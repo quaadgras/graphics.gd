@@ -283,61 +283,22 @@ func New() Instance {
 	return casted
 }
 
-/*
-Creates a new [ImageTexture] and initializes it by allocating and setting the data from an [Image].
-
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-[ImageTexture]: https://pkg.go.dev/graphics.gd/classdb/ImageTexture
-*/
-//go:nosplit
 func (self class) CreateFromImage(image [1]gdclass.Image) [1]gdclass.ImageTexture { //gd:ImageTexture.create_from_image
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.create_from_image, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0])))})
 	var ret = [1]gdclass.ImageTexture{gdclass.NewImageTexture(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the format of the texture.
-*/
-//go:nosplit
 func (self class) GetFormat() Image.Format { //gd:ImageTexture.get_format
 	var r_ret = noescape.Call[Image.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Replaces the texture's data with a new [Image]. This will re-allocate new memory for the texture.
-
-If you want to update the image, but don't need to change its parameters (format, size), use [Update] instead for better performance.
-
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-[Update]: https://pkg.go.dev/graphics.gd/classdb/ImageTexture#Instance.Update
-*/
-//go:nosplit
 func (self class) SetImage(image [1]gdclass.Image) { //gd:ImageTexture.set_image
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_image, 0|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0])))})
 }
-
-/*
-Replaces the texture's data with a new [Image].
-
-Note: The texture has to be created using [CreateFromImage] or initialized first with the [SetImage] method before it can be updated. The new image dimensions, format, and mipmaps configuration should match the existing texture's image configuration.
-
-Use this method over [SetImage] if you need to update the texture frequently, which is faster than allocating additional memory for a new texture each time.
-
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-[SetImage]: https://pkg.go.dev/graphics.gd/classdb/ImageTexture#Instance.SetImage
-*/
-//go:nosplit
 func (self class) Update(image [1]gdclass.Image) { //gd:ImageTexture.update
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update, 0|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0])))})
 }
-
-/*
-Resizes the texture to the specified dimensions.
-*/
-//go:nosplit
 func (self class) SetSizeOverride(size Vector2i.XY) { //gd:ImageTexture.set_size_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size_override, 0|(gdextension.SizeVector2i<<4), &struct{ size Vector2i.XY }{size})
 }

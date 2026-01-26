@@ -516,349 +516,149 @@ func (self Instance) SetBigEndian(value bool) Instance { //gd:StreamPeer.big_end
 	return self
 }
 
-/*
-Sends a chunk of data through the connection, blocking if necessary until the data is done sending. This function returns an [Error] code.
-*/
-//go:nosplit
 func (self class) PutData(data Packed.Bytes) Error.Code { //gd:StreamPeer.put_data
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.put_data, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Sends a chunk of data through the connection. If all the data could not be sent at once, only part of it will. This function returns two values, an [Error] code and an integer, describing how much data was actually sent.
-*/
-//go:nosplit
 func (self class) PutPartialData(data Packed.Bytes) Array.Any { //gd:StreamPeer.put_partial_data
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.put_partial_data, gdextension.SizeArray|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns a chunk data with the received bytes. The number of bytes to be received can be requested in the 'bytes' argument. If not enough bytes are available, the function will block until the desired amount is received. This function returns two values, an [Error] code and a data array.
-*/
-//go:nosplit
 func (self class) GetData(bytes int64) Array.Any { //gd:StreamPeer.get_data
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_data, gdextension.SizeArray|(gdextension.SizeInt<<4), &struct{ bytes int64 }{bytes})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns a chunk data with the received bytes. The number of bytes to be received can be requested in the 'bytes' argument. If not enough bytes are available, the function will return how many were actually received. This function returns two values: an [Error] code and a data array.
-*/
-//go:nosplit
 func (self class) GetPartialData(bytes int64) Array.Any { //gd:StreamPeer.get_partial_data
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_partial_data, gdextension.SizeArray|(gdextension.SizeInt<<4), &struct{ bytes int64 }{bytes})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns the number of bytes this [StreamPeer] has available.
-
-[StreamPeer]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer
-*/
-//go:nosplit
 func (self class) GetAvailableBytes() int64 { //gd:StreamPeer.get_available_bytes
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_available_bytes, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBigEndian(enable bool) { //gd:StreamPeer.set_big_endian
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_big_endian, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsBigEndianEnabled() bool { //gd:StreamPeer.is_big_endian_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_big_endian_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Puts a signed byte into the stream.
-*/
-//go:nosplit
 func (self class) Put8(value int64) { //gd:StreamPeer.put_8
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.put_8, 0|(gdextension.SizeInt<<4), &struct{ value int64 }{value})
 }
-
-/*
-Puts an unsigned byte into the stream.
-*/
-//go:nosplit
 func (self class) PutU8(value int64) { //gd:StreamPeer.put_u8
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.put_u8, 0|(gdextension.SizeInt<<4), &struct{ value int64 }{value})
 }
-
-/*
-Puts a signed 16-bit value into the stream.
-*/
-//go:nosplit
 func (self class) Put16(value int64) { //gd:StreamPeer.put_16
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.put_16, 0|(gdextension.SizeInt<<4), &struct{ value int64 }{value})
 }
-
-/*
-Puts an unsigned 16-bit value into the stream.
-*/
-//go:nosplit
 func (self class) PutU16(value int64) { //gd:StreamPeer.put_u16
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.put_u16, 0|(gdextension.SizeInt<<4), &struct{ value int64 }{value})
 }
-
-/*
-Puts a signed 32-bit value into the stream.
-*/
-//go:nosplit
 func (self class) Put32(value int64) { //gd:StreamPeer.put_32
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.put_32, 0|(gdextension.SizeInt<<4), &struct{ value int64 }{value})
 }
-
-/*
-Puts an unsigned 32-bit value into the stream.
-*/
-//go:nosplit
 func (self class) PutU32(value int64) { //gd:StreamPeer.put_u32
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.put_u32, 0|(gdextension.SizeInt<<4), &struct{ value int64 }{value})
 }
-
-/*
-Puts a signed 64-bit value into the stream.
-*/
-//go:nosplit
 func (self class) Put64(value int64) { //gd:StreamPeer.put_64
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.put_64, 0|(gdextension.SizeInt<<4), &struct{ value int64 }{value})
 }
-
-/*
-Puts an unsigned 64-bit value into the stream.
-*/
-//go:nosplit
 func (self class) PutU64(value int64) { //gd:StreamPeer.put_u64
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.put_u64, 0|(gdextension.SizeInt<<4), &struct{ value int64 }{value})
 }
-
-/*
-Puts a half-precision float into the stream.
-*/
-//go:nosplit
 func (self class) PutHalf(value float64) { //gd:StreamPeer.put_half
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.put_half, 0|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
 }
-
-/*
-Puts a single-precision float into the stream.
-*/
-//go:nosplit
 func (self class) PutFloat(value float64) { //gd:StreamPeer.put_float
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.put_float, 0|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
 }
-
-/*
-Puts a double-precision float into the stream.
-*/
-//go:nosplit
 func (self class) PutDouble(value float64) { //gd:StreamPeer.put_double
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.put_double, 0|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
 }
-
-/*
-Puts a zero-terminated ASCII string into the stream prepended by a 32-bit unsigned integer representing its size.
-
-Note: To put an ASCII string without prepending its size, you can use [PutData]:
-
-
-	streamPeer.PutData([]byte("Hello world"))
-
-
-[PutData]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.PutData
-*/
-//go:nosplit
 func (self class) PutString(value String.Readable) { //gd:StreamPeer.put_string
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.put_string, 0|(gdextension.SizeString<<4), &struct{ value gdextension.String }{pointers.Get(gd.InternalString(value))})
 }
-
-/*
-Puts a zero-terminated UTF-8 string into the stream prepended by a 32 bits unsigned integer representing its size.
-
-Note: To put a UTF-8 string without prepending its size, you can use [PutData]:
-
-
-	streamPeer.PutData([]byte("Hello World"))
-
-
-[PutData]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.PutData
-*/
-//go:nosplit
 func (self class) PutUtf8String(value String.Readable) { //gd:StreamPeer.put_utf8_string
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.put_utf8_string, 0|(gdextension.SizeString<<4), &struct{ value gdextension.String }{pointers.Get(gd.InternalString(value))})
 }
-
-/*
-Puts a Variant into the stream. If 'full_objects' is true encoding objects is allowed (and can potentially include code).
-
-Internally, this uses the same encoding mechanism as the [@GlobalScope.VarToBytes] method.
-
-[@GlobalScope.VarToBytes]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.VarToBytes
-*/
-//go:nosplit
 func (self class) PutVar(value variant.Any, full_objects bool) { //gd:StreamPeer.put_var
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.put_var, 0|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), &struct {
 		value        gdextension.Variant
 		full_objects bool
 	}{gdextension.Variant(pointers.Get(gd.InternalVariant(value))), full_objects})
 }
-
-/*
-Gets a signed byte from the stream.
-*/
-//go:nosplit
 func (self class) Get8() int64 { //gd:StreamPeer.get_8
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_8, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Gets an unsigned byte from the stream.
-*/
-//go:nosplit
 func (self class) GetU8() int64 { //gd:StreamPeer.get_u8
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_u8, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Gets a signed 16-bit value from the stream.
-*/
-//go:nosplit
 func (self class) Get16() int64 { //gd:StreamPeer.get_16
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_16, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Gets an unsigned 16-bit value from the stream.
-*/
-//go:nosplit
 func (self class) GetU16() int64 { //gd:StreamPeer.get_u16
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_u16, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Gets a signed 32-bit value from the stream.
-*/
-//go:nosplit
 func (self class) Get32() int64 { //gd:StreamPeer.get_32
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_32, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Gets an unsigned 32-bit value from the stream.
-*/
-//go:nosplit
 func (self class) GetU32() int64 { //gd:StreamPeer.get_u32
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_u32, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Gets a signed 64-bit value from the stream.
-*/
-//go:nosplit
 func (self class) Get64() int64 { //gd:StreamPeer.get_64
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_64, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Gets an unsigned 64-bit value from the stream.
-*/
-//go:nosplit
 func (self class) GetU64() int64 { //gd:StreamPeer.get_u64
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_u64, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Gets a half-precision float from the stream.
-*/
-//go:nosplit
 func (self class) GetHalf() float64 { //gd:StreamPeer.get_half
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_half, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Gets a single-precision float from the stream.
-*/
-//go:nosplit
 func (self class) GetFloat() float64 { //gd:StreamPeer.get_float
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_float, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Gets a double-precision float from the stream.
-*/
-//go:nosplit
 func (self class) GetDouble() float64 { //gd:StreamPeer.get_double
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_double, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Gets an ASCII string with byte-length 'bytes' from the stream. If 'bytes' is negative (default) the length will be read from the stream using the reverse process of [PutString].
-
-[PutString]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.PutString
-*/
-//go:nosplit
 func (self class) GetString(bytes int64) String.Readable { //gd:StreamPeer.get_string
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_string, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ bytes int64 }{bytes})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Gets a UTF-8 string with byte-length 'bytes' from the stream (this decodes the string sent as UTF-8). If 'bytes' is negative (default) the length will be read from the stream using the reverse process of [PutUtf8String].
-
-[PutUtf8String]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.PutUtf8String
-*/
-//go:nosplit
 func (self class) GetUtf8String(bytes int64) String.Readable { //gd:StreamPeer.get_utf8_string
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_utf8_string, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ bytes int64 }{bytes})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Gets a Variant from the stream. If 'allow_objects' is true, decoding objects is allowed.
-
-Internally, this uses the same decoding mechanism as the [@GlobalScope.BytesToVar] method.
-
-Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
-
-[@GlobalScope.BytesToVar]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.BytesToVar
-*/
-//go:nosplit
 func (self class) GetVar(allow_objects bool) variant.Any { //gd:StreamPeer.get_var
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_var, gdextension.SizeVariant|(gdextension.SizeBool<<4), &struct{ allow_objects bool }{allow_objects})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))

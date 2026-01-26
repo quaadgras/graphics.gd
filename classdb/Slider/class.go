@@ -233,60 +233,41 @@ func (self Instance) SetTicksPosition(value TickPosition) Instance { //gd:Slider
 	return self
 }
 
-//go:nosplit
 func (self class) SetTicks(count int64) { //gd:Slider.set_ticks
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ticks, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
-
-//go:nosplit
 func (self class) GetTicks() int64 { //gd:Slider.get_ticks
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_ticks, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetTicksOnBorders() bool { //gd:Slider.get_ticks_on_borders
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_ticks_on_borders, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTicksOnBorders(ticks_on_border bool) { //gd:Slider.set_ticks_on_borders
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ticks_on_borders, 0|(gdextension.SizeBool<<4), &struct{ ticks_on_border bool }{ticks_on_border})
 }
-
-//go:nosplit
 func (self class) GetTicksPosition() TickPosition { //gd:Slider.get_ticks_position
 	var r_ret = noescape.Call[TickPosition](gd.ObjectChecked(self.AsObject()), methods.get_ticks_position, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTicksPosition(ticks_on_border TickPosition) { //gd:Slider.set_ticks_position
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ticks_position, 0|(gdextension.SizeInt<<4), &struct{ ticks_on_border TickPosition }{ticks_on_border})
 }
-
-//go:nosplit
 func (self class) SetEditable(editable bool) { //gd:Slider.set_editable
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editable, 0|(gdextension.SizeBool<<4), &struct{ editable bool }{editable})
 }
-
-//go:nosplit
 func (self class) IsEditable() bool { //gd:Slider.is_editable
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetScrollable(scrollable bool) { //gd:Slider.set_scrollable
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scrollable, 0|(gdextension.SizeBool<<4), &struct{ scrollable bool }{scrollable})
 }
-
-//go:nosplit
 func (self class) IsScrollable() bool { //gd:Slider.is_scrollable
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scrollable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

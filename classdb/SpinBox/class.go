@@ -349,112 +349,65 @@ func (self Instance) SetSelectAllOnFocus(value bool) Instance { //gd:SpinBox.sel
 	return self
 }
 
-//go:nosplit
 func (self class) SetHorizontalAlignment(alignment GUI.HorizontalAlignment) { //gd:SpinBox.set_horizontal_alignment
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_horizontal_alignment, 0|(gdextension.SizeInt<<4), &struct{ alignment GUI.HorizontalAlignment }{alignment})
 }
-
-//go:nosplit
 func (self class) GetHorizontalAlignment() GUI.HorizontalAlignment { //gd:SpinBox.get_horizontal_alignment
 	var r_ret = noescape.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_alignment, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSuffix(suffix String.Readable) { //gd:SpinBox.set_suffix
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_suffix, 0|(gdextension.SizeString<<4), &struct{ suffix gdextension.String }{pointers.Get(gd.InternalString(suffix))})
 }
-
-//go:nosplit
 func (self class) GetSuffix() String.Readable { //gd:SpinBox.get_suffix
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_suffix, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPrefix(prefix String.Readable) { //gd:SpinBox.set_prefix
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_prefix, 0|(gdextension.SizeString<<4), &struct{ prefix gdextension.String }{pointers.Get(gd.InternalString(prefix))})
 }
-
-//go:nosplit
 func (self class) GetPrefix() String.Readable { //gd:SpinBox.get_prefix
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_prefix, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEditable(enabled bool) { //gd:SpinBox.set_editable
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editable, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) SetCustomArrowStep(arrow_step float64) { //gd:SpinBox.set_custom_arrow_step
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_arrow_step, 0|(gdextension.SizeFloat<<4), &struct{ arrow_step float64 }{arrow_step})
 }
-
-//go:nosplit
 func (self class) GetCustomArrowStep() float64 { //gd:SpinBox.get_custom_arrow_step
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_custom_arrow_step, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) IsEditable() bool { //gd:SpinBox.is_editable
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUpdateOnTextChanged(enabled bool) { //gd:SpinBox.set_update_on_text_changed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_update_on_text_changed, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) GetUpdateOnTextChanged() bool { //gd:SpinBox.get_update_on_text_changed
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_update_on_text_changed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSelectAllOnFocus(enabled bool) { //gd:SpinBox.set_select_all_on_focus
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_select_all_on_focus, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsSelectAllOnFocus() bool { //gd:SpinBox.is_select_all_on_focus
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_select_all_on_focus, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Applies the current value of this [SpinBox]. This is equivalent to pressing Enter while editing the [LineEdit] used by the [SpinBox]. This will cause [OnLineedit.TextSubmitted] to be emitted and its currently contained expression to be evaluated.
-
-[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
-[OnLineedit.TextSubmitted]: https://pkg.go.dev/graphics.gd/classdb/SpinBox#Instance.OnLineedit.TextSubmitted
-[SpinBox]: https://pkg.go.dev/graphics.gd/classdb/SpinBox
-*/
-//go:nosplit
 func (self class) Apply() { //gd:SpinBox.apply
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply, 0, &struct{}{})
 }
-
-/*
-Returns the [LineEdit] instance from this [SpinBox]. You can use it to access properties and methods of [LineEdit].
-
-Warning: This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [CanvasItem.Visible] property.
-
-[CanvasItem.Visible]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Visible
-[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
-[SpinBox]: https://pkg.go.dev/graphics.gd/classdb/SpinBox
-*/
-//go:nosplit
 func (self class) GetLineEdit() [1]gdclass.LineEdit { //gd:SpinBox.get_line_edit
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_line_edit, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.LineEdit{gdclass.NewLineEdit(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}

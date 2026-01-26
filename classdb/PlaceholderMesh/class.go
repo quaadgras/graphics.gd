@@ -174,7 +174,6 @@ func (self Instance) SetAabb(value AABB.PositionSize) Instance { //gd:Placeholde
 	return self
 }
 
-//go:nosplit
 func (self class) SetAabb(aabb AABB.PositionSize) { //gd:PlaceholderMesh.set_aabb
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_aabb, 0|(gdextension.SizeAABB<<4), &struct{ aabb AABB.PositionSize }{aabb})
 }

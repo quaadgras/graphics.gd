@@ -213,36 +213,25 @@ func (self Instance) SetRadianceSize(value RadianceSize) Instance { //gd:Sky.rad
 	return self
 }
 
-//go:nosplit
 func (self class) SetRadianceSize(size RadianceSize) { //gd:Sky.set_radiance_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radiance_size, 0|(gdextension.SizeInt<<4), &struct{ size RadianceSize }{size})
 }
-
-//go:nosplit
 func (self class) GetRadianceSize() RadianceSize { //gd:Sky.get_radiance_size
 	var r_ret = noescape.Call[RadianceSize](gd.ObjectChecked(self.AsObject()), methods.get_radiance_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetProcessMode(mode ProcessMode) { //gd:Sky.set_process_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_mode, 0|(gdextension.SizeInt<<4), &struct{ mode ProcessMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetProcessMode() ProcessMode { //gd:Sky.get_process_mode
 	var r_ret = noescape.Call[ProcessMode](gd.ObjectChecked(self.AsObject()), methods.get_process_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:Sky.set_material
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
 }
-
-//go:nosplit
 func (self class) GetMaterial() [1]gdclass.Material { //gd:Sky.get_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

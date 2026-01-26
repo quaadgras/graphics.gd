@@ -243,36 +243,16 @@ func New() Instance {
 	return casted
 }
 
-/*
-Sets the time in seconds after which the [MethodTweener] will start interpolating. By default there's no delay.
-
-[MethodTweener]: https://pkg.go.dev/graphics.gd/classdb/MethodTweener
-*/
-//go:nosplit
 func (self class) SetDelay(delay float64) [1]gdclass.MethodTweener { //gd:MethodTweener.set_delay
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_delay, gdextension.SizeObject|(gdextension.SizeFloat<<4), &struct{ delay float64 }{delay})
 	var ret = [1]gdclass.MethodTweener{gdclass.NewMethodTweener(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Sets the type of used transition from [Tween.TransitionType]. If not set, the default transition is used from the [Tween] that contains this Tweener.
-
-[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
-*/
-//go:nosplit
 func (self class) SetTrans(trans Tween.TransitionType) [1]gdclass.MethodTweener { //gd:MethodTweener.set_trans
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_trans, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ trans Tween.TransitionType }{trans})
 	var ret = [1]gdclass.MethodTweener{gdclass.NewMethodTweener(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Sets the type of used easing from [Tween.EaseType]. If not set, the default easing is used from the [Tween] that contains this Tweener.
-
-[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
-*/
-//go:nosplit
 func (self class) SetEase(ease Tween.EaseType) [1]gdclass.MethodTweener { //gd:MethodTweener.set_ease
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_ease, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ ease Tween.EaseType }{ease})
 	var ret = [1]gdclass.MethodTweener{gdclass.NewMethodTweener(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

@@ -218,48 +218,33 @@ func (self Instance) SetDamping(value Float.X) Instance { //gd:DampedSpringJoint
 	return self
 }
 
-//go:nosplit
 func (self class) SetLength(length float64) { //gd:DampedSpringJoint2D.set_length
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
-
-//go:nosplit
 func (self class) GetLength() float64 { //gd:DampedSpringJoint2D.get_length
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRestLength(rest_length float64) { //gd:DampedSpringJoint2D.set_rest_length
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rest_length, 0|(gdextension.SizeFloat<<4), &struct{ rest_length float64 }{rest_length})
 }
-
-//go:nosplit
 func (self class) GetRestLength() float64 { //gd:DampedSpringJoint2D.get_rest_length
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rest_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetStiffness(stiffness float64) { //gd:DampedSpringJoint2D.set_stiffness
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stiffness, 0|(gdextension.SizeFloat<<4), &struct{ stiffness float64 }{stiffness})
 }
-
-//go:nosplit
 func (self class) GetStiffness() float64 { //gd:DampedSpringJoint2D.get_stiffness
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_stiffness, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDamping(damping float64) { //gd:DampedSpringJoint2D.set_damping
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_damping, 0|(gdextension.SizeFloat<<4), &struct{ damping float64 }{damping})
 }
-
-//go:nosplit
 func (self class) GetDamping() float64 { //gd:DampedSpringJoint2D.get_damping
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_damping, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

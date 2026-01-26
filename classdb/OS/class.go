@@ -1437,86 +1437,32 @@ func SetDeltaSmoothing(value bool) { //gd:OS.delta_smoothing
 	class(self).SetDeltaSmoothing(value)
 }
 
-/*
-Generates a []byte of cryptographically secure random bytes with given 'size'.
-
-Note: Generating large quantities of bytes using this method can result in locking and entropy of lower quality on most platforms. Using [Crypto.GenerateRandomBytes] is preferred in most cases.
-
-[Crypto.GenerateRandomBytes]: https://pkg.go.dev/graphics.gd/classdb/Crypto#Instance.GenerateRandomBytes
-*/
-//go:nosplit
 func (self class) GetEntropy(size int64) Packed.Bytes { //gd:OS.get_entropy
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_entropy, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-
-/*
-Returns the list of certification authorities trusted by the operating system as a string of concatenated certificates in PEM format.
-*/
-//go:nosplit
 func (self class) GetSystemCaCertificates() String.Readable { //gd:OS.get_system_ca_certificates
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_system_ca_certificates, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns an array of connected MIDI device names, if they exist. Returns an empty array if the system MIDI driver has not previously been initialized with [OpenMidiInputs]. See also [CloseMidiInputs].
-
-Note: This method is implemented on Linux, macOS, Windows, and Web.
-
-Note: On the Web platform, Web MIDI needs to be supported by the browser. [For the time being], it is currently supported by all major browsers, except Safari.
-
-Note: On the Web platform, using MIDI input requires a browser permission to be granted first. This permission request is performed when calling [OpenMidiInputs]. The browser will refrain from processing MIDI input until the user accepts the permission request.
-
-[For the time being]: https://caniuse.com/midi
-*/
-//go:nosplit
 func (self class) GetConnectedMidiInputs() Packed.Strings { //gd:OS.get_connected_midi_inputs
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_connected_midi_inputs, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Initializes the singleton for the system MIDI driver, allowing Godot to receive [InputEventMIDI]. See also [GetConnectedMidiInputs] and [CloseMidiInputs].
-
-Note: This method is implemented on Linux, macOS, Windows, and Web.
-
-Note: On the Web platform, Web MIDI needs to be supported by the browser. [For the time being], it is currently supported by all major browsers, except Safari.
-
-Note: On the Web platform, using MIDI input requires a browser permission to be granted first. This permission request is performed when calling [OpenMidiInputs]. The browser will refrain from processing MIDI input until the user accepts the permission request.
-
-[For the time being]: https://caniuse.com/midi
-[InputEventMIDI]: https://pkg.go.dev/graphics.gd/classdb/InputEventMIDI
-*/
-//go:nosplit
 func (self class) OpenMidiInputs() { //gd:OS.open_midi_inputs
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.open_midi_inputs, 0, &struct{}{})
 }
-
-/*
-Shuts down the system MIDI driver. Godot will no longer receive [InputEventMIDI]. See also [OpenMidiInputs] and [GetConnectedMidiInputs].
-
-Note: This method is implemented on Linux, macOS, Windows, and Web.
-
-[InputEventMIDI]: https://pkg.go.dev/graphics.gd/classdb/InputEventMIDI
-*/
-//go:nosplit
 func (self class) CloseMidiInputs() { //gd:OS.close_midi_inputs
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.close_midi_inputs, 0, &struct{}{})
 }
-
-/*
-Displays a modal dialog box using the host platform's implementation. The engine execution is blocked until the dialog is closed.
-*/
-//go:nosplit
 func (self class) Alert(text String.Readable, title String.Readable) { //gd:OS.alert
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.alert, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
@@ -1524,110 +1470,58 @@ func (self class) Alert(text String.Readable, title String.Readable) { //gd:OS.a
 		title gdextension.String
 	}{pointers.Get(gd.InternalString(text)), pointers.Get(gd.InternalString(title))})
 }
-
-/*
-Crashes the engine (or the editor if called within a @tool script). See also [Kill].
-
-Note: This method should only be used for testing the system's crash handler, not for any other purpose. For general error reporting, use (in order of preference) [@GDScript.Assert], [@GlobalScope.PushError], or [Alert].
-
-[@GDScript.Assert]: https://pkg.go.dev/graphics.gd/classdb/@GDScript#Instance.Assert
-[@GlobalScope.PushError]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.PushError
-*/
-//go:nosplit
 func (self class) Crash(message String.Readable) { //gd:OS.crash
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.crash, 0|(gdextension.SizeString<<4), &struct{ message gdextension.String }{pointers.Get(gd.InternalString(message))})
 }
-
-//go:nosplit
 func (self class) SetLowProcessorUsageMode(enable bool) { //gd:OS.set_low_processor_usage_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_low_processor_usage_mode, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsInLowProcessorUsageMode() bool { //gd:OS.is_in_low_processor_usage_mode
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_in_low_processor_usage_mode, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetLowProcessorUsageModeSleepUsec(usec int64) { //gd:OS.set_low_processor_usage_mode_sleep_usec
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_low_processor_usage_mode_sleep_usec, 0|(gdextension.SizeInt<<4), &struct{ usec int64 }{usec})
 }
-
-//go:nosplit
 func (self class) GetLowProcessorUsageModeSleepUsec() int64 { //gd:OS.get_low_processor_usage_mode_sleep_usec
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_low_processor_usage_mode_sleep_usec, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDeltaSmoothing(delta_smoothing_enabled bool) { //gd:OS.set_delta_smoothing
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_delta_smoothing, 0|(gdextension.SizeBool<<4), &struct{ delta_smoothing_enabled bool }{delta_smoothing_enabled})
 }
-
-//go:nosplit
 func (self class) IsDeltaSmoothingEnabled() bool { //gd:OS.is_delta_smoothing_enabled
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_delta_smoothing_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the number of logical CPU cores available on the host machine. On CPUs with HyperThreading enabled, this number will be greater than the number of physical CPU cores.
-*/
-//go:nosplit
 func (self class) GetProcessorCount() int64 { //gd:OS.get_processor_count
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_processor_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the full name of the CPU model on the host machine (e.g. "Intel(R) Core(TM) i7-6700K CPU @ 4.00GHz").
-
-Note: This method is only implemented on Windows, macOS, Linux and iOS. On Android and Web, [GetProcessorName] returns an empty string.
-*/
-//go:nosplit
 func (self class) GetProcessorName() String.Readable { //gd:OS.get_processor_name
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_processor_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the list of font family names available.
-
-Note: This method is implemented on Android, iOS, Linux, macOS and Windows.
-*/
-//go:nosplit
 func (self class) GetSystemFonts() Packed.Strings { //gd:OS.get_system_fonts
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_system_fonts, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns the path to the system font file with 'font_name' and style. Returns an empty string if no matching fonts found.
-
-The following aliases can be used to request default fonts: "sans-serif", "serif", "monospace", "cursive", and "fantasy".
-
-Note: Returned font might have different style if the requested style is not available.
-
-Note: This method is implemented on Android, iOS, Linux, macOS and Windows.
-*/
-//go:nosplit
 func (self class) GetSystemFontPath(font_name String.Readable, weight int64, stretch int64, italic bool) String.Readable { //gd:OS.get_system_font_path
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_system_font_path, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), &struct {
@@ -1639,19 +1533,6 @@ func (self class) GetSystemFontPath(font_name String.Readable, weight int64, str
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns an array of the system substitute font file paths, which are similar to the font with 'font_name' and style for the specified text, locale, and script. Returns an empty array if no matching fonts found.
-
-The following aliases can be used to request default fonts: "sans-serif", "serif", "monospace", "cursive", and "fantasy".
-
-Note: Depending on OS, it's not guaranteed that any of the returned fonts will be suitable for rendering specified text. Fonts should be loaded and checked in the order they are returned, and the first suitable one used.
-
-Note: Returned fonts might have different style if the requested style is not available or belong to a different font family.
-
-Note: This method is implemented on Android, iOS, Linux, macOS and Windows.
-*/
-//go:nosplit
 func (self class) GetSystemFontPathForText(font_name String.Readable, text String.Readable, locale String.Readable, script String.Readable, weight int64, stretch int64, italic bool) Packed.Strings { //gd:OS.get_system_font_path_for_text
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_system_font_path_for_text, gdextension.SizePackedArray|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeBool<<28), &struct {
@@ -1666,141 +1547,42 @@ func (self class) GetSystemFontPathForText(font_name String.Readable, text Strin
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns the file path to the current engine executable.
-
-Note: On macOS, if you want to launch another instance of Godot, always use [CreateInstance] instead of relying on the executable path.
-*/
-//go:nosplit
 func (self class) GetExecutablePath() String.Readable { //gd:OS.get_executable_path
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_executable_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Reads a user input as a UTF-8 encoded string from the standard input. This operation can be blocking, which causes the window to freeze if [ReadStringFromStdin] is called on the main thread.
-
-- If standard input is console, this method will block until the program receives a line break in standard input (usually by the user pressing Enter).
-
-- If standard input is pipe, this method will block until a specific amount of data is read or pipe is closed.
-
-- If standard input is a file, this method will read a specific amount of data (or less if end-of-file is reached) and return immediately.
-
-Note: This method automatically replaces \r\n line breaks with \n and removes them from the end of the string. Use [ReadBufferFromStdin] to read the unprocessed data.
-
-Note: This method is implemented on Linux, macOS, and Windows.
-
-Note: On exported Windows builds, run the console wrapper executable to access the terminal. If standard input is console, calling this method without console wrapped will freeze permanently. If standard input is pipe or file, it can be used without console wrapper. If you need a single executable with full console support, use a custom build compiled with the windows_subsystem=console flag.
-*/
-//go:nosplit
 func (self class) ReadStringFromStdin(buffer_size int64) String.Readable { //gd:OS.read_string_from_stdin
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.read_string_from_stdin, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ buffer_size int64 }{buffer_size})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Reads a user input as raw data from the standard input. This operation can be blocking, which causes the window to freeze if [ReadBufferFromStdin] is called on the main thread.
-
-- If standard input is console, this method will block until the program receives a line break in standard input (usually by the user pressing Enter).
-
-- If standard input is pipe, this method will block until a specific amount of data is read or pipe is closed.
-
-- If standard input is a file, this method will read a specific amount of data (or less if end-of-file is reached) and return immediately.
-
-Note: This method is implemented on Linux, macOS, and Windows.
-
-Note: On exported Windows builds, run the console wrapper executable to access the terminal. If standard input is console, calling this method without console wrapped will freeze permanently. If standard input is pipe or file, it can be used without console wrapper. If you need a single executable with full console support, use a custom build compiled with the windows_subsystem=console flag.
-*/
-//go:nosplit
 func (self class) ReadBufferFromStdin(buffer_size int64) Packed.Bytes { //gd:OS.read_buffer_from_stdin
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.read_buffer_from_stdin, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ buffer_size int64 }{buffer_size})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-
-/*
-Returns the type of the standard input device.
-
-Note: This method is implemented on Linux, macOS, and Windows.
-
-Note: On exported Windows builds, run the console wrapper executable to access the standard input. If you need a single executable with full console support, use a custom build compiled with the windows_subsystem=console flag.
-*/
-//go:nosplit
 func (self class) GetStdinType() StdHandleType { //gd:OS.get_stdin_type
 	once.Do(singleton)
 	var r_ret = noescape.Call[StdHandleType](gd.ObjectChecked(self.AsObject()), methods.get_stdin_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the type of the standard output device.
-
-Note: This method is implemented on Linux, macOS, and Windows.
-*/
-//go:nosplit
 func (self class) GetStdoutType() StdHandleType { //gd:OS.get_stdout_type
 	once.Do(singleton)
 	var r_ret = noescape.Call[StdHandleType](gd.ObjectChecked(self.AsObject()), methods.get_stdout_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the type of the standard error device.
-
-Note: This method is implemented on Linux, macOS, and Windows.
-*/
-//go:nosplit
 func (self class) GetStderrType() StdHandleType { //gd:OS.get_stderr_type
 	once.Do(singleton)
 	var r_ret = noescape.Call[StdHandleType](gd.ObjectChecked(self.AsObject()), methods.get_stderr_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Executes the given process in a blocking way. The file specified in 'path' must exist and be executable. The system path resolution will be used. The 'arguments' are used in the given order, separated by spaces, and wrapped in quotes.
-
-If an 'output' array is provided, the complete shell output of the process is appended to 'output' as a single string element. If 'read_stderr' is true, the output to the standard error stream is also appended to the array.
-
-On Windows, if 'open_console' is true and the process is a console app, a new terminal window is opened.
-
-This method returns the exit code of the command, or -1 if the process fails to execute.
-
-Note: The main thread will be blocked until the executed command terminates. Use [Thread] to create a separate thread that will not block the main thread, or use [CreateProcess] to create a completely independent process.
-
-For example, to retrieve a list of the working directory's contents:
-
-
-	output, exit_code := OS.Execute("ls", []string{"-l", "/tmp"}, false, false)
-
-
-If you wish to access a shell built-in or execute a composite command, a platform-specific shell can be invoked. For example:
-
-
-
-Note: This method is implemented on Android, Linux, macOS, and Windows.
-
-Note: To execute a Windows command interpreter built-in command, specify cmd.exe in 'path', /c as the first argument, and the desired command as the second argument.
-
-Note: To execute a PowerShell built-in command, specify powershell.exe in 'path', -Command as the first argument, and the desired command as the second argument.
-
-Note: To execute a Unix shell built-in command, specify shell executable name in 'path', -c as the first argument, and the desired command as the second argument.
-
-Note: On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export.
-
-Note: On Android, system commands such as dumpsys can only be run on a rooted device.
-
-[Thread]: https://pkg.go.dev/graphics.gd/classdb/Thread
-*/
-//go:nosplit
 func (self class) Execute(path String.Readable, arguments Packed.Strings, output Array.Any, read_stderr bool, open_console bool) int64 { //gd:OS.execute
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.execute, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeArray<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), &struct {
@@ -1813,34 +1595,6 @@ func (self class) Execute(path String.Readable, arguments Packed.Strings, output
 	var ret = r_ret
 	return ret
 }
-
-/*
-Creates a new process that runs independently of Godot with redirected IO. It will not terminate when Godot terminates. The path specified in 'path' must exist and be an executable file or macOS .app bundle. The path is resolved based on the current platform. The 'arguments' are used in the given order and separated by a space.
-
-If 'blocking' is false, created pipes work in non-blocking mode, i.e. read and write operations will return immediately. Use [FileAccess.GetError] to check if the last read/write operation was successful.
-
-If the process cannot be created, this method returns an empty data structure. Otherwise, this method returns a data structure with the following keys:
-
-- "stdio" - [FileAccess] to access the process stdin and stdout pipes (read/write).
-
-- "stderr" - [FileAccess] to access the process stderr pipe (read only).
-
-- "pid" - Process ID as an int, which you can use to monitor the process (and potentially terminate it with [Kill]).
-
-Note: This method is implemented on Android, Linux, macOS, and Windows.
-
-Note: To execute a Windows command interpreter built-in command, specify cmd.exe in 'path', /c as the first argument, and the desired command as the second argument.
-
-Note: To execute a PowerShell built-in command, specify powershell.exe in 'path', -Command as the first argument, and the desired command as the second argument.
-
-Note: To execute a Unix shell built-in command, specify shell executable name in 'path', -c as the first argument, and the desired command as the second argument.
-
-Note: On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
-
-[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
-[FileAccess.GetError]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.GetError
-*/
-//go:nosplit
 func (self class) ExecuteWithPipe(path String.Readable, arguments Packed.Strings, blocking bool) Dictionary.Any { //gd:OS.execute_with_pipe
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.execute_with_pipe, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeBool<<12), &struct {
@@ -1851,27 +1605,6 @@ func (self class) ExecuteWithPipe(path String.Readable, arguments Packed.Strings
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Creates a new process that runs independently of Godot. It will not terminate when Godot terminates. The path specified in 'path' must exist and be an executable file or macOS .app bundle. The path is resolved based on the current platform. The 'arguments' are used in the given order and separated by a space.
-
-On Windows, if 'open_console' is true and the process is a console app, a new terminal window will be opened.
-
-If the process is successfully created, this method returns its process ID, which you can use to monitor the process (and potentially terminate it with [Kill]). Otherwise, this method returns -1.
-
-Example: Run another instance of the project:
-
-
-	var pid = OS.CreateProcess(OS.GetExecutablePath(), []string{}, false)
-
-
-See [Execute] if you wish to run an external command and retrieve the results.
-
-Note: This method is implemented on Android, Linux, macOS, and Windows.
-
-Note: On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
-*/
-//go:nosplit
 func (self class) CreateProcess(path String.Readable, arguments Packed.Strings, open_console bool) int64 { //gd:OS.create_process
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_process, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeBool<<12), &struct {
@@ -1882,17 +1615,6 @@ func (self class) CreateProcess(path String.Readable, arguments Packed.Strings, 
 	var ret = r_ret
 	return ret
 }
-
-/*
-Creates a new instance of Godot that runs independently. The 'arguments' are used in the given order and separated by a space.
-
-If the process is successfully created, this method returns the new process' ID, which you can use to monitor the process (and potentially terminate it with [Kill]). If the process cannot be created, this method returns -1.
-
-See [CreateProcess] if you wish to run a different process.
-
-Note: This method is implemented on Android, Linux, macOS and Windows.
-*/
-//go:nosplit
 func (self class) CreateInstance(arguments Packed.Strings) int64 { //gd:OS.create_instance
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_instance, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct {
@@ -1901,15 +1623,6 @@ func (self class) CreateInstance(arguments Packed.Strings) int64 { //gd:OS.creat
 	var ret = r_ret
 	return ret
 }
-
-/*
-Opens one or more files/directories with the specified application. The 'program_path' specifies the path to the application to use for opening the files, and 'paths' contains an array of file/directory paths to open.
-
-Note: This method is mostly only relevant for macOS, where opening files using [CreateProcess] might fail. On other platforms, this falls back to using [CreateProcess].
-
-Note: On macOS, 'program_path' should ideally be the path to a .app bundle.
-*/
-//go:nosplit
 func (self class) OpenWithProgram(program_path String.Readable, paths Packed.Strings) Error.Code { //gd:OS.open_with_program
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.open_with_program, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8), &struct {
@@ -1919,63 +1632,18 @@ func (self class) OpenWithProgram(program_path String.Readable, paths Packed.Str
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Kill (terminate) the process identified by the given process ID ('pid'), such as the ID returned by [Execute] in non-blocking mode. See also [Crash].
-
-Note: This method can also be used to kill processes that were not spawned by the engine.
-
-Note: This method is implemented on Android, iOS, Linux, macOS and Windows.
-*/
-//go:nosplit
 func (self class) Kill(pid int64) Error.Code { //gd:OS.kill
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.kill, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ pid int64 }{pid})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Requests the OS to open a resource identified by 'uri' with the most appropriate program. For example:
-
-- OS.shell_open("C:\\Users\\name\\Downloads") on Windows opens the file explorer at the user's Downloads folder.
-
-- OS.shell_open("C:/Users/name/Downloads") also works on Windows and opens the file explorer at the user's Downloads folder.
-
-- OS.shell_open("https://godotengine.org") opens the default web browser on the official Godot website.
-
-- OS.shell_open("mailto:example@example.com") opens the default email client with the "To" field set to example@example.com. See [RFC 2368 - The [code]mailto[/code] URL scheme] for a list of fields that can be added.
-
-Use [ProjectSettings.GlobalizePath] to convert a res:// or user:// project path into a system path for use with this method.
-
-Note: Use [String.UriEncode] to encode characters within URLs in a URL-safe, portable way. This is especially required for line breaks. Otherwise, [ShellOpen] may not work correctly in a project exported to the Web platform.
-
-Note: This method is implemented on Android, iOS, Web, Linux, macOS and Windows.
-
-[ProjectSettings.GlobalizePath]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings#GlobalizePath
-[RFC 2368 - The [code]mailto[/code] URL scheme]: https://datatracker.ietf.org/doc/html/rfc2368
-[String.UriEncode]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.UriEncode
-*/
-//go:nosplit
 func (self class) ShellOpen(uri String.Readable) Error.Code { //gd:OS.shell_open
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.shell_open, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ uri gdextension.String }{pointers.Get(gd.InternalString(uri))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Requests the OS to open the file manager, navigate to the given 'file_or_dir_path' and select the target file or folder.
-
-If 'open_folder' is true and 'file_or_dir_path' is a valid directory path, the OS will open the file manager and navigate to the target folder without selecting anything.
-
-Use [ProjectSettings.GlobalizePath] to convert a res:// or user:// project path into a system path to use with this method.
-
-Note: This method is currently only implemented on Windows and macOS. On other platforms, it will fallback to [ShellOpen] with a directory path of 'file_or_dir_path' prefixed with file://.
-
-[ProjectSettings.GlobalizePath]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings#GlobalizePath
-*/
-//go:nosplit
 func (self class) ShellShowInFileManager(file_or_dir_path String.Readable, open_folder bool) Error.Code { //gd:OS.shell_show_in_file_manager
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.shell_show_in_file_manager, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
@@ -1985,84 +1653,36 @@ func (self class) ShellShowInFileManager(file_or_dir_path String.Readable, open_
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns true if the child process ID ('pid') is still running or false if it has terminated. 'pid' must be a valid ID generated from [CreateProcess].
-
-Note: This method is implemented on Android, iOS, Linux, macOS, and Windows.
-*/
-//go:nosplit
 func (self class) IsProcessRunning(pid int64) bool { //gd:OS.is_process_running
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_process_running, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ pid int64 }{pid})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the exit code of a spawned process once it has finished running (see [IsProcessRunning]).
-
-Returns -1 if the 'pid' is not a PID of a spawned child process, the process is still running, or the method is not implemented for the current platform.
-
-Note: Returns -1 if the 'pid' is a macOS bundled app process.
-
-Note: This method is implemented on Android, Linux, macOS and Windows.
-*/
-//go:nosplit
 func (self class) GetProcessExitCode(pid int64) int64 { //gd:OS.get_process_exit_code
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_process_exit_code, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ pid int64 }{pid})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the number used by the host machine to uniquely identify this application.
-
-Note: On Web, this method always returns 0.
-*/
-//go:nosplit
 func (self class) GetProcessId() int64 { //gd:OS.get_process_id
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_process_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the environment variable with the name 'variable' exists.
-
-Note: Double-check the casing of 'variable'. Environment variable names are case-sensitive on all platforms except Windows.
-*/
-//go:nosplit
 func (self class) HasEnvironment(variable String.Readable) bool { //gd:OS.has_environment
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_environment, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ variable gdextension.String }{pointers.Get(gd.InternalString(variable))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the value of the given environment variable, or an empty string if 'variable' doesn't exist.
-
-Note: Double-check the casing of 'variable'. Environment variable names are case-sensitive on all platforms except Windows.
-
-Note: On macOS, applications do not have access to shell environment variables.
-*/
-//go:nosplit
 func (self class) GetEnvironment(variable String.Readable) String.Readable { //gd:OS.get_environment
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_environment, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ variable gdextension.String }{pointers.Get(gd.InternalString(variable))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Sets the value of the environment variable 'variable' to 'value'. The environment variable will be set for the Godot process and any process executed with [Execute] after running [SetEnvironment]. The environment variable will not persist to processes run after the Godot process was terminated.
-
-Note: Environment variable names are case-sensitive on all platforms except Windows. The 'variable' name cannot be empty or include the = character. On Windows, there is a 32767 characters limit for the combined length of 'variable', 'value', and the = and null terminator characters that will be registered in the environment block.
-*/
-//go:nosplit
 func (self class) SetEnvironment(variable String.Readable, value String.Readable) { //gd:OS.set_environment
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
@@ -2070,221 +1690,52 @@ func (self class) SetEnvironment(variable String.Readable, value String.Readable
 		value    gdextension.String
 	}{pointers.Get(gd.InternalString(variable)), pointers.Get(gd.InternalString(value))})
 }
-
-/*
-Removes the given environment variable from the current environment, if it exists. The 'variable' name cannot be empty or include the = character. The environment variable will be removed for the Godot process and any process executed with [Execute] after running [UnsetEnvironment]. The removal of the environment variable will not persist to processes run after the Godot process was terminated.
-
-Note: Environment variable names are case-sensitive on all platforms except Windows.
-*/
-//go:nosplit
 func (self class) UnsetEnvironment(variable String.Readable) { //gd:OS.unset_environment
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unset_environment, 0|(gdextension.SizeString<<4), &struct{ variable gdextension.String }{pointers.Get(gd.InternalString(variable))})
 }
-
-/*
-Returns the name of the host platform.
-
-- On Windows, this is "Windows".
-
-- On macOS, this is "macOS".
-
-- On Linux-based operating systems, this is "Linux".
-
-- On BSD-based operating systems, this is "FreeBSD", "NetBSD", "OpenBSD", or "BSD" as a fallback.
-
-- On Android, this is "Android".
-
-- On iOS, this is "iOS".
-
-- On Web, this is "Web".
-
-Note: Custom builds of the engine may support additional platforms, such as consoles, possibly returning other names.
-
-
-	switch OS.GetName() {
-	case "Windows":
-		fmt.Println("Welcome to Windows!")
-	case "macOS":
-		fmt.Println("Welcome to macOS!")
-	case "Linux", "FreeBSD", "NetBSD", "OpenBSD", "BSD":
-		fmt.Println("Welcome to Linux/BSD!")
-	case "Android":
-		fmt.Println("Welcome to Android!")
-	case "iOS":
-		fmt.Println("Welcome to iOS!")
-	case "Web":
-		fmt.Println("Welcome to the Web!")
-	default:
-		fmt.Println("Unknown OS")
-	}
-
-
-Note: On Web platforms, it is still possible to determine the host platform's OS with feature tags. See [HasFeature].
-*/
-//go:nosplit
 func (self class) GetName() String.Readable { //gd:OS.get_name
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the name of the distribution for Linux and BSD platforms (e.g. "Ubuntu", "Manjaro", "OpenBSD", etc.).
-
-Returns the same value as [GetName] for stock Android ROMs, but attempts to return the custom ROM name for popular Android derivatives such as "LineageOS".
-
-Returns the same value as [GetName] for other platforms.
-
-Note: This method is not supported on the Web platform. It returns an empty string.
-*/
-//go:nosplit
 func (self class) GetDistributionName() String.Readable { //gd:OS.get_distribution_name
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_distribution_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the exact production and build version of the operating system. This is different from the branded version used in marketing. This helps to distinguish between different releases of operating systems, including minor versions, and insider and custom builds.
-
-- For Windows, the major and minor version are returned, as well as the build number. For example, the returned string may look like 10.0.9926 for a build of Windows 10.
-
-- For rolling distributions, such as Arch Linux, an empty string is returned.
-
-- For macOS and iOS, the major and minor version are returned, as well as the patch number.
-
-- For Android, the SDK version and the incremental build number are returned. If it's a custom ROM, it attempts to return its version instead.
-
-Note: This method is not supported on the Web platform. It returns an empty string.
-*/
-//go:nosplit
 func (self class) GetVersion() String.Readable { //gd:OS.get_version
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_version, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the branded version used in marketing, followed by the build number (on Windows), the version number (on macOS), or the SDK version and incremental build number (on Android). Examples include 11 (build 22000), Sequoia (15.0.0), and 15 (SDK 35 build abc528-11988f).
-
-This value can then be appended to [GetName] to get a full, human-readable operating system name and version combination for the operating system. Windows feature updates such as 24H2 are not contained in the resulting string, but Windows Server is recognized as such (e.g. 2025 (build 26100) for Windows Server 2025).
-
-Note: This method is only supported on Windows, macOS, and Android. On other operating systems, it returns the same value as [GetVersion].
-*/
-//go:nosplit
 func (self class) GetVersionAlias() String.Readable { //gd:OS.get_version_alias
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_version_alias, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the command-line arguments passed to the engine.
-
-Command-line arguments can be written in any form, including both --key value and --key=value forms so they can be properly parsed, as long as custom command-line arguments do not conflict with engine arguments.
-
-You can also incorporate environment variables using the [GetEnvironment] method.
-
-You can set [ProjectSettings] "editor/run/main_run_args" to define command-line arguments to be passed by the editor when running the project.
-
-Example: Parse command-line arguments into a data structure using the --key=value form for arguments:
-
-
-	var arguments = map[string]string{}
-	for _, argument := range OS.GetCmdlineArgs() {
-		if strings.Contains(argument, "=") {
-			_, keyValue, _ := strings.Cut(argument, "=")
-			arguments[strings.TrimPrefix(keyValue, "--")] = keyValue
-		} else {
-			// Options without an argument will be present in the dictionary,
-			// with the value set to an empty string.
-			arguments[strings.TrimPrefix(argument, "--")] = ""
-		}
-	}
-
-
-Note: Passing custom user arguments directly is not recommended, as the engine may discard or modify them. Instead, pass the standard UNIX double dash (--) and then the custom arguments, which the engine will ignore by design. These can be read via [GetCmdlineUserArgs].
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) GetCmdlineArgs() Packed.Strings { //gd:OS.get_cmdline_args
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_cmdline_args, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns the command-line user arguments passed to the engine. User arguments are ignored by the engine and reserved for the user. They are passed after the double dash -- argument. ++ may be used when -- is intercepted by another program (such as startx).
-
-
-	// The application has been executed with the following command:
-	// myprogram --fullscreen -- --level=2 --hardcore
-	OS.GetCmdlineArgs()     // Returns ["--fullscreen", "--level=2", "--hardcore"]
-	OS.GetCmdlineUserArgs() // Returns ["--level=2", "--hardcore"]
-
-
-To get all passed arguments, use [GetCmdlineArgs].
-*/
-//go:nosplit
 func (self class) GetCmdlineUserArgs() Packed.Strings { //gd:OS.get_cmdline_user_args
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_cmdline_user_args, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns the video adapter driver name and version for the user's currently active graphics card, as a []string. See also [RenderingServer.GetVideoAdapterApiVersion].
-
-The first element holds the driver name, such as nvidia, amdgpu, etc.
-
-The second element holds the driver version. For example, on the nvidia driver on a Linux/BSD platform, the version is in the format 510.85.02. For Windows, the driver's format is 31.0.15.1659.
-
-Note: This method is only supported on Linux/BSD and Windows when not running in headless mode. On other platforms, it returns an empty array.
-
-Note: This method will run slowly the first time it is called in a session; it can take several seconds depending on the operating system and hardware. It is blocking if called on the main thread, so it's recommended to call it on a separate thread using [Thread]. This allows the engine to keep running while the information is being retrieved. However, [GetVideoAdapterDriverInfo] is not thread-safe, so it should not be called from multiple threads at the same time.
-
-
-	go func() {
-		var driverInfo = OS.GetVideoAdapterDriverInfo()
-		if len(driverInfo) != 0 {
-			fmt.Printf("Driver: %s %s\n", driverInfo[0], driverInfo[1])
-		} else {
-			fmt.Println("Driver: (unknown)")
-		}
-	}()
-
-
-[RenderingServer.GetVideoAdapterApiVersion]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#GetVideoAdapterApiVersion
-[Thread]: https://pkg.go.dev/graphics.gd/classdb/Thread
-*/
-//go:nosplit
 func (self class) GetVideoAdapterDriverInfo() Packed.Strings { //gd:OS.get_video_adapter_driver_info
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_video_adapter_driver_info, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-If 'restart' is true, restarts the project automatically when it is exited with [SceneTree.Quit] or [Node.NotificationWmCloseRequest]. Command-line 'arguments' can be supplied. To restart the project with the same command line arguments as originally used to run the project, pass [GetCmdlineArgs] as the value for 'arguments'.
-
-This method can be used to apply setting changes that require a restart. See also [IsRestartOnExitSet] and [GetRestartOnExitArguments].
-
-Note: This method is only effective on desktop platforms, and only when the project isn't started from the editor. It will have no effect on mobile and Web platforms, or when the project is started from the editor.
-
-Note: If the project process crashes or is killed by the user (by sending SIGKILL instead of the usual SIGTERM), the project won't restart automatically.
-
-[SceneTree.Quit]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Quit
-*/
-//go:nosplit
 func (self class) SetRestartOnExit(restart bool, arguments Packed.Strings) { //gd:OS.set_restart_on_exit
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_restart_on_exit, 0|(gdextension.SizeBool<<4)|(gdextension.SizePackedArray<<8), &struct {
@@ -2292,265 +1743,92 @@ func (self class) SetRestartOnExit(restart bool, arguments Packed.Strings) { //g
 		arguments gdextension.PackedArray[gdextension.String]
 	}{restart, pointers.Get(gd.InternalPackedStrings(arguments))})
 }
-
-/*
-Returns true if the project will automatically restart when it exits for any reason, false otherwise. See also [SetRestartOnExit] and [GetRestartOnExitArguments].
-*/
-//go:nosplit
 func (self class) IsRestartOnExitSet() bool { //gd:OS.is_restart_on_exit_set
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_restart_on_exit_set, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the list of command line arguments that will be used when the project automatically restarts using [SetRestartOnExit]. See also [IsRestartOnExitSet].
-*/
-//go:nosplit
 func (self class) GetRestartOnExitArguments() Packed.Strings { //gd:OS.get_restart_on_exit_arguments
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_restart_on_exit_arguments, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Delays execution of the current thread by 'usec' microseconds. 'usec' must be greater than or equal to 0. Otherwise, [DelayUsec] does nothing and prints an error message.
-
-Note: [DelayUsec] is a blocking way to delay code execution. To delay code execution in a non-blocking way, you may use [SceneTree.CreateTimer]. Awaiting with a [SceneTreeTimer] delays the execution of code placed below the await without affecting the rest of the project (or editor, for [EditorPlugin]s and [EditorScript]s).
-
-Note: When [DelayUsec] is called on the main thread, it will freeze the project and will prevent it from redrawing and registering input until the delay has passed. When using [DelayUsec] as part of an [EditorPlugin] or [EditorScript], it will freeze the editor but won't freeze the project if it is currently running (since the project is an independent child process).
-
-[EditorPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin
-[EditorScript]: https://pkg.go.dev/graphics.gd/classdb/EditorScript
-[SceneTree.CreateTimer]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.CreateTimer
-[SceneTreeTimer]: https://pkg.go.dev/graphics.gd/classdb/SceneTreeTimer
-*/
-//go:nosplit
 func (self class) DelayUsec(usec int64) { //gd:OS.delay_usec
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.delay_usec, 0|(gdextension.SizeInt<<4), &struct{ usec int64 }{usec})
 }
-
-/*
-Delays execution of the current thread by 'msec' milliseconds. 'msec' must be greater than or equal to 0. Otherwise, [DelayMsec] does nothing and prints an error message.
-
-Note: [DelayMsec] is a blocking way to delay code execution. To delay code execution in a non-blocking way, you may use [SceneTree.CreateTimer]. Awaiting with [SceneTreeTimer] delays the execution of code placed below the await without affecting the rest of the project (or editor, for [EditorPlugin]s and [EditorScript]s).
-
-Note: When [DelayMsec] is called on the main thread, it will freeze the project and will prevent it from redrawing and registering input until the delay has passed. When using [DelayMsec] as part of an [EditorPlugin] or [EditorScript], it will freeze the editor but won't freeze the project if it is currently running (since the project is an independent child process).
-
-[EditorPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin
-[EditorScript]: https://pkg.go.dev/graphics.gd/classdb/EditorScript
-[SceneTree.CreateTimer]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.CreateTimer
-[SceneTreeTimer]: https://pkg.go.dev/graphics.gd/classdb/SceneTreeTimer
-*/
-//go:nosplit
 func (self class) DelayMsec(msec int64) { //gd:OS.delay_msec
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.delay_msec, 0|(gdextension.SizeInt<<4), &struct{ msec int64 }{msec})
 }
-
-/*
-Returns the host OS locale as a string of the form language_Script_COUNTRY_VARIANT@extra. Every substring after language is optional and may not exist.
-
-- language - 2 or 3-letter [language code], in lower case.
-
-- Script - 4-letter [script code], in title case.
-
-- COUNTRY - 2 or 3-letter [country code], in upper case.
-
-- VARIANT - language variant, region and sort order. The variant can have any number of underscored keywords.
-
-- extra - semicolon separated list of additional key words. This may include currency, calendar, sort order and numbering system information.
-
-If you want only the language code and not the fully specified locale from the OS, you can use [GetLocaleLanguage].
-
-[country code]: https://en.wikipedia.org/wiki/ISO_3166-1
-[language code]: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-[script code]: https://en.wikipedia.org/wiki/ISO_15924
-*/
-//go:nosplit
 func (self class) GetLocale() String.Readable { //gd:OS.get_locale
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_locale, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the host OS locale's 2 or 3-letter [language code] as a string which should be consistent on all platforms. This is equivalent to extracting the language part of the [GetLocale] string.
-
-This can be used to narrow down fully specified locale strings to only the "common" language code, when you don't need the additional information about country code or variants. For example, for a French Canadian user with fr_CA locale, this would return fr.
-
-[language code]: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-*/
-//go:nosplit
 func (self class) GetLocaleLanguage() String.Readable { //gd:OS.get_locale_language
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_locale_language, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the model name of the current device.
-
-Note: This method is implemented on Android, iOS, macOS, and Windows. Returns "GenericDevice" on unsupported platforms.
-*/
-//go:nosplit
 func (self class) GetModelName() String.Readable { //gd:OS.get_model_name
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_model_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns true if the user:// file system is persistent, that is, its state is the same after a player quits and starts the game again. Relevant to the Web platform, where this persistence may be unavailable.
-*/
-//go:nosplit
 func (self class) IsUserfsPersistent() bool { //gd:OS.is_userfs_persistent
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_userfs_persistent, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the engine was executed with the --verbose or -v command line argument, or if [ProjectSettings] "debug/settings/stdout/verbose_stdout" is true. See also [@GlobalScope.PrintVerbose].
-
-[@GlobalScope.PrintVerbose]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.PrintVerbose
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) IsStdoutVerbose() bool { //gd:OS.is_stdout_verbose
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_stdout_verbose, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the Godot binary used to run the project is a debug export template, or when running in the editor.
-
-Returns false if the Godot binary used to run the project is a release export template.
-
-Note: To check whether the Godot binary used to run the project is an export template (debug or release), use OS.has_feature("template") instead.
-*/
-//go:nosplit
 func (self class) IsDebugBuild() bool { //gd:OS.is_debug_build
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_debug_build, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the amount of static memory being used by the program in bytes. Only works in debug builds.
-*/
-//go:nosplit
 func (self class) GetStaticMemoryUsage() int64 { //gd:OS.get_static_memory_usage
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_static_memory_usage, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the maximum amount of static memory used. Only works in debug builds.
-*/
-//go:nosplit
 func (self class) GetStaticMemoryPeakUsage() int64 { //gd:OS.get_static_memory_peak_usage
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_static_memory_peak_usage, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a data structure containing information about the current memory with the following entries:
-
-- "physical" - total amount of usable physical memory in bytes. This value can be slightly less than the actual physical memory amount, since it does not include memory reserved by the kernel and devices.
-
-- "free" - amount of physical memory, that can be immediately allocated without disk access or other costly operations, in bytes. The process might be able to allocate more physical memory, but this action will require moving inactive pages to disk, which can be expensive.
-
-- "available" - amount of memory that can be allocated without extending the swap file(s), in bytes. This value includes both physical memory and swap.
-
-- "stack" - size of the current thread stack in bytes.
-
-Note: Each entry's value may be -1 if it is unknown.
-*/
-//go:nosplit
 func (self class) GetMemoryInfo() Dictionary.Any { //gd:OS.get_memory_info
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_memory_info, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Moves the file or directory at the given 'path' to the system's recycle bin. See also [DirAccess.Remove].
-
-The method takes only global paths, so you may need to use [ProjectSettings.GlobalizePath]. Do not use it for files in res:// as it will not work in exported projects.
-
-Returns [Failed] if the file or directory cannot be found, or the system does not support this method.
-
-
-	var file_to_remove = "user://slot1.save"
-	OS.MoveToTrash(ProjectSettings.GlobalizePath(file_to_remove))
-
-
-Note: This method is implemented on Android, Linux, macOS and Windows.
-
-Note: If the user has disabled the recycle bin on their system, the file will be permanently deleted instead.
-
-[DirAccess.Remove]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.Remove
-[ProjectSettings.GlobalizePath]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings#GlobalizePath
-*/
-//go:nosplit
 func (self class) MoveToTrash(path String.Readable) Error.Code { //gd:OS.move_to_trash
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.move_to_trash, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns the absolute directory path where user data is written (the user:// directory in Godot). The path depends on the project name and [ProjectSettings] "application/config/use_custom_user_dir".
-
-- On Windows, this is %AppData%\Godot\app_userdata\[project_name], or %AppData%\[custom_name] if use_custom_user_dir is set. %AppData% expands to %UserProfile%\AppData\Roaming.
-
-- On macOS, this is ~/Library/Application Support/Godot/app_userdata/[project_name], or ~/Library/Application Support/[custom_name] if use_custom_user_dir is set.
-
-- On Linux and BSD, this is ~/.local/share/godot/app_userdata/[project_name], or ~/.local/share/[custom_name] if use_custom_user_dir is set.
-
-- On Android and iOS, this is a sandboxed directory in either internal or external storage, depending on the user's configuration.
-
-- On Web, this is a virtual directory managed by the browser.
-
-If the project name is empty, [project_name] falls back to [unnamed project].
-
-Not to be confused with [GetDataDir], which returns the global (non-project-specific) user home directory.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) GetUserDataDir() String.Readable { //gd:OS.get_user_data_dir
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_user_data_dir, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the path to commonly used folders across different platforms, as defined by 'dir'. See the [SystemDir] constants for available locations.
-
-Note: This method is implemented on Android, Linux, macOS and Windows.
-
-Note: Shared storage is implemented on Android and allows to differentiate between app specific and shared directories, if 'shared_storage' is true. Shared directories have additional restrictions on Android.
-*/
-//go:nosplit
 func (self class) GetSystemDir(dir SystemDir, shared_storage bool) String.Readable { //gd:OS.get_system_dir
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_system_dir, gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
@@ -2560,299 +1838,114 @@ func (self class) GetSystemDir(dir SystemDir, shared_storage bool) String.Readab
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the global user configuration directory according to the operating system's standards.
-
-On the Linux/BSD platform, this path can be overridden by setting the XDG_CONFIG_HOME environment variable before starting the project. See [File paths in Godot projects] in the documentation for more information. See also [GetCacheDir] and [GetDataDir].
-
-Not to be confused with [GetUserDataDir], which returns the project-specific user data path.
-
-[File paths in Godot projects]: https://docs.godotengine.org/tutorials/io/data_paths.html
-*/
-//go:nosplit
 func (self class) GetConfigDir() String.Readable { //gd:OS.get_config_dir
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_config_dir, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the global user data directory according to the operating system's standards.
-
-On the Linux/BSD platform, this path can be overridden by setting the XDG_DATA_HOME environment variable before starting the project. See [File paths in Godot projects] in the documentation for more information. See also [GetCacheDir] and [GetConfigDir].
-
-Not to be confused with [GetUserDataDir], which returns the project-specific user data path.
-
-[File paths in Godot projects]: https://docs.godotengine.org/tutorials/io/data_paths.html
-*/
-//go:nosplit
 func (self class) GetDataDir() String.Readable { //gd:OS.get_data_dir
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_data_dir, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the global cache data directory according to the operating system's standards.
-
-On the Linux/BSD platform, this path can be overridden by setting the XDG_CACHE_HOME environment variable before starting the project. See [File paths in Godot projects] in the documentation for more information. See also [GetConfigDir] and [GetDataDir].
-
-Not to be confused with [GetUserDataDir], which returns the project-specific user data path.
-
-[File paths in Godot projects]: https://docs.godotengine.org/tutorials/io/data_paths.html
-*/
-//go:nosplit
 func (self class) GetCacheDir() String.Readable { //gd:OS.get_cache_dir
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_cache_dir, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the global temporary data directory according to the operating system's standards.
-*/
-//go:nosplit
 func (self class) GetTempDir() String.Readable { //gd:OS.get_temp_dir
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_temp_dir, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns a string that is unique to the device.
-
-Note: This string may change without notice if the user reinstalls their operating system, upgrades it, or modifies their hardware. This means it should generally not be used to encrypt persistent data, as the data saved before an unexpected ID change would become inaccessible. The returned string may also be falsified using external programs, so do not rely on the string returned by this method for security purposes.
-
-Note: On Web, returns an empty string and generates an error, as this method cannot be implemented for security reasons.
-*/
-//go:nosplit
 func (self class) GetUniqueId() String.Readable { //gd:OS.get_unique_id
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_unique_id, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the given keycode as a string.
-
-
-	fmt.Println(OS.GetKeycodeString(Input.KeyC))                                   // Prints "C"
-	fmt.Println(OS.GetKeycodeString(Input.KeyEscape))                              // Prints "Escape"
-	fmt.Println(OS.GetKeycodeString(Input.Key(Input.KeyMaskShift) | Input.KeyTab)) // Prints "Shift+Tab"
-
-
-See also [FindKeycodeFromString], [InputEventKey.Keycode], and [InputEventKey.GetKeycodeWithModifiers].
-
-[InputEventKey.GetKeycodeWithModifiers]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey#Instance.GetKeycodeWithModifiers
-[InputEventKey.Keycode]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey#Instance.Keycode
-*/
-//go:nosplit
 func (self class) GetKeycodeString(code Input.Key) String.Readable { //gd:OS.get_keycode_string
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_keycode_string, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ code Input.Key }{code})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns true if the input keycode corresponds to a Unicode character. For a list of codes, see the [Key] constants.
-
-
-	fmt.Println(OS.IsKeycodeUnicode(Input.KeyG))      // Prints True
-	fmt.Println(OS.IsKeycodeUnicode(Input.KeyKp4))    // Prints True
-	fmt.Println(OS.IsKeycodeUnicode(Input.KeyTab))    // Prints False
-	fmt.Println(OS.IsKeycodeUnicode(Input.KeyEscape)) // Prints False
-
-*/
-//go:nosplit
 func (self class) IsKeycodeUnicode(code int64) bool { //gd:OS.is_keycode_unicode
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_keycode_unicode, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ code int64 }{code})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Finds the keycode for the given string. The returned values are equivalent to the [Key] constants.
-
-
-	fmt.Println(OS.FindKeycodeFromString("C"))         // Prints 67 (KEY_C)
-	fmt.Println(OS.FindKeycodeFromString("Escape"))    // Prints 4194305 (KEY_ESCAPE)
-	fmt.Println(OS.FindKeycodeFromString("Shift+Tab")) // Prints 37748738 (KEY_MASK_SHIFT | KEY_TAB)
-	fmt.Println(OS.FindKeycodeFromString("Unknown"))   // Prints 0 (KEY_NONE)
-
-
-See also [GetKeycodeString].
-*/
-//go:nosplit
 func (self class) FindKeycodeFromString(s String.Readable) Input.Key { //gd:OS.find_keycode_from_string
 	once.Do(singleton)
 	var r_ret = noescape.Call[Input.Key](gd.ObjectChecked(self.AsObject()), methods.find_keycode_from_string, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ s gdextension.String }{pointers.Get(gd.InternalString(s))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-If 'enabled' is true, when opening a file for writing, a temporary file is used in its place. When closed, it is automatically applied to the target file.
-
-This can useful when files may be opened by other applications, such as antiviruses, text editors, or even the Godot editor itself.
-*/
-//go:nosplit
 func (self class) SetUseFileAccessSaveAndSwap(enabled bool) { //gd:OS.set_use_file_access_save_and_swap
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_file_access_save_and_swap, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-/*
-Assigns the given name to the current thread. Returns [ErrUnavailable] if unavailable on the current platform.
-*/
-//go:nosplit
 func (self class) SetThreadName(name String.Readable) Error.Code { //gd:OS.set_thread_name
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.set_thread_name, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns the ID of the current thread. This can be used in logs to ease debugging of multi-threaded applications.
-
-Note: Thread IDs are not deterministic and may be reused across application restarts.
-*/
-//go:nosplit
 func (self class) GetThreadCallerId() int64 { //gd:OS.get_thread_caller_id
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_thread_caller_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the ID of the main thread. See [GetThreadCallerId].
-
-Note: Thread IDs are not deterministic and may be reused across application restarts.
-*/
-//go:nosplit
 func (self class) GetMainThreadId() int64 { //gd:OS.get_main_thread_id
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_main_thread_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the feature for the given feature tag is supported in the currently running instance, depending on the platform, build, etc. Can be used to check whether you're currently running a debug build, on a certain platform or arch, etc. Refer to the [Feature Tags] documentation for more details.
-
-Note: Tag names are case-sensitive.
-
-Note: On the Web platform, one of the following additional tags is defined to indicate the host platform: web_android, web_ios, web_linuxbsd, web_macos, or web_windows.
-
-[Feature Tags]: https://docs.godotengine.org/tutorials/export/feature_tags.html
-*/
-//go:nosplit
 func (self class) HasFeature(tag_name String.Readable) bool { //gd:OS.has_feature
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_feature, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ tag_name gdextension.String }{pointers.Get(gd.InternalString(tag_name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the application is running in the sandbox.
-
-Note: This method is only implemented on macOS and Linux.
-*/
-//go:nosplit
 func (self class) IsSandboxed() bool { //gd:OS.is_sandboxed
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_sandboxed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Requests permission from the OS for the given 'name'. Returns true if the permission has already been granted. See also [OnMainloop.OnRequestPermissionsResult].
-
-The 'name' must be the full permission name. For example:
-
-- OS.request_permission("android.permission.READ_EXTERNAL_STORAGE")
-
-- OS.request_permission("android.permission.POST_NOTIFICATIONS")
-
-- OS.request_permission("macos.permission.RECORD_SCREEN")
-
-- OS.request_permission("appleembedded.permission.AUDIO_RECORD")
-
-Note: On Android, permission must be checked during export.
-
-Note: This method is implemented on Android, macOS, and visionOS platforms.
-*/
-//go:nosplit
 func (self class) RequestPermission(name String.Readable) bool { //gd:OS.request_permission
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.request_permission, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Requests dangerous permissions from the OS. Returns true if permissions have already been granted. See also [OnMainloop.OnRequestPermissionsResult].
-
-Note: Permissions must be checked during export.
-
-Note: This method is only implemented on Android. Normal permissions are automatically granted at install time in Android applications.
-*/
-//go:nosplit
 func (self class) RequestPermissions() bool { //gd:OS.request_permissions
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.request_permissions, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-On Android devices: Returns the list of dangerous permissions that have been granted.
-
-On macOS: Returns the list of granted permissions and user selected folders accessible to the application (sandboxed applications only). Use the native file dialog to request folder access permission.
-
-On iOS, visionOS: Returns the list of granted permissions.
-*/
-//go:nosplit
 func (self class) GetGrantedPermissions() Packed.Strings { //gd:OS.get_granted_permissions
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_granted_permissions, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-On macOS (sandboxed applications only), this function clears list of user selected folders accessible to the application.
-*/
-//go:nosplit
 func (self class) RevokeGrantedPermissions() { //gd:OS.revoke_granted_permissions
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.revoke_granted_permissions, 0, &struct{}{})
 }
-
-/*
-Add a custom logger to intercept the internal message stream.
-*/
-//go:nosplit
 func (self class) AddLogger(logger [1]gdclass.Logger) { //gd:OS.add_logger
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_logger, 0|(gdextension.SizeObject<<4), &struct{ logger gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetLogger(logger[0])))})
 }
-
-/*
-Remove a custom logger added by [AddLogger].
-*/
-//go:nosplit
 func (self class) RemoveLogger(logger [1]gdclass.Logger) { //gd:OS.remove_logger
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_logger, 0|(gdextension.SizeObject<<4), &struct{ logger gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetLogger(logger[0])))})

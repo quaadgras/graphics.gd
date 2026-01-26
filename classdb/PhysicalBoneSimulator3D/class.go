@@ -232,60 +232,20 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns a boolean that indicates whether the [PhysicalBoneSimulator3D] is running and simulating.
-
-[PhysicalBoneSimulator3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBoneSimulator3D
-*/
-//go:nosplit
 func (self class) IsSimulatingPhysics() bool { //gd:PhysicalBoneSimulator3D.is_simulating_physics
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_simulating_physics, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Tells the [PhysicalBone3D] nodes in the Skeleton to stop simulating.
-
-[PhysicalBone3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D
-*/
-//go:nosplit
 func (self class) PhysicalBonesStopSimulation() { //gd:PhysicalBoneSimulator3D.physical_bones_stop_simulation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_stop_simulation, 0, &struct{}{})
 }
-
-/*
-Tells the [PhysicalBone3D] nodes in the Skeleton to start simulating and reacting to the physics world.
-
-Optionally, a list of bone names can be passed-in, allowing only the passed-in bones to be simulated.
-
-[PhysicalBone3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D
-*/
-//go:nosplit
 func (self class) PhysicalBonesStartSimulation(bones Array.Contains[String.Name]) { //gd:PhysicalBoneSimulator3D.physical_bones_start_simulation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_start_simulation, 0|(gdextension.SizeArray<<4), &struct{ bones gdextension.Array }{pointers.Get(gd.InternalArray(bones))})
 }
-
-/*
-Adds a collision exception to the physical bone.
-
-Works just like the [RigidBody3D] node.
-
-[RigidBody3D]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D
-*/
-//go:nosplit
 func (self class) PhysicalBonesAddCollisionException(exception RID.Any) { //gd:PhysicalBoneSimulator3D.physical_bones_add_collision_exception
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_add_collision_exception, 0|(gdextension.SizeRID<<4), &struct{ exception RID.Any }{exception})
 }
-
-/*
-Removes a collision exception to the physical bone.
-
-Works just like the [RigidBody3D] node.
-
-[RigidBody3D]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D
-*/
-//go:nosplit
 func (self class) PhysicalBonesRemoveCollisionException(exception RID.Any) { //gd:PhysicalBoneSimulator3D.physical_bones_remove_collision_exception
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_remove_collision_exception, 0|(gdextension.SizeRID<<4), &struct{ exception RID.Any }{exception})
 }

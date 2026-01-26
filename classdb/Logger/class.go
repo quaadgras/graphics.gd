@@ -238,22 +238,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Called when an error is logged. The error provides the 'function', 'file', and 'line' that it originated from, as well as either the 'code' that generated the error or a 'rationale'.
-
-The type of error provided by 'error_type' is described in the [ErrorType] enumeration.
-
-Additionally, 'script_backtraces' provides backtraces for each of the script languages. These will only contain stack frames in editor builds and debug builds by default. To enable them for release builds as well, you need to enable [ProjectSettings] "debug/settings/gdscript/always_track_call_stacks".
-
-Warning: This function may be called from multiple different threads, so you may need to do your own locking.
-
-Note: 'script_backtraces' will not contain any captured variables, due to its prohibitively high cost. To get those you will need to capture the backtraces yourself, from within the [Logger] virtual methods, using [Engine.CaptureScriptBacktraces].
-
-[Engine.CaptureScriptBacktraces]: https://pkg.go.dev/graphics.gd/classdb/Engine#CaptureScriptBacktraces
-[Logger]: https://pkg.go.dev/graphics.gd/classdb/Logger
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
 func (class) _log_error(impl func(ptr gdclass.Receiver, function String.Readable, file String.Readable, line int64, code String.Readable, rationale String.Readable, editor_notify bool, error_type int64, script_backtraces Array.Contains[[1]gdclass.ScriptBacktrace])) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var function = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -273,12 +257,6 @@ func (class) _log_error(impl func(ptr gdclass.Receiver, function String.Readable
 		impl(self, function, file, line, code, rationale, editor_notify, error_type, script_backtraces)
 	}
 }
-
-/*
-Called when a message is logged. If 'error' is true, then this message was meant to be sent to stderr.
-
-Warning: This function may be called from multiple different threads, so you may need to do your own locking.
-*/
 func (class) _log_message(impl func(ptr gdclass.Receiver, message String.Readable, error bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var message = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))

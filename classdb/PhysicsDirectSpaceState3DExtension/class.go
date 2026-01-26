@@ -308,7 +308,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
 func (class) _intersect_ray(impl func(ptr gdclass.Receiver, from Vector3.XYZ, to Vector3.XYZ, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, hit_from_inside bool, hit_back_faces bool, pick_ray bool, result *PhysicsServer3DExtensionRayResult) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
@@ -325,7 +324,6 @@ func (class) _intersect_ray(impl func(ptr gdclass.Receiver, from Vector3.XYZ, to
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
 func (class) _intersect_point(impl func(ptr gdclass.Receiver, position Vector3.XYZ, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, results *PhysicsServer3DExtensionShapeResult, max_results int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var position = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
@@ -339,7 +337,6 @@ func (class) _intersect_point(impl func(ptr gdclass.Receiver, position Vector3.X
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
 func (class) _intersect_shape(impl func(ptr gdclass.Receiver, shape_rid RID.Any, transform Transform3D.BasisOrigin, motion Vector3.XYZ, margin float64, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, result_count *PhysicsServer3DExtensionShapeResult, max_results int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape_rid = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -356,7 +353,6 @@ func (class) _intersect_shape(impl func(ptr gdclass.Receiver, shape_rid RID.Any,
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
 func (class) _cast_motion(impl func(ptr gdclass.Receiver, shape_rid RID.Any, transform Transform3D.BasisOrigin, motion Vector3.XYZ, margin float64, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, closest_safe *float64, closest_unsafe *float64, info *PhysicsServer3DExtensionShapeRestInfo) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape_rid = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -374,7 +370,6 @@ func (class) _cast_motion(impl func(ptr gdclass.Receiver, shape_rid RID.Any, tra
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
 func (class) _collide_shape(impl func(ptr gdclass.Receiver, shape_rid RID.Any, transform Transform3D.BasisOrigin, motion Vector3.XYZ, margin float64, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, results gdextension.Pointer, max_results int64, result_count *int32) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape_rid = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -392,7 +387,6 @@ func (class) _collide_shape(impl func(ptr gdclass.Receiver, shape_rid RID.Any, t
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
 func (class) _rest_info(impl func(ptr gdclass.Receiver, shape_rid RID.Any, transform Transform3D.BasisOrigin, motion Vector3.XYZ, margin float64, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, rest_info *PhysicsServer3DExtensionShapeRestInfo) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape_rid = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -408,7 +402,6 @@ func (class) _rest_info(impl func(ptr gdclass.Receiver, shape_rid RID.Any, trans
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
 func (class) _get_closest_point_to_object_volume(impl func(ptr gdclass.Receiver, obj RID.Any, point Vector3.XYZ) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -419,7 +412,6 @@ func (class) _get_closest_point_to_object_volume(impl func(ptr gdclass.Receiver,
 	}
 }
 
-//go:nosplit
 func (self class) IsBodyExcludedFromQuery(body RID.Any) bool { //gd:PhysicsDirectSpaceState3DExtension.is_body_excluded_from_query
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_body_excluded_from_query, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret

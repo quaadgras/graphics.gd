@@ -346,72 +346,32 @@ func (self Instance) SetDialogAutowrap(value bool) Instance { //gd:AcceptDialog.
 	return self
 }
 
-/*
-Returns the OK [Button] instance.
-
-Warning: This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [CanvasItem.Visible] property.
-
-[Button]: https://pkg.go.dev/graphics.gd/classdb/Button
-[CanvasItem.Visible]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Visible
-*/
-//go:nosplit
 func (self class) GetOkButton() [1]gdclass.Button { //gd:AcceptDialog.get_ok_button
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_ok_button, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Button{gdclass.NewButton(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Returns the label used for built-in text.
-
-Warning: This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [CanvasItem.Visible] property.
-
-[CanvasItem.Visible]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Visible
-*/
-//go:nosplit
 func (self class) GetLabel() [1]gdclass.Label { //gd:AcceptDialog.get_label
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_label, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Label{gdclass.NewLabel(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetHideOnOk(enabled bool) { //gd:AcceptDialog.set_hide_on_ok
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hide_on_ok, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) GetHideOnOk() bool { //gd:AcceptDialog.get_hide_on_ok
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_hide_on_ok, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCloseOnEscape(enabled bool) { //gd:AcceptDialog.set_close_on_escape
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_close_on_escape, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) GetCloseOnEscape() bool { //gd:AcceptDialog.get_close_on_escape
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_close_on_escape, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a button with label 'text' and a custom 'action' to the dialog and returns the created button.
-
-If 'action' is not empty, pressing the button will emit the [OnCustomAction] signal with the specified action string.
-
-If true, 'right' will place the button to the right of any sibling buttons.
-
-You can use [RemoveButton] method to remove a button created with this method from the dialog.
-
-[OnCustomAction]: https://pkg.go.dev/graphics.gd/classdb/AcceptDialog#Instance.OnCustomAction
-[RemoveButton]: https://pkg.go.dev/graphics.gd/classdb/AcceptDialog#Instance.RemoveButton
-*/
-//go:nosplit
 func (self class) AddButton(text String.Readable, right bool, action String.Readable) [1]gdclass.Button { //gd:AcceptDialog.add_button
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.add_button, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12), &struct {
 		text   gdextension.String
@@ -421,75 +381,36 @@ func (self class) AddButton(text String.Readable, right bool, action String.Read
 	var ret = [1]gdclass.Button{gdclass.NewButton(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Adds a button with label 'name' and a cancel action to the dialog and returns the created button.
-
-You can use [RemoveButton] method to remove a button created with this method from the dialog.
-
-[RemoveButton]: https://pkg.go.dev/graphics.gd/classdb/AcceptDialog#Instance.RemoveButton
-*/
-//go:nosplit
 func (self class) AddCancelButton(name String.Readable) [1]gdclass.Button { //gd:AcceptDialog.add_cancel_button
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.add_cancel_button, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = [1]gdclass.Button{gdclass.NewButton(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Removes the 'button' from the dialog. Does NOT free the 'button'. The 'button' must be a [Button] added with [AddButton] or [AddCancelButton] method. After removal, pressing the 'button' will no longer emit this dialog's [OnCustomAction] or [OnCanceled] signals.
-
-[AddButton]: https://pkg.go.dev/graphics.gd/classdb/AcceptDialog#Instance.AddButton
-[AddCancelButton]: https://pkg.go.dev/graphics.gd/classdb/AcceptDialog#Instance.AddCancelButton
-[Button]: https://pkg.go.dev/graphics.gd/classdb/Button
-[OnCanceled]: https://pkg.go.dev/graphics.gd/classdb/AcceptDialog#Instance.OnCanceled
-[OnCustomAction]: https://pkg.go.dev/graphics.gd/classdb/AcceptDialog#Instance.OnCustomAction
-*/
-//go:nosplit
 func (self class) RemoveButton(button [1]gdclass.Button) { //gd:AcceptDialog.remove_button
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_button, 0|(gdextension.SizeObject<<4), &struct{ button gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetButton(button[0])))})
 }
-
-/*
-Registers a [LineEdit] in the dialog. When the enter key is pressed, the dialog will be accepted.
-
-[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
-*/
-//go:nosplit
 func (self class) RegisterTextEnter(line_edit [1]gdclass.LineEdit) { //gd:AcceptDialog.register_text_enter
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_text_enter, 0|(gdextension.SizeObject<<4), &struct{ line_edit gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetLineEdit(line_edit[0])))})
 }
-
-//go:nosplit
 func (self class) SetText(text String.Readable) { //gd:AcceptDialog.set_text
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
-
-//go:nosplit
 func (self class) GetText() String.Readable { //gd:AcceptDialog.get_text
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAutowrap(autowrap bool) { //gd:AcceptDialog.set_autowrap
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autowrap, 0|(gdextension.SizeBool<<4), &struct{ autowrap bool }{autowrap})
 }
-
-//go:nosplit
 func (self class) HasAutowrap() bool { //gd:AcceptDialog.has_autowrap
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_autowrap, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetOkButtonText(text String.Readable) { //gd:AcceptDialog.set_ok_button_text
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ok_button_text, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
-
-//go:nosplit
 func (self class) GetOkButtonText() String.Readable { //gd:AcceptDialog.get_ok_button_text
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_ok_button_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))

@@ -378,26 +378,6 @@ func (self Instance) SetAxisLockAngularZ(value bool) Instance { //gd:PhysicsBody
 	return self
 }
 
-/*
-Moves the body along the vector 'motion'. In order to be frame rate independent in [Node.PhysicsProcess] or [Node.Process], 'motion' should be computed using delta.
-
-The body will stop if it collides. Returns a [KinematicCollision3D], which contains information about the collision when stopped, or when touching another body along the motion.
-
-If 'test_only' is true, the body does not move but the would-be collision information is given.
-
-'safe_margin' is the extra margin used for collision recovery (see [CharacterBody3D.SafeMargin] for more details).
-
-If 'recovery_as_collision' is true, any depenetration from the recovery phase is also reported as a collision; this is used e.g. by [CharacterBody3D] for improving floor detection during floor snapping.
-
-'max_collisions' allows to retrieve more than one collision result.
-
-[CharacterBody3D]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D
-[CharacterBody3D.SafeMargin]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.SafeMargin
-[KinematicCollision3D]: https://pkg.go.dev/graphics.gd/classdb/KinematicCollision3D
-[Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
-[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
-*/
-//go:nosplit
 func (self class) MoveAndCollide(motion Vector3.XYZ, test_only bool, safe_margin float64, recovery_as_collision bool, max_collisions int64) [1]gdclass.KinematicCollision3D { //gd:PhysicsBody3D.move_and_collide
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.move_and_collide, gdextension.SizeObject|(gdextension.SizeVector3<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20), &struct {
 		motion                Vector3.XYZ
@@ -409,27 +389,6 @@ func (self class) MoveAndCollide(motion Vector3.XYZ, test_only bool, safe_margin
 	var ret = [1]gdclass.KinematicCollision3D{gdclass.NewKinematicCollision3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Checks for collisions without moving the body. In order to be frame rate independent in [Node.PhysicsProcess] or [Node.Process], 'motion' should be computed using delta.
-
-Virtually sets the node's position, scale and rotation to that of the given [Transform3D.BasisOrigin], then tries to move the body along the vector 'motion'. Returns true if a collision would stop the body from moving along the whole path.
-
-'collision' is an optional object of type [KinematicCollision3D], which contains additional information about the collision when stopped, or when touching another body along the motion.
-
-'safe_margin' is the extra margin used for collision recovery (see [CharacterBody3D.SafeMargin] for more details).
-
-If 'recovery_as_collision' is true, any depenetration from the recovery phase is also reported as a collision; this is useful for checking whether the body would touch any other bodies.
-
-'max_collisions' allows to retrieve more than one collision result.
-
-[CharacterBody3D.SafeMargin]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.SafeMargin
-[KinematicCollision3D]: https://pkg.go.dev/graphics.gd/classdb/KinematicCollision3D
-[Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
-[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
-[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
-*/
-//go:nosplit
 func (self class) TestMove(from Transform3D.BasisOrigin, motion Vector3.XYZ, collision [1]gdclass.KinematicCollision3D, safe_margin float64, recovery_as_collision bool, max_collisions int64) bool { //gd:PhysicsBody3D.test_move
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.test_move, gdextension.SizeBool|(gdextension.SizeTransform3D<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeInt<<24), &struct {
 		from                  Transform3D.BasisOrigin
@@ -442,62 +401,30 @@ func (self class) TestMove(from Transform3D.BasisOrigin, motion Vector3.XYZ, col
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the gravity vector computed from all sources that can affect the body, including all gravity overrides from [Area3D] nodes and the global world gravity.
-
-[Area3D]: https://pkg.go.dev/graphics.gd/classdb/Area3D
-*/
-//go:nosplit
 func (self class) GetGravity() Vector3.XYZ { //gd:PhysicsBody3D.get_gravity
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_gravity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Locks or unlocks the specified linear or rotational 'axis' depending on the value of 'lock'.
-*/
-//go:nosplit
 func (self class) SetAxisLock(axis PhysicsServer3D.BodyAxis, lock bool) { //gd:PhysicsBody3D.set_axis_lock
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis_lock, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		axis PhysicsServer3D.BodyAxis
 		lock bool
 	}{axis, lock})
 }
-
-/*
-Returns true if the specified linear or rotational 'axis' is locked.
-*/
-//go:nosplit
 func (self class) GetAxisLock(axis PhysicsServer3D.BodyAxis) bool { //gd:PhysicsBody3D.get_axis_lock
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_axis_lock, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ axis PhysicsServer3D.BodyAxis }{axis})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns an array of nodes that were added as collision exceptions for this body.
-*/
-//go:nosplit
 func (self class) GetCollisionExceptions() Array.Contains[[1]gdclass.PhysicsBody3D] { //gd:PhysicsBody3D.get_collision_exceptions
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_collision_exceptions, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.PhysicsBody3D]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Adds a body to the list of bodies that this body can't collide with.
-*/
-//go:nosplit
 func (self class) AddCollisionExceptionWith(body [1]gdclass.Node) { //gd:PhysicsBody3D.add_collision_exception_with
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_collision_exception_with, 0|(gdextension.SizeObject<<4), &struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(body[0])))})
 }
-
-/*
-Removes a body from the list of bodies that this body can't collide with.
-*/
-//go:nosplit
 func (self class) RemoveCollisionExceptionWith(body [1]gdclass.Node) { //gd:PhysicsBody3D.remove_collision_exception_with
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_collision_exception_with, 0|(gdextension.SizeObject<<4), &struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(body[0])))})
 }

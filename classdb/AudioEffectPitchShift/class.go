@@ -204,36 +204,25 @@ func (self Instance) SetFftSize(value FFTSize) Instance { //gd:AudioEffectPitchS
 	return self
 }
 
-//go:nosplit
 func (self class) SetPitchScale(rate float64) { //gd:AudioEffectPitchShift.set_pitch_scale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pitch_scale, 0|(gdextension.SizeFloat<<4), &struct{ rate float64 }{rate})
 }
-
-//go:nosplit
 func (self class) GetPitchScale() float64 { //gd:AudioEffectPitchShift.get_pitch_scale
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pitch_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetOversampling(amount int64) { //gd:AudioEffectPitchShift.set_oversampling
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_oversampling, 0|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
 }
-
-//go:nosplit
 func (self class) GetOversampling() int64 { //gd:AudioEffectPitchShift.get_oversampling
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_oversampling, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFftSize(size FFTSize) { //gd:AudioEffectPitchShift.set_fft_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fft_size, 0|(gdextension.SizeInt<<4), &struct{ size FFTSize }{size})
 }
-
-//go:nosplit
 func (self class) GetFftSize() FFTSize { //gd:AudioEffectPitchShift.get_fft_size
 	var r_ret = noescape.Call[FFTSize](gd.ObjectChecked(self.AsObject()), methods.get_fft_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

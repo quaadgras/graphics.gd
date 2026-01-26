@@ -198,10 +198,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Override this method to modify properties in 'char_fx'. The method must return true if the character could be transformed successfully. If the method returns false, it will skip transformation to avoid displaying broken text.
-*/
 func (class) _process_custom_fx(impl func(ptr gdclass.Receiver, char_fx [1]gdclass.CharFXTransform) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var char_fx = [1]gdclass.CharFXTransform{gdclass.NewCharFXTransform(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}

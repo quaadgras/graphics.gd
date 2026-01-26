@@ -2647,33 +2647,6 @@ func (self Instance) SetEditorDescription(value string) Instance { //gd:Node.edi
 	class(self).SetEditorDescription(String.New(value))
 	return self
 }
-
-/*
-Called on each idle frame, prior to rendering, and after physics ticks have been processed. 'delta' is the time between frames in seconds.
-
-It is only called if processing is enabled for this Node, which is done automatically if this method is overridden, and can be toggled with [SetProcess].
-
-Processing happens in order of [ProcessPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
-
-Corresponds to the [NotificationProcess] notification in [Object.Notification].
-
-Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-
-Note: When the engine is struggling and the frame rate is lowered, 'delta' will increase. When 'delta' is increased, it's capped at a maximum of [Engine.TimeScale] * [Engine.MaxPhysicsStepsPerFrame] / [Engine.PhysicsTicksPerSecond]. As a result, accumulated 'delta' may not represent real world time.
-
-Note: When --fixed-fps is enabled or the engine is running in Movie Maker mode (see [MovieWriter]), process 'delta' will always be the same for every frame, regardless of how much time the frame took to render.
-
-Note: Frame delta may be post-processed by [OS.DeltaSmoothing] if this is enabled for the project.
-
-[Engine.MaxPhysicsStepsPerFrame]: https://pkg.go.dev/graphics.gd/classdb/Engine#MaxPhysicsStepsPerFrame
-[Engine.PhysicsTicksPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#PhysicsTicksPerSecond
-[Engine.TimeScale]: https://pkg.go.dev/graphics.gd/classdb/Engine#TimeScale
-[MovieWriter]: https://pkg.go.dev/graphics.gd/classdb/MovieWriter
-[OS.DeltaSmoothing]: https://pkg.go.dev/graphics.gd/classdb/OS#DeltaSmoothing
-[Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
-[ProcessPriority]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessPriority
-[SetProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcess
-*/
 func (class) _process(impl func(ptr gdclass.Receiver, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
@@ -2681,26 +2654,6 @@ func (class) _process(impl func(ptr gdclass.Receiver, delta float64)) (cb gd.Ext
 		impl(self, delta)
 	}
 }
-
-/*
-Called once on each physics tick, and allows Nodes to synchronize their logic with physics ticks. 'delta' is the logical time between physics ticks in seconds and is equal to [Engine.TimeScale] / [Engine.PhysicsTicksPerSecond].
-
-It is only called if physics processing is enabled for this Node, which is done automatically if this method is overridden, and can be toggled with [SetPhysicsProcess].
-
-Processing happens in order of [ProcessPhysicsPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
-
-Corresponds to the [NotificationPhysicsProcess] notification in [Object.Notification].
-
-Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-
-Note: Accumulated 'delta' may diverge from real world seconds.
-
-[Engine.PhysicsTicksPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#PhysicsTicksPerSecond
-[Engine.TimeScale]: https://pkg.go.dev/graphics.gd/classdb/Engine#TimeScale
-[Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
-[ProcessPhysicsPriority]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessPhysicsPriority
-[SetPhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetPhysicsProcess
-*/
 func (class) _physics_process(impl func(ptr gdclass.Receiver, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
@@ -2708,99 +2661,24 @@ func (class) _physics_process(impl func(ptr gdclass.Receiver, delta float64)) (c
 		impl(self, delta)
 	}
 }
-
-/*
-Called when the node enters the [SceneTree] (e.g. upon instantiating, scene changing, or after calling [AddChild] in a script). If the node has children, its [EnterTree] callback will be called first, and then that of the children.
-
-Corresponds to the [NotificationEnterTree] notification in [Object.Notification].
-
-[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
-[EnterTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-*/
 func (class) _enter_tree(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
-
-/*
-Called when the node is about to leave the [SceneTree] (e.g. upon freeing, scene changing, or after calling [RemoveChild] in a script). If the node has children, its [ExitTree] callback will be called last, after all its children have left the tree.
-
-Corresponds to the [NotificationExitTree] notification in [Object.Notification] and signal [OnTreeExiting]. To get notified when the node has already left the active tree, connect to the [OnTreeExited].
-
-[ExitTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
-[OnTreeExited]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.OnTreeExited
-[OnTreeExiting]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.OnTreeExiting
-[RemoveChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RemoveChild
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-*/
 func (class) _exit_tree(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
-
-/*
-Called when the node is "ready", i.e. when both the node and its children have entered the scene tree. If the node has children, their [Ready] callbacks get triggered first, and the parent node will receive the ready notification afterwards.
-
-Corresponds to the [NotificationReady] notification in [Object.Notification]. See also the @onready annotation for variables.
-
-Usually used for initialization. For even earlier initialization, [Object.Init] may be used. See also [EnterTree].
-
-Note: This method may be called only once for each node. After removing a node from the scene tree and adding it again, [Ready] will not be called a second time. This can be bypassed by requesting another call with [RequestReady], which may be called anywhere before adding the node again.
-
-[EnterTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[Object.Init]: https://pkg.go.dev/graphics.gd/variant/Object#Init
-[Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
-[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[RequestReady]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RequestReady
-*/
 func (class) _ready(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
-
-/*
-The elements in the array returned from this method are displayed as warnings in the Scene dock if the script that overrides it is a tool script.
-
-Returning an empty array produces no warnings.
-
-Call [UpdateConfigurationWarnings] when the warnings need to be updated for this node.
-
-	package main
-
-	import (
-		"graphics.gd/classdb/Node"
-		"graphics.gd/variant/Float"
-	)
-
-	type ConfigurableNode struct {
-		Node.Extension[ConfigurableNode]
-
-		energy Float.X
-	}
-
-	func (cn ConfigurableNode) SetEnergy(energy Float.X) {
-		cn.energy = energy
-		cn.AsNode().UpdateConfigurationWarnings()
-	}
-
-	func (cn ConfigurableNode) GetConfigurationWarnings() []string {
-		if cn.energy < 0 {
-			return []string{"Energy must be 0 or greater."}
-		}
-		return nil
-	}
-
-[UpdateConfigurationWarnings]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UpdateConfigurationWarnings
-*/
 func (class) _get_configuration_warnings(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -2813,12 +2691,6 @@ func (class) _get_configuration_warnings(impl func(ptr gdclass.Receiver) Packed.
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-The elements in the array returned from this method are displayed as warnings in the Scene dock if the script that overrides it is a tool script, and accessibility warnings are enabled in the editor settings.
-
-Returning an empty array produces no warnings.
-*/
 func (class) _get_accessibility_configuration_warnings(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -2831,23 +2703,6 @@ func (class) _get_accessibility_configuration_warnings(impl func(ptr gdclass.Rec
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Called when there is an input event. The input event propagates up through the node tree until a node consumes it.
-
-It is only called if input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [SetProcessInput].
-
-To consume the input event and stop it propagating further to other nodes, [Viewport.SetInputAsHandled] can be called.
-
-For gameplay input, [UnhandledInput] and [UnhandledKeyInput] are usually a better fit as they allow the GUI to intercept the events first.
-
-Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-
-[SetProcessInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessInput
-[UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[UnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[Viewport.SetInputAsHandled]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetInputAsHandled
-*/
 func (class) _input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -2857,28 +2712,6 @@ func (class) _input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent)
 		impl(self, event)
 	}
 }
-
-/*
-Called when an [InputEventKey], [InputEventShortcut], or [InputEventJoypadButton] hasn't been consumed by [Input] or any GUI [Control] item. It is called before [UnhandledKeyInput] and [UnhandledInput]. The input event propagates up through the node tree until a node consumes it.
-
-It is only called if shortcut processing is enabled, which is done automatically if this method is overridden, and can be toggled with [SetProcessShortcutInput].
-
-To consume the input event and stop it propagating further to other nodes, [Viewport.SetInputAsHandled] can be called.
-
-This method can be used to handle shortcuts. For generic GUI events, use [Input] instead. Gameplay events should usually be handled with either [UnhandledInput] or [UnhandledKeyInput].
-
-Note: This method is only called if the node is present in the scene tree (i.e. if it's not orphan).
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[InputEventJoypadButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadButton
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventShortcut]: https://pkg.go.dev/graphics.gd/classdb/InputEventShortcut
-[SetProcessShortcutInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessShortcutInput
-[UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[UnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[Viewport.SetInputAsHandled]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetInputAsHandled
-*/
 func (class) _shortcut_input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -2888,26 +2721,6 @@ func (class) _shortcut_input(impl func(ptr gdclass.Receiver, event [1]gdclass.In
 		impl(self, event)
 	}
 }
-
-/*
-Called when an [InputEvent] hasn't been consumed by [Input] or any GUI [Control] item. It is called after [ShortcutInput] and after [UnhandledKeyInput]. The input event propagates up through the node tree until a node consumes it.
-
-It is only called if unhandled input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [SetProcessUnhandledInput].
-
-To consume the input event and stop it propagating further to other nodes, [Viewport.SetInputAsHandled] can be called.
-
-For gameplay input, this method is usually a better fit than [Input], as GUI events need a higher priority. For keyboard shortcuts, consider using [ShortcutInput] instead, as it is called before this method. Finally, to handle keyboard events, consider using [UnhandledKeyInput] for performance reasons.
-
-Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
-[SetProcessUnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessUnhandledInput
-[ShortcutInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[UnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[Viewport.SetInputAsHandled]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetInputAsHandled
-*/
 func (class) _unhandled_input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -2917,29 +2730,6 @@ func (class) _unhandled_input(impl func(ptr gdclass.Receiver, event [1]gdclass.I
 		impl(self, event)
 	}
 }
-
-/*
-Called when an [InputEventKey] hasn't been consumed by [Input] or any GUI [Control] item. It is called after [ShortcutInput] but before [UnhandledInput]. The input event propagates up through the node tree until a node consumes it.
-
-It is only called if unhandled key input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [SetProcessUnhandledKeyInput].
-
-To consume the input event and stop it propagating further to other nodes, [Viewport.SetInputAsHandled] can be called.
-
-This method can be used to handle Unicode character input with Alt, Alt + Ctrl, and Alt + Shift modifiers, after shortcuts were handled.
-
-For gameplay input, this and [UnhandledInput] are usually a better fit than [Input], as GUI events should be handled first. This method also performs better than [UnhandledInput], since unrelated events such as [InputEventMouseMotion] are automatically filtered. For shortcuts, consider using [ShortcutInput] instead.
-
-Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventMouseMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion
-[SetProcessUnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessUnhandledKeyInput
-[ShortcutInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[Viewport.SetInputAsHandled]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetInputAsHandled
-*/
 func (class) _unhandled_key_input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -2949,12 +2739,6 @@ func (class) _unhandled_key_input(impl func(ptr gdclass.Receiver, event [1]gdcla
 		impl(self, event)
 	}
 }
-
-/*
-Called during accessibility information updates to determine the currently focused sub-element, should return a sub-element RID or the value returned by [GetAccessibilityElement].
-
-[GetAccessibilityElement]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetAccessibilityElement
-*/
 func (class) _get_focused_accessibility_element(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -2963,98 +2747,28 @@ func (class) _get_focused_accessibility_element(impl func(ptr gdclass.Receiver) 
 	}
 }
 
-/*
-Prints all orphan nodes (nodes outside the [SceneTree]). Useful for debugging.
-
-Note: This method only works in debug builds. Does nothing in a project exported in release mode.
-
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-*/
-//go:nosplit
 func (self class) PrintOrphanNodes() { //gd:Node.print_orphan_nodes
 	noescape.CallStatic[struct{}](methods.print_orphan_nodes, 0, &struct{}{})
 }
-
-/*
-Returns object IDs of all orphan nodes (nodes outside the [SceneTree]). Used for debugging.
-
-Note: [GetOrphanNodeIds] only works in debug builds. When called in a project exported in release mode, [GetOrphanNodeIds] will return an empty array.
-
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-*/
-//go:nosplit
 func (self class) GetOrphanNodeIds() Array.Contains[int64] { //gd:Node.get_orphan_node_ids
 	var r_ret = noescape.CallStatic[gdextension.Array](methods.get_orphan_node_ids, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[int64]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Adds a 'sibling' node to this node's parent, and moves the added sibling right below this node.
-
-If 'force_readable_name' is true, improves the readability of the added 'sibling'. If not named, the 'sibling' is renamed to its type, and if it shares [Name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
-
-Use [AddChild] instead of this method if you don't need the child node to be added below a specific node in the list of children.
-
-Note: If this node is internal, the added sibling will be internal too (see [AddChild]'s internal parameter).
-
-[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
-[Name]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Name
-*/
-//go:nosplit
 func (self class) AddSibling(sibling [1]gdclass.Node, force_readable_name bool) { //gd:Node.add_sibling
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_sibling, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		sibling             gdextension.Object
 		force_readable_name bool
 	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetNode(sibling[0])[0])), force_readable_name})
 }
-
-//go:nosplit
 func (self class) SetName(name String.Name) { //gd:Node.set_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_name, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
-
-//go:nosplit
 func (self class) GetName() String.Name { //gd:Node.get_name
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-
-/*
-Adds a child 'node'. Nodes can have any number of children, but every child must have a unique name. Child nodes are automatically deleted when the parent node is deleted, so an entire scene can be removed by deleting its topmost node.
-
-If 'force_readable_name' is true, improves the readability of the added 'node'. If not named, the 'node' is renamed to its type, and if it shares [Name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
-
-If 'internal' is different than [InternalModeDisabled], the child will be added as internal node. These nodes are ignored by methods like [GetChildren], unless their parameter include_internal is true. It also prevents these nodes being duplicated with their parent. The intended usage is to hide the internal nodes from the user, so the user won't accidentally delete or modify them. Used by some GUI nodes, e.g. [ColorPicker].
-
-Note: If 'node' already has a parent, this method will fail. Use [RemoveChild] first to remove 'node' from its current parent. For example:
-
-
-	var childNode = node.GetChild(0)
-	if childNode.GetParent() != Node.Nil {
-		childNode.GetParent().RemoveChild(childNode)
-	}
-	node.AddChild(childNode)
-
-
-If you need the child node to be added below a specific node in the list of children, use [AddSibling] instead of this method.
-
-Note: If you want a child to be persisted to a [PackedScene], you must set [Owner] in addition to calling [AddChild]. This is typically relevant for [tool scripts] and [editor plugins]. If [AddChild] is called without setting [Owner], the newly added [Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
-
-[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
-[AddSibling]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddSibling
-[ColorPicker]: https://pkg.go.dev/graphics.gd/classdb/ColorPicker
-[GetChildren]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetChildren
-[Name]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Name
-[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
-[Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
-[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
-[RemoveChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RemoveChild
-[editor plugins]: https://docs.godotengine.org/tutorials/plugins/editor/index.html
-[tool scripts]: https://docs.godotengine.org/tutorials/plugins/running_code_in_the_editor.html
-*/
-//go:nosplit
 func (self class) AddChild(node [1]gdclass.Node, force_readable_name bool, internal_ InternalMode) { //gd:Node.add_child
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_child, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12), &struct {
 		node                gdextension.Object
@@ -3062,90 +2776,25 @@ func (self class) AddChild(node [1]gdclass.Node, force_readable_name bool, inter
 		internal_           InternalMode
 	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetNode(node[0])[0])), force_readable_name, internal_})
 }
-
-/*
-Removes a child 'node'. The 'node', along with its children, are not deleted. To delete a node, see [QueueFree].
-
-Note: When this node is inside the tree, this method sets the [Owner] of the removed 'node' (or its descendants) to null, if their [Owner] is no longer an ancestor (see [IsAncestorOf]).
-
-[IsAncestorOf]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsAncestorOf
-[Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
-[QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
-*/
-//go:nosplit
 func (self class) RemoveChild(node [1]gdclass.Node) { //gd:Node.remove_child
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_child, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
 }
-
-/*
-Changes the parent of this [Node] to the 'new_parent'. The node needs to already have a parent. The node's [Owner] is preserved if its owner is still reachable from the new location (i.e., the node is still a descendant of the new parent after the operation).
-
-If 'keep_global_transform' is true, the node's global transform will be preserved if supported. [Node2D], [Node3D] and [Control] support this argument (but [Control] keeps only position).
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
-[Node2D]: https://pkg.go.dev/graphics.gd/classdb/Node2D
-[Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
-[Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
-*/
-//go:nosplit
 func (self class) Reparent(new_parent [1]gdclass.Node, keep_global_transform bool) { //gd:Node.reparent
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reparent, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		new_parent            gdextension.Object
 		keep_global_transform bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(new_parent[0]))), keep_global_transform})
 }
-
-/*
-Returns the number of children of this node.
-
-If 'include_internal' is false, internal children are not counted (see [AddChild]'s internal parameter).
-
-[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
-*/
-//go:nosplit
 func (self class) GetChildCount(include_internal bool) int64 { //gd:Node.get_child_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_child_count, gdextension.SizeInt|(gdextension.SizeBool<<4), &struct{ include_internal bool }{include_internal})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns all children of this node inside an slice.
-
-If 'include_internal' is false, excludes internal children from the returned array (see [AddChild]'s internal parameter).
-
-[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
-*/
-//go:nosplit
 func (self class) GetChildren(include_internal bool) Array.Contains[[1]gdclass.Node] { //gd:Node.get_children
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_children, gdextension.SizeArray|(gdextension.SizeBool<<4), &struct{ include_internal bool }{include_internal})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Fetches a child node by its index. Each child node has an index relative to its siblings (see [GetIndex]). The first child is at index 0. Negative values can also be used to start from the end of the list. This method can be used in combination with [GetChildCount] to iterate over this node's children. If no child exists at the given index, this method returns null and an error is generated.
-
-If 'include_internal' is false, internal children are ignored (see [AddChild]'s internal parameter).
-
-
-	// Assuming the following are children of this node, in order:
-	// First, Middle, Last.
-	var a = node.GetChild(0).Name()  // a is "First"
-	var b = node.GetChild(1).Name()  // b is "Middle"
-	b = node.GetChild(2).Name()      // b is "Last"
-	var c = node.GetChild(-1).Name() // c is "Last"
-
-
-Note: To fetch a node by node path, use [GetNode].
-
-[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
-[GetChildCount]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetChildCount
-[GetIndex]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetIndex
-[GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
-*/
-//go:nosplit
 func (self class) GetChild(idx int64, include_internal bool) [1]gdclass.Node { //gd:Node.get_child
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_child, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		idx              int64
@@ -3154,89 +2803,26 @@ func (self class) GetChild(idx int64, include_internal bool) [1]gdclass.Node { /
 	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns true if the 'path' points to a valid node. See also [GetNode].
-
-[GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
-*/
-//go:nosplit
 func (self class) HasNode(path Path.ToNode) bool { //gd:Node.has_node
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_node, gdextension.SizeBool|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Fetches a node. The node path can either be a relative path (from this node), or an absolute path (from the [SceneTree.Root]) to a node. If 'path' does not point to a valid node, generates an error and returns null. Attempts to access methods on the return value will result in an "Attempt to call <method> on a null instance." error.
-
-Note: Fetching by absolute path only works when the node is inside the scene tree (see [IsInsideTree]).
-
-Example: Assume this method is called from the Character node, inside the following tree:
-
-
-	node.GetNode("Sword")
-	node.GetNode("Backpack/Dagger")
-	node.GetNode("../Swamp/Alligator")
-	node.GetNode("/root/MyGame")
-
-
-The following calls will return a valid node:
-
-
-
-[IsInsideTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsInsideTree
-[SceneTree.Root]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Root
-*/
-//go:nosplit
 func (self class) GetNode(path Path.ToNode) [1]gdclass.Node { //gd:Node.get_node
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_node, gdextension.SizeObject|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Fetches a node by node path. Similar to [GetNode], but does not generate an error if 'path' does not point to a valid node.
-
-[GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
-*/
-//go:nosplit
 func (self class) GetNodeOrNull(path Path.ToNode) [1]gdclass.Node { //gd:Node.get_node_or_null
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_node_or_null, gdextension.SizeObject|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns this node's parent node, or null if the node doesn't have a parent.
-*/
-//go:nosplit
 func (self class) GetParent() [1]gdclass.Node { //gd:Node.get_parent
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_parent, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Finds the first descendant of this node whose [Name] matches 'pattern', returning null if no match is found. The matching is done against node names, not their paths, through [String.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
-
-If 'recursive' is false, only this node's direct children are checked. Nodes are checked in tree order, so this node's first direct child is checked first, then its own direct children, etc., before moving to the second direct child, and so on. Internal children are also included in the search (see internal parameter in [AddChild]).
-
-If 'owned' is true, only descendants with a valid [Owner] node are checked.
-
-Note: This method can be very slow. Consider storing a reference to the found node in a variable. Alternatively, use [GetNode] with unique names (see [UniqueNameInOwner]).
-
-Note: To find all descendant nodes matching a pattern or a class type, see [FindChildren].
-
-[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
-[FindChildren]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.FindChildren
-[GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
-[Name]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Name
-[Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
-[String.Match]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.Match
-[UniqueNameInOwner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UniqueNameInOwner
-*/
-//go:nosplit
 func (self class) FindChild(pattern String.Readable, recursive bool, owned bool) [1]gdclass.Node { //gd:Node.find_child
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_child, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12), &struct {
 		pattern   gdextension.String
@@ -3246,27 +2832,6 @@ func (self class) FindChild(pattern String.Readable, recursive bool, owned bool)
 	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Finds all descendants of this node whose names match 'pattern', returning an empty slice if no match is found. The matching is done against node names, not their paths, through [String.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
-
-If 'type' is not empty, only ancestors inheriting from 'type' are included (see [Object.IsClass]).
-
-If 'recursive' is false, only this node's direct children are checked. Nodes are checked in tree order, so this node's first direct child is checked first, then its own direct children, etc., before moving to the second direct child, and so on. Internal children are also included in the search (see internal parameter in [AddChild]).
-
-If 'owned' is true, only descendants with a valid [Owner] node are checked.
-
-Note: This method can be very slow. Consider storing references to the found nodes in a variable.
-
-Note: To find a single descendant node matching a pattern, see [FindChild].
-
-[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
-[FindChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.FindChild
-[Object.IsClass]: https://pkg.go.dev/graphics.gd/variant/Object#IsClass
-[Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
-[String.Match]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.Match
-*/
-//go:nosplit
 func (self class) FindChildren(pattern String.Readable, atype String.Readable, recursive bool, owned bool) Array.Contains[[1]gdclass.Node] { //gd:Node.find_children
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.find_children, gdextension.SizeArray|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
 		pattern   gdextension.String
@@ -3277,146 +2842,46 @@ func (self class) FindChildren(pattern String.Readable, atype String.Readable, r
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Finds the first ancestor of this node whose [Name] matches 'pattern', returning null if no match is found. The matching is done through [String.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character. See also [FindChild] and [FindChildren].
-
-Note: As this method walks upwards in the scene tree, it can be slow in large, deeply nested nodes. Consider storing a reference to the found node in a variable. Alternatively, use [GetNode] with unique names (see [UniqueNameInOwner]).
-
-[FindChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.FindChild
-[FindChildren]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.FindChildren
-[GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
-[Name]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Name
-[String.Match]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.Match
-[UniqueNameInOwner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UniqueNameInOwner
-*/
-//go:nosplit
 func (self class) FindParent(pattern String.Readable) [1]gdclass.Node { //gd:Node.find_parent
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_parent, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ pattern gdextension.String }{pointers.Get(gd.InternalString(pattern))})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns true if 'path' points to a valid node and its subnames point to a valid [Resource], e.g. Area2D/CollisionShape2D:shape. Properties that are not [Resource] types (such as nodes or other any types) are not considered. See also [GetNodeAndResource].
-
-[GetNodeAndResource]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNodeAndResource
-[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
-*/
-//go:nosplit
 func (self class) HasNodeAndResource(path Path.ToNode) bool { //gd:Node.has_node_and_resource
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_node_and_resource, gdextension.SizeBool|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Fetches a node and its most nested resource as specified by the node path's subname. Returns an slice of size 3 where:
-
-- Element 0 is the [Node], or null if not found;
-
-- Element 1 is the subname's last nested [Resource], or null if not found;
-
-- Element 2 is the remaining node path, referring to an existing, non-[Resource] property (see [Object.GetIndexed]).
-
-Example: Assume that the child's [Sprite2D.Texture] has been assigned an [AtlasTexture]:
-
-
-	node, res, path := node.GetNodeAndResource("Area2D/Sprite2D")
-	fmt.Println(node.Name()) // Prints Sprite2D
-	fmt.Println(res)         // Prints <null>
-	fmt.Println(path)        // Prints ^""
-
-	node, res, path = node.GetNodeAndResource("Area2D/Sprite2D:texture:atlas")
-	fmt.Println(node.Name())                                 // Prints Sprite2D
-	fmt.Println(Object.Instance(res.AsObject()).ClassName()) // Prints AtlasTexture
-	fmt.Println(path)                                        // Prints ^""
-
-	node, res, path = node.GetNodeAndResource("Area2D/Sprite2D:texture:atlas:region")
-	fmt.Println(node.Name())                                 // Prints Sprite2D
-	fmt.Println(Object.Instance(res.AsObject()).ClassName()) // Prints AtlasTexture
-	fmt.Println(path)                                        // Prints ^":region"
-
-
-[AtlasTexture]: https://pkg.go.dev/graphics.gd/classdb/AtlasTexture
-[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
-[Object.GetIndexed]: https://pkg.go.dev/graphics.gd/variant/Object#GetIndexed
-[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
-[Sprite2D.Texture]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Texture
-*/
-//go:nosplit
 func (self class) GetNodeAndResource(path Path.ToNode) Array.Any { //gd:Node.get_node_and_resource
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_node_and_resource, gdextension.SizeArray|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns true if this node is currently inside a [SceneTree]. See also [GetTree].
-
-[GetTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetTree
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-*/
-//go:nosplit
 func (self class) IsInsideTree() bool { //gd:Node.is_inside_tree
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_inside_tree, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the node is part of the scene currently opened in the editor.
-*/
-//go:nosplit
 func (self class) IsPartOfEditedScene() bool { //gd:Node.is_part_of_edited_scene
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_part_of_edited_scene, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the given 'node' is a direct or indirect child of this node.
-*/
-//go:nosplit
 func (self class) IsAncestorOf(node [1]gdclass.Node) bool { //gd:Node.is_ancestor_of
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ancestor_of, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the given 'node' occurs later in the scene hierarchy than this node. A node occurring later is usually processed last.
-*/
-//go:nosplit
 func (self class) IsGreaterThan(node [1]gdclass.Node) bool { //gd:Node.is_greater_than
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_greater_than, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the node's absolute path, relative to the [SceneTree.Root]. If the node is not inside the scene tree, this method fails and returns an empty node path.
-
-[SceneTree.Root]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Root
-*/
-//go:nosplit
 func (self class) GetPath() Path.ToNode { //gd:Node.get_path
 	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_path, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
-
-/*
-Returns the relative node path from this node to the specified 'node'. Both nodes must be in the same [SceneTree] or scene hierarchy, otherwise this method fails and returns an empty node path.
-
-If 'use_unique_path' is true, returns the shortest path accounting for this node's unique name (see [UniqueNameInOwner]).
-
-Note: If you get a relative path which starts from a unique node, the path may be longer than a normal relative path, due to the addition of the unique node's name.
-
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-[UniqueNameInOwner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UniqueNameInOwner
-*/
-//go:nosplit
 func (self class) GetPathTo(node [1]gdclass.Node, use_unique_path bool) Path.ToNode { //gd:Node.get_path_to
 	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_path_to, gdextension.SizeNodePath|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		node            gdextension.Object
@@ -3425,213 +2890,71 @@ func (self class) GetPathTo(node [1]gdclass.Node, use_unique_path bool) Path.ToN
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
-
-/*
-Adds the node to the 'group'. Groups can be helpful to organize a subset of nodes, for example "enemies" or "collectables". See notes in the description, and the group methods in [SceneTree].
-
-If 'persistent' is true, the group will be stored when saved inside a [PackedScene]. All groups created and displayed in the Node dock are persistent.
-
-Note: To improve performance, the order of group names is not guaranteed and may vary between project runs. Therefore, do not rely on the group order.
-
-Note: [SceneTree]'s group methods will not work on this node if not inside the tree (see [IsInsideTree]).
-
-[IsInsideTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsInsideTree
-[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-*/
-//go:nosplit
 func (self class) AddToGroup(group String.Name, persistent bool) { //gd:Node.add_to_group
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_to_group, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		group      gdextension.StringName
 		persistent bool
 	}{pointers.Get(gd.InternalStringName(group)), persistent})
 }
-
-/*
-Removes the node from the given 'group'. Does nothing if the node is not in the 'group'. See also notes in the description, and the [SceneTree]'s group methods.
-
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-*/
-//go:nosplit
 func (self class) RemoveFromGroup(group String.Name) { //gd:Node.remove_from_group
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_from_group, 0|(gdextension.SizeStringName<<4), &struct{ group gdextension.StringName }{pointers.Get(gd.InternalStringName(group))})
 }
-
-/*
-Returns true if this node has been added to the given 'group'. See [AddToGroup] and [RemoveFromGroup]. See also notes in the description, and the [SceneTree]'s group methods.
-
-[AddToGroup]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddToGroup
-[RemoveFromGroup]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RemoveFromGroup
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-*/
-//go:nosplit
 func (self class) IsInGroup(group String.Name) bool { //gd:Node.is_in_group
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_in_group, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ group gdextension.StringName }{pointers.Get(gd.InternalStringName(group))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Moves 'child_node' to the given index. A node's index is the order among its siblings. If 'to_index' is negative, the index is counted from the end of the list. See also [GetChild] and [GetIndex].
-
-Note: The processing order of several engine callbacks ([Ready], [Process], etc.) and notifications sent through [PropagateNotification] is affected by tree order. [CanvasItem] nodes are also rendered in tree order. See also [ProcessPriority].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[GetChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetChild
-[GetIndex]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetIndex
-[Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[ProcessPriority]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessPriority
-[PropagateNotification]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PropagateNotification
-[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-*/
-//go:nosplit
 func (self class) MoveChild(child_node [1]gdclass.Node, to_index int64) { //gd:Node.move_child
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_child, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		child_node gdextension.Object
 		to_index   int64
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(child_node[0]))), to_index})
 }
-
-/*
-Returns an slice of group names that the node has been added to.
-
-Note: To improve performance, the order of group names is not guaranteed and may vary between project runs. Therefore, do not rely on the group order.
-
-Note: This method may also return some group names starting with an underscore (_). These are internally used by the engine. To avoid conflicts, do not use custom groups starting with underscores. To exclude internal groups, see the following code snippet:
-
-
-	// Stores the node's non-internal groups only (as a slice of strings).
-	var nonInternalGroups []string
-	for _, group := range node.GetGroups() {
-		if !strings.HasPrefix(group, "_") {
-			nonInternalGroups = append(nonInternalGroups, group)
-		}
-	}
-
-*/
-//go:nosplit
 func (self class) GetGroups() Array.Contains[String.Name] { //gd:Node.get_groups
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_groups, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetOwner(owner [1]gdclass.Node) { //gd:Node.set_owner
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_owner, 0|(gdextension.SizeObject<<4), &struct{ owner gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(owner[0])))})
 }
-
-//go:nosplit
 func (self class) GetOwner() [1]gdclass.Node { //gd:Node.get_owner
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_owner, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns this node's order among its siblings. The first node's index is 0. See also [GetChild].
-
-If 'include_internal' is false, returns the index ignoring internal children. The first, non-internal child will have an index of 0 (see [AddChild]'s internal parameter).
-
-[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
-[GetChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetChild
-*/
-//go:nosplit
 func (self class) GetIndex(include_internal bool) int64 { //gd:Node.get_index
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_index, gdextension.SizeInt|(gdextension.SizeBool<<4), &struct{ include_internal bool }{include_internal})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Prints the node and its children to the console, recursively. The node does not have to be inside the tree. This method outputs node paths relative to this node, and is good for copy/pasting into [GetNode]. See also [PrintTreePretty].
-
-May print, for example:
-
-
-
-[GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
-[PrintTreePretty]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PrintTreePretty
-*/
-//go:nosplit
 func (self class) PrintTree() { //gd:Node.print_tree
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.print_tree, 0, &struct{}{})
 }
-
-/*
-Prints the node and its children to the console, recursively. The node does not have to be inside the tree. Similar to [PrintTree], but the graphical representation looks like what is displayed in the editor's Scene dock. It is useful for inspecting larger trees.
-
-May print, for example:
-
-
-
-[PrintTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PrintTree
-*/
-//go:nosplit
 func (self class) PrintTreePretty() { //gd:Node.print_tree_pretty
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.print_tree_pretty, 0, &struct{}{})
 }
-
-/*
-Returns the tree as a string. Used mainly for debugging purposes. This version displays the path relative to the current node, and is good for copy/pasting into the [GetNode] function. It also can be used in game UI/UX.
-
-May print, for example:
-
-
-
-[GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
-*/
-//go:nosplit
 func (self class) GetTreeString() String.Readable { //gd:Node.get_tree_string
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tree_string, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Similar to [GetTreeString], this returns the tree as a string. This version displays a more graphical representation similar to what is displayed in the Scene Dock. It is useful for inspecting larger trees.
-
-May print, for example:
-
-
-
-[GetTreeString]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetTreeString
-*/
-//go:nosplit
 func (self class) GetTreeStringPretty() String.Readable { //gd:Node.get_tree_string_pretty
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tree_string_pretty, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSceneFilePath(scene_file_path String.Readable) { //gd:Node.set_scene_file_path
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scene_file_path, 0|(gdextension.SizeString<<4), &struct{ scene_file_path gdextension.String }{pointers.Get(gd.InternalString(scene_file_path))})
 }
-
-//go:nosplit
 func (self class) GetSceneFilePath() String.Readable { //gd:Node.get_scene_file_path
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_scene_file_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Calls [Object.Notification] with 'what' on this node and all of its children, recursively.
-
-[Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
-*/
-//go:nosplit
 func (self class) PropagateNotification(what int64) { //gd:Node.propagate_notification
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.propagate_notification, 0|(gdextension.SizeInt<<4), &struct{ what int64 }{what})
 }
-
-/*
-Calls the given 'method' name, passing 'args' as arguments, on this node and all of its children, recursively.
-
-If 'parent_first' is true, the method is called on this node first, then on all of its children. If false, the children's methods are called first.
-*/
-//go:nosplit
 func (self class) PropagateCall(method String.Name, args Array.Any, parent_first bool) { //gd:Node.propagate_call
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.propagate_call, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeBool<<12), &struct {
 		method       gdextension.StringName
@@ -3639,828 +2962,301 @@ func (self class) PropagateCall(method String.Name, args Array.Any, parent_first
 		parent_first bool
 	}{pointers.Get(gd.InternalStringName(method)), pointers.Get(gd.InternalArray(args)), parent_first})
 }
-
-/*
-If set to true, enables physics (fixed framerate) processing. When a node is being processed, it will receive a [NotificationPhysicsProcess] at a fixed (usually 60 FPS, see [Engine.PhysicsTicksPerSecond] to change) interval (and the [PhysicsProcess] callback will be called if it exists).
-
-Note: If [PhysicsProcess] is overridden, this will be automatically enabled before [Ready] is called.
-
-[Engine.PhysicsTicksPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#PhysicsTicksPerSecond
-[PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-*/
-//go:nosplit
 func (self class) SetPhysicsProcess(enable bool) { //gd:Node.set_physics_process
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_process, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-/*
-Returns the time elapsed (in seconds) since the last physics callback. This value is identical to [PhysicsProcess]'s delta parameter, and is often consistent at run-time, unless [Engine.PhysicsTicksPerSecond] is changed. See also [NotificationPhysicsProcess].
-
-Note: The returned value will be larger than expected if running at a framerate lower than [Engine.PhysicsTicksPerSecond] / [Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Process] and [PhysicsProcess]. As a result, avoid using delta for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [Time.GetTicksUsec].
-
-[Engine.MaxPhysicsStepsPerFrame]: https://pkg.go.dev/graphics.gd/classdb/Engine#MaxPhysicsStepsPerFrame
-[Engine.PhysicsTicksPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#PhysicsTicksPerSecond
-[PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[Time]: https://pkg.go.dev/graphics.gd/classdb/Time
-[Time.GetTicksUsec]: https://pkg.go.dev/graphics.gd/classdb/Time#GetTicksUsec
-*/
-//go:nosplit
 func (self class) GetPhysicsProcessDeltaTime() float64 { //gd:Node.get_physics_process_delta_time
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_physics_process_delta_time, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if physics processing is enabled (see [SetPhysicsProcess]).
-
-[SetPhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetPhysicsProcess
-*/
-//go:nosplit
 func (self class) IsPhysicsProcessing() bool { //gd:Node.is_physics_processing
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_physics_processing, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the time elapsed (in seconds) since the last process callback. This value is identical to [Process]'s delta parameter, and may vary from frame to frame. See also [NotificationProcess].
-
-Note: The returned value will be larger than expected if running at a framerate lower than [Engine.PhysicsTicksPerSecond] / [Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Process] and [PhysicsProcess]. As a result, avoid using delta for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [Time.GetTicksUsec].
-
-[Engine.MaxPhysicsStepsPerFrame]: https://pkg.go.dev/graphics.gd/classdb/Engine#MaxPhysicsStepsPerFrame
-[Engine.PhysicsTicksPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#PhysicsTicksPerSecond
-[PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[Time]: https://pkg.go.dev/graphics.gd/classdb/Time
-[Time.GetTicksUsec]: https://pkg.go.dev/graphics.gd/classdb/Time#GetTicksUsec
-*/
-//go:nosplit
 func (self class) GetProcessDeltaTime() float64 { //gd:Node.get_process_delta_time
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_process_delta_time, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-If set to true, enables processing. When a node is being processed, it will receive a [NotificationProcess] on every drawn frame (and the [Process] callback will be called if it exists).
-
-Note: If [Process] is overridden, this will be automatically enabled before [Ready] is called.
-
-Note: This method only affects the [Process] callback, i.e. it has no effect on other callbacks like [PhysicsProcess]. If you want to disable all processing for the node, set [ProcessMode] to [ProcessModeDisabled].
-
-[PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessMode
-[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-*/
-//go:nosplit
 func (self class) SetProcess(enable bool) { //gd:Node.set_process
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) SetProcessPriority(priority int64) { //gd:Node.set_process_priority
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_priority, 0|(gdextension.SizeInt<<4), &struct{ priority int64 }{priority})
 }
-
-//go:nosplit
 func (self class) GetProcessPriority() int64 { //gd:Node.get_process_priority
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_process_priority, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPhysicsProcessPriority(priority int64) { //gd:Node.set_physics_process_priority
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_process_priority, 0|(gdextension.SizeInt<<4), &struct{ priority int64 }{priority})
 }
-
-//go:nosplit
 func (self class) GetPhysicsProcessPriority() int64 { //gd:Node.get_physics_process_priority
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_physics_process_priority, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if processing is enabled (see [SetProcess]).
-
-[SetProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcess
-*/
-//go:nosplit
 func (self class) IsProcessing() bool { //gd:Node.is_processing
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_processing, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-If set to true, enables input processing.
-
-Note: If [Input] is overridden, this will be automatically enabled before [Ready] is called. Input processing is also already enabled for GUI controls, such as [Button] and [TextEdit].
-
-[Button]: https://pkg.go.dev/graphics.gd/classdb/Button
-[Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
-*/
-//go:nosplit
 func (self class) SetProcessInput(enable bool) { //gd:Node.set_process_input
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_input, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-/*
-Returns true if the node is processing input (see [SetProcessInput]).
-
-[SetProcessInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessInput
-*/
-//go:nosplit
 func (self class) IsProcessingInput() bool { //gd:Node.is_processing_input
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_processing_input, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-If set to true, enables shortcut processing for this node.
-
-Note: If [ShortcutInput] is overridden, this will be automatically enabled before [Ready] is called.
-
-[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[ShortcutInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-*/
-//go:nosplit
 func (self class) SetProcessShortcutInput(enable bool) { //gd:Node.set_process_shortcut_input
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_shortcut_input, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-/*
-Returns true if the node is processing shortcuts (see [SetProcessShortcutInput]).
-
-[SetProcessShortcutInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessShortcutInput
-*/
-//go:nosplit
 func (self class) IsProcessingShortcutInput() bool { //gd:Node.is_processing_shortcut_input
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_processing_shortcut_input, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-If set to true, enables unhandled input processing. It enables the node to receive all input that was not previously handled (usually by a [Control]).
-
-Note: If [UnhandledInput] is overridden, this will be automatically enabled before [Ready] is called. Unhandled input processing is also already enabled for GUI controls, such as [Button] and [TextEdit].
-
-[Button]: https://pkg.go.dev/graphics.gd/classdb/Button
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
-[UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-*/
-//go:nosplit
 func (self class) SetProcessUnhandledInput(enable bool) { //gd:Node.set_process_unhandled_input
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_unhandled_input, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-/*
-Returns true if the node is processing unhandled input (see [SetProcessUnhandledInput]).
-
-[SetProcessUnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessUnhandledInput
-*/
-//go:nosplit
 func (self class) IsProcessingUnhandledInput() bool { //gd:Node.is_processing_unhandled_input
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_processing_unhandled_input, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-If set to true, enables unhandled key input processing.
-
-Note: If [UnhandledKeyInput] is overridden, this will be automatically enabled before [Ready] is called.
-
-[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[UnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-*/
-//go:nosplit
 func (self class) SetProcessUnhandledKeyInput(enable bool) { //gd:Node.set_process_unhandled_key_input
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_unhandled_key_input, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-/*
-Returns true if the node is processing unhandled key input (see [SetProcessUnhandledKeyInput]).
-
-[SetProcessUnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessUnhandledKeyInput
-*/
-//go:nosplit
 func (self class) IsProcessingUnhandledKeyInput() bool { //gd:Node.is_processing_unhandled_key_input
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_processing_unhandled_key_input, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetProcessMode(mode ProcessMode) { //gd:Node.set_process_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_mode, 0|(gdextension.SizeInt<<4), &struct{ mode ProcessMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetProcessMode() ProcessMode { //gd:Node.get_process_mode
 	var r_ret = noescape.Call[ProcessMode](gd.ObjectChecked(self.AsObject()), methods.get_process_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the node can receive processing notifications and input callbacks ([NotificationProcess], [Input], etc.) from the [SceneTree] and [Viewport]. The returned value depends on [ProcessMode]:
-
-- If set to [ProcessModePausable], returns true when the game is processing, i.e. [SceneTree.Paused] is false;
-
-- If set to [ProcessModeWhenPaused], returns true when the game is paused, i.e. [SceneTree.Paused] is true;
-
-- If set to [ProcessModeAlways], always returns true;
-
-- If set to [ProcessModeDisabled], always returns false;
-
-- If set to [ProcessModeInherit], use the parent node's [ProcessMode] to determine the result.
-
-If the node is not inside the tree, returns false no matter the value of [ProcessMode].
-
-[Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessMode
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-[SceneTree.Paused]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Paused
-[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
-*/
-//go:nosplit
 func (self class) CanProcess() bool { //gd:Node.can_process
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_process, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetProcessThreadGroup(mode ProcessThreadGroup) { //gd:Node.set_process_thread_group
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_thread_group, 0|(gdextension.SizeInt<<4), &struct{ mode ProcessThreadGroup }{mode})
 }
-
-//go:nosplit
 func (self class) GetProcessThreadGroup() ProcessThreadGroup { //gd:Node.get_process_thread_group
 	var r_ret = noescape.Call[ProcessThreadGroup](gd.ObjectChecked(self.AsObject()), methods.get_process_thread_group, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetProcessThreadMessages(flags ProcessThreadMessages) { //gd:Node.set_process_thread_messages
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_thread_messages, 0|(gdextension.SizeInt<<4), &struct{ flags ProcessThreadMessages }{flags})
 }
-
-//go:nosplit
 func (self class) GetProcessThreadMessages() ProcessThreadMessages { //gd:Node.get_process_thread_messages
 	var r_ret = noescape.Call[ProcessThreadMessages](gd.ObjectChecked(self.AsObject()), methods.get_process_thread_messages, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetProcessThreadGroupOrder(order int64) { //gd:Node.set_process_thread_group_order
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_thread_group_order, 0|(gdextension.SizeInt<<4), &struct{ order int64 }{order})
 }
-
-//go:nosplit
 func (self class) GetProcessThreadGroupOrder() int64 { //gd:Node.get_process_thread_group_order
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_process_thread_group_order, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Queues an accessibility information update for this node.
-*/
-//go:nosplit
 func (self class) QueueAccessibilityUpdate() { //gd:Node.queue_accessibility_update
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_accessibility_update, 0, &struct{}{})
 }
-
-/*
-Returns main accessibility element RID.
-
-Note: This method should be called only during accessibility information updates ([NotificationAccessibilityUpdate]).
-*/
-//go:nosplit
 func (self class) GetAccessibilityElement() RID.Any { //gd:Node.get_accessibility_element
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_element, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-If set to true, the node appears folded in the Scene dock. As a result, all of its children are hidden. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [IsDisplayedFolded].
-
-[IsDisplayedFolded]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsDisplayedFolded
-*/
-//go:nosplit
 func (self class) SetDisplayFolded(fold bool) { //gd:Node.set_display_folded
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_display_folded, 0|(gdextension.SizeBool<<4), &struct{ fold bool }{fold})
 }
-
-/*
-Returns true if the node is folded (collapsed) in the Scene dock. This method is intended to be used in editor plugins and tools. See also [SetDisplayFolded].
-
-[SetDisplayFolded]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetDisplayFolded
-*/
-//go:nosplit
 func (self class) IsDisplayedFolded() bool { //gd:Node.is_displayed_folded
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_displayed_folded, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-If set to true, enables internal processing for this node. Internal processing happens in isolation from the normal [Process] calls and is used by some nodes internally to guarantee proper functioning even if the node is paused or processing is disabled for scripting ([SetProcess]).
-
-Warning: Built-in nodes rely on internal processing for their internal logic. Disabling it is unsafe and may lead to unexpected behavior. Use this method if you know what you are doing.
-
-[Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[SetProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcess
-*/
-//go:nosplit
 func (self class) SetProcessInternal(enable bool) { //gd:Node.set_process_internal
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_internal, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-/*
-Returns true if internal processing is enabled (see [SetProcessInternal]).
-
-[SetProcessInternal]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessInternal
-*/
-//go:nosplit
 func (self class) IsProcessingInternal() bool { //gd:Node.is_processing_internal
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_processing_internal, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-If set to true, enables internal physics for this node. Internal physics processing happens in isolation from the normal [PhysicsProcess] calls and is used by some nodes internally to guarantee proper functioning even if the node is paused or physics processing is disabled for scripting ([SetPhysicsProcess]).
-
-Warning: Built-in nodes rely on internal processing for their internal logic. Disabling it is unsafe and may lead to unexpected behavior. Use this method if you know what you are doing.
-
-[PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[SetPhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetPhysicsProcess
-*/
-//go:nosplit
 func (self class) SetPhysicsProcessInternal(enable bool) { //gd:Node.set_physics_process_internal
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_process_internal, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-/*
-Returns true if internal physics processing is enabled (see [SetPhysicsProcessInternal]).
-
-[SetPhysicsProcessInternal]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetPhysicsProcessInternal
-*/
-//go:nosplit
 func (self class) IsPhysicsProcessingInternal() bool { //gd:Node.is_physics_processing_internal
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_physics_processing_internal, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPhysicsInterpolationMode(mode PhysicsInterpolationMode) { //gd:Node.set_physics_interpolation_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_interpolation_mode, 0|(gdextension.SizeInt<<4), &struct{ mode PhysicsInterpolationMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetPhysicsInterpolationMode() PhysicsInterpolationMode { //gd:Node.get_physics_interpolation_mode
 	var r_ret = noescape.Call[PhysicsInterpolationMode](gd.ObjectChecked(self.AsObject()), methods.get_physics_interpolation_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if physics interpolation is enabled for this node (see [PhysicsInterpolationMode]).
-
-Note: Interpolation will only be active if both the flag is set and physics interpolation is enabled within the [SceneTree]. This can be tested using [IsPhysicsInterpolatedAndEnabled].
-
-[IsPhysicsInterpolatedAndEnabled]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsPhysicsInterpolatedAndEnabled
-[PhysicsInterpolationMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsInterpolationMode
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-*/
-//go:nosplit
 func (self class) IsPhysicsInterpolated() bool { //gd:Node.is_physics_interpolated
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_physics_interpolated, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if physics interpolation is enabled (see [PhysicsInterpolationMode]) and enabled in the [SceneTree].
-
-This is a convenience version of [IsPhysicsInterpolated] that also checks whether physics interpolation is enabled globally.
-
-See [SceneTree.PhysicsInterpolation] and [ProjectSettings] "physics/common/physics_interpolation".
-
-[IsPhysicsInterpolated]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsPhysicsInterpolated
-[PhysicsInterpolationMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsInterpolationMode
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-[SceneTree.PhysicsInterpolation]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.PhysicsInterpolation
-*/
-//go:nosplit
 func (self class) IsPhysicsInterpolatedAndEnabled() bool { //gd:Node.is_physics_interpolated_and_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_physics_interpolated_and_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-When physics interpolation is active, moving a node to a radically different transform (such as placement within a level) can result in a visible glitch as the object is rendered moving from the old to new position over the physics tick.
-
-That glitch can be prevented by calling this method, which temporarily disables interpolation until the physics tick is complete.
-
-The notification [NotificationResetPhysicsInterpolation] will be received by the node and all children recursively.
-
-Note: This function should be called after moving the node, rather than before.
-*/
-//go:nosplit
 func (self class) ResetPhysicsInterpolation() { //gd:Node.reset_physics_interpolation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_physics_interpolation, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetAutoTranslateMode(mode AutoTranslateMode) { //gd:Node.set_auto_translate_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_translate_mode, 0|(gdextension.SizeInt<<4), &struct{ mode AutoTranslateMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetAutoTranslateMode() AutoTranslateMode { //gd:Node.get_auto_translate_mode
 	var r_ret = noescape.Call[AutoTranslateMode](gd.ObjectChecked(self.AsObject()), methods.get_auto_translate_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if this node can automatically translate messages depending on the current locale. See [AutoTranslateMode], [Atr], and [AtrN].
-
-[Atr]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Atr
-[AtrN]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AtrN
-[AutoTranslateMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AutoTranslateMode
-*/
-//go:nosplit
 func (self class) CanAutoTranslate() bool { //gd:Node.can_auto_translate
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_auto_translate, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Makes this node inherit the translation domain from its parent node. If this node has no parent, the main translation domain will be used.
-
-This is the default behavior for all nodes. Calling [Object.SetTranslationDomain] disables this behavior.
-
-[Object.SetTranslationDomain]: https://pkg.go.dev/graphics.gd/variant/Object#SetTranslationDomain
-*/
-//go:nosplit
 func (self class) SetTranslationDomainInherited() { //gd:Node.set_translation_domain_inherited
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_translation_domain_inherited, 0, &struct{}{})
 }
-
-/*
-Returns the [Window] that contains this node. If the node is in the main window, this is equivalent to getting the root node (get_tree().get_root()).
-
-[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
-*/
-//go:nosplit
 func (self class) GetWindow() [1]gdclass.Window { //gd:Node.get_window
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_window, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Window{gdclass.NewWindow(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the [Window] that contains this node, or the last exclusive child in a chain of windows starting with the one that contains this node.
-
-[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
-*/
-//go:nosplit
 func (self class) GetLastExclusiveWindow() [1]gdclass.Window { //gd:Node.get_last_exclusive_window
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_last_exclusive_window, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Window{gdclass.NewWindow(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the [SceneTree] that contains this node. If this node is not inside the tree, generates an error and returns null. See also [IsInsideTree].
-
-[IsInsideTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsInsideTree
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-*/
-//go:nosplit
 func (self class) GetTree() [1]gdclass.SceneTree { //gd:Node.get_tree
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tree, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.SceneTree{gdclass.NewSceneTree(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Creates a new [Tween] and binds it to this node.
-
-This is the equivalent of doing:
-
-
-	node.BindToTween(SceneTree.Get(node).CreateTween())
-
-
-The Tween will start automatically on the next process frame or physics frame (depending on [Tween.TweenProcessMode]). See [Tween.BindNode] for more info on Tweens bound to nodes.
-
-Note: The method can still be used when the node is not inside [SceneTree]. It can fail in an unlikely case of using a custom [MainLoop].
-
-[MainLoop]: https://pkg.go.dev/graphics.gd/classdb/MainLoop
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
-[Tween.BindNode]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.BindNode
-*/
-//go:nosplit
 func (self class) CreateTween() [1]gdclass.Tween { //gd:Node.create_tween
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_tween, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Duplicates the node, returning a new node with all of its properties, signals, groups, and children copied from the original. The behavior can be tweaked through the 'flags' (see [DuplicateFlags]). Internal nodes are not duplicated.
-
-Note: For nodes with a [Script] attached, if [Object.Init] has been defined with required parameters, the duplicated node will not have a [Script].
-
-[Object.Init]: https://pkg.go.dev/graphics.gd/variant/Object#Init
-[Script]: https://pkg.go.dev/graphics.gd/classdb/Script
-*/
-//go:nosplit
 func (self class) Duplicate(flags int64) [1]gdclass.Node { //gd:Node.duplicate
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.duplicate, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ flags int64 }{flags})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Replaces this node by the given 'node'. All children of this node are moved to 'node'.
-
-If 'keep_groups' is true, the 'node' is added to the same groups that the replaced node is in (see [AddToGroup]).
-
-Warning: The replaced node is removed from the tree, but it is not deleted. To prevent memory leaks, store a reference to the node in a variable, or use [Object.Free].
-
-[AddToGroup]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddToGroup
-[Object.Free]: https://pkg.go.dev/graphics.gd/variant/Object#Free
-*/
-//go:nosplit
 func (self class) ReplaceBy(node [1]gdclass.Node, keep_groups bool) { //gd:Node.replace_by
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.replace_by, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		node        gdextension.Object
 		keep_groups bool
 	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetNode(node[0])[0])), keep_groups})
 }
-
-/*
-If set to true, the node becomes an [InstancePlaceholder] when packed and instantiated from a [PackedScene]. See also [GetSceneInstanceLoadPlaceholder].
-
-[GetSceneInstanceLoadPlaceholder]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetSceneInstanceLoadPlaceholder
-[InstancePlaceholder]: https://pkg.go.dev/graphics.gd/classdb/InstancePlaceholder
-[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
-*/
-//go:nosplit
 func (self class) SetSceneInstanceLoadPlaceholder(load_placeholder bool) { //gd:Node.set_scene_instance_load_placeholder
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scene_instance_load_placeholder, 0|(gdextension.SizeBool<<4), &struct{ load_placeholder bool }{load_placeholder})
 }
-
-/*
-Returns true if this node is an instance load placeholder. See [InstancePlaceholder] and [SetSceneInstanceLoadPlaceholder].
-
-[InstancePlaceholder]: https://pkg.go.dev/graphics.gd/classdb/InstancePlaceholder
-[SetSceneInstanceLoadPlaceholder]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetSceneInstanceLoadPlaceholder
-*/
-//go:nosplit
 func (self class) GetSceneInstanceLoadPlaceholder() bool { //gd:Node.get_scene_instance_load_placeholder
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_scene_instance_load_placeholder, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Set to true to allow all nodes owned by 'node' to be available, and editable, in the Scene dock, even if their [Owner] is not the scene root. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [IsEditableInstance].
-
-[IsEditableInstance]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsEditableInstance
-[Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
-*/
-//go:nosplit
 func (self class) SetEditableInstance(node [1]gdclass.Node, is_editable bool) { //gd:Node.set_editable_instance
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editable_instance, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		node        gdextension.Object
 		is_editable bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0]))), is_editable})
 }
-
-/*
-Returns true if 'node' has editable children enabled relative to this node. This method is intended to be used in editor plugins and tools. See also [SetEditableInstance].
-
-[SetEditableInstance]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetEditableInstance
-*/
-//go:nosplit
 func (self class) IsEditableInstance(node [1]gdclass.Node) bool { //gd:Node.is_editable_instance
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editable_instance, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the node's closest [Viewport] ancestor, if the node is inside the tree. Otherwise, returns null.
-
-[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
-*/
-//go:nosplit
 func (self class) GetViewport() [1]gdclass.Viewport { //gd:Node.get_viewport
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_viewport, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Viewport{gdclass.NewViewport(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Queues this node to be deleted at the end of the current frame. When deleted, all of its children are deleted as well, and all references to the node and its children become invalid.
-
-Unlike with [Object.Free], the node is not deleted instantly, and it can still be accessed before deletion. It is also safe to call [QueueFree] multiple times. Use [Object.IsQueuedForDeletion] to check if the node will be deleted at the end of the frame.
-
-Note: The node will only be freed after all other deferred calls are finished. Using this method is not always the same as calling [Object.Free] through [Object.CallDeferred].
-
-[Object.CallDeferred]: https://pkg.go.dev/graphics.gd/variant/Object#CallDeferred
-[Object.Free]: https://pkg.go.dev/graphics.gd/variant/Object#Free
-[Object.IsQueuedForDeletion]: https://pkg.go.dev/graphics.gd/variant/Object#IsQueuedForDeletion
-[QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
-*/
-//go:nosplit
 func (self class) QueueFree() { //gd:Node.queue_free
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_free, 0, &struct{}{})
 	gd.PointerQueueFree(self.AsObject()[0])
 }
-
-/*
-Requests [Ready] to be called again the next time the node enters the tree. Does not immediately call [Ready].
-
-Note: This method only affects the current node. If the node's children also need to request ready, this method needs to be called for each one of them. When the node and its children enter the tree again, the order of [Ready] callbacks will be the same as normal.
-
-[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-*/
-//go:nosplit
 func (self class) RequestReady() { //gd:Node.request_ready
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_ready, 0, &struct{}{})
 }
-
-/*
-Returns true if the node is ready, i.e. it's inside scene tree and all its children are initialized.
-
-[RequestReady] resets it back to false.
-
-[RequestReady]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RequestReady
-*/
-//go:nosplit
 func (self class) IsNodeReady() bool { //gd:Node.is_node_ready
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_node_ready, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the node's multiplayer authority to the peer with the given peer 'id'. The multiplayer authority is the peer that has authority over the node on the network. Defaults to peer ID 1 (the server). Useful in conjunction with [RpcConfig] and the [MultiplayerAPI].
-
-If 'recursive' is true, the given peer is recursively set as the authority for all children of this node.
-
-Warning: This does not automatically replicate the new authority to other peers. It is the developer's responsibility to do so. You may replicate the new authority's information using [MultiplayerSpawner.SpawnFunction], an RPC, or a [MultiplayerSynchronizer]. Furthermore, the parent's authority does not propagate to newly added children.
-
-[MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
-[MultiplayerSpawner.SpawnFunction]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSpawner#Instance.SpawnFunction
-[MultiplayerSynchronizer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer
-[RpcConfig]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RpcConfig
-*/
-//go:nosplit
 func (self class) SetMultiplayerAuthority(id int64, recursive bool) { //gd:Node.set_multiplayer_authority
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_multiplayer_authority, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		id        int64
 		recursive bool
 	}{id, recursive})
 }
-
-/*
-Returns the peer ID of the multiplayer authority for this node. See [SetMultiplayerAuthority].
-
-[SetMultiplayerAuthority]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetMultiplayerAuthority
-*/
-//go:nosplit
 func (self class) GetMultiplayerAuthority() int64 { //gd:Node.get_multiplayer_authority
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_multiplayer_authority, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the local system is the multiplayer authority of this node.
-*/
-//go:nosplit
 func (self class) IsMultiplayerAuthority() bool { //gd:Node.is_multiplayer_authority
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_multiplayer_authority, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetMultiplayer() [1]gdclass.MultiplayerAPI { //gd:Node.get_multiplayer
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_multiplayer, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.MultiplayerAPI{gdclass.NewMultiplayerAPI(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Changes the RPC configuration for the given 'method'. 'config' should either be null to disable the feature (as by default), or a data structure containing the following entries:
-
-- rpc_mode: see [MultiplayerAPI.RPCMode];
-
-- transfer_mode: see [MultiplayerPeer.TransferMode];
-
-- call_local: if true, the method will also be called locally;
-
-- channel: an int representing the channel to send the RPC on.
-
-Note: In GDScript, this method corresponds to the  annotation, with various parameters passed ([code]@rpc(any)[/code], [code]@rpc(authority)[/code]...). See also the [url=https://docs.godotengine.org/tutorials/networking/high_level_multiplayer.html]high-level multiplayer[/url] tutorial. annotation, with various parameters passed (@rpc(any), @rpc(authority)...). See also the [high-level multiplayer] tutorial.
-
-[high-level multiplayer]: https://docs.godotengine.org/tutorials/networking/high_level_multiplayer.html
-*/
-//go:nosplit
 func (self class) RpcConfig(method String.Name, config variant.Any) { //gd:Node.rpc_config
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.rpc_config, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), &struct {
 		method gdextension.StringName
 		config gdextension.Variant
 	}{pointers.Get(gd.InternalStringName(method)), gdextension.Variant(pointers.Get(gd.InternalVariant(config)))})
 }
-
-/*
-Returns a data structure mapping method names to their RPC configuration defined for this node using [RpcConfig].
-
-Note: This method only returns the RPC configuration assigned via [RpcConfig]. See [Script.GetRpcConfig] to retrieve the RPCs defined by the [Script].
-
-[RpcConfig]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RpcConfig
-[Script]: https://pkg.go.dev/graphics.gd/classdb/Script
-[Script.GetRpcConfig]: https://pkg.go.dev/graphics.gd/classdb/Script#Instance.GetRpcConfig
-*/
-//go:nosplit
 func (self class) GetNodeRpcConfig() variant.Any { //gd:Node.get_node_rpc_config
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_node_rpc_config, gdextension.SizeVariant, &struct{}{})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEditorDescription(editor_description String.Readable) { //gd:Node.set_editor_description
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editor_description, 0|(gdextension.SizeString<<4), &struct{ editor_description gdextension.String }{pointers.Get(gd.InternalString(editor_description))})
 }
-
-//go:nosplit
 func (self class) GetEditorDescription() String.Readable { //gd:Node.get_editor_description
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_editor_description, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUniqueNameInOwner(enable bool) { //gd:Node.set_unique_name_in_owner
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_unique_name_in_owner, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsUniqueNameInOwner() bool { //gd:Node.is_unique_name_in_owner
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_unique_name_in_owner, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Translates a 'message', using the translation catalogs configured in the Project Settings. Further 'context' can be specified to help with the translation. Note that most [Control] nodes automatically translate their strings, so this method is mostly useful for formatted strings or custom drawn text.
-
-This method works the same as [Object.Tr], with the addition of respecting the [AutoTranslateMode] state.
-
-If [Object.CanTranslateMessages] is false, or no translation is available, this method returns the 'message' without changes. See [Object.SetMessageTranslation].
-
-For detailed examples, see [Internationalizing games].
-
-[AutoTranslateMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AutoTranslateMode
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[Internationalizing games]: https://docs.godotengine.org/tutorials/i18n/internationalizing_games.html
-[Object.CanTranslateMessages]: https://pkg.go.dev/graphics.gd/variant/Object#CanTranslateMessages
-[Object.SetMessageTranslation]: https://pkg.go.dev/graphics.gd/variant/Object#SetMessageTranslation
-[Object.Tr]: https://pkg.go.dev/graphics.gd/variant/Object#Tr
-*/
-//go:nosplit
 func (self class) Atr(message String.Readable, context String.Name) String.Readable { //gd:Node.atr
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.atr, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeStringName<<8), &struct {
 		message gdextension.String
@@ -4469,29 +3265,6 @@ func (self class) Atr(message String.Readable, context String.Name) String.Reada
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Translates a 'message' or 'plural_message', using the translation catalogs configured in the Project Settings. Further 'context' can be specified to help with the translation.
-
-This method works the same as [Object.TrN], with the addition of respecting the [AutoTranslateMode] state.
-
-If [Object.CanTranslateMessages] is false, or no translation is available, this method returns 'message' or 'plural_message', without changes. See [Object.SetMessageTranslation].
-
-The 'n' is the number, or amount, of the message's subject. It is used by the translation system to fetch the correct plural form for the current language.
-
-For detailed examples, see [Localization using gettext].
-
-Note: Negative and [Float.X] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [Atr].
-
-[Atr]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Atr
-[AutoTranslateMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AutoTranslateMode
-[Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
-[Localization using gettext]: https://docs.godotengine.org/tutorials/i18n/localization_using_gettext.html
-[Object.CanTranslateMessages]: https://pkg.go.dev/graphics.gd/variant/Object#CanTranslateMessages
-[Object.SetMessageTranslation]: https://pkg.go.dev/graphics.gd/variant/Object#SetMessageTranslation
-[Object.TrN]: https://pkg.go.dev/graphics.gd/variant/Object#TrN
-*/
-//go:nosplit
 func (self class) AtrN(message String.Readable, plural_message String.Name, n int64, context String.Name) String.Readable { //gd:Node.atr_n
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.atr_n, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeStringName<<16), &struct {
 		message        gdextension.String
@@ -4502,26 +3275,6 @@ func (self class) AtrN(message String.Readable, plural_message String.Name, n in
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Sends a remote procedure call request for the given 'method' to peers on the network (and locally), sending additional arguments to the method called by the RPC. The call request will only be received by nodes with the same node path, including the exact same [Name]. Behavior depends on the RPC configuration for the given 'method' (see [RpcConfig] and ). By default, methods are not exposed to RPCs.
-
-May return [constant OK] if the call is successful, [constant ERR_INVALID_PARAMETER] if the arguments passed in the [param method] do not match, [constant ERR_UNCONFIGURED] if the node's [member multiplayer] cannot be fetched (such as when the node is not inside the tree), [constant ERR_CONNECTION_ERROR] if [member multiplayer]'s connection is not available.
-
-[b]Note:[/b] You can only safely use RPCs on clients after you received the [signal MultiplayerAPI.connected_to_server] signal from the [MultiplayerAPI]. You also need to keep track of the connection state, either by the [MultiplayerAPI] signals like [signal MultiplayerAPI.server_disconnected] or by checking ([code]get_multiplayer().peer.get_connection_status() == CONNECTION_CONNECTED[/code]).). By default, methods are not exposed to RPCs.
-
-May return [Ok] if the call is successful, [ErrInvalidParameter] if the arguments passed in the 'method' do not match, [ErrUnconfigured] if the node's [Multiplayer] cannot be fetched (such as when the node is not inside the tree), [ErrConnectionError] if [Multiplayer]'s connection is not available.
-
-Note: You can only safely use RPCs on clients after you received the [OnMultiplayerapi.ConnectedToServer] signal from the [MultiplayerAPI]. You also need to keep track of the connection state, either by the [MultiplayerAPI] signals like [OnMultiplayerapi.ServerDisconnected] or by checking (get_multiplayer().peer.get_connection_status() == CONNECTION_CONNECTED).
-
-[Multiplayer]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Multiplayer
-[MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
-[Name]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Name
-[OnMultiplayerapi.ConnectedToServer]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.OnMultiplayerapi.ConnectedToServer
-[OnMultiplayerapi.ServerDisconnected]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.OnMultiplayerapi.ServerDisconnected
-[RpcConfig]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RpcConfig
-*/
-//go:nosplit
 func (self class) Rpc(method String.Name, args ...gd.Variant) Error.Code { //gd:Node.rpc
 	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(method)))}
 	var dynamic []gdextension.Variant
@@ -4535,16 +3288,6 @@ func (self class) Rpc(method String.Name, args ...gd.Variant) Error.Code { //gd:
 	return gd.VariantAs[Error.Code](pointers.New[gd.Variant]([3]uint64(ret)))
 }
 
-/*
-Sends a [Rpc] to a specific peer identified by 'peer_id' (see [MultiplayerPeer.SetTargetPeer]).
-
-May return [Ok] if the call is successful, [ErrInvalidParameter] if the arguments passed in the 'method' do not match, [ErrUnconfigured] if the node's [Multiplayer] cannot be fetched (such as when the node is not inside the tree), [ErrConnectionError] if [Multiplayer]'s connection is not available.
-
-[Multiplayer]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Multiplayer
-[MultiplayerPeer.SetTargetPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerPeer#Instance.SetTargetPeer
-[Rpc]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Rpc
-*/
-//go:nosplit
 func (self class) RpcId(peer_id int64, method String.Name, args ...gd.Variant) Error.Code { //gd:Node.rpc_id
 	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(peer_id))), gdextension.Variant(pointers.Get(gd.NewVariant(method)))}
 	var dynamic []gdextension.Variant
@@ -4558,24 +3301,9 @@ func (self class) RpcId(peer_id int64, method String.Name, args ...gd.Variant) E
 	return gd.VariantAs[Error.Code](pointers.New[gd.Variant]([3]uint64(ret)))
 }
 
-/*
-Refreshes the warnings displayed for this node in the Scene dock. Use [GetConfigurationWarnings] to customize the warning messages to display.
-
-[GetConfigurationWarnings]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-*/
-//go:nosplit
 func (self class) UpdateConfigurationWarnings() { //gd:Node.update_configuration_warnings
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_configuration_warnings, 0, &struct{}{})
 }
-
-/*
-This function is similar to [Object.CallDeferred] except that the call will take place when the node thread group is processed. If the node thread group processes in sub-threads, then the call will be done on that thread, right before [NotificationProcess] or [NotificationPhysicsProcess], the [Process] or [PhysicsProcess] or their internal versions are called.
-
-[Object.CallDeferred]: https://pkg.go.dev/graphics.gd/variant/Object#CallDeferred
-[PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-[Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
-*/
-//go:nosplit
 func (self class) CallDeferredThreadGroup(method String.Name, args ...gd.Variant) variant.Any { //gd:Node.call_deferred_thread_group
 	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(method)))}
 	var dynamic []gdextension.Variant
@@ -4589,33 +3317,15 @@ func (self class) CallDeferredThreadGroup(method String.Name, args ...gd.Variant
 	return gd.VariantAs[variant.Any](pointers.New[gd.Variant]([3]uint64(ret)))
 }
 
-/*
-Similar to [CallDeferredThreadGroup], but for setting properties.
-
-[CallDeferredThreadGroup]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.CallDeferredThreadGroup
-*/
-//go:nosplit
 func (self class) SetDeferredThreadGroup(property String.Name, value variant.Any) { //gd:Node.set_deferred_thread_group
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_deferred_thread_group, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), &struct {
 		property gdextension.StringName
 		value    gdextension.Variant
 	}{pointers.Get(gd.InternalStringName(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-/*
-Similar to [CallDeferredThreadGroup], but for notifications.
-
-[CallDeferredThreadGroup]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.CallDeferredThreadGroup
-*/
-//go:nosplit
 func (self class) NotifyDeferredThreadGroup(what int64) { //gd:Node.notify_deferred_thread_group
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.notify_deferred_thread_group, 0|(gdextension.SizeInt<<4), &struct{ what int64 }{what})
 }
-
-/*
-This function ensures that the calling of this function will succeed, no matter whether it's being done from a thread or not. If called from a thread that is not allowed to call the function, the call will become deferred. Otherwise, the call will go through directly.
-*/
-//go:nosplit
 func (self class) CallThreadSafe(method String.Name, args ...gd.Variant) variant.Any { //gd:Node.call_thread_safe
 	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(method)))}
 	var dynamic []gdextension.Variant
@@ -4629,25 +3339,12 @@ func (self class) CallThreadSafe(method String.Name, args ...gd.Variant) variant
 	return gd.VariantAs[variant.Any](pointers.New[gd.Variant]([3]uint64(ret)))
 }
 
-/*
-Similar to [CallThreadSafe], but for setting properties.
-
-[CallThreadSafe]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.CallThreadSafe
-*/
-//go:nosplit
 func (self class) SetThreadSafe(property String.Name, value variant.Any) { //gd:Node.set_thread_safe
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_thread_safe, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), &struct {
 		property gdextension.StringName
 		value    gdextension.Variant
 	}{pointers.Get(gd.InternalStringName(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-/*
-Similar to [CallThreadSafe], but for notifications.
-
-[CallThreadSafe]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.CallThreadSafe
-*/
-//go:nosplit
 func (self class) NotifyThreadSafe(what int64) { //gd:Node.notify_thread_safe
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.notify_thread_safe, 0|(gdextension.SizeInt<<4), &struct{ what int64 }{what})
 }

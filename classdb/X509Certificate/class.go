@@ -193,40 +193,21 @@ func New() Instance {
 	return casted
 }
 
-/*
-Saves a certificate to the given 'path' (should be a "*.crt" file).
-*/
-//go:nosplit
 func (self class) Save(path String.Readable) Error.Code { //gd:X509Certificate.save
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Loads a certificate from 'path' ("*.crt" file).
-*/
-//go:nosplit
 func (self class) Load(path String.Readable) Error.Code { //gd:X509Certificate.load
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns a string representation of the certificate, or an empty string if the certificate is invalid.
-*/
-//go:nosplit
 func (self class) SaveToString() String.Readable { //gd:X509Certificate.save_to_string
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.save_to_string, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Loads a certificate from the given 'string'.
-*/
-//go:nosplit
 func (self class) LoadFromString(s String.Readable) Error.Code { //gd:X509Certificate.load_from_string
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_from_string, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ s gdextension.String }{pointers.Get(gd.InternalString(s))})
 	var ret = Error.Code(r_ret)

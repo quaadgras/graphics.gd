@@ -310,96 +310,65 @@ func (self Instance) SetLoopMode(value Animation.LoopMode) Instance { //gd:Anima
 	return self
 }
 
-//go:nosplit
 func (self class) SetAnimation(name String.Name) { //gd:AnimationNodeAnimation.set_animation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_animation, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
-
-//go:nosplit
 func (self class) GetAnimation() String.Name { //gd:AnimationNodeAnimation.get_animation
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_animation, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPlayMode(mode PlayMode) { //gd:AnimationNodeAnimation.set_play_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_play_mode, 0|(gdextension.SizeInt<<4), &struct{ mode PlayMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetPlayMode() PlayMode { //gd:AnimationNodeAnimation.get_play_mode
 	var r_ret = noescape.Call[PlayMode](gd.ObjectChecked(self.AsObject()), methods.get_play_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAdvanceOnStart(advance_on_start bool) { //gd:AnimationNodeAnimation.set_advance_on_start
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_advance_on_start, 0|(gdextension.SizeBool<<4), &struct{ advance_on_start bool }{advance_on_start})
 }
-
-//go:nosplit
 func (self class) IsAdvanceOnStart() bool { //gd:AnimationNodeAnimation.is_advance_on_start
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_advance_on_start, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUseCustomTimeline(use_custom_timeline bool) { //gd:AnimationNodeAnimation.set_use_custom_timeline
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_custom_timeline, 0|(gdextension.SizeBool<<4), &struct{ use_custom_timeline bool }{use_custom_timeline})
 }
-
-//go:nosplit
 func (self class) IsUsingCustomTimeline() bool { //gd:AnimationNodeAnimation.is_using_custom_timeline
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_custom_timeline, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTimelineLength(timeline_length float64) { //gd:AnimationNodeAnimation.set_timeline_length
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_timeline_length, 0|(gdextension.SizeFloat<<4), &struct{ timeline_length float64 }{timeline_length})
 }
-
-//go:nosplit
 func (self class) GetTimelineLength() float64 { //gd:AnimationNodeAnimation.get_timeline_length
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_timeline_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetStretchTimeScale(stretch_time_scale bool) { //gd:AnimationNodeAnimation.set_stretch_time_scale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stretch_time_scale, 0|(gdextension.SizeBool<<4), &struct{ stretch_time_scale bool }{stretch_time_scale})
 }
-
-//go:nosplit
 func (self class) IsStretchingTimeScale() bool { //gd:AnimationNodeAnimation.is_stretching_time_scale
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_stretching_time_scale, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetStartOffset(start_offset float64) { //gd:AnimationNodeAnimation.set_start_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_start_offset, 0|(gdextension.SizeFloat<<4), &struct{ start_offset float64 }{start_offset})
 }
-
-//go:nosplit
 func (self class) GetStartOffset() float64 { //gd:AnimationNodeAnimation.get_start_offset
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_start_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetLoopMode(loop_mode Animation.LoopMode) { //gd:AnimationNodeAnimation.set_loop_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop_mode, 0|(gdextension.SizeInt<<4), &struct{ loop_mode Animation.LoopMode }{loop_mode})
 }
-
-//go:nosplit
 func (self class) GetLoopMode() Animation.LoopMode { //gd:AnimationNodeAnimation.get_loop_mode
 	var r_ret = noescape.Call[Animation.LoopMode](gd.ObjectChecked(self.AsObject()), methods.get_loop_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

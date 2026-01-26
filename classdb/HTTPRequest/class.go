@@ -526,22 +526,6 @@ func (self Instance) SetTimeout(value Float.X) Instance { //gd:HTTPRequest.timeo
 	return self
 }
 
-/*
-Creates request on the underlying [HTTPClient]. If there is no configuration errors, it tries to connect using [HTTPClient.ConnectToHost] and passes parameters onto [HTTPClient.Request].
-
-Returns [Ok] if request is successfully created. (Does not imply that the server has responded), [ErrUnconfigured] if not in the tree, [ErrBusy] if still processing previous request, [ErrInvalidParameter] if given string is not a valid URL format, or [ErrCantConnect] if not using thread and the [HTTPClient] cannot connect to host.
-
-Note: When 'method' is [Httpclient.MethodGet], the payload sent via 'request_data' might be ignored by the server or even cause the server to reject the request (check [RFC 7231 section 4.3.1] for more details). As a workaround, you can send data as a query string in the URL (see [String.UriEncode] for an example).
-
-Note: It's recommended to use transport encryption (TLS) and to avoid sending sensitive information (such as login credentials) in HTTP GET URL parameters. Consider using HTTP POST requests or HTTP headers for such information instead.
-
-[HTTPClient]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient
-[HTTPClient.ConnectToHost]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient#Instance.ConnectToHost
-[HTTPClient.Request]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient#Instance.Request
-[RFC 7231 section 4.3.1]: https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.1
-[String.UriEncode]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.UriEncode
-*/
-//go:nosplit
 func (self class) Request(url String.Readable, custom_headers Packed.Strings, method HTTPClient.Method, request_data String.Readable) Error.Code { //gd:HTTPRequest.request
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.request, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeString<<16), &struct {
 		url            gdextension.String
@@ -552,17 +536,6 @@ func (self class) Request(url String.Readable, custom_headers Packed.Strings, me
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Creates request on the underlying [HTTPClient] using a raw array of bytes for the request body. If there is no configuration errors, it tries to connect using [HTTPClient.ConnectToHost] and passes parameters onto [HTTPClient.Request].
-
-Returns [Ok] if request is successfully created. (Does not imply that the server has responded), [ErrUnconfigured] if not in the tree, [ErrBusy] if still processing previous request, [ErrInvalidParameter] if given string is not a valid URL format, or [ErrCantConnect] if not using thread and the [HTTPClient] cannot connect to host.
-
-[HTTPClient]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient
-[HTTPClient.ConnectToHost]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient#Instance.ConnectToHost
-[HTTPClient.Request]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient#Instance.Request
-*/
-//go:nosplit
 func (self class) RequestRaw(url String.Readable, custom_headers Packed.Strings, method HTTPClient.Method, request_data_raw Packed.Bytes) Error.Code { //gd:HTTPRequest.request_raw
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.request_raw, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12)|(gdextension.SizePackedArray<<16), &struct {
 		url              gdextension.String
@@ -573,163 +546,89 @@ func (self class) RequestRaw(url String.Readable, custom_headers Packed.Strings,
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Cancels the current request.
-*/
-//go:nosplit
 func (self class) CancelRequest() { //gd:HTTPRequest.cancel_request
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.cancel_request, 0, &struct{}{})
 }
-
-/*
-Sets the [TLSOptions] to be used when connecting to an HTTPS server. See [TLSOptions.Client].
-
-[TLSOptions]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions
-[TLSOptions.Client]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Client
-*/
-//go:nosplit
 func (self class) SetTlsOptions(client_options [1]gdclass.TLSOptions) { //gd:HTTPRequest.set_tls_options
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tls_options, 0|(gdextension.SizeObject<<4), &struct{ client_options gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTLSOptions(client_options[0])))})
 }
-
-/*
-Returns the current status of the underlying [HTTPClient].
-
-[HTTPClient]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient
-*/
-//go:nosplit
 func (self class) GetHttpClientStatus() HTTPClient.Status { //gd:HTTPRequest.get_http_client_status
 	var r_ret = noescape.Call[HTTPClient.Status](gd.ObjectChecked(self.AsObject()), methods.get_http_client_status, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUseThreads(enable bool) { //gd:HTTPRequest.set_use_threads
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_threads, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsUsingThreads() bool { //gd:HTTPRequest.is_using_threads
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_threads, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAcceptGzip(enable bool) { //gd:HTTPRequest.set_accept_gzip
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accept_gzip, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsAcceptingGzip() bool { //gd:HTTPRequest.is_accepting_gzip
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_accepting_gzip, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBodySizeLimit(bytes int64) { //gd:HTTPRequest.set_body_size_limit
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_body_size_limit, 0|(gdextension.SizeInt<<4), &struct{ bytes int64 }{bytes})
 }
-
-//go:nosplit
 func (self class) GetBodySizeLimit() int64 { //gd:HTTPRequest.get_body_size_limit
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_body_size_limit, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMaxRedirects(amount int64) { //gd:HTTPRequest.set_max_redirects
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_redirects, 0|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
 }
-
-//go:nosplit
 func (self class) GetMaxRedirects() int64 { //gd:HTTPRequest.get_max_redirects
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_redirects, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDownloadFile(path String.Readable) { //gd:HTTPRequest.set_download_file
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_download_file, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
-
-//go:nosplit
 func (self class) GetDownloadFile() String.Readable { //gd:HTTPRequest.get_download_file
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_download_file, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the number of bytes this HTTPRequest downloaded.
-*/
-//go:nosplit
 func (self class) GetDownloadedBytes() int64 { //gd:HTTPRequest.get_downloaded_bytes
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_downloaded_bytes, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the response body length.
-
-Note: Some Web servers may not send a body length. In this case, the value returned will be -1. If using chunked transfer encoding, the body length will also be -1.
-*/
-//go:nosplit
 func (self class) GetBodySize() int64 { //gd:HTTPRequest.get_body_size
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_body_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTimeout(timeout float64) { //gd:HTTPRequest.set_timeout
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_timeout, 0|(gdextension.SizeFloat<<4), &struct{ timeout float64 }{timeout})
 }
-
-//go:nosplit
 func (self class) GetTimeout() float64 { //gd:HTTPRequest.get_timeout
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_timeout, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDownloadChunkSize(chunk_size int64) { //gd:HTTPRequest.set_download_chunk_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_download_chunk_size, 0|(gdextension.SizeInt<<4), &struct{ chunk_size int64 }{chunk_size})
 }
-
-//go:nosplit
 func (self class) GetDownloadChunkSize() int64 { //gd:HTTPRequest.get_download_chunk_size
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_download_chunk_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the proxy server for HTTP requests.
-
-The proxy server is unset if 'host' is empty or 'port' is -1.
-*/
-//go:nosplit
 func (self class) SetHttpProxy(host String.Readable, port int64) { //gd:HTTPRequest.set_http_proxy
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_http_proxy, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		host gdextension.String
 		port int64
 	}{pointers.Get(gd.InternalString(host)), port})
 }
-
-/*
-Sets the proxy server for HTTPS requests.
-
-The proxy server is unset if 'host' is empty or 'port' is -1.
-*/
-//go:nosplit
 func (self class) SetHttpsProxy(host String.Readable, port int64) { //gd:HTTPRequest.set_https_proxy
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_https_proxy, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		host gdextension.String

@@ -265,52 +265,28 @@ func New() Instance {
 	return casted
 }
 
-/*
-If 'disable' is true, disables the class specified by 'class_name'. When disabled, the class won't appear in the Create New Node dialog.
-*/
-//go:nosplit
 func (self class) SetDisableClass(class_name String.Name, disable bool) { //gd:EditorFeatureProfile.set_disable_class
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_class, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		class_name gdextension.StringName
 		disable    bool
 	}{pointers.Get(gd.InternalStringName(class_name)), disable})
 }
-
-/*
-Returns true if the class specified by 'class_name' is disabled. When disabled, the class won't appear in the Create New Node dialog.
-*/
-//go:nosplit
 func (self class) IsClassDisabled(class_name String.Name) bool { //gd:EditorFeatureProfile.is_class_disabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_class_disabled, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ class_name gdextension.StringName }{pointers.Get(gd.InternalStringName(class_name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-If 'disable' is true, disables editing for the class specified by 'class_name'. When disabled, the class will still appear in the Create New Node dialog but the Inspector will be read-only when selecting a node that extends the class.
-*/
-//go:nosplit
 func (self class) SetDisableClassEditor(class_name String.Name, disable bool) { //gd:EditorFeatureProfile.set_disable_class_editor
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_class_editor, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		class_name gdextension.StringName
 		disable    bool
 	}{pointers.Get(gd.InternalStringName(class_name)), disable})
 }
-
-/*
-Returns true if editing for the class specified by 'class_name' is disabled. When disabled, the class will still appear in the Create New Node dialog but the Inspector will be read-only when selecting a node that extends the class.
-*/
-//go:nosplit
 func (self class) IsClassEditorDisabled(class_name String.Name) bool { //gd:EditorFeatureProfile.is_class_editor_disabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_class_editor_disabled, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ class_name gdextension.StringName }{pointers.Get(gd.InternalStringName(class_name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-If 'disable' is true, disables editing for 'property' in the class specified by 'class_name'. When a property is disabled, it won't appear in the Inspector when selecting a node that extends the class specified by 'class_name'.
-*/
-//go:nosplit
 func (self class) SetDisableClassProperty(class_name String.Name, property String.Name, disable bool) { //gd:EditorFeatureProfile.set_disable_class_property
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_class_property, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeBool<<12), &struct {
 		class_name gdextension.StringName
@@ -318,11 +294,6 @@ func (self class) SetDisableClassProperty(class_name String.Name, property Strin
 		disable    bool
 	}{pointers.Get(gd.InternalStringName(class_name)), pointers.Get(gd.InternalStringName(property)), disable})
 }
-
-/*
-Returns true if 'property' is disabled in the class specified by 'class_name'. When a property is disabled, it won't appear in the Inspector when selecting a node that extends the class specified by 'class_name'.
-*/
-//go:nosplit
 func (self class) IsClassPropertyDisabled(class_name String.Name, property String.Name) bool { //gd:EditorFeatureProfile.is_class_property_disabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_class_property_disabled, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		class_name gdextension.StringName
@@ -331,62 +302,27 @@ func (self class) IsClassPropertyDisabled(class_name String.Name, property Strin
 	var ret = r_ret
 	return ret
 }
-
-/*
-If 'disable' is true, disables the editor feature specified in 'feature'. When a feature is disabled, it will disappear from the editor entirely.
-*/
-//go:nosplit
 func (self class) SetDisableFeature(feature Feature, disable bool) { //gd:EditorFeatureProfile.set_disable_feature
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_feature, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		feature Feature
 		disable bool
 	}{feature, disable})
 }
-
-/*
-Returns true if the 'feature' is disabled. When a feature is disabled, it will disappear from the editor entirely.
-*/
-//go:nosplit
 func (self class) IsFeatureDisabled(feature Feature) bool { //gd:EditorFeatureProfile.is_feature_disabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_feature_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ feature Feature }{feature})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the specified 'feature''s human-readable name.
-*/
-//go:nosplit
 func (self class) GetFeatureName(feature Feature) String.Readable { //gd:EditorFeatureProfile.get_feature_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_feature_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ feature Feature }{feature})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Saves the editor feature profile to a file in JSON format. It can then be imported using the feature profile manager's Import button or the [LoadFromFile] method.
-
-Note: Feature profiles created via the user interface are saved in the feature_profiles directory, as a file with the .profile extension. The editor configuration folder can be found by using [EditorPaths.GetConfigDir].
-
-[EditorPaths.GetConfigDir]: https://pkg.go.dev/graphics.gd/classdb/EditorPaths#Instance.GetConfigDir
-[LoadFromFile]: https://pkg.go.dev/graphics.gd/classdb/EditorFeatureProfile#Instance.LoadFromFile
-*/
-//go:nosplit
 func (self class) SaveToFile(path String.Readable) Error.Code { //gd:EditorFeatureProfile.save_to_file
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save_to_file, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Loads an editor feature profile from a file. The file must follow the JSON format obtained by using the feature profile manager's Export button or the [SaveToFile] method.
-
-Note: Feature profiles created via the user interface are loaded from the feature_profiles directory, as a file with the .profile extension. The editor configuration folder can be found by using [EditorPaths.GetConfigDir].
-
-[EditorPaths.GetConfigDir]: https://pkg.go.dev/graphics.gd/classdb/EditorPaths#Instance.GetConfigDir
-[SaveToFile]: https://pkg.go.dev/graphics.gd/classdb/EditorFeatureProfile#Instance.SaveToFile
-*/
-//go:nosplit
 func (self class) LoadFromFile(path String.Readable) Error.Code { //gd:EditorFeatureProfile.load_from_file
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_from_file, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)

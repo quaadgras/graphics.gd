@@ -201,80 +201,59 @@ func New() Instance {
 	return casted
 }
 
-//go:nosplit
 func (self class) SetBindCount(bind_count int64) { //gd:Skin.set_bind_count
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bind_count, 0|(gdextension.SizeInt<<4), &struct{ bind_count int64 }{bind_count})
 }
-
-//go:nosplit
 func (self class) GetBindCount() int64 { //gd:Skin.get_bind_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bind_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) AddBind(bone int64, pose Transform3D.BasisOrigin) { //gd:Skin.add_bind
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_bind, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), &struct {
 		bone int64
 		pose Transform3D.BasisOrigin
 	}{bone, gd.Transposed(pose)})
 }
-
-//go:nosplit
 func (self class) AddNamedBind(name String.Readable, pose Transform3D.BasisOrigin) { //gd:Skin.add_named_bind
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_named_bind, 0|(gdextension.SizeString<<4)|(gdextension.SizeTransform3D<<8), &struct {
 		name gdextension.String
 		pose Transform3D.BasisOrigin
 	}{pointers.Get(gd.InternalString(name)), gd.Transposed(pose)})
 }
-
-//go:nosplit
 func (self class) SetBindPose(bind_index int64, pose Transform3D.BasisOrigin) { //gd:Skin.set_bind_pose
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bind_pose, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), &struct {
 		bind_index int64
 		pose       Transform3D.BasisOrigin
 	}{bind_index, gd.Transposed(pose)})
 }
-
-//go:nosplit
 func (self class) GetBindPose(bind_index int64) Transform3D.BasisOrigin { //gd:Skin.get_bind_pose
 	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_bind_pose, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), &struct{ bind_index int64 }{bind_index})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBindName(bind_index int64, name String.Name) { //gd:Skin.set_bind_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bind_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), &struct {
 		bind_index int64
 		name       gdextension.StringName
 	}{bind_index, pointers.Get(gd.InternalStringName(name))})
 }
-
-//go:nosplit
 func (self class) GetBindName(bind_index int64) String.Name { //gd:Skin.get_bind_name
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_bind_name, gdextension.SizeStringName|(gdextension.SizeInt<<4), &struct{ bind_index int64 }{bind_index})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBindBone(bind_index int64, bone int64) { //gd:Skin.set_bind_bone
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bind_bone, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		bind_index int64
 		bone       int64
 	}{bind_index, bone})
 }
-
-//go:nosplit
 func (self class) GetBindBone(bind_index int64) int64 { //gd:Skin.get_bind_bone
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bind_bone, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ bind_index int64 }{bind_index})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) ClearBinds() { //gd:Skin.clear_binds
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_binds, 0, &struct{}{})
 }

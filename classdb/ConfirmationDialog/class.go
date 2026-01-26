@@ -198,26 +198,14 @@ func (self Instance) SetCancelButtonText(value string) Instance { //gd:Confirmat
 	return self
 }
 
-/*
-Returns the cancel button.
-
-Warning: This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [CanvasItem.Visible] property.
-
-[CanvasItem.Visible]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Visible
-*/
-//go:nosplit
 func (self class) GetCancelButton() [1]gdclass.Button { //gd:ConfirmationDialog.get_cancel_button
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_cancel_button, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Button{gdclass.NewButton(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCancelButtonText(text String.Readable) { //gd:ConfirmationDialog.set_cancel_button_text
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cancel_button_text, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
-
-//go:nosplit
 func (self class) GetCancelButtonText() String.Readable { //gd:ConfirmationDialog.get_cancel_button_text
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_cancel_button_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))

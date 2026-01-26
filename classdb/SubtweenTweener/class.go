@@ -170,12 +170,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Sets the time in seconds after which the [SubtweenTweener] will start running the subtween. By default there's no delay.
-
-[SubtweenTweener]: https://pkg.go.dev/graphics.gd/classdb/SubtweenTweener
-*/
-//go:nosplit
 func (self class) SetDelay(delay float64) [1]gdclass.SubtweenTweener { //gd:SubtweenTweener.set_delay
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_delay, gdextension.SizeObject|(gdextension.SizeFloat<<4), &struct{ delay float64 }{delay})
 	var ret = [1]gdclass.SubtweenTweener{gdclass.NewSubtweenTweener(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

@@ -598,10 +598,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Gets the unique name of the importer.
-*/
 func (class) _get_importer_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -614,10 +610,6 @@ func (class) _get_importer_name(impl func(ptr gdclass.Receiver) String.Readable)
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Gets the name to display in the import window. You should choose this name as a continuation to "Import as", e.g. "Import as Special Mesh".
-*/
 func (class) _get_visible_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -630,13 +622,6 @@ func (class) _get_visible_name(impl func(ptr gdclass.Receiver) String.Readable) 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Gets the number of initial presets defined by the plugin. Use [GetImportOptions] to get the default options for the preset and [GetPresetName] to get the name of the preset.
-
-[GetImportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorImportPlugin#Interface
-[GetPresetName]: https://pkg.go.dev/graphics.gd/classdb/EditorImportPlugin#Interface
-*/
 func (class) _get_preset_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -644,10 +629,6 @@ func (class) _get_preset_count(impl func(ptr gdclass.Receiver) int64) (cb gd.Ext
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Gets the name of the options preset at this index.
-*/
 func (class) _get_preset_name(impl func(ptr gdclass.Receiver, preset_index int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset_index = gd.UnsafeGet[int64](p_args, 0)
@@ -661,10 +642,6 @@ func (class) _get_preset_name(impl func(ptr gdclass.Receiver, preset_index int64
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Gets the list of file extensions to associate with this loader (case-insensitive). e.g. ["obj"].
-*/
 func (class) _get_recognized_extensions(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -677,10 +654,6 @@ func (class) _get_recognized_extensions(impl func(ptr gdclass.Receiver) Packed.S
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Gets the options and default values for the preset at this index. Returns an Array of Dictionaries with the following keys: name, default_value, property_hint (optional), hint_string (optional), usage (optional).
-*/
 func (class) _get_import_options(impl func(ptr gdclass.Receiver, path String.Readable, preset_index int64) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -696,12 +669,6 @@ func (class) _get_import_options(impl func(ptr gdclass.Receiver, path String.Rea
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Gets the extension used to save this resource in the .godot/imported directory (see [ProjectSettings] "application/config/use_hidden_project_data_directory").
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
 func (class) _get_save_extension(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -714,10 +681,6 @@ func (class) _get_save_extension(impl func(ptr gdclass.Receiver) String.Readable
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Gets the Godot resource type associated with this loader. e.g. "Mesh" or "Animation".
-*/
 func (class) _get_resource_type(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -730,10 +693,6 @@ func (class) _get_resource_type(impl func(ptr gdclass.Receiver) String.Readable)
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Gets the priority of this plugin for the recognized extension. Higher priority plugins will be preferred. The default priority is 1.0.
-*/
 func (class) _get_priority(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -741,10 +700,6 @@ func (class) _get_priority(impl func(ptr gdclass.Receiver) float64) (cb gd.Exten
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Gets the order of this importer to be run when importing resources. Importers with lower import orders will be called first, and higher values will be called later. Use this to ensure the importer runs after the dependencies are already imported. The default import order is 0 unless overridden by a specific importer. See [ResourceImporter.ImportOrder] for some predefined values.
-*/
 func (class) _get_import_order(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -752,10 +707,6 @@ func (class) _get_import_order(impl func(ptr gdclass.Receiver) int64) (cb gd.Ext
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Gets the format version of this importer. Increment this version when making incompatible changes to the format of the imported resources.
-*/
 func (class) _get_format_version(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -763,10 +714,6 @@ func (class) _get_format_version(impl func(ptr gdclass.Receiver) int64) (cb gd.E
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Gets whether the import option specified by 'option_name' should be visible in the Import dock. The default implementation always returns true, making all options visible. This is mainly useful for hiding options that depend on others if one of them is disabled.
-*/
 func (class) _get_option_visibility(impl func(ptr gdclass.Receiver, path String.Readable, option_name String.Name, options Dictionary.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -780,18 +727,6 @@ func (class) _get_option_visibility(impl func(ptr gdclass.Receiver, path String.
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Imports 'source_file' with the import 'options' specified. Should return [@Globalscope.Ok] if the import is successful, other values indicate failure.
-
-The imported resource is expected to be saved to save_path + "." + _get_save_extension(). If a different variant is preferred for a [feature tag], save the variant to save_path + "." + tag + "." + _get_save_extension() and add the feature tag to 'platform_variants'.
-
-If additional resource files are generated in the resource filesystem (res://), add their full path to 'gen_files' so that the editor knows they depend on 'source_file'.
-
-This method must be overridden to do the actual importing work. See this class' description for an example of overriding this method.
-
-[feature tag]: https://docs.godotengine.org/tutorials/export/feature_tags.html
-*/
 func (class) _import(impl func(ptr gdclass.Receiver, source_file String.Readable, save_path String.Readable, options Dictionary.Any, platform_variants Array.Contains[String.Readable], gen_files Array.Contains[String.Readable]) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var source_file = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -814,14 +749,6 @@ func (class) _import(impl func(ptr gdclass.Receiver, source_file String.Readable
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Tells whether this importer can be run in parallel on threads, or, on the contrary, it's only safe for the editor to call it from the main thread, for one file at a time.
-
-If this method is not overridden, it will return false by default.
-
-If this importer's implementation is thread-safe and can be run in parallel, override this with true to optimize for concurrency.
-*/
 func (class) _can_import_threaded(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -830,12 +757,6 @@ func (class) _can_import_threaded(impl func(ptr gdclass.Receiver) bool) (cb gd.E
 	}
 }
 
-/*
-This function can only be called during the [Import] callback and it allows manually importing resources from it. This is useful when the imported file generates external resources that require importing (as example, images). Custom parameters for the ".import" file can be passed via the 'custom_options'. Additionally, in cases where multiple importers can handle a file, the 'custom_importer' can be specified to force a specific one. This function performs a resource import and returns immediately with a success or error code. 'generator_parameters' defines optional extra metadata which will be stored as generator_parameters in the remap section of the .import file, for example to store a md5 hash of the source data.
-
-[Import]: https://pkg.go.dev/graphics.gd/classdb/EditorImportPlugin#Interface
-*/
-//go:nosplit
 func (self class) AppendImportExternalResource(path String.Readable, custom_options Dictionary.Any, custom_importer String.Readable, generator_parameters variant.Any) Error.Code { //gd:EditorImportPlugin.append_import_external_resource
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.append_import_external_resource, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeDictionary<<8)|(gdextension.SizeString<<12)|(gdextension.SizeVariant<<16), &struct {
 		path                 gdextension.String

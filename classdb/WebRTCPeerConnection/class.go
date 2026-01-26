@@ -381,70 +381,14 @@ func New() Instance {
 	return casted
 }
 
-/*
-Sets the 'extension_class' as the default [WebRTCPeerConnectionExtension] returned when creating a new [WebRTCPeerConnection].
-
-[WebRTCPeerConnection]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection
-[WebRTCPeerConnectionExtension]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnectionExtension
-*/
-//go:nosplit
 func (self class) SetDefaultExtension(extension_class String.Name) { //gd:WebRTCPeerConnection.set_default_extension
 	noescape.CallStatic[struct{}](methods.set_default_extension, 0|(gdextension.SizeStringName<<4), &struct{ extension_class gdextension.StringName }{pointers.Get(gd.InternalStringName(extension_class))})
 }
-
-/*
-Re-initialize this peer connection, closing any previously active connection, and going back to state [StateNew]. A dictionary of 'configuration' options can be passed to configure the peer connection.
-
-Valid 'configuration' options are:
-
-
-	var example = WebRTCPeerConnection.Configuration{
-		IceServers: []WebRTCPeerConnection.IceServer{
-			{
-				URLs: []string{"stun:stun.example.com:3478"}, // One or more STUN servers.
-			},
-			{
-				URLs:       []string{"turn:turn.example.com:3478"}, // One or more TURN servers.
-				Username:   "a_username",                           // Optional username for the TURN server.
-				Credential: "a_password",                           // Optional password for the TURN server.
-			},
-		},
-	}
-
-*/
-//go:nosplit
 func (self class) Initialize(configuration Dictionary.Any) Error.Code { //gd:WebRTCPeerConnection.initialize
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.initialize, gdextension.SizeInt|(gdextension.SizeDictionary<<4), &struct{ configuration gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(configuration))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns a new [WebRTCDataChannel] (or null on failure) with given 'label' and optionally configured via the 'options' dictionary. This method can only be called when the connection is in state [StateNew].
-
-There are two ways to create a working data channel: either call [CreateDataChannel] on only one of the peer and listen to [OnDataChannelReceived] on the other, or call [CreateDataChannel] on both peers, with the same values, and the "negotiated" option set to true.
-
-Valid 'options' are:
-
-
-	var example = WebRTCPeerConnection.Options{
-		Negotiated: true, // When set to true (default off), means the channel is negotiated out of band. "id" must be set too. "data_channel_received" will not be called.
-		ID:         1,    // When "negotiated" is true this value must also be set to the same value on both peer.
-		// Only one of maxRetransmits and maxPacketLifeTime can be specified, not both. They make the channel unreliable (but also better at real time).
-		MaxRetransmits:    1,                    // Specify the maximum number of attempt the peer will make to retransmits packets if they are not acknowledged.
-		MaxPacketLifeTime: 100,                  // Specify the maximum amount of time before giving up retransmitions of unacknowledged packets (in milliseconds).
-		Ordered:           true,                 // When in unreliable mode (i.e. either "maxRetransmits" or "maxPacketLifetime" is set), "ordered" (true by default) specify if packet ordering is to be enforced.
-		Protocol:          "my-custom-protocol", // A custom sub-protocol string for this channel.
-	}
-
-
-Note: You must keep a reference to channels created this way, or it will be closed.
-
-[CreateDataChannel]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.CreateDataChannel
-[OnDataChannelReceived]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.OnDataChannelReceived
-[WebRTCDataChannel]: https://pkg.go.dev/graphics.gd/classdb/WebRTCDataChannel
-*/
-//go:nosplit
 func (self class) CreateDataChannel(label String.Readable, options Dictionary.Any) [1]gdclass.WebRTCDataChannel { //gd:WebRTCPeerConnection.create_data_channel
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_data_channel, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeDictionary<<8), &struct {
 		label   gdextension.String
@@ -453,31 +397,11 @@ func (self class) CreateDataChannel(label String.Readable, options Dictionary.An
 	var ret = [1]gdclass.WebRTCDataChannel{gdclass.NewWebRTCDataChannel(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Creates a new SDP offer to start a WebRTC connection with a remote peer. At least one [WebRTCDataChannel] must have been created before calling this method.
-
-If this functions returns [Ok], [OnSessionDescriptionCreated] will be called when the session is ready to be sent.
-
-[OnSessionDescriptionCreated]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.OnSessionDescriptionCreated
-[WebRTCDataChannel]: https://pkg.go.dev/graphics.gd/classdb/WebRTCDataChannel
-*/
-//go:nosplit
 func (self class) CreateOffer() Error.Code { //gd:WebRTCPeerConnection.create_offer
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_offer, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Sets the SDP description of the local peer. This should be called in response to [OnSessionDescriptionCreated].
-
-After calling this function the peer will start emitting [OnIceCandidateCreated] (unless an [Error] different from [Ok] is returned).
-
-[OnIceCandidateCreated]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.OnIceCandidateCreated
-[OnSessionDescriptionCreated]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.OnSessionDescriptionCreated
-*/
-//go:nosplit
 func (self class) SetLocalDescription(atype String.Readable, sdp String.Readable) Error.Code { //gd:WebRTCPeerConnection.set_local_description
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.set_local_description, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		atype gdextension.String
@@ -486,18 +410,6 @@ func (self class) SetLocalDescription(atype String.Readable, sdp String.Readable
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Sets the SDP description of the remote peer. This should be called with the values generated by a remote peer and received over the signaling server.
-
-If 'type' is "offer" the peer will emit [OnSessionDescriptionCreated] with the appropriate answer.
-
-If 'type' is "answer" the peer will start emitting [OnIceCandidateCreated].
-
-[OnIceCandidateCreated]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.OnIceCandidateCreated
-[OnSessionDescriptionCreated]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.OnSessionDescriptionCreated
-*/
-//go:nosplit
 func (self class) SetRemoteDescription(atype String.Readable, sdp String.Readable) Error.Code { //gd:WebRTCPeerConnection.set_remote_description
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.set_remote_description, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		atype gdextension.String
@@ -506,13 +418,6 @@ func (self class) SetRemoteDescription(atype String.Readable, sdp String.Readabl
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Add an ice candidate generated by a remote peer (and received over the signaling server). See [OnIceCandidateCreated].
-
-[OnIceCandidateCreated]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.OnIceCandidateCreated
-*/
-//go:nosplit
 func (self class) AddIceCandidate(media String.Readable, index int64, name String.Readable) Error.Code { //gd:WebRTCPeerConnection.add_ice_candidate
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_ice_candidate, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		media gdextension.String
@@ -522,56 +427,24 @@ func (self class) AddIceCandidate(media String.Readable, index int64, name Strin
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Call this method frequently (e.g. in [Node.Process] or [Node.PhysicsProcess]) to properly receive signals.
-
-[Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
-[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
-*/
-//go:nosplit
 func (self class) Poll() Error.Code { //gd:WebRTCPeerConnection.poll
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.poll, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Close the peer connection and all data channels associated with it.
-
-Note: You cannot reuse this object for a new connection unless you call [Initialize].
-
-[Initialize]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.Initialize
-*/
-//go:nosplit
 func (self class) Close() { //gd:WebRTCPeerConnection.close
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.close, 0, &struct{}{})
 }
-
-/*
-Returns the connection state.
-*/
-//go:nosplit
 func (self class) GetConnectionState() ConnectionState { //gd:WebRTCPeerConnection.get_connection_state
 	var r_ret = noescape.Call[ConnectionState](gd.ObjectChecked(self.AsObject()), methods.get_connection_state, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the ICE [GatheringState] of the connection. This lets you detect, for example, when collection of ICE candidates has finished.
-*/
-//go:nosplit
 func (self class) GetGatheringState() GatheringState { //gd:WebRTCPeerConnection.get_gathering_state
 	var r_ret = noescape.Call[GatheringState](gd.ObjectChecked(self.AsObject()), methods.get_gathering_state, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the signaling state on the local end of the connection while connecting or reconnecting to another peer.
-*/
-//go:nosplit
 func (self class) GetSignalingState() SignalingState { //gd:WebRTCPeerConnection.get_signaling_state
 	var r_ret = noescape.Call[SignalingState](gd.ObjectChecked(self.AsObject()), methods.get_signaling_state, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

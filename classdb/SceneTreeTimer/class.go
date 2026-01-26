@@ -198,12 +198,9 @@ func (self Instance) SetTimeLeft(value Float.X) Instance { //gd:SceneTreeTimer.t
 	return self
 }
 
-//go:nosplit
 func (self class) SetTimeLeft(time float64) { //gd:SceneTreeTimer.set_time_left
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_time_left, 0|(gdextension.SizeFloat<<4), &struct{ time float64 }{time})
 }
-
-//go:nosplit
 func (self class) GetTimeLeft() float64 { //gd:SceneTreeTimer.get_time_left
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_time_left, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

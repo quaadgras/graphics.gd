@@ -509,303 +509,176 @@ func (self Instance) SetStackedShadowCount(value int) Instance { //gd:LabelSetti
 	return self
 }
 
-//go:nosplit
 func (self class) SetLineSpacing(spacing float64) { //gd:LabelSettings.set_line_spacing
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_line_spacing, 0|(gdextension.SizeFloat<<4), &struct{ spacing float64 }{spacing})
 }
-
-//go:nosplit
 func (self class) GetLineSpacing() float64 { //gd:LabelSettings.get_line_spacing
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_line_spacing, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetParagraphSpacing(spacing float64) { //gd:LabelSettings.set_paragraph_spacing
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_paragraph_spacing, 0|(gdextension.SizeFloat<<4), &struct{ spacing float64 }{spacing})
 }
-
-//go:nosplit
 func (self class) GetParagraphSpacing() float64 { //gd:LabelSettings.get_paragraph_spacing
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_paragraph_spacing, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFont(font [1]gdclass.Font) { //gd:LabelSettings.set_font
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_font, 0|(gdextension.SizeObject<<4), &struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0])))})
 }
-
-//go:nosplit
 func (self class) GetFont() [1]gdclass.Font { //gd:LabelSettings.get_font
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_font, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Font{gdclass.NewFont(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFontSize(size int64) { //gd:LabelSettings.set_font_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_font_size, 0|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 }
-
-//go:nosplit
 func (self class) GetFontSize() int64 { //gd:LabelSettings.get_font_size
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_font_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFontColor(color Color.RGBA) { //gd:LabelSettings.set_font_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_font_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
-
-//go:nosplit
 func (self class) GetFontColor() Color.RGBA { //gd:LabelSettings.get_font_color
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_font_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetOutlineSize(size int64) { //gd:LabelSettings.set_outline_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_outline_size, 0|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 }
-
-//go:nosplit
 func (self class) GetOutlineSize() int64 { //gd:LabelSettings.get_outline_size
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_outline_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetOutlineColor(color Color.RGBA) { //gd:LabelSettings.set_outline_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_outline_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
-
-//go:nosplit
 func (self class) GetOutlineColor() Color.RGBA { //gd:LabelSettings.get_outline_color
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_outline_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetShadowSize(size int64) { //gd:LabelSettings.set_shadow_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_size, 0|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 }
-
-//go:nosplit
 func (self class) GetShadowSize() int64 { //gd:LabelSettings.get_shadow_size
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_shadow_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetShadowColor(color Color.RGBA) { //gd:LabelSettings.set_shadow_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
-
-//go:nosplit
 func (self class) GetShadowColor() Color.RGBA { //gd:LabelSettings.get_shadow_color
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_shadow_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetShadowOffset(offset Vector2.XY) { //gd:LabelSettings.set_shadow_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
-
-//go:nosplit
 func (self class) GetShadowOffset() Vector2.XY { //gd:LabelSettings.get_shadow_offset
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_shadow_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetStackedOutlineCount() int64 { //gd:LabelSettings.get_stacked_outline_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stacked_outline_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetStackedOutlineCount(count int64) { //gd:LabelSettings.set_stacked_outline_count
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stacked_outline_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
-
-/*
-Adds a new stacked outline to the label at the given 'index'. If 'index' is -1, the new stacked outline will be added at the end of the list.
-*/
-//go:nosplit
 func (self class) AddStackedOutline(index int64) { //gd:LabelSettings.add_stacked_outline
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_stacked_outline, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
-
-/*
-Moves the stacked outline at index 'from_index' to the given position 'to_position' in the array.
-*/
-//go:nosplit
 func (self class) MoveStackedOutline(from_index int64, to_position int64) { //gd:LabelSettings.move_stacked_outline
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_stacked_outline, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		from_index  int64
 		to_position int64
 	}{from_index, to_position})
 }
-
-/*
-Removes the stacked outline at index 'index'.
-*/
-//go:nosplit
 func (self class) RemoveStackedOutline(index int64) { //gd:LabelSettings.remove_stacked_outline
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_stacked_outline, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
-
-/*
-Sets the size of the stacked outline identified by the given 'index' to 'size'.
-*/
-//go:nosplit
 func (self class) SetStackedOutlineSize(index int64, size int64) { //gd:LabelSettings.set_stacked_outline_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stacked_outline_size, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index int64
 		size  int64
 	}{index, size})
 }
-
-/*
-Returns the size of the stacked outline at 'index'.
-*/
-//go:nosplit
 func (self class) GetStackedOutlineSize(index int64) int64 { //gd:LabelSettings.get_stacked_outline_size
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stacked_outline_size, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the color of the stacked outline identified by the given 'index' to 'color'.
-*/
-//go:nosplit
 func (self class) SetStackedOutlineColor(index int64, color Color.RGBA) { //gd:LabelSettings.set_stacked_outline_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stacked_outline_color, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
 		index int64
 		color Color.RGBA
 	}{index, color})
 }
-
-/*
-Returns the color of the stacked outline at 'index'.
-*/
-//go:nosplit
 func (self class) GetStackedOutlineColor(index int64) Color.RGBA { //gd:LabelSettings.get_stacked_outline_color
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_stacked_outline_color, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetStackedShadowCount() int64 { //gd:LabelSettings.get_stacked_shadow_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stacked_shadow_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetStackedShadowCount(count int64) { //gd:LabelSettings.set_stacked_shadow_count
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stacked_shadow_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
-
-/*
-Adds a new stacked shadow to the label at the given 'index'. If 'index' is -1, the new stacked shadow will be added at the end of the list.
-*/
-//go:nosplit
 func (self class) AddStackedShadow(index int64) { //gd:LabelSettings.add_stacked_shadow
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_stacked_shadow, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
-
-/*
-Moves the stacked shadow at index 'from_index' to the given position 'to_position' in the array.
-*/
-//go:nosplit
 func (self class) MoveStackedShadow(from_index int64, to_position int64) { //gd:LabelSettings.move_stacked_shadow
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_stacked_shadow, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		from_index  int64
 		to_position int64
 	}{from_index, to_position})
 }
-
-/*
-Removes the stacked shadow at index 'index'.
-*/
-//go:nosplit
 func (self class) RemoveStackedShadow(index int64) { //gd:LabelSettings.remove_stacked_shadow
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_stacked_shadow, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
-
-/*
-Sets the offset of the stacked shadow identified by the given 'index' to 'offset'.
-*/
-//go:nosplit
 func (self class) SetStackedShadowOffset(index int64, offset Vector2.XY) { //gd:LabelSettings.set_stacked_shadow_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stacked_shadow_offset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), &struct {
 		index  int64
 		offset Vector2.XY
 	}{index, offset})
 }
-
-/*
-Returns the offset of the stacked shadow at 'index'.
-*/
-//go:nosplit
 func (self class) GetStackedShadowOffset(index int64) Vector2.XY { //gd:LabelSettings.get_stacked_shadow_offset
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_stacked_shadow_offset, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the color of the stacked shadow identified by the given 'index' to 'color'.
-*/
-//go:nosplit
 func (self class) SetStackedShadowColor(index int64, color Color.RGBA) { //gd:LabelSettings.set_stacked_shadow_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stacked_shadow_color, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
 		index int64
 		color Color.RGBA
 	}{index, color})
 }
-
-/*
-Returns the color of the stacked shadow at 'index'.
-*/
-//go:nosplit
 func (self class) GetStackedShadowColor(index int64) Color.RGBA { //gd:LabelSettings.get_stacked_shadow_color
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_stacked_shadow_color, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the outline size of the stacked shadow identified by the given 'index' to 'size'.
-*/
-//go:nosplit
 func (self class) SetStackedShadowOutlineSize(index int64, size int64) { //gd:LabelSettings.set_stacked_shadow_outline_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stacked_shadow_outline_size, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index int64
 		size  int64
 	}{index, size})
 }
-
-/*
-Returns the outline size of the stacked shadow at 'index'.
-*/
-//go:nosplit
 func (self class) GetStackedShadowOutlineSize(index int64) int64 { //gd:LabelSettings.get_stacked_shadow_outline_size
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stacked_shadow_outline_size, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret

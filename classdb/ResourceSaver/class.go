@@ -207,20 +207,6 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetResourceSaver(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
-/*
-Saves a resource to disk to the given path, using a [ResourceFormatSaver] that recognizes the resource object. If 'path' is empty, [ResourceSaver] will try to use [Resource.ResourcePath].
-
-The 'flags' bitmask can be specified to customize the save behavior.
-
-Returns [Ok] on success.
-
-Note: When the project is running, any generated UID associated with the resource will not be saved as the required code is only executed in editor mode.
-
-[Resource.ResourcePath]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.ResourcePath
-[ResourceFormatSaver]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatSaver
-[ResourceSaver]: https://pkg.go.dev/graphics.gd/classdb/ResourceSaver
-*/
-//go:nosplit
 func (self class) Save(resource [1]gdclass.Resource, path String.Readable, flags SaverFlags) Error.Code { //gd:ResourceSaver.save
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), &struct {
@@ -231,15 +217,6 @@ func (self class) Save(resource [1]gdclass.Resource, path String.Readable, flags
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Sets the UID of the given 'resource' path to 'uid'. You can generate a new UID using [ResourceUID.CreateId].
-
-Since resources will normally get a UID automatically, this method is only useful in very specific cases.
-
-[ResourceUID.CreateId]: https://pkg.go.dev/graphics.gd/classdb/ResourceUID#CreateId
-*/
-//go:nosplit
 func (self class) SetUid(resource String.Readable, uid int64) Error.Code { //gd:ResourceSaver.set_uid
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.set_uid, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -249,26 +226,12 @@ func (self class) SetUid(resource String.Readable, uid int64) Error.Code { //gd:
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns the list of extensions available for saving a resource of a given type.
-*/
-//go:nosplit
 func (self class) GetRecognizedExtensions(atype [1]gdclass.Resource) Packed.Strings { //gd:ResourceSaver.get_recognized_extensions
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_recognized_extensions, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ atype gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetResource(atype[0])))})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Registers a new [ResourceFormatSaver]. The ResourceSaver will use the ResourceFormatSaver as described in [Save].
-
-This method is performed implicitly for ResourceFormatSavers written in GDScript (see [ResourceFormatSaver] for more information).
-
-[ResourceFormatSaver]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatSaver
-*/
-//go:nosplit
 func (self class) AddResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver, at_front bool) { //gd:ResourceSaver.add_resource_format_saver
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_resource_format_saver, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
@@ -276,22 +239,10 @@ func (self class) AddResourceFormatSaver(format_saver [1]gdclass.ResourceFormatS
 		at_front     bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetResourceFormatSaver(format_saver[0]))), at_front})
 }
-
-/*
-Unregisters the given [ResourceFormatSaver].
-
-[ResourceFormatSaver]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatSaver
-*/
-//go:nosplit
 func (self class) RemoveResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver) { //gd:ResourceSaver.remove_resource_format_saver
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_format_saver, 0|(gdextension.SizeObject<<4), &struct{ format_saver gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetResourceFormatSaver(format_saver[0])))})
 }
-
-/*
-Returns the resource ID for the given path. If 'generate' is true, a new resource ID will be generated if one for the path is not found. If 'generate' is false and the path is not found, [Resourceuid.InvalidId] is returned.
-*/
-//go:nosplit
 func (self class) GetResourceIdForPath(path String.Readable, generate bool) int64 { //gd:ResourceSaver.get_resource_id_for_path
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_resource_id_for_path, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {

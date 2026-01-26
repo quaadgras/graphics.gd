@@ -540,26 +540,14 @@ func (self Instance) SetUpVectorEnabled(value bool) Instance { //gd:Curve3D.up_v
 	return self
 }
 
-//go:nosplit
 func (self class) GetPointCount() int64 { //gd:Curve3D.get_point_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_point_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPointCount(count int64) { //gd:Curve3D.set_point_count
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
-
-/*
-Adds a point with the specified 'position' relative to the curve's own position, with control points 'in' and 'out'. Appends the new point at the end of the point list.
-
-If 'index' is given, the new point is inserted before the existing point identified by index 'index'. Every existing point starting from 'index' is shifted further down the list of points. The index must be greater than or equal to 0 and must not exceed the number of existing points in the line. See [PointCount].
-
-[PointCount]: https://pkg.go.dev/graphics.gd/classdb/Curve3D#Instance.PointCount
-*/
-//go:nosplit
 func (self class) AddPoint(position Vector3.XYZ, in Vector3.XYZ, out Vector3.XYZ, index int64) { //gd:Curve3D.add_point
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_point, 0|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeInt<<16), &struct {
 		position Vector3.XYZ
@@ -568,117 +556,56 @@ func (self class) AddPoint(position Vector3.XYZ, in Vector3.XYZ, out Vector3.XYZ
 		index    int64
 	}{position, in, out, index})
 }
-
-/*
-Sets the position for the vertex 'idx'. If the index is out of bounds, the function sends an error to the console.
-*/
-//go:nosplit
 func (self class) SetPointPosition(idx int64, position Vector3.XYZ) { //gd:Curve3D.set_point_position
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_position, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), &struct {
 		idx      int64
 		position Vector3.XYZ
 	}{idx, position})
 }
-
-/*
-Returns the position of the vertex 'idx'. If the index is out of bounds, the function sends an error to the console, and returns (0, 0, 0).
-*/
-//go:nosplit
 func (self class) GetPointPosition(idx int64) Vector3.XYZ { //gd:Curve3D.get_point_position
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_point_position, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the tilt angle in radians for the point 'idx'. If the index is out of bounds, the function sends an error to the console.
-
-The tilt controls the rotation along the look-at axis an object traveling the path would have. In the case of a curve controlling a [PathFollow3D], this tilt is an offset over the natural tilt the [PathFollow3D] calculates.
-
-[PathFollow3D]: https://pkg.go.dev/graphics.gd/classdb/PathFollow3D
-*/
-//go:nosplit
 func (self class) SetPointTilt(idx int64, tilt float64) { //gd:Curve3D.set_point_tilt
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_tilt, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		idx  int64
 		tilt float64
 	}{idx, tilt})
 }
-
-/*
-Returns the tilt angle in radians for the point 'idx'. If the index is out of bounds, the function sends an error to the console, and returns 0.
-*/
-//go:nosplit
 func (self class) GetPointTilt(idx int64) float64 { //gd:Curve3D.get_point_tilt
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_point_tilt, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the position of the control point leading to the vertex 'idx'. If the index is out of bounds, the function sends an error to the console. The position is relative to the vertex.
-*/
-//go:nosplit
 func (self class) SetPointIn(idx int64, position Vector3.XYZ) { //gd:Curve3D.set_point_in
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_in, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), &struct {
 		idx      int64
 		position Vector3.XYZ
 	}{idx, position})
 }
-
-/*
-Returns the position of the control point leading to the vertex 'idx'. The returned position is relative to the vertex 'idx'. If the index is out of bounds, the function sends an error to the console, and returns (0, 0, 0).
-*/
-//go:nosplit
 func (self class) GetPointIn(idx int64) Vector3.XYZ { //gd:Curve3D.get_point_in
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_point_in, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the position of the control point leading out of the vertex 'idx'. If the index is out of bounds, the function sends an error to the console. The position is relative to the vertex.
-*/
-//go:nosplit
 func (self class) SetPointOut(idx int64, position Vector3.XYZ) { //gd:Curve3D.set_point_out
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_out, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), &struct {
 		idx      int64
 		position Vector3.XYZ
 	}{idx, position})
 }
-
-/*
-Returns the position of the control point leading out of the vertex 'idx'. The returned position is relative to the vertex 'idx'. If the index is out of bounds, the function sends an error to the console, and returns (0, 0, 0).
-*/
-//go:nosplit
 func (self class) GetPointOut(idx int64) Vector3.XYZ { //gd:Curve3D.get_point_out
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_point_out, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Deletes the point 'idx' from the curve. Sends an error to the console if 'idx' is out of bounds.
-*/
-//go:nosplit
 func (self class) RemovePoint(idx int64) { //gd:Curve3D.remove_point
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_point, 0|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 }
-
-/*
-Removes all points from the curve.
-*/
-//go:nosplit
 func (self class) ClearPoints() { //gd:Curve3D.clear_points
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_points, 0, &struct{}{})
 }
-
-/*
-Returns the position between the vertex 'idx' and the vertex idx + 1, where 't' controls if the point is the first vertex (t = 0.0), the last vertex (t = 1.0), or in between. Values of 't' outside the range (0.0 >= t <=1) give strange, but predictable results.
-
-If 'idx' is out of bounds it is truncated to the first or last vertex, and 't' is ignored. If the curve has no points, the function sends an error to the console, and returns (0, 0, 0).
-*/
-//go:nosplit
 func (self class) Sample(idx int64, t float64) Vector3.XYZ { //gd:Curve3D.sample
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.sample, gdextension.SizeVector3|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		idx int64
@@ -687,73 +614,40 @@ func (self class) Sample(idx int64, t float64) Vector3.XYZ { //gd:Curve3D.sample
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the position at the vertex 'fofs'. It calls [Sample] using the integer part of 'fofs' as idx, and its fractional part as t.
-
-[Sample]: https://pkg.go.dev/graphics.gd/classdb/Curve3D#Instance.Sample
-*/
-//go:nosplit
 func (self class) Samplef(fofs float64) Vector3.XYZ { //gd:Curve3D.samplef
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.samplef, gdextension.SizeVector3|(gdextension.SizeFloat<<4), &struct{ fofs float64 }{fofs})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetClosed(closed bool) { //gd:Curve3D.set_closed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_closed, 0|(gdextension.SizeBool<<4), &struct{ closed bool }{closed})
 }
-
-//go:nosplit
 func (self class) IsClosed() bool { //gd:Curve3D.is_closed
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_closed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBakeInterval(distance float64) { //gd:Curve3D.set_bake_interval
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_interval, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
-
-//go:nosplit
 func (self class) GetBakeInterval() float64 { //gd:Curve3D.get_bake_interval
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bake_interval, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUpVectorEnabled(enable bool) { //gd:Curve3D.set_up_vector_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_up_vector_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsUpVectorEnabled() bool { //gd:Curve3D.is_up_vector_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_up_vector_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the total length of the curve, based on the cached points. Given enough density (see [BakeInterval]), it should be approximate enough.
-
-[BakeInterval]: https://pkg.go.dev/graphics.gd/classdb/Curve3D#Instance.BakeInterval
-*/
-//go:nosplit
 func (self class) GetBakedLength() float64 { //gd:Curve3D.get_baked_length
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_baked_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a point within the curve at position 'offset', where 'offset' is measured as a distance in 3D units along the curve. To do that, it finds the two cached points where the 'offset' lies between, then interpolates the values. This interpolation is cubic if 'cubic' is set to true, or linear if set to false.
-
-Cubic interpolation tends to follow the curves better, but linear is faster (and often, precise enough).
-*/
-//go:nosplit
 func (self class) SampleBaked(offset float64, cubic bool) Vector3.XYZ { //gd:Curve3D.sample_baked
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.sample_baked, gdextension.SizeVector3|(gdextension.SizeFloat<<4)|(gdextension.SizeBool<<8), &struct {
 		offset float64
@@ -762,14 +656,6 @@ func (self class) SampleBaked(offset float64, cubic bool) Vector3.XYZ { //gd:Cur
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a [Transform3D.BasisOrigin] with origin as point position, basis.x as sideway vector, basis.y as up vector, basis.z as forward vector. When the curve length is 0, there is no reasonable way to calculate the rotation, all vectors aligned with global space axes. See also [SampleBaked].
-
-[SampleBaked]: https://pkg.go.dev/graphics.gd/classdb/Curve3D#Instance.SampleBaked
-[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
-*/
-//go:nosplit
 func (self class) SampleBakedWithRotation(offset float64, cubic bool, apply_tilt bool) Transform3D.BasisOrigin { //gd:Curve3D.sample_baked_with_rotation
 	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.sample_baked_with_rotation, gdextension.SizeTransform3D|(gdextension.SizeFloat<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12), &struct {
 		offset     float64
@@ -779,13 +665,6 @@ func (self class) SampleBakedWithRotation(offset float64, cubic bool, apply_tilt
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
-
-/*
-Returns an up vector within the curve at position 'offset', where 'offset' is measured as a distance in 3D units along the curve. To do that, it finds the two cached up vectors where the 'offset' lies between, then interpolates the values. If 'apply_tilt' is true, an interpolated tilt is applied to the interpolated up vector.
-
-If the curve has no up vectors, the function sends an error to the console, and returns (0, 1, 0).
-*/
-//go:nosplit
 func (self class) SampleBakedUpVector(offset float64, apply_tilt bool) Vector3.XYZ { //gd:Curve3D.sample_baked_up_vector
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.sample_baked_up_vector, gdextension.SizeVector3|(gdextension.SizeFloat<<4)|(gdextension.SizeBool<<8), &struct {
 		offset     float64
@@ -794,81 +673,31 @@ func (self class) SampleBakedUpVector(offset float64, apply_tilt bool) Vector3.X
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the cache of points as a [][Vector3.XYZ].
-
-[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
-*/
-//go:nosplit
 func (self class) GetBakedPoints() Packed.Array[Vector3.XYZ] { //gd:Curve3D.get_baked_points
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_baked_points, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns the cache of tilts as a []float32.
-*/
-//go:nosplit
 func (self class) GetBakedTilts() Packed.Array[float32] { //gd:Curve3D.get_baked_tilts
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_baked_tilts, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns the cache of up vectors as a [][Vector3.XYZ].
-
-If [UpVectorEnabled] is false, the cache will be empty.
-
-[UpVectorEnabled]: https://pkg.go.dev/graphics.gd/classdb/Curve3D#Instance.UpVectorEnabled
-[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
-*/
-//go:nosplit
 func (self class) GetBakedUpVectors() Packed.Array[Vector3.XYZ] { //gd:Curve3D.get_baked_up_vectors
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_baked_up_vectors, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns the closest point on baked segments (in curve's local space) to 'to_point'.
-
-'to_point' must be in this curve's local space.
-*/
-//go:nosplit
 func (self class) GetClosestPoint(to_point Vector3.XYZ) Vector3.XYZ { //gd:Curve3D.get_closest_point
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_closest_point, gdextension.SizeVector3|(gdextension.SizeVector3<<4), &struct{ to_point Vector3.XYZ }{to_point})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the closest offset to 'to_point'. This offset is meant to be used in [SampleBaked] or [SampleBakedUpVector].
-
-'to_point' must be in this curve's local space.
-
-[SampleBaked]: https://pkg.go.dev/graphics.gd/classdb/Curve3D#Instance.SampleBaked
-[SampleBakedUpVector]: https://pkg.go.dev/graphics.gd/classdb/Curve3D#Instance.SampleBakedUpVector
-*/
-//go:nosplit
 func (self class) GetClosestOffset(to_point Vector3.XYZ) float64 { //gd:Curve3D.get_closest_offset
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_closest_offset, gdextension.SizeFloat|(gdextension.SizeVector3<<4), &struct{ to_point Vector3.XYZ }{to_point})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a list of points along the curve, with a curvature controlled point density. That is, the curvier parts will have more points than the straighter parts.
-
-This approximation makes straight segments between each point, then subdivides those segments until the resulting shape is similar enough.
-
-'max_stages' controls how many subdivisions a curve segment may face before it is considered approximate enough. Each subdivision splits the segment in half, so the default 5 stages may mean up to 32 subdivisions per curve segment. Increase with care!
-
-'tolerance_degrees' controls how many degrees the midpoint of a segment may deviate from the real curve, before the segment has to be subdivided.
-*/
-//go:nosplit
 func (self class) Tessellate(max_stages int64, tolerance_degrees float64) Packed.Array[Vector3.XYZ] { //gd:Curve3D.tessellate
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.tessellate, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		max_stages        int64
@@ -877,13 +706,6 @@ func (self class) Tessellate(max_stages int64, tolerance_degrees float64) Packed
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns a list of points along the curve, with almost uniform density. 'max_stages' controls how many subdivisions a curve segment may face before it is considered approximate enough. Each subdivision splits the segment in half, so the default 5 stages may mean up to 32 subdivisions per curve segment. Increase with care!
-
-'tolerance_length' controls the maximal distance between two neighboring points, before the segment has to be subdivided.
-*/
-//go:nosplit
 func (self class) TessellateEvenLength(max_stages int64, tolerance_length float64) Packed.Array[Vector3.XYZ] { //gd:Curve3D.tessellate_even_length
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.tessellate_even_length, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		max_stages       int64

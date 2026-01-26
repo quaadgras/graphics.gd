@@ -205,36 +205,25 @@ func (self Instance) SetCondition(value Condition) Instance { //gd:VisualShaderN
 	return self
 }
 
-//go:nosplit
 func (self class) SetComparisonType(atype ComparisonType) { //gd:VisualShaderNodeCompare.set_comparison_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_comparison_type, 0|(gdextension.SizeInt<<4), &struct{ atype ComparisonType }{atype})
 }
-
-//go:nosplit
 func (self class) GetComparisonType() ComparisonType { //gd:VisualShaderNodeCompare.get_comparison_type
 	var r_ret = noescape.Call[ComparisonType](gd.ObjectChecked(self.AsObject()), methods.get_comparison_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFunction(fn Function) { //gd:VisualShaderNodeCompare.set_function
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_function, 0|(gdextension.SizeInt<<4), &struct{ fn Function }{fn})
 }
-
-//go:nosplit
 func (self class) GetFunction() Function { //gd:VisualShaderNodeCompare.get_function
 	var r_ret = noescape.Call[Function](gd.ObjectChecked(self.AsObject()), methods.get_function, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCondition(condition Condition) { //gd:VisualShaderNodeCompare.set_condition
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_condition, 0|(gdextension.SizeInt<<4), &struct{ condition Condition }{condition})
 }
-
-//go:nosplit
 func (self class) GetCondition() Condition { //gd:VisualShaderNodeCompare.get_condition
 	var r_ret = noescape.Call[Condition](gd.ObjectChecked(self.AsObject()), methods.get_condition, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

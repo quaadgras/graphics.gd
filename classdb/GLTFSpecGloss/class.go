@@ -231,62 +231,43 @@ func (self Instance) SetSpecGlossImg(value Image.Instance) Instance { //gd:GLTFS
 	return self
 }
 
-//go:nosplit
 func (self class) GetDiffuseImg() [1]gdclass.Image { //gd:GLTFSpecGloss.get_diffuse_img
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_diffuse_img, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDiffuseImg(diffuse_img [1]gdclass.Image) { //gd:GLTFSpecGloss.set_diffuse_img
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_diffuse_img, 0|(gdextension.SizeObject<<4), &struct{ diffuse_img gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(diffuse_img[0])))})
 }
-
-//go:nosplit
 func (self class) GetDiffuseFactor() Color.RGBA { //gd:GLTFSpecGloss.get_diffuse_factor
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_diffuse_factor, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDiffuseFactor(diffuse_factor Color.RGBA) { //gd:GLTFSpecGloss.set_diffuse_factor
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_diffuse_factor, 0|(gdextension.SizeColor<<4), &struct{ diffuse_factor Color.RGBA }{diffuse_factor})
 }
-
-//go:nosplit
 func (self class) GetGlossFactor() float64 { //gd:GLTFSpecGloss.get_gloss_factor
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gloss_factor, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetGlossFactor(gloss_factor float64) { //gd:GLTFSpecGloss.set_gloss_factor
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gloss_factor, 0|(gdextension.SizeFloat<<4), &struct{ gloss_factor float64 }{gloss_factor})
 }
-
-//go:nosplit
 func (self class) GetSpecularFactor() Color.RGBA { //gd:GLTFSpecGloss.get_specular_factor
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_specular_factor, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSpecularFactor(specular_factor Color.RGBA) { //gd:GLTFSpecGloss.set_specular_factor
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_specular_factor, 0|(gdextension.SizeColor<<4), &struct{ specular_factor Color.RGBA }{specular_factor})
 }
-
-//go:nosplit
 func (self class) GetSpecGlossImg() [1]gdclass.Image { //gd:GLTFSpecGloss.get_spec_gloss_img
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_spec_gloss_img, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSpecGlossImg(spec_gloss_img [1]gdclass.Image) { //gd:GLTFSpecGloss.set_spec_gloss_img
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spec_gloss_img, 0|(gdextension.SizeObject<<4), &struct{ spec_gloss_img gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(spec_gloss_img[0])))})
 }

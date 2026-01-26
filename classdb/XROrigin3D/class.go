@@ -199,24 +199,17 @@ func (self Instance) SetCurrent(value bool) Instance { //gd:XROrigin3D.current
 	return self
 }
 
-//go:nosplit
 func (self class) SetWorldScale(world_scale float64) { //gd:XROrigin3D.set_world_scale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_world_scale, 0|(gdextension.SizeFloat<<4), &struct{ world_scale float64 }{world_scale})
 }
-
-//go:nosplit
 func (self class) GetWorldScale() float64 { //gd:XROrigin3D.get_world_scale
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_world_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCurrent(enabled bool) { //gd:XROrigin3D.set_current
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsCurrent() bool { //gd:XROrigin3D.is_current
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_current, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

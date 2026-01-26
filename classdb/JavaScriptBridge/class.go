@@ -271,12 +271,6 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetJavaScriptBridge(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
-/*
-Execute the string 'code' as JavaScript code within the browser window. This is a call to the actual global JavaScript function eval().
-
-If 'use_global_execution_context' is true, the code will be evaluated in the global execution context. Otherwise, it is evaluated in the execution context of a function within the engine's runtime environment.
-*/
-//go:nosplit
 func (self class) Eval(code String.Readable, use_global_execution_context bool) variant.Any { //gd:JavaScriptBridge.eval
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.eval, gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
@@ -286,68 +280,30 @@ func (self class) Eval(code String.Readable, use_global_execution_context bool) 
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Returns an interface to a JavaScript object that can be used by scripts. The 'interface' must be a valid property of the JavaScript window. The callback must accept a single slice argument, which will contain the JavaScript arguments. See [JavaScriptObject] for usage.
-
-[JavaScriptObject]: https://pkg.go.dev/graphics.gd/classdb/JavaScriptObject
-*/
-//go:nosplit
 func (self class) GetInterface(intf String.Readable) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.get_interface
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_interface, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ intf gdextension.String }{pointers.Get(gd.InternalString(intf))})
 	var ret = [1]gdclass.JavaScriptObject{gdclass.NewJavaScriptObject(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Creates a reference to a func that can be used as a callback by JavaScript. The reference must be kept until the callback happens, or it won't be called at all. See [JavaScriptObject] for usage.
-
-Note: The callback function must take exactly one slice argument, which is going to be the JavaScript [arguments object] converted to an array.
-
-[JavaScriptObject]: https://pkg.go.dev/graphics.gd/classdb/JavaScriptObject
-[arguments object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments
-*/
-//go:nosplit
 func (self class) CreateCallback(callable Callable.Function) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.create_callback
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_callback, gdextension.SizeObject|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
 	var ret = [1]gdclass.JavaScriptObject{gdclass.NewJavaScriptObject(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns true if the given 'javascript_object' is of type [[code]ArrayBuffer[/code]], [[code]DataView[/code]], or one of the many [typed array objects].
-
-[[code]ArrayBuffer[/code]]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer
-[[code]DataView[/code]]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView
-[typed array objects]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray
-*/
-//go:nosplit
 func (self class) IsJsBuffer(javascript_object [1]gdclass.JavaScriptObject) bool { //gd:JavaScriptBridge.is_js_buffer
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_js_buffer, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ javascript_object gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetJavaScriptObject(javascript_object[0])))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a copy of 'javascript_buffer''s contents as a []byte. See also [IsJsBuffer].
-*/
-//go:nosplit
 func (self class) JsBufferToPackedByteArray(javascript_buffer [1]gdclass.JavaScriptObject) Packed.Bytes { //gd:JavaScriptBridge.js_buffer_to_packed_byte_array
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.js_buffer_to_packed_byte_array, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ javascript_buffer gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetJavaScriptObject(javascript_buffer[0])))})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-
-/*
-Creates a new JavaScript object using the new constructor. The 'object' must a valid property of the JavaScript window. See [JavaScriptObject] for usage.
-
-[JavaScriptObject]: https://pkg.go.dev/graphics.gd/classdb/JavaScriptObject
-*/
-//go:nosplit
 func (self class) CreateObject(obj String.Readable, args ...gd.Variant) variant.Any { //gd:JavaScriptBridge.create_object
 	once.Do(singleton)
 	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(obj)))}
@@ -362,18 +318,6 @@ func (self class) CreateObject(obj String.Readable, args ...gd.Variant) variant.
 	return gd.VariantAs[variant.Any](pointers.New[gd.Variant]([3]uint64(ret)))
 }
 
-/*
-Prompts the user to download a file containing the specified 'buffer'. The file will have the given 'name' and 'mime' type.
-
-Note: The browser may override the [MIME type] provided based on the file 'name''s extension.
-
-Note: Browsers might block the download if [DownloadBuffer] is not being called from a user interaction (e.g. button click).
-
-Note: Browsers might ask the user for permission or block the download if multiple download requests are made in a quick succession.
-
-[MIME type]: https://en.wikipedia.org/wiki/Media_type
-*/
-//go:nosplit
 func (self class) DownloadBuffer(buffer Packed.Bytes, name String.Readable, mime String.Readable) { //gd:JavaScriptBridge.download_buffer
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.download_buffer, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12), &struct {
@@ -382,43 +326,18 @@ func (self class) DownloadBuffer(buffer Packed.Bytes, name String.Readable, mime
 		mime   gdextension.String
 	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array))), pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalString(mime))})
 }
-
-/*
-Returns true if a new version of the progressive web app is waiting to be activated.
-
-Note: Only relevant when exported as a Progressive Web App.
-*/
-//go:nosplit
 func (self class) PwaNeedsUpdate() bool { //gd:JavaScriptBridge.pwa_needs_update
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.pwa_needs_update, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Performs the live update of the progressive web app. Forcing the new version to be installed and the page to be reloaded.
-
-Note: Your application will be reloaded in all browser tabs.
-
-Note: Only relevant when exported as a Progressive Web App and [PwaNeedsUpdate] returns true.
-*/
-//go:nosplit
 func (self class) PwaUpdate() Error.Code { //gd:JavaScriptBridge.pwa_update
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.pwa_update, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Force synchronization of the persistent file system (when enabled).
-
-Note: This is only useful for modules or extensions that can't use [FileAccess] to write files.
-
-[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
-*/
-//go:nosplit
 func (self class) ForceFsSync() { //gd:JavaScriptBridge.force_fs_sync
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_fs_sync, 0, &struct{}{})

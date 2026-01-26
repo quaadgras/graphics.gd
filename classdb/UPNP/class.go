@@ -468,89 +468,36 @@ func (self Instance) SetDiscoverIpv6(value bool) Instance { //gd:UPNP.discover_i
 	return self
 }
 
-/*
-Returns the number of discovered [UPNPDevice]s.
-
-[UPNPDevice]: https://pkg.go.dev/graphics.gd/classdb/UPNPDevice
-*/
-//go:nosplit
 func (self class) GetDeviceCount() int64 { //gd:UPNP.get_device_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_device_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [UPNPDevice] at the given 'index'.
-
-[UPNPDevice]: https://pkg.go.dev/graphics.gd/classdb/UPNPDevice
-*/
-//go:nosplit
 func (self class) GetDevice(index int64) [1]gdclass.UPNPDevice { //gd:UPNP.get_device
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_device, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = [1]gdclass.UPNPDevice{gdclass.NewUPNPDevice(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Adds the given [UPNPDevice] to the list of discovered devices.
-
-[UPNPDevice]: https://pkg.go.dev/graphics.gd/classdb/UPNPDevice
-*/
-//go:nosplit
 func (self class) AddDevice(device [1]gdclass.UPNPDevice) { //gd:UPNP.add_device
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_device, 0|(gdextension.SizeObject<<4), &struct{ device gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetUPNPDevice(device[0])))})
 }
-
-/*
-Sets the device at 'index' from the list of discovered devices to 'device'.
-*/
-//go:nosplit
 func (self class) SetDevice(index int64, device [1]gdclass.UPNPDevice) { //gd:UPNP.set_device
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_device, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		index  int64
 		device gdextension.Object
 	}{index, gdextension.Object(gd.ObjectChecked(gdclass.GetUPNPDevice(device[0])))})
 }
-
-/*
-Removes the device at 'index' from the list of discovered devices.
-*/
-//go:nosplit
 func (self class) RemoveDevice(index int64) { //gd:UPNP.remove_device
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_device, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
-
-/*
-Clears the list of discovered devices.
-*/
-//go:nosplit
 func (self class) ClearDevices() { //gd:UPNP.clear_devices
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_devices, 0, &struct{}{})
 }
-
-/*
-Returns the default gateway. That is the first discovered [UPNPDevice] that is also a valid IGD (InternetGatewayDevice).
-
-[UPNPDevice]: https://pkg.go.dev/graphics.gd/classdb/UPNPDevice
-*/
-//go:nosplit
 func (self class) GetGateway() [1]gdclass.UPNPDevice { //gd:UPNP.get_gateway
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_gateway, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.UPNPDevice{gdclass.NewUPNPDevice(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Discovers local [UPNPDevice]s. Clears the list of previously discovered devices.
-
-Filters for IGD (InternetGatewayDevice) type devices by default, as those manage port forwarding. 'timeout' is the time to wait for responses in milliseconds. 'ttl' is the time-to-live; only touch this if you know what you're doing.
-
-See [UPNPResult] for possible return values.
-
-[UPNPDevice]: https://pkg.go.dev/graphics.gd/classdb/UPNPDevice
-*/
-//go:nosplit
 func (self class) Discover(timeout int64, ttl int64, device_filter String.Readable) int64 { //gd:UPNP.discover
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.discover, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		timeout       int64
@@ -560,37 +507,11 @@ func (self class) Discover(timeout int64, ttl int64, device_filter String.Readab
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the external [IP] address of the default gateway (see [GetGateway]) as string. Returns an empty string on error.
-
-[GetGateway]: https://pkg.go.dev/graphics.gd/classdb/UPNP#Instance.GetGateway
-[IP]: https://pkg.go.dev/graphics.gd/classdb/IP
-*/
-//go:nosplit
 func (self class) QueryExternalAddress() String.Readable { //gd:UPNP.query_external_address
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.query_external_address, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Adds a mapping to forward the external 'port' (between 1 and 65535, although recommended to use port 1024 or above) on the default gateway (see [GetGateway]) to the 'port_internal' on the local machine for the given protocol 'proto' (either "TCP" or "UDP", with UDP being the default). If a port mapping for the given port and protocol combination already exists on that gateway device, this method tries to overwrite it. If that is not desired, you can retrieve the gateway manually with [GetGateway] and call [AddPortMapping] on it, if any. Note that forwarding a well-known port (below 1024) with UPnP may fail depending on the device.
-
-Depending on the gateway device, if a mapping for that port already exists, it will either be updated or it will refuse this command due to that conflict, especially if the existing mapping for that port wasn't created via UPnP or points to a different network address (or device) than this one.
-
-If 'port_internal' is 0 (the default), the same port number is used for both the external and the internal port (the 'port' value).
-
-The description ('desc') is shown in some routers management UIs and can be used to point out which application added the mapping.
-
-The mapping's lease 'duration' can be limited by specifying a duration in seconds. The default of 0 means no duration, i.e. a permanent lease and notably some devices only support these permanent leases. Note that whether permanent or not, this is only a request and the gateway may still decide at any point to remove the mapping (which usually happens on a reboot of the gateway, when its external IP address changes, or on some models when it detects a port mapping has become inactive, i.e. had no traffic for multiple minutes). If not 0 (permanent), the allowed range according to spec is between 120 (2 minutes) and 86400 seconds (24 hours).
-
-See [UPNPResult] for possible return values.
-
-[AddPortMapping]: https://pkg.go.dev/graphics.gd/classdb/UPNP#Instance.AddPortMapping
-[GetGateway]: https://pkg.go.dev/graphics.gd/classdb/UPNP#Instance.GetGateway
-*/
-//go:nosplit
 func (self class) AddPortMapping(port int64, port_internal int64, desc String.Readable, proto String.Readable, duration int64) int64 { //gd:UPNP.add_port_mapping
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_port_mapping, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeInt<<20), &struct {
 		port          int64
@@ -602,13 +523,6 @@ func (self class) AddPortMapping(port int64, port_internal int64, desc String.Re
 	var ret = r_ret
 	return ret
 }
-
-/*
-Deletes the port mapping for the given port and protocol combination on the default gateway (see [GetGateway]) if one exists. 'port' must be a valid port between 1 and 65535, 'proto' can be either "TCP" or "UDP". May be refused for mappings pointing to addresses other than this one, for well-known ports (below 1024), or for mappings not added via UPnP. See [UPNPResult] for possible return values.
-
-[GetGateway]: https://pkg.go.dev/graphics.gd/classdb/UPNP#Instance.GetGateway
-*/
-//go:nosplit
 func (self class) DeletePortMapping(port int64, proto String.Readable) int64 { //gd:UPNP.delete_port_mapping
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.delete_port_mapping, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		port  int64
@@ -617,37 +531,25 @@ func (self class) DeletePortMapping(port int64, proto String.Readable) int64 { /
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDiscoverMulticastIf(m_if String.Readable) { //gd:UPNP.set_discover_multicast_if
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_discover_multicast_if, 0|(gdextension.SizeString<<4), &struct{ m_if gdextension.String }{pointers.Get(gd.InternalString(m_if))})
 }
-
-//go:nosplit
 func (self class) GetDiscoverMulticastIf() String.Readable { //gd:UPNP.get_discover_multicast_if
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_discover_multicast_if, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDiscoverLocalPort(port int64) { //gd:UPNP.set_discover_local_port
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_discover_local_port, 0|(gdextension.SizeInt<<4), &struct{ port int64 }{port})
 }
-
-//go:nosplit
 func (self class) GetDiscoverLocalPort() int64 { //gd:UPNP.get_discover_local_port
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_discover_local_port, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDiscoverIpv6(ipv6 bool) { //gd:UPNP.set_discover_ipv6
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_discover_ipv6, 0|(gdextension.SizeBool<<4), &struct{ ipv6 bool }{ipv6})
 }
-
-//go:nosplit
 func (self class) IsDiscoverIpv6() bool { //gd:UPNP.is_discover_ipv6
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_discover_ipv6, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

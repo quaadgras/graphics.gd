@@ -274,122 +274,54 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns true if OpenXR's render model extension is supported and enabled.
-
-Note: This only returns a valid value after OpenXR has been initialized.
-*/
-//go:nosplit
 func (self class) IsActive() bool { //gd:OpenXRRenderModelExtension.is_active
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_active, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Creates a render model object within OpenXR using a render model id.
-
-Note: This function is exposed for dependent OpenXR extensions that provide render model ids to be used with the render model extension.
-*/
-//go:nosplit
 func (self class) RenderModelCreate(render_model_id int64) RID.Any { //gd:OpenXRRenderModelExtension.render_model_create
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.render_model_create, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ render_model_id int64 }{render_model_id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Destroys a render model object within OpenXR that was previously created with [RenderModelCreate].
-
-Note: This function is exposed for dependent OpenXR extensions that provide render model ids to be used with the render model extension.
-
-[RenderModelCreate]: https://pkg.go.dev/graphics.gd/classdb/OpenXRRenderModelExtension#Instance.RenderModelCreate
-*/
-//go:nosplit
 func (self class) RenderModelDestroy(render_model RID.Any) { //gd:OpenXRRenderModelExtension.render_model_destroy
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.render_model_destroy, 0|(gdextension.SizeRID<<4), &struct{ render_model RID.Any }{render_model})
 }
-
-/*
-Returns an array of all currently active render models registered with this extension.
-*/
-//go:nosplit
 func (self class) RenderModelGetAll() Array.Contains[RID.Any] { //gd:OpenXRRenderModelExtension.render_model_get_all
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.render_model_get_all, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns an instance of a subscene that contains all [MeshInstance3D] nodes that allow you to visualize the render model.
-
-[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
-*/
-//go:nosplit
 func (self class) RenderModelNewSceneInstance(render_model RID.Any) [1]gdclass.Node3D { //gd:OpenXRRenderModelExtension.render_model_new_scene_instance
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.render_model_new_scene_instance, gdextension.SizeObject|(gdextension.SizeRID<<4), &struct{ render_model RID.Any }{render_model})
 	var ret = [1]gdclass.Node3D{gdclass.NewNode3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns a list of active subaction paths for this 'render_model'.
-
-Note: If different devices are bound to your actions than available in suggested interaction bindings, this information shows paths related to the interaction bindings being mimicked by that device.
-*/
-//go:nosplit
 func (self class) RenderModelGetSubactionPaths(render_model RID.Any) Packed.Strings { //gd:OpenXRRenderModelExtension.render_model_get_subaction_paths
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.render_model_get_subaction_paths, gdextension.SizePackedArray|(gdextension.SizeRID<<4), &struct{ render_model RID.Any }{render_model})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns the top level path associated with this 'render_model'. If provided this identifies whether the render model is associated with the player's hands or other body part.
-*/
-//go:nosplit
 func (self class) RenderModelGetTopLevelPath(render_model RID.Any) String.Readable { //gd:OpenXRRenderModelExtension.render_model_get_top_level_path
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.render_model_get_top_level_path, gdextension.SizeString|(gdextension.SizeRID<<4), &struct{ render_model RID.Any }{render_model})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the tracking confidence of the tracking data for the render model.
-*/
-//go:nosplit
 func (self class) RenderModelGetConfidence(render_model RID.Any) XRPose.TrackingConfidence { //gd:OpenXRRenderModelExtension.render_model_get_confidence
 	var r_ret = noescape.Call[XRPose.TrackingConfidence](gd.ObjectChecked(self.AsObject()), methods.render_model_get_confidence, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ render_model RID.Any }{render_model})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the root transform of a render model. This is the tracked position relative to our [XROrigin3D] node.
-
-[XROrigin3D]: https://pkg.go.dev/graphics.gd/classdb/XROrigin3D
-*/
-//go:nosplit
 func (self class) RenderModelGetRootTransform(render_model RID.Any) Transform3D.BasisOrigin { //gd:OpenXRRenderModelExtension.render_model_get_root_transform
 	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.render_model_get_root_transform, gdextension.SizeTransform3D|(gdextension.SizeRID<<4), &struct{ render_model RID.Any }{render_model})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
-
-/*
-Returns the number of animatable nodes this render model has.
-*/
-//go:nosplit
 func (self class) RenderModelGetAnimatableNodeCount(render_model RID.Any) int64 { //gd:OpenXRRenderModelExtension.render_model_get_animatable_node_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.render_model_get_animatable_node_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ render_model RID.Any }{render_model})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the name of the given animatable node.
-*/
-//go:nosplit
 func (self class) RenderModelGetAnimatableNodeName(render_model RID.Any, index int64) String.Readable { //gd:OpenXRRenderModelExtension.render_model_get_animatable_node_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.render_model_get_animatable_node_name, gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		render_model RID.Any
@@ -398,11 +330,6 @@ func (self class) RenderModelGetAnimatableNodeName(render_model RID.Any, index i
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns true if this animatable node should be visible.
-*/
-//go:nosplit
 func (self class) RenderModelIsAnimatableNodeVisible(render_model RID.Any, index int64) bool { //gd:OpenXRRenderModelExtension.render_model_is_animatable_node_visible
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.render_model_is_animatable_node_visible, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		render_model RID.Any
@@ -411,11 +338,6 @@ func (self class) RenderModelIsAnimatableNodeVisible(render_model RID.Any, index
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the current local transform for an animatable node. This is updated every frame.
-*/
-//go:nosplit
 func (self class) RenderModelGetAnimatableNodeTransform(render_model RID.Any, index int64) Transform3D.BasisOrigin { //gd:OpenXRRenderModelExtension.render_model_get_animatable_node_transform
 	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.render_model_get_animatable_node_transform, gdextension.SizeTransform3D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		render_model RID.Any

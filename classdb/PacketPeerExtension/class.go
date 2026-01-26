@@ -215,7 +215,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
 func (class) _get_packet(impl func(ptr gdclass.Receiver, r_buffer gdextension.Pointer, r_buffer_size *int32) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var r_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
@@ -230,7 +229,6 @@ func (class) _get_packet(impl func(ptr gdclass.Receiver, r_buffer gdextension.Po
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
 func (class) _put_packet(impl func(ptr gdclass.Receiver, p_buffer gdextension.Pointer, p_buffer_size int64) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var p_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
@@ -245,7 +243,6 @@ func (class) _put_packet(impl func(ptr gdclass.Receiver, p_buffer gdextension.Po
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
 func (class) _get_available_packet_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -253,7 +250,6 @@ func (class) _get_available_packet_count(impl func(ptr gdclass.Receiver) int64) 
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
 func (class) _get_max_packet_size(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)

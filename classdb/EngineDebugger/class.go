@@ -344,23 +344,12 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetEngineDebugger(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
-/*
-Returns true if the debugger is active otherwise false.
-*/
-//go:nosplit
 func (self class) IsActive() bool { //gd:EngineDebugger.is_active
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_active, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Registers a profiler with the given 'name'. See [EngineProfiler] for more information.
-
-[EngineProfiler]: https://pkg.go.dev/graphics.gd/classdb/EngineProfiler
-*/
-//go:nosplit
 func (self class) RegisterProfiler(name String.Name, profiler [1]gdclass.EngineProfiler) { //gd:EngineDebugger.register_profiler
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_profiler, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
@@ -368,42 +357,22 @@ func (self class) RegisterProfiler(name String.Name, profiler [1]gdclass.EngineP
 		profiler gdextension.Object
 	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetEngineProfiler(profiler[0])))})
 }
-
-/*
-Unregisters a profiler with given 'name'.
-*/
-//go:nosplit
 func (self class) UnregisterProfiler(name String.Name) { //gd:EngineDebugger.unregister_profiler
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_profiler, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
-
-/*
-Returns true if a profiler with the given name is present and active otherwise false.
-*/
-//go:nosplit
 func (self class) IsProfiling(name String.Name) bool { //gd:EngineDebugger.is_profiling
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_profiling, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if a profiler with the given name is present otherwise false.
-*/
-//go:nosplit
 func (self class) HasProfiler(name String.Name) bool { //gd:EngineDebugger.has_profiler
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_profiler, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Calls the add callable of the profiler with given 'name' and 'data'.
-*/
-//go:nosplit
 func (self class) ProfilerAddFrameData(name String.Name, data Array.Any) { //gd:EngineDebugger.profiler_add_frame_data
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.profiler_add_frame_data, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeArray<<8), &struct {
@@ -411,11 +380,6 @@ func (self class) ProfilerAddFrameData(name String.Name, data Array.Any) { //gd:
 		data gdextension.Array
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalArray(data))})
 }
-
-/*
-Calls the toggle callable of the profiler with given 'name' and 'arguments'. Enables/Disables the same profiler depending on 'enable' argument.
-*/
-//go:nosplit
 func (self class) ProfilerEnable(name String.Name, enable bool, arguments Array.Any) { //gd:EngineDebugger.profiler_enable
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.profiler_enable, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeArray<<12), &struct {
@@ -424,18 +388,6 @@ func (self class) ProfilerEnable(name String.Name, enable bool, arguments Array.
 		arguments gdextension.Array
 	}{pointers.Get(gd.InternalStringName(name)), enable, pointers.Get(gd.InternalArray(arguments))})
 }
-
-/*
-Registers a message capture with given 'name'. If 'name' is "my_message" then messages starting with "my_message:" will be called with the given callable.
-
-The callable must accept a message string and a data array as argument. The callable should return true if the message is recognized.
-
-Note: The callable will receive the message with the prefix stripped, unlike [EditorDebuggerPlugin.Capture]. See the [EditorDebuggerPlugin] description for an example.
-
-[EditorDebuggerPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorDebuggerPlugin
-[EditorDebuggerPlugin.Capture]: https://pkg.go.dev/graphics.gd/classdb/EditorDebuggerPlugin#Instance.Capture
-*/
-//go:nosplit
 func (self class) RegisterMessageCapture(name String.Name, callable Callable.Function) { //gd:EngineDebugger.register_message_capture
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_message_capture, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeCallable<<8), &struct {
@@ -443,40 +395,20 @@ func (self class) RegisterMessageCapture(name String.Name, callable Callable.Fun
 		callable gdextension.Callable
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalCallable(callable))})
 }
-
-/*
-Unregisters the message capture with given 'name'.
-*/
-//go:nosplit
 func (self class) UnregisterMessageCapture(name String.Name) { //gd:EngineDebugger.unregister_message_capture
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_message_capture, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
-
-/*
-Returns true if a capture with the given name is present otherwise false.
-*/
-//go:nosplit
 func (self class) HasCapture(name String.Name) bool { //gd:EngineDebugger.has_capture
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_capture, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Forces a processing loop of debugger events. The purpose of this method is just processing events every now and then when the script might get too busy, so that bugs like infinite loops can be caught.
-*/
-//go:nosplit
 func (self class) LinePoll() { //gd:EngineDebugger.line_poll
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.line_poll, 0, &struct{}{})
 }
-
-/*
-Sends a message with given 'message' and 'data' array.
-*/
-//go:nosplit
 func (self class) SendMessage(message String.Readable, data Array.Any) { //gd:EngineDebugger.send_message
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.send_message, 0|(gdextension.SizeString<<4)|(gdextension.SizeArray<<8), &struct {
@@ -484,11 +416,6 @@ func (self class) SendMessage(message String.Readable, data Array.Any) { //gd:En
 		data    gdextension.Array
 	}{pointers.Get(gd.InternalString(message)), pointers.Get(gd.InternalArray(data))})
 }
-
-/*
-Starts a debug break in script execution, optionally specifying whether the program can continue based on 'can_continue' and whether the break was due to a breakpoint.
-*/
-//go:nosplit
 func (self class) Debug(can_continue bool, is_error_breakpoint bool) { //gd:EngineDebugger.debug
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.debug, 0|(gdextension.SizeBool<<4)|(gdextension.SizeBool<<8), &struct {
@@ -496,11 +423,6 @@ func (self class) Debug(can_continue bool, is_error_breakpoint bool) { //gd:Engi
 		is_error_breakpoint bool
 	}{can_continue, is_error_breakpoint})
 }
-
-/*
-Starts a debug break in script execution, optionally specifying whether the program can continue based on 'can_continue' and whether the break was due to a breakpoint.
-*/
-//go:nosplit
 func (self class) ScriptDebug(language [1]gdclass.ScriptLanguage, can_continue bool, is_error_breakpoint bool) { //gd:EngineDebugger.script_debug
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.script_debug, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12), &struct {
@@ -509,51 +431,26 @@ func (self class) ScriptDebug(language [1]gdclass.ScriptLanguage, can_continue b
 		is_error_breakpoint bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetScriptLanguage(language[0]))), can_continue, is_error_breakpoint})
 }
-
-/*
-Sets the current debugging lines that remain.
-*/
-//go:nosplit
 func (self class) SetLinesLeft(lines int64) { //gd:EngineDebugger.set_lines_left
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lines_left, 0|(gdextension.SizeInt<<4), &struct{ lines int64 }{lines})
 }
-
-/*
-Returns the number of lines that remain.
-*/
-//go:nosplit
 func (self class) GetLinesLeft() int64 { //gd:EngineDebugger.get_lines_left
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_lines_left, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the current debugging depth.
-*/
-//go:nosplit
 func (self class) SetDepth(depth int64) { //gd:EngineDebugger.set_depth
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth, 0|(gdextension.SizeInt<<4), &struct{ depth int64 }{depth})
 }
-
-/*
-Returns the current debug depth.
-*/
-//go:nosplit
 func (self class) GetDepth() int64 { //gd:EngineDebugger.get_depth
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_depth, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the given 'source' and 'line' represent an existing breakpoint.
-*/
-//go:nosplit
 func (self class) IsBreakpoint(line int64, source String.Name) bool { //gd:EngineDebugger.is_breakpoint
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_breakpoint, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), &struct {
@@ -563,22 +460,12 @@ func (self class) IsBreakpoint(line int64, source String.Name) bool { //gd:Engin
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the debugger is skipping breakpoints otherwise false.
-*/
-//go:nosplit
 func (self class) IsSkippingBreakpoints() bool { //gd:EngineDebugger.is_skipping_breakpoints
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_skipping_breakpoints, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Inserts a new breakpoint with the given 'source' and 'line'.
-*/
-//go:nosplit
 func (self class) InsertBreakpoint(line int64, source String.Name) { //gd:EngineDebugger.insert_breakpoint
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.insert_breakpoint, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), &struct {
@@ -586,11 +473,6 @@ func (self class) InsertBreakpoint(line int64, source String.Name) { //gd:Engine
 		source gdextension.StringName
 	}{line, pointers.Get(gd.InternalStringName(source))})
 }
-
-/*
-Removes a breakpoint with the given 'source' and 'line'.
-*/
-//go:nosplit
 func (self class) RemoveBreakpoint(line int64, source String.Name) { //gd:EngineDebugger.remove_breakpoint
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_breakpoint, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), &struct {
@@ -598,11 +480,6 @@ func (self class) RemoveBreakpoint(line int64, source String.Name) { //gd:Engine
 		source gdextension.StringName
 	}{line, pointers.Get(gd.InternalStringName(source))})
 }
-
-/*
-Clears all breakpoints.
-*/
-//go:nosplit
 func (self class) ClearBreakpoints() { //gd:EngineDebugger.clear_breakpoints
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_breakpoints, 0, &struct{}{})

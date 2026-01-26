@@ -678,165 +678,77 @@ func (self Instance) SetCurrentPath(value string) Instance { //gd:FileDialog.cur
 	return self
 }
 
-/*
-Clear all the added filters in the dialog.
-*/
-//go:nosplit
 func (self class) ClearFilters() { //gd:FileDialog.clear_filters
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_filters, 0, &struct{}{})
 }
-
-/*
-Adds a comma-separated file name 'filter' option to the [FileDialog] with an optional 'description', which restricts what files can be picked.
-
-A 'filter' should be of the form "filename.extension", where filename and extension can be * to match any string. Filters starting with . (i.e. empty filenames) are not allowed.
-
-For example, a 'filter' of "*.png, *.jpg" and a 'description' of "Images" results in filter text "Images (*.png, *.jpg)".
-
-[FileDialog]: https://pkg.go.dev/graphics.gd/classdb/FileDialog
-*/
-//go:nosplit
 func (self class) AddFilter(filter String.Readable, description String.Readable) { //gd:FileDialog.add_filter
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_filter, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		filter      gdextension.String
 		description gdextension.String
 	}{pointers.Get(gd.InternalString(filter)), pointers.Get(gd.InternalString(description))})
 }
-
-//go:nosplit
 func (self class) SetFilters(filters Packed.Strings) { //gd:FileDialog.set_filters
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_filters, 0|(gdextension.SizePackedArray<<4), &struct {
 		filters gdextension.PackedArray[gdextension.String]
 	}{pointers.Get(gd.InternalPackedStrings(filters))})
 }
-
-//go:nosplit
 func (self class) GetFilters() Packed.Strings { //gd:FileDialog.get_filters
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_filters, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Clear the filter for file names.
-*/
-//go:nosplit
 func (self class) ClearFilenameFilter() { //gd:FileDialog.clear_filename_filter
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_filename_filter, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetFilenameFilter(filter String.Readable) { //gd:FileDialog.set_filename_filter
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_filename_filter, 0|(gdextension.SizeString<<4), &struct{ filter gdextension.String }{pointers.Get(gd.InternalString(filter))})
 }
-
-//go:nosplit
 func (self class) GetFilenameFilter() String.Readable { //gd:FileDialog.get_filename_filter
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_filename_filter, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the name of the [OptionButton] or [CheckBox] with index 'option'.
-
-[CheckBox]: https://pkg.go.dev/graphics.gd/classdb/CheckBox
-[OptionButton]: https://pkg.go.dev/graphics.gd/classdb/OptionButton
-*/
-//go:nosplit
 func (self class) GetOptionName(option int64) String.Readable { //gd:FileDialog.get_option_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_option_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ option int64 }{option})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns an array of values of the [OptionButton] with index 'option'.
-
-[OptionButton]: https://pkg.go.dev/graphics.gd/classdb/OptionButton
-*/
-//go:nosplit
 func (self class) GetOptionValues(option int64) Packed.Strings { //gd:FileDialog.get_option_values
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_option_values, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ option int64 }{option})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns the default value index of the [OptionButton] or [CheckBox] with index 'option'.
-
-[CheckBox]: https://pkg.go.dev/graphics.gd/classdb/CheckBox
-[OptionButton]: https://pkg.go.dev/graphics.gd/classdb/OptionButton
-*/
-//go:nosplit
 func (self class) GetOptionDefault(option int64) int64 { //gd:FileDialog.get_option_default
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_option_default, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ option int64 }{option})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the name of the [OptionButton] or [CheckBox] with index 'option'.
-
-[CheckBox]: https://pkg.go.dev/graphics.gd/classdb/CheckBox
-[OptionButton]: https://pkg.go.dev/graphics.gd/classdb/OptionButton
-*/
-//go:nosplit
 func (self class) SetOptionName(option int64, name String.Readable) { //gd:FileDialog.set_option_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_option_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		option int64
 		name   gdextension.String
 	}{option, pointers.Get(gd.InternalString(name))})
 }
-
-/*
-Sets the option values of the [OptionButton] with index 'option'.
-
-[OptionButton]: https://pkg.go.dev/graphics.gd/classdb/OptionButton
-*/
-//go:nosplit
 func (self class) SetOptionValues(option int64, values Packed.Strings) { //gd:FileDialog.set_option_values
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_option_values, 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), &struct {
 		option int64
 		values gdextension.PackedArray[gdextension.String]
 	}{option, pointers.Get(gd.InternalPackedStrings(values))})
 }
-
-/*
-Sets the default value index of the [OptionButton] or [CheckBox] with index 'option'.
-
-[CheckBox]: https://pkg.go.dev/graphics.gd/classdb/CheckBox
-[OptionButton]: https://pkg.go.dev/graphics.gd/classdb/OptionButton
-*/
-//go:nosplit
 func (self class) SetOptionDefault(option int64, default_value_index int64) { //gd:FileDialog.set_option_default
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_option_default, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		option              int64
 		default_value_index int64
 	}{option, default_value_index})
 }
-
-//go:nosplit
 func (self class) SetOptionCount(count int64) { //gd:FileDialog.set_option_count
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_option_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
-
-//go:nosplit
 func (self class) GetOptionCount() int64 { //gd:FileDialog.get_option_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_option_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds an additional [OptionButton] to the file dialog. If 'values' is empty, a [CheckBox] is added instead.
-
-'default_value_index' should be an index of the value in the 'values'. If 'values' is empty it should be either 1 (checked), or 0 (unchecked).
-
-[CheckBox]: https://pkg.go.dev/graphics.gd/classdb/CheckBox
-[OptionButton]: https://pkg.go.dev/graphics.gd/classdb/OptionButton
-*/
-//go:nosplit
 func (self class) AddOption(name String.Readable, values Packed.Strings, default_value_index int64) { //gd:FileDialog.add_option
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_option, 0|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), &struct {
 		name                gdextension.String
@@ -844,208 +756,115 @@ func (self class) AddOption(name String.Readable, values Packed.Strings, default
 		default_value_index int64
 	}{pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalPackedStrings(values)), default_value_index})
 }
-
-/*
-Returns a data structure with the selected values of the additional [OptionButton]s and/or [CheckBox]es. data structure keys are names and values are selected value indices.
-
-[CheckBox]: https://pkg.go.dev/graphics.gd/classdb/CheckBox
-[OptionButton]: https://pkg.go.dev/graphics.gd/classdb/OptionButton
-*/
-//go:nosplit
 func (self class) GetSelectedOptions() Dictionary.Any { //gd:FileDialog.get_selected_options
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_selected_options, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) GetCurrentDir() String.Readable { //gd:FileDialog.get_current_dir
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_dir, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) GetCurrentFile() String.Readable { //gd:FileDialog.get_current_file
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_file, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) GetCurrentPath() String.Readable { //gd:FileDialog.get_current_path
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCurrentDir(dir String.Readable) { //gd:FileDialog.set_current_dir
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_dir, 0|(gdextension.SizeString<<4), &struct{ dir gdextension.String }{pointers.Get(gd.InternalString(dir))})
 }
-
-//go:nosplit
 func (self class) SetCurrentFile(file String.Readable) { //gd:FileDialog.set_current_file
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_file, 0|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
 }
-
-//go:nosplit
 func (self class) SetCurrentPath(path String.Readable) { //gd:FileDialog.set_current_path
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_path, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
-
-//go:nosplit
 func (self class) SetModeOverridesTitle(override bool) { //gd:FileDialog.set_mode_overrides_title
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mode_overrides_title, 0|(gdextension.SizeBool<<4), &struct{ override bool }{override})
 }
-
-//go:nosplit
 func (self class) IsModeOverridingTitle() bool { //gd:FileDialog.is_mode_overriding_title
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_mode_overriding_title, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFileMode(mode FileMode) { //gd:FileDialog.set_file_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_file_mode, 0|(gdextension.SizeInt<<4), &struct{ mode FileMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetFileMode() FileMode { //gd:FileDialog.get_file_mode
 	var r_ret = noescape.Call[FileMode](gd.ObjectChecked(self.AsObject()), methods.get_file_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDisplayMode(mode DisplayMode) { //gd:FileDialog.set_display_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_display_mode, 0|(gdextension.SizeInt<<4), &struct{ mode DisplayMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetDisplayMode() DisplayMode { //gd:FileDialog.get_display_mode
 	var r_ret = noescape.Call[DisplayMode](gd.ObjectChecked(self.AsObject()), methods.get_display_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the vertical box container of the dialog, custom controls can be added to it.
-
-Warning: This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [CanvasItem.Visible] property.
-
-Note: Changes to this node are ignored by native file dialogs, use [AddOption] to add custom elements to the dialog instead.
-
-[AddOption]: https://pkg.go.dev/graphics.gd/classdb/FileDialog#Instance.AddOption
-[CanvasItem.Visible]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Visible
-*/
-//go:nosplit
 func (self class) GetVbox() [1]gdclass.VBoxContainer { //gd:FileDialog.get_vbox
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_vbox, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.VBoxContainer{gdclass.NewVBoxContainer(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Returns the LineEdit for the selected file.
-
-Warning: This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [CanvasItem.Visible] property.
-
-[CanvasItem.Visible]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Visible
-*/
-//go:nosplit
 func (self class) GetLineEdit() [1]gdclass.LineEdit { //gd:FileDialog.get_line_edit
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_line_edit, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.LineEdit{gdclass.NewLineEdit(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAccess(access Access) { //gd:FileDialog.set_access
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_access, 0|(gdextension.SizeInt<<4), &struct{ access Access }{access})
 }
-
-//go:nosplit
 func (self class) GetAccess() Access { //gd:FileDialog.get_access
 	var r_ret = noescape.Call[Access](gd.ObjectChecked(self.AsObject()), methods.get_access, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRootSubfolder(dir String.Readable) { //gd:FileDialog.set_root_subfolder
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_subfolder, 0|(gdextension.SizeString<<4), &struct{ dir gdextension.String }{pointers.Get(gd.InternalString(dir))})
 }
-
-//go:nosplit
 func (self class) GetRootSubfolder() String.Readable { //gd:FileDialog.get_root_subfolder
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_root_subfolder, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetShowHiddenFiles(show bool) { //gd:FileDialog.set_show_hidden_files
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_show_hidden_files, 0|(gdextension.SizeBool<<4), &struct{ show bool }{show})
 }
-
-//go:nosplit
 func (self class) IsShowingHiddenFiles() bool { //gd:FileDialog.is_showing_hidden_files
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_showing_hidden_files, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUseNativeDialog(native bool) { //gd:FileDialog.set_use_native_dialog
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_native_dialog, 0|(gdextension.SizeBool<<4), &struct{ native bool }{native})
 }
-
-//go:nosplit
 func (self class) GetUseNativeDialog() bool { //gd:FileDialog.get_use_native_dialog
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_native_dialog, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Toggles the specified customization 'flag', allowing to customize features available in this [FileDialog]. See [Customization] for options.
-
-[FileDialog]: https://pkg.go.dev/graphics.gd/classdb/FileDialog
-*/
-//go:nosplit
 func (self class) SetCustomizationFlagEnabled(flag Customization, enabled bool) { //gd:FileDialog.set_customization_flag_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_customization_flag_enabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		flag    Customization
 		enabled bool
 	}{flag, enabled})
 }
-
-/*
-Returns true if the provided 'flag' is enabled.
-*/
-//go:nosplit
 func (self class) IsCustomizationFlagEnabled(flag Customization) bool { //gd:FileDialog.is_customization_flag_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_customization_flag_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ flag Customization }{flag})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Clear all currently selected items in the dialog.
-*/
-//go:nosplit
 func (self class) DeselectAll() { //gd:FileDialog.deselect_all
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.deselect_all, 0, &struct{}{})
 }
-
-/*
-Invalidate and update the current dialog content list.
-
-Note: This method does nothing on native file dialogs.
-*/
-//go:nosplit
 func (self class) Invalidate() { //gd:FileDialog.invalidate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.invalidate, 0, &struct{}{})
 }

@@ -265,61 +265,36 @@ func (self Instance) SetBakeSimplificationDistance(value Float.X) Instance { //g
 	return self
 }
 
-//go:nosplit
 func (self class) SetBakeMask(mask int64) { //gd:OccluderInstance3D.set_bake_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
-
-//go:nosplit
 func (self class) GetBakeMask() int64 { //gd:OccluderInstance3D.get_bake_mask
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bake_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Based on 'value', enables or disables the specified layer in the [BakeMask], given a 'layer_number' between 1 and 32.
-
-[BakeMask]: https://pkg.go.dev/graphics.gd/classdb/OccluderInstance3D#Instance.BakeMask
-*/
-//go:nosplit
 func (self class) SetBakeMaskValue(layer_number int64, value bool) { //gd:OccluderInstance3D.set_bake_mask_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value})
 }
-
-/*
-Returns whether or not the specified layer of the [BakeMask] is enabled, given a 'layer_number' between 1 and 32.
-
-[BakeMask]: https://pkg.go.dev/graphics.gd/classdb/OccluderInstance3D#Instance.BakeMask
-*/
-//go:nosplit
 func (self class) GetBakeMaskValue(layer_number int64) bool { //gd:OccluderInstance3D.get_bake_mask_value
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_bake_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBakeSimplificationDistance(simplification_distance float64) { //gd:OccluderInstance3D.set_bake_simplification_distance
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_simplification_distance, 0|(gdextension.SizeFloat<<4), &struct{ simplification_distance float64 }{simplification_distance})
 }
-
-//go:nosplit
 func (self class) GetBakeSimplificationDistance() float64 { //gd:OccluderInstance3D.get_bake_simplification_distance
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bake_simplification_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetOccluder(occluder [1]gdclass.Occluder3D) { //gd:OccluderInstance3D.set_occluder
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occluder, 0|(gdextension.SizeObject<<4), &struct{ occluder gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOccluder3D(occluder[0])))})
 }
-
-//go:nosplit
 func (self class) GetOccluder() [1]gdclass.Occluder3D { //gd:OccluderInstance3D.get_occluder
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_occluder, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Occluder3D{gdclass.NewOccluder3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

@@ -288,140 +288,66 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns the point of collision in global coordinates.
-*/
-//go:nosplit
 func (self class) GetPosition() Vector2.XY { //gd:KinematicCollision2D.get_position
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the colliding body's shape's normal at the point of collision.
-*/
-//go:nosplit
 func (self class) GetNormal() Vector2.XY { //gd:KinematicCollision2D.get_normal
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_normal, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the moving object's travel before collision.
-*/
-//go:nosplit
 func (self class) GetTravel() Vector2.XY { //gd:KinematicCollision2D.get_travel
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_travel, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the moving object's remaining movement vector.
-*/
-//go:nosplit
 func (self class) GetRemainder() Vector2.XY { //gd:KinematicCollision2D.get_remainder
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_remainder, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the collision angle according to 'up_direction', which is [Vector2.Up] by default. This value is always positive.
-*/
-//go:nosplit
 func (self class) GetAngle(up_direction Vector2.XY) float64 { //gd:KinematicCollision2D.get_angle
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angle, gdextension.SizeFloat|(gdextension.SizeVector2<<4), &struct{ up_direction Vector2.XY }{up_direction})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the colliding body's length of overlap along the collision normal.
-*/
-//go:nosplit
 func (self class) GetDepth() float64 { //gd:KinematicCollision2D.get_depth
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the moving object's colliding shape.
-*/
-//go:nosplit
 func (self class) GetLocalShape() [1]gd.Object { //gd:KinematicCollision2D.get_local_shape
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_local_shape, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
-
-/*
-Returns the colliding body's attached [Object].
-
-[Object]: https://pkg.go.dev/graphics.gd/variant/Object
-*/
-//go:nosplit
 func (self class) GetCollider() [1]gd.Object { //gd:KinematicCollision2D.get_collider
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_collider, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
-
-/*
-Returns the unique instance ID of the colliding body's attached [Object]. See [Object.GetInstanceId].
-
-[Object]: https://pkg.go.dev/graphics.gd/variant/Object
-[Object.GetInstanceId]: https://pkg.go.dev/graphics.gd/variant/Object#GetInstanceId
-*/
-//go:nosplit
 func (self class) GetColliderId() int64 { //gd:KinematicCollision2D.get_collider_id
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collider_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the colliding body's [Resource.ID] used by the [PhysicsServer2D].
-
-[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) GetColliderRid() RID.Any { //gd:KinematicCollision2D.get_collider_rid
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_collider_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the colliding body's shape.
-*/
-//go:nosplit
 func (self class) GetColliderShape() [1]gd.Object { //gd:KinematicCollision2D.get_collider_shape
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_collider_shape, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
-
-/*
-Returns the colliding body's shape index. See [CollisionObject2D].
-
-[CollisionObject2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D
-*/
-//go:nosplit
 func (self class) GetColliderShapeIndex() int64 { //gd:KinematicCollision2D.get_collider_shape_index
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collider_shape_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the colliding body's velocity.
-*/
-//go:nosplit
 func (self class) GetColliderVelocity() Vector2.XY { //gd:KinematicCollision2D.get_collider_velocity
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_collider_velocity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret

@@ -195,24 +195,17 @@ func (self Instance) SetMaterial(value Material.Instance) Instance { //gd:CSGBox
 	return self
 }
 
-//go:nosplit
 func (self class) SetSize(size Vector3.XYZ) { //gd:CSGBox3D.set_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), &struct{ size Vector3.XYZ }{size})
 }
-
-//go:nosplit
 func (self class) GetSize() Vector3.XYZ { //gd:CSGBox3D.get_size
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:CSGBox3D.set_material
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
 }
-
-//go:nosplit
 func (self class) GetMaterial() [1]gdclass.Material { //gd:CSGBox3D.get_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

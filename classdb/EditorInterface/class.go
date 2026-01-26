@@ -858,127 +858,58 @@ func SetMovieMakerEnabled(value bool) { //gd:EditorInterface.movie_maker_enabled
 	class(self).SetMovieMakerEnabled(value)
 }
 
-/*
-Restarts the editor. This closes the editor and then opens the same project. If 'save' is true, the project will be saved before restarting.
-*/
-//go:nosplit
 func (self class) RestartEditor(save bool) { //gd:EditorInterface.restart_editor
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.restart_editor, 0|(gdextension.SizeBool<<4), &struct{ save bool }{save})
 }
-
-/*
-Returns the editor's [EditorCommandPalette] instance.
-
-Warning: Removing and freeing this node will render a part of the editor useless and may cause a crash.
-
-[EditorCommandPalette]: https://pkg.go.dev/graphics.gd/classdb/EditorCommandPalette
-*/
-//go:nosplit
 func (self class) GetCommandPalette() [1]gdclass.EditorCommandPalette { //gd:EditorInterface.get_command_palette
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_command_palette, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorCommandPalette{gdclass.NewEditorCommandPalette(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Returns the editor's [EditorFileSystem] instance.
-
-[EditorFileSystem]: https://pkg.go.dev/graphics.gd/classdb/EditorFileSystem
-*/
-//go:nosplit
 func (self class) GetResourceFilesystem() [1]gdclass.EditorFileSystem { //gd:EditorInterface.get_resource_filesystem
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_resource_filesystem, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorFileSystem{gdclass.NewEditorFileSystem(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Returns the [EditorPaths] singleton.
-
-[EditorPaths]: https://pkg.go.dev/graphics.gd/classdb/EditorPaths
-*/
-//go:nosplit
 func (self class) GetEditorPaths() [1]gdclass.EditorPaths { //gd:EditorInterface.get_editor_paths
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_paths, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorPaths{gdclass.NewEditorPaths(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Returns the editor's [EditorResourcePreview] instance.
-
-[EditorResourcePreview]: https://pkg.go.dev/graphics.gd/classdb/EditorResourcePreview
-*/
-//go:nosplit
 func (self class) GetResourcePreviewer() [1]gdclass.EditorResourcePreview { //gd:EditorInterface.get_resource_previewer
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_resource_previewer, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorResourcePreview{gdclass.NewEditorResourcePreview(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Returns the editor's [EditorSelection] instance.
-
-[EditorSelection]: https://pkg.go.dev/graphics.gd/classdb/EditorSelection
-*/
-//go:nosplit
 func (self class) GetSelection() [1]gdclass.EditorSelection { //gd:EditorInterface.get_selection
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_selection, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorSelection{gdclass.NewEditorSelection(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Returns the editor's [EditorSettings] instance.
-
-[EditorSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings
-*/
-//go:nosplit
 func (self class) GetEditorSettings() [1]gdclass.EditorSettings { //gd:EditorInterface.get_editor_settings
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_settings, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorSettings{gdclass.NewEditorSettings(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the editor's [EditorToaster].
-
-[EditorToaster]: https://pkg.go.dev/graphics.gd/classdb/EditorToaster
-*/
-//go:nosplit
 func (self class) GetEditorToaster() [1]gdclass.EditorToaster { //gd:EditorInterface.get_editor_toaster
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_toaster, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorToaster{gdclass.NewEditorToaster(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Returns the editor's [EditorUndoRedoManager].
-
-[EditorUndoRedoManager]: https://pkg.go.dev/graphics.gd/classdb/EditorUndoRedoManager
-*/
-//go:nosplit
 func (self class) GetEditorUndoRedo() [1]gdclass.EditorUndoRedoManager { //gd:EditorInterface.get_editor_undo_redo
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_undo_redo, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorUndoRedoManager{gdclass.NewEditorUndoRedoManager(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Returns mesh previews rendered at the given size as an slice of [Texture2D]s.
-
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
-//go:nosplit
 func (self class) MakeMeshPreviews(meshes Array.Contains[[1]gdclass.Mesh], preview_size int64) Array.Contains[[1]gdclass.Texture2D] { //gd:EditorInterface.make_mesh_previews
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.make_mesh_previews, gdextension.SizeArray|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8), &struct {
@@ -988,11 +919,6 @@ func (self class) MakeMeshPreviews(meshes Array.Contains[[1]gdclass.Mesh], previ
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Texture2D]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Sets the enabled status of a plugin. The plugin name is the same as its directory name.
-*/
-//go:nosplit
 func (self class) SetPluginEnabled(plugin String.Readable, enabled bool) { //gd:EditorInterface.set_plugin_enabled
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_plugin_enabled, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
@@ -1000,177 +926,74 @@ func (self class) SetPluginEnabled(plugin String.Readable, enabled bool) { //gd:
 		enabled bool
 	}{pointers.Get(gd.InternalString(plugin)), enabled})
 }
-
-/*
-Returns true if the specified 'plugin' is enabled. The plugin name is the same as its directory name.
-*/
-//go:nosplit
 func (self class) IsPluginEnabled(plugin String.Readable) bool { //gd:EditorInterface.is_plugin_enabled
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_plugin_enabled, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ plugin gdextension.String }{pointers.Get(gd.InternalString(plugin))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the editor's [Theme].
-
-Note: When creating custom editor UI, prefer accessing theme items directly from your GUI nodes using the get_theme_* methods.
-
-[Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
-*/
-//go:nosplit
 func (self class) GetEditorTheme() [1]gdclass.Theme { //gd:EditorInterface.get_editor_theme
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_theme, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Theme{gdclass.NewTheme(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the main container of Godot editor's window. For example, you can use it to retrieve the size of the container and place your controls accordingly.
-
-Warning: Removing and freeing this node will render the editor useless and may cause a crash.
-*/
-//go:nosplit
 func (self class) GetBaseControl() [1]gdclass.Control { //gd:EditorInterface.get_base_control
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_base_control, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Returns the editor control responsible for main screen plugins and tools. Use it with plugins that implement [EditorPlugin.HasMainScreen].
-
-Note: This node is a [VBoxContainer], which means that if you add a [Control] child to it, you need to set the child's [Control.SizeFlagsVertical] to [Control.SizeExpandFill] to make it use the full available space.
-
-Warning: Removing and freeing this node will render a part of the editor useless and may cause a crash.
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[Control.SizeFlagsVertical]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.SizeFlagsVertical
-[EditorPlugin.HasMainScreen]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.HasMainScreen
-[VBoxContainer]: https://pkg.go.dev/graphics.gd/classdb/VBoxContainer
-*/
-//go:nosplit
 func (self class) GetEditorMainScreen() [1]gdclass.VBoxContainer { //gd:EditorInterface.get_editor_main_screen
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_main_screen, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.VBoxContainer{gdclass.NewVBoxContainer(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Returns the editor's [ScriptEditor] instance.
-
-Warning: Removing and freeing this node will render a part of the editor useless and may cause a crash.
-
-[ScriptEditor]: https://pkg.go.dev/graphics.gd/classdb/ScriptEditor
-*/
-//go:nosplit
 func (self class) GetScriptEditor() [1]gdclass.ScriptEditor { //gd:EditorInterface.get_script_editor
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_script_editor, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ScriptEditor{gdclass.NewScriptEditor(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Returns the 2D editor [SubViewport]. It does not have a camera. Instead, the view transforms are done directly and can be accessed with [Viewport.GlobalCanvasTransform].
-
-[SubViewport]: https://pkg.go.dev/graphics.gd/classdb/SubViewport
-[Viewport.GlobalCanvasTransform]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GlobalCanvasTransform
-*/
-//go:nosplit
 func (self class) GetEditorViewport2d() [1]gdclass.SubViewport { //gd:EditorInterface.get_editor_viewport_2d
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_viewport_2d, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.SubViewport{gdclass.NewSubViewport(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Returns the specified 3D editor [SubViewport], from 0 to 3. The viewport can be used to access the active editor cameras with [Viewport.GetCamera3d].
-
-[SubViewport]: https://pkg.go.dev/graphics.gd/classdb/SubViewport
-[Viewport.GetCamera3d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GetCamera3d
-*/
-//go:nosplit
 func (self class) GetEditorViewport3d(idx int64) [1]gdclass.SubViewport { //gd:EditorInterface.get_editor_viewport_3d
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_viewport_3d, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = [1]gdclass.SubViewport{gdclass.NewSubViewport(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Sets the editor's current main screen to the one specified in 'name'. 'name' must match the title of the tab in question exactly (e.g. 2D, 3D, Script, Game, or AssetLib for default tabs).
-*/
-//go:nosplit
 func (self class) SetMainScreenEditor(name String.Readable) { //gd:EditorInterface.set_main_screen_editor
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_main_screen_editor, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
-
-//go:nosplit
 func (self class) SetDistractionFreeMode(enter bool) { //gd:EditorInterface.set_distraction_free_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_distraction_free_mode, 0|(gdextension.SizeBool<<4), &struct{ enter bool }{enter})
 }
-
-//go:nosplit
 func (self class) IsDistractionFreeModeEnabled() bool { //gd:EditorInterface.is_distraction_free_mode_enabled
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_distraction_free_mode_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if multiple window support is enabled in the editor. Multiple window support is enabled if all of these statements are true:
-
-- [EditorSettings] "interface/multi_window/enable" is true.
-
-- [EditorSettings] "interface/editor/single_window_mode" is false.
-
-- [Viewport.GuiEmbedSubwindows] is false. This is forced to true on platforms that don't support multiple windows such as Web, or when the --single-window [command line argument] is used.
-
-[EditorSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings
-[Viewport.GuiEmbedSubwindows]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GuiEmbedSubwindows
-[command line argument]: https://docs.godotengine.org/tutorials/editor/command_line_tutorial.html
-*/
-//go:nosplit
 func (self class) IsMultiWindowEnabled() bool { //gd:EditorInterface.is_multi_window_enabled
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_multi_window_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the actual scale of the editor UI (1.0 being 100% scale). This can be used to adjust position and dimensions of the UI added by plugins.
-
-Note: This value is set via the [EditorSettings] "interface/editor/display_scale" and [EditorSettings] "interface/editor/custom_display_scale" settings. The editor must be restarted for changes to be properly applied.
-
-[EditorSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings
-*/
-//go:nosplit
 func (self class) GetEditorScale() float64 { //gd:EditorInterface.get_editor_scale
 	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_editor_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Pops up the 'dialog' in the editor UI with [Window.PopupExclusive]. The dialog must have no current parent, otherwise the method fails.
-
-See also [Window.SetUnparentWhenInvisible].
-
-[Window.PopupExclusive]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.PopupExclusive
-[Window.SetUnparentWhenInvisible]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.SetUnparentWhenInvisible
-*/
-//go:nosplit
 func (self class) PopupDialog(dialog [1]gdclass.Window, rect Rect2i.PositionSize) { //gd:EditorInterface.popup_dialog
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_dialog, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2i<<8), &struct {
@@ -1178,16 +1001,6 @@ func (self class) PopupDialog(dialog [1]gdclass.Window, rect Rect2i.PositionSize
 		rect   Rect2i.PositionSize
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetWindow(dialog[0]))), rect})
 }
-
-/*
-Pops up the 'dialog' in the editor UI with [Window.PopupExclusiveCentered]. The dialog must have no current parent, otherwise the method fails.
-
-See also [Window.SetUnparentWhenInvisible].
-
-[Window.PopupExclusiveCentered]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.PopupExclusiveCentered
-[Window.SetUnparentWhenInvisible]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.SetUnparentWhenInvisible
-*/
-//go:nosplit
 func (self class) PopupDialogCentered(dialog [1]gdclass.Window, minsize Vector2i.XY) { //gd:EditorInterface.popup_dialog_centered
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_dialog_centered, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2i<<8), &struct {
@@ -1195,16 +1008,6 @@ func (self class) PopupDialogCentered(dialog [1]gdclass.Window, minsize Vector2i
 		minsize Vector2i.XY
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetWindow(dialog[0]))), minsize})
 }
-
-/*
-Pops up the 'dialog' in the editor UI with [Window.PopupExclusiveCenteredRatio]. The dialog must have no current parent, otherwise the method fails.
-
-See also [Window.SetUnparentWhenInvisible].
-
-[Window.PopupExclusiveCenteredRatio]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.PopupExclusiveCenteredRatio
-[Window.SetUnparentWhenInvisible]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.SetUnparentWhenInvisible
-*/
-//go:nosplit
 func (self class) PopupDialogCenteredRatio(dialog [1]gdclass.Window, ratio float64) { //gd:EditorInterface.popup_dialog_centered_ratio
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_dialog_centered_ratio, 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -1212,16 +1015,6 @@ func (self class) PopupDialogCenteredRatio(dialog [1]gdclass.Window, ratio float
 		ratio  float64
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetWindow(dialog[0]))), ratio})
 }
-
-/*
-Pops up the 'dialog' in the editor UI with [Window.PopupExclusiveCenteredClamped]. The dialog must have no current parent, otherwise the method fails.
-
-See also [Window.SetUnparentWhenInvisible].
-
-[Window.PopupExclusiveCenteredClamped]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.PopupExclusiveCenteredClamped
-[Window.SetUnparentWhenInvisible]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.SetUnparentWhenInvisible
-*/
-//go:nosplit
 func (self class) PopupDialogCenteredClamped(dialog [1]gdclass.Window, minsize Vector2i.XY, fallback_ratio float64) { //gd:EditorInterface.popup_dialog_centered_clamped
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_dialog_centered_clamped, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeFloat<<12), &struct {
@@ -1230,52 +1023,16 @@ func (self class) PopupDialogCenteredClamped(dialog [1]gdclass.Window, minsize V
 		fallback_ratio float64
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetWindow(dialog[0]))), minsize, fallback_ratio})
 }
-
-/*
-Returns the name of the currently activated feature profile. If the default profile is currently active, an empty string is returned instead.
-
-In order to get a reference to the [EditorFeatureProfile], you must load the feature profile using [EditorFeatureProfile.LoadFromFile].
-
-Note: Feature profiles created via the user interface are loaded from the feature_profiles directory, as a file with the .profile extension. The editor configuration folder can be found by using [EditorPaths.GetConfigDir].
-
-[EditorFeatureProfile]: https://pkg.go.dev/graphics.gd/classdb/EditorFeatureProfile
-[EditorFeatureProfile.LoadFromFile]: https://pkg.go.dev/graphics.gd/classdb/EditorFeatureProfile#Instance.LoadFromFile
-[EditorPaths.GetConfigDir]: https://pkg.go.dev/graphics.gd/classdb/EditorPaths#Instance.GetConfigDir
-*/
-//go:nosplit
 func (self class) GetCurrentFeatureProfile() String.Readable { //gd:EditorInterface.get_current_feature_profile
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_feature_profile, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Selects and activates the specified feature profile with the given 'profile_name'. Set 'profile_name' to an empty string to reset to the default feature profile.
-
-A feature profile can be created programmatically using the [EditorFeatureProfile] class.
-
-Note: The feature profile that gets activated must be located in the feature_profiles directory, as a file with the .profile extension. If a profile could not be found, an error occurs. The editor configuration folder can be found by using [EditorPaths.GetConfigDir].
-
-[EditorFeatureProfile]: https://pkg.go.dev/graphics.gd/classdb/EditorFeatureProfile
-[EditorPaths.GetConfigDir]: https://pkg.go.dev/graphics.gd/classdb/EditorPaths#Instance.GetConfigDir
-*/
-//go:nosplit
 func (self class) SetCurrentFeatureProfile(profile_name String.Readable) { //gd:EditorInterface.set_current_feature_profile
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_feature_profile, 0|(gdextension.SizeString<<4), &struct{ profile_name gdextension.String }{pointers.Get(gd.InternalString(profile_name))})
 }
-
-/*
-Pops up an editor dialog for selecting a [Node] from the edited scene. The 'callback' must take a single argument of type node path. It is called on the selected node path or the empty path ^"" if the dialog is canceled. If 'valid_types' is provided, the dialog will only show Nodes that match one of the listed Node types. If 'current_value' is provided, the Node will be automatically selected in the tree, if it exists.
-
-Example: Display the node selection dialog as soon as this node is added to the tree for the first time:
-
-
-
-[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
-*/
-//go:nosplit
 func (self class) PopupNodeSelector(callback Callable.Function, valid_types Array.Contains[String.Name], current_value [1]gdclass.Node) { //gd:EditorInterface.popup_node_selector
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_node_selector, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeObject<<12), &struct {
@@ -1284,15 +1041,6 @@ func (self class) PopupNodeSelector(callback Callable.Function, valid_types Arra
 		current_value gdextension.Object
 	}{pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalArray(valid_types)), gdextension.Object(gd.ObjectChecked(gdclass.GetNode(current_value[0])))})
 }
-
-/*
-Pops up an editor dialog for selecting properties from 'object'. The 'callback' must take a single argument of type node path. It is called on the selected property path (see [NodePath.GetAsPropertyPath]) or the empty path ^"" if the dialog is canceled. If 'type_filter' is provided, the dialog will only show properties that match one of the listed [Variant.Type] values. If 'current_value' is provided, the property will be selected automatically in the property list, if it exists.
-
-
-
-[NodePath.GetAsPropertyPath]: https://pkg.go.dev/graphics.gd/classdb/NodePath#Instance.GetAsPropertyPath
-*/
-//go:nosplit
 func (self class) PopupPropertySelector(obj [1]gd.Object, callback Callable.Function, type_filter Packed.Array[int32], current_value String.Readable) { //gd:EditorInterface.popup_property_selector
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_property_selector, 0|(gdextension.SizeObject<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeString<<16), &struct {
@@ -1302,11 +1050,6 @@ func (self class) PopupPropertySelector(obj [1]gd.Object, callback Callable.Func
 		current_value gdextension.String
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0]))), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](type_filter)), pointers.Get(gd.InternalString(current_value))})
 }
-
-/*
-Pops up an editor dialog for selecting a method from 'object'. The 'callback' must take a single argument of type string which will contain the name of the selected method or be empty if the dialog is canceled. If 'current_value' is provided, the method will be selected automatically in the method list, if it exists.
-*/
-//go:nosplit
 func (self class) PopupMethodSelector(obj [1]gd.Object, callback Callable.Function, current_value String.Readable) { //gd:EditorInterface.popup_method_selector
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_method_selector, 0|(gdextension.SizeObject<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeString<<12), &struct {
@@ -1315,13 +1058,6 @@ func (self class) PopupMethodSelector(obj [1]gd.Object, callback Callable.Functi
 		current_value gdextension.String
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0]))), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalString(current_value))})
 }
-
-/*
-Pops up an editor dialog for quick selecting a resource file. The 'callback' must take a single argument of type string which will contain the path of the selected resource or be empty if the dialog is canceled. If 'base_types' is provided, the dialog will only show resources that match these types. Only types deriving from [Resource] are supported.
-
-[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
-*/
-//go:nosplit
 func (self class) PopupQuickOpen(callback Callable.Function, base_types Array.Contains[String.Name]) { //gd:EditorInterface.popup_quick_open
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_quick_open, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeArray<<8), &struct {
@@ -1329,25 +1065,6 @@ func (self class) PopupQuickOpen(callback Callable.Function, base_types Array.Co
 		base_types gdextension.Array
 	}{pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalArray(base_types))})
 }
-
-/*
-Pops up an editor dialog for creating an object.
-
-The 'callback' must take a single argument of type string which will contain the type name of the selected object or be empty if no item is selected.
-
-The 'base_type' specifies the base type of objects to display. For example, if you set this to "Resource", all types derived from [Resource] will display in the create dialog.
-
-The 'current_type' will be passed in the search box of the create dialog, and the specified type can be immediately selected when the dialog pops up. If the 'current_type' is not derived from 'base_type', there will be no result of the type in the dialog.
-
-The 'dialog_title' allows you to define a custom title for the dialog. This is useful if you want to accurately hint the usage of the dialog. If the 'dialog_title' is an empty string, the dialog will use "Create New 'Base Type'" as the default title.
-
-The 'type_blocklist' contains a list of type names, and the types in the blocklist will be hidden from the create dialog.
-
-Note: Trying to list the base type in the 'type_blocklist' will hide all types derived from the base type from the create dialog.
-
-[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
-*/
-//go:nosplit
 func (self class) PopupCreateDialog(callback Callable.Function, base_type String.Name, current_type String.Readable, dialog_title String.Readable, type_blocklist Array.Contains[String.Name]) { //gd:EditorInterface.popup_create_dialog
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_create_dialog, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeArray<<20), &struct {
@@ -1358,90 +1075,40 @@ func (self class) PopupCreateDialog(callback Callable.Function, base_type String
 		type_blocklist gdextension.Array
 	}{pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalStringName(base_type)), pointers.Get(gd.InternalString(current_type)), pointers.Get(gd.InternalString(dialog_title)), pointers.Get(gd.InternalArray(type_blocklist))})
 }
-
-/*
-Returns the editor's [FileSystemDock] instance.
-
-Warning: Removing and freeing this node will render a part of the editor useless and may cause a crash.
-
-[FileSystemDock]: https://pkg.go.dev/graphics.gd/classdb/FileSystemDock
-*/
-//go:nosplit
 func (self class) GetFileSystemDock() [1]gdclass.FileSystemDock { //gd:EditorInterface.get_file_system_dock
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_file_system_dock, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.FileSystemDock{gdclass.NewFileSystemDock(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Selects the file, with the path provided by 'file', in the FileSystem dock.
-*/
-//go:nosplit
 func (self class) SelectFile(file String.Readable) { //gd:EditorInterface.select_file
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.select_file, 0|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
 }
-
-/*
-Returns an array containing the paths of the currently selected files (and directories) in the [FileSystemDock].
-
-[FileSystemDock]: https://pkg.go.dev/graphics.gd/classdb/FileSystemDock
-*/
-//go:nosplit
 func (self class) GetSelectedPaths() Packed.Strings { //gd:EditorInterface.get_selected_paths
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_selected_paths, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns the current path being viewed in the [FileSystemDock].
-
-[FileSystemDock]: https://pkg.go.dev/graphics.gd/classdb/FileSystemDock
-*/
-//go:nosplit
 func (self class) GetCurrentPath() String.Readable { //gd:EditorInterface.get_current_path
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the current directory being viewed in the [FileSystemDock]. If a file is selected, its base directory will be returned using [String.GetBaseDir] instead.
-
-[FileSystemDock]: https://pkg.go.dev/graphics.gd/classdb/FileSystemDock
-[String.GetBaseDir]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.GetBaseDir
-*/
-//go:nosplit
 func (self class) GetCurrentDirectory() String.Readable { //gd:EditorInterface.get_current_directory
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_directory, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the editor's [EditorInspector] instance.
-
-Warning: Removing and freeing this node will render a part of the editor useless and may cause a crash.
-
-[EditorInspector]: https://pkg.go.dev/graphics.gd/classdb/EditorInspector
-*/
-//go:nosplit
 func (self class) GetInspector() [1]gdclass.EditorInspector { //gd:EditorInterface.get_inspector
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_inspector, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorInspector{gdclass.NewEditorInspector(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Shows the given property on the given 'object' in the editor's Inspector dock. If 'inspector_only' is true, plugins will not attempt to edit 'object'.
-*/
-//go:nosplit
 func (self class) InspectObject(obj [1]gd.Object, for_property String.Readable, inspector_only bool) { //gd:EditorInterface.inspect_object
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.inspect_object, 0|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12), &struct {
@@ -1450,36 +1117,14 @@ func (self class) InspectObject(obj [1]gd.Object, for_property String.Readable, 
 		inspector_only bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0]))), pointers.Get(gd.InternalString(for_property)), inspector_only})
 }
-
-/*
-Edits the given [Resource]. If the resource is a [Script] you can also edit it with [EditScript] to specify the line and column position.
-
-[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
-[Script]: https://pkg.go.dev/graphics.gd/classdb/Script
-*/
-//go:nosplit
 func (self class) EditResource(resource [1]gdclass.Resource) { //gd:EditorInterface.edit_resource
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit_resource, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetResource(resource[0])))})
 }
-
-/*
-Edits the given [Node]. The node will be also selected if it's inside the scene tree.
-
-[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
-*/
-//go:nosplit
 func (self class) EditNode(node [1]gdclass.Node) { //gd:EditorInterface.edit_node
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit_node, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
 }
-
-/*
-Edits the given [Script]. The line and column on which to open the script can also be specified. The script will be open with the user-configured editor for the script's language which may be an external editor.
-
-[Script]: https://pkg.go.dev/graphics.gd/classdb/Script
-*/
-//go:nosplit
 func (self class) EditScript(script [1]gdclass.Script, line int64, column int64, grab_focus bool) { //gd:EditorInterface.edit_script
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit_script, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), &struct {
@@ -1489,11 +1134,6 @@ func (self class) EditScript(script [1]gdclass.Script, line int64, column int64,
 		grab_focus bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetScript(script[0]))), line, column, grab_focus})
 }
-
-/*
-Opens the scene at the given path. If 'set_inherited' is true, creates a new inherited scene.
-*/
-//go:nosplit
 func (self class) OpenSceneFromPath(scene_filepath String.Readable, set_inherited bool) { //gd:EditorInterface.open_scene_from_path
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.open_scene_from_path, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
@@ -1501,66 +1141,34 @@ func (self class) OpenSceneFromPath(scene_filepath String.Readable, set_inherite
 		set_inherited  bool
 	}{pointers.Get(gd.InternalString(scene_filepath)), set_inherited})
 }
-
-/*
-Reloads the scene at the given path.
-*/
-//go:nosplit
 func (self class) ReloadSceneFromPath(scene_filepath String.Readable) { //gd:EditorInterface.reload_scene_from_path
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reload_scene_from_path, 0|(gdextension.SizeString<<4), &struct{ scene_filepath gdextension.String }{pointers.Get(gd.InternalString(scene_filepath))})
 }
-
-/*
-Returns an array with the file paths of the currently opened scenes.
-*/
-//go:nosplit
 func (self class) GetOpenScenes() Packed.Strings { //gd:EditorInterface.get_open_scenes
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_open_scenes, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns an array with references to the root nodes of the currently opened scenes.
-*/
-//go:nosplit
 func (self class) GetOpenSceneRoots() Array.Contains[[1]gdclass.Node] { //gd:EditorInterface.get_open_scene_roots
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_open_scene_roots, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns the edited (current) scene's root [Node].
-
-[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
-*/
-//go:nosplit
 func (self class) GetEditedSceneRoot() [1]gdclass.Node { //gd:EditorInterface.get_edited_scene_root
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_scene_root, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Saves the currently active scene. Returns either [Ok] or [ErrCantCreate].
-*/
-//go:nosplit
 func (self class) SaveScene() Error.Code { //gd:EditorInterface.save_scene
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save_scene, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Saves the currently active scene as a file at 'path'.
-*/
-//go:nosplit
 func (self class) SaveSceneAs(path String.Readable, with_preview bool) { //gd:EditorInterface.save_scene_as
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.save_scene_as, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
@@ -1568,101 +1176,52 @@ func (self class) SaveSceneAs(path String.Readable, with_preview bool) { //gd:Ed
 		with_preview bool
 	}{pointers.Get(gd.InternalString(path)), with_preview})
 }
-
-/*
-Saves all opened scenes in the editor.
-*/
-//go:nosplit
 func (self class) SaveAllScenes() { //gd:EditorInterface.save_all_scenes
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.save_all_scenes, 0, &struct{}{})
 }
-
-/*
-Closes the currently active scene, discarding any pending changes in the process. Returns [Ok] on success or [ErrDoesNotExist] if there is no scene to close.
-*/
-//go:nosplit
 func (self class) CloseScene() Error.Code { //gd:EditorInterface.close_scene
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.close_scene, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Marks the current scene tab as unsaved.
-*/
-//go:nosplit
 func (self class) MarkSceneAsUnsaved() { //gd:EditorInterface.mark_scene_as_unsaved
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.mark_scene_as_unsaved, 0, &struct{}{})
 }
-
-/*
-Plays the main scene.
-*/
-//go:nosplit
 func (self class) PlayMainScene() { //gd:EditorInterface.play_main_scene
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_main_scene, 0, &struct{}{})
 }
-
-/*
-Plays the currently active scene.
-*/
-//go:nosplit
 func (self class) PlayCurrentScene() { //gd:EditorInterface.play_current_scene
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_current_scene, 0, &struct{}{})
 }
-
-/*
-Plays the scene specified by its filepath.
-*/
-//go:nosplit
 func (self class) PlayCustomScene(scene_filepath String.Readable) { //gd:EditorInterface.play_custom_scene
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_custom_scene, 0|(gdextension.SizeString<<4), &struct{ scene_filepath gdextension.String }{pointers.Get(gd.InternalString(scene_filepath))})
 }
-
-/*
-Stops the scene that is currently playing.
-*/
-//go:nosplit
 func (self class) StopPlayingScene() { //gd:EditorInterface.stop_playing_scene
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop_playing_scene, 0, &struct{}{})
 }
-
-/*
-Returns true if a scene is currently being played, false otherwise. Paused scenes are considered as being played.
-*/
-//go:nosplit
 func (self class) IsPlayingScene() bool { //gd:EditorInterface.is_playing_scene
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_playing_scene, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the name of the scene that is being played. If no scene is currently being played, returns an empty string.
-*/
-//go:nosplit
 func (self class) GetPlayingScene() String.Readable { //gd:EditorInterface.get_playing_scene
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_playing_scene, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMovieMakerEnabled(enabled bool) { //gd:EditorInterface.set_movie_maker_enabled
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_movie_maker_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsMovieMakerEnabled() bool { //gd:EditorInterface.is_movie_maker_enabled
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_movie_maker_enabled, gdextension.SizeBool, &struct{}{})

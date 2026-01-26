@@ -460,28 +460,14 @@ func (self Instance) SetDevice(value int) Instance { //gd:InputEvent.device
 	return self
 }
 
-//go:nosplit
 func (self class) SetDevice(device int64) { //gd:InputEvent.set_device
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_device, 0|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 }
-
-//go:nosplit
 func (self class) GetDevice() int64 { //gd:InputEvent.get_device
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_device, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if this input event matches a pre-defined action of any type.
-
-If 'exact_match' is false, it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
-
-[InputEventJoypadMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadMotion
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-*/
-//go:nosplit
 func (self class) IsAction(action String.Name, exact_match bool) bool { //gd:InputEvent.is_action
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		action      gdextension.StringName
@@ -490,23 +476,6 @@ func (self class) IsAction(action String.Name, exact_match bool) bool { //gd:Inp
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the given action matches this event and is being pressed (and is not an echo event for [InputEventKey] events, unless 'allow_echo' is true). Not relevant for events of type [InputEventMouseMotion] or [InputEventScreenDrag].
-
-If 'exact_match' is false, it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
-
-Note: Due to keyboard ghosting, [IsActionPressed] may return false even if one of the action's keys is pressed. See [Input examples] in the documentation for more information.
-
-[Input examples]: https://docs.godotengine.org/tutorials/inputs/input_examples.html#keyboard-events
-[InputEventJoypadMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadMotion
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-[InputEventMouseMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion
-[InputEventScreenDrag]: https://pkg.go.dev/graphics.gd/classdb/InputEventScreenDrag
-[IsActionPressed]: https://pkg.go.dev/graphics.gd/classdb/InputEvent#Instance.IsActionPressed
-*/
-//go:nosplit
 func (self class) IsActionPressed(action String.Name, allow_echo bool, exact_match bool) bool { //gd:InputEvent.is_action_pressed
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_pressed, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12), &struct {
 		action      gdextension.StringName
@@ -516,19 +485,6 @@ func (self class) IsActionPressed(action String.Name, allow_echo bool, exact_mat
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the given action matches this event and is released (i.e. not pressed). Not relevant for events of type [InputEventMouseMotion] or [InputEventScreenDrag].
-
-If 'exact_match' is false, it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
-
-[InputEventJoypadMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadMotion
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-[InputEventMouseMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion
-[InputEventScreenDrag]: https://pkg.go.dev/graphics.gd/classdb/InputEventScreenDrag
-*/
-//go:nosplit
 func (self class) IsActionReleased(action String.Name, exact_match bool) bool { //gd:InputEvent.is_action_released
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_released, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		action      gdextension.StringName
@@ -537,17 +493,6 @@ func (self class) IsActionReleased(action String.Name, exact_match bool) bool { 
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a value between 0.0 and 1.0 depending on the given actions' state. Useful for getting the value of events of type [InputEventJoypadMotion].
-
-If 'exact_match' is false, it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
-
-[InputEventJoypadMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadMotion
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-*/
-//go:nosplit
 func (self class) GetActionStrength(action String.Name, exact_match bool) float64 { //gd:InputEvent.get_action_strength
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_action_strength, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		action      gdextension.StringName
@@ -556,89 +501,31 @@ func (self class) GetActionStrength(action String.Name, exact_match bool) float6
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if this input event has been canceled.
-*/
-//go:nosplit
 func (self class) IsCanceled() bool { //gd:InputEvent.is_canceled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_canceled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if this input event is pressed. Not relevant for events of type [InputEventMouseMotion] or [InputEventScreenDrag].
-
-Note: Due to keyboard ghosting, [IsPressed] may return false even if one of the action's keys is pressed. See [Input examples] in the documentation for more information.
-
-[Input examples]: https://docs.godotengine.org/tutorials/inputs/input_examples.html#keyboard-events
-[InputEventMouseMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion
-[InputEventScreenDrag]: https://pkg.go.dev/graphics.gd/classdb/InputEventScreenDrag
-[IsPressed]: https://pkg.go.dev/graphics.gd/classdb/InputEvent#Instance.IsPressed
-*/
-//go:nosplit
 func (self class) IsPressed() bool { //gd:InputEvent.is_pressed
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pressed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if this input event is released. Not relevant for events of type [InputEventMouseMotion] or [InputEventScreenDrag].
-
-[InputEventMouseMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion
-[InputEventScreenDrag]: https://pkg.go.dev/graphics.gd/classdb/InputEventScreenDrag
-*/
-//go:nosplit
 func (self class) IsReleased() bool { //gd:InputEvent.is_released
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_released, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if this input event is an echo event (only for events of type [InputEventKey]). An echo event is a repeated key event sent when the user is holding down the key. Any other event type returns false.
-
-Note: The rate at which echo events are sent is typically around 20 events per second (after holding down the key for roughly half a second). However, the key repeat delay/speed can be changed by the user or disabled entirely in the operating system settings. To ensure your project works correctly on all configurations, do not assume the user has a specific key repeat configuration in your project's behavior.
-
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-*/
-//go:nosplit
 func (self class) IsEcho() bool { //gd:InputEvent.is_echo
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_echo, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a string representation of the event.
-*/
-//go:nosplit
 func (self class) AsText() String.Readable { //gd:InputEvent.as_text
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.as_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns true if the specified 'event' matches this event. Only valid for action events, which include key ([InputEventKey]), button ([InputEventMouseButton] or [InputEventJoypadButton]), axis [InputEventJoypadMotion], and action ([InputEventAction]) events.
-
-If 'exact_match' is false, the check ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
-
-Note: This method only considers the event configuration (such as the keyboard key or the joypad axis), not state information like [IsPressed], [IsReleased], [IsEcho], or [IsCanceled].
-
-[InputEventAction]: https://pkg.go.dev/graphics.gd/classdb/InputEventAction
-[InputEventJoypadButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadButton
-[InputEventJoypadMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadMotion
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-[IsCanceled]: https://pkg.go.dev/graphics.gd/classdb/InputEvent#Instance.IsCanceled
-[IsEcho]: https://pkg.go.dev/graphics.gd/classdb/InputEvent#Instance.IsEcho
-[IsPressed]: https://pkg.go.dev/graphics.gd/classdb/InputEvent#Instance.IsPressed
-[IsReleased]: https://pkg.go.dev/graphics.gd/classdb/InputEvent#Instance.IsReleased
-*/
-//go:nosplit
 func (self class) IsMatch(event [1]gdclass.InputEvent, exact_match bool) bool { //gd:InputEvent.is_match
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_match, gdextension.SizeBool|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		event       gdextension.Object
@@ -647,48 +534,16 @@ func (self class) IsMatch(event [1]gdclass.InputEvent, exact_match bool) bool { 
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if this input event's type is one that can be assigned to an input action: [InputEventKey], [InputEventMouseButton], [InputEventJoypadButton], [InputEventJoypadMotion], [InputEventAction]. Returns false for all other input event types.
-
-[InputEventAction]: https://pkg.go.dev/graphics.gd/classdb/InputEventAction
-[InputEventJoypadButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadButton
-[InputEventJoypadMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadMotion
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-*/
-//go:nosplit
 func (self class) IsActionType() bool { //gd:InputEvent.is_action_type
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_type, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the given input event and this input event can be added together (only for events of type [InputEventMouseMotion]).
-
-The given input event's position, global position and speed will be copied. The resulting relative is a sum of both events. Both events' modifiers have to be identical.
-
-[InputEventMouseMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion
-*/
-//go:nosplit
 func (self class) Accumulate(with_event [1]gdclass.InputEvent) bool { //gd:InputEvent.accumulate
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.accumulate, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ with_event gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(with_event[0])))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a copy of the given input event which has been offset by 'local_ofs' and transformed by 'xform'. Relevant for events of type [InputEventMouseButton], [InputEventMouseMotion], [InputEventScreenTouch], [InputEventScreenDrag], [InputEventMagnifyGesture] and [InputEventPanGesture].
-
-[InputEventMagnifyGesture]: https://pkg.go.dev/graphics.gd/classdb/InputEventMagnifyGesture
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-[InputEventMouseMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion
-[InputEventPanGesture]: https://pkg.go.dev/graphics.gd/classdb/InputEventPanGesture
-[InputEventScreenDrag]: https://pkg.go.dev/graphics.gd/classdb/InputEventScreenDrag
-[InputEventScreenTouch]: https://pkg.go.dev/graphics.gd/classdb/InputEventScreenTouch
-*/
-//go:nosplit
 func (self class) XformedBy(xform Transform2D.OriginXY, local_ofs Vector2.XY) [1]gdclass.InputEvent { //gd:InputEvent.xformed_by
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.xformed_by, gdextension.SizeObject|(gdextension.SizeTransform2D<<4)|(gdextension.SizeVector2<<8), &struct {
 		xform     Transform2D.OriginXY

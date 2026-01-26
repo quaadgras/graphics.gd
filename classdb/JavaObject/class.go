@@ -173,12 +173,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns the [JavaClass] that this object is an instance of.
-
-[JavaClass]: https://pkg.go.dev/graphics.gd/classdb/JavaClass
-*/
-//go:nosplit
 func (self class) GetJavaClass() [1]gdclass.JavaClass { //gd:JavaObject.get_java_class
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_java_class, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.JavaClass{gdclass.NewJavaClass(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

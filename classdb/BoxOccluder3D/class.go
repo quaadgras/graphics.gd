@@ -176,12 +176,9 @@ func (self Instance) SetSize(value Vector3.XYZ) Instance { //gd:BoxOccluder3D.si
 	return self
 }
 
-//go:nosplit
 func (self class) SetSize(size Vector3.XYZ) { //gd:BoxOccluder3D.set_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), &struct{ size Vector3.XYZ }{size})
 }
-
-//go:nosplit
 func (self class) GetSize() Vector3.XYZ { //gd:BoxOccluder3D.get_size
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret

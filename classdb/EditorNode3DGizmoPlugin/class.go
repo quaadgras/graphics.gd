@@ -769,13 +769,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Override this method to define which Node3D nodes have a gizmo from this plugin. Whenever a [Node3D] node is added to a scene this method is called, if it returns true the node gets a generic [EditorNode3DGizmo] assigned and is added to this plugin's list of active gizmos.
-
-[EditorNode3DGizmo]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmo
-[Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
-*/
 func (class) _has_gizmo(impl func(ptr gdclass.Receiver, for_node_3d [1]gdclass.Node3D) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var for_node_3d = [1]gdclass.Node3D{gdclass.NewNode3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -786,13 +779,6 @@ func (class) _has_gizmo(impl func(ptr gdclass.Receiver, for_node_3d [1]gdclass.N
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Override this method to return a custom [EditorNode3DGizmo] for the 3D nodes of your choice, return null for the rest of nodes. See also [HasGizmo].
-
-[EditorNode3DGizmo]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmo
-[HasGizmo]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmoPlugin#Interface
-*/
 func (class) _create_gizmo(impl func(ptr gdclass.Receiver, for_node_3d [1]gdclass.Node3D) [1]gdclass.EditorNode3DGizmo) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var for_node_3d = [1]gdclass.Node3D{gdclass.NewNode3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -808,10 +794,6 @@ func (class) _create_gizmo(impl func(ptr gdclass.Receiver, for_node_3d [1]gdclas
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Override this method to provide the name that will appear in the gizmo visibility menu.
-*/
 func (class) _get_gizmo_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -824,12 +806,6 @@ func (class) _get_gizmo_name(impl func(ptr gdclass.Receiver) String.Readable) (c
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Override this method to set the gizmo's priority. Gizmos with higher priority will have precedence when processing inputs like handles or subgizmos selection.
-
-All built-in editor gizmos return a priority of -1. If not overridden, this method will return 0, which means custom gizmos will automatically get higher priority than built-in gizmos.
-*/
 func (class) _get_priority(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -837,10 +813,6 @@ func (class) _get_priority(impl func(ptr gdclass.Receiver) int64) (cb gd.Extensi
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Override this method to define whether the gizmos handled by this plugin can be hidden or not. Returns true if not overridden.
-*/
 func (class) _can_be_hidden(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -848,10 +820,6 @@ func (class) _can_be_hidden(impl func(ptr gdclass.Receiver) bool) (cb gd.Extensi
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Override this method to define whether Node3D with this gizmo should be selectable even when the gizmo is hidden.
-*/
 func (class) _is_selectable_when_hidden(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -859,12 +827,6 @@ func (class) _is_selectable_when_hidden(impl func(ptr gdclass.Receiver) bool) (c
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Override this method to add all the gizmo elements whenever a gizmo update is requested. It's common to call [EditorNode3DGizmo.Clear] at the beginning of this method and then add visual elements depending on the node's properties.
-
-[EditorNode3DGizmo.Clear]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmo#Instance.Clear
-*/
 func (class) _redraw(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode3DGizmo)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -874,12 +836,6 @@ func (class) _redraw(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode
 		impl(self, gizmo)
 	}
 }
-
-/*
-Override this method to provide gizmo's handle names. The 'secondary' argument is true when the requested handle is secondary (see [EditorNode3DGizmo.AddHandles] for more information). Called for this plugin's active gizmos.
-
-[EditorNode3DGizmo.AddHandles]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmo#Instance.AddHandles
-*/
 func (class) _get_handle_name(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode3DGizmo, handle_id int64, secondary bool) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -897,12 +853,6 @@ func (class) _get_handle_name(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.E
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Override this method to return true whenever to given handle should be highlighted in the editor. The 'secondary' argument is true when the requested handle is secondary (see [EditorNode3DGizmo.AddHandles] for more information). Called for this plugin's active gizmos.
-
-[EditorNode3DGizmo.AddHandles]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmo#Instance.AddHandles
-*/
 func (class) _is_handle_highlighted(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode3DGizmo, handle_id int64, secondary bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -915,17 +865,6 @@ func (class) _is_handle_highlighted(impl func(ptr gdclass.Receiver, gizmo [1]gdc
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Override this method to return the current value of a handle. This value will be requested at the start of an edit and used as the restore argument in [CommitHandle].
-
-The 'secondary' argument is true when the requested handle is secondary (see [EditorNode3DGizmo.AddHandles] for more information).
-
-Called for this plugin's active gizmos.
-
-[CommitHandle]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmoPlugin#Interface
-[EditorNode3DGizmo.AddHandles]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmo#Instance.AddHandles
-*/
 func (class) _get_handle_value(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode3DGizmo, handle_id int64, secondary bool) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -943,7 +882,6 @@ func (class) _get_handle_value(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
 func (class) _begin_handle_action(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode3DGizmo, handle_id int64, secondary bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -955,16 +893,6 @@ func (class) _begin_handle_action(impl func(ptr gdclass.Receiver, gizmo [1]gdcla
 		impl(self, gizmo, handle_id, secondary)
 	}
 }
-
-/*
-Override this method to update the node's properties when the user drags a gizmo handle (previously added with [EditorNode3DGizmo.AddHandles]). The provided 'screen_pos' is the mouse position in screen coordinates and the 'camera' can be used to convert it to raycasts.
-
-The 'secondary' argument is true when the edited handle is secondary (see [EditorNode3DGizmo.AddHandles] for more information).
-
-Called for this plugin's active gizmos.
-
-[EditorNode3DGizmo.AddHandles]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmo#Instance.AddHandles
-*/
 func (class) _set_handle(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode3DGizmo, handle_id int64, secondary bool, camera [1]gdclass.Camera3D, screen_pos Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -980,20 +908,6 @@ func (class) _set_handle(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.Editor
 		impl(self, gizmo, handle_id, secondary, camera, screen_pos)
 	}
 }
-
-/*
-Override this method to commit a handle being edited (handles must have been previously added by [EditorNode3DGizmo.AddHandles] during [Redraw]). This usually means creating an [UndoRedo] action for the change, using the current handle value as "do" and the 'restore' argument as "undo".
-
-If the 'cancel' argument is true, the 'restore' value should be directly set, without any [UndoRedo] action.
-
-The 'secondary' argument is true when the committed handle is secondary (see [EditorNode3DGizmo.AddHandles] for more information).
-
-Called for this plugin's active gizmos.
-
-[EditorNode3DGizmo.AddHandles]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmo#Instance.AddHandles
-[Redraw]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmoPlugin#Interface
-[UndoRedo]: https://pkg.go.dev/graphics.gd/classdb/UndoRedo
-*/
 func (class) _commit_handle(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode3DGizmo, handle_id int64, secondary bool, restore variant.Any, cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1008,13 +922,6 @@ func (class) _commit_handle(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.Edi
 		impl(self, gizmo, handle_id, secondary, restore, cancel)
 	}
 }
-
-/*
-Override this method to allow selecting subgizmos using mouse clicks. Given a 'camera' and a 'screen_pos' in screen coordinates, this method should return which subgizmo should be selected. The returned value should be a unique subgizmo identifier, which can have any non-negative value and will be used in other virtual methods like [GetSubgizmoTransform] or [CommitSubgizmos]. Called for this plugin's active gizmos.
-
-[CommitSubgizmos]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmoPlugin#Interface
-[GetSubgizmoTransform]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmoPlugin#Interface
-*/
 func (class) _subgizmos_intersect_ray(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode3DGizmo, camera [1]gdclass.Camera3D, screen_pos Vector2.XY) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1029,14 +936,6 @@ func (class) _subgizmos_intersect_ray(impl func(ptr gdclass.Receiver, gizmo [1]g
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Override this method to allow selecting subgizmos using mouse drag box selection. Given a 'camera' and 'frustum_planes', this method should return which subgizmos are contained within the frustums. The 'frustum_planes' argument consists of an array with all the [Plane.NormalD]s that make up the selection frustum. The returned value should contain a list of unique subgizmo identifiers, these identifiers can have any non-negative value and will be used in other virtual methods like [GetSubgizmoTransform] or [CommitSubgizmos]. Called for this plugin's active gizmos.
-
-[CommitSubgizmos]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmoPlugin#Interface
-[GetSubgizmoTransform]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmoPlugin#Interface
-[Plane.NormalD]: https://pkg.go.dev/graphics.gd/variant/Plane#NormalD
-*/
 func (class) _subgizmos_intersect_frustum(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode3DGizmo, camera [1]gdclass.Camera3D, frustum_planes Array.Contains[Plane.NormalD]) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1057,12 +956,6 @@ func (class) _subgizmos_intersect_frustum(impl func(ptr gdclass.Receiver, gizmo 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Override this method to return the current transform of a subgizmo. As with all subgizmo methods, the transform should be in local space respect to the gizmo's Node3D. This transform will be requested at the start of an edit and used in the restore argument in [CommitSubgizmos]. Called for this plugin's active gizmos.
-
-[CommitSubgizmos]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmoPlugin#Interface
-*/
 func (class) _get_subgizmo_transform(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode3DGizmo, subgizmo_id int64) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1074,13 +967,6 @@ func (class) _get_subgizmo_transform(impl func(ptr gdclass.Receiver, gizmo [1]gd
 		gd.UnsafeSet(p_back, gd.Transposed(ret))
 	}
 }
-
-/*
-Override this method to update the node properties during subgizmo editing (see [SubgizmosIntersectRay] and [SubgizmosIntersectFrustum]). The 'transform' is given in the Node3D's local coordinate system. Called for this plugin's active gizmos.
-
-[SubgizmosIntersectFrustum]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmoPlugin#Interface
-[SubgizmosIntersectRay]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmoPlugin#Interface
-*/
 func (class) _set_subgizmo_transform(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode3DGizmo, subgizmo_id int64, transform Transform3D.BasisOrigin)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1092,16 +978,6 @@ func (class) _set_subgizmo_transform(impl func(ptr gdclass.Receiver, gizmo [1]gd
 		impl(self, gizmo, subgizmo_id, transform)
 	}
 }
-
-/*
-Override this method to commit a group of subgizmos being edited (see [SubgizmosIntersectRay] and [SubgizmosIntersectFrustum]). This usually means creating an [UndoRedo] action for the change, using the current transforms as "do" and the 'restores' transforms as "undo".
-
-If the 'cancel' argument is true, the 'restores' transforms should be directly set, without any [UndoRedo] action. As with all subgizmo methods, transforms are given in local space respect to the gizmo's Node3D. Called for this plugin's active gizmos.
-
-[SubgizmosIntersectFrustum]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmoPlugin#Interface
-[SubgizmosIntersectRay]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmoPlugin#Interface
-[UndoRedo]: https://pkg.go.dev/graphics.gd/classdb/UndoRedo
-*/
 func (class) _commit_subgizmos(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode3DGizmo, ids Packed.Array[int32], restores Array.Contains[Transform3D.BasisOrigin], cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1117,14 +993,6 @@ func (class) _commit_subgizmos(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.
 	}
 }
 
-/*
-Creates an unshaded material with its variants (selected and/or editable) and adds them to the internal material list. They can then be accessed with [GetMaterial] and used in [EditorNode3DGizmo.AddMesh] and [EditorNode3DGizmo.AddLines]. Should not be overridden.
-
-[EditorNode3DGizmo.AddLines]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmo#Instance.AddLines
-[EditorNode3DGizmo.AddMesh]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmo#Instance.AddMesh
-[GetMaterial]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmoPlugin#Instance.GetMaterial
-*/
-//go:nosplit
 func (self class) CreateMaterial(name String.Readable, color Color.RGBA, billboard bool, on_top bool, use_vertex_color bool) { //gd:EditorNode3DGizmoPlugin.create_material
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_material, 0|(gdextension.SizeString<<4)|(gdextension.SizeColor<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), &struct {
 		name             gdextension.String
@@ -1134,14 +1002,6 @@ func (self class) CreateMaterial(name String.Readable, color Color.RGBA, billboa
 		use_vertex_color bool
 	}{pointers.Get(gd.InternalString(name)), color, billboard, on_top, use_vertex_color})
 }
-
-/*
-Creates an icon material with its variants (selected and/or editable) and adds them to the internal material list. They can then be accessed with [GetMaterial] and used in [EditorNode3DGizmo.AddUnscaledBillboard]. Should not be overridden.
-
-[EditorNode3DGizmo.AddUnscaledBillboard]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmo#Instance.AddUnscaledBillboard
-[GetMaterial]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmoPlugin#Instance.GetMaterial
-*/
-//go:nosplit
 func (self class) CreateIconMaterial(name String.Readable, texture [1]gdclass.Texture2D, on_top bool, color Color.RGBA) { //gd:EditorNode3DGizmoPlugin.create_icon_material
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_icon_material, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeColor<<16), &struct {
 		name    gdextension.String
@@ -1150,16 +1010,6 @@ func (self class) CreateIconMaterial(name String.Readable, texture [1]gdclass.Te
 		color   Color.RGBA
 	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), on_top, color})
 }
-
-/*
-Creates a handle material with its variants (selected and/or editable) and adds them to the internal material list. They can then be accessed with [GetMaterial] and used in [EditorNode3DGizmo.AddHandles]. Should not be overridden.
-
-You can optionally provide a texture to use instead of the default icon.
-
-[EditorNode3DGizmo.AddHandles]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmo#Instance.AddHandles
-[GetMaterial]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmoPlugin#Instance.GetMaterial
-*/
-//go:nosplit
 func (self class) CreateHandleMaterial(name String.Readable, billboard bool, texture [1]gdclass.Texture2D) { //gd:EditorNode3DGizmoPlugin.create_handle_material
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_handle_material, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeObject<<12), &struct {
 		name      gdextension.String
@@ -1167,26 +1017,12 @@ func (self class) CreateHandleMaterial(name String.Readable, billboard bool, tex
 		texture   gdextension.Object
 	}{pointers.Get(gd.InternalString(name)), billboard, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
-
-/*
-Adds a new material to the internal material list for the plugin. It can then be accessed with [GetMaterial]. Should not be overridden.
-
-[GetMaterial]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmoPlugin#Instance.GetMaterial
-*/
-//go:nosplit
 func (self class) AddMaterial(name String.Readable, material [1]gdclass.StandardMaterial3D) { //gd:EditorNode3DGizmoPlugin.add_material
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_material, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
 		name     gdextension.String
 		material gdextension.Object
 	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetStandardMaterial3D(material[0])))})
 }
-
-/*
-Gets material from the internal list of materials. If an [EditorNode3DGizmo] is provided, it will try to get the corresponding variant (selected and/or editable).
-
-[EditorNode3DGizmo]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmo
-*/
-//go:nosplit
 func (self class) GetMaterial(name String.Readable, gizmo [1]gdclass.EditorNode3DGizmo) [1]gdclass.StandardMaterial3D { //gd:EditorNode3DGizmoPlugin.get_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
 		name  gdextension.String

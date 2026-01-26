@@ -1000,12 +1000,6 @@ func (self Instance) SetDefaultFontSize(value int) Instance { //gd:Theme.default
 	return self
 }
 
-/*
-Creates or changes the value of the icon property defined by 'name' and 'theme_type'. Use [ClearIcon] to remove the property.
-
-[ClearIcon]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearIcon
-*/
-//go:nosplit
 func (self class) SetIcon(name String.Name, theme_type String.Name, texture [1]gdclass.Texture2D) { //gd:Theme.set_icon
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeObject<<12), &struct {
 		name       gdextension.StringName
@@ -1013,16 +1007,6 @@ func (self class) SetIcon(name String.Name, theme_type String.Name, texture [1]g
 		texture    gdextension.Object
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
-
-/*
-Returns the icon property defined by 'name' and 'theme_type', if it exists.
-
-Returns the engine fallback icon value if the property doesn't exist (see [ThemeDB.FallbackIcon]). Use [HasIcon] to check for existence.
-
-[HasIcon]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasIcon
-[ThemeDB.FallbackIcon]: https://pkg.go.dev/graphics.gd/classdb/ThemeDB#FallbackIcon
-*/
-//go:nosplit
 func (self class) GetIcon(name String.Name, theme_type String.Name) [1]gdclass.Texture2D { //gd:Theme.get_icon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_icon, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
@@ -1031,15 +1015,6 @@ func (self class) GetIcon(name String.Name, theme_type String.Name) [1]gdclass.T
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns true if the icon property defined by 'name' and 'theme_type' exists.
-
-Returns false if it doesn't exist. Use [SetIcon] to define it.
-
-[SetIcon]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.SetIcon
-*/
-//go:nosplit
 func (self class) HasIcon(name String.Name, theme_type String.Name) bool { //gd:Theme.has_icon
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_icon, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
@@ -1048,16 +1023,6 @@ func (self class) HasIcon(name String.Name, theme_type String.Name) bool { //gd:
 	var ret = r_ret
 	return ret
 }
-
-/*
-Renames the icon property defined by 'old_name' and 'theme_type' to 'name', if it exists.
-
-Fails if it doesn't exist, or if a similar property with the new name already exists. Use [HasIcon] to check for existence, and [ClearIcon] to remove the existing property.
-
-[ClearIcon]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearIcon
-[HasIcon]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasIcon
-*/
-//go:nosplit
 func (self class) RenameIcon(old_name String.Name, name String.Name, theme_type String.Name) { //gd:Theme.rename_icon
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.rename_icon, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12), &struct {
 		old_name   gdextension.StringName
@@ -1065,53 +1030,22 @@ func (self class) RenameIcon(old_name String.Name, name String.Name, theme_type 
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(old_name)), pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
 }
-
-/*
-Removes the icon property defined by 'name' and 'theme_type', if it exists.
-
-Fails if it doesn't exist. Use [HasIcon] to check for existence.
-
-[HasIcon]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasIcon
-*/
-//go:nosplit
 func (self class) ClearIcon(name String.Name, theme_type String.Name) { //gd:Theme.clear_icon
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_icon, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
 }
-
-/*
-Returns a list of names for icon properties defined with 'theme_type'. Use [GetIconTypeList] to get a list of possible theme type names.
-
-[GetIconTypeList]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.GetIconTypeList
-*/
-//go:nosplit
 func (self class) GetIconList(theme_type String.Readable) Packed.Strings { //gd:Theme.get_icon_list
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_icon_list, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ theme_type gdextension.String }{pointers.Get(gd.InternalString(theme_type))})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns a list of all unique theme type names for icon properties. Use [GetTypeList] to get a list of all unique theme types.
-
-[GetTypeList]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.GetTypeList
-*/
-//go:nosplit
 func (self class) GetIconTypeList() Packed.Strings { //gd:Theme.get_icon_type_list
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_icon_type_list, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Creates or changes the value of the [StyleBox] property defined by 'name' and 'theme_type'. Use [ClearStylebox] to remove the property.
-
-[ClearStylebox]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearStylebox
-[StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
-*/
-//go:nosplit
 func (self class) SetStylebox(name String.Name, theme_type String.Name, texture [1]gdclass.StyleBox) { //gd:Theme.set_stylebox
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stylebox, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeObject<<12), &struct {
 		name       gdextension.StringName
@@ -1119,17 +1053,6 @@ func (self class) SetStylebox(name String.Name, theme_type String.Name, texture 
 		texture    gdextension.Object
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), gdextension.Object(gd.ObjectChecked(gdclass.GetStyleBox(texture[0])))})
 }
-
-/*
-Returns the [StyleBox] property defined by 'name' and 'theme_type', if it exists.
-
-Returns the engine fallback stylebox value if the property doesn't exist (see [ThemeDB.FallbackStylebox]). Use [HasStylebox] to check for existence.
-
-[HasStylebox]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasStylebox
-[StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
-[ThemeDB.FallbackStylebox]: https://pkg.go.dev/graphics.gd/classdb/ThemeDB#FallbackStylebox
-*/
-//go:nosplit
 func (self class) GetStylebox(name String.Name, theme_type String.Name) [1]gdclass.StyleBox { //gd:Theme.get_stylebox
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_stylebox, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
@@ -1138,16 +1061,6 @@ func (self class) GetStylebox(name String.Name, theme_type String.Name) [1]gdcla
 	var ret = [1]gdclass.StyleBox{gdclass.NewStyleBox(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns true if the [StyleBox] property defined by 'name' and 'theme_type' exists.
-
-Returns false if it doesn't exist. Use [SetStylebox] to define it.
-
-[SetStylebox]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.SetStylebox
-[StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
-*/
-//go:nosplit
 func (self class) HasStylebox(name String.Name, theme_type String.Name) bool { //gd:Theme.has_stylebox
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_stylebox, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
@@ -1156,17 +1069,6 @@ func (self class) HasStylebox(name String.Name, theme_type String.Name) bool { /
 	var ret = r_ret
 	return ret
 }
-
-/*
-Renames the [StyleBox] property defined by 'old_name' and 'theme_type' to 'name', if it exists.
-
-Fails if it doesn't exist, or if a similar property with the new name already exists. Use [HasStylebox] to check for existence, and [ClearStylebox] to remove the existing property.
-
-[ClearStylebox]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearStylebox
-[HasStylebox]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasStylebox
-[StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
-*/
-//go:nosplit
 func (self class) RenameStylebox(old_name String.Name, name String.Name, theme_type String.Name) { //gd:Theme.rename_stylebox
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.rename_stylebox, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12), &struct {
 		old_name   gdextension.StringName
@@ -1174,56 +1076,22 @@ func (self class) RenameStylebox(old_name String.Name, name String.Name, theme_t
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(old_name)), pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
 }
-
-/*
-Removes the [StyleBox] property defined by 'name' and 'theme_type', if it exists.
-
-Fails if it doesn't exist. Use [HasStylebox] to check for existence.
-
-[HasStylebox]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasStylebox
-[StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
-*/
-//go:nosplit
 func (self class) ClearStylebox(name String.Name, theme_type String.Name) { //gd:Theme.clear_stylebox
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_stylebox, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
 }
-
-/*
-Returns a list of names for [StyleBox] properties defined with 'theme_type'. Use [GetStyleboxTypeList] to get a list of possible theme type names.
-
-[GetStyleboxTypeList]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.GetStyleboxTypeList
-[StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
-*/
-//go:nosplit
 func (self class) GetStyleboxList(theme_type String.Readable) Packed.Strings { //gd:Theme.get_stylebox_list
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_stylebox_list, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ theme_type gdextension.String }{pointers.Get(gd.InternalString(theme_type))})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns a list of all unique theme type names for [StyleBox] properties. Use [GetTypeList] to get a list of all unique theme types.
-
-[GetTypeList]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.GetTypeList
-[StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
-*/
-//go:nosplit
 func (self class) GetStyleboxTypeList() Packed.Strings { //gd:Theme.get_stylebox_type_list
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_stylebox_type_list, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Creates or changes the value of the [Font] property defined by 'name' and 'theme_type'. Use [ClearFont] to remove the property.
-
-[ClearFont]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearFont
-[Font]: https://pkg.go.dev/graphics.gd/classdb/Font
-*/
-//go:nosplit
 func (self class) SetFont(name String.Name, theme_type String.Name, font [1]gdclass.Font) { //gd:Theme.set_font
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_font, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeObject<<12), &struct {
 		name       gdextension.StringName
@@ -1231,21 +1099,6 @@ func (self class) SetFont(name String.Name, theme_type String.Name, font [1]gdcl
 		font       gdextension.Object
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0])))})
 }
-
-/*
-Returns the [Font] property defined by 'name' and 'theme_type', if it exists.
-
-Returns the default theme font if the property doesn't exist and the default theme font is set up (see [DefaultFont]). Use [HasFont] to check for existence of the property and [HasDefaultFont] to check for existence of the default theme font.
-
-Returns the engine fallback font value, if neither exist (see [ThemeDB.FallbackFont]).
-
-[DefaultFont]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.DefaultFont
-[Font]: https://pkg.go.dev/graphics.gd/classdb/Font
-[HasDefaultFont]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasDefaultFont
-[HasFont]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasFont
-[ThemeDB.FallbackFont]: https://pkg.go.dev/graphics.gd/classdb/ThemeDB#FallbackFont
-*/
-//go:nosplit
 func (self class) GetFont(name String.Name, theme_type String.Name) [1]gdclass.Font { //gd:Theme.get_font
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_font, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
@@ -1254,17 +1107,6 @@ func (self class) GetFont(name String.Name, theme_type String.Name) [1]gdclass.F
 	var ret = [1]gdclass.Font{gdclass.NewFont(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns true if the [Font] property defined by 'name' and 'theme_type' exists, or if the default theme font is set up (see [HasDefaultFont]).
-
-Returns false if neither exist. Use [SetFont] to define the property.
-
-[Font]: https://pkg.go.dev/graphics.gd/classdb/Font
-[HasDefaultFont]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasDefaultFont
-[SetFont]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.SetFont
-*/
-//go:nosplit
 func (self class) HasFont(name String.Name, theme_type String.Name) bool { //gd:Theme.has_font
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_font, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
@@ -1273,17 +1115,6 @@ func (self class) HasFont(name String.Name, theme_type String.Name) bool { //gd:
 	var ret = r_ret
 	return ret
 }
-
-/*
-Renames the [Font] property defined by 'old_name' and 'theme_type' to 'name', if it exists.
-
-Fails if it doesn't exist, or if a similar property with the new name already exists. Use [HasFont] to check for existence, and [ClearFont] to remove the existing property.
-
-[ClearFont]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearFont
-[Font]: https://pkg.go.dev/graphics.gd/classdb/Font
-[HasFont]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasFont
-*/
-//go:nosplit
 func (self class) RenameFont(old_name String.Name, name String.Name, theme_type String.Name) { //gd:Theme.rename_font
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.rename_font, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12), &struct {
 		old_name   gdextension.StringName
@@ -1291,55 +1122,22 @@ func (self class) RenameFont(old_name String.Name, name String.Name, theme_type 
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(old_name)), pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
 }
-
-/*
-Removes the [Font] property defined by 'name' and 'theme_type', if it exists.
-
-Fails if it doesn't exist. Use [HasFont] to check for existence.
-
-[Font]: https://pkg.go.dev/graphics.gd/classdb/Font
-[HasFont]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasFont
-*/
-//go:nosplit
 func (self class) ClearFont(name String.Name, theme_type String.Name) { //gd:Theme.clear_font
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_font, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
 }
-
-/*
-Returns a list of names for [Font] properties defined with 'theme_type'. Use [GetFontTypeList] to get a list of possible theme type names.
-
-[Font]: https://pkg.go.dev/graphics.gd/classdb/Font
-[GetFontTypeList]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.GetFontTypeList
-*/
-//go:nosplit
 func (self class) GetFontList(theme_type String.Readable) Packed.Strings { //gd:Theme.get_font_list
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_font_list, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ theme_type gdextension.String }{pointers.Get(gd.InternalString(theme_type))})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns a list of all unique theme type names for [Font] properties. Use [GetTypeList] to get a list of all unique theme types.
-
-[Font]: https://pkg.go.dev/graphics.gd/classdb/Font
-[GetTypeList]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.GetTypeList
-*/
-//go:nosplit
 func (self class) GetFontTypeList() Packed.Strings { //gd:Theme.get_font_type_list
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_font_type_list, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Creates or changes the value of the font size property defined by 'name' and 'theme_type'. Use [ClearFontSize] to remove the property.
-
-[ClearFontSize]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearFontSize
-*/
-//go:nosplit
 func (self class) SetFontSize(name String.Name, theme_type String.Name, font_size int64) { //gd:Theme.set_font_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_font_size, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12), &struct {
 		name       gdextension.StringName
@@ -1347,20 +1145,6 @@ func (self class) SetFontSize(name String.Name, theme_type String.Name, font_siz
 		font_size  int64
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), font_size})
 }
-
-/*
-Returns the font size property defined by 'name' and 'theme_type', if it exists.
-
-Returns the default theme font size if the property doesn't exist and the default theme font size is set up (see [DefaultFontSize]). Use [HasFontSize] to check for existence of the property and [HasDefaultFontSize] to check for existence of the default theme font.
-
-Returns the engine fallback font size value, if neither exist (see [ThemeDB.FallbackFontSize]).
-
-[DefaultFontSize]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.DefaultFontSize
-[HasDefaultFontSize]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasDefaultFontSize
-[HasFontSize]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasFontSize
-[ThemeDB.FallbackFontSize]: https://pkg.go.dev/graphics.gd/classdb/ThemeDB#FallbackFontSize
-*/
-//go:nosplit
 func (self class) GetFontSize(name String.Name, theme_type String.Name) int64 { //gd:Theme.get_font_size
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_font_size, gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
@@ -1369,16 +1153,6 @@ func (self class) GetFontSize(name String.Name, theme_type String.Name) int64 { 
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the font size property defined by 'name' and 'theme_type' exists, or if the default theme font size is set up (see [HasDefaultFontSize]).
-
-Returns false if neither exist. Use [SetFontSize] to define the property.
-
-[HasDefaultFontSize]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasDefaultFontSize
-[SetFontSize]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.SetFontSize
-*/
-//go:nosplit
 func (self class) HasFontSize(name String.Name, theme_type String.Name) bool { //gd:Theme.has_font_size
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_font_size, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
@@ -1387,16 +1161,6 @@ func (self class) HasFontSize(name String.Name, theme_type String.Name) bool { /
 	var ret = r_ret
 	return ret
 }
-
-/*
-Renames the font size property defined by 'old_name' and 'theme_type' to 'name', if it exists.
-
-Fails if it doesn't exist, or if a similar property with the new name already exists. Use [HasFontSize] to check for existence, and [ClearFontSize] to remove the existing property.
-
-[ClearFontSize]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearFontSize
-[HasFontSize]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasFontSize
-*/
-//go:nosplit
 func (self class) RenameFontSize(old_name String.Name, name String.Name, theme_type String.Name) { //gd:Theme.rename_font_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.rename_font_size, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12), &struct {
 		old_name   gdextension.StringName
@@ -1404,53 +1168,22 @@ func (self class) RenameFontSize(old_name String.Name, name String.Name, theme_t
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(old_name)), pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
 }
-
-/*
-Removes the font size property defined by 'name' and 'theme_type', if it exists.
-
-Fails if it doesn't exist. Use [HasFontSize] to check for existence.
-
-[HasFontSize]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasFontSize
-*/
-//go:nosplit
 func (self class) ClearFontSize(name String.Name, theme_type String.Name) { //gd:Theme.clear_font_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_font_size, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
 }
-
-/*
-Returns a list of names for font size properties defined with 'theme_type'. Use [GetFontSizeTypeList] to get a list of possible theme type names.
-
-[GetFontSizeTypeList]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.GetFontSizeTypeList
-*/
-//go:nosplit
 func (self class) GetFontSizeList(theme_type String.Readable) Packed.Strings { //gd:Theme.get_font_size_list
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_font_size_list, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ theme_type gdextension.String }{pointers.Get(gd.InternalString(theme_type))})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns a list of all unique theme type names for font size properties. Use [GetTypeList] to get a list of all unique theme types.
-
-[GetTypeList]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.GetTypeList
-*/
-//go:nosplit
 func (self class) GetFontSizeTypeList() Packed.Strings { //gd:Theme.get_font_size_type_list
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_font_size_type_list, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Creates or changes the value of the [Color.RGBA] property defined by 'name' and 'theme_type'. Use [ClearColor] to remove the property.
-
-[ClearColor]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearColor
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
-*/
-//go:nosplit
 func (self class) SetColor(name String.Name, theme_type String.Name, color Color.RGBA) { //gd:Theme.set_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeColor<<12), &struct {
 		name       gdextension.StringName
@@ -1458,16 +1191,6 @@ func (self class) SetColor(name String.Name, theme_type String.Name, color Color
 		color      Color.RGBA
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), color})
 }
-
-/*
-Returns the [Color.RGBA] property defined by 'name' and 'theme_type', if it exists.
-
-Returns the default color value if the property doesn't exist. Use [HasColor] to check for existence.
-
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
-[HasColor]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasColor
-*/
-//go:nosplit
 func (self class) GetColor(name String.Name, theme_type String.Name) Color.RGBA { //gd:Theme.get_color
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_color, gdextension.SizeColor|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
@@ -1476,16 +1199,6 @@ func (self class) GetColor(name String.Name, theme_type String.Name) Color.RGBA 
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the [Color.RGBA] property defined by 'name' and 'theme_type' exists.
-
-Returns false if it doesn't exist. Use [SetColor] to define it.
-
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
-[SetColor]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.SetColor
-*/
-//go:nosplit
 func (self class) HasColor(name String.Name, theme_type String.Name) bool { //gd:Theme.has_color
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_color, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
@@ -1494,17 +1207,6 @@ func (self class) HasColor(name String.Name, theme_type String.Name) bool { //gd
 	var ret = r_ret
 	return ret
 }
-
-/*
-Renames the [Color.RGBA] property defined by 'old_name' and 'theme_type' to 'name', if it exists.
-
-Fails if it doesn't exist, or if a similar property with the new name already exists. Use [HasColor] to check for existence, and [ClearColor] to remove the existing property.
-
-[ClearColor]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearColor
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
-[HasColor]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasColor
-*/
-//go:nosplit
 func (self class) RenameColor(old_name String.Name, name String.Name, theme_type String.Name) { //gd:Theme.rename_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.rename_color, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12), &struct {
 		old_name   gdextension.StringName
@@ -1512,55 +1214,22 @@ func (self class) RenameColor(old_name String.Name, name String.Name, theme_type
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(old_name)), pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
 }
-
-/*
-Removes the [Color.RGBA] property defined by 'name' and 'theme_type', if it exists.
-
-Fails if it doesn't exist. Use [HasColor] to check for existence.
-
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
-[HasColor]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasColor
-*/
-//go:nosplit
 func (self class) ClearColor(name String.Name, theme_type String.Name) { //gd:Theme.clear_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_color, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
 }
-
-/*
-Returns a list of names for [Color.RGBA] properties defined with 'theme_type'. Use [GetColorTypeList] to get a list of possible theme type names.
-
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
-[GetColorTypeList]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.GetColorTypeList
-*/
-//go:nosplit
 func (self class) GetColorList(theme_type String.Readable) Packed.Strings { //gd:Theme.get_color_list
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_color_list, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ theme_type gdextension.String }{pointers.Get(gd.InternalString(theme_type))})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns a list of all unique theme type names for [Color.RGBA] properties. Use [GetTypeList] to get a list of all unique theme types.
-
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
-[GetTypeList]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.GetTypeList
-*/
-//go:nosplit
 func (self class) GetColorTypeList() Packed.Strings { //gd:Theme.get_color_type_list
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_color_type_list, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Creates or changes the value of the constant property defined by 'name' and 'theme_type'. Use [ClearConstant] to remove the property.
-
-[ClearConstant]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearConstant
-*/
-//go:nosplit
 func (self class) SetConstant(name String.Name, theme_type String.Name, constant int64) { //gd:Theme.set_constant
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12), &struct {
 		name       gdextension.StringName
@@ -1568,15 +1237,6 @@ func (self class) SetConstant(name String.Name, theme_type String.Name, constant
 		constant   int64
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), constant})
 }
-
-/*
-Returns the constant property defined by 'name' and 'theme_type', if it exists.
-
-Returns 0 if the property doesn't exist. Use [HasConstant] to check for existence.
-
-[HasConstant]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasConstant
-*/
-//go:nosplit
 func (self class) GetConstant(name String.Name, theme_type String.Name) int64 { //gd:Theme.get_constant
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_constant, gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
@@ -1585,15 +1245,6 @@ func (self class) GetConstant(name String.Name, theme_type String.Name) int64 { 
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the constant property defined by 'name' and 'theme_type' exists.
-
-Returns false if it doesn't exist. Use [SetConstant] to define it.
-
-[SetConstant]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.SetConstant
-*/
-//go:nosplit
 func (self class) HasConstant(name String.Name, theme_type String.Name) bool { //gd:Theme.has_constant
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_constant, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
@@ -1602,16 +1253,6 @@ func (self class) HasConstant(name String.Name, theme_type String.Name) bool { /
 	var ret = r_ret
 	return ret
 }
-
-/*
-Renames the constant property defined by 'old_name' and 'theme_type' to 'name', if it exists.
-
-Fails if it doesn't exist, or if a similar property with the new name already exists. Use [HasConstant] to check for existence, and [ClearConstant] to remove the existing property.
-
-[ClearConstant]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearConstant
-[HasConstant]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasConstant
-*/
-//go:nosplit
 func (self class) RenameConstant(old_name String.Name, name String.Name, theme_type String.Name) { //gd:Theme.rename_constant
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.rename_constant, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12), &struct {
 		old_name   gdextension.StringName
@@ -1619,134 +1260,61 @@ func (self class) RenameConstant(old_name String.Name, name String.Name, theme_t
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(old_name)), pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
 }
-
-/*
-Removes the constant property defined by 'name' and 'theme_type', if it exists.
-
-Fails if it doesn't exist. Use [HasConstant] to check for existence.
-
-[HasConstant]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasConstant
-*/
-//go:nosplit
 func (self class) ClearConstant(name String.Name, theme_type String.Name) { //gd:Theme.clear_constant
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_constant, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
 }
-
-/*
-Returns a list of names for constant properties defined with 'theme_type'. Use [GetConstantTypeList] to get a list of possible theme type names.
-
-[GetConstantTypeList]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.GetConstantTypeList
-*/
-//go:nosplit
 func (self class) GetConstantList(theme_type String.Readable) Packed.Strings { //gd:Theme.get_constant_list
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_constant_list, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ theme_type gdextension.String }{pointers.Get(gd.InternalString(theme_type))})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns a list of all unique theme type names for constant properties. Use [GetTypeList] to get a list of all unique theme types.
-
-[GetTypeList]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.GetTypeList
-*/
-//go:nosplit
 func (self class) GetConstantTypeList() Packed.Strings { //gd:Theme.get_constant_type_list
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_constant_type_list, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDefaultBaseScale(base_scale float64) { //gd:Theme.set_default_base_scale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_base_scale, 0|(gdextension.SizeFloat<<4), &struct{ base_scale float64 }{base_scale})
 }
-
-//go:nosplit
 func (self class) GetDefaultBaseScale() float64 { //gd:Theme.get_default_base_scale
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_default_base_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if [DefaultBaseScale] has a valid value.
-
-Returns false if it doesn't. The value must be greater than 0.0 to be considered valid.
-
-[DefaultBaseScale]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.DefaultBaseScale
-*/
-//go:nosplit
 func (self class) HasDefaultBaseScale() bool { //gd:Theme.has_default_base_scale
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_default_base_scale, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDefaultFont(font [1]gdclass.Font) { //gd:Theme.set_default_font
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_font, 0|(gdextension.SizeObject<<4), &struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0])))})
 }
-
-//go:nosplit
 func (self class) GetDefaultFont() [1]gdclass.Font { //gd:Theme.get_default_font
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_default_font, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Font{gdclass.NewFont(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns true if [DefaultFont] has a valid value.
-
-Returns false if it doesn't.
-
-[DefaultFont]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.DefaultFont
-*/
-//go:nosplit
 func (self class) HasDefaultFont() bool { //gd:Theme.has_default_font
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_default_font, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDefaultFontSize(font_size int64) { //gd:Theme.set_default_font_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_font_size, 0|(gdextension.SizeInt<<4), &struct{ font_size int64 }{font_size})
 }
-
-//go:nosplit
 func (self class) GetDefaultFontSize() int64 { //gd:Theme.get_default_font_size
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_default_font_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if [DefaultFontSize] has a valid value.
-
-Returns false if it doesn't. The value must be greater than 0 to be considered valid.
-
-[DefaultFontSize]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.DefaultFontSize
-*/
-//go:nosplit
 func (self class) HasDefaultFontSize() bool { //gd:Theme.has_default_font_size
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_default_font_size, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Creates or changes the value of the theme property of 'data_type' defined by 'name' and 'theme_type'. Use [ClearThemeItem] to remove the property.
-
-Fails if the 'value' type is not accepted by 'data_type'.
-
-Note: This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
-
-[ClearThemeItem]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearThemeItem
-*/
-//go:nosplit
 func (self class) SetThemeItem(data_type DataType, name String.Name, theme_type String.Name, value variant.Any) { //gd:Theme.set_theme_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_theme_item, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeVariant<<16), &struct {
 		data_type  DataType
@@ -1755,18 +1323,6 @@ func (self class) SetThemeItem(data_type DataType, name String.Name, theme_type 
 		value      gdextension.Variant
 	}{data_type, pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-/*
-Returns the theme property of 'data_type' defined by 'name' and 'theme_type', if it exists.
-
-Returns the engine fallback value if the property doesn't exist (see [ThemeDB]). Use [HasThemeItem] to check for existence.
-
-Note: This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
-
-[HasThemeItem]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasThemeItem
-[ThemeDB]: https://pkg.go.dev/graphics.gd/classdb/ThemeDB
-*/
-//go:nosplit
 func (self class) GetThemeItem(data_type DataType, name String.Name, theme_type String.Name) variant.Any { //gd:Theme.get_theme_item
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_theme_item, gdextension.SizeVariant|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12), &struct {
 		data_type  DataType
@@ -1776,17 +1332,6 @@ func (self class) GetThemeItem(data_type DataType, name String.Name, theme_type 
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Returns true if the theme property of 'data_type' defined by 'name' and 'theme_type' exists.
-
-Returns false if it doesn't exist. Use [SetThemeItem] to define it.
-
-Note: This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
-
-[SetThemeItem]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.SetThemeItem
-*/
-//go:nosplit
 func (self class) HasThemeItem(data_type DataType, name String.Name, theme_type String.Name) bool { //gd:Theme.has_theme_item
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_item, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12), &struct {
 		data_type  DataType
@@ -1796,18 +1341,6 @@ func (self class) HasThemeItem(data_type DataType, name String.Name, theme_type 
 	var ret = r_ret
 	return ret
 }
-
-/*
-Renames the theme property of 'data_type' defined by 'old_name' and 'theme_type' to 'name', if it exists.
-
-Fails if it doesn't exist, or if a similar property with the new name already exists. Use [HasThemeItem] to check for existence, and [ClearThemeItem] to remove the existing property.
-
-Note: This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
-
-[ClearThemeItem]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearThemeItem
-[HasThemeItem]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasThemeItem
-*/
-//go:nosplit
 func (self class) RenameThemeItem(data_type DataType, old_name String.Name, name String.Name, theme_type String.Name) { //gd:Theme.rename_theme_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.rename_theme_item, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeStringName<<16), &struct {
 		data_type  DataType
@@ -1816,17 +1349,6 @@ func (self class) RenameThemeItem(data_type DataType, old_name String.Name, name
 		theme_type gdextension.StringName
 	}{data_type, pointers.Get(gd.InternalStringName(old_name)), pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
 }
-
-/*
-Removes the theme property of 'data_type' defined by 'name' and 'theme_type', if it exists.
-
-Fails if it doesn't exist. Use [HasThemeItem] to check for existence.
-
-Note: This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
-
-[HasThemeItem]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasThemeItem
-*/
-//go:nosplit
 func (self class) ClearThemeItem(data_type DataType, name String.Name, theme_type String.Name) { //gd:Theme.clear_theme_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_theme_item, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12), &struct {
 		data_type  DataType
@@ -1834,15 +1356,6 @@ func (self class) ClearThemeItem(data_type DataType, name String.Name, theme_typ
 		theme_type gdextension.StringName
 	}{data_type, pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
 }
-
-/*
-Returns a list of names for properties of 'data_type' defined with 'theme_type'. Use [GetThemeItemTypeList] to get a list of possible theme type names.
-
-Note: This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
-
-[GetThemeItemTypeList]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.GetThemeItemTypeList
-*/
-//go:nosplit
 func (self class) GetThemeItemList(data_type DataType, theme_type String.Readable) Packed.Strings { //gd:Theme.get_theme_item_list
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_theme_item_list, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		data_type  DataType
@@ -1851,46 +1364,17 @@ func (self class) GetThemeItemList(data_type DataType, theme_type String.Readabl
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns a list of all unique theme type names for 'data_type' properties. Use [GetTypeList] to get a list of all unique theme types.
-
-Note: This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
-
-[GetTypeList]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.GetTypeList
-*/
-//go:nosplit
 func (self class) GetThemeItemTypeList(data_type DataType) Packed.Strings { //gd:Theme.get_theme_item_type_list
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_theme_item_type_list, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ data_type DataType }{data_type})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Marks 'theme_type' as a variation of 'base_type'.
-
-This adds 'theme_type' as a suggested option for [Control.ThemeTypeVariation] on a [Control] that is of the 'base_type' class.
-
-Variations can also be nested, i.e. 'base_type' can be another variation. If a chain of variations ends with a 'base_type' matching the class of the [Control], the whole chain is going to be suggested as options.
-
-Note: Suggestions only show up if this theme resource is set as the project default theme. See [ProjectSettings] "gui/theme/custom".
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[Control.ThemeTypeVariation]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.ThemeTypeVariation
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) SetTypeVariation(theme_type String.Name, base_type String.Name) { //gd:Theme.set_type_variation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_type_variation, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		theme_type gdextension.StringName
 		base_type  gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(theme_type)), pointers.Get(gd.InternalStringName(base_type))})
 }
-
-/*
-Returns true if 'theme_type' is marked as a variation of 'base_type'.
-*/
-//go:nosplit
 func (self class) IsTypeVariation(theme_type String.Name, base_type String.Name) bool { //gd:Theme.is_type_variation
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_type_variation, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		theme_type gdextension.StringName
@@ -1899,92 +1383,39 @@ func (self class) IsTypeVariation(theme_type String.Name, base_type String.Name)
 	var ret = r_ret
 	return ret
 }
-
-/*
-Unmarks 'theme_type' as being a variation of another theme type. See [SetTypeVariation].
-
-[SetTypeVariation]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.SetTypeVariation
-*/
-//go:nosplit
 func (self class) ClearTypeVariation(theme_type String.Name) { //gd:Theme.clear_type_variation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_type_variation, 0|(gdextension.SizeStringName<<4), &struct{ theme_type gdextension.StringName }{pointers.Get(gd.InternalStringName(theme_type))})
 }
-
-/*
-Returns the name of the base theme type if 'theme_type' is a valid variation type. Returns an empty string otherwise.
-*/
-//go:nosplit
 func (self class) GetTypeVariationBase(theme_type String.Name) String.Name { //gd:Theme.get_type_variation_base
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_type_variation_base, gdextension.SizeStringName|(gdextension.SizeStringName<<4), &struct{ theme_type gdextension.StringName }{pointers.Get(gd.InternalStringName(theme_type))})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-
-/*
-Returns a list of all type variations for the given 'base_type'.
-*/
-//go:nosplit
 func (self class) GetTypeVariationList(base_type String.Name) Packed.Strings { //gd:Theme.get_type_variation_list
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_type_variation_list, gdextension.SizePackedArray|(gdextension.SizeStringName<<4), &struct{ base_type gdextension.StringName }{pointers.Get(gd.InternalStringName(base_type))})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Adds an empty theme type for every valid data type.
-
-Note: Empty types are not saved with the theme. This method only exists to perform in-memory changes to the resource. Use available set_* methods to add theme items.
-*/
-//go:nosplit
 func (self class) AddType(theme_type String.Name) { //gd:Theme.add_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_type, 0|(gdextension.SizeStringName<<4), &struct{ theme_type gdextension.StringName }{pointers.Get(gd.InternalStringName(theme_type))})
 }
-
-/*
-Removes the theme type, gracefully discarding defined theme items. If the type is a variation, this information is also erased. If the type is a base for type variations, those variations lose their base.
-*/
-//go:nosplit
 func (self class) RemoveType(theme_type String.Name) { //gd:Theme.remove_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_type, 0|(gdextension.SizeStringName<<4), &struct{ theme_type gdextension.StringName }{pointers.Get(gd.InternalStringName(theme_type))})
 }
-
-/*
-Renames the theme type 'old_theme_type' to 'theme_type', if the old type exists and the new one doesn't exist.
-
-Note: Renaming a theme type to an empty name or a variation to a type associated with a built-in class removes type variation connections in a way that cannot be undone by reversing the rename alone.
-*/
-//go:nosplit
 func (self class) RenameType(old_theme_type String.Name, theme_type String.Name) { //gd:Theme.rename_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.rename_type, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		old_theme_type gdextension.StringName
 		theme_type     gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(old_theme_type)), pointers.Get(gd.InternalStringName(theme_type))})
 }
-
-/*
-Returns a list of all unique theme type names. Use the appropriate get_*_type_list method to get a list of unique theme types for a single data type.
-*/
-//go:nosplit
 func (self class) GetTypeList() Packed.Strings { //gd:Theme.get_type_list
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_type_list, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Adds missing and overrides existing definitions with values from the 'other' theme resource.
-
-Note: This modifies the current theme. If you want to merge two themes together without modifying either one, create a new empty theme and merge the other two into it one after another.
-*/
-//go:nosplit
 func (self class) MergeWith(other [1]gdclass.Theme) { //gd:Theme.merge_with
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.merge_with, 0|(gdextension.SizeObject<<4), &struct{ other gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTheme(other[0])))})
 }
-
-/*
-Removes all the theme properties defined on the theme resource.
-*/
-//go:nosplit
 func (self class) Clear() { //gd:Theme.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }

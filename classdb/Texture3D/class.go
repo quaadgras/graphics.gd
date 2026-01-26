@@ -358,12 +358,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Called when the [Texture3D]'s format is queried.
-
-[Texture3D]: https://pkg.go.dev/graphics.gd/classdb/Texture3D
-*/
 func (class) _get_format(impl func(ptr gdclass.Receiver) Image.Format) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -371,12 +365,6 @@ func (class) _get_format(impl func(ptr gdclass.Receiver) Image.Format) (cb gd.Ex
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called when the [Texture3D]'s width is queried.
-
-[Texture3D]: https://pkg.go.dev/graphics.gd/classdb/Texture3D
-*/
 func (class) _get_width(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -384,12 +372,6 @@ func (class) _get_width(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionC
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called when the [Texture3D]'s height is queried.
-
-[Texture3D]: https://pkg.go.dev/graphics.gd/classdb/Texture3D
-*/
 func (class) _get_height(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -397,12 +379,6 @@ func (class) _get_height(impl func(ptr gdclass.Receiver) int64) (cb gd.Extension
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called when the [Texture3D]'s depth is queried.
-
-[Texture3D]: https://pkg.go.dev/graphics.gd/classdb/Texture3D
-*/
 func (class) _get_depth(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -410,12 +386,6 @@ func (class) _get_depth(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionC
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called when the presence of mipmaps in the [Texture3D] is queried.
-
-[Texture3D]: https://pkg.go.dev/graphics.gd/classdb/Texture3D
-*/
 func (class) _has_mipmaps(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -423,12 +393,6 @@ func (class) _has_mipmaps(impl func(ptr gdclass.Receiver) bool) (cb gd.Extension
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called when the [Texture3D]'s data is queried.
-
-[Texture3D]: https://pkg.go.dev/graphics.gd/classdb/Texture3D
-*/
 func (class) _get_data(impl func(ptr gdclass.Receiver) Array.Contains[[1]gdclass.Image]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -442,84 +406,36 @@ func (class) _get_data(impl func(ptr gdclass.Receiver) Array.Contains[[1]gdclass
 	}
 }
 
-/*
-Returns the current format being used by this texture.
-*/
-//go:nosplit
 func (self class) GetFormat() Image.Format { //gd:Texture3D.get_format
 	var r_ret = noescape.Call[Image.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [Texture3D]'s width in pixels. Width is typically represented by the X axis.
-
-[Texture3D]: https://pkg.go.dev/graphics.gd/classdb/Texture3D
-*/
-//go:nosplit
 func (self class) GetWidth() int64 { //gd:Texture3D.get_width
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_width, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [Texture3D]'s height in pixels. Width is typically represented by the Y axis.
-
-[Texture3D]: https://pkg.go.dev/graphics.gd/classdb/Texture3D
-*/
-//go:nosplit
 func (self class) GetHeight() int64 { //gd:Texture3D.get_height
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [Texture3D]'s depth in pixels. Depth is typically represented by the Z axis (a dimension not present in [Texture2D]).
-
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-[Texture3D]: https://pkg.go.dev/graphics.gd/classdb/Texture3D
-*/
-//go:nosplit
 func (self class) GetDepth() int64 { //gd:Texture3D.get_depth
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_depth, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the [Texture3D] has generated mipmaps.
-
-[Texture3D]: https://pkg.go.dev/graphics.gd/classdb/Texture3D
-*/
-//go:nosplit
 func (self class) HasMipmaps() bool { //gd:Texture3D.has_mipmaps
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_mipmaps, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [Texture3D]'s data as an array of [Image]s. Each [Image] represents a slice of the [Texture3D], with different slices mapping to different depth (Z axis) levels.
-
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-[Texture3D]: https://pkg.go.dev/graphics.gd/classdb/Texture3D
-*/
-//go:nosplit
 func (self class) GetData() Array.Contains[[1]gdclass.Image] { //gd:Texture3D.get_data
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_data, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Image]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Creates a placeholder version of this resource ([PlaceholderTexture3D]).
-
-[PlaceholderTexture3D]: https://pkg.go.dev/graphics.gd/classdb/PlaceholderTexture3D
-*/
-//go:nosplit
 func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:Texture3D.create_placeholder
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_placeholder, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Resource{gdclass.NewResource(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

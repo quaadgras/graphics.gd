@@ -593,61 +593,26 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns the [XrInstance] created during the initialization of the OpenXR API.
-
-[XrInstance]: https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrInstance.html
-*/
-//go:nosplit
 func (self class) GetInstance() int64 { //gd:OpenXRAPIExtension.get_instance
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_instance, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the id of the system, which is an [XrSystemId] cast to an integer.
-
-[XrSystemId]: https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSystemId.html
-*/
-//go:nosplit
 func (self class) GetSystemId() int64 { //gd:OpenXRAPIExtension.get_system_id
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_system_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the OpenXR session, which is an [XrSession] cast to an integer.
-
-[XrSession]: https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSession.html
-*/
-//go:nosplit
 func (self class) GetSession() int64 { //gd:OpenXRAPIExtension.get_session
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_session, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Creates a [Transform3D.BasisOrigin] from an [XrPosef].
-
-[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
-[XrPosef]: https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrPosef.html
-*/
-//go:nosplit
 func (self class) TransformFromPose(pose gdextension.Pointer) Transform3D.BasisOrigin { //gd:OpenXRAPIExtension.transform_from_pose
 	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.transform_from_pose, gdextension.SizeTransform3D|(gdextension.SizePointer<<4), &struct{ pose gdextension.Pointer }{pose})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
-
-/*
-Returns true if the provided [XrResult] (cast to an integer) is successful. Otherwise returns false and prints the [XrResult] converted to a string, with the specified additional information.
-
-[XrResult]: https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html
-*/
-//go:nosplit
 func (self class) XrResult(result int64, format String.Readable, args Array.Any) bool { //gd:OpenXRAPIExtension.xr_result
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.xr_result, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeArray<<12), &struct {
 		result int64
@@ -657,55 +622,26 @@ func (self class) XrResult(result int64, format String.Readable, args Array.Any)
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if OpenXR is enabled.
-*/
-//go:nosplit
 func (self class) OpenxrIsEnabled(check_run_in_editor bool) bool { //gd:OpenXRAPIExtension.openxr_is_enabled
 	var r_ret = noescape.CallStatic[bool](methods.openxr_is_enabled, gdextension.SizeBool|(gdextension.SizeBool<<4), &struct{ check_run_in_editor bool }{check_run_in_editor})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the function pointer of the OpenXR function with the specified name, cast to an integer. If the function with the given name does not exist, the method returns 0.
-
-Note: openxr/util.h contains utility macros for acquiring OpenXR functions, e.g. GDEXTENSION_INIT_XR_FUNC_V(xrCreateAction).
-*/
-//go:nosplit
 func (self class) GetInstanceProcAddr(name String.Readable) int64 { //gd:OpenXRAPIExtension.get_instance_proc_addr
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_instance_proc_addr, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns an error string for the given [XrResult].
-
-[XrResult]: https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html
-*/
-//go:nosplit
 func (self class) GetErrorString(result int64) String.Readable { //gd:OpenXRAPIExtension.get_error_string
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_error_string, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ result int64 }{result})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the name of the specified swapchain format.
-*/
-//go:nosplit
 func (self class) GetSwapchainFormatName(swapchain_format int64) String.Readable { //gd:OpenXRAPIExtension.get_swapchain_format_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_swapchain_format_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ swapchain_format int64 }{swapchain_format})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Set the object name of an OpenXR object, used for debug output. 'object_type' must be a valid OpenXR XrObjectType enum and 'object_handle' must be a valid OpenXR object handle.
-*/
-//go:nosplit
 func (self class) SetObjectName(object_type int64, object_handle int64, object_name String.Readable) { //gd:OpenXRAPIExtension.set_object_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_object_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		object_type   int64
@@ -713,119 +649,48 @@ func (self class) SetObjectName(object_type int64, object_handle int64, object_n
 		object_name   gdextension.String
 	}{object_type, object_handle, pointers.Get(gd.InternalString(object_name))})
 }
-
-/*
-Begins a new debug label region, this label will be reported in debug messages for any calls following this until [EndDebugLabelRegion] is called. Debug labels can be stacked.
-
-[EndDebugLabelRegion]: https://pkg.go.dev/graphics.gd/classdb/OpenXRAPIExtension#Instance.EndDebugLabelRegion
-*/
-//go:nosplit
 func (self class) BeginDebugLabelRegion(label_name String.Readable) { //gd:OpenXRAPIExtension.begin_debug_label_region
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.begin_debug_label_region, 0|(gdextension.SizeString<<4), &struct{ label_name gdextension.String }{pointers.Get(gd.InternalString(label_name))})
 }
-
-/*
-Marks the end of a debug label region. Removes the latest debug label region added by calling [BeginDebugLabelRegion].
-
-[BeginDebugLabelRegion]: https://pkg.go.dev/graphics.gd/classdb/OpenXRAPIExtension#Instance.BeginDebugLabelRegion
-*/
-//go:nosplit
 func (self class) EndDebugLabelRegion() { //gd:OpenXRAPIExtension.end_debug_label_region
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.end_debug_label_region, 0, &struct{}{})
 }
-
-/*
-Inserts a debug label, this label is reported in any debug message resulting from the OpenXR calls that follows, until any of [BeginDebugLabelRegion], [EndDebugLabelRegion], or [InsertDebugLabel] is called.
-
-[BeginDebugLabelRegion]: https://pkg.go.dev/graphics.gd/classdb/OpenXRAPIExtension#Instance.BeginDebugLabelRegion
-[EndDebugLabelRegion]: https://pkg.go.dev/graphics.gd/classdb/OpenXRAPIExtension#Instance.EndDebugLabelRegion
-[InsertDebugLabel]: https://pkg.go.dev/graphics.gd/classdb/OpenXRAPIExtension#Instance.InsertDebugLabel
-*/
-//go:nosplit
 func (self class) InsertDebugLabel(label_name String.Readable) { //gd:OpenXRAPIExtension.insert_debug_label
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.insert_debug_label, 0|(gdextension.SizeString<<4), &struct{ label_name gdextension.String }{pointers.Get(gd.InternalString(label_name))})
 }
-
-/*
-Returns true if OpenXR is initialized.
-*/
-//go:nosplit
 func (self class) IsInitialized() bool { //gd:OpenXRAPIExtension.is_initialized
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_initialized, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if OpenXR is running ([xrBeginSession] was successfully called and the swapchains were created).
-
-[xrBeginSession]: https://registry.khronos.org/OpenXR/specs/1.0/man/html/xrBeginSession.html
-*/
-//go:nosplit
 func (self class) IsRunning() bool { //gd:OpenXRAPIExtension.is_running
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_running, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the reference space used by OpenXR to the given [XrSpace] (cast to a void *).
-
-[XrSpace]: https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSpace.html
-*/
-//go:nosplit
 func (self class) SetCustomPlaySpace(space gdextension.Pointer) { //gd:OpenXRAPIExtension.set_custom_play_space
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_play_space, 0|(gdextension.SizePointer<<4), &struct{ space gdextension.Pointer }{space})
 }
-
-/*
-Returns the play space, which is an [XrSpace] cast to an integer.
-
-[XrSpace]: https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSpace.html
-*/
-//go:nosplit
 func (self class) GetPlaySpace() int64 { //gd:OpenXRAPIExtension.get_play_space
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_play_space, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the predicted display timing for the current frame.
-*/
-//go:nosplit
 func (self class) GetPredictedDisplayTime() int64 { //gd:OpenXRAPIExtension.get_predicted_display_time
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_predicted_display_time, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the predicted display timing for the next frame.
-*/
-//go:nosplit
 func (self class) GetNextFrameTime() int64 { //gd:OpenXRAPIExtension.get_next_frame_time
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_next_frame_time, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if OpenXR is initialized for rendering with an XR viewport.
-*/
-//go:nosplit
 func (self class) CanRender() bool { //gd:OpenXRAPIExtension.can_render
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_render, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [Resource.ID] corresponding to an Action of a matching name, optionally limited to a specified action set.
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) FindAction(name String.Readable, action_set RID.Any) RID.Any { //gd:OpenXRAPIExtension.find_action
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.find_action, gdextension.SizeRID|(gdextension.SizeString<<4)|(gdextension.SizeRID<<8), &struct {
 		name       gdextension.String
@@ -834,141 +699,58 @@ func (self class) FindAction(name String.Readable, action_set RID.Any) RID.Any {
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the corresponding XrAction OpenXR handle for the given action RID.
-*/
-//go:nosplit
 func (self class) ActionGetHandle(action RID.Any) int64 { //gd:OpenXRAPIExtension.action_get_handle
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.action_get_handle, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ action RID.Any }{action})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the corresponding XRHandTrackerEXT handle for the given hand index value.
-*/
-//go:nosplit
 func (self class) GetHandTracker(hand_index int64) int64 { //gd:OpenXRAPIExtension.get_hand_tracker
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_hand_tracker, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ hand_index int64 }{hand_index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Registers the given extension as a composition layer provider.
-*/
-//go:nosplit
 func (self class) RegisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.register_composition_layer_provider
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_composition_layer_provider, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetOpenXRExtensionWrapper(extension[0])[0]))})
 }
-
-/*
-Unregisters the given extension as a composition layer provider.
-*/
-//go:nosplit
 func (self class) UnregisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.unregister_composition_layer_provider
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_composition_layer_provider, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRExtensionWrapper(extension[0])))})
 }
-
-/*
-Registers the given extension as a provider of additional data structures to projections views.
-*/
-//go:nosplit
 func (self class) RegisterProjectionViewsExtension(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.register_projection_views_extension
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_projection_views_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetOpenXRExtensionWrapper(extension[0])[0]))})
 }
-
-/*
-Unregisters the given extension as a provider of additional data structures to projections views.
-*/
-//go:nosplit
 func (self class) UnregisterProjectionViewsExtension(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.unregister_projection_views_extension
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_projection_views_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRExtensionWrapper(extension[0])))})
 }
-
-/*
-Registers the given extension as modifying frame info via the [OpenXRExtensionWrapper.SetFrameWaitInfoAndGetNextPointer], [OpenXRExtensionWrapper.SetViewLocateInfoAndGetNextPointer], or [OpenXRExtensionWrapper.SetFrameEndInfoAndGetNextPointer] virtual methods.
-
-[OpenXRExtensionWrapper.SetFrameEndInfoAndGetNextPointer]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Instance.SetFrameEndInfoAndGetNextPointer
-[OpenXRExtensionWrapper.SetFrameWaitInfoAndGetNextPointer]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Instance.SetFrameWaitInfoAndGetNextPointer
-[OpenXRExtensionWrapper.SetViewLocateInfoAndGetNextPointer]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Instance.SetViewLocateInfoAndGetNextPointer
-*/
-//go:nosplit
 func (self class) RegisterFrameInfoExtension(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.register_frame_info_extension
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_frame_info_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetOpenXRExtensionWrapper(extension[0])[0]))})
 }
-
-/*
-Unregisters the given extension as modifying frame info.
-*/
-//go:nosplit
 func (self class) UnregisterFrameInfoExtension(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.unregister_frame_info_extension
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_frame_info_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRExtensionWrapper(extension[0])))})
 }
-
-/*
-Returns the near boundary value of the camera frustum.
-
-Note: This is only accessible in the render thread.
-*/
-//go:nosplit
 func (self class) GetRenderStateZNear() float64 { //gd:OpenXRAPIExtension.get_render_state_z_near
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_render_state_z_near, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the far boundary value of the camera frustum.
-
-Note: This is only accessible in the render thread.
-*/
-//go:nosplit
 func (self class) GetRenderStateZFar() float64 { //gd:OpenXRAPIExtension.get_render_state_z_far
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_render_state_z_far, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the render target of the velocity texture.
-*/
-//go:nosplit
 func (self class) SetVelocityTexture(render_target RID.Any) { //gd:OpenXRAPIExtension.set_velocity_texture
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_velocity_texture, 0|(gdextension.SizeRID<<4), &struct{ render_target RID.Any }{render_target})
 }
-
-/*
-Sets the render target of the velocity depth texture.
-*/
-//go:nosplit
 func (self class) SetVelocityDepthTexture(render_target RID.Any) { //gd:OpenXRAPIExtension.set_velocity_depth_texture
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_velocity_depth_texture, 0|(gdextension.SizeRID<<4), &struct{ render_target RID.Any }{render_target})
 }
-
-/*
-Sets the target size of the velocity and velocity depth textures.
-*/
-//go:nosplit
 func (self class) SetVelocityTargetSize(target_size Vector2i.XY) { //gd:OpenXRAPIExtension.set_velocity_target_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_velocity_target_size, 0|(gdextension.SizeVector2i<<4), &struct{ target_size Vector2i.XY }{target_size})
 }
-
-/*
-Returns an array of supported swapchain formats.
-*/
-//go:nosplit
 func (self class) GetSupportedSwapchainFormats() Packed.Array[int64] { //gd:OpenXRAPIExtension.get_supported_swapchain_formats
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_supported_swapchain_formats, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns a pointer to a new swapchain created using the provided parameters.
-*/
-//go:nosplit
 func (self class) OpenxrSwapchainCreate(create_flags int64, usage_flags int64, swapchain_format int64, width int64, height int64, sample_count int64, array_size int64) int64 { //gd:OpenXRAPIExtension.openxr_swapchain_create
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.openxr_swapchain_create, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
 		create_flags     int64
@@ -982,83 +764,36 @@ func (self class) OpenxrSwapchainCreate(create_flags int64, usage_flags int64, s
 	var ret = r_ret
 	return ret
 }
-
-/*
-Destroys the provided swapchain and frees it from memory.
-*/
-//go:nosplit
 func (self class) OpenxrSwapchainFree(swapchain int64) { //gd:OpenXRAPIExtension.openxr_swapchain_free
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.openxr_swapchain_free, 0|(gdextension.SizeInt<<4), &struct{ swapchain int64 }{swapchain})
 }
-
-/*
-Returns the XrSwapchain handle of the provided swapchain.
-*/
-//go:nosplit
 func (self class) OpenxrSwapchainGetSwapchain(swapchain int64) int64 { //gd:OpenXRAPIExtension.openxr_swapchain_get_swapchain
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.openxr_swapchain_get_swapchain, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ swapchain int64 }{swapchain})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Acquires the image of the provided swapchain.
-*/
-//go:nosplit
 func (self class) OpenxrSwapchainAcquire(swapchain int64) { //gd:OpenXRAPIExtension.openxr_swapchain_acquire
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.openxr_swapchain_acquire, 0|(gdextension.SizeInt<<4), &struct{ swapchain int64 }{swapchain})
 }
-
-/*
-Returns the RID of the provided swapchain's image.
-*/
-//go:nosplit
 func (self class) OpenxrSwapchainGetImage(swapchain int64) RID.Any { //gd:OpenXRAPIExtension.openxr_swapchain_get_image
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.openxr_swapchain_get_image, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ swapchain int64 }{swapchain})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Releases the image of the provided swapchain.
-*/
-//go:nosplit
 func (self class) OpenxrSwapchainRelease(swapchain int64) { //gd:OpenXRAPIExtension.openxr_swapchain_release
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.openxr_swapchain_release, 0|(gdextension.SizeInt<<4), &struct{ swapchain int64 }{swapchain})
 }
-
-/*
-Returns a pointer to the render state's XrCompositionLayerProjection struct.
-
-Note: This method should only be called from the rendering thread.
-*/
-//go:nosplit
 func (self class) GetProjectionLayer() int64 { //gd:OpenXRAPIExtension.get_projection_layer
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_projection_layer, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the render region to 'render_region', overriding the normal render target's rect.
-*/
-//go:nosplit
 func (self class) SetRenderRegion(render_region Rect2i.PositionSize) { //gd:OpenXRAPIExtension.set_render_region
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_render_region, 0|(gdextension.SizeRect2i<<4), &struct{ render_region Rect2i.PositionSize }{render_region})
 }
-
-/*
-If set to true, an OpenXR extension is loaded which is capable of emulating the [Xrinterface.XrEnvBlendModeAlphaBlend] blend mode.
-*/
-//go:nosplit
 func (self class) SetEmulateEnvironmentBlendModeAlphaBlend(enabled bool) { //gd:OpenXRAPIExtension.set_emulate_environment_blend_mode_alpha_blend
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emulate_environment_blend_mode_alpha_blend, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-/*
-Returns [OpenXRAPIExtension.OpenXRAlphaBlendModeSupport] denoting if [Xrinterface.XrEnvBlendModeAlphaBlend] is really supported, emulated or not supported at all.
-*/
-//go:nosplit
 func (self class) IsEnvironmentBlendModeAlphaSupported() OpenXRAlphaBlendModeSupport { //gd:OpenXRAPIExtension.is_environment_blend_mode_alpha_supported
 	var r_ret = noescape.Call[OpenXRAlphaBlendModeSupport](gd.ObjectChecked(self.AsObject()), methods.is_environment_blend_mode_alpha_supported, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

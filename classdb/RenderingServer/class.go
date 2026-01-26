@@ -5384,36 +5384,12 @@ func SetRenderLoopEnabled(value bool) { //gd:RenderingServer.render_loop_enabled
 	class(self).SetRenderLoopEnabled(value)
 }
 
-/*
-Creates a 2-dimensional texture and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all texture_2d_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-Note: The equivalent resource is [Texture2D].
-
-Note: Not to be confused with [RenderingDevice.TextureCreate], which creates the graphics API's own texture type as opposed to the Godot-specific [Texture2D] resource.
-
-[RenderingDevice.TextureCreate]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.TextureCreate
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
-//go:nosplit
 func (self class) Texture2dCreate(image [1]gdclass.Image) RID.Any { //gd:RenderingServer.texture_2d_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_2d_create, gdextension.SizeRID|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0])))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Creates a 2-dimensional layered texture and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all texture_2d_layered_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-Note: The equivalent resource is [TextureLayered].
-
-[TextureLayered]: https://pkg.go.dev/graphics.gd/classdb/TextureLayered
-*/
-//go:nosplit
 func (self class) Texture2dLayeredCreate(layers Array.Contains[[1]gdclass.Image], layered_type TextureLayeredType) RID.Any { //gd:RenderingServer.texture_2d_layered_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_2d_layered_create, gdextension.SizeRID|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5423,13 +5399,6 @@ func (self class) Texture2dLayeredCreate(layers Array.Contains[[1]gdclass.Image]
 	var ret = r_ret
 	return ret
 }
-
-/*
-Note: The equivalent resource is [Texture3D].
-
-[Texture3D]: https://pkg.go.dev/graphics.gd/classdb/Texture3D
-*/
-//go:nosplit
 func (self class) Texture3dCreate(format Image.Format, width int64, height int64, depth int64, mipmaps bool, data Array.Contains[[1]gdclass.Image]) RID.Any { //gd:RenderingServer.texture_3d_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_3d_create, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeArray<<24), &struct {
@@ -5443,29 +5412,12 @@ func (self class) Texture3dCreate(format Image.Format, width int64, height int64
 	var ret = r_ret
 	return ret
 }
-
-/*
-This method does nothing and always returns an invalid [Resource.ID].
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) TextureProxyCreate(base RID.Any) RID.Any { //gd:RenderingServer.texture_proxy_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_proxy_create, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ base RID.Any }{base})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Creates a texture based on a native handle that was created outside of Godot's renderer.
-
-Note: If using only the rendering device renderer, it's recommend to use [RenderingDevice.TextureCreateFromExtension] together with [RenderingServer.TextureRdCreate], rather than this method. It will give you much more control over the texture's format and usage.
-
-[RenderingDevice.TextureCreateFromExtension]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.TextureCreateFromExtension
-[RenderingServer.TextureRdCreate]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#TextureRdCreate
-*/
-//go:nosplit
 func (self class) TextureCreateFromNativeHandle(atype TextureType, format Image.Format, native_handle int64, width int64, height int64, depth int64, layers int64, layered_type TextureLayeredType) RID.Any { //gd:RenderingServer.texture_create_from_native_handle
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_create_from_native_handle, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
@@ -5481,16 +5433,6 @@ func (self class) TextureCreateFromNativeHandle(atype TextureType, format Image.
 	var ret = r_ret
 	return ret
 }
-
-/*
-Updates the texture specified by the 'texture' [Resource.ID] with the data in 'image'. A 'layer' must also be specified, which should be 0 when updating a single-layer texture ([Texture2D]).
-
-Note: The 'image' must have the same width, height and format as the current 'texture' data. Otherwise, an error will be printed and the original texture won't be modified. If you need to use different width, height or format, use [TextureReplace] instead.
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
-//go:nosplit
 func (self class) Texture2dUpdate(texture RID.Any, image [1]gdclass.Image, layer int64) { //gd:RenderingServer.texture_2d_update
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.texture_2d_update, 0|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12), &struct {
@@ -5499,15 +5441,6 @@ func (self class) Texture2dUpdate(texture RID.Any, image [1]gdclass.Image, layer
 		layer   int64
 	}{texture, gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0]))), layer})
 }
-
-/*
-Updates the texture specified by the 'texture' [Resource.ID]'s data with the data in 'data'. All the texture's layers must be replaced at once.
-
-Note: The 'texture' must have the same width, height, depth and format as the current texture data. Otherwise, an error will be printed and the original texture won't be modified. If you need to use different width, height, depth or format, use [TextureReplace] instead.
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) Texture3dUpdate(texture RID.Any, data Array.Contains[[1]gdclass.Image]) { //gd:RenderingServer.texture_3d_update
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.texture_3d_update, 0|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8), &struct {
@@ -5515,11 +5448,6 @@ func (self class) Texture3dUpdate(texture RID.Any, data Array.Contains[[1]gdclas
 		data    gdextension.Array
 	}{texture, pointers.Get(gd.InternalArray(data))})
 }
-
-/*
-This method does nothing.
-*/
-//go:nosplit
 func (self class) TextureProxyUpdate(texture RID.Any, proxy_to RID.Any) { //gd:RenderingServer.texture_proxy_update
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.texture_proxy_update, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -5527,86 +5455,30 @@ func (self class) TextureProxyUpdate(texture RID.Any, proxy_to RID.Any) { //gd:R
 		proxy_to RID.Any
 	}{texture, proxy_to})
 }
-
-/*
-Creates a placeholder for a 2-dimensional layered texture and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all texture_2d_layered_* RenderingServer functions, although it does nothing when used. See also [Texture2dLayeredPlaceholderCreate].
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-Note: The equivalent resource is [PlaceholderTexture2D].
-
-[PlaceholderTexture2D]: https://pkg.go.dev/graphics.gd/classdb/PlaceholderTexture2D
-*/
-//go:nosplit
 func (self class) Texture2dPlaceholderCreate() RID.Any { //gd:RenderingServer.texture_2d_placeholder_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_2d_placeholder_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Creates a placeholder for a 2-dimensional layered texture and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all texture_2d_layered_* RenderingServer functions, although it does nothing when used. See also [Texture2dPlaceholderCreate].
-
-Note: The equivalent resource is [PlaceholderTextureLayered].
-
-[PlaceholderTextureLayered]: https://pkg.go.dev/graphics.gd/classdb/PlaceholderTextureLayered
-*/
-//go:nosplit
 func (self class) Texture2dLayeredPlaceholderCreate(layered_type TextureLayeredType) RID.Any { //gd:RenderingServer.texture_2d_layered_placeholder_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_2d_layered_placeholder_create, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ layered_type TextureLayeredType }{layered_type})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Creates a placeholder for a 3-dimensional texture and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all texture_3d_* RenderingServer functions, although it does nothing when used.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-Note: The equivalent resource is [PlaceholderTexture3D].
-
-[PlaceholderTexture3D]: https://pkg.go.dev/graphics.gd/classdb/PlaceholderTexture3D
-*/
-//go:nosplit
 func (self class) Texture3dPlaceholderCreate() RID.Any { //gd:RenderingServer.texture_3d_placeholder_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_3d_placeholder_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns an [Image] instance from the given 'texture' [Resource.ID].
-
-Example: Get the test texture from [GetTestTexture] and apply it to a [Sprite2D] node:
-
-
-	var texture_rid = RenderingServer.GetTestTexture()
-	var texture = ImageTexture.CreateFromImage(RenderingServer.Texture2dGet(RID.Texture2D(texture_rid)))
-	sprite.SetTexture(texture.AsTexture2D())
-
-
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-[Sprite2D]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D
-*/
-//go:nosplit
 func (self class) Texture2dGet(texture RID.Any) [1]gdclass.Image { //gd:RenderingServer.texture_2d_get
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.texture_2d_get, gdextension.SizeObject|(gdextension.SizeRID<<4), &struct{ texture RID.Any }{texture})
 	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns an [Image] instance from the given 'texture' [Resource.ID] and 'layer'.
-
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) Texture2dLayerGet(texture RID.Any, layer int64) [1]gdclass.Image { //gd:RenderingServer.texture_2d_layer_get
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.texture_2d_layer_get, gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5616,25 +5488,12 @@ func (self class) Texture2dLayerGet(texture RID.Any, layer int64) [1]gdclass.Ima
 	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns 3D texture data as an array of [Image]s for the specified texture [Resource.ID].
-
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) Texture3dGet(texture RID.Any) Array.Contains[[1]gdclass.Image] { //gd:RenderingServer.texture_3d_get
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.texture_3d_get, gdextension.SizeArray|(gdextension.SizeRID<<4), &struct{ texture RID.Any }{texture})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Image]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Replaces 'texture''s texture data by the texture specified by the 'by_texture' RID, without changing 'texture''s RID.
-*/
-//go:nosplit
 func (self class) TextureReplace(texture RID.Any, by_texture RID.Any) { //gd:RenderingServer.texture_replace
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.texture_replace, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -5642,8 +5501,6 @@ func (self class) TextureReplace(texture RID.Any, by_texture RID.Any) { //gd:Ren
 		by_texture RID.Any
 	}{texture, by_texture})
 }
-
-//go:nosplit
 func (self class) TextureSetSizeOverride(texture RID.Any, width int64, height int64) { //gd:RenderingServer.texture_set_size_override
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.texture_set_size_override, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
@@ -5652,8 +5509,6 @@ func (self class) TextureSetSizeOverride(texture RID.Any, width int64, height in
 		height  int64
 	}{texture, width, height})
 }
-
-//go:nosplit
 func (self class) TextureSetPath(texture RID.Any, path String.Readable) { //gd:RenderingServer.texture_set_path
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.texture_set_path, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
@@ -5661,27 +5516,18 @@ func (self class) TextureSetPath(texture RID.Any, path String.Readable) { //gd:R
 		path    gdextension.String
 	}{texture, pointers.Get(gd.InternalString(path))})
 }
-
-//go:nosplit
 func (self class) TextureGetPath(texture RID.Any) String.Readable { //gd:RenderingServer.texture_get_path
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.texture_get_path, gdextension.SizeString|(gdextension.SizeRID<<4), &struct{ texture RID.Any }{texture})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the format for the texture.
-*/
-//go:nosplit
 func (self class) TextureGetFormat(texture RID.Any) Image.Format { //gd:RenderingServer.texture_get_format
 	once.Do(singleton)
 	var r_ret = noescape.Call[Image.Format](gd.ObjectChecked(self.AsObject()), methods.texture_get_format, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ texture RID.Any }{texture})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) TextureSetForceRedrawIfVisible(texture RID.Any, enable bool) { //gd:RenderingServer.texture_set_force_redraw_if_visible
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.texture_set_force_redraw_if_visible, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -5689,13 +5535,6 @@ func (self class) TextureSetForceRedrawIfVisible(texture RID.Any, enable bool) {
 		enable  bool
 	}{texture, enable})
 }
-
-/*
-Creates a new texture object based on a texture created directly on the [RenderingDevice]. If the texture contains layers, 'layer_type' is used to define the layer type.
-
-[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
-*/
-//go:nosplit
 func (self class) TextureRdCreate(rd_texture RID.Any, layer_type TextureLayeredType) RID.Any { //gd:RenderingServer.texture_rd_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_rd_create, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5705,14 +5544,6 @@ func (self class) TextureRdCreate(rd_texture RID.Any, layer_type TextureLayeredT
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a texture [Resource.ID] that can be used with [RenderingDevice].
-
-[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) TextureGetRdTexture(texture RID.Any, srgb bool) RID.Any { //gd:RenderingServer.texture_get_rd_texture
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_get_rd_texture, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -5722,13 +5553,6 @@ func (self class) TextureGetRdTexture(texture RID.Any, srgb bool) RID.Any { //gd
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the internal graphics handle for this texture object. For use when communicating with third-party APIs mostly with GDExtension.
-
-Note: This function returns a uint64_t which internally maps to a GLuint (OpenGL) or VkImage (Vulkan).
-*/
-//go:nosplit
 func (self class) TextureGetNativeHandle(texture RID.Any, srgb bool) int64 { //gd:RenderingServer.texture_get_native_handle
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.texture_get_native_handle, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -5738,28 +5562,12 @@ func (self class) TextureGetNativeHandle(texture RID.Any, srgb bool) int64 { //g
 	var ret = r_ret
 	return ret
 }
-
-/*
-Creates an empty shader and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all shader_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-Note: The equivalent resource is [Shader].
-
-[Shader]: https://pkg.go.dev/graphics.gd/classdb/Shader
-*/
-//go:nosplit
 func (self class) ShaderCreate() RID.Any { //gd:RenderingServer.shader_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.shader_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the shader's source code (which triggers recompilation after being changed).
-*/
-//go:nosplit
 func (self class) ShaderSetCode(shader RID.Any, code String.Readable) { //gd:RenderingServer.shader_set_code
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shader_set_code, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
@@ -5767,14 +5575,6 @@ func (self class) ShaderSetCode(shader RID.Any, code String.Readable) { //gd:Ren
 		code   gdextension.String
 	}{shader, pointers.Get(gd.InternalString(code))})
 }
-
-/*
-Sets the path hint for the specified shader. This should generally match the [Shader] resource's [Resource.ResourcePath].
-
-[Resource.ResourcePath]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.ResourcePath
-[Shader]: https://pkg.go.dev/graphics.gd/classdb/Shader
-*/
-//go:nosplit
 func (self class) ShaderSetPathHint(shader RID.Any, path String.Readable) { //gd:RenderingServer.shader_set_path_hint
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shader_set_path_hint, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
@@ -5782,33 +5582,18 @@ func (self class) ShaderSetPathHint(shader RID.Any, path String.Readable) { //gd
 		path   gdextension.String
 	}{shader, pointers.Get(gd.InternalString(path))})
 }
-
-/*
-Returns a shader's source code as a string.
-*/
-//go:nosplit
 func (self class) ShaderGetCode(shader RID.Any) String.Readable { //gd:RenderingServer.shader_get_code
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.shader_get_code, gdextension.SizeString|(gdextension.SizeRID<<4), &struct{ shader RID.Any }{shader})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the parameters of a shader.
-*/
-//go:nosplit
 func (self class) GetShaderParameterList(shader RID.Any) Array.Contains[Dictionary.Any] { //gd:RenderingServer.get_shader_parameter_list
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_shader_parameter_list, gdextension.SizeArray|(gdextension.SizeRID<<4), &struct{ shader RID.Any }{shader})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns the default value for the specified shader uniform. This is usually the value written in the shader source code.
-*/
-//go:nosplit
 func (self class) ShaderGetParameterDefault(shader RID.Any, name String.Name) variant.Any { //gd:RenderingServer.shader_get_parameter_default
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.shader_get_parameter_default, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), &struct {
@@ -5818,13 +5603,6 @@ func (self class) ShaderGetParameterDefault(shader RID.Any, name String.Name) va
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Sets a shader's default texture. Overwrites the texture given by name.
-
-Note: If the sampler array is used use 'index' to access the specified texture.
-*/
-//go:nosplit
 func (self class) ShaderSetDefaultTextureParameter(shader RID.Any, name String.Name, texture RID.Any, index int64) { //gd:RenderingServer.shader_set_default_texture_parameter
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shader_set_default_texture_parameter, 0|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeInt<<16), &struct {
@@ -5834,13 +5612,6 @@ func (self class) ShaderSetDefaultTextureParameter(shader RID.Any, name String.N
 		index   int64
 	}{shader, pointers.Get(gd.InternalStringName(name)), texture, index})
 }
-
-/*
-Returns a default texture from a shader searched by name.
-
-Note: If the sampler array is used use 'index' to access the specified texture.
-*/
-//go:nosplit
 func (self class) ShaderGetDefaultTextureParameter(shader RID.Any, name String.Name, index int64) RID.Any { //gd:RenderingServer.shader_get_default_texture_parameter
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.shader_get_default_texture_parameter, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12), &struct {
@@ -5851,28 +5622,12 @@ func (self class) ShaderGetDefaultTextureParameter(shader RID.Any, name String.N
 	var ret = r_ret
 	return ret
 }
-
-/*
-Creates an empty material and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all material_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-Note: The equivalent resource is [Material].
-
-[Material]: https://pkg.go.dev/graphics.gd/classdb/Material
-*/
-//go:nosplit
 func (self class) MaterialCreate() RID.Any { //gd:RenderingServer.material_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.material_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets a shader material's shader.
-*/
-//go:nosplit
 func (self class) MaterialSetShader(shader_material RID.Any, shader RID.Any) { //gd:RenderingServer.material_set_shader
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.material_set_shader, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -5880,11 +5635,6 @@ func (self class) MaterialSetShader(shader_material RID.Any, shader RID.Any) { /
 		shader          RID.Any
 	}{shader_material, shader})
 }
-
-/*
-Sets a material's parameter.
-*/
-//go:nosplit
 func (self class) MaterialSetParam(material RID.Any, parameter String.Name, value variant.Any) { //gd:RenderingServer.material_set_param
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.material_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeVariant<<12), &struct {
@@ -5893,11 +5643,6 @@ func (self class) MaterialSetParam(material RID.Any, parameter String.Name, valu
 		value     gdextension.Variant
 	}{material, pointers.Get(gd.InternalStringName(parameter)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-/*
-Returns the value of a certain material's parameter.
-*/
-//go:nosplit
 func (self class) MaterialGetParam(material RID.Any, parameter String.Name) variant.Any { //gd:RenderingServer.material_get_param
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.material_get_param, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), &struct {
@@ -5907,11 +5652,6 @@ func (self class) MaterialGetParam(material RID.Any, parameter String.Name) vari
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Sets a material's render priority.
-*/
-//go:nosplit
 func (self class) MaterialSetRenderPriority(material RID.Any, priority int64) { //gd:RenderingServer.material_set_render_priority
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.material_set_render_priority, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5919,11 +5659,6 @@ func (self class) MaterialSetRenderPriority(material RID.Any, priority int64) { 
 		priority int64
 	}{material, priority})
 }
-
-/*
-Sets an object's next material.
-*/
-//go:nosplit
 func (self class) MaterialSetNextPass(material RID.Any, next_material RID.Any) { //gd:RenderingServer.material_set_next_pass
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.material_set_next_pass, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -5931,8 +5666,6 @@ func (self class) MaterialSetNextPass(material RID.Any, next_material RID.Any) {
 		next_material RID.Any
 	}{material, next_material})
 }
-
-//go:nosplit
 func (self class) MeshCreateFromSurfaces(surfaces Array.Contains[Dictionary.Any], blend_shape_count int64) RID.Any { //gd:RenderingServer.mesh_create_from_surfaces
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.mesh_create_from_surfaces, gdextension.SizeRID|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5942,30 +5675,12 @@ func (self class) MeshCreateFromSurfaces(surfaces Array.Contains[Dictionary.Any]
 	var ret = r_ret
 	return ret
 }
-
-/*
-Creates a new mesh and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all mesh_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-To place in a scene, attach this mesh to an instance using [InstanceSetBase] using the returned RID.
-
-Note: The equivalent resource is [Mesh].
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-*/
-//go:nosplit
 func (self class) MeshCreate() RID.Any { //gd:RenderingServer.mesh_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.mesh_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the offset of a given attribute by 'array_index' in the start of its respective buffer.
-*/
-//go:nosplit
 func (self class) MeshSurfaceGetFormatOffset(format ArrayFormat, vertex_count int64, array_index int64) int64 { //gd:RenderingServer.mesh_surface_get_format_offset
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.mesh_surface_get_format_offset, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
@@ -5976,11 +5691,6 @@ func (self class) MeshSurfaceGetFormatOffset(format ArrayFormat, vertex_count in
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the stride of the vertex positions for a mesh with given 'format'. Note importantly that vertex positions are stored consecutively and are not interleaved with the other attributes in the vertex buffer (normals and tangents).
-*/
-//go:nosplit
 func (self class) MeshSurfaceGetFormatVertexStride(format ArrayFormat, vertex_count int64) int64 { //gd:RenderingServer.mesh_surface_get_format_vertex_stride
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.mesh_surface_get_format_vertex_stride, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5990,11 +5700,6 @@ func (self class) MeshSurfaceGetFormatVertexStride(format ArrayFormat, vertex_co
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the stride of the combined normals and tangents for a mesh with given 'format'. Note importantly that, while normals and tangents are in the vertex buffer with vertices, they are only interleaved with each other and so have a different stride than vertex positions.
-*/
-//go:nosplit
 func (self class) MeshSurfaceGetFormatNormalTangentStride(format ArrayFormat, vertex_count int64) int64 { //gd:RenderingServer.mesh_surface_get_format_normal_tangent_stride
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.mesh_surface_get_format_normal_tangent_stride, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6004,11 +5709,6 @@ func (self class) MeshSurfaceGetFormatNormalTangentStride(format ArrayFormat, ve
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the stride of the attribute buffer for a mesh with given 'format'.
-*/
-//go:nosplit
 func (self class) MeshSurfaceGetFormatAttributeStride(format ArrayFormat, vertex_count int64) int64 { //gd:RenderingServer.mesh_surface_get_format_attribute_stride
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.mesh_surface_get_format_attribute_stride, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6018,11 +5718,6 @@ func (self class) MeshSurfaceGetFormatAttributeStride(format ArrayFormat, vertex
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the stride of the skin buffer for a mesh with given 'format'.
-*/
-//go:nosplit
 func (self class) MeshSurfaceGetFormatSkinStride(format ArrayFormat, vertex_count int64) int64 { //gd:RenderingServer.mesh_surface_get_format_skin_stride
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.mesh_surface_get_format_skin_stride, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6032,11 +5727,6 @@ func (self class) MeshSurfaceGetFormatSkinStride(format ArrayFormat, vertex_coun
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the stride of the index buffer for a mesh with the given 'format'.
-*/
-//go:nosplit
 func (self class) MeshSurfaceGetFormatIndexStride(format ArrayFormat, vertex_count int64) int64 { //gd:RenderingServer.mesh_surface_get_format_index_stride
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.mesh_surface_get_format_index_stride, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6046,8 +5736,6 @@ func (self class) MeshSurfaceGetFormatIndexStride(format ArrayFormat, vertex_cou
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) MeshAddSurface(mesh RID.Any, surface Dictionary.Any) { //gd:RenderingServer.mesh_add_surface
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.mesh_add_surface, 0|(gdextension.SizeRID<<4)|(gdextension.SizeDictionary<<8), &struct {
@@ -6055,8 +5743,6 @@ func (self class) MeshAddSurface(mesh RID.Any, surface Dictionary.Any) { //gd:Re
 		surface gdextension.Dictionary
 	}{mesh, pointers.Get(gd.InternalDictionary(surface))})
 }
-
-//go:nosplit
 func (self class) MeshAddSurfaceFromArrays(mesh RID.Any, primitive PrimitiveType, arrays Array.Any, blend_shapes Array.Any, lods Dictionary.Any, compress_format ArrayFormat) { //gd:RenderingServer.mesh_add_surface_from_arrays
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.mesh_add_surface_from_arrays, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeArray<<12)|(gdextension.SizeArray<<16)|(gdextension.SizeDictionary<<20)|(gdextension.SizeInt<<24), &struct {
@@ -6068,22 +5754,12 @@ func (self class) MeshAddSurfaceFromArrays(mesh RID.Any, primitive PrimitiveType
 		compress_format ArrayFormat
 	}{mesh, primitive, pointers.Get(gd.InternalArray(arrays)), pointers.Get(gd.InternalArray(blend_shapes)), pointers.Get(gd.InternalDictionary(lods)), compress_format})
 }
-
-/*
-Returns a mesh's blend shape count.
-*/
-//go:nosplit
 func (self class) MeshGetBlendShapeCount(mesh RID.Any) int64 { //gd:RenderingServer.mesh_get_blend_shape_count
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.mesh_get_blend_shape_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ mesh RID.Any }{mesh})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets a mesh's blend shape mode.
-*/
-//go:nosplit
 func (self class) MeshSetBlendShapeMode(mesh RID.Any, mode BlendShapeMode) { //gd:RenderingServer.mesh_set_blend_shape_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.mesh_set_blend_shape_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6091,22 +5767,12 @@ func (self class) MeshSetBlendShapeMode(mesh RID.Any, mode BlendShapeMode) { //g
 		mode BlendShapeMode
 	}{mesh, mode})
 }
-
-/*
-Returns a mesh's blend shape mode.
-*/
-//go:nosplit
 func (self class) MeshGetBlendShapeMode(mesh RID.Any) BlendShapeMode { //gd:RenderingServer.mesh_get_blend_shape_mode
 	once.Do(singleton)
 	var r_ret = noescape.Call[BlendShapeMode](gd.ObjectChecked(self.AsObject()), methods.mesh_get_blend_shape_mode, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ mesh RID.Any }{mesh})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets a mesh's surface's material.
-*/
-//go:nosplit
 func (self class) MeshSurfaceSetMaterial(mesh RID.Any, surface int64, material RID.Any) { //gd:RenderingServer.mesh_surface_set_material
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.mesh_surface_set_material, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), &struct {
@@ -6115,11 +5781,6 @@ func (self class) MeshSurfaceSetMaterial(mesh RID.Any, surface int64, material R
 		material RID.Any
 	}{mesh, surface, material})
 }
-
-/*
-Returns a mesh's surface's material.
-*/
-//go:nosplit
 func (self class) MeshSurfaceGetMaterial(mesh RID.Any, surface int64) RID.Any { //gd:RenderingServer.mesh_surface_get_material
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.mesh_surface_get_material, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6129,8 +5790,6 @@ func (self class) MeshSurfaceGetMaterial(mesh RID.Any, surface int64) RID.Any { 
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) MeshGetSurface(mesh RID.Any, surface int64) Dictionary.Any { //gd:RenderingServer.mesh_get_surface
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.mesh_get_surface, gdextension.SizeDictionary|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6140,11 +5799,6 @@ func (self class) MeshGetSurface(mesh RID.Any, surface int64) Dictionary.Any { /
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Returns a mesh's surface's buffer arrays.
-*/
-//go:nosplit
 func (self class) MeshSurfaceGetArrays(mesh RID.Any, surface int64) Array.Any { //gd:RenderingServer.mesh_surface_get_arrays
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.mesh_surface_get_arrays, gdextension.SizeArray|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6154,11 +5808,6 @@ func (self class) MeshSurfaceGetArrays(mesh RID.Any, surface int64) Array.Any { 
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns a mesh's surface's arrays for blend shapes.
-*/
-//go:nosplit
 func (self class) MeshSurfaceGetBlendShapeArrays(mesh RID.Any, surface int64) Array.Contains[Array.Any] { //gd:RenderingServer.mesh_surface_get_blend_shape_arrays
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.mesh_surface_get_blend_shape_arrays, gdextension.SizeArray|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6168,22 +5817,12 @@ func (self class) MeshSurfaceGetBlendShapeArrays(mesh RID.Any, surface int64) Ar
 	var ret = Array.Through(gd.ArrayProxy[Array.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns a mesh's number of surfaces.
-*/
-//go:nosplit
 func (self class) MeshGetSurfaceCount(mesh RID.Any) int64 { //gd:RenderingServer.mesh_get_surface_count
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.mesh_get_surface_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ mesh RID.Any }{mesh})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets a mesh's custom aabb.
-*/
-//go:nosplit
 func (self class) MeshSetCustomAabb(mesh RID.Any, aabb AABB.PositionSize) { //gd:RenderingServer.mesh_set_custom_aabb
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.mesh_set_custom_aabb, 0|(gdextension.SizeRID<<4)|(gdextension.SizeAABB<<8), &struct {
@@ -6191,22 +5830,12 @@ func (self class) MeshSetCustomAabb(mesh RID.Any, aabb AABB.PositionSize) { //gd
 		aabb AABB.PositionSize
 	}{mesh, aabb})
 }
-
-/*
-Returns a mesh's custom aabb.
-*/
-//go:nosplit
 func (self class) MeshGetCustomAabb(mesh RID.Any) AABB.PositionSize { //gd:RenderingServer.mesh_get_custom_aabb
 	once.Do(singleton)
 	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.mesh_get_custom_aabb, gdextension.SizeAABB|(gdextension.SizeRID<<4), &struct{ mesh RID.Any }{mesh})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Removes the surface at the given index from the Mesh, shifting surfaces with higher index down by one.
-*/
-//go:nosplit
 func (self class) MeshSurfaceRemove(mesh RID.Any, surface int64) { //gd:RenderingServer.mesh_surface_remove
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.mesh_surface_remove, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6214,17 +5843,10 @@ func (self class) MeshSurfaceRemove(mesh RID.Any, surface int64) { //gd:Renderin
 		surface int64
 	}{mesh, surface})
 }
-
-/*
-Removes all surfaces from a mesh.
-*/
-//go:nosplit
 func (self class) MeshClear(mesh RID.Any) { //gd:RenderingServer.mesh_clear
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.mesh_clear, 0|(gdextension.SizeRID<<4), &struct{ mesh RID.Any }{mesh})
 }
-
-//go:nosplit
 func (self class) MeshSurfaceUpdateVertexRegion(mesh RID.Any, surface int64, offset int64, data Packed.Bytes) { //gd:RenderingServer.mesh_surface_update_vertex_region
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.mesh_surface_update_vertex_region, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizePackedArray<<16), &struct {
@@ -6234,8 +5856,6 @@ func (self class) MeshSurfaceUpdateVertexRegion(mesh RID.Any, surface int64, off
 		data    gdextension.PackedArray[byte]
 	}{mesh, surface, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 }
-
-//go:nosplit
 func (self class) MeshSurfaceUpdateAttributeRegion(mesh RID.Any, surface int64, offset int64, data Packed.Bytes) { //gd:RenderingServer.mesh_surface_update_attribute_region
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.mesh_surface_update_attribute_region, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizePackedArray<<16), &struct {
@@ -6245,8 +5865,6 @@ func (self class) MeshSurfaceUpdateAttributeRegion(mesh RID.Any, surface int64, 
 		data    gdextension.PackedArray[byte]
 	}{mesh, surface, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 }
-
-//go:nosplit
 func (self class) MeshSurfaceUpdateSkinRegion(mesh RID.Any, surface int64, offset int64, data Packed.Bytes) { //gd:RenderingServer.mesh_surface_update_skin_region
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.mesh_surface_update_skin_region, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizePackedArray<<16), &struct {
@@ -6256,11 +5874,6 @@ func (self class) MeshSurfaceUpdateSkinRegion(mesh RID.Any, surface int64, offse
 		data    gdextension.PackedArray[byte]
 	}{mesh, surface, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 }
-
-/*
-Updates the index buffer of the mesh surface with the given 'data'. The expected data are 16 or 32-bit unsigned integers, which can be determined with [MeshSurfaceGetFormatIndexStride].
-*/
-//go:nosplit
 func (self class) MeshSurfaceUpdateIndexRegion(mesh RID.Any, surface int64, offset int64, data Packed.Bytes) { //gd:RenderingServer.mesh_surface_update_index_region
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.mesh_surface_update_index_region, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizePackedArray<<16), &struct {
@@ -6270,8 +5883,6 @@ func (self class) MeshSurfaceUpdateIndexRegion(mesh RID.Any, surface int64, offs
 		data    gdextension.PackedArray[byte]
 	}{mesh, surface, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 }
-
-//go:nosplit
 func (self class) MeshSetShadowMesh(mesh RID.Any, shadow_mesh RID.Any) { //gd:RenderingServer.mesh_set_shadow_mesh
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.mesh_set_shadow_mesh, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -6279,28 +5890,12 @@ func (self class) MeshSetShadowMesh(mesh RID.Any, shadow_mesh RID.Any) { //gd:Re
 		shadow_mesh RID.Any
 	}{mesh, shadow_mesh})
 }
-
-/*
-Creates a new multimesh on the RenderingServer and returns an [Resource.ID] handle. This RID will be used in all multimesh_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-To place in a scene, attach this multimesh to an instance using [InstanceSetBase] using the returned RID.
-
-Note: The equivalent resource is [MultiMesh].
-
-[MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) MultimeshCreate() RID.Any { //gd:RenderingServer.multimesh_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.multimesh_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) MultimeshAllocateData(multimesh RID.Any, instances int64, transform_format MultimeshTransformFormat, color_format bool, custom_data_format bool, use_indirect bool) { //gd:RenderingServer.multimesh_allocate_data
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.multimesh_allocate_data, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeBool<<24), &struct {
@@ -6312,24 +5907,12 @@ func (self class) MultimeshAllocateData(multimesh RID.Any, instances int64, tran
 		use_indirect       bool
 	}{multimesh, instances, transform_format, color_format, custom_data_format, use_indirect})
 }
-
-/*
-Returns the number of instances allocated for this multimesh.
-*/
-//go:nosplit
 func (self class) MultimeshGetInstanceCount(multimesh RID.Any) int64 { //gd:RenderingServer.multimesh_get_instance_count
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.multimesh_get_instance_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ multimesh RID.Any }{multimesh})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the mesh to be drawn by the multimesh. Equivalent to [MultiMesh.Mesh].
-
-[MultiMesh.Mesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.Mesh
-*/
-//go:nosplit
 func (self class) MultimeshSetMesh(multimesh RID.Any, mesh RID.Any) { //gd:RenderingServer.multimesh_set_mesh
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.multimesh_set_mesh, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -6337,14 +5920,6 @@ func (self class) MultimeshSetMesh(multimesh RID.Any, mesh RID.Any) { //gd:Rende
 		mesh      RID.Any
 	}{multimesh, mesh})
 }
-
-/*
-Sets the [Transform3D.BasisOrigin] for this instance. Equivalent to [MultiMesh.SetInstanceTransform].
-
-[MultiMesh.SetInstanceTransform]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.SetInstanceTransform
-[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
-*/
-//go:nosplit
 func (self class) MultimeshInstanceSetTransform(multimesh RID.Any, index int64, transform Transform3D.BasisOrigin) { //gd:RenderingServer.multimesh_instance_set_transform
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.multimesh_instance_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform3D<<12), &struct {
@@ -6353,14 +5928,6 @@ func (self class) MultimeshInstanceSetTransform(multimesh RID.Any, index int64, 
 		transform Transform3D.BasisOrigin
 	}{multimesh, index, gd.Transposed(transform)})
 }
-
-/*
-Sets the [Transform2D.OriginXY] for this instance. For use when multimesh is used in 2D. Equivalent to [MultiMesh.SetInstanceTransform2d].
-
-[MultiMesh.SetInstanceTransform2d]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.SetInstanceTransform2d
-[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
-*/
-//go:nosplit
 func (self class) MultimeshInstanceSetTransform2d(multimesh RID.Any, index int64, transform Transform2D.OriginXY) { //gd:RenderingServer.multimesh_instance_set_transform_2d
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.multimesh_instance_set_transform_2d, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform2D<<12), &struct {
@@ -6369,13 +5936,6 @@ func (self class) MultimeshInstanceSetTransform2d(multimesh RID.Any, index int64
 		transform Transform2D.OriginXY
 	}{multimesh, index, transform})
 }
-
-/*
-Sets the color by which this instance will be modulated. Equivalent to [MultiMesh.SetInstanceColor].
-
-[MultiMesh.SetInstanceColor]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.SetInstanceColor
-*/
-//go:nosplit
 func (self class) MultimeshInstanceSetColor(multimesh RID.Any, index int64, color Color.RGBA) { //gd:RenderingServer.multimesh_instance_set_color
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.multimesh_instance_set_color, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeColor<<12), &struct {
@@ -6384,14 +5944,6 @@ func (self class) MultimeshInstanceSetColor(multimesh RID.Any, index int64, colo
 		color     Color.RGBA
 	}{multimesh, index, color})
 }
-
-/*
-Sets the custom data for this instance. Custom data is passed as a [Color.RGBA], but is interpreted as a vec4 in the shader. Equivalent to [MultiMesh.SetInstanceCustomData].
-
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
-[MultiMesh.SetInstanceCustomData]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.SetInstanceCustomData
-*/
-//go:nosplit
 func (self class) MultimeshInstanceSetCustomData(multimesh RID.Any, index int64, custom_data Color.RGBA) { //gd:RenderingServer.multimesh_instance_set_custom_data
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.multimesh_instance_set_custom_data, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeColor<<12), &struct {
@@ -6400,33 +5952,18 @@ func (self class) MultimeshInstanceSetCustomData(multimesh RID.Any, index int64,
 		custom_data Color.RGBA
 	}{multimesh, index, custom_data})
 }
-
-/*
-Returns the RID of the mesh that will be used in drawing this multimesh.
-*/
-//go:nosplit
 func (self class) MultimeshGetMesh(multimesh RID.Any) RID.Any { //gd:RenderingServer.multimesh_get_mesh
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.multimesh_get_mesh, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ multimesh RID.Any }{multimesh})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Calculates and returns the axis-aligned bounding box that encloses all instances within the multimesh.
-*/
-//go:nosplit
 func (self class) MultimeshGetAabb(multimesh RID.Any) AABB.PositionSize { //gd:RenderingServer.multimesh_get_aabb
 	once.Do(singleton)
 	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.multimesh_get_aabb, gdextension.SizeAABB|(gdextension.SizeRID<<4), &struct{ multimesh RID.Any }{multimesh})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the custom AABB for this MultiMesh resource.
-*/
-//go:nosplit
 func (self class) MultimeshSetCustomAabb(multimesh RID.Any, aabb AABB.PositionSize) { //gd:RenderingServer.multimesh_set_custom_aabb
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.multimesh_set_custom_aabb, 0|(gdextension.SizeRID<<4)|(gdextension.SizeAABB<<8), &struct {
@@ -6434,24 +5971,12 @@ func (self class) MultimeshSetCustomAabb(multimesh RID.Any, aabb AABB.PositionSi
 		aabb      AABB.PositionSize
 	}{multimesh, aabb})
 }
-
-/*
-Returns the custom AABB defined for this MultiMesh resource.
-*/
-//go:nosplit
 func (self class) MultimeshGetCustomAabb(multimesh RID.Any) AABB.PositionSize { //gd:RenderingServer.multimesh_get_custom_aabb
 	once.Do(singleton)
 	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.multimesh_get_custom_aabb, gdextension.SizeAABB|(gdextension.SizeRID<<4), &struct{ multimesh RID.Any }{multimesh})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [Transform3D.BasisOrigin] of the specified instance.
-
-[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
-*/
-//go:nosplit
 func (self class) MultimeshInstanceGetTransform(multimesh RID.Any, index int64) Transform3D.BasisOrigin { //gd:RenderingServer.multimesh_instance_get_transform
 	once.Do(singleton)
 	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.multimesh_instance_get_transform, gdextension.SizeTransform3D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6461,13 +5986,6 @@ func (self class) MultimeshInstanceGetTransform(multimesh RID.Any, index int64) 
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
-
-/*
-Returns the [Transform2D.OriginXY] of the specified instance. For use when the multimesh is set to use 2D transforms.
-
-[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
-*/
-//go:nosplit
 func (self class) MultimeshInstanceGetTransform2d(multimesh RID.Any, index int64) Transform2D.OriginXY { //gd:RenderingServer.multimesh_instance_get_transform_2d
 	once.Do(singleton)
 	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.multimesh_instance_get_transform_2d, gdextension.SizeTransform2D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6477,11 +5995,6 @@ func (self class) MultimeshInstanceGetTransform2d(multimesh RID.Any, index int64
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the color by which the specified instance will be modulated.
-*/
-//go:nosplit
 func (self class) MultimeshInstanceGetColor(multimesh RID.Any, index int64) Color.RGBA { //gd:RenderingServer.multimesh_instance_get_color
 	once.Do(singleton)
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.multimesh_instance_get_color, gdextension.SizeColor|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6491,11 +6004,6 @@ func (self class) MultimeshInstanceGetColor(multimesh RID.Any, index int64) Colo
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the custom data associated with the specified instance.
-*/
-//go:nosplit
 func (self class) MultimeshInstanceGetCustomData(multimesh RID.Any, index int64) Color.RGBA { //gd:RenderingServer.multimesh_instance_get_custom_data
 	once.Do(singleton)
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.multimesh_instance_get_custom_data, gdextension.SizeColor|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6505,13 +6013,6 @@ func (self class) MultimeshInstanceGetCustomData(multimesh RID.Any, index int64)
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the number of instances visible at a given time. If -1, all instances that have been allocated are drawn. Equivalent to [MultiMesh.VisibleInstanceCount].
-
-[MultiMesh.VisibleInstanceCount]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.VisibleInstanceCount
-*/
-//go:nosplit
 func (self class) MultimeshSetVisibleInstances(multimesh RID.Any, visible int64) { //gd:RenderingServer.multimesh_set_visible_instances
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.multimesh_set_visible_instances, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6519,35 +6020,12 @@ func (self class) MultimeshSetVisibleInstances(multimesh RID.Any, visible int64)
 		visible   int64
 	}{multimesh, visible})
 }
-
-/*
-Returns the number of visible instances for this multimesh.
-*/
-//go:nosplit
 func (self class) MultimeshGetVisibleInstances(multimesh RID.Any) int64 { //gd:RenderingServer.multimesh_get_visible_instances
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.multimesh_get_visible_instances, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ multimesh RID.Any }{multimesh})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Set the entire data to use for drawing the 'multimesh' at once to 'buffer' (such as instance transforms and colors). 'buffer''s size must match the number of instances multiplied by the per-instance data size (which depends on the enabled MultiMesh fields). Otherwise, an error message is printed and nothing is rendered. See also [MultimeshGetBuffer].
-
-The per-instance data size and expected data order is:
-
-
-
-Instance transforms are in row-major order. Specifically:
-
-- For [Transform2D.OriginXY] the float-order is: (x.x, y.x, padding_float, origin.x, x.y, y.y, padding_float, origin.y).
-
-- For [Transform3D.BasisOrigin] the float-order is: (basis.x.x, basis.y.x, basis.z.x, origin.x, basis.x.y, basis.y.y, basis.z.y, origin.y, basis.x.z, basis.y.z, basis.z.z, origin.z).
-
-[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
-[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
-*/
-//go:nosplit
 func (self class) MultimeshSetBuffer(multimesh RID.Any, buffer Packed.Array[float32]) { //gd:RenderingServer.multimesh_set_buffer
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.multimesh_set_buffer, 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8), &struct {
@@ -6555,62 +6033,24 @@ func (self class) MultimeshSetBuffer(multimesh RID.Any, buffer Packed.Array[floa
 		buffer    gdextension.PackedArray[float32]
 	}{multimesh, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer))})
 }
-
-/*
-Returns the [RenderingDevice] [Resource.ID] handle of the [MultiMesh] command buffer. This [Resource.ID] is only valid if use_indirect is set to true when allocating data through [MultimeshAllocateData]. It can be used to directly modify the instance count via buffer.
-
-The data structure is dependent on both how many surfaces the mesh contains and whether it is indexed or not, the buffer has 5 integers in it, with the last unused if the mesh is not indexed.
-
-Each of the values in the buffer correspond to these options:
-
-
-
-[MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
-[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) MultimeshGetCommandBufferRdRid(multimesh RID.Any) RID.Any { //gd:RenderingServer.multimesh_get_command_buffer_rd_rid
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.multimesh_get_command_buffer_rd_rid, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ multimesh RID.Any }{multimesh})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [RenderingDevice] [Resource.ID] handle of the [MultiMesh], which can be used as any other buffer on the Rendering Device.
-
-[MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
-[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) MultimeshGetBufferRdRid(multimesh RID.Any) RID.Any { //gd:RenderingServer.multimesh_get_buffer_rd_rid
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.multimesh_get_buffer_rd_rid, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ multimesh RID.Any }{multimesh})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the MultiMesh data (such as instance transforms, colors, etc.). See [MultimeshSetBuffer] for details on the returned data.
-
-Note: If the buffer is in the engine's internal cache, it will have to be fetched from GPU memory and possibly decompressed. This means [MultimeshGetBuffer] is potentially a slow operation and should be avoided whenever possible.
-*/
-//go:nosplit
 func (self class) MultimeshGetBuffer(multimesh RID.Any) Packed.Array[float32] { //gd:RenderingServer.multimesh_get_buffer
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.multimesh_get_buffer, gdextension.SizePackedArray|(gdextension.SizeRID<<4), &struct{ multimesh RID.Any }{multimesh})
 	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Alternative version of [MultimeshSetBuffer] for use with physics interpolation.
-
-Takes both an array of current data and an array of data for the previous physics tick.
-*/
-//go:nosplit
 func (self class) MultimeshSetBufferInterpolated(multimesh RID.Any, buffer Packed.Array[float32], buffer_previous Packed.Array[float32]) { //gd:RenderingServer.multimesh_set_buffer_interpolated
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.multimesh_set_buffer_interpolated, 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12), &struct {
@@ -6619,11 +6059,6 @@ func (self class) MultimeshSetBufferInterpolated(multimesh RID.Any, buffer Packe
 		buffer_previous gdextension.PackedArray[float32]
 	}{multimesh, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer)), pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer_previous))})
 }
-
-/*
-Turns on and off physics interpolation for this MultiMesh resource.
-*/
-//go:nosplit
 func (self class) MultimeshSetPhysicsInterpolated(multimesh RID.Any, interpolated bool) { //gd:RenderingServer.multimesh_set_physics_interpolated
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.multimesh_set_physics_interpolated, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -6631,15 +6066,6 @@ func (self class) MultimeshSetPhysicsInterpolated(multimesh RID.Any, interpolate
 		interpolated bool
 	}{multimesh, interpolated})
 }
-
-/*
-Sets the physics interpolation quality for the [MultiMesh].
-
-A value of [MultimeshInterpQualityFast] gives fast but low quality interpolation, a value of [MultimeshInterpQualityHigh] gives slower but higher quality interpolation.
-
-[MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
-*/
-//go:nosplit
 func (self class) MultimeshSetPhysicsInterpolationQuality(multimesh RID.Any, quality MultimeshPhysicsInterpolationQuality) { //gd:RenderingServer.multimesh_set_physics_interpolation_quality
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.multimesh_set_physics_interpolation_quality, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6647,13 +6073,6 @@ func (self class) MultimeshSetPhysicsInterpolationQuality(multimesh RID.Any, qua
 		quality   MultimeshPhysicsInterpolationQuality
 	}{multimesh, quality})
 }
-
-/*
-Prevents physics interpolation for the specified instance during the current physics tick.
-
-This is useful when moving an instance to a new location, to give an instantaneous change rather than interpolation from the previous location.
-*/
-//go:nosplit
 func (self class) MultimeshInstanceResetPhysicsInterpolation(multimesh RID.Any, index int64) { //gd:RenderingServer.multimesh_instance_reset_physics_interpolation
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.multimesh_instance_reset_physics_interpolation, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6661,21 +6080,12 @@ func (self class) MultimeshInstanceResetPhysicsInterpolation(multimesh RID.Any, 
 		index     int64
 	}{multimesh, index})
 }
-
-/*
-Creates a skeleton and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all skeleton_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-*/
-//go:nosplit
 func (self class) SkeletonCreate() RID.Any { //gd:RenderingServer.skeleton_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.skeleton_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SkeletonAllocateData(skeleton RID.Any, bones int64, is_2d_skeleton bool) { //gd:RenderingServer.skeleton_allocate_data
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.skeleton_allocate_data, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
@@ -6684,24 +6094,12 @@ func (self class) SkeletonAllocateData(skeleton RID.Any, bones int64, is_2d_skel
 		is_2d_skeleton bool
 	}{skeleton, bones, is_2d_skeleton})
 }
-
-/*
-Returns the number of bones allocated for this skeleton.
-*/
-//go:nosplit
 func (self class) SkeletonGetBoneCount(skeleton RID.Any) int64 { //gd:RenderingServer.skeleton_get_bone_count
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.skeleton_get_bone_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ skeleton RID.Any }{skeleton})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the [Transform3D.BasisOrigin] for a specific bone of this skeleton.
-
-[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
-*/
-//go:nosplit
 func (self class) SkeletonBoneSetTransform(skeleton RID.Any, bone int64, transform Transform3D.BasisOrigin) { //gd:RenderingServer.skeleton_bone_set_transform
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.skeleton_bone_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform3D<<12), &struct {
@@ -6710,13 +6108,6 @@ func (self class) SkeletonBoneSetTransform(skeleton RID.Any, bone int64, transfo
 		transform Transform3D.BasisOrigin
 	}{skeleton, bone, gd.Transposed(transform)})
 }
-
-/*
-Returns the [Transform3D.BasisOrigin] set for a specific bone of this skeleton.
-
-[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
-*/
-//go:nosplit
 func (self class) SkeletonBoneGetTransform(skeleton RID.Any, bone int64) Transform3D.BasisOrigin { //gd:RenderingServer.skeleton_bone_get_transform
 	once.Do(singleton)
 	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.skeleton_bone_get_transform, gdextension.SizeTransform3D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6726,13 +6117,6 @@ func (self class) SkeletonBoneGetTransform(skeleton RID.Any, bone int64) Transfo
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
-
-/*
-Sets the [Transform2D.OriginXY] for a specific bone of this skeleton.
-
-[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
-*/
-//go:nosplit
 func (self class) SkeletonBoneSetTransform2d(skeleton RID.Any, bone int64, transform Transform2D.OriginXY) { //gd:RenderingServer.skeleton_bone_set_transform_2d
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.skeleton_bone_set_transform_2d, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform2D<<12), &struct {
@@ -6741,13 +6125,6 @@ func (self class) SkeletonBoneSetTransform2d(skeleton RID.Any, bone int64, trans
 		transform Transform2D.OriginXY
 	}{skeleton, bone, transform})
 }
-
-/*
-Returns the [Transform2D.OriginXY] set for a specific bone of this skeleton.
-
-[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
-*/
-//go:nosplit
 func (self class) SkeletonBoneGetTransform2d(skeleton RID.Any, bone int64) Transform2D.OriginXY { //gd:RenderingServer.skeleton_bone_get_transform_2d
 	once.Do(singleton)
 	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.skeleton_bone_get_transform_2d, gdextension.SizeTransform2D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6757,8 +6134,6 @@ func (self class) SkeletonBoneGetTransform2d(skeleton RID.Any, bone int64) Trans
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SkeletonSetBaseTransform2d(skeleton RID.Any, base_transform Transform2D.OriginXY) { //gd:RenderingServer.skeleton_set_base_transform_2d
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.skeleton_set_base_transform_2d, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), &struct {
@@ -6766,66 +6141,24 @@ func (self class) SkeletonSetBaseTransform2d(skeleton RID.Any, base_transform Tr
 		base_transform Transform2D.OriginXY
 	}{skeleton, base_transform})
 }
-
-/*
-Creates a directional light and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID can be used in most light_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-To place in a scene, attach this directional light to an instance using [InstanceSetBase] using the returned RID.
-
-Note: The equivalent node is [DirectionalLight3D].
-
-[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
-*/
-//go:nosplit
 func (self class) DirectionalLightCreate() RID.Any { //gd:RenderingServer.directional_light_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.directional_light_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Creates a new omni light and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID can be used in most light_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-To place in a scene, attach this omni light to an instance using [InstanceSetBase] using the returned RID.
-
-Note: The equivalent node is [OmniLight3D].
-
-[OmniLight3D]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D
-*/
-//go:nosplit
 func (self class) OmniLightCreate() RID.Any { //gd:RenderingServer.omni_light_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.omni_light_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Creates a spot light and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID can be used in most light_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-To place in a scene, attach this spot light to an instance using [InstanceSetBase] using the returned RID.
-*/
-//go:nosplit
 func (self class) SpotLightCreate() RID.Any { //gd:RenderingServer.spot_light_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.spot_light_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the color of the light. Equivalent to [Light3D.LightColor].
-
-[Light3D.LightColor]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightColor
-*/
-//go:nosplit
 func (self class) LightSetColor(light RID.Any, color Color.RGBA) { //gd:RenderingServer.light_set_color
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.light_set_color, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
@@ -6833,13 +6166,6 @@ func (self class) LightSetColor(light RID.Any, color Color.RGBA) { //gd:Renderin
 		color Color.RGBA
 	}{light, color})
 }
-
-/*
-Sets the specified 3D light parameter. Equivalent to [Light3D.SetParam].
-
-[Light3D.SetParam]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.SetParam
-*/
-//go:nosplit
 func (self class) LightSetParam(light RID.Any, param LightParam, value float64) { //gd:RenderingServer.light_set_param
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.light_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
@@ -6848,13 +6174,6 @@ func (self class) LightSetParam(light RID.Any, param LightParam, value float64) 
 		value float64
 	}{light, param, value})
 }
-
-/*
-If true, light will cast shadows. Equivalent to [Light3D.ShadowEnabled].
-
-[Light3D.ShadowEnabled]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.ShadowEnabled
-*/
-//go:nosplit
 func (self class) LightSetShadow(light RID.Any, enabled bool) { //gd:RenderingServer.light_set_shadow
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.light_set_shadow, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -6862,13 +6181,6 @@ func (self class) LightSetShadow(light RID.Any, enabled bool) { //gd:RenderingSe
 		enabled bool
 	}{light, enabled})
 }
-
-/*
-Sets the projector texture to use for the specified 3D light. Equivalent to [Light3D.LightProjector].
-
-[Light3D.LightProjector]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightProjector
-*/
-//go:nosplit
 func (self class) LightSetProjector(light RID.Any, texture RID.Any) { //gd:RenderingServer.light_set_projector
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.light_set_projector, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -6876,13 +6188,6 @@ func (self class) LightSetProjector(light RID.Any, texture RID.Any) { //gd:Rende
 		texture RID.Any
 	}{light, texture})
 }
-
-/*
-If true, the 3D light will subtract light instead of adding light. Equivalent to [Light3D.LightNegative].
-
-[Light3D.LightNegative]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightNegative
-*/
-//go:nosplit
 func (self class) LightSetNegative(light RID.Any, enable bool) { //gd:RenderingServer.light_set_negative
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.light_set_negative, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -6890,13 +6195,6 @@ func (self class) LightSetNegative(light RID.Any, enable bool) { //gd:RenderingS
 		enable bool
 	}{light, enable})
 }
-
-/*
-Sets the cull mask for this 3D light. Lights only affect objects in the selected layers. Equivalent to [Light3D.LightCullMask].
-
-[Light3D.LightCullMask]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightCullMask
-*/
-//go:nosplit
 func (self class) LightSetCullMask(light RID.Any, mask int64) { //gd:RenderingServer.light_set_cull_mask
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.light_set_cull_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6904,16 +6202,6 @@ func (self class) LightSetCullMask(light RID.Any, mask int64) { //gd:RenderingSe
 		mask  int64
 	}{light, mask})
 }
-
-/*
-Sets the distance fade for this 3D light. This acts as a form of level of detail (LOD) and can be used to improve performance. Equivalent to [Light3D.DistanceFadeEnabled], [Light3D.DistanceFadeBegin], [Light3D.DistanceFadeShadow], and [Light3D.DistanceFadeLength].
-
-[Light3D.DistanceFadeBegin]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.DistanceFadeBegin
-[Light3D.DistanceFadeEnabled]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.DistanceFadeEnabled
-[Light3D.DistanceFadeLength]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.DistanceFadeLength
-[Light3D.DistanceFadeShadow]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.DistanceFadeShadow
-*/
-//go:nosplit
 func (self class) LightSetDistanceFade(decal RID.Any, enabled bool, begin float64, shadow float64, length float64) { //gd:RenderingServer.light_set_distance_fade
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.light_set_distance_fade, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20), &struct {
@@ -6924,13 +6212,6 @@ func (self class) LightSetDistanceFade(decal RID.Any, enabled bool, begin float6
 		length  float64
 	}{decal, enabled, begin, shadow, length})
 }
-
-/*
-If true, reverses the backface culling of the mesh. This can be useful when you have a flat mesh that has a light behind it. If you need to cast a shadow on both sides of the mesh, set the mesh to use double-sided shadows with [InstanceGeometrySetCastShadowsSetting]. Equivalent to [Light3D.ShadowReverseCullFace].
-
-[Light3D.ShadowReverseCullFace]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.ShadowReverseCullFace
-*/
-//go:nosplit
 func (self class) LightSetReverseCullFaceMode(light RID.Any, enabled bool) { //gd:RenderingServer.light_set_reverse_cull_face_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.light_set_reverse_cull_face_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -6938,13 +6219,6 @@ func (self class) LightSetReverseCullFaceMode(light RID.Any, enabled bool) { //g
 		enabled bool
 	}{light, enabled})
 }
-
-/*
-Sets the shadow caster mask for this 3D light. Shadows will only be cast using objects in the selected layers. Equivalent to [Light3D.ShadowCasterMask].
-
-[Light3D.ShadowCasterMask]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.ShadowCasterMask
-*/
-//go:nosplit
 func (self class) LightSetShadowCasterMask(light RID.Any, mask int64) { //gd:RenderingServer.light_set_shadow_caster_mask
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.light_set_shadow_caster_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6952,13 +6226,6 @@ func (self class) LightSetShadowCasterMask(light RID.Any, mask int64) { //gd:Ren
 		mask  int64
 	}{light, mask})
 }
-
-/*
-Sets the bake mode to use for the specified 3D light. Equivalent to [Light3D.LightBakeMode].
-
-[Light3D.LightBakeMode]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightBakeMode
-*/
-//go:nosplit
 func (self class) LightSetBakeMode(light RID.Any, bake_mode LightBakeMode) { //gd:RenderingServer.light_set_bake_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.light_set_bake_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6966,11 +6233,6 @@ func (self class) LightSetBakeMode(light RID.Any, bake_mode LightBakeMode) { //g
 		bake_mode LightBakeMode
 	}{light, bake_mode})
 }
-
-/*
-Sets the maximum SDFGI cascade in which the 3D light's indirect lighting is rendered. Higher values allow the light to be rendered in SDFGI further away from the camera.
-*/
-//go:nosplit
 func (self class) LightSetMaxSdfgiCascade(light RID.Any, cascade int64) { //gd:RenderingServer.light_set_max_sdfgi_cascade
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.light_set_max_sdfgi_cascade, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6978,13 +6240,6 @@ func (self class) LightSetMaxSdfgiCascade(light RID.Any, cascade int64) { //gd:R
 		cascade int64
 	}{light, cascade})
 }
-
-/*
-Sets whether to use a dual paraboloid or a cubemap for the shadow map. Dual paraboloid is faster but may suffer from artifacts. Equivalent to [OmniLight3D.OmniShadowMode].
-
-[OmniLight3D.OmniShadowMode]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D#Instance.OmniShadowMode
-*/
-//go:nosplit
 func (self class) LightOmniSetShadowMode(light RID.Any, mode LightOmniShadowMode) { //gd:RenderingServer.light_omni_set_shadow_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.light_omni_set_shadow_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6992,13 +6247,6 @@ func (self class) LightOmniSetShadowMode(light RID.Any, mode LightOmniShadowMode
 		mode  LightOmniShadowMode
 	}{light, mode})
 }
-
-/*
-Sets the shadow mode for this directional light. Equivalent to [DirectionalLight3D.DirectionalShadowMode].
-
-[DirectionalLight3D.DirectionalShadowMode]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D#Instance.DirectionalShadowMode
-*/
-//go:nosplit
 func (self class) LightDirectionalSetShadowMode(light RID.Any, mode LightDirectionalShadowMode) { //gd:RenderingServer.light_directional_set_shadow_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.light_directional_set_shadow_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -7006,13 +6254,6 @@ func (self class) LightDirectionalSetShadowMode(light RID.Any, mode LightDirecti
 		mode  LightDirectionalShadowMode
 	}{light, mode})
 }
-
-/*
-If true, this directional light will blend between shadow map splits resulting in a smoother transition between them. Equivalent to [DirectionalLight3D.DirectionalShadowBlendSplits].
-
-[DirectionalLight3D.DirectionalShadowBlendSplits]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D#Instance.DirectionalShadowBlendSplits
-*/
-//go:nosplit
 func (self class) LightDirectionalSetBlendSplits(light RID.Any, enable bool) { //gd:RenderingServer.light_directional_set_blend_splits
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.light_directional_set_blend_splits, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -7020,11 +6261,6 @@ func (self class) LightDirectionalSetBlendSplits(light RID.Any, enable bool) { /
 		enable bool
 	}{light, enable})
 }
-
-/*
-If true, this light will not be used for anything except sky shaders. Use this for lights that impact your sky shader that you may want to hide from affecting the rest of the scene. For example, you may want to enable this when the sun in your sky shader falls below the horizon.
-*/
-//go:nosplit
 func (self class) LightDirectionalSetSkyMode(light RID.Any, mode LightDirectionalSkyMode) { //gd:RenderingServer.light_directional_set_sky_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.light_directional_set_sky_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -7032,53 +6268,22 @@ func (self class) LightDirectionalSetSkyMode(light RID.Any, mode LightDirectiona
 		mode  LightDirectionalSkyMode
 	}{light, mode})
 }
-
-/*
-Sets the texture filter mode to use when rendering light projectors. This parameter is global and cannot be set on a per-light basis.
-*/
-//go:nosplit
 func (self class) LightProjectorsSetFilter(filter LightProjectorFilter) { //gd:RenderingServer.light_projectors_set_filter
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.light_projectors_set_filter, 0|(gdextension.SizeInt<<4), &struct{ filter LightProjectorFilter }{filter})
 }
-
-/*
-Toggles whether a bicubic filter should be used when lightmaps are sampled. This smoothens their appearance at a performance cost.
-*/
-//go:nosplit
 func (self class) LightmapsSetBicubicFilter(enable bool) { //gd:RenderingServer.lightmaps_set_bicubic_filter
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.lightmaps_set_bicubic_filter, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-/*
-Sets the filter quality for omni and spot light shadows in 3D. See also [ProjectSettings] "rendering/lights_and_shadows/positional_shadow/soft_shadow_filter_quality". This parameter is global and cannot be set on a per-viewport basis.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) PositionalSoftShadowFilterSetQuality(quality ShadowQuality) { //gd:RenderingServer.positional_soft_shadow_filter_set_quality
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.positional_soft_shadow_filter_set_quality, 0|(gdextension.SizeInt<<4), &struct{ quality ShadowQuality }{quality})
 }
-
-/*
-Sets the filter 'quality' for directional light shadows in 3D. See also [ProjectSettings] "rendering/lights_and_shadows/directional_shadow/soft_shadow_filter_quality". This parameter is global and cannot be set on a per-viewport basis.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) DirectionalSoftShadowFilterSetQuality(quality ShadowQuality) { //gd:RenderingServer.directional_soft_shadow_filter_set_quality
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.directional_soft_shadow_filter_set_quality, 0|(gdextension.SizeInt<<4), &struct{ quality ShadowQuality }{quality})
 }
-
-/*
-Sets the 'size' of the directional light shadows in 3D. See also [ProjectSettings] "rendering/lights_and_shadows/directional_shadow/size". This parameter is global and cannot be set on a per-viewport basis.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) DirectionalShadowAtlasSetSize(size int64, is_16bits bool) { //gd:RenderingServer.directional_shadow_atlas_set_size
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.directional_shadow_atlas_set_size, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
@@ -7086,30 +6291,12 @@ func (self class) DirectionalShadowAtlasSetSize(size int64, is_16bits bool) { //
 		is_16bits bool
 	}{size, is_16bits})
 }
-
-/*
-Creates a reflection probe and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all reflection_probe_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-To place in a scene, attach this reflection probe to an instance using [InstanceSetBase] using the returned RID.
-
-Note: The equivalent node is [ReflectionProbe].
-
-[ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
-*/
-//go:nosplit
 func (self class) ReflectionProbeCreate() RID.Any { //gd:RenderingServer.reflection_probe_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.reflection_probe_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets how often the reflection probe updates. Can either be once or every frame.
-*/
-//go:nosplit
 func (self class) ReflectionProbeSetUpdateMode(probe RID.Any, mode ReflectionProbeUpdateMode) { //gd:RenderingServer.reflection_probe_set_update_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reflection_probe_set_update_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -7117,13 +6304,6 @@ func (self class) ReflectionProbeSetUpdateMode(probe RID.Any, mode ReflectionPro
 		mode  ReflectionProbeUpdateMode
 	}{probe, mode})
 }
-
-/*
-Sets the intensity of the reflection probe. Intensity modulates the strength of the reflection. Equivalent to [ReflectionProbe.Intensity].
-
-[ReflectionProbe.Intensity]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.Intensity
-*/
-//go:nosplit
 func (self class) ReflectionProbeSetIntensity(probe RID.Any, intensity float64) { //gd:RenderingServer.reflection_probe_set_intensity
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reflection_probe_set_intensity, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -7131,11 +6311,6 @@ func (self class) ReflectionProbeSetIntensity(probe RID.Any, intensity float64) 
 		intensity float64
 	}{probe, intensity})
 }
-
-/*
-Sets the distance in meters over which a probe blends into the scene.
-*/
-//go:nosplit
 func (self class) ReflectionProbeSetBlendDistance(probe RID.Any, blend_distance float64) { //gd:RenderingServer.reflection_probe_set_blend_distance
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reflection_probe_set_blend_distance, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -7143,13 +6318,6 @@ func (self class) ReflectionProbeSetBlendDistance(probe RID.Any, blend_distance 
 		blend_distance float64
 	}{probe, blend_distance})
 }
-
-/*
-Sets the reflection probe's ambient light mode. Equivalent to [ReflectionProbe.AmbientMode].
-
-[ReflectionProbe.AmbientMode]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.AmbientMode
-*/
-//go:nosplit
 func (self class) ReflectionProbeSetAmbientMode(probe RID.Any, mode ReflectionProbeAmbientMode) { //gd:RenderingServer.reflection_probe_set_ambient_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reflection_probe_set_ambient_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -7157,13 +6325,6 @@ func (self class) ReflectionProbeSetAmbientMode(probe RID.Any, mode ReflectionPr
 		mode  ReflectionProbeAmbientMode
 	}{probe, mode})
 }
-
-/*
-Sets the reflection probe's custom ambient light color. Equivalent to [ReflectionProbe.AmbientColor].
-
-[ReflectionProbe.AmbientColor]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.AmbientColor
-*/
-//go:nosplit
 func (self class) ReflectionProbeSetAmbientColor(probe RID.Any, color Color.RGBA) { //gd:RenderingServer.reflection_probe_set_ambient_color
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reflection_probe_set_ambient_color, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
@@ -7171,13 +6332,6 @@ func (self class) ReflectionProbeSetAmbientColor(probe RID.Any, color Color.RGBA
 		color Color.RGBA
 	}{probe, color})
 }
-
-/*
-Sets the reflection probe's custom ambient light energy. Equivalent to [ReflectionProbe.AmbientColorEnergy].
-
-[ReflectionProbe.AmbientColorEnergy]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.AmbientColorEnergy
-*/
-//go:nosplit
 func (self class) ReflectionProbeSetAmbientEnergy(probe RID.Any, energy float64) { //gd:RenderingServer.reflection_probe_set_ambient_energy
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reflection_probe_set_ambient_energy, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -7185,13 +6339,6 @@ func (self class) ReflectionProbeSetAmbientEnergy(probe RID.Any, energy float64)
 		energy float64
 	}{probe, energy})
 }
-
-/*
-Sets the max distance away from the probe an object can be before it is culled. Equivalent to [ReflectionProbe.MaxDistance].
-
-[ReflectionProbe.MaxDistance]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.MaxDistance
-*/
-//go:nosplit
 func (self class) ReflectionProbeSetMaxDistance(probe RID.Any, distance float64) { //gd:RenderingServer.reflection_probe_set_max_distance
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reflection_probe_set_max_distance, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -7199,13 +6346,6 @@ func (self class) ReflectionProbeSetMaxDistance(probe RID.Any, distance float64)
 		distance float64
 	}{probe, distance})
 }
-
-/*
-Sets the size of the area that the reflection probe will capture. Equivalent to [ReflectionProbe.Size].
-
-[ReflectionProbe.Size]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.Size
-*/
-//go:nosplit
 func (self class) ReflectionProbeSetSize(probe RID.Any, size Vector3.XYZ) { //gd:RenderingServer.reflection_probe_set_size
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reflection_probe_set_size, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
@@ -7213,13 +6353,6 @@ func (self class) ReflectionProbeSetSize(probe RID.Any, size Vector3.XYZ) { //gd
 		size  Vector3.XYZ
 	}{probe, size})
 }
-
-/*
-Sets the origin offset to be used when this reflection probe is in box project mode. Equivalent to [ReflectionProbe.OriginOffset].
-
-[ReflectionProbe.OriginOffset]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.OriginOffset
-*/
-//go:nosplit
 func (self class) ReflectionProbeSetOriginOffset(probe RID.Any, offset Vector3.XYZ) { //gd:RenderingServer.reflection_probe_set_origin_offset
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reflection_probe_set_origin_offset, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
@@ -7227,13 +6360,6 @@ func (self class) ReflectionProbeSetOriginOffset(probe RID.Any, offset Vector3.X
 		offset Vector3.XYZ
 	}{probe, offset})
 }
-
-/*
-If true, reflections will ignore sky contribution. Equivalent to [ReflectionProbe.Interior].
-
-[ReflectionProbe.Interior]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.Interior
-*/
-//go:nosplit
 func (self class) ReflectionProbeSetAsInterior(probe RID.Any, enable bool) { //gd:RenderingServer.reflection_probe_set_as_interior
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reflection_probe_set_as_interior, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -7241,13 +6367,6 @@ func (self class) ReflectionProbeSetAsInterior(probe RID.Any, enable bool) { //g
 		enable bool
 	}{probe, enable})
 }
-
-/*
-If true, uses box projection. This can make reflections look more correct in certain situations. Equivalent to [ReflectionProbe.BoxProjection].
-
-[ReflectionProbe.BoxProjection]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.BoxProjection
-*/
-//go:nosplit
 func (self class) ReflectionProbeSetEnableBoxProjection(probe RID.Any, enable bool) { //gd:RenderingServer.reflection_probe_set_enable_box_projection
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reflection_probe_set_enable_box_projection, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -7255,13 +6374,6 @@ func (self class) ReflectionProbeSetEnableBoxProjection(probe RID.Any, enable bo
 		enable bool
 	}{probe, enable})
 }
-
-/*
-If true, computes shadows in the reflection probe. This makes the reflection much slower to compute. Equivalent to [ReflectionProbe.EnableShadows].
-
-[ReflectionProbe.EnableShadows]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.EnableShadows
-*/
-//go:nosplit
 func (self class) ReflectionProbeSetEnableShadows(probe RID.Any, enable bool) { //gd:RenderingServer.reflection_probe_set_enable_shadows
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reflection_probe_set_enable_shadows, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -7269,13 +6381,6 @@ func (self class) ReflectionProbeSetEnableShadows(probe RID.Any, enable bool) { 
 		enable bool
 	}{probe, enable})
 }
-
-/*
-Sets the render cull mask for this reflection probe. Only instances with a matching layer will be reflected by this probe. Equivalent to [ReflectionProbe.CullMask].
-
-[ReflectionProbe.CullMask]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.CullMask
-*/
-//go:nosplit
 func (self class) ReflectionProbeSetCullMask(probe RID.Any, layers int64) { //gd:RenderingServer.reflection_probe_set_cull_mask
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reflection_probe_set_cull_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -7283,13 +6388,6 @@ func (self class) ReflectionProbeSetCullMask(probe RID.Any, layers int64) { //gd
 		layers int64
 	}{probe, layers})
 }
-
-/*
-Sets the render reflection mask for this reflection probe. Only instances with a matching layer will have reflections applied from this probe. Equivalent to [ReflectionProbe.ReflectionMask].
-
-[ReflectionProbe.ReflectionMask]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.ReflectionMask
-*/
-//go:nosplit
 func (self class) ReflectionProbeSetReflectionMask(probe RID.Any, layers int64) { //gd:RenderingServer.reflection_probe_set_reflection_mask
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reflection_probe_set_reflection_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -7297,11 +6395,6 @@ func (self class) ReflectionProbeSetReflectionMask(probe RID.Any, layers int64) 
 		layers int64
 	}{probe, layers})
 }
-
-/*
-Sets the resolution to use when rendering the specified reflection probe. The 'resolution' is specified for each cubemap face: for instance, specifying 512 will allocate 6 faces of 512×512 each (plus mipmaps for roughness levels).
-*/
-//go:nosplit
 func (self class) ReflectionProbeSetResolution(probe RID.Any, resolution int64) { //gd:RenderingServer.reflection_probe_set_resolution
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reflection_probe_set_resolution, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -7309,13 +6402,6 @@ func (self class) ReflectionProbeSetResolution(probe RID.Any, resolution int64) 
 		resolution int64
 	}{probe, resolution})
 }
-
-/*
-Sets the mesh level of detail to use in the reflection probe rendering. Higher values will use less detailed versions of meshes that have LOD variations generated, which can improve performance. Equivalent to [ReflectionProbe.MeshLodThreshold].
-
-[ReflectionProbe.MeshLodThreshold]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.MeshLodThreshold
-*/
-//go:nosplit
 func (self class) ReflectionProbeSetMeshLodThreshold(probe RID.Any, pixels float64) { //gd:RenderingServer.reflection_probe_set_mesh_lod_threshold
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reflection_probe_set_mesh_lod_threshold, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -7323,32 +6409,12 @@ func (self class) ReflectionProbeSetMeshLodThreshold(probe RID.Any, pixels float
 		pixels float64
 	}{probe, pixels})
 }
-
-/*
-Creates a decal and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all decal_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-To place in a scene, attach this decal to an instance using [InstanceSetBase] using the returned RID.
-
-Note: The equivalent node is [Decal].
-
-[Decal]: https://pkg.go.dev/graphics.gd/classdb/Decal
-*/
-//go:nosplit
 func (self class) DecalCreate() RID.Any { //gd:RenderingServer.decal_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.decal_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the 'size' of the decal specified by the 'decal' RID. Equivalent to [Decal.Size].
-
-[Decal.Size]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.Size
-*/
-//go:nosplit
 func (self class) DecalSetSize(decal RID.Any, size Vector3.XYZ) { //gd:RenderingServer.decal_set_size
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.decal_set_size, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
@@ -7356,13 +6422,6 @@ func (self class) DecalSetSize(decal RID.Any, size Vector3.XYZ) { //gd:Rendering
 		size  Vector3.XYZ
 	}{decal, size})
 }
-
-/*
-Sets the 'texture' in the given texture 'type' slot for the specified decal. Equivalent to [Decal.SetTexture].
-
-[Decal.SetTexture]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.SetTexture
-*/
-//go:nosplit
 func (self class) DecalSetTexture(decal RID.Any, atype DecalTexture, texture RID.Any) { //gd:RenderingServer.decal_set_texture
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.decal_set_texture, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), &struct {
@@ -7371,13 +6430,6 @@ func (self class) DecalSetTexture(decal RID.Any, atype DecalTexture, texture RID
 		texture RID.Any
 	}{decal, atype, texture})
 }
-
-/*
-Sets the emission 'energy' in the decal specified by the 'decal' RID. Equivalent to [Decal.EmissionEnergy].
-
-[Decal.EmissionEnergy]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.EmissionEnergy
-*/
-//go:nosplit
 func (self class) DecalSetEmissionEnergy(decal RID.Any, energy float64) { //gd:RenderingServer.decal_set_emission_energy
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.decal_set_emission_energy, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -7385,13 +6437,6 @@ func (self class) DecalSetEmissionEnergy(decal RID.Any, energy float64) { //gd:R
 		energy float64
 	}{decal, energy})
 }
-
-/*
-Sets the 'albedo_mix' in the decal specified by the 'decal' RID. Equivalent to [Decal.AlbedoMix].
-
-[Decal.AlbedoMix]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.AlbedoMix
-*/
-//go:nosplit
 func (self class) DecalSetAlbedoMix(decal RID.Any, albedo_mix float64) { //gd:RenderingServer.decal_set_albedo_mix
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.decal_set_albedo_mix, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -7399,13 +6444,6 @@ func (self class) DecalSetAlbedoMix(decal RID.Any, albedo_mix float64) { //gd:Re
 		albedo_mix float64
 	}{decal, albedo_mix})
 }
-
-/*
-Sets the color multiplier in the decal specified by the 'decal' RID to 'color'. Equivalent to [Decal.Modulate].
-
-[Decal.Modulate]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.Modulate
-*/
-//go:nosplit
 func (self class) DecalSetModulate(decal RID.Any, color Color.RGBA) { //gd:RenderingServer.decal_set_modulate
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.decal_set_modulate, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
@@ -7413,13 +6451,6 @@ func (self class) DecalSetModulate(decal RID.Any, color Color.RGBA) { //gd:Rende
 		color Color.RGBA
 	}{decal, color})
 }
-
-/*
-Sets the cull 'mask' in the decal specified by the 'decal' RID. Equivalent to [Decal.CullMask].
-
-[Decal.CullMask]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.CullMask
-*/
-//go:nosplit
 func (self class) DecalSetCullMask(decal RID.Any, mask int64) { //gd:RenderingServer.decal_set_cull_mask
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.decal_set_cull_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -7427,15 +6458,6 @@ func (self class) DecalSetCullMask(decal RID.Any, mask int64) { //gd:RenderingSe
 		mask  int64
 	}{decal, mask})
 }
-
-/*
-Sets the distance fade parameters in the decal specified by the 'decal' RID. Equivalent to [Decal.DistanceFadeEnabled], [Decal.DistanceFadeBegin] and [Decal.DistanceFadeLength].
-
-[Decal.DistanceFadeBegin]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.DistanceFadeBegin
-[Decal.DistanceFadeEnabled]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.DistanceFadeEnabled
-[Decal.DistanceFadeLength]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.DistanceFadeLength
-*/
-//go:nosplit
 func (self class) DecalSetDistanceFade(decal RID.Any, enabled bool, begin float64, length float64) { //gd:RenderingServer.decal_set_distance_fade
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.decal_set_distance_fade, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), &struct {
@@ -7445,14 +6467,6 @@ func (self class) DecalSetDistanceFade(decal RID.Any, enabled bool, begin float6
 		length  float64
 	}{decal, enabled, begin, length})
 }
-
-/*
-Sets the upper fade ('above') and lower fade ('below') in the decal specified by the 'decal' RID. Equivalent to [Decal.UpperFade] and [Decal.LowerFade].
-
-[Decal.LowerFade]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.LowerFade
-[Decal.UpperFade]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.UpperFade
-*/
-//go:nosplit
 func (self class) DecalSetFade(decal RID.Any, above float64, below float64) { //gd:RenderingServer.decal_set_fade
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.decal_set_fade, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
@@ -7461,13 +6475,6 @@ func (self class) DecalSetFade(decal RID.Any, above float64, below float64) { //
 		below float64
 	}{decal, above, below})
 }
-
-/*
-Sets the normal 'fade' in the decal specified by the 'decal' RID. Equivalent to [Decal.NormalFade].
-
-[Decal.NormalFade]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.NormalFade
-*/
-//go:nosplit
 func (self class) DecalSetNormalFade(decal RID.Any, fade float64) { //gd:RenderingServer.decal_set_normal_fade
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.decal_set_normal_fade, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -7475,48 +6482,20 @@ func (self class) DecalSetNormalFade(decal RID.Any, fade float64) { //gd:Renderi
 		fade  float64
 	}{decal, fade})
 }
-
-/*
-Sets the texture 'filter' mode to use when rendering decals. This parameter is global and cannot be set on a per-decal basis.
-*/
-//go:nosplit
 func (self class) DecalsSetFilter(filter DecalFilter) { //gd:RenderingServer.decals_set_filter
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.decals_set_filter, 0|(gdextension.SizeInt<<4), &struct{ filter DecalFilter }{filter})
 }
-
-/*
-If 'half_resolution' is true, renders [VoxelGI] and SDFGI ([Environment.SdfgiEnabled]) buffers at halved resolution on each axis (e.g. 960×540 when the viewport size is 1920×1080). This improves performance significantly when VoxelGI or SDFGI is enabled, at the cost of artifacts that may be visible on polygon edges. The loss in quality becomes less noticeable as the viewport resolution increases. [LightmapGI] rendering is not affected by this setting. Equivalent to [ProjectSettings] "rendering/global_illumination/gi/use_half_resolution".
-
-[Environment.SdfgiEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiEnabled
-[LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-[VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
-*/
-//go:nosplit
 func (self class) GiSetUseHalfResolution(half_resolution bool) { //gd:RenderingServer.gi_set_use_half_resolution
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.gi_set_use_half_resolution, 0|(gdextension.SizeBool<<4), &struct{ half_resolution bool }{half_resolution})
 }
-
-/*
-Creates a new voxel-based global illumination object and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all voxel_gi_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-Note: The equivalent node is [VoxelGI].
-
-[VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
-*/
-//go:nosplit
 func (self class) VoxelGiCreate() RID.Any { //gd:RenderingServer.voxel_gi_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.voxel_gi_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) VoxelGiAllocateData(voxel_gi RID.Any, to_cell_xform Transform3D.BasisOrigin, aabb AABB.PositionSize, octree_size Vector3i.XYZ, octree_cells Packed.Bytes, data_cells Packed.Bytes, distance_field Packed.Bytes, level_counts Packed.Array[int32]) { //gd:RenderingServer.voxel_gi_allocate_data
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.voxel_gi_allocate_data, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8)|(gdextension.SizeAABB<<12)|(gdextension.SizeVector3i<<16)|(gdextension.SizePackedArray<<20)|(gdextension.SizePackedArray<<24)|(gdextension.SizePackedArray<<28)|(gdextension.SizePackedArray<<32), &struct {
@@ -7530,62 +6509,42 @@ func (self class) VoxelGiAllocateData(voxel_gi RID.Any, to_cell_xform Transform3
 		level_counts   gdextension.PackedArray[int32]
 	}{voxel_gi, gd.Transposed(to_cell_xform), aabb, octree_size, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](octree_cells.Array))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data_cells.Array))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](distance_field.Array))), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](level_counts))})
 }
-
-//go:nosplit
 func (self class) VoxelGiGetOctreeSize(voxel_gi RID.Any) Vector3i.XYZ { //gd:RenderingServer.voxel_gi_get_octree_size
 	once.Do(singleton)
 	var r_ret = noescape.Call[Vector3i.XYZ](gd.ObjectChecked(self.AsObject()), methods.voxel_gi_get_octree_size, gdextension.SizeVector3i|(gdextension.SizeRID<<4), &struct{ voxel_gi RID.Any }{voxel_gi})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) VoxelGiGetOctreeCells(voxel_gi RID.Any) Packed.Bytes { //gd:RenderingServer.voxel_gi_get_octree_cells
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.voxel_gi_get_octree_cells, gdextension.SizePackedArray|(gdextension.SizeRID<<4), &struct{ voxel_gi RID.Any }{voxel_gi})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-
-//go:nosplit
 func (self class) VoxelGiGetDataCells(voxel_gi RID.Any) Packed.Bytes { //gd:RenderingServer.voxel_gi_get_data_cells
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.voxel_gi_get_data_cells, gdextension.SizePackedArray|(gdextension.SizeRID<<4), &struct{ voxel_gi RID.Any }{voxel_gi})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-
-//go:nosplit
 func (self class) VoxelGiGetDistanceField(voxel_gi RID.Any) Packed.Bytes { //gd:RenderingServer.voxel_gi_get_distance_field
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.voxel_gi_get_distance_field, gdextension.SizePackedArray|(gdextension.SizeRID<<4), &struct{ voxel_gi RID.Any }{voxel_gi})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-
-//go:nosplit
 func (self class) VoxelGiGetLevelCounts(voxel_gi RID.Any) Packed.Array[int32] { //gd:RenderingServer.voxel_gi_get_level_counts
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.voxel_gi_get_level_counts, gdextension.SizePackedArray|(gdextension.SizeRID<<4), &struct{ voxel_gi RID.Any }{voxel_gi})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) VoxelGiGetToCellXform(voxel_gi RID.Any) Transform3D.BasisOrigin { //gd:RenderingServer.voxel_gi_get_to_cell_xform
 	once.Do(singleton)
 	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.voxel_gi_get_to_cell_xform, gdextension.SizeTransform3D|(gdextension.SizeRID<<4), &struct{ voxel_gi RID.Any }{voxel_gi})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
-
-/*
-Sets the [VoxelGIData.DynamicRange] value to use on the specified 'voxel_gi''s [Resource.ID].
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-[VoxelGIData.DynamicRange]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.DynamicRange
-*/
-//go:nosplit
 func (self class) VoxelGiSetDynamicRange(voxel_gi RID.Any, arange float64) { //gd:RenderingServer.voxel_gi_set_dynamic_range
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.voxel_gi_set_dynamic_range, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -7593,14 +6552,6 @@ func (self class) VoxelGiSetDynamicRange(voxel_gi RID.Any, arange float64) { //g
 		arange   float64
 	}{voxel_gi, arange})
 }
-
-/*
-Sets the [VoxelGIData.Propagation] value to use on the specified 'voxel_gi''s [Resource.ID].
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-[VoxelGIData.Propagation]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.Propagation
-*/
-//go:nosplit
 func (self class) VoxelGiSetPropagation(voxel_gi RID.Any, amount float64) { //gd:RenderingServer.voxel_gi_set_propagation
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.voxel_gi_set_propagation, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -7608,14 +6559,6 @@ func (self class) VoxelGiSetPropagation(voxel_gi RID.Any, amount float64) { //gd
 		amount   float64
 	}{voxel_gi, amount})
 }
-
-/*
-Sets the [VoxelGIData.Energy] value to use on the specified 'voxel_gi''s [Resource.ID].
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-[VoxelGIData.Energy]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.Energy
-*/
-//go:nosplit
 func (self class) VoxelGiSetEnergy(voxel_gi RID.Any, energy float64) { //gd:RenderingServer.voxel_gi_set_energy
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.voxel_gi_set_energy, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -7623,11 +6566,6 @@ func (self class) VoxelGiSetEnergy(voxel_gi RID.Any, energy float64) { //gd:Rend
 		energy   float64
 	}{voxel_gi, energy})
 }
-
-/*
-Used to inform the renderer what exposure normalization value was used while baking the voxel gi. This value will be used and modulated at run time to ensure that the voxel gi maintains a consistent level of exposure even if the scene-wide exposure normalization is changed at run time. For more information see [CameraAttributesSetExposure].
-*/
-//go:nosplit
 func (self class) VoxelGiSetBakedExposureNormalization(voxel_gi RID.Any, baked_exposure float64) { //gd:RenderingServer.voxel_gi_set_baked_exposure_normalization
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.voxel_gi_set_baked_exposure_normalization, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -7635,14 +6573,6 @@ func (self class) VoxelGiSetBakedExposureNormalization(voxel_gi RID.Any, baked_e
 		baked_exposure float64
 	}{voxel_gi, baked_exposure})
 }
-
-/*
-Sets the [VoxelGIData.Bias] value to use on the specified 'voxel_gi''s [Resource.ID].
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-[VoxelGIData.Bias]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.Bias
-*/
-//go:nosplit
 func (self class) VoxelGiSetBias(voxel_gi RID.Any, bias float64) { //gd:RenderingServer.voxel_gi_set_bias
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.voxel_gi_set_bias, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -7650,14 +6580,6 @@ func (self class) VoxelGiSetBias(voxel_gi RID.Any, bias float64) { //gd:Renderin
 		bias     float64
 	}{voxel_gi, bias})
 }
-
-/*
-Sets the [VoxelGIData.NormalBias] value to use on the specified 'voxel_gi''s [Resource.ID].
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-[VoxelGIData.NormalBias]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.NormalBias
-*/
-//go:nosplit
 func (self class) VoxelGiSetNormalBias(voxel_gi RID.Any, bias float64) { //gd:RenderingServer.voxel_gi_set_normal_bias
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.voxel_gi_set_normal_bias, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -7665,14 +6587,6 @@ func (self class) VoxelGiSetNormalBias(voxel_gi RID.Any, bias float64) { //gd:Re
 		bias     float64
 	}{voxel_gi, bias})
 }
-
-/*
-Sets the [VoxelGIData.Interior] value to use on the specified 'voxel_gi''s [Resource.ID].
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-[VoxelGIData.Interior]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.Interior
-*/
-//go:nosplit
 func (self class) VoxelGiSetInterior(voxel_gi RID.Any, enable bool) { //gd:RenderingServer.voxel_gi_set_interior
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.voxel_gi_set_interior, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -7680,14 +6594,6 @@ func (self class) VoxelGiSetInterior(voxel_gi RID.Any, enable bool) { //gd:Rende
 		enable   bool
 	}{voxel_gi, enable})
 }
-
-/*
-Sets the [VoxelGIData.UseTwoBounces] value to use on the specified 'voxel_gi''s [Resource.ID].
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-[VoxelGIData.UseTwoBounces]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.UseTwoBounces
-*/
-//go:nosplit
 func (self class) VoxelGiSetUseTwoBounces(voxel_gi RID.Any, enable bool) { //gd:RenderingServer.voxel_gi_set_use_two_bounces
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.voxel_gi_set_use_two_bounces, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -7695,41 +6601,16 @@ func (self class) VoxelGiSetUseTwoBounces(voxel_gi RID.Any, enable bool) { //gd:
 		enable   bool
 	}{voxel_gi, enable})
 }
-
-/*
-Sets the [ProjectSettings] "rendering/global_illumination/voxel_gi/quality" value to use when rendering. This parameter is global and cannot be set on a per-VoxelGI basis.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) VoxelGiSetQuality(quality VoxelGIQuality) { //gd:RenderingServer.voxel_gi_set_quality
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.voxel_gi_set_quality, 0|(gdextension.SizeInt<<4), &struct{ quality VoxelGIQuality }{quality})
 }
-
-/*
-Creates a new lightmap global illumination instance and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all lightmap_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-Note: The equivalent node is [LightmapGI].
-
-[LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
-*/
-//go:nosplit
 func (self class) LightmapCreate() RID.Any { //gd:RenderingServer.lightmap_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.lightmap_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Set the textures on the given 'lightmap' GI instance to the texture array pointed to by the 'light' RID. If the lightmap texture was baked with [LightmapGI.Directional] set to true, then 'uses_sh' must also be true.
-
-[LightmapGI.Directional]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.Directional
-*/
-//go:nosplit
 func (self class) LightmapSetTextures(lightmap RID.Any, light RID.Any, uses_sh bool) { //gd:RenderingServer.lightmap_set_textures
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.lightmap_set_textures, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeBool<<12), &struct {
@@ -7738,8 +6619,6 @@ func (self class) LightmapSetTextures(lightmap RID.Any, light RID.Any, uses_sh b
 		uses_sh  bool
 	}{lightmap, light, uses_sh})
 }
-
-//go:nosplit
 func (self class) LightmapSetProbeBounds(lightmap RID.Any, bounds AABB.PositionSize) { //gd:RenderingServer.lightmap_set_probe_bounds
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.lightmap_set_probe_bounds, 0|(gdextension.SizeRID<<4)|(gdextension.SizeAABB<<8), &struct {
@@ -7747,8 +6626,6 @@ func (self class) LightmapSetProbeBounds(lightmap RID.Any, bounds AABB.PositionS
 		bounds   AABB.PositionSize
 	}{lightmap, bounds})
 }
-
-//go:nosplit
 func (self class) LightmapSetProbeInterior(lightmap RID.Any, interior bool) { //gd:RenderingServer.lightmap_set_probe_interior
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.lightmap_set_probe_interior, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -7756,8 +6633,6 @@ func (self class) LightmapSetProbeInterior(lightmap RID.Any, interior bool) { //
 		interior bool
 	}{lightmap, interior})
 }
-
-//go:nosplit
 func (self class) LightmapSetProbeCaptureData(lightmap RID.Any, points Packed.Array[Vector3.XYZ], point_sh Packed.Array[Color.RGBA], tetrahedra Packed.Array[int32], bsp_tree Packed.Array[int32]) { //gd:RenderingServer.lightmap_set_probe_capture_data
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.lightmap_set_probe_capture_data, 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizePackedArray<<20), &struct {
@@ -7768,43 +6643,30 @@ func (self class) LightmapSetProbeCaptureData(lightmap RID.Any, points Packed.Ar
 		bsp_tree   gdextension.PackedArray[int32]
 	}{lightmap, pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](points)), pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](point_sh)), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](tetrahedra)), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](bsp_tree))})
 }
-
-//go:nosplit
 func (self class) LightmapGetProbeCapturePoints(lightmap RID.Any) Packed.Array[Vector3.XYZ] { //gd:RenderingServer.lightmap_get_probe_capture_points
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.lightmap_get_probe_capture_points, gdextension.SizePackedArray|(gdextension.SizeRID<<4), &struct{ lightmap RID.Any }{lightmap})
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) LightmapGetProbeCaptureSh(lightmap RID.Any) Packed.Array[Color.RGBA] { //gd:RenderingServer.lightmap_get_probe_capture_sh
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.lightmap_get_probe_capture_sh, gdextension.SizePackedArray|(gdextension.SizeRID<<4), &struct{ lightmap RID.Any }{lightmap})
 	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) LightmapGetProbeCaptureTetrahedra(lightmap RID.Any) Packed.Array[int32] { //gd:RenderingServer.lightmap_get_probe_capture_tetrahedra
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.lightmap_get_probe_capture_tetrahedra, gdextension.SizePackedArray|(gdextension.SizeRID<<4), &struct{ lightmap RID.Any }{lightmap})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) LightmapGetProbeCaptureBspTree(lightmap RID.Any) Packed.Array[int32] { //gd:RenderingServer.lightmap_get_probe_capture_bsp_tree
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.lightmap_get_probe_capture_bsp_tree, gdextension.SizePackedArray|(gdextension.SizeRID<<4), &struct{ lightmap RID.Any }{lightmap})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Used to inform the renderer what exposure normalization value was used while baking the lightmap. This value will be used and modulated at run time to ensure that the lightmap maintains a consistent level of exposure even if the scene-wide exposure normalization is changed at run time. For more information see [CameraAttributesSetExposure].
-*/
-//go:nosplit
 func (self class) LightmapSetBakedExposureNormalization(lightmap RID.Any, baked_exposure float64) { //gd:RenderingServer.lightmap_set_baked_exposure_normalization
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.lightmap_set_baked_exposure_normalization, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -7812,43 +6674,16 @@ func (self class) LightmapSetBakedExposureNormalization(lightmap RID.Any, baked_
 		baked_exposure float64
 	}{lightmap, baked_exposure})
 }
-
-//go:nosplit
 func (self class) LightmapSetProbeCaptureUpdateSpeed(speed float64) { //gd:RenderingServer.lightmap_set_probe_capture_update_speed
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.lightmap_set_probe_capture_update_speed, 0|(gdextension.SizeFloat<<4), &struct{ speed float64 }{speed})
 }
-
-/*
-Creates a GPU-based particle system and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all particles_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-To place in a scene, attach these particles to an instance using [InstanceSetBase] using the returned RID.
-
-Note: The equivalent nodes are [GPUParticles2D] and [GPUParticles3D].
-
-Note: All particles_* methods only apply to GPU-based particles, not CPU-based particles. [CPUParticles2D] and [CPUParticles3D] do not have equivalent RenderingServer functions available, as these use [MultiMeshInstance2D] and [MultiMeshInstance3D] under the hood (see multimesh_* methods).
-
-[CPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D
-[CPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles3D
-[GPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D
-[GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
-[MultiMeshInstance2D]: https://pkg.go.dev/graphics.gd/classdb/MultiMeshInstance2D
-[MultiMeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MultiMeshInstance3D
-*/
-//go:nosplit
 func (self class) ParticlesCreate() RID.Any { //gd:RenderingServer.particles_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.particles_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets whether the GPU particles specified by the 'particles' RID should be rendered in 2D or 3D according to 'mode'.
-*/
-//go:nosplit
 func (self class) ParticlesSetMode(particles RID.Any, mode ParticlesMode) { //gd:RenderingServer.particles_set_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -7856,13 +6691,6 @@ func (self class) ParticlesSetMode(particles RID.Any, mode ParticlesMode) { //gd
 		mode      ParticlesMode
 	}{particles, mode})
 }
-
-/*
-If true, particles will emit over time. Setting to false does not reset the particles, but only stops their emission. Equivalent to [GPUParticles3D.Emitting].
-
-[GPUParticles3D.Emitting]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Emitting
-*/
-//go:nosplit
 func (self class) ParticlesSetEmitting(particles RID.Any, emitting bool) { //gd:RenderingServer.particles_set_emitting
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_emitting, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -7870,24 +6698,12 @@ func (self class) ParticlesSetEmitting(particles RID.Any, emitting bool) { //gd:
 		emitting  bool
 	}{particles, emitting})
 }
-
-/*
-Returns true if particles are currently set to emitting.
-*/
-//go:nosplit
 func (self class) ParticlesGetEmitting(particles RID.Any) bool { //gd:RenderingServer.particles_get_emitting
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.particles_get_emitting, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ particles RID.Any }{particles})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the number of particles to be drawn and allocates the memory for them. Equivalent to [GPUParticles3D.Amount].
-
-[GPUParticles3D.Amount]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Amount
-*/
-//go:nosplit
 func (self class) ParticlesSetAmount(particles RID.Any, amount int64) { //gd:RenderingServer.particles_set_amount
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_amount, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -7895,13 +6711,6 @@ func (self class) ParticlesSetAmount(particles RID.Any, amount int64) { //gd:Ren
 		amount    int64
 	}{particles, amount})
 }
-
-/*
-Sets the amount ratio for particles to be emitted. Equivalent to [GPUParticles3D.AmountRatio].
-
-[GPUParticles3D.AmountRatio]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.AmountRatio
-*/
-//go:nosplit
 func (self class) ParticlesSetAmountRatio(particles RID.Any, ratio float64) { //gd:RenderingServer.particles_set_amount_ratio
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_amount_ratio, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -7909,13 +6718,6 @@ func (self class) ParticlesSetAmountRatio(particles RID.Any, ratio float64) { //
 		ratio     float64
 	}{particles, ratio})
 }
-
-/*
-Sets the lifetime of each particle in the system. Equivalent to [GPUParticles3D.Lifetime].
-
-[GPUParticles3D.Lifetime]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Lifetime
-*/
-//go:nosplit
 func (self class) ParticlesSetLifetime(particles RID.Any, lifetime float64) { //gd:RenderingServer.particles_set_lifetime
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_lifetime, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -7923,13 +6725,6 @@ func (self class) ParticlesSetLifetime(particles RID.Any, lifetime float64) { //
 		lifetime  float64
 	}{particles, lifetime})
 }
-
-/*
-If true, particles will emit once and then stop. Equivalent to [GPUParticles3D.OneShot].
-
-[GPUParticles3D.OneShot]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.OneShot
-*/
-//go:nosplit
 func (self class) ParticlesSetOneShot(particles RID.Any, one_shot bool) { //gd:RenderingServer.particles_set_one_shot
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_one_shot, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -7937,13 +6732,6 @@ func (self class) ParticlesSetOneShot(particles RID.Any, one_shot bool) { //gd:R
 		one_shot  bool
 	}{particles, one_shot})
 }
-
-/*
-Sets the preprocess time for the particles' animation. This lets you delay starting an animation until after the particles have begun emitting. Equivalent to [GPUParticles3D.Preprocess].
-
-[GPUParticles3D.Preprocess]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Preprocess
-*/
-//go:nosplit
 func (self class) ParticlesSetPreProcessTime(particles RID.Any, time float64) { //gd:RenderingServer.particles_set_pre_process_time
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_pre_process_time, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -7951,11 +6739,6 @@ func (self class) ParticlesSetPreProcessTime(particles RID.Any, time float64) { 
 		time      float64
 	}{particles, time})
 }
-
-/*
-Requests particles to process for extra process time during a single frame.
-*/
-//go:nosplit
 func (self class) ParticlesRequestProcessTime(particles RID.Any, time float64) { //gd:RenderingServer.particles_request_process_time
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_request_process_time, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -7963,13 +6746,6 @@ func (self class) ParticlesRequestProcessTime(particles RID.Any, time float64) {
 		time      float64
 	}{particles, time})
 }
-
-/*
-Sets the explosiveness ratio. Equivalent to [GPUParticles3D.Explosiveness].
-
-[GPUParticles3D.Explosiveness]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Explosiveness
-*/
-//go:nosplit
 func (self class) ParticlesSetExplosivenessRatio(particles RID.Any, ratio float64) { //gd:RenderingServer.particles_set_explosiveness_ratio
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_explosiveness_ratio, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -7977,13 +6753,6 @@ func (self class) ParticlesSetExplosivenessRatio(particles RID.Any, ratio float6
 		ratio     float64
 	}{particles, ratio})
 }
-
-/*
-Sets the emission randomness ratio. This randomizes the emission of particles within their phase. Equivalent to [GPUParticles3D.Randomness].
-
-[GPUParticles3D.Randomness]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Randomness
-*/
-//go:nosplit
 func (self class) ParticlesSetRandomnessRatio(particles RID.Any, ratio float64) { //gd:RenderingServer.particles_set_randomness_ratio
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_randomness_ratio, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -7991,13 +6760,6 @@ func (self class) ParticlesSetRandomnessRatio(particles RID.Any, ratio float64) 
 		ratio     float64
 	}{particles, ratio})
 }
-
-/*
-Sets the value that informs a [ParticleProcessMaterial] to rush all particles towards the end of their lifetime.
-
-[ParticleProcessMaterial]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial
-*/
-//go:nosplit
 func (self class) ParticlesSetInterpToEnd(particles RID.Any, factor float64) { //gd:RenderingServer.particles_set_interp_to_end
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_interp_to_end, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -8005,13 +6767,6 @@ func (self class) ParticlesSetInterpToEnd(particles RID.Any, factor float64) { /
 		factor    float64
 	}{particles, factor})
 }
-
-/*
-Sets the velocity of a particle node, that will be used by [ParticleProcessMaterial.InheritVelocityRatio].
-
-[ParticleProcessMaterial.InheritVelocityRatio]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.InheritVelocityRatio
-*/
-//go:nosplit
 func (self class) ParticlesSetEmitterVelocity(particles RID.Any, velocity Vector3.XYZ) { //gd:RenderingServer.particles_set_emitter_velocity
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_emitter_velocity, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
@@ -8019,13 +6774,6 @@ func (self class) ParticlesSetEmitterVelocity(particles RID.Any, velocity Vector
 		velocity  Vector3.XYZ
 	}{particles, velocity})
 }
-
-/*
-Sets a custom axis-aligned bounding box for the particle system. Equivalent to [GPUParticles3D.VisibilityAabb].
-
-[GPUParticles3D.VisibilityAabb]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.VisibilityAabb
-*/
-//go:nosplit
 func (self class) ParticlesSetCustomAabb(particles RID.Any, aabb AABB.PositionSize) { //gd:RenderingServer.particles_set_custom_aabb
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_custom_aabb, 0|(gdextension.SizeRID<<4)|(gdextension.SizeAABB<<8), &struct {
@@ -8033,13 +6781,6 @@ func (self class) ParticlesSetCustomAabb(particles RID.Any, aabb AABB.PositionSi
 		aabb      AABB.PositionSize
 	}{particles, aabb})
 }
-
-/*
-Sets the speed scale of the particle system. Equivalent to [GPUParticles3D.SpeedScale].
-
-[GPUParticles3D.SpeedScale]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.SpeedScale
-*/
-//go:nosplit
 func (self class) ParticlesSetSpeedScale(particles RID.Any, scale float64) { //gd:RenderingServer.particles_set_speed_scale
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_speed_scale, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -8047,13 +6788,6 @@ func (self class) ParticlesSetSpeedScale(particles RID.Any, scale float64) { //g
 		scale     float64
 	}{particles, scale})
 }
-
-/*
-If true, particles use local coordinates. If false they use global coordinates. Equivalent to [GPUParticles3D.LocalCoords].
-
-[GPUParticles3D.LocalCoords]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.LocalCoords
-*/
-//go:nosplit
 func (self class) ParticlesSetUseLocalCoordinates(particles RID.Any, enable bool) { //gd:RenderingServer.particles_set_use_local_coordinates
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_use_local_coordinates, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -8061,15 +6795,6 @@ func (self class) ParticlesSetUseLocalCoordinates(particles RID.Any, enable bool
 		enable    bool
 	}{particles, enable})
 }
-
-/*
-Sets the material for processing the particles.
-
-Note: This is not the material used to draw the materials. Equivalent to [GPUParticles3D.ProcessMaterial].
-
-[GPUParticles3D.ProcessMaterial]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.ProcessMaterial
-*/
-//go:nosplit
 func (self class) ParticlesSetProcessMaterial(particles RID.Any, material RID.Any) { //gd:RenderingServer.particles_set_process_material
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_process_material, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -8077,13 +6802,6 @@ func (self class) ParticlesSetProcessMaterial(particles RID.Any, material RID.An
 		material  RID.Any
 	}{particles, material})
 }
-
-/*
-Sets the frame rate that the particle system rendering will be fixed to. Equivalent to [GPUParticles3D.FixedFps].
-
-[GPUParticles3D.FixedFps]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.FixedFps
-*/
-//go:nosplit
 func (self class) ParticlesSetFixedFps(particles RID.Any, fps int64) { //gd:RenderingServer.particles_set_fixed_fps
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_fixed_fps, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -8091,8 +6809,6 @@ func (self class) ParticlesSetFixedFps(particles RID.Any, fps int64) { //gd:Rend
 		fps       int64
 	}{particles, fps})
 }
-
-//go:nosplit
 func (self class) ParticlesSetInterpolate(particles RID.Any, enable bool) { //gd:RenderingServer.particles_set_interpolate
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_interpolate, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -8100,13 +6816,6 @@ func (self class) ParticlesSetInterpolate(particles RID.Any, enable bool) { //gd
 		enable    bool
 	}{particles, enable})
 }
-
-/*
-If true, uses fractional delta which smooths the movement of the particles. Equivalent to [GPUParticles3D.FractDelta].
-
-[GPUParticles3D.FractDelta]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.FractDelta
-*/
-//go:nosplit
 func (self class) ParticlesSetFractionalDelta(particles RID.Any, enable bool) { //gd:RenderingServer.particles_set_fractional_delta
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_fractional_delta, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -8114,8 +6823,6 @@ func (self class) ParticlesSetFractionalDelta(particles RID.Any, enable bool) { 
 		enable    bool
 	}{particles, enable})
 }
-
-//go:nosplit
 func (self class) ParticlesSetCollisionBaseSize(particles RID.Any, size float64) { //gd:RenderingServer.particles_set_collision_base_size
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_collision_base_size, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -8123,8 +6830,6 @@ func (self class) ParticlesSetCollisionBaseSize(particles RID.Any, size float64)
 		size      float64
 	}{particles, size})
 }
-
-//go:nosplit
 func (self class) ParticlesSetTransformAlign(particles RID.Any, align ParticlesTransformAlign) { //gd:RenderingServer.particles_set_transform_align
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_transform_align, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -8132,14 +6837,6 @@ func (self class) ParticlesSetTransformAlign(particles RID.Any, align ParticlesT
 		align     ParticlesTransformAlign
 	}{particles, align})
 }
-
-/*
-If 'enable' is true, enables trails for the 'particles' with the specified 'length_sec' in seconds. Equivalent to [GPUParticles3D.TrailEnabled] and [GPUParticles3D.TrailLifetime].
-
-[GPUParticles3D.TrailEnabled]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.TrailEnabled
-[GPUParticles3D.TrailLifetime]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.TrailLifetime
-*/
-//go:nosplit
 func (self class) ParticlesSetTrails(particles RID.Any, enable bool, length_sec float64) { //gd:RenderingServer.particles_set_trails
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_trails, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12), &struct {
@@ -8148,8 +6845,6 @@ func (self class) ParticlesSetTrails(particles RID.Any, enable bool, length_sec 
 		length_sec float64
 	}{particles, enable, length_sec})
 }
-
-//go:nosplit
 func (self class) ParticlesSetTrailBindPoses(particles RID.Any, bind_poses Array.Contains[Transform3D.BasisOrigin]) { //gd:RenderingServer.particles_set_trail_bind_poses
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_trail_bind_poses, 0|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8), &struct {
@@ -8157,39 +6852,20 @@ func (self class) ParticlesSetTrailBindPoses(particles RID.Any, bind_poses Array
 		bind_poses gdextension.Array
 	}{particles, pointers.Get(gd.InternalArray(bind_poses))})
 }
-
-/*
-Returns true if particles are not emitting and particles are set to inactive.
-*/
-//go:nosplit
 func (self class) ParticlesIsInactive(particles RID.Any) bool { //gd:RenderingServer.particles_is_inactive
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.particles_is_inactive, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ particles RID.Any }{particles})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Add particle system to list of particle systems that need to be updated. Update will take place on the next frame, or on the next call to [InstancesCullAabb], [InstancesCullConvex], or [InstancesCullRay].
-*/
-//go:nosplit
 func (self class) ParticlesRequestProcess(particles RID.Any) { //gd:RenderingServer.particles_request_process
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_request_process, 0|(gdextension.SizeRID<<4), &struct{ particles RID.Any }{particles})
 }
-
-/*
-Reset the particles on the next update. Equivalent to [GPUParticles3D.Restart].
-
-[GPUParticles3D.Restart]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Restart
-*/
-//go:nosplit
 func (self class) ParticlesRestart(particles RID.Any) { //gd:RenderingServer.particles_restart
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_restart, 0|(gdextension.SizeRID<<4), &struct{ particles RID.Any }{particles})
 }
-
-//go:nosplit
 func (self class) ParticlesSetSubemitter(particles RID.Any, subemitter_particles RID.Any) { //gd:RenderingServer.particles_set_subemitter
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_subemitter, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -8197,11 +6873,6 @@ func (self class) ParticlesSetSubemitter(particles RID.Any, subemitter_particles
 		subemitter_particles RID.Any
 	}{particles, subemitter_particles})
 }
-
-/*
-Manually emits particles from the 'particles' instance.
-*/
-//go:nosplit
 func (self class) ParticlesEmit(particles RID.Any, transform Transform3D.BasisOrigin, velocity Vector3.XYZ, color Color.RGBA, custom Color.RGBA, emit_flags int64) { //gd:RenderingServer.particles_emit
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_emit, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeInt<<24), &struct {
@@ -8213,13 +6884,6 @@ func (self class) ParticlesEmit(particles RID.Any, transform Transform3D.BasisOr
 		emit_flags int64
 	}{particles, gd.Transposed(transform), velocity, color, custom, emit_flags})
 }
-
-/*
-Sets the draw order of the particles. Equivalent to [GPUParticles3D.DrawOrder].
-
-[GPUParticles3D.DrawOrder]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.DrawOrder
-*/
-//go:nosplit
 func (self class) ParticlesSetDrawOrder(particles RID.Any, order ParticlesDrawOrder) { //gd:RenderingServer.particles_set_draw_order
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_draw_order, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -8227,13 +6891,6 @@ func (self class) ParticlesSetDrawOrder(particles RID.Any, order ParticlesDrawOr
 		order     ParticlesDrawOrder
 	}{particles, order})
 }
-
-/*
-Sets the number of draw passes to use. Equivalent to [GPUParticles3D.DrawPasses].
-
-[GPUParticles3D.DrawPasses]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.DrawPasses
-*/
-//go:nosplit
 func (self class) ParticlesSetDrawPasses(particles RID.Any, count int64) { //gd:RenderingServer.particles_set_draw_passes
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_draw_passes, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -8241,16 +6898,6 @@ func (self class) ParticlesSetDrawPasses(particles RID.Any, count int64) { //gd:
 		count     int64
 	}{particles, count})
 }
-
-/*
-Sets the mesh to be used for the specified draw pass. Equivalent to [GPUParticles3D.DrawPass1], [GPUParticles3D.DrawPass2], [GPUParticles3D.DrawPass3], and [GPUParticles3D.DrawPass4].
-
-[GPUParticles3D.DrawPass1]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.DrawPass1
-[GPUParticles3D.DrawPass2]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.DrawPass2
-[GPUParticles3D.DrawPass3]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.DrawPass3
-[GPUParticles3D.DrawPass4]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.DrawPass4
-*/
-//go:nosplit
 func (self class) ParticlesSetDrawPassMesh(particles RID.Any, pass int64, mesh RID.Any) { //gd:RenderingServer.particles_set_draw_pass_mesh
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_draw_pass_mesh, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), &struct {
@@ -8259,26 +6906,12 @@ func (self class) ParticlesSetDrawPassMesh(particles RID.Any, pass int64, mesh R
 		mesh      RID.Any
 	}{particles, pass, mesh})
 }
-
-/*
-Calculates and returns the axis-aligned bounding box that contains all the particles. Equivalent to [GPUParticles3D.CaptureAabb].
-
-[GPUParticles3D.CaptureAabb]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.CaptureAabb
-*/
-//go:nosplit
 func (self class) ParticlesGetCurrentAabb(particles RID.Any) AABB.PositionSize { //gd:RenderingServer.particles_get_current_aabb
 	once.Do(singleton)
 	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.particles_get_current_aabb, gdextension.SizeAABB|(gdextension.SizeRID<<4), &struct{ particles RID.Any }{particles})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the [Transform3D.BasisOrigin] that will be used by the particles when they first emit.
-
-[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
-*/
-//go:nosplit
 func (self class) ParticlesSetEmissionTransform(particles RID.Any, transform Transform3D.BasisOrigin) { //gd:RenderingServer.particles_set_emission_transform
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_set_emission_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8), &struct {
@@ -8286,27 +6919,12 @@ func (self class) ParticlesSetEmissionTransform(particles RID.Any, transform Tra
 		transform Transform3D.BasisOrigin
 	}{particles, gd.Transposed(transform)})
 }
-
-/*
-Creates a new 3D GPU particle collision or attractor and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID can be used in most particles_collision_* RenderingServer functions.
-
-Note: The equivalent nodes are [GPUParticlesCollision3D] and [GPUParticlesAttractor3D].
-
-[GPUParticlesAttractor3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D
-[GPUParticlesCollision3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollision3D
-*/
-//go:nosplit
 func (self class) ParticlesCollisionCreate() RID.Any { //gd:RenderingServer.particles_collision_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.particles_collision_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the collision or attractor shape 'type' for the 3D GPU particles collision or attractor specified by the 'particles_collision' RID.
-*/
-//go:nosplit
 func (self class) ParticlesCollisionSetCollisionType(particles_collision RID.Any, atype ParticlesCollisionType) { //gd:RenderingServer.particles_collision_set_collision_type
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_collision_set_collision_type, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -8314,14 +6932,6 @@ func (self class) ParticlesCollisionSetCollisionType(particles_collision RID.Any
 		atype               ParticlesCollisionType
 	}{particles_collision, atype})
 }
-
-/*
-Sets the cull 'mask' for the 3D GPU particles collision or attractor specified by the 'particles_collision' RID. Equivalent to [GPUParticlesCollision3D.CullMask] or [GPUParticlesAttractor3D.CullMask] depending on the 'particles_collision' type.
-
-[GPUParticlesAttractor3D.CullMask]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D#Instance.CullMask
-[GPUParticlesCollision3D.CullMask]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollision3D#Instance.CullMask
-*/
-//go:nosplit
 func (self class) ParticlesCollisionSetCullMask(particles_collision RID.Any, mask int64) { //gd:RenderingServer.particles_collision_set_cull_mask
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_collision_set_cull_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -8329,14 +6939,6 @@ func (self class) ParticlesCollisionSetCullMask(particles_collision RID.Any, mas
 		mask                int64
 	}{particles_collision, mask})
 }
-
-/*
-Sets the 'radius' for the 3D GPU particles sphere collision or attractor specified by the 'particles_collision' RID. Equivalent to [GPUParticlesCollisionSphere3D.Radius] or [GPUParticlesAttractorSphere3D.Radius] depending on the 'particles_collision' type.
-
-[GPUParticlesAttractorSphere3D.Radius]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractorSphere3D#Instance.Radius
-[GPUParticlesCollisionSphere3D.Radius]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSphere3D#Instance.Radius
-*/
-//go:nosplit
 func (self class) ParticlesCollisionSetSphereRadius(particles_collision RID.Any, radius float64) { //gd:RenderingServer.particles_collision_set_sphere_radius
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_collision_set_sphere_radius, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -8344,17 +6946,6 @@ func (self class) ParticlesCollisionSetSphereRadius(particles_collision RID.Any,
 		radius              float64
 	}{particles_collision, radius})
 }
-
-/*
-Sets the 'extents' for the 3D GPU particles collision by the 'particles_collision' RID. Equivalent to [GPUParticlesCollisionBox3D.Size], [GPUParticlesCollisionSDF3D.Size], [GPUParticlesCollisionHeightField3D.Size], [GPUParticlesAttractorBox3D.Size] or [GPUParticlesAttractorVectorField3D.Size] depending on the 'particles_collision' type.
-
-[GPUParticlesAttractorBox3D.Size]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractorBox3D#Instance.Size
-[GPUParticlesAttractorVectorField3D.Size]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractorVectorField3D#Instance.Size
-[GPUParticlesCollisionBox3D.Size]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionBox3D#Instance.Size
-[GPUParticlesCollisionHeightField3D.Size]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.Size
-[GPUParticlesCollisionSDF3D.Size]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSDF3D#Instance.Size
-*/
-//go:nosplit
 func (self class) ParticlesCollisionSetBoxExtents(particles_collision RID.Any, extents Vector3.XYZ) { //gd:RenderingServer.particles_collision_set_box_extents
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_collision_set_box_extents, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
@@ -8362,13 +6953,6 @@ func (self class) ParticlesCollisionSetBoxExtents(particles_collision RID.Any, e
 		extents             Vector3.XYZ
 	}{particles_collision, extents})
 }
-
-/*
-Sets the 'strength' for the 3D GPU particles attractor specified by the 'particles_collision' RID. Only used for attractors, not colliders. Equivalent to [GPUParticlesAttractor3D.Strength].
-
-[GPUParticlesAttractor3D.Strength]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D#Instance.Strength
-*/
-//go:nosplit
 func (self class) ParticlesCollisionSetAttractorStrength(particles_collision RID.Any, strength float64) { //gd:RenderingServer.particles_collision_set_attractor_strength
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_collision_set_attractor_strength, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -8376,13 +6960,6 @@ func (self class) ParticlesCollisionSetAttractorStrength(particles_collision RID
 		strength            float64
 	}{particles_collision, strength})
 }
-
-/*
-Sets the directionality 'amount' for the 3D GPU particles attractor specified by the 'particles_collision' RID. Only used for attractors, not colliders. Equivalent to [GPUParticlesAttractor3D.Directionality].
-
-[GPUParticlesAttractor3D.Directionality]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D#Instance.Directionality
-*/
-//go:nosplit
 func (self class) ParticlesCollisionSetAttractorDirectionality(particles_collision RID.Any, amount float64) { //gd:RenderingServer.particles_collision_set_attractor_directionality
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_collision_set_attractor_directionality, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -8390,13 +6967,6 @@ func (self class) ParticlesCollisionSetAttractorDirectionality(particles_collisi
 		amount              float64
 	}{particles_collision, amount})
 }
-
-/*
-Sets the attenuation 'curve' for the 3D GPU particles attractor specified by the 'particles_collision' RID. Only used for attractors, not colliders. Equivalent to [GPUParticlesAttractor3D.Attenuation].
-
-[GPUParticlesAttractor3D.Attenuation]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D#Instance.Attenuation
-*/
-//go:nosplit
 func (self class) ParticlesCollisionSetAttractorAttenuation(particles_collision RID.Any, curve float64) { //gd:RenderingServer.particles_collision_set_attractor_attenuation
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_collision_set_attractor_attenuation, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -8404,14 +6974,6 @@ func (self class) ParticlesCollisionSetAttractorAttenuation(particles_collision 
 		curve               float64
 	}{particles_collision, curve})
 }
-
-/*
-Sets the signed distance field 'texture' for the 3D GPU particles collision specified by the 'particles_collision' RID. Equivalent to [GPUParticlesCollisionSDF3D.Texture] or [GPUParticlesAttractorVectorField3D.Texture] depending on the 'particles_collision' type.
-
-[GPUParticlesAttractorVectorField3D.Texture]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractorVectorField3D#Instance.Texture
-[GPUParticlesCollisionSDF3D.Texture]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSDF3D#Instance.Texture
-*/
-//go:nosplit
 func (self class) ParticlesCollisionSetFieldTexture(particles_collision RID.Any, texture RID.Any) { //gd:RenderingServer.particles_collision_set_field_texture
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_collision_set_field_texture, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -8419,24 +6981,10 @@ func (self class) ParticlesCollisionSetFieldTexture(particles_collision RID.Any,
 		texture             RID.Any
 	}{particles_collision, texture})
 }
-
-/*
-Requests an update for the 3D GPU particle collision heightfield. This may be automatically called by the 3D GPU particle collision heightfield depending on its [GPUParticlesCollisionHeightField3D.UpdateMode].
-
-[GPUParticlesCollisionHeightField3D.UpdateMode]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.UpdateMode
-*/
-//go:nosplit
 func (self class) ParticlesCollisionHeightFieldUpdate(particles_collision RID.Any) { //gd:RenderingServer.particles_collision_height_field_update
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_collision_height_field_update, 0|(gdextension.SizeRID<<4), &struct{ particles_collision RID.Any }{particles_collision})
 }
-
-/*
-Sets the heightmap 'resolution' for the 3D GPU particles heightfield collision specified by the 'particles_collision' RID. Equivalent to [GPUParticlesCollisionHeightField3D.Resolution].
-
-[GPUParticlesCollisionHeightField3D.Resolution]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.Resolution
-*/
-//go:nosplit
 func (self class) ParticlesCollisionSetHeightFieldResolution(particles_collision RID.Any, resolution ParticlesCollisionHeightfieldResolution) { //gd:RenderingServer.particles_collision_set_height_field_resolution
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_collision_set_height_field_resolution, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -8444,13 +6992,6 @@ func (self class) ParticlesCollisionSetHeightFieldResolution(particles_collision
 		resolution          ParticlesCollisionHeightfieldResolution
 	}{particles_collision, resolution})
 }
-
-/*
-Sets the heightfield 'mask' for the 3D GPU particles heightfield collision specified by the 'particles_collision' RID. Equivalent to [GPUParticlesCollisionHeightField3D.HeightfieldMask].
-
-[GPUParticlesCollisionHeightField3D.HeightfieldMask]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.HeightfieldMask
-*/
-//go:nosplit
 func (self class) ParticlesCollisionSetHeightFieldMask(particles_collision RID.Any, mask int64) { //gd:RenderingServer.particles_collision_set_height_field_mask
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.particles_collision_set_height_field_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -8458,28 +6999,12 @@ func (self class) ParticlesCollisionSetHeightFieldMask(particles_collision RID.A
 		mask                int64
 	}{particles_collision, mask})
 }
-
-/*
-Creates a new fog volume and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all fog_volume_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-Note: The equivalent node is [FogVolume].
-
-[FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
-*/
-//go:nosplit
 func (self class) FogVolumeCreate() RID.Any { //gd:RenderingServer.fog_volume_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.fog_volume_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the shape of the fog volume to either [Renderingserver.FogVolumeShapeEllipsoid], [Renderingserver.FogVolumeShapeCone], [Renderingserver.FogVolumeShapeCylinder], [Renderingserver.FogVolumeShapeBox] or [Renderingserver.FogVolumeShapeWorld].
-*/
-//go:nosplit
 func (self class) FogVolumeSetShape(fog_volume RID.Any, shape FogVolumeShape) { //gd:RenderingServer.fog_volume_set_shape
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.fog_volume_set_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -8487,11 +7012,6 @@ func (self class) FogVolumeSetShape(fog_volume RID.Any, shape FogVolumeShape) { 
 		shape      FogVolumeShape
 	}{fog_volume, shape})
 }
-
-/*
-Sets the size of the fog volume when shape is [Renderingserver.FogVolumeShapeEllipsoid], [Renderingserver.FogVolumeShapeCone], [Renderingserver.FogVolumeShapeCylinder] or [Renderingserver.FogVolumeShapeBox].
-*/
-//go:nosplit
 func (self class) FogVolumeSetSize(fog_volume RID.Any, size Vector3.XYZ) { //gd:RenderingServer.fog_volume_set_size
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.fog_volume_set_size, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
@@ -8499,15 +7019,6 @@ func (self class) FogVolumeSetSize(fog_volume RID.Any, size Vector3.XYZ) { //gd:
 		size       Vector3.XYZ
 	}{fog_volume, size})
 }
-
-/*
-Sets the [Material] of the fog volume. Can be either a [FogMaterial] or a custom [ShaderMaterial].
-
-[FogMaterial]: https://pkg.go.dev/graphics.gd/classdb/FogMaterial
-[Material]: https://pkg.go.dev/graphics.gd/classdb/Material
-[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
-*/
-//go:nosplit
 func (self class) FogVolumeSetMaterial(fog_volume RID.Any, material RID.Any) { //gd:RenderingServer.fog_volume_set_material
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.fog_volume_set_material, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -8515,27 +7026,12 @@ func (self class) FogVolumeSetMaterial(fog_volume RID.Any, material RID.Any) { /
 		material   RID.Any
 	}{fog_volume, material})
 }
-
-/*
-Creates a new 3D visibility notifier object and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all visibility_notifier_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-To place in a scene, attach this notifier to an instance using [InstanceSetBase] using the returned RID.
-
-Note: The equivalent node is [VisibleOnScreenNotifier3D].
-
-[VisibleOnScreenNotifier3D]: https://pkg.go.dev/graphics.gd/classdb/VisibleOnScreenNotifier3D
-*/
-//go:nosplit
 func (self class) VisibilityNotifierCreate() RID.Any { //gd:RenderingServer.visibility_notifier_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.visibility_notifier_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) VisibilityNotifierSetAabb(notifier RID.Any, aabb AABB.PositionSize) { //gd:RenderingServer.visibility_notifier_set_aabb
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.visibility_notifier_set_aabb, 0|(gdextension.SizeRID<<4)|(gdextension.SizeAABB<<8), &struct {
@@ -8543,8 +7039,6 @@ func (self class) VisibilityNotifierSetAabb(notifier RID.Any, aabb AABB.Position
 		aabb     AABB.PositionSize
 	}{notifier, aabb})
 }
-
-//go:nosplit
 func (self class) VisibilityNotifierSetCallbacks(notifier RID.Any, enter_callable Callable.Function, exit_callable Callable.Function) { //gd:RenderingServer.visibility_notifier_set_callbacks
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.visibility_notifier_set_callbacks, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeCallable<<12), &struct {
@@ -8553,29 +7047,12 @@ func (self class) VisibilityNotifierSetCallbacks(notifier RID.Any, enter_callabl
 		exit_callable  gdextension.Callable
 	}{notifier, pointers.Get(gd.InternalCallable(enter_callable)), pointers.Get(gd.InternalCallable(exit_callable))})
 }
-
-/*
-Creates an occluder instance and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all occluder_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-Note: The equivalent resource is [Occluder3D] (not to be confused with the [OccluderInstance3D] node).
-
-[Occluder3D]: https://pkg.go.dev/graphics.gd/classdb/Occluder3D
-[OccluderInstance3D]: https://pkg.go.dev/graphics.gd/classdb/OccluderInstance3D
-*/
-//go:nosplit
 func (self class) OccluderCreate() RID.Any { //gd:RenderingServer.occluder_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.occluder_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the mesh data for the given occluder RID, which controls the shape of the occlusion culling that will be performed.
-*/
-//go:nosplit
 func (self class) OccluderSetMesh(occluder RID.Any, vertices Packed.Array[Vector3.XYZ], indices Packed.Array[int32]) { //gd:RenderingServer.occluder_set_mesh
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.occluder_set_mesh, 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12), &struct {
@@ -8584,28 +7061,12 @@ func (self class) OccluderSetMesh(occluder RID.Any, vertices Packed.Array[Vector
 		indices  gdextension.PackedArray[int32]
 	}{occluder, pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices)), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](indices))})
 }
-
-/*
-Creates a 3D camera and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all camera_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-Note: The equivalent node is [Camera3D].
-
-[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
-*/
-//go:nosplit
 func (self class) CameraCreate() RID.Any { //gd:RenderingServer.camera_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.camera_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets camera to use perspective projection. Objects on the screen becomes smaller when they are far away.
-*/
-//go:nosplit
 func (self class) CameraSetPerspective(camera RID.Any, fovy_degrees float64, z_near float64, z_far float64) { //gd:RenderingServer.camera_set_perspective
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.camera_set_perspective, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), &struct {
@@ -8615,11 +7076,6 @@ func (self class) CameraSetPerspective(camera RID.Any, fovy_degrees float64, z_n
 		z_far        float64
 	}{camera, fovy_degrees, z_near, z_far})
 }
-
-/*
-Sets camera to use orthogonal projection, also known as orthographic projection. Objects remain the same size on the screen no matter how far away they are.
-*/
-//go:nosplit
 func (self class) CameraSetOrthogonal(camera RID.Any, size float64, z_near float64, z_far float64) { //gd:RenderingServer.camera_set_orthogonal
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.camera_set_orthogonal, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), &struct {
@@ -8629,11 +7085,6 @@ func (self class) CameraSetOrthogonal(camera RID.Any, size float64, z_near float
 		z_far  float64
 	}{camera, size, z_near, z_far})
 }
-
-/*
-Sets camera to use frustum projection. This mode allows adjusting the 'offset' argument to create "tilted frustum" effects.
-*/
-//go:nosplit
 func (self class) CameraSetFrustum(camera RID.Any, size float64, offset Vector2.XY, z_near float64, z_far float64) { //gd:RenderingServer.camera_set_frustum
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.camera_set_frustum, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20), &struct {
@@ -8644,13 +7095,6 @@ func (self class) CameraSetFrustum(camera RID.Any, size float64, offset Vector2.
 		z_far  float64
 	}{camera, size, offset, z_near, z_far})
 }
-
-/*
-Sets [Transform3D.BasisOrigin] of camera.
-
-[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
-*/
-//go:nosplit
 func (self class) CameraSetTransform(camera RID.Any, transform Transform3D.BasisOrigin) { //gd:RenderingServer.camera_set_transform
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.camera_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8), &struct {
@@ -8658,13 +7102,6 @@ func (self class) CameraSetTransform(camera RID.Any, transform Transform3D.Basis
 		transform Transform3D.BasisOrigin
 	}{camera, gd.Transposed(transform)})
 }
-
-/*
-Sets the cull mask associated with this camera. The cull mask describes which 3D layers are rendered by this camera. Equivalent to [Camera3D.CullMask].
-
-[Camera3D.CullMask]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.CullMask
-*/
-//go:nosplit
 func (self class) CameraSetCullMask(camera RID.Any, layers int64) { //gd:RenderingServer.camera_set_cull_mask
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.camera_set_cull_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -8672,13 +7109,6 @@ func (self class) CameraSetCullMask(camera RID.Any, layers int64) { //gd:Renderi
 		layers int64
 	}{camera, layers})
 }
-
-/*
-Sets the environment used by this camera. Equivalent to [Camera3D.Environment].
-
-[Camera3D.Environment]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Environment
-*/
-//go:nosplit
 func (self class) CameraSetEnvironment(camera RID.Any, env RID.Any) { //gd:RenderingServer.camera_set_environment
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.camera_set_environment, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -8686,11 +7116,6 @@ func (self class) CameraSetEnvironment(camera RID.Any, env RID.Any) { //gd:Rende
 		env    RID.Any
 	}{camera, env})
 }
-
-/*
-Sets the camera_attributes created with [CameraAttributesCreate] to the given camera.
-*/
-//go:nosplit
 func (self class) CameraSetCameraAttributes(camera RID.Any, effects RID.Any) { //gd:RenderingServer.camera_set_camera_attributes
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.camera_set_camera_attributes, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -8698,13 +7123,6 @@ func (self class) CameraSetCameraAttributes(camera RID.Any, effects RID.Any) { /
 		effects RID.Any
 	}{camera, effects})
 }
-
-/*
-Sets the compositor used by this camera. Equivalent to [Camera3D.Compositor].
-
-[Camera3D.Compositor]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Compositor
-*/
-//go:nosplit
 func (self class) CameraSetCompositor(camera RID.Any, compositor RID.Any) { //gd:RenderingServer.camera_set_compositor
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.camera_set_compositor, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -8712,11 +7130,6 @@ func (self class) CameraSetCompositor(camera RID.Any, compositor RID.Any) { //gd
 		compositor RID.Any
 	}{camera, compositor})
 }
-
-/*
-If true, preserves the horizontal aspect ratio which is equivalent to [Camera3d.KeepWidth]. If false, preserves the vertical aspect ratio which is equivalent to [Camera3d.KeepHeight].
-*/
-//go:nosplit
 func (self class) CameraSetUseVerticalAspect(camera RID.Any, enable bool) { //gd:RenderingServer.camera_set_use_vertical_aspect
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.camera_set_use_vertical_aspect, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -8724,30 +7137,12 @@ func (self class) CameraSetUseVerticalAspect(camera RID.Any, enable bool) { //gd
 		enable bool
 	}{camera, enable})
 }
-
-/*
-Creates an empty viewport and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all viewport_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-Note: The equivalent node is [Viewport].
-
-[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
-*/
-//go:nosplit
 func (self class) ViewportCreate() RID.Any { //gd:RenderingServer.viewport_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.viewport_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-If true, the viewport uses augmented or virtual reality technologies. See [XRInterface].
-
-[XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
-*/
-//go:nosplit
 func (self class) ViewportSetUseXr(viewport RID.Any, use_xr bool) { //gd:RenderingServer.viewport_set_use_xr
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_use_xr, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -8755,11 +7150,6 @@ func (self class) ViewportSetUseXr(viewport RID.Any, use_xr bool) { //gd:Renderi
 		use_xr   bool
 	}{viewport, use_xr})
 }
-
-/*
-Sets the viewport's width and height in pixels.
-*/
-//go:nosplit
 func (self class) ViewportSetSize(viewport RID.Any, width int64, height int64) { //gd:RenderingServer.viewport_set_size
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_size, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
@@ -8768,11 +7158,6 @@ func (self class) ViewportSetSize(viewport RID.Any, width int64, height int64) {
 		height   int64
 	}{viewport, width, height})
 }
-
-/*
-If true, sets the viewport active, else sets it inactive.
-*/
-//go:nosplit
 func (self class) ViewportSetActive(viewport RID.Any, active bool) { //gd:RenderingServer.viewport_set_active
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_active, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -8780,11 +7165,6 @@ func (self class) ViewportSetActive(viewport RID.Any, active bool) { //gd:Render
 		active   bool
 	}{viewport, active})
 }
-
-/*
-Sets the viewport's parent to the viewport specified by the 'parent_viewport' RID.
-*/
-//go:nosplit
 func (self class) ViewportSetParentViewport(viewport RID.Any, parent_viewport RID.Any) { //gd:RenderingServer.viewport_set_parent_viewport
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_parent_viewport, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -8792,20 +7172,6 @@ func (self class) ViewportSetParentViewport(viewport RID.Any, parent_viewport RI
 		parent_viewport RID.Any
 	}{viewport, parent_viewport})
 }
-
-/*
-Copies the viewport to a region of the screen specified by 'rect'. If [ViewportSetRenderDirectToScreen] is true, then the viewport does not use a framebuffer and the contents of the viewport are rendered directly to screen. However, note that the root viewport is drawn last, therefore it will draw over the screen. Accordingly, you must set the root viewport to an area that does not cover the area that you have attached this viewport to.
-
-For example, you can set the root viewport to not render at all with the following code:
-
-
-	RenderingServer.ViewportAttachToScreen(Viewport.Get(node).GetViewportRid(), Rect2.PositionSize{}, 0)
-	RenderingServer.ViewportAttachToScreen(viewport.GetViewportRid(), Rect2.New(0, 0, 600, 600), 0)
-
-
-Using this can result in significant optimization, especially on lower-end devices. However, it comes at the cost of having to manage your viewports manually. For further optimization, see [ViewportSetRenderDirectToScreen].
-*/
-//go:nosplit
 func (self class) ViewportAttachToScreen(viewport RID.Any, rect Rect2.PositionSize, screen int64) { //gd:RenderingServer.viewport_attach_to_screen
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_attach_to_screen, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeInt<<12), &struct {
@@ -8814,11 +7180,6 @@ func (self class) ViewportAttachToScreen(viewport RID.Any, rect Rect2.PositionSi
 		screen   int64
 	}{viewport, rect, screen})
 }
-
-/*
-If true, render the contents of the viewport directly to screen. This allows a low-level optimization where you can skip drawing a viewport to the root viewport. While this optimization can result in a significant increase in speed (especially on older devices), it comes at a cost of usability. When this is enabled, you cannot read from the viewport or from the screen_texture. You also lose the benefit of certain window settings, such as the various stretch modes. Another consequence to be aware of is that in 2D the rendering happens in window coordinates, so if you have a viewport that is double the size of the window, and you set this, then only the portion that fits within the window will be drawn, no automatic scaling is possible, even if your game scene is significantly larger than the window size.
-*/
-//go:nosplit
 func (self class) ViewportSetRenderDirectToScreen(viewport RID.Any, enabled bool) { //gd:RenderingServer.viewport_set_render_direct_to_screen
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_render_direct_to_screen, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -8826,14 +7187,6 @@ func (self class) ViewportSetRenderDirectToScreen(viewport RID.Any, enabled bool
 		enabled  bool
 	}{viewport, enabled})
 }
-
-/*
-Sets the rendering mask associated with this [Viewport]. Only [CanvasItem] nodes with a matching rendering visibility layer will be rendered by this [Viewport].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
-*/
-//go:nosplit
 func (self class) ViewportSetCanvasCullMask(viewport RID.Any, canvas_cull_mask int64) { //gd:RenderingServer.viewport_set_canvas_cull_mask
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_canvas_cull_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -8841,11 +7194,6 @@ func (self class) ViewportSetCanvasCullMask(viewport RID.Any, canvas_cull_mask i
 		canvas_cull_mask int64
 	}{viewport, canvas_cull_mask})
 }
-
-/*
-Sets the 3D resolution scaling mode. Bilinear scaling renders at different resolution to either undersample or supersample the viewport. FidelityFX Super Resolution 1.0, abbreviated to FSR, is an upscaling technology that produces high quality images at fast framerates by using a spatially aware upscaling algorithm. FSR is slightly more expensive than bilinear, but it produces significantly higher image quality. FSR should be used where possible.
-*/
-//go:nosplit
 func (self class) ViewportSetScaling3dMode(viewport RID.Any, scaling_3d_mode ViewportScaling3DMode) { //gd:RenderingServer.viewport_set_scaling_3d_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_scaling_3d_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -8853,13 +7201,6 @@ func (self class) ViewportSetScaling3dMode(viewport RID.Any, scaling_3d_mode Vie
 		scaling_3d_mode ViewportScaling3DMode
 	}{viewport, scaling_3d_mode})
 }
-
-/*
-Scales the 3D render buffer based on the viewport size uses an image filter specified in [ViewportScaling3DMode] to scale the output image to the full viewport size. Values lower than 1.0 can be used to speed up 3D rendering at the cost of quality (undersampling). Values greater than 1.0 are only valid for bilinear mode and can be used to improve 3D rendering quality at a high performance cost (supersampling). See also [ViewportMSAA] for multi-sample antialiasing, which is significantly cheaper but only smoothens the edges of polygons.
-
-When using FSR upscaling, AMD recommends exposing the following values as preset options to users "Ultra Quality: 0.77", "Quality: 0.67", "Balanced: 0.59", "Performance: 0.5" instead of exposing the entire scale.
-*/
-//go:nosplit
 func (self class) ViewportSetScaling3dScale(viewport RID.Any, scale float64) { //gd:RenderingServer.viewport_set_scaling_3d_scale
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_scaling_3d_scale, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -8867,11 +7208,6 @@ func (self class) ViewportSetScaling3dScale(viewport RID.Any, scale float64) { /
 		scale    float64
 	}{viewport, scale})
 }
-
-/*
-Determines how sharp the upscaled image will be when using the FSR upscaling mode. Sharpness halves with every whole number. Values go from 0.0 (sharpest) to 2.0. Values above 2.0 won't make a visible difference.
-*/
-//go:nosplit
 func (self class) ViewportSetFsrSharpness(viewport RID.Any, sharpness float64) { //gd:RenderingServer.viewport_set_fsr_sharpness
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_fsr_sharpness, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -8879,15 +7215,6 @@ func (self class) ViewportSetFsrSharpness(viewport RID.Any, sharpness float64) {
 		sharpness float64
 	}{viewport, sharpness})
 }
-
-/*
-Affects the final texture sharpness by reading from a lower or higher mipmap (also called "texture LOD bias"). Negative values make mipmapped textures sharper but grainier when viewed at a distance, while positive values make mipmapped textures blurrier (even when up close). To get sharper textures at a distance without introducing too much graininess, set this between -0.75 and 0.0. Enabling temporal antialiasing ([ProjectSettings] "rendering/anti_aliasing/quality/use_taa") can help reduce the graininess visible when using negative mipmap bias.
-
-Note: When the 3D scaling mode is set to FSR 1.0, this value is used to adjust the automatic mipmap bias which is calculated internally based on the scale factor. The formula for this is -log2(1.0 / scale) + mipmap_bias.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) ViewportSetTextureMipmapBias(viewport RID.Any, mipmap_bias float64) { //gd:RenderingServer.viewport_set_texture_mipmap_bias
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_texture_mipmap_bias, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -8895,23 +7222,6 @@ func (self class) ViewportSetTextureMipmapBias(viewport RID.Any, mipmap_bias flo
 		mipmap_bias float64
 	}{viewport, mipmap_bias})
 }
-
-/*
-Sets the maximum number of samples to take when using anisotropic filtering on textures (as a power of two). A higher sample count will result in sharper textures at oblique angles, but is more expensive to compute. A value of 0 forcibly disables anisotropic filtering, even on materials where it is enabled.
-
-The anisotropic filtering level also affects decals and light projectors if they are configured to use anisotropic filtering. See [ProjectSettings] "rendering/textures/decals/filter" and [ProjectSettings] "rendering/textures/light_projectors/filter".
-
-Note: In 3D, for this setting to have an effect, set [BaseMaterial3D.TextureFilter] to [Basematerial3d.TextureFilterLinearWithMipmapsAnisotropic] or [Basematerial3d.TextureFilterNearestWithMipmapsAnisotropic] on materials.
-
-Note: In 2D, for this setting to have an effect, set [CanvasItem.TextureFilter] to [Canvasitem.TextureFilterLinearWithMipmapsAnisotropic] or [Canvasitem.TextureFilterNearestWithMipmapsAnisotropic] on the [CanvasItem] node displaying the texture (or in [CanvasTexture]). However, anisotropic filtering is rarely useful in 2D, so only enable it for textures in 2D if it makes a meaningful visual difference.
-
-[BaseMaterial3D.TextureFilter]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.TextureFilter
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[CanvasItem.TextureFilter]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.TextureFilter
-[CanvasTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) ViewportSetAnisotropicFilteringLevel(viewport RID.Any, anisotropic_filtering_level ViewportAnisotropicFiltering) { //gd:RenderingServer.viewport_set_anisotropic_filtering_level
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_anisotropic_filtering_level, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -8919,11 +7229,6 @@ func (self class) ViewportSetAnisotropicFilteringLevel(viewport RID.Any, anisotr
 		anisotropic_filtering_level ViewportAnisotropicFiltering
 	}{viewport, anisotropic_filtering_level})
 }
-
-/*
-Sets when the viewport should be updated.
-*/
-//go:nosplit
 func (self class) ViewportSetUpdateMode(viewport RID.Any, update_mode ViewportUpdateMode) { //gd:RenderingServer.viewport_set_update_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_update_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -8931,24 +7236,12 @@ func (self class) ViewportSetUpdateMode(viewport RID.Any, update_mode ViewportUp
 		update_mode ViewportUpdateMode
 	}{viewport, update_mode})
 }
-
-/*
-Returns the viewport's update mode.
-
-Warning: Calling this from any thread other than the rendering thread will be detrimental to performance.
-*/
-//go:nosplit
 func (self class) ViewportGetUpdateMode(viewport RID.Any) ViewportUpdateMode { //gd:RenderingServer.viewport_get_update_mode
 	once.Do(singleton)
 	var r_ret = noescape.Call[ViewportUpdateMode](gd.ObjectChecked(self.AsObject()), methods.viewport_get_update_mode, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ viewport RID.Any }{viewport})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the clear mode of a viewport.
-*/
-//go:nosplit
 func (self class) ViewportSetClearMode(viewport RID.Any, clear_mode ViewportClearMode) { //gd:RenderingServer.viewport_set_clear_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_clear_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -8956,33 +7249,18 @@ func (self class) ViewportSetClearMode(viewport RID.Any, clear_mode ViewportClea
 		clear_mode ViewportClearMode
 	}{viewport, clear_mode})
 }
-
-/*
-Returns the render target for the viewport.
-*/
-//go:nosplit
 func (self class) ViewportGetRenderTarget(viewport RID.Any) RID.Any { //gd:RenderingServer.viewport_get_render_target
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.viewport_get_render_target, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ viewport RID.Any }{viewport})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the viewport's last rendered frame.
-*/
-//go:nosplit
 func (self class) ViewportGetTexture(viewport RID.Any) RID.Any { //gd:RenderingServer.viewport_get_texture
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.viewport_get_texture, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ viewport RID.Any }{viewport})
 	var ret = r_ret
 	return ret
 }
-
-/*
-If true, the viewport's 3D elements are not rendered.
-*/
-//go:nosplit
 func (self class) ViewportSetDisable3d(viewport RID.Any, disable bool) { //gd:RenderingServer.viewport_set_disable_3d
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_disable_3d, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -8990,11 +7268,6 @@ func (self class) ViewportSetDisable3d(viewport RID.Any, disable bool) { //gd:Re
 		disable  bool
 	}{viewport, disable})
 }
-
-/*
-If true, the viewport's canvas (i.e. 2D and GUI elements) is not rendered.
-*/
-//go:nosplit
 func (self class) ViewportSetDisable2d(viewport RID.Any, disable bool) { //gd:RenderingServer.viewport_set_disable_2d
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_disable_2d, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -9002,11 +7275,6 @@ func (self class) ViewportSetDisable2d(viewport RID.Any, disable bool) { //gd:Re
 		disable  bool
 	}{viewport, disable})
 }
-
-/*
-Sets the viewport's environment mode which allows enabling or disabling rendering of 3D environment over 2D canvas. When disabled, 2D will not be affected by the environment. When enabled, 2D will be affected by the environment if the environment background mode is [EnvBgCanvas]. The default behavior is to inherit the setting from the viewport's parent. If the topmost parent is also set to [ViewportEnvironmentInherit], then the behavior will be the same as if it was set to [ViewportEnvironmentEnabled].
-*/
-//go:nosplit
 func (self class) ViewportSetEnvironmentMode(viewport RID.Any, mode ViewportEnvironmentMode) { //gd:RenderingServer.viewport_set_environment_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_environment_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -9014,11 +7282,6 @@ func (self class) ViewportSetEnvironmentMode(viewport RID.Any, mode ViewportEnvi
 		mode     ViewportEnvironmentMode
 	}{viewport, mode})
 }
-
-/*
-Sets a viewport's camera.
-*/
-//go:nosplit
 func (self class) ViewportAttachCamera(viewport RID.Any, camera RID.Any) { //gd:RenderingServer.viewport_attach_camera
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_attach_camera, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -9026,11 +7289,6 @@ func (self class) ViewportAttachCamera(viewport RID.Any, camera RID.Any) { //gd:
 		camera   RID.Any
 	}{viewport, camera})
 }
-
-/*
-Sets a viewport's scenario. The scenario contains information about environment information, reflection atlas, etc.
-*/
-//go:nosplit
 func (self class) ViewportSetScenario(viewport RID.Any, scenario RID.Any) { //gd:RenderingServer.viewport_set_scenario
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_scenario, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -9038,11 +7296,6 @@ func (self class) ViewportSetScenario(viewport RID.Any, scenario RID.Any) { //gd
 		scenario RID.Any
 	}{viewport, scenario})
 }
-
-/*
-Sets a viewport's canvas.
-*/
-//go:nosplit
 func (self class) ViewportAttachCanvas(viewport RID.Any, canvas RID.Any) { //gd:RenderingServer.viewport_attach_canvas
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_attach_canvas, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -9050,11 +7303,6 @@ func (self class) ViewportAttachCanvas(viewport RID.Any, canvas RID.Any) { //gd:
 		canvas   RID.Any
 	}{viewport, canvas})
 }
-
-/*
-Detaches a viewport from a canvas.
-*/
-//go:nosplit
 func (self class) ViewportRemoveCanvas(viewport RID.Any, canvas RID.Any) { //gd:RenderingServer.viewport_remove_canvas
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_remove_canvas, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -9062,14 +7310,6 @@ func (self class) ViewportRemoveCanvas(viewport RID.Any, canvas RID.Any) { //gd:
 		canvas   RID.Any
 	}{viewport, canvas})
 }
-
-/*
-If true, canvas item transforms (i.e. origin position) are snapped to the nearest pixel when rendering. This can lead to a crisper appearance at the cost of less smooth movement, especially when [Camera2D] smoothing is enabled. Equivalent to [ProjectSettings] "rendering/2d/snap/snap_2d_transforms_to_pixel".
-
-[Camera2D]: https://pkg.go.dev/graphics.gd/classdb/Camera2D
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) ViewportSetSnap2dTransformsToPixel(viewport RID.Any, enabled bool) { //gd:RenderingServer.viewport_set_snap_2d_transforms_to_pixel
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_snap_2d_transforms_to_pixel, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -9077,14 +7317,6 @@ func (self class) ViewportSetSnap2dTransformsToPixel(viewport RID.Any, enabled b
 		enabled  bool
 	}{viewport, enabled})
 }
-
-/*
-If true, canvas item vertices (i.e. polygon points) are snapped to the nearest pixel when rendering. This can lead to a crisper appearance at the cost of less smooth movement, especially when [Camera2D] smoothing is enabled. Equivalent to [ProjectSettings] "rendering/2d/snap/snap_2d_vertices_to_pixel".
-
-[Camera2D]: https://pkg.go.dev/graphics.gd/classdb/Camera2D
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) ViewportSetSnap2dVerticesToPixel(viewport RID.Any, enabled bool) { //gd:RenderingServer.viewport_set_snap_2d_vertices_to_pixel
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_snap_2d_vertices_to_pixel, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -9092,11 +7324,6 @@ func (self class) ViewportSetSnap2dVerticesToPixel(viewport RID.Any, enabled boo
 		enabled  bool
 	}{viewport, enabled})
 }
-
-/*
-Sets the default texture filtering mode for the specified 'viewport' RID.
-*/
-//go:nosplit
 func (self class) ViewportSetDefaultCanvasItemTextureFilter(viewport RID.Any, filter CanvasItemTextureFilter) { //gd:RenderingServer.viewport_set_default_canvas_item_texture_filter
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_default_canvas_item_texture_filter, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -9104,11 +7331,6 @@ func (self class) ViewportSetDefaultCanvasItemTextureFilter(viewport RID.Any, fi
 		filter   CanvasItemTextureFilter
 	}{viewport, filter})
 }
-
-/*
-Sets the default texture repeat mode for the specified 'viewport' RID.
-*/
-//go:nosplit
 func (self class) ViewportSetDefaultCanvasItemTextureRepeat(viewport RID.Any, repeat CanvasItemTextureRepeat) { //gd:RenderingServer.viewport_set_default_canvas_item_texture_repeat
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_default_canvas_item_texture_repeat, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -9116,11 +7338,6 @@ func (self class) ViewportSetDefaultCanvasItemTextureRepeat(viewport RID.Any, re
 		repeat   CanvasItemTextureRepeat
 	}{viewport, repeat})
 }
-
-/*
-Sets the transformation of a viewport's canvas.
-*/
-//go:nosplit
 func (self class) ViewportSetCanvasTransform(viewport RID.Any, canvas RID.Any, offset Transform2D.OriginXY) { //gd:RenderingServer.viewport_set_canvas_transform
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_canvas_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform2D<<12), &struct {
@@ -9129,15 +7346,6 @@ func (self class) ViewportSetCanvasTransform(viewport RID.Any, canvas RID.Any, o
 		offset   Transform2D.OriginXY
 	}{viewport, canvas, offset})
 }
-
-/*
-Sets the stacking order for a viewport's canvas.
-
-'layer' is the actual canvas layer, while 'sublayer' specifies the stacking order of the canvas among those in the same layer.
-
-Note: 'layer' should be between [CanvasLayerMin] and [CanvasLayerMax] (inclusive). Any other value will wrap around.
-*/
-//go:nosplit
 func (self class) ViewportSetCanvasStacking(viewport RID.Any, canvas RID.Any, layer int64, sublayer int64) { //gd:RenderingServer.viewport_set_canvas_stacking
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_canvas_stacking, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
@@ -9147,11 +7355,6 @@ func (self class) ViewportSetCanvasStacking(viewport RID.Any, canvas RID.Any, la
 		sublayer int64
 	}{viewport, canvas, layer, sublayer})
 }
-
-/*
-If true, the viewport renders its background as transparent.
-*/
-//go:nosplit
 func (self class) ViewportSetTransparentBackground(viewport RID.Any, enabled bool) { //gd:RenderingServer.viewport_set_transparent_background
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_transparent_background, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -9159,11 +7362,6 @@ func (self class) ViewportSetTransparentBackground(viewport RID.Any, enabled boo
 		enabled  bool
 	}{viewport, enabled})
 }
-
-/*
-Sets the viewport's global transformation matrix.
-*/
-//go:nosplit
 func (self class) ViewportSetGlobalCanvasTransform(viewport RID.Any, transform Transform2D.OriginXY) { //gd:RenderingServer.viewport_set_global_canvas_transform
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_global_canvas_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), &struct {
@@ -9171,15 +7369,6 @@ func (self class) ViewportSetGlobalCanvasTransform(viewport RID.Any, transform T
 		transform Transform2D.OriginXY
 	}{viewport, transform})
 }
-
-/*
-Sets the viewport's 2D signed distance field [ProjectSettings] "rendering/2d/sdf/oversize" and [ProjectSettings] "rendering/2d/sdf/scale". This is used when sampling the signed distance field in [CanvasItem] shaders as well as [GPUParticles2D] collision. This is not used by SDFGI in 3D rendering.
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[GPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) ViewportSetSdfOversizeAndScale(viewport RID.Any, oversize ViewportSDFOversize, scale ViewportSDFScale) { //gd:RenderingServer.viewport_set_sdf_oversize_and_scale
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_sdf_oversize_and_scale, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
@@ -9188,13 +7377,6 @@ func (self class) ViewportSetSdfOversizeAndScale(viewport RID.Any, oversize View
 		scale    ViewportSDFScale
 	}{viewport, oversize, scale})
 }
-
-/*
-Sets the 'size' of the shadow atlas's images (used for omni and spot lights) on the viewport specified by the 'viewport' RID. The value is rounded up to the nearest power of 2. If 'use_16_bits' is true, use 16 bits for the omni/spot shadow depth map. Enabling this results in shadows having less precision and may result in shadow acne, but can lead to performance improvements on some devices.
-
-Note: If this is set to 0, no positional shadows will be visible at all. This can improve performance significantly on low-end systems by reducing both the CPU and GPU load (as fewer draw calls are needed to draw the scene without shadows).
-*/
-//go:nosplit
 func (self class) ViewportSetPositionalShadowAtlasSize(viewport RID.Any, size int64, use_16_bits bool) { //gd:RenderingServer.viewport_set_positional_shadow_atlas_size
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_positional_shadow_atlas_size, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
@@ -9203,13 +7385,6 @@ func (self class) ViewportSetPositionalShadowAtlasSize(viewport RID.Any, size in
 		use_16_bits bool
 	}{viewport, size, use_16_bits})
 }
-
-/*
-Sets the number of subdivisions to use in the specified shadow atlas 'quadrant' for omni and spot shadows. See also [Viewport.SetPositionalShadowAtlasQuadrantSubdiv].
-
-[Viewport.SetPositionalShadowAtlasQuadrantSubdiv]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetPositionalShadowAtlasQuadrantSubdiv
-*/
-//go:nosplit
 func (self class) ViewportSetPositionalShadowAtlasQuadrantSubdivision(viewport RID.Any, quadrant int64, subdivision int64) { //gd:RenderingServer.viewport_set_positional_shadow_atlas_quadrant_subdivision
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_positional_shadow_atlas_quadrant_subdivision, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
@@ -9218,14 +7393,6 @@ func (self class) ViewportSetPositionalShadowAtlasQuadrantSubdivision(viewport R
 		subdivision int64
 	}{viewport, quadrant, subdivision})
 }
-
-/*
-Sets the multisample antialiasing mode for 3D on the specified 'viewport' RID. Equivalent to [ProjectSettings] "rendering/anti_aliasing/quality/msaa_3d" or [Viewport.Msaa3d].
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-[Viewport.Msaa3d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.Msaa3d
-*/
-//go:nosplit
 func (self class) ViewportSetMsaa3d(viewport RID.Any, msaa ViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_3d
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_msaa_3d, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -9233,14 +7400,6 @@ func (self class) ViewportSetMsaa3d(viewport RID.Any, msaa ViewportMSAA) { //gd:
 		msaa     ViewportMSAA
 	}{viewport, msaa})
 }
-
-/*
-Sets the multisample antialiasing mode for 2D/Canvas on the specified 'viewport' RID. Equivalent to [ProjectSettings] "rendering/anti_aliasing/quality/msaa_2d" or [Viewport.Msaa2d].
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-[Viewport.Msaa2d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.Msaa2d
-*/
-//go:nosplit
 func (self class) ViewportSetMsaa2d(viewport RID.Any, msaa ViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_2d
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_msaa_2d, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -9248,17 +7407,6 @@ func (self class) ViewportSetMsaa2d(viewport RID.Any, msaa ViewportMSAA) { //gd:
 		msaa     ViewportMSAA
 	}{viewport, msaa})
 }
-
-/*
-If true, 2D rendering will use a high dynamic range (HDR) format framebuffer matching the bit depth of the 3D framebuffer. When using the Forward+ or Compatibility renderer, this will be an RGBA16 framebuffer. When using the Mobile renderer, it will be an RGB10_A2 framebuffer.
-
-Additionally, 2D rendering will take place in linear color space and will be converted to sRGB space immediately before blitting to the screen (if the Viewport is attached to the screen).
-
-Practically speaking, this means that the end result of the Viewport will not be clamped to the 0-1 range and can be used in 3D rendering without color space adjustments. This allows 2D rendering to take advantage of effects requiring high dynamic range (e.g. 2D glow) as well as substantially improves the appearance of effects requiring highly detailed gradients. This setting has the same effect as [Viewport.UseHdr2d].
-
-[Viewport.UseHdr2d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.UseHdr2d
-*/
-//go:nosplit
 func (self class) ViewportSetUseHdr2d(viewport RID.Any, enabled bool) { //gd:RenderingServer.viewport_set_use_hdr_2d
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_use_hdr_2d, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -9266,14 +7414,6 @@ func (self class) ViewportSetUseHdr2d(viewport RID.Any, enabled bool) { //gd:Ren
 		enabled  bool
 	}{viewport, enabled})
 }
-
-/*
-Sets the viewport's screen-space antialiasing mode. Equivalent to [ProjectSettings] "rendering/anti_aliasing/quality/screen_space_aa" or [Viewport.ScreenSpaceAa].
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-[Viewport.ScreenSpaceAa]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.ScreenSpaceAa
-*/
-//go:nosplit
 func (self class) ViewportSetScreenSpaceAa(viewport RID.Any, mode ViewportScreenSpaceAA) { //gd:RenderingServer.viewport_set_screen_space_aa
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_screen_space_aa, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -9281,14 +7421,6 @@ func (self class) ViewportSetScreenSpaceAa(viewport RID.Any, mode ViewportScreen
 		mode     ViewportScreenSpaceAA
 	}{viewport, mode})
 }
-
-/*
-If true, use temporal antialiasing. Equivalent to [ProjectSettings] "rendering/anti_aliasing/quality/use_taa" or [Viewport.UseTaa].
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-[Viewport.UseTaa]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.UseTaa
-*/
-//go:nosplit
 func (self class) ViewportSetUseTaa(viewport RID.Any, enable bool) { //gd:RenderingServer.viewport_set_use_taa
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_use_taa, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -9296,14 +7428,6 @@ func (self class) ViewportSetUseTaa(viewport RID.Any, enable bool) { //gd:Render
 		enable   bool
 	}{viewport, enable})
 }
-
-/*
-Equivalent to [Viewport.UseDebanding]. See also [ProjectSettings] "rendering/anti_aliasing/quality/use_debanding".
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-[Viewport.UseDebanding]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.UseDebanding
-*/
-//go:nosplit
 func (self class) ViewportSetUseDebanding(viewport RID.Any, enable bool) { //gd:RenderingServer.viewport_set_use_debanding
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_use_debanding, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -9311,13 +7435,6 @@ func (self class) ViewportSetUseDebanding(viewport RID.Any, enable bool) { //gd:
 		enable   bool
 	}{viewport, enable})
 }
-
-/*
-If true, enables occlusion culling on the specified viewport. Equivalent to [ProjectSettings] "rendering/occlusion_culling/use_occlusion_culling".
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) ViewportSetUseOcclusionCulling(viewport RID.Any, enable bool) { //gd:RenderingServer.viewport_set_use_occlusion_culling
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_use_occlusion_culling, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -9325,47 +7442,16 @@ func (self class) ViewportSetUseOcclusionCulling(viewport RID.Any, enable bool) 
 		enable   bool
 	}{viewport, enable})
 }
-
-/*
-Sets the [ProjectSettings] "rendering/occlusion_culling/occlusion_rays_per_thread" to use for occlusion culling. This parameter is global and cannot be set on a per-viewport basis.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) ViewportSetOcclusionRaysPerThread(rays_per_thread int64) { //gd:RenderingServer.viewport_set_occlusion_rays_per_thread
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_occlusion_rays_per_thread, 0|(gdextension.SizeInt<<4), &struct{ rays_per_thread int64 }{rays_per_thread})
 }
-
-/*
-Sets the [ProjectSettings] "rendering/occlusion_culling/bvh_build_quality" to use for occlusion culling. This parameter is global and cannot be set on a per-viewport basis.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) ViewportSetOcclusionCullingBuildQuality(quality ViewportOcclusionCullingBuildQuality) { //gd:RenderingServer.viewport_set_occlusion_culling_build_quality
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_occlusion_culling_build_quality, 0|(gdextension.SizeInt<<4), &struct {
 		quality ViewportOcclusionCullingBuildQuality
 	}{quality})
 }
-
-/*
-Returns a statistic about the rendering engine which can be used for performance profiling. This is separated into render pass 'type's, each of them having the same 'info's you can query (different passes will return different values).
-
-See also [GetRenderingInfo], which returns global information across all viewports.
-
-Note: Viewport rendering information is not available until at least 2 frames have been rendered by the engine. If rendering information is not available, [ViewportGetRenderInfo] returns 0. To print rendering information in _ready() successfully, use the following:
-
-
-	if Engine.GetFramesDrawn() == 2 {
-		fmt.Println(RenderingServer.ViewportGetRenderInfo(Viewport.Get(node).GetViewportRid(),
-			RenderingServer.ViewportRenderInfoTypeVisible,
-			RenderingServer.ViewportRenderInfoDrawCallsInFrame))
-	}
-
-*/
-//go:nosplit
 func (self class) ViewportGetRenderInfo(viewport RID.Any, atype ViewportRenderInfoType, info ViewportRenderInfo) int64 { //gd:RenderingServer.viewport_get_render_info
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.viewport_get_render_info, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
@@ -9376,11 +7462,6 @@ func (self class) ViewportGetRenderInfo(viewport RID.Any, atype ViewportRenderIn
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the debug draw mode of a viewport.
-*/
-//go:nosplit
 func (self class) ViewportSetDebugDraw(viewport RID.Any, draw ViewportDebugDraw) { //gd:RenderingServer.viewport_set_debug_draw
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_debug_draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -9388,13 +7469,6 @@ func (self class) ViewportSetDebugDraw(viewport RID.Any, draw ViewportDebugDraw)
 		draw     ViewportDebugDraw
 	}{viewport, draw})
 }
-
-/*
-Sets the measurement for the given 'viewport' RID (obtained using [Viewport.GetViewportRid]). Once enabled, [ViewportGetMeasuredRenderTimeCpu] and [ViewportGetMeasuredRenderTimeGpu] will return values greater than 0.0 when queried with the given 'viewport'.
-
-[Viewport.GetViewportRid]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GetViewportRid
-*/
-//go:nosplit
 func (self class) ViewportSetMeasureRenderTime(viewport RID.Any, enable bool) { //gd:RenderingServer.viewport_set_measure_render_time
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_measure_render_time, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -9402,47 +7476,18 @@ func (self class) ViewportSetMeasureRenderTime(viewport RID.Any, enable bool) { 
 		enable   bool
 	}{viewport, enable})
 }
-
-/*
-Returns the CPU time taken to render the last frame in milliseconds. This only includes time spent in rendering-related operations; scripts' _process functions and other engine subsystems are not included in this readout. To get a complete readout of CPU time spent to render the scene, sum the render times of all viewports that are drawn every frame plus [GetFrameSetupTimeCpu]. Unlike [Engine.GetFramesPerSecond], this method will accurately reflect CPU utilization even if framerate is capped via V-Sync or [Engine.MaxFps]. See also [ViewportGetMeasuredRenderTimeGpu].
-
-Note: Requires measurements to be enabled on the specified 'viewport' using [ViewportSetMeasureRenderTime]. Otherwise, this method returns 0.0.
-
-[Engine.GetFramesPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#GetFramesPerSecond
-[Engine.MaxFps]: https://pkg.go.dev/graphics.gd/classdb/Engine#MaxFps
-*/
-//go:nosplit
 func (self class) ViewportGetMeasuredRenderTimeCpu(viewport RID.Any) float64 { //gd:RenderingServer.viewport_get_measured_render_time_cpu
 	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.viewport_get_measured_render_time_cpu, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ viewport RID.Any }{viewport})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the GPU time taken to render the last frame in milliseconds. To get a complete readout of GPU time spent to render the scene, sum the render times of all viewports that are drawn every frame. Unlike [Engine.GetFramesPerSecond], this method accurately reflects GPU utilization even if framerate is capped via V-Sync or [Engine.MaxFps]. See also [ViewportGetMeasuredRenderTimeCpu].
-
-Note: Requires measurements to be enabled on the specified 'viewport' using [ViewportSetMeasureRenderTime]. Otherwise, this method returns 0.0.
-
-Note: When GPU utilization is low enough during a certain period of time, GPUs will decrease their power state (which in turn decreases core and memory clock speeds). This can cause the reported GPU time to increase if GPU utilization is kept low enough by a framerate cap (compared to what it would be at the GPU's highest power state). Keep this in mind when benchmarking using [ViewportGetMeasuredRenderTimeGpu]. This behavior can be overridden in the graphics driver settings at the cost of higher power usage.
-
-[Engine.GetFramesPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#GetFramesPerSecond
-[Engine.MaxFps]: https://pkg.go.dev/graphics.gd/classdb/Engine#MaxFps
-*/
-//go:nosplit
 func (self class) ViewportGetMeasuredRenderTimeGpu(viewport RID.Any) float64 { //gd:RenderingServer.viewport_get_measured_render_time_gpu
 	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.viewport_get_measured_render_time_gpu, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ viewport RID.Any }{viewport})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the Variable Rate Shading (VRS) mode for the viewport. If the GPU does not support VRS, this property is ignored. Equivalent to [ProjectSettings] "rendering/vrs/mode".
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) ViewportSetVrsMode(viewport RID.Any, mode ViewportVRSMode) { //gd:RenderingServer.viewport_set_vrs_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_vrs_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -9450,13 +7495,6 @@ func (self class) ViewportSetVrsMode(viewport RID.Any, mode ViewportVRSMode) { /
 		mode     ViewportVRSMode
 	}{viewport, mode})
 }
-
-/*
-Sets the update mode for Variable Rate Shading (VRS) for the viewport. VRS requires the input texture to be converted to the format usable by the VRS method supported by the hardware. The update mode defines how often this happens. If the GPU does not support VRS, or VRS is not enabled, this property is ignored.
-
-If set to [Renderingserver.ViewportVrsUpdateOnce], the input texture is copied once and the mode is changed to [Renderingserver.ViewportVrsUpdateDisabled].
-*/
-//go:nosplit
 func (self class) ViewportSetVrsUpdateMode(viewport RID.Any, mode ViewportVRSUpdateMode) { //gd:RenderingServer.viewport_set_vrs_update_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_vrs_update_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -9464,13 +7502,6 @@ func (self class) ViewportSetVrsUpdateMode(viewport RID.Any, mode ViewportVRSUpd
 		mode     ViewportVRSUpdateMode
 	}{viewport, mode})
 }
-
-/*
-The texture to use when the VRS mode is set to [Renderingserver.ViewportVrsTexture]. Equivalent to [ProjectSettings] "rendering/vrs/texture".
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) ViewportSetVrsTexture(viewport RID.Any, texture RID.Any) { //gd:RenderingServer.viewport_set_vrs_texture
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.viewport_set_vrs_texture, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -9478,26 +7509,12 @@ func (self class) ViewportSetVrsTexture(viewport RID.Any, texture RID.Any) { //g
 		texture  RID.Any
 	}{viewport, texture})
 }
-
-/*
-Creates an empty sky and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all sky_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-*/
-//go:nosplit
 func (self class) SkyCreate() RID.Any { //gd:RenderingServer.sky_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.sky_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the 'radiance_size' of the sky specified by the 'sky' RID (in pixels). Equivalent to [Sky.RadianceSize].
-
-[Sky.RadianceSize]: https://pkg.go.dev/graphics.gd/classdb/Sky#Instance.RadianceSize
-*/
-//go:nosplit
 func (self class) SkySetRadianceSize(sky RID.Any, radiance_size int64) { //gd:RenderingServer.sky_set_radiance_size
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.sky_set_radiance_size, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -9505,13 +7522,6 @@ func (self class) SkySetRadianceSize(sky RID.Any, radiance_size int64) { //gd:Re
 		radiance_size int64
 	}{sky, radiance_size})
 }
-
-/*
-Sets the process 'mode' of the sky specified by the 'sky' RID. Equivalent to [Sky.ProcessMode].
-
-[Sky.ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Sky#Instance.ProcessMode
-*/
-//go:nosplit
 func (self class) SkySetMode(sky RID.Any, mode SkyMode) { //gd:RenderingServer.sky_set_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.sky_set_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -9519,11 +7529,6 @@ func (self class) SkySetMode(sky RID.Any, mode SkyMode) { //gd:RenderingServer.s
 		mode SkyMode
 	}{sky, mode})
 }
-
-/*
-Sets the material that the sky uses to render the background, ambient and reflection maps.
-*/
-//go:nosplit
 func (self class) SkySetMaterial(sky RID.Any, material RID.Any) { //gd:RenderingServer.sky_set_material
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.sky_set_material, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -9531,18 +7536,6 @@ func (self class) SkySetMaterial(sky RID.Any, material RID.Any) { //gd:Rendering
 		material RID.Any
 	}{sky, material})
 }
-
-/*
-Generates and returns an [Image] containing the radiance map for the specified 'sky' RID. This supports built-in sky material and custom sky shaders. If 'bake_irradiance' is true, the irradiance map is saved instead of the radiance map. The radiance map is used to render reflected light, while the irradiance map is used to render ambient light. See also [EnvironmentBakePanorama].
-
-Note: The image is saved in linear color space without any tonemapping performed, which means it will look too dark if viewed directly in an image editor. 'energy' values above 1.0 can be used to brighten the resulting image.
-
-Note: 'size' should be a 2:1 aspect ratio for the generated panorama to have square pixels. For radiance maps, there is no point in using a height greater than [Sky.RadianceSize], as it won't increase detail. Irradiance maps only contain low-frequency data, so there is usually no point in going past a size of 128×64 pixels when saving an irradiance map.
-
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-[Sky.RadianceSize]: https://pkg.go.dev/graphics.gd/classdb/Sky#Instance.RadianceSize
-*/
-//go:nosplit
 func (self class) SkyBakePanorama(sky RID.Any, energy float64, bake_irradiance bool, size Vector2i.XY) [1]gdclass.Image { //gd:RenderingServer.sky_bake_panorama
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.sky_bake_panorama, gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeVector2i<<16), &struct {
@@ -9554,24 +7547,12 @@ func (self class) SkyBakePanorama(sky RID.Any, energy float64, bake_irradiance b
 	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Creates a new rendering effect and adds it to the RenderingServer. It can be accessed with the RID that is returned.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-*/
-//go:nosplit
 func (self class) CompositorEffectCreate() RID.Any { //gd:RenderingServer.compositor_effect_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.compositor_effect_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Enables/disables this rendering effect.
-*/
-//go:nosplit
 func (self class) CompositorEffectSetEnabled(effect RID.Any, enabled bool) { //gd:RenderingServer.compositor_effect_set_enabled
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.compositor_effect_set_enabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -9579,11 +7560,6 @@ func (self class) CompositorEffectSetEnabled(effect RID.Any, enabled bool) { //g
 		enabled bool
 	}{effect, enabled})
 }
-
-/*
-Sets the callback type ('callback_type') and callback method('callback') for this rendering effect.
-*/
-//go:nosplit
 func (self class) CompositorEffectSetCallback(effect RID.Any, callback_type CompositorEffectCallbackType, callback Callable.Function) { //gd:RenderingServer.compositor_effect_set_callback
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.compositor_effect_set_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
@@ -9592,11 +7568,6 @@ func (self class) CompositorEffectSetCallback(effect RID.Any, callback_type Comp
 		callback      gdextension.Callable
 	}{effect, callback_type, pointers.Get(gd.InternalCallable(callback))})
 }
-
-/*
-Sets the flag ('flag') for this rendering effect to true or false ('set').
-*/
-//go:nosplit
 func (self class) CompositorEffectSetFlag(effect RID.Any, flag CompositorEffectFlags, set bool) { //gd:RenderingServer.compositor_effect_set_flag
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.compositor_effect_set_flag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
@@ -9605,24 +7576,12 @@ func (self class) CompositorEffectSetFlag(effect RID.Any, flag CompositorEffectF
 		set    bool
 	}{effect, flag, set})
 }
-
-/*
-Creates a new compositor and adds it to the RenderingServer. It can be accessed with the RID that is returned.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-*/
-//go:nosplit
 func (self class) CompositorCreate() RID.Any { //gd:RenderingServer.compositor_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.compositor_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the compositor effects for the specified compositor RID. 'effects' should be an array containing RIDs created with [CompositorEffectCreate].
-*/
-//go:nosplit
 func (self class) CompositorSetCompositorEffects(compositor RID.Any, effects Array.Contains[RID.Any]) { //gd:RenderingServer.compositor_set_compositor_effects
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.compositor_set_compositor_effects, 0|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8), &struct {
@@ -9630,30 +7589,12 @@ func (self class) CompositorSetCompositorEffects(compositor RID.Any, effects Arr
 		effects    gdextension.Array
 	}{compositor, pointers.Get(gd.InternalArray(effects))})
 }
-
-/*
-Creates an environment and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all environment_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-Note: The equivalent resource is [Environment].
-
-[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
-*/
-//go:nosplit
 func (self class) EnvironmentCreate() RID.Any { //gd:RenderingServer.environment_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.environment_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the environment's background mode. Equivalent to [Environment.BackgroundMode].
-
-[Environment.BackgroundMode]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.BackgroundMode
-*/
-//go:nosplit
 func (self class) EnvironmentSetBackground(env RID.Any, bg EnvironmentBG) { //gd:RenderingServer.environment_set_background
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_background, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -9661,11 +7602,6 @@ func (self class) EnvironmentSetBackground(env RID.Any, bg EnvironmentBG) { //gd
 		bg  EnvironmentBG
 	}{env, bg})
 }
-
-/*
-Sets the camera ID to be used as environment background.
-*/
-//go:nosplit
 func (self class) EnvironmentSetCameraId(env RID.Any, id int64) { //gd:RenderingServer.environment_set_camera_id
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_camera_id, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -9673,14 +7609,6 @@ func (self class) EnvironmentSetCameraId(env RID.Any, id int64) { //gd:Rendering
 		id  int64
 	}{env, id})
 }
-
-/*
-Sets the [Sky] to be used as the environment's background when using BGMode sky. Equivalent to [Environment.Sky].
-
-[Environment.Sky]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.Sky
-[Sky]: https://pkg.go.dev/graphics.gd/classdb/Sky
-*/
-//go:nosplit
 func (self class) EnvironmentSetSky(env RID.Any, sky RID.Any) { //gd:RenderingServer.environment_set_sky
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_sky, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -9688,14 +7616,6 @@ func (self class) EnvironmentSetSky(env RID.Any, sky RID.Any) { //gd:RenderingSe
 		sky RID.Any
 	}{env, sky})
 }
-
-/*
-Sets a custom field of view for the background [Sky]. Equivalent to [Environment.SkyCustomFov].
-
-[Environment.SkyCustomFov]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SkyCustomFov
-[Sky]: https://pkg.go.dev/graphics.gd/classdb/Sky
-*/
-//go:nosplit
 func (self class) EnvironmentSetSkyCustomFov(env RID.Any, scale float64) { //gd:RenderingServer.environment_set_sky_custom_fov
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_sky_custom_fov, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -9703,15 +7623,6 @@ func (self class) EnvironmentSetSkyCustomFov(env RID.Any, scale float64) { //gd:
 		scale float64
 	}{env, scale})
 }
-
-/*
-Sets the rotation of the background [Sky] expressed as a [Basis.XYZ]. Equivalent to [Environment.SkyRotation], where the rotation vector is used to construct the [Basis.XYZ].
-
-[Basis.XYZ]: https://pkg.go.dev/graphics.gd/variant/Basis#XYZ
-[Environment.SkyRotation]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SkyRotation
-[Sky]: https://pkg.go.dev/graphics.gd/classdb/Sky
-*/
-//go:nosplit
 func (self class) EnvironmentSetSkyOrientation(env RID.Any, orientation Basis.XYZ) { //gd:RenderingServer.environment_set_sky_orientation
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_sky_orientation, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBasis<<8), &struct {
@@ -9719,11 +7630,6 @@ func (self class) EnvironmentSetSkyOrientation(env RID.Any, orientation Basis.XY
 		orientation Basis.XYZ
 	}{env, Basis.Transposed(orientation)})
 }
-
-/*
-Color displayed for clear areas of the scene. Only effective if using the [EnvBgColor] background mode.
-*/
-//go:nosplit
 func (self class) EnvironmentSetBgColor(env RID.Any, color Color.RGBA) { //gd:RenderingServer.environment_set_bg_color
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_bg_color, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
@@ -9731,11 +7637,6 @@ func (self class) EnvironmentSetBgColor(env RID.Any, color Color.RGBA) { //gd:Re
 		color Color.RGBA
 	}{env, color})
 }
-
-/*
-Sets the intensity of the background color.
-*/
-//go:nosplit
 func (self class) EnvironmentSetBgEnergy(env RID.Any, multiplier float64, exposure_value float64) { //gd:RenderingServer.environment_set_bg_energy
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_bg_energy, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
@@ -9744,11 +7645,6 @@ func (self class) EnvironmentSetBgEnergy(env RID.Any, multiplier float64, exposu
 		exposure_value float64
 	}{env, multiplier, exposure_value})
 }
-
-/*
-Sets the maximum layer to use if using Canvas background mode.
-*/
-//go:nosplit
 func (self class) EnvironmentSetCanvasMaxLayer(env RID.Any, max_layer int64) { //gd:RenderingServer.environment_set_canvas_max_layer
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_canvas_max_layer, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -9756,13 +7652,6 @@ func (self class) EnvironmentSetCanvasMaxLayer(env RID.Any, max_layer int64) { /
 		max_layer int64
 	}{env, max_layer})
 }
-
-/*
-Sets the values to be used for ambient light rendering. See [Environment] for more details.
-
-[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
-*/
-//go:nosplit
 func (self class) EnvironmentSetAmbientLight(env RID.Any, color Color.RGBA, ambient EnvironmentAmbientSource, energy float64, sky_contribution float64, reflection_source EnvironmentReflectionSource) { //gd:RenderingServer.environment_set_ambient_light
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_ambient_light, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24), &struct {
@@ -9774,13 +7663,6 @@ func (self class) EnvironmentSetAmbientLight(env RID.Any, color Color.RGBA, ambi
 		reflection_source EnvironmentReflectionSource
 	}{env, color, ambient, energy, sky_contribution, reflection_source})
 }
-
-/*
-Configures glow for the specified environment RID. See glow_* properties in [Environment] for more information.
-
-[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
-*/
-//go:nosplit
 func (self class) EnvironmentSetGlow(env RID.Any, enable bool, levels Packed.Array[float32], intensity float64, strength float64, mix float64, bloom_threshold float64, blend_mode EnvironmentGlowBlendMode, hdr_bleed_threshold float64, hdr_bleed_scale float64, hdr_luminance_cap float64, glow_map_strength float64, glow_map RID.Any) { //gd:RenderingServer.environment_set_glow
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_glow, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeFloat<<40)|(gdextension.SizeFloat<<44)|(gdextension.SizeFloat<<48)|(gdextension.SizeRID<<52), &struct {
@@ -9799,13 +7681,6 @@ func (self class) EnvironmentSetGlow(env RID.Any, enable bool, levels Packed.Arr
 		glow_map            RID.Any
 	}{env, enable, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](levels)), intensity, strength, mix, bloom_threshold, blend_mode, hdr_bleed_threshold, hdr_bleed_scale, hdr_luminance_cap, glow_map_strength, glow_map})
 }
-
-/*
-Sets the variables to be used with the "tonemap" post-process effect. See [Environment] for more details.
-
-[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
-*/
-//go:nosplit
 func (self class) EnvironmentSetTonemap(env RID.Any, tone_mapper EnvironmentToneMapper, exposure float64, white float64) { //gd:RenderingServer.environment_set_tonemap
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_tonemap, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), &struct {
@@ -9815,13 +7690,6 @@ func (self class) EnvironmentSetTonemap(env RID.Any, tone_mapper EnvironmentTone
 		white       float64
 	}{env, tone_mapper, exposure, white})
 }
-
-/*
-Sets the values to be used with the "adjustments" post-process effect. See [Environment] for more details.
-
-[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
-*/
-//go:nosplit
 func (self class) EnvironmentSetAdjustment(env RID.Any, enable bool, brightness float64, contrast float64, saturation float64, use_1d_color_correction bool, color_correction RID.Any) { //gd:RenderingServer.environment_set_adjustment
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_adjustment, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24)|(gdextension.SizeRID<<28), &struct {
@@ -9834,13 +7702,6 @@ func (self class) EnvironmentSetAdjustment(env RID.Any, enable bool, brightness 
 		color_correction        RID.Any
 	}{env, enable, brightness, contrast, saturation, use_1d_color_correction, color_correction})
 }
-
-/*
-Sets the variables to be used with the screen-space reflections (SSR) post-process effect. See [Environment] for more details.
-
-[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
-*/
-//go:nosplit
 func (self class) EnvironmentSetSsr(env RID.Any, enable bool, max_steps int64, fade_in float64, fade_out float64, depth_tolerance float64) { //gd:RenderingServer.environment_set_ssr
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_ssr, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24), &struct {
@@ -9852,13 +7713,6 @@ func (self class) EnvironmentSetSsr(env RID.Any, enable bool, max_steps int64, f
 		depth_tolerance float64
 	}{env, enable, max_steps, fade_in, fade_out, depth_tolerance})
 }
-
-/*
-Sets the variables to be used with the screen-space ambient occlusion (SSAO) post-process effect. See [Environment] for more details.
-
-[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
-*/
-//go:nosplit
 func (self class) EnvironmentSetSsao(env RID.Any, enable bool, radius float64, intensity float64, power float64, detail float64, horizon float64, sharpness float64, light_affect float64, ao_channel_affect float64) { //gd:RenderingServer.environment_set_ssao
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_ssao, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeFloat<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeFloat<<40), &struct {
@@ -9874,13 +7728,6 @@ func (self class) EnvironmentSetSsao(env RID.Any, enable bool, radius float64, i
 		ao_channel_affect float64
 	}{env, enable, radius, intensity, power, detail, horizon, sharpness, light_affect, ao_channel_affect})
 }
-
-/*
-Configures fog for the specified environment RID. See fog_* properties in [Environment] for more information.
-
-[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
-*/
-//go:nosplit
 func (self class) EnvironmentSetFog(env RID.Any, enable bool, light_color Color.RGBA, light_energy float64, sun_scatter float64, density float64, height float64, height_density float64, aerial_perspective float64, sky_affect float64, fog_mode EnvironmentFogMode) { //gd:RenderingServer.environment_set_fog
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_fog, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeFloat<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeFloat<<40)|(gdextension.SizeInt<<44), &struct {
@@ -9897,13 +7744,6 @@ func (self class) EnvironmentSetFog(env RID.Any, enable bool, light_color Color.
 		fog_mode           EnvironmentFogMode
 	}{env, enable, light_color, light_energy, sun_scatter, density, height, height_density, aerial_perspective, sky_affect, fog_mode})
 }
-
-/*
-Configures fog depth for the specified environment RID. Only has an effect when the fog mode of the environment is [EnvFogModeDepth]. See fog_depth_* properties in [Environment] for more information.
-
-[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
-*/
-//go:nosplit
 func (self class) EnvironmentSetFogDepth(env RID.Any, curve float64, begin float64, end float64) { //gd:RenderingServer.environment_set_fog_depth
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_fog_depth, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), &struct {
@@ -9913,13 +7753,6 @@ func (self class) EnvironmentSetFogDepth(env RID.Any, curve float64, begin float
 		end   float64
 	}{env, curve, begin, end})
 }
-
-/*
-Configures signed distance field global illumination for the specified environment RID. See sdfgi_* properties in [Environment] for more information.
-
-[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
-*/
-//go:nosplit
 func (self class) EnvironmentSetSdfgi(env RID.Any, enable bool, cascades int64, min_cell_size float64, y_scale EnvironmentSDFGIYScale, use_occlusion bool, bounce_feedback float64, read_sky bool, energy float64, normal_bias float64, probe_bias float64) { //gd:RenderingServer.environment_set_sdfgi
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_sdfgi, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeBool<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeBool<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeFloat<<40)|(gdextension.SizeFloat<<44), &struct {
@@ -9936,13 +7769,6 @@ func (self class) EnvironmentSetSdfgi(env RID.Any, enable bool, cascades int64, 
 		probe_bias      float64
 	}{env, enable, cascades, min_cell_size, y_scale, use_occlusion, bounce_feedback, read_sky, energy, normal_bias, probe_bias})
 }
-
-/*
-Sets the variables to be used with the volumetric fog post-process effect. See [Environment] for more details.
-
-[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
-*/
-//go:nosplit
 func (self class) EnvironmentSetVolumetricFog(env RID.Any, enable bool, density float64, albedo Color.RGBA, emission Color.RGBA, emission_energy float64, anisotropy float64, length float64, p_detail_spread float64, gi_inject float64, temporal_reprojection bool, temporal_reprojection_amount float64, ambient_inject float64, sky_affect float64) { //gd:RenderingServer.environment_set_volumetric_fog
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_volumetric_fog, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeFloat<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeFloat<<40)|(gdextension.SizeBool<<44)|(gdextension.SizeFloat<<48)|(gdextension.SizeFloat<<52)|(gdextension.SizeFloat<<56), &struct {
@@ -9962,34 +7788,16 @@ func (self class) EnvironmentSetVolumetricFog(env RID.Any, enable bool, density 
 		sky_affect                   float64
 	}{env, enable, density, albedo, emission, emission_energy, anisotropy, length, p_detail_spread, gi_inject, temporal_reprojection, temporal_reprojection_amount, ambient_inject, sky_affect})
 }
-
-/*
-If 'enable' is true, enables bicubic upscaling for glow which improves quality at the cost of performance. Equivalent to [ProjectSettings] "rendering/environment/glow/upscale_mode".
-
-Note: This setting is only effective when using the Forward+ or Mobile rendering methods, as Compatibility uses a different glow implementation.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) EnvironmentGlowSetUseBicubicUpscale(enable bool) { //gd:RenderingServer.environment_glow_set_use_bicubic_upscale
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_glow_set_use_bicubic_upscale, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) EnvironmentSetSsrRoughnessQuality(quality EnvironmentSSRRoughnessQuality) { //gd:RenderingServer.environment_set_ssr_roughness_quality
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_ssr_roughness_quality, 0|(gdextension.SizeInt<<4), &struct {
 		quality EnvironmentSSRRoughnessQuality
 	}{quality})
 }
-
-/*
-Sets the quality level of the screen-space ambient occlusion (SSAO) post-process effect. See [Environment] for more details.
-
-[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
-*/
-//go:nosplit
 func (self class) EnvironmentSetSsaoQuality(quality EnvironmentSSAOQuality, half_size bool, adaptive_target float64, blur_passes int64, fadeout_from float64, fadeout_to float64) { //gd:RenderingServer.environment_set_ssao_quality
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_ssao_quality, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24), &struct {
@@ -10001,13 +7809,6 @@ func (self class) EnvironmentSetSsaoQuality(quality EnvironmentSSAOQuality, half
 		fadeout_to      float64
 	}{quality, half_size, adaptive_target, blur_passes, fadeout_from, fadeout_to})
 }
-
-/*
-Sets the quality level of the screen-space indirect lighting (SSIL) post-process effect. See [Environment] for more details.
-
-[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
-*/
-//go:nosplit
 func (self class) EnvironmentSetSsilQuality(quality EnvironmentSSILQuality, half_size bool, adaptive_target float64, blur_passes int64, fadeout_from float64, fadeout_to float64) { //gd:RenderingServer.environment_set_ssil_quality
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_ssil_quality, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24), &struct {
@@ -10019,48 +7820,22 @@ func (self class) EnvironmentSetSsilQuality(quality EnvironmentSSILQuality, half
 		fadeout_to      float64
 	}{quality, half_size, adaptive_target, blur_passes, fadeout_from, fadeout_to})
 }
-
-/*
-Sets the number of rays to throw per frame when computing signed distance field global illumination. Equivalent to [ProjectSettings] "rendering/global_illumination/sdfgi/probe_ray_count".
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) EnvironmentSetSdfgiRayCount(ray_count EnvironmentSDFGIRayCount) { //gd:RenderingServer.environment_set_sdfgi_ray_count
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_sdfgi_ray_count, 0|(gdextension.SizeInt<<4), &struct{ ray_count EnvironmentSDFGIRayCount }{ray_count})
 }
-
-/*
-Sets the number of frames to use for converging signed distance field global illumination. Equivalent to [ProjectSettings] "rendering/global_illumination/sdfgi/frames_to_converge".
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) EnvironmentSetSdfgiFramesToConverge(frames EnvironmentSDFGIFramesToConverge) { //gd:RenderingServer.environment_set_sdfgi_frames_to_converge
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_sdfgi_frames_to_converge, 0|(gdextension.SizeInt<<4), &struct {
 		frames EnvironmentSDFGIFramesToConverge
 	}{frames})
 }
-
-/*
-Sets the update speed for dynamic lights' indirect lighting when computing signed distance field global illumination. Equivalent to [ProjectSettings] "rendering/global_illumination/sdfgi/frames_to_update_lights".
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) EnvironmentSetSdfgiFramesToUpdateLight(frames EnvironmentSDFGIFramesToUpdateLight) { //gd:RenderingServer.environment_set_sdfgi_frames_to_update_light
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_sdfgi_frames_to_update_light, 0|(gdextension.SizeInt<<4), &struct {
 		frames EnvironmentSDFGIFramesToUpdateLight
 	}{frames})
 }
-
-/*
-Sets the resolution of the volumetric fog's froxel buffer. 'size' is modified by the screen's aspect ratio and then used to set the width and height of the buffer. While 'depth' is directly used to set the depth of the buffer.
-*/
-//go:nosplit
 func (self class) EnvironmentSetVolumetricFogVolumeSize(size int64, depth int64) { //gd:RenderingServer.environment_set_volumetric_fog_volume_size
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_volumetric_fog_volume_size, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
@@ -10068,27 +7843,10 @@ func (self class) EnvironmentSetVolumetricFogVolumeSize(size int64, depth int64)
 		depth int64
 	}{size, depth})
 }
-
-/*
-Enables filtering of the volumetric fog scattering buffer. This results in much smoother volumes with very few under-sampling artifacts.
-*/
-//go:nosplit
 func (self class) EnvironmentSetVolumetricFogFilterActive(active bool) { //gd:RenderingServer.environment_set_volumetric_fog_filter_active
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_volumetric_fog_filter_active, 0|(gdextension.SizeBool<<4), &struct{ active bool }{active})
 }
-
-/*
-Generates and returns an [Image] containing the radiance map for the specified 'environment' RID's sky. This supports built-in sky material and custom sky shaders. If 'bake_irradiance' is true, the irradiance map is saved instead of the radiance map. The radiance map is used to render reflected light, while the irradiance map is used to render ambient light. See also [SkyBakePanorama].
-
-Note: The image is saved in linear color space without any tonemapping performed, which means it will look too dark if viewed directly in an image editor.
-
-Note: 'size' should be a 2:1 aspect ratio for the generated panorama to have square pixels. For radiance maps, there is no point in using a height greater than [Sky.RadianceSize], as it won't increase detail. Irradiance maps only contain low-frequency data, so there is usually no point in going past a size of 128×64 pixels when saving an irradiance map.
-
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-[Sky.RadianceSize]: https://pkg.go.dev/graphics.gd/classdb/Sky#Instance.RadianceSize
-*/
-//go:nosplit
 func (self class) EnvironmentBakePanorama(environment RID.Any, bake_irradiance bool, size Vector2i.XY) [1]gdclass.Image { //gd:RenderingServer.environment_bake_panorama
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.environment_bake_panorama, gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeVector2i<<12), &struct {
@@ -10099,13 +7857,6 @@ func (self class) EnvironmentBakePanorama(environment RID.Any, bake_irradiance b
 	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Sets the screen-space roughness limiter parameters, such as whether it should be enabled and its thresholds. Equivalent to [ProjectSettings] "rendering/anti_aliasing/screen_space_roughness_limiter/enabled", [ProjectSettings] "rendering/anti_aliasing/screen_space_roughness_limiter/amount" and [ProjectSettings] "rendering/anti_aliasing/screen_space_roughness_limiter/limit".
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) ScreenSpaceRoughnessLimiterSetActive(enable bool, amount float64, limit float64) { //gd:RenderingServer.screen_space_roughness_limiter_set_active
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.screen_space_roughness_limiter_set_active, 0|(gdextension.SizeBool<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
@@ -10114,24 +7865,10 @@ func (self class) ScreenSpaceRoughnessLimiterSetActive(enable bool, amount float
 		limit  float64
 	}{enable, amount, limit})
 }
-
-/*
-Sets [ProjectSettings] "rendering/environment/subsurface_scattering/subsurface_scattering_quality" to use when rendering materials that have subsurface scattering enabled.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) SubSurfaceScatteringSetQuality(quality SubSurfaceScatteringQuality) { //gd:RenderingServer.sub_surface_scattering_set_quality
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.sub_surface_scattering_set_quality, 0|(gdextension.SizeInt<<4), &struct{ quality SubSurfaceScatteringQuality }{quality})
 }
-
-/*
-Sets the [ProjectSettings] "rendering/environment/subsurface_scattering/subsurface_scattering_scale" and [ProjectSettings] "rendering/environment/subsurface_scattering/subsurface_scattering_depth_scale" to use when rendering materials that have subsurface scattering enabled.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) SubSurfaceScatteringSetScale(scale float64, depth_scale float64) { //gd:RenderingServer.sub_surface_scattering_set_scale
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.sub_surface_scattering_set_scale, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -10139,28 +7876,12 @@ func (self class) SubSurfaceScatteringSetScale(scale float64, depth_scale float6
 		depth_scale float64
 	}{scale, depth_scale})
 }
-
-/*
-Creates a camera attributes object and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all camera_attributes_ RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-Note: The equivalent resource is [CameraAttributes].
-
-[CameraAttributes]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributes
-*/
-//go:nosplit
 func (self class) CameraAttributesCreate() RID.Any { //gd:RenderingServer.camera_attributes_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.camera_attributes_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the quality level of the DOF blur effect to 'quality'. 'use_jitter' can be used to jitter samples taken during the blur pass to hide artifacts at the cost of looking more fuzzy.
-*/
-//go:nosplit
 func (self class) CameraAttributesSetDofBlurQuality(quality DOFBlurQuality, use_jitter bool) { //gd:RenderingServer.camera_attributes_set_dof_blur_quality
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.camera_attributes_set_dof_blur_quality, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
@@ -10168,22 +7889,10 @@ func (self class) CameraAttributesSetDofBlurQuality(quality DOFBlurQuality, use_
 		use_jitter bool
 	}{quality, use_jitter})
 }
-
-/*
-Sets the shape of the DOF bokeh pattern to 'shape'. Different shapes may be used to achieve artistic effect, or to meet performance targets.
-*/
-//go:nosplit
 func (self class) CameraAttributesSetDofBlurBokehShape(shape DOFBokehShape) { //gd:RenderingServer.camera_attributes_set_dof_blur_bokeh_shape
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.camera_attributes_set_dof_blur_bokeh_shape, 0|(gdextension.SizeInt<<4), &struct{ shape DOFBokehShape }{shape})
 }
-
-/*
-Sets the parameters to use with the DOF blur effect. These parameters take on the same meaning as their counterparts in [CameraAttributesPractical].
-
-[CameraAttributesPractical]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical
-*/
-//go:nosplit
 func (self class) CameraAttributesSetDofBlur(camera_attributes RID.Any, far_enable bool, far_distance float64, far_transition float64, near_enable bool, near_distance float64, near_transition float64, amount float64) { //gd:RenderingServer.camera_attributes_set_dof_blur
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.camera_attributes_set_dof_blur, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeFloat<<32), &struct {
@@ -10197,23 +7906,6 @@ func (self class) CameraAttributesSetDofBlur(camera_attributes RID.Any, far_enab
 		amount            float64
 	}{camera_attributes, far_enable, far_distance, far_transition, near_enable, near_distance, near_transition, amount})
 }
-
-/*
-Sets the exposure values that will be used by the renderers. The normalization amount is used to bake a given Exposure Value (EV) into rendering calculations to reduce the dynamic range of the scene.
-
-The normalization factor can be calculated from exposure value (EV100) as follows:
-
-
-	GetExposureNormalization := func(ev100 float32) float32 {
-		return 1.0 / (Float.Pow(2, ev100) * 12 / 10)
-	}
-
-
-The exposure value can be calculated from aperture (in f-stops), shutter speed (in seconds), and sensitivity (in ISO) as follows:
-
-
-*/
-//go:nosplit
 func (self class) CameraAttributesSetExposure(camera_attributes RID.Any, multiplier float64, normalization float64) { //gd:RenderingServer.camera_attributes_set_exposure
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.camera_attributes_set_exposure, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
@@ -10222,14 +7914,6 @@ func (self class) CameraAttributesSetExposure(camera_attributes RID.Any, multipl
 		normalization     float64
 	}{camera_attributes, multiplier, normalization})
 }
-
-/*
-Sets the parameters to use with the auto-exposure effect. These parameters take on the same meaning as their counterparts in [CameraAttributes] and [CameraAttributesPractical].
-
-[CameraAttributes]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributes
-[CameraAttributesPractical]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical
-*/
-//go:nosplit
 func (self class) CameraAttributesSetAutoExposure(camera_attributes RID.Any, enable bool, min_sensitivity float64, max_sensitivity float64, speed float64, scale float64) { //gd:RenderingServer.camera_attributes_set_auto_exposure
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.camera_attributes_set_auto_exposure, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24), &struct {
@@ -10241,28 +7925,12 @@ func (self class) CameraAttributesSetAutoExposure(camera_attributes RID.Any, ena
 		scale             float64
 	}{camera_attributes, enable, min_sensitivity, max_sensitivity, speed, scale})
 }
-
-/*
-Creates a scenario and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all scenario_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-The scenario is the 3D world that all the visual instances exist in.
-*/
-//go:nosplit
 func (self class) ScenarioCreate() RID.Any { //gd:RenderingServer.scenario_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.scenario_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the environment that will be used with this scenario. See also [Environment].
-
-[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
-*/
-//go:nosplit
 func (self class) ScenarioSetEnvironment(scenario RID.Any, environment RID.Any) { //gd:RenderingServer.scenario_set_environment
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.scenario_set_environment, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -10270,11 +7938,6 @@ func (self class) ScenarioSetEnvironment(scenario RID.Any, environment RID.Any) 
 		environment RID.Any
 	}{scenario, environment})
 }
-
-/*
-Sets the fallback environment to be used by this scenario. The fallback environment is used if no environment is set. Internally, this is used by the editor to provide a default environment.
-*/
-//go:nosplit
 func (self class) ScenarioSetFallbackEnvironment(scenario RID.Any, environment RID.Any) { //gd:RenderingServer.scenario_set_fallback_environment
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.scenario_set_fallback_environment, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -10282,13 +7945,6 @@ func (self class) ScenarioSetFallbackEnvironment(scenario RID.Any, environment R
 		environment RID.Any
 	}{scenario, environment})
 }
-
-/*
-Sets the camera attributes ('effects') that will be used with this scenario. See also [CameraAttributes].
-
-[CameraAttributes]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributes
-*/
-//go:nosplit
 func (self class) ScenarioSetCameraAttributes(scenario RID.Any, effects RID.Any) { //gd:RenderingServer.scenario_set_camera_attributes
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.scenario_set_camera_attributes, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -10296,13 +7952,6 @@ func (self class) ScenarioSetCameraAttributes(scenario RID.Any, effects RID.Any)
 		effects  RID.Any
 	}{scenario, effects})
 }
-
-/*
-Sets the compositor ('compositor') that will be used with this scenario. See also [Compositor].
-
-[Compositor]: https://pkg.go.dev/graphics.gd/classdb/Compositor
-*/
-//go:nosplit
 func (self class) ScenarioSetCompositor(scenario RID.Any, compositor RID.Any) { //gd:RenderingServer.scenario_set_compositor
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.scenario_set_compositor, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -10310,13 +7959,6 @@ func (self class) ScenarioSetCompositor(scenario RID.Any, compositor RID.Any) { 
 		compositor RID.Any
 	}{scenario, compositor})
 }
-
-/*
-Creates a visual instance, adds it to the RenderingServer, and sets both base and scenario. It can be accessed with the RID that is returned. This RID will be used in all instance_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method. This is a shorthand for using [InstanceCreate] and setting the base and scenario manually.
-*/
-//go:nosplit
 func (self class) InstanceCreate2(base RID.Any, scenario RID.Any) RID.Any { //gd:RenderingServer.instance_create2
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.instance_create2, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -10326,30 +7968,12 @@ func (self class) InstanceCreate2(base RID.Any, scenario RID.Any) RID.Any { //gd
 	var ret = r_ret
 	return ret
 }
-
-/*
-Creates a visual instance and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all instance_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-An instance is a way of placing a 3D object in the scenario. Objects like particles, meshes, reflection probes and decals need to be associated with an instance to be visible in the scenario using [InstanceSetBase].
-
-Note: The equivalent node is [VisualInstance3D].
-
-[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
-*/
-//go:nosplit
 func (self class) InstanceCreate() RID.Any { //gd:RenderingServer.instance_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.instance_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the base of the instance. A base can be any of the 3D objects that are created in the RenderingServer that can be displayed. For example, any of the light types, mesh, multimesh, particle system, reflection probe, decal, lightmap, voxel GI and visibility notifiers are all types that can be set as the base of an instance in order to be displayed in the scenario.
-*/
-//go:nosplit
 func (self class) InstanceSetBase(instance RID.Any, base RID.Any) { //gd:RenderingServer.instance_set_base
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_set_base, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -10357,11 +7981,6 @@ func (self class) InstanceSetBase(instance RID.Any, base RID.Any) { //gd:Renderi
 		base     RID.Any
 	}{instance, base})
 }
-
-/*
-Sets the scenario that the instance is in. The scenario is the 3D world that the objects will be displayed in.
-*/
-//go:nosplit
 func (self class) InstanceSetScenario(instance RID.Any, scenario RID.Any) { //gd:RenderingServer.instance_set_scenario
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_set_scenario, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -10369,13 +7988,6 @@ func (self class) InstanceSetScenario(instance RID.Any, scenario RID.Any) { //gd
 		scenario RID.Any
 	}{instance, scenario})
 }
-
-/*
-Sets the render layers that this instance will be drawn to. Equivalent to [VisualInstance3D.Layers].
-
-[VisualInstance3D.Layers]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D#Instance.Layers
-*/
-//go:nosplit
 func (self class) InstanceSetLayerMask(instance RID.Any, mask int64) { //gd:RenderingServer.instance_set_layer_mask
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_set_layer_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -10383,11 +7995,6 @@ func (self class) InstanceSetLayerMask(instance RID.Any, mask int64) { //gd:Rend
 		mask     int64
 	}{instance, mask})
 }
-
-/*
-Sets the sorting offset and switches between using the bounding box or instance origin for depth sorting.
-*/
-//go:nosplit
 func (self class) InstanceSetPivotData(instance RID.Any, sorting_offset float64, use_aabb_center bool) { //gd:RenderingServer.instance_set_pivot_data
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_set_pivot_data, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12), &struct {
@@ -10396,13 +8003,6 @@ func (self class) InstanceSetPivotData(instance RID.Any, sorting_offset float64,
 		use_aabb_center bool
 	}{instance, sorting_offset, use_aabb_center})
 }
-
-/*
-Sets the world space transform of the instance. Equivalent to [Node3D.GlobalTransform].
-
-[Node3D.GlobalTransform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalTransform
-*/
-//go:nosplit
 func (self class) InstanceSetTransform(instance RID.Any, transform Transform3D.BasisOrigin) { //gd:RenderingServer.instance_set_transform
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8), &struct {
@@ -10410,11 +8010,6 @@ func (self class) InstanceSetTransform(instance RID.Any, transform Transform3D.B
 		transform Transform3D.BasisOrigin
 	}{instance, gd.Transposed(transform)})
 }
-
-/*
-Attaches a unique Object ID to instance. Object ID must be attached to instance for proper culling with [InstancesCullAabb], [InstancesCullConvex], and [InstancesCullRay].
-*/
-//go:nosplit
 func (self class) InstanceAttachObjectInstanceId(instance RID.Any, id int64) { //gd:RenderingServer.instance_attach_object_instance_id
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_attach_object_instance_id, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -10422,11 +8017,6 @@ func (self class) InstanceAttachObjectInstanceId(instance RID.Any, id int64) { /
 		id       int64
 	}{instance, id})
 }
-
-/*
-Sets the weight for a given blend shape associated with this instance.
-*/
-//go:nosplit
 func (self class) InstanceSetBlendShapeWeight(instance RID.Any, shape int64, weight float64) { //gd:RenderingServer.instance_set_blend_shape_weight
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_set_blend_shape_weight, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
@@ -10435,13 +8025,6 @@ func (self class) InstanceSetBlendShapeWeight(instance RID.Any, shape int64, wei
 		weight   float64
 	}{instance, shape, weight})
 }
-
-/*
-Sets the override material of a specific surface. Equivalent to [MeshInstance3D.SetSurfaceOverrideMaterial].
-
-[MeshInstance3D.SetSurfaceOverrideMaterial]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D#Instance.SetSurfaceOverrideMaterial
-*/
-//go:nosplit
 func (self class) InstanceSetSurfaceOverrideMaterial(instance RID.Any, surface int64, material RID.Any) { //gd:RenderingServer.instance_set_surface_override_material
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_set_surface_override_material, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), &struct {
@@ -10450,13 +8033,6 @@ func (self class) InstanceSetSurfaceOverrideMaterial(instance RID.Any, surface i
 		material RID.Any
 	}{instance, surface, material})
 }
-
-/*
-Sets whether an instance is drawn or not. Equivalent to [Node3D.Visible].
-
-[Node3D.Visible]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Visible
-*/
-//go:nosplit
 func (self class) InstanceSetVisible(instance RID.Any, visible bool) { //gd:RenderingServer.instance_set_visible
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_set_visible, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -10464,19 +8040,6 @@ func (self class) InstanceSetVisible(instance RID.Any, visible bool) { //gd:Rend
 		visible  bool
 	}{instance, visible})
 }
-
-/*
-Sets the transparency for the given geometry instance. Equivalent to [GeometryInstance3D.Transparency].
-
-A transparency of 0.0 is fully opaque, while 1.0 is fully transparent. Values greater than 0.0 (exclusive) will force the geometry's materials to go through the transparent pipeline, which is slower to render and can exhibit rendering issues due to incorrect transparency sorting. However, unlike using a transparent material, setting 'transparency' to a value greater than 0.0 (exclusive) will not disable shadow rendering.
-
-In spatial shaders, 1.0 - transparency is set as the default value of the ALPHA built-in.
-
-Note: 'transparency' is clamped between 0.0 and 1.0, so this property cannot be used to make transparent materials more opaque than they originally are.
-
-[GeometryInstance3D.Transparency]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.Transparency
-*/
-//go:nosplit
 func (self class) InstanceGeometrySetTransparency(instance RID.Any, transparency float64) { //gd:RenderingServer.instance_geometry_set_transparency
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_geometry_set_transparency, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -10484,22 +8047,10 @@ func (self class) InstanceGeometrySetTransparency(instance RID.Any, transparency
 		transparency float64
 	}{instance, transparency})
 }
-
-/*
-Resets motion vectors and other interpolated values. Use this after teleporting a mesh from one position to another to avoid ghosting artifacts.
-*/
-//go:nosplit
 func (self class) InstanceTeleport(instance RID.Any) { //gd:RenderingServer.instance_teleport
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_teleport, 0|(gdextension.SizeRID<<4), &struct{ instance RID.Any }{instance})
 }
-
-/*
-Sets a custom AABB to use when culling objects from the view frustum. Equivalent to setting [GeometryInstance3D.CustomAabb].
-
-[GeometryInstance3D.CustomAabb]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.CustomAabb
-*/
-//go:nosplit
 func (self class) InstanceSetCustomAabb(instance RID.Any, aabb AABB.PositionSize) { //gd:RenderingServer.instance_set_custom_aabb
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_set_custom_aabb, 0|(gdextension.SizeRID<<4)|(gdextension.SizeAABB<<8), &struct {
@@ -10507,11 +8058,6 @@ func (self class) InstanceSetCustomAabb(instance RID.Any, aabb AABB.PositionSize
 		aabb     AABB.PositionSize
 	}{instance, aabb})
 }
-
-/*
-Attaches a skeleton to an instance. Removes the previous skeleton from the instance.
-*/
-//go:nosplit
 func (self class) InstanceAttachSkeleton(instance RID.Any, skeleton RID.Any) { //gd:RenderingServer.instance_attach_skeleton
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_attach_skeleton, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -10519,13 +8065,6 @@ func (self class) InstanceAttachSkeleton(instance RID.Any, skeleton RID.Any) { /
 		skeleton RID.Any
 	}{instance, skeleton})
 }
-
-/*
-Sets a margin to increase the size of the AABB when culling objects from the view frustum. This allows you to avoid culling objects that fall outside the view frustum. Equivalent to [GeometryInstance3D.ExtraCullMargin].
-
-[GeometryInstance3D.ExtraCullMargin]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.ExtraCullMargin
-*/
-//go:nosplit
 func (self class) InstanceSetExtraVisibilityMargin(instance RID.Any, margin float64) { //gd:RenderingServer.instance_set_extra_visibility_margin
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_set_extra_visibility_margin, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -10533,13 +8072,6 @@ func (self class) InstanceSetExtraVisibilityMargin(instance RID.Any, margin floa
 		margin   float64
 	}{instance, margin})
 }
-
-/*
-Sets the visibility parent for the given instance. Equivalent to [Node3D.VisibilityParent].
-
-[Node3D.VisibilityParent]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.VisibilityParent
-*/
-//go:nosplit
 func (self class) InstanceSetVisibilityParent(instance RID.Any, parent RID.Any) { //gd:RenderingServer.instance_set_visibility_parent
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_set_visibility_parent, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -10547,13 +8079,6 @@ func (self class) InstanceSetVisibilityParent(instance RID.Any, parent RID.Any) 
 		parent   RID.Any
 	}{instance, parent})
 }
-
-/*
-If true, ignores both frustum and occlusion culling on the specified 3D geometry instance. This is not the same as [GeometryInstance3D.IgnoreOcclusionCulling], which only ignores occlusion culling and leaves frustum culling intact.
-
-[GeometryInstance3D.IgnoreOcclusionCulling]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.IgnoreOcclusionCulling
-*/
-//go:nosplit
 func (self class) InstanceSetIgnoreCulling(instance RID.Any, enabled bool) { //gd:RenderingServer.instance_set_ignore_culling
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_set_ignore_culling, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -10561,11 +8086,6 @@ func (self class) InstanceSetIgnoreCulling(instance RID.Any, enabled bool) { //g
 		enabled  bool
 	}{instance, enabled})
 }
-
-/*
-Sets the 'flag' for a given 'instance' to 'enabled'.
-*/
-//go:nosplit
 func (self class) InstanceGeometrySetFlag(instance RID.Any, flag InstanceFlags, enabled bool) { //gd:RenderingServer.instance_geometry_set_flag
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_geometry_set_flag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
@@ -10574,13 +8094,6 @@ func (self class) InstanceGeometrySetFlag(instance RID.Any, flag InstanceFlags, 
 		enabled  bool
 	}{instance, flag, enabled})
 }
-
-/*
-Sets the shadow casting setting. Equivalent to [GeometryInstance3D.CastShadow].
-
-[GeometryInstance3D.CastShadow]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.CastShadow
-*/
-//go:nosplit
 func (self class) InstanceGeometrySetCastShadowsSetting(instance RID.Any, shadow_casting_setting ShadowCastingSetting) { //gd:RenderingServer.instance_geometry_set_cast_shadows_setting
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_geometry_set_cast_shadows_setting, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -10588,13 +8101,6 @@ func (self class) InstanceGeometrySetCastShadowsSetting(instance RID.Any, shadow
 		shadow_casting_setting ShadowCastingSetting
 	}{instance, shadow_casting_setting})
 }
-
-/*
-Sets a material that will override the material for all surfaces on the mesh associated with this instance. Equivalent to [GeometryInstance3D.MaterialOverride].
-
-[GeometryInstance3D.MaterialOverride]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.MaterialOverride
-*/
-//go:nosplit
 func (self class) InstanceGeometrySetMaterialOverride(instance RID.Any, material RID.Any) { //gd:RenderingServer.instance_geometry_set_material_override
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_geometry_set_material_override, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -10602,13 +8108,6 @@ func (self class) InstanceGeometrySetMaterialOverride(instance RID.Any, material
 		material RID.Any
 	}{instance, material})
 }
-
-/*
-Sets a material that will be rendered for all surfaces on top of active materials for the mesh associated with this instance. Equivalent to [GeometryInstance3D.MaterialOverlay].
-
-[GeometryInstance3D.MaterialOverlay]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.MaterialOverlay
-*/
-//go:nosplit
 func (self class) InstanceGeometrySetMaterialOverlay(instance RID.Any, material RID.Any) { //gd:RenderingServer.instance_geometry_set_material_overlay
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_geometry_set_material_overlay, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -10616,13 +8115,6 @@ func (self class) InstanceGeometrySetMaterialOverlay(instance RID.Any, material 
 		material RID.Any
 	}{instance, material})
 }
-
-/*
-Sets the visibility range values for the given geometry instance. Equivalent to [GeometryInstance3D.VisibilityRangeBegin] and related properties.
-
-[GeometryInstance3D.VisibilityRangeBegin]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.VisibilityRangeBegin
-*/
-//go:nosplit
 func (self class) InstanceGeometrySetVisibilityRange(instance RID.Any, min float64, max float64, min_margin float64, max_margin float64, fade_mode VisibilityRangeFadeMode) { //gd:RenderingServer.instance_geometry_set_visibility_range
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_geometry_set_visibility_range, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24), &struct {
@@ -10634,13 +8126,6 @@ func (self class) InstanceGeometrySetVisibilityRange(instance RID.Any, min float
 		fade_mode  VisibilityRangeFadeMode
 	}{instance, min, max, min_margin, max_margin, fade_mode})
 }
-
-/*
-Sets the lightmap GI instance to use for the specified 3D geometry instance. The lightmap UV scale for the specified instance (equivalent to [GeometryInstance3D.GiLightmapScale]) and lightmap atlas slice must also be specified.
-
-[GeometryInstance3D.GiLightmapScale]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.GiLightmapScale
-*/
-//go:nosplit
 func (self class) InstanceGeometrySetLightmap(instance RID.Any, lightmap RID.Any, lightmap_uv_scale Rect2.PositionSize, lightmap_slice int64) { //gd:RenderingServer.instance_geometry_set_lightmap
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_geometry_set_lightmap, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeRect2<<12)|(gdextension.SizeInt<<16), &struct {
@@ -10650,13 +8135,6 @@ func (self class) InstanceGeometrySetLightmap(instance RID.Any, lightmap RID.Any
 		lightmap_slice    int64
 	}{instance, lightmap, lightmap_uv_scale, lightmap_slice})
 }
-
-/*
-Sets the level of detail bias to use when rendering the specified 3D geometry instance. Higher values result in higher detail from further away. Equivalent to [GeometryInstance3D.LodBias].
-
-[GeometryInstance3D.LodBias]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.LodBias
-*/
-//go:nosplit
 func (self class) InstanceGeometrySetLodBias(instance RID.Any, lod_bias float64) { //gd:RenderingServer.instance_geometry_set_lod_bias
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_geometry_set_lod_bias, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -10664,13 +8142,6 @@ func (self class) InstanceGeometrySetLodBias(instance RID.Any, lod_bias float64)
 		lod_bias float64
 	}{instance, lod_bias})
 }
-
-/*
-Sets the per-instance shader uniform on the specified 3D geometry instance. Equivalent to [GeometryInstance3D.SetInstanceShaderParameter].
-
-[GeometryInstance3D.SetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.SetInstanceShaderParameter
-*/
-//go:nosplit
 func (self class) InstanceGeometrySetShaderParameter(instance RID.Any, parameter String.Name, value variant.Any) { //gd:RenderingServer.instance_geometry_set_shader_parameter
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_geometry_set_shader_parameter, 0|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeVariant<<12), &struct {
@@ -10679,15 +8150,6 @@ func (self class) InstanceGeometrySetShaderParameter(instance RID.Any, parameter
 		value     gdextension.Variant
 	}{instance, pointers.Get(gd.InternalStringName(parameter)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-/*
-Returns the value of the per-instance shader uniform from the specified 3D geometry instance. Equivalent to [GeometryInstance3D.GetInstanceShaderParameter].
-
-Note: Per-instance shader parameter names are case-sensitive.
-
-[GeometryInstance3D.GetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.GetInstanceShaderParameter
-*/
-//go:nosplit
 func (self class) InstanceGeometryGetShaderParameter(instance RID.Any, parameter String.Name) variant.Any { //gd:RenderingServer.instance_geometry_get_shader_parameter
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.instance_geometry_get_shader_parameter, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), &struct {
@@ -10697,13 +8159,6 @@ func (self class) InstanceGeometryGetShaderParameter(instance RID.Any, parameter
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Returns the default value of the per-instance shader uniform from the specified 3D geometry instance. Equivalent to [GeometryInstance3D.GetInstanceShaderParameter].
-
-[GeometryInstance3D.GetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.GetInstanceShaderParameter
-*/
-//go:nosplit
 func (self class) InstanceGeometryGetShaderParameterDefaultValue(instance RID.Any, parameter String.Name) variant.Any { //gd:RenderingServer.instance_geometry_get_shader_parameter_default_value
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.instance_geometry_get_shader_parameter_default_value, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), &struct {
@@ -10713,32 +8168,12 @@ func (self class) InstanceGeometryGetShaderParameterDefaultValue(instance RID.An
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Returns a dictionary of per-instance shader uniform names of the per-instance shader uniform from the specified 3D geometry instance. The returned dictionary is in PropertyInfo format, with the keys name, class_name, type, hint, hint_string and usage. Equivalent to [GeometryInstance3D.GetInstanceShaderParameter].
-
-[GeometryInstance3D.GetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.GetInstanceShaderParameter
-*/
-//go:nosplit
 func (self class) InstanceGeometryGetShaderParameterList(instance RID.Any) Array.Contains[Dictionary.Any] { //gd:RenderingServer.instance_geometry_get_shader_parameter_list
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.instance_geometry_get_shader_parameter_list, gdextension.SizeArray|(gdextension.SizeRID<<4), &struct{ instance RID.Any }{instance})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns an array of object IDs intersecting with the provided AABB. Only 3D nodes that inherit from [VisualInstance3D] are considered, such as [MeshInstance3D] or [DirectionalLight3D]. Use [@GlobalScope.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [World3D] you want to query. This forces an update for all resources queued to update.
-
-Warning: This function is primarily intended for editor usage. For in-game use cases, prefer physics collision.
-
-[@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
-[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
-[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
-[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
-[World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
-*/
-//go:nosplit
 func (self class) InstancesCullAabb(aabb AABB.PositionSize, scenario RID.Any) Packed.Array[int64] { //gd:RenderingServer.instances_cull_aabb
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.instances_cull_aabb, gdextension.SizePackedArray|(gdextension.SizeAABB<<4)|(gdextension.SizeRID<<8), &struct {
@@ -10748,19 +8183,6 @@ func (self class) InstancesCullAabb(aabb AABB.PositionSize, scenario RID.Any) Pa
 	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns an array of object IDs intersecting with the provided 3D ray. Only 3D nodes that inherit from [VisualInstance3D] are considered, such as [MeshInstance3D] or [DirectionalLight3D]. Use [@GlobalScope.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [World3D] you want to query. This forces an update for all resources queued to update.
-
-Warning: This function is primarily intended for editor usage. For in-game use cases, prefer physics collision.
-
-[@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
-[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
-[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
-[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
-[World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
-*/
-//go:nosplit
 func (self class) InstancesCullRay(from Vector3.XYZ, to Vector3.XYZ, scenario RID.Any) Packed.Array[int64] { //gd:RenderingServer.instances_cull_ray
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.instances_cull_ray, gdextension.SizePackedArray|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeRID<<12), &struct {
@@ -10771,19 +8193,6 @@ func (self class) InstancesCullRay(from Vector3.XYZ, to Vector3.XYZ, scenario RI
 	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns an array of object IDs intersecting with the provided convex shape. Only 3D nodes that inherit from [VisualInstance3D] are considered, such as [MeshInstance3D] or [DirectionalLight3D]. Use [@GlobalScope.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [World3D] you want to query. This forces an update for all resources queued to update.
-
-Warning: This function is primarily intended for editor usage. For in-game use cases, prefer physics collision.
-
-[@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
-[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
-[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
-[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
-[World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
-*/
-//go:nosplit
 func (self class) InstancesCullConvex(convex Array.Contains[Plane.NormalD], scenario RID.Any) Packed.Array[int64] { //gd:RenderingServer.instances_cull_convex
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.instances_cull_convex, gdextension.SizePackedArray|(gdextension.SizeArray<<4)|(gdextension.SizeRID<<8), &struct {
@@ -10793,13 +8202,6 @@ func (self class) InstancesCullConvex(convex Array.Contains[Plane.NormalD], scen
 	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Bakes the material data of the Mesh passed in the 'base' parameter with optional 'material_overrides' to a set of [Image]s of size 'image_size'. Returns an array of [Image]s containing material properties as specified in [BakeChannels].
-
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-*/
-//go:nosplit
 func (self class) BakeRenderUv2(base RID.Any, material_overrides Array.Contains[RID.Any], image_size Vector2i.XY) Array.Contains[[1]gdclass.Image] { //gd:RenderingServer.bake_render_uv2
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.bake_render_uv2, gdextension.SizeArray|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeVector2i<<12), &struct {
@@ -10810,32 +8212,12 @@ func (self class) BakeRenderUv2(base RID.Any, material_overrides Array.Contains[
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Image]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Creates a canvas and returns the assigned [Resource.ID]. It can be accessed with the RID that is returned. This RID will be used in all canvas_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-Canvas has no [Resource] or [Node] equivalent.
-
-[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
-[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) CanvasCreate() RID.Any { //gd:RenderingServer.canvas_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.canvas_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-A copy of the canvas item will be drawn with a local offset of the 'mirroring'.
-
-Note: This is equivalent to calling [CanvasSetItemRepeat] like canvas_set_item_repeat(item, mirroring, 1), with an additional check ensuring 'canvas' is a parent of 'item'.
-*/
-//go:nosplit
 func (self class) CanvasSetItemMirroring(canvas RID.Any, item RID.Any, mirroring Vector2.XY) { //gd:RenderingServer.canvas_set_item_mirroring
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_set_item_mirroring, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeVector2<<12), &struct {
@@ -10844,11 +8226,6 @@ func (self class) CanvasSetItemMirroring(canvas RID.Any, item RID.Any, mirroring
 		mirroring Vector2.XY
 	}{canvas, item, mirroring})
 }
-
-/*
-A copy of the canvas item will be drawn with a local offset of the 'repeat_size' by the number of times of the 'repeat_times'. As the 'repeat_times' increases, the copies will spread away from the origin texture.
-*/
-//go:nosplit
 func (self class) CanvasSetItemRepeat(item RID.Any, repeat_size Vector2.XY, repeat_times int64) { //gd:RenderingServer.canvas_set_item_repeat
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_set_item_repeat, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12), &struct {
@@ -10857,11 +8234,6 @@ func (self class) CanvasSetItemRepeat(item RID.Any, repeat_size Vector2.XY, repe
 		repeat_times int64
 	}{item, repeat_size, repeat_times})
 }
-
-/*
-Modulates all colors in the given canvas.
-*/
-//go:nosplit
 func (self class) CanvasSetModulate(canvas RID.Any, color Color.RGBA) { //gd:RenderingServer.canvas_set_modulate
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_set_modulate, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
@@ -10869,38 +8241,16 @@ func (self class) CanvasSetModulate(canvas RID.Any, color Color.RGBA) { //gd:Ren
 		color  Color.RGBA
 	}{canvas, color})
 }
-
-//go:nosplit
 func (self class) CanvasSetDisableScale(disable bool) { //gd:RenderingServer.canvas_set_disable_scale
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_set_disable_scale, 0|(gdextension.SizeBool<<4), &struct{ disable bool }{disable})
 }
-
-/*
-Creates a canvas texture and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all canvas_texture_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method. See also [Texture2dCreate].
-
-Note: The equivalent resource is [CanvasTexture] and is only meant to be used in 2D rendering, not 3D.
-
-[CanvasTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture
-*/
-//go:nosplit
 func (self class) CanvasTextureCreate() RID.Any { //gd:RenderingServer.canvas_texture_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.canvas_texture_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the 'channel''s 'texture' for the canvas texture specified by the 'canvas_texture' RID. Equivalent to [CanvasTexture.DiffuseTexture], [CanvasTexture.NormalTexture] and [CanvasTexture.SpecularTexture].
-
-[CanvasTexture.DiffuseTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture#Instance.DiffuseTexture
-[CanvasTexture.NormalTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture#Instance.NormalTexture
-[CanvasTexture.SpecularTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture#Instance.SpecularTexture
-*/
-//go:nosplit
 func (self class) CanvasTextureSetChannel(canvas_texture RID.Any, channel CanvasTextureChannel, texture RID.Any) { //gd:RenderingServer.canvas_texture_set_channel
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_texture_set_channel, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), &struct {
@@ -10909,14 +8259,6 @@ func (self class) CanvasTextureSetChannel(canvas_texture RID.Any, channel Canvas
 		texture        RID.Any
 	}{canvas_texture, channel, texture})
 }
-
-/*
-Sets the 'base_color' and 'shininess' to use for the canvas texture specified by the 'canvas_texture' RID. Equivalent to [CanvasTexture.SpecularColor] and [CanvasTexture.SpecularShininess].
-
-[CanvasTexture.SpecularColor]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture#Instance.SpecularColor
-[CanvasTexture.SpecularShininess]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture#Instance.SpecularShininess
-*/
-//go:nosplit
 func (self class) CanvasTextureSetShadingParameters(canvas_texture RID.Any, base_color Color.RGBA, shininess float64) { //gd:RenderingServer.canvas_texture_set_shading_parameters
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_texture_set_shading_parameters, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8)|(gdextension.SizeFloat<<12), &struct {
@@ -10925,11 +8267,6 @@ func (self class) CanvasTextureSetShadingParameters(canvas_texture RID.Any, base
 		shininess      float64
 	}{canvas_texture, base_color, shininess})
 }
-
-/*
-Sets the texture 'filter' mode to use for the canvas texture specified by the 'canvas_texture' RID.
-*/
-//go:nosplit
 func (self class) CanvasTextureSetTextureFilter(canvas_texture RID.Any, filter CanvasItemTextureFilter) { //gd:RenderingServer.canvas_texture_set_texture_filter
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_texture_set_texture_filter, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -10937,11 +8274,6 @@ func (self class) CanvasTextureSetTextureFilter(canvas_texture RID.Any, filter C
 		filter         CanvasItemTextureFilter
 	}{canvas_texture, filter})
 }
-
-/*
-Sets the texture 'repeat' mode to use for the canvas texture specified by the 'canvas_texture' RID.
-*/
-//go:nosplit
 func (self class) CanvasTextureSetTextureRepeat(canvas_texture RID.Any, repeat CanvasItemTextureRepeat) { //gd:RenderingServer.canvas_texture_set_texture_repeat
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_texture_set_texture_repeat, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -10949,31 +8281,12 @@ func (self class) CanvasTextureSetTextureRepeat(canvas_texture RID.Any, repeat C
 		repeat         CanvasItemTextureRepeat
 	}{canvas_texture, repeat})
 }
-
-/*
-Creates a new CanvasItem instance and returns its [Resource.ID]. It can be accessed with the RID that is returned. This RID will be used in all canvas_item_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-Note: The equivalent node is [CanvasItem].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) CanvasItemCreate() RID.Any { //gd:RenderingServer.canvas_item_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.canvas_item_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets a parent [CanvasItem] to the [CanvasItem]. The item will inherit transform, modulation and visibility from its parent, like [CanvasItem] nodes in the scene tree.
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-*/
-//go:nosplit
 func (self class) CanvasItemSetParent(item RID.Any, parent RID.Any) { //gd:RenderingServer.canvas_item_set_parent
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_set_parent, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -10981,13 +8294,6 @@ func (self class) CanvasItemSetParent(item RID.Any, parent RID.Any) { //gd:Rende
 		parent RID.Any
 	}{item, parent})
 }
-
-/*
-Sets the default texture filter mode for the canvas item specified by the 'item' RID. Equivalent to [CanvasItem.TextureFilter].
-
-[CanvasItem.TextureFilter]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.TextureFilter
-*/
-//go:nosplit
 func (self class) CanvasItemSetDefaultTextureFilter(item RID.Any, filter CanvasItemTextureFilter) { //gd:RenderingServer.canvas_item_set_default_texture_filter
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_set_default_texture_filter, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -10995,13 +8301,6 @@ func (self class) CanvasItemSetDefaultTextureFilter(item RID.Any, filter CanvasI
 		filter CanvasItemTextureFilter
 	}{item, filter})
 }
-
-/*
-Sets the default texture repeat mode for the canvas item specified by the 'item' RID. Equivalent to [CanvasItem.TextureRepeat].
-
-[CanvasItem.TextureRepeat]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.TextureRepeat
-*/
-//go:nosplit
 func (self class) CanvasItemSetDefaultTextureRepeat(item RID.Any, repeat CanvasItemTextureRepeat) { //gd:RenderingServer.canvas_item_set_default_texture_repeat
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_set_default_texture_repeat, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -11009,13 +8308,6 @@ func (self class) CanvasItemSetDefaultTextureRepeat(item RID.Any, repeat CanvasI
 		repeat CanvasItemTextureRepeat
 	}{item, repeat})
 }
-
-/*
-Sets the visibility of the [CanvasItem].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-*/
-//go:nosplit
 func (self class) CanvasItemSetVisible(item RID.Any, visible bool) { //gd:RenderingServer.canvas_item_set_visible
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_set_visible, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -11023,13 +8315,6 @@ func (self class) CanvasItemSetVisible(item RID.Any, visible bool) { //gd:Render
 		visible bool
 	}{item, visible})
 }
-
-/*
-Sets the light 'mask' for the canvas item specified by the 'item' RID. Equivalent to [CanvasItem.LightMask].
-
-[CanvasItem.LightMask]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.LightMask
-*/
-//go:nosplit
 func (self class) CanvasItemSetLightMask(item RID.Any, mask int64) { //gd:RenderingServer.canvas_item_set_light_mask
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_set_light_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -11037,14 +8322,6 @@ func (self class) CanvasItemSetLightMask(item RID.Any, mask int64) { //gd:Render
 		mask int64
 	}{item, mask})
 }
-
-/*
-Sets the rendering visibility layer associated with this [CanvasItem]. Only [Viewport] nodes with a matching rendering mask will render this [CanvasItem].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
-*/
-//go:nosplit
 func (self class) CanvasItemSetVisibilityLayer(item RID.Any, visibility_layer int64) { //gd:RenderingServer.canvas_item_set_visibility_layer
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_set_visibility_layer, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -11052,13 +8329,6 @@ func (self class) CanvasItemSetVisibilityLayer(item RID.Any, visibility_layer in
 		visibility_layer int64
 	}{item, visibility_layer})
 }
-
-/*
-Sets the 'transform' of the canvas item specified by the 'item' RID. This affects where and how the item will be drawn. Child canvas items' transforms are multiplied by their parent's transform. Equivalent to [Node2D.Transform].
-
-[Node2D.Transform]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Transform
-*/
-//go:nosplit
 func (self class) CanvasItemSetTransform(item RID.Any, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_item_set_transform
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), &struct {
@@ -11066,16 +8336,6 @@ func (self class) CanvasItemSetTransform(item RID.Any, transform Transform2D.Ori
 		transform Transform2D.OriginXY
 	}{item, transform})
 }
-
-/*
-If 'clip' is true, makes the canvas item specified by the 'item' RID not draw anything outside of its rect's coordinates. This clipping is fast, but works only with axis-aligned rectangles. This means that rotation is ignored by the clipping rectangle. For more advanced clipping shapes, use [CanvasItemSetCanvasGroupMode] instead.
-
-Note: The equivalent node functionality is found in [Label.ClipText], [RichTextLabel] (always enabled) and more.
-
-[Label.ClipText]: https://pkg.go.dev/graphics.gd/classdb/Label#Instance.ClipText
-[RichTextLabel]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel
-*/
-//go:nosplit
 func (self class) CanvasItemSetClip(item RID.Any, clip bool) { //gd:RenderingServer.canvas_item_set_clip
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_set_clip, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -11083,13 +8343,6 @@ func (self class) CanvasItemSetClip(item RID.Any, clip bool) { //gd:RenderingSer
 		clip bool
 	}{item, clip})
 }
-
-/*
-If 'enabled' is true, enables multichannel signed distance field rendering mode for the canvas item specified by the 'item' RID. This is meant to be used for font rendering, or with specially generated images using [msdfgen].
-
-[msdfgen]: https://github.com/Chlumsky/msdfgen
-*/
-//go:nosplit
 func (self class) CanvasItemSetDistanceFieldMode(item RID.Any, enabled bool) { //gd:RenderingServer.canvas_item_set_distance_field_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_set_distance_field_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -11097,11 +8350,6 @@ func (self class) CanvasItemSetDistanceFieldMode(item RID.Any, enabled bool) { /
 		enabled bool
 	}{item, enabled})
 }
-
-/*
-If 'use_custom_rect' is true, sets the custom visibility rectangle (used for culling) to 'rect' for the canvas item specified by 'item'. Setting a custom visibility rect can reduce CPU load when drawing lots of 2D instances. If 'use_custom_rect' is false, automatically computes a visibility rectangle based on the canvas item's draw commands.
-*/
-//go:nosplit
 func (self class) CanvasItemSetCustomRect(item RID.Any, use_custom_rect bool, rect Rect2.PositionSize) { //gd:RenderingServer.canvas_item_set_custom_rect
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_set_custom_rect, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeRect2<<12), &struct {
@@ -11110,13 +8358,6 @@ func (self class) CanvasItemSetCustomRect(item RID.Any, use_custom_rect bool, re
 		rect            Rect2.PositionSize
 	}{item, use_custom_rect, rect})
 }
-
-/*
-Multiplies the color of the canvas item specified by the 'item' RID, while affecting its children. See also [CanvasItemSetSelfModulate]. Equivalent to [CanvasItem.Modulate].
-
-[CanvasItem.Modulate]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Modulate
-*/
-//go:nosplit
 func (self class) CanvasItemSetModulate(item RID.Any, color Color.RGBA) { //gd:RenderingServer.canvas_item_set_modulate
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_set_modulate, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
@@ -11124,13 +8365,6 @@ func (self class) CanvasItemSetModulate(item RID.Any, color Color.RGBA) { //gd:R
 		color Color.RGBA
 	}{item, color})
 }
-
-/*
-Multiplies the color of the canvas item specified by the 'item' RID, without affecting its children. See also [CanvasItemSetModulate]. Equivalent to [CanvasItem.SelfModulate].
-
-[CanvasItem.SelfModulate]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.SelfModulate
-*/
-//go:nosplit
 func (self class) CanvasItemSetSelfModulate(item RID.Any, color Color.RGBA) { //gd:RenderingServer.canvas_item_set_self_modulate
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_set_self_modulate, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
@@ -11138,13 +8372,6 @@ func (self class) CanvasItemSetSelfModulate(item RID.Any, color Color.RGBA) { //
 		color Color.RGBA
 	}{item, color})
 }
-
-/*
-If 'enabled' is true, draws the canvas item specified by the 'item' RID behind its parent. Equivalent to [CanvasItem.ShowBehindParent].
-
-[CanvasItem.ShowBehindParent]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.ShowBehindParent
-*/
-//go:nosplit
 func (self class) CanvasItemSetDrawBehindParent(item RID.Any, enabled bool) { //gd:RenderingServer.canvas_item_set_draw_behind_parent
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_set_draw_behind_parent, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -11152,11 +8379,6 @@ func (self class) CanvasItemSetDrawBehindParent(item RID.Any, enabled bool) { //
 		enabled bool
 	}{item, enabled})
 }
-
-/*
-If 'interpolated' is true, turns on physics interpolation for the canvas item.
-*/
-//go:nosplit
 func (self class) CanvasItemSetInterpolated(item RID.Any, interpolated bool) { //gd:RenderingServer.canvas_item_set_interpolated
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_set_interpolated, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -11164,24 +8386,10 @@ func (self class) CanvasItemSetInterpolated(item RID.Any, interpolated bool) { /
 		interpolated bool
 	}{item, interpolated})
 }
-
-/*
-Prevents physics interpolation for the current physics tick.
-
-This is useful when moving a canvas item to a new location, to give an instantaneous change rather than interpolation from the previous location.
-*/
-//go:nosplit
 func (self class) CanvasItemResetPhysicsInterpolation(item RID.Any) { //gd:RenderingServer.canvas_item_reset_physics_interpolation
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_reset_physics_interpolation, 0|(gdextension.SizeRID<<4), &struct{ item RID.Any }{item})
 }
-
-/*
-Transforms both the current and previous stored transform for a canvas item.
-
-This allows transforming a canvas item without creating a "glitch" in the interpolation, which is particularly useful for large worlds utilizing a shifting origin.
-*/
-//go:nosplit
 func (self class) CanvasItemTransformPhysicsInterpolation(item RID.Any, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_item_transform_physics_interpolation
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_transform_physics_interpolation, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), &struct {
@@ -11189,15 +8397,6 @@ func (self class) CanvasItemTransformPhysicsInterpolation(item RID.Any, transfor
 		transform Transform2D.OriginXY
 	}{item, transform})
 }
-
-/*
-Draws a line on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawLine].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[CanvasItem.DrawLine]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawLine
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) CanvasItemAddLine(item RID.Any, from Vector2.XY, to Vector2.XY, color Color.RGBA, width float64, antialiased bool) { //gd:RenderingServer.canvas_item_add_line
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_add_line, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), &struct {
@@ -11209,16 +8408,6 @@ func (self class) CanvasItemAddLine(item RID.Any, from Vector2.XY, to Vector2.XY
 		antialiased bool
 	}{item, from, to, color, width, antialiased})
 }
-
-/*
-Draws a 2D polyline on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawPolyline] and [CanvasItem.DrawPolylineColors].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[CanvasItem.DrawPolyline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolyline
-[CanvasItem.DrawPolylineColors]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolylineColors
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) CanvasItemAddPolyline(item RID.Any, points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], width float64, antialiased bool) { //gd:RenderingServer.canvas_item_add_polyline
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_add_polyline, 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20), &struct {
@@ -11229,16 +8418,6 @@ func (self class) CanvasItemAddPolyline(item RID.Any, points Packed.Array[Vector
 		antialiased bool
 	}{item, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)), width, antialiased})
 }
-
-/*
-Draws a 2D multiline on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawMultiline] and [CanvasItem.DrawMultilineColors].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[CanvasItem.DrawMultiline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultiline
-[CanvasItem.DrawMultilineColors]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultilineColors
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) CanvasItemAddMultiline(item RID.Any, points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], width float64, antialiased bool) { //gd:RenderingServer.canvas_item_add_multiline
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_add_multiline, 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20), &struct {
@@ -11249,15 +8428,6 @@ func (self class) CanvasItemAddMultiline(item RID.Any, points Packed.Array[Vecto
 		antialiased bool
 	}{item, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)), width, antialiased})
 }
-
-/*
-Draws a rectangle on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawRect].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[CanvasItem.DrawRect]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawRect
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) CanvasItemAddRect(item RID.Any, rect Rect2.PositionSize, color Color.RGBA, antialiased bool) { //gd:RenderingServer.canvas_item_add_rect
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_add_rect, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeBool<<16), &struct {
@@ -11267,15 +8437,6 @@ func (self class) CanvasItemAddRect(item RID.Any, rect Rect2.PositionSize, color
 		antialiased bool
 	}{item, rect, color, antialiased})
 }
-
-/*
-Draws a circle on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawCircle].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[CanvasItem.DrawCircle]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawCircle
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) CanvasItemAddCircle(item RID.Any, pos Vector2.XY, radius float64, color Color.RGBA, antialiased bool) { //gd:RenderingServer.canvas_item_add_circle
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_add_circle, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20), &struct {
@@ -11286,16 +8447,6 @@ func (self class) CanvasItemAddCircle(item RID.Any, pos Vector2.XY, radius float
 		antialiased bool
 	}{item, pos, radius, color, antialiased})
 }
-
-/*
-Draws a 2D textured rectangle on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawTextureRect] and [Texture2D.DrawRect].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[CanvasItem.DrawTextureRect]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawTextureRect
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-[Texture2D.DrawRect]: https://pkg.go.dev/graphics.gd/classdb/Texture2D#Instance.DrawRect
-*/
-//go:nosplit
 func (self class) CanvasItemAddTextureRect(item RID.Any, rect Rect2.PositionSize, texture RID.Any, tile bool, modulate Color.RGBA, transpose bool) { //gd:RenderingServer.canvas_item_add_texture_rect
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_add_texture_rect, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeBool<<24), &struct {
@@ -11307,13 +8458,6 @@ func (self class) CanvasItemAddTextureRect(item RID.Any, rect Rect2.PositionSize
 		transpose bool
 	}{item, rect, texture, tile, modulate, transpose})
 }
-
-/*
-See also [CanvasItem.DrawMsdfTextureRectRegion].
-
-[CanvasItem.DrawMsdfTextureRectRegion]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMsdfTextureRectRegion
-*/
-//go:nosplit
 func (self class) CanvasItemAddMsdfTextureRectRegion(item RID.Any, rect Rect2.PositionSize, texture RID.Any, src_rect Rect2.PositionSize, modulate Color.RGBA, outline_size int64, px_range float64, scale float64) { //gd:RenderingServer.canvas_item_add_msdf_texture_rect_region
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_add_msdf_texture_rect_region, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeRect2<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeFloat<<32), &struct {
@@ -11327,13 +8471,6 @@ func (self class) CanvasItemAddMsdfTextureRectRegion(item RID.Any, rect Rect2.Po
 		scale        float64
 	}{item, rect, texture, src_rect, modulate, outline_size, px_range, scale})
 }
-
-/*
-See also [CanvasItem.DrawLcdTextureRectRegion].
-
-[CanvasItem.DrawLcdTextureRectRegion]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawLcdTextureRectRegion
-*/
-//go:nosplit
 func (self class) CanvasItemAddLcdTextureRectRegion(item RID.Any, rect Rect2.PositionSize, texture RID.Any, src_rect Rect2.PositionSize, modulate Color.RGBA) { //gd:RenderingServer.canvas_item_add_lcd_texture_rect_region
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_add_lcd_texture_rect_region, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeRect2<<16)|(gdextension.SizeColor<<20), &struct {
@@ -11344,16 +8481,6 @@ func (self class) CanvasItemAddLcdTextureRectRegion(item RID.Any, rect Rect2.Pos
 		modulate Color.RGBA
 	}{item, rect, texture, src_rect, modulate})
 }
-
-/*
-Draws the specified region of a 2D textured rectangle on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawTextureRectRegion] and [Texture2D.DrawRectRegion].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[CanvasItem.DrawTextureRectRegion]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawTextureRectRegion
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-[Texture2D.DrawRectRegion]: https://pkg.go.dev/graphics.gd/classdb/Texture2D#Instance.DrawRectRegion
-*/
-//go:nosplit
 func (self class) CanvasItemAddTextureRectRegion(item RID.Any, rect Rect2.PositionSize, texture RID.Any, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) { //gd:RenderingServer.canvas_item_add_texture_rect_region
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_add_texture_rect_region, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeRect2<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeBool<<24)|(gdextension.SizeBool<<28), &struct {
@@ -11366,14 +8493,6 @@ func (self class) CanvasItemAddTextureRectRegion(item RID.Any, rect Rect2.Positi
 		clip_uv   bool
 	}{item, rect, texture, src_rect, modulate, transpose, clip_uv})
 }
-
-/*
-Draws a nine-patch rectangle on the [CanvasItem] pointed to by the 'item' [Resource.ID].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) CanvasItemAddNinePatch(item RID.Any, rect Rect2.PositionSize, source Rect2.PositionSize, texture RID.Any, topleft Vector2.XY, bottomright Vector2.XY, x_axis_mode NinePatchAxisMode, y_axis_mode NinePatchAxisMode, draw_center bool, modulate Color.RGBA) { //gd:RenderingServer.canvas_item_add_nine_patch
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_add_nine_patch, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeVector2<<20)|(gdextension.SizeVector2<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeBool<<36)|(gdextension.SizeColor<<40), &struct {
@@ -11389,15 +8508,6 @@ func (self class) CanvasItemAddNinePatch(item RID.Any, rect Rect2.PositionSize, 
 		modulate    Color.RGBA
 	}{item, rect, source, texture, topleft, bottomright, x_axis_mode, y_axis_mode, draw_center, modulate})
 }
-
-/*
-Draws a 2D primitive on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawPrimitive].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[CanvasItem.DrawPrimitive]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPrimitive
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) CanvasItemAddPrimitive(item RID.Any, points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uvs Packed.Array[Vector2.XY], texture RID.Any) { //gd:RenderingServer.canvas_item_add_primitive
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_add_primitive, 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizeRID<<20), &struct {
@@ -11408,20 +8518,6 @@ func (self class) CanvasItemAddPrimitive(item RID.Any, points Packed.Array[Vecto
 		texture RID.Any
 	}{item, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs)), texture})
 }
-
-/*
-Draws a 2D polygon on the [CanvasItem] pointed to by the 'item' [Resource.ID]. If you need more flexibility (such as being able to use bones), use [CanvasItemAddTriangleArray] instead. See also [CanvasItem.DrawPolygon].
-
-Note: If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [Geometry2D.TriangulatePolygon] and using [CanvasItem.DrawMesh], [CanvasItem.DrawMultimesh], or [CanvasItemAddTriangleArray].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[CanvasItem.DrawMesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMesh
-[CanvasItem.DrawMultimesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultimesh
-[CanvasItem.DrawPolygon]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolygon
-[Geometry2D.TriangulatePolygon]: https://pkg.go.dev/graphics.gd/classdb/Geometry2D#TriangulatePolygon
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) CanvasItemAddPolygon(item RID.Any, points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uvs Packed.Array[Vector2.XY], texture RID.Any) { //gd:RenderingServer.canvas_item_add_polygon
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_add_polygon, 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizeRID<<20), &struct {
@@ -11432,18 +8528,6 @@ func (self class) CanvasItemAddPolygon(item RID.Any, points Packed.Array[Vector2
 		texture RID.Any
 	}{item, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs)), texture})
 }
-
-/*
-Draws a triangle array on the [CanvasItem] pointed to by the 'item' [Resource.ID]. This is internally used by [Line2D] and [StyleBoxFlat] for rendering. [CanvasItemAddTriangleArray] is highly flexible, but more complex to use than [CanvasItemAddPolygon].
-
-Note: If 'count' is set to a non-negative value, only the first count * 3 indices (corresponding to count triangles) will be drawn. Otherwise, all indices are drawn.
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[Line2D]: https://pkg.go.dev/graphics.gd/classdb/Line2D
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-[StyleBoxFlat]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat
-*/
-//go:nosplit
 func (self class) CanvasItemAddTriangleArray(item RID.Any, indices Packed.Array[int32], points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uvs Packed.Array[Vector2.XY], bones Packed.Array[int32], weights Packed.Array[float32], texture RID.Any, count int64) { //gd:RenderingServer.canvas_item_add_triangle_array
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_add_triangle_array, 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizePackedArray<<20)|(gdextension.SizePackedArray<<24)|(gdextension.SizePackedArray<<28)|(gdextension.SizeRID<<32)|(gdextension.SizeInt<<36), &struct {
@@ -11458,13 +8542,6 @@ func (self class) CanvasItemAddTriangleArray(item RID.Any, indices Packed.Array[
 		count   int64
 	}{item, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](indices)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs)), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](bones)), pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](weights)), texture, count})
 }
-
-/*
-Draws a mesh created with [MeshCreate] with given 'transform', 'modulate' color, and 'texture'. This is used internally by [MeshInstance2D].
-
-[MeshInstance2D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance2D
-*/
-//go:nosplit
 func (self class) CanvasItemAddMesh(item RID.Any, mesh RID.Any, transform Transform2D.OriginXY, modulate Color.RGBA, texture RID.Any) { //gd:RenderingServer.canvas_item_add_mesh
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_add_mesh, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform2D<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeRID<<20), &struct {
@@ -11475,16 +8552,6 @@ func (self class) CanvasItemAddMesh(item RID.Any, mesh RID.Any, transform Transf
 		texture   RID.Any
 	}{item, mesh, transform, modulate, texture})
 }
-
-/*
-Draws a 2D [MultiMesh] on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawMultimesh].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[CanvasItem.DrawMultimesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultimesh
-[MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) CanvasItemAddMultimesh(item RID.Any, mesh RID.Any, texture RID.Any) { //gd:RenderingServer.canvas_item_add_multimesh
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_add_multimesh, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeRID<<12), &struct {
@@ -11493,14 +8560,6 @@ func (self class) CanvasItemAddMultimesh(item RID.Any, mesh RID.Any, texture RID
 		texture RID.Any
 	}{item, mesh, texture})
 }
-
-/*
-Draws particles on the [CanvasItem] pointed to by the 'item' [Resource.ID].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) CanvasItemAddParticles(item RID.Any, particles RID.Any, texture RID.Any) { //gd:RenderingServer.canvas_item_add_particles
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_add_particles, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeRID<<12), &struct {
@@ -11509,13 +8568,6 @@ func (self class) CanvasItemAddParticles(item RID.Any, particles RID.Any, textur
 		texture   RID.Any
 	}{item, particles, texture})
 }
-
-/*
-Sets a [Transform2D.OriginXY] that will be used to transform subsequent canvas item commands.
-
-[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
-*/
-//go:nosplit
 func (self class) CanvasItemAddSetTransform(item RID.Any, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_item_add_set_transform
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_add_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), &struct {
@@ -11523,11 +8575,6 @@ func (self class) CanvasItemAddSetTransform(item RID.Any, transform Transform2D.
 		transform Transform2D.OriginXY
 	}{item, transform})
 }
-
-/*
-If 'ignore' is true, ignore clipping on items drawn with this canvas item until this is called again with 'ignore' set to false.
-*/
-//go:nosplit
 func (self class) CanvasItemAddClipIgnore(item RID.Any, ignore bool) { //gd:RenderingServer.canvas_item_add_clip_ignore
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_add_clip_ignore, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -11535,11 +8582,6 @@ func (self class) CanvasItemAddClipIgnore(item RID.Any, ignore bool) { //gd:Rend
 		ignore bool
 	}{item, ignore})
 }
-
-/*
-Subsequent drawing commands will be ignored unless they fall within the specified animation slice. This is a faster way to implement animations that loop on background rather than redrawing constantly.
-*/
-//go:nosplit
 func (self class) CanvasItemAddAnimationSlice(item RID.Any, animation_length float64, slice_begin float64, slice_end float64, offset float64) { //gd:RenderingServer.canvas_item_add_animation_slice
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_add_animation_slice, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20), &struct {
@@ -11550,13 +8592,6 @@ func (self class) CanvasItemAddAnimationSlice(item RID.Any, animation_length flo
 		offset           float64
 	}{item, animation_length, slice_begin, slice_end, offset})
 }
-
-/*
-If 'enabled' is true, child nodes with the lowest Y position are drawn before those with a higher Y position. Y-sorting only affects children that inherit from the canvas item specified by the 'item' RID, not the canvas item itself. Equivalent to [CanvasItem.YSortEnabled].
-
-[CanvasItem.YSortEnabled]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.YSortEnabled
-*/
-//go:nosplit
 func (self class) CanvasItemSetSortChildrenByY(item RID.Any, enabled bool) { //gd:RenderingServer.canvas_item_set_sort_children_by_y
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_set_sort_children_by_y, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -11564,13 +8599,6 @@ func (self class) CanvasItemSetSortChildrenByY(item RID.Any, enabled bool) { //g
 		enabled bool
 	}{item, enabled})
 }
-
-/*
-Sets the [CanvasItem]'s Z index, i.e. its draw order (lower indexes are drawn first).
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-*/
-//go:nosplit
 func (self class) CanvasItemSetZIndex(item RID.Any, z_index int64) { //gd:RenderingServer.canvas_item_set_z_index
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_set_z_index, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -11578,11 +8606,6 @@ func (self class) CanvasItemSetZIndex(item RID.Any, z_index int64) { //gd:Render
 		z_index int64
 	}{item, z_index})
 }
-
-/*
-If this is enabled, the Z index of the parent will be added to the children's Z index.
-*/
-//go:nosplit
 func (self class) CanvasItemSetZAsRelativeToParent(item RID.Any, enabled bool) { //gd:RenderingServer.canvas_item_set_z_as_relative_to_parent
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_set_z_as_relative_to_parent, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -11590,13 +8613,6 @@ func (self class) CanvasItemSetZAsRelativeToParent(item RID.Any, enabled bool) {
 		enabled bool
 	}{item, enabled})
 }
-
-/*
-Sets the [CanvasItem] to copy a rect to the backbuffer.
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-*/
-//go:nosplit
 func (self class) CanvasItemSetCopyToBackbuffer(item RID.Any, enabled bool, rect Rect2.PositionSize) { //gd:RenderingServer.canvas_item_set_copy_to_backbuffer
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_set_copy_to_backbuffer, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeRect2<<12), &struct {
@@ -11605,13 +8621,6 @@ func (self class) CanvasItemSetCopyToBackbuffer(item RID.Any, enabled bool, rect
 		rect    Rect2.PositionSize
 	}{item, enabled, rect})
 }
-
-/*
-Attaches a skeleton to the [CanvasItem]. Removes the previous skeleton.
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-*/
-//go:nosplit
 func (self class) CanvasItemAttachSkeleton(item RID.Any, skeleton RID.Any) { //gd:RenderingServer.canvas_item_attach_skeleton
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_attach_skeleton, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -11619,24 +8628,10 @@ func (self class) CanvasItemAttachSkeleton(item RID.Any, skeleton RID.Any) { //g
 		skeleton RID.Any
 	}{item, skeleton})
 }
-
-/*
-Clears the [CanvasItem] and removes all commands in it.
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-*/
-//go:nosplit
 func (self class) CanvasItemClear(item RID.Any) { //gd:RenderingServer.canvas_item_clear
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_clear, 0|(gdextension.SizeRID<<4), &struct{ item RID.Any }{item})
 }
-
-/*
-Sets the index for the [CanvasItem].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-*/
-//go:nosplit
 func (self class) CanvasItemSetDrawIndex(item RID.Any, index int64) { //gd:RenderingServer.canvas_item_set_draw_index
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_set_draw_index, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -11644,13 +8639,6 @@ func (self class) CanvasItemSetDrawIndex(item RID.Any, index int64) { //gd:Rende
 		index int64
 	}{item, index})
 }
-
-/*
-Sets a new 'material' to the canvas item specified by the 'item' RID. Equivalent to [CanvasItem.Material].
-
-[CanvasItem.Material]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Material
-*/
-//go:nosplit
 func (self class) CanvasItemSetMaterial(item RID.Any, material RID.Any) { //gd:RenderingServer.canvas_item_set_material
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_set_material, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -11658,13 +8646,6 @@ func (self class) CanvasItemSetMaterial(item RID.Any, material RID.Any) { //gd:R
 		material RID.Any
 	}{item, material})
 }
-
-/*
-Sets if the [CanvasItem] uses its parent's material.
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-*/
-//go:nosplit
 func (self class) CanvasItemSetUseParentMaterial(item RID.Any, enabled bool) { //gd:RenderingServer.canvas_item_set_use_parent_material
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_set_use_parent_material, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -11672,13 +8653,6 @@ func (self class) CanvasItemSetUseParentMaterial(item RID.Any, enabled bool) { /
 		enabled bool
 	}{item, enabled})
 }
-
-/*
-Sets the per-instance shader uniform on the specified canvas item instance. Equivalent to [CanvasItem.SetInstanceShaderParameter].
-
-[CanvasItem.SetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.SetInstanceShaderParameter
-*/
-//go:nosplit
 func (self class) CanvasItemSetInstanceShaderParameter(instance RID.Any, parameter String.Name, value variant.Any) { //gd:RenderingServer.canvas_item_set_instance_shader_parameter
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_set_instance_shader_parameter, 0|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeVariant<<12), &struct {
@@ -11687,13 +8661,6 @@ func (self class) CanvasItemSetInstanceShaderParameter(instance RID.Any, paramet
 		value     gdextension.Variant
 	}{instance, pointers.Get(gd.InternalStringName(parameter)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-/*
-Returns the value of the per-instance shader uniform from the specified canvas item instance. Equivalent to [CanvasItem.GetInstanceShaderParameter].
-
-[CanvasItem.GetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.GetInstanceShaderParameter
-*/
-//go:nosplit
 func (self class) CanvasItemGetInstanceShaderParameter(instance RID.Any, parameter String.Name) variant.Any { //gd:RenderingServer.canvas_item_get_instance_shader_parameter
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.canvas_item_get_instance_shader_parameter, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), &struct {
@@ -11703,13 +8670,6 @@ func (self class) CanvasItemGetInstanceShaderParameter(instance RID.Any, paramet
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Returns the default value of the per-instance shader uniform from the specified canvas item instance. Equivalent to [CanvasItem.GetInstanceShaderParameter].
-
-[CanvasItem.GetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.GetInstanceShaderParameter
-*/
-//go:nosplit
 func (self class) CanvasItemGetInstanceShaderParameterDefaultValue(instance RID.Any, parameter String.Name) variant.Any { //gd:RenderingServer.canvas_item_get_instance_shader_parameter_default_value
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.canvas_item_get_instance_shader_parameter_default_value, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), &struct {
@@ -11719,29 +8679,12 @@ func (self class) CanvasItemGetInstanceShaderParameterDefaultValue(instance RID.
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Returns a dictionary of per-instance shader uniform names of the per-instance shader uniform from the specified canvas item instance.
-
-The returned dictionary is in PropertyInfo format, with the keys name, class_name, type, hint, hint_string, and usage.
-*/
-//go:nosplit
 func (self class) CanvasItemGetInstanceShaderParameterList(instance RID.Any) Array.Contains[Dictionary.Any] { //gd:RenderingServer.canvas_item_get_instance_shader_parameter_list
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.canvas_item_get_instance_shader_parameter_list, gdextension.SizeArray|(gdextension.SizeRID<<4), &struct{ instance RID.Any }{instance})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Sets the given [CanvasItem] as visibility notifier. 'area' defines the area of detecting visibility. 'enter_callable' is called when the [CanvasItem] enters the screen, 'exit_callable' is called when the [CanvasItem] exits the screen. If 'enable' is false, the item will no longer function as notifier.
-
-This method can be used to manually mimic [VisibleOnScreenNotifier2D].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[VisibleOnScreenNotifier2D]: https://pkg.go.dev/graphics.gd/classdb/VisibleOnScreenNotifier2D
-*/
-//go:nosplit
 func (self class) CanvasItemSetVisibilityNotifier(item RID.Any, enable bool, area Rect2.PositionSize, enter_callable Callable.Function, exit_callable Callable.Function) { //gd:RenderingServer.canvas_item_set_visibility_notifier
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_set_visibility_notifier, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeRect2<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20), &struct {
@@ -11752,16 +8695,6 @@ func (self class) CanvasItemSetVisibilityNotifier(item RID.Any, enable bool, are
 		exit_callable  gdextension.Callable
 	}{item, enable, area, pointers.Get(gd.InternalCallable(enter_callable)), pointers.Get(gd.InternalCallable(exit_callable))})
 }
-
-/*
-Sets the canvas group mode used during 2D rendering for the canvas item specified by the 'item' RID. For faster but more limited clipping, use [CanvasItemSetClip] instead.
-
-Note: The equivalent node functionality is found in [CanvasGroup] and [CanvasItem.ClipChildren].
-
-[CanvasGroup]: https://pkg.go.dev/graphics.gd/classdb/CanvasGroup
-[CanvasItem.ClipChildren]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.ClipChildren
-*/
-//go:nosplit
 func (self class) CanvasItemSetCanvasGroupMode(item RID.Any, mode CanvasGroupMode, clear_margin float64, fit_empty bool, fit_margin float64, blur_mipmaps bool) { //gd:RenderingServer.canvas_item_set_canvas_group_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_set_canvas_group_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), &struct {
@@ -11773,43 +8706,18 @@ func (self class) CanvasItemSetCanvasGroupMode(item RID.Any, mode CanvasGroupMod
 		blur_mipmaps bool
 	}{item, mode, clear_margin, fit_empty, fit_margin, blur_mipmaps})
 }
-
-/*
-Returns the bounding rectangle for a canvas item in local space, as calculated by the renderer. This bound is used internally for culling.
-
-Warning: This function is intended for debugging in the editor, and will pass through and return a zero [Rect2.PositionSize] in exported projects.
-
-[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
-*/
-//go:nosplit
 func (self class) DebugCanvasItemGetRect(item RID.Any) Rect2.PositionSize { //gd:RenderingServer.debug_canvas_item_get_rect
 	once.Do(singleton)
 	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.debug_canvas_item_get_rect, gdextension.SizeRect2|(gdextension.SizeRID<<4), &struct{ item RID.Any }{item})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Creates a canvas light and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all canvas_light_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-Note: The equivalent node is [Light2D].
-
-[Light2D]: https://pkg.go.dev/graphics.gd/classdb/Light2D
-*/
-//go:nosplit
 func (self class) CanvasLightCreate() RID.Any { //gd:RenderingServer.canvas_light_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.canvas_light_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Attaches the canvas light to the canvas. Removes it from its previous canvas.
-*/
-//go:nosplit
 func (self class) CanvasLightAttachToCanvas(light RID.Any, canvas RID.Any) { //gd:RenderingServer.canvas_light_attach_to_canvas
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_attach_to_canvas, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -11817,11 +8725,6 @@ func (self class) CanvasLightAttachToCanvas(light RID.Any, canvas RID.Any) { //g
 		canvas RID.Any
 	}{light, canvas})
 }
-
-/*
-Enables or disables a canvas light.
-*/
-//go:nosplit
 func (self class) CanvasLightSetEnabled(light RID.Any, enabled bool) { //gd:RenderingServer.canvas_light_set_enabled
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_set_enabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -11829,14 +8732,6 @@ func (self class) CanvasLightSetEnabled(light RID.Any, enabled bool) { //gd:Rend
 		enabled bool
 	}{light, enabled})
 }
-
-/*
-Sets the scale factor of a [PointLight2D]'s texture. Equivalent to [PointLight2D.TextureScale].
-
-[PointLight2D]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D
-[PointLight2D.TextureScale]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D#Instance.TextureScale
-*/
-//go:nosplit
 func (self class) CanvasLightSetTextureScale(light RID.Any, scale float64) { //gd:RenderingServer.canvas_light_set_texture_scale
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_set_texture_scale, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -11844,13 +8739,6 @@ func (self class) CanvasLightSetTextureScale(light RID.Any, scale float64) { //g
 		scale float64
 	}{light, scale})
 }
-
-/*
-Sets the canvas light's [Transform2D.OriginXY].
-
-[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
-*/
-//go:nosplit
 func (self class) CanvasLightSetTransform(light RID.Any, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_light_set_transform
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), &struct {
@@ -11858,14 +8746,6 @@ func (self class) CanvasLightSetTransform(light RID.Any, transform Transform2D.O
 		transform Transform2D.OriginXY
 	}{light, transform})
 }
-
-/*
-Sets the texture to be used by a [PointLight2D]. Equivalent to [PointLight2D.Texture].
-
-[PointLight2D]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D
-[PointLight2D.Texture]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D#Instance.Texture
-*/
-//go:nosplit
 func (self class) CanvasLightSetTexture(light RID.Any, texture RID.Any) { //gd:RenderingServer.canvas_light_set_texture
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_set_texture, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -11873,14 +8753,6 @@ func (self class) CanvasLightSetTexture(light RID.Any, texture RID.Any) { //gd:R
 		texture RID.Any
 	}{light, texture})
 }
-
-/*
-Sets the offset of a [PointLight2D]'s texture. Equivalent to [PointLight2D.Offset].
-
-[PointLight2D]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D
-[PointLight2D.Offset]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D#Instance.Offset
-*/
-//go:nosplit
 func (self class) CanvasLightSetTextureOffset(light RID.Any, offset Vector2.XY) { //gd:RenderingServer.canvas_light_set_texture_offset
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_set_texture_offset, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
@@ -11888,11 +8760,6 @@ func (self class) CanvasLightSetTextureOffset(light RID.Any, offset Vector2.XY) 
 		offset Vector2.XY
 	}{light, offset})
 }
-
-/*
-Sets the color for a light.
-*/
-//go:nosplit
 func (self class) CanvasLightSetColor(light RID.Any, color Color.RGBA) { //gd:RenderingServer.canvas_light_set_color
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_set_color, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
@@ -11900,11 +8767,6 @@ func (self class) CanvasLightSetColor(light RID.Any, color Color.RGBA) { //gd:Re
 		color Color.RGBA
 	}{light, color})
 }
-
-/*
-Sets a canvas light's height.
-*/
-//go:nosplit
 func (self class) CanvasLightSetHeight(light RID.Any, height float64) { //gd:RenderingServer.canvas_light_set_height
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_set_height, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -11912,11 +8774,6 @@ func (self class) CanvasLightSetHeight(light RID.Any, height float64) { //gd:Ren
 		height float64
 	}{light, height})
 }
-
-/*
-Sets a canvas light's energy.
-*/
-//go:nosplit
 func (self class) CanvasLightSetEnergy(light RID.Any, energy float64) { //gd:RenderingServer.canvas_light_set_energy
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_set_energy, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -11924,14 +8781,6 @@ func (self class) CanvasLightSetEnergy(light RID.Any, energy float64) { //gd:Ren
 		energy float64
 	}{light, energy})
 }
-
-/*
-Sets the Z range of objects that will be affected by this light. Equivalent to [Light2D.RangeZMin] and [Light2D.RangeZMax].
-
-[Light2D.RangeZMax]: https://pkg.go.dev/graphics.gd/classdb/Light2D#Instance.RangeZMax
-[Light2D.RangeZMin]: https://pkg.go.dev/graphics.gd/classdb/Light2D#Instance.RangeZMin
-*/
-//go:nosplit
 func (self class) CanvasLightSetZRange(light RID.Any, min_z int64, max_z int64) { //gd:RenderingServer.canvas_light_set_z_range
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_set_z_range, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
@@ -11940,11 +8789,6 @@ func (self class) CanvasLightSetZRange(light RID.Any, min_z int64, max_z int64) 
 		max_z int64
 	}{light, min_z, max_z})
 }
-
-/*
-The layer range that gets rendered with this light.
-*/
-//go:nosplit
 func (self class) CanvasLightSetLayerRange(light RID.Any, min_layer int64, max_layer int64) { //gd:RenderingServer.canvas_light_set_layer_range
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_set_layer_range, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
@@ -11953,13 +8797,6 @@ func (self class) CanvasLightSetLayerRange(light RID.Any, min_layer int64, max_l
 		max_layer int64
 	}{light, min_layer, max_layer})
 }
-
-/*
-The light mask. See [LightOccluder2D] for more information on light masks.
-
-[LightOccluder2D]: https://pkg.go.dev/graphics.gd/classdb/LightOccluder2D
-*/
-//go:nosplit
 func (self class) CanvasLightSetItemCullMask(light RID.Any, mask int64) { //gd:RenderingServer.canvas_light_set_item_cull_mask
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_set_item_cull_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -11967,13 +8804,6 @@ func (self class) CanvasLightSetItemCullMask(light RID.Any, mask int64) { //gd:R
 		mask  int64
 	}{light, mask})
 }
-
-/*
-The binary mask used to determine which layers this canvas light's shadows affects. See [LightOccluder2D] for more information on light masks.
-
-[LightOccluder2D]: https://pkg.go.dev/graphics.gd/classdb/LightOccluder2D
-*/
-//go:nosplit
 func (self class) CanvasLightSetItemShadowCullMask(light RID.Any, mask int64) { //gd:RenderingServer.canvas_light_set_item_shadow_cull_mask
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_set_item_shadow_cull_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -11981,11 +8811,6 @@ func (self class) CanvasLightSetItemShadowCullMask(light RID.Any, mask int64) { 
 		mask  int64
 	}{light, mask})
 }
-
-/*
-Sets the mode of the canvas light.
-*/
-//go:nosplit
 func (self class) CanvasLightSetMode(light RID.Any, mode CanvasLightMode) { //gd:RenderingServer.canvas_light_set_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_set_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -11993,11 +8818,6 @@ func (self class) CanvasLightSetMode(light RID.Any, mode CanvasLightMode) { //gd
 		mode  CanvasLightMode
 	}{light, mode})
 }
-
-/*
-Enables or disables the canvas light's shadow.
-*/
-//go:nosplit
 func (self class) CanvasLightSetShadowEnabled(light RID.Any, enabled bool) { //gd:RenderingServer.canvas_light_set_shadow_enabled
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_set_shadow_enabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -12005,11 +8825,6 @@ func (self class) CanvasLightSetShadowEnabled(light RID.Any, enabled bool) { //g
 		enabled bool
 	}{light, enabled})
 }
-
-/*
-Sets the canvas light's shadow's filter.
-*/
-//go:nosplit
 func (self class) CanvasLightSetShadowFilter(light RID.Any, filter CanvasLightShadowFilter) { //gd:RenderingServer.canvas_light_set_shadow_filter
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_set_shadow_filter, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -12017,11 +8832,6 @@ func (self class) CanvasLightSetShadowFilter(light RID.Any, filter CanvasLightSh
 		filter CanvasLightShadowFilter
 	}{light, filter})
 }
-
-/*
-Sets the color of the canvas light's shadow.
-*/
-//go:nosplit
 func (self class) CanvasLightSetShadowColor(light RID.Any, color Color.RGBA) { //gd:RenderingServer.canvas_light_set_shadow_color
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_set_shadow_color, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
@@ -12029,11 +8839,6 @@ func (self class) CanvasLightSetShadowColor(light RID.Any, color Color.RGBA) { /
 		color Color.RGBA
 	}{light, color})
 }
-
-/*
-Smoothens the shadow. The lower, the smoother.
-*/
-//go:nosplit
 func (self class) CanvasLightSetShadowSmooth(light RID.Any, smooth float64) { //gd:RenderingServer.canvas_light_set_shadow_smooth
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_set_shadow_smooth, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -12041,13 +8846,6 @@ func (self class) CanvasLightSetShadowSmooth(light RID.Any, smooth float64) { //
 		smooth float64
 	}{light, smooth})
 }
-
-/*
-Sets the blend mode for the given canvas light to 'mode'. Equivalent to [Light2D.BlendMode].
-
-[Light2D.BlendMode]: https://pkg.go.dev/graphics.gd/classdb/Light2D#Instance.BlendMode
-*/
-//go:nosplit
 func (self class) CanvasLightSetBlendMode(light RID.Any, mode CanvasLightBlendMode) { //gd:RenderingServer.canvas_light_set_blend_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_set_blend_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -12055,11 +8853,6 @@ func (self class) CanvasLightSetBlendMode(light RID.Any, mode CanvasLightBlendMo
 		mode  CanvasLightBlendMode
 	}{light, mode})
 }
-
-/*
-If 'interpolated' is true, turns on physics interpolation for the canvas light.
-*/
-//go:nosplit
 func (self class) CanvasLightSetInterpolated(light RID.Any, interpolated bool) { //gd:RenderingServer.canvas_light_set_interpolated
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_set_interpolated, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -12067,24 +8860,10 @@ func (self class) CanvasLightSetInterpolated(light RID.Any, interpolated bool) {
 		interpolated bool
 	}{light, interpolated})
 }
-
-/*
-Prevents physics interpolation for the current physics tick.
-
-This is useful when moving a canvas item to a new location, to give an instantaneous change rather than interpolation from the previous location.
-*/
-//go:nosplit
 func (self class) CanvasLightResetPhysicsInterpolation(light RID.Any) { //gd:RenderingServer.canvas_light_reset_physics_interpolation
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_reset_physics_interpolation, 0|(gdextension.SizeRID<<4), &struct{ light RID.Any }{light})
 }
-
-/*
-Transforms both the current and previous stored transform for a canvas light.
-
-This allows transforming a light without creating a "glitch" in the interpolation, which is particularly useful for large worlds utilizing a shifting origin.
-*/
-//go:nosplit
 func (self class) CanvasLightTransformPhysicsInterpolation(light RID.Any, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_light_transform_physics_interpolation
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_transform_physics_interpolation, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), &struct {
@@ -12092,28 +8871,12 @@ func (self class) CanvasLightTransformPhysicsInterpolation(light RID.Any, transf
 		transform Transform2D.OriginXY
 	}{light, transform})
 }
-
-/*
-Creates a light occluder and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all canvas_light_occluder_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-Note: The equivalent node is [LightOccluder2D].
-
-[LightOccluder2D]: https://pkg.go.dev/graphics.gd/classdb/LightOccluder2D
-*/
-//go:nosplit
 func (self class) CanvasLightOccluderCreate() RID.Any { //gd:RenderingServer.canvas_light_occluder_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.canvas_light_occluder_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Attaches a light occluder to the canvas. Removes it from its previous canvas.
-*/
-//go:nosplit
 func (self class) CanvasLightOccluderAttachToCanvas(occluder RID.Any, canvas RID.Any) { //gd:RenderingServer.canvas_light_occluder_attach_to_canvas
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_occluder_attach_to_canvas, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -12121,11 +8884,6 @@ func (self class) CanvasLightOccluderAttachToCanvas(occluder RID.Any, canvas RID
 		canvas   RID.Any
 	}{occluder, canvas})
 }
-
-/*
-Enables or disables light occluder.
-*/
-//go:nosplit
 func (self class) CanvasLightOccluderSetEnabled(occluder RID.Any, enabled bool) { //gd:RenderingServer.canvas_light_occluder_set_enabled
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_occluder_set_enabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -12133,11 +8891,6 @@ func (self class) CanvasLightOccluderSetEnabled(occluder RID.Any, enabled bool) 
 		enabled  bool
 	}{occluder, enabled})
 }
-
-/*
-Sets a light occluder's polygon.
-*/
-//go:nosplit
 func (self class) CanvasLightOccluderSetPolygon(occluder RID.Any, polygon RID.Any) { //gd:RenderingServer.canvas_light_occluder_set_polygon
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_occluder_set_polygon, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -12145,8 +8898,6 @@ func (self class) CanvasLightOccluderSetPolygon(occluder RID.Any, polygon RID.An
 		polygon  RID.Any
 	}{occluder, polygon})
 }
-
-//go:nosplit
 func (self class) CanvasLightOccluderSetAsSdfCollision(occluder RID.Any, enable bool) { //gd:RenderingServer.canvas_light_occluder_set_as_sdf_collision
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_occluder_set_as_sdf_collision, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -12154,13 +8905,6 @@ func (self class) CanvasLightOccluderSetAsSdfCollision(occluder RID.Any, enable 
 		enable   bool
 	}{occluder, enable})
 }
-
-/*
-Sets a light occluder's [Transform2D.OriginXY].
-
-[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
-*/
-//go:nosplit
 func (self class) CanvasLightOccluderSetTransform(occluder RID.Any, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_light_occluder_set_transform
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_occluder_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), &struct {
@@ -12168,13 +8912,6 @@ func (self class) CanvasLightOccluderSetTransform(occluder RID.Any, transform Tr
 		transform Transform2D.OriginXY
 	}{occluder, transform})
 }
-
-/*
-The light mask. See [LightOccluder2D] for more information on light masks.
-
-[LightOccluder2D]: https://pkg.go.dev/graphics.gd/classdb/LightOccluder2D
-*/
-//go:nosplit
 func (self class) CanvasLightOccluderSetLightMask(occluder RID.Any, mask int64) { //gd:RenderingServer.canvas_light_occluder_set_light_mask
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_occluder_set_light_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -12182,11 +8919,6 @@ func (self class) CanvasLightOccluderSetLightMask(occluder RID.Any, mask int64) 
 		mask     int64
 	}{occluder, mask})
 }
-
-/*
-If 'interpolated' is true, turns on physics interpolation for the light occluder.
-*/
-//go:nosplit
 func (self class) CanvasLightOccluderSetInterpolated(occluder RID.Any, interpolated bool) { //gd:RenderingServer.canvas_light_occluder_set_interpolated
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_occluder_set_interpolated, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -12194,24 +8926,10 @@ func (self class) CanvasLightOccluderSetInterpolated(occluder RID.Any, interpola
 		interpolated bool
 	}{occluder, interpolated})
 }
-
-/*
-Prevents physics interpolation for the current physics tick.
-
-This is useful when moving an occluder to a new location, to give an instantaneous change rather than interpolation from the previous location.
-*/
-//go:nosplit
 func (self class) CanvasLightOccluderResetPhysicsInterpolation(occluder RID.Any) { //gd:RenderingServer.canvas_light_occluder_reset_physics_interpolation
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_occluder_reset_physics_interpolation, 0|(gdextension.SizeRID<<4), &struct{ occluder RID.Any }{occluder})
 }
-
-/*
-Transforms both the current and previous stored transform for a light occluder.
-
-This allows transforming an occluder without creating a "glitch" in the interpolation, which is particularly useful for large worlds utilizing a shifting origin.
-*/
-//go:nosplit
 func (self class) CanvasLightOccluderTransformPhysicsInterpolation(occluder RID.Any, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_light_occluder_transform_physics_interpolation
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_light_occluder_transform_physics_interpolation, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), &struct {
@@ -12219,28 +8937,12 @@ func (self class) CanvasLightOccluderTransformPhysicsInterpolation(occluder RID.
 		transform Transform2D.OriginXY
 	}{occluder, transform})
 }
-
-/*
-Creates a new light occluder polygon and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all canvas_occluder_polygon_* RenderingServer functions.
-
-Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
-
-Note: The equivalent resource is [OccluderPolygon2D].
-
-[OccluderPolygon2D]: https://pkg.go.dev/graphics.gd/classdb/OccluderPolygon2D
-*/
-//go:nosplit
 func (self class) CanvasOccluderPolygonCreate() RID.Any { //gd:RenderingServer.canvas_occluder_polygon_create
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.canvas_occluder_polygon_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the shape of the occluder polygon.
-*/
-//go:nosplit
 func (self class) CanvasOccluderPolygonSetShape(occluder_polygon RID.Any, shape Packed.Array[Vector2.XY], closed bool) { //gd:RenderingServer.canvas_occluder_polygon_set_shape
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_occluder_polygon_set_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeBool<<12), &struct {
@@ -12249,11 +8951,6 @@ func (self class) CanvasOccluderPolygonSetShape(occluder_polygon RID.Any, shape 
 		closed           bool
 	}{occluder_polygon, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](shape)), closed})
 }
-
-/*
-Sets an occluder polygon's cull mode.
-*/
-//go:nosplit
 func (self class) CanvasOccluderPolygonSetCullMode(occluder_polygon RID.Any, mode CanvasOccluderPolygonCullMode) { //gd:RenderingServer.canvas_occluder_polygon_set_cull_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_occluder_polygon_set_cull_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -12261,25 +8958,10 @@ func (self class) CanvasOccluderPolygonSetCullMode(occluder_polygon RID.Any, mod
 		mode             CanvasOccluderPolygonCullMode
 	}{occluder_polygon, mode})
 }
-
-/*
-Sets the [ProjectSettings] "rendering/2d/shadow_atlas/size" to use for [Light2D] shadow rendering (in pixels). The value is rounded up to the nearest power of 2.
-
-[Light2D]: https://pkg.go.dev/graphics.gd/classdb/Light2D
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) CanvasSetShadowTextureSize(size int64) { //gd:RenderingServer.canvas_set_shadow_texture_size
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_set_shadow_texture_size, 0|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 }
-
-/*
-Creates a new global shader uniform.
-
-Note: Global shader parameter names are case-sensitive.
-*/
-//go:nosplit
 func (self class) GlobalShaderParameterAdd(name String.Name, atype GlobalShaderParameterType, default_value variant.Any) { //gd:RenderingServer.global_shader_parameter_add
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_shader_parameter_add, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
@@ -12288,33 +8970,16 @@ func (self class) GlobalShaderParameterAdd(name String.Name, atype GlobalShaderP
 		default_value gdextension.Variant
 	}{pointers.Get(gd.InternalStringName(name)), atype, gdextension.Variant(pointers.Get(gd.InternalVariant(default_value)))})
 }
-
-/*
-Removes the global shader uniform specified by 'name'.
-*/
-//go:nosplit
 func (self class) GlobalShaderParameterRemove(name String.Name) { //gd:RenderingServer.global_shader_parameter_remove
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_shader_parameter_remove, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
-
-/*
-Returns the list of global shader uniform names.
-
-Note: [GlobalShaderParameterGet] has a large performance penalty as the rendering thread needs to synchronize with the calling thread, which is slow. Do not use this method during gameplay to avoid stuttering. If you need to read values in a script after setting them, consider creating an autoload where you store the values you need to query at the same time you're setting them as global parameters.
-*/
-//go:nosplit
 func (self class) GlobalShaderParameterGetList() Array.Contains[String.Name] { //gd:RenderingServer.global_shader_parameter_get_list
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.global_shader_parameter_get_list, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Sets the global shader uniform 'name' to 'value'.
-*/
-//go:nosplit
 func (self class) GlobalShaderParameterSet(name String.Name, value variant.Any) { //gd:RenderingServer.global_shader_parameter_set
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_shader_parameter_set, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), &struct {
@@ -12322,13 +8987,6 @@ func (self class) GlobalShaderParameterSet(name String.Name, value variant.Any) 
 		value gdextension.Variant
 	}{pointers.Get(gd.InternalStringName(name)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-/*
-Overrides the global shader uniform 'name' with 'value'. Equivalent to the [ShaderGlobalsOverride] node.
-
-[ShaderGlobalsOverride]: https://pkg.go.dev/graphics.gd/classdb/ShaderGlobalsOverride
-*/
-//go:nosplit
 func (self class) GlobalShaderParameterSetOverride(name String.Name, value variant.Any) { //gd:RenderingServer.global_shader_parameter_set_override
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_shader_parameter_set_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), &struct {
@@ -12336,177 +8994,74 @@ func (self class) GlobalShaderParameterSetOverride(name String.Name, value varia
 		value gdextension.Variant
 	}{pointers.Get(gd.InternalStringName(name)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-/*
-Returns the value of the global shader uniform specified by 'name'.
-
-Note: [GlobalShaderParameterGet] has a large performance penalty as the rendering thread needs to synchronize with the calling thread, which is slow. Do not use this method during gameplay to avoid stuttering. If you need to read values in a script after setting them, consider creating an autoload where you store the values you need to query at the same time you're setting them as global parameters.
-*/
-//go:nosplit
 func (self class) GlobalShaderParameterGet(name String.Name) variant.Any { //gd:RenderingServer.global_shader_parameter_get
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.global_shader_parameter_get, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Returns the type associated to the global shader uniform specified by 'name'.
-
-Note: [GlobalShaderParameterGet] has a large performance penalty as the rendering thread needs to synchronize with the calling thread, which is slow. Do not use this method during gameplay to avoid stuttering. If you need to read values in a script after setting them, consider creating an autoload where you store the values you need to query at the same time you're setting them as global parameters.
-*/
-//go:nosplit
 func (self class) GlobalShaderParameterGetType(name String.Name) GlobalShaderParameterType { //gd:RenderingServer.global_shader_parameter_get_type
 	once.Do(singleton)
 	var r_ret = noescape.Call[GlobalShaderParameterType](gd.ObjectChecked(self.AsObject()), methods.global_shader_parameter_get_type, gdextension.SizeInt|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Tries to free an object in the RenderingServer. To avoid memory leaks, this should be called after using an object as memory management does not occur automatically when using RenderingServer directly.
-*/
-//go:nosplit
 func (self class) FreeRid(rid RID.Any) { //gd:RenderingServer.free_rid
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.free_rid, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 }
-
-/*
-Schedules a callback to the given callable after a frame has been drawn.
-*/
-//go:nosplit
 func (self class) RequestFrameDrawnCallback(callable Callable.Function) { //gd:RenderingServer.request_frame_drawn_callback
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_frame_drawn_callback, 0|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
 }
-
-/*
-Returns true if changes have been made to the RenderingServer's data. [ForceDraw] is usually called if this happens.
-*/
-//go:nosplit
 func (self class) HasChanged() bool { //gd:RenderingServer.has_changed
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_changed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a statistic about the rendering engine which can be used for performance profiling. See also [ViewportGetRenderInfo], which returns information specific to a viewport.
-
-Note: Only 3D rendering is currently taken into account by some of these values, such as the number of draw calls.
-
-Note: Rendering information is not available until at least 2 frames have been rendered by the engine. If rendering information is not available, [GetRenderingInfo] returns 0. To print rendering information in _ready() successfully, use the following:
-
-
-	if Engine.GetFramesDrawn() == 2 {
-		fmt.Println(RenderingServer.GetRenderingInfo(RenderingServer.RenderingInfoTotalDrawCallsInFrame))
-	}
-
-*/
-//go:nosplit
 func (self class) GetRenderingInfo(info RenderingInfo) int64 { //gd:RenderingServer.get_rendering_info
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_rendering_info, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ info RenderingInfo }{info})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the name of the video adapter (e.g. "GeForce GTX 1080/PCIe/SSE2").
-
-Note: When running a headless or server binary, this function returns an empty string.
-
-Note: On the web platform, some browsers such as Firefox may report a different, fixed GPU name such as "GeForce GTX 980" (regardless of the user's actual GPU model). This is done to make fingerprinting more difficult.
-*/
-//go:nosplit
 func (self class) GetVideoAdapterName() String.Readable { //gd:RenderingServer.get_video_adapter_name
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_video_adapter_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the vendor of the video adapter (e.g. "NVIDIA Corporation").
-
-Note: When running a headless or server binary, this function returns an empty string.
-*/
-//go:nosplit
 func (self class) GetVideoAdapterVendor() String.Readable { //gd:RenderingServer.get_video_adapter_vendor
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_video_adapter_vendor, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the type of the video adapter. Since dedicated graphics cards from a given generation will usually be significantly faster than integrated graphics made in the same generation, the device type can be used as a basis for automatic graphics settings adjustment. However, this is not always true, so make sure to provide users with a way to manually override graphics settings.
-
-Note: When using the OpenGL rendering driver or when running in headless mode, this function always returns [Renderingdevice.DeviceTypeOther].
-*/
-//go:nosplit
 func (self class) GetVideoAdapterType() Rendering.DeviceType { //gd:RenderingServer.get_video_adapter_type
 	once.Do(singleton)
 	var r_ret = noescape.Call[Rendering.DeviceType](gd.ObjectChecked(self.AsObject()), methods.get_video_adapter_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the version of the graphics video adapter currently in use (e.g. "1.2.189" for Vulkan, "3.3.0 NVIDIA 510.60.02" for OpenGL). This version may be different from the actual latest version supported by the hardware, as Godot may not always request the latest version. See also [OS.GetVideoAdapterDriverInfo].
-
-Note: When running a headless or server binary, this function returns an empty string.
-
-[OS.GetVideoAdapterDriverInfo]: https://pkg.go.dev/graphics.gd/classdb/OS#GetVideoAdapterDriverInfo
-*/
-//go:nosplit
 func (self class) GetVideoAdapterApiVersion() String.Readable { //gd:RenderingServer.get_video_adapter_api_version
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_video_adapter_api_version, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the name of the current rendering driver. This can be vulkan, d3d12, metal, opengl3, opengl3_es, or opengl3_angle. See also [GetCurrentRenderingMethod].
-
-When [ProjectSettings] "rendering/renderer/rendering_method" is forward_plus or mobile, the rendering driver is determined by [ProjectSettings] "rendering/rendering_device/driver".
-
-When [ProjectSettings] "rendering/renderer/rendering_method" is gl_compatibility, the rendering driver is determined by [ProjectSettings] "rendering/gl_compatibility/driver".
-
-The rendering driver is also determined by the --rendering-driver command line argument that overrides this project setting, or an automatic fallback that is applied depending on the hardware.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) GetCurrentRenderingDriverName() String.Readable { //gd:RenderingServer.get_current_rendering_driver_name
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_rendering_driver_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the name of the current rendering method. This can be forward_plus, mobile, or gl_compatibility. See also [GetCurrentRenderingDriverName].
-
-The rendering method is determined by [ProjectSettings] "rendering/renderer/rendering_method", the --rendering-method command line argument that overrides this project setting, or an automatic fallback that is applied depending on the hardware.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) GetCurrentRenderingMethod() String.Readable { //gd:RenderingServer.get_current_rendering_method
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_rendering_method, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns a mesh of a sphere with the given number of horizontal subdivisions, vertical subdivisions and radius. See also [GetTestCube].
-*/
-//go:nosplit
 func (self class) MakeSphereMesh(latitudes int64, longitudes int64, radius float64) RID.Any { //gd:RenderingServer.make_sphere_mesh
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.make_sphere_mesh, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
@@ -12517,64 +9072,24 @@ func (self class) MakeSphereMesh(latitudes int64, longitudes int64, radius float
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the RID of the test cube. This mesh will be created and returned on the first call to [GetTestCube], then it will be cached for subsequent calls. See also [MakeSphereMesh].
-*/
-//go:nosplit
 func (self class) GetTestCube() RID.Any { //gd:RenderingServer.get_test_cube
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_test_cube, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the RID of a 256×256 texture with a testing pattern on it (in [Image.FormatRgb8] format). This texture will be created and returned on the first call to [GetTestTexture], then it will be cached for subsequent calls. See also [GetWhiteTexture].
-
-Example: Get the test texture and apply it to a [Sprite2D] node:
-
-
-	var texture_rid = RenderingServer.GetTestTexture()
-	var texture = ImageTexture.CreateFromImage(RenderingServer.Texture2dGet(RID.Texture2D(texture_rid)))
-	sprite.SetTexture(texture.AsTexture2D())
-
-
-[Sprite2D]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D
-*/
-//go:nosplit
 func (self class) GetTestTexture() RID.Any { //gd:RenderingServer.get_test_texture
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_test_texture, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the ID of a 4×4 white texture (in [Image.FormatRgb8] format). This texture will be created and returned on the first call to [GetWhiteTexture], then it will be cached for subsequent calls. See also [GetTestTexture].
-
-Example: Get the white texture and apply it to a [Sprite2D] node:
-
-
-	var texture_rid = RenderingServer.GetWhiteTexture()
-	var texture = ImageTexture.CreateFromImage(RenderingServer.Texture2dGet(RID.Texture2D(texture_rid)))
-	sprite.SetTexture(texture.AsTexture2D())
-
-
-[Sprite2D]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D
-*/
-//go:nosplit
 func (self class) GetWhiteTexture() RID.Any { //gd:RenderingServer.get_white_texture
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_white_texture, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets a boot image. The color defines the background color. If 'scale' is true, the image will be scaled to fit the screen size. If 'use_filter' is true, the image will be scaled with linear interpolation. If 'use_filter' is false, the image will be scaled with nearest-neighbor interpolation.
-*/
-//go:nosplit
 func (self class) SetBootImage(image [1]gdclass.Image, color Color.RGBA, scale bool, use_filter bool) { //gd:RenderingServer.set_boot_image
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_boot_image, 0|(gdextension.SizeObject<<4)|(gdextension.SizeColor<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
@@ -12584,87 +9099,46 @@ func (self class) SetBootImage(image [1]gdclass.Image, color Color.RGBA, scale b
 		use_filter bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0]))), color, scale, use_filter})
 }
-
-/*
-Returns the default clear color which is used when a specific clear color has not been selected. See also [SetDefaultClearColor].
-*/
-//go:nosplit
 func (self class) GetDefaultClearColor() Color.RGBA { //gd:RenderingServer.get_default_clear_color
 	once.Do(singleton)
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_default_clear_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the default clear color which is used when a specific clear color has not been selected. See also [GetDefaultClearColor].
-*/
-//go:nosplit
 func (self class) SetDefaultClearColor(color Color.RGBA) { //gd:RenderingServer.set_default_clear_color
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_clear_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
-
-/*
-Returns true if the OS supports a certain 'feature'. Features might be s3tc, etc, and etc2.
-*/
-//go:nosplit
 func (self class) HasOsFeature(feature String.Readable) bool { //gd:RenderingServer.has_os_feature
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_os_feature, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ feature gdextension.String }{pointers.Get(gd.InternalString(feature))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-If 'generate' is true, generates debug wireframes for all meshes that are loaded when using the Compatibility renderer. By default, the engine does not generate debug wireframes at runtime, since they slow down loading of assets and take up VRAM.
-
-Note: You must call this method before loading any meshes when using the Compatibility renderer, otherwise wireframes will not be used.
-*/
-//go:nosplit
 func (self class) SetDebugGenerateWireframes(generate bool) { //gd:RenderingServer.set_debug_generate_wireframes
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_generate_wireframes, 0|(gdextension.SizeBool<<4), &struct{ generate bool }{generate})
 }
-
-//go:nosplit
 func (self class) IsRenderLoopEnabled() bool { //gd:RenderingServer.is_render_loop_enabled
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_render_loop_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRenderLoopEnabled(enabled bool) { //gd:RenderingServer.set_render_loop_enabled
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_render_loop_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-/*
-Returns the time taken to setup rendering on the CPU in milliseconds. This value is shared across all viewports and does not require [ViewportSetMeasureRenderTime] to be enabled on a viewport to be queried. See also [ViewportGetMeasuredRenderTimeCpu].
-*/
-//go:nosplit
 func (self class) GetFrameSetupTimeCpu() float64 { //gd:RenderingServer.get_frame_setup_time_cpu
 	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_frame_setup_time_cpu, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Forces a synchronization between the CPU and GPU, which may be required in certain cases. Only call this when needed, as CPU-GPU synchronization has a performance cost.
-*/
-//go:nosplit
 func (self class) ForceSync() { //gd:RenderingServer.force_sync
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_sync, 0, &struct{}{})
 }
-
-/*
-Forces redrawing of all viewports at once. Must be called from the main thread.
-*/
-//go:nosplit
 func (self class) ForceDraw(swap_buffers bool, frame_step float64) { //gd:RenderingServer.force_draw
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_draw, 0|(gdextension.SizeBool<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -12672,59 +9146,28 @@ func (self class) ForceDraw(swap_buffers bool, frame_step float64) { //gd:Render
 		frame_step   float64
 	}{swap_buffers, frame_step})
 }
-
-/*
-Returns the global RenderingDevice.
-
-Note: When using the OpenGL rendering driver or when running in headless mode, this function always returns null.
-*/
-//go:nosplit
 func (self class) GetRenderingDevice() [1]gdclass.RenderingDevice { //gd:RenderingServer.get_rendering_device
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_rendering_device, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.RenderingDevice{gdclass.NewRenderingDevice(gd.PointerBorrowedTemporarily[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Creates a RenderingDevice that can be used to do draw and compute operations on a separate thread. Cannot draw to the screen nor share data with the global RenderingDevice.
-
-Note: When using the OpenGL rendering driver or when running in headless mode, this function always returns null.
-*/
-//go:nosplit
 func (self class) CreateLocalRenderingDevice() [1]gdclass.RenderingDevice { //gd:RenderingServer.create_local_rendering_device
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_local_rendering_device, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.RenderingDevice{gdclass.NewRenderingDevice(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns true if our code is currently executing on the rendering thread.
-*/
-//go:nosplit
 func (self class) IsOnRenderThread() bool { //gd:RenderingServer.is_on_render_thread
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_on_render_thread, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-As the RenderingServer actual logic may run on a separate thread, accessing its internals from the main (or any other) thread will result in errors. To make it easier to run code that can safely access the rendering internals (such as [RenderingDevice] and similar RD classes), push a callable via this function so it will be executed on the render thread.
-
-[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
-*/
-//go:nosplit
 func (self class) CallOnRenderThread(callable Callable.Function) { //gd:RenderingServer.call_on_render_thread
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.call_on_render_thread, 0|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
 }
-
-/*
-This method does nothing and always returns false.
-*/
-//go:nosplit
 func (self class) HasFeature(feature Features) bool { //gd:RenderingServer.has_feature
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_feature, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ feature Features }{feature})

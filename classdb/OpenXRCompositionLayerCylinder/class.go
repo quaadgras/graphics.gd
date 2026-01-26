@@ -219,48 +219,33 @@ func (self Instance) SetFallbackSegments(value int) Instance { //gd:OpenXRCompos
 	return self
 }
 
-//go:nosplit
 func (self class) SetRadius(radius float64) { //gd:OpenXRCompositionLayerCylinder.set_radius
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
-
-//go:nosplit
 func (self class) GetRadius() float64 { //gd:OpenXRCompositionLayerCylinder.get_radius
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAspectRatio(aspect_ratio float64) { //gd:OpenXRCompositionLayerCylinder.set_aspect_ratio
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_aspect_ratio, 0|(gdextension.SizeFloat<<4), &struct{ aspect_ratio float64 }{aspect_ratio})
 }
-
-//go:nosplit
 func (self class) GetAspectRatio() float64 { //gd:OpenXRCompositionLayerCylinder.get_aspect_ratio
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_aspect_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCentralAngle(angle float64) { //gd:OpenXRCompositionLayerCylinder.set_central_angle
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_central_angle, 0|(gdextension.SizeFloat<<4), &struct{ angle float64 }{angle})
 }
-
-//go:nosplit
 func (self class) GetCentralAngle() float64 { //gd:OpenXRCompositionLayerCylinder.get_central_angle
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_central_angle, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFallbackSegments(segments int64) { //gd:OpenXRCompositionLayerCylinder.set_fallback_segments
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_segments, 0|(gdextension.SizeInt<<4), &struct{ segments int64 }{segments})
 }
-
-//go:nosplit
 func (self class) GetFallbackSegments() int64 { //gd:OpenXRCompositionLayerCylinder.get_fallback_segments
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fallback_segments, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

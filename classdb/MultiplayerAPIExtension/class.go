@@ -471,12 +471,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Callback for [MultiplayerAPI.Poll].
-
-[MultiplayerAPI.Poll]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.Poll
-*/
 func (class) _poll(impl func(ptr gdclass.Receiver) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -489,12 +483,6 @@ func (class) _poll(impl func(ptr gdclass.Receiver) Error.Code) (cb gd.ExtensionC
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Called when the [MultiplayerAPI.MultiplayerPeer] is set.
-
-[MultiplayerAPI.MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.MultiplayerPeer
-*/
 func (class) _set_multiplayer_peer(impl func(ptr gdclass.Receiver, multiplayer_peer [1]gdclass.MultiplayerPeer)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var multiplayer_peer = [1]gdclass.MultiplayerPeer{gdclass.NewMultiplayerPeer(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -504,12 +492,6 @@ func (class) _set_multiplayer_peer(impl func(ptr gdclass.Receiver, multiplayer_p
 		impl(self, multiplayer_peer)
 	}
 }
-
-/*
-Called when the [MultiplayerAPI.MultiplayerPeer] is retrieved.
-
-[MultiplayerAPI.MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.MultiplayerPeer
-*/
 func (class) _get_multiplayer_peer(impl func(ptr gdclass.Receiver) [1]gdclass.MultiplayerPeer) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -522,12 +504,6 @@ func (class) _get_multiplayer_peer(impl func(ptr gdclass.Receiver) [1]gdclass.Mu
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Callback for [MultiplayerAPI.GetUniqueId].
-
-[MultiplayerAPI.GetUniqueId]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.GetUniqueId
-*/
 func (class) _get_unique_id(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -535,12 +511,6 @@ func (class) _get_unique_id(impl func(ptr gdclass.Receiver) int64) (cb gd.Extens
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Callback for [MultiplayerAPI.GetPeers].
-
-[MultiplayerAPI.GetPeers]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.GetPeers
-*/
 func (class) _get_peer_ids(impl func(ptr gdclass.Receiver) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -553,12 +523,6 @@ func (class) _get_peer_ids(impl func(ptr gdclass.Receiver) Packed.Array[int32]) 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Callback for [MultiplayerAPI.Rpc].
-
-[MultiplayerAPI.Rpc]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.Rpc
-*/
 func (class) _rpc(impl func(ptr gdclass.Receiver, peer int64, obj [1]gd.Object, method String.Name, args Array.Any) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var peer = gd.UnsafeGet[int64](p_args, 0)
@@ -578,12 +542,6 @@ func (class) _rpc(impl func(ptr gdclass.Receiver, peer int64, obj [1]gd.Object, 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Callback for [MultiplayerAPI.GetRemoteSenderId].
-
-[MultiplayerAPI.GetRemoteSenderId]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.GetRemoteSenderId
-*/
 func (class) _get_remote_sender_id(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -591,12 +549,6 @@ func (class) _get_remote_sender_id(impl func(ptr gdclass.Receiver) int64) (cb gd
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Callback for [MultiplayerAPI.ObjectConfigurationAdd].
-
-[MultiplayerAPI.ObjectConfigurationAdd]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.ObjectConfigurationAdd
-*/
 func (class) _object_configuration_add(impl func(ptr gdclass.Receiver, obj [1]gd.Object, configuration variant.Any) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
@@ -613,12 +565,6 @@ func (class) _object_configuration_add(impl func(ptr gdclass.Receiver, obj [1]gd
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Callback for [MultiplayerAPI.ObjectConfigurationRemove].
-
-[MultiplayerAPI.ObjectConfigurationRemove]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.ObjectConfigurationRemove
-*/
 func (class) _object_configuration_remove(impl func(ptr gdclass.Receiver, obj [1]gd.Object, configuration variant.Any) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}

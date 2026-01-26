@@ -236,21 +236,12 @@ func (self Instance) SetRelaxation(value Float.X) Instance { //gd:ConeTwistJoint
 	return self
 }
 
-/*
-Sets the value of the specified parameter.
-*/
-//go:nosplit
 func (self class) SetParam(param Param, value float64) { //gd:ConeTwistJoint3D.set_param
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		param Param
 		value float64
 	}{param, value})
 }
-
-/*
-Returns the value of the specified parameter.
-*/
-//go:nosplit
 func (self class) GetParam(param Param) float64 { //gd:ConeTwistJoint3D.get_param
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_param, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ param Param }{param})
 	var ret = r_ret

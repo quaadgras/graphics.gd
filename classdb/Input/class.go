@@ -867,77 +867,36 @@ func SetEmulateTouchFromMouse(value bool) { //gd:Input.emulate_touch_from_mouse
 	class(self).SetEmulateTouchFromMouse(value)
 }
 
-/*
-Returns true if any action, key, joypad button, or mouse button is being pressed. This will also return true if any action is simulated via code by calling [ActionPress].
-*/
-//go:nosplit
 func (self class) IsAnythingPressed() bool { //gd:Input.is_anything_pressed
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_anything_pressed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if you are pressing the Latin key in the current keyboard layout. You can pass a [Key] constant.
-
-[IsKeyPressed] is only recommended over [IsPhysicalKeyPressed] in non-game applications. This ensures that shortcut keys behave as expected depending on the user's keyboard layout, as keyboard shortcuts are generally dependent on the keyboard layout in non-game applications. If in doubt, use [IsPhysicalKeyPressed].
-
-Note: Due to keyboard ghosting, [IsKeyPressed] may return false even if one of the action's keys is pressed. See [Input examples] in the documentation for more information.
-
-[Input examples]: https://docs.godotengine.org/tutorials/inputs/input_examples.html#keyboard-events
-*/
-//go:nosplit
 func (self class) IsKeyPressed(keycode Key) bool { //gd:Input.is_key_pressed
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_key_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ keycode int64 }{int64(keycode)})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if you are pressing the key in the physical location on the 101/102-key US QWERTY keyboard. You can pass a [Key] constant.
-
-[IsPhysicalKeyPressed] is recommended over [IsKeyPressed] for in-game actions, as it will make W/A/S/D layouts work regardless of the user's keyboard layout. [IsPhysicalKeyPressed] will also ensure that the top row number keys work on any keyboard layout. If in doubt, use [IsPhysicalKeyPressed].
-
-Note: Due to keyboard ghosting, [IsPhysicalKeyPressed] may return false even if one of the action's keys is pressed. See [Input examples] in the documentation for more information.
-
-[Input examples]: https://docs.godotengine.org/tutorials/inputs/input_examples.html#keyboard-events
-*/
-//go:nosplit
 func (self class) IsPhysicalKeyPressed(keycode Key) bool { //gd:Input.is_physical_key_pressed
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_physical_key_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ keycode int64 }{int64(keycode)})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if you are pressing the key with the 'keycode' printed on it. You can pass a [Key] constant or any Unicode character code.
-*/
-//go:nosplit
 func (self class) IsKeyLabelPressed(keycode Key) bool { //gd:Input.is_key_label_pressed
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_key_label_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ keycode int64 }{int64(keycode)})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if you are pressing the mouse button specified with [MouseButton].
-*/
-//go:nosplit
 func (self class) IsMouseButtonPressed(button MouseButton) bool { //gd:Input.is_mouse_button_pressed
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_mouse_button_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ button int64 }{int64(button)})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if you are pressing the joypad button at index 'button'.
-*/
-//go:nosplit
 func (self class) IsJoyButtonPressed(device int64, button JoyButton) bool { //gd:Input.is_joy_button_pressed
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_joy_button_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
@@ -947,20 +906,6 @@ func (self class) IsJoyButtonPressed(device int64, button JoyButton) bool { //gd
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if you are pressing the action event.
-
-If 'exact_match' is false, it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
-
-Note: Due to keyboard ghosting, [IsActionPressed] may return false even if one of the action's keys is pressed. See [Input examples] in the documentation for more information.
-
-[Input examples]: https://docs.godotengine.org/tutorials/inputs/input_examples.html#keyboard-events
-[InputEventJoypadMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadMotion
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-*/
-//go:nosplit
 func (self class) IsActionPressed(action String.Name, exact_match bool) bool { //gd:Input.is_action_pressed
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_pressed, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
@@ -970,28 +915,6 @@ func (self class) IsActionPressed(action String.Name, exact_match bool) bool { /
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true when the user has started pressing the action event in the current frame or physics tick. It will only return true on the frame or tick that the user pressed down the button.
-
-This is useful for code that needs to run only once when an action is pressed, instead of every frame while it's pressed.
-
-If 'exact_match' is false, it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
-
-Note: Returning true does not imply that the action is still pressed. An action can be pressed and released again rapidly, and true will still be returned so as not to miss input.
-
-Note: Due to keyboard ghosting, [IsActionJustPressed] may return false even if one of the action's keys is pressed. See [Input examples] in the documentation for more information.
-
-Note: During input handling (e.g. [Node.Input]), use [InputEvent.IsActionPressed] instead to query the action state of the current event. See also [IsActionJustPressedByEvent].
-
-[Input examples]: https://docs.godotengine.org/tutorials/inputs/input_examples.html#keyboard-events
-[InputEvent.IsActionPressed]: https://pkg.go.dev/graphics.gd/classdb/InputEvent#Instance.IsActionPressed
-[InputEventJoypadMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadMotion
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-[Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
-*/
-//go:nosplit
 func (self class) IsActionJustPressed(action String.Name, exact_match bool) bool { //gd:Input.is_action_just_pressed
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_just_pressed, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
@@ -1001,23 +924,6 @@ func (self class) IsActionJustPressed(action String.Name, exact_match bool) bool
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true when the user stops pressing the action event in the current frame or physics tick. It will only return true on the frame or tick that the user releases the button.
-
-Note: Returning true does not imply that the action is still not pressed. An action can be released and pressed again rapidly, and true will still be returned so as not to miss input.
-
-If 'exact_match' is false, it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
-
-Note: During input handling (e.g. [Node.Input]), use [InputEvent.IsActionReleased] instead to query the action state of the current event. See also [IsActionJustReleasedByEvent].
-
-[InputEvent.IsActionReleased]: https://pkg.go.dev/graphics.gd/classdb/InputEvent#Instance.IsActionReleased
-[InputEventJoypadMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadMotion
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-[Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
-*/
-//go:nosplit
 func (self class) IsActionJustReleased(action String.Name, exact_match bool) bool { //gd:Input.is_action_just_released
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_just_released, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
@@ -1027,25 +933,6 @@ func (self class) IsActionJustReleased(action String.Name, exact_match bool) boo
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true when the user has started pressing the action event in the current frame or physics tick, and the first event that triggered action press in the current frame/physics tick was 'event'. It will only return true on the frame or tick that the user pressed down the button.
-
-This is useful for code that needs to run only once when an action is pressed, and the action is processed during input handling (e.g. [Node.Input]).
-
-If 'exact_match' is false, it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
-
-Note: Returning true does not imply that the action is still pressed. An action can be pressed and released again rapidly, and true will still be returned so as not to miss input.
-
-Note: Due to keyboard ghosting, [IsActionJustPressed] may return false even if one of the action's keys is pressed. See [Input examples] in the documentation for more information.
-
-[Input examples]: https://docs.godotengine.org/tutorials/inputs/input_examples.html#keyboard-events
-[InputEventJoypadMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadMotion
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-[Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
-*/
-//go:nosplit
 func (self class) IsActionJustPressedByEvent(action String.Name, event [1]gdclass.InputEvent, exact_match bool) bool { //gd:Input.is_action_just_pressed_by_event
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_just_pressed_by_event, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12), &struct {
@@ -1056,22 +943,6 @@ func (self class) IsActionJustPressedByEvent(action String.Name, event [1]gdclas
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true when the user stops pressing the action event in the current frame or physics tick, and the first event that triggered action release in the current frame/physics tick was 'event'. It will only return true on the frame or tick that the user releases the button.
-
-This is useful when an action is processed during input handling (e.g. [Node.Input]).
-
-Note: Returning true does not imply that the action is still not pressed. An action can be released and pressed again rapidly, and true will still be returned so as not to miss input.
-
-If 'exact_match' is false, it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
-
-[InputEventJoypadMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadMotion
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-[Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
-*/
-//go:nosplit
 func (self class) IsActionJustReleasedByEvent(action String.Name, event [1]gdclass.InputEvent, exact_match bool) bool { //gd:Input.is_action_just_released_by_event
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_just_released_by_event, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12), &struct {
@@ -1082,17 +953,6 @@ func (self class) IsActionJustReleasedByEvent(action String.Name, event [1]gdcla
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a value between 0 and 1 representing the intensity of the given action. In a joypad, for example, the further away the axis (analog sticks or L2, R2 triggers) is from the dead zone, the closer the value will be to 1. If the action is mapped to a control that has no axis such as the keyboard, the value returned will be 0 or 1.
-
-If 'exact_match' is false, it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
-
-[InputEventJoypadMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadMotion
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-*/
-//go:nosplit
 func (self class) GetActionStrength(action String.Name, exact_match bool) float64 { //gd:Input.get_action_strength
 	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_action_strength, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
@@ -1102,17 +962,6 @@ func (self class) GetActionStrength(action String.Name, exact_match bool) float6
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a value between 0 and 1 representing the raw intensity of the given action, ignoring the action's deadzone. In most cases, you should use [GetActionStrength] instead.
-
-If 'exact_match' is false, it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
-
-[InputEventJoypadMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadMotion
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-*/
-//go:nosplit
 func (self class) GetActionRawStrength(action String.Name, exact_match bool) float64 { //gd:Input.get_action_raw_strength
 	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_action_raw_strength, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
@@ -1122,13 +971,6 @@ func (self class) GetActionRawStrength(action String.Name, exact_match bool) flo
 	var ret = r_ret
 	return ret
 }
-
-/*
-Get axis input by specifying two actions, one negative and one positive.
-
-This is a shorthand for writing Input.get_action_strength("positive_action") - Input.get_action_strength("negative_action").
-*/
-//go:nosplit
 func (self class) GetAxis(negative_action String.Name, positive_action String.Name) float64 { //gd:Input.get_axis
 	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_axis, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
@@ -1138,15 +980,6 @@ func (self class) GetAxis(negative_action String.Name, positive_action String.Na
 	var ret = r_ret
 	return ret
 }
-
-/*
-Gets an input vector by specifying four actions for the positive and negative X and Y axes.
-
-This method is useful when getting vector input, such as from a joystick, directional pad, arrows, or WASD. The vector has its length limited to 1 and has a circular deadzone, which is useful for using vector input as movement.
-
-By default, the deadzone is automatically calculated from the average of the action deadzones. However, you can override the deadzone to be whatever you want (on the range of 0 to 1).
-*/
-//go:nosplit
 func (self class) GetVector(negative_x String.Name, positive_x String.Name, negative_y String.Name, positive_y String.Name, deadzone float64) Vector2.XY { //gd:Input.get_vector
 	once.Do(singleton)
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_vector, gdextension.SizeVector2|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeStringName<<16)|(gdextension.SizeFloat<<20), &struct {
@@ -1159,11 +992,6 @@ func (self class) GetVector(negative_x String.Name, positive_x String.Name, nega
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a new mapping entry (in SDL2 format) to the mapping database. Optionally update already connected devices.
-*/
-//go:nosplit
 func (self class) AddJoyMapping(mapping String.Readable, update_existing bool) { //gd:Input.add_joy_mapping
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_joy_mapping, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
@@ -1171,33 +999,16 @@ func (self class) AddJoyMapping(mapping String.Readable, update_existing bool) {
 		update_existing bool
 	}{pointers.Get(gd.InternalString(mapping)), update_existing})
 }
-
-/*
-Removes all mappings from the internal database that match the given GUID. All currently connected joypads that use this GUID will become unmapped.
-
-On Android, Godot will map to an internal fallback mapping.
-*/
-//go:nosplit
 func (self class) RemoveJoyMapping(guid String.Readable) { //gd:Input.remove_joy_mapping
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_joy_mapping, 0|(gdextension.SizeString<<4), &struct{ guid gdextension.String }{pointers.Get(gd.InternalString(guid))})
 }
-
-/*
-Returns true if the system knows the specified device. This means that it sets all button and axis indices. Unknown joypads are not expected to match these constants, but you can still retrieve events from them.
-*/
-//go:nosplit
 func (self class) IsJoyKnown(device int64) bool { //gd:Input.is_joy_known
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_joy_known, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the current value of the joypad axis at index 'axis'.
-*/
-//go:nosplit
 func (self class) GetJoyAxis(device int64, axis JoyAxis) float64 { //gd:Input.get_joy_axis
 	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_joy_axis, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
@@ -1207,70 +1018,24 @@ func (self class) GetJoyAxis(device int64, axis JoyAxis) float64 { //gd:Input.ge
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the name of the joypad at the specified device index, e.g. PS4 Controller. Godot uses the [SDL2 game controller database] to determine gamepad names.
-
-[SDL2 game controller database]: https://github.com/gabomdq/SDL_GameControllerDB
-*/
-//go:nosplit
 func (self class) GetJoyName(device int64) String.Readable { //gd:Input.get_joy_name
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_joy_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns an SDL2-compatible device GUID on platforms that use gamepad remapping, e.g. 030000004c050000c405000000010000. Returns an empty string if it cannot be found. Godot uses the [SDL2 game controller database] to determine gamepad names and mappings based on this GUID.
-
-On Windows, all XInput joypad GUIDs will be overridden by Godot to __XINPUT_DEVICE__, because their mappings are the same.
-
-[SDL2 game controller database]: https://github.com/gabomdq/SDL_GameControllerDB
-*/
-//go:nosplit
 func (self class) GetJoyGuid(device int64) String.Readable { //gd:Input.get_joy_guid
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_joy_guid, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns a dictionary with extra platform-specific information about the device, e.g. the raw gamepad name from the OS or the Steam Input index.
-
-On Windows, Linux, and macOS, the dictionary contains the following fields:
-
-raw_name: The name of the controller as it came from the OS, before getting renamed by the controller database.
-
-vendor_id: The USB vendor ID of the device.
-
-product_id: The USB product ID of the device.
-
-steam_input_index: The Steam Input gamepad index, if the device is not a Steam Input device this key won't be present.
-
-On Windows, the dictionary can have an additional field:
-
-xinput_index: The index of the controller in the XInput system. This key won't be present for devices not handled by XInput.
-
-Note: The returned dictionary is always empty on Android, iOS, visionOS, and Web.
-*/
-//go:nosplit
 func (self class) GetJoyInfo(device int64) Dictionary.Any { //gd:Input.get_joy_info
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_joy_info, gdextension.SizeDictionary|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Queries whether an input device should be ignored or not. Devices can be ignored by setting the environment variable SDL_GAMECONTROLLER_IGNORE_DEVICES. Read the [SDL documentation] for more information.
-
-Note: Some 3rd party tools can contribute to the list of ignored devices. For example, SteamInput creates virtual devices from physical devices for remapping purposes. To avoid handling the same input device twice, the original device is added to the ignore list.
-
-[SDL documentation]: https://wiki.libsdl.org/SDL2
-*/
-//go:nosplit
 func (self class) ShouldIgnoreDevice(vendor_id int64, product_id int64) bool { //gd:Input.should_ignore_device
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.should_ignore_device, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
@@ -1280,48 +1045,24 @@ func (self class) ShouldIgnoreDevice(vendor_id int64, product_id int64) bool { /
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns an slice containing the device IDs of all currently connected joypads.
-*/
-//go:nosplit
 func (self class) GetConnectedJoypads() Array.Contains[int64] { //gd:Input.get_connected_joypads
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_connected_joypads, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[int64]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns the strength of the joypad vibration: x is the strength of the weak motor, and y is the strength of the strong motor.
-*/
-//go:nosplit
 func (self class) GetJoyVibrationStrength(device int64) Vector2.XY { //gd:Input.get_joy_vibration_strength
 	once.Do(singleton)
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_joy_vibration_strength, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the duration of the current vibration effect in seconds.
-*/
-//go:nosplit
 func (self class) GetJoyVibrationDuration(device int64) float64 { //gd:Input.get_joy_vibration_duration
 	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_joy_vibration_duration, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Starts to vibrate the joypad. Joypads usually come with two rumble motors, a strong and a weak one. 'weak_magnitude' is the strength of the weak motor (between 0 and 1) and 'strong_magnitude' is the strength of the strong motor (between 0 and 1). 'duration' is the duration of the effect in seconds (a duration of 0 will try to play the vibration indefinitely). The vibration can be stopped early by calling [StopJoyVibration].
-
-Note: Not every hardware is compatible with long effect durations; it is recommended to restart an effect if it has to be played for more than a few seconds.
-
-Note: For macOS, vibration is only supported in macOS 11 and later.
-*/
-//go:nosplit
 func (self class) StartJoyVibration(device int64, weak_magnitude float64, strong_magnitude float64, duration float64) { //gd:Input.start_joy_vibration
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.start_joy_vibration, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), &struct {
@@ -1331,32 +1072,10 @@ func (self class) StartJoyVibration(device int64, weak_magnitude float64, strong
 		duration         float64
 	}{device, weak_magnitude, strong_magnitude, duration})
 }
-
-/*
-Stops the vibration of the joypad started with [StartJoyVibration].
-*/
-//go:nosplit
 func (self class) StopJoyVibration(device int64) { //gd:Input.stop_joy_vibration
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop_joy_vibration, 0|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 }
-
-/*
-Vibrate the handheld device for the specified duration in milliseconds.
-
-'amplitude' is the strength of the vibration, as a value between 0.0 and 1.0. If set to -1.0, the default vibration strength of the device is used.
-
-Note: This method is implemented on Android, iOS, and Web. It has no effect on other platforms.
-
-Note: For Android, [VibrateHandheld] requires enabling the VIBRATE permission in the export preset. Otherwise, [VibrateHandheld] will have no effect.
-
-Note: For iOS, specifying the duration is only supported in iOS 13 and later.
-
-Note: For Web, the amplitude cannot be changed.
-
-Note: Some web browsers such as Safari and Firefox for Android do not support [VibrateHandheld].
-*/
-//go:nosplit
 func (self class) VibrateHandheld(duration_ms int64, amplitude float64) { //gd:Input.vibrate_handheld
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.vibrate_handheld, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -1364,194 +1083,78 @@ func (self class) VibrateHandheld(duration_ms int64, amplitude float64) { //gd:I
 		amplitude   float64
 	}{duration_ms, amplitude})
 }
-
-/*
-Returns the gravity in m/s² of the device's accelerometer sensor, if the device has one. Otherwise, the method returns [Vector3.Zero].
-
-Note: This method only works on Android and iOS. On other platforms, it always returns [Vector3.Zero].
-
-Note: For Android, [ProjectSettings] "input_devices/sensors/enable_gravity" must be enabled.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) GetGravity() Vector3.XYZ { //gd:Input.get_gravity
 	once.Do(singleton)
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_gravity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the acceleration in m/s² of the device's accelerometer sensor, if the device has one. Otherwise, the method returns [Vector3.Zero].
-
-Note this method returns an empty [Vector3.XYZ] when running from the editor even when your device has an accelerometer. You must export your project to a supported device to read values from the accelerometer.
-
-Note: This method only works on Android and iOS. On other platforms, it always returns [Vector3.Zero].
-
-Note: For Android, [ProjectSettings] "input_devices/sensors/enable_accelerometer" must be enabled.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
-*/
-//go:nosplit
 func (self class) GetAccelerometer() Vector3.XYZ { //gd:Input.get_accelerometer
 	once.Do(singleton)
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_accelerometer, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the magnetic field strength in micro-Tesla for all axes of the device's magnetometer sensor, if the device has one. Otherwise, the method returns [Vector3.Zero].
-
-Note: This method only works on Android and iOS. On other platforms, it always returns [Vector3.Zero].
-
-Note: For Android, [ProjectSettings] "input_devices/sensors/enable_magnetometer" must be enabled.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) GetMagnetometer() Vector3.XYZ { //gd:Input.get_magnetometer
 	once.Do(singleton)
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_magnetometer, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the rotation rate in rad/s around a device's X, Y, and Z axes of the gyroscope sensor, if the device has one. Otherwise, the method returns [Vector3.Zero].
-
-Note: This method only works on Android and iOS. On other platforms, it always returns [Vector3.Zero].
-
-Note: For Android, [ProjectSettings] "input_devices/sensors/enable_gyroscope" must be enabled.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) GetGyroscope() Vector3.XYZ { //gd:Input.get_gyroscope
 	once.Do(singleton)
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_gyroscope, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the gravity value of the accelerometer sensor. Can be used for debugging on devices without a hardware sensor, for example in an editor on a PC.
-
-Note: This value can be immediately overwritten by the hardware sensor value on Android and iOS.
-*/
-//go:nosplit
 func (self class) SetGravity(value Vector3.XYZ) { //gd:Input.set_gravity
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity, 0|(gdextension.SizeVector3<<4), &struct{ value Vector3.XYZ }{value})
 }
-
-/*
-Sets the acceleration value of the accelerometer sensor. Can be used for debugging on devices without a hardware sensor, for example in an editor on a PC.
-
-Note: This value can be immediately overwritten by the hardware sensor value on Android and iOS.
-*/
-//go:nosplit
 func (self class) SetAccelerometer(value Vector3.XYZ) { //gd:Input.set_accelerometer
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accelerometer, 0|(gdextension.SizeVector3<<4), &struct{ value Vector3.XYZ }{value})
 }
-
-/*
-Sets the value of the magnetic field of the magnetometer sensor. Can be used for debugging on devices without a hardware sensor, for example in an editor on a PC.
-
-Note: This value can be immediately overwritten by the hardware sensor value on Android and iOS.
-*/
-//go:nosplit
 func (self class) SetMagnetometer(value Vector3.XYZ) { //gd:Input.set_magnetometer
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_magnetometer, 0|(gdextension.SizeVector3<<4), &struct{ value Vector3.XYZ }{value})
 }
-
-/*
-Sets the value of the rotation rate of the gyroscope sensor. Can be used for debugging on devices without a hardware sensor, for example in an editor on a PC.
-
-Note: This value can be immediately overwritten by the hardware sensor value on Android and iOS.
-*/
-//go:nosplit
 func (self class) SetGyroscope(value Vector3.XYZ) { //gd:Input.set_gyroscope
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gyroscope, 0|(gdextension.SizeVector3<<4), &struct{ value Vector3.XYZ }{value})
 }
-
-/*
-Returns the last mouse velocity. To provide a precise and jitter-free velocity, mouse velocity is only calculated every 0.1s. Therefore, mouse velocity will lag mouse movements.
-*/
-//go:nosplit
 func (self class) GetLastMouseVelocity() Vector2.XY { //gd:Input.get_last_mouse_velocity
 	once.Do(singleton)
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_last_mouse_velocity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the last mouse velocity in screen coordinates. To provide a precise and jitter-free velocity, mouse velocity is only calculated every 0.1s. Therefore, mouse velocity will lag mouse movements.
-*/
-//go:nosplit
 func (self class) GetLastMouseScreenVelocity() Vector2.XY { //gd:Input.get_last_mouse_screen_velocity
 	once.Do(singleton)
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_last_mouse_screen_velocity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns mouse buttons as a bitmask. If multiple mouse buttons are pressed at the same time, the bits are added together. Equivalent to [DisplayServer.MouseGetButtonState].
-
-[DisplayServer.MouseGetButtonState]: https://pkg.go.dev/graphics.gd/classdb/DisplayServer#MouseGetButtonState
-*/
-//go:nosplit
 func (self class) GetMouseButtonMask() MouseButtonMask { //gd:Input.get_mouse_button_mask
 	once.Do(singleton)
 	var r_ret = noescape.Call[MouseButtonMask](gd.ObjectChecked(self.AsObject()), methods.get_mouse_button_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMouseMode(mode MouseModeValue) { //gd:Input.set_mouse_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mouse_mode, 0|(gdextension.SizeInt<<4), &struct{ mode MouseModeValue }{mode})
 }
-
-//go:nosplit
 func (self class) GetMouseMode() MouseModeValue { //gd:Input.get_mouse_mode
 	once.Do(singleton)
 	var r_ret = noescape.Call[MouseModeValue](gd.ObjectChecked(self.AsObject()), methods.get_mouse_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the mouse position to the specified vector, provided in pixels and relative to an origin at the upper left corner of the currently focused Window Manager game window.
-
-Mouse position is clipped to the limits of the screen resolution, or to the limits of the game window if [MouseMode] is set to [MouseModeConfined] or [MouseModeConfinedHidden].
-
-Note: [WarpMouse] is only supported on Windows, macOS and Linux. It has no effect on Android, iOS and Web.
-*/
-//go:nosplit
 func (self class) WarpMouse(position Vector2.XY) { //gd:Input.warp_mouse
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.warp_mouse, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 }
-
-/*
-This will simulate pressing the specified action.
-
-The strength can be used for non-boolean actions, it's ranged between 0 and 1 representing the intensity of the given action.
-
-Note: This method will not cause any [Node.Input] calls. It is intended to be used with [IsActionPressed] and [IsActionJustPressed]. If you want to simulate _input, use [ParseInputEvent] instead.
-
-[Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
-*/
-//go:nosplit
 func (self class) ActionPress(action String.Name, strength float64) { //gd:Input.action_press
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.action_press, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -1559,63 +1162,20 @@ func (self class) ActionPress(action String.Name, strength float64) { //gd:Input
 		strength float64
 	}{pointers.Get(gd.InternalStringName(action)), strength})
 }
-
-/*
-If the specified action is already pressed, this will release it.
-*/
-//go:nosplit
 func (self class) ActionRelease(action String.Name) { //gd:Input.action_release
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.action_release, 0|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
 }
-
-/*
-Sets the default cursor shape to be used in the viewport instead of [CursorArrow].
-
-Note: If you want to change the default cursor shape for [Control]'s nodes, use [Control.MouseDefaultCursorShape] instead.
-
-Note: This method generates an [InputEventMouseMotion] to update cursor immediately.
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[Control.MouseDefaultCursorShape]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MouseDefaultCursorShape
-[InputEventMouseMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion
-*/
-//go:nosplit
 func (self class) SetDefaultCursorShape(shape CursorShape) { //gd:Input.set_default_cursor_shape
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_cursor_shape, 0|(gdextension.SizeInt<<4), &struct{ shape CursorShape }{shape})
 }
-
-/*
-Returns the currently assigned cursor shape.
-*/
-//go:nosplit
 func (self class) GetCurrentCursorShape() CursorShape { //gd:Input.get_current_cursor_shape
 	once.Do(singleton)
 	var r_ret = noescape.Call[CursorShape](gd.ObjectChecked(self.AsObject()), methods.get_current_cursor_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets a custom mouse cursor image, which is only visible inside the game window, for the given mouse 'shape'. The hotspot can also be specified. Passing null to the image parameter resets to the system cursor.
-
-'image' can be either [Texture2D] or [Image] and its size must be lower than or equal to 256×256. To avoid rendering issues, sizes lower than or equal to 128×128 are recommended.
-
-'hotspot' must be within 'image''s size.
-
-Note: [AnimatedTexture]s aren't supported as custom mouse cursors. If using an [AnimatedTexture], only the first frame will be displayed.
-
-Note: The Lossless, Lossy or Uncompressed compression modes are recommended. The Video RAM compression mode can be used, but it will be decompressed on the CPU, which means loading times are slowed down and no memory is saved compared to lossless modes.
-
-Note: On the web platform, the maximum allowed cursor image size is 128×128. Cursor images larger than 32×32 will also only be displayed if the mouse cursor image is entirely located within the page for [security reasons].
-
-[AnimatedTexture]: https://pkg.go.dev/graphics.gd/classdb/AnimatedTexture
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-[security reasons]: https://chromestatus.com/feature/5825971391299584
-*/
-//go:nosplit
 func (self class) SetCustomMouseCursor(image [1]gdclass.Resource, shape CursorShape, hotspot Vector2.XY) { //gd:Input.set_custom_mouse_cursor
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_mouse_cursor, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector2<<12), &struct {
@@ -1624,78 +1184,38 @@ func (self class) SetCustomMouseCursor(image [1]gdclass.Resource, shape CursorSh
 		hotspot Vector2.XY
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetResource(image[0]))), shape, hotspot})
 }
-
-/*
-Feeds an [InputEvent] to the game. Can be used to artificially trigger input events from code. Also generates [Node.Input] calls.
-
-
-	var cancelEvent = InputEventAction.New()
-	cancelEvent.SetAction("ui_cancel")
-	cancelEvent.SetPressed(true)
-	Input.ParseInputEvent(cancelEvent.AsInputEvent())
-
-
-Note: Calling this function has no influence on the operating system. So for example sending an [InputEventMouseMotion] will not move the OS mouse cursor to the specified position (use [WarpMouse] instead) and sending Alt/Cmd + Tab as [InputEventKey] won't toggle between active windows.
-
-[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventMouseMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion
-[Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
-*/
-//go:nosplit
 func (self class) ParseInputEvent(event [1]gdclass.InputEvent) { //gd:Input.parse_input_event
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.parse_input_event, 0|(gdextension.SizeObject<<4), &struct{ event gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0])))})
 }
-
-//go:nosplit
 func (self class) SetUseAccumulatedInput(enable bool) { //gd:Input.set_use_accumulated_input
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_accumulated_input, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsUsingAccumulatedInput() bool { //gd:Input.is_using_accumulated_input
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_accumulated_input, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sends all input events which are in the current buffer to the game loop. These events may have been buffered as a result of accumulated input ([UseAccumulatedInput]) or agile input flushing ([ProjectSettings] "input_devices/buffering/agile_event_flushing").
-
-The engine will already do this itself at key execution points (at least once per frame). However, this can be useful in advanced cases where you want precise control over the timing of event handling.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) FlushBufferedEvents() { //gd:Input.flush_buffered_events
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.flush_buffered_events, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetEmulateMouseFromTouch(enable bool) { //gd:Input.set_emulate_mouse_from_touch
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emulate_mouse_from_touch, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsEmulatingMouseFromTouch() bool { //gd:Input.is_emulating_mouse_from_touch
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_emulating_mouse_from_touch, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEmulateTouchFromMouse(enable bool) { //gd:Input.set_emulate_touch_from_mouse
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emulate_touch_from_mouse, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsEmulatingTouchFromMouse() bool { //gd:Input.is_emulating_touch_from_mouse
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_emulating_touch_from_mouse, gdextension.SizeBool, &struct{}{})

@@ -209,40 +209,22 @@ func (self Instance) SetFormat(value AudioStreamWAV.Format) Instance { //gd:Audi
 	return self
 }
 
-/*
-If true, the sound will be recorded. Note that restarting the recording will remove the previously recorded sample.
-*/
-//go:nosplit
 func (self class) SetRecordingActive(record bool) { //gd:AudioEffectRecord.set_recording_active
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_recording_active, 0|(gdextension.SizeBool<<4), &struct{ record bool }{record})
 }
-
-/*
-Returns whether the recording is active or not.
-*/
-//go:nosplit
 func (self class) IsRecordingActive() bool { //gd:AudioEffectRecord.is_recording_active
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_recording_active, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFormat(format AudioStreamWAV.Format) { //gd:AudioEffectRecord.set_format
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format, 0|(gdextension.SizeInt<<4), &struct{ format AudioStreamWAV.Format }{format})
 }
-
-//go:nosplit
 func (self class) GetFormat() AudioStreamWAV.Format { //gd:AudioEffectRecord.get_format
 	var r_ret = noescape.Call[AudioStreamWAV.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the recorded sample.
-*/
-//go:nosplit
 func (self class) GetRecording() [1]gdclass.AudioStreamWAV { //gd:AudioEffectRecord.get_recording
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_recording, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.AudioStreamWAV{gdclass.NewAudioStreamWAV(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

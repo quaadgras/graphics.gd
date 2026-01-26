@@ -167,12 +167,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns the [Object] this weakref is referring to. Returns null if that object no longer exists.
-
-[Object]: https://pkg.go.dev/graphics.gd/variant/Object
-*/
-//go:nosplit
 func (self class) GetRef() variant.Any { //gd:WeakRef.get_ref
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_ref, gdextension.SizeVariant, &struct{}{})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))

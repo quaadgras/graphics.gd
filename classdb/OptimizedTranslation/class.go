@@ -167,14 +167,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Generates and sets an optimized translation from the given [Translation] resource.
-
-Note: This method is intended to be used in the editor. It does nothing when called from an exported project.
-
-[Translation]: https://pkg.go.dev/graphics.gd/classdb/Translation
-*/
-//go:nosplit
 func (self class) Generate(from [1]gdclass.Translation) { //gd:OptimizedTranslation.generate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.generate, 0|(gdextension.SizeObject<<4), &struct{ from gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTranslation(from[0])))})
 }

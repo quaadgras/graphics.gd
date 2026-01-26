@@ -620,362 +620,207 @@ func (self Instance) SetReverbBusUniformity(value Float.X) Instance { //gd:Area3
 	return self
 }
 
-//go:nosplit
 func (self class) SetGravitySpaceOverrideMode(space_override_mode SpaceOverride) { //gd:Area3D.set_gravity_space_override_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity_space_override_mode, 0|(gdextension.SizeInt<<4), &struct{ space_override_mode SpaceOverride }{space_override_mode})
 }
-
-//go:nosplit
 func (self class) GetGravitySpaceOverrideMode() SpaceOverride { //gd:Area3D.get_gravity_space_override_mode
 	var r_ret = noescape.Call[SpaceOverride](gd.ObjectChecked(self.AsObject()), methods.get_gravity_space_override_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetGravityIsPoint(enable bool) { //gd:Area3D.set_gravity_is_point
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity_is_point, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsGravityAPoint() bool { //gd:Area3D.is_gravity_a_point
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_gravity_a_point, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetGravityPointUnitDistance(distance_scale float64) { //gd:Area3D.set_gravity_point_unit_distance
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity_point_unit_distance, 0|(gdextension.SizeFloat<<4), &struct{ distance_scale float64 }{distance_scale})
 }
-
-//go:nosplit
 func (self class) GetGravityPointUnitDistance() float64 { //gd:Area3D.get_gravity_point_unit_distance
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gravity_point_unit_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetGravityPointCenter(center Vector3.XYZ) { //gd:Area3D.set_gravity_point_center
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity_point_center, 0|(gdextension.SizeVector3<<4), &struct{ center Vector3.XYZ }{center})
 }
-
-//go:nosplit
 func (self class) GetGravityPointCenter() Vector3.XYZ { //gd:Area3D.get_gravity_point_center
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_gravity_point_center, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetGravityDirection(direction Vector3.XYZ) { //gd:Area3D.set_gravity_direction
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity_direction, 0|(gdextension.SizeVector3<<4), &struct{ direction Vector3.XYZ }{direction})
 }
-
-//go:nosplit
 func (self class) GetGravityDirection() Vector3.XYZ { //gd:Area3D.get_gravity_direction
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_gravity_direction, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetGravity(gravity float64) { //gd:Area3D.set_gravity
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity, 0|(gdextension.SizeFloat<<4), &struct{ gravity float64 }{gravity})
 }
-
-//go:nosplit
 func (self class) GetGravity() float64 { //gd:Area3D.get_gravity
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gravity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetLinearDampSpaceOverrideMode(space_override_mode SpaceOverride) { //gd:Area3D.set_linear_damp_space_override_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_damp_space_override_mode, 0|(gdextension.SizeInt<<4), &struct{ space_override_mode SpaceOverride }{space_override_mode})
 }
-
-//go:nosplit
 func (self class) GetLinearDampSpaceOverrideMode() SpaceOverride { //gd:Area3D.get_linear_damp_space_override_mode
 	var r_ret = noescape.Call[SpaceOverride](gd.ObjectChecked(self.AsObject()), methods.get_linear_damp_space_override_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAngularDampSpaceOverrideMode(space_override_mode SpaceOverride) { //gd:Area3D.set_angular_damp_space_override_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_damp_space_override_mode, 0|(gdextension.SizeInt<<4), &struct{ space_override_mode SpaceOverride }{space_override_mode})
 }
-
-//go:nosplit
 func (self class) GetAngularDampSpaceOverrideMode() SpaceOverride { //gd:Area3D.get_angular_damp_space_override_mode
 	var r_ret = noescape.Call[SpaceOverride](gd.ObjectChecked(self.AsObject()), methods.get_angular_damp_space_override_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAngularDamp(angular_damp float64) { //gd:Area3D.set_angular_damp
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_damp, 0|(gdextension.SizeFloat<<4), &struct{ angular_damp float64 }{angular_damp})
 }
-
-//go:nosplit
 func (self class) GetAngularDamp() float64 { //gd:Area3D.get_angular_damp
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_damp, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetLinearDamp(linear_damp float64) { //gd:Area3D.set_linear_damp
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_damp, 0|(gdextension.SizeFloat<<4), &struct{ linear_damp float64 }{linear_damp})
 }
-
-//go:nosplit
 func (self class) GetLinearDamp() float64 { //gd:Area3D.get_linear_damp
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_linear_damp, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPriority(priority int64) { //gd:Area3D.set_priority
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_priority, 0|(gdextension.SizeInt<<4), &struct{ priority int64 }{priority})
 }
-
-//go:nosplit
 func (self class) GetPriority() int64 { //gd:Area3D.get_priority
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_priority, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetWindForceMagnitude(wind_force_magnitude float64) { //gd:Area3D.set_wind_force_magnitude
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wind_force_magnitude, 0|(gdextension.SizeFloat<<4), &struct{ wind_force_magnitude float64 }{wind_force_magnitude})
 }
-
-//go:nosplit
 func (self class) GetWindForceMagnitude() float64 { //gd:Area3D.get_wind_force_magnitude
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_wind_force_magnitude, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetWindAttenuationFactor(wind_attenuation_factor float64) { //gd:Area3D.set_wind_attenuation_factor
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wind_attenuation_factor, 0|(gdextension.SizeFloat<<4), &struct{ wind_attenuation_factor float64 }{wind_attenuation_factor})
 }
-
-//go:nosplit
 func (self class) GetWindAttenuationFactor() float64 { //gd:Area3D.get_wind_attenuation_factor
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_wind_attenuation_factor, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetWindSourcePath(wind_source_path Path.ToNode) { //gd:Area3D.set_wind_source_path
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wind_source_path, 0|(gdextension.SizeNodePath<<4), &struct{ wind_source_path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(wind_source_path))})
 }
-
-//go:nosplit
 func (self class) GetWindSourcePath() Path.ToNode { //gd:Area3D.get_wind_source_path
 	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_wind_source_path, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMonitorable(enable bool) { //gd:Area3D.set_monitorable
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_monitorable, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsMonitorable() bool { //gd:Area3D.is_monitorable
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_monitorable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMonitoring(enable bool) { //gd:Area3D.set_monitoring
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_monitoring, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsMonitoring() bool { //gd:Area3D.is_monitoring
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_monitoring, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a list of intersecting [PhysicsBody3D]s and [GridMap]s. The overlapping body's [CollisionObject3D.CollisionLayer] must be part of this area's [CollisionObject3D.CollisionMask] in order to be detected.
-
-For performance reasons (collisions are all processed at the same time) this list is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
-
-[CollisionObject3D.CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D#Instance.CollisionLayer
-[CollisionObject3D.CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D#Instance.CollisionMask
-[GridMap]: https://pkg.go.dev/graphics.gd/classdb/GridMap
-[PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
-*/
-//go:nosplit
 func (self class) GetOverlappingBodies() Array.Contains[[1]gdclass.Node3D] { //gd:Area3D.get_overlapping_bodies
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_overlapping_bodies, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node3D]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns a list of intersecting [Area3D]s. The overlapping area's [CollisionObject3D.CollisionLayer] must be part of this area's [CollisionObject3D.CollisionMask] in order to be detected.
-
-For performance reasons (collisions are all processed at the same time) this list is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
-
-[Area3D]: https://pkg.go.dev/graphics.gd/classdb/Area3D
-[CollisionObject3D.CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D#Instance.CollisionLayer
-[CollisionObject3D.CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D#Instance.CollisionMask
-*/
-//go:nosplit
 func (self class) GetOverlappingAreas() Array.Contains[[1]gdclass.Area3D] { //gd:Area3D.get_overlapping_areas
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_overlapping_areas, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Area3D]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns true if intersecting any [PhysicsBody3D]s or [GridMap]s, otherwise returns false. The overlapping body's [CollisionObject3D.CollisionLayer] must be part of this area's [CollisionObject3D.CollisionMask] in order to be detected.
-
-For performance reasons (collisions are all processed at the same time) the list of overlapping bodies is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
-
-[CollisionObject3D.CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D#Instance.CollisionLayer
-[CollisionObject3D.CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D#Instance.CollisionMask
-[GridMap]: https://pkg.go.dev/graphics.gd/classdb/GridMap
-[PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
-*/
-//go:nosplit
 func (self class) HasOverlappingBodies() bool { //gd:Area3D.has_overlapping_bodies
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_overlapping_bodies, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if intersecting any [Area3D]s, otherwise returns false. The overlapping area's [CollisionObject3D.CollisionLayer] must be part of this area's [CollisionObject3D.CollisionMask] in order to be detected.
-
-For performance reasons (collisions are all processed at the same time) the list of overlapping areas is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
-
-[Area3D]: https://pkg.go.dev/graphics.gd/classdb/Area3D
-[CollisionObject3D.CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D#Instance.CollisionLayer
-[CollisionObject3D.CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D#Instance.CollisionMask
-*/
-//go:nosplit
 func (self class) HasOverlappingAreas() bool { //gd:Area3D.has_overlapping_areas
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_overlapping_areas, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the given physics body intersects or overlaps this [Area3D], false otherwise.
-
-Note: The result of this test is not immediate after moving objects. For performance, list of overlaps is updated once per frame and before the physics step. Consider using signals instead.
-
-The 'body' argument can either be a [PhysicsBody3D] or a [GridMap] instance. While GridMaps are not physics body themselves, they register their tiles with collision shapes as a virtual physics body.
-
-[Area3D]: https://pkg.go.dev/graphics.gd/classdb/Area3D
-[GridMap]: https://pkg.go.dev/graphics.gd/classdb/GridMap
-[PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
-*/
-//go:nosplit
 func (self class) OverlapsBody(body [1]gdclass.Node) bool { //gd:Area3D.overlaps_body
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.overlaps_body, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(body[0])))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the given [Area3D] intersects or overlaps this [Area3D], false otherwise.
-
-Note: The result of this test is not immediate after moving objects. For performance, list of overlaps is updated once per frame and before the physics step. Consider using signals instead.
-
-[Area3D]: https://pkg.go.dev/graphics.gd/classdb/Area3D
-*/
-//go:nosplit
 func (self class) OverlapsArea(area [1]gdclass.Node) bool { //gd:Area3D.overlaps_area
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.overlaps_area, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ area gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(area[0])))})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAudioBusOverride(enable bool) { //gd:Area3D.set_audio_bus_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_audio_bus_override, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsOverridingAudioBus() bool { //gd:Area3D.is_overriding_audio_bus
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_overriding_audio_bus, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAudioBusName(name String.Name) { //gd:Area3D.set_audio_bus_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_audio_bus_name, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
-
-//go:nosplit
 func (self class) GetAudioBusName() String.Name { //gd:Area3D.get_audio_bus_name
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_audio_bus_name, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUseReverbBus(enable bool) { //gd:Area3D.set_use_reverb_bus
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_reverb_bus, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsUsingReverbBus() bool { //gd:Area3D.is_using_reverb_bus
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_reverb_bus, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetReverbBusName(name String.Name) { //gd:Area3D.set_reverb_bus_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reverb_bus_name, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
-
-//go:nosplit
 func (self class) GetReverbBusName() String.Name { //gd:Area3D.get_reverb_bus_name
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_reverb_bus_name, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetReverbAmount(amount float64) { //gd:Area3D.set_reverb_amount
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reverb_amount, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
-
-//go:nosplit
 func (self class) GetReverbAmount() float64 { //gd:Area3D.get_reverb_amount
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_reverb_amount, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetReverbUniformity(amount float64) { //gd:Area3D.set_reverb_uniformity
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reverb_uniformity, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
-
-//go:nosplit
 func (self class) GetReverbUniformity() float64 { //gd:Area3D.get_reverb_uniformity
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_reverb_uniformity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

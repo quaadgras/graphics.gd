@@ -321,108 +321,73 @@ func (self Instance) SetAdvanceExpression(value string) Instance { //gd:Animatio
 	return self
 }
 
-//go:nosplit
 func (self class) SetSwitchMode(mode SwitchMode) { //gd:AnimationNodeStateMachineTransition.set_switch_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_switch_mode, 0|(gdextension.SizeInt<<4), &struct{ mode SwitchMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetSwitchMode() SwitchMode { //gd:AnimationNodeStateMachineTransition.get_switch_mode
 	var r_ret = noescape.Call[SwitchMode](gd.ObjectChecked(self.AsObject()), methods.get_switch_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAdvanceMode(mode AdvanceMode) { //gd:AnimationNodeStateMachineTransition.set_advance_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_advance_mode, 0|(gdextension.SizeInt<<4), &struct{ mode AdvanceMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetAdvanceMode() AdvanceMode { //gd:AnimationNodeStateMachineTransition.get_advance_mode
 	var r_ret = noescape.Call[AdvanceMode](gd.ObjectChecked(self.AsObject()), methods.get_advance_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAdvanceCondition(name String.Name) { //gd:AnimationNodeStateMachineTransition.set_advance_condition
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_advance_condition, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
-
-//go:nosplit
 func (self class) GetAdvanceCondition() String.Name { //gd:AnimationNodeStateMachineTransition.get_advance_condition
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_advance_condition, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetXfadeTime(secs float64) { //gd:AnimationNodeStateMachineTransition.set_xfade_time
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_xfade_time, 0|(gdextension.SizeFloat<<4), &struct{ secs float64 }{secs})
 }
-
-//go:nosplit
 func (self class) GetXfadeTime() float64 { //gd:AnimationNodeStateMachineTransition.get_xfade_time
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_xfade_time, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetXfadeCurve(curve [1]gdclass.Curve) { //gd:AnimationNodeStateMachineTransition.set_xfade_curve
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_xfade_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCurve(curve[0])))})
 }
-
-//go:nosplit
 func (self class) GetXfadeCurve() [1]gdclass.Curve { //gd:AnimationNodeStateMachineTransition.get_xfade_curve
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_xfade_curve, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Curve{gdclass.NewCurve(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBreakLoopAtEnd(enable bool) { //gd:AnimationNodeStateMachineTransition.set_break_loop_at_end
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_break_loop_at_end, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsLoopBrokenAtEnd() bool { //gd:AnimationNodeStateMachineTransition.is_loop_broken_at_end
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_loop_broken_at_end, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetReset(reset bool) { //gd:AnimationNodeStateMachineTransition.set_reset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reset, 0|(gdextension.SizeBool<<4), &struct{ reset bool }{reset})
 }
-
-//go:nosplit
 func (self class) IsReset() bool { //gd:AnimationNodeStateMachineTransition.is_reset
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_reset, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPriority(priority int64) { //gd:AnimationNodeStateMachineTransition.set_priority
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_priority, 0|(gdextension.SizeInt<<4), &struct{ priority int64 }{priority})
 }
-
-//go:nosplit
 func (self class) GetPriority() int64 { //gd:AnimationNodeStateMachineTransition.get_priority
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_priority, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAdvanceExpression(text String.Readable) { //gd:AnimationNodeStateMachineTransition.set_advance_expression
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_advance_expression, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
-
-//go:nosplit
 func (self class) GetAdvanceExpression() String.Readable { //gd:AnimationNodeStateMachineTransition.get_advance_expression
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_advance_expression, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))

@@ -445,234 +445,143 @@ func (self Instance) SetDampingRelaxation(value Float.X) Instance { //gd:Vehicle
 	return self
 }
 
-//go:nosplit
 func (self class) SetRadius(length float64) { //gd:VehicleWheel3D.set_radius
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
-
-//go:nosplit
 func (self class) GetRadius() float64 { //gd:VehicleWheel3D.get_radius
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSuspensionRestLength(length float64) { //gd:VehicleWheel3D.set_suspension_rest_length
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_suspension_rest_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
-
-//go:nosplit
 func (self class) GetSuspensionRestLength() float64 { //gd:VehicleWheel3D.get_suspension_rest_length
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_suspension_rest_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSuspensionTravel(length float64) { //gd:VehicleWheel3D.set_suspension_travel
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_suspension_travel, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
-
-//go:nosplit
 func (self class) GetSuspensionTravel() float64 { //gd:VehicleWheel3D.get_suspension_travel
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_suspension_travel, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSuspensionStiffness(length float64) { //gd:VehicleWheel3D.set_suspension_stiffness
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_suspension_stiffness, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
-
-//go:nosplit
 func (self class) GetSuspensionStiffness() float64 { //gd:VehicleWheel3D.get_suspension_stiffness
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_suspension_stiffness, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSuspensionMaxForce(length float64) { //gd:VehicleWheel3D.set_suspension_max_force
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_suspension_max_force, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
-
-//go:nosplit
 func (self class) GetSuspensionMaxForce() float64 { //gd:VehicleWheel3D.get_suspension_max_force
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_suspension_max_force, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDampingCompression(length float64) { //gd:VehicleWheel3D.set_damping_compression
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_damping_compression, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
-
-//go:nosplit
 func (self class) GetDampingCompression() float64 { //gd:VehicleWheel3D.get_damping_compression
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_damping_compression, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDampingRelaxation(length float64) { //gd:VehicleWheel3D.set_damping_relaxation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_damping_relaxation, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
-
-//go:nosplit
 func (self class) GetDampingRelaxation() float64 { //gd:VehicleWheel3D.get_damping_relaxation
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_damping_relaxation, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUseAsTraction(enable bool) { //gd:VehicleWheel3D.set_use_as_traction
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_as_traction, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsUsedAsTraction() bool { //gd:VehicleWheel3D.is_used_as_traction
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_used_as_traction, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUseAsSteering(enable bool) { //gd:VehicleWheel3D.set_use_as_steering
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_as_steering, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsUsedAsSteering() bool { //gd:VehicleWheel3D.is_used_as_steering
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_used_as_steering, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFrictionSlip(length float64) { //gd:VehicleWheel3D.set_friction_slip
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_friction_slip, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
-
-//go:nosplit
 func (self class) GetFrictionSlip() float64 { //gd:VehicleWheel3D.get_friction_slip
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_friction_slip, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if this wheel is in contact with a surface.
-*/
-//go:nosplit
 func (self class) IsInContact() bool { //gd:VehicleWheel3D.is_in_contact
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_in_contact, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the contacting body node if valid in the tree, as [Node3D]. At the moment, [GridMap] is not supported so the node will be always of type [PhysicsBody3D].
-
-Returns null if the wheel is not in contact with a surface, or the contact body is not a [PhysicsBody3D].
-
-[GridMap]: https://pkg.go.dev/graphics.gd/classdb/GridMap
-[Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
-[PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
-*/
-//go:nosplit
 func (self class) GetContactBody() [1]gdclass.Node3D { //gd:VehicleWheel3D.get_contact_body
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_contact_body, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Node3D{gdclass.NewNode3D(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the point of the suspension's collision in world space if the wheel is in contact. If the wheel isn't in contact with anything, returns the maximum point of the wheel's ray cast in world space, which is defined by wheel_rest_length + wheel_radius.
-*/
-//go:nosplit
 func (self class) GetContactPoint() Vector3.XYZ { //gd:VehicleWheel3D.get_contact_point
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_contact_point, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the normal of the suspension's collision in world space if the wheel is in contact. If the wheel isn't in contact with anything, returns a vector pointing directly along the suspension axis toward the vehicle in world space.
-*/
-//go:nosplit
 func (self class) GetContactNormal() Vector3.XYZ { //gd:VehicleWheel3D.get_contact_normal
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_contact_normal, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRollInfluence(roll_influence float64) { //gd:VehicleWheel3D.set_roll_influence
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_roll_influence, 0|(gdextension.SizeFloat<<4), &struct{ roll_influence float64 }{roll_influence})
 }
-
-//go:nosplit
 func (self class) GetRollInfluence() float64 { //gd:VehicleWheel3D.get_roll_influence
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_roll_influence, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a value between 0.0 and 1.0 that indicates whether this wheel is skidding. 0.0 is skidding (the wheel has lost grip, e.g. icy terrain), 1.0 means not skidding (the wheel has full grip, e.g. dry asphalt road).
-*/
-//go:nosplit
 func (self class) GetSkidinfo() float64 { //gd:VehicleWheel3D.get_skidinfo
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_skidinfo, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the rotational speed of the wheel in revolutions per minute.
-*/
-//go:nosplit
 func (self class) GetRpm() float64 { //gd:VehicleWheel3D.get_rpm
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rpm, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEngineForce(engine_force float64) { //gd:VehicleWheel3D.set_engine_force
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_engine_force, 0|(gdextension.SizeFloat<<4), &struct{ engine_force float64 }{engine_force})
 }
-
-//go:nosplit
 func (self class) GetEngineForce() float64 { //gd:VehicleWheel3D.get_engine_force
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_engine_force, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBrake(brake float64) { //gd:VehicleWheel3D.set_brake
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_brake, 0|(gdextension.SizeFloat<<4), &struct{ brake float64 }{brake})
 }
-
-//go:nosplit
 func (self class) GetBrake() float64 { //gd:VehicleWheel3D.get_brake
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_brake, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSteering(steering float64) { //gd:VehicleWheel3D.set_steering
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_steering, 0|(gdextension.SizeFloat<<4), &struct{ steering float64 }{steering})
 }
-
-//go:nosplit
 func (self class) GetSteering() float64 { //gd:VehicleWheel3D.get_steering
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_steering, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

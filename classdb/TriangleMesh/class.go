@@ -222,12 +222,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Creates the BVH tree from an array of faces. Each 3 vertices of the input 'faces' array represent one triangle (face).
-
-Returns true if the tree is successfully built, false otherwise.
-*/
-//go:nosplit
 func (self class) CreateFromFaces(faces Packed.Array[Vector3.XYZ]) bool { //gd:TriangleMesh.create_from_faces
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.create_from_faces, gdextension.SizeBool|(gdextension.SizePackedArray<<4), &struct {
 		faces gdextension.PackedArray[Vector3.XYZ]
@@ -235,35 +229,11 @@ func (self class) CreateFromFaces(faces Packed.Array[Vector3.XYZ]) bool { //gd:T
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a copy of the geometry faces. Each 3 vertices of the array represent one triangle (face).
-*/
-//go:nosplit
 func (self class) GetFaces() Packed.Array[Vector3.XYZ] { //gd:TriangleMesh.get_faces
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_faces, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Tests for intersection with a segment going from 'begin' to 'end'.
-
-If an intersection with a triangle happens returns a data structure with the following fields:
-
-position: The position on the intersected triangle.
-
-normal: The normal of the intersected triangle.
-
-face_index: The index of the intersected triangle.
-
-Returns an empty data structure if no intersection happens.
-
-See also [IntersectRay], which is similar but uses an infinite-length ray.
-
-[IntersectRay]: https://pkg.go.dev/graphics.gd/classdb/TriangleMesh#Instance.IntersectRay
-*/
-//go:nosplit
 func (self class) IntersectSegment(begin Vector3.XYZ, end Vector3.XYZ) Dictionary.Any { //gd:TriangleMesh.intersect_segment
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.intersect_segment, gdextension.SizeDictionary|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8), &struct {
 		begin Vector3.XYZ
@@ -272,25 +242,6 @@ func (self class) IntersectSegment(begin Vector3.XYZ, end Vector3.XYZ) Dictionar
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Tests for intersection with a ray starting at 'begin' and facing 'dir' and extending toward infinity.
-
-If an intersection with a triangle happens, returns a data structure with the following fields:
-
-position: The position on the intersected triangle.
-
-normal: The normal of the intersected triangle.
-
-face_index: The index of the intersected triangle.
-
-Returns an empty data structure if no intersection happens.
-
-See also [IntersectSegment], which is similar but uses a finite-length segment.
-
-[IntersectSegment]: https://pkg.go.dev/graphics.gd/classdb/TriangleMesh#Instance.IntersectSegment
-*/
-//go:nosplit
 func (self class) IntersectRay(begin Vector3.XYZ, dir Vector3.XYZ) Dictionary.Any { //gd:TriangleMesh.intersect_ray
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.intersect_ray, gdextension.SizeDictionary|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8), &struct {
 		begin Vector3.XYZ

@@ -256,21 +256,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Play an [AudioStream] at a given offset, volume, pitch scale, playback type, and bus. Playback starts immediately.
-
-The return value is a unique integer ID that is associated to this playback stream and which can be used to control it.
-
-This ID becomes invalid when the stream ends (if it does not loop), when the [AudioStreamPlaybackPolyphonic] is stopped, or when [StopStream] is called.
-
-This function returns [InvalidId] if the amount of streams currently playing equals [AudioStreamPolyphonic.Polyphony]. If you need a higher amount of maximum polyphony, raise this value.
-
-[AudioStream]: https://pkg.go.dev/graphics.gd/classdb/AudioStream
-[AudioStreamPlaybackPolyphonic]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlaybackPolyphonic
-[AudioStreamPolyphonic.Polyphony]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPolyphonic#Instance.Polyphony
-[StopStream]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlaybackPolyphonic#Instance.StopStream
-*/
-//go:nosplit
 func (self class) PlayStream(stream [1]gdclass.AudioStream, from_offset float64, volume_db float64, pitch_scale float64, playback_type AudioServer.PlaybackType, bus String.Name) int64 { //gd:AudioStreamPlaybackPolyphonic.play_stream
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.play_stream, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeStringName<<24), &struct {
 		stream        gdextension.Object
@@ -283,51 +268,23 @@ func (self class) PlayStream(stream [1]gdclass.AudioStream, from_offset float64,
 	var ret = r_ret
 	return ret
 }
-
-/*
-Change the stream volume (in db). The 'stream' argument is an integer ID returned by [PlayStream].
-
-[PlayStream]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlaybackPolyphonic#Instance.PlayStream
-*/
-//go:nosplit
 func (self class) SetStreamVolume(stream int64, volume_db float64) { //gd:AudioStreamPlaybackPolyphonic.set_stream_volume
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream_volume, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		stream    int64
 		volume_db float64
 	}{stream, volume_db})
 }
-
-/*
-Change the stream pitch scale. The 'stream' argument is an integer ID returned by [PlayStream].
-
-[PlayStream]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlaybackPolyphonic#Instance.PlayStream
-*/
-//go:nosplit
 func (self class) SetStreamPitchScale(stream int64, pitch_scale float64) { //gd:AudioStreamPlaybackPolyphonic.set_stream_pitch_scale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream_pitch_scale, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		stream      int64
 		pitch_scale float64
 	}{stream, pitch_scale})
 }
-
-/*
-Returns true if the stream associated with the given integer ID is still playing. Check [PlayStream] for information on when this ID becomes invalid.
-
-[PlayStream]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlaybackPolyphonic#Instance.PlayStream
-*/
-//go:nosplit
 func (self class) IsStreamPlaying(stream int64) bool { //gd:AudioStreamPlaybackPolyphonic.is_stream_playing
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_stream_playing, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ stream int64 }{stream})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Stop a stream. The 'stream' argument is an integer ID returned by [PlayStream], which becomes invalid after calling this function.
-
-[PlayStream]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlaybackPolyphonic#Instance.PlayStream
-*/
-//go:nosplit
 func (self class) StopStream(stream int64) { //gd:AudioStreamPlaybackPolyphonic.stop_stream
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop_stream, 0|(gdextension.SizeInt<<4), &struct{ stream int64 }{stream})
 }

@@ -667,82 +667,31 @@ func (self Instance) SetFar(value Float.X) Instance { //gd:Camera3D.far
 	return self
 }
 
-/*
-Returns a normal vector in world space, that is the result of projecting a point on the [Viewport] rectangle by the inverse camera projection. This is useful for casting rays in the form of (origin, normal) for object intersection or picking.
-
-[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
-*/
-//go:nosplit
 func (self class) ProjectRayNormal(screen_point Vector2.XY) Vector3.XYZ { //gd:Camera3D.project_ray_normal
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.project_ray_normal, gdextension.SizeVector3|(gdextension.SizeVector2<<4), &struct{ screen_point Vector2.XY }{screen_point})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a normal vector from the screen point location directed along the camera. Orthogonal cameras are normalized. Perspective cameras account for perspective, screen width/height, etc.
-*/
-//go:nosplit
 func (self class) ProjectLocalRayNormal(screen_point Vector2.XY) Vector3.XYZ { //gd:Camera3D.project_local_ray_normal
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.project_local_ray_normal, gdextension.SizeVector3|(gdextension.SizeVector2<<4), &struct{ screen_point Vector2.XY }{screen_point})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a 3D position in world space, that is the result of projecting a point on the [Viewport] rectangle by the inverse camera projection. This is useful for casting rays in the form of (origin, normal) for object intersection or picking.
-
-[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
-*/
-//go:nosplit
 func (self class) ProjectRayOrigin(screen_point Vector2.XY) Vector3.XYZ { //gd:Camera3D.project_ray_origin
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.project_ray_origin, gdextension.SizeVector3|(gdextension.SizeVector2<<4), &struct{ screen_point Vector2.XY }{screen_point})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the 2D coordinate in the [Viewport] rectangle that maps to the given 3D point in world space.
-
-Note: When using this to position GUI elements over a 3D viewport, use [IsPositionBehind] to prevent them from appearing if the 3D point is behind the camera:
-
-
-	// This code block is part of a script that inherits from Node3D.
-	// `control` is a reference to a node inheriting from Control.
-	control.AsCanvasItem().SetVisible(!Viewport.Get(node3d.AsNode()).GetCamera3d().IsPositionBehind(node3d.GlobalTransform().Origin))
-	control.SetPosition(Viewport.Get(node3d.AsNode()).GetCamera3d().UnprojectPosition(node3d.GlobalTransform().Origin))
-
-
-[IsPositionBehind]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.IsPositionBehind
-[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
-*/
-//go:nosplit
 func (self class) UnprojectPosition(world_point Vector3.XYZ) Vector2.XY { //gd:Camera3D.unproject_position
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.unproject_position, gdextension.SizeVector2|(gdextension.SizeVector3<<4), &struct{ world_point Vector3.XYZ }{world_point})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the given position is behind the camera (the blue part of the linked diagram). [See this diagram] for an overview of position query methods.
-
-Note: A position which returns false may still be outside the camera's field of view.
-
-[See this diagram]: https://raw.githubusercontent.com/godotengine/godot-docs/master/img/camera3d_position_frustum.png
-*/
-//go:nosplit
 func (self class) IsPositionBehind(world_point Vector3.XYZ) bool { //gd:Camera3D.is_position_behind
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_position_behind, gdextension.SizeBool|(gdextension.SizeVector3<<4), &struct{ world_point Vector3.XYZ }{world_point})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the 3D point in world space that maps to the given 2D coordinate in the [Viewport] rectangle on a plane that is the given 'z_depth' distance into the scene away from the camera.
-
-[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
-*/
-//go:nosplit
 func (self class) ProjectPosition(screen_point Vector2.XY, z_depth float64) Vector3.XYZ { //gd:Camera3D.project_position
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.project_position, gdextension.SizeVector3|(gdextension.SizeVector2<<4)|(gdextension.SizeFloat<<8), &struct {
 		screen_point Vector2.XY
@@ -751,11 +700,6 @@ func (self class) ProjectPosition(screen_point Vector2.XY, z_depth float64) Vect
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the camera projection to perspective mode (see [ProjectionPerspective]), by specifying a 'fov' (field of view) angle in degrees, and the 'z_near' and 'z_far' clip planes in world space units.
-*/
-//go:nosplit
 func (self class) SetPerspective(fov float64, z_near float64, z_far float64) { //gd:Camera3D.set_perspective
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_perspective, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
 		fov    float64
@@ -763,13 +707,6 @@ func (self class) SetPerspective(fov float64, z_near float64, z_far float64) { /
 		z_far  float64
 	}{fov, z_near, z_far})
 }
-
-/*
-Sets the camera projection to orthogonal mode (see [ProjectionOrthogonal]), by specifying a 'size', and the 'z_near' and 'z_far' clip planes in world space units.
-
-As a hint, 3D games that look 2D often use this projection, with 'size' specified in pixels.
-*/
-//go:nosplit
 func (self class) SetOrthogonal(size float64, z_near float64, z_far float64) { //gd:Camera3D.set_orthogonal
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_orthogonal, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
 		size   float64
@@ -777,13 +714,6 @@ func (self class) SetOrthogonal(size float64, z_near float64, z_far float64) { /
 		z_far  float64
 	}{size, z_near, z_far})
 }
-
-/*
-Sets the camera projection to frustum mode (see [ProjectionFrustum]), by specifying a 'size', an 'offset', and the 'z_near' and 'z_far' clip planes in world space units. See also [FrustumOffset].
-
-[FrustumOffset]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.FrustumOffset
-*/
-//go:nosplit
 func (self class) SetFrustum(size float64, offset Vector2.XY, z_near float64, z_far float64) { //gd:Camera3D.set_frustum
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frustum, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), &struct {
 		size   float64
@@ -792,295 +722,168 @@ func (self class) SetFrustum(size float64, offset Vector2.XY, z_near float64, z_
 		z_far  float64
 	}{size, offset, z_near, z_far})
 }
-
-/*
-Makes this camera the current camera for the [Viewport] (see class description). If the camera node is outside the scene tree, it will attempt to become current once it's added.
-
-[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
-*/
-//go:nosplit
 func (self class) MakeCurrent() { //gd:Camera3D.make_current
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.make_current, 0, &struct{}{})
 }
-
-/*
-If this is the current camera, remove it from being current. If 'enable_next' is true, request to make the next camera current, if any.
-*/
-//go:nosplit
 func (self class) ClearCurrent(enable_next bool) { //gd:Camera3D.clear_current
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_current, 0|(gdextension.SizeBool<<4), &struct{ enable_next bool }{enable_next})
 }
-
-//go:nosplit
 func (self class) SetCurrent(enabled bool) { //gd:Camera3D.set_current
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsCurrent() bool { //gd:Camera3D.is_current
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_current, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the transform of the camera plus the vertical ([VOffset]) and horizontal ([HOffset]) offsets; and any other adjustments made to the position and orientation of the camera by subclassed cameras such as [XRCamera3D].
-
-[HOffset]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.HOffset
-[VOffset]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.VOffset
-[XRCamera3D]: https://pkg.go.dev/graphics.gd/classdb/XRCamera3D
-*/
-//go:nosplit
 func (self class) GetCameraTransform() Transform3D.BasisOrigin { //gd:Camera3D.get_camera_transform
 	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_camera_transform, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
-
-/*
-Returns the projection matrix that this camera uses to render to its associated viewport. The camera must be part of the scene tree to function.
-*/
-//go:nosplit
 func (self class) GetCameraProjection() Projection.XYZW { //gd:Camera3D.get_camera_projection
 	var r_ret = noescape.Call[Projection.XYZW](gd.ObjectChecked(self.AsObject()), methods.get_camera_projection, gdextension.SizeProjection, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetFov() float64 { //gd:Camera3D.get_fov
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fov, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetFrustumOffset() Vector2.XY { //gd:Camera3D.get_frustum_offset
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_frustum_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetSize() float64 { //gd:Camera3D.get_size
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetFar() float64 { //gd:Camera3D.get_far
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_far, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetNear() float64 { //gd:Camera3D.get_near
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_near, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFov(fov float64) { //gd:Camera3D.set_fov
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fov, 0|(gdextension.SizeFloat<<4), &struct{ fov float64 }{fov})
 }
-
-//go:nosplit
 func (self class) SetFrustumOffset(offset Vector2.XY) { //gd:Camera3D.set_frustum_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frustum_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
-
-//go:nosplit
 func (self class) SetSize(size float64) { //gd:Camera3D.set_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeFloat<<4), &struct{ size float64 }{size})
 }
-
-//go:nosplit
 func (self class) SetFar(far float64) { //gd:Camera3D.set_far
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_far, 0|(gdextension.SizeFloat<<4), &struct{ far float64 }{far})
 }
-
-//go:nosplit
 func (self class) SetNear(near float64) { //gd:Camera3D.set_near
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_near, 0|(gdextension.SizeFloat<<4), &struct{ near float64 }{near})
 }
-
-//go:nosplit
 func (self class) GetProjection() ProjectionType { //gd:Camera3D.get_projection
 	var r_ret = noescape.Call[ProjectionType](gd.ObjectChecked(self.AsObject()), methods.get_projection, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetProjection(mode ProjectionType) { //gd:Camera3D.set_projection
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_projection, 0|(gdextension.SizeInt<<4), &struct{ mode ProjectionType }{mode})
 }
-
-//go:nosplit
 func (self class) SetHOffset(offset float64) { //gd:Camera3D.set_h_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_offset, 0|(gdextension.SizeFloat<<4), &struct{ offset float64 }{offset})
 }
-
-//go:nosplit
 func (self class) GetHOffset() float64 { //gd:Camera3D.get_h_offset
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_h_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetVOffset(offset float64) { //gd:Camera3D.set_v_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_offset, 0|(gdextension.SizeFloat<<4), &struct{ offset float64 }{offset})
 }
-
-//go:nosplit
 func (self class) GetVOffset() float64 { //gd:Camera3D.get_v_offset
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_v_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCullMask(mask int64) { //gd:Camera3D.set_cull_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cull_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
-
-//go:nosplit
 func (self class) GetCullMask() int64 { //gd:Camera3D.get_cull_mask
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cull_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEnvironment(env [1]gdclass.Environment) { //gd:Camera3D.set_environment
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment, 0|(gdextension.SizeObject<<4), &struct{ env gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEnvironment(env[0])))})
 }
-
-//go:nosplit
 func (self class) GetEnvironment() [1]gdclass.Environment { //gd:Camera3D.get_environment
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_environment, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Environment{gdclass.NewEnvironment(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAttributes(env [1]gdclass.CameraAttributes) { //gd:Camera3D.set_attributes
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_attributes, 0|(gdextension.SizeObject<<4), &struct{ env gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCameraAttributes(env[0])))})
 }
-
-//go:nosplit
 func (self class) GetAttributes() [1]gdclass.CameraAttributes { //gd:Camera3D.get_attributes
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_attributes, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.CameraAttributes{gdclass.NewCameraAttributes(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCompositor(compositor [1]gdclass.Compositor) { //gd:Camera3D.set_compositor
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_compositor, 0|(gdextension.SizeObject<<4), &struct{ compositor gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCompositor(compositor[0])))})
 }
-
-//go:nosplit
 func (self class) GetCompositor() [1]gdclass.Compositor { //gd:Camera3D.get_compositor
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_compositor, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Compositor{gdclass.NewCompositor(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetKeepAspectMode(mode KeepAspect) { //gd:Camera3D.set_keep_aspect_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keep_aspect_mode, 0|(gdextension.SizeInt<<4), &struct{ mode KeepAspect }{mode})
 }
-
-//go:nosplit
 func (self class) GetKeepAspectMode() KeepAspect { //gd:Camera3D.get_keep_aspect_mode
 	var r_ret = noescape.Call[KeepAspect](gd.ObjectChecked(self.AsObject()), methods.get_keep_aspect_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDopplerTracking(mode DopplerTracking) { //gd:Camera3D.set_doppler_tracking
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_doppler_tracking, 0|(gdextension.SizeInt<<4), &struct{ mode DopplerTracking }{mode})
 }
-
-//go:nosplit
 func (self class) GetDopplerTracking() DopplerTracking { //gd:Camera3D.get_doppler_tracking
 	var r_ret = noescape.Call[DopplerTracking](gd.ObjectChecked(self.AsObject()), methods.get_doppler_tracking, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the camera's frustum planes in world space units as an array of [Plane.NormalD]s in the following order: near, far, left, top, right, bottom. Not to be confused with [FrustumOffset].
-
-[FrustumOffset]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.FrustumOffset
-[Plane.NormalD]: https://pkg.go.dev/graphics.gd/variant/Plane#NormalD
-*/
-//go:nosplit
 func (self class) GetFrustum() Array.Contains[Plane.NormalD] { //gd:Camera3D.get_frustum
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_frustum, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Plane.NormalD]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns true if the given position is inside the camera's frustum (the green part of the linked diagram). [See this diagram] for an overview of position query methods.
-
-[See this diagram]: https://raw.githubusercontent.com/godotengine/godot-docs/master/img/camera3d_position_frustum.png
-*/
-//go:nosplit
 func (self class) IsPositionInFrustum(world_point Vector3.XYZ) bool { //gd:Camera3D.is_position_in_frustum
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_position_in_frustum, gdextension.SizeBool|(gdextension.SizeVector3<<4), &struct{ world_point Vector3.XYZ }{world_point})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the camera's RID from the [RenderingServer].
-
-[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
-*/
-//go:nosplit
 func (self class) GetCameraRid() RID.Any { //gd:Camera3D.get_camera_rid
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_camera_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the RID of a pyramid shape encompassing the camera's view frustum, ignoring the camera's near plane. The tip of the pyramid represents the position of the camera.
-*/
-//go:nosplit
 func (self class) GetPyramidShapeRid() RID.Any { //gd:Camera3D.get_pyramid_shape_rid
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_pyramid_shape_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Based on 'value', enables or disables the specified layer in the [CullMask], given a 'layer_number' between 1 and 20.
-
-[CullMask]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.CullMask
-*/
-//go:nosplit
 func (self class) SetCullMaskValue(layer_number int64, value bool) { //gd:Camera3D.set_cull_mask_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cull_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value})
 }
-
-/*
-Returns whether or not the specified layer of the [CullMask] is enabled, given a 'layer_number' between 1 and 20.
-
-[CullMask]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.CullMask
-*/
-//go:nosplit
 func (self class) GetCullMaskValue(layer_number int64) bool { //gd:Camera3D.get_cull_mask_value
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_cull_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret

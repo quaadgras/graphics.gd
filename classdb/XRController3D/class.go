@@ -223,67 +223,26 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns true if the button with the given 'name' is pressed.
-
-Note: The current [XRInterface] defines the 'name' for each input. In the case of OpenXR, these are the names of actions in the current action set.
-
-[XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
-*/
-//go:nosplit
 func (self class) IsButtonPressed(name String.Name) bool { //gd:XRController3D.is_button_pressed
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_button_pressed, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a any for the input with the given 'name'. This works for any input type, the variant will be typed according to the actions configuration.
-
-Note: The current [XRInterface] defines the 'name' for each input. In the case of OpenXR, these are the names of actions in the current action set.
-
-[XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
-*/
-//go:nosplit
 func (self class) GetInput(name String.Name) variant.Any { //gd:XRController3D.get_input
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_input, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Returns a numeric value for the input with the given 'name'. This is used for triggers and grip sensors.
-
-Note: The current [XRInterface] defines the 'name' for each input. In the case of OpenXR, these are the names of actions in the current action set.
-
-[XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
-*/
-//go:nosplit
 func (self class) GetFloat(name String.Name) float64 { //gd:XRController3D.get_float
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_float, gdextension.SizeFloat|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a [Vector2.XY] for the input with the given 'name'. This is used for thumbsticks and thumbpads found on many controllers.
-
-Note: The current [XRInterface] defines the 'name' for each input. In the case of OpenXR, these are the names of actions in the current action set.
-
-[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
-[XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
-*/
-//go:nosplit
 func (self class) GetVector2(name String.Name) Vector2.XY { //gd:XRController3D.get_vector2
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_vector2, gdextension.SizeVector2|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the hand holding this controller, if known.
-*/
-//go:nosplit
 func (self class) GetTrackerHand() XRPositionalTracker.TrackerHand { //gd:XRController3D.get_tracker_hand
 	var r_ret = noescape.Call[XRPositionalTracker.TrackerHand](gd.ObjectChecked(self.AsObject()), methods.get_tracker_hand, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

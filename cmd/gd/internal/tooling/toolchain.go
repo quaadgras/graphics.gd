@@ -58,6 +58,9 @@ func (exe toolchain) PathToCommand() string {
 
 func (exe toolchain) Exec(args ...string) error {
 	for i, arg := range args {
+		if strings.Contains(arg, "=") {
+			arg, _, _ = strings.Cut(arg, "=")
+		}
 		if newarg, ok := exe.ConvertArguments[arg]; ok {
 			if newarg == "" {
 				args = append(args[:i], args[i+1:]...)
@@ -81,11 +84,8 @@ func (exe toolchain) Exec(args ...string) error {
 }
 
 func (exe toolchain) Action(name string, suffix_args []string, args ...string) error {
-	var suffix = make([]string, len(suffix_args))
-	for _, arg := range suffix {
-		if !strings.HasPrefix(arg, "-") {
-			continue
-		}
+	var suffix = make([]string, 0, len(suffix_args))
+	for _, arg := range suffix_args {
 		suffix = append(suffix, arg)
 	}
 	for i, arg := range args {

@@ -257,10 +257,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Start the AES context in the given 'mode'. A 'key' of either 16 or 32 bytes must always be provided, while an 'iv' (initialization vector) of exactly 16 bytes, is only needed when 'mode' is either [ModeCbcEncrypt] or [ModeCbcDecrypt].
-*/
-//go:nosplit
 func (self class) Start(mode Mode, key Packed.Bytes, iv Packed.Bytes) Error.Code { //gd:AESContext.start
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12), &struct {
 		mode Mode
@@ -270,41 +266,16 @@ func (self class) Start(mode Mode, key Packed.Bytes, iv Packed.Bytes) Error.Code
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Run the desired operation for this AES context. Will return a []byte containing the result of encrypting (or decrypting) the given 'src'. See [Start] for mode of operation.
-
-Note: The size of 'src' must be a multiple of 16. Apply some padding if needed.
-
-[Start]: https://pkg.go.dev/graphics.gd/classdb/AESContext#Instance.Start
-*/
-//go:nosplit
 func (self class) Update(src Packed.Bytes) Packed.Bytes { //gd:AESContext.update
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.update, gdextension.SizePackedArray|(gdextension.SizePackedArray<<4), &struct{ src gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](src.Array)))})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-
-/*
-Get the current IV state for this context (IV gets updated when calling [Update]). You normally don't need this function.
-
-Note: This function only makes sense when the context is started with [ModeCbcEncrypt] or [ModeCbcDecrypt].
-
-[Update]: https://pkg.go.dev/graphics.gd/classdb/AESContext#Instance.Update
-*/
-//go:nosplit
 func (self class) GetIvState() Packed.Bytes { //gd:AESContext.get_iv_state
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_iv_state, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-
-/*
-Close this AES context so it can be started again. See [Start].
-
-[Start]: https://pkg.go.dev/graphics.gd/classdb/AESContext#Instance.Start
-*/
-//go:nosplit
 func (self class) Finish() { //gd:AESContext.finish
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.finish, 0, &struct{}{})
 }

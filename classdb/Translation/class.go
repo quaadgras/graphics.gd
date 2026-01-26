@@ -374,12 +374,6 @@ func (self Instance) SetLocale(value string) Instance { //gd:Translation.locale
 	class(self).SetLocale(String.New(value))
 	return self
 }
-
-/*
-Virtual method to override [GetPluralMessage].
-
-[GetPluralMessage]: https://pkg.go.dev/graphics.gd/classdb/Translation#Instance.GetPluralMessage
-*/
 func (class) _get_plural_message(impl func(ptr gdclass.Receiver, src_message String.Name, src_plural_message String.Name, n int64, context String.Name) String.Name) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var src_message = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
@@ -399,12 +393,6 @@ func (class) _get_plural_message(impl func(ptr gdclass.Receiver, src_message Str
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Virtual method to override [GetMessage].
-
-[GetMessage]: https://pkg.go.dev/graphics.gd/classdb/Translation#Instance.GetMessage
-*/
 func (class) _get_message(impl func(ptr gdclass.Receiver, src_message String.Name, context String.Name) String.Name) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var src_message = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
@@ -422,24 +410,14 @@ func (class) _get_message(impl func(ptr gdclass.Receiver, src_message String.Nam
 	}
 }
 
-//go:nosplit
 func (self class) SetLocale(locale String.Readable) { //gd:Translation.set_locale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_locale, 0|(gdextension.SizeString<<4), &struct{ locale gdextension.String }{pointers.Get(gd.InternalString(locale))})
 }
-
-//go:nosplit
 func (self class) GetLocale() String.Readable { //gd:Translation.get_locale
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_locale, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Adds a message if nonexistent, followed by its translation.
-
-An additional context could be used to specify the translation context or differentiate polysemic words.
-*/
-//go:nosplit
 func (self class) AddMessage(src_message String.Name, xlated_message String.Name, context String.Name) { //gd:Translation.add_message
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_message, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12), &struct {
 		src_message    gdextension.StringName
@@ -447,17 +425,6 @@ func (self class) AddMessage(src_message String.Name, xlated_message String.Name
 		context        gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(src_message)), pointers.Get(gd.InternalStringName(xlated_message)), pointers.Get(gd.InternalStringName(context))})
 }
-
-/*
-Adds a message involving plural translation if nonexistent, followed by its translation.
-
-An additional context could be used to specify the translation context or differentiate polysemic words.
-
-Note: Plurals are only supported in [gettext-based translations (PO)], not CSV.
-
-[gettext-based translations (PO)]: https://docs.godotengine.org/tutorials/i18n/localization_using_gettext.html
-*/
-//go:nosplit
 func (self class) AddPluralMessage(src_message String.Name, xlated_messages Packed.Strings, context String.Name) { //gd:Translation.add_plural_message
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_plural_message, 0|(gdextension.SizeStringName<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeStringName<<12), &struct {
 		src_message     gdextension.StringName
@@ -465,11 +432,6 @@ func (self class) AddPluralMessage(src_message String.Name, xlated_messages Pack
 		context         gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(src_message)), pointers.Get(gd.InternalPackedStrings(xlated_messages)), pointers.Get(gd.InternalStringName(context))})
 }
-
-/*
-Returns a message's translation.
-*/
-//go:nosplit
 func (self class) GetMessage(src_message String.Name, context String.Name) String.Name { //gd:Translation.get_message
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_message, gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		src_message gdextension.StringName
@@ -478,17 +440,6 @@ func (self class) GetMessage(src_message String.Name, context String.Name) Strin
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-
-/*
-Returns a message's translation involving plurals.
-
-The number 'n' is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
-
-Note: Plurals are only supported in [gettext-based translations (PO)], not CSV.
-
-[gettext-based translations (PO)]: https://docs.godotengine.org/tutorials/i18n/localization_using_gettext.html
-*/
-//go:nosplit
 func (self class) GetPluralMessage(src_message String.Name, src_plural_message String.Name, n int64, context String.Name) String.Name { //gd:Translation.get_plural_message
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_plural_message, gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeStringName<<16), &struct {
 		src_message        gdextension.StringName
@@ -499,42 +450,22 @@ func (self class) GetPluralMessage(src_message String.Name, src_plural_message S
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-
-/*
-Erases a message.
-*/
-//go:nosplit
 func (self class) EraseMessage(src_message String.Name, context String.Name) { //gd:Translation.erase_message
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.erase_message, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		src_message gdextension.StringName
 		context     gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(src_message)), pointers.Get(gd.InternalStringName(context))})
 }
-
-/*
-Returns all the messages (keys).
-*/
-//go:nosplit
 func (self class) GetMessageList() Packed.Strings { //gd:Translation.get_message_list
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_message_list, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns all the messages (translated text).
-*/
-//go:nosplit
 func (self class) GetTranslatedMessageList() Packed.Strings { //gd:Translation.get_translated_message_list
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_translated_message_list, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns the number of existing messages.
-*/
-//go:nosplit
 func (self class) GetMessageCount() int64 { //gd:Translation.get_message_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_message_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

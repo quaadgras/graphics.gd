@@ -277,136 +277,68 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns a list of synchronized property node paths.
-*/
-//go:nosplit
 func (self class) GetProperties() Array.Contains[Path.ToNode] { //gd:SceneReplicationConfig.get_properties
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_properties, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Adds the property identified by the given 'path' to the list of the properties being synchronized, optionally passing an 'index'.
-
-Note: For details on restrictions and limitations on property synchronization, see [MultiplayerSynchronizer].
-
-[MultiplayerSynchronizer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer
-*/
-//go:nosplit
 func (self class) AddProperty(path Path.ToNode, index int64) { //gd:SceneReplicationConfig.add_property
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_property, 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeInt<<8), &struct {
 		path  gdextension.NodePath
 		index int64
 	}{pointers.Get(gd.InternalNodePath(path)), index})
 }
-
-/*
-Returns true if the given 'path' is configured for synchronization.
-*/
-//go:nosplit
 func (self class) HasProperty(path Path.ToNode) bool { //gd:SceneReplicationConfig.has_property
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_property, gdextension.SizeBool|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Removes the property identified by the given 'path' from the configuration.
-*/
-//go:nosplit
 func (self class) RemoveProperty(path Path.ToNode) { //gd:SceneReplicationConfig.remove_property
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_property, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
-
-/*
-Finds the index of the given 'path'.
-*/
-//go:nosplit
 func (self class) PropertyGetIndex(path Path.ToNode) int64 { //gd:SceneReplicationConfig.property_get_index
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.property_get_index, gdextension.SizeInt|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the property identified by the given 'path' is configured to be synchronized on spawn.
-*/
-//go:nosplit
 func (self class) PropertyGetSpawn(path Path.ToNode) bool { //gd:SceneReplicationConfig.property_get_spawn
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.property_get_spawn, gdextension.SizeBool|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets whether the property identified by the given 'path' is configured to be synchronized on spawn.
-*/
-//go:nosplit
 func (self class) PropertySetSpawn(path Path.ToNode, enabled bool) { //gd:SceneReplicationConfig.property_set_spawn
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.property_set_spawn, 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeBool<<8), &struct {
 		path    gdextension.NodePath
 		enabled bool
 	}{pointers.Get(gd.InternalNodePath(path)), enabled})
 }
-
-/*
-Returns the replication mode for the property identified by the given 'path'.
-*/
-//go:nosplit
 func (self class) PropertyGetReplicationMode(path Path.ToNode) ReplicationMode { //gd:SceneReplicationConfig.property_get_replication_mode
 	var r_ret = noescape.Call[ReplicationMode](gd.ObjectChecked(self.AsObject()), methods.property_get_replication_mode, gdextension.SizeInt|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the synchronization mode for the property identified by the given 'path'.
-*/
-//go:nosplit
 func (self class) PropertySetReplicationMode(path Path.ToNode, mode ReplicationMode) { //gd:SceneReplicationConfig.property_set_replication_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.property_set_replication_mode, 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeInt<<8), &struct {
 		path gdextension.NodePath
 		mode ReplicationMode
 	}{pointers.Get(gd.InternalNodePath(path)), mode})
 }
-
-/*
-Returns true if the property identified by the given 'path' is configured to be synchronized on process.
-*/
-//go:nosplit
 func (self class) PropertyGetSync(path Path.ToNode) bool { //gd:SceneReplicationConfig.property_get_sync
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.property_get_sync, gdextension.SizeBool|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets whether the property identified by the given 'path' is configured to be synchronized on process.
-*/
-//go:nosplit
 func (self class) PropertySetSync(path Path.ToNode, enabled bool) { //gd:SceneReplicationConfig.property_set_sync
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.property_set_sync, 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeBool<<8), &struct {
 		path    gdextension.NodePath
 		enabled bool
 	}{pointers.Get(gd.InternalNodePath(path)), enabled})
 }
-
-/*
-Returns true if the property identified by the given 'path' is configured to be reliably synchronized when changes are detected on process.
-*/
-//go:nosplit
 func (self class) PropertyGetWatch(path Path.ToNode) bool { //gd:SceneReplicationConfig.property_get_watch
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.property_get_watch, gdextension.SizeBool|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets whether the property identified by the given 'path' is configured to be reliably synchronized when changes are detected on process.
-*/
-//go:nosplit
 func (self class) PropertySetWatch(path Path.ToNode, enabled bool) { //gd:SceneReplicationConfig.property_set_watch
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.property_set_watch, 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeBool<<8), &struct {
 		path    gdextension.NodePath

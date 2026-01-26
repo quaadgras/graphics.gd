@@ -197,12 +197,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Creates a placeholder version of this resource ([PlaceholderCubemapArray]).
-
-[PlaceholderCubemapArray]: https://pkg.go.dev/graphics.gd/classdb/PlaceholderCubemapArray
-*/
-//go:nosplit
 func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:CubemapArray.create_placeholder
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_placeholder, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Resource{gdclass.NewResource(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

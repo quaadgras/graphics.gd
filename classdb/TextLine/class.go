@@ -497,86 +497,49 @@ func (self Instance) SetEllipsisChar(value string) Instance { //gd:TextLine.elli
 	return self
 }
 
-/*
-Clears text line (removes text and inline objects).
-*/
-//go:nosplit
 func (self class) Clear() { //gd:TextLine.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetDirection(direction TextServer.Direction) { //gd:TextLine.set_direction
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_direction, 0|(gdextension.SizeInt<<4), &struct{ direction TextServer.Direction }{direction})
 }
-
-//go:nosplit
 func (self class) GetDirection() TextServer.Direction { //gd:TextLine.get_direction
 	var r_ret = noescape.Call[TextServer.Direction](gd.ObjectChecked(self.AsObject()), methods.get_direction, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the text writing direction inferred by the BiDi algorithm.
-*/
-//go:nosplit
 func (self class) GetInferredDirection() TextServer.Direction { //gd:TextLine.get_inferred_direction
 	var r_ret = noescape.Call[TextServer.Direction](gd.ObjectChecked(self.AsObject()), methods.get_inferred_direction, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetOrientation(orientation TextServer.Orientation) { //gd:TextLine.set_orientation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_orientation, 0|(gdextension.SizeInt<<4), &struct{ orientation TextServer.Orientation }{orientation})
 }
-
-//go:nosplit
 func (self class) GetOrientation() TextServer.Orientation { //gd:TextLine.get_orientation
 	var r_ret = noescape.Call[TextServer.Orientation](gd.ObjectChecked(self.AsObject()), methods.get_orientation, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPreserveInvalid(enabled bool) { //gd:TextLine.set_preserve_invalid
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_preserve_invalid, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) GetPreserveInvalid() bool { //gd:TextLine.get_preserve_invalid
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_preserve_invalid, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPreserveControl(enabled bool) { //gd:TextLine.set_preserve_control
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_preserve_control, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) GetPreserveControl() bool { //gd:TextLine.get_preserve_control
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_preserve_control, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Overrides BiDi for the structured text.
-
-Override ranges should cover full source text without overlaps. BiDi algorithm will be used on each range separately.
-*/
-//go:nosplit
 func (self class) SetBidiOverride(override Array.Any) { //gd:TextLine.set_bidi_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bidi_override, 0|(gdextension.SizeArray<<4), &struct{ override gdextension.Array }{pointers.Get(gd.InternalArray(override))})
 }
-
-/*
-Adds text span and font to draw it.
-*/
-//go:nosplit
 func (self class) AddString(text String.Readable, font [1]gdclass.Font, font_size int64, language String.Readable, meta variant.Any) bool { //gd:TextLine.add_string
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.add_string, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeString<<16)|(gdextension.SizeVariant<<20), &struct {
 		text      gdextension.String
@@ -588,11 +551,6 @@ func (self class) AddString(text String.Readable, font [1]gdclass.Font, font_siz
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds inline object to the text buffer, 'key' must be unique. In the text, object is represented as 'length' object replacement characters.
-*/
-//go:nosplit
 func (self class) AddObject(key variant.Any, size Vector2.XY, inline_align GUI.InlineAlignment, length int64, baseline float64) bool { //gd:TextLine.add_object
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.add_object, gdextension.SizeBool|(gdextension.SizeVariant<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20), &struct {
 		key          gdextension.Variant
@@ -604,11 +562,6 @@ func (self class) AddObject(key variant.Any, size Vector2.XY, inline_align GUI.I
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets new size and alignment of embedded object.
-*/
-//go:nosplit
 func (self class) ResizeObject(key variant.Any, size Vector2.XY, inline_align GUI.InlineAlignment, baseline float64) bool { //gd:TextLine.resize_object
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.resize_object, gdextension.SizeBool|(gdextension.SizeVariant<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeFloat<<16), &struct {
 		key          gdextension.Variant
@@ -619,171 +572,96 @@ func (self class) ResizeObject(key variant.Any, size Vector2.XY, inline_align GU
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetWidth(width float64) { //gd:TextLine.set_width
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_width, 0|(gdextension.SizeFloat<<4), &struct{ width float64 }{width})
 }
-
-//go:nosplit
 func (self class) GetWidth() float64 { //gd:TextLine.get_width
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_width, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetHorizontalAlignment(alignment GUI.HorizontalAlignment) { //gd:TextLine.set_horizontal_alignment
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_horizontal_alignment, 0|(gdextension.SizeInt<<4), &struct{ alignment GUI.HorizontalAlignment }{alignment})
 }
-
-//go:nosplit
 func (self class) GetHorizontalAlignment() GUI.HorizontalAlignment { //gd:TextLine.get_horizontal_alignment
 	var r_ret = noescape.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_alignment, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Aligns text to the given tab-stops.
-*/
-//go:nosplit
 func (self class) TabAlign(tab_stops Packed.Array[float32]) { //gd:TextLine.tab_align
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.tab_align, 0|(gdextension.SizePackedArray<<4), &struct {
 		tab_stops gdextension.PackedArray[float32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops))})
 }
-
-//go:nosplit
 func (self class) SetFlags(flags TextServer.JustificationFlag) { //gd:TextLine.set_flags
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flags, 0|(gdextension.SizeInt<<4), &struct{ flags TextServer.JustificationFlag }{flags})
 }
-
-//go:nosplit
 func (self class) GetFlags() TextServer.JustificationFlag { //gd:TextLine.get_flags
 	var r_ret = noescape.Call[TextServer.JustificationFlag](gd.ObjectChecked(self.AsObject()), methods.get_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTextOverrunBehavior(overrun_behavior TextServer.OverrunBehavior) { //gd:TextLine.set_text_overrun_behavior
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_overrun_behavior, 0|(gdextension.SizeInt<<4), &struct{ overrun_behavior TextServer.OverrunBehavior }{overrun_behavior})
 }
-
-//go:nosplit
 func (self class) GetTextOverrunBehavior() TextServer.OverrunBehavior { //gd:TextLine.get_text_overrun_behavior
 	var r_ret = noescape.Call[TextServer.OverrunBehavior](gd.ObjectChecked(self.AsObject()), methods.get_text_overrun_behavior, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEllipsisChar(char String.Readable) { //gd:TextLine.set_ellipsis_char
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ellipsis_char, 0|(gdextension.SizeString<<4), &struct{ char gdextension.String }{pointers.Get(gd.InternalString(char))})
 }
-
-//go:nosplit
 func (self class) GetEllipsisChar() String.Readable { //gd:TextLine.get_ellipsis_char
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_ellipsis_char, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns array of inline objects.
-*/
-//go:nosplit
 func (self class) GetObjects() Array.Any { //gd:TextLine.get_objects
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_objects, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns bounding rectangle of the inline object.
-*/
-//go:nosplit
 func (self class) GetObjectRect(key variant.Any) Rect2.PositionSize { //gd:TextLine.get_object_rect
 	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_object_rect, gdextension.SizeRect2|(gdextension.SizeVariant<<4), &struct{ key gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(key)))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns size of the bounding box of the text.
-*/
-//go:nosplit
 func (self class) GetSize() Vector2.XY { //gd:TextLine.get_size
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns TextServer buffer RID.
-*/
-//go:nosplit
 func (self class) GetRid() RID.Any { //gd:TextLine.get_rid
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the text ascent (number of pixels above the baseline for horizontal layout or to the left of baseline for vertical).
-*/
-//go:nosplit
 func (self class) GetLineAscent() float64 { //gd:TextLine.get_line_ascent
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_line_ascent, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the text descent (number of pixels below the baseline for horizontal layout or to the right of baseline for vertical).
-*/
-//go:nosplit
 func (self class) GetLineDescent() float64 { //gd:TextLine.get_line_descent
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_line_descent, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns width (for horizontal layout) or height (for vertical) of the text.
-*/
-//go:nosplit
 func (self class) GetLineWidth() float64 { //gd:TextLine.get_line_width
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_line_width, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns pixel offset of the underline below the baseline.
-*/
-//go:nosplit
 func (self class) GetLineUnderlinePosition() float64 { //gd:TextLine.get_line_underline_position
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_line_underline_position, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns thickness of the underline.
-*/
-//go:nosplit
 func (self class) GetLineUnderlineThickness() float64 { //gd:TextLine.get_line_underline_thickness
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_line_underline_thickness, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Draw text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
-*/
-//go:nosplit
 func (self class) Draw(canvas RID.Any, pos Vector2.XY, color Color.RGBA, oversampling float64) { //gd:TextLine.draw
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeFloat<<16), &struct {
 		canvas       RID.Any
@@ -792,11 +670,6 @@ func (self class) Draw(canvas RID.Any, pos Vector2.XY, color Color.RGBA, oversam
 		oversampling float64
 	}{canvas, pos, color, oversampling})
 }
-
-/*
-Draw text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
-*/
-//go:nosplit
 func (self class) DrawOutline(canvas RID.Any, pos Vector2.XY, outline_size int64, color Color.RGBA, oversampling float64) { //gd:TextLine.draw_outline
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeFloat<<20), &struct {
 		canvas       RID.Any
@@ -806,11 +679,6 @@ func (self class) DrawOutline(canvas RID.Any, pos Vector2.XY, outline_size int64
 		oversampling float64
 	}{canvas, pos, outline_size, color, oversampling})
 }
-
-/*
-Returns caret character offset at the specified pixel offset at the baseline. This function always returns a valid position.
-*/
-//go:nosplit
 func (self class) HitTest(coords float64) int64 { //gd:TextLine.hit_test
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.hit_test, gdextension.SizeInt|(gdextension.SizeFloat<<4), &struct{ coords float64 }{coords})
 	var ret = r_ret

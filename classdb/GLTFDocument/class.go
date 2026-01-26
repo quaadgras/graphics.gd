@@ -452,87 +452,54 @@ func (self Instance) SetVisibilityMode(value VisibilityMode) Instance { //gd:GLT
 	return self
 }
 
-//go:nosplit
 func (self class) SetImageFormat(image_format String.Readable) { //gd:GLTFDocument.set_image_format
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_image_format, 0|(gdextension.SizeString<<4), &struct{ image_format gdextension.String }{pointers.Get(gd.InternalString(image_format))})
 }
-
-//go:nosplit
 func (self class) GetImageFormat() String.Readable { //gd:GLTFDocument.get_image_format
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_image_format, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetLossyQuality(lossy_quality float64) { //gd:GLTFDocument.set_lossy_quality
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lossy_quality, 0|(gdextension.SizeFloat<<4), &struct{ lossy_quality float64 }{lossy_quality})
 }
-
-//go:nosplit
 func (self class) GetLossyQuality() float64 { //gd:GLTFDocument.get_lossy_quality
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lossy_quality, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFallbackImageFormat(fallback_image_format String.Readable) { //gd:GLTFDocument.set_fallback_image_format
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_image_format, 0|(gdextension.SizeString<<4), &struct{ fallback_image_format gdextension.String }{pointers.Get(gd.InternalString(fallback_image_format))})
 }
-
-//go:nosplit
 func (self class) GetFallbackImageFormat() String.Readable { //gd:GLTFDocument.get_fallback_image_format
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_fallback_image_format, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFallbackImageQuality(fallback_image_quality float64) { //gd:GLTFDocument.set_fallback_image_quality
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_image_quality, 0|(gdextension.SizeFloat<<4), &struct{ fallback_image_quality float64 }{fallback_image_quality})
 }
-
-//go:nosplit
 func (self class) GetFallbackImageQuality() float64 { //gd:GLTFDocument.get_fallback_image_quality
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fallback_image_quality, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRootNodeMode(root_node_mode RootNodeMode) { //gd:GLTFDocument.set_root_node_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_node_mode, 0|(gdextension.SizeInt<<4), &struct{ root_node_mode RootNodeMode }{root_node_mode})
 }
-
-//go:nosplit
 func (self class) GetRootNodeMode() RootNodeMode { //gd:GLTFDocument.get_root_node_mode
 	var r_ret = noescape.Call[RootNodeMode](gd.ObjectChecked(self.AsObject()), methods.get_root_node_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetVisibilityMode(visibility_mode VisibilityMode) { //gd:GLTFDocument.set_visibility_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_mode, 0|(gdextension.SizeInt<<4), &struct{ visibility_mode VisibilityMode }{visibility_mode})
 }
-
-//go:nosplit
 func (self class) GetVisibilityMode() VisibilityMode { //gd:GLTFDocument.get_visibility_mode
 	var r_ret = noescape.Call[VisibilityMode](gd.ObjectChecked(self.AsObject()), methods.get_visibility_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Takes a path to a glTF file and imports the data at that file path to the given [GLTFState] object through the 'state' parameter.
-
-Note: The 'base_path' tells [AppendFromFile] where to find dependencies and can be empty.
-
-[AppendFromFile]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocument#Instance.AppendFromFile
-[GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
-*/
-//go:nosplit
 func (self class) AppendFromFile(path String.Readable, state [1]gdclass.GLTFState, flags int64, base_path String.Readable) Error.Code { //gd:GLTFDocument.append_from_file
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.append_from_file, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeString<<16), &struct {
 		path      gdextension.String
@@ -543,16 +510,6 @@ func (self class) AppendFromFile(path String.Readable, state [1]gdclass.GLTFStat
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Takes a []byte defining a glTF and imports the data to the given [GLTFState] object through the 'state' parameter.
-
-Note: The 'base_path' tells [AppendFromBuffer] where to find dependencies and can be empty.
-
-[AppendFromBuffer]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocument#Instance.AppendFromBuffer
-[GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
-*/
-//go:nosplit
 func (self class) AppendFromBuffer(bytes Packed.Bytes, base_path String.Readable, state [1]gdclass.GLTFState, flags int64) Error.Code { //gd:GLTFDocument.append_from_buffer
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.append_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4)|(gdextension.SizeString<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeInt<<16), &struct {
 		bytes     gdextension.PackedArray[byte]
@@ -563,13 +520,6 @@ func (self class) AppendFromBuffer(bytes Packed.Bytes, base_path String.Readable
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Takes a Godot Engine scene node and exports it and its descendants to the given [GLTFState] object through the 'state' parameter.
-
-[GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
-*/
-//go:nosplit
 func (self class) AppendFromScene(node [1]gdclass.Node, state [1]gdclass.GLTFState, flags int64) Error.Code { //gd:GLTFDocument.append_from_scene
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.append_from_scene, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12), &struct {
 		node  gdextension.Object
@@ -579,15 +529,6 @@ func (self class) AppendFromScene(node [1]gdclass.Node, state [1]gdclass.GLTFSta
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Takes a [GLTFState] object through the 'state' parameter and returns a Godot Engine scene node.
-
-The 'bake_fps' parameter overrides the bake_fps in 'state'.
-
-[GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
-*/
-//go:nosplit
 func (self class) GenerateScene(state [1]gdclass.GLTFState, bake_fps float64, trimming bool, remove_immutable_tracks bool) [1]gdclass.Node { //gd:GLTFDocument.generate_scene
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.generate_scene, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
 		state                   gdextension.Object
@@ -598,27 +539,11 @@ func (self class) GenerateScene(state [1]gdclass.GLTFState, bake_fps float64, tr
 	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Takes a [GLTFState] object through the 'state' parameter and returns a glTF []byte.
-
-[GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
-*/
-//go:nosplit
 func (self class) GenerateBuffer(state [1]gdclass.GLTFState) Packed.Bytes { //gd:GLTFDocument.generate_buffer
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.generate_buffer, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ state gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFState(state[0])))})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-
-/*
-Takes a [GLTFState] object through the 'state' parameter and writes a glTF file to the filesystem.
-
-Note: The extension of the glTF file determines if it is a .glb binary file or a .gltf text file.
-
-[GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
-*/
-//go:nosplit
 func (self class) WriteToFilesystem(state [1]gdclass.GLTFState, path String.Readable) Error.Code { //gd:GLTFDocument.write_to_filesystem
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.write_to_filesystem, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), &struct {
 		state gdextension.Object
@@ -627,14 +552,6 @@ func (self class) WriteToFilesystem(state [1]gdclass.GLTFState, path String.Read
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Determines a mapping between the given glTF Object Model 'json_pointer' and the corresponding Godot node path(s) in the generated Godot scene. The details of this mapping are returned in a [GLTFObjectModelProperty] object. Additional mappings can be supplied via the [GLTFDocumentExtension.ExportObjectModelProperty] callback method.
-
-[GLTFDocumentExtension.ExportObjectModelProperty]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocumentExtension#Instance.ExportObjectModelProperty
-[GLTFObjectModelProperty]: https://pkg.go.dev/graphics.gd/classdb/GLTFObjectModelProperty
-*/
-//go:nosplit
 func (self class) ImportObjectModelProperty(state [1]gdclass.GLTFState, json_pointer String.Readable) [1]gdclass.GLTFObjectModelProperty { //gd:GLTFDocument.import_object_model_property
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.import_object_model_property, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), &struct {
 		state        gdextension.Object
@@ -643,14 +560,6 @@ func (self class) ImportObjectModelProperty(state [1]gdclass.GLTFState, json_poi
 	var ret = [1]gdclass.GLTFObjectModelProperty{gdclass.NewGLTFObjectModelProperty(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Determines a mapping between the given Godot 'node_path' and the corresponding glTF Object Model JSON pointer(s) in the generated glTF file. The details of this mapping are returned in a [GLTFObjectModelProperty] object. Additional mappings can be supplied via the [GLTFDocumentExtension.ImportObjectModelProperty] callback method.
-
-[GLTFDocumentExtension.ImportObjectModelProperty]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocumentExtension#Instance.ImportObjectModelProperty
-[GLTFObjectModelProperty]: https://pkg.go.dev/graphics.gd/classdb/GLTFObjectModelProperty
-*/
-//go:nosplit
 func (self class) ExportObjectModelProperty(state [1]gdclass.GLTFState, node_path Path.ToNode, godot_node [1]gdclass.Node, gltf_node_index int64) [1]gdclass.GLTFObjectModelProperty { //gd:GLTFDocument.export_object_model_property
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.export_object_model_property, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeNodePath<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeInt<<16), &struct {
 		state           gdextension.Object
@@ -661,42 +570,15 @@ func (self class) ExportObjectModelProperty(state [1]gdclass.GLTFState, node_pat
 	var ret = [1]gdclass.GLTFObjectModelProperty{gdclass.NewGLTFObjectModelProperty(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Registers the given [GLTFDocumentExtension] instance with GLTFDocument. If 'first_priority' is true, this extension will be run first. Otherwise, it will be run last.
-
-Note: Like GLTFDocument itself, all GLTFDocumentExtension classes must be stateless in order to function properly. If you need to store data, use the set_additional_data and get_additional_data methods in [GLTFState] or [GLTFNode].
-
-[GLTFDocumentExtension]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocumentExtension
-[GLTFNode]: https://pkg.go.dev/graphics.gd/classdb/GLTFNode
-[GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
-*/
-//go:nosplit
 func (self class) RegisterGltfDocumentExtension(extension [1]gdclass.GLTFDocumentExtension, first_priority bool) { //gd:GLTFDocument.register_gltf_document_extension
 	noescape.CallStatic[struct{}](methods.register_gltf_document_extension, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		extension      gdextension.Object
 		first_priority bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFDocumentExtension(extension[0]))), first_priority})
 }
-
-/*
-Unregisters the given [GLTFDocumentExtension] instance.
-
-[GLTFDocumentExtension]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocumentExtension
-*/
-//go:nosplit
 func (self class) UnregisterGltfDocumentExtension(extension [1]gdclass.GLTFDocumentExtension) { //gd:GLTFDocument.unregister_gltf_document_extension
 	noescape.CallStatic[struct{}](methods.unregister_gltf_document_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFDocumentExtension(extension[0])))})
 }
-
-/*
-Returns a list of all support glTF extensions, including extensions supported directly by the engine, and extensions supported by user plugins registering [GLTFDocumentExtension] classes.
-
-Note: If this method is run before a GLTFDocumentExtension is registered, its extensions won't be included in the list. Be sure to only run this method after all extensions are registered. If you run this when the engine starts, consider waiting a frame before calling this method to ensure all extensions are registered.
-
-[GLTFDocumentExtension]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocumentExtension
-*/
-//go:nosplit
 func (self class) GetSupportedGltfExtensions() Packed.Strings { //gd:GLTFDocument.get_supported_gltf_extensions
 	var r_ret = noescape.CallStatic[gd.PackedPointers](methods.get_supported_gltf_extensions, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))

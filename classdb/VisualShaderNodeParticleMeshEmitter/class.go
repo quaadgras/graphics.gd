@@ -213,36 +213,25 @@ func (self Instance) SetSurfaceIndex(value int) Instance { //gd:VisualShaderNode
 	return self
 }
 
-//go:nosplit
 func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:VisualShaderNodeParticleMeshEmitter.set_mesh
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMesh(mesh[0])))})
 }
-
-//go:nosplit
 func (self class) GetMesh() [1]gdclass.Mesh { //gd:VisualShaderNodeParticleMeshEmitter.get_mesh
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Mesh{gdclass.NewMesh(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUseAllSurfaces(enabled bool) { //gd:VisualShaderNodeParticleMeshEmitter.set_use_all_surfaces
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_all_surfaces, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsUseAllSurfaces() bool { //gd:VisualShaderNodeParticleMeshEmitter.is_use_all_surfaces
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_use_all_surfaces, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSurfaceIndex(surface_index int64) { //gd:VisualShaderNodeParticleMeshEmitter.set_surface_index
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_surface_index, 0|(gdextension.SizeInt<<4), &struct{ surface_index int64 }{surface_index})
 }
-
-//go:nosplit
 func (self class) GetSurfaceIndex() int64 { //gd:VisualShaderNodeParticleMeshEmitter.get_surface_index
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_surface_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

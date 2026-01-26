@@ -474,12 +474,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Called when the [Texture2D]'s width is queried.
-
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
 func (class) _get_width(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -487,12 +481,6 @@ func (class) _get_width(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionC
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called when the [Texture2D]'s height is queried.
-
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
 func (class) _get_height(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -500,12 +488,6 @@ func (class) _get_height(impl func(ptr gdclass.Receiver) int64) (cb gd.Extension
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called when a pixel's opaque state in the [Texture2D] is queried at the specified (x, y) position.
-
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
 func (class) _is_pixel_opaque(impl func(ptr gdclass.Receiver, x int64, y int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var x = gd.UnsafeGet[int64](p_args, 0)
@@ -515,12 +497,6 @@ func (class) _is_pixel_opaque(impl func(ptr gdclass.Receiver, x int64, y int64) 
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called when the presence of an alpha channel in the [Texture2D] is queried.
-
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
 func (class) _has_alpha(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -528,15 +504,6 @@ func (class) _has_alpha(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionCl
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called when the entire [Texture2D] is requested to be drawn over a [CanvasItem], with the top-left offset specified in 'pos'. 'modulate' specifies a multiplier for the colors being drawn, while 'transpose' specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
-
-Note: This is only used in 2D rendering, not 3D.
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
 func (class) _draw(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, pos Vector2.XY, modulate Color.RGBA, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -547,15 +514,6 @@ func (class) _draw(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, pos V
 		impl(self, to_canvas_item, pos, modulate, transpose)
 	}
 }
-
-/*
-Called when the [Texture2D] is requested to be drawn onto [CanvasItem]'s specified 'rect'. 'modulate' specifies a multiplier for the colors being drawn, while 'transpose' specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
-
-Note: This is only used in 2D rendering, not 3D.
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
 func (class) _draw_rect(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -567,15 +525,6 @@ func (class) _draw_rect(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, 
 		impl(self, to_canvas_item, rect, tile, modulate, transpose)
 	}
 }
-
-/*
-Called when a part of the [Texture2D] specified by 'src_rect”s coordinates is requested to be drawn onto [CanvasItem]'s specified 'rect'. 'modulate' specifies a multiplier for the colors being drawn, while 'transpose' specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
-
-Note: This is only used in 2D rendering, not 3D.
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
 func (class) _draw_rect_region(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -589,55 +538,26 @@ func (class) _draw_rect_region(impl func(ptr gdclass.Receiver, to_canvas_item RI
 	}
 }
 
-/*
-Returns the texture width in pixels.
-*/
-//go:nosplit
 func (self class) GetWidth() int64 { //gd:Texture2D.get_width
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_width, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the texture height in pixels.
-*/
-//go:nosplit
 func (self class) GetHeight() int64 { //gd:Texture2D.get_height
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the texture size in pixels.
-*/
-//go:nosplit
 func (self class) GetSize() Vector2.XY { //gd:Texture2D.get_size
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if this [Texture2D] has an alpha channel.
-
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
-//go:nosplit
 func (self class) HasAlpha() bool { //gd:Texture2D.has_alpha
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_alpha, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Draws the texture using a [CanvasItem] with the [RenderingServer] API at the specified 'position'.
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
-*/
-//go:nosplit
 func (self class) Draw(canvas_item RID.Any, position Vector2.XY, modulate Color.RGBA, transpose bool) { //gd:Texture2D.draw
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeBool<<16), &struct {
 		canvas_item RID.Any
@@ -646,14 +566,6 @@ func (self class) Draw(canvas_item RID.Any, position Vector2.XY, modulate Color.
 		transpose   bool
 	}{canvas_item, position, modulate, transpose})
 }
-
-/*
-Draws the texture using a [CanvasItem] with the [RenderingServer] API.
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
-*/
-//go:nosplit
 func (self class) DrawRect(canvas_item RID.Any, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool) { //gd:Texture2D.draw_rect
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_rect, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20), &struct {
 		canvas_item RID.Any
@@ -663,14 +575,6 @@ func (self class) DrawRect(canvas_item RID.Any, rect Rect2.PositionSize, tile bo
 		transpose   bool
 	}{canvas_item, rect, tile, modulate, transpose})
 }
-
-/*
-Draws a part of the texture using a [CanvasItem] with the [RenderingServer] API.
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
-*/
-//go:nosplit
 func (self class) DrawRectRegion(canvas_item RID.Any, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) { //gd:Texture2D.draw_rect_region
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_rect_region, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeBool<<24), &struct {
 		canvas_item RID.Any
@@ -681,31 +585,11 @@ func (self class) DrawRectRegion(canvas_item RID.Any, rect Rect2.PositionSize, s
 		clip_uv     bool
 	}{canvas_item, rect, src_rect, modulate, transpose, clip_uv})
 }
-
-/*
-Returns an [Image] that is a copy of data from this [Texture2D] (a new [Image] is created each time). [Image]s can be accessed and manipulated directly.
-
-Note: This will return null if this [Texture2D] is invalid.
-
-Note: This will fetch the texture data from the GPU, which might cause performance problems when overused. Avoid calling [GetImage] every frame, especially on large textures.
-
-[GetImage]: https://pkg.go.dev/graphics.gd/classdb/Texture2D#Instance.GetImage
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
-//go:nosplit
 func (self class) GetImage() [1]gdclass.Image { //gd:Texture2D.get_image
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_image, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Creates a placeholder version of this resource ([PlaceholderTexture2D]).
-
-[PlaceholderTexture2D]: https://pkg.go.dev/graphics.gd/classdb/PlaceholderTexture2D
-*/
-//go:nosplit
 func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:Texture2D.create_placeholder
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_placeholder, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Resource{gdclass.NewResource(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

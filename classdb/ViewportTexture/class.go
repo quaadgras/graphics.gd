@@ -214,12 +214,9 @@ func (self Instance) SetViewportPath(value string) Instance { //gd:ViewportTextu
 	return self
 }
 
-//go:nosplit
 func (self class) SetViewportPathInScene(path Path.ToNode) { //gd:ViewportTexture.set_viewport_path_in_scene
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_viewport_path_in_scene, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
-
-//go:nosplit
 func (self class) GetViewportPathInScene() Path.ToNode { //gd:ViewportTexture.get_viewport_path_in_scene
 	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_viewport_path_in_scene, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))

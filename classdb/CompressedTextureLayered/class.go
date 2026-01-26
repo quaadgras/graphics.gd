@@ -175,17 +175,11 @@ func (self Instance) SetLoadPath(value string) Instance { //gd:CompressedTexture
 	return self
 }
 
-/*
-Loads the texture at 'path'.
-*/
-//go:nosplit
 func (self class) Load(path String.Readable) Error.Code { //gd:CompressedTextureLayered.load
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-//go:nosplit
 func (self class) GetLoadPath() String.Readable { //gd:CompressedTextureLayered.get_load_path
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_load_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))

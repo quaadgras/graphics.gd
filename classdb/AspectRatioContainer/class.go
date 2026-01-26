@@ -218,48 +218,33 @@ func (self Instance) SetAlignmentVertical(value AlignmentMode) Instance { //gd:A
 	return self
 }
 
-//go:nosplit
 func (self class) SetRatio(ratio float64) { //gd:AspectRatioContainer.set_ratio
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
 }
-
-//go:nosplit
 func (self class) GetRatio() float64 { //gd:AspectRatioContainer.get_ratio
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetStretchMode(stretch_mode StretchMode) { //gd:AspectRatioContainer.set_stretch_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stretch_mode, 0|(gdextension.SizeInt<<4), &struct{ stretch_mode StretchMode }{stretch_mode})
 }
-
-//go:nosplit
 func (self class) GetStretchMode() StretchMode { //gd:AspectRatioContainer.get_stretch_mode
 	var r_ret = noescape.Call[StretchMode](gd.ObjectChecked(self.AsObject()), methods.get_stretch_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAlignmentHorizontal(alignment_horizontal AlignmentMode) { //gd:AspectRatioContainer.set_alignment_horizontal
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alignment_horizontal, 0|(gdextension.SizeInt<<4), &struct{ alignment_horizontal AlignmentMode }{alignment_horizontal})
 }
-
-//go:nosplit
 func (self class) GetAlignmentHorizontal() AlignmentMode { //gd:AspectRatioContainer.get_alignment_horizontal
 	var r_ret = noescape.Call[AlignmentMode](gd.ObjectChecked(self.AsObject()), methods.get_alignment_horizontal, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAlignmentVertical(alignment_vertical AlignmentMode) { //gd:AspectRatioContainer.set_alignment_vertical
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alignment_vertical, 0|(gdextension.SizeInt<<4), &struct{ alignment_vertical AlignmentMode }{alignment_vertical})
 }
-
-//go:nosplit
 func (self class) GetAlignmentVertical() AlignmentMode { //gd:AspectRatioContainer.get_alignment_vertical
 	var r_ret = noescape.Call[AlignmentMode](gd.ObjectChecked(self.AsObject()), methods.get_alignment_vertical, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

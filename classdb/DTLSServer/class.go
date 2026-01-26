@@ -277,26 +277,11 @@ func New() Instance {
 	return casted
 }
 
-/*
-Setup the DTLS server to use the given 'server_options'. See [TLSOptions.Server].
-
-[TLSOptions.Server]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Server
-*/
-//go:nosplit
 func (self class) Setup(server_options [1]gdclass.TLSOptions) Error.Code { //gd:DTLSServer.setup
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.setup, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ server_options gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTLSOptions(server_options[0])))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Try to initiate the DTLS handshake with the given 'udp_peer' which must be already connected (see [PacketPeerUDP.ConnectToHost]).
-
-Note: You must check that the state of the return PacketPeerUDP is [Packetpeerdtls.StatusHandshaking], as it is normal that 50% of the new connections will be invalid due to cookie exchange.
-
-[PacketPeerUDP.ConnectToHost]: https://pkg.go.dev/graphics.gd/classdb/PacketPeerUDP#Instance.ConnectToHost
-*/
-//go:nosplit
 func (self class) TakeConnection(udp_peer [1]gdclass.PacketPeerUDP) [1]gdclass.PacketPeerDTLS { //gd:DTLSServer.take_connection
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.take_connection, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ udp_peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetPacketPeerUDP(udp_peer[0])))})
 	var ret = [1]gdclass.PacketPeerDTLS{gdclass.NewPacketPeerDTLS(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

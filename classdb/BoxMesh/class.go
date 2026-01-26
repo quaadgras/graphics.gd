@@ -227,48 +227,33 @@ func (self Instance) SetSubdivideDepth(value int) Instance { //gd:BoxMesh.subdiv
 	return self
 }
 
-//go:nosplit
 func (self class) SetSize(size Vector3.XYZ) { //gd:BoxMesh.set_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), &struct{ size Vector3.XYZ }{size})
 }
-
-//go:nosplit
 func (self class) GetSize() Vector3.XYZ { //gd:BoxMesh.get_size
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSubdivideWidth(subdivide int64) { //gd:BoxMesh.set_subdivide_width
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_subdivide_width, 0|(gdextension.SizeInt<<4), &struct{ subdivide int64 }{subdivide})
 }
-
-//go:nosplit
 func (self class) GetSubdivideWidth() int64 { //gd:BoxMesh.get_subdivide_width
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_subdivide_width, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSubdivideHeight(divisions int64) { //gd:BoxMesh.set_subdivide_height
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_subdivide_height, 0|(gdextension.SizeInt<<4), &struct{ divisions int64 }{divisions})
 }
-
-//go:nosplit
 func (self class) GetSubdivideHeight() int64 { //gd:BoxMesh.get_subdivide_height
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_subdivide_height, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSubdivideDepth(divisions int64) { //gd:BoxMesh.set_subdivide_depth
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_subdivide_depth, 0|(gdextension.SizeInt<<4), &struct{ divisions int64 }{divisions})
 }
-
-//go:nosplit
 func (self class) GetSubdivideDepth() int64 { //gd:BoxMesh.get_subdivide_depth
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_subdivide_depth, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

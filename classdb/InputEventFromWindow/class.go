@@ -172,12 +172,9 @@ func (self Instance) SetWindowId(value int) Instance { //gd:InputEventFromWindow
 	return self
 }
 
-//go:nosplit
 func (self class) SetWindowId(id int64) { //gd:InputEventFromWindow.set_window_id
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_window_id, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 }
-
-//go:nosplit
 func (self class) GetWindowId() int64 { //gd:InputEventFromWindow.get_window_id
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_window_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

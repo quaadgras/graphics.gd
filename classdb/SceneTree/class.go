@@ -809,155 +809,82 @@ func (self Instance) SetPhysicsInterpolation(value bool) Instance { //gd:SceneTr
 	return self
 }
 
-//go:nosplit
 func (self class) GetRoot() [1]gdclass.Window { //gd:SceneTree.get_root
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_root, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Window{gdclass.NewWindow(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns true if a node added to the given group 'name' exists in the tree.
-*/
-//go:nosplit
 func (self class) HasGroup(name String.Name) bool { //gd:SceneTree.has_group
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_group, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if accessibility features are enabled, and accessibility information updates are actively processed.
-*/
-//go:nosplit
 func (self class) IsAccessibilityEnabled() bool { //gd:SceneTree.is_accessibility_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_accessibility_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if accessibility features are supported by the OS and enabled in project settings.
-*/
-//go:nosplit
 func (self class) IsAccessibilitySupported() bool { //gd:SceneTree.is_accessibility_supported
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_accessibility_supported, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) IsAutoAcceptQuit() bool { //gd:SceneTree.is_auto_accept_quit
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_accept_quit, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAutoAcceptQuit(enabled bool) { //gd:SceneTree.set_auto_accept_quit
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_accept_quit, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsQuitOnGoBack() bool { //gd:SceneTree.is_quit_on_go_back
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_quit_on_go_back, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetQuitOnGoBack(enabled bool) { //gd:SceneTree.set_quit_on_go_back
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_quit_on_go_back, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) SetDebugCollisionsHint(enable bool) { //gd:SceneTree.set_debug_collisions_hint
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_collisions_hint, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsDebuggingCollisionsHint() bool { //gd:SceneTree.is_debugging_collisions_hint
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_debugging_collisions_hint, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDebugPathsHint(enable bool) { //gd:SceneTree.set_debug_paths_hint
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_paths_hint, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsDebuggingPathsHint() bool { //gd:SceneTree.is_debugging_paths_hint
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_debugging_paths_hint, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDebugNavigationHint(enable bool) { //gd:SceneTree.set_debug_navigation_hint
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_navigation_hint, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsDebuggingNavigationHint() bool { //gd:SceneTree.is_debugging_navigation_hint
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_debugging_navigation_hint, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEditedSceneRoot(scene [1]gdclass.Node) { //gd:SceneTree.set_edited_scene_root
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edited_scene_root, 0|(gdextension.SizeObject<<4), &struct{ scene gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetNode(scene[0])[0]))})
 }
-
-//go:nosplit
 func (self class) GetEditedSceneRoot() [1]gdclass.Node { //gd:SceneTree.get_edited_scene_root
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_scene_root, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPause(enable bool) { //gd:SceneTree.set_pause
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pause, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsPaused() bool { //gd:SceneTree.is_paused
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_paused, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a new [SceneTreeTimer]. After 'time_sec' in seconds have passed, the timer will emit [OnScenetreetimer.Timeout] and will be automatically freed.
-
-If 'process_always' is false, the timer will be paused when setting [SceneTree.Paused] to true.
-
-If 'process_in_physics' is true, the timer will update at the end of the physics frame, instead of the process frame.
-
-If 'ignore_time_scale' is true, the timer will ignore [Engine.TimeScale] and update with the real, elapsed time.
-
-This method is commonly used to create a one-shot delay timer, as in the following example:
-
-
-	fmt.Println("start")
-	SceneTree.Get(node).CreateTimer(1.0).OnTimeout(func() {
-		fmt.Println("end")
-	}, Signal.OneShot)
-
-
-Note: The timer is always updated after all of the nodes in the tree. A node's [Node.Process] method would be called before the timer updates (or [Node.PhysicsProcess] if 'process_in_physics' is set to true).
-
-[Engine.TimeScale]: https://pkg.go.dev/graphics.gd/classdb/Engine#TimeScale
-[Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
-[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
-[OnScenetreetimer.Timeout]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.OnScenetreetimer.Timeout
-[SceneTree.Paused]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Paused
-[SceneTreeTimer]: https://pkg.go.dev/graphics.gd/classdb/SceneTreeTimer
-*/
-//go:nosplit
 func (self class) CreateTimer(time_sec float64, process_always bool, process_in_physics bool, ignore_time_scale bool) [1]gdclass.SceneTreeTimer { //gd:SceneTree.create_timer
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_timer, gdextension.SizeObject|(gdextension.SizeFloat<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
 		time_sec           float64
@@ -968,109 +895,40 @@ func (self class) CreateTimer(time_sec float64, process_always bool, process_in_
 	var ret = [1]gdclass.SceneTreeTimer{gdclass.NewSceneTreeTimer(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Creates and returns a new [Tween] processed in this tree. The Tween will start automatically on the next process frame or physics frame (depending on its [Tween.TweenProcessMode]).
-
-Note: A [Tween] created using this method is not bound to any [Node]. It may keep working until there is nothing left to animate. If you want the [Tween] to be automatically killed when the [Node] is freed, use [Node.CreateTween] or [Tween.BindNode].
-
-[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
-[Node.CreateTween]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.CreateTween
-[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
-[Tween.BindNode]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.BindNode
-*/
-//go:nosplit
 func (self class) CreateTween() [1]gdclass.Tween { //gd:SceneTree.create_tween
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_tween, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns an slice of currently existing [Tween]s in the tree, including paused tweens.
-
-[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
-*/
-//go:nosplit
 func (self class) GetProcessedTweens() Array.Contains[[1]gdclass.Tween] { //gd:SceneTree.get_processed_tweens
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_processed_tweens, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Tween]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns the number of nodes inside this tree.
-*/
-//go:nosplit
 func (self class) GetNodeCount() int64 { //gd:SceneTree.get_node_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_node_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns how many physics process steps have been processed, since the application started. This is not a measurement of elapsed time. See also [OnPhysicsFrame]. For the number of frames rendered, see [Engine.GetProcessFrames].
-
-[Engine.GetProcessFrames]: https://pkg.go.dev/graphics.gd/classdb/Engine#GetProcessFrames
-[OnPhysicsFrame]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.OnPhysicsFrame
-*/
-//go:nosplit
 func (self class) GetFrame() int64 { //gd:SceneTree.get_frame
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Quits the application at the end of the current iteration, with the given 'exit_code'.
-
-By convention, an exit code of 0 indicates success, whereas any other exit code indicates an error. For portability reasons, it should be between 0 and 125 (inclusive).
-
-Note: On iOS this method doesn't work. Instead, as recommended by the [iOS Human Interface Guidelines], the user is expected to close apps via the Home button.
-
-[iOS Human Interface Guidelines]: https://developer.apple.com/library/archive/qa/qa1561/_index.html
-*/
-//go:nosplit
 func (self class) Quit(exit_code int64) { //gd:SceneTree.quit
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.quit, 0|(gdextension.SizeInt<<4), &struct{ exit_code int64 }{exit_code})
 }
-
-//go:nosplit
 func (self class) SetPhysicsInterpolationEnabled(enabled bool) { //gd:SceneTree.set_physics_interpolation_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_interpolation_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsPhysicsInterpolationEnabled() bool { //gd:SceneTree.is_physics_interpolation_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_physics_interpolation_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Queues the given 'obj' to be deleted, calling its [Object.Free] at the end of the current frame. This method is similar to [Node.QueueFree].
-
-[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
-[Object.Free]: https://pkg.go.dev/graphics.gd/variant/Object#Free
-*/
-//go:nosplit
 func (self class) QueueDelete(obj [1]gd.Object) { //gd:SceneTree.queue_delete
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_delete, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0]))})
 }
-
-/*
-Calls the given 'method' on each node inside this tree added to the given 'group'. Use 'flags' to customize this method's behavior (see [GroupCallFlags]). Additional arguments for 'method' can be passed at the end of this method. Nodes that cannot call 'method' (either because the method doesn't exist or the arguments do not match) are ignored.
-
-
-	// Calls "hide" to all nodes of the "enemies" group, at the end of the frame and in reverse tree order.
-	SceneTree.Get(node).CallGroupFlags(
-		SceneTree.GroupCallDeferred|SceneTree.GroupCallReverse,
-		"enemies", "hide")
-
-
-Note: In C#, 'method' must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the MethodName class to avoid allocating a new string on each call.
-*/
-//go:nosplit
 func (self class) CallGroupFlags(flags int64, group String.Name, method String.Name, args ...gd.Variant) { //gd:SceneTree.call_group_flags
 	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(flags))), gdextension.Variant(pointers.Get(gd.NewVariant(group))), gdextension.Variant(pointers.Get(gd.NewVariant(method)))}
 	var dynamic []gdextension.Variant
@@ -1084,12 +942,6 @@ func (self class) CallGroupFlags(flags int64, group String.Name, method String.N
 	_ = ret
 }
 
-/*
-Calls [Object.Notification] with the given 'notification' to all nodes inside this tree added to the 'group'. Use 'call_flags' to customize this method's behavior (see [GroupCallFlags]).
-
-[Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
-*/
-//go:nosplit
 func (self class) NotifyGroupFlags(call_flags int64, group String.Name, notification int64) { //gd:SceneTree.notify_group_flags
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.notify_group_flags, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12), &struct {
 		call_flags   int64
@@ -1097,13 +949,6 @@ func (self class) NotifyGroupFlags(call_flags int64, group String.Name, notifica
 		notification int64
 	}{call_flags, pointers.Get(gd.InternalStringName(group)), notification})
 }
-
-/*
-Sets the given 'property' to 'value' on all nodes inside this tree added to the given 'group'. Nodes that do not have the 'property' are ignored. Use 'call_flags' to customize this method's behavior (see [GroupCallFlags]).
-
-Note: In C#, 'property' must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the PropertyName class to avoid allocating a new string on each call.
-*/
-//go:nosplit
 func (self class) SetGroupFlags(call_flags int64, group String.Name, property String.Readable, value variant.Any) { //gd:SceneTree.set_group_flags
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_group_flags, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeString<<12)|(gdextension.SizeVariant<<16), &struct {
 		call_flags int64
@@ -1112,18 +957,6 @@ func (self class) SetGroupFlags(call_flags int64, group String.Name, property St
 		value      gdextension.Variant
 	}{call_flags, pointers.Get(gd.InternalStringName(group)), pointers.Get(gd.InternalString(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-/*
-Calls 'method' on each node inside this tree added to the given 'group'. You can pass arguments to 'method' by specifying them at the end of this method call. Nodes that cannot call 'method' (either because the method doesn't exist or the arguments do not match) are ignored. See also [SetGroup] and [NotifyGroup].
-
-Note: This method acts immediately on all selected nodes at once, which may cause stuttering in some performance-intensive situations.
-
-Note: In C#, 'method' must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the MethodName class to avoid allocating a new string on each call.
-
-[NotifyGroup]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.NotifyGroup
-[SetGroup]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.SetGroup
-*/
-//go:nosplit
 func (self class) CallGroup(group String.Name, method String.Name, args ...gd.Variant) { //gd:SceneTree.call_group
 	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(group))), gdextension.Variant(pointers.Get(gd.NewVariant(method)))}
 	var dynamic []gdextension.Variant
@@ -1137,35 +970,12 @@ func (self class) CallGroup(group String.Name, method String.Name, args ...gd.Va
 	_ = ret
 }
 
-/*
-Calls [Object.Notification] with the given 'notification' to all nodes inside this tree added to the 'group'. See also [Godot notifications] and [CallGroup] and [SetGroup].
-
-Note: This method acts immediately on all selected nodes at once, which may cause stuttering in some performance-intensive situations.
-
-[CallGroup]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.CallGroup
-[Godot notifications]: https://docs.godotengine.org/tutorials/best_practices/godot_notifications.html
-[Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
-[SetGroup]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.SetGroup
-*/
-//go:nosplit
 func (self class) NotifyGroup(group String.Name, notification int64) { //gd:SceneTree.notify_group
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.notify_group, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), &struct {
 		group        gdextension.StringName
 		notification int64
 	}{pointers.Get(gd.InternalStringName(group)), notification})
 }
-
-/*
-Sets the given 'property' to 'value' on all nodes inside this tree added to the given 'group'. Nodes that do not have the 'property' are ignored. See also [CallGroup] and [NotifyGroup].
-
-Note: This method acts immediately on all selected nodes at once, which may cause stuttering in some performance-intensive situations.
-
-Note: In C#, 'property' must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the PropertyName class to avoid allocating a new string on each call.
-
-[CallGroup]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.CallGroup
-[NotifyGroup]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.NotifyGroup
-*/
-//go:nosplit
 func (self class) SetGroup(group String.Name, property String.Readable, value variant.Any) { //gd:SceneTree.set_group
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_group, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12), &struct {
 		group    gdextension.StringName
@@ -1173,160 +983,61 @@ func (self class) SetGroup(group String.Name, property String.Readable, value va
 		value    gdextension.Variant
 	}{pointers.Get(gd.InternalStringName(group)), pointers.Get(gd.InternalString(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-/*
-Returns an slice containing all nodes inside this tree, that have been added to the given 'group', in scene hierarchy order.
-*/
-//go:nosplit
 func (self class) GetNodesInGroup(group String.Name) Array.Contains[[1]gdclass.Node] { //gd:SceneTree.get_nodes_in_group
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_nodes_in_group, gdextension.SizeArray|(gdextension.SizeStringName<<4), &struct{ group gdextension.StringName }{pointers.Get(gd.InternalStringName(group))})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns the first [Node] found inside the tree, that has been added to the given 'group', in scene hierarchy order. Returns null if no match is found. See also [GetNodesInGroup].
-
-[GetNodesInGroup]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.GetNodesInGroup
-[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
-*/
-//go:nosplit
 func (self class) GetFirstNodeInGroup(group String.Name) [1]gdclass.Node { //gd:SceneTree.get_first_node_in_group
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_first_node_in_group, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ group gdextension.StringName }{pointers.Get(gd.InternalStringName(group))})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the number of nodes assigned to the given group.
-*/
-//go:nosplit
 func (self class) GetNodeCountInGroup(group String.Name) int64 { //gd:SceneTree.get_node_count_in_group
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_node_count_in_group, gdextension.SizeInt|(gdextension.SizeStringName<<4), &struct{ group gdextension.StringName }{pointers.Get(gd.InternalStringName(group))})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCurrentScene(child_node [1]gdclass.Node) { //gd:SceneTree.set_current_scene
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_scene, 0|(gdextension.SizeObject<<4), &struct{ child_node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetNode(child_node[0])[0]))})
 }
-
-//go:nosplit
 func (self class) GetCurrentScene() [1]gdclass.Node { //gd:SceneTree.get_current_scene
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_current_scene, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Changes the running scene to the one at the given 'path', after loading it into a [PackedScene] and creating a new instance.
-
-Returns [Ok] on success, [ErrCantOpen] if the 'path' cannot be loaded into a [PackedScene], or [ErrCantCreate] if that scene cannot be instantiated.
-
-Note: See [ChangeSceneToPacked] for details on the order of operations.
-
-[ChangeSceneToPacked]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.ChangeSceneToPacked
-[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
-*/
-//go:nosplit
 func (self class) ChangeSceneToFile(path String.Readable) Error.Code { //gd:SceneTree.change_scene_to_file
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.change_scene_to_file, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Changes the running scene to a new instance of the given [PackedScene] (which must be valid).
-
-Returns [Ok] on success, [ErrCantCreate] if the scene cannot be instantiated, or [ErrInvalidParameter] if the scene is invalid.
-
-Note: Operations happen in the following order when [ChangeSceneToPacked] is called:
-
-1. The current scene node is immediately removed from the tree. From that point, [Node.GetTree] called on the current (outgoing) scene will return null. [CurrentScene] will be null, too, because the new scene is not available yet.
-
-2. At the end of the frame, the formerly current scene, already removed from the tree, will be deleted (freed from memory) and then the new scene will be instantiated and added to the tree. [Node.GetTree] and [CurrentScene] will be back to working as usual.
-
-This ensures that both scenes aren't running at the same time, while still freeing the previous scene in a safe way similar to [Node.QueueFree].
-
-If you want to reliably access the new scene, await the [OnSceneChanged] signal.
-
-[ChangeSceneToPacked]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.ChangeSceneToPacked
-[CurrentScene]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.CurrentScene
-[Node.GetTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetTree
-[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
-[OnSceneChanged]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.OnSceneChanged
-[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
-*/
-//go:nosplit
 func (self class) ChangeSceneToPacked(packed_scene [1]gdclass.PackedScene) Error.Code { //gd:SceneTree.change_scene_to_packed
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.change_scene_to_packed, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ packed_scene gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetPackedScene(packed_scene[0])))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Reloads the currently active scene, replacing [CurrentScene] with a new instance of its original [PackedScene].
-
-Returns [Ok] on success, [ErrUnconfigured] if no [CurrentScene] is defined, [ErrCantOpen] if [CurrentScene] cannot be loaded into a [PackedScene], or [ErrCantCreate] if the scene cannot be instantiated.
-
-[CurrentScene]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.CurrentScene
-[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
-*/
-//go:nosplit
 func (self class) ReloadCurrentScene() Error.Code { //gd:SceneTree.reload_current_scene
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.reload_current_scene, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-If a current scene is loaded, calling this method will unload it.
-*/
-//go:nosplit
 func (self class) UnloadCurrentScene() { //gd:SceneTree.unload_current_scene
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unload_current_scene, 0, &struct{}{})
 }
-
-/*
-Sets a custom [MultiplayerAPI] with the given 'root_path' (controlling also the relative subpaths), or override the default one if 'root_path' is empty.
-
-Note: No [MultiplayerAPI] must be configured for the subpath containing 'root_path', nested custom multiplayers are not allowed. I.e. if one is configured for "/root/Foo" setting one for "/root/Foo/Bar" will cause an error.
-
-Note: [SetMultiplayer] should be called before the child nodes are ready at the given 'root_path'. If multiplayer nodes like [MultiplayerSpawner] or [MultiplayerSynchronizer] are added to the tree before the custom multiplayer API is set, they will not work.
-
-[MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
-[MultiplayerSpawner]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSpawner
-[MultiplayerSynchronizer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer
-[SetMultiplayer]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.SetMultiplayer
-*/
-//go:nosplit
 func (self class) SetMultiplayer(multiplayer [1]gdclass.MultiplayerAPI, root_path Path.ToNode) { //gd:SceneTree.set_multiplayer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_multiplayer, 0|(gdextension.SizeObject<<4)|(gdextension.SizeNodePath<<8), &struct {
 		multiplayer gdextension.Object
 		root_path   gdextension.NodePath
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetMultiplayerAPI(multiplayer[0]))), pointers.Get(gd.InternalNodePath(root_path))})
 }
-
-/*
-Searches for the [MultiplayerAPI] configured for the given path, if one does not exist it searches the parent paths until one is found. If the path is empty, or none is found, the default one is returned. See [SetMultiplayer].
-
-[MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
-[SetMultiplayer]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.SetMultiplayer
-*/
-//go:nosplit
 func (self class) GetMultiplayer(for_path Path.ToNode) [1]gdclass.MultiplayerAPI { //gd:SceneTree.get_multiplayer
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_multiplayer, gdextension.SizeObject|(gdextension.SizeNodePath<<4), &struct{ for_path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(for_path))})
 	var ret = [1]gdclass.MultiplayerAPI{gdclass.NewMultiplayerAPI(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMultiplayerPollEnabled(enabled bool) { //gd:SceneTree.set_multiplayer_poll_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_multiplayer_poll_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsMultiplayerPollEnabled() bool { //gd:SceneTree.is_multiplayer_poll_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_multiplayer_poll_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

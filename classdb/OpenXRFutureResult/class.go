@@ -198,48 +198,22 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns the status of this result.
-*/
-//go:nosplit
 func (self class) GetStatus() ResultStatus { //gd:OpenXRFutureResult.get_status
 	var r_ret = noescape.Call[ResultStatus](gd.ObjectChecked(self.AsObject()), methods.get_status, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Return the XrFutureEXT value this result relates to.
-*/
-//go:nosplit
 func (self class) GetFuture() int64 { //gd:OpenXRFutureResult.get_future
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_future, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Cancel this future, this will interrupt and stop the asynchronous function.
-*/
-//go:nosplit
 func (self class) CancelFuture() { //gd:OpenXRFutureResult.cancel_future
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.cancel_future, 0, &struct{}{})
 }
-
-/*
-Stores the result value we expose to the user.
-
-Note: This method should only be called by an OpenXR extension that implements an asynchronous function.
-*/
-//go:nosplit
 func (self class) SetResultValue(result_value variant.Any) { //gd:OpenXRFutureResult.set_result_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_result_value, 0|(gdextension.SizeVariant<<4), &struct{ result_value gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(result_value)))})
 }
-
-/*
-Returns the result value of our asynchronous function (if set by the extension). The type of this result value depends on the function being called. Consult the documentation of the relevant function.
-*/
-//go:nosplit
 func (self class) GetResultValue() variant.Any { //gd:OpenXRFutureResult.get_result_value
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_result_value, gdextension.SizeVariant, &struct{}{})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))

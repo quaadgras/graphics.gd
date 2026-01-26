@@ -202,36 +202,25 @@ func (self Instance) SetPrecision(value Precision) Instance { //gd:VisualShaderN
 	return self
 }
 
-//go:nosplit
 func (self class) SetOpType(atype OpType) { //gd:VisualShaderNodeDerivativeFunc.set_op_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_op_type, 0|(gdextension.SizeInt<<4), &struct{ atype OpType }{atype})
 }
-
-//go:nosplit
 func (self class) GetOpType() OpType { //gd:VisualShaderNodeDerivativeFunc.get_op_type
 	var r_ret = noescape.Call[OpType](gd.ObjectChecked(self.AsObject()), methods.get_op_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFunction(fn Function) { //gd:VisualShaderNodeDerivativeFunc.set_function
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_function, 0|(gdextension.SizeInt<<4), &struct{ fn Function }{fn})
 }
-
-//go:nosplit
 func (self class) GetFunction() Function { //gd:VisualShaderNodeDerivativeFunc.get_function
 	var r_ret = noescape.Call[Function](gd.ObjectChecked(self.AsObject()), methods.get_function, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPrecision(precision Precision) { //gd:VisualShaderNodeDerivativeFunc.set_precision
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_precision, 0|(gdextension.SizeInt<<4), &struct{ precision Precision }{precision})
 }
-
-//go:nosplit
 func (self class) GetPrecision() Precision { //gd:VisualShaderNodeDerivativeFunc.get_precision
 	var r_ret = noescape.Call[Precision](gd.ObjectChecked(self.AsObject()), methods.get_precision, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

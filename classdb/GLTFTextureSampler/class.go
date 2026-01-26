@@ -214,50 +214,35 @@ func (self Instance) SetWrapT(value int) Instance { //gd:GLTFTextureSampler.wrap
 	return self
 }
 
-//go:nosplit
 func (self class) GetMagFilter() int64 { //gd:GLTFTextureSampler.get_mag_filter
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_mag_filter, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMagFilter(filter_mode int64) { //gd:GLTFTextureSampler.set_mag_filter
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mag_filter, 0|(gdextension.SizeInt<<4), &struct{ filter_mode int64 }{filter_mode})
 }
-
-//go:nosplit
 func (self class) GetMinFilter() int64 { //gd:GLTFTextureSampler.get_min_filter
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_min_filter, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMinFilter(filter_mode int64) { //gd:GLTFTextureSampler.set_min_filter
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_filter, 0|(gdextension.SizeInt<<4), &struct{ filter_mode int64 }{filter_mode})
 }
-
-//go:nosplit
 func (self class) GetWrapS() int64 { //gd:GLTFTextureSampler.get_wrap_s
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_wrap_s, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetWrapS(wrap_mode int64) { //gd:GLTFTextureSampler.set_wrap_s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wrap_s, 0|(gdextension.SizeInt<<4), &struct{ wrap_mode int64 }{wrap_mode})
 }
-
-//go:nosplit
 func (self class) GetWrapT() int64 { //gd:GLTFTextureSampler.get_wrap_t
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_wrap_t, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetWrapT(wrap_mode int64) { //gd:GLTFTextureSampler.set_wrap_t
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wrap_t, 0|(gdextension.SizeInt<<4), &struct{ wrap_mode int64 }{wrap_mode})
 }

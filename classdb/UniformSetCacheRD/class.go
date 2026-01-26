@@ -162,10 +162,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Creates/returns a cached uniform set based on the provided uniforms for a given shader.
-*/
-//go:nosplit
 func (self class) GetCache(shader RID.Any, set int64, uniforms Array.Contains[[1]gdclass.RDUniform]) RID.Any { //gd:UniformSetCacheRD.get_cache
 	var r_ret = noescape.CallStatic[RID.Any](methods.get_cache, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeArray<<12), &struct {
 		shader   RID.Any

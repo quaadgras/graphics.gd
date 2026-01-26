@@ -218,36 +218,25 @@ func (self Instance) SetConstantAngularVelocity(value Float.X) Instance { //gd:S
 	return self
 }
 
-//go:nosplit
 func (self class) SetConstantLinearVelocity(vel Vector2.XY) { //gd:StaticBody2D.set_constant_linear_velocity
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_linear_velocity, 0|(gdextension.SizeVector2<<4), &struct{ vel Vector2.XY }{vel})
 }
-
-//go:nosplit
 func (self class) SetConstantAngularVelocity(vel float64) { //gd:StaticBody2D.set_constant_angular_velocity
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_angular_velocity, 0|(gdextension.SizeFloat<<4), &struct{ vel float64 }{vel})
 }
-
-//go:nosplit
 func (self class) GetConstantLinearVelocity() Vector2.XY { //gd:StaticBody2D.get_constant_linear_velocity
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_constant_linear_velocity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetConstantAngularVelocity() float64 { //gd:StaticBody2D.get_constant_angular_velocity
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_constant_angular_velocity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPhysicsMaterialOverride(physics_material_override [1]gdclass.PhysicsMaterial) { //gd:StaticBody2D.set_physics_material_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_material_override, 0|(gdextension.SizeObject<<4), &struct{ physics_material_override gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsMaterial(physics_material_override[0])))})
 }
-
-//go:nosplit
 func (self class) GetPhysicsMaterialOverride() [1]gdclass.PhysicsMaterial { //gd:StaticBody2D.get_physics_material_override
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_physics_material_override, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PhysicsMaterial{gdclass.NewPhysicsMaterial(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

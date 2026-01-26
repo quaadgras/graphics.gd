@@ -207,54 +207,27 @@ func (self Instance) SetLoop(value bool) Instance { //gd:GLTFAnimation.loop
 	return self
 }
 
-//go:nosplit
 func (self class) GetOriginalName() String.Readable { //gd:GLTFAnimation.get_original_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetOriginalName(original_name String.Readable) { //gd:GLTFAnimation.set_original_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_original_name, 0|(gdextension.SizeString<<4), &struct{ original_name gdextension.String }{pointers.Get(gd.InternalString(original_name))})
 }
-
-//go:nosplit
 func (self class) GetLoop() bool { //gd:GLTFAnimation.get_loop
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_loop, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetLoop(loop bool) { //gd:GLTFAnimation.set_loop
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), &struct{ loop bool }{loop})
 }
-
-/*
-Gets additional arbitrary data in this [GLTFAnimation] instance. This can be used to keep per-node state data in [GLTFDocumentExtension] classes, which is important because they are stateless.
-
-The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the return value can be anything you set. If nothing was set, the return value is null.
-
-[GLTFAnimation]: https://pkg.go.dev/graphics.gd/classdb/GLTFAnimation
-[GLTFDocumentExtension]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocumentExtension
-*/
-//go:nosplit
 func (self class) GetAdditionalData(extension_name String.Name) variant.Any { //gd:GLTFAnimation.get_additional_data
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_additional_data, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ extension_name gdextension.StringName }{pointers.Get(gd.InternalStringName(extension_name))})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Sets additional arbitrary data in this [GLTFAnimation] instance. This can be used to keep per-node state data in [GLTFDocumentExtension] classes, which is important because they are stateless.
-
-The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the second argument can be anything you want.
-
-[GLTFAnimation]: https://pkg.go.dev/graphics.gd/classdb/GLTFAnimation
-[GLTFDocumentExtension]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocumentExtension
-*/
-//go:nosplit
 func (self class) SetAdditionalData(extension_name String.Name, additional_data variant.Any) { //gd:GLTFAnimation.set_additional_data
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_additional_data, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), &struct {
 		extension_name  gdextension.StringName

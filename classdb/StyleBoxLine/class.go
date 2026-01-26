@@ -237,60 +237,41 @@ func (self Instance) SetVertical(value bool) Instance { //gd:StyleBoxLine.vertic
 	return self
 }
 
-//go:nosplit
 func (self class) SetColor(color Color.RGBA) { //gd:StyleBoxLine.set_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
-
-//go:nosplit
 func (self class) GetColor() Color.RGBA { //gd:StyleBoxLine.get_color
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetThickness(thickness int64) { //gd:StyleBoxLine.set_thickness
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_thickness, 0|(gdextension.SizeInt<<4), &struct{ thickness int64 }{thickness})
 }
-
-//go:nosplit
 func (self class) GetThickness() int64 { //gd:StyleBoxLine.get_thickness
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_thickness, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetGrowBegin(offset float64) { //gd:StyleBoxLine.set_grow_begin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_grow_begin, 0|(gdextension.SizeFloat<<4), &struct{ offset float64 }{offset})
 }
-
-//go:nosplit
 func (self class) GetGrowBegin() float64 { //gd:StyleBoxLine.get_grow_begin
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_grow_begin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetGrowEnd(offset float64) { //gd:StyleBoxLine.set_grow_end
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_grow_end, 0|(gdextension.SizeFloat<<4), &struct{ offset float64 }{offset})
 }
-
-//go:nosplit
 func (self class) GetGrowEnd() float64 { //gd:StyleBoxLine.get_grow_end
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_grow_end, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetVertical(vertical bool) { //gd:StyleBoxLine.set_vertical
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical, 0|(gdextension.SizeBool<<4), &struct{ vertical bool }{vertical})
 }
-
-//go:nosplit
 func (self class) IsVertical() bool { //gd:StyleBoxLine.is_vertical
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_vertical, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

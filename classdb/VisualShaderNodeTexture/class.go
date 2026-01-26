@@ -205,36 +205,25 @@ func (self Instance) SetTextureType(value TextureType) Instance { //gd:VisualSha
 	return self
 }
 
-//go:nosplit
 func (self class) SetSource(value Source) { //gd:VisualShaderNodeTexture.set_source
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_source, 0|(gdextension.SizeInt<<4), &struct{ value Source }{value})
 }
-
-//go:nosplit
 func (self class) GetSource() Source { //gd:VisualShaderNodeTexture.get_source
 	var r_ret = noescape.Call[Source](gd.ObjectChecked(self.AsObject()), methods.get_source, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTexture(value [1]gdclass.Texture2D) { //gd:VisualShaderNodeTexture.set_texture
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ value gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(value[0])))})
 }
-
-//go:nosplit
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:VisualShaderNodeTexture.get_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTextureType(value TextureType) { //gd:VisualShaderNodeTexture.set_texture_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_type, 0|(gdextension.SizeInt<<4), &struct{ value TextureType }{value})
 }
-
-//go:nosplit
 func (self class) GetTextureType() TextureType { //gd:VisualShaderNodeTexture.get_texture_type
 	var r_ret = noescape.Call[TextureType](gd.ObjectChecked(self.AsObject()), methods.get_texture_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

@@ -677,443 +677,214 @@ func (self Instance) SetSafeMargin(value Float.X) Instance { //gd:CharacterBody3
 	return self
 }
 
-/*
-Moves the body based on [Velocity]. If the body collides with another, it will slide along the other body rather than stop immediately. If the other body is a [CharacterBody3D] or [RigidBody3D], it will also be affected by the motion of the other body. You can use this to make moving and rotating platforms, or to make nodes push other nodes.
-
-This method should be used in [Node.PhysicsProcess] (or in a method called by [Node.PhysicsProcess]), as it uses the physics step's delta value automatically in calculations. Otherwise, the simulation will run at an incorrect speed.
-
-Modifies [Velocity] if a slide collision occurred. To get the latest collision call [GetLastSlideCollision], for more detailed information about collisions that occurred, use [GetSlideCollision].
-
-When the body touches a moving platform, the platform's velocity is automatically added to the body motion. If a collision occurs due to the platform's motion, it will always be first in the slide collisions.
-
-Returns true if the body collided, otherwise, returns false.
-
-[CharacterBody3D]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D
-[GetLastSlideCollision]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.GetLastSlideCollision
-[GetSlideCollision]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.GetSlideCollision
-[Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
-[RigidBody3D]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D
-[Velocity]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.Velocity
-*/
-//go:nosplit
 func (self class) MoveAndSlide() bool { //gd:CharacterBody3D.move_and_slide
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.move_and_slide, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Allows to manually apply a snap to the floor regardless of the body's velocity. This function does nothing when [IsOnFloor] returns true.
-
-[IsOnFloor]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.IsOnFloor
-*/
-//go:nosplit
 func (self class) ApplyFloorSnap() { //gd:CharacterBody3D.apply_floor_snap
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_floor_snap, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetVelocity(velocity Vector3.XYZ) { //gd:CharacterBody3D.set_velocity
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_velocity, 0|(gdextension.SizeVector3<<4), &struct{ velocity Vector3.XYZ }{velocity})
 }
-
-//go:nosplit
 func (self class) GetVelocity() Vector3.XYZ { //gd:CharacterBody3D.get_velocity
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSafeMargin(margin float64) { //gd:CharacterBody3D.set_safe_margin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_safe_margin, 0|(gdextension.SizeFloat<<4), &struct{ margin float64 }{margin})
 }
-
-//go:nosplit
 func (self class) GetSafeMargin() float64 { //gd:CharacterBody3D.get_safe_margin
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_safe_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) IsFloorStopOnSlopeEnabled() bool { //gd:CharacterBody3D.is_floor_stop_on_slope_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_floor_stop_on_slope_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFloorStopOnSlopeEnabled(enabled bool) { //gd:CharacterBody3D.set_floor_stop_on_slope_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_floor_stop_on_slope_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) SetFloorConstantSpeedEnabled(enabled bool) { //gd:CharacterBody3D.set_floor_constant_speed_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_floor_constant_speed_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsFloorConstantSpeedEnabled() bool { //gd:CharacterBody3D.is_floor_constant_speed_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_floor_constant_speed_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFloorBlockOnWallEnabled(enabled bool) { //gd:CharacterBody3D.set_floor_block_on_wall_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_floor_block_on_wall_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsFloorBlockOnWallEnabled() bool { //gd:CharacterBody3D.is_floor_block_on_wall_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_floor_block_on_wall_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSlideOnCeilingEnabled(enabled bool) { //gd:CharacterBody3D.set_slide_on_ceiling_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slide_on_ceiling_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsSlideOnCeilingEnabled() bool { //gd:CharacterBody3D.is_slide_on_ceiling_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_slide_on_ceiling_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPlatformFloorLayers(exclude_layer int64) { //gd:CharacterBody3D.set_platform_floor_layers
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_platform_floor_layers, 0|(gdextension.SizeInt<<4), &struct{ exclude_layer int64 }{exclude_layer})
 }
-
-//go:nosplit
 func (self class) GetPlatformFloorLayers() int64 { //gd:CharacterBody3D.get_platform_floor_layers
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_platform_floor_layers, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPlatformWallLayers(exclude_layer int64) { //gd:CharacterBody3D.set_platform_wall_layers
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_platform_wall_layers, 0|(gdextension.SizeInt<<4), &struct{ exclude_layer int64 }{exclude_layer})
 }
-
-//go:nosplit
 func (self class) GetPlatformWallLayers() int64 { //gd:CharacterBody3D.get_platform_wall_layers
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_platform_wall_layers, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetMaxSlides() int64 { //gd:CharacterBody3D.get_max_slides
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_slides, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMaxSlides(max_slides int64) { //gd:CharacterBody3D.set_max_slides
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_slides, 0|(gdextension.SizeInt<<4), &struct{ max_slides int64 }{max_slides})
 }
-
-//go:nosplit
 func (self class) GetFloorMaxAngle() float64 { //gd:CharacterBody3D.get_floor_max_angle
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_floor_max_angle, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFloorMaxAngle(radians float64) { //gd:CharacterBody3D.set_floor_max_angle
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_floor_max_angle, 0|(gdextension.SizeFloat<<4), &struct{ radians float64 }{radians})
 }
-
-//go:nosplit
 func (self class) GetFloorSnapLength() float64 { //gd:CharacterBody3D.get_floor_snap_length
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_floor_snap_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFloorSnapLength(floor_snap_length float64) { //gd:CharacterBody3D.set_floor_snap_length
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_floor_snap_length, 0|(gdextension.SizeFloat<<4), &struct{ floor_snap_length float64 }{floor_snap_length})
 }
-
-//go:nosplit
 func (self class) GetWallMinSlideAngle() float64 { //gd:CharacterBody3D.get_wall_min_slide_angle
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_wall_min_slide_angle, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetWallMinSlideAngle(radians float64) { //gd:CharacterBody3D.set_wall_min_slide_angle
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wall_min_slide_angle, 0|(gdextension.SizeFloat<<4), &struct{ radians float64 }{radians})
 }
-
-//go:nosplit
 func (self class) GetUpDirection() Vector3.XYZ { //gd:CharacterBody3D.get_up_direction
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_up_direction, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUpDirection(up_direction Vector3.XYZ) { //gd:CharacterBody3D.set_up_direction
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_up_direction, 0|(gdextension.SizeVector3<<4), &struct{ up_direction Vector3.XYZ }{up_direction})
 }
-
-//go:nosplit
 func (self class) SetMotionMode(mode MotionMode) { //gd:CharacterBody3D.set_motion_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_motion_mode, 0|(gdextension.SizeInt<<4), &struct{ mode MotionMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetMotionMode() MotionMode { //gd:CharacterBody3D.get_motion_mode
 	var r_ret = noescape.Call[MotionMode](gd.ObjectChecked(self.AsObject()), methods.get_motion_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPlatformOnLeave(on_leave_apply_velocity PlatformOnLeave) { //gd:CharacterBody3D.set_platform_on_leave
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_platform_on_leave, 0|(gdextension.SizeInt<<4), &struct{ on_leave_apply_velocity PlatformOnLeave }{on_leave_apply_velocity})
 }
-
-//go:nosplit
 func (self class) GetPlatformOnLeave() PlatformOnLeave { //gd:CharacterBody3D.get_platform_on_leave
 	var r_ret = noescape.Call[PlatformOnLeave](gd.ObjectChecked(self.AsObject()), methods.get_platform_on_leave, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the body collided with the floor on the last call of [MoveAndSlide]. Otherwise, returns false. The [UpDirection] and [FloorMaxAngle] are used to determine whether a surface is "floor" or not.
-
-[FloorMaxAngle]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.FloorMaxAngle
-[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
-[UpDirection]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.UpDirection
-*/
-//go:nosplit
 func (self class) IsOnFloor() bool { //gd:CharacterBody3D.is_on_floor
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_on_floor, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the body collided only with the floor on the last call of [MoveAndSlide]. Otherwise, returns false. The [UpDirection] and [FloorMaxAngle] are used to determine whether a surface is "floor" or not.
-
-[FloorMaxAngle]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.FloorMaxAngle
-[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
-[UpDirection]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.UpDirection
-*/
-//go:nosplit
 func (self class) IsOnFloorOnly() bool { //gd:CharacterBody3D.is_on_floor_only
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_on_floor_only, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the body collided with the ceiling on the last call of [MoveAndSlide]. Otherwise, returns false. The [UpDirection] and [FloorMaxAngle] are used to determine whether a surface is "ceiling" or not.
-
-[FloorMaxAngle]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.FloorMaxAngle
-[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
-[UpDirection]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.UpDirection
-*/
-//go:nosplit
 func (self class) IsOnCeiling() bool { //gd:CharacterBody3D.is_on_ceiling
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_on_ceiling, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the body collided only with the ceiling on the last call of [MoveAndSlide]. Otherwise, returns false. The [UpDirection] and [FloorMaxAngle] are used to determine whether a surface is "ceiling" or not.
-
-[FloorMaxAngle]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.FloorMaxAngle
-[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
-[UpDirection]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.UpDirection
-*/
-//go:nosplit
 func (self class) IsOnCeilingOnly() bool { //gd:CharacterBody3D.is_on_ceiling_only
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_on_ceiling_only, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the body collided with a wall on the last call of [MoveAndSlide]. Otherwise, returns false. The [UpDirection] and [FloorMaxAngle] are used to determine whether a surface is "wall" or not.
-
-[FloorMaxAngle]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.FloorMaxAngle
-[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
-[UpDirection]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.UpDirection
-*/
-//go:nosplit
 func (self class) IsOnWall() bool { //gd:CharacterBody3D.is_on_wall
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_on_wall, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the body collided only with a wall on the last call of [MoveAndSlide]. Otherwise, returns false. The [UpDirection] and [FloorMaxAngle] are used to determine whether a surface is "wall" or not.
-
-[FloorMaxAngle]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.FloorMaxAngle
-[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
-[UpDirection]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.UpDirection
-*/
-//go:nosplit
 func (self class) IsOnWallOnly() bool { //gd:CharacterBody3D.is_on_wall_only
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_on_wall_only, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the collision normal of the floor at the last collision point. Only valid after calling [MoveAndSlide] and when [IsOnFloor] returns true.
-
-Warning: The collision normal is not always the same as the surface normal.
-
-[IsOnFloor]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.IsOnFloor
-[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
-*/
-//go:nosplit
 func (self class) GetFloorNormal() Vector3.XYZ { //gd:CharacterBody3D.get_floor_normal
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_floor_normal, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the collision normal of the wall at the last collision point. Only valid after calling [MoveAndSlide] and when [IsOnWall] returns true.
-
-Warning: The collision normal is not always the same as the surface normal.
-
-[IsOnWall]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.IsOnWall
-[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
-*/
-//go:nosplit
 func (self class) GetWallNormal() Vector3.XYZ { //gd:CharacterBody3D.get_wall_normal
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_wall_normal, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the last motion applied to the [CharacterBody3D] during the last call to [MoveAndSlide]. The movement can be split into multiple motions when sliding occurs, and this method return the last one, which is useful to retrieve the current direction of the movement.
-
-[CharacterBody3D]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D
-[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
-*/
-//go:nosplit
 func (self class) GetLastMotion() Vector3.XYZ { //gd:CharacterBody3D.get_last_motion
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_last_motion, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the travel (position delta) that occurred during the last call to [MoveAndSlide].
-
-[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
-*/
-//go:nosplit
 func (self class) GetPositionDelta() Vector3.XYZ { //gd:CharacterBody3D.get_position_delta
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_position_delta, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the current real velocity since the last call to [MoveAndSlide]. For example, when you climb a slope, you will move diagonally even though the velocity is horizontal. This method returns the diagonal movement, as opposed to [Velocity] which returns the requested velocity.
-
-[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
-[Velocity]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.Velocity
-*/
-//go:nosplit
 func (self class) GetRealVelocity() Vector3.XYZ { //gd:CharacterBody3D.get_real_velocity
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_real_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the floor's collision angle at the last collision point according to 'up_direction', which is [Vector3.Up] by default. This value is always positive and only valid after calling [MoveAndSlide] and when [IsOnFloor] returns true.
-
-[IsOnFloor]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.IsOnFloor
-[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
-*/
-//go:nosplit
 func (self class) GetFloorAngle(up_direction Vector3.XYZ) float64 { //gd:CharacterBody3D.get_floor_angle
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_floor_angle, gdextension.SizeFloat|(gdextension.SizeVector3<<4), &struct{ up_direction Vector3.XYZ }{up_direction})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the linear velocity of the platform at the last collision point. Only valid after calling [MoveAndSlide].
-
-[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
-*/
-//go:nosplit
 func (self class) GetPlatformVelocity() Vector3.XYZ { //gd:CharacterBody3D.get_platform_velocity
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_platform_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the angular velocity of the platform at the last collision point. Only valid after calling [MoveAndSlide].
-
-[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
-*/
-//go:nosplit
 func (self class) GetPlatformAngularVelocity() Vector3.XYZ { //gd:CharacterBody3D.get_platform_angular_velocity
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_platform_angular_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the number of times the body collided and changed direction during the last call to [MoveAndSlide].
-
-[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
-*/
-//go:nosplit
 func (self class) GetSlideCollisionCount() int64 { //gd:CharacterBody3D.get_slide_collision_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_slide_collision_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a [KinematicCollision3D], which contains information about a collision that occurred during the last call to [MoveAndSlide]. Since the body can collide several times in a single call to [MoveAndSlide], you must specify the index of the collision in the range 0 to ([GetSlideCollisionCount] - 1).
-
-[GetSlideCollisionCount]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.GetSlideCollisionCount
-[KinematicCollision3D]: https://pkg.go.dev/graphics.gd/classdb/KinematicCollision3D
-[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
-*/
-//go:nosplit
 func (self class) GetSlideCollision(slide_idx int64) [1]gdclass.KinematicCollision3D { //gd:CharacterBody3D.get_slide_collision
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_slide_collision, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ slide_idx int64 }{slide_idx})
 	var ret = [1]gdclass.KinematicCollision3D{gdclass.NewKinematicCollision3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns a [KinematicCollision3D], which contains information about the latest collision that occurred during the last call to [MoveAndSlide].
-
-[KinematicCollision3D]: https://pkg.go.dev/graphics.gd/classdb/KinematicCollision3D
-[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
-*/
-//go:nosplit
 func (self class) GetLastSlideCollision() [1]gdclass.KinematicCollision3D { //gd:CharacterBody3D.get_last_slide_collision
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_last_slide_collision, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.KinematicCollision3D{gdclass.NewKinematicCollision3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

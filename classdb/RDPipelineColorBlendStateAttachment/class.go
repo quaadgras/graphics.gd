@@ -455,146 +455,92 @@ func (self Instance) SetWriteA(value bool) Instance { //gd:RDPipelineColorBlendS
 	return self
 }
 
-/*
-Convenience method to perform standard mix blending with straight (non-premultiplied) alpha. This sets [EnableBlend] to true, [SrcColorBlendFactor] to [Renderingdevice.BlendFactorSrcAlpha], [DstColorBlendFactor] to [Renderingdevice.BlendFactorOneMinusSrcAlpha], [SrcAlphaBlendFactor] to [Renderingdevice.BlendFactorSrcAlpha] and [DstAlphaBlendFactor] to [Renderingdevice.BlendFactorOneMinusSrcAlpha].
-
-[DstAlphaBlendFactor]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendStateAttachment#Instance.DstAlphaBlendFactor
-[DstColorBlendFactor]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendStateAttachment#Instance.DstColorBlendFactor
-[EnableBlend]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendStateAttachment#Instance.EnableBlend
-[SrcAlphaBlendFactor]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendStateAttachment#Instance.SrcAlphaBlendFactor
-[SrcColorBlendFactor]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendStateAttachment#Instance.SrcColorBlendFactor
-*/
-//go:nosplit
 func (self class) SetAsMix() { //gd:RDPipelineColorBlendStateAttachment.set_as_mix
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_as_mix, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetEnableBlend(p_member bool) { //gd:RDPipelineColorBlendStateAttachment.set_enable_blend
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_blend, 0|(gdextension.SizeBool<<4), &struct{ p_member bool }{p_member})
 }
-
-//go:nosplit
 func (self class) GetEnableBlend() bool { //gd:RDPipelineColorBlendStateAttachment.get_enable_blend
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enable_blend, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSrcColorBlendFactor(p_member Rendering.BlendFactor) { //gd:RDPipelineColorBlendStateAttachment.set_src_color_blend_factor
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_src_color_blend_factor, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.BlendFactor }{p_member})
 }
-
-//go:nosplit
 func (self class) GetSrcColorBlendFactor() Rendering.BlendFactor { //gd:RDPipelineColorBlendStateAttachment.get_src_color_blend_factor
 	var r_ret = noescape.Call[Rendering.BlendFactor](gd.ObjectChecked(self.AsObject()), methods.get_src_color_blend_factor, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDstColorBlendFactor(p_member Rendering.BlendFactor) { //gd:RDPipelineColorBlendStateAttachment.set_dst_color_blend_factor
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dst_color_blend_factor, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.BlendFactor }{p_member})
 }
-
-//go:nosplit
 func (self class) GetDstColorBlendFactor() Rendering.BlendFactor { //gd:RDPipelineColorBlendStateAttachment.get_dst_color_blend_factor
 	var r_ret = noescape.Call[Rendering.BlendFactor](gd.ObjectChecked(self.AsObject()), methods.get_dst_color_blend_factor, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetColorBlendOp(p_member Rendering.BlendOperation) { //gd:RDPipelineColorBlendStateAttachment.set_color_blend_op
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_blend_op, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.BlendOperation }{p_member})
 }
-
-//go:nosplit
 func (self class) GetColorBlendOp() Rendering.BlendOperation { //gd:RDPipelineColorBlendStateAttachment.get_color_blend_op
 	var r_ret = noescape.Call[Rendering.BlendOperation](gd.ObjectChecked(self.AsObject()), methods.get_color_blend_op, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSrcAlphaBlendFactor(p_member Rendering.BlendFactor) { //gd:RDPipelineColorBlendStateAttachment.set_src_alpha_blend_factor
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_src_alpha_blend_factor, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.BlendFactor }{p_member})
 }
-
-//go:nosplit
 func (self class) GetSrcAlphaBlendFactor() Rendering.BlendFactor { //gd:RDPipelineColorBlendStateAttachment.get_src_alpha_blend_factor
 	var r_ret = noescape.Call[Rendering.BlendFactor](gd.ObjectChecked(self.AsObject()), methods.get_src_alpha_blend_factor, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDstAlphaBlendFactor(p_member Rendering.BlendFactor) { //gd:RDPipelineColorBlendStateAttachment.set_dst_alpha_blend_factor
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dst_alpha_blend_factor, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.BlendFactor }{p_member})
 }
-
-//go:nosplit
 func (self class) GetDstAlphaBlendFactor() Rendering.BlendFactor { //gd:RDPipelineColorBlendStateAttachment.get_dst_alpha_blend_factor
 	var r_ret = noescape.Call[Rendering.BlendFactor](gd.ObjectChecked(self.AsObject()), methods.get_dst_alpha_blend_factor, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAlphaBlendOp(p_member Rendering.BlendOperation) { //gd:RDPipelineColorBlendStateAttachment.set_alpha_blend_op
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_blend_op, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.BlendOperation }{p_member})
 }
-
-//go:nosplit
 func (self class) GetAlphaBlendOp() Rendering.BlendOperation { //gd:RDPipelineColorBlendStateAttachment.get_alpha_blend_op
 	var r_ret = noescape.Call[Rendering.BlendOperation](gd.ObjectChecked(self.AsObject()), methods.get_alpha_blend_op, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetWriteR(p_member bool) { //gd:RDPipelineColorBlendStateAttachment.set_write_r
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_write_r, 0|(gdextension.SizeBool<<4), &struct{ p_member bool }{p_member})
 }
-
-//go:nosplit
 func (self class) GetWriteR() bool { //gd:RDPipelineColorBlendStateAttachment.get_write_r
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_write_r, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetWriteG(p_member bool) { //gd:RDPipelineColorBlendStateAttachment.set_write_g
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_write_g, 0|(gdextension.SizeBool<<4), &struct{ p_member bool }{p_member})
 }
-
-//go:nosplit
 func (self class) GetWriteG() bool { //gd:RDPipelineColorBlendStateAttachment.get_write_g
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_write_g, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetWriteB(p_member bool) { //gd:RDPipelineColorBlendStateAttachment.set_write_b
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_write_b, 0|(gdextension.SizeBool<<4), &struct{ p_member bool }{p_member})
 }
-
-//go:nosplit
 func (self class) GetWriteB() bool { //gd:RDPipelineColorBlendStateAttachment.get_write_b
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_write_b, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetWriteA(p_member bool) { //gd:RDPipelineColorBlendStateAttachment.set_write_a
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_write_a, 0|(gdextension.SizeBool<<4), &struct{ p_member bool }{p_member})
 }
-
-//go:nosplit
 func (self class) GetWriteA() bool { //gd:RDPipelineColorBlendStateAttachment.get_write_a
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_write_a, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

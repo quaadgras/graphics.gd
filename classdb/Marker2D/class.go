@@ -172,12 +172,9 @@ func (self Instance) SetGizmoExtents(value Float.X) Instance { //gd:Marker2D.giz
 	return self
 }
 
-//go:nosplit
 func (self class) SetGizmoExtents(extents float64) { //gd:Marker2D.set_gizmo_extents
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gizmo_extents, 0|(gdextension.SizeFloat<<4), &struct{ extents float64 }{extents})
 }
-
-//go:nosplit
 func (self class) GetGizmoExtents() float64 { //gd:Marker2D.get_gizmo_extents
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gizmo_extents, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

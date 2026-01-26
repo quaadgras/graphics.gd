@@ -162,10 +162,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Creates, or obtains a cached, framebuffer. 'textures' lists textures accessed. 'passes' defines the subpasses and texture allocation, if left empty a single pass is created and textures are allocated depending on their usage flags. 'views' defines the number of views used when rendering.
-*/
-//go:nosplit
 func (self class) GetCacheMultipass(textures Array.Contains[RID.Any], passes Array.Contains[[1]gdclass.RDFramebufferPass], views int64) RID.Any { //gd:FramebufferCacheRD.get_cache_multipass
 	var r_ret = noescape.CallStatic[RID.Any](methods.get_cache_multipass, gdextension.SizeRID|(gdextension.SizeArray<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeInt<<12), &struct {
 		textures gdextension.Array

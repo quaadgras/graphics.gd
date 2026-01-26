@@ -194,13 +194,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns the size of the packed container (see [Array.Size] and [Dictionary.Size]).
-
-[Array.Size]: https://pkg.go.dev/graphics.gd/classdb/Array#Instance.Size
-[Dictionary.Size]: https://pkg.go.dev/graphics.gd/classdb/Dictionary#Instance.Size
-*/
-//go:nosplit
 func (self class) Size() int64 { //gd:PackedDataContainerRef.size
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

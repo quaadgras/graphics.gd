@@ -14,8 +14,9 @@ var Godot = toolchain{
 	RequiredFor:   "graphics",
 
 	ConvertArguments: map[string]string{
-		"-v": "--verbose",
-		"-x": "",
+		"-v":       "--verbose",
+		"-x":       "",
+		"-gcflags": "",
 	},
 }
 

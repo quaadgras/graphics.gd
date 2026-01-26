@@ -231,38 +231,27 @@ func (self Instance) SetMaterial(value Material.Instance) Instance { //gd:FogVol
 	return self
 }
 
-//go:nosplit
 func (self class) SetSize(size Vector3.XYZ) { //gd:FogVolume.set_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), &struct{ size Vector3.XYZ }{size})
 }
-
-//go:nosplit
 func (self class) GetSize() Vector3.XYZ { //gd:FogVolume.get_size
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetShape(shape RenderingServer.FogVolumeShape) { //gd:FogVolume.set_shape
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape, 0|(gdextension.SizeInt<<4), &struct {
 		shape RenderingServer.FogVolumeShape
 	}{shape})
 }
-
-//go:nosplit
 func (self class) GetShape() RenderingServer.FogVolumeShape { //gd:FogVolume.get_shape
 	var r_ret = noescape.Call[RenderingServer.FogVolumeShape](gd.ObjectChecked(self.AsObject()), methods.get_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:FogVolume.set_material
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
 }
-
-//go:nosplit
 func (self class) GetMaterial() [1]gdclass.Material { //gd:FogVolume.get_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

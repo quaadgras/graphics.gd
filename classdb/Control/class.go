@@ -2997,14 +2997,6 @@ func (self Instance) SetThemeTypeVariation(value string) Instance { //gd:Control
 	class(self).SetThemeTypeVariation(String.Name(String.New(value)))
 	return self
 }
-
-/*
-Virtual method to be implemented by the user. Returns whether the given 'point' is inside this control.
-
-If not overridden, default behavior is checking if the point is within control's Rect.
-
-Note: If you want to check if a point is inside the control, you can use Rect2(Vector2.ZERO, size).has_point(point).
-*/
 func (class) _has_point(impl func(ptr gdclass.Receiver, point Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var point = gd.UnsafeGet[Vector2.XY](p_args, 0)
@@ -3013,14 +3005,6 @@ func (class) _has_point(impl func(ptr gdclass.Receiver, point Vector2.XY) bool) 
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-User defined BiDi algorithm override function.
-
-Returns an slice of [Vector3i.XYZ] text ranges and text base directions, in the left-to-right order. Ranges should cover full source 'text' without overlaps. BiDi algorithm will be used on each range separately.
-
-[Vector3i.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3i#XYZ
-*/
 func (class) _structured_text_parser(impl func(ptr gdclass.Receiver, args Array.Any, text String.Readable) Array.Contains[Vector3i.XYZ]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var args = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0))))
@@ -3037,22 +3021,6 @@ func (class) _structured_text_parser(impl func(ptr gdclass.Receiver, args Array.
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Virtual method to be implemented by the user. Returns the minimum size for this control. Alternative to [CustomMinimumSize] for controlling minimum size via code. The actual minimum size will be the max value of these two (in each axis separately).
-
-If not overridden, defaults to [Vector2.Zero].
-
-Note: This method will not be called when the script is attached to a [Control] node that already overrides its minimum size (e.g. [Label], [Button], [PanelContainer] etc.). It can only be used with most basic GUI nodes, like [Control], [Container], [Panel] etc.
-
-[Button]: https://pkg.go.dev/graphics.gd/classdb/Button
-[Container]: https://pkg.go.dev/graphics.gd/classdb/Container
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[CustomMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CustomMinimumSize
-[Label]: https://pkg.go.dev/graphics.gd/classdb/Label
-[Panel]: https://pkg.go.dev/graphics.gd/classdb/Panel
-[PanelContainer]: https://pkg.go.dev/graphics.gd/classdb/PanelContainer
-*/
 func (class) _get_minimum_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -3060,15 +3028,6 @@ func (class) _get_minimum_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb g
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Virtual method to be implemented by the user. Returns the tooltip text for the position 'at_position' in control's local coordinates, which will typically appear when the cursor is resting over this control. See [GetTooltip].
-
-Note: If this method returns an empty string and [MakeCustomTooltip] is not overridden, no tooltip is displayed.
-
-[GetTooltip]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetTooltip
-[MakeCustomTooltip]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
-*/
 func (class) _get_tooltip(impl func(ptr gdclass.Receiver, at_position Vector2.XY) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
@@ -3082,26 +3041,6 @@ func (class) _get_tooltip(impl func(ptr gdclass.Receiver, at_position Vector2.XY
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Godot calls this method to get data that can be dragged and dropped onto controls that expect drop data. Returns null if there is no data to drag. Controls that want to receive drop data should implement [CanDropData] and [DropData]. 'at_position' is local to this control. Drag may be forced with [ForceDrag].
-
-A preview that will follow the mouse that should represent the data can be set with [SetDragPreview]. A good time to set the preview is in this method.
-
-Note: If the drag was initiated by a keyboard shortcut or [AccessibilityDrag], 'at_position' is set to [Vector2.Inf], and the currently selected item/text position should be used as the drag position.
-
-	GetDragData := func(position Vector2.XY) any {
-		var mydata = make_data() // This is your custom method generating the drag data.
-		control.SetDragPreview(make_preview(mydata))
-		return mydata
-	}
-
-[AccessibilityDrag]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AccessibilityDrag
-[CanDropData]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
-[DropData]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
-[ForceDrag]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.ForceDrag
-[SetDragPreview]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.SetDragPreview
-*/
 func (class) _get_drag_data(impl func(ptr gdclass.Receiver, at_position Vector2.XY) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
@@ -3115,22 +3054,6 @@ func (class) _get_drag_data(impl func(ptr gdclass.Receiver, at_position Vector2.
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Godot calls this method to test if 'data' from a control's [GetDragData] can be dropped at 'at_position'. 'at_position' is local to this control.
-
-This method should only be used to test the data. Process the data in [DropData].
-
-Note: If the drag was initiated by a keyboard shortcut or [AccessibilityDrag], 'at_position' is set to [Vector2.Inf], and the currently selected item/text position should be used as the drop position.
-
-	CanDropData := func(position Vector2.XY, data any) bool {
-		return reflect.TypeOf(data).Kind() == reflect.Map && data.(map[any]any)["expected"] != nil
-	}
-
-[AccessibilityDrag]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AccessibilityDrag
-[DropData]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
-[GetDragData]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
-*/
 func (class) _can_drop_data(impl func(ptr gdclass.Receiver, at_position Vector2.XY, data variant.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
@@ -3141,23 +3064,6 @@ func (class) _can_drop_data(impl func(ptr gdclass.Receiver, at_position Vector2.
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Godot calls this method to pass you the 'data' from a control's [GetDragData] result. Godot first calls [CanDropData] to test if 'data' is allowed to drop at 'at_position' where 'at_position' is local to this control.
-
-Note: If the drag was initiated by a keyboard shortcut or [AccessibilityDrag], 'at_position' is set to [Vector2.Inf], and the currently selected item/text position should be used as the drop position.
-
-	CanDropData := func(position Vector2.XY, data any) bool {
-		return reflect.TypeOf(data).Kind() == reflect.Map && data.(map[any]any)["color"] != nil
-	}
-	DropData := func(position Vector2.XY, data any) {
-		color = data.(map[any]any)["color"].(Color.RGBA)
-	}
-
-[AccessibilityDrag]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AccessibilityDrag
-[CanDropData]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
-[GetDragData]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
-*/
 func (class) _drop_data(impl func(ptr gdclass.Receiver, at_position Vector2.XY, data variant.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
@@ -3167,38 +3073,6 @@ func (class) _drop_data(impl func(ptr gdclass.Receiver, at_position Vector2.XY, 
 		impl(self, at_position, data)
 	}
 }
-
-/*
-Virtual method to be implemented by the user. Returns a [Control] node that should be used as a tooltip instead of the default one. 'for_text' is the return value of [GetTooltip].
-
-The returned node must be of type [Control] or Control-derived. It can have child nodes of any type. It is freed when the tooltip disappears, so make sure you always provide a new instance (if you want to use a pre-existing node from your scene tree, you can duplicate it and pass the duplicated instance). When null or a non-Control node is returned, the default tooltip will be used instead.
-
-The returned node will be added as child to a [PopupPanel], so you should only provide the contents of that panel. That [PopupPanel] can be themed using [Theme.SetStylebox] for the type "TooltipPanel" (see [TooltipText] for an example).
-
-Note: The tooltip is shrunk to minimal size. If you want to ensure it's fully visible, you might want to set its [CustomMinimumSize] to some non-zero value.
-
-Note: The node (and any relevant children) should have their [CanvasItem.Visible] set to true when returned, otherwise, the viewport that instantiates it will not be able to calculate its minimum size reliably.
-
-Note: If overridden, this method is called even if [GetTooltip] returns an empty string. When this happens with the default tooltip, it is not displayed. To copy this behavior, return null in this method when 'for_text' is empty.
-
-Example: Use a constructed node as a tooltip:
-
-	MakeCustomTooltip := func(forText string) Control.Instance {
-		var label = Label.New()
-		label.SetText(forText)
-		return label.AsControl()
-	}
-
-Example: Usa a scene instance as a tooltip:
-
-[CanvasItem.Visible]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Visible
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[CustomMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CustomMinimumSize
-[GetTooltip]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetTooltip
-[PopupPanel]: https://pkg.go.dev/graphics.gd/classdb/PopupPanel
-[Theme.SetStylebox]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.SetStylebox
-[TooltipText]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.TooltipText
-*/
 func (class) _make_custom_tooltip(impl func(ptr gdclass.Receiver, for_text String.Readable) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var for_text = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -3213,10 +3087,6 @@ func (class) _make_custom_tooltip(impl func(ptr gdclass.Receiver, for_text Strin
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Return the description of the keyboard shortcuts and other contextual help for this control.
-*/
 func (class) _accessibility_get_contextual_info(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -3229,12 +3099,6 @@ func (class) _accessibility_get_contextual_info(impl func(ptr gdclass.Receiver) 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Override this method to return a human-readable description of the position of the child 'node' in the custom container, added to the [AccessibilityName].
-
-[AccessibilityName]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AccessibilityName
-*/
 func (class) _get_accessibility_container_name(impl func(ptr gdclass.Receiver, node [1]gdclass.Node) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var node = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -3250,40 +3114,6 @@ func (class) _get_accessibility_container_name(impl func(ptr gdclass.Receiver, n
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Virtual method to be implemented by the user. Override this method to handle and accept inputs on UI elements. See also [AcceptEvent].
-
-Example: Click on the control to print a message:
-
-	GuiInput := func(event InputEvent.Instance) {
-		if event, ok := Object.As[InputEventMouseButton.Instance](event); ok {
-			if event.ButtonIndex() == Input.MouseButtonLeft && event.AsInputEvent().IsPressed() {
-				fmt.Println("I've been clicked D:")
-			}
-		}
-	}
-
-If the 'event' inherits [InputEventMouse], this method will not be called when:
-
-- the control's [MouseFilter] is set to [MouseFilterIgnore];
-
-- the control is obstructed by another control on top, that doesn't have [MouseFilter] set to [MouseFilterIgnore];
-
-- the control's parent has [MouseFilter] set to [MouseFilterStop] or has accepted the event;
-
-- the control's parent has [ClipContents] enabled and the 'event”s position is outside the parent's rectangle;
-
-- the 'event”s position is outside the control (see [HasPoint]).
-
-Note: The 'event”s position is relative to this control's origin.
-
-[AcceptEvent]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AcceptEvent
-[ClipContents]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.ClipContents
-[HasPoint]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
-[InputEventMouse]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouse
-[MouseFilter]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MouseFilter
-*/
 func (class) _gui_input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -3294,68 +3124,25 @@ func (class) _gui_input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEv
 	}
 }
 
-/*
-Marks an input event as handled. Once you accept an input event, it stops propagating, even to nodes listening to [Node.UnhandledInput] or [Node.UnhandledKeyInput].
-
-Note: This does not affect the methods in [Input], only the way events are propagated.
-
-[Input]: https://pkg.go.dev/graphics.gd/classdb/Input
-[Node.UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UnhandledInput
-[Node.UnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UnhandledKeyInput
-*/
-//go:nosplit
 func (self class) AcceptEvent() { //gd:Control.accept_event
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accept_event, 0, &struct{}{})
 }
-
-/*
-Returns the minimum size for this control. See [CustomMinimumSize].
-
-[CustomMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CustomMinimumSize
-*/
-//go:nosplit
 func (self class) GetMinimumSize() Vector2.XY { //gd:Control.get_minimum_size
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_minimum_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns combined minimum size from [CustomMinimumSize] and [GetMinimumSize].
-
-[CustomMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CustomMinimumSize
-[GetMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetMinimumSize
-*/
-//go:nosplit
 func (self class) GetCombinedMinimumSize() Vector2.XY { //gd:Control.get_combined_minimum_size
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_combined_minimum_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the anchors to a 'preset' from [Control.LayoutPreset] enum. This is the code equivalent to using the Layout menu in the 2D editor.
-
-If 'keep_offsets' is true, control's position will also be updated.
-*/
-//go:nosplit
 func (self class) SetAnchorsPreset(preset LayoutPreset, keep_offsets bool) { //gd:Control.set_anchors_preset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anchors_preset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		preset       LayoutPreset
 		keep_offsets bool
 	}{preset, keep_offsets})
 }
-
-/*
-Sets the offsets to a 'preset' from [Control.LayoutPreset] enum. This is the code equivalent to using the Layout menu in the 2D editor.
-
-Use parameter 'resize_mode' with constants from [Control.LayoutPresetMode] to better determine the resulting size of the [Control]. Constant size will be ignored if used with presets that change size, e.g. [PresetLeftWide].
-
-Use parameter 'margin' to determine the gap between the [Control] and the edges.
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-*/
-//go:nosplit
 func (self class) SetOffsetsPreset(preset LayoutPreset, resize_mode LayoutPresetMode, margin int64) { //gd:Control.set_offsets_preset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offsets_preset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		preset      LayoutPreset
@@ -3363,14 +3150,6 @@ func (self class) SetOffsetsPreset(preset LayoutPreset, resize_mode LayoutPreset
 		margin      int64
 	}{preset, resize_mode, margin})
 }
-
-/*
-Sets both anchor preset and offset preset. See [SetAnchorsPreset] and [SetOffsetsPreset].
-
-[SetAnchorsPreset]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.SetAnchorsPreset
-[SetOffsetsPreset]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.SetOffsetsPreset
-*/
-//go:nosplit
 func (self class) SetAnchorsAndOffsetsPreset(preset LayoutPreset, resize_mode LayoutPresetMode, margin int64) { //gd:Control.set_anchors_and_offsets_preset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anchors_and_offsets_preset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		preset      LayoutPreset
@@ -3378,20 +3157,6 @@ func (self class) SetAnchorsAndOffsetsPreset(preset LayoutPreset, resize_mode La
 		margin      int64
 	}{preset, resize_mode, margin})
 }
-
-/*
-Sets the anchor for the specified [Side] to 'anchor'. A setter method for [AnchorBottom], [AnchorLeft], [AnchorRight] and [AnchorTop].
-
-If 'keep_offset' is true, offsets aren't updated after this operation.
-
-If 'push_opposite_anchor' is true and the opposite anchor overlaps this anchor, the opposite one will have its value overridden. For example, when setting left anchor to 1 and the right anchor has value of 0.5, the right anchor will also get value of 1. If 'push_opposite_anchor' was false, the left anchor would get value 0.5.
-
-[AnchorBottom]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AnchorBottom
-[AnchorLeft]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AnchorLeft
-[AnchorRight]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AnchorRight
-[AnchorTop]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AnchorTop
-*/
-//go:nosplit
 func (self class) SetAnchor(side Rect2.Side, anchor float64, keep_offset bool, push_opposite_anchor bool) { //gd:Control.set_anchor
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anchor, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
 		side                 Rect2.Side
@@ -3400,60 +3165,22 @@ func (self class) SetAnchor(side Rect2.Side, anchor float64, keep_offset bool, p
 		push_opposite_anchor bool
 	}{side, anchor, keep_offset, push_opposite_anchor})
 }
-
-/*
-Returns the anchor for the specified [Side]. A getter method for [AnchorBottom], [AnchorLeft], [AnchorRight] and [AnchorTop].
-
-[AnchorBottom]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AnchorBottom
-[AnchorLeft]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AnchorLeft
-[AnchorRight]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AnchorRight
-[AnchorTop]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AnchorTop
-*/
-//go:nosplit
 func (self class) GetAnchor(side Rect2.Side) float64 { //gd:Control.get_anchor
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_anchor, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ side Rect2.Side }{side})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the offset for the specified [Side] to 'offset'. A setter method for [OffsetBottom], [OffsetLeft], [OffsetRight] and [OffsetTop].
-
-[OffsetBottom]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetBottom
-[OffsetLeft]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetLeft
-[OffsetRight]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetRight
-[OffsetTop]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetTop
-*/
-//go:nosplit
 func (self class) SetOffset(side Rect2.Side, offset float64) { //gd:Control.set_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		side   Rect2.Side
 		offset float64
 	}{side, offset})
 }
-
-/*
-Returns the offset for the specified [Side]. A getter method for [OffsetBottom], [OffsetLeft], [OffsetRight] and [OffsetTop].
-
-[OffsetBottom]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetBottom
-[OffsetLeft]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetLeft
-[OffsetRight]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetRight
-[OffsetTop]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetTop
-*/
-//go:nosplit
 func (self class) GetOffset(offset Rect2.Side) float64 { //gd:Control.get_offset
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ offset Rect2.Side }{offset})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Works the same as [SetAnchor], but instead of keep_offset argument and automatic update of offset, it allows to set the offset yourself (see [SetOffset]).
-
-[SetAnchor]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.SetAnchor
-[SetOffset]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.SetOffset
-*/
-//go:nosplit
 func (self class) SetAnchorAndOffset(side Rect2.Side, anchor float64, offset float64, push_opposite_anchor bool) { //gd:Control.set_anchor_and_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anchor_and_offset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), &struct {
 		side                 Rect2.Side
@@ -3462,655 +3189,265 @@ func (self class) SetAnchorAndOffset(side Rect2.Side, anchor float64, offset flo
 		push_opposite_anchor bool
 	}{side, anchor, offset, push_opposite_anchor})
 }
-
-/*
-Sets [OffsetLeft] and [OffsetTop] at the same time. Equivalent of changing [Position].
-
-[OffsetLeft]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetLeft
-[OffsetTop]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetTop
-[Position]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Position
-*/
-//go:nosplit
 func (self class) SetBegin(position Vector2.XY) { //gd:Control.set_begin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_begin, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 }
-
-/*
-Sets [OffsetRight] and [OffsetBottom] at the same time.
-
-[OffsetBottom]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetBottom
-[OffsetRight]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetRight
-*/
-//go:nosplit
 func (self class) SetEnd(position Vector2.XY) { //gd:Control.set_end
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_end, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 }
-
-/*
-Sets the [Position] to given 'position'.
-
-If 'keep_offsets' is true, control's anchors will be updated instead of offsets.
-
-[Position]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Position
-*/
-//go:nosplit
 func (self class) SetPosition(position Vector2.XY, keep_offsets bool) { //gd:Control.set_position
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeBool<<8), &struct {
 		position     Vector2.XY
 		keep_offsets bool
 	}{position, keep_offsets})
 }
-
-/*
-Sets the size (see [Size]).
-
-If 'keep_offsets' is true, control's anchors will be updated instead of offsets.
-
-[Size]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Size
-*/
-//go:nosplit
 func (self class) SetSize(size Vector2.XY, keep_offsets bool) { //gd:Control.set_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeBool<<8), &struct {
 		size         Vector2.XY
 		keep_offsets bool
 	}{size, keep_offsets})
 }
-
-/*
-Resets the size to [GetCombinedMinimumSize]. This is equivalent to calling set_size(Vector2()) (or any size below the minimum).
-
-[GetCombinedMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetCombinedMinimumSize
-*/
-//go:nosplit
 func (self class) ResetSize() { //gd:Control.reset_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_size, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetCustomMinimumSize(size Vector2.XY) { //gd:Control.set_custom_minimum_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_minimum_size, 0|(gdextension.SizeVector2<<4), &struct{ size Vector2.XY }{size})
 }
-
-/*
-Sets the [GlobalPosition] to given 'position'.
-
-If 'keep_offsets' is true, control's anchors will be updated instead of offsets.
-
-[GlobalPosition]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GlobalPosition
-*/
-//go:nosplit
 func (self class) SetGlobalPosition(position Vector2.XY, keep_offsets bool) { //gd:Control.set_global_position
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_global_position, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeBool<<8), &struct {
 		position     Vector2.XY
 		keep_offsets bool
 	}{position, keep_offsets})
 }
-
-//go:nosplit
 func (self class) SetRotation(radians float64) { //gd:Control.set_rotation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation, 0|(gdextension.SizeFloat<<4), &struct{ radians float64 }{radians})
 }
-
-//go:nosplit
 func (self class) SetRotationDegrees(degrees float64) { //gd:Control.set_rotation_degrees
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_degrees, 0|(gdextension.SizeFloat<<4), &struct{ degrees float64 }{degrees})
 }
-
-//go:nosplit
 func (self class) SetScale(scale Vector2.XY) { //gd:Control.set_scale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale, 0|(gdextension.SizeVector2<<4), &struct{ scale Vector2.XY }{scale})
 }
-
-//go:nosplit
 func (self class) SetPivotOffset(pivot_offset Vector2.XY) { //gd:Control.set_pivot_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pivot_offset, 0|(gdextension.SizeVector2<<4), &struct{ pivot_offset Vector2.XY }{pivot_offset})
 }
-
-/*
-Returns [OffsetLeft] and [OffsetTop]. See also [Position].
-
-[OffsetLeft]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetLeft
-[OffsetTop]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetTop
-[Position]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Position
-*/
-//go:nosplit
 func (self class) GetBegin() Vector2.XY { //gd:Control.get_begin
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_begin, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns [OffsetRight] and [OffsetBottom].
-
-[OffsetBottom]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetBottom
-[OffsetRight]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetRight
-*/
-//go:nosplit
 func (self class) GetEnd() Vector2.XY { //gd:Control.get_end
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_end, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetPosition() Vector2.XY { //gd:Control.get_position
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetSize() Vector2.XY { //gd:Control.get_size
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetRotation() float64 { //gd:Control.get_rotation
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rotation, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetRotationDegrees() float64 { //gd:Control.get_rotation_degrees
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rotation_degrees, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetScale() Vector2.XY { //gd:Control.get_scale
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_scale, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetPivotOffset() Vector2.XY { //gd:Control.get_pivot_offset
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_pivot_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetCustomMinimumSize() Vector2.XY { //gd:Control.get_custom_minimum_size
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_custom_minimum_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the width/height occupied in the parent control.
-*/
-//go:nosplit
 func (self class) GetParentAreaSize() Vector2.XY { //gd:Control.get_parent_area_size
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_parent_area_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetGlobalPosition() Vector2.XY { //gd:Control.get_global_position
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_global_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the position of this [Control] in global screen coordinates (i.e. taking window position into account). Mostly useful for editor plugins.
-
-Equals to [GlobalPosition] if the window is embedded (see [Viewport.GuiEmbedSubwindows]).
-
-Example: Show a popup at the mouse position:
-
-
-	popup_menu.AsWindow().SetPosition(Vector2i.From(Vector2.Add(control.GetScreenPosition(), control.AsCanvasItem().GetLocalMousePosition())))
-	popup_menu.AsWindow().ResetSize()
-	popup_menu.AsWindow().Popup()
-
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[GlobalPosition]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GlobalPosition
-[Viewport.GuiEmbedSubwindows]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GuiEmbedSubwindows
-*/
-//go:nosplit
 func (self class) GetScreenPosition() Vector2.XY { //gd:Control.get_screen_position
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_screen_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the position and size of the control in the coordinate system of the containing node. See [Position], [Scale] and [Size].
-
-Note: If [Rotation] is not the default rotation, the resulting size is not meaningful.
-
-Note: Setting [Viewport.GuiSnapControlsToPixels] to true can lead to rounding inaccuracies between the displayed control and the returned [Rect2.PositionSize].
-
-[Position]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Position
-[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
-[Rotation]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Rotation
-[Scale]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Scale
-[Size]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Size
-[Viewport.GuiSnapControlsToPixels]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GuiSnapControlsToPixels
-*/
-//go:nosplit
 func (self class) GetRect() Rect2.PositionSize { //gd:Control.get_rect
 	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the position and size of the control relative to the containing canvas. See [GlobalPosition] and [Size].
-
-Note: If the node itself or any parent [CanvasItem] between the node and the canvas have a non default rotation or skew, the resulting size is likely not meaningful.
-
-Note: Setting [Viewport.GuiSnapControlsToPixels] to true can lead to rounding inaccuracies between the displayed control and the returned [Rect2.PositionSize].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[GlobalPosition]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GlobalPosition
-[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
-[Size]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Size
-[Viewport.GuiSnapControlsToPixels]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GuiSnapControlsToPixels
-*/
-//go:nosplit
 func (self class) GetGlobalRect() Rect2.PositionSize { //gd:Control.get_global_rect
 	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_global_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFocusMode(mode FocusMode) { //gd:Control.set_focus_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focus_mode, 0|(gdextension.SizeInt<<4), &struct{ mode FocusMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetFocusMode() FocusMode { //gd:Control.get_focus_mode
 	var r_ret = noescape.Call[FocusMode](gd.ObjectChecked(self.AsObject()), methods.get_focus_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [FocusMode], but takes the [FocusBehaviorRecursive] into account. If [FocusBehaviorRecursive] is set to [FocusBehaviorDisabled], or it is set to [FocusBehaviorInherited] and its ancestor is set to [FocusBehaviorDisabled], then this returns [FocusNone].
-
-[FocusBehaviorRecursive]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.FocusBehaviorRecursive
-[FocusMode]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.FocusMode
-*/
-//go:nosplit
 func (self class) GetFocusModeWithOverride() FocusMode { //gd:Control.get_focus_mode_with_override
 	var r_ret = noescape.Call[FocusMode](gd.ObjectChecked(self.AsObject()), methods.get_focus_mode_with_override, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFocusBehaviorRecursive(focus_behavior_recursive FocusBehaviorRecursive) { //gd:Control.set_focus_behavior_recursive
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focus_behavior_recursive, 0|(gdextension.SizeInt<<4), &struct{ focus_behavior_recursive FocusBehaviorRecursive }{focus_behavior_recursive})
 }
-
-//go:nosplit
 func (self class) GetFocusBehaviorRecursive() FocusBehaviorRecursive { //gd:Control.get_focus_behavior_recursive
 	var r_ret = noescape.Call[FocusBehaviorRecursive](gd.ObjectChecked(self.AsObject()), methods.get_focus_behavior_recursive, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if this is the current focused control. See [FocusMode].
-
-[FocusMode]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.FocusMode
-*/
-//go:nosplit
 func (self class) HasFocus() bool { //gd:Control.has_focus
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_focus, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Steal the focus from another control and become the focused control (see [FocusMode]).
-
-Note: Using this method together with [Callable.CallDeferred] makes it more reliable, especially when called inside [Node.Ready].
-
-[Callable.CallDeferred]: https://pkg.go.dev/graphics.gd/classdb/Callable#Instance.CallDeferred
-[FocusMode]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.FocusMode
-[Node.Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Ready
-*/
-//go:nosplit
 func (self class) GrabFocus() { //gd:Control.grab_focus
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.grab_focus, 0, &struct{}{})
 }
-
-/*
-Give up the focus. No other control will be able to receive input.
-*/
-//go:nosplit
 func (self class) ReleaseFocus() { //gd:Control.release_focus
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.release_focus, 0, &struct{}{})
 }
-
-/*
-Finds the previous (above in the tree) [Control] that can receive the focus.
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-*/
-//go:nosplit
 func (self class) FindPrevValidFocus() [1]gdclass.Control { //gd:Control.find_prev_valid_focus
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_prev_valid_focus, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Finds the next (below in the tree) [Control] that can receive the focus.
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-*/
-//go:nosplit
 func (self class) FindNextValidFocus() [1]gdclass.Control { //gd:Control.find_next_valid_focus
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_next_valid_focus, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Finds the next [Control] that can receive the focus on the specified [Side].
-
-Note: This is different from [GetFocusNeighbor], which returns the path of a specified focus neighbor.
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[GetFocusNeighbor]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetFocusNeighbor
-*/
-//go:nosplit
 func (self class) FindValidFocusNeighbor(side Rect2.Side) [1]gdclass.Control { //gd:Control.find_valid_focus_neighbor
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_valid_focus_neighbor, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ side Rect2.Side }{side})
 	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetHSizeFlags(flags SizeFlags) { //gd:Control.set_h_size_flags
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_size_flags, 0|(gdextension.SizeInt<<4), &struct{ flags SizeFlags }{flags})
 }
-
-//go:nosplit
 func (self class) GetHSizeFlags() SizeFlags { //gd:Control.get_h_size_flags
 	var r_ret = noescape.Call[SizeFlags](gd.ObjectChecked(self.AsObject()), methods.get_h_size_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetStretchRatio(ratio float64) { //gd:Control.set_stretch_ratio
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stretch_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
 }
-
-//go:nosplit
 func (self class) GetStretchRatio() float64 { //gd:Control.get_stretch_ratio
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_stretch_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetVSizeFlags(flags SizeFlags) { //gd:Control.set_v_size_flags
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_size_flags, 0|(gdextension.SizeInt<<4), &struct{ flags SizeFlags }{flags})
 }
-
-//go:nosplit
 func (self class) GetVSizeFlags() SizeFlags { //gd:Control.get_v_size_flags
 	var r_ret = noescape.Call[SizeFlags](gd.ObjectChecked(self.AsObject()), methods.get_v_size_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTheme(theme [1]gdclass.Theme) { //gd:Control.set_theme
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_theme, 0|(gdextension.SizeObject<<4), &struct{ theme gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTheme(theme[0])))})
 }
-
-//go:nosplit
 func (self class) GetTheme() [1]gdclass.Theme { //gd:Control.get_theme
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Theme{gdclass.NewTheme(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetThemeTypeVariation(theme_type String.Name) { //gd:Control.set_theme_type_variation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_theme_type_variation, 0|(gdextension.SizeStringName<<4), &struct{ theme_type gdextension.StringName }{pointers.Get(gd.InternalStringName(theme_type))})
 }
-
-//go:nosplit
 func (self class) GetThemeTypeVariation() String.Name { //gd:Control.get_theme_type_variation
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_theme_type_variation, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-
-/*
-Prevents *_theme_*_override methods from emitting [NotificationThemeChanged] until [EndBulkThemeOverride] is called.
-
-[EndBulkThemeOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.EndBulkThemeOverride
-*/
-//go:nosplit
 func (self class) BeginBulkThemeOverride() { //gd:Control.begin_bulk_theme_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.begin_bulk_theme_override, 0, &struct{}{})
 }
-
-/*
-Ends a bulk theme override update. See [BeginBulkThemeOverride].
-
-[BeginBulkThemeOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.BeginBulkThemeOverride
-*/
-//go:nosplit
 func (self class) EndBulkThemeOverride() { //gd:Control.end_bulk_theme_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.end_bulk_theme_override, 0, &struct{}{})
 }
-
-/*
-Creates a local override for a theme icon with the specified 'name'. Local overrides always take precedence when fetching theme items for the control. An override can be removed with [RemoveThemeIconOverride].
-
-See also [GetThemeIcon].
-
-[GetThemeIcon]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetThemeIcon
-[RemoveThemeIconOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.RemoveThemeIconOverride
-*/
-//go:nosplit
 func (self class) AddThemeIconOverride(name String.Name, texture [1]gdclass.Texture2D) { //gd:Control.add_theme_icon_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_icon_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name    gdextension.StringName
 		texture gdextension.Object
 	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
-
-/*
-Creates a local override for a theme [StyleBox] with the specified 'name'. Local overrides always take precedence when fetching theme items for the control. An override can be removed with [RemoveThemeStyleboxOverride].
-
-See also [GetThemeStylebox].
-
-Example: Modify a property in a [StyleBox] by duplicating it:
-
-
-	// The snippet below assumes the child node "MyButton" has a StyleBoxFlat assigned.
-	// Resources are shared across instances, so we need to duplicate it
-	// to avoid modifying the appearance of all other buttons.
-	var newStyleboxNormal = Resource.Duplicate(MyButton.AsControl().GetThemeStylebox("normal"))
-	Object.Set(newStyleboxNormal, "border_width_top", 3)
-	Object.Set(newStyleboxNormal, "border_color", Color.RGBA{0, 1, 0.5, 1})
-	MyButton.AsControl().AddThemeStyleboxOverride("normal", newStyleboxNormal)
-	// Remove the stylebox override.
-	MyButton.AsControl().RemoveThemeStyleboxOverride("normal")
-
-
-[GetThemeStylebox]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetThemeStylebox
-[RemoveThemeStyleboxOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.RemoveThemeStyleboxOverride
-[StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
-*/
-//go:nosplit
 func (self class) AddThemeStyleboxOverride(name String.Name, stylebox [1]gdclass.StyleBox) { //gd:Control.add_theme_stylebox_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_stylebox_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name     gdextension.StringName
 		stylebox gdextension.Object
 	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetStyleBox(stylebox[0])))})
 }
-
-/*
-Creates a local override for a theme [Font] with the specified 'name'. Local overrides always take precedence when fetching theme items for the control. An override can be removed with [RemoveThemeFontOverride].
-
-See also [GetThemeFont].
-
-[Font]: https://pkg.go.dev/graphics.gd/classdb/Font
-[GetThemeFont]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetThemeFont
-[RemoveThemeFontOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.RemoveThemeFontOverride
-*/
-//go:nosplit
 func (self class) AddThemeFontOverride(name String.Name, font [1]gdclass.Font) { //gd:Control.add_theme_font_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_font_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name gdextension.StringName
 		font gdextension.Object
 	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0])))})
 }
-
-/*
-Creates a local override for a theme font size with the specified 'name'. Local overrides always take precedence when fetching theme items for the control. An override can be removed with [RemoveThemeFontSizeOverride].
-
-See also [GetThemeFontSize].
-
-[GetThemeFontSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetThemeFontSize
-[RemoveThemeFontSizeOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.RemoveThemeFontSizeOverride
-*/
-//go:nosplit
 func (self class) AddThemeFontSizeOverride(name String.Name, font_size int64) { //gd:Control.add_theme_font_size_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_font_size_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), &struct {
 		name      gdextension.StringName
 		font_size int64
 	}{pointers.Get(gd.InternalStringName(name)), font_size})
 }
-
-/*
-Creates a local override for a theme [Color.RGBA] with the specified 'name'. Local overrides always take precedence when fetching theme items for the control. An override can be removed with [RemoveThemeColorOverride].
-
-See also [GetThemeColor].
-
-Example: Override a [Label]'s color and reset it later:
-
-
-	// Given the child Label node "MyLabel", override its font color with a custom value.
-	MyLabel.AsControl().AddThemeColorOverride("font_color", Color.RGBA{1, 0.5, 0, 1})
-	// Reset the font color of the child label.
-	MyLabel.AsControl().RemoveThemeColorOverride("font_color")
-	// Alternatively it can be overridden with the default value from the Label type.
-	MyLabel.AsControl().AddThemeColorOverride("font_color", MyLabel.AsControl().MoreArgs().GetThemeColor("font_color", "Label"))
-
-
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
-[GetThemeColor]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetThemeColor
-[Label]: https://pkg.go.dev/graphics.gd/classdb/Label
-[RemoveThemeColorOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.RemoveThemeColorOverride
-*/
-//go:nosplit
 func (self class) AddThemeColorOverride(name String.Name, color Color.RGBA) { //gd:Control.add_theme_color_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_color_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeColor<<8), &struct {
 		name  gdextension.StringName
 		color Color.RGBA
 	}{pointers.Get(gd.InternalStringName(name)), color})
 }
-
-/*
-Creates a local override for a theme constant with the specified 'name'. Local overrides always take precedence when fetching theme items for the control. An override can be removed with [RemoveThemeConstantOverride].
-
-See also [GetThemeConstant].
-
-[GetThemeConstant]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetThemeConstant
-[RemoveThemeConstantOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.RemoveThemeConstantOverride
-*/
-//go:nosplit
 func (self class) AddThemeConstantOverride(name String.Name, constant int64) { //gd:Control.add_theme_constant_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_constant_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), &struct {
 		name     gdextension.StringName
 		constant int64
 	}{pointers.Get(gd.InternalStringName(name)), constant})
 }
-
-/*
-Removes a local override for a theme icon with the specified 'name' previously added by [AddThemeIconOverride] or via the Inspector dock.
-
-[AddThemeIconOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AddThemeIconOverride
-*/
-//go:nosplit
 func (self class) RemoveThemeIconOverride(name String.Name) { //gd:Control.remove_theme_icon_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_theme_icon_override, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
-
-/*
-Removes a local override for a theme [StyleBox] with the specified 'name' previously added by [AddThemeStyleboxOverride] or via the Inspector dock.
-
-[AddThemeStyleboxOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AddThemeStyleboxOverride
-[StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
-*/
-//go:nosplit
 func (self class) RemoveThemeStyleboxOverride(name String.Name) { //gd:Control.remove_theme_stylebox_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_theme_stylebox_override, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
-
-/*
-Removes a local override for a theme [Font] with the specified 'name' previously added by [AddThemeFontOverride] or via the Inspector dock.
-
-[AddThemeFontOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AddThemeFontOverride
-[Font]: https://pkg.go.dev/graphics.gd/classdb/Font
-*/
-//go:nosplit
 func (self class) RemoveThemeFontOverride(name String.Name) { //gd:Control.remove_theme_font_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_theme_font_override, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
-
-/*
-Removes a local override for a theme font size with the specified 'name' previously added by [AddThemeFontSizeOverride] or via the Inspector dock.
-
-[AddThemeFontSizeOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AddThemeFontSizeOverride
-*/
-//go:nosplit
 func (self class) RemoveThemeFontSizeOverride(name String.Name) { //gd:Control.remove_theme_font_size_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_theme_font_size_override, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
-
-/*
-Removes a local override for a theme [Color.RGBA] with the specified 'name' previously added by [AddThemeColorOverride] or via the Inspector dock.
-
-[AddThemeColorOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AddThemeColorOverride
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
-*/
-//go:nosplit
 func (self class) RemoveThemeColorOverride(name String.Name) { //gd:Control.remove_theme_color_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_theme_color_override, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
-
-/*
-Removes a local override for a theme constant with the specified 'name' previously added by [AddThemeConstantOverride] or via the Inspector dock.
-
-[AddThemeConstantOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AddThemeConstantOverride
-*/
-//go:nosplit
 func (self class) RemoveThemeConstantOverride(name String.Name) { //gd:Control.remove_theme_constant_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_theme_constant_override, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
-
-/*
-Returns an icon from the first matching [Theme] in the tree if that [Theme] has an icon item with the specified 'name' and 'theme_type'.
-
-See [GetThemeColor] for details.
-
-[GetThemeColor]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetThemeColor
-[Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
-*/
-//go:nosplit
 func (self class) GetThemeIcon(name String.Name, theme_type String.Name) [1]gdclass.Texture2D { //gd:Control.get_theme_icon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme_icon, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
@@ -4119,17 +3456,6 @@ func (self class) GetThemeIcon(name String.Name, theme_type String.Name) [1]gdcl
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns a [StyleBox] from the first matching [Theme] in the tree if that [Theme] has a stylebox item with the specified 'name' and 'theme_type'.
-
-See [GetThemeColor] for details.
-
-[GetThemeColor]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetThemeColor
-[StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
-[Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
-*/
-//go:nosplit
 func (self class) GetThemeStylebox(name String.Name, theme_type String.Name) [1]gdclass.StyleBox { //gd:Control.get_theme_stylebox
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme_stylebox, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
@@ -4138,17 +3464,6 @@ func (self class) GetThemeStylebox(name String.Name, theme_type String.Name) [1]
 	var ret = [1]gdclass.StyleBox{gdclass.NewStyleBox(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns a [Font] from the first matching [Theme] in the tree if that [Theme] has a font item with the specified 'name' and 'theme_type'.
-
-See [GetThemeColor] for details.
-
-[Font]: https://pkg.go.dev/graphics.gd/classdb/Font
-[GetThemeColor]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetThemeColor
-[Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
-*/
-//go:nosplit
 func (self class) GetThemeFont(name String.Name, theme_type String.Name) [1]gdclass.Font { //gd:Control.get_theme_font
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme_font, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
@@ -4157,16 +3472,6 @@ func (self class) GetThemeFont(name String.Name, theme_type String.Name) [1]gdcl
 	var ret = [1]gdclass.Font{gdclass.NewFont(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns a font size from the first matching [Theme] in the tree if that [Theme] has a font size item with the specified 'name' and 'theme_type'.
-
-See [GetThemeColor] for details.
-
-[GetThemeColor]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetThemeColor
-[Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
-*/
-//go:nosplit
 func (self class) GetThemeFontSize(name String.Name, theme_type String.Name) int64 { //gd:Control.get_theme_font_size
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_theme_font_size, gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
@@ -4175,27 +3480,6 @@ func (self class) GetThemeFontSize(name String.Name, theme_type String.Name) int
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a [Color.RGBA] from the first matching [Theme] in the tree if that [Theme] has a color item with the specified 'name' and 'theme_type'. If 'theme_type' is omitted the class name of the current control is used as the type, or [ThemeTypeVariation] if it is defined. If the type is a class name its parent classes are also checked, in order of inheritance. If the type is a variation its base types are checked, in order of dependency, then the control's class name and its parent classes are checked.
-
-For the current control its local overrides are considered first (see [AddThemeColorOverride]), then its assigned [Theme]. After the current control, each parent control and its assigned [Theme] are considered; controls without a [Theme] assigned are skipped. If no matching [Theme] is found in the tree, the custom project [Theme] (see [ProjectSettings] "gui/theme/custom") and the default [Theme] are used (see [ThemeDB]).
-
-
-	// Get the font color defined for the current Control's class, if it exists.
-	control.AsCanvasItem().SetModulate(control.GetThemeColor("font_color"))
-	// Get the font color defined for the Button class.
-	control.MoreArgs().GetThemeColor("font_color", "Button")
-
-
-[AddThemeColorOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AddThemeColorOverride
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-[Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
-[ThemeDB]: https://pkg.go.dev/graphics.gd/classdb/ThemeDB
-[ThemeTypeVariation]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.ThemeTypeVariation
-*/
-//go:nosplit
 func (self class) GetThemeColor(name String.Name, theme_type String.Name) Color.RGBA { //gd:Control.get_theme_color
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_theme_color, gdextension.SizeColor|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
@@ -4204,16 +3488,6 @@ func (self class) GetThemeColor(name String.Name, theme_type String.Name) Color.
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a constant from the first matching [Theme] in the tree if that [Theme] has a constant item with the specified 'name' and 'theme_type'.
-
-See [GetThemeColor] for details.
-
-[GetThemeColor]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetThemeColor
-[Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
-*/
-//go:nosplit
 func (self class) GetThemeConstant(name String.Name, theme_type String.Name) int64 { //gd:Control.get_theme_constant
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_theme_constant, gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
@@ -4222,109 +3496,36 @@ func (self class) GetThemeConstant(name String.Name, theme_type String.Name) int
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if there is a local override for a theme icon with the specified 'name' in this [Control] node.
-
-See [AddThemeIconOverride].
-
-[AddThemeIconOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AddThemeIconOverride
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-*/
-//go:nosplit
 func (self class) HasThemeIconOverride(name String.Name) bool { //gd:Control.has_theme_icon_override
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_icon_override, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if there is a local override for a theme [StyleBox] with the specified 'name' in this [Control] node.
-
-See [AddThemeStyleboxOverride].
-
-[AddThemeStyleboxOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AddThemeStyleboxOverride
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
-*/
-//go:nosplit
 func (self class) HasThemeStyleboxOverride(name String.Name) bool { //gd:Control.has_theme_stylebox_override
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_stylebox_override, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if there is a local override for a theme [Font] with the specified 'name' in this [Control] node.
-
-See [AddThemeFontOverride].
-
-[AddThemeFontOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AddThemeFontOverride
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[Font]: https://pkg.go.dev/graphics.gd/classdb/Font
-*/
-//go:nosplit
 func (self class) HasThemeFontOverride(name String.Name) bool { //gd:Control.has_theme_font_override
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_font_override, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if there is a local override for a theme font size with the specified 'name' in this [Control] node.
-
-See [AddThemeFontSizeOverride].
-
-[AddThemeFontSizeOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AddThemeFontSizeOverride
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-*/
-//go:nosplit
 func (self class) HasThemeFontSizeOverride(name String.Name) bool { //gd:Control.has_theme_font_size_override
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_font_size_override, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if there is a local override for a theme [Color.RGBA] with the specified 'name' in this [Control] node.
-
-See [AddThemeColorOverride].
-
-[AddThemeColorOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AddThemeColorOverride
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-*/
-//go:nosplit
 func (self class) HasThemeColorOverride(name String.Name) bool { //gd:Control.has_theme_color_override
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_color_override, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if there is a local override for a theme constant with the specified 'name' in this [Control] node.
-
-See [AddThemeConstantOverride].
-
-[AddThemeConstantOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AddThemeConstantOverride
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-*/
-//go:nosplit
 func (self class) HasThemeConstantOverride(name String.Name) bool { //gd:Control.has_theme_constant_override
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_constant_override, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if there is a matching [Theme] in the tree that has an icon item with the specified 'name' and 'theme_type'.
-
-See [GetThemeColor] for details.
-
-[GetThemeColor]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetThemeColor
-[Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
-*/
-//go:nosplit
 func (self class) HasThemeIcon(name String.Name, theme_type String.Name) bool { //gd:Control.has_theme_icon
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_icon, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
@@ -4333,16 +3534,6 @@ func (self class) HasThemeIcon(name String.Name, theme_type String.Name) bool { 
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if there is a matching [Theme] in the tree that has a stylebox item with the specified 'name' and 'theme_type'.
-
-See [GetThemeColor] for details.
-
-[GetThemeColor]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetThemeColor
-[Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
-*/
-//go:nosplit
 func (self class) HasThemeStylebox(name String.Name, theme_type String.Name) bool { //gd:Control.has_theme_stylebox
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_stylebox, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
@@ -4351,16 +3542,6 @@ func (self class) HasThemeStylebox(name String.Name, theme_type String.Name) boo
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if there is a matching [Theme] in the tree that has a font item with the specified 'name' and 'theme_type'.
-
-See [GetThemeColor] for details.
-
-[GetThemeColor]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetThemeColor
-[Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
-*/
-//go:nosplit
 func (self class) HasThemeFont(name String.Name, theme_type String.Name) bool { //gd:Control.has_theme_font
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_font, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
@@ -4369,16 +3550,6 @@ func (self class) HasThemeFont(name String.Name, theme_type String.Name) bool { 
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if there is a matching [Theme] in the tree that has a font size item with the specified 'name' and 'theme_type'.
-
-See [GetThemeColor] for details.
-
-[GetThemeColor]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetThemeColor
-[Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
-*/
-//go:nosplit
 func (self class) HasThemeFontSize(name String.Name, theme_type String.Name) bool { //gd:Control.has_theme_font_size
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_font_size, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
@@ -4387,16 +3558,6 @@ func (self class) HasThemeFontSize(name String.Name, theme_type String.Name) boo
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if there is a matching [Theme] in the tree that has a color item with the specified 'name' and 'theme_type'.
-
-See [GetThemeColor] for details.
-
-[GetThemeColor]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetThemeColor
-[Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
-*/
-//go:nosplit
 func (self class) HasThemeColor(name String.Name, theme_type String.Name) bool { //gd:Control.has_theme_color
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_color, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
@@ -4405,16 +3566,6 @@ func (self class) HasThemeColor(name String.Name, theme_type String.Name) bool {
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if there is a matching [Theme] in the tree that has a constant item with the specified 'name' and 'theme_type'.
-
-See [GetThemeColor] for details.
-
-[GetThemeColor]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetThemeColor
-[Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
-*/
-//go:nosplit
 func (self class) HasThemeConstant(name String.Name, theme_type String.Name) bool { //gd:Control.has_theme_constant
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_constant, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
@@ -4423,427 +3574,213 @@ func (self class) HasThemeConstant(name String.Name, theme_type String.Name) boo
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the default base scale value from the first matching [Theme] in the tree if that [Theme] has a valid [Theme.DefaultBaseScale] value.
-
-See [GetThemeColor] for details.
-
-[GetThemeColor]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetThemeColor
-[Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
-[Theme.DefaultBaseScale]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.DefaultBaseScale
-*/
-//go:nosplit
 func (self class) GetThemeDefaultBaseScale() float64 { //gd:Control.get_theme_default_base_scale
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_theme_default_base_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the default font from the first matching [Theme] in the tree if that [Theme] has a valid [Theme.DefaultFont] value.
-
-See [GetThemeColor] for details.
-
-[GetThemeColor]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetThemeColor
-[Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
-[Theme.DefaultFont]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.DefaultFont
-*/
-//go:nosplit
 func (self class) GetThemeDefaultFont() [1]gdclass.Font { //gd:Control.get_theme_default_font
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme_default_font, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Font{gdclass.NewFont(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the default font size value from the first matching [Theme] in the tree if that [Theme] has a valid [Theme.DefaultFontSize] value.
-
-See [GetThemeColor] for details.
-
-[GetThemeColor]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetThemeColor
-[Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
-[Theme.DefaultFontSize]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.DefaultFontSize
-*/
-//go:nosplit
 func (self class) GetThemeDefaultFontSize() int64 { //gd:Control.get_theme_default_font_size
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_theme_default_font_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the parent control node.
-*/
-//go:nosplit
 func (self class) GetParentControl() [1]gdclass.Control { //gd:Control.get_parent_control
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_parent_control, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetHGrowDirection(direction GrowDirection) { //gd:Control.set_h_grow_direction
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_grow_direction, 0|(gdextension.SizeInt<<4), &struct{ direction GrowDirection }{direction})
 }
-
-//go:nosplit
 func (self class) GetHGrowDirection() GrowDirection { //gd:Control.get_h_grow_direction
 	var r_ret = noescape.Call[GrowDirection](gd.ObjectChecked(self.AsObject()), methods.get_h_grow_direction, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetVGrowDirection(direction GrowDirection) { //gd:Control.set_v_grow_direction
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_grow_direction, 0|(gdextension.SizeInt<<4), &struct{ direction GrowDirection }{direction})
 }
-
-//go:nosplit
 func (self class) GetVGrowDirection() GrowDirection { //gd:Control.get_v_grow_direction
 	var r_ret = noescape.Call[GrowDirection](gd.ObjectChecked(self.AsObject()), methods.get_v_grow_direction, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTooltipAutoTranslateMode(mode Node.AutoTranslateMode) { //gd:Control.set_tooltip_auto_translate_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tooltip_auto_translate_mode, 0|(gdextension.SizeInt<<4), &struct{ mode Node.AutoTranslateMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetTooltipAutoTranslateMode() Node.AutoTranslateMode { //gd:Control.get_tooltip_auto_translate_mode
 	var r_ret = noescape.Call[Node.AutoTranslateMode](gd.ObjectChecked(self.AsObject()), methods.get_tooltip_auto_translate_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTooltipText(hint String.Readable) { //gd:Control.set_tooltip_text
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tooltip_text, 0|(gdextension.SizeString<<4), &struct{ hint gdextension.String }{pointers.Get(gd.InternalString(hint))})
 }
-
-//go:nosplit
 func (self class) GetTooltipText() String.Readable { //gd:Control.get_tooltip_text
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tooltip_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the tooltip text for the position 'at_position' in control's local coordinates, which will typically appear when the cursor is resting over this control. By default, it returns [TooltipText].
-
-This method can be overridden to customize its behavior. See [GetTooltip].
-
-Note: If this method returns an empty string and [MakeCustomTooltip] is not overridden, no tooltip is displayed.
-
-[GetTooltip]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
-[MakeCustomTooltip]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
-[TooltipText]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.TooltipText
-*/
-//go:nosplit
 func (self class) GetTooltip(at_position Vector2.XY) String.Readable { //gd:Control.get_tooltip
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tooltip, gdextension.SizeString|(gdextension.SizeVector2<<4), &struct{ at_position Vector2.XY }{at_position})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDefaultCursorShape(shape CursorShape) { //gd:Control.set_default_cursor_shape
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_cursor_shape, 0|(gdextension.SizeInt<<4), &struct{ shape CursorShape }{shape})
 }
-
-//go:nosplit
 func (self class) GetDefaultCursorShape() CursorShape { //gd:Control.get_default_cursor_shape
 	var r_ret = noescape.Call[CursorShape](gd.ObjectChecked(self.AsObject()), methods.get_default_cursor_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the mouse cursor shape for this control when hovered over 'position' in local coordinates. For most controls, this is the same as [MouseDefaultCursorShape], but some built-in controls implement more complex logic.
-
-[MouseDefaultCursorShape]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MouseDefaultCursorShape
-*/
-//go:nosplit
 func (self class) GetCursorShape(position Vector2.XY) CursorShape { //gd:Control.get_cursor_shape
 	var r_ret = noescape.Call[CursorShape](gd.ObjectChecked(self.AsObject()), methods.get_cursor_shape, gdextension.SizeInt|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the focus neighbor for the specified [Side] to the [Control] at 'neighbor' node path. A setter method for [FocusNeighborBottom], [FocusNeighborLeft], [FocusNeighborRight] and [FocusNeighborTop].
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[FocusNeighborBottom]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.FocusNeighborBottom
-[FocusNeighborLeft]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.FocusNeighborLeft
-[FocusNeighborRight]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.FocusNeighborRight
-[FocusNeighborTop]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.FocusNeighborTop
-*/
-//go:nosplit
 func (self class) SetFocusNeighbor(side Rect2.Side, neighbor Path.ToNode) { //gd:Control.set_focus_neighbor
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focus_neighbor, 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), &struct {
 		side     Rect2.Side
 		neighbor gdextension.NodePath
 	}{side, pointers.Get(gd.InternalNodePath(neighbor))})
 }
-
-/*
-Returns the focus neighbor for the specified [Side]. A getter method for [FocusNeighborBottom], [FocusNeighborLeft], [FocusNeighborRight] and [FocusNeighborTop].
-
-Note: To find the next [Control] on the specific [Side], even if a neighbor is not assigned, use [FindValidFocusNeighbor].
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[FindValidFocusNeighbor]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.FindValidFocusNeighbor
-[FocusNeighborBottom]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.FocusNeighborBottom
-[FocusNeighborLeft]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.FocusNeighborLeft
-[FocusNeighborRight]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.FocusNeighborRight
-[FocusNeighborTop]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.FocusNeighborTop
-*/
-//go:nosplit
 func (self class) GetFocusNeighbor(side Rect2.Side) Path.ToNode { //gd:Control.get_focus_neighbor
 	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_focus_neighbor, gdextension.SizeNodePath|(gdextension.SizeInt<<4), &struct{ side Rect2.Side }{side})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFocusNext(next Path.ToNode) { //gd:Control.set_focus_next
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focus_next, 0|(gdextension.SizeNodePath<<4), &struct{ next gdextension.NodePath }{pointers.Get(gd.InternalNodePath(next))})
 }
-
-//go:nosplit
 func (self class) GetFocusNext() Path.ToNode { //gd:Control.get_focus_next
 	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_focus_next, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFocusPrevious(previous Path.ToNode) { //gd:Control.set_focus_previous
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focus_previous, 0|(gdextension.SizeNodePath<<4), &struct{ previous gdextension.NodePath }{pointers.Get(gd.InternalNodePath(previous))})
 }
-
-//go:nosplit
 func (self class) GetFocusPrevious() Path.ToNode { //gd:Control.get_focus_previous
 	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_focus_previous, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
-
-/*
-Forces drag and bypasses [GetDragData] and [SetDragPreview] by passing 'data' and 'preview'. Drag will start even if the mouse is neither over nor pressed on this control.
-
-The methods [CanDropData] and [DropData] must be implemented on controls that want to receive drop data.
-
-[CanDropData]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
-[DropData]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
-[GetDragData]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
-[SetDragPreview]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.SetDragPreview
-*/
-//go:nosplit
 func (self class) ForceDrag(data variant.Any, preview [1]gdclass.Control) { //gd:Control.force_drag
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_drag, 0|(gdextension.SizeVariant<<4)|(gdextension.SizeObject<<8), &struct {
 		data    gdextension.Variant
 		preview gdextension.Object
 	}{gdextension.Variant(pointers.Get(gd.InternalVariant(data))), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetControl(preview[0])[0]))})
 }
-
-/*
-Starts drag-and-drop operation without using a mouse.
-*/
-//go:nosplit
 func (self class) AccessibilityDrag() { //gd:Control.accessibility_drag
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_drag, 0, &struct{}{})
 }
-
-/*
-Ends drag-and-drop operation without using a mouse.
-*/
-//go:nosplit
 func (self class) AccessibilityDrop() { //gd:Control.accessibility_drop
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_drop, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetAccessibilityName(name String.Readable) { //gd:Control.set_accessibility_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_name, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
-
-//go:nosplit
 func (self class) GetAccessibilityName() String.Readable { //gd:Control.get_accessibility_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAccessibilityDescription(description String.Readable) { //gd:Control.set_accessibility_description
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_description, 0|(gdextension.SizeString<<4), &struct{ description gdextension.String }{pointers.Get(gd.InternalString(description))})
 }
-
-//go:nosplit
 func (self class) GetAccessibilityDescription() String.Readable { //gd:Control.get_accessibility_description
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_description, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAccessibilityLive(mode DisplayServer.AccessibilityLiveMode) { //gd:Control.set_accessibility_live
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_live, 0|(gdextension.SizeInt<<4), &struct {
 		mode DisplayServer.AccessibilityLiveMode
 	}{mode})
 }
-
-//go:nosplit
 func (self class) GetAccessibilityLive() DisplayServer.AccessibilityLiveMode { //gd:Control.get_accessibility_live
 	var r_ret = noescape.Call[DisplayServer.AccessibilityLiveMode](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_live, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAccessibilityControlsNodes(node_path Array.Contains[Path.ToNode]) { //gd:Control.set_accessibility_controls_nodes
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_controls_nodes, 0|(gdextension.SizeArray<<4), &struct{ node_path gdextension.Array }{pointers.Get(gd.InternalArray(node_path))})
 }
-
-//go:nosplit
 func (self class) GetAccessibilityControlsNodes() Array.Contains[Path.ToNode] { //gd:Control.get_accessibility_controls_nodes
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_controls_nodes, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAccessibilityDescribedByNodes(node_path Array.Contains[Path.ToNode]) { //gd:Control.set_accessibility_described_by_nodes
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_described_by_nodes, 0|(gdextension.SizeArray<<4), &struct{ node_path gdextension.Array }{pointers.Get(gd.InternalArray(node_path))})
 }
-
-//go:nosplit
 func (self class) GetAccessibilityDescribedByNodes() Array.Contains[Path.ToNode] { //gd:Control.get_accessibility_described_by_nodes
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_described_by_nodes, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAccessibilityLabeledByNodes(node_path Array.Contains[Path.ToNode]) { //gd:Control.set_accessibility_labeled_by_nodes
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_labeled_by_nodes, 0|(gdextension.SizeArray<<4), &struct{ node_path gdextension.Array }{pointers.Get(gd.InternalArray(node_path))})
 }
-
-//go:nosplit
 func (self class) GetAccessibilityLabeledByNodes() Array.Contains[Path.ToNode] { //gd:Control.get_accessibility_labeled_by_nodes
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_labeled_by_nodes, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAccessibilityFlowToNodes(node_path Array.Contains[Path.ToNode]) { //gd:Control.set_accessibility_flow_to_nodes
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_flow_to_nodes, 0|(gdextension.SizeArray<<4), &struct{ node_path gdextension.Array }{pointers.Get(gd.InternalArray(node_path))})
 }
-
-//go:nosplit
 func (self class) GetAccessibilityFlowToNodes() Array.Contains[Path.ToNode] { //gd:Control.get_accessibility_flow_to_nodes
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_flow_to_nodes, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMouseFilter(filter MouseFilter) { //gd:Control.set_mouse_filter
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mouse_filter, 0|(gdextension.SizeInt<<4), &struct{ filter MouseFilter }{filter})
 }
-
-//go:nosplit
 func (self class) GetMouseFilter() MouseFilter { //gd:Control.get_mouse_filter
 	var r_ret = noescape.Call[MouseFilter](gd.ObjectChecked(self.AsObject()), methods.get_mouse_filter, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [MouseFilter], but takes the [MouseBehaviorRecursive] into account. If [MouseBehaviorRecursive] is set to [MouseBehaviorDisabled], or it is set to [MouseBehaviorInherited] and its ancestor is set to [MouseBehaviorDisabled], then this returns [MouseFilterIgnore].
-
-[MouseBehaviorRecursive]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MouseBehaviorRecursive
-[MouseFilter]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MouseFilter
-*/
-//go:nosplit
 func (self class) GetMouseFilterWithOverride() MouseFilter { //gd:Control.get_mouse_filter_with_override
 	var r_ret = noescape.Call[MouseFilter](gd.ObjectChecked(self.AsObject()), methods.get_mouse_filter_with_override, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMouseBehaviorRecursive(mouse_behavior_recursive MouseBehaviorRecursive) { //gd:Control.set_mouse_behavior_recursive
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mouse_behavior_recursive, 0|(gdextension.SizeInt<<4), &struct{ mouse_behavior_recursive MouseBehaviorRecursive }{mouse_behavior_recursive})
 }
-
-//go:nosplit
 func (self class) GetMouseBehaviorRecursive() MouseBehaviorRecursive { //gd:Control.get_mouse_behavior_recursive
 	var r_ret = noescape.Call[MouseBehaviorRecursive](gd.ObjectChecked(self.AsObject()), methods.get_mouse_behavior_recursive, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetForcePassScrollEvents(force_pass_scroll_events bool) { //gd:Control.set_force_pass_scroll_events
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_force_pass_scroll_events, 0|(gdextension.SizeBool<<4), &struct{ force_pass_scroll_events bool }{force_pass_scroll_events})
 }
-
-//go:nosplit
 func (self class) IsForcePassScrollEvents() bool { //gd:Control.is_force_pass_scroll_events
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_force_pass_scroll_events, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetClipContents(enable bool) { //gd:Control.set_clip_contents
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clip_contents, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsClippingContents() bool { //gd:Control.is_clipping_contents
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_clipping_contents, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Creates an [InputEventMouseButton] that attempts to click the control. If the event is received, the control gains focus.
-
-
-	control.GrabClickFocus() // When clicking another Control node, this node will be clicked instead.
-
-
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-*/
-//go:nosplit
 func (self class) GrabClickFocus() { //gd:Control.grab_click_focus
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.grab_click_focus, 0, &struct{}{})
 }
-
-/*
-Sets the given callables to be used instead of the control's own drag-and-drop virtual methods. If a callable is empty, its respective virtual method is used as normal.
-
-The arguments for each callable should be exactly the same as their respective virtual methods, which would be:
-
-- 'drag_func' corresponds to [GetDragData] and requires a [Vector2.XY];
-
-- 'can_drop_func' corresponds to [CanDropData] and requires both a [Vector2.XY] and a any;
-
-- 'drop_func' corresponds to [DropData] and requires both a [Vector2.XY] and a any.
-
-[CanDropData]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
-[DropData]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
-[GetDragData]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
-[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
-*/
-//go:nosplit
 func (self class) SetDragForwarding(drag_func Callable.Function, can_drop_func Callable.Function, drop_func Callable.Function) { //gd:Control.set_drag_forwarding
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_forwarding, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeCallable<<12), &struct {
 		drag_func     gdextension.Callable
@@ -4851,121 +3788,52 @@ func (self class) SetDragForwarding(drag_func Callable.Function, can_drop_func C
 		drop_func     gdextension.Callable
 	}{pointers.Get(gd.InternalCallable(drag_func)), pointers.Get(gd.InternalCallable(can_drop_func)), pointers.Get(gd.InternalCallable(drop_func))})
 }
-
-/*
-Shows the given control at the mouse pointer. A good time to call this method is in [GetDragData]. The control must not be in the scene tree. You should not free the control, and you should not keep a reference to the control beyond the duration of the drag. It will be deleted automatically after the drag has ended.
-
-
-	GetDragData := func(position Vector2.XY) any {
-		// Use a control that is not in the tree
-		var cpb = ColorPickerButton.New()
-		cpb.SetColor(Color.RGBA{1, 0, 0, 1})
-		cpb.AsControl().SetSize(Vector2.XY{50, 50})
-		control.SetDragPreview(cpb.AsControl())
-		return cpb.Color()
-	}
-
-
-[GetDragData]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
-*/
-//go:nosplit
 func (self class) SetDragPreview(control [1]gdclass.Control) { //gd:Control.set_drag_preview
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_preview, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetControl(control[0])[0]))})
 }
-
-/*
-Returns true if a drag operation is successful. Alternative to [Viewport.GuiIsDragSuccessful].
-
-Best used with [Node.NotificationDragEnd].
-
-[Viewport.GuiIsDragSuccessful]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GuiIsDragSuccessful
-*/
-//go:nosplit
 func (self class) IsDragSuccessful() bool { //gd:Control.is_drag_successful
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drag_successful, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Moves the mouse cursor to 'position', relative to [Position] of this [Control].
-
-Note: [WarpMouse] is only supported on Windows, macOS and Linux. It has no effect on Android, iOS and Web.
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[Position]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Position
-[WarpMouse]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.WarpMouse
-*/
-//go:nosplit
 func (self class) WarpMouse(position Vector2.XY) { //gd:Control.warp_mouse
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.warp_mouse, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 }
-
-//go:nosplit
 func (self class) SetShortcutContext(node [1]gdclass.Node) { //gd:Control.set_shortcut_context
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut_context, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
 }
-
-//go:nosplit
 func (self class) GetShortcutContext() [1]gdclass.Node { //gd:Control.get_shortcut_context
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shortcut_context, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Invalidates the size cache in this node and in parent nodes up to top level. Intended to be used with [GetMinimumSize] when the return value is changed. Setting [CustomMinimumSize] directly calls this method automatically.
-
-[CustomMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CustomMinimumSize
-[GetMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetMinimumSize
-*/
-//go:nosplit
 func (self class) UpdateMinimumSize() { //gd:Control.update_minimum_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_minimum_size, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetLayoutDirection(direction LayoutDirection) { //gd:Control.set_layout_direction
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layout_direction, 0|(gdextension.SizeInt<<4), &struct{ direction LayoutDirection }{direction})
 }
-
-//go:nosplit
 func (self class) GetLayoutDirection() LayoutDirection { //gd:Control.get_layout_direction
 	var r_ret = noescape.Call[LayoutDirection](gd.ObjectChecked(self.AsObject()), methods.get_layout_direction, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the layout is right-to-left. See also [LayoutDirection].
-
-[LayoutDirection]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.LayoutDirection
-*/
-//go:nosplit
 func (self class) IsLayoutRtl() bool { //gd:Control.is_layout_rtl
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_layout_rtl, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAutoTranslate(enable bool) { //gd:Control.set_auto_translate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_translate, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsAutoTranslating() bool { //gd:Control.is_auto_translating
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_translating, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetLocalizeNumeralSystem(enable bool) { //gd:Control.set_localize_numeral_system
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_localize_numeral_system, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsLocalizingNumeralSystem() bool { //gd:Control.is_localizing_numeral_system
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_localizing_numeral_system, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

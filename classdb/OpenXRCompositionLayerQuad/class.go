@@ -173,12 +173,9 @@ func (self Instance) SetQuadSize(value Vector2.XY) Instance { //gd:OpenXRComposi
 	return self
 }
 
-//go:nosplit
 func (self class) SetQuadSize(size Vector2.XY) { //gd:OpenXRCompositionLayerQuad.set_quad_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_quad_size, 0|(gdextension.SizeVector2<<4), &struct{ size Vector2.XY }{size})
 }
-
-//go:nosplit
 func (self class) GetQuadSize() Vector2.XY { //gd:OpenXRCompositionLayerQuad.get_quad_size
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_quad_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret

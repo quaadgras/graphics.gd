@@ -178,12 +178,9 @@ func (self Instance) SetObjectId(value int) Instance { //gd:EncodedObjectAsID.ob
 	return self
 }
 
-//go:nosplit
 func (self class) SetObjectId(id int64) { //gd:EncodedObjectAsID.set_object_id
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_object_id, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 }
-
-//go:nosplit
 func (self class) GetObjectId() int64 { //gd:EncodedObjectAsID.get_object_id
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_object_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

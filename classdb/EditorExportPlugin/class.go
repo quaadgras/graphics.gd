@@ -1202,18 +1202,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Virtual method to be overridden by the user. Called for each exported file before [CustomizeResource] and [CustomizeScene]. The arguments can be used to identify the file. 'path' is the path of the file, 'type' is the [Resource] represented by the file (e.g. [PackedScene]), and 'features' is the list of features for the export.
-
-Calling [Skip] inside this callback will make the file not included in the export.
-
-[CustomizeResource]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Interface
-[CustomizeScene]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Interface
-[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
-[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
-[Skip]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Instance.Skip
-*/
 func (class) _export_file(impl func(ptr gdclass.Receiver, path String.Readable, atype String.Readable, features Packed.Strings)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -1226,10 +1214,6 @@ func (class) _export_file(impl func(ptr gdclass.Receiver, path String.Readable, 
 		impl(self, path, atype, features)
 	}
 }
-
-/*
-Virtual method to be overridden by the user. It is called when the export starts and provides all information about the export. 'features' is the list of features for the export, 'is_debug' is true for debug builds, 'path' is the target path for the exported project. 'flags' is only used when running a runnable profile, e.g. when using native run on Android.
-*/
 func (class) _export_begin(impl func(ptr gdclass.Receiver, features Packed.Strings, is_debug bool, path String.Readable, flags int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var features = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
@@ -1242,25 +1226,12 @@ func (class) _export_begin(impl func(ptr gdclass.Receiver, features Packed.Strin
 		impl(self, features, is_debug, path, flags)
 	}
 }
-
-/*
-Virtual method to be overridden by the user. Called when the export is finished.
-*/
 func (class) _export_end(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
-
-/*
-Return true if this plugin will customize resources based on the platform and features used.
-
-When enabled, [GetCustomizationConfigurationHash] and [CustomizeResource] will be called and must be implemented.
-
-[CustomizeResource]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Interface
-[GetCustomizationConfigurationHash]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Interface
-*/
 func (class) _begin_customize_resources(impl func(ptr gdclass.Receiver, platform [1]gdclass.EditorExportPlatform, features Packed.Strings) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var platform = [1]gdclass.EditorExportPlatform{gdclass.NewEditorExportPlatform(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1273,38 +1244,6 @@ func (class) _begin_customize_resources(impl func(ptr gdclass.Receiver, platform
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Customize a resource. If changes are made to it, return the same or a new resource. Otherwise, return null. When a new resource is returned, 'resource' will be replaced by a copy of the new resource.
-
-The 'path' argument is only used when customizing an actual file, otherwise this means that this resource is part of another one and it will be empty.
-
-Implementing this method is required if [BeginCustomizeResources] returns true.
-
-Note: When customizing any of the following types and returning another resource, the other resource should not be skipped using [Skip] in [ExportFile]:
-
-- [AtlasTexture]
-
-- [CompressedCubemap]
-
-- [CompressedCubemapArray]
-
-- [CompressedTexture2D]
-
-- [CompressedTexture2DArray]
-
-- [CompressedTexture3D]
-
-[AtlasTexture]: https://pkg.go.dev/graphics.gd/classdb/AtlasTexture
-[BeginCustomizeResources]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Interface
-[CompressedCubemap]: https://pkg.go.dev/graphics.gd/classdb/CompressedCubemap
-[CompressedCubemapArray]: https://pkg.go.dev/graphics.gd/classdb/CompressedCubemapArray
-[CompressedTexture2D]: https://pkg.go.dev/graphics.gd/classdb/CompressedTexture2D
-[CompressedTexture2DArray]: https://pkg.go.dev/graphics.gd/classdb/CompressedTexture2DArray
-[CompressedTexture3D]: https://pkg.go.dev/graphics.gd/classdb/CompressedTexture3D
-[ExportFile]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Interface
-[Skip]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Instance.Skip
-*/
 func (class) _customize_resource(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resource, path String.Readable) [1]gdclass.Resource) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1322,17 +1261,6 @@ func (class) _customize_resource(impl func(ptr gdclass.Receiver, resource [1]gdc
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Return true if this plugin will customize scenes based on the platform and features used.
-
-When enabled, [GetCustomizationConfigurationHash] and [CustomizeScene] will be called and must be implemented.
-
-Note: [CustomizeScene] will only be called for scenes that have been modified since the last export.
-
-[CustomizeScene]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Interface
-[GetCustomizationConfigurationHash]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Interface
-*/
 func (class) _begin_customize_scenes(impl func(ptr gdclass.Receiver, platform [1]gdclass.EditorExportPlatform, features Packed.Strings) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var platform = [1]gdclass.EditorExportPlatform{gdclass.NewEditorExportPlatform(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1345,14 +1273,6 @@ func (class) _begin_customize_scenes(impl func(ptr gdclass.Receiver, platform [1
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Customize a scene. If changes are made to it, return the same or a new scene. Otherwise, return null. If a new scene is returned, it is up to you to dispose of the old one.
-
-Implementing this method is required if [BeginCustomizeScenes] returns true.
-
-[BeginCustomizeScenes]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Interface
-*/
 func (class) _customize_scene(impl func(ptr gdclass.Receiver, scene [1]gdclass.Node, path String.Readable) [1]gdclass.Node) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var scene = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1370,14 +1290,6 @@ func (class) _customize_scene(impl func(ptr gdclass.Receiver, scene [1]gdclass.N
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Return a hash based on the configuration passed (for both scenes and resources). This helps keep separate caches for separate export configurations.
-
-Implementing this method is required if [BeginCustomizeResources] returns true.
-
-[BeginCustomizeResources]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Interface
-*/
 func (class) _get_customization_configuration_hash(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -1385,41 +1297,18 @@ func (class) _get_customization_configuration_hash(impl func(ptr gdclass.Receive
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-This is called when the customization process for scenes ends.
-*/
 func (class) _end_customize_scenes(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
-
-/*
-This is called when the customization process for resources ends.
-*/
 func (class) _end_customize_resources(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
-
-/*
-Return a list of export options that can be configured for this export plugin.
-
-Each element in the return value is a data structure with the following keys:
-
-- option: A dictionary with the structure documented by [Object.GetPropertyList], but all keys are optional.
-
-- default_value: The default value for this option.
-
-- update_visibility: An optional boolean value. If set to true, the preset will emit [OnObject.PropertyListChanged] when the option is changed.
-
-[Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
-[OnObject.PropertyListChanged]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Instance.OnObject.PropertyListChanged
-*/
 func (class) _get_export_options(impl func(ptr gdclass.Receiver, platform [1]gdclass.EditorExportPlatform) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var platform = [1]gdclass.EditorExportPlatform{gdclass.NewEditorExportPlatform(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1435,35 +1324,6 @@ func (class) _get_export_options(impl func(ptr gdclass.Receiver, platform [1]gdc
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Return a data structure of override values for export options, that will be used instead of user-provided values. Overridden options will be hidden from the user interface.
-
-	package main
-
-	import (
-		"graphics.gd/classdb/EditorExportPlatform"
-		"graphics.gd/classdb/EditorExportPlatformPC"
-		"graphics.gd/classdb/EditorExportPlugin"
-		"graphics.gd/variant/Object"
-	)
-
-	type MyExportPlugin struct {
-		EditorExportPlugin.Extension[MyExportPlugin]
-	}
-
-	func (m *MyExportPlugin) GetName() string { return "MyExportPlugin" }
-
-	func (m *MyExportPlugin) SupportsPlatform(platform EditorExportPlatform.Instance) bool {
-		return Object.Is[EditorExportPlatformPC.Instance](platform)
-	}
-
-	func (m *MyExportPlugin) GetExportOptionsOverrides(platform EditorExportPlatform.Instance) map[string]any {
-		return map[string]any{
-			"binary_format/embed_pck": true,
-		}
-	}
-*/
 func (class) _get_export_options_overrides(impl func(ptr gdclass.Receiver, platform [1]gdclass.EditorExportPlatform) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var platform = [1]gdclass.EditorExportPlatform{gdclass.NewEditorExportPlatform(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1479,12 +1339,6 @@ func (class) _get_export_options_overrides(impl func(ptr gdclass.Receiver, platf
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Return true if the result of [GetExportOptions] has changed and the export options of the preset corresponding to 'platform' should be updated.
-
-[GetExportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Interface
-*/
 func (class) _should_update_export_options(impl func(ptr gdclass.Receiver, platform [1]gdclass.EditorExportPlatform) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var platform = [1]gdclass.EditorExportPlatform{gdclass.NewEditorExportPlatform(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1495,10 +1349,6 @@ func (class) _should_update_export_options(impl func(ptr gdclass.Receiver, platf
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Validates 'option' and returns the visibility for the specified 'platform'. The default implementation returns true for all options.
-*/
 func (class) _get_export_option_visibility(impl func(ptr gdclass.Receiver, platform [1]gdclass.EditorExportPlatform, option String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var platform = [1]gdclass.EditorExportPlatform{gdclass.NewEditorExportPlatform(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1511,14 +1361,6 @@ func (class) _get_export_option_visibility(impl func(ptr gdclass.Receiver, platf
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Check the requirements for the given 'option' and return a non-empty warning string if they are not met.
-
-Note: Use [GetOption] to check the value of the export options.
-
-[GetOption]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Instance.GetOption
-*/
 func (class) _get_export_option_warning(impl func(ptr gdclass.Receiver, platform [1]gdclass.EditorExportPlatform, option String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var platform = [1]gdclass.EditorExportPlatform{gdclass.NewEditorExportPlatform(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1536,10 +1378,6 @@ func (class) _get_export_option_warning(impl func(ptr gdclass.Receiver, platform
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Return a []string of additional features this preset, for the given 'platform', should have.
-*/
 func (class) _get_export_features(impl func(ptr gdclass.Receiver, platform [1]gdclass.EditorExportPlatform, debug bool) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var platform = [1]gdclass.EditorExportPlatform{gdclass.NewEditorExportPlatform(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1556,12 +1394,6 @@ func (class) _get_export_features(impl func(ptr gdclass.Receiver, platform [1]gd
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Return the name identifier of this plugin (for future identification by the exporter). The plugins are sorted by name before exporting.
-
-Implementing this method is required.
-*/
 func (class) _get_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -1574,10 +1406,6 @@ func (class) _get_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.E
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Return true if the plugin supports the given 'platform'.
-*/
 func (class) _supports_platform(impl func(ptr gdclass.Receiver, platform [1]gdclass.EditorExportPlatform) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var platform = [1]gdclass.EditorExportPlatform{gdclass.NewEditorExportPlatform(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1588,17 +1416,6 @@ func (class) _supports_platform(impl func(ptr gdclass.Receiver, platform [1]gdcl
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Virtual method to be overridden by the user. This is called to retrieve the set of Android dependencies provided by this plugin. Each returned Android dependency should have the format of an Android remote binary dependency: org.godot.example:my-plugin:0.0.0
-
-For more information see [Android documentation on dependencies].
-
-Note: Only supported on Android and requires [EditorExportPlatformAndroid] "gradle_build/use_gradle_build" to be enabled.
-
-[Android documentation on dependencies]: https://developer.android.com/build/dependencies?agpversion
-[EditorExportPlatformAndroid]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatformAndroid
-*/
 func (class) _get_android_dependencies(impl func(ptr gdclass.Receiver, platform [1]gdclass.EditorExportPlatform, debug bool) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var platform = [1]gdclass.EditorExportPlatform{gdclass.NewEditorExportPlatform(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1615,19 +1432,6 @@ func (class) _get_android_dependencies(impl func(ptr gdclass.Receiver, platform 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Virtual method to be overridden by the user. This is called to retrieve the URLs of Maven repositories for the set of Android dependencies provided by this plugin.
-
-For more information see [Gradle documentation on dependency management].
-
-Note: Google's Maven repo and the Maven Central repo are already included by default.
-
-Note: Only supported on Android and requires [EditorExportPlatformAndroid] "gradle_build/use_gradle_build" to be enabled.
-
-[EditorExportPlatformAndroid]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatformAndroid
-[Gradle documentation on dependency management]: https://docs.gradle.org/current/userguide/dependency_management.html#sec:maven_repo
-*/
 func (class) _get_android_dependencies_maven_repos(impl func(ptr gdclass.Receiver, platform [1]gdclass.EditorExportPlatform, debug bool) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var platform = [1]gdclass.EditorExportPlatform{gdclass.NewEditorExportPlatform(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1644,16 +1448,6 @@ func (class) _get_android_dependencies_maven_repos(impl func(ptr gdclass.Receive
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Virtual method to be overridden by the user. This is called to retrieve the local paths of the Android libraries archive (AAR) files provided by this plugin.
-
-Note: Relative paths must be relative to Godot's res://addons/ directory. For example, an AAR file located under res://addons/hello_world_plugin/HelloWorld.release.aar can be returned as an absolute path using res://addons/hello_world_plugin/HelloWorld.release.aar or a relative path using hello_world_plugin/HelloWorld.release.aar.
-
-Note: Only supported on Android and requires [EditorExportPlatformAndroid] "gradle_build/use_gradle_build" to be enabled.
-
-[EditorExportPlatformAndroid]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatformAndroid
-*/
 func (class) _get_android_libraries(impl func(ptr gdclass.Receiver, platform [1]gdclass.EditorExportPlatform, debug bool) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var platform = [1]gdclass.EditorExportPlatform{gdclass.NewEditorExportPlatform(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1670,14 +1464,6 @@ func (class) _get_android_libraries(impl func(ptr gdclass.Receiver, platform [1]
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Virtual method to be overridden by the user. This is used at export time to update the contents of the activity element in the generated Android manifest.
-
-Note: Only supported on Android and requires [EditorExportPlatformAndroid] "gradle_build/use_gradle_build" to be enabled.
-
-[EditorExportPlatformAndroid]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatformAndroid
-*/
 func (class) _get_android_manifest_activity_element_contents(impl func(ptr gdclass.Receiver, platform [1]gdclass.EditorExportPlatform, debug bool) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var platform = [1]gdclass.EditorExportPlatform{gdclass.NewEditorExportPlatform(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1694,14 +1480,6 @@ func (class) _get_android_manifest_activity_element_contents(impl func(ptr gdcla
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Virtual method to be overridden by the user. This is used at export time to update the contents of the application element in the generated Android manifest.
-
-Note: Only supported on Android and requires [EditorExportPlatformAndroid] "gradle_build/use_gradle_build" to be enabled.
-
-[EditorExportPlatformAndroid]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatformAndroid
-*/
 func (class) _get_android_manifest_application_element_contents(impl func(ptr gdclass.Receiver, platform [1]gdclass.EditorExportPlatform, debug bool) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var platform = [1]gdclass.EditorExportPlatform{gdclass.NewEditorExportPlatform(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1718,14 +1496,6 @@ func (class) _get_android_manifest_application_element_contents(impl func(ptr gd
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Virtual method to be overridden by the user. This is used at export time to update the contents of the manifest element in the generated Android manifest.
-
-Note: Only supported on Android and requires [EditorExportPlatformAndroid] "gradle_build/use_gradle_build" to be enabled.
-
-[EditorExportPlatformAndroid]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatformAndroid
-*/
 func (class) _get_android_manifest_element_contents(impl func(ptr gdclass.Receiver, platform [1]gdclass.EditorExportPlatform, debug bool) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var platform = [1]gdclass.EditorExportPlatform{gdclass.NewEditorExportPlatform(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1742,14 +1512,6 @@ func (class) _get_android_manifest_element_contents(impl func(ptr gdclass.Receiv
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Provide access to the Android prebuilt manifest and allows the plugin to modify it if needed.
-
-Implementers of this virtual method should take the binary manifest data from 'manifest_data', copy it, modify it, and then return it with the modifications.
-
-If no modifications are needed, then an empty []byte should be returned.
-*/
 func (class) _update_android_prebuilt_manifest(impl func(ptr gdclass.Receiver, platform [1]gdclass.EditorExportPlatform, manifest_data Packed.Bytes) Packed.Bytes) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var platform = [1]gdclass.EditorExportPlatform{gdclass.NewEditorExportPlatform(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1768,14 +1530,6 @@ func (class) _update_android_prebuilt_manifest(impl func(ptr gdclass.Receiver, p
 	}
 }
 
-/*
-Adds a shared object or a directory containing only shared objects with the given 'tags' and destination 'path'.
-
-Note: In case of macOS exports, those shared objects will be added to Frameworks directory of app bundle.
-
-In case of a directory code-sign will error if you place non code object in directory.
-*/
-//go:nosplit
 func (self class) AddSharedObject(path String.Readable, tags Packed.Strings, target String.Readable) { //gd:EditorExportPlugin.add_shared_object
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_shared_object, 0|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeString<<12), &struct {
 		path   gdextension.String
@@ -1783,18 +1537,6 @@ func (self class) AddSharedObject(path String.Readable, tags Packed.Strings, tar
 		target gdextension.String
 	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalPackedStrings(tags)), pointers.Get(gd.InternalString(target))})
 }
-
-/*
-Adds a custom file to be exported. 'path' is the virtual path that can be used to load the file, 'file' is the binary data of the file.
-
-When called inside [ExportFile] and 'remap' is true, the current file will not be exported, but instead remapped to this custom file. 'remap' is ignored when called in other places.
-
-'file' will not be imported, so consider using [CustomizeResource] to remap imported resources.
-
-[CustomizeResource]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Interface
-[ExportFile]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Interface
-*/
-//go:nosplit
 func (self class) AddFile(path String.Readable, file Packed.Bytes, remap bool) { //gd:EditorExportPlugin.add_file
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_file, 0|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeBool<<12), &struct {
 		path  gdextension.String
@@ -1802,177 +1544,64 @@ func (self class) AddFile(path String.Readable, file Packed.Bytes, remap bool) {
 		remap bool
 	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](file.Array))), remap})
 }
-
-/*
-Adds a static library from the given 'path' to the Apple embedded platform project.
-*/
-//go:nosplit
 func (self class) AddAppleEmbeddedPlatformProjectStaticLib(path String.Readable) { //gd:EditorExportPlugin.add_apple_embedded_platform_project_static_lib
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_project_static_lib, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
-
-/*
-Adds a static library (*.a) or a dynamic library (*.dylib, *.framework) to the Linking Phase to the Apple embedded platform's Xcode project.
-*/
-//go:nosplit
 func (self class) AddAppleEmbeddedPlatformFramework(path String.Readable) { //gd:EditorExportPlugin.add_apple_embedded_platform_framework
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_framework, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
-
-/*
-Adds a dynamic library (*.dylib, *.framework) to the Linking Phase in the Apple embedded platform's Xcode project and embeds it into the resulting binary.
-
-Note: For static libraries (*.a), this works in the same way as [AddAppleEmbeddedPlatformFramework].
-
-Note: This method should not be used for System libraries as they are already present on the device.
-
-[AddAppleEmbeddedPlatformFramework]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Instance.AddAppleEmbeddedPlatformFramework
-*/
-//go:nosplit
 func (self class) AddAppleEmbeddedPlatformEmbeddedFramework(path String.Readable) { //gd:EditorExportPlugin.add_apple_embedded_platform_embedded_framework
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_embedded_framework, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
-
-/*
-Adds additional fields to the Apple embedded platform's project Info.plist file.
-*/
-//go:nosplit
 func (self class) AddAppleEmbeddedPlatformPlistContent(plist_content String.Readable) { //gd:EditorExportPlugin.add_apple_embedded_platform_plist_content
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_plist_content, 0|(gdextension.SizeString<<4), &struct{ plist_content gdextension.String }{pointers.Get(gd.InternalString(plist_content))})
 }
-
-/*
-Adds linker flags for the Apple embedded platform export.
-*/
-//go:nosplit
 func (self class) AddAppleEmbeddedPlatformLinkerFlags(flags String.Readable) { //gd:EditorExportPlugin.add_apple_embedded_platform_linker_flags
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_linker_flags, 0|(gdextension.SizeString<<4), &struct{ flags gdextension.String }{pointers.Get(gd.InternalString(flags))})
 }
-
-/*
-Adds an Apple embedded platform bundle file from the given 'path' to the exported project.
-*/
-//go:nosplit
 func (self class) AddAppleEmbeddedPlatformBundleFile(path String.Readable) { //gd:EditorExportPlugin.add_apple_embedded_platform_bundle_file
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_bundle_file, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
-
-/*
-Adds C++ code to the Apple embedded platform export. The final code is created from the code appended by each active export plugin.
-*/
-//go:nosplit
 func (self class) AddAppleEmbeddedPlatformCppCode(code String.Readable) { //gd:EditorExportPlugin.add_apple_embedded_platform_cpp_code
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_cpp_code, 0|(gdextension.SizeString<<4), &struct{ code gdextension.String }{pointers.Get(gd.InternalString(code))})
 }
-
-/*
-Adds a static library from the given 'path' to the iOS project.
-*/
-//go:nosplit
 func (self class) AddIosProjectStaticLib(path String.Readable) { //gd:EditorExportPlugin.add_ios_project_static_lib
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_project_static_lib, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
-
-/*
-Adds a static library (*.a) or a dynamic library (*.dylib, *.framework) to the Linking Phase to the iOS Xcode project.
-*/
-//go:nosplit
 func (self class) AddIosFramework(path String.Readable) { //gd:EditorExportPlugin.add_ios_framework
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_framework, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
-
-/*
-Adds a dynamic library (*.dylib, *.framework) to Linking Phase in iOS's Xcode project and embeds it into resulting binary.
-
-Note: For static libraries (*.a), this works the in same way as [AddAppleEmbeddedPlatformFramework].
-
-Note: This method should not be used for System libraries as they are already present on the device.
-
-[AddAppleEmbeddedPlatformFramework]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Instance.AddAppleEmbeddedPlatformFramework
-*/
-//go:nosplit
 func (self class) AddIosEmbeddedFramework(path String.Readable) { //gd:EditorExportPlugin.add_ios_embedded_framework
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_embedded_framework, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
-
-/*
-Adds additional fields to the iOS project Info.plist file.
-*/
-//go:nosplit
 func (self class) AddIosPlistContent(plist_content String.Readable) { //gd:EditorExportPlugin.add_ios_plist_content
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_plist_content, 0|(gdextension.SizeString<<4), &struct{ plist_content gdextension.String }{pointers.Get(gd.InternalString(plist_content))})
 }
-
-/*
-Adds linker flags for the iOS export.
-*/
-//go:nosplit
 func (self class) AddIosLinkerFlags(flags String.Readable) { //gd:EditorExportPlugin.add_ios_linker_flags
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_linker_flags, 0|(gdextension.SizeString<<4), &struct{ flags gdextension.String }{pointers.Get(gd.InternalString(flags))})
 }
-
-/*
-Adds an iOS bundle file from the given 'path' to the exported project.
-*/
-//go:nosplit
 func (self class) AddIosBundleFile(path String.Readable) { //gd:EditorExportPlugin.add_ios_bundle_file
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_bundle_file, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
-
-/*
-Adds C++ code to the iOS export. The final code is created from the code appended by each active export plugin.
-*/
-//go:nosplit
 func (self class) AddIosCppCode(code String.Readable) { //gd:EditorExportPlugin.add_ios_cpp_code
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_cpp_code, 0|(gdextension.SizeString<<4), &struct{ code gdextension.String }{pointers.Get(gd.InternalString(code))})
 }
-
-/*
-Adds file or directory matching 'path' to PlugIns directory of macOS app bundle.
-
-Note: This is useful only for macOS exports.
-*/
-//go:nosplit
 func (self class) AddMacosPluginFile(path String.Readable) { //gd:EditorExportPlugin.add_macos_plugin_file
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_macos_plugin_file, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
-
-/*
-To be called inside [ExportFile]. Skips the current file, so it's not included in the export.
-
-[ExportFile]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Interface
-*/
-//go:nosplit
 func (self class) Skip() { //gd:EditorExportPlugin.skip
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.skip, 0, &struct{}{})
 }
-
-/*
-Returns the current value of an export option supplied by [GetExportOptions].
-
-[GetExportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Interface
-*/
-//go:nosplit
 func (self class) GetOption(name String.Name) variant.Any { //gd:EditorExportPlugin.get_option
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_option, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Returns currently used export preset.
-*/
-//go:nosplit
 func (self class) GetExportPreset() [1]gdclass.EditorExportPreset { //gd:EditorExportPlugin.get_export_preset
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_export_preset, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorExportPreset{gdclass.NewEditorExportPreset(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns currently used export platform.
-*/
-//go:nosplit
 func (self class) GetExportPlatform() [1]gdclass.EditorExportPlatform { //gd:EditorExportPlugin.get_export_platform
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_export_platform, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorExportPlatform{gdclass.NewEditorExportPlatform(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

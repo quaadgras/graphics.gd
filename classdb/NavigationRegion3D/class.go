@@ -391,180 +391,91 @@ func (self Instance) SetTravelCost(value Float.X) Instance { //gd:NavigationRegi
 	return self
 }
 
-/*
-Returns the [Resource.ID] of this region on the [NavigationServer3D]. Combined with [NavigationServer3D.MapGetClosestPointOwner] can be used to identify the [NavigationRegion3D] closest to a point on the merged navigation map.
-
-[NavigationRegion3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationRegion3D
-[NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
-[NavigationServer3D.MapGetClosestPointOwner]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D#MapGetClosestPointOwner
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) GetRid() RID.Any { //gd:NavigationRegion3D.get_rid
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetNavigationMesh(navigation_mesh [1]gdclass.NavigationMesh) { //gd:NavigationRegion3D.set_navigation_mesh
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_mesh, 0|(gdextension.SizeObject<<4), &struct{ navigation_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationMesh(navigation_mesh[0])))})
 }
-
-//go:nosplit
 func (self class) GetNavigationMesh() [1]gdclass.NavigationMesh { //gd:NavigationRegion3D.get_navigation_mesh
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_navigation_mesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.NavigationMesh{gdclass.NewNavigationMesh(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEnabled(enabled bool) { //gd:NavigationRegion3D.set_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsEnabled() bool { //gd:NavigationRegion3D.is_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the [Resource.ID] of the navigation map this region should use. By default the region will automatically join the [World3D] default navigation map so this function is only required to override the default map.
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-[World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
-*/
-//go:nosplit
 func (self class) SetNavigationMap(navigation_map RID.Any) { //gd:NavigationRegion3D.set_navigation_map
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_map, 0|(gdextension.SizeRID<<4), &struct{ navigation_map RID.Any }{navigation_map})
 }
-
-/*
-Returns the current navigation map [Resource.ID] used by this region.
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) GetNavigationMap() RID.Any { //gd:NavigationRegion3D.get_navigation_map
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_navigation_map, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUseEdgeConnections(enabled bool) { //gd:NavigationRegion3D.set_use_edge_connections
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_edge_connections, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) GetUseEdgeConnections() bool { //gd:NavigationRegion3D.get_use_edge_connections
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_edge_connections, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetNavigationLayers(navigation_layers int64) { //gd:NavigationRegion3D.set_navigation_layers
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_layers, 0|(gdextension.SizeInt<<4), &struct{ navigation_layers int64 }{navigation_layers})
 }
-
-//go:nosplit
 func (self class) GetNavigationLayers() int64 { //gd:NavigationRegion3D.get_navigation_layers
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_navigation_layers, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Based on 'value', enables or disables the specified layer in the [NavigationLayers] bitmask, given a 'layer_number' between 1 and 32.
-
-[NavigationLayers]: https://pkg.go.dev/graphics.gd/classdb/NavigationRegion3D#Instance.NavigationLayers
-*/
-//go:nosplit
 func (self class) SetNavigationLayerValue(layer_number int64, value bool) { //gd:NavigationRegion3D.set_navigation_layer_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_layer_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value})
 }
-
-/*
-Returns whether or not the specified layer of the [NavigationLayers] bitmask is enabled, given a 'layer_number' between 1 and 32.
-
-[NavigationLayers]: https://pkg.go.dev/graphics.gd/classdb/NavigationRegion3D#Instance.NavigationLayers
-*/
-//go:nosplit
 func (self class) GetNavigationLayerValue(layer_number int64) bool { //gd:NavigationRegion3D.get_navigation_layer_value
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_navigation_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [Resource.ID] of this region on the [NavigationServer3D].
-
-[NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) GetRegionRid() RID.Any { //gd:NavigationRegion3D.get_region_rid
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_region_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEnterCost(enter_cost float64) { //gd:NavigationRegion3D.set_enter_cost
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enter_cost, 0|(gdextension.SizeFloat<<4), &struct{ enter_cost float64 }{enter_cost})
 }
-
-//go:nosplit
 func (self class) GetEnterCost() float64 { //gd:NavigationRegion3D.get_enter_cost
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_enter_cost, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTravelCost(travel_cost float64) { //gd:NavigationRegion3D.set_travel_cost
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_travel_cost, 0|(gdextension.SizeFloat<<4), &struct{ travel_cost float64 }{travel_cost})
 }
-
-//go:nosplit
 func (self class) GetTravelCost() float64 { //gd:NavigationRegion3D.get_travel_cost
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_travel_cost, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Bakes the [NavigationMesh]. If 'on_thread' is set to true (default), the baking is done on a separate thread. Baking on separate thread is useful because navigation baking is not a cheap operation. When it is completed, it automatically sets the new [NavigationMesh]. Please note that baking on separate thread may be very slow if geometry is parsed from meshes as async access to each mesh involves heavy synchronization. Also, please note that baking on a separate thread is automatically disabled on operating systems that cannot use threads (such as Web with threads disabled).
-
-[NavigationMesh]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh
-*/
-//go:nosplit
 func (self class) BakeNavigationMesh(on_thread bool) { //gd:NavigationRegion3D.bake_navigation_mesh
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.bake_navigation_mesh, 0|(gdextension.SizeBool<<4), &struct{ on_thread bool }{on_thread})
 }
-
-/*
-Returns true when the [NavigationMesh] is being baked on a background thread.
-
-[NavigationMesh]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh
-*/
-//go:nosplit
 func (self class) IsBaking() bool { //gd:NavigationRegion3D.is_baking
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_baking, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the axis-aligned bounding box for the region's transformed navigation mesh.
-*/
-//go:nosplit
 func (self class) GetBounds() AABB.PositionSize { //gd:NavigationRegion3D.get_bounds
 	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_bounds, gdextension.SizeAABB, &struct{}{})
 	var ret = r_ret

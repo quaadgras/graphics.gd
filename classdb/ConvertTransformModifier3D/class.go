@@ -381,221 +381,111 @@ func New() Instance {
 	return casted
 }
 
-/*
-Sets the operation of the remapping destination transform.
-*/
-//go:nosplit
 func (self class) SetApplyTransformMode(index int64, transform_mode TransformMode) { //gd:ConvertTransformModifier3D.set_apply_transform_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_apply_transform_mode, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index          int64
 		transform_mode TransformMode
 	}{index, transform_mode})
 }
-
-/*
-Returns the operation of the remapping destination transform.
-*/
-//go:nosplit
 func (self class) GetApplyTransformMode(index int64) TransformMode { //gd:ConvertTransformModifier3D.get_apply_transform_mode
 	var r_ret = noescape.Call[TransformMode](gd.ObjectChecked(self.AsObject()), methods.get_apply_transform_mode, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the axis of the remapping destination transform.
-*/
-//go:nosplit
 func (self class) SetApplyAxis(index int64, axis Vector3.Axis) { //gd:ConvertTransformModifier3D.set_apply_axis
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_apply_axis, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index int64
 		axis  Vector3.Axis
 	}{index, axis})
 }
-
-/*
-Returns the axis of the remapping destination transform.
-*/
-//go:nosplit
 func (self class) GetApplyAxis(index int64) Vector3.Axis { //gd:ConvertTransformModifier3D.get_apply_axis
 	var r_ret = noescape.Call[Vector3.Axis](gd.ObjectChecked(self.AsObject()), methods.get_apply_axis, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the minimum value of the remapping destination range.
-*/
-//go:nosplit
 func (self class) SetApplyRangeMin(index int64, range_min float64) { //gd:ConvertTransformModifier3D.set_apply_range_min
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_apply_range_min, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		index     int64
 		range_min float64
 	}{index, range_min})
 }
-
-/*
-Returns the minimum value of the remapping destination range.
-*/
-//go:nosplit
 func (self class) GetApplyRangeMin(index int64) float64 { //gd:ConvertTransformModifier3D.get_apply_range_min
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_apply_range_min, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the maximum value of the remapping destination range.
-*/
-//go:nosplit
 func (self class) SetApplyRangeMax(index int64, range_max float64) { //gd:ConvertTransformModifier3D.set_apply_range_max
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_apply_range_max, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		index     int64
 		range_max float64
 	}{index, range_max})
 }
-
-/*
-Returns the maximum value of the remapping destination range.
-*/
-//go:nosplit
 func (self class) GetApplyRangeMax(index int64) float64 { //gd:ConvertTransformModifier3D.get_apply_range_max
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_apply_range_max, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the operation of the remapping source transform.
-*/
-//go:nosplit
 func (self class) SetReferenceTransformMode(index int64, transform_mode TransformMode) { //gd:ConvertTransformModifier3D.set_reference_transform_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reference_transform_mode, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index          int64
 		transform_mode TransformMode
 	}{index, transform_mode})
 }
-
-/*
-Returns the operation of the remapping source transform.
-*/
-//go:nosplit
 func (self class) GetReferenceTransformMode(index int64) TransformMode { //gd:ConvertTransformModifier3D.get_reference_transform_mode
 	var r_ret = noescape.Call[TransformMode](gd.ObjectChecked(self.AsObject()), methods.get_reference_transform_mode, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the axis of the remapping source transform.
-*/
-//go:nosplit
 func (self class) SetReferenceAxis(index int64, axis Vector3.Axis) { //gd:ConvertTransformModifier3D.set_reference_axis
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reference_axis, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index int64
 		axis  Vector3.Axis
 	}{index, axis})
 }
-
-/*
-Returns the axis of the remapping source transform.
-*/
-//go:nosplit
 func (self class) GetReferenceAxis(index int64) Vector3.Axis { //gd:ConvertTransformModifier3D.get_reference_axis
 	var r_ret = noescape.Call[Vector3.Axis](gd.ObjectChecked(self.AsObject()), methods.get_reference_axis, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the minimum value of the remapping source range.
-*/
-//go:nosplit
 func (self class) SetReferenceRangeMin(index int64, range_min float64) { //gd:ConvertTransformModifier3D.set_reference_range_min
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reference_range_min, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		index     int64
 		range_min float64
 	}{index, range_min})
 }
-
-/*
-Returns the minimum value of the remapping source range.
-*/
-//go:nosplit
 func (self class) GetReferenceRangeMin(index int64) float64 { //gd:ConvertTransformModifier3D.get_reference_range_min
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_reference_range_min, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the maximum value of the remapping source range.
-*/
-//go:nosplit
 func (self class) SetReferenceRangeMax(index int64, range_max float64) { //gd:ConvertTransformModifier3D.set_reference_range_max
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reference_range_max, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		index     int64
 		range_max float64
 	}{index, range_max})
 }
-
-/*
-Returns the maximum value of the remapping source range.
-*/
-//go:nosplit
 func (self class) GetReferenceRangeMax(index int64) float64 { //gd:ConvertTransformModifier3D.get_reference_range_max
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_reference_range_max, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets relative option in the setting at 'index' to 'enabled'.
-
-If sets 'enabled' to true, the extracted and applying transform is relative to the rest.
-
-If sets 'enabled' to false, the extracted transform is absolute.
-*/
-//go:nosplit
 func (self class) SetRelative(index int64, enabled bool) { //gd:ConvertTransformModifier3D.set_relative
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_relative, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		index   int64
 		enabled bool
 	}{index, enabled})
 }
-
-/*
-Returns true if the relative option is enabled in the setting at 'index'.
-*/
-//go:nosplit
 func (self class) IsRelative(index int64) bool { //gd:ConvertTransformModifier3D.is_relative
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_relative, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets additive option in the setting at 'index' to 'enabled'. This mainly affects the process of applying transform to the [BoneConstraint3D.SetApplyBone].
-
-If sets 'enabled' to true, the processed transform is added to the pose of the current apply bone.
-
-If sets 'enabled' to false, the pose of the current apply bone is replaced with the processed transform. However, if set [SetRelative] to true, the transform is relative to rest.
-
-[BoneConstraint3D.SetApplyBone]: https://pkg.go.dev/graphics.gd/classdb/BoneConstraint3D#Instance.SetApplyBone
-[SetRelative]: https://pkg.go.dev/graphics.gd/classdb/ConvertTransformModifier3D#Instance.SetRelative
-*/
-//go:nosplit
 func (self class) SetAdditive(index int64, enabled bool) { //gd:ConvertTransformModifier3D.set_additive
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_additive, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		index   int64
 		enabled bool
 	}{index, enabled})
 }
-
-/*
-Returns true if the additive option is enabled in the setting at 'index'.
-*/
-//go:nosplit
 func (self class) IsAdditive(index int64) bool { //gd:ConvertTransformModifier3D.is_additive
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_additive, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret

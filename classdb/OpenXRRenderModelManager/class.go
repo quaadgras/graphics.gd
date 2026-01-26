@@ -190,26 +190,19 @@ func (self Instance) SetMakeLocalToPose(value string) Instance { //gd:OpenXRRend
 	return self
 }
 
-//go:nosplit
 func (self class) GetTracker() RenderModelTracker { //gd:OpenXRRenderModelManager.get_tracker
 	var r_ret = noescape.Call[RenderModelTracker](gd.ObjectChecked(self.AsObject()), methods.get_tracker, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTracker(tracker RenderModelTracker) { //gd:OpenXRRenderModelManager.set_tracker
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker, 0|(gdextension.SizeInt<<4), &struct{ tracker RenderModelTracker }{tracker})
 }
-
-//go:nosplit
 func (self class) GetMakeLocalToPose() String.Readable { //gd:OpenXRRenderModelManager.get_make_local_to_pose
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_make_local_to_pose, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMakeLocalToPose(make_local_to_pose String.Readable) { //gd:OpenXRRenderModelManager.set_make_local_to_pose
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_make_local_to_pose, 0|(gdextension.SizeString<<4), &struct{ make_local_to_pose gdextension.String }{pointers.Get(gd.InternalString(make_local_to_pose))})
 }

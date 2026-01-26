@@ -534,318 +534,166 @@ func (self Instance) SetBakingRectOffset(value Vector2.XY) Instance { //gd:Navig
 	return self
 }
 
-/*
-Sets the vertices that can be then indexed to create polygons with the [AddPolygon] method.
-
-[AddPolygon]: https://pkg.go.dev/graphics.gd/classdb/NavigationPolygon#Instance.AddPolygon
-*/
-//go:nosplit
 func (self class) SetVertices(vertices Packed.Array[Vector2.XY]) { //gd:NavigationPolygon.set_vertices
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertices, 0|(gdextension.SizePackedArray<<4), &struct {
 		vertices gdextension.PackedArray[Vector2.XY]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](vertices))})
 }
-
-/*
-Returns a [][Vector2.XY] containing all the vertices being used to create the polygons.
-
-[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
-*/
-//go:nosplit
 func (self class) GetVertices() Packed.Array[Vector2.XY] { //gd:NavigationPolygon.get_vertices
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_vertices, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Adds a polygon using the indices of the vertices you get when calling [GetVertices].
-
-[GetVertices]: https://pkg.go.dev/graphics.gd/classdb/NavigationPolygon#Instance.GetVertices
-*/
-//go:nosplit
 func (self class) AddPolygon(polygon Packed.Array[int32]) { //gd:NavigationPolygon.add_polygon
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_polygon, 0|(gdextension.SizePackedArray<<4), &struct {
 		polygon gdextension.PackedArray[int32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](polygon))})
 }
-
-/*
-Returns the count of all polygons.
-*/
-//go:nosplit
 func (self class) GetPolygonCount() int64 { //gd:NavigationPolygon.get_polygon_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_polygon_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a []int32 containing the indices of the vertices of a created polygon.
-*/
-//go:nosplit
 func (self class) GetPolygon(idx int64) Packed.Array[int32] { //gd:NavigationPolygon.get_polygon
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_polygon, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Clears the array of polygons, but it doesn't clear the array of outlines and vertices.
-*/
-//go:nosplit
 func (self class) ClearPolygons() { //gd:NavigationPolygon.clear_polygons
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_polygons, 0, &struct{}{})
 }
-
-/*
-Returns the [NavigationMesh] resulting from this navigation polygon. This navigation mesh can be used to update the navigation mesh of a region with the [NavigationServer3D.RegionSetNavigationMesh] API directly.
-
-[NavigationMesh]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh
-[NavigationServer3D.RegionSetNavigationMesh]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D#RegionSetNavigationMesh
-*/
-//go:nosplit
 func (self class) GetNavigationMesh() [1]gdclass.NavigationMesh { //gd:NavigationPolygon.get_navigation_mesh
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_navigation_mesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.NavigationMesh{gdclass.NewNavigationMesh(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Appends a [][Vector2.XY] that contains the vertices of an outline to the internal array that contains all the outlines.
-
-[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
-*/
-//go:nosplit
 func (self class) AddOutline(outline Packed.Array[Vector2.XY]) { //gd:NavigationPolygon.add_outline
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_outline, 0|(gdextension.SizePackedArray<<4), &struct {
 		outline gdextension.PackedArray[Vector2.XY]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](outline))})
 }
-
-/*
-Adds a [][Vector2.XY] that contains the vertices of an outline to the internal array that contains all the outlines at a fixed position.
-
-[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
-*/
-//go:nosplit
 func (self class) AddOutlineAtIndex(outline Packed.Array[Vector2.XY], index int64) { //gd:NavigationPolygon.add_outline_at_index
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_outline_at_index, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeInt<<8), &struct {
 		outline gdextension.PackedArray[Vector2.XY]
 		index   int64
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](outline)), index})
 }
-
-/*
-Returns the number of outlines that were created in the editor or by script.
-*/
-//go:nosplit
 func (self class) GetOutlineCount() int64 { //gd:NavigationPolygon.get_outline_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_outline_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Changes an outline created in the editor or by script. You have to call [MakePolygonsFromOutlines] for the polygons to update.
-
-[MakePolygonsFromOutlines]: https://pkg.go.dev/graphics.gd/classdb/NavigationPolygon#Instance.MakePolygonsFromOutlines
-*/
-//go:nosplit
 func (self class) SetOutline(idx int64, outline Packed.Array[Vector2.XY]) { //gd:NavigationPolygon.set_outline
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_outline, 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), &struct {
 		idx     int64
 		outline gdextension.PackedArray[Vector2.XY]
 	}{idx, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](outline))})
 }
-
-/*
-Returns a [][Vector2.XY] containing the vertices of an outline that was created in the editor or by script.
-
-[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
-*/
-//go:nosplit
 func (self class) GetOutline(idx int64) Packed.Array[Vector2.XY] { //gd:NavigationPolygon.get_outline
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_outline, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Removes an outline created in the editor or by script. You have to call [MakePolygonsFromOutlines] for the polygons to update.
-
-[MakePolygonsFromOutlines]: https://pkg.go.dev/graphics.gd/classdb/NavigationPolygon#Instance.MakePolygonsFromOutlines
-*/
-//go:nosplit
 func (self class) RemoveOutline(idx int64) { //gd:NavigationPolygon.remove_outline
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_outline, 0|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 }
-
-/*
-Clears the array of the outlines, but it doesn't clear the vertices and the polygons that were created by them.
-*/
-//go:nosplit
 func (self class) ClearOutlines() { //gd:NavigationPolygon.clear_outlines
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_outlines, 0, &struct{}{})
 }
-
-/*
-Creates polygons from the outlines added in the editor or by script.
-*/
-//go:nosplit
 func (self class) MakePolygonsFromOutlines() { //gd:NavigationPolygon.make_polygons_from_outlines
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.make_polygons_from_outlines, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetCellSize(cell_size float64) { //gd:NavigationPolygon.set_cell_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cell_size, 0|(gdextension.SizeFloat<<4), &struct{ cell_size float64 }{cell_size})
 }
-
-//go:nosplit
 func (self class) GetCellSize() float64 { //gd:NavigationPolygon.get_cell_size
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_cell_size, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBorderSize(border_size float64) { //gd:NavigationPolygon.set_border_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_border_size, 0|(gdextension.SizeFloat<<4), &struct{ border_size float64 }{border_size})
 }
-
-//go:nosplit
 func (self class) GetBorderSize() float64 { //gd:NavigationPolygon.get_border_size
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_border_size, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSamplePartitionType(sample_partition_type SamplePartitionType) { //gd:NavigationPolygon.set_sample_partition_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sample_partition_type, 0|(gdextension.SizeInt<<4), &struct{ sample_partition_type SamplePartitionType }{sample_partition_type})
 }
-
-//go:nosplit
 func (self class) GetSamplePartitionType() SamplePartitionType { //gd:NavigationPolygon.get_sample_partition_type
 	var r_ret = noescape.Call[SamplePartitionType](gd.ObjectChecked(self.AsObject()), methods.get_sample_partition_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetParsedGeometryType(geometry_type ParsedGeometryType) { //gd:NavigationPolygon.set_parsed_geometry_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_parsed_geometry_type, 0|(gdextension.SizeInt<<4), &struct{ geometry_type ParsedGeometryType }{geometry_type})
 }
-
-//go:nosplit
 func (self class) GetParsedGeometryType() ParsedGeometryType { //gd:NavigationPolygon.get_parsed_geometry_type
 	var r_ret = noescape.Call[ParsedGeometryType](gd.ObjectChecked(self.AsObject()), methods.get_parsed_geometry_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetParsedCollisionMask(mask int64) { //gd:NavigationPolygon.set_parsed_collision_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_parsed_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
-
-//go:nosplit
 func (self class) GetParsedCollisionMask() int64 { //gd:NavigationPolygon.get_parsed_collision_mask
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_parsed_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Based on 'value', enables or disables the specified layer in the [ParsedCollisionMask], given a 'layer_number' between 1 and 32.
-
-[ParsedCollisionMask]: https://pkg.go.dev/graphics.gd/classdb/NavigationPolygon#Instance.ParsedCollisionMask
-*/
-//go:nosplit
 func (self class) SetParsedCollisionMaskValue(layer_number int64, value bool) { //gd:NavigationPolygon.set_parsed_collision_mask_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_parsed_collision_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value})
 }
-
-/*
-Returns whether or not the specified layer of the [ParsedCollisionMask] is enabled, given a 'layer_number' between 1 and 32.
-
-[ParsedCollisionMask]: https://pkg.go.dev/graphics.gd/classdb/NavigationPolygon#Instance.ParsedCollisionMask
-*/
-//go:nosplit
 func (self class) GetParsedCollisionMaskValue(layer_number int64) bool { //gd:NavigationPolygon.get_parsed_collision_mask_value
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_parsed_collision_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSourceGeometryMode(geometry_mode SourceGeometryMode) { //gd:NavigationPolygon.set_source_geometry_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_source_geometry_mode, 0|(gdextension.SizeInt<<4), &struct{ geometry_mode SourceGeometryMode }{geometry_mode})
 }
-
-//go:nosplit
 func (self class) GetSourceGeometryMode() SourceGeometryMode { //gd:NavigationPolygon.get_source_geometry_mode
 	var r_ret = noescape.Call[SourceGeometryMode](gd.ObjectChecked(self.AsObject()), methods.get_source_geometry_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSourceGeometryGroupName(group_name String.Name) { //gd:NavigationPolygon.set_source_geometry_group_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_source_geometry_group_name, 0|(gdextension.SizeStringName<<4), &struct{ group_name gdextension.StringName }{pointers.Get(gd.InternalStringName(group_name))})
 }
-
-//go:nosplit
 func (self class) GetSourceGeometryGroupName() String.Name { //gd:NavigationPolygon.get_source_geometry_group_name
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_source_geometry_group_name, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAgentRadius(agent_radius float64) { //gd:NavigationPolygon.set_agent_radius
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_agent_radius, 0|(gdextension.SizeFloat<<4), &struct{ agent_radius float64 }{agent_radius})
 }
-
-//go:nosplit
 func (self class) GetAgentRadius() float64 { //gd:NavigationPolygon.get_agent_radius
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_agent_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBakingRect(rect Rect2.PositionSize) { //gd:NavigationPolygon.set_baking_rect
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_baking_rect, 0|(gdextension.SizeRect2<<4), &struct{ rect Rect2.PositionSize }{rect})
 }
-
-//go:nosplit
 func (self class) GetBakingRect() Rect2.PositionSize { //gd:NavigationPolygon.get_baking_rect
 	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_baking_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBakingRectOffset(rect_offset Vector2.XY) { //gd:NavigationPolygon.set_baking_rect_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_baking_rect_offset, 0|(gdextension.SizeVector2<<4), &struct{ rect_offset Vector2.XY }{rect_offset})
 }
-
-//go:nosplit
 func (self class) GetBakingRectOffset() Vector2.XY { //gd:NavigationPolygon.get_baking_rect_offset
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_baking_rect_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Clears the internal arrays for vertices and polygon indices.
-*/
-//go:nosplit
 func (self class) Clear() { //gd:NavigationPolygon.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }

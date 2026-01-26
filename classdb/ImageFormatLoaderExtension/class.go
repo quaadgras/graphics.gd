@@ -236,10 +236,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Returns the list of file extensions for this image format. Files with the given extensions will be treated as image file and loaded using this class.
-*/
 func (class) _get_recognized_extensions(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -252,10 +248,6 @@ func (class) _get_recognized_extensions(impl func(ptr gdclass.Receiver) Packed.S
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Loads the content of 'fileaccess' into the provided 'image'.
-*/
 func (class) _load_image(impl func(ptr gdclass.Receiver, image [1]gdclass.Image, fileaccess [1]gdclass.FileAccess, flags ImageFormatLoader.LoaderFlags, scale float64) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var image = [1]gdclass.Image{gdclass.NewImage(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -277,20 +269,9 @@ func (class) _load_image(impl func(ptr gdclass.Receiver, image [1]gdclass.Image,
 	}
 }
 
-/*
-Add this format loader to the engine, allowing it to recognize the file extensions returned by [GetRecognizedExtensions].
-
-[GetRecognizedExtensions]: https://pkg.go.dev/graphics.gd/classdb/ImageFormatLoaderExtension#Interface
-*/
-//go:nosplit
 func (self class) AddFormatLoader() { //gd:ImageFormatLoaderExtension.add_format_loader
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_format_loader, 0, &struct{}{})
 }
-
-/*
-Remove this format loader from the engine.
-*/
-//go:nosplit
 func (self class) RemoveFormatLoader() { //gd:ImageFormatLoaderExtension.remove_format_loader
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_format_loader, 0, &struct{}{})
 }

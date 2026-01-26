@@ -197,24 +197,17 @@ func (self Instance) SetEnableNodePath(value string) Instance { //gd:VisibleOnSc
 	return self
 }
 
-//go:nosplit
 func (self class) SetEnableMode(mode EnableMode) { //gd:VisibleOnScreenEnabler3D.set_enable_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_mode, 0|(gdextension.SizeInt<<4), &struct{ mode EnableMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetEnableMode() EnableMode { //gd:VisibleOnScreenEnabler3D.get_enable_mode
 	var r_ret = noescape.Call[EnableMode](gd.ObjectChecked(self.AsObject()), methods.get_enable_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEnableNodePath(path Path.ToNode) { //gd:VisibleOnScreenEnabler3D.set_enable_node_path
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_node_path, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
-
-//go:nosplit
 func (self class) GetEnableNodePath() Path.ToNode { //gd:VisibleOnScreenEnabler3D.get_enable_node_path
 	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_enable_node_path, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))

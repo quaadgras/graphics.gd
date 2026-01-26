@@ -456,169 +456,108 @@ func (self Instance) SetTintProgress(value Color.RGBA) Instance { //gd:TexturePr
 	return self
 }
 
-//go:nosplit
 func (self class) SetUnderTexture(tex [1]gdclass.Texture2D) { //gd:TextureProgressBar.set_under_texture
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_under_texture, 0|(gdextension.SizeObject<<4), &struct{ tex gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(tex[0])))})
 }
-
-//go:nosplit
 func (self class) GetUnderTexture() [1]gdclass.Texture2D { //gd:TextureProgressBar.get_under_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_under_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetProgressTexture(tex [1]gdclass.Texture2D) { //gd:TextureProgressBar.set_progress_texture
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_progress_texture, 0|(gdextension.SizeObject<<4), &struct{ tex gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(tex[0])))})
 }
-
-//go:nosplit
 func (self class) GetProgressTexture() [1]gdclass.Texture2D { //gd:TextureProgressBar.get_progress_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_progress_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetOverTexture(tex [1]gdclass.Texture2D) { //gd:TextureProgressBar.set_over_texture
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_over_texture, 0|(gdextension.SizeObject<<4), &struct{ tex gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(tex[0])))})
 }
-
-//go:nosplit
 func (self class) GetOverTexture() [1]gdclass.Texture2D { //gd:TextureProgressBar.get_over_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_over_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFillMode(mode int64) { //gd:TextureProgressBar.set_fill_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fill_mode, 0|(gdextension.SizeInt<<4), &struct{ mode int64 }{mode})
 }
-
-//go:nosplit
 func (self class) GetFillMode() int64 { //gd:TextureProgressBar.get_fill_mode
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fill_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTintUnder(tint Color.RGBA) { //gd:TextureProgressBar.set_tint_under
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tint_under, 0|(gdextension.SizeColor<<4), &struct{ tint Color.RGBA }{tint})
 }
-
-//go:nosplit
 func (self class) GetTintUnder() Color.RGBA { //gd:TextureProgressBar.get_tint_under
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_tint_under, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTintProgress(tint Color.RGBA) { //gd:TextureProgressBar.set_tint_progress
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tint_progress, 0|(gdextension.SizeColor<<4), &struct{ tint Color.RGBA }{tint})
 }
-
-//go:nosplit
 func (self class) GetTintProgress() Color.RGBA { //gd:TextureProgressBar.get_tint_progress
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_tint_progress, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTintOver(tint Color.RGBA) { //gd:TextureProgressBar.set_tint_over
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tint_over, 0|(gdextension.SizeColor<<4), &struct{ tint Color.RGBA }{tint})
 }
-
-//go:nosplit
 func (self class) GetTintOver() Color.RGBA { //gd:TextureProgressBar.get_tint_over
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_tint_over, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTextureProgressOffset(offset Vector2.XY) { //gd:TextureProgressBar.set_texture_progress_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_progress_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
-
-//go:nosplit
 func (self class) GetTextureProgressOffset() Vector2.XY { //gd:TextureProgressBar.get_texture_progress_offset
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_texture_progress_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRadialInitialAngle(mode float64) { //gd:TextureProgressBar.set_radial_initial_angle
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radial_initial_angle, 0|(gdextension.SizeFloat<<4), &struct{ mode float64 }{mode})
 }
-
-//go:nosplit
 func (self class) GetRadialInitialAngle() float64 { //gd:TextureProgressBar.get_radial_initial_angle
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radial_initial_angle, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRadialCenterOffset(mode Vector2.XY) { //gd:TextureProgressBar.set_radial_center_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radial_center_offset, 0|(gdextension.SizeVector2<<4), &struct{ mode Vector2.XY }{mode})
 }
-
-//go:nosplit
 func (self class) GetRadialCenterOffset() Vector2.XY { //gd:TextureProgressBar.get_radial_center_offset
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_radial_center_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFillDegrees(mode float64) { //gd:TextureProgressBar.set_fill_degrees
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fill_degrees, 0|(gdextension.SizeFloat<<4), &struct{ mode float64 }{mode})
 }
-
-//go:nosplit
 func (self class) GetFillDegrees() float64 { //gd:TextureProgressBar.get_fill_degrees
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fill_degrees, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the stretch margin with the specified index. See [StretchMarginBottom] and related properties.
-
-[StretchMarginBottom]: https://pkg.go.dev/graphics.gd/classdb/TextureProgressBar#Instance.StretchMarginBottom
-*/
-//go:nosplit
 func (self class) SetStretchMargin(margin Rect2.Side, value int64) { //gd:TextureProgressBar.set_stretch_margin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stretch_margin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		margin Rect2.Side
 		value  int64
 	}{margin, value})
 }
-
-/*
-Returns the stretch margin with the specified index. See [StretchMarginBottom] and related properties.
-
-[StretchMarginBottom]: https://pkg.go.dev/graphics.gd/classdb/TextureProgressBar#Instance.StretchMarginBottom
-*/
-//go:nosplit
 func (self class) GetStretchMargin(margin Rect2.Side) int64 { //gd:TextureProgressBar.get_stretch_margin
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stretch_margin, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ margin Rect2.Side }{margin})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetNinePatchStretch(stretch bool) { //gd:TextureProgressBar.set_nine_patch_stretch
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_nine_patch_stretch, 0|(gdextension.SizeBool<<4), &struct{ stretch bool }{stretch})
 }
-
-//go:nosplit
 func (self class) GetNinePatchStretch() bool { //gd:TextureProgressBar.get_nine_patch_stretch
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_nine_patch_stretch, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

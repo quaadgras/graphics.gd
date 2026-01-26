@@ -221,22 +221,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Called when the engine compilation profile editor wants to check what build options an imported resource needs. For example, [ResourceImporterDynamicFont] has a property called [ResourceImporterDynamicFont.MultichannelSignedDistanceField], that depends on the engine to be build with the "msdfgen" module. If that resource happened to be a custom one, it would be handled like this:
-
-	GetBuildDependencies := func(path string) []string {
-		var resource = Resource.Load[Resource.Instance](path)
-		var dependencies []string
-		if font, ok := Object.As[FontFile.Instance](resource); ok && font.MultichannelSignedDistanceField() {
-			dependencies = append(dependencies, "module_msdfgen_enabled")
-		}
-		return dependencies
-	}
-
-[ResourceImporterDynamicFont]: https://pkg.go.dev/graphics.gd/classdb/ResourceImporterDynamicFont
-[ResourceImporterDynamicFont.MultichannelSignedDistanceField]: https://pkg.go.dev/graphics.gd/classdb/ResourceImporterDynamicFont#Instance.MultichannelSignedDistanceField
-*/
 func (class) _get_build_dependencies(impl func(ptr gdclass.Receiver, path String.Readable) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))

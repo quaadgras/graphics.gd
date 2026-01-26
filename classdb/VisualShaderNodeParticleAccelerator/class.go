@@ -174,12 +174,9 @@ func (self Instance) SetMode(value Mode) Instance { //gd:VisualShaderNodeParticl
 	return self
 }
 
-//go:nosplit
 func (self class) SetMode(mode Mode) { //gd:VisualShaderNodeParticleAccelerator.set_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mode, 0|(gdextension.SizeInt<<4), &struct{ mode Mode }{mode})
 }
-
-//go:nosplit
 func (self class) GetMode() Mode { //gd:VisualShaderNodeParticleAccelerator.get_mode
 	var r_ret = noescape.Call[Mode](gd.ObjectChecked(self.AsObject()), methods.get_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

@@ -608,15 +608,6 @@ func (self Instance) SetNeighborFilterEnabled(value bool) Instance { //gd:AStar3
 	class(self).SetNeighborFilterEnabled(value)
 	return self
 }
-
-/*
-Called when neighboring point enters processing and if [NeighborFilterEnabled] is true. If true is returned the point will not be processed.
-
-Note that this function is hidden in the default [AStar3D] class.
-
-[AStar3D]: https://pkg.go.dev/graphics.gd/classdb/AStar3D
-[NeighborFilterEnabled]: https://pkg.go.dev/graphics.gd/classdb/AStar3D#Instance.NeighborFilterEnabled
-*/
 func (class) _filter_neighbor(impl func(ptr gdclass.Receiver, from_id int64, neighbor_id int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_id = gd.UnsafeGet[int64](p_args, 0)
@@ -626,14 +617,6 @@ func (class) _filter_neighbor(impl func(ptr gdclass.Receiver, from_id int64, nei
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called when estimating the cost between a point and the path's ending point.
-
-Note that this function is hidden in the default [AStar3D] class.
-
-[AStar3D]: https://pkg.go.dev/graphics.gd/classdb/AStar3D
-*/
 func (class) _estimate_cost(impl func(ptr gdclass.Receiver, from_id int64, end_id int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_id = gd.UnsafeGet[int64](p_args, 0)
@@ -643,14 +626,6 @@ func (class) _estimate_cost(impl func(ptr gdclass.Receiver, from_id int64, end_i
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called when computing the cost between two connected points.
-
-Note that this function is hidden in the default [AStar3D] class.
-
-[AStar3D]: https://pkg.go.dev/graphics.gd/classdb/AStar3D
-*/
 func (class) _compute_cost(impl func(ptr gdclass.Receiver, from_id int64, to_id int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_id = gd.UnsafeGet[int64](p_args, 0)
@@ -661,28 +636,11 @@ func (class) _compute_cost(impl func(ptr gdclass.Receiver, from_id int64, to_id 
 	}
 }
 
-/*
-Returns the next available point ID with no point associated to it.
-*/
-//go:nosplit
 func (self class) GetAvailablePointId() int64 { //gd:AStar3D.get_available_point_id
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_available_point_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a new point at the given position with the given identifier. The 'id' must be 0 or larger, and the 'weight_scale' must be 0.0 or greater.
-
-The 'weight_scale' is multiplied by the result of [ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point. Thus, all else being equal, the algorithm prefers points with lower 'weight_scale's to form a path.
-
-
-
-If there already exists a point for the given 'id', its position and weight scale are updated to the given values.
-
-[ComputeCost]: https://pkg.go.dev/graphics.gd/classdb/AStar3D#Interface
-*/
-//go:nosplit
 func (self class) AddPoint(id int64, position Vector3.XYZ, weight_scale float64) { //gd:AStar3D.add_point
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_point, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeFloat<<12), &struct {
 		id           int64
@@ -690,130 +648,65 @@ func (self class) AddPoint(id int64, position Vector3.XYZ, weight_scale float64)
 		weight_scale float64
 	}{id, position, weight_scale})
 }
-
-/*
-Returns the position of the point associated with the given 'id'.
-*/
-//go:nosplit
 func (self class) GetPointPosition(id int64) Vector3.XYZ { //gd:AStar3D.get_point_position
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_point_position, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the 'position' for the point with the given 'id'.
-*/
-//go:nosplit
 func (self class) SetPointPosition(id int64, position Vector3.XYZ) { //gd:AStar3D.set_point_position
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_position, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), &struct {
 		id       int64
 		position Vector3.XYZ
 	}{id, position})
 }
-
-/*
-Returns the weight scale of the point associated with the given 'id'.
-*/
-//go:nosplit
 func (self class) GetPointWeightScale(id int64) float64 { //gd:AStar3D.get_point_weight_scale
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_point_weight_scale, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the 'weight_scale' for the point with the given 'id'. The 'weight_scale' is multiplied by the result of [ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point.
-
-[ComputeCost]: https://pkg.go.dev/graphics.gd/classdb/AStar3D#Interface
-*/
-//go:nosplit
 func (self class) SetPointWeightScale(id int64, weight_scale float64) { //gd:AStar3D.set_point_weight_scale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_weight_scale, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		id           int64
 		weight_scale float64
 	}{id, weight_scale})
 }
-
-/*
-Removes the point associated with the given 'id' from the points pool.
-*/
-//go:nosplit
 func (self class) RemovePoint(id int64) { //gd:AStar3D.remove_point
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_point, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 }
-
-/*
-Returns whether a point associated with the given 'id' exists.
-*/
-//go:nosplit
 func (self class) HasPoint(id int64) bool { //gd:AStar3D.has_point
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_point, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns an array with the IDs of the points that form the connection with the given point.
-
-
-*/
-//go:nosplit
 func (self class) GetPointConnections(id int64) Packed.Array[int64] { //gd:AStar3D.get_point_connections
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_point_connections, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns an array of all point IDs.
-*/
-//go:nosplit
 func (self class) GetPointIds() Packed.Array[int64] { //gd:AStar3D.get_point_ids
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_point_ids, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Disables or enables the specified point for pathfinding. Useful for making a temporary obstacle.
-*/
-//go:nosplit
 func (self class) SetPointDisabled(id int64, disabled bool) { //gd:AStar3D.set_point_disabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_disabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		id       int64
 		disabled bool
 	}{id, disabled})
 }
-
-/*
-Returns whether a point is disabled or not for pathfinding. By default, all points are enabled.
-*/
-//go:nosplit
 func (self class) IsPointDisabled(id int64) bool { //gd:AStar3D.is_point_disabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_point_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetNeighborFilterEnabled(enabled bool) { //gd:AStar3D.set_neighbor_filter_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_neighbor_filter_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsNeighborFilterEnabled() bool { //gd:AStar3D.is_neighbor_filter_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_neighbor_filter_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Creates a segment between the given points. If 'bidirectional' is false, only movement from 'id' to 'to_id' is allowed, not the reverse direction.
-
-
-*/
-//go:nosplit
 func (self class) ConnectPoints(id int64, to_id int64, bidirectional bool) { //gd:AStar3D.connect_points
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.connect_points, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		id            int64
@@ -821,11 +714,6 @@ func (self class) ConnectPoints(id int64, to_id int64, bidirectional bool) { //g
 		bidirectional bool
 	}{id, to_id, bidirectional})
 }
-
-/*
-Deletes the segment between the given points. If 'bidirectional' is false, only movement from 'id' to 'to_id' is prevented, and a unidirectional segment possibly remains.
-*/
-//go:nosplit
 func (self class) DisconnectPoints(id int64, to_id int64, bidirectional bool) { //gd:AStar3D.disconnect_points
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.disconnect_points, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		id            int64
@@ -833,11 +721,6 @@ func (self class) DisconnectPoints(id int64, to_id int64, bidirectional bool) { 
 		bidirectional bool
 	}{id, to_id, bidirectional})
 }
-
-/*
-Returns whether the two given points are directly connected by a segment. If 'bidirectional' is false, returns whether movement from 'id' to 'to_id' is possible through this segment.
-*/
-//go:nosplit
 func (self class) ArePointsConnected(id int64, to_id int64, bidirectional bool) bool { //gd:AStar3D.are_points_connected
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.are_points_connected, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		id            int64
@@ -847,51 +730,22 @@ func (self class) ArePointsConnected(id int64, to_id int64, bidirectional bool) 
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the number of points currently in the points pool.
-*/
-//go:nosplit
 func (self class) GetPointCount() int64 { //gd:AStar3D.get_point_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_point_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the capacity of the structure backing the points, useful in conjunction with [ReserveSpace].
-
-[ReserveSpace]: https://pkg.go.dev/graphics.gd/classdb/AStar3D#Instance.ReserveSpace
-*/
-//go:nosplit
 func (self class) GetPointCapacity() int64 { //gd:AStar3D.get_point_capacity
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_point_capacity, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Reserves space internally for 'num_nodes' points. Useful if you're adding a known large number of points at once, such as points on a grid.
-*/
-//go:nosplit
 func (self class) ReserveSpace(num_nodes int64) { //gd:AStar3D.reserve_space
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reserve_space, 0|(gdextension.SizeInt<<4), &struct{ num_nodes int64 }{num_nodes})
 }
-
-/*
-Clears all the points and segments.
-*/
-//go:nosplit
 func (self class) Clear() { //gd:AStar3D.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
-
-/*
-Returns the ID of the closest point to 'to_position', optionally taking disabled points into account. Returns -1 if there are no points in the points pool.
-
-Note: If several points are the closest to 'to_position', the one with the smallest ID will be returned, ensuring a deterministic result.
-*/
-//go:nosplit
 func (self class) GetClosestPoint(to_position Vector3.XYZ, include_disabled bool) int64 { //gd:AStar3D.get_closest_point
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_closest_point, gdextension.SizeInt|(gdextension.SizeVector3<<4)|(gdextension.SizeBool<<8), &struct {
 		to_position      Vector3.XYZ
@@ -900,34 +754,11 @@ func (self class) GetClosestPoint(to_position Vector3.XYZ, include_disabled bool
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the closest position to 'to_position' that resides inside a segment between two connected points.
-
-
-
-The result is in the segment that goes from y = 0 to y = 5. It's the closest position in the segment to the given point.
-*/
-//go:nosplit
 func (self class) GetClosestPositionInSegment(to_position Vector3.XYZ) Vector3.XYZ { //gd:AStar3D.get_closest_position_in_segment
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_closest_position_in_segment, gdextension.SizeVector3|(gdextension.SizeVector3<<4), &struct{ to_position Vector3.XYZ }{to_position})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns an array with the points that are in the path found by AStar3D between the given points. The array is ordered from the starting point to the ending point of the path.
-
-If there is no valid path to the target, and 'allow_partial_path' is true, returns a path to the point closest to the target that can be reached.
-
-Note: This method is not thread-safe; it can only be used from a single [Thread] at a given time. Consider using [Mutex] to ensure exclusive access to one thread to avoid race conditions.
-
-Additionally, when 'allow_partial_path' is true and 'to_id' is disabled the search may take an unusually long time to finish.
-
-[Mutex]: https://pkg.go.dev/graphics.gd/classdb/Mutex
-[Thread]: https://pkg.go.dev/graphics.gd/classdb/Thread
-*/
-//go:nosplit
 func (self class) GetPointPath(from_id int64, to_id int64, allow_partial_path bool) Packed.Array[Vector3.XYZ] { //gd:AStar3D.get_point_path
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_point_path, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		from_id            int64
@@ -937,19 +768,6 @@ func (self class) GetPointPath(from_id int64, to_id int64, allow_partial_path bo
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns an array with the IDs of the points that form the path found by AStar3D between the given points. The array is ordered from the starting point to the ending point of the path.
-
-If there is no valid path to the target, and 'allow_partial_path' is true, returns a path to the point closest to the target that can be reached.
-
-Note: When 'allow_partial_path' is true and 'to_id' is disabled the search may take an unusually long time to finish.
-
-
-
-If you change the 2nd point's weight to 3, then the result will be [1, 4, 3] instead, because now even though the distance is longer, it's "easier" to get through point 4 than through point 2.
-*/
-//go:nosplit
 func (self class) GetIdPath(from_id int64, to_id int64, allow_partial_path bool) Packed.Array[int64] { //gd:AStar3D.get_id_path
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_id_path, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		from_id            int64

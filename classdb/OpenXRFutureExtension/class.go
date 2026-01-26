@@ -220,36 +220,11 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns true if futures are available in the OpenXR runtime used. This function will only return a usable result after OpenXR has been initialized.
-*/
-//go:nosplit
 func (self class) IsActive() bool { //gd:OpenXRFutureExtension.is_active
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_active, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Register an OpenXR Future object so we monitor for completion. 'future' must be an XrFutureEXT value previously returned by an API that started an asynchronous function.
-
-You can optionally specify 'on_success', it will be invoked on successful completion of the future.
-
-Or you can use the returned [OpenXRFutureResult] object to await its [OnOpenxrfutureresult.Completed] signal.
-
-
-	var future_result = openXRFutureExtension.RegisterFuture(future)
-	future_result.OnCompleted(func(result OpenXRFutureResult.Instance) {
-		if result.GetStatus() == OpenXRFutureResult.ResultFinished {
-			// Handle your success
-		}
-	}, Signal.OneShot)
-
-
-[OnOpenxrfutureresult.Completed]: https://pkg.go.dev/graphics.gd/classdb/OpenXRFutureExtension#Instance.OnOpenxrfutureresult.Completed
-[OpenXRFutureResult]: https://pkg.go.dev/graphics.gd/classdb/OpenXRFutureResult
-*/
-//go:nosplit
 func (self class) RegisterFuture(future int64, on_success Callable.Function) [1]gdclass.OpenXRFutureResult { //gd:OpenXRFutureExtension.register_future
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.register_future, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeCallable<<8), &struct {
 		future     int64
@@ -258,11 +233,6 @@ func (self class) RegisterFuture(future int64, on_success Callable.Function) [1]
 	var ret = [1]gdclass.OpenXRFutureResult{gdclass.NewOpenXRFutureResult(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Cancels an in-progress future. 'future' must be an XrFutureEXT value previously returned by an API that started an asynchronous function.
-*/
-//go:nosplit
 func (self class) CancelFuture(future int64) { //gd:OpenXRFutureExtension.cancel_future
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.cancel_future, 0|(gdextension.SizeInt<<4), &struct{ future int64 }{future})
 }

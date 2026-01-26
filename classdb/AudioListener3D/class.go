@@ -217,54 +217,25 @@ func (self Instance) SetDopplerTracking(value DopplerTracking) Instance { //gd:A
 	return self
 }
 
-/*
-Enables the listener. This will override the current camera's listener.
-*/
-//go:nosplit
 func (self class) MakeCurrent() { //gd:AudioListener3D.make_current
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.make_current, 0, &struct{}{})
 }
-
-/*
-Disables the listener to use the current camera's listener instead.
-*/
-//go:nosplit
 func (self class) ClearCurrent() { //gd:AudioListener3D.clear_current
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_current, 0, &struct{}{})
 }
-
-/*
-Returns true if the listener was made current using [MakeCurrent], false otherwise.
-
-Note: There may be more than one AudioListener3D marked as "current" in the scene tree, but only the one that was made current last will be used.
-
-[MakeCurrent]: https://pkg.go.dev/graphics.gd/classdb/AudioListener3D#Instance.MakeCurrent
-*/
-//go:nosplit
 func (self class) IsCurrent() bool { //gd:AudioListener3D.is_current
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_current, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the listener's global orthonormalized [Transform3D.BasisOrigin].
-
-[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
-*/
-//go:nosplit
 func (self class) GetListenerTransform() Transform3D.BasisOrigin { //gd:AudioListener3D.get_listener_transform
 	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_listener_transform, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDopplerTracking(mode DopplerTracking) { //gd:AudioListener3D.set_doppler_tracking
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_doppler_tracking, 0|(gdextension.SizeInt<<4), &struct{ mode DopplerTracking }{mode})
 }
-
-//go:nosplit
 func (self class) GetDopplerTracking() DopplerTracking { //gd:AudioListener3D.get_doppler_tracking
 	var r_ret = noescape.Call[DopplerTracking](gd.ObjectChecked(self.AsObject()), methods.get_doppler_tracking, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

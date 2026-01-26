@@ -217,48 +217,33 @@ func (self Instance) SetDb(value FilterDB) Instance { //gd:AudioEffectFilter.db
 	return self
 }
 
-//go:nosplit
 func (self class) SetCutoff(freq float64) { //gd:AudioEffectFilter.set_cutoff
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cutoff, 0|(gdextension.SizeFloat<<4), &struct{ freq float64 }{freq})
 }
-
-//go:nosplit
 func (self class) GetCutoff() float64 { //gd:AudioEffectFilter.get_cutoff
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_cutoff, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetResonance(amount float64) { //gd:AudioEffectFilter.set_resonance
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_resonance, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
-
-//go:nosplit
 func (self class) GetResonance() float64 { //gd:AudioEffectFilter.get_resonance
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_resonance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetGain(amount float64) { //gd:AudioEffectFilter.set_gain
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gain, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
-
-//go:nosplit
 func (self class) GetGain() float64 { //gd:AudioEffectFilter.get_gain
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gain, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDb(amount FilterDB) { //gd:AudioEffectFilter.set_db
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_db, 0|(gdextension.SizeInt<<4), &struct{ amount FilterDB }{amount})
 }
-
-//go:nosplit
 func (self class) GetDb() FilterDB { //gd:AudioEffectFilter.get_db
 	var r_ret = noescape.Call[FilterDB](gd.ObjectChecked(self.AsObject()), methods.get_db, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

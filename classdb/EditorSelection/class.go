@@ -213,62 +213,25 @@ func New() Instance {
 	return casted
 }
 
-/*
-Clear the selection.
-*/
-//go:nosplit
 func (self class) Clear() { //gd:EditorSelection.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
-
-/*
-Adds a node to the selection.
-
-Note: The newly selected node will not be automatically edited in the inspector. If you want to edit a node, use [EditorInterface.EditNode].
-
-[EditorInterface.EditNode]: https://pkg.go.dev/graphics.gd/classdb/EditorInterface#EditNode
-*/
-//go:nosplit
 func (self class) AddNode(node [1]gdclass.Node) { //gd:EditorSelection.add_node
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_node, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetNode(node[0])[0]))})
 }
-
-/*
-Removes a node from the selection.
-*/
-//go:nosplit
 func (self class) RemoveNode(node [1]gdclass.Node) { //gd:EditorSelection.remove_node
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_node, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
 }
-
-/*
-Returns the list of selected nodes.
-*/
-//go:nosplit
 func (self class) GetSelectedNodes() Array.Contains[[1]gdclass.Node] { //gd:EditorSelection.get_selected_nodes
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_selected_nodes, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns the list of top selected nodes only, excluding any children. This is useful for performing transform operations (moving them, rotating, etc.).
-
-For example, if there is a node A with a child B and a sibling C, then selecting all three will cause this method to return only A and C. Changing the global transform of A will affect the global transform of B, so there is no need to change B separately.
-*/
-//go:nosplit
 func (self class) GetTopSelectedNodes() Array.Contains[[1]gdclass.Node] { //gd:EditorSelection.get_top_selected_nodes
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_top_selected_nodes, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns the list of top selected nodes only, excluding any children. This is useful for performing transform operations (moving them, rotating, etc.). See [GetTopSelectedNodes].
-
-[GetTopSelectedNodes]: https://pkg.go.dev/graphics.gd/classdb/EditorSelection#Instance.GetTopSelectedNodes
-*/
-//go:nosplit
 func (self class) GetTransformableSelectedNodes() Array.Contains[[1]gdclass.Node] { //gd:EditorSelection.get_transformable_selected_nodes
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_transformable_selected_nodes, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))

@@ -255,91 +255,38 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns the [GridMap] node currently edited by the grid map editor.
-
-[GridMap]: https://pkg.go.dev/graphics.gd/classdb/GridMap
-*/
-//go:nosplit
 func (self class) GetCurrentGridMap() [1]gdclass.GridMap { //gd:GridMapEditorPlugin.get_current_grid_map
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_current_grid_map, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.GridMap{gdclass.NewGridMap(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Selects the cells inside the given bounds from 'begin' to 'end'.
-*/
-//go:nosplit
 func (self class) SetSelection(begin Vector3i.XYZ, end Vector3i.XYZ) { //gd:GridMapEditorPlugin.set_selection
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selection, 0|(gdextension.SizeVector3i<<4)|(gdextension.SizeVector3i<<8), &struct {
 		begin Vector3i.XYZ
 		end   Vector3i.XYZ
 	}{begin, end})
 }
-
-/*
-Deselects any currently selected cells.
-*/
-//go:nosplit
 func (self class) ClearSelection() { //gd:GridMapEditorPlugin.clear_selection
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_selection, 0, &struct{}{})
 }
-
-/*
-Returns the cell coordinate bounds of the current selection. Use [HasSelection] to check if there is an active selection.
-
-[HasSelection]: https://pkg.go.dev/graphics.gd/classdb/GridMapEditorPlugin#Instance.HasSelection
-*/
-//go:nosplit
 func (self class) GetSelection() AABB.PositionSize { //gd:GridMapEditorPlugin.get_selection
 	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_selection, gdextension.SizeAABB, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if there are selected cells.
-*/
-//go:nosplit
 func (self class) HasSelection() bool { //gd:GridMapEditorPlugin.has_selection
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_selection, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns an array of [Vector3i.XYZ]s with the selected cells' coordinates.
-
-[Vector3i.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3i#XYZ
-*/
-//go:nosplit
 func (self class) GetSelectedCells() Array.Any { //gd:GridMapEditorPlugin.get_selected_cells
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_selected_cells, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Selects the [MeshLibrary] item with the given index in the grid map editor's palette. If a negative index is given, no item will be selected. If a value greater than the last index is given, the last item will be selected.
-
-Note: The indices might not be in the same order as they appear in the editor's interface.
-
-[MeshLibrary]: https://pkg.go.dev/graphics.gd/classdb/MeshLibrary
-*/
-//go:nosplit
 func (self class) SetSelectedPaletteItem(item int64) { //gd:GridMapEditorPlugin.set_selected_palette_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selected_palette_item, 0|(gdextension.SizeInt<<4), &struct{ item int64 }{item})
 }
-
-/*
-Returns the index of the selected [MeshLibrary] item in the grid map editor's palette or -1 if no item is selected.
-
-Note: The indices might not be in the same order as they appear in the editor's interface.
-
-[MeshLibrary]: https://pkg.go.dev/graphics.gd/classdb/MeshLibrary
-*/
-//go:nosplit
 func (self class) GetSelectedPaletteItem() int64 { //gd:GridMapEditorPlugin.get_selected_palette_item
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selected_palette_item, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

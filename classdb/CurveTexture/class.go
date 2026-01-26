@@ -208,29 +208,20 @@ func (self Instance) SetCurve(value Curve.Instance) Instance { //gd:CurveTexture
 	return self
 }
 
-//go:nosplit
 func (self class) SetWidth(width int64) { //gd:CurveTexture.set_width
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_width, 0|(gdextension.SizeInt<<4), &struct{ width int64 }{width})
 }
-
-//go:nosplit
 func (self class) SetCurve(curve [1]gdclass.Curve) { //gd:CurveTexture.set_curve
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCurve(curve[0])))})
 }
-
-//go:nosplit
 func (self class) GetCurve() [1]gdclass.Curve { //gd:CurveTexture.get_curve
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Curve{gdclass.NewCurve(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTextureMode(texture_mode TextureMode) { //gd:CurveTexture.set_texture_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_mode, 0|(gdextension.SizeInt<<4), &struct{ texture_mode TextureMode }{texture_mode})
 }
-
-//go:nosplit
 func (self class) GetTextureMode() TextureMode { //gd:CurveTexture.get_texture_mode
 	var r_ret = noescape.Call[TextureMode](gd.ObjectChecked(self.AsObject()), methods.get_texture_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

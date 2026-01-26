@@ -182,24 +182,16 @@ func (self Instance) SetRenderModel(value RID.RenderModel) Instance { //gd:OpenX
 	return self
 }
 
-/*
-Returns the top level path related to this render model.
-*/
-//go:nosplit
 func (self class) GetTopLevelPath() String.Readable { //gd:OpenXRRenderModel.get_top_level_path
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_top_level_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) GetRenderModel() RID.Any { //gd:OpenXRRenderModel.get_render_model
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_render_model, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRenderModel(render_model RID.Any) { //gd:OpenXRRenderModel.set_render_model
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_render_model, 0|(gdextension.SizeRID<<4), &struct{ render_model RID.Any }{render_model})
 }

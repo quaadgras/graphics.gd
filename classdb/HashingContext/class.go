@@ -206,30 +206,16 @@ func New() Instance {
 	return casted
 }
 
-/*
-Starts a new hash computation of the given 'type' (e.g. [HashSha256] to start computation of an SHA-256).
-*/
-//go:nosplit
 func (self class) Start(atype HashType) Error.Code { //gd:HashingContext.start
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ atype HashType }{atype})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Updates the computation with the given 'chunk' of data.
-*/
-//go:nosplit
 func (self class) Update(chunk Packed.Bytes) Error.Code { //gd:HashingContext.update
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.update, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ chunk gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](chunk.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Closes the current context, and return the computed hash.
-*/
-//go:nosplit
 func (self class) Finish() Packed.Bytes { //gd:HashingContext.finish
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.finish, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}

@@ -289,102 +289,49 @@ func (self Instance) SetEnable(value TransformFlag) Instance { //gd:RetargetModi
 	return self
 }
 
-//go:nosplit
 func (self class) SetProfile(profile [1]gdclass.SkeletonProfile) { //gd:RetargetModifier3D.set_profile
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_profile, 0|(gdextension.SizeObject<<4), &struct{ profile gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetSkeletonProfile(profile[0])))})
 }
-
-//go:nosplit
 func (self class) GetProfile() [1]gdclass.SkeletonProfile { //gd:RetargetModifier3D.get_profile
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_profile, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.SkeletonProfile{gdclass.NewSkeletonProfile(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUseGlobalPose(use_global_pose bool) { //gd:RetargetModifier3D.set_use_global_pose
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_global_pose, 0|(gdextension.SizeBool<<4), &struct{ use_global_pose bool }{use_global_pose})
 }
-
-//go:nosplit
 func (self class) IsUsingGlobalPose() bool { //gd:RetargetModifier3D.is_using_global_pose
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_global_pose, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEnableFlags(enable_flags TransformFlag) { //gd:RetargetModifier3D.set_enable_flags
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_flags, 0|(gdextension.SizeInt<<4), &struct{ enable_flags TransformFlag }{enable_flags})
 }
-
-//go:nosplit
 func (self class) GetEnableFlags() TransformFlag { //gd:RetargetModifier3D.get_enable_flags
 	var r_ret = noescape.Call[TransformFlag](gd.ObjectChecked(self.AsObject()), methods.get_enable_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets [TransformFlagPosition] into [Enable].
-
-[Enable]: https://pkg.go.dev/graphics.gd/classdb/RetargetModifier3D#Instance.Enable
-*/
-//go:nosplit
 func (self class) SetPositionEnabled(enabled bool) { //gd:RetargetModifier3D.set_position_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-/*
-Returns true if [Enable] has [TransformFlagPosition].
-
-[Enable]: https://pkg.go.dev/graphics.gd/classdb/RetargetModifier3D#Instance.Enable
-*/
-//go:nosplit
 func (self class) IsPositionEnabled() bool { //gd:RetargetModifier3D.is_position_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_position_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets [TransformFlagRotation] into [Enable].
-
-[Enable]: https://pkg.go.dev/graphics.gd/classdb/RetargetModifier3D#Instance.Enable
-*/
-//go:nosplit
 func (self class) SetRotationEnabled(enabled bool) { //gd:RetargetModifier3D.set_rotation_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-/*
-Returns true if [Enable] has [TransformFlagRotation].
-
-[Enable]: https://pkg.go.dev/graphics.gd/classdb/RetargetModifier3D#Instance.Enable
-*/
-//go:nosplit
 func (self class) IsRotationEnabled() bool { //gd:RetargetModifier3D.is_rotation_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_rotation_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets [TransformFlagScale] into [Enable].
-
-[Enable]: https://pkg.go.dev/graphics.gd/classdb/RetargetModifier3D#Instance.Enable
-*/
-//go:nosplit
 func (self class) SetScaleEnabled(enabled bool) { //gd:RetargetModifier3D.set_scale_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-/*
-Returns true if [Enable] has [TransformFlagScale].
-
-[Enable]: https://pkg.go.dev/graphics.gd/classdb/RetargetModifier3D#Instance.Enable
-*/
-//go:nosplit
 func (self class) IsScaleEnabled() bool { //gd:RetargetModifier3D.is_scale_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scale_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

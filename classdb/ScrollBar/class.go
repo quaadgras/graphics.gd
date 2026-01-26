@@ -175,12 +175,9 @@ func (self Instance) SetCustomStep(value Float.X) Instance { //gd:ScrollBar.cust
 	return self
 }
 
-//go:nosplit
 func (self class) SetCustomStep(step float64) { //gd:ScrollBar.set_custom_step
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_step, 0|(gdextension.SizeFloat<<4), &struct{ step float64 }{step})
 }
-
-//go:nosplit
 func (self class) GetCustomStep() float64 { //gd:ScrollBar.get_custom_step
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_custom_step, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

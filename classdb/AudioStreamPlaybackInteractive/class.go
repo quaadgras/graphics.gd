@@ -191,36 +191,12 @@ func New() Instance {
 	return casted
 }
 
-/*
-Switch to a clip (by name).
-*/
-//go:nosplit
 func (self class) SwitchToClipByName(clip_name String.Name) { //gd:AudioStreamPlaybackInteractive.switch_to_clip_by_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.switch_to_clip_by_name, 0|(gdextension.SizeStringName<<4), &struct{ clip_name gdextension.StringName }{pointers.Get(gd.InternalStringName(clip_name))})
 }
-
-/*
-Switch to a clip (by index).
-*/
-//go:nosplit
 func (self class) SwitchToClip(clip_index int64) { //gd:AudioStreamPlaybackInteractive.switch_to_clip
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.switch_to_clip, 0|(gdextension.SizeInt<<4), &struct{ clip_index int64 }{clip_index})
 }
-
-/*
-Return the index of the currently playing clip. You can use this to get the name of the currently playing clip with [AudioStreamInteractive.GetClipName].
-
-Example: Get the currently playing clip name from inside an [AudioStreamPlayer] node.
-
-
-	var playback = Object.To[AudioStreamPlaybackInteractive.Instance](audioStreamPlayer.GetStreamPlayback())
-	var playing_clip_name = streamInteractive.GetClipName(playback.GetCurrentClipIndex())
-
-
-[AudioStreamInteractive.GetClipName]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamInteractive#Instance.GetClipName
-[AudioStreamPlayer]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer
-*/
-//go:nosplit
 func (self class) GetCurrentClipIndex() int64 { //gd:AudioStreamPlaybackInteractive.get_current_clip_index
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_current_clip_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

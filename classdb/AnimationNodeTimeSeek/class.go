@@ -190,12 +190,9 @@ func (self Instance) SetExplicitElapse(value bool) Instance { //gd:AnimationNode
 	return self
 }
 
-//go:nosplit
 func (self class) SetExplicitElapse(enable bool) { //gd:AnimationNodeTimeSeek.set_explicit_elapse
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_explicit_elapse, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsExplicitElapse() bool { //gd:AnimationNodeTimeSeek.is_explicit_elapse
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_explicit_elapse, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

@@ -294,85 +294,52 @@ func (self Instance) SetHeightfieldMask(value int) Instance { //gd:GPUParticlesC
 	return self
 }
 
-//go:nosplit
 func (self class) SetSize(size Vector3.XYZ) { //gd:GPUParticlesCollisionHeightField3D.set_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), &struct{ size Vector3.XYZ }{size})
 }
-
-//go:nosplit
 func (self class) GetSize() Vector3.XYZ { //gd:GPUParticlesCollisionHeightField3D.get_size
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetResolution(resolution Resolution) { //gd:GPUParticlesCollisionHeightField3D.set_resolution
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_resolution, 0|(gdextension.SizeInt<<4), &struct{ resolution Resolution }{resolution})
 }
-
-//go:nosplit
 func (self class) GetResolution() Resolution { //gd:GPUParticlesCollisionHeightField3D.get_resolution
 	var r_ret = noescape.Call[Resolution](gd.ObjectChecked(self.AsObject()), methods.get_resolution, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUpdateMode(update_mode UpdateMode) { //gd:GPUParticlesCollisionHeightField3D.set_update_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_update_mode, 0|(gdextension.SizeInt<<4), &struct{ update_mode UpdateMode }{update_mode})
 }
-
-//go:nosplit
 func (self class) GetUpdateMode() UpdateMode { //gd:GPUParticlesCollisionHeightField3D.get_update_mode
 	var r_ret = noescape.Call[UpdateMode](gd.ObjectChecked(self.AsObject()), methods.get_update_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetHeightfieldMask(heightfield_mask int64) { //gd:GPUParticlesCollisionHeightField3D.set_heightfield_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_heightfield_mask, 0|(gdextension.SizeInt<<4), &struct{ heightfield_mask int64 }{heightfield_mask})
 }
-
-//go:nosplit
 func (self class) GetHeightfieldMask() int64 { //gd:GPUParticlesCollisionHeightField3D.get_heightfield_mask
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_heightfield_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Based on 'value', enables or disables the specified layer in the [HeightfieldMask], given a 'layer_number' between 1 and 20, inclusive.
-
-[HeightfieldMask]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.HeightfieldMask
-*/
-//go:nosplit
 func (self class) SetHeightfieldMaskValue(layer_number int64, value bool) { //gd:GPUParticlesCollisionHeightField3D.set_heightfield_mask_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_heightfield_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value})
 }
-
-/*
-Returns true if the specified layer of the [HeightfieldMask] is enabled, given a 'layer_number' between 1 and 20, inclusive.
-
-[HeightfieldMask]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.HeightfieldMask
-*/
-//go:nosplit
 func (self class) GetHeightfieldMaskValue(layer_number int64) bool { //gd:GPUParticlesCollisionHeightField3D.get_heightfield_mask_value
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_heightfield_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFollowCameraEnabled(enabled bool) { //gd:GPUParticlesCollisionHeightField3D.set_follow_camera_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_follow_camera_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsFollowCameraEnabled() bool { //gd:GPUParticlesCollisionHeightField3D.is_follow_camera_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_follow_camera_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

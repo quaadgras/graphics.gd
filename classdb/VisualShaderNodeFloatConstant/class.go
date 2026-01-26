@@ -173,12 +173,9 @@ func (self Instance) SetConstant(value Float.X) Instance { //gd:VisualShaderNode
 	return self
 }
 
-//go:nosplit
 func (self class) SetConstant(constant float64) { //gd:VisualShaderNodeFloatConstant.set_constant
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant, 0|(gdextension.SizeFloat<<4), &struct{ constant float64 }{constant})
 }
-
-//go:nosplit
 func (self class) GetConstant() float64 { //gd:VisualShaderNodeFloatConstant.get_constant
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_constant, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

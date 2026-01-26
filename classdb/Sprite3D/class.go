@@ -285,84 +285,57 @@ func (self Instance) SetRegionRect(value Rect2.PositionSize) Instance { //gd:Spr
 	return self
 }
 
-//go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:Sprite3D.set_texture
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
-
-//go:nosplit
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:Sprite3D.get_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRegionEnabled(enabled bool) { //gd:Sprite3D.set_region_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_region_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsRegionEnabled() bool { //gd:Sprite3D.is_region_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_region_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRegionRect(rect Rect2.PositionSize) { //gd:Sprite3D.set_region_rect
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_region_rect, 0|(gdextension.SizeRect2<<4), &struct{ rect Rect2.PositionSize }{rect})
 }
-
-//go:nosplit
 func (self class) GetRegionRect() Rect2.PositionSize { //gd:Sprite3D.get_region_rect
 	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_region_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFrame(frame_ int64) { //gd:Sprite3D.set_frame
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame, 0|(gdextension.SizeInt<<4), &struct{ frame_ int64 }{frame_})
 }
-
-//go:nosplit
 func (self class) GetFrame() int64 { //gd:Sprite3D.get_frame
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFrameCoords(coords Vector2i.XY) { //gd:Sprite3D.set_frame_coords
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame_coords, 0|(gdextension.SizeVector2i<<4), &struct{ coords Vector2i.XY }{coords})
 }
-
-//go:nosplit
 func (self class) GetFrameCoords() Vector2i.XY { //gd:Sprite3D.get_frame_coords
 	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_frame_coords, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetVframes(vframes int64) { //gd:Sprite3D.set_vframes
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vframes, 0|(gdextension.SizeInt<<4), &struct{ vframes int64 }{vframes})
 }
-
-//go:nosplit
 func (self class) GetVframes() int64 { //gd:Sprite3D.get_vframes
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_vframes, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetHframes(hframes int64) { //gd:Sprite3D.set_hframes
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hframes, 0|(gdextension.SizeInt<<4), &struct{ hframes int64 }{hframes})
 }
-
-//go:nosplit
 func (self class) GetHframes() int64 { //gd:Sprite3D.get_hframes
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_hframes, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

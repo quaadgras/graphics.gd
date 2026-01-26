@@ -196,24 +196,17 @@ func (self Instance) SetRect(value Rect2.PositionSize) Instance { //gd:BackBuffe
 	return self
 }
 
-//go:nosplit
 func (self class) SetRect(rect Rect2.PositionSize) { //gd:BackBufferCopy.set_rect
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rect, 0|(gdextension.SizeRect2<<4), &struct{ rect Rect2.PositionSize }{rect})
 }
-
-//go:nosplit
 func (self class) GetRect() Rect2.PositionSize { //gd:BackBufferCopy.get_rect
 	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCopyMode(copy_mode CopyMode) { //gd:BackBufferCopy.set_copy_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_copy_mode, 0|(gdextension.SizeInt<<4), &struct{ copy_mode CopyMode }{copy_mode})
 }
-
-//go:nosplit
 func (self class) GetCopyMode() CopyMode { //gd:BackBufferCopy.get_copy_mode
 	var r_ret = noescape.Call[CopyMode](gd.ObjectChecked(self.AsObject()), methods.get_copy_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

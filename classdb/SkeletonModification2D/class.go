@@ -341,10 +341,6 @@ func (self Instance) SetExecutionMode(value int) Instance { //gd:SkeletonModific
 	class(self).SetExecutionMode(int64(value))
 	return self
 }
-
-/*
-Executes the given modification. This is where the modification performs whatever function it is designed to do.
-*/
 func (class) _execute(impl func(ptr gdclass.Receiver, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
@@ -352,10 +348,6 @@ func (class) _execute(impl func(ptr gdclass.Receiver, delta float64)) (cb gd.Ext
 		impl(self, delta)
 	}
 }
-
-/*
-Called when the modification is setup. This is where the modification performs initialization.
-*/
 func (class) _setup_modification(impl func(ptr gdclass.Receiver, modification_stack [1]gdclass.SkeletonModificationStack2D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var modification_stack = [1]gdclass.SkeletonModificationStack2D{gdclass.NewSkeletonModificationStack2D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -365,15 +357,6 @@ func (class) _setup_modification(impl func(ptr gdclass.Receiver, modification_st
 		impl(self, modification_stack)
 	}
 }
-
-/*
-Used for drawing editor-only modification gizmos. This function will only be called in the Godot editor and can be overridden to draw custom gizmos.
-
-Note: You will need to use the Skeleton2D from [SkeletonModificationStack2D.GetSkeleton] and it's draw functions, as the [SkeletonModification2D] resource cannot draw on its own.
-
-[SkeletonModification2D]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModification2D
-[SkeletonModificationStack2D.GetSkeleton]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModificationStack2D#Instance.GetSkeleton
-*/
 func (class) _draw_editor_gizmo(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -381,66 +364,35 @@ func (class) _draw_editor_gizmo(impl func(ptr gdclass.Receiver)) (cb gd.Extensio
 	}
 }
 
-//go:nosplit
 func (self class) SetEnabled(enabled bool) { //gd:SkeletonModification2D.set_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) GetEnabled() bool { //gd:SkeletonModification2D.get_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [SkeletonModificationStack2D] that this modification is bound to. Through the modification stack, you can access the Skeleton2D the modification is operating on.
-
-[SkeletonModificationStack2D]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModificationStack2D
-*/
-//go:nosplit
 func (self class) GetModificationStack() [1]gdclass.SkeletonModificationStack2D { //gd:SkeletonModification2D.get_modification_stack
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_modification_stack, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.SkeletonModificationStack2D{gdclass.NewSkeletonModificationStack2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Manually allows you to set the setup state of the modification. This function should only rarely be used, as the [SkeletonModificationStack2D] the modification is bound to should handle setting the modification up.
-
-[SkeletonModificationStack2D]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModificationStack2D
-*/
-//go:nosplit
 func (self class) SetIsSetup(is_setup bool) { //gd:SkeletonModification2D.set_is_setup
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_is_setup, 0|(gdextension.SizeBool<<4), &struct{ is_setup bool }{is_setup})
 }
-
-/*
-Returns whether this modification has been successfully setup or not.
-*/
-//go:nosplit
 func (self class) GetIsSetup() bool { //gd:SkeletonModification2D.get_is_setup
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_setup, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetExecutionMode(execution_mode int64) { //gd:SkeletonModification2D.set_execution_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_execution_mode, 0|(gdextension.SizeInt<<4), &struct{ execution_mode int64 }{execution_mode})
 }
-
-//go:nosplit
 func (self class) GetExecutionMode() int64 { //gd:SkeletonModification2D.get_execution_mode
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_execution_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Takes an angle and clamps it so it is within the passed-in 'min' and 'max' range. 'invert' will inversely clamp the angle, clamping it to the range outside of the given bounds.
-*/
-//go:nosplit
 func (self class) ClampAngle(angle float64, min float64, max float64, invert bool) float64 { //gd:SkeletonModification2D.clamp_angle
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.clamp_angle, gdextension.SizeFloat|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), &struct {
 		angle  float64
@@ -451,23 +403,9 @@ func (self class) ClampAngle(angle float64, min float64, max float64, invert boo
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets whether this modification will call [DrawEditorGizmo] in the Godot editor to draw modification-specific gizmos.
-
-[DrawEditorGizmo]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModification2D#Interface
-*/
-//go:nosplit
 func (self class) SetEditorDrawGizmo(draw_gizmo bool) { //gd:SkeletonModification2D.set_editor_draw_gizmo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editor_draw_gizmo, 0|(gdextension.SizeBool<<4), &struct{ draw_gizmo bool }{draw_gizmo})
 }
-
-/*
-Returns whether this modification will call [DrawEditorGizmo] in the Godot editor to draw modification-specific gizmos.
-
-[DrawEditorGizmo]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModification2D#Interface
-*/
-//go:nosplit
 func (self class) GetEditorDrawGizmo() bool { //gd:SkeletonModification2D.get_editor_draw_gizmo
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_editor_draw_gizmo, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

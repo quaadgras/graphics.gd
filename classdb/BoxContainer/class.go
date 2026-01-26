@@ -202,36 +202,22 @@ func (self Instance) SetVertical(value bool) Instance { //gd:BoxContainer.vertic
 	return self
 }
 
-/*
-Adds a [Control] node to the box as a spacer. If 'begin' is true, it will insert the [Control] node in front of all other children.
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-*/
-//go:nosplit
 func (self class) AddSpacer(begin bool) [1]gdclass.Control { //gd:BoxContainer.add_spacer
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.add_spacer, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ begin bool }{begin})
 	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAlignment(alignment AlignmentMode) { //gd:BoxContainer.set_alignment
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alignment, 0|(gdextension.SizeInt<<4), &struct{ alignment AlignmentMode }{alignment})
 }
-
-//go:nosplit
 func (self class) GetAlignment() AlignmentMode { //gd:BoxContainer.get_alignment
 	var r_ret = noescape.Call[AlignmentMode](gd.ObjectChecked(self.AsObject()), methods.get_alignment, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetVertical(vertical bool) { //gd:BoxContainer.set_vertical
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical, 0|(gdextension.SizeBool<<4), &struct{ vertical bool }{vertical})
 }
-
-//go:nosplit
 func (self class) IsVertical() bool { //gd:BoxContainer.is_vertical
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_vertical, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

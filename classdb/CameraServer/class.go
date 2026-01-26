@@ -208,72 +208,38 @@ func SetMonitoringFeeds(value bool) { //gd:CameraServer.monitoring_feeds
 	class(self).SetMonitoringFeeds(value)
 }
 
-//go:nosplit
 func (self class) SetMonitoringFeeds(is_monitoring_feeds bool) { //gd:CameraServer.set_monitoring_feeds
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_monitoring_feeds, 0|(gdextension.SizeBool<<4), &struct{ is_monitoring_feeds bool }{is_monitoring_feeds})
 }
-
-//go:nosplit
 func (self class) IsMonitoringFeeds() bool { //gd:CameraServer.is_monitoring_feeds
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_monitoring_feeds, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [CameraFeed] corresponding to the camera with the given 'index'.
-
-[CameraFeed]: https://pkg.go.dev/graphics.gd/classdb/CameraFeed
-*/
-//go:nosplit
 func (self class) GetFeed(index int64) [1]gdclass.CameraFeed { //gd:CameraServer.get_feed
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_feed, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = [1]gdclass.CameraFeed{gdclass.NewCameraFeed(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the number of [CameraFeed]s registered.
-
-[CameraFeed]: https://pkg.go.dev/graphics.gd/classdb/CameraFeed
-*/
-//go:nosplit
 func (self class) GetFeedCount() int64 { //gd:CameraServer.get_feed_count
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_feed_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns an array of [CameraFeed]s.
-
-[CameraFeed]: https://pkg.go.dev/graphics.gd/classdb/CameraFeed
-*/
-//go:nosplit
 func (self class) Feeds() Array.Contains[[1]gdclass.CameraFeed] { //gd:CameraServer.feeds
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.feeds, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.CameraFeed]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Adds the camera 'feed' to the camera server.
-*/
-//go:nosplit
 func (self class) AddFeed(feed [1]gdclass.CameraFeed) { //gd:CameraServer.add_feed
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_feed, 0|(gdextension.SizeObject<<4), &struct{ feed gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCameraFeed(feed[0])))})
 }
-
-/*
-Removes the specified camera 'feed'.
-*/
-//go:nosplit
 func (self class) RemoveFeed(feed [1]gdclass.CameraFeed) { //gd:CameraServer.remove_feed
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_feed, 0|(gdextension.SizeObject<<4), &struct{ feed gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCameraFeed(feed[0])))})

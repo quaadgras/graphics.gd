@@ -428,14 +428,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Override this method to customize the returned value of [InstantiatePlayback]. Should return a new [AudioStreamPlayback] created when the stream is played (such as by an [AudioStreamPlayer]).
-
-[AudioStreamPlayback]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayback
-[AudioStreamPlayer]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer
-[InstantiatePlayback]: https://pkg.go.dev/graphics.gd/classdb/AudioStream#Instance.InstantiatePlayback
-*/
 func (class) _instantiate_playback(impl func(ptr gdclass.Receiver) [1]gdclass.AudioStreamPlayback) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -448,10 +440,6 @@ func (class) _instantiate_playback(impl func(ptr gdclass.Receiver) [1]gdclass.Au
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Override this method to customize the name assigned to this audio stream. Unused by the engine.
-*/
 func (class) _get_stream_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -464,12 +452,6 @@ func (class) _get_stream_name(impl func(ptr gdclass.Receiver) String.Readable) (
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Override this method to customize the returned value of [GetLength]. Should return the length of this audio stream, in seconds.
-
-[GetLength]: https://pkg.go.dev/graphics.gd/classdb/AudioStream#Instance.GetLength
-*/
 func (class) _get_length(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -477,12 +459,6 @@ func (class) _get_length(impl func(ptr gdclass.Receiver) float64) (cb gd.Extensi
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Override this method to customize the returned value of [IsMonophonic]. Should return true if this audio stream only supports one channel.
-
-[IsMonophonic]: https://pkg.go.dev/graphics.gd/classdb/AudioStream#Instance.IsMonophonic
-*/
 func (class) _is_monophonic(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -490,14 +466,6 @@ func (class) _is_monophonic(impl func(ptr gdclass.Receiver) bool) (cb gd.Extensi
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable method. Should return the tempo of this audio stream, in beats per minute (BPM). Used by the engine to determine the position of every beat.
-
-Ideally, the returned value should be based off the stream's sample rate ([AudioStreamWAV.MixRate], for example).
-
-[AudioStreamWAV.MixRate]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamWAV#Instance.MixRate
-*/
 func (class) _get_bpm(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -505,14 +473,6 @@ func (class) _get_bpm(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionC
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable method. Should return the total number of beats of this audio stream. Used by the engine to determine the position of every beat.
-
-Ideally, the returned value should be based off the stream's sample rate ([AudioStreamWAV.MixRate], for example).
-
-[AudioStreamWAV.MixRate]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamWAV#Instance.MixRate
-*/
 func (class) _get_beat_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -520,12 +480,6 @@ func (class) _get_beat_count(impl func(ptr gdclass.Receiver) int64) (cb gd.Exten
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Override this method to customize the tags for this audio stream. Should return a data structure of strings with the tag as the key and its content as the value.
-
-Commonly used tags include title, artist, album, tracknumber, and date.
-*/
 func (class) _get_tags(impl func(ptr gdclass.Receiver) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -538,12 +492,6 @@ func (class) _get_tags(impl func(ptr gdclass.Receiver) Dictionary.Any) (cb gd.Ex
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Return the controllable parameters of this stream. This array contains dictionaries with a property info description format (see [Object.GetPropertyList]). Additionally, the default value for this parameter must be added tho each dictionary in "default_value" field.
-
-[Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
-*/
 func (class) _get_parameter_list(impl func(ptr gdclass.Receiver) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -556,10 +504,6 @@ func (class) _get_parameter_list(impl func(ptr gdclass.Receiver) Array.Contains[
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Override this method to return true if this stream has a loop.
-*/
 func (class) _has_loop(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -567,10 +511,6 @@ func (class) _has_loop(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionCla
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Override this method to return the bar beats of this stream.
-*/
 func (class) _get_bar_beats(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -579,71 +519,31 @@ func (class) _get_bar_beats(impl func(ptr gdclass.Receiver) int64) (cb gd.Extens
 	}
 }
 
-/*
-Returns the length of the audio stream in seconds. If this stream is an [AudioStreamRandomizer], returns the length of the last played stream. If this stream has an indefinite length (such as for [AudioStreamGenerator] and [AudioStreamMicrophone]), returns 0.0.
-
-[AudioStreamGenerator]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamGenerator
-[AudioStreamMicrophone]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamMicrophone
-[AudioStreamRandomizer]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamRandomizer
-*/
-//go:nosplit
 func (self class) GetLength() float64 { //gd:AudioStream.get_length
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if this audio stream only supports one channel (monophony), or false if the audio stream supports two or more channels (polyphony).
-*/
-//go:nosplit
 func (self class) IsMonophonic() bool { //gd:AudioStream.is_monophonic
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_monophonic, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a newly created [AudioStreamPlayback] intended to play this audio stream. Useful for when you want to extend [InstantiatePlayback] but call [InstantiatePlayback] from an internally held AudioStream subresource. An example of this can be found in the source code for AudioStreamRandomPitch::instantiate_playback.
-
-[AudioStreamPlayback]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayback
-[InstantiatePlayback]: https://pkg.go.dev/graphics.gd/classdb/AudioStream#Instance.InstantiatePlayback
-*/
-//go:nosplit
 func (self class) InstantiatePlayback() [1]gdclass.AudioStreamPlayback { //gd:AudioStream.instantiate_playback
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.instantiate_playback, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.AudioStreamPlayback{gdclass.NewAudioStreamPlayback(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns if the current [AudioStream] can be used as a sample. Only static streams can be sampled.
-
-[AudioStream]: https://pkg.go.dev/graphics.gd/classdb/AudioStream
-*/
-//go:nosplit
 func (self class) CanBeSampled() bool { //gd:AudioStream.can_be_sampled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_be_sampled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Generates an [AudioSample] based on the current stream.
-
-[AudioSample]: https://pkg.go.dev/graphics.gd/classdb/AudioSample
-*/
-//go:nosplit
 func (self class) GenerateSample() [1]gdclass.AudioSample { //gd:AudioStream.generate_sample
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.generate_sample, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.AudioSample{gdclass.NewAudioSample(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns true if the stream is a collection of other streams, false otherwise.
-*/
-//go:nosplit
 func (self class) IsMetaStream() bool { //gd:AudioStream.is_meta_stream
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_meta_stream, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

@@ -356,154 +356,89 @@ func (self Instance) SetDragAreaHighlightInEditor(value bool) Instance { //gd:Sp
 	return self
 }
 
-//go:nosplit
 func (self class) SetSplitOffset(offset int64) { //gd:SplitContainer.set_split_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_split_offset, 0|(gdextension.SizeInt<<4), &struct{ offset int64 }{offset})
 }
-
-//go:nosplit
 func (self class) GetSplitOffset() int64 { //gd:SplitContainer.get_split_offset
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_split_offset, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Clamps the [SplitOffset] value to not go outside the currently possible minimal and maximum values.
-
-[SplitOffset]: https://pkg.go.dev/graphics.gd/classdb/SplitContainer#Instance.SplitOffset
-*/
-//go:nosplit
 func (self class) ClampSplitOffset() { //gd:SplitContainer.clamp_split_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clamp_split_offset, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetCollapsed(collapsed bool) { //gd:SplitContainer.set_collapsed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collapsed, 0|(gdextension.SizeBool<<4), &struct{ collapsed bool }{collapsed})
 }
-
-//go:nosplit
 func (self class) IsCollapsed() bool { //gd:SplitContainer.is_collapsed
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collapsed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDraggerVisibility(mode DraggerVisibility) { //gd:SplitContainer.set_dragger_visibility
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dragger_visibility, 0|(gdextension.SizeInt<<4), &struct{ mode DraggerVisibility }{mode})
 }
-
-//go:nosplit
 func (self class) GetDraggerVisibility() DraggerVisibility { //gd:SplitContainer.get_dragger_visibility
 	var r_ret = noescape.Call[DraggerVisibility](gd.ObjectChecked(self.AsObject()), methods.get_dragger_visibility, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetVertical(vertical bool) { //gd:SplitContainer.set_vertical
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical, 0|(gdextension.SizeBool<<4), &struct{ vertical bool }{vertical})
 }
-
-//go:nosplit
 func (self class) IsVertical() bool { //gd:SplitContainer.is_vertical
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_vertical, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDraggingEnabled(dragging_enabled bool) { //gd:SplitContainer.set_dragging_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dragging_enabled, 0|(gdextension.SizeBool<<4), &struct{ dragging_enabled bool }{dragging_enabled})
 }
-
-//go:nosplit
 func (self class) IsDraggingEnabled() bool { //gd:SplitContainer.is_dragging_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dragging_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDragAreaMarginBegin(margin int64) { //gd:SplitContainer.set_drag_area_margin_begin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_area_margin_begin, 0|(gdextension.SizeInt<<4), &struct{ margin int64 }{margin})
 }
-
-//go:nosplit
 func (self class) GetDragAreaMarginBegin() int64 { //gd:SplitContainer.get_drag_area_margin_begin
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_drag_area_margin_begin, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDragAreaMarginEnd(margin int64) { //gd:SplitContainer.set_drag_area_margin_end
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_area_margin_end, 0|(gdextension.SizeInt<<4), &struct{ margin int64 }{margin})
 }
-
-//go:nosplit
 func (self class) GetDragAreaMarginEnd() int64 { //gd:SplitContainer.get_drag_area_margin_end
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_drag_area_margin_end, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDragAreaOffset(offset int64) { //gd:SplitContainer.set_drag_area_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_area_offset, 0|(gdextension.SizeInt<<4), &struct{ offset int64 }{offset})
 }
-
-//go:nosplit
 func (self class) GetDragAreaOffset() int64 { //gd:SplitContainer.get_drag_area_offset
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_drag_area_offset, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDragAreaHighlightInEditor(drag_area_highlight_in_editor bool) { //gd:SplitContainer.set_drag_area_highlight_in_editor
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_area_highlight_in_editor, 0|(gdextension.SizeBool<<4), &struct{ drag_area_highlight_in_editor bool }{drag_area_highlight_in_editor})
 }
-
-//go:nosplit
 func (self class) IsDragAreaHighlightInEditorEnabled() bool { //gd:SplitContainer.is_drag_area_highlight_in_editor_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drag_area_highlight_in_editor_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the drag area [Control]. For example, you can move a pre-configured button into the drag area [Control] so that it rides along with the split bar. Try setting the [Button] anchors to center prior to the reparent() call.
-
-
-	barnacleButton.AsNode().Reparent(splitContainer.GetDragAreaControl().AsNode())
-
-
-Note: The drag area [Control] is drawn over the [SplitContainer]'s children, so [CanvasItem] draw objects called from the [Control] and children added to the [Control] will also appear over the [SplitContainer]'s children. Try setting [Control.MouseFilter] of custom children to [Control.MouseFilterIgnore] to prevent blocking the mouse from dragging if desired.
-
-Warning: This is a required internal node, removing and freeing it may cause a crash.
-
-[Button]: https://pkg.go.dev/graphics.gd/classdb/Button
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[Control.MouseFilter]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MouseFilter
-[SplitContainer]: https://pkg.go.dev/graphics.gd/classdb/SplitContainer
-*/
-//go:nosplit
 func (self class) GetDragAreaControl() [1]gdclass.Control { //gd:SplitContainer.get_drag_area_control
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_drag_area_control, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTouchDraggerEnabled(enabled bool) { //gd:SplitContainer.set_touch_dragger_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_touch_dragger_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsTouchDraggerEnabled() bool { //gd:SplitContainer.is_touch_dragger_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_touch_dragger_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

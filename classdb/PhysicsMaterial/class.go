@@ -218,48 +218,33 @@ func (self Instance) SetAbsorbent(value bool) Instance { //gd:PhysicsMaterial.ab
 	return self
 }
 
-//go:nosplit
 func (self class) SetFriction(friction float64) { //gd:PhysicsMaterial.set_friction
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_friction, 0|(gdextension.SizeFloat<<4), &struct{ friction float64 }{friction})
 }
-
-//go:nosplit
 func (self class) GetFriction() float64 { //gd:PhysicsMaterial.get_friction
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_friction, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRough(rough bool) { //gd:PhysicsMaterial.set_rough
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rough, 0|(gdextension.SizeBool<<4), &struct{ rough bool }{rough})
 }
-
-//go:nosplit
 func (self class) IsRough() bool { //gd:PhysicsMaterial.is_rough
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_rough, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBounce(bounce float64) { //gd:PhysicsMaterial.set_bounce
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bounce, 0|(gdextension.SizeFloat<<4), &struct{ bounce float64 }{bounce})
 }
-
-//go:nosplit
 func (self class) GetBounce() float64 { //gd:PhysicsMaterial.get_bounce
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bounce, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAbsorbent(absorbent bool) { //gd:PhysicsMaterial.set_absorbent
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_absorbent, 0|(gdextension.SizeBool<<4), &struct{ absorbent bool }{absorbent})
 }
-
-//go:nosplit
 func (self class) IsAbsorbent() bool { //gd:PhysicsMaterial.is_absorbent
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_absorbent, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

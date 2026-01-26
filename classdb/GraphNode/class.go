@@ -619,7 +619,6 @@ func (self Instance) SetSlotsFocusMode(value Control.FocusMode) Instance { //gd:
 	class(self).SetSlotsFocusMode(value)
 	return self
 }
-
 func (class) _draw_port(impl func(ptr gdclass.Receiver, slot_index int64, position Vector2i.XY, left bool, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var slot_index = gd.UnsafeGet[int64](p_args, 0)
@@ -631,52 +630,19 @@ func (class) _draw_port(impl func(ptr gdclass.Receiver, slot_index int64, positi
 	}
 }
 
-//go:nosplit
 func (self class) SetTitle(title String.Readable) { //gd:GraphNode.set_title
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_title, 0|(gdextension.SizeString<<4), &struct{ title gdextension.String }{pointers.Get(gd.InternalString(title))})
 }
-
-//go:nosplit
 func (self class) GetTitle() String.Readable { //gd:GraphNode.get_title
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_title, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the [HBoxContainer] used for the title bar, only containing a [Label] for displaying the title by default. This can be used to add custom controls to the title bar such as option or close buttons.
-
-[HBoxContainer]: https://pkg.go.dev/graphics.gd/classdb/HBoxContainer
-[Label]: https://pkg.go.dev/graphics.gd/classdb/Label
-*/
-//go:nosplit
 func (self class) GetTitlebarHbox() [1]gdclass.HBoxContainer { //gd:GraphNode.get_titlebar_hbox
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_titlebar_hbox, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.HBoxContainer{gdclass.NewHBoxContainer(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Sets properties of the slot with the given 'slot_index'.
-
-If 'enable_left_port'/'enable_right_port' is true, a port will appear and the slot will be able to be connected from this side.
-
-With 'type_left'/'type_right' an arbitrary type can be assigned to each port. Two ports can be connected if they share the same type, or if the connection between their types is allowed in the parent [GraphEdit] (see [GraphEdit.AddValidConnectionType]). Keep in mind that the [GraphEdit] has the final say in accepting the connection. Type compatibility simply allows the [OnGraphedit.ConnectionRequest] signal to be emitted.
-
-Ports can be further customized using 'color_left'/'color_right' and 'custom_icon_left'/'custom_icon_right'. The color parameter adds a tint to the icon. The custom icon can be used to override the default port dot.
-
-Additionally, 'draw_stylebox' can be used to enable or disable drawing of the background stylebox for each slot. See theme's 'slot'.
-
-Individual properties can also be set using one of the set_slot_* methods.
-
-Note: This method only sets properties of the slot. To create the slot itself, add a [Control]-derived child to the GraphNode.
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[GraphEdit]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit
-[GraphEdit.AddValidConnectionType]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit#Instance.AddValidConnectionType
-[OnGraphedit.ConnectionRequest]: https://pkg.go.dev/graphics.gd/classdb/GraphNode#Instance.OnGraphedit.ConnectionRequest
-*/
-//go:nosplit
 func (self class) SetSlot(slot_index int64, enable_left_port bool, type_left int64, color_left Color.RGBA, enable_right_port bool, type_right int64, color_right Color.RGBA, custom_icon_left [1]gdclass.Texture2D, custom_icon_right [1]gdclass.Texture2D, draw_stylebox bool) { //gd:GraphNode.set_slot
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeColor<<28)|(gdextension.SizeObject<<32)|(gdextension.SizeObject<<36)|(gdextension.SizeBool<<40), &struct {
 		slot_index        int64
@@ -691,354 +657,172 @@ func (self class) SetSlot(slot_index int64, enable_left_port bool, type_left int
 		draw_stylebox     bool
 	}{slot_index, enable_left_port, type_left, color_left, enable_right_port, type_right, color_right, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(custom_icon_left[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(custom_icon_right[0]))), draw_stylebox})
 }
-
-/*
-Disables the slot with the given 'slot_index'. This will remove the corresponding input and output port from the GraphNode.
-*/
-//go:nosplit
 func (self class) ClearSlot(slot_index int64) { //gd:GraphNode.clear_slot
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_slot, 0|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
 }
-
-/*
-Disables all slots of the GraphNode. This will remove all input/output ports from the GraphNode.
-*/
-//go:nosplit
 func (self class) ClearAllSlots() { //gd:GraphNode.clear_all_slots
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_all_slots, 0, &struct{}{})
 }
-
-/*
-Returns true if left (input) side of the slot with the given 'slot_index' is enabled.
-*/
-//go:nosplit
 func (self class) IsSlotEnabledLeft(slot_index int64) bool { //gd:GraphNode.is_slot_enabled_left
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_slot_enabled_left, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Toggles the left (input) side of the slot with the given 'slot_index'. If 'enable' is true, a port will appear on the left side and the slot will be able to be connected from this side.
-*/
-//go:nosplit
 func (self class) SetSlotEnabledLeft(slot_index int64, enable bool) { //gd:GraphNode.set_slot_enabled_left
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_enabled_left, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		slot_index int64
 		enable     bool
 	}{slot_index, enable})
 }
-
-/*
-Sets the left (input) type of the slot with the given 'slot_index' to 'type'. If the value is negative, all connections will be disallowed to be created via user inputs.
-*/
-//go:nosplit
 func (self class) SetSlotTypeLeft(slot_index int64, atype int64) { //gd:GraphNode.set_slot_type_left
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_type_left, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		slot_index int64
 		atype      int64
 	}{slot_index, atype})
 }
-
-/*
-Returns the left (input) type of the slot with the given 'slot_index'.
-*/
-//go:nosplit
 func (self class) GetSlotTypeLeft(slot_index int64) int64 { //gd:GraphNode.get_slot_type_left
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_slot_type_left, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the [Color.RGBA] of the left (input) side of the slot with the given 'slot_index' to 'color'.
-
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
-*/
-//go:nosplit
 func (self class) SetSlotColorLeft(slot_index int64, color Color.RGBA) { //gd:GraphNode.set_slot_color_left
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_color_left, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
 		slot_index int64
 		color      Color.RGBA
 	}{slot_index, color})
 }
-
-/*
-Returns the left (input) [Color.RGBA] of the slot with the given 'slot_index'.
-
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
-*/
-//go:nosplit
 func (self class) GetSlotColorLeft(slot_index int64) Color.RGBA { //gd:GraphNode.get_slot_color_left
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_slot_color_left, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the custom [Texture2D] of the left (input) side of the slot with the given 'slot_index' to 'custom_icon'.
-
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
-//go:nosplit
 func (self class) SetSlotCustomIconLeft(slot_index int64, custom_icon [1]gdclass.Texture2D) { //gd:GraphNode.set_slot_custom_icon_left
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_custom_icon_left, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		slot_index  int64
 		custom_icon gdextension.Object
 	}{slot_index, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(custom_icon[0])))})
 }
-
-/*
-Returns the left (input) custom [Texture2D] of the slot with the given 'slot_index'.
-
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
-//go:nosplit
 func (self class) GetSlotCustomIconLeft(slot_index int64) [1]gdclass.Texture2D { //gd:GraphNode.get_slot_custom_icon_left
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_slot_custom_icon_left, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns true if right (output) side of the slot with the given 'slot_index' is enabled.
-*/
-//go:nosplit
 func (self class) IsSlotEnabledRight(slot_index int64) bool { //gd:GraphNode.is_slot_enabled_right
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_slot_enabled_right, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Toggles the right (output) side of the slot with the given 'slot_index'. If 'enable' is true, a port will appear on the right side and the slot will be able to be connected from this side.
-*/
-//go:nosplit
 func (self class) SetSlotEnabledRight(slot_index int64, enable bool) { //gd:GraphNode.set_slot_enabled_right
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_enabled_right, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		slot_index int64
 		enable     bool
 	}{slot_index, enable})
 }
-
-/*
-Sets the right (output) type of the slot with the given 'slot_index' to 'type'. If the value is negative, all connections will be disallowed to be created via user inputs.
-*/
-//go:nosplit
 func (self class) SetSlotTypeRight(slot_index int64, atype int64) { //gd:GraphNode.set_slot_type_right
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_type_right, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		slot_index int64
 		atype      int64
 	}{slot_index, atype})
 }
-
-/*
-Returns the right (output) type of the slot with the given 'slot_index'.
-*/
-//go:nosplit
 func (self class) GetSlotTypeRight(slot_index int64) int64 { //gd:GraphNode.get_slot_type_right
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_slot_type_right, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the [Color.RGBA] of the right (output) side of the slot with the given 'slot_index' to 'color'.
-
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
-*/
-//go:nosplit
 func (self class) SetSlotColorRight(slot_index int64, color Color.RGBA) { //gd:GraphNode.set_slot_color_right
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_color_right, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
 		slot_index int64
 		color      Color.RGBA
 	}{slot_index, color})
 }
-
-/*
-Returns the right (output) [Color.RGBA] of the slot with the given 'slot_index'.
-
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
-*/
-//go:nosplit
 func (self class) GetSlotColorRight(slot_index int64) Color.RGBA { //gd:GraphNode.get_slot_color_right
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_slot_color_right, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the custom [Texture2D] of the right (output) side of the slot with the given 'slot_index' to 'custom_icon'.
-
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
-//go:nosplit
 func (self class) SetSlotCustomIconRight(slot_index int64, custom_icon [1]gdclass.Texture2D) { //gd:GraphNode.set_slot_custom_icon_right
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_custom_icon_right, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		slot_index  int64
 		custom_icon gdextension.Object
 	}{slot_index, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(custom_icon[0])))})
 }
-
-/*
-Returns the right (output) custom [Texture2D] of the slot with the given 'slot_index'.
-
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
-//go:nosplit
 func (self class) GetSlotCustomIconRight(slot_index int64) [1]gdclass.Texture2D { //gd:GraphNode.get_slot_custom_icon_right
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_slot_custom_icon_right, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns true if the background [StyleBox] of the slot with the given 'slot_index' is drawn.
-
-[StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
-*/
-//go:nosplit
 func (self class) IsSlotDrawStylebox(slot_index int64) bool { //gd:GraphNode.is_slot_draw_stylebox
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_slot_draw_stylebox, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Toggles the background [StyleBox] of the slot with the given 'slot_index'.
-
-[StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
-*/
-//go:nosplit
 func (self class) SetSlotDrawStylebox(slot_index int64, enable bool) { //gd:GraphNode.set_slot_draw_stylebox
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_draw_stylebox, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		slot_index int64
 		enable     bool
 	}{slot_index, enable})
 }
-
-//go:nosplit
 func (self class) SetIgnoreInvalidConnectionType(ignore bool) { //gd:GraphNode.set_ignore_invalid_connection_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ignore_invalid_connection_type, 0|(gdextension.SizeBool<<4), &struct{ ignore bool }{ignore})
 }
-
-//go:nosplit
 func (self class) IsIgnoringValidConnectionType() bool { //gd:GraphNode.is_ignoring_valid_connection_type
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ignoring_valid_connection_type, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSlotsFocusMode(focus_mode Control.FocusMode) { //gd:GraphNode.set_slots_focus_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slots_focus_mode, 0|(gdextension.SizeInt<<4), &struct{ focus_mode Control.FocusMode }{focus_mode})
 }
-
-//go:nosplit
 func (self class) GetSlotsFocusMode() Control.FocusMode { //gd:GraphNode.get_slots_focus_mode
 	var r_ret = noescape.Call[Control.FocusMode](gd.ObjectChecked(self.AsObject()), methods.get_slots_focus_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the number of slots with an enabled input port.
-*/
-//go:nosplit
 func (self class) GetInputPortCount() int64 { //gd:GraphNode.get_input_port_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_input_port_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the position of the input port with the given 'port_idx'.
-*/
-//go:nosplit
 func (self class) GetInputPortPosition(port_idx int64) Vector2.XY { //gd:GraphNode.get_input_port_position
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_input_port_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ port_idx int64 }{port_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the type of the input port with the given 'port_idx'.
-*/
-//go:nosplit
 func (self class) GetInputPortType(port_idx int64) int64 { //gd:GraphNode.get_input_port_type
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_input_port_type, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ port_idx int64 }{port_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [Color.RGBA] of the input port with the given 'port_idx'.
-
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
-*/
-//go:nosplit
 func (self class) GetInputPortColor(port_idx int64) Color.RGBA { //gd:GraphNode.get_input_port_color
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_input_port_color, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ port_idx int64 }{port_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the corresponding slot index of the input port with the given 'port_idx'.
-*/
-//go:nosplit
 func (self class) GetInputPortSlot(port_idx int64) int64 { //gd:GraphNode.get_input_port_slot
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_input_port_slot, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ port_idx int64 }{port_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the number of slots with an enabled output port.
-*/
-//go:nosplit
 func (self class) GetOutputPortCount() int64 { //gd:GraphNode.get_output_port_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_output_port_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the position of the output port with the given 'port_idx'.
-*/
-//go:nosplit
 func (self class) GetOutputPortPosition(port_idx int64) Vector2.XY { //gd:GraphNode.get_output_port_position
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_output_port_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ port_idx int64 }{port_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the type of the output port with the given 'port_idx'.
-*/
-//go:nosplit
 func (self class) GetOutputPortType(port_idx int64) int64 { //gd:GraphNode.get_output_port_type
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_output_port_type, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ port_idx int64 }{port_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [Color.RGBA] of the output port with the given 'port_idx'.
-
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
-*/
-//go:nosplit
 func (self class) GetOutputPortColor(port_idx int64) Color.RGBA { //gd:GraphNode.get_output_port_color
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_output_port_color, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ port_idx int64 }{port_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the corresponding slot index of the output port with the given 'port_idx'.
-*/
-//go:nosplit
 func (self class) GetOutputPortSlot(port_idx int64) int64 { //gd:GraphNode.get_output_port_slot
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_output_port_slot, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ port_idx int64 }{port_idx})
 	var ret = r_ret

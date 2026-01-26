@@ -323,7 +323,6 @@ func (self Instance) SetSortingUseAabbCenter(value bool) Instance { //gd:VisualI
 	class(self).SetSortingUseAabbCenter(value)
 	return self
 }
-
 func (class) _get_aabb(impl func(ptr gdclass.Receiver) AABB.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -332,113 +331,54 @@ func (class) _get_aabb(impl func(ptr gdclass.Receiver) AABB.PositionSize) (cb gd
 	}
 }
 
-/*
-Sets the resource that is instantiated by this [VisualInstance3D], which changes how the engine handles the [VisualInstance3D] under the hood. Equivalent to [RenderingServer.InstanceSetBase].
-
-[RenderingServer.InstanceSetBase]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#InstanceSetBase
-[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
-*/
-//go:nosplit
 func (self class) SetBase(base RID.Any) { //gd:VisualInstance3D.set_base
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base, 0|(gdextension.SizeRID<<4), &struct{ base RID.Any }{base})
 }
-
-/*
-Returns the RID of the resource associated with this [VisualInstance3D]. For example, if the Node is a [MeshInstance3D], this will return the RID of the associated [Mesh].
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
-[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
-*/
-//go:nosplit
 func (self class) GetBase() RID.Any { //gd:VisualInstance3D.get_base
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_base, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the RID of this instance. This RID is the same as the RID returned by [RenderingServer.InstanceCreate]. This RID is needed if you want to call [RenderingServer] functions directly on this [VisualInstance3D].
-
-[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
-[RenderingServer.InstanceCreate]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#InstanceCreate
-[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
-*/
-//go:nosplit
 func (self class) GetInstance() RID.Any { //gd:VisualInstance3D.get_instance
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_instance, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetLayerMask(mask int64) { //gd:VisualInstance3D.set_layer_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
-
-//go:nosplit
 func (self class) GetLayerMask() int64 { //gd:VisualInstance3D.get_layer_mask
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layer_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Based on 'value', enables or disables the specified layer in the [Layers], given a 'layer_number' between 1 and 20.
-
-[Layers]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D#Instance.Layers
-*/
-//go:nosplit
 func (self class) SetLayerMaskValue(layer_number int64, value bool) { //gd:VisualInstance3D.set_layer_mask_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value})
 }
-
-/*
-Returns whether or not the specified layer of the [Layers] is enabled, given a 'layer_number' between 1 and 20.
-
-[Layers]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D#Instance.Layers
-*/
-//go:nosplit
 func (self class) GetLayerMaskValue(layer_number int64) bool { //gd:VisualInstance3D.get_layer_mask_value
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_layer_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSortingOffset(offset float64) { //gd:VisualInstance3D.set_sorting_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sorting_offset, 0|(gdextension.SizeFloat<<4), &struct{ offset float64 }{offset})
 }
-
-//go:nosplit
 func (self class) GetSortingOffset() float64 { //gd:VisualInstance3D.get_sorting_offset
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sorting_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSortingUseAabbCenter(enabled bool) { //gd:VisualInstance3D.set_sorting_use_aabb_center
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sorting_use_aabb_center, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsSortingUseAabbCenter() bool { //gd:VisualInstance3D.is_sorting_use_aabb_center
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_sorting_use_aabb_center, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [AABB.PositionSize] (also known as the bounding box) for this [VisualInstance3D].
-
-[AABB.PositionSize]: https://pkg.go.dev/graphics.gd/variant/AABB#PositionSize
-[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
-*/
-//go:nosplit
 func (self class) GetAabb() AABB.PositionSize { //gd:VisualInstance3D.get_aabb
 	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_aabb, gdextension.SizeAABB, &struct{}{})
 	var ret = r_ret

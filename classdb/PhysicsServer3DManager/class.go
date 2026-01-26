@@ -159,12 +159,6 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetPhysicsServer3DManager(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
-/*
-Register a [PhysicsServer3D] implementation by passing a 'name' and a func that returns a [PhysicsServer3D] object.
-
-[PhysicsServer3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer3D
-*/
-//go:nosplit
 func (self class) RegisterServer(name String.Readable, create_callback Callable.Function) { //gd:PhysicsServer3DManager.register_server
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_server, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), &struct {
@@ -172,13 +166,6 @@ func (self class) RegisterServer(name String.Readable, create_callback Callable.
 		create_callback gdextension.Callable
 	}{pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalCallable(create_callback))})
 }
-
-/*
-Set the default [PhysicsServer3D] implementation to the one identified by 'name', if 'priority' is greater than the priority of the current default implementation.
-
-[PhysicsServer3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer3D
-*/
-//go:nosplit
 func (self class) SetDefaultServer(name String.Readable, priority int64) { //gd:PhysicsServer3DManager.set_default_server
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_server, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {

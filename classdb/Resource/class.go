@@ -586,45 +586,12 @@ func (self Instance) SetResourceSceneUniqueId(value string) Instance { //gd:Reso
 	class(self).SetSceneUniqueId(String.New(value))
 	return self
 }
-
-/*
-Override this method to customize the newly duplicated resource created from [PackedScene.Instantiate], if the original's [ResourceLocalToScene] is set to true.
-
-Example: Set a random damage value to every local resource from an instantiated scene:
-
-	package main
-
-	import (
-		"graphics.gd/classdb/Resource"
-		"graphics.gd/variant/Int"
-	)
-
-	type MyResource struct {
-		Resource.Extension[MyResource]
-
-		damage int
-	}
-
-	func (r *MyResource) SetupLocalToScene() {
-		r.damage = Int.RandomBetween(10, 40)
-	}
-
-[PackedScene.Instantiate]: https://pkg.go.dev/graphics.gd/classdb/PackedScene#Instance.Instantiate
-[ResourceLocalToScene]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.ResourceLocalToScene
-*/
 func (class) _setup_local_to_scene(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
-
-/*
-Override this method to return a custom [Resource.ID] when [GetRid] is called.
-
-[GetRid]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.GetRid
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
 func (class) _get_rid(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -632,25 +599,12 @@ func (class) _get_rid(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionC
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-For resources that store state in non-exported properties, such as via [Object.ValidateProperty] or [Object.GetPropertyList], this method must be implemented to clear them.
-
-[Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
-[Object.ValidateProperty]: https://pkg.go.dev/graphics.gd/variant/Object#ValidateProperty
-*/
 func (class) _reset_state(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
-
-/*
-Override this method to execute additional logic after [SetPathCache] is called on this object.
-
-[SetPathCache]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.SetPathCache
-*/
 func (class) _set_path_cache(impl func(ptr gdclass.Receiver, path String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -660,250 +614,89 @@ func (class) _set_path_cache(impl func(ptr gdclass.Receiver, path String.Readabl
 	}
 }
 
-//go:nosplit
 func (self class) SetPath(path String.Readable) { //gd:Resource.set_path
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
-
-/*
-Sets the [ResourcePath] to 'path', potentially overriding an existing cache entry for this path. Further attempts to load an overridden resource by path will instead return this resource.
-
-[ResourcePath]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.ResourcePath
-*/
-//go:nosplit
 func (self class) TakeOverPath(path String.Readable) { //gd:Resource.take_over_path
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.take_over_path, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
-
-//go:nosplit
 func (self class) GetPath() String.Readable { //gd:Resource.get_path
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Sets the resource's path to 'path' without involving the resource cache. Useful for handling [ResourceFormatLoader.CacheMode] values when implementing a custom resource format by extending [ResourceFormatLoader] and [ResourceFormatSaver].
-
-[ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
-[ResourceFormatSaver]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatSaver
-*/
-//go:nosplit
 func (self class) SetPathCache(path String.Readable) { //gd:Resource.set_path_cache
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_cache, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
-
-//go:nosplit
 func (self class) SetName(name String.Readable) { //gd:Resource.set_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_name, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
-
-//go:nosplit
 func (self class) GetName() String.Readable { //gd:Resource.get_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the [Resource.ID] of this resource (or an empty RID). Many resources (such as [Texture2D], [Mesh], and so on) are high-level abstractions of resources stored in a specialized server ([DisplayServer], [RenderingServer], etc.), so this function will return the original [Resource.ID].
-
-[DisplayServer]: https://pkg.go.dev/graphics.gd/classdb/DisplayServer
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
-//go:nosplit
 func (self class) GetRid() RID.Any { //gd:Resource.get_rid
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetLocalToScene(enable bool) { //gd:Resource.set_local_to_scene
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_local_to_scene, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsLocalToScene() bool { //gd:Resource.is_local_to_scene
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_local_to_scene, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-If [ResourceLocalToScene] is set to true and the resource has been loaded from a [PackedScene] instantiation, returns the root [Node] of the scene where this resource is used. Otherwise, returns null.
-
-[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
-[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
-[ResourceLocalToScene]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.ResourceLocalToScene
-*/
-//go:nosplit
 func (self class) GetLocalScene() [1]gdclass.Node { //gd:Resource.get_local_scene
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_local_scene, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Calls [SetupLocalToScene]. If [ResourceLocalToScene] is set to true, this method is automatically called from [PackedScene.Instantiate] by the newly duplicated resource within the scene instance.
-
-[PackedScene.Instantiate]: https://pkg.go.dev/graphics.gd/classdb/PackedScene#Instance.Instantiate
-[ResourceLocalToScene]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.ResourceLocalToScene
-[SetupLocalToScene]: https://pkg.go.dev/graphics.gd/classdb/Resource#Interface
-*/
-//go:nosplit
 func (self class) SetupLocalToScene() { //gd:Resource.setup_local_to_scene
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.setup_local_to_scene, 0, &struct{}{})
 }
-
-/*
-Makes the resource clear its non-exported properties. See also [ResetState]. Useful when implementing a custom resource format by extending [ResourceFormatLoader] and [ResourceFormatSaver].
-
-[ResetState]: https://pkg.go.dev/graphics.gd/classdb/Resource#Interface
-[ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
-[ResourceFormatSaver]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatSaver
-*/
-//go:nosplit
 func (self class) ResetState() { //gd:Resource.reset_state
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_state, 0, &struct{}{})
 }
-
-/*
-In the internal cache for scene-unique IDs, sets the ID of this resource to 'id' for the scene at 'path'. If 'id' is empty, the cache entry for 'path' is cleared. Useful to keep scene-unique IDs the same when implementing a VCS-friendly custom resource format by extending [ResourceFormatLoader] and [ResourceFormatSaver].
-
-Note: This method is only implemented when running in an editor context.
-
-[ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
-[ResourceFormatSaver]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatSaver
-*/
-//go:nosplit
 func (self class) SetIdForPath(path String.Readable, id String.Readable) { //gd:Resource.set_id_for_path
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_id_for_path, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		path gdextension.String
 		id   gdextension.String
 	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalString(id))})
 }
-
-/*
-From the internal cache for scene-unique IDs, returns the ID of this resource for the scene at 'path'. If there is no entry, an empty string is returned. Useful to keep scene-unique IDs the same when implementing a VCS-friendly custom resource format by extending [ResourceFormatLoader] and [ResourceFormatSaver].
-
-Note: This method is only implemented when running in an editor context. At runtime, it returns an empty string.
-
-[ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
-[ResourceFormatSaver]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatSaver
-*/
-//go:nosplit
 func (self class) GetIdForPath(path String.Readable) String.Readable { //gd:Resource.get_id_for_path
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_id_for_path, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns true if the resource is saved on disk as a part of another resource's file.
-*/
-//go:nosplit
 func (self class) IsBuiltIn() bool { //gd:Resource.is_built_in
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_built_in, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Generates a unique identifier for a resource to be contained inside a [PackedScene], based on the current date, time, and a random value. The returned string is only composed of letters (a to y) and numbers (0 to 8). See also [ResourceSceneUniqueId].
-
-[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
-[ResourceSceneUniqueId]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.ResourceSceneUniqueId
-*/
-//go:nosplit
 func (self class) GenerateSceneUniqueId() String.Readable { //gd:Resource.generate_scene_unique_id
 	var r_ret = noescape.CallStatic[gdextension.String](methods.generate_scene_unique_id, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSceneUniqueId(id String.Readable) { //gd:Resource.set_scene_unique_id
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scene_unique_id, 0|(gdextension.SizeString<<4), &struct{ id gdextension.String }{pointers.Get(gd.InternalString(id))})
 }
-
-//go:nosplit
 func (self class) GetSceneUniqueId() String.Readable { //gd:Resource.get_scene_unique_id
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_scene_unique_id, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Emits the [OnChanged] signal. This method is called automatically for some built-in resources.
-
-Note: For custom resources, it's recommended to call this method whenever a meaningful change occurs, such as a modified property. This ensures that custom [Object]s depending on the resource are properly updated.
-
-	package main
-
-	import "graphics.gd/classdb/Resource"
-
-	type SomeResource struct {
-		Resource.Extension[SomeResource]
-
-		damage int
-	}
-
-	func (r *SomeResource) SetDamage(newValue int) {
-		if r.damage != newValue {
-			r.damage = newValue
-			r.AsResource().EmitChanged()
-		}
-	}
-
-
-[Object]: https://pkg.go.dev/graphics.gd/variant/Object
-[OnChanged]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.OnChanged
-*/
-//go:nosplit
 func (self class) EmitChanged() { //gd:Resource.emit_changed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.emit_changed, 0, &struct{}{})
 }
-
-/*
-Duplicates this resource, returning a new resource with its exported or [PropertyUsageStorage] properties copied from the original.
-
-If 'deep' is false, a shallow copy is returned: nested slice, data structure, and [Resource] properties are not duplicated and are shared with the original resource.
-
-If 'deep' is true, a deep copy is returned: all nested arrays, dictionaries, and packed arrays are also duplicated (recursively). Any [Resource] found inside will only be duplicated if it's local, like [DeepDuplicateInternal] used with [DuplicateDeep].
-
-The following exceptions apply:
-
-- Subresource properties with the [PropertyUsageAlwaysDuplicate] flag are always duplicated (recursively or not, depending on 'deep').
-
-- Subresource properties with the [PropertyUsageNeverDuplicate] flag are never duplicated.
-
-Note: For custom resources, this method will fail if [Object.Init] has been defined with required parameters.
-
-Note: When duplicating with 'deep' set to true, each resource found, including the one on which this method is called, will be only duplicated once and referenced as many times as needed in the duplicate. For instance, if you are duplicating resource A that happens to have resource B referenced twice, you'll get a new resource A' referencing a new resource B' twice.
-
-[DuplicateDeep]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.DuplicateDeep
-[Object.Init]: https://pkg.go.dev/graphics.gd/variant/Object#Init
-[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
-*/
-//go:nosplit
 func (self class) Duplicate(deep bool) [1]gdclass.Resource { //gd:Resource.duplicate
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.duplicate, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ deep bool }{deep})
 	var ret = [1]gdclass.Resource{gdclass.NewResource(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Duplicates this resource, deeply, like [Duplicate](true), with extra control over how subresources are handled.
-
-'deep_subresources_mode' must be one of the values from [DeepDuplicateMode].
-
-[Duplicate]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.Duplicate
-*/
-//go:nosplit
 func (self class) DuplicateDeep(deep_subresources_mode DeepDuplicateMode) [1]gdclass.Resource { //gd:Resource.duplicate_deep
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.duplicate_deep, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ deep_subresources_mode DeepDuplicateMode }{deep_subresources_mode})
 	var ret = [1]gdclass.Resource{gdclass.NewResource(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

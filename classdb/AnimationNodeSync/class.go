@@ -174,12 +174,9 @@ func (self Instance) SetSync(value bool) Instance { //gd:AnimationNodeSync.sync
 	return self
 }
 
-//go:nosplit
 func (self class) SetUseSync(enable bool) { //gd:AnimationNodeSync.set_use_sync
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_sync, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsUsingSync() bool { //gd:AnimationNodeSync.is_using_sync
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_sync, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

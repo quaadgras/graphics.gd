@@ -273,31 +273,12 @@ func New() Instance {
 	return casted
 }
 
-/*
-Registers a callback for the given method name.
-
-- 'name' The name that clients can use to access the callback.
-
-- 'callback' The callback which will handle the specific method.
-*/
-//go:nosplit
 func (self class) SetMethod(name String.Readable, callback Callable.Function) { //gd:JSONRPC.set_method
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_method, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), &struct {
 		name     gdextension.String
 		callback gdextension.Callable
 	}{pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalCallable(callback))})
 }
-
-/*
-Given a Dictionary which takes the form of a JSON-RPC request: unpack the request and run it. Methods are resolved by looking at the field called "method" and looking for an equivalently named function in the JSONRPC object. If one is found that method is called.
-
-To add new supported methods extend the JSONRPC class and call [ProcessAction] on your subclass.
-
-'action': The action to be run, as a Dictionary in the form of a JSON-RPC request or notification.
-
-[ProcessAction]: https://pkg.go.dev/graphics.gd/classdb/JSONRPC#Instance.ProcessAction
-*/
-//go:nosplit
 func (self class) ProcessAction(action variant.Any, recurse bool) variant.Any { //gd:JSONRPC.process_action
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.process_action, gdextension.SizeVariant|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), &struct {
 		action  gdextension.Variant
@@ -306,24 +287,11 @@ func (self class) ProcessAction(action variant.Any, recurse bool) variant.Any { 
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) ProcessString(action String.Readable) String.Readable { //gd:JSONRPC.process_string
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.process_string, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ action gdextension.String }{pointers.Get(gd.InternalString(action))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns a dictionary in the form of a JSON-RPC request. Requests are sent to a server with the expectation of a response. The ID field is used for the server to specify which exact request it is responding to.
-
-- 'method': Name of the method being called.
-
-- 'params': An array or dictionary of parameters being passed to the method.
-
-- 'id': Uniquely identifies this request. The server is expected to send a response with the same ID.
-*/
-//go:nosplit
 func (self class) MakeRequest(method String.Readable, params variant.Any, id variant.Any) Dictionary.Any { //gd:JSONRPC.make_request
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.make_request, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8)|(gdextension.SizeVariant<<12), &struct {
 		method gdextension.String
@@ -333,15 +301,6 @@ func (self class) MakeRequest(method String.Readable, params variant.Any, id var
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-When a server has received and processed a request, it is expected to send a response. If you did not want a response then you need to have sent a Notification instead.
-
-- 'result': The return value of the function which was called.
-
-- 'id': The ID of the request this response is targeted to.
-*/
-//go:nosplit
 func (self class) MakeResponse(result variant.Any, id variant.Any) Dictionary.Any { //gd:JSONRPC.make_response
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.make_response, gdextension.SizeDictionary|(gdextension.SizeVariant<<4)|(gdextension.SizeVariant<<8), &struct {
 		result gdextension.Variant
@@ -350,15 +309,6 @@ func (self class) MakeResponse(result variant.Any, id variant.Any) Dictionary.An
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Returns a dictionary in the form of a JSON-RPC notification. Notifications are one-shot messages which do not expect a response.
-
-- 'method': Name of the method being called.
-
-- 'params': An array or dictionary of parameters being passed to the method.
-*/
-//go:nosplit
 func (self class) MakeNotification(method String.Readable, params variant.Any) Dictionary.Any { //gd:JSONRPC.make_notification
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.make_notification, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), &struct {
 		method gdextension.String
@@ -367,17 +317,6 @@ func (self class) MakeNotification(method String.Readable, params variant.Any) D
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Creates a response which indicates a previous reply has failed in some way.
-
-- 'code': The error code corresponding to what kind of error this is. See the [ErrorCode] constants.
-
-- 'message': A custom message about this error.
-
-- 'id': The request this error is a response to.
-*/
-//go:nosplit
 func (self class) MakeResponseError(code int64, message String.Readable, id variant.Any) Dictionary.Any { //gd:JSONRPC.make_response_error
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.make_response_error, gdextension.SizeDictionary|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12), &struct {
 		code    int64

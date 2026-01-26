@@ -226,70 +226,11 @@ func New() Instance {
 	return casted
 }
 
-/*
-Creates an [ImageTextureLayered] from an array of [Image]s. See [Image.Create] for the expected data format. The first image decides the width, height, image format and mipmapping setting. The other images must have the same width, height, image format and mipmapping setting.
-
-Each [Image] represents one layer.
-
-
-	// Fill in an array of Images with different colors.
-	var images []Image.Instance
-	const LAYERS = 6
-	for i := range LAYERS {
-		var image = Image.CreateEmpty(128, 128, false, Image.FormatRgb8)
-		if i%3 == 0 {
-			image.Fill(Color.W3C.Red)
-		} else if i%3 == 1 {
-			image.Fill(Color.W3C.Green)
-		} else {
-			image.Fill(Color.W3C.Blue)
-		}
-		images = append(images, image)
-	}
-
-	// Create and save a 2D texture array. The array of images must have at least 1 Image.
-	var texture2DArray = ImageTextureLayered.New()
-	texture2DArray.CreateFromImages(images)
-	ResourceSaver.Save(texture2DArray.AsResource(), "res://texture_2d_array.res", ResourceSaver.FlagCompress)
-
-	// Create and save a cubemap. The array of images must have exactly 6 Images.
-	// The cubemap's images are specified in this order: X+, X-, Y+, Y-, Z+, Z-
-	// (in Godot's coordinate system, so Y+ is "up" and Z- is "forward").
-	var cubemap = Cubemap.New()
-	cubemap.AsImageTextureLayered().CreateFromImages(images)
-	ResourceSaver.Save(cubemap.AsResource(), "res://cubemap.res", ResourceSaver.FlagCompress)
-
-	// Create and save a cubemap array. The array of images must have a multiple of 6 Images.
-	// Each cubemap's images are specified in this order: X+, X-, Y+, Y-, Z+, Z-
-	// (in Godot's coordinate system, so Y+ is "up" and Z- is "forward").
-	var cubemapArray = Cubemap.New()
-	cubemapArray.AsImageTextureLayered().CreateFromImages(images)
-	ResourceSaver.Save(cubemapArray.AsResource(), "res://cubemap_array.res", ResourceSaver.FlagCompress)
-
-
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-[Image.Create]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.Create
-[ImageTextureLayered]: https://pkg.go.dev/graphics.gd/classdb/ImageTextureLayered
-*/
-//go:nosplit
 func (self class) CreateFromImages(images Array.Contains[[1]gdclass.Image]) Error.Code { //gd:ImageTextureLayered.create_from_images
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_from_images, gdextension.SizeInt|(gdextension.SizeArray<<4), &struct{ images gdextension.Array }{pointers.Get(gd.InternalArray(images))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Replaces the existing [Image] data at the given 'layer' with this new image.
-
-The given [Image] must have the same width, height, image format, and mipmapping flag as the rest of the referenced images.
-
-If the image format is unsupported, it will be decompressed and converted to a similar and supported [Image.Format].
-
-The update is immediate: it's synchronized with drawing.
-
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-*/
-//go:nosplit
 func (self class) UpdateLayer(image [1]gdclass.Image, layer int64) { //gd:ImageTextureLayered.update_layer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_layer, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		image gdextension.Object

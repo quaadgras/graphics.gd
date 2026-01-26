@@ -243,66 +243,35 @@ func (self Instance) SetEditIntensity(value bool) Instance { //gd:ColorPickerBut
 	return self
 }
 
-//go:nosplit
 func (self class) SetPickColor(color Color.RGBA) { //gd:ColorPickerButton.set_pick_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pick_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
-
-//go:nosplit
 func (self class) GetPickColor() Color.RGBA { //gd:ColorPickerButton.get_pick_color
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_pick_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [ColorPicker] that this node toggles.
-
-Warning: This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [CanvasItem.Visible] property.
-
-[CanvasItem.Visible]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Visible
-[ColorPicker]: https://pkg.go.dev/graphics.gd/classdb/ColorPicker
-*/
-//go:nosplit
 func (self class) GetPicker() [1]gdclass.ColorPicker { //gd:ColorPickerButton.get_picker
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_picker, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ColorPicker{gdclass.NewColorPicker(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Returns the control's [PopupPanel] which allows you to connect to popup signals. This allows you to handle events when the ColorPicker is shown or hidden.
-
-Warning: This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [Window.Visible] property.
-
-[PopupPanel]: https://pkg.go.dev/graphics.gd/classdb/PopupPanel
-[Window.Visible]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Visible
-*/
-//go:nosplit
 func (self class) GetPopup() [1]gdclass.PopupPanel { //gd:ColorPickerButton.get_popup
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_popup, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PopupPanel{gdclass.NewPopupPanel(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEditAlpha(show bool) { //gd:ColorPickerButton.set_edit_alpha
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edit_alpha, 0|(gdextension.SizeBool<<4), &struct{ show bool }{show})
 }
-
-//go:nosplit
 func (self class) IsEditingAlpha() bool { //gd:ColorPickerButton.is_editing_alpha
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_alpha, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEditIntensity(show bool) { //gd:ColorPickerButton.set_edit_intensity
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edit_intensity, 0|(gdextension.SizeBool<<4), &struct{ show bool }{show})
 }
-
-//go:nosplit
 func (self class) IsEditingIntensity() bool { //gd:ColorPickerButton.is_editing_intensity
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_intensity, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

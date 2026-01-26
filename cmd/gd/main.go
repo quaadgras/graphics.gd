@@ -175,15 +175,19 @@ func gd(args ...string) error {
 			if err := os.Chdir(project.Directory); err != nil {
 				return xray.New(err)
 			}
-			return platform.Run(args[1:]...)
+			return platform.Run(append([]string{"-gcflags=graphics.gd/classdb/...=-N -l"}, args[1:]...)...)
 		case "test":
 			if !project.IncludesGo {
 				return errors.New("cannot run 'gd test' on a project that does not include Go code")
 			}
 			converted := []string{}
+			var benchmark bool
 			for _, arg := range args[1:] {
 				switch arg {
-				case "-bench", "-benchmem", "-benchtime", "blockprofile",
+				case "-bench":
+					benchmark = true
+					fallthrough
+				case "-benchmem", "-benchtime", "blockprofile",
 					"-blockprofilerate", "-count", "-coverprofile", "-cpu",
 					"-cpuprofile", "-failfast", "-fullpath", "-fuzz", "-fuzzcachedir",
 					"-fuzzminimizetime", "-fuzztime", "-fuzzworker", "-gocoverdir",
@@ -195,6 +199,9 @@ func gd(args ...string) error {
 				default:
 					converted = append(converted, arg)
 				}
+			}
+			if !benchmark {
+				converted = append([]string{"-gcflags=graphics.gd/classdb/...=-N -l"}, converted...)
 			}
 			return platform.Test(converted...)
 		default:

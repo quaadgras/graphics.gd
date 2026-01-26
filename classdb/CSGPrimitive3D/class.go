@@ -177,12 +177,9 @@ func (self Instance) SetFlipFaces(value bool) Instance { //gd:CSGPrimitive3D.fli
 	return self
 }
 
-//go:nosplit
 func (self class) SetFlipFaces(flip_faces bool) { //gd:CSGPrimitive3D.set_flip_faces
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flip_faces, 0|(gdextension.SizeBool<<4), &struct{ flip_faces bool }{flip_faces})
 }
-
-//go:nosplit
 func (self class) GetFlipFaces() bool { //gd:CSGPrimitive3D.get_flip_faces
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flip_faces, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

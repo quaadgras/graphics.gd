@@ -1574,16 +1574,6 @@ func (self Instance) SetUseParentMaterial(value bool) Instance { //gd:CanvasItem
 	class(self).SetUseParentMaterial(value)
 	return self
 }
-
-/*
-Called when [CanvasItem] has been requested to redraw (after [QueueRedraw] is called, either manually or by the engine).
-
-Corresponds to the [NotificationDraw] notification in [Object.Notification].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
-[QueueRedraw]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.QueueRedraw
-*/
 func (class) _draw(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -1591,208 +1581,100 @@ func (class) _draw(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVir
 	}
 }
 
-/*
-Returns the internal canvas item [Resource.ID] used by the [RenderingServer] for this node.
-
-[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) GetCanvasItem() RID.Any { //gd:CanvasItem.get_canvas_item
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_canvas_item, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetVisible(visible bool) { //gd:CanvasItem.set_visible
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visible, 0|(gdextension.SizeBool<<4), &struct{ visible bool }{visible})
 }
-
-//go:nosplit
 func (self class) IsVisible() bool { //gd:CanvasItem.is_visible
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_visible, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the node is present in the [SceneTree], its [Visible] property is true and all its ancestors are also visible. If any ancestor is hidden, this node will not be visible in the scene tree, and is therefore not drawn (see [Draw]).
-
-Visibility is checked only in parent nodes that inherit from [CanvasItem], [CanvasLayer], and [Window]. If the parent is of any other type (such as [Node], [AnimationPlayer], or [Node3D]), it is assumed to be visible.
-
-Note: This method does not take [VisibilityLayer] into account, so even if this method returns true, the node might end up not being rendered.
-
-[AnimationPlayer]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
-[Draw]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Interface
-[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
-[Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-[VisibilityLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.VisibilityLayer
-[Visible]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Visible
-[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
-*/
-//go:nosplit
 func (self class) IsVisibleInTree() bool { //gd:CanvasItem.is_visible_in_tree
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_visible_in_tree, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Show the [CanvasItem] if it's currently hidden. This is equivalent to setting [Visible] to true.
-
-Note: For controls that inherit [Popup], the correct way to make them visible is to call one of the multiple popup*() functions instead.
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[Popup]: https://pkg.go.dev/graphics.gd/classdb/Popup
-[Visible]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Visible
-*/
-//go:nosplit
 func (self class) Show() { //gd:CanvasItem.show
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.show, 0, &struct{}{})
 }
-
-/*
-Hide the [CanvasItem] if it's currently visible. This is equivalent to setting [Visible] to false.
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[Visible]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Visible
-*/
-//go:nosplit
 func (self class) Hide() { //gd:CanvasItem.hide
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.hide, 0, &struct{}{})
 }
-
-/*
-Queues the [CanvasItem] to redraw. During idle time, if [CanvasItem] is visible, [NotificationDraw] is sent and [Draw] is called. This only occurs once per frame, even if this method has been called multiple times.
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[Draw]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Interface
-*/
-//go:nosplit
 func (self class) QueueRedraw() { //gd:CanvasItem.queue_redraw
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_redraw, 0, &struct{}{})
 }
-
-/*
-Moves this node below its siblings, usually causing the node to draw on top of its siblings. Does nothing if this node does not have a parent. See also [Node.MoveChild].
-
-[Node.MoveChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.MoveChild
-*/
-//go:nosplit
 func (self class) MoveToFront() { //gd:CanvasItem.move_to_front
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_to_front, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetAsTopLevel(enable bool) { //gd:CanvasItem.set_as_top_level
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_as_top_level, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsSetAsTopLevel() bool { //gd:CanvasItem.is_set_as_top_level
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_set_as_top_level, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetLightMask(light_mask int64) { //gd:CanvasItem.set_light_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_light_mask, 0|(gdextension.SizeInt<<4), &struct{ light_mask int64 }{light_mask})
 }
-
-//go:nosplit
 func (self class) GetLightMask() int64 { //gd:CanvasItem.get_light_mask
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_light_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetModulate(modulate Color.RGBA) { //gd:CanvasItem.set_modulate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modulate, 0|(gdextension.SizeColor<<4), &struct{ modulate Color.RGBA }{modulate})
 }
-
-//go:nosplit
 func (self class) GetModulate() Color.RGBA { //gd:CanvasItem.get_modulate
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_modulate, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSelfModulate(self_modulate Color.RGBA) { //gd:CanvasItem.set_self_modulate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_self_modulate, 0|(gdextension.SizeColor<<4), &struct{ self_modulate Color.RGBA }{self_modulate})
 }
-
-//go:nosplit
 func (self class) GetSelfModulate() Color.RGBA { //gd:CanvasItem.get_self_modulate
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_self_modulate, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetZIndex(z_index int64) { //gd:CanvasItem.set_z_index
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_z_index, 0|(gdextension.SizeInt<<4), &struct{ z_index int64 }{z_index})
 }
-
-//go:nosplit
 func (self class) GetZIndex() int64 { //gd:CanvasItem.get_z_index
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_z_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetZAsRelative(enable bool) { //gd:CanvasItem.set_z_as_relative
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_z_as_relative, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsZRelative() bool { //gd:CanvasItem.is_z_relative
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_z_relative, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetYSortEnabled(enabled bool) { //gd:CanvasItem.set_y_sort_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_y_sort_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsYSortEnabled() bool { //gd:CanvasItem.is_y_sort_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_y_sort_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDrawBehindParent(enable bool) { //gd:CanvasItem.set_draw_behind_parent
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_behind_parent, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsDrawBehindParentEnabled() bool { //gd:CanvasItem.is_draw_behind_parent_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draw_behind_parent_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Draws a line from a 2D point to another, with a given color and width. It can be optionally antialiased. The 'from' and 'to' positions are defined in local space. See also [DrawDashedLine], [DrawMultiline], and [DrawPolyline].
-
-If 'width' is negative, then a two-point primitive will be drawn instead of a four-point one. This means that when the CanvasItem is scaled, the line will remain thin. If this behavior is not desired, then pass a positive 'width' like 1.0.
-
-[DrawDashedLine]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawDashedLine
-[DrawMultiline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultiline
-[DrawPolyline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolyline
-*/
-//go:nosplit
 func (self class) DrawLine(from Vector2.XY, to Vector2.XY, color Color.RGBA, width float64, antialiased bool) { //gd:CanvasItem.draw_line
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_line, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20), &struct {
 		from        Vector2.XY
@@ -1802,23 +1684,6 @@ func (self class) DrawLine(from Vector2.XY, to Vector2.XY, color Color.RGBA, wid
 		antialiased bool
 	}{from, to, color, width, antialiased})
 }
-
-/*
-Draws a dashed line from a 2D point to another, with a given color and width. The 'from' and 'to' positions are defined in local space. See also [DrawLine], [DrawMultiline], and [DrawPolyline].
-
-If 'width' is negative, then a two-point primitives will be drawn instead of a four-point ones. This means that when the CanvasItem is scaled, the line parts will remain thin. If this behavior is not desired, then pass a positive 'width' like 1.0.
-
-'dash' is the length of each dash in pixels, with the gap between each dash being the same length. If 'aligned' is true, the length of the first and last dashes may be shortened or lengthened to allow the line to begin and end at the precise points defined by 'from' and 'to'. Both ends are always symmetrical when 'aligned' is true. If 'aligned' is false, all dashes will have the same length, but the line may appear incomplete at the end due to the dash length not dividing evenly into the line length. Only full dashes are drawn when 'aligned' is false.
-
-If 'antialiased' is true, half transparent "feathers" will be attached to the boundary, making outlines smooth.
-
-Note: 'antialiased' is only effective if 'width' is greater than 0.0.
-
-[DrawLine]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawLine
-[DrawMultiline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultiline
-[DrawPolyline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolyline
-*/
-//go:nosplit
 func (self class) DrawDashedLine(from Vector2.XY, to Vector2.XY, color Color.RGBA, width float64, dash float64, aligned bool, antialiased bool) { //gd:CanvasItem.draw_dashed_line
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_dashed_line, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24)|(gdextension.SizeBool<<28), &struct {
 		from        Vector2.XY
@@ -1830,17 +1695,6 @@ func (self class) DrawDashedLine(from Vector2.XY, to Vector2.XY, color Color.RGB
 		antialiased bool
 	}{from, to, color, width, dash, aligned, antialiased})
 }
-
-/*
-Draws interconnected line segments with a uniform 'color' and 'width' and optional antialiasing (supported only for positive 'width'). The 'points' array is defined in local space. When drawing large amounts of lines, this is faster than using individual [DrawLine] calls. To draw disconnected lines, use [DrawMultiline] instead. See also [DrawPolygon].
-
-If 'width' is negative, it will be ignored and the polyline will be drawn using [Renderingserver.PrimitiveLineStrip]. This means that when the CanvasItem is scaled, the polyline will remain thin. If this behavior is not desired, then pass a positive 'width' like 1.0.
-
-[DrawLine]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawLine
-[DrawMultiline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultiline
-[DrawPolygon]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolygon
-*/
-//go:nosplit
 func (self class) DrawPolyline(points Packed.Array[Vector2.XY], color Color.RGBA, width float64, antialiased bool) { //gd:CanvasItem.draw_polyline
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_polyline, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeColor<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), &struct {
 		points      gdextension.PackedArray[Vector2.XY]
@@ -1849,17 +1703,6 @@ func (self class) DrawPolyline(points Packed.Array[Vector2.XY], color Color.RGBA
 		antialiased bool
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), color, width, antialiased})
 }
-
-/*
-Draws interconnected line segments with a uniform 'width', point-by-point coloring, and optional antialiasing (supported only for positive 'width'). Colors assigned to line points match by index between 'points' and 'colors', i.e. each line segment is filled with a gradient between the colors of the endpoints. The 'points' array is defined in local space. When drawing large amounts of lines, this is faster than using individual [DrawLine] calls. To draw disconnected lines, use [DrawMultilineColors] instead. See also [DrawPolygon].
-
-If 'width' is negative, it will be ignored and the polyline will be drawn using [Renderingserver.PrimitiveLineStrip]. This means that when the CanvasItem is scaled, the polyline will remain thin. If this behavior is not desired, then pass a positive 'width' like 1.0.
-
-[DrawLine]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawLine
-[DrawMultilineColors]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultilineColors
-[DrawPolygon]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolygon
-*/
-//go:nosplit
 func (self class) DrawPolylineColors(points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], width float64, antialiased bool) { //gd:CanvasItem.draw_polyline_colors
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_polyline_colors, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), &struct {
 		points      gdextension.PackedArray[Vector2.XY]
@@ -1868,17 +1711,6 @@ func (self class) DrawPolylineColors(points Packed.Array[Vector2.XY], colors Pac
 		antialiased bool
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)), width, antialiased})
 }
-
-/*
-Draws an unfilled arc between the given angles with a uniform 'color' and 'width' and optional antialiasing (supported only for positive 'width'). The larger the value of 'point_count', the smoother the curve. 'center' is defined in local space. See also [DrawCircle].
-
-If 'width' is negative, it will be ignored and the arc will be drawn using [Renderingserver.PrimitiveLineStrip]. This means that when the CanvasItem is scaled, the arc will remain thin. If this behavior is not desired, then pass a positive 'width' like 1.0.
-
-The arc is drawn from 'start_angle' towards the value of 'end_angle' so in clockwise direction if start_angle < end_angle and counter-clockwise otherwise. Passing the same angles but in reversed order will produce the same arc. If absolute difference of 'start_angle' and 'end_angle' is greater than [@Gdscript.Tau] radians, then a full circle arc is drawn (i.e. arc will not overlap itself).
-
-[DrawCircle]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawCircle
-*/
-//go:nosplit
 func (self class) DrawArc(center Vector2.XY, radius float64, start_angle float64, end_angle float64, point_count int64, color Color.RGBA, width float64, antialiased bool) { //gd:CanvasItem.draw_arc
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_arc, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeColor<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeBool<<32), &struct {
 		center      Vector2.XY
@@ -1891,18 +1723,6 @@ func (self class) DrawArc(center Vector2.XY, radius float64, start_angle float64
 		antialiased bool
 	}{center, radius, start_angle, end_angle, point_count, color, width, antialiased})
 }
-
-/*
-Draws multiple disconnected lines with a uniform 'width' and 'color'. Each line is defined by two consecutive points from 'points' array in local space, i.e. i-th segment consists of points[2 * i], points[2 * i + 1] endpoints. When drawing large amounts of lines, this is faster than using individual [DrawLine] calls. To draw interconnected lines, use [DrawPolyline] instead.
-
-If 'width' is negative, then two-point primitives will be drawn instead of a four-point ones. This means that when the CanvasItem is scaled, the lines will remain thin. If this behavior is not desired, then pass a positive 'width' like 1.0.
-
-Note: 'antialiased' is only effective if 'width' is greater than 0.0.
-
-[DrawLine]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawLine
-[DrawPolyline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolyline
-*/
-//go:nosplit
 func (self class) DrawMultiline(points Packed.Array[Vector2.XY], color Color.RGBA, width float64, antialiased bool) { //gd:CanvasItem.draw_multiline
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_multiline, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeColor<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), &struct {
 		points      gdextension.PackedArray[Vector2.XY]
@@ -1911,18 +1731,6 @@ func (self class) DrawMultiline(points Packed.Array[Vector2.XY], color Color.RGB
 		antialiased bool
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), color, width, antialiased})
 }
-
-/*
-Draws multiple disconnected lines with a uniform 'width' and segment-by-segment coloring. Each segment is defined by two consecutive points from 'points' array in local space and a corresponding color from 'colors' array, i.e. i-th segment consists of points[2 * i], points[2 * i + 1] endpoints and has colors[i] color. When drawing large amounts of lines, this is faster than using individual [DrawLine] calls. To draw interconnected lines, use [DrawPolylineColors] instead.
-
-If 'width' is negative, then two-point primitives will be drawn instead of a four-point ones. This means that when the CanvasItem is scaled, the lines will remain thin. If this behavior is not desired, then pass a positive 'width' like 1.0.
-
-Note: 'antialiased' is only effective if 'width' is greater than 0.0.
-
-[DrawLine]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawLine
-[DrawPolylineColors]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolylineColors
-*/
-//go:nosplit
 func (self class) DrawMultilineColors(points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], width float64, antialiased bool) { //gd:CanvasItem.draw_multiline_colors
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_multiline_colors, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), &struct {
 		points      gdextension.PackedArray[Vector2.XY]
@@ -1931,21 +1739,6 @@ func (self class) DrawMultilineColors(points Packed.Array[Vector2.XY], colors Pa
 		antialiased bool
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)), width, antialiased})
 }
-
-/*
-Draws a rectangle. If 'filled' is true, the rectangle will be filled with the 'color' specified. If 'filled' is false, the rectangle will be drawn as a stroke with the 'color' and 'width' specified. The 'rect' is specified in local space. See also [DrawTextureRect].
-
-If 'width' is negative, then two-point primitives will be drawn instead of a four-point ones. This means that when the CanvasItem is scaled, the lines will remain thin. If this behavior is not desired, then pass a positive 'width' like 1.0.
-
-If 'antialiased' is true, half transparent "feathers" will be attached to the boundary, making outlines smooth.
-
-Note: 'width' is only effective if 'filled' is false.
-
-Note: Unfilled rectangles drawn with a negative 'width' may not display perfectly. For example, corners may be missing or brighter due to overlapping lines (for a translucent 'color').
-
-[DrawTextureRect]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawTextureRect
-*/
-//go:nosplit
 func (self class) DrawRect(rect Rect2.PositionSize, color Color.RGBA, filled bool, width float64, antialiased bool) { //gd:CanvasItem.draw_rect
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_rect, 0|(gdextension.SizeRect2<<4)|(gdextension.SizeColor<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20), &struct {
 		rect        Rect2.PositionSize
@@ -1955,23 +1748,6 @@ func (self class) DrawRect(rect Rect2.PositionSize, color Color.RGBA, filled boo
 		antialiased bool
 	}{rect, color, filled, width, antialiased})
 }
-
-/*
-Draws a circle, with 'position' defined in local space. See also [DrawArc], [DrawPolyline], and [DrawPolygon].
-
-If 'filled' is true, the circle will be filled with the 'color' specified. If 'filled' is false, the circle will be drawn as a stroke with the 'color' and 'width' specified.
-
-If 'width' is negative, then two-point primitives will be drawn instead of a four-point ones. This means that when the CanvasItem is scaled, the lines will remain thin. If this behavior is not desired, then pass a positive 'width' like 1.0.
-
-If 'antialiased' is true, half transparent "feathers" will be attached to the boundary, making outlines smooth.
-
-Note: 'width' is only effective if 'filled' is false.
-
-[DrawArc]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawArc
-[DrawPolygon]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolygon
-[DrawPolyline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolyline
-*/
-//go:nosplit
 func (self class) DrawCircle(position Vector2.XY, radius float64, color Color.RGBA, filled bool, width float64, antialiased bool) { //gd:CanvasItem.draw_circle
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_circle, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), &struct {
 		position    Vector2.XY
@@ -1982,11 +1758,6 @@ func (self class) DrawCircle(position Vector2.XY, radius float64, color Color.RG
 		antialiased bool
 	}{position, radius, color, filled, width, antialiased})
 }
-
-/*
-Draws a texture at a given position. The 'position' is defined in local space.
-*/
-//go:nosplit
 func (self class) DrawTexture(texture [1]gdclass.Texture2D, position Vector2.XY, modulate Color.RGBA) { //gd:CanvasItem.draw_texture
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_texture, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeColor<<12), &struct {
 		texture  gdextension.Object
@@ -1994,14 +1765,6 @@ func (self class) DrawTexture(texture [1]gdclass.Texture2D, position Vector2.XY,
 		modulate Color.RGBA
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), position, modulate})
 }
-
-/*
-Draws a textured rectangle at a given position, optionally modulated by a color. The 'rect' is defined in local space. If 'transpose' is true, the texture will have its X and Y coordinates swapped. See also [DrawRect] and [DrawTextureRectRegion].
-
-[DrawRect]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawRect
-[DrawTextureRectRegion]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawTextureRectRegion
-*/
-//go:nosplit
 func (self class) DrawTextureRect(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool) { //gd:CanvasItem.draw_texture_rect
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_texture_rect, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20), &struct {
 		texture   gdextension.Object
@@ -2011,13 +1774,6 @@ func (self class) DrawTextureRect(texture [1]gdclass.Texture2D, rect Rect2.Posit
 		transpose bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), rect, tile, modulate, transpose})
 }
-
-/*
-Draws a textured rectangle from a texture's region (specified by 'src_rect') at a given position in local space, optionally modulated by a color. If 'transpose' is true, the texture will have its X and Y coordinates swapped. See also [DrawTextureRect].
-
-[DrawTextureRect]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawTextureRect
-*/
-//go:nosplit
 func (self class) DrawTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) { //gd:CanvasItem.draw_texture_rect_region
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_texture_rect_region, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeBool<<24), &struct {
 		texture   gdextension.Object
@@ -2028,17 +1784,6 @@ func (self class) DrawTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2
 		clip_uv   bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), rect, src_rect, modulate, transpose, clip_uv})
 }
-
-/*
-Draws a textured rectangle region of the multichannel signed distance field texture at a given position, optionally modulated by a color. The 'rect' is defined in local space. See [FontFile.MultichannelSignedDistanceField] for more information and caveats about MSDF font rendering.
-
-If 'outline' is positive, each alpha channel value of pixel in region is set to maximum value of true distance in the 'outline' radius.
-
-Value of the 'pixel_range' should the same that was used during distance field texture generation.
-
-[FontFile.MultichannelSignedDistanceField]: https://pkg.go.dev/graphics.gd/classdb/FontFile#Instance.MultichannelSignedDistanceField
-*/
-//go:nosplit
 func (self class) DrawMsdfTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, outline float64, pixel_range float64, scale float64) { //gd:CanvasItem.draw_msdf_texture_rect_region
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_msdf_texture_rect_region, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeFloat<<28), &struct {
 		texture     gdextension.Object
@@ -2050,23 +1795,6 @@ func (self class) DrawMsdfTextureRectRegion(texture [1]gdclass.Texture2D, rect R
 		scale       float64
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), rect, src_rect, modulate, outline, pixel_range, scale})
 }
-
-/*
-Draws a textured rectangle region of the font texture with LCD subpixel anti-aliasing at a given position, optionally modulated by a color. The 'rect' is defined in local space.
-
-Texture is drawn using the following blend operation, blend mode of the [CanvasItemMaterial] is ignored:
-
-
-	var dst, texture, modulate Color.RGBA
-	dst.R = texture.R*modulate.R*modulate.A + dst.R*(1.0-texture.R*modulate.A)
-	dst.G = texture.G*modulate.G*modulate.A + dst.G*(1.0-texture.G*modulate.A)
-	dst.B = texture.B*modulate.B*modulate.A + dst.B*(1.0-texture.B*modulate.A)
-	dst.A = modulate.A + dst.A*(1.0-modulate.A)
-
-
-[CanvasItemMaterial]: https://pkg.go.dev/graphics.gd/classdb/CanvasItemMaterial
-*/
-//go:nosplit
 func (self class) DrawLcdTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA) { //gd:CanvasItem.draw_lcd_texture_rect_region
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_lcd_texture_rect_region, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2<<12)|(gdextension.SizeColor<<16), &struct {
 		texture  gdextension.Object
@@ -2075,27 +1803,12 @@ func (self class) DrawLcdTextureRectRegion(texture [1]gdclass.Texture2D, rect Re
 		modulate Color.RGBA
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), rect, src_rect, modulate})
 }
-
-/*
-Draws a styled rectangle. The 'rect' is defined in local space.
-*/
-//go:nosplit
 func (self class) DrawStyleBox(style_box [1]gdclass.StyleBox, rect Rect2.PositionSize) { //gd:CanvasItem.draw_style_box
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_style_box, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2<<8), &struct {
 		style_box gdextension.Object
 		rect      Rect2.PositionSize
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetStyleBox(style_box[0]))), rect})
 }
-
-/*
-Draws a custom primitive. 1 point for a point, 2 points for a line, 3 points for a triangle, and 4 points for a quad. If 0 points or more than 4 points are specified, nothing will be drawn and an error message will be printed. The 'points' array is defined in local space. See also [DrawLine], [DrawPolyline], [DrawPolygon], and [DrawRect].
-
-[DrawLine]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawLine
-[DrawPolygon]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolygon
-[DrawPolyline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolyline
-[DrawRect]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawRect
-*/
-//go:nosplit
 func (self class) DrawPrimitive(points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uvs Packed.Array[Vector2.XY], texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_primitive
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_primitive, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeObject<<16), &struct {
 		points  gdextension.PackedArray[Vector2.XY]
@@ -2104,21 +1817,6 @@ func (self class) DrawPrimitive(points Packed.Array[Vector2.XY], colors Packed.A
 		texture gdextension.Object
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
-
-/*
-Draws a solid polygon of any number of points, convex or concave. Unlike [DrawColoredPolygon], each point's color can be changed individually. The 'points' array is defined in local space. See also [DrawPolyline] and [DrawPolylineColors]. If you need more flexibility (such as being able to use bones), use [RenderingServer.CanvasItemAddTriangleArray] instead.
-
-Note: If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [Geometry2D.TriangulatePolygon] and using [DrawMesh], [DrawMultimesh], or [RenderingServer.CanvasItemAddTriangleArray].
-
-[DrawColoredPolygon]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawColoredPolygon
-[DrawMesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMesh
-[DrawMultimesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultimesh
-[DrawPolyline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolyline
-[DrawPolylineColors]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolylineColors
-[Geometry2D.TriangulatePolygon]: https://pkg.go.dev/graphics.gd/classdb/Geometry2D#TriangulatePolygon
-[RenderingServer.CanvasItemAddTriangleArray]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#CanvasItemAddTriangleArray
-*/
-//go:nosplit
 func (self class) DrawPolygon(points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uvs Packed.Array[Vector2.XY], texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_polygon
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_polygon, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeObject<<16), &struct {
 		points  gdextension.PackedArray[Vector2.XY]
@@ -2127,19 +1825,6 @@ func (self class) DrawPolygon(points Packed.Array[Vector2.XY], colors Packed.Arr
 		texture gdextension.Object
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
-
-/*
-Draws a colored polygon of any number of points, convex or concave. The points in the 'points' array are defined in local space. Unlike [DrawPolygon], a single color must be specified for the whole polygon.
-
-Note: If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [Geometry2D.TriangulatePolygon] and using [DrawMesh], [DrawMultimesh], or [RenderingServer.CanvasItemAddTriangleArray].
-
-[DrawMesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMesh
-[DrawMultimesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultimesh
-[DrawPolygon]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolygon
-[Geometry2D.TriangulatePolygon]: https://pkg.go.dev/graphics.gd/classdb/Geometry2D#TriangulatePolygon
-[RenderingServer.CanvasItemAddTriangleArray]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#CanvasItemAddTriangleArray
-*/
-//go:nosplit
 func (self class) DrawColoredPolygon(points Packed.Array[Vector2.XY], color Color.RGBA, uvs Packed.Array[Vector2.XY], texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_colored_polygon
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_colored_polygon, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeColor<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeObject<<16), &struct {
 		points  gdextension.PackedArray[Vector2.XY]
@@ -2148,27 +1833,6 @@ func (self class) DrawColoredPolygon(points Packed.Array[Vector2.XY], color Colo
 		texture gdextension.Object
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), color, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
-
-/*
-Draws 'text' using the specified 'font' at the 'pos' in local space (bottom-left corner using the baseline of the font). The text will have its color multiplied by 'modulate'. If 'width' is greater than or equal to 0, the text will be clipped if it exceeds the specified width. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
-
-Example: Draw "Hello world", using the project's default font:
-
-
-	// If using this method in a script that redraws constantly, move the
-	// `default_font` declaration to a member variable assigned in `Ready()`
-	// so the Control is only created once.
-	var defaultFont = ThemeDB.FallbackFont()
-	var defaultFontSize = ThemeDB.FallbackFontSize()
-	canvas_item.MoreArgs().DrawString(defaultFont, Vector2.New(64, 64), "Hello world", GUI.HorizontalAlignmentLeft, -1, defaultFontSize,
-		Color.W3C.White, TextServer.JustificationKashida|TextServer.JustificationWordBound, 0, 0, 0)
-
-
-See also [Font.DrawString].
-
-[Font.DrawString]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.DrawString
-*/
-//go:nosplit
 func (self class) DrawString(font [1]gdclass.Font, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling float64) { //gd:CanvasItem.draw_string
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_string, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeColor<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeFloat<<44), &struct {
 		font                gdextension.Object
@@ -2184,11 +1848,6 @@ func (self class) DrawString(font [1]gdclass.Font, pos Vector2.XY, text String.R
 		oversampling        float64
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0]))), pos, pointers.Get(gd.InternalString(text)), alignment, width, font_size, modulate, justification_flags, direction, orientation, oversampling})
 }
-
-/*
-Breaks 'text' into lines and draws it using the specified 'font' at the 'pos' in local space (top-left corner). The text will have its color multiplied by 'modulate'. If 'width' is greater than or equal to 0, the text will be clipped if it exceeds the specified width. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
-*/
-//go:nosplit
 func (self class) DrawMultilineString(font [1]gdclass.Font, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, max_lines int64, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling float64) { //gd:CanvasItem.draw_multiline_string
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_multiline_string, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeColor<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeInt<<44)|(gdextension.SizeInt<<48)|(gdextension.SizeFloat<<52), &struct {
 		font                gdextension.Object
@@ -2206,11 +1865,6 @@ func (self class) DrawMultilineString(font [1]gdclass.Font, pos Vector2.XY, text
 		oversampling        float64
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0]))), pos, pointers.Get(gd.InternalString(text)), alignment, width, font_size, max_lines, modulate, brk_flags, justification_flags, direction, orientation, oversampling})
 }
-
-/*
-Draws 'text' outline using the specified 'font' at the 'pos' in local space (bottom-left corner using the baseline of the font). The text will have its color multiplied by 'modulate'. If 'width' is greater than or equal to 0, the text will be clipped if it exceeds the specified width. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
-*/
-//go:nosplit
 func (self class) DrawStringOutline(font [1]gdclass.Font, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, size int64, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling float64) { //gd:CanvasItem.draw_string_outline
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_string_outline, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeColor<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeInt<<44)|(gdextension.SizeFloat<<48), &struct {
 		font                gdextension.Object
@@ -2227,11 +1881,6 @@ func (self class) DrawStringOutline(font [1]gdclass.Font, pos Vector2.XY, text S
 		oversampling        float64
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0]))), pos, pointers.Get(gd.InternalString(text)), alignment, width, font_size, size, modulate, justification_flags, direction, orientation, oversampling})
 }
-
-/*
-Breaks 'text' to the lines and draws text outline using the specified 'font' at the 'pos' in local space (top-left corner). The text will have its color multiplied by 'modulate'. If 'width' is greater than or equal to 0, the text will be clipped if it exceeds the specified width. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
-*/
-//go:nosplit
 func (self class) DrawMultilineStringOutline(font [1]gdclass.Font, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, max_lines int64, size int64, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling float64) { //gd:CanvasItem.draw_multiline_string_outline
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_multiline_string_outline, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeColor<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeInt<<44)|(gdextension.SizeInt<<48)|(gdextension.SizeInt<<52)|(gdextension.SizeFloat<<56), &struct {
 		font                gdextension.Object
@@ -2250,11 +1899,6 @@ func (self class) DrawMultilineStringOutline(font [1]gdclass.Font, pos Vector2.X
 		oversampling        float64
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0]))), pos, pointers.Get(gd.InternalString(text)), alignment, width, font_size, max_lines, size, modulate, brk_flags, justification_flags, direction, orientation, oversampling})
 }
-
-/*
-Draws a string first character using a custom font. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used. 'pos' is defined in local space.
-*/
-//go:nosplit
 func (self class) DrawChar(font [1]gdclass.Font, pos Vector2.XY, char String.Readable, font_size int64, modulate Color.RGBA, oversampling float64) { //gd:CanvasItem.draw_char
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_char, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeFloat<<24), &struct {
 		font         gdextension.Object
@@ -2265,11 +1909,6 @@ func (self class) DrawChar(font [1]gdclass.Font, pos Vector2.XY, char String.Rea
 		oversampling float64
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0]))), pos, pointers.Get(gd.InternalString(char)), font_size, modulate, oversampling})
 }
-
-/*
-Draws a string first character outline using a custom font. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used. 'pos' is defined in local space.
-*/
-//go:nosplit
 func (self class) DrawCharOutline(font [1]gdclass.Font, pos Vector2.XY, char String.Readable, font_size int64, size int64, modulate Color.RGBA, oversampling float64) { //gd:CanvasItem.draw_char_outline
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_char_outline, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeColor<<24)|(gdextension.SizeFloat<<28), &struct {
 		font         gdextension.Object
@@ -2281,14 +1920,6 @@ func (self class) DrawCharOutline(font [1]gdclass.Font, pos Vector2.XY, char Str
 		oversampling float64
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0]))), pos, pointers.Get(gd.InternalString(char)), font_size, size, modulate, oversampling})
 }
-
-/*
-Draws a [Mesh] in 2D, using the provided texture. See [MeshInstance2D] for related documentation. The 'transform' is defined in local space.
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-[MeshInstance2D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance2D
-*/
-//go:nosplit
 func (self class) DrawMesh(mesh [1]gdclass.Mesh, texture [1]gdclass.Texture2D, transform Transform2D.OriginXY, modulate Color.RGBA) { //gd:CanvasItem.draw_mesh
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_mesh, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeTransform2D<<12)|(gdextension.SizeColor<<16), &struct {
 		mesh      gdextension.Object
@@ -2297,31 +1928,12 @@ func (self class) DrawMesh(mesh [1]gdclass.Mesh, texture [1]gdclass.Texture2D, t
 		modulate  Color.RGBA
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetMesh(mesh[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), transform, modulate})
 }
-
-/*
-Draws a [MultiMesh] in 2D with the provided texture. See [MultiMeshInstance2D] for related documentation.
-
-[MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
-[MultiMeshInstance2D]: https://pkg.go.dev/graphics.gd/classdb/MultiMeshInstance2D
-*/
-//go:nosplit
 func (self class) DrawMultimesh(multimesh [1]gdclass.MultiMesh, texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_multimesh
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_multimesh, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
 		multimesh gdextension.Object
 		texture   gdextension.Object
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetMultiMesh(multimesh[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
-
-/*
-Sets a custom local transform for drawing via components. Anything drawn afterwards will be transformed by this.
-
-Note: [FontFile.Oversampling] does not take 'scale' into account. This means that scaling up/down will cause bitmap fonts and rasterized (non-MSDF) dynamic fonts to appear blurry or pixelated. To ensure text remains crisp regardless of scale, you can enable MSDF font rendering by enabling [ProjectSettings] "gui/theme/default_font_multichannel_signed_distance_field" (applies to the default project font only), or enabling Multichannel Signed Distance Field in the import options of a DynamicFont for custom fonts. On system fonts, [SystemFont.MultichannelSignedDistanceField] can be enabled in the inspector.
-
-[FontFile.Oversampling]: https://pkg.go.dev/graphics.gd/classdb/FontFile#Instance.Oversampling
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-[SystemFont.MultichannelSignedDistanceField]: https://pkg.go.dev/graphics.gd/classdb/SystemFont#Instance.MultichannelSignedDistanceField
-*/
-//go:nosplit
 func (self class) DrawSetTransform(position Vector2.XY, rotation float64, scale Vector2.XY) { //gd:CanvasItem.draw_set_transform
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_set_transform, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeVector2<<12), &struct {
 		position Vector2.XY
@@ -2329,19 +1941,9 @@ func (self class) DrawSetTransform(position Vector2.XY, rotation float64, scale 
 		scale    Vector2.XY
 	}{position, rotation, scale})
 }
-
-/*
-Sets a custom local transform for drawing via matrix. Anything drawn afterwards will be transformed by this.
-*/
-//go:nosplit
 func (self class) DrawSetTransformMatrix(xform Transform2D.OriginXY) { //gd:CanvasItem.draw_set_transform_matrix
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_set_transform_matrix, 0|(gdextension.SizeTransform2D<<4), &struct{ xform Transform2D.OriginXY }{xform})
 }
-
-/*
-Subsequent drawing commands will be ignored unless they fall within the specified animation slice. This is a faster way to implement animations that loop on background rather than redrawing constantly.
-*/
-//go:nosplit
 func (self class) DrawAnimationSlice(animation_length float64, slice_begin float64, slice_end float64, offset float64) { //gd:CanvasItem.draw_animation_slice
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_animation_slice, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), &struct {
 		animation_length float64
@@ -2350,393 +1952,163 @@ func (self class) DrawAnimationSlice(animation_length float64, slice_begin float
 		offset           float64
 	}{animation_length, slice_begin, slice_end, offset})
 }
-
-/*
-After submitting all animations slices via [DrawAnimationSlice], this function can be used to revert drawing to its default state (all subsequent drawing commands will be visible). If you don't care about this particular use case, usage of this function after submitting the slices is not required.
-
-[DrawAnimationSlice]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawAnimationSlice
-*/
-//go:nosplit
 func (self class) DrawEndAnimation() { //gd:CanvasItem.draw_end_animation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_end_animation, 0, &struct{}{})
 }
-
-/*
-Returns the transform matrix of this [CanvasItem].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-*/
-//go:nosplit
 func (self class) GetTransform() Transform2D.OriginXY { //gd:CanvasItem.get_transform
 	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_transform, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the global transform matrix of this item, i.e. the combined transform up to the topmost [CanvasItem] node. The topmost item is a [CanvasItem] that either has no parent, has non-[CanvasItem] parent or it has [TopLevel] enabled.
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[TopLevel]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.TopLevel
-*/
-//go:nosplit
 func (self class) GetGlobalTransform() Transform2D.OriginXY { //gd:CanvasItem.get_global_transform
 	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_global_transform, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the transform from the local coordinate system of this [CanvasItem] to the [Viewport]s coordinate system.
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
-*/
-//go:nosplit
 func (self class) GetGlobalTransformWithCanvas() Transform2D.OriginXY { //gd:CanvasItem.get_global_transform_with_canvas
 	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_global_transform_with_canvas, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the transform of this node, converted from its registered canvas's coordinate system to its viewport embedder's coordinate system. See also [Viewport.GetFinalTransform] and [Node.GetViewport].
-
-[Node.GetViewport]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetViewport
-[Viewport.GetFinalTransform]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GetFinalTransform
-*/
-//go:nosplit
 func (self class) GetViewportTransform() Transform2D.OriginXY { //gd:CanvasItem.get_viewport_transform
 	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_viewport_transform, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns this node's viewport boundaries as a [Rect2.PositionSize]. See also [Node.GetViewport].
-
-[Node.GetViewport]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetViewport
-[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
-*/
-//go:nosplit
 func (self class) GetViewportRect() Rect2.PositionSize { //gd:CanvasItem.get_viewport_rect
 	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_viewport_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the transform of this node, converted from its registered canvas's coordinate system to its viewport's coordinate system. See also [Node.GetViewport].
-
-[Node.GetViewport]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetViewport
-*/
-//go:nosplit
 func (self class) GetCanvasTransform() Transform2D.OriginXY { //gd:CanvasItem.get_canvas_transform
 	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_canvas_transform, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the transform of this [CanvasItem] in global screen coordinates (i.e. taking window position into account). Mostly useful for editor plugins.
-
-Equals to [GetGlobalTransform] if the window is embedded (see [Viewport.GuiEmbedSubwindows]).
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[GetGlobalTransform]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.GetGlobalTransform
-[Viewport.GuiEmbedSubwindows]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GuiEmbedSubwindows
-*/
-//go:nosplit
 func (self class) GetScreenTransform() Transform2D.OriginXY { //gd:CanvasItem.get_screen_transform
 	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_screen_transform, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the mouse's position in this [CanvasItem] using the local coordinate system of this [CanvasItem].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-*/
-//go:nosplit
 func (self class) GetLocalMousePosition() Vector2.XY { //gd:CanvasItem.get_local_mouse_position
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_local_mouse_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns mouse cursor's global position relative to the [CanvasLayer] that contains this node.
-
-Note: For screen-space coordinates (e.g. when using a non-embedded [Popup]), you can use [DisplayServer.MouseGetPosition].
-
-[CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
-[DisplayServer.MouseGetPosition]: https://pkg.go.dev/graphics.gd/classdb/DisplayServer#MouseGetPosition
-[Popup]: https://pkg.go.dev/graphics.gd/classdb/Popup
-*/
-//go:nosplit
 func (self class) GetGlobalMousePosition() Vector2.XY { //gd:CanvasItem.get_global_mouse_position
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_global_mouse_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [Resource.ID] of the [World2D] canvas where this node is registered to, used by the [RenderingServer].
-
-[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-[World2D]: https://pkg.go.dev/graphics.gd/classdb/World2D
-*/
-//go:nosplit
 func (self class) GetCanvas() RID.Any { //gd:CanvasItem.get_canvas
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_canvas, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [CanvasLayer] that contains this node, or null if the node is not in any [CanvasLayer].
-
-[CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
-*/
-//go:nosplit
 func (self class) GetCanvasLayerNode() [1]gdclass.CanvasLayer { //gd:CanvasItem.get_canvas_layer_node
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_canvas_layer_node, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.CanvasLayer{gdclass.NewCanvasLayer(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Returns the [World2D] this node is registered to.
-
-Usually, this is the same as this node's viewport (see [Node.GetViewport] and [Viewport.FindWorld2d]).
-
-[Node.GetViewport]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetViewport
-[Viewport.FindWorld2d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.FindWorld2d
-[World2D]: https://pkg.go.dev/graphics.gd/classdb/World2D
-*/
-//go:nosplit
 func (self class) GetWorld2d() [1]gdclass.World2D { //gd:CanvasItem.get_world_2d
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_world_2d, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.World2D{gdclass.NewWorld2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:CanvasItem.set_material
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
 }
-
-//go:nosplit
 func (self class) GetMaterial() [1]gdclass.Material { //gd:CanvasItem.get_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Set the value of a shader uniform for this instance only ([per-instance uniform]). See also [ShaderMaterial.SetShaderParameter] to assign a uniform on all instances using the same [ShaderMaterial].
-
-Note: For a shader uniform to be assignable on a per-instance basis, it must be defined with instance uniform ... rather than uniform ... in the shader code.
-
-Note: 'name' is case-sensitive and must match the name of the uniform in the code exactly (not the capitalized name in the inspector).
-
-[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
-[ShaderMaterial.SetShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial#Instance.SetShaderParameter
-[per-instance uniform]: https://docs.godotengine.org/tutorials/shaders/shader_reference/shading_language.html#per-instance-uniforms
-*/
-//go:nosplit
 func (self class) SetInstanceShaderParameter(name String.Name, value variant.Any) { //gd:CanvasItem.set_instance_shader_parameter
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_instance_shader_parameter, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), &struct {
 		name  gdextension.StringName
 		value gdextension.Variant
 	}{pointers.Get(gd.InternalStringName(name)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-/*
-Get the value of a shader parameter as set on this instance.
-*/
-//go:nosplit
 func (self class) GetInstanceShaderParameter(name String.Name) variant.Any { //gd:CanvasItem.get_instance_shader_parameter
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_instance_shader_parameter, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUseParentMaterial(enable bool) { //gd:CanvasItem.set_use_parent_material
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_parent_material, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) GetUseParentMaterial() bool { //gd:CanvasItem.get_use_parent_material
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_parent_material, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-If true, the node will receive [NotificationLocalTransformChanged] whenever its local transform changes.
-
-Note: Many canvas items such as [Bone2D] or [CollisionShape2D] automatically enable this in order to function correctly.
-
-[Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
-[CollisionShape2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionShape2D
-*/
-//go:nosplit
 func (self class) SetNotifyLocalTransform(enable bool) { //gd:CanvasItem.set_notify_local_transform
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_notify_local_transform, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-/*
-Returns true if the node receives [NotificationLocalTransformChanged] whenever its local transform changes. This is enabled with [SetNotifyLocalTransform].
-
-[SetNotifyLocalTransform]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.SetNotifyLocalTransform
-*/
-//go:nosplit
 func (self class) IsLocalTransformNotificationEnabled() bool { //gd:CanvasItem.is_local_transform_notification_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_local_transform_notification_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-If true, the node will receive [NotificationTransformChanged] whenever global transform changes.
-
-Note: Many canvas items such as [Camera2D] or [Light2D] automatically enable this in order to function correctly.
-
-[Camera2D]: https://pkg.go.dev/graphics.gd/classdb/Camera2D
-[Light2D]: https://pkg.go.dev/graphics.gd/classdb/Light2D
-*/
-//go:nosplit
 func (self class) SetNotifyTransform(enable bool) { //gd:CanvasItem.set_notify_transform
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_notify_transform, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-/*
-Returns true if the node receives [NotificationTransformChanged] whenever its global transform changes. This is enabled with [SetNotifyTransform].
-
-[SetNotifyTransform]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.SetNotifyTransform
-*/
-//go:nosplit
 func (self class) IsTransformNotificationEnabled() bool { //gd:CanvasItem.is_transform_notification_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_transform_notification_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Forces the node's transform to update. Fails if the node is not inside the tree. See also [GetTransform].
-
-Note: For performance reasons, transform changes are usually accumulated and applied once at the end of the frame. The update propagates through [CanvasItem] children, as well. Therefore, use this method only when you need an up-to-date transform (such as during physics operations).
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[GetTransform]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.GetTransform
-*/
-//go:nosplit
 func (self class) ForceUpdateTransform() { //gd:CanvasItem.force_update_transform
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_update_transform, 0, &struct{}{})
 }
-
-/*
-Transforms 'viewport_point' from the viewport's coordinates to this node's local coordinates.
-
-For the opposite operation, use [GetGlobalTransformWithCanvas].
-
-
-	var viewport_point = Transform2D.Vector(local_point, canvas_item.GetGlobalTransformWithCanvas())
-
-
-[GetGlobalTransformWithCanvas]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.GetGlobalTransformWithCanvas
-*/
-//go:nosplit
 func (self class) MakeCanvasPositionLocal(viewport_point Vector2.XY) Vector2.XY { //gd:CanvasItem.make_canvas_position_local
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.make_canvas_position_local, gdextension.SizeVector2|(gdextension.SizeVector2<<4), &struct{ viewport_point Vector2.XY }{viewport_point})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a copy of the given 'event' with its coordinates converted from global space to this [CanvasItem]'s local space. If not possible, returns the same [InputEvent] unchanged.
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
-*/
-//go:nosplit
 func (self class) MakeInputLocal(event [1]gdclass.InputEvent) [1]gdclass.InputEvent { //gd:CanvasItem.make_input_local
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.make_input_local, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ event gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0])))})
 	var ret = [1]gdclass.InputEvent{gdclass.NewInputEvent(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetVisibilityLayer(layer int64) { //gd:CanvasItem.set_visibility_layer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_layer, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 }
-
-//go:nosplit
 func (self class) GetVisibilityLayer() int64 { //gd:CanvasItem.get_visibility_layer
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_visibility_layer, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Set/clear individual bits on the rendering visibility layer. This simplifies editing this [CanvasItem]'s visibility layer.
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-*/
-//go:nosplit
 func (self class) SetVisibilityLayerBit(layer int64, enabled bool) { //gd:CanvasItem.set_visibility_layer_bit
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_layer_bit, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer   int64
 		enabled bool
 	}{layer, enabled})
 }
-
-/*
-Returns true if the layer at the given index is set in [VisibilityLayer].
-
-[VisibilityLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.VisibilityLayer
-*/
-//go:nosplit
 func (self class) GetVisibilityLayerBit(layer int64) bool { //gd:CanvasItem.get_visibility_layer_bit
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_visibility_layer_bit, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTextureFilter(mode TextureFilter) { //gd:CanvasItem.set_texture_filter
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_filter, 0|(gdextension.SizeInt<<4), &struct{ mode TextureFilter }{mode})
 }
-
-//go:nosplit
 func (self class) GetTextureFilter() TextureFilter { //gd:CanvasItem.get_texture_filter
 	var r_ret = noescape.Call[TextureFilter](gd.ObjectChecked(self.AsObject()), methods.get_texture_filter, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTextureRepeat(mode TextureRepeat) { //gd:CanvasItem.set_texture_repeat
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_repeat, 0|(gdextension.SizeInt<<4), &struct{ mode TextureRepeat }{mode})
 }
-
-//go:nosplit
 func (self class) GetTextureRepeat() TextureRepeat { //gd:CanvasItem.get_texture_repeat
 	var r_ret = noescape.Call[TextureRepeat](gd.ObjectChecked(self.AsObject()), methods.get_texture_repeat, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetClipChildrenMode(mode ClipChildrenMode) { //gd:CanvasItem.set_clip_children_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clip_children_mode, 0|(gdextension.SizeInt<<4), &struct{ mode ClipChildrenMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetClipChildrenMode() ClipChildrenMode { //gd:CanvasItem.get_clip_children_mode
 	var r_ret = noescape.Call[ClipChildrenMode](gd.ObjectChecked(self.AsObject()), methods.get_clip_children_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

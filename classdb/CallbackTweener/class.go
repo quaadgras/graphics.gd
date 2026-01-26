@@ -176,19 +176,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Makes the callback call delayed by given time in seconds.
-
-Example: Call [Node.QueueFree] after 2 seconds:
-
-
-	var tween = SceneTree.Get(node).CreateTween()
-	tween.TweenCallback(node.QueueFree).SetDelay(2)
-
-
-[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
-*/
-//go:nosplit
 func (self class) SetDelay(delay float64) [1]gdclass.CallbackTweener { //gd:CallbackTweener.set_delay
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_delay, gdextension.SizeObject|(gdextension.SizeFloat<<4), &struct{ delay float64 }{delay})
 	var ret = [1]gdclass.CallbackTweener{gdclass.NewCallbackTweener(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

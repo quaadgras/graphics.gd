@@ -235,10 +235,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-This method is executed by the Editor when File > Run is used.
-*/
 func (class) _run(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -246,33 +242,14 @@ func (class) _run(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirt
 	}
 }
 
-/*
-Makes 'node' root of the currently opened scene. Only works if the scene is empty. If the 'node' is a scene instance, an inheriting scene will be created.
-*/
-//go:nosplit
 func (self class) AddRootNode(node [1]gdclass.Node) { //gd:EditorScript.add_root_node
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_root_node, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetNode(node[0])[0]))})
 }
-
-/*
-Returns the edited (current) scene's root [Node]. Equivalent of [EditorInterface.GetEditedSceneRoot].
-
-[EditorInterface.GetEditedSceneRoot]: https://pkg.go.dev/graphics.gd/classdb/EditorInterface#GetEditedSceneRoot
-[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
-*/
-//go:nosplit
 func (self class) GetScene() [1]gdclass.Node { //gd:EditorScript.get_scene
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_scene, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the [EditorInterface] singleton instance.
-
-[EditorInterface]: https://pkg.go.dev/graphics.gd/classdb/EditorInterface
-*/
-//go:nosplit
 func (self class) GetEditorInterface() [1]gdclass.EditorInterface { //gd:EditorScript.get_editor_interface
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_interface, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorInterface{gdclass.NewEditorInterface(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}

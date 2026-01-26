@@ -230,43 +230,25 @@ func (self Instance) SetBaseError(value string) Instance { //gd:RDShaderFile.bas
 	return self
 }
 
-/*
-Sets the SPIR-V 'bytecode' that will be compiled for the specified 'version'.
-*/
-//go:nosplit
 func (self class) SetBytecode(bytecode [1]gdclass.RDShaderSPIRV, version String.Name) { //gd:RDShaderFile.set_bytecode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bytecode, 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8), &struct {
 		bytecode gdextension.Object
 		version  gdextension.StringName
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetRDShaderSPIRV(bytecode[0]))), pointers.Get(gd.InternalStringName(version))})
 }
-
-/*
-Returns the SPIR-V intermediate representation for the specified shader 'version'.
-*/
-//go:nosplit
 func (self class) GetSpirv(version String.Name) [1]gdclass.RDShaderSPIRV { //gd:RDShaderFile.get_spirv
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_spirv, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ version gdextension.StringName }{pointers.Get(gd.InternalStringName(version))})
 	var ret = [1]gdclass.RDShaderSPIRV{gdclass.NewRDShaderSPIRV(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the list of compiled versions for this shader.
-*/
-//go:nosplit
 func (self class) GetVersionList() Array.Contains[String.Name] { //gd:RDShaderFile.get_version_list
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_version_list, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBaseError(error String.Readable) { //gd:RDShaderFile.set_base_error
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_error, 0|(gdextension.SizeString<<4), &struct{ error gdextension.String }{pointers.Get(gd.InternalString(error))})
 }
-
-//go:nosplit
 func (self class) GetBaseError() String.Readable { //gd:RDShaderFile.get_base_error
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_base_error, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))

@@ -193,12 +193,9 @@ func (self Instance) SetCullMask(value int) Instance { //gd:GPUParticlesCollisio
 	return self
 }
 
-//go:nosplit
 func (self class) SetCullMask(mask int64) { //gd:GPUParticlesCollision3D.set_cull_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cull_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
-
-//go:nosplit
 func (self class) GetCullMask() int64 { //gd:GPUParticlesCollision3D.get_cull_mask
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cull_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

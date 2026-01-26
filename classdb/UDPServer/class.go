@@ -337,12 +337,6 @@ func (self Instance) SetMaxPendingConnections(value int) Instance { //gd:UDPServ
 	return self
 }
 
-/*
-Starts the server by opening a UDP socket listening on the given 'port'. You can optionally specify a 'bind_address' to only listen for packets sent to that address. See also [PacketPeerUDP.Bind].
-
-[PacketPeerUDP.Bind]: https://pkg.go.dev/graphics.gd/classdb/PacketPeerUDP#Instance.Bind
-*/
-//go:nosplit
 func (self class) Listen(port int64, bind_address String.Readable) Error.Code { //gd:UDPServer.listen
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.listen, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		port         int64
@@ -351,83 +345,37 @@ func (self class) Listen(port int64, bind_address String.Readable) Error.Code { 
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Call this method at regular intervals (e.g. inside [Node.Process]) to process new packets. Any packet from a known address/port pair will be delivered to the appropriate [PacketPeerUDP], while any packet received from an unknown address/port pair will be added as a pending connection (see [IsConnectionAvailable] and [TakeConnection]). The maximum number of pending connections is defined via [MaxPendingConnections].
-
-[IsConnectionAvailable]: https://pkg.go.dev/graphics.gd/classdb/UDPServer#Instance.IsConnectionAvailable
-[MaxPendingConnections]: https://pkg.go.dev/graphics.gd/classdb/UDPServer#Instance.MaxPendingConnections
-[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
-[PacketPeerUDP]: https://pkg.go.dev/graphics.gd/classdb/PacketPeerUDP
-[TakeConnection]: https://pkg.go.dev/graphics.gd/classdb/UDPServer#Instance.TakeConnection
-*/
-//go:nosplit
 func (self class) Poll() Error.Code { //gd:UDPServer.poll
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.poll, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns true if a packet with a new address/port combination was received on the socket.
-*/
-//go:nosplit
 func (self class) IsConnectionAvailable() bool { //gd:UDPServer.is_connection_available
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_connection_available, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the local port this server is listening to.
-*/
-//go:nosplit
 func (self class) GetLocalPort() int64 { //gd:UDPServer.get_local_port
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_local_port, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the socket is open and listening on a port.
-*/
-//go:nosplit
 func (self class) IsListening() bool { //gd:UDPServer.is_listening
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_listening, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the first pending connection (connected to the appropriate address/port). Will return null if no new connection is available. See also [IsConnectionAvailable], [PacketPeerUDP.ConnectToHost].
-
-[IsConnectionAvailable]: https://pkg.go.dev/graphics.gd/classdb/UDPServer#Instance.IsConnectionAvailable
-[PacketPeerUDP.ConnectToHost]: https://pkg.go.dev/graphics.gd/classdb/PacketPeerUDP#Instance.ConnectToHost
-*/
-//go:nosplit
 func (self class) TakeConnection() [1]gdclass.PacketPeerUDP { //gd:UDPServer.take_connection
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.take_connection, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PacketPeerUDP{gdclass.NewPacketPeerUDP(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Stops the server, closing the UDP socket if open. Will close all connected [PacketPeerUDP] accepted via [TakeConnection] (remote peers will not be notified).
-
-[PacketPeerUDP]: https://pkg.go.dev/graphics.gd/classdb/PacketPeerUDP
-[TakeConnection]: https://pkg.go.dev/graphics.gd/classdb/UDPServer#Instance.TakeConnection
-*/
-//go:nosplit
 func (self class) Stop() { //gd:UDPServer.stop
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetMaxPendingConnections(max_pending_connections int64) { //gd:UDPServer.set_max_pending_connections
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_pending_connections, 0|(gdextension.SizeInt<<4), &struct{ max_pending_connections int64 }{max_pending_connections})
 }
-
-//go:nosplit
 func (self class) GetMaxPendingConnections() int64 { //gd:UDPServer.get_max_pending_connections
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_pending_connections, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

@@ -214,79 +214,52 @@ func (self Instance) SetGodotBoneNode(value map[int]int) Instance { //gd:GLTFSke
 	return self
 }
 
-//go:nosplit
 func (self class) GetJoints() Packed.Array[int32] { //gd:GLTFSkeleton.get_joints
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_joints, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetJoints(joints Packed.Array[int32]) { //gd:GLTFSkeleton.set_joints
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joints, 0|(gdextension.SizePackedArray<<4), &struct {
 		joints gdextension.PackedArray[int32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](joints))})
 }
-
-//go:nosplit
 func (self class) GetRoots() Packed.Array[int32] { //gd:GLTFSkeleton.get_roots
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_roots, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRoots(roots Packed.Array[int32]) { //gd:GLTFSkeleton.set_roots
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_roots, 0|(gdextension.SizePackedArray<<4), &struct {
 		roots gdextension.PackedArray[int32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](roots))})
 }
-
-//go:nosplit
 func (self class) GetGodotSkeleton() [1]gdclass.Skeleton3D { //gd:GLTFSkeleton.get_godot_skeleton
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_godot_skeleton, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Skeleton3D{gdclass.NewSkeleton3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) GetUniqueNames() Array.Contains[String.Readable] { //gd:GLTFSkeleton.get_unique_names
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_unique_names, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUniqueNames(unique_names Array.Contains[String.Readable]) { //gd:GLTFSkeleton.set_unique_names
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_unique_names, 0|(gdextension.SizeArray<<4), &struct{ unique_names gdextension.Array }{pointers.Get(gd.InternalArray(unique_names))})
 }
-
-/*
-Returns a data structure that maps skeleton bone indices to the indices of glTF nodes. This property is unused during import, and only set during export. In a glTF file, a bone is a node, so Godot converts skeleton bones to glTF nodes.
-*/
-//go:nosplit
 func (self class) GetGodotBoneNode() Dictionary.Any { //gd:GLTFSkeleton.get_godot_bone_node
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_godot_bone_node, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Sets a data structure that maps skeleton bone indices to the indices of glTF nodes. This property is unused during import, and only set during export. In a glTF file, a bone is a node, so Godot converts skeleton bones to glTF nodes.
-*/
-//go:nosplit
 func (self class) SetGodotBoneNode(godot_bone_node Dictionary.Any) { //gd:GLTFSkeleton.set_godot_bone_node
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_godot_bone_node, 0|(gdextension.SizeDictionary<<4), &struct{ godot_bone_node gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(godot_bone_node))})
 }
-
-//go:nosplit
 func (self class) GetBoneAttachmentCount() int64 { //gd:GLTFSkeleton.get_bone_attachment_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone_attachment_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetBoneAttachment(idx int64) [1]gdclass.BoneAttachment3D { //gd:GLTFSkeleton.get_bone_attachment
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_bone_attachment, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = [1]gdclass.BoneAttachment3D{gdclass.NewBoneAttachment3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

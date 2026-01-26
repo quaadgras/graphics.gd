@@ -246,7 +246,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
 func (class) _get_data(impl func(ptr gdclass.Receiver, r_buffer gdextension.Pointer, r_bytes int64, r_received *int32) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var r_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
@@ -262,7 +261,6 @@ func (class) _get_data(impl func(ptr gdclass.Receiver, r_buffer gdextension.Poin
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
 func (class) _get_partial_data(impl func(ptr gdclass.Receiver, r_buffer gdextension.Pointer, r_bytes int64, r_received *int32) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var r_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
@@ -278,7 +276,6 @@ func (class) _get_partial_data(impl func(ptr gdclass.Receiver, r_buffer gdextens
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
 func (class) _put_data(impl func(ptr gdclass.Receiver, p_data gdextension.Pointer, p_bytes int64, r_sent *int32) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var p_data = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
@@ -294,7 +291,6 @@ func (class) _put_data(impl func(ptr gdclass.Receiver, p_data gdextension.Pointe
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
 func (class) _put_partial_data(impl func(ptr gdclass.Receiver, p_data gdextension.Pointer, p_bytes int64, r_sent *int32) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var p_data = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
@@ -310,7 +306,6 @@ func (class) _put_partial_data(impl func(ptr gdclass.Receiver, p_data gdextensio
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
 func (class) _get_available_bytes(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)

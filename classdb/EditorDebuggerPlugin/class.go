@@ -403,12 +403,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Override this method to be notified whenever a new [EditorDebuggerSession] is created. Note that the session may be inactive during this stage.
-
-[EditorDebuggerSession]: https://pkg.go.dev/graphics.gd/classdb/EditorDebuggerSession
-*/
 func (class) _setup_session(impl func(ptr gdclass.Receiver, session_id int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var session_id = gd.UnsafeGet[int64](p_args, 0)
@@ -416,12 +410,6 @@ func (class) _setup_session(impl func(ptr gdclass.Receiver, session_id int64)) (
 		impl(self, session_id)
 	}
 }
-
-/*
-Override this method to enable receiving messages from the debugger. If 'capture' is "my_message" then messages starting with "my_message:" will be passed to the [Capture] method.
-
-[Capture]: https://pkg.go.dev/graphics.gd/classdb/EditorDebuggerPlugin#Interface
-*/
 func (class) _has_capture(impl func(ptr gdclass.Receiver, capture String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var capture = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -431,13 +419,6 @@ func (class) _has_capture(impl func(ptr gdclass.Receiver, capture String.Readabl
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Override this method to process incoming messages. The 'session_id' is the ID of the [EditorDebuggerSession] that received the 'message'. Use [GetSession] to retrieve the session. This method should return true if the message is recognized.
-
-[EditorDebuggerSession]: https://pkg.go.dev/graphics.gd/classdb/EditorDebuggerSession
-[GetSession]: https://pkg.go.dev/graphics.gd/classdb/EditorDebuggerPlugin#Instance.GetSession
-*/
 func (class) _capture(impl func(ptr gdclass.Receiver, message String.Readable, data Array.Any, session_id int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var message = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -450,10 +431,6 @@ func (class) _capture(impl func(ptr gdclass.Receiver, message String.Readable, d
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Override this method to be notified when a breakpoint line has been clicked in the debugger breakpoint panel.
-*/
 func (class) _goto_script_line(impl func(ptr gdclass.Receiver, script [1]gdclass.Script, line int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var script = [1]gdclass.Script{gdclass.NewScript(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -464,20 +441,12 @@ func (class) _goto_script_line(impl func(ptr gdclass.Receiver, script [1]gdclass
 		impl(self, script, line)
 	}
 }
-
-/*
-Override this method to be notified when all breakpoints are cleared in the editor.
-*/
 func (class) _breakpoints_cleared_in_tree(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
-
-/*
-Override this method to be notified when a breakpoint is set in the editor.
-*/
 func (class) _breakpoint_set_in_tree(impl func(ptr gdclass.Receiver, script [1]gdclass.Script, line int64, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var script = [1]gdclass.Script{gdclass.NewScript(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -490,27 +459,11 @@ func (class) _breakpoint_set_in_tree(impl func(ptr gdclass.Receiver, script [1]g
 	}
 }
 
-/*
-Returns the [EditorDebuggerSession] with the given 'id'.
-
-[EditorDebuggerSession]: https://pkg.go.dev/graphics.gd/classdb/EditorDebuggerSession
-*/
-//go:nosplit
 func (self class) GetSession(id int64) [1]gdclass.EditorDebuggerSession { //gd:EditorDebuggerPlugin.get_session
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_session, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = [1]gdclass.EditorDebuggerSession{gdclass.NewEditorDebuggerSession(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns an array of [EditorDebuggerSession] currently available to this debugger plugin.
-
-Note: Sessions in the array may be inactive, check their state via [EditorDebuggerSession.IsActive].
-
-[EditorDebuggerSession]: https://pkg.go.dev/graphics.gd/classdb/EditorDebuggerSession
-[EditorDebuggerSession.IsActive]: https://pkg.go.dev/graphics.gd/classdb/EditorDebuggerSession#Instance.IsActive
-*/
-//go:nosplit
 func (self class) GetSessions() Array.Any { //gd:EditorDebuggerPlugin.get_sessions
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_sessions, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))

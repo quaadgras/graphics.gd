@@ -75,14 +75,6 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 	if pkg != "internal" {
 		prefix = "gd."
 	}
-
-	fmt.Fprintln(w)
-	if method.Description != "" {
-		fmt.Fprintln(w, "/*")
-		fmt.Fprint(w, gdjson.DocsToGoDoc(method.Description, classDB, class.Name, class.Name+"_"+gdjson.ConvertName(method.Name)))
-		fmt.Fprintln(w, "\n*/")
-	}
-
 	if method.IsVirtual {
 		fmt.Fprintf(w, "func (class) %s(impl func(ptr gdclass.Receiver", method.Name)
 		for _, arg := range method.Arguments {
@@ -130,9 +122,9 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 		return
 	}
 	if ctype == TypeBuiltin && strings.HasPrefix(class.Name, "Packed") {
-		fmt.Fprintf(w, "//go:nosplit\nfunc (self *class) %v(", gdjson.ConvertName(method.Name))
+		fmt.Fprintf(w, "\nfunc (self *class) %v(", gdjson.ConvertName(method.Name))
 	} else {
-		fmt.Fprintf(w, "//go:nosplit\nfunc (self class) %v(", gdjson.ConvertName(method.Name))
+		fmt.Fprintf(w, "\nfunc (self class) %v(", gdjson.ConvertName(method.Name))
 	}
 
 	if method.Name == "select" {

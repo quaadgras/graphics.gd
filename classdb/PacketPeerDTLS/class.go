@@ -218,23 +218,9 @@ func New() Instance {
 	return casted
 }
 
-/*
-Poll the connection to check for incoming packets. Call this frequently to update the status and keep the connection working.
-*/
-//go:nosplit
 func (self class) Poll() { //gd:PacketPeerDTLS.poll
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.poll, 0, &struct{}{})
 }
-
-/*
-Connects a 'packet_peer' beginning the DTLS handshake using the underlying [PacketPeerUDP] which must be connected (see [PacketPeerUDP.ConnectToHost]). You can optionally specify the 'client_options' to be used while verifying the TLS connections. See [TLSOptions.Client] and [TLSOptions.ClientUnsafe].
-
-[PacketPeerUDP]: https://pkg.go.dev/graphics.gd/classdb/PacketPeerUDP
-[PacketPeerUDP.ConnectToHost]: https://pkg.go.dev/graphics.gd/classdb/PacketPeerUDP#Instance.ConnectToHost
-[TLSOptions.Client]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Client
-[TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
-*/
-//go:nosplit
 func (self class) ConnectToPeer(packet_peer [1]gdclass.PacketPeerUDP, hostname String.Readable, client_options [1]gdclass.TLSOptions) Error.Code { //gd:PacketPeerDTLS.connect_to_peer
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.connect_to_peer, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeObject<<12), &struct {
 		packet_peer    gdextension.Object
@@ -244,21 +230,11 @@ func (self class) ConnectToPeer(packet_peer [1]gdclass.PacketPeerUDP, hostname S
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns the status of the connection.
-*/
-//go:nosplit
 func (self class) GetStatus() Status { //gd:PacketPeerDTLS.get_status
 	var r_ret = noescape.Call[Status](gd.ObjectChecked(self.AsObject()), methods.get_status, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Disconnects this peer, terminating the DTLS session.
-*/
-//go:nosplit
 func (self class) DisconnectFromPeer() { //gd:PacketPeerDTLS.disconnect_from_peer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.disconnect_from_peer, 0, &struct{}{})
 }

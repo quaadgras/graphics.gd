@@ -240,61 +240,38 @@ func (self Instance) SetDisableCollision(value bool) Instance { //gd:Joint2D.dis
 	return self
 }
 
-//go:nosplit
 func (self class) SetNodeA(node Path.ToNode) { //gd:Joint2D.set_node_a
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_node_a, 0|(gdextension.SizeNodePath<<4), &struct{ node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(node))})
 }
-
-//go:nosplit
 func (self class) GetNodeA() Path.ToNode { //gd:Joint2D.get_node_a
 	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_node_a, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetNodeB(node Path.ToNode) { //gd:Joint2D.set_node_b
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_node_b, 0|(gdextension.SizeNodePath<<4), &struct{ node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(node))})
 }
-
-//go:nosplit
 func (self class) GetNodeB() Path.ToNode { //gd:Joint2D.get_node_b
 	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_node_b, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBias(bias float64) { //gd:Joint2D.set_bias
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bias, 0|(gdextension.SizeFloat<<4), &struct{ bias float64 }{bias})
 }
-
-//go:nosplit
 func (self class) GetBias() float64 { //gd:Joint2D.get_bias
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bias, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetExcludeNodesFromCollision(enable bool) { //gd:Joint2D.set_exclude_nodes_from_collision
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exclude_nodes_from_collision, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) GetExcludeNodesFromCollision() bool { //gd:Joint2D.get_exclude_nodes_from_collision
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_exclude_nodes_from_collision, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the joint's internal [Resource.ID] from the [PhysicsServer2D].
-
-[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) GetRid() RID.Any { //gd:Joint2D.get_rid
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret

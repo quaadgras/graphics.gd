@@ -192,24 +192,17 @@ func (self Instance) SetBone(value int) Instance { //gd:ModifierBoneTarget3D.bon
 	return self
 }
 
-//go:nosplit
 func (self class) SetBoneName(bone_name String.Readable) { //gd:ModifierBoneTarget3D.set_bone_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_name, 0|(gdextension.SizeString<<4), &struct{ bone_name gdextension.String }{pointers.Get(gd.InternalString(bone_name))})
 }
-
-//go:nosplit
 func (self class) GetBoneName() String.Readable { //gd:ModifierBoneTarget3D.get_bone_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_bone_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBone(bone int64) { //gd:ModifierBoneTarget3D.set_bone
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone, 0|(gdextension.SizeInt<<4), &struct{ bone int64 }{bone})
 }
-
-//go:nosplit
 func (self class) GetBone() int64 { //gd:ModifierBoneTarget3D.get_bone
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

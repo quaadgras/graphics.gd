@@ -288,19 +288,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Starts a new [Thread] that calls 'callable'.
-
-If the method takes some arguments, you can pass them using [Callable.Bind].
-
-The 'priority' of the [Thread] can be changed by passing a value from the [Priority] enum.
-
-Returns [Ok] on success, or [ErrCantCreate] on failure.
-
-[Callable.Bind]: https://pkg.go.dev/graphics.gd/classdb/Callable#Instance.Bind
-[Thread]: https://pkg.go.dev/graphics.gd/classdb/Thread
-*/
-//go:nosplit
 func (self class) Start(callable Callable.Function, priority Priority) Error.Code { //gd:Thread.start
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start, gdextension.SizeInt|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
 		callable gdextension.Callable
@@ -309,89 +296,26 @@ func (self class) Start(callable Callable.Function, priority Priority) Error.Cod
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns the current [Thread]'s ID, uniquely identifying it among all threads. If the [Thread] has not started running or if [WaitToFinish] has been called, this returns an empty string.
-
-[Thread]: https://pkg.go.dev/graphics.gd/classdb/Thread
-[WaitToFinish]: https://pkg.go.dev/graphics.gd/classdb/Thread#Instance.WaitToFinish
-*/
-//go:nosplit
 func (self class) GetId() String.Readable { //gd:Thread.get_id
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_id, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns true if this [Thread] has been started. Once started, this will return true until it is joined using [WaitToFinish]. For checking if a [Thread] is still executing its task, use [IsAlive].
-
-[IsAlive]: https://pkg.go.dev/graphics.gd/classdb/Thread#Instance.IsAlive
-[Thread]: https://pkg.go.dev/graphics.gd/classdb/Thread
-[WaitToFinish]: https://pkg.go.dev/graphics.gd/classdb/Thread#Instance.WaitToFinish
-*/
-//go:nosplit
 func (self class) IsStarted() bool { //gd:Thread.is_started
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_started, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if this [Thread] is currently running the provided function. This is useful for determining if [WaitToFinish] can be called without blocking the calling thread.
-
-To check if a [Thread] is joinable, use [IsStarted].
-
-[IsStarted]: https://pkg.go.dev/graphics.gd/classdb/Thread#Instance.IsStarted
-[Thread]: https://pkg.go.dev/graphics.gd/classdb/Thread
-[WaitToFinish]: https://pkg.go.dev/graphics.gd/classdb/Thread#Instance.WaitToFinish
-*/
-//go:nosplit
 func (self class) IsAlive() bool { //gd:Thread.is_alive
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_alive, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Joins the [Thread] and waits for it to finish. Returns the output of the func passed to [Start].
-
-Should either be used when you want to retrieve the value returned from the method called by the [Thread] or before freeing the instance that contains the [Thread].
-
-To determine if this can be called without blocking the calling thread, check if [IsAlive] is false.
-
-[IsAlive]: https://pkg.go.dev/graphics.gd/classdb/Thread#Instance.IsAlive
-[Start]: https://pkg.go.dev/graphics.gd/classdb/Thread#Instance.Start
-[Thread]: https://pkg.go.dev/graphics.gd/classdb/Thread
-*/
-//go:nosplit
 func (self class) WaitToFinish() variant.Any { //gd:Thread.wait_to_finish
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.wait_to_finish, gdextension.SizeVariant, &struct{}{})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Sets whether the thread safety checks the engine normally performs in methods of certain classes (e.g., [Node]) should happen on the current thread.
-
-The default, for every thread, is that they are enabled (as if called with 'enabled' being true).
-
-Those checks are conservative. That means that they will only succeed in considering a call thread-safe (and therefore allow it to happen) if the engine can guarantee such safety.
-
-Because of that, there may be cases where the user may want to disable them ('enabled' being false) to make certain operations allowed again. By doing so, it becomes the user's responsibility to ensure thread safety (e.g., by using [Mutex]) for those objects that are otherwise protected by the engine.
-
-Note: This is an advanced usage of the engine. You are advised to use it only if you know what you are doing and there is no safer way.
-
-Note: This is useful for scripts running on either arbitrary [Thread] objects or tasks submitted to the [WorkerThreadPool]. It doesn't apply to code running during [Node] group processing, where the checks will be always performed.
-
-Note: Even in the case of having disabled the checks in a [WorkerThreadPool] task, there's no need to re-enable them at the end. The engine will do so.
-
-[Mutex]: https://pkg.go.dev/graphics.gd/classdb/Mutex
-[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
-[Thread]: https://pkg.go.dev/graphics.gd/classdb/Thread
-[WorkerThreadPool]: https://pkg.go.dev/graphics.gd/classdb/WorkerThreadPool
-*/
-//go:nosplit
 func (self class) SetThreadSafetyChecksEnabled(enabled bool) { //gd:Thread.set_thread_safety_checks_enabled
 	noescape.CallStatic[struct{}](methods.set_thread_safety_checks_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }

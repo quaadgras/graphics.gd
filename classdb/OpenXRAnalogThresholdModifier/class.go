@@ -225,48 +225,33 @@ func (self Instance) SetOffHaptic(value OpenXRHapticBase.Instance) Instance { //
 	return self
 }
 
-//go:nosplit
 func (self class) SetOnThreshold(on_threshold float64) { //gd:OpenXRAnalogThresholdModifier.set_on_threshold
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_on_threshold, 0|(gdextension.SizeFloat<<4), &struct{ on_threshold float64 }{on_threshold})
 }
-
-//go:nosplit
 func (self class) GetOnThreshold() float64 { //gd:OpenXRAnalogThresholdModifier.get_on_threshold
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_on_threshold, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetOffThreshold(off_threshold float64) { //gd:OpenXRAnalogThresholdModifier.set_off_threshold
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_off_threshold, 0|(gdextension.SizeFloat<<4), &struct{ off_threshold float64 }{off_threshold})
 }
-
-//go:nosplit
 func (self class) GetOffThreshold() float64 { //gd:OpenXRAnalogThresholdModifier.get_off_threshold
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_off_threshold, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetOnHaptic(haptic [1]gdclass.OpenXRHapticBase) { //gd:OpenXRAnalogThresholdModifier.set_on_haptic
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_on_haptic, 0|(gdextension.SizeObject<<4), &struct{ haptic gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRHapticBase(haptic[0])))})
 }
-
-//go:nosplit
 func (self class) GetOnHaptic() [1]gdclass.OpenXRHapticBase { //gd:OpenXRAnalogThresholdModifier.get_on_haptic
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_on_haptic, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.OpenXRHapticBase{gdclass.NewOpenXRHapticBase(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetOffHaptic(haptic [1]gdclass.OpenXRHapticBase) { //gd:OpenXRAnalogThresholdModifier.set_off_haptic
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_off_haptic, 0|(gdextension.SizeObject<<4), &struct{ haptic gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRHapticBase(haptic[0])))})
 }
-
-//go:nosplit
 func (self class) GetOffHaptic() [1]gdclass.OpenXRHapticBase { //gd:OpenXRAnalogThresholdModifier.get_off_haptic
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_off_haptic, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.OpenXRHapticBase{gdclass.NewOpenXRHapticBase(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

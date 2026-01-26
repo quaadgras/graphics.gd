@@ -1084,118 +1084,52 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetNativeMenu(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
-/*
-Returns true if the specified 'feature' is supported by the current [NativeMenu], false otherwise.
-
-Note: This method is implemented on macOS and Windows.
-
-[NativeMenu]: https://pkg.go.dev/graphics.gd/classdb/NativeMenu
-*/
-//go:nosplit
 func (self class) HasFeature(feature Feature) bool { //gd:NativeMenu.has_feature
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_feature, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ feature Feature }{feature})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if a special system menu is supported.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) HasSystemMenu(menu_id SystemMenus) bool { //gd:NativeMenu.has_system_menu
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_system_menu, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ menu_id SystemMenus }{menu_id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns RID of a special system menu.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GetSystemMenu(menu_id SystemMenus) RID.Any { //gd:NativeMenu.get_system_menu
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_system_menu, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ menu_id SystemMenus }{menu_id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns readable name of a special system menu.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GetSystemMenuName(menu_id SystemMenus) String.Readable { //gd:NativeMenu.get_system_menu_name
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_system_menu_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ menu_id SystemMenus }{menu_id})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Creates a new global menu object.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) CreateMenu() RID.Any { //gd:NativeMenu.create_menu
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.create_menu, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if 'rid' is valid global menu.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) HasMenu(rid RID.Any) bool { //gd:NativeMenu.has_menu
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_menu, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Frees a global menu object created by this [NativeMenu].
-
-Note: This method is implemented on macOS and Windows.
-
-[NativeMenu]: https://pkg.go.dev/graphics.gd/classdb/NativeMenu
-*/
-//go:nosplit
 func (self class) FreeMenu(rid RID.Any) { //gd:NativeMenu.free_menu
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.free_menu, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 }
-
-/*
-Returns global menu size.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) GetSize(rid RID.Any) Vector2.XY { //gd:NativeMenu.get_size
 	once.Do(singleton)
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Shows the global menu at 'position' in the screen coordinates.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) Popup(rid RID.Any, position Vector2i.XY) { //gd:NativeMenu.popup
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2i<<8), &struct {
@@ -1203,13 +1137,6 @@ func (self class) Popup(rid RID.Any, position Vector2i.XY) { //gd:NativeMenu.pop
 		position Vector2i.XY
 	}{rid, position})
 }
-
-/*
-Sets the menu text layout direction from right-to-left if 'is_rtl' is true.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) SetInterfaceDirection(rid RID.Any, is_rtl bool) { //gd:NativeMenu.set_interface_direction
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interface_direction, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -1217,13 +1144,6 @@ func (self class) SetInterfaceDirection(rid RID.Any, is_rtl bool) { //gd:NativeM
 		is_rtl bool
 	}{rid, is_rtl})
 }
-
-/*
-Registers callable to emit after the menu is closed.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) SetPopupOpenCallback(rid RID.Any, callback Callable.Function) { //gd:NativeMenu.set_popup_open_callback
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_popup_open_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
@@ -1231,28 +1151,12 @@ func (self class) SetPopupOpenCallback(rid RID.Any, callback Callable.Function) 
 		callback gdextension.Callable
 	}{rid, pointers.Get(gd.InternalCallable(callback))})
 }
-
-/*
-Returns global menu open callback.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GetPopupOpenCallback(rid RID.Any) Callable.Function { //gd:NativeMenu.get_popup_open_callback
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_popup_open_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret)))
 	return ret
 }
-
-/*
-Registers callable to emit when the menu is about to show.
-
-Note: The OS can simulate menu opening to track menu item changes and global shortcuts, in which case the corresponding close callback is not triggered. Use [IsOpened] to check if the menu is currently opened.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) SetPopupCloseCallback(rid RID.Any, callback Callable.Function) { //gd:NativeMenu.set_popup_close_callback
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_popup_close_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
@@ -1260,26 +1164,12 @@ func (self class) SetPopupCloseCallback(rid RID.Any, callback Callable.Function)
 		callback gdextension.Callable
 	}{rid, pointers.Get(gd.InternalCallable(callback))})
 }
-
-/*
-Returns global menu close callback.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) GetPopupCloseCallback(rid RID.Any) Callable.Function { //gd:NativeMenu.get_popup_close_callback
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_popup_close_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret)))
 	return ret
 }
-
-/*
-Sets the minimum width of the global menu.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) SetMinimumWidth(rid RID.Any, width float64) { //gd:NativeMenu.set_minimum_width
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_minimum_width, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -1287,41 +1177,18 @@ func (self class) SetMinimumWidth(rid RID.Any, width float64) { //gd:NativeMenu.
 		width float64
 	}{rid, width})
 }
-
-/*
-Returns global menu minimum width.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GetMinimumWidth(rid RID.Any) float64 { //gd:NativeMenu.get_minimum_width
 	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_minimum_width, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the menu is currently opened.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) IsOpened(rid RID.Any) bool { //gd:NativeMenu.is_opened
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_opened, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds an item that will act as a submenu of the global menu 'rid'. The 'submenu_rid' argument is the RID of the global menu that will be shown when the item is clicked.
-
-Returns index of the inserted item, it's not guaranteed to be the same as 'index' value.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) AddSubmenuItem(rid RID.Any, label String.Readable, submenu_rid RID.Any, tag variant.Any, index int64) int64 { //gd:NativeMenu.add_submenu_item
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_submenu_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeVariant<<16)|(gdextension.SizeInt<<20), &struct {
@@ -1334,21 +1201,6 @@ func (self class) AddSubmenuItem(rid RID.Any, label String.Readable, submenu_rid
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a new item with text 'label' to the global menu 'rid'.
-
-Returns index of the inserted item, it's not guaranteed to be the same as 'index' value.
-
-An 'accelerator' can optionally be defined, which is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. The 'accelerator' is generally a combination of [KeyModifierMask]s and [Key]s using bitwise OR such as KEY_MASK_CTRL | KEY_A (Ctrl + A).
-
-Note: The 'callback' and 'key_callback' Callables need to accept exactly one Variant parameter, the parameter passed to the Callables will be the value passed to 'tag'.
-
-Note: This method is implemented on macOS and Windows.
-
-Note: On Windows, 'accelerator' and 'key_callback' are ignored.
-*/
-//go:nosplit
 func (self class) AddItem(rid RID.Any, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_item
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
@@ -1363,21 +1215,6 @@ func (self class) AddItem(rid RID.Any, label String.Readable, callback Callable.
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a new checkable item with text 'label' to the global menu 'rid'.
-
-Returns index of the inserted item, it's not guaranteed to be the same as 'index' value.
-
-An 'accelerator' can optionally be defined, which is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. The 'accelerator' is generally a combination of [KeyModifierMask]s and [Key]s using bitwise OR such as KEY_MASK_CTRL | KEY_A (Ctrl + A).
-
-Note: The 'callback' and 'key_callback' Callables need to accept exactly one Variant parameter, the parameter passed to the Callables will be the value passed to 'tag'.
-
-Note: This method is implemented on macOS and Windows.
-
-Note: On Windows, 'accelerator' and 'key_callback' are ignored.
-*/
-//go:nosplit
 func (self class) AddCheckItem(rid RID.Any, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_check_item
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
@@ -1392,21 +1229,6 @@ func (self class) AddCheckItem(rid RID.Any, label String.Readable, callback Call
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a new item with text 'label' and icon 'icon' to the global menu 'rid'.
-
-Returns index of the inserted item, it's not guaranteed to be the same as 'index' value.
-
-An 'accelerator' can optionally be defined, which is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. The 'accelerator' is generally a combination of [KeyModifierMask]s and [Key]s using bitwise OR such as KEY_MASK_CTRL | KEY_A (Ctrl + A).
-
-Note: The 'callback' and 'key_callback' Callables need to accept exactly one Variant parameter, the parameter passed to the Callables will be the value passed to 'tag'.
-
-Note: This method is implemented on macOS and Windows.
-
-Note: On Windows, 'accelerator' and 'key_callback' are ignored.
-*/
-//go:nosplit
 func (self class) AddIconItem(rid RID.Any, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_icon_item
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_icon_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
@@ -1422,21 +1244,6 @@ func (self class) AddIconItem(rid RID.Any, icon [1]gdclass.Texture2D, label Stri
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a new checkable item with text 'label' and icon 'icon' to the global menu 'rid'.
-
-Returns index of the inserted item, it's not guaranteed to be the same as 'index' value.
-
-An 'accelerator' can optionally be defined, which is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. The 'accelerator' is generally a combination of [KeyModifierMask]s and [Key]s using bitwise OR such as KEY_MASK_CTRL | KEY_A (Ctrl + A).
-
-Note: The 'callback' and 'key_callback' Callables need to accept exactly one Variant parameter, the parameter passed to the Callables will be the value passed to 'tag'.
-
-Note: This method is implemented on macOS and Windows.
-
-Note: On Windows, 'accelerator' and 'key_callback' are ignored.
-*/
-//go:nosplit
 func (self class) AddIconCheckItem(rid RID.Any, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_icon_check_item
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_icon_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
@@ -1452,23 +1259,6 @@ func (self class) AddIconCheckItem(rid RID.Any, icon [1]gdclass.Texture2D, label
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a new radio-checkable item with text 'label' to the global menu 'rid'.
-
-Returns index of the inserted item, it's not guaranteed to be the same as 'index' value.
-
-An 'accelerator' can optionally be defined, which is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. The 'accelerator' is generally a combination of [KeyModifierMask]s and [Key]s using bitwise OR such as KEY_MASK_CTRL | KEY_A (Ctrl + A).
-
-Note: Radio-checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [SetItemChecked] for more info on how to control it.
-
-Note: The 'callback' and 'key_callback' Callables need to accept exactly one Variant parameter, the parameter passed to the Callables will be the value passed to 'tag'.
-
-Note: This method is implemented on macOS and Windows.
-
-Note: On Windows, 'accelerator' and 'key_callback' are ignored.
-*/
-//go:nosplit
 func (self class) AddRadioCheckItem(rid RID.Any, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_radio_check_item
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_radio_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
@@ -1483,23 +1273,6 @@ func (self class) AddRadioCheckItem(rid RID.Any, label String.Readable, callback
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a new radio-checkable item with text 'label' and icon 'icon' to the global menu 'rid'.
-
-Returns index of the inserted item, it's not guaranteed to be the same as 'index' value.
-
-An 'accelerator' can optionally be defined, which is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. The 'accelerator' is generally a combination of [KeyModifierMask]s and [Key]s using bitwise OR such as KEY_MASK_CTRL | KEY_A (Ctrl + A).
-
-Note: Radio-checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [SetItemChecked] for more info on how to control it.
-
-Note: The 'callback' and 'key_callback' Callables need to accept exactly one Variant parameter, the parameter passed to the Callables will be the value passed to 'tag'.
-
-Note: This method is implemented on macOS and Windows.
-
-Note: On Windows, 'accelerator' and 'key_callback' are ignored.
-*/
-//go:nosplit
 func (self class) AddIconRadioCheckItem(rid RID.Any, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_icon_radio_check_item
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_icon_radio_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
@@ -1515,25 +1288,6 @@ func (self class) AddIconRadioCheckItem(rid RID.Any, icon [1]gdclass.Texture2D, 
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a new item with text 'label' to the global menu 'rid'.
-
-Contrarily to normal binary items, multistate items can have more than two states, as defined by 'max_states'. Each press or activate of the item will increase the state by one. The default value is defined by 'default_state'.
-
-Returns index of the inserted item, it's not guaranteed to be the same as 'index' value.
-
-An 'accelerator' can optionally be defined, which is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. The 'accelerator' is generally a combination of [KeyModifierMask]s and [Key]s using bitwise OR such as KEY_MASK_CTRL | KEY_A (Ctrl + A).
-
-Note: By default, there's no indication of the current item state, it should be changed manually.
-
-Note: The 'callback' and 'key_callback' Callables need to accept exactly one Variant parameter, the parameter passed to the Callables will be the value passed to 'tag'.
-
-Note: This method is implemented on macOS and Windows.
-
-Note: On Windows, 'accelerator' and 'key_callback' are ignored.
-*/
-//go:nosplit
 func (self class) AddMultistateItem(rid RID.Any, label String.Readable, max_states int64, default_state int64, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_multistate_item
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_multistate_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeCallable<<24)|(gdextension.SizeVariant<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36), &struct {
@@ -1550,15 +1304,6 @@ func (self class) AddMultistateItem(rid RID.Any, label String.Readable, max_stat
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a separator between items to the global menu 'rid'. Separators also occupy an index.
-
-Returns index of the inserted item, it's not guaranteed to be the same as 'index' value.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) AddSeparator(rid RID.Any, index int64) int64 { //gd:NativeMenu.add_separator
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_separator, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -1568,13 +1313,6 @@ func (self class) AddSeparator(rid RID.Any, index int64) int64 { //gd:NativeMenu
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the index of the item with the specified 'text'. Indices are automatically assigned to each item by the engine, and cannot be set manually.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) FindItemIndexWithText(rid RID.Any, text String.Readable) int64 { //gd:NativeMenu.find_item_index_with_text
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_item_index_with_text, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
@@ -1584,13 +1322,6 @@ func (self class) FindItemIndexWithText(rid RID.Any, text String.Readable) int64
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the index of the item with the specified 'tag'. Indices are automatically assigned to each item by the engine, and cannot be set manually.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) FindItemIndexWithTag(rid RID.Any, tag variant.Any) int64 { //gd:NativeMenu.find_item_index_with_tag
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_item_index_with_tag, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeVariant<<8), &struct {
@@ -1600,13 +1331,6 @@ func (self class) FindItemIndexWithTag(rid RID.Any, tag variant.Any) int64 { //g
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the index of the item with the submenu specified by 'submenu_rid'. Indices are automatically assigned to each item by the engine, and cannot be set manually.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) FindItemIndexWithSubmenu(rid RID.Any, submenu_rid RID.Any) int64 { //gd:NativeMenu.find_item_index_with_submenu
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_item_index_with_submenu, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -1616,13 +1340,6 @@ func (self class) FindItemIndexWithSubmenu(rid RID.Any, submenu_rid RID.Any) int
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the item at index 'idx' is checked.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) IsItemChecked(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_checked
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_checked, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -1632,13 +1349,6 @@ func (self class) IsItemChecked(rid RID.Any, idx int64) bool { //gd:NativeMenu.i
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the item at index 'idx' is checkable in some way, i.e. if it has a checkbox or radio button.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) IsItemCheckable(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_checkable
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_checkable, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -1648,15 +1358,6 @@ func (self class) IsItemCheckable(rid RID.Any, idx int64) bool { //gd:NativeMenu
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the item at index 'idx' has radio button-style checkability.
-
-Note: This is purely cosmetic; you must add the logic for checking/unchecking items in radio groups.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) IsItemRadioCheckable(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_radio_checkable
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_radio_checkable, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -1666,13 +1367,6 @@ func (self class) IsItemRadioCheckable(rid RID.Any, idx int64) bool { //gd:Nativ
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the callback of the item at index 'idx'.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) GetItemCallback(rid RID.Any, idx int64) Callable.Function { //gd:NativeMenu.get_item_callback
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_item_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -1682,13 +1376,6 @@ func (self class) GetItemCallback(rid RID.Any, idx int64) Callable.Function { //
 	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret)))
 	return ret
 }
-
-/*
-Returns the callback of the item accelerator at index 'idx'.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GetItemKeyCallback(rid RID.Any, idx int64) Callable.Function { //gd:NativeMenu.get_item_key_callback
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_item_key_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -1698,13 +1385,6 @@ func (self class) GetItemKeyCallback(rid RID.Any, idx int64) Callable.Function {
 	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret)))
 	return ret
 }
-
-/*
-Returns the metadata of the specified item, which might be of any type. You can set it with [SetItemTag], which provides a simple way of assigning context data to items.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) GetItemTag(rid RID.Any, idx int64) variant.Any { //gd:NativeMenu.get_item_tag
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_item_tag, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -1714,13 +1394,6 @@ func (self class) GetItemTag(rid RID.Any, idx int64) variant.Any { //gd:NativeMe
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Returns the text of the item at index 'idx'.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) GetItemText(rid RID.Any, idx int64) String.Readable { //gd:NativeMenu.get_item_text
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_text, gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -1730,13 +1403,6 @@ func (self class) GetItemText(rid RID.Any, idx int64) String.Readable { //gd:Nat
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the submenu ID of the item at index 'idx'. See [AddSubmenuItem] for more info on how to add a submenu.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) GetItemSubmenu(rid RID.Any, idx int64) RID.Any { //gd:NativeMenu.get_item_submenu
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_item_submenu, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -1746,13 +1412,6 @@ func (self class) GetItemSubmenu(rid RID.Any, idx int64) RID.Any { //gd:NativeMe
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the accelerator of the item at index 'idx'. Accelerators are special combinations of keys that activate the item, no matter which control is focused.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GetItemAccelerator(rid RID.Any, idx int64) Input.Key { //gd:NativeMenu.get_item_accelerator
 	once.Do(singleton)
 	var r_ret = noescape.Call[Input.Key](gd.ObjectChecked(self.AsObject()), methods.get_item_accelerator, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -1762,15 +1421,6 @@ func (self class) GetItemAccelerator(rid RID.Any, idx int64) Input.Key { //gd:Na
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the item at index 'idx' is disabled. When it is disabled it can't be selected, or its action invoked.
-
-See [SetItemDisabled] for more info on how to disable an item.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) IsItemDisabled(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_disabled
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_disabled, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -1780,15 +1430,6 @@ func (self class) IsItemDisabled(rid RID.Any, idx int64) bool { //gd:NativeMenu.
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the item at index 'idx' is hidden.
-
-See [SetItemHidden] for more info on how to hide an item.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) IsItemHidden(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_hidden
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_hidden, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -1798,13 +1439,6 @@ func (self class) IsItemHidden(rid RID.Any, idx int64) bool { //gd:NativeMenu.is
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the tooltip associated with the specified index 'idx'.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GetItemTooltip(rid RID.Any, idx int64) String.Readable { //gd:NativeMenu.get_item_tooltip
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_tooltip, gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -1814,13 +1448,6 @@ func (self class) GetItemTooltip(rid RID.Any, idx int64) String.Readable { //gd:
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the state of a multistate item. See [AddMultistateItem] for details.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) GetItemState(rid RID.Any, idx int64) int64 { //gd:NativeMenu.get_item_state
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_state, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -1830,13 +1457,6 @@ func (self class) GetItemState(rid RID.Any, idx int64) int64 { //gd:NativeMenu.g
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns number of states of a multistate item. See [AddMultistateItem] for details.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) GetItemMaxStates(rid RID.Any, idx int64) int64 { //gd:NativeMenu.get_item_max_states
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_max_states, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -1846,13 +1466,6 @@ func (self class) GetItemMaxStates(rid RID.Any, idx int64) int64 { //gd:NativeMe
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the icon of the item at index 'idx'.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) GetItemIcon(rid RID.Any, idx int64) [1]gdclass.Texture2D { //gd:NativeMenu.get_item_icon
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_item_icon, gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -1862,13 +1475,6 @@ func (self class) GetItemIcon(rid RID.Any, idx int64) [1]gdclass.Texture2D { //g
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the horizontal offset of the item at the given 'idx'.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GetItemIndentationLevel(rid RID.Any, idx int64) int64 { //gd:NativeMenu.get_item_indentation_level
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_indentation_level, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -1878,13 +1484,6 @@ func (self class) GetItemIndentationLevel(rid RID.Any, idx int64) int64 { //gd:N
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the checkstate status of the item at index 'idx'.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) SetItemChecked(rid RID.Any, idx int64, checked bool) { //gd:NativeMenu.set_item_checked
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_checked, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
@@ -1893,13 +1492,6 @@ func (self class) SetItemChecked(rid RID.Any, idx int64, checked bool) { //gd:Na
 		checked bool
 	}{rid, idx, checked})
 }
-
-/*
-Sets whether the item at index 'idx' has a checkbox. If false, sets the type of the item to plain text.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) SetItemCheckable(rid RID.Any, idx int64, checkable bool) { //gd:NativeMenu.set_item_checkable
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_checkable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
@@ -1908,15 +1500,6 @@ func (self class) SetItemCheckable(rid RID.Any, idx int64, checkable bool) { //g
 		checkable bool
 	}{rid, idx, checkable})
 }
-
-/*
-Sets the type of the item at the specified index 'idx' to radio button. If false, sets the type of the item to plain text.
-
-Note: This is purely cosmetic; you must add the logic for checking/unchecking items in radio groups.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) SetItemRadioCheckable(rid RID.Any, idx int64, checkable bool) { //gd:NativeMenu.set_item_radio_checkable
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_radio_checkable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
@@ -1925,15 +1508,6 @@ func (self class) SetItemRadioCheckable(rid RID.Any, idx int64, checkable bool) 
 		checkable bool
 	}{rid, idx, checkable})
 }
-
-/*
-Sets the callback of the item at index 'idx'. Callback is emitted when an item is pressed.
-
-Note: The 'callback' Callable needs to accept exactly one Variant parameter, the parameter passed to the Callable will be the value passed to the tag parameter when the menu item was created.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) SetItemCallback(rid RID.Any, idx int64, callback Callable.Function) { //gd:NativeMenu.set_item_callback
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
@@ -1942,15 +1516,6 @@ func (self class) SetItemCallback(rid RID.Any, idx int64, callback Callable.Func
 		callback gdextension.Callable
 	}{rid, idx, pointers.Get(gd.InternalCallable(callback))})
 }
-
-/*
-Sets the callback of the item at index 'idx'. The callback is emitted when an item is hovered.
-
-Note: The 'callback' Callable needs to accept exactly one Variant parameter, the parameter passed to the Callable will be the value passed to the tag parameter when the menu item was created.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) SetItemHoverCallbacks(rid RID.Any, idx int64, callback Callable.Function) { //gd:NativeMenu.set_item_hover_callbacks
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_hover_callbacks, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
@@ -1959,15 +1524,6 @@ func (self class) SetItemHoverCallbacks(rid RID.Any, idx int64, callback Callabl
 		callback gdextension.Callable
 	}{rid, idx, pointers.Get(gd.InternalCallable(callback))})
 }
-
-/*
-Sets the callback of the item at index 'idx'. Callback is emitted when its accelerator is activated.
-
-Note: The 'key_callback' Callable needs to accept exactly one Variant parameter, the parameter passed to the Callable will be the value passed to the tag parameter when the menu item was created.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) SetItemKeyCallback(rid RID.Any, idx int64, key_callback Callable.Function) { //gd:NativeMenu.set_item_key_callback
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_key_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
@@ -1976,13 +1532,6 @@ func (self class) SetItemKeyCallback(rid RID.Any, idx int64, key_callback Callab
 		key_callback gdextension.Callable
 	}{rid, idx, pointers.Get(gd.InternalCallable(key_callback))})
 }
-
-/*
-Sets the metadata of an item, which may be of any type. You can later get it with [GetItemTag], which provides a simple way of assigning context data to items.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) SetItemTag(rid RID.Any, idx int64, tag variant.Any) { //gd:NativeMenu.set_item_tag
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_tag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
@@ -1991,13 +1540,6 @@ func (self class) SetItemTag(rid RID.Any, idx int64, tag variant.Any) { //gd:Nat
 		tag gdextension.Variant
 	}{rid, idx, gdextension.Variant(pointers.Get(gd.InternalVariant(tag)))})
 }
-
-/*
-Sets the text of the item at index 'idx'.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) SetItemText(rid RID.Any, idx int64, text String.Readable) { //gd:NativeMenu.set_item_text
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_text, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
@@ -2006,13 +1548,6 @@ func (self class) SetItemText(rid RID.Any, idx int64, text String.Readable) { //
 		text gdextension.String
 	}{rid, idx, pointers.Get(gd.InternalString(text))})
 }
-
-/*
-Sets the submenu RID of the item at index 'idx'. The submenu is a global menu that would be shown when the item is clicked.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) SetItemSubmenu(rid RID.Any, idx int64, submenu_rid RID.Any) { //gd:NativeMenu.set_item_submenu
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_submenu, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), &struct {
@@ -2021,13 +1556,6 @@ func (self class) SetItemSubmenu(rid RID.Any, idx int64, submenu_rid RID.Any) { 
 		submenu_rid RID.Any
 	}{rid, idx, submenu_rid})
 }
-
-/*
-Sets the accelerator of the item at index 'idx'. 'keycode' can be a single [Key], or a combination of [KeyModifierMask]s and [Key]s using bitwise OR such as KEY_MASK_CTRL | KEY_A (Ctrl + A).
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) SetItemAccelerator(rid RID.Any, idx int64, keycode Input.Key) { //gd:NativeMenu.set_item_accelerator
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_accelerator, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
@@ -2036,13 +1564,6 @@ func (self class) SetItemAccelerator(rid RID.Any, idx int64, keycode Input.Key) 
 		keycode Input.Key
 	}{rid, idx, keycode})
 }
-
-/*
-Enables/disables the item at index 'idx'. When it is disabled, it can't be selected and its action can't be invoked.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) SetItemDisabled(rid RID.Any, idx int64, disabled bool) { //gd:NativeMenu.set_item_disabled
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_disabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
@@ -2051,13 +1572,6 @@ func (self class) SetItemDisabled(rid RID.Any, idx int64, disabled bool) { //gd:
 		disabled bool
 	}{rid, idx, disabled})
 }
-
-/*
-Hides/shows the item at index 'idx'. When it is hidden, an item does not appear in a menu and its action cannot be invoked.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) SetItemHidden(rid RID.Any, idx int64, hidden bool) { //gd:NativeMenu.set_item_hidden
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_hidden, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
@@ -2066,13 +1580,6 @@ func (self class) SetItemHidden(rid RID.Any, idx int64, hidden bool) { //gd:Nati
 		hidden bool
 	}{rid, idx, hidden})
 }
-
-/*
-Sets the string tooltip of the item at the specified index 'idx'.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) SetItemTooltip(rid RID.Any, idx int64, tooltip String.Readable) { //gd:NativeMenu.set_item_tooltip
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_tooltip, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
@@ -2081,13 +1588,6 @@ func (self class) SetItemTooltip(rid RID.Any, idx int64, tooltip String.Readable
 		tooltip gdextension.String
 	}{rid, idx, pointers.Get(gd.InternalString(tooltip))})
 }
-
-/*
-Sets the state of a multistate item. See [AddMultistateItem] for details.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) SetItemState(rid RID.Any, idx int64, state int64) { //gd:NativeMenu.set_item_state
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_state, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
@@ -2096,13 +1596,6 @@ func (self class) SetItemState(rid RID.Any, idx int64, state int64) { //gd:Nativ
 		state int64
 	}{rid, idx, state})
 }
-
-/*
-Sets number of state of a multistate item. See [AddMultistateItem] for details.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) SetItemMaxStates(rid RID.Any, idx int64, max_states int64) { //gd:NativeMenu.set_item_max_states
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_max_states, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
@@ -2111,17 +1604,6 @@ func (self class) SetItemMaxStates(rid RID.Any, idx int64, max_states int64) { /
 		max_states int64
 	}{rid, idx, max_states})
 }
-
-/*
-Replaces the [Texture2D] icon of the specified 'idx'.
-
-Note: This method is implemented on macOS and Windows.
-
-Note: This method is not supported by macOS Dock menu items.
-
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
-//go:nosplit
 func (self class) SetItemIcon(rid RID.Any, idx int64, icon [1]gdclass.Texture2D) { //gd:NativeMenu.set_item_icon
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_icon, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12), &struct {
@@ -2130,13 +1612,6 @@ func (self class) SetItemIcon(rid RID.Any, idx int64, icon [1]gdclass.Texture2D)
 		icon gdextension.Object
 	}{rid, idx, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
 }
-
-/*
-Sets the horizontal offset of the item at the given 'idx'.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) SetItemIndentationLevel(rid RID.Any, idx int64, level int64) { //gd:NativeMenu.set_item_indentation_level
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_indentation_level, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
@@ -2145,41 +1620,18 @@ func (self class) SetItemIndentationLevel(rid RID.Any, idx int64, level int64) {
 		level int64
 	}{rid, idx, level})
 }
-
-/*
-Returns number of items in the global menu 'rid'.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) GetItemCount(rid RID.Any) int64 { //gd:NativeMenu.get_item_count
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Return true is global menu is a special system menu.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) IsSystemMenu(rid RID.Any) bool { //gd:NativeMenu.is_system_menu
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_system_menu, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Removes the item at index 'idx' from the global menu 'rid'.
-
-Note: The indices of items after the removed item will be shifted by one.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) RemoveItem(rid RID.Any, idx int64) { //gd:NativeMenu.remove_item
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_item, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -2187,13 +1639,6 @@ func (self class) RemoveItem(rid RID.Any, idx int64) { //gd:NativeMenu.remove_it
 		idx int64
 	}{rid, idx})
 }
-
-/*
-Removes all items from the global menu 'rid'.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) Clear(rid RID.Any) { //gd:NativeMenu.clear
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})

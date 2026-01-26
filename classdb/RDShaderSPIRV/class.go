@@ -296,66 +296,23 @@ func (self Instance) SetCompileErrorCompute(value string) Instance { //gd:RDShad
 	return self
 }
 
-/*
-Sets the SPIR-V 'bytecode' for the given shader 'stage'. Equivalent to setting one of [BytecodeCompute], [BytecodeFragment], [BytecodeTesselationControl], [BytecodeTesselationEvaluation], [BytecodeVertex].
-
-[BytecodeCompute]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSPIRV#Instance.BytecodeCompute
-[BytecodeFragment]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSPIRV#Instance.BytecodeFragment
-[BytecodeTesselationControl]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSPIRV#Instance.BytecodeTesselationControl
-[BytecodeTesselationEvaluation]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSPIRV#Instance.BytecodeTesselationEvaluation
-[BytecodeVertex]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSPIRV#Instance.BytecodeVertex
-*/
-//go:nosplit
 func (self class) SetStageBytecode(stage Rendering.ShaderStage, bytecode Packed.Bytes) { //gd:RDShaderSPIRV.set_stage_bytecode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stage_bytecode, 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), &struct {
 		stage    Rendering.ShaderStage
 		bytecode gdextension.PackedArray[byte]
 	}{stage, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](bytecode.Array)))})
 }
-
-/*
-Equivalent to getting one of [BytecodeCompute], [BytecodeFragment], [BytecodeTesselationControl], [BytecodeTesselationEvaluation], [BytecodeVertex].
-
-[BytecodeCompute]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSPIRV#Instance.BytecodeCompute
-[BytecodeFragment]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSPIRV#Instance.BytecodeFragment
-[BytecodeTesselationControl]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSPIRV#Instance.BytecodeTesselationControl
-[BytecodeTesselationEvaluation]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSPIRV#Instance.BytecodeTesselationEvaluation
-[BytecodeVertex]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSPIRV#Instance.BytecodeVertex
-*/
-//go:nosplit
 func (self class) GetStageBytecode(stage Rendering.ShaderStage) Packed.Bytes { //gd:RDShaderSPIRV.get_stage_bytecode
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_stage_bytecode, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ stage Rendering.ShaderStage }{stage})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-
-/*
-Sets the compilation error message for the given shader 'stage' to 'compile_error'. Equivalent to setting one of [CompileErrorCompute], [CompileErrorFragment], [CompileErrorTesselationControl], [CompileErrorTesselationEvaluation], [CompileErrorVertex].
-
-[CompileErrorCompute]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSPIRV#Instance.CompileErrorCompute
-[CompileErrorFragment]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSPIRV#Instance.CompileErrorFragment
-[CompileErrorTesselationControl]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSPIRV#Instance.CompileErrorTesselationControl
-[CompileErrorTesselationEvaluation]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSPIRV#Instance.CompileErrorTesselationEvaluation
-[CompileErrorVertex]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSPIRV#Instance.CompileErrorVertex
-*/
-//go:nosplit
 func (self class) SetStageCompileError(stage Rendering.ShaderStage, compile_error String.Readable) { //gd:RDShaderSPIRV.set_stage_compile_error
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stage_compile_error, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		stage         Rendering.ShaderStage
 		compile_error gdextension.String
 	}{stage, pointers.Get(gd.InternalString(compile_error))})
 }
-
-/*
-Returns the compilation error message for the given shader 'stage'. Equivalent to getting one of [CompileErrorCompute], [CompileErrorFragment], [CompileErrorTesselationControl], [CompileErrorTesselationEvaluation], [CompileErrorVertex].
-
-[CompileErrorCompute]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSPIRV#Instance.CompileErrorCompute
-[CompileErrorFragment]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSPIRV#Instance.CompileErrorFragment
-[CompileErrorTesselationControl]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSPIRV#Instance.CompileErrorTesselationControl
-[CompileErrorTesselationEvaluation]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSPIRV#Instance.CompileErrorTesselationEvaluation
-[CompileErrorVertex]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSPIRV#Instance.CompileErrorVertex
-*/
-//go:nosplit
 func (self class) GetStageCompileError(stage Rendering.ShaderStage) String.Readable { //gd:RDShaderSPIRV.get_stage_compile_error
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_stage_compile_error, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ stage Rendering.ShaderStage }{stage})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))

@@ -311,19 +311,6 @@ func (self Instance) SetInfluence(value Float.X) Instance { //gd:SkeletonModifie
 	class(self).SetInfluence(float64(value))
 	return self
 }
-
-/*
-Override this virtual method to implement a custom skeleton modifier. You should do things like get the [Skeleton3D]'s current pose and apply the pose here.
-
-[ProcessModificationWithDelta] must not apply [Influence] to bone poses because the [Skeleton3D] automatically applies influence to all bone poses set by the modifier.
-
-'delta' is passed from parent [Skeleton3D]. See also [Skeleton3D.Advance].
-
-[Influence]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D#Instance.Influence
-[ProcessModificationWithDelta]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D#Interface
-[Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
-[Skeleton3D.Advance]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.Advance
-*/
 func (class) _process_modification_with_delta(impl func(ptr gdclass.Receiver, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
@@ -331,26 +318,12 @@ func (class) _process_modification_with_delta(impl func(ptr gdclass.Receiver, de
 		impl(self, delta)
 	}
 }
-
-/*
-Override this virtual method to implement a custom skeleton modifier. You should do things like get the [Skeleton3D]'s current pose and apply the pose here.
-
-[ProcessModification] must not apply [Influence] to bone poses because the [Skeleton3D] automatically applies influence to all bone poses set by the modifier.
-
-[Influence]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D#Instance.Influence
-[ProcessModification]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D#Interface
-[Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
-*/
 func (class) _process_modification(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
-
-/*
-Called when the skeleton is changed.
-*/
 func (class) _skeleton_changed(impl func(ptr gdclass.Receiver, old_skeleton [1]gdclass.Skeleton3D, new_skeleton [1]gdclass.Skeleton3D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var old_skeleton = [1]gdclass.Skeleton3D{gdclass.NewSkeleton3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -363,10 +336,6 @@ func (class) _skeleton_changed(impl func(ptr gdclass.Receiver, old_skeleton [1]g
 		impl(self, old_skeleton, new_skeleton)
 	}
 }
-
-/*
-Called when bone name and index need to be validated such as the timing of the entering tree or changing skeleton.
-*/
 func (class) _validate_bone_names(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -374,36 +343,22 @@ func (class) _validate_bone_names(impl func(ptr gdclass.Receiver)) (cb gd.Extens
 	}
 }
 
-/*
-Get parent [Skeleton3D] node if found.
-
-[Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
-*/
-//go:nosplit
 func (self class) GetSkeleton() [1]gdclass.Skeleton3D { //gd:SkeletonModifier3D.get_skeleton
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Skeleton3D{gdclass.NewSkeleton3D(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetActive(active bool) { //gd:SkeletonModifier3D.set_active
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_active, 0|(gdextension.SizeBool<<4), &struct{ active bool }{active})
 }
-
-//go:nosplit
 func (self class) IsActive() bool { //gd:SkeletonModifier3D.is_active
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_active, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetInfluence(influence float64) { //gd:SkeletonModifier3D.set_influence
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_influence, 0|(gdextension.SizeFloat<<4), &struct{ influence float64 }{influence})
 }
-
-//go:nosplit
 func (self class) GetInfluence() float64 { //gd:SkeletonModifier3D.get_influence
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_influence, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

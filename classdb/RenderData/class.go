@@ -198,50 +198,21 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns the [RenderSceneBuffers] object managing the scene buffers for rendering this viewport.
-
-[RenderSceneBuffers]: https://pkg.go.dev/graphics.gd/classdb/RenderSceneBuffers
-*/
-//go:nosplit
 func (self class) GetRenderSceneBuffers() [1]gdclass.RenderSceneBuffers { //gd:RenderData.get_render_scene_buffers
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_render_scene_buffers, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.RenderSceneBuffers{gdclass.NewRenderSceneBuffers(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the [RenderSceneData] object managing this frames scene data.
-
-[RenderSceneData]: https://pkg.go.dev/graphics.gd/classdb/RenderSceneData
-*/
-//go:nosplit
 func (self class) GetRenderSceneData() [1]gdclass.RenderSceneData { //gd:RenderData.get_render_scene_data
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_render_scene_data, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.RenderSceneData{gdclass.NewRenderSceneData(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the [Resource.ID] of the environment object in the [RenderingServer] being used to render this viewport.
-
-[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) GetEnvironment() RID.Any { //gd:RenderData.get_environment
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_environment, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [Resource.ID] of the camera attributes object in the [RenderingServer] being used to render this viewport.
-
-[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) GetCameraAttributes() RID.Any { //gd:RenderData.get_camera_attributes
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_camera_attributes, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret

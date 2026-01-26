@@ -247,10 +247,6 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetIP(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
-/*
-Returns a given hostname's IPv4 or IPv6 address when resolved (blocking-type method). The address type returned depends on the [Type] constant given as 'ip_type'.
-*/
-//go:nosplit
 func (self class) ResolveHostname(host String.Readable, ip_type Type) String.Readable { //gd:IP.resolve_hostname
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.resolve_hostname, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -260,11 +256,6 @@ func (self class) ResolveHostname(host String.Readable, ip_type Type) String.Rea
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Resolves a given hostname in a blocking way. Addresses are returned as an slice of IPv4 or IPv6 addresses depending on 'ip_type'.
-*/
-//go:nosplit
 func (self class) ResolveHostnameAddresses(host String.Readable, ip_type Type) Packed.Strings { //gd:IP.resolve_hostname_addresses
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.resolve_hostname_addresses, gdextension.SizePackedArray|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -274,11 +265,6 @@ func (self class) ResolveHostnameAddresses(host String.Readable, ip_type Type) P
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Creates a queue item to resolve a hostname to an IPv4 or IPv6 address depending on the [Type] constant given as 'ip_type'. Returns the queue ID if successful, or [ResolverInvalidId] on error.
-*/
-//go:nosplit
 func (self class) ResolveHostnameQueueItem(host String.Readable, ip_type Type) int64 { //gd:IP.resolve_hostname_queue_item
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.resolve_hostname_queue_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -288,86 +274,40 @@ func (self class) ResolveHostnameQueueItem(host String.Readable, ip_type Type) i
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a queued hostname's status as a [ResolverStatus] constant, given its queue 'id'.
-*/
-//go:nosplit
 func (self class) GetResolveItemStatus(id int64) ResolverStatus { //gd:IP.get_resolve_item_status
 	once.Do(singleton)
 	var r_ret = noescape.Call[ResolverStatus](gd.ObjectChecked(self.AsObject()), methods.get_resolve_item_status, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a queued hostname's IP address, given its queue 'id'. Returns an empty string on error or if resolution hasn't happened yet (see [GetResolveItemStatus]).
-*/
-//go:nosplit
 func (self class) GetResolveItemAddress(id int64) String.Readable { //gd:IP.get_resolve_item_address
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_resolve_item_address, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns resolved addresses, or an empty array if an error happened or resolution didn't happen yet (see [GetResolveItemStatus]).
-*/
-//go:nosplit
 func (self class) GetResolveItemAddresses(id int64) Array.Any { //gd:IP.get_resolve_item_addresses
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_resolve_item_addresses, gdextension.SizeArray|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Removes a given item 'id' from the queue. This should be used to free a queue after it has completed to enable more queries to happen.
-*/
-//go:nosplit
 func (self class) EraseResolveItem(id int64) { //gd:IP.erase_resolve_item
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.erase_resolve_item, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 }
-
-/*
-Returns all the user's current IPv4 and IPv6 addresses as an array.
-*/
-//go:nosplit
 func (self class) GetLocalAddresses() Packed.Strings { //gd:IP.get_local_addresses
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_local_addresses, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns all network adapters as an array.
-
-Each adapter is a dictionary of the form:
-
-
-	example := IP.LocalInterface{
-		Index:     "1",
-		Name:      "eth0",
-		Friendly:  "Ethernet One",
-		Addresses: []netip.Addr{netip.MustParseAddr("192.168.1.101")},
-	}
-
-*/
-//go:nosplit
 func (self class) GetLocalInterfaces() Array.Contains[Dictionary.Any] { //gd:IP.get_local_interfaces
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_local_interfaces, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Removes all of a 'hostname''s cached references. If no 'hostname' is given, all cached IP addresses are removed.
-*/
-//go:nosplit
 func (self class) ClearCache(hostname String.Readable) { //gd:IP.clear_cache
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_cache, 0|(gdextension.SizeString<<4), &struct{ hostname gdextension.String }{pointers.Get(gd.InternalString(hostname))})

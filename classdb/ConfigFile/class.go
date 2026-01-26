@@ -396,10 +396,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Assigns a value to the specified key of the specified section. If either the section or the key do not exist, they are created. Passing a null value deletes the specified key if it exists, and deletes the section if it ends up empty once the key has been removed.
-*/
-//go:nosplit
 func (self class) SetValue(section String.Readable, key String.Readable, value variant.Any) { //gd:ConfigFile.set_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_value, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12), &struct {
 		section gdextension.String
@@ -407,11 +403,6 @@ func (self class) SetValue(section String.Readable, key String.Readable, value v
 		value   gdextension.Variant
 	}{pointers.Get(gd.InternalString(section)), pointers.Get(gd.InternalString(key)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-/*
-Returns the current value for the specified section and key. If either the section or the key do not exist, the method returns the fallback 'default' value. If 'default' is not specified or set to null, an error is also raised.
-*/
-//go:nosplit
 func (self class) GetValue(section String.Readable, key String.Readable, def variant.Any) variant.Any { //gd:ConfigFile.get_value
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_value, gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12), &struct {
 		section gdextension.String
@@ -421,21 +412,11 @@ func (self class) GetValue(section String.Readable, key String.Readable, def var
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Returns true if the specified section exists.
-*/
-//go:nosplit
 func (self class) HasSection(section String.Readable) bool { //gd:ConfigFile.has_section
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_section, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ section gdextension.String }{pointers.Get(gd.InternalString(section))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the specified section-key pair exists.
-*/
-//go:nosplit
 func (self class) HasSectionKey(section String.Readable, key String.Readable) bool { //gd:ConfigFile.has_section_key
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_section_key, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		section gdextension.String
@@ -444,104 +425,45 @@ func (self class) HasSectionKey(section String.Readable, key String.Readable) bo
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns an array of all defined section identifiers.
-*/
-//go:nosplit
 func (self class) GetSections() Packed.Strings { //gd:ConfigFile.get_sections
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_sections, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns an array of all defined key identifiers in the specified section. Raises an error and returns an empty array if the section does not exist.
-*/
-//go:nosplit
 func (self class) GetSectionKeys(section String.Readable) Packed.Strings { //gd:ConfigFile.get_section_keys
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_section_keys, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ section gdextension.String }{pointers.Get(gd.InternalString(section))})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Deletes the specified section along with all the key-value pairs inside. Raises an error if the section does not exist.
-*/
-//go:nosplit
 func (self class) EraseSection(section String.Readable) { //gd:ConfigFile.erase_section
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.erase_section, 0|(gdextension.SizeString<<4), &struct{ section gdextension.String }{pointers.Get(gd.InternalString(section))})
 }
-
-/*
-Deletes the specified key in a section. Raises an error if either the section or the key do not exist.
-*/
-//go:nosplit
 func (self class) EraseSectionKey(section String.Readable, key String.Readable) { //gd:ConfigFile.erase_section_key
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.erase_section_key, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		section gdextension.String
 		key     gdextension.String
 	}{pointers.Get(gd.InternalString(section)), pointers.Get(gd.InternalString(key))})
 }
-
-/*
-Loads the config file specified as a parameter. The file's contents are parsed and loaded in the [ConfigFile] object which the method was called on.
-
-Returns [Ok] on success, or one of the other [Error] values if the operation failed.
-
-[ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
-*/
-//go:nosplit
 func (self class) Load(path String.Readable) Error.Code { //gd:ConfigFile.load
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Parses the passed string as the contents of a config file. The string is parsed and loaded in the ConfigFile object which the method was called on.
-
-Returns [Ok] on success, or one of the other [Error] values if the operation failed.
-*/
-//go:nosplit
 func (self class) Parse(data String.Readable) Error.Code { //gd:ConfigFile.parse
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.parse, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ data gdextension.String }{pointers.Get(gd.InternalString(data))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Saves the contents of the [ConfigFile] object to the file specified as a parameter. The output file uses an INI-style structure.
-
-Returns [Ok] on success, or one of the other [Error] values if the operation failed.
-
-[ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
-*/
-//go:nosplit
 func (self class) Save(path String.Readable) Error.Code { //gd:ConfigFile.save
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Obtain the text version of this config file (the same text that would be written to a file).
-*/
-//go:nosplit
 func (self class) EncodeToText() String.Readable { //gd:ConfigFile.encode_to_text
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.encode_to_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Loads the encrypted config file specified as a parameter, using the provided 'key' to decrypt it. The file's contents are parsed and loaded in the [ConfigFile] object which the method was called on.
-
-Returns [Ok] on success, or one of the other [Error] values if the operation failed.
-
-[ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
-*/
-//go:nosplit
 func (self class) LoadEncrypted(path String.Readable, key Packed.Bytes) Error.Code { //gd:ConfigFile.load_encrypted
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_encrypted, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8), &struct {
 		path gdextension.String
@@ -550,15 +472,6 @@ func (self class) LoadEncrypted(path String.Readable, key Packed.Bytes) Error.Co
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Loads the encrypted config file specified as a parameter, using the provided 'password' to decrypt it. The file's contents are parsed and loaded in the [ConfigFile] object which the method was called on.
-
-Returns [Ok] on success, or one of the other [Error] values if the operation failed.
-
-[ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
-*/
-//go:nosplit
 func (self class) LoadEncryptedPass(path String.Readable, password String.Readable) Error.Code { //gd:ConfigFile.load_encrypted_pass
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_encrypted_pass, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		path     gdextension.String
@@ -567,15 +480,6 @@ func (self class) LoadEncryptedPass(path String.Readable, password String.Readab
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Saves the contents of the [ConfigFile] object to the AES-256 encrypted file specified as a parameter, using the provided 'key' to encrypt it. The output file uses an INI-style structure.
-
-Returns [Ok] on success, or one of the other [Error] values if the operation failed.
-
-[ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
-*/
-//go:nosplit
 func (self class) SaveEncrypted(path String.Readable, key Packed.Bytes) Error.Code { //gd:ConfigFile.save_encrypted
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save_encrypted, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8), &struct {
 		path gdextension.String
@@ -584,15 +488,6 @@ func (self class) SaveEncrypted(path String.Readable, key Packed.Bytes) Error.Co
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Saves the contents of the [ConfigFile] object to the AES-256 encrypted file specified as a parameter, using the provided 'password' to encrypt it. The output file uses an INI-style structure.
-
-Returns [Ok] on success, or one of the other [Error] values if the operation failed.
-
-[ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
-*/
-//go:nosplit
 func (self class) SaveEncryptedPass(path String.Readable, password String.Readable) Error.Code { //gd:ConfigFile.save_encrypted_pass
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save_encrypted_pass, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		path     gdextension.String
@@ -601,11 +496,6 @@ func (self class) SaveEncryptedPass(path String.Readable, password String.Readab
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Removes the entire contents of the config.
-*/
-//go:nosplit
 func (self class) Clear() { //gd:ConfigFile.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }

@@ -206,10 +206,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Return the description of this class that is used for the title bar of the binding modifier editor.
-*/
 func (class) _get_description(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -222,12 +218,6 @@ func (class) _get_description(impl func(ptr gdclass.Receiver) String.Readable) (
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Returns the data that is sent to OpenXR when submitting the suggested interacting bindings this modifier is a part of.
-
-Note: This must be data compatible with an XrBindingModificationBaseHeaderKHR structure.
-*/
 func (class) _get_ip_modification(impl func(ptr gdclass.Receiver) Packed.Bytes) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)

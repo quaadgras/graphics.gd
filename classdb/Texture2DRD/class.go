@@ -175,12 +175,9 @@ func (self Instance) SetTextureRdRid(value RID.Texture) Instance { //gd:Texture2
 	return self
 }
 
-//go:nosplit
 func (self class) SetTextureRdRid(texture_rd_rid RID.Any) { //gd:Texture2DRD.set_texture_rd_rid
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_rd_rid, 0|(gdextension.SizeRID<<4), &struct{ texture_rd_rid RID.Any }{texture_rd_rid})
 }
-
-//go:nosplit
 func (self class) GetTextureRdRid() RID.Any { //gd:Texture2DRD.get_texture_rd_rid
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_texture_rd_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret

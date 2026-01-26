@@ -275,72 +275,49 @@ func (self Instance) SetDensityTexture(value Texture3D.Instance) Instance { //gd
 	return self
 }
 
-//go:nosplit
 func (self class) SetDensity(density float64) { //gd:FogMaterial.set_density
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_density, 0|(gdextension.SizeFloat<<4), &struct{ density float64 }{density})
 }
-
-//go:nosplit
 func (self class) GetDensity() float64 { //gd:FogMaterial.get_density
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_density, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAlbedo(albedo Color.RGBA) { //gd:FogMaterial.set_albedo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_albedo, 0|(gdextension.SizeColor<<4), &struct{ albedo Color.RGBA }{albedo})
 }
-
-//go:nosplit
 func (self class) GetAlbedo() Color.RGBA { //gd:FogMaterial.get_albedo
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_albedo, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEmission(emission Color.RGBA) { //gd:FogMaterial.set_emission
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission, 0|(gdextension.SizeColor<<4), &struct{ emission Color.RGBA }{emission})
 }
-
-//go:nosplit
 func (self class) GetEmission() Color.RGBA { //gd:FogMaterial.get_emission
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_emission, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetHeightFalloff(height_falloff float64) { //gd:FogMaterial.set_height_falloff
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height_falloff, 0|(gdextension.SizeFloat<<4), &struct{ height_falloff float64 }{height_falloff})
 }
-
-//go:nosplit
 func (self class) GetHeightFalloff() float64 { //gd:FogMaterial.get_height_falloff
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height_falloff, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEdgeFade(edge_fade float64) { //gd:FogMaterial.set_edge_fade
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edge_fade, 0|(gdextension.SizeFloat<<4), &struct{ edge_fade float64 }{edge_fade})
 }
-
-//go:nosplit
 func (self class) GetEdgeFade() float64 { //gd:FogMaterial.get_edge_fade
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_edge_fade, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDensityTexture(density_texture [1]gdclass.Texture3D) { //gd:FogMaterial.set_density_texture
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_density_texture, 0|(gdextension.SizeObject<<4), &struct{ density_texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture3D(density_texture[0])))})
 }
-
-//go:nosplit
 func (self class) GetDensityTexture() [1]gdclass.Texture3D { //gd:FogMaterial.get_density_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_density_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture3D{gdclass.NewTexture3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

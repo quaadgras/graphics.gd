@@ -198,28 +198,21 @@ func (self Instance) DirectSpaceState() PhysicsDirectSpaceState2D.Instance { //g
 	return PhysicsDirectSpaceState2D.Instance(class(self).GetDirectSpaceState())
 }
 
-//go:nosplit
 func (self class) GetCanvas() RID.Any { //gd:World2D.get_canvas
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_canvas, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetNavigationMap() RID.Any { //gd:World2D.get_navigation_map
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_navigation_map, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetSpace() RID.Any { //gd:World2D.get_space
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_space, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetDirectSpaceState() [1]gdclass.PhysicsDirectSpaceState2D { //gd:World2D.get_direct_space_state
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_direct_space_state, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PhysicsDirectSpaceState2D{gdclass.NewPhysicsDirectSpaceState2D(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}

@@ -174,12 +174,9 @@ func (self Instance) SetTexture(value Texture3D.Instance) Instance { //gd:Visual
 	return self
 }
 
-//go:nosplit
 func (self class) SetTexture(value [1]gdclass.Texture3D) { //gd:VisualShaderNodeTexture3D.set_texture
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ value gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture3D(value[0])))})
 }
-
-//go:nosplit
 func (self class) GetTexture() [1]gdclass.Texture3D { //gd:VisualShaderNodeTexture3D.get_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture3D{gdclass.NewTexture3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

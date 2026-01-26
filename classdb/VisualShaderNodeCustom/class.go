@@ -686,12 +686,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Override this method to define the name of the associated custom node in the Visual Shader Editor's members dialog and graph.
-
-Defining this method is optional, but recommended. If not overridden, the node will be named as "Unnamed".
-*/
 func (class) _get_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -704,12 +698,6 @@ func (class) _get_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.E
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Override this method to define the description of the associated custom node in the Visual Shader Editor's members dialog.
-
-Defining this method is optional.
-*/
 func (class) _get_description(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -722,12 +710,6 @@ func (class) _get_description(impl func(ptr gdclass.Receiver) String.Readable) (
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Override this method to define the path to the associated custom node in the Visual Shader Editor's members dialog. The path may look like "MyGame/MyFunctions/Noise".
-
-Defining this method is optional. If not overridden, the node will be filed under the "Addons" category.
-*/
 func (class) _get_category(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -740,12 +722,6 @@ func (class) _get_category(impl func(ptr gdclass.Receiver) String.Readable) (cb 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Override this method to define the return icon of the associated custom node in the Visual Shader Editor's members dialog.
-
-Defining this method is optional. If not overridden, no return icon is shown.
-*/
 func (class) _get_return_icon_type(impl func(ptr gdclass.Receiver) VisualShaderNode.PortType) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -753,12 +729,6 @@ func (class) _get_return_icon_type(impl func(ptr gdclass.Receiver) VisualShaderN
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Override this method to define the number of input ports of the associated custom node.
-
-Defining this method is required. If not overridden, the node has no input ports.
-*/
 func (class) _get_input_port_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -766,12 +736,6 @@ func (class) _get_input_port_count(impl func(ptr gdclass.Receiver) int64) (cb gd
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Override this method to define the returned type of each input port of the associated custom node.
-
-Defining this method is optional, but recommended. If not overridden, input ports will return the [Visualshadernode.PortTypeScalar] type.
-*/
 func (class) _get_input_port_type(impl func(ptr gdclass.Receiver, port int64) VisualShaderNode.PortType) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var port = gd.UnsafeGet[int64](p_args, 0)
@@ -780,14 +744,6 @@ func (class) _get_input_port_type(impl func(ptr gdclass.Receiver, port int64) Vi
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Override this method to define the names of input ports of the associated custom node. The names are used both for the input slots in the editor and as identifiers in the shader code, and are passed in the input_vars array in [GetCode].
-
-Defining this method is optional, but recommended. If not overridden, input ports are named as "in" + str(port).
-
-[GetCode]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeCustom#Interface
-*/
 func (class) _get_input_port_name(impl func(ptr gdclass.Receiver, port int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var port = gd.UnsafeGet[int64](p_args, 0)
@@ -801,14 +757,6 @@ func (class) _get_input_port_name(impl func(ptr gdclass.Receiver, port int64) St
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Override this method to define the default value for the specified input port. Prefer use this over [VisualShaderNode.SetInputPortDefaultValue].
-
-Defining this method is required. If not overridden, the node has no default values for their input ports.
-
-[VisualShaderNode.SetInputPortDefaultValue]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNode#Instance.SetInputPortDefaultValue
-*/
 func (class) _get_input_port_default_value(impl func(ptr gdclass.Receiver, port int64) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var port = gd.UnsafeGet[int64](p_args, 0)
@@ -822,12 +770,6 @@ func (class) _get_input_port_default_value(impl func(ptr gdclass.Receiver, port 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Override this method to define the input port which should be connected by default when this node is created as a result of dragging a connection from an existing node to the empty space on the graph.
-
-Defining this method is optional. If not overridden, the connection will be created to the first valid port.
-*/
 func (class) _get_default_input_port(impl func(ptr gdclass.Receiver, atype VisualShaderNode.PortType) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var atype = gd.UnsafeGet[VisualShaderNode.PortType](p_args, 0)
@@ -836,12 +778,6 @@ func (class) _get_default_input_port(impl func(ptr gdclass.Receiver, atype Visua
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Override this method to define the number of output ports of the associated custom node.
-
-Defining this method is required. If not overridden, the node has no output ports.
-*/
 func (class) _get_output_port_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -849,12 +785,6 @@ func (class) _get_output_port_count(impl func(ptr gdclass.Receiver) int64) (cb g
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Override this method to define the returned type of each output port of the associated custom node.
-
-Defining this method is optional, but recommended. If not overridden, output ports will return the [Visualshadernode.PortTypeScalar] type.
-*/
 func (class) _get_output_port_type(impl func(ptr gdclass.Receiver, port int64) VisualShaderNode.PortType) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var port = gd.UnsafeGet[int64](p_args, 0)
@@ -863,14 +793,6 @@ func (class) _get_output_port_type(impl func(ptr gdclass.Receiver, port int64) V
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Override this method to define the names of output ports of the associated custom node. The names are used both for the output slots in the editor and as identifiers in the shader code, and are passed in the output_vars array in [GetCode].
-
-Defining this method is optional, but recommended. If not overridden, output ports are named as "out" + str(port).
-
-[GetCode]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeCustom#Interface
-*/
 func (class) _get_output_port_name(impl func(ptr gdclass.Receiver, port int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var port = gd.UnsafeGet[int64](p_args, 0)
@@ -884,12 +806,6 @@ func (class) _get_output_port_name(impl func(ptr gdclass.Receiver, port int64) S
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Override this method to define the number of the properties.
-
-Defining this method is optional.
-*/
 func (class) _get_property_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -897,12 +813,6 @@ func (class) _get_property_count(impl func(ptr gdclass.Receiver) int64) (cb gd.E
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Override this method to define the names of the property of the associated custom node.
-
-Defining this method is optional.
-*/
 func (class) _get_property_name(impl func(ptr gdclass.Receiver, index int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
@@ -916,12 +826,6 @@ func (class) _get_property_name(impl func(ptr gdclass.Receiver, index int64) Str
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Override this method to define the default index of the property of the associated custom node.
-
-Defining this method is optional.
-*/
 func (class) _get_property_default_index(impl func(ptr gdclass.Receiver, index int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
@@ -930,12 +834,6 @@ func (class) _get_property_default_index(impl func(ptr gdclass.Receiver, index i
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Override this method to define the options inside the drop-down list property of the associated custom node.
-
-Defining this method is optional.
-*/
 func (class) _get_property_options(impl func(ptr gdclass.Receiver, index int64) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
@@ -949,18 +847,6 @@ func (class) _get_property_options(impl func(ptr gdclass.Receiver, index int64) 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Override this method to define the actual shader code of the associated custom node. The shader code should be returned as a string, which can have multiple lines (the """ multiline string construct can be used for convenience).
-
-The 'input_vars' and 'output_vars' arrays contain the string names of the various input and output variables, as defined by _get_input_* and _get_output_* virtual methods in this class.
-
-The output ports can be assigned values in the shader code. For example, return output_vars[0] + " = " + input_vars[0] + ";".
-
-You can customize the generated code based on the shader 'mode' and/or 'type'.
-
-Defining this method is required.
-*/
 func (class) _get_code(impl func(ptr gdclass.Receiver, input_vars Array.Contains[String.Readable], output_vars Array.Contains[String.Readable], mode Shader.Mode, atype VisualShader.Type) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var input_vars = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0))))
@@ -979,16 +865,6 @@ func (class) _get_code(impl func(ptr gdclass.Receiver, input_vars Array.Contains
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Override this method to add a shader code to the beginning of each shader function (once). The shader code should be returned as a string, which can have multiple lines (the """ multiline string construct can be used for convenience).
-
-If there are multiple custom nodes of different types which use this feature the order of each insertion is undefined.
-
-You can customize the generated code based on the shader 'mode' and/or 'type'.
-
-Defining this method is optional.
-*/
 func (class) _get_func_code(impl func(ptr gdclass.Receiver, mode Shader.Mode, atype VisualShader.Type) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var mode = gd.UnsafeGet[Shader.Mode](p_args, 0)
@@ -1003,16 +879,6 @@ func (class) _get_func_code(impl func(ptr gdclass.Receiver, mode Shader.Mode, at
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Override this method to add shader code on top of the global shader, to define your own standard library of reusable methods, varyings, constants, uniforms, etc. The shader code should be returned as a string, which can have multiple lines (the """ multiline string construct can be used for convenience).
-
-Be careful with this functionality as it can cause name conflicts with other custom nodes, so be sure to give the defined entities unique names.
-
-You can customize the generated code based on the shader 'mode'.
-
-Defining this method is optional.
-*/
 func (class) _get_global_code(impl func(ptr gdclass.Receiver, mode Shader.Mode) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var mode = gd.UnsafeGet[Shader.Mode](p_args, 0)
@@ -1026,12 +892,6 @@ func (class) _get_global_code(impl func(ptr gdclass.Receiver, mode Shader.Mode) 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Override this method to enable high-end mark in the Visual Shader Editor's members dialog.
-
-Defining this method is optional. If not overridden, it's false.
-*/
 func (class) _is_highend(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -1039,12 +899,6 @@ func (class) _is_highend(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionC
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Override this method to prevent the node to be visible in the member dialog for the certain 'mode' and/or 'type'.
-
-Defining this method is optional. If not overridden, it's true.
-*/
 func (class) _is_available(impl func(ptr gdclass.Receiver, mode Shader.Mode, atype VisualShader.Type) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var mode = gd.UnsafeGet[Shader.Mode](p_args, 0)
@@ -1055,13 +909,6 @@ func (class) _is_available(impl func(ptr gdclass.Receiver, mode Shader.Mode, aty
 	}
 }
 
-/*
-Returns the selected index of the drop-down list option within a graph. You may use this function to define the specific behavior in the [GetCode] or [GetGlobalCode].
-
-[GetCode]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeCustom#Interface
-[GetGlobalCode]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeCustom#Interface
-*/
-//go:nosplit
 func (self class) GetOptionIndex(option int64) int64 { //gd:VisualShaderNodeCustom.get_option_index
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_option_index, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ option int64 }{option})
 	var ret = r_ret

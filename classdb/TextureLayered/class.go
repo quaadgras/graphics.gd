@@ -375,12 +375,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Called when the [TextureLayered]'s format is queried.
-
-[TextureLayered]: https://pkg.go.dev/graphics.gd/classdb/TextureLayered
-*/
 func (class) _get_format(impl func(ptr gdclass.Receiver) Image.Format) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -388,12 +382,6 @@ func (class) _get_format(impl func(ptr gdclass.Receiver) Image.Format) (cb gd.Ex
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called when the layers' type in the [TextureLayered] is queried.
-
-[TextureLayered]: https://pkg.go.dev/graphics.gd/classdb/TextureLayered
-*/
 func (class) _get_layered_type(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -401,12 +389,6 @@ func (class) _get_layered_type(impl func(ptr gdclass.Receiver) int64) (cb gd.Ext
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called when the [TextureLayered]'s width queried.
-
-[TextureLayered]: https://pkg.go.dev/graphics.gd/classdb/TextureLayered
-*/
 func (class) _get_width(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -414,12 +396,6 @@ func (class) _get_width(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionC
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called when the [TextureLayered]'s height is queried.
-
-[TextureLayered]: https://pkg.go.dev/graphics.gd/classdb/TextureLayered
-*/
 func (class) _get_height(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -427,12 +403,6 @@ func (class) _get_height(impl func(ptr gdclass.Receiver) int64) (cb gd.Extension
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called when the number of layers in the [TextureLayered] is queried.
-
-[TextureLayered]: https://pkg.go.dev/graphics.gd/classdb/TextureLayered
-*/
 func (class) _get_layers(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -440,12 +410,6 @@ func (class) _get_layers(impl func(ptr gdclass.Receiver) int64) (cb gd.Extension
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called when the presence of mipmaps in the [TextureLayered] is queried.
-
-[TextureLayered]: https://pkg.go.dev/graphics.gd/classdb/TextureLayered
-*/
 func (class) _has_mipmaps(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -453,12 +417,6 @@ func (class) _has_mipmaps(impl func(ptr gdclass.Receiver) bool) (cb gd.Extension
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called when the data for a layer in the [TextureLayered] is queried.
-
-[TextureLayered]: https://pkg.go.dev/graphics.gd/classdb/TextureLayered
-*/
 func (class) _get_layer_data(impl func(ptr gdclass.Receiver, layer_index int64) [1]gdclass.Image) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var layer_index = gd.UnsafeGet[int64](p_args, 0)
@@ -473,76 +431,36 @@ func (class) _get_layer_data(impl func(ptr gdclass.Receiver, layer_index int64) 
 	}
 }
 
-/*
-Returns the current format being used by this texture.
-*/
-//go:nosplit
 func (self class) GetFormat() Image.Format { //gd:TextureLayered.get_format
 	var r_ret = noescape.Call[Image.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [TextureLayered]'s type. The type determines how the data is accessed, with cubemaps having special types.
-
-[TextureLayered]: https://pkg.go.dev/graphics.gd/classdb/TextureLayered
-*/
-//go:nosplit
 func (self class) GetLayeredType() LayeredType { //gd:TextureLayered.get_layered_type
 	var r_ret = noescape.Call[LayeredType](gd.ObjectChecked(self.AsObject()), methods.get_layered_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the width of the texture in pixels. Width is typically represented by the X axis.
-*/
-//go:nosplit
 func (self class) GetWidth() int64 { //gd:TextureLayered.get_width
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_width, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the height of the texture in pixels. Height is typically represented by the Y axis.
-*/
-//go:nosplit
 func (self class) GetHeight() int64 { //gd:TextureLayered.get_height
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the number of referenced [Image]s.
-
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-*/
-//go:nosplit
 func (self class) GetLayers() int64 { //gd:TextureLayered.get_layers
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layers, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the layers have generated mipmaps.
-*/
-//go:nosplit
 func (self class) HasMipmaps() bool { //gd:TextureLayered.has_mipmaps
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_mipmaps, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns an [Image] resource with the data from specified 'layer'.
-
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-*/
-//go:nosplit
 func (self class) GetLayerData(layer int64) [1]gdclass.Image { //gd:TextureLayered.get_layer_data
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_layer_data, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

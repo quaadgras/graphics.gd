@@ -208,45 +208,14 @@ func New() Instance {
 	return casted
 }
 
-/*
-Locks this [Mutex], blocks until it is unlocked by the current owner.
-
-Note: This function returns without blocking if the thread already has ownership of the mutex.
-
-[Mutex]: https://pkg.go.dev/graphics.gd/classdb/Mutex
-*/
-//go:nosplit
 func (self class) Lock() { //gd:Mutex.lock
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.lock, 0, &struct{}{})
 }
-
-/*
-Tries locking this [Mutex], but does not block. Returns true on success, false otherwise.
-
-Note: This function returns true if the thread already has ownership of the mutex.
-
-[Mutex]: https://pkg.go.dev/graphics.gd/classdb/Mutex
-*/
-//go:nosplit
 func (self class) TryLock() bool { //gd:Mutex.try_lock
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.try_lock, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Unlocks this [Mutex], leaving it to other threads.
-
-Note: If a thread called [Lock] or [TryLock] multiple times while already having ownership of the mutex, it must also call [Unlock] the same number of times in order to unlock it correctly.
-
-Warning: Calling [Unlock] more times that [Lock] on a given thread, thus ending up trying to unlock a non-locked mutex, is wrong and may causes crashes or deadlocks.
-
-[Lock]: https://pkg.go.dev/graphics.gd/classdb/Mutex#Instance.Lock
-[Mutex]: https://pkg.go.dev/graphics.gd/classdb/Mutex
-[TryLock]: https://pkg.go.dev/graphics.gd/classdb/Mutex#Instance.TryLock
-[Unlock]: https://pkg.go.dev/graphics.gd/classdb/Mutex#Instance.Unlock
-*/
-//go:nosplit
 func (self class) Unlock() { //gd:Mutex.unlock
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unlock, 0, &struct{}{})
 }

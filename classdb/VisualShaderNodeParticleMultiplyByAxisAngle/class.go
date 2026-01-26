@@ -174,12 +174,9 @@ func (self Instance) SetDegreesMode(value bool) Instance { //gd:VisualShaderNode
 	return self
 }
 
-//go:nosplit
 func (self class) SetDegreesMode(enabled bool) { //gd:VisualShaderNodeParticleMultiplyByAxisAngle.set_degrees_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_degrees_mode, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsDegreesMode() bool { //gd:VisualShaderNodeParticleMultiplyByAxisAngle.is_degrees_mode
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_degrees_mode, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

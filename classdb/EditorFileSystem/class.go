@@ -244,98 +244,40 @@ func New() Instance {
 	return casted
 }
 
-/*
-Gets the root directory object.
-*/
-//go:nosplit
 func (self class) GetFilesystem() [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystem.get_filesystem
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_filesystem, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorFileSystemDirectory{gdclass.NewEditorFileSystemDirectory(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Returns true if the filesystem is being scanned.
-*/
-//go:nosplit
 func (self class) IsScanning() bool { //gd:EditorFileSystem.is_scanning
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scanning, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the scan progress for 0 to 1 if the FS is being scanned.
-*/
-//go:nosplit
 func (self class) GetScanningProgress() float64 { //gd:EditorFileSystem.get_scanning_progress
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_scanning_progress, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Scan the filesystem for changes.
-*/
-//go:nosplit
 func (self class) Scan() { //gd:EditorFileSystem.scan
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.scan, 0, &struct{}{})
 }
-
-/*
-Check if the source of any imported resource changed.
-*/
-//go:nosplit
 func (self class) ScanSources() { //gd:EditorFileSystem.scan_sources
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.scan_sources, 0, &struct{}{})
 }
-
-/*
-Add a file in an existing directory, or schedule file information to be updated on editor restart. Can be used to update text files saved by an external program.
-
-This will not import the file. To reimport, call [ReimportFiles] or [Scan] methods.
-
-[ReimportFiles]: https://pkg.go.dev/graphics.gd/classdb/EditorFileSystem#Instance.ReimportFiles
-[Scan]: https://pkg.go.dev/graphics.gd/classdb/EditorFileSystem#Instance.Scan
-*/
-//go:nosplit
 func (self class) UpdateFile(path String.Readable) { //gd:EditorFileSystem.update_file
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_file, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
-
-/*
-Returns a view into the filesystem at 'path'.
-*/
-//go:nosplit
 func (self class) GetFilesystemPath(path String.Readable) [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystem.get_filesystem_path
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_filesystem_path, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = [1]gdclass.EditorFileSystemDirectory{gdclass.NewEditorFileSystemDirectory(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Returns the resource type of the file, given the full path. This returns a string such as "Resource" or "GDScript", not a file extension such as ".gd".
-*/
-//go:nosplit
 func (self class) GetFileType(path String.Readable) String.Readable { //gd:EditorFileSystem.get_file_type
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_file_type, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Reimports a set of files. Call this if these files or their .import files were directly edited by script or an external program.
-
-If the file type changed or the file was newly created, use [UpdateFile] or [Scan].
-
-Note: This function blocks until the import is finished. However, the main loop iteration, including timers and [Node.Process], will occur during the import process due to progress bar updates. Avoid calls to [ReimportFiles] or [Scan] while an import is in progress.
-
-[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
-[ReimportFiles]: https://pkg.go.dev/graphics.gd/classdb/EditorFileSystem#Instance.ReimportFiles
-[Scan]: https://pkg.go.dev/graphics.gd/classdb/EditorFileSystem#Instance.Scan
-[UpdateFile]: https://pkg.go.dev/graphics.gd/classdb/EditorFileSystem#Instance.UpdateFile
-*/
-//go:nosplit
 func (self class) ReimportFiles(files Packed.Strings) { //gd:EditorFileSystem.reimport_files
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reimport_files, 0|(gdextension.SizePackedArray<<4), &struct {
 		files gdextension.PackedArray[gdextension.String]

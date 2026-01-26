@@ -300,17 +300,6 @@ func (self Instance) SetHitFromInside(value bool) Instance { //gd:PhysicsRayQuer
 	return self
 }
 
-/*
-Returns a new, pre-configured [PhysicsRayQueryParameters2D] object. Use it to quickly create query parameters using the most common options.
-
-
-	var query = PhysicsRayQueryParameters2D.Create(node2d.GlobalPosition(), Vector2.Add(node2d.GlobalPosition(), Vector2.XY{0, 100}), nil)
-	var collision = node2d.AsCanvasItem().GetWorld2d().DirectSpaceState().IntersectRay(query)
-
-
-[PhysicsRayQueryParameters2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsRayQueryParameters2D
-*/
-//go:nosplit
 func (self class) Create(from Vector2.XY, to Vector2.XY, collision_mask int64, exclude Array.Contains[RID.Any]) [1]gdclass.PhysicsRayQueryParameters2D { //gd:PhysicsRayQueryParameters2D.create
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.create, gdextension.SizeObject|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeArray<<16), &struct {
 		from           Vector2.XY
@@ -321,85 +310,57 @@ func (self class) Create(from Vector2.XY, to Vector2.XY, collision_mask int64, e
 	var ret = [1]gdclass.PhysicsRayQueryParameters2D{gdclass.NewPhysicsRayQueryParameters2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFrom(from Vector2.XY) { //gd:PhysicsRayQueryParameters2D.set_from
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_from, 0|(gdextension.SizeVector2<<4), &struct{ from Vector2.XY }{from})
 }
-
-//go:nosplit
 func (self class) GetFrom() Vector2.XY { //gd:PhysicsRayQueryParameters2D.get_from
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_from, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTo(to Vector2.XY) { //gd:PhysicsRayQueryParameters2D.set_to
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_to, 0|(gdextension.SizeVector2<<4), &struct{ to Vector2.XY }{to})
 }
-
-//go:nosplit
 func (self class) GetTo() Vector2.XY { //gd:PhysicsRayQueryParameters2D.get_to
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_to, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCollisionMask(collision_mask int64) { //gd:PhysicsRayQueryParameters2D.set_collision_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ collision_mask int64 }{collision_mask})
 }
-
-//go:nosplit
 func (self class) GetCollisionMask() int64 { //gd:PhysicsRayQueryParameters2D.get_collision_mask
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetExclude(exclude Array.Contains[RID.Any]) { //gd:PhysicsRayQueryParameters2D.set_exclude
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exclude, 0|(gdextension.SizeArray<<4), &struct{ exclude gdextension.Array }{pointers.Get(gd.InternalArray(exclude))})
 }
-
-//go:nosplit
 func (self class) GetExclude() Array.Contains[RID.Any] { //gd:PhysicsRayQueryParameters2D.get_exclude
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_exclude, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCollideWithBodies(enable bool) { //gd:PhysicsRayQueryParameters2D.set_collide_with_bodies
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_bodies, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsCollideWithBodiesEnabled() bool { //gd:PhysicsRayQueryParameters2D.is_collide_with_bodies_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_bodies_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCollideWithAreas(enable bool) { //gd:PhysicsRayQueryParameters2D.set_collide_with_areas
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_areas, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsCollideWithAreasEnabled() bool { //gd:PhysicsRayQueryParameters2D.is_collide_with_areas_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_areas_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetHitFromInside(enable bool) { //gd:PhysicsRayQueryParameters2D.set_hit_from_inside
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hit_from_inside, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsHitFromInsideEnabled() bool { //gd:PhysicsRayQueryParameters2D.is_hit_from_inside_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hit_from_inside_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

@@ -174,12 +174,9 @@ func (self Instance) SetConstant(value Quaternion.IJKX) Instance { //gd:VisualSh
 	return self
 }
 
-//go:nosplit
 func (self class) SetConstant(constant Quaternion.IJKX) { //gd:VisualShaderNodeVec4Constant.set_constant
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant, 0|(gdextension.SizeQuaternion<<4), &struct{ constant Quaternion.IJKX }{constant})
 }
-
-//go:nosplit
 func (self class) GetConstant() Quaternion.IJKX { //gd:VisualShaderNodeVec4Constant.get_constant
 	var r_ret = noescape.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_constant, gdextension.SizeQuaternion, &struct{}{})
 	var ret = r_ret

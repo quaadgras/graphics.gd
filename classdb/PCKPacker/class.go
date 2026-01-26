@@ -240,10 +240,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Creates a new PCK file at the file path 'pck_path'. The .pck file extension isn't added automatically, so it should be part of 'pck_path' (even though it's not required).
-*/
-//go:nosplit
 func (self class) PckStart(pck_path String.Readable, alignment int64, key String.Readable, encrypt_directory bool) Error.Code { //gd:PCKPacker.pck_start
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.pck_start, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeBool<<16), &struct {
 		pck_path          gdextension.String
@@ -254,11 +250,6 @@ func (self class) PckStart(pck_path String.Readable, alignment int64, key String
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Adds the 'source_path' file to the current PCK package at the 'target_path' internal path. The res:// prefix for 'target_path' is optional and stripped internally. File content is immediately written to the PCK.
-*/
-//go:nosplit
 func (self class) AddFile(target_path String.Readable, source_path String.Readable, encrypt bool) Error.Code { //gd:PCKPacker.add_file
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_file, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12), &struct {
 		target_path gdextension.String
@@ -268,25 +259,11 @@ func (self class) AddFile(target_path String.Readable, source_path String.Readab
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Registers a file removal of the 'target_path' internal path to the PCK. This is mainly used for patches. If the file at this path has been loaded from a previous PCK, it will be removed. The res:// prefix for 'target_path' is optional and stripped internally.
-*/
-//go:nosplit
 func (self class) AddFileRemoval(target_path String.Readable) Error.Code { //gd:PCKPacker.add_file_removal
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_file_removal, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ target_path gdextension.String }{pointers.Get(gd.InternalString(target_path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Writes the file directory and closes the PCK. If 'verbose' is true, a list of files added will be printed to the console for easier debugging.
-
-Note: [PCKPacker] will automatically flush when it's freed, which happens when it goes out of scope or when it gets assigned with null. In C# the reference must be disposed after use, either with the using statement or by calling the Dispose method directly.
-
-[PCKPacker]: https://pkg.go.dev/graphics.gd/classdb/PCKPacker
-*/
-//go:nosplit
 func (self class) Flush(verbose bool) Error.Code { //gd:PCKPacker.flush
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.flush, gdextension.SizeInt|(gdextension.SizeBool<<4), &struct{ verbose bool }{verbose})
 	var ret = Error.Code(r_ret)

@@ -523,327 +523,163 @@ func (self Instance) SetDebugShapeCustomColor(value Color.RGBA) Instance { //gd:
 	return self
 }
 
-/*
-This method does nothing.
-*/
-//go:nosplit
 func (self class) ResourceChanged(resource [1]gdclass.Resource) { //gd:ShapeCast3D.resource_changed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resource_changed, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetResource(resource[0])))})
 }
-
-//go:nosplit
 func (self class) SetEnabled(enabled bool) { //gd:ShapeCast3D.set_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsEnabled() bool { //gd:ShapeCast3D.is_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetShape(shape [1]gdclass.Shape3D) { //gd:ShapeCast3D.set_shape
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape, 0|(gdextension.SizeObject<<4), &struct{ shape gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetShape3D(shape[0])))})
 }
-
-//go:nosplit
 func (self class) GetShape() [1]gdclass.Shape3D { //gd:ShapeCast3D.get_shape
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shape, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Shape3D{gdclass.NewShape3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTargetPosition(local_point Vector3.XYZ) { //gd:ShapeCast3D.set_target_position
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_position, 0|(gdextension.SizeVector3<<4), &struct{ local_point Vector3.XYZ }{local_point})
 }
-
-//go:nosplit
 func (self class) GetTargetPosition() Vector3.XYZ { //gd:ShapeCast3D.get_target_position
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_target_position, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMargin(margin float64) { //gd:ShapeCast3D.set_margin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_margin, 0|(gdextension.SizeFloat<<4), &struct{ margin float64 }{margin})
 }
-
-//go:nosplit
 func (self class) GetMargin() float64 { //gd:ShapeCast3D.get_margin
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMaxResults(max_results int64) { //gd:ShapeCast3D.set_max_results
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_results, 0|(gdextension.SizeInt<<4), &struct{ max_results int64 }{max_results})
 }
-
-//go:nosplit
 func (self class) GetMaxResults() int64 { //gd:ShapeCast3D.get_max_results
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_results, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns whether any object is intersecting with the shape's vector (considering the vector length).
-*/
-//go:nosplit
 func (self class) IsColliding() bool { //gd:ShapeCast3D.is_colliding
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_colliding, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-The number of collisions detected at the point of impact. Use this to iterate over multiple collisions as provided by [GetCollider], [GetColliderShape], [GetCollisionPoint], and [GetCollisionNormal] methods.
-
-[GetCollider]: https://pkg.go.dev/graphics.gd/classdb/ShapeCast3D#Instance.GetCollider
-[GetColliderShape]: https://pkg.go.dev/graphics.gd/classdb/ShapeCast3D#Instance.GetColliderShape
-[GetCollisionNormal]: https://pkg.go.dev/graphics.gd/classdb/ShapeCast3D#Instance.GetCollisionNormal
-[GetCollisionPoint]: https://pkg.go.dev/graphics.gd/classdb/ShapeCast3D#Instance.GetCollisionPoint
-*/
-//go:nosplit
 func (self class) GetCollisionCount() int64 { //gd:ShapeCast3D.get_collision_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Updates the collision information for the shape immediately, without waiting for the next _physics_process call. Use this method, for example, when the shape or its parent has changed state.
-
-Note: Setting [Enabled] to true is not required for this to work.
-
-[Enabled]: https://pkg.go.dev/graphics.gd/classdb/ShapeCast3D#Instance.Enabled
-*/
-//go:nosplit
 func (self class) ForceShapecastUpdate() { //gd:ShapeCast3D.force_shapecast_update
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_shapecast_update, 0, &struct{}{})
 }
-
-/*
-Returns the collided [Object] of one of the multiple collisions at 'index', or null if no object is intersecting the shape (i.e. [IsColliding] returns false).
-
-[IsColliding]: https://pkg.go.dev/graphics.gd/classdb/ShapeCast3D#Instance.IsColliding
-[Object]: https://pkg.go.dev/graphics.gd/variant/Object
-*/
-//go:nosplit
 func (self class) GetCollider(index int64) [1]gd.Object { //gd:ShapeCast3D.get_collider
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_collider, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
-
-/*
-Returns the [Resource.ID] of the collided object of one of the multiple collisions at 'index'.
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) GetColliderRid(index int64) RID.Any { //gd:ShapeCast3D.get_collider_rid
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_collider_rid, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the shape ID of the colliding shape of one of the multiple collisions at 'index', or 0 if no object is intersecting the shape (i.e. [IsColliding] returns false).
-
-[IsColliding]: https://pkg.go.dev/graphics.gd/classdb/ShapeCast3D#Instance.IsColliding
-*/
-//go:nosplit
 func (self class) GetColliderShape(index int64) int64 { //gd:ShapeCast3D.get_collider_shape
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collider_shape, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the collision point of one of the multiple collisions at 'index' where the shape intersects the colliding object.
-
-Note: This point is in the global coordinate system.
-*/
-//go:nosplit
 func (self class) GetCollisionPoint(index int64) Vector3.XYZ { //gd:ShapeCast3D.get_collision_point
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_collision_point, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the normal of one of the multiple collisions at 'index' of the intersecting object.
-*/
-//go:nosplit
 func (self class) GetCollisionNormal(index int64) Vector3.XYZ { //gd:ShapeCast3D.get_collision_normal
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_collision_normal, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the fraction from this cast's origin to its [TargetPosition] of how far the shape can move without triggering a collision, as a value between 0.0 and 1.0.
-
-[TargetPosition]: https://pkg.go.dev/graphics.gd/classdb/ShapeCast3D#Instance.TargetPosition
-*/
-//go:nosplit
 func (self class) GetClosestCollisionSafeFraction() float64 { //gd:ShapeCast3D.get_closest_collision_safe_fraction
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_closest_collision_safe_fraction, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the fraction from this cast's origin to its [TargetPosition] of how far the shape must move to trigger a collision, as a value between 0.0 and 1.0.
-
-In ideal conditions this would be the same as [GetClosestCollisionSafeFraction], however shape casting is calculated in discrete steps, so the precise point of collision can occur between two calculated positions.
-
-[GetClosestCollisionSafeFraction]: https://pkg.go.dev/graphics.gd/classdb/ShapeCast3D#Instance.GetClosestCollisionSafeFraction
-[TargetPosition]: https://pkg.go.dev/graphics.gd/classdb/ShapeCast3D#Instance.TargetPosition
-*/
-//go:nosplit
 func (self class) GetClosestCollisionUnsafeFraction() float64 { //gd:ShapeCast3D.get_closest_collision_unsafe_fraction
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_closest_collision_unsafe_fraction, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a collision exception so the shape does not report collisions with the specified [Resource.ID].
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) AddExceptionRid(rid RID.Any) { //gd:ShapeCast3D.add_exception_rid
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_exception_rid, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 }
-
-/*
-Adds a collision exception so the shape does not report collisions with the specified node.
-*/
-//go:nosplit
 func (self class) AddException(node [1]gdclass.CollisionObject3D) { //gd:ShapeCast3D.add_exception
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_exception, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetCollisionObject3D(node[0])[0]))})
 }
-
-/*
-Removes a collision exception so the shape does report collisions with the specified [Resource.ID].
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) RemoveExceptionRid(rid RID.Any) { //gd:ShapeCast3D.remove_exception_rid
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_exception_rid, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 }
-
-/*
-Removes a collision exception so the shape does report collisions with the specified node.
-*/
-//go:nosplit
 func (self class) RemoveException(node [1]gdclass.CollisionObject3D) { //gd:ShapeCast3D.remove_exception
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_exception, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCollisionObject3D(node[0])))})
 }
-
-/*
-Removes all collision exceptions for this shape.
-*/
-//go:nosplit
 func (self class) ClearExceptions() { //gd:ShapeCast3D.clear_exceptions
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_exceptions, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetCollisionMask(mask int64) { //gd:ShapeCast3D.set_collision_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
-
-//go:nosplit
 func (self class) GetCollisionMask() int64 { //gd:ShapeCast3D.get_collision_mask
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Based on 'value', enables or disables the specified layer in the [CollisionMask], given a 'layer_number' between 1 and 32.
-
-[CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/ShapeCast3D#Instance.CollisionMask
-*/
-//go:nosplit
 func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:ShapeCast3D.set_collision_mask_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value})
 }
-
-/*
-Returns whether or not the specified layer of the [CollisionMask] is enabled, given a 'layer_number' between 1 and 32.
-
-[CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/ShapeCast3D#Instance.CollisionMask
-*/
-//go:nosplit
 func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:ShapeCast3D.get_collision_mask_value
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetExcludeParentBody(mask bool) { //gd:ShapeCast3D.set_exclude_parent_body
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exclude_parent_body, 0|(gdextension.SizeBool<<4), &struct{ mask bool }{mask})
 }
-
-//go:nosplit
 func (self class) GetExcludeParentBody() bool { //gd:ShapeCast3D.get_exclude_parent_body
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_exclude_parent_body, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCollideWithAreas(enable bool) { //gd:ShapeCast3D.set_collide_with_areas
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_areas, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsCollideWithAreasEnabled() bool { //gd:ShapeCast3D.is_collide_with_areas_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_areas_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCollideWithBodies(enable bool) { //gd:ShapeCast3D.set_collide_with_bodies
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_bodies, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsCollideWithBodiesEnabled() bool { //gd:ShapeCast3D.is_collide_with_bodies_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_bodies_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetCollisionResult() Array.Any { //gd:ShapeCast3D.get_collision_result
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_collision_result, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDebugShapeCustomColor(debug_shape_custom_color Color.RGBA) { //gd:ShapeCast3D.set_debug_shape_custom_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_shape_custom_color, 0|(gdextension.SizeColor<<4), &struct{ debug_shape_custom_color Color.RGBA }{debug_shape_custom_color})
 }
-
-//go:nosplit
 func (self class) GetDebugShapeCustomColor() Color.RGBA { //gd:ShapeCast3D.get_debug_shape_custom_color
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_debug_shape_custom_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret

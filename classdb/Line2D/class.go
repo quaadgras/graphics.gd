@@ -474,232 +474,143 @@ func (self Instance) SetAntialiased(value bool) Instance { //gd:Line2D.antialias
 	return self
 }
 
-//go:nosplit
 func (self class) SetPoints(points Packed.Array[Vector2.XY]) { //gd:Line2D.set_points
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_points, 0|(gdextension.SizePackedArray<<4), &struct {
 		points gdextension.PackedArray[Vector2.XY]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))})
 }
-
-//go:nosplit
 func (self class) GetPoints() Packed.Array[Vector2.XY] { //gd:Line2D.get_points
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_points, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Overwrites the position of the point at the given 'index' with the supplied 'position'.
-*/
-//go:nosplit
 func (self class) SetPointPosition(index int64, position Vector2.XY) { //gd:Line2D.set_point_position
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_position, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), &struct {
 		index    int64
 		position Vector2.XY
 	}{index, position})
 }
-
-/*
-Returns the position of the point at index 'index'.
-*/
-//go:nosplit
 func (self class) GetPointPosition(index int64) Vector2.XY { //gd:Line2D.get_point_position
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_point_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the number of points in the polyline.
-*/
-//go:nosplit
 func (self class) GetPointCount() int64 { //gd:Line2D.get_point_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_point_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a point with the specified 'position' relative to the polyline's own position. If no 'index' is provided, the new point will be added to the end of the points array.
-
-If 'index' is given, the new point is inserted before the existing point identified by index 'index'. The indices of the points after the new point get increased by 1. The provided 'index' must not exceed the number of existing points in the polyline. See [GetPointCount].
-
-[GetPointCount]: https://pkg.go.dev/graphics.gd/classdb/Line2D#Instance.GetPointCount
-*/
-//go:nosplit
 func (self class) AddPoint(position Vector2.XY, index int64) { //gd:Line2D.add_point
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_point, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeInt<<8), &struct {
 		position Vector2.XY
 		index    int64
 	}{position, index})
 }
-
-/*
-Removes the point at index 'index' from the polyline.
-*/
-//go:nosplit
 func (self class) RemovePoint(index int64) { //gd:Line2D.remove_point
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_point, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
-
-/*
-Removes all points from the polyline, making it empty.
-*/
-//go:nosplit
 func (self class) ClearPoints() { //gd:Line2D.clear_points
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_points, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetClosed(closed bool) { //gd:Line2D.set_closed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_closed, 0|(gdextension.SizeBool<<4), &struct{ closed bool }{closed})
 }
-
-//go:nosplit
 func (self class) IsClosed() bool { //gd:Line2D.is_closed
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_closed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetWidth(width float64) { //gd:Line2D.set_width
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_width, 0|(gdextension.SizeFloat<<4), &struct{ width float64 }{width})
 }
-
-//go:nosplit
 func (self class) GetWidth() float64 { //gd:Line2D.get_width
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_width, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCurve(curve [1]gdclass.Curve) { //gd:Line2D.set_curve
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCurve(curve[0])))})
 }
-
-//go:nosplit
 func (self class) GetCurve() [1]gdclass.Curve { //gd:Line2D.get_curve
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Curve{gdclass.NewCurve(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDefaultColor(color Color.RGBA) { //gd:Line2D.set_default_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
-
-//go:nosplit
 func (self class) GetDefaultColor() Color.RGBA { //gd:Line2D.get_default_color
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_default_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetGradient(color [1]gdclass.Gradient) { //gd:Line2D.set_gradient
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gradient, 0|(gdextension.SizeObject<<4), &struct{ color gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetGradient(color[0])))})
 }
-
-//go:nosplit
 func (self class) GetGradient() [1]gdclass.Gradient { //gd:Line2D.get_gradient
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_gradient, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Gradient{gdclass.NewGradient(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:Line2D.set_texture
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
-
-//go:nosplit
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:Line2D.get_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTextureMode(mode LineTextureMode) { //gd:Line2D.set_texture_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_mode, 0|(gdextension.SizeInt<<4), &struct{ mode LineTextureMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetTextureMode() LineTextureMode { //gd:Line2D.get_texture_mode
 	var r_ret = noescape.Call[LineTextureMode](gd.ObjectChecked(self.AsObject()), methods.get_texture_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetJointMode(mode LineJointMode) { //gd:Line2D.set_joint_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joint_mode, 0|(gdextension.SizeInt<<4), &struct{ mode LineJointMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetJointMode() LineJointMode { //gd:Line2D.get_joint_mode
 	var r_ret = noescape.Call[LineJointMode](gd.ObjectChecked(self.AsObject()), methods.get_joint_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBeginCapMode(mode LineCapMode) { //gd:Line2D.set_begin_cap_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_begin_cap_mode, 0|(gdextension.SizeInt<<4), &struct{ mode LineCapMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetBeginCapMode() LineCapMode { //gd:Line2D.get_begin_cap_mode
 	var r_ret = noescape.Call[LineCapMode](gd.ObjectChecked(self.AsObject()), methods.get_begin_cap_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEndCapMode(mode LineCapMode) { //gd:Line2D.set_end_cap_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_end_cap_mode, 0|(gdextension.SizeInt<<4), &struct{ mode LineCapMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetEndCapMode() LineCapMode { //gd:Line2D.get_end_cap_mode
 	var r_ret = noescape.Call[LineCapMode](gd.ObjectChecked(self.AsObject()), methods.get_end_cap_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSharpLimit(limit float64) { //gd:Line2D.set_sharp_limit
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sharp_limit, 0|(gdextension.SizeFloat<<4), &struct{ limit float64 }{limit})
 }
-
-//go:nosplit
 func (self class) GetSharpLimit() float64 { //gd:Line2D.get_sharp_limit
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sharp_limit, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRoundPrecision(precision int64) { //gd:Line2D.set_round_precision
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_round_precision, 0|(gdextension.SizeInt<<4), &struct{ precision int64 }{precision})
 }
-
-//go:nosplit
 func (self class) GetRoundPrecision() int64 { //gd:Line2D.get_round_precision
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_round_precision, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAntialiased(antialiased bool) { //gd:Line2D.set_antialiased
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_antialiased, 0|(gdextension.SizeBool<<4), &struct{ antialiased bool }{antialiased})
 }
-
-//go:nosplit
 func (self class) GetAntialiased() bool { //gd:Line2D.get_antialiased
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_antialiased, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

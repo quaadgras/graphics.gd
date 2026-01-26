@@ -180,24 +180,14 @@ func (self Instance) SetInputName(value string) Instance { //gd:VisualShaderNode
 	return self
 }
 
-//go:nosplit
 func (self class) SetInputName(name String.Readable) { //gd:VisualShaderNodeInput.set_input_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_name, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
-
-//go:nosplit
 func (self class) GetInputName() String.Readable { //gd:VisualShaderNodeInput.get_input_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_input_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns a translated name of the current constant in the Godot Shader Language. E.g. "ALBEDO" if the [InputName] equal to "albedo".
-
-[InputName]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeInput#Instance.InputName
-*/
-//go:nosplit
 func (self class) GetInputRealName() String.Readable { //gd:VisualShaderNodeInput.get_input_real_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_input_real_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))

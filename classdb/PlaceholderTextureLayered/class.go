@@ -190,19 +190,14 @@ func (self Instance) SetLayers(value int) Instance { //gd:PlaceholderTextureLaye
 	return self
 }
 
-//go:nosplit
 func (self class) SetSize(size Vector2i.XY) { //gd:PlaceholderTextureLayered.set_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector2i<<4), &struct{ size Vector2i.XY }{size})
 }
-
-//go:nosplit
 func (self class) GetSize() Vector2i.XY { //gd:PlaceholderTextureLayered.get_size
 	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetLayers(layers int64) { //gd:PlaceholderTextureLayered.set_layers
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layers, 0|(gdextension.SizeInt<<4), &struct{ layers int64 }{layers})
 }

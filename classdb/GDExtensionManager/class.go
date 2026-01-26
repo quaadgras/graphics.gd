@@ -196,75 +196,36 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetGDExtensionManager(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
-/*
-Loads an extension by absolute file path. The 'path' needs to point to a valid [GDExtension]. Returns [LoadStatusOk] if successful.
-
-[GDExtension]: https://pkg.go.dev/graphics.gd/classdb/GDExtension
-*/
-//go:nosplit
 func (self class) LoadExtension(path String.Readable) LoadStatus { //gd:GDExtensionManager.load_extension
 	once.Do(singleton)
 	var r_ret = noescape.Call[LoadStatus](gd.ObjectChecked(self.AsObject()), methods.load_extension, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Reloads the extension at the given file path. The 'path' needs to point to a valid [GDExtension], otherwise this method may return either [LoadStatusNotLoaded] or [LoadStatusFailed].
-
-Note: You can only reload extensions in the editor. In release builds, this method always fails and returns [LoadStatusFailed].
-
-[GDExtension]: https://pkg.go.dev/graphics.gd/classdb/GDExtension
-*/
-//go:nosplit
 func (self class) ReloadExtension(path String.Readable) LoadStatus { //gd:GDExtensionManager.reload_extension
 	once.Do(singleton)
 	var r_ret = noescape.Call[LoadStatus](gd.ObjectChecked(self.AsObject()), methods.reload_extension, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Unloads an extension by file path. The 'path' needs to point to an already loaded [GDExtension], otherwise this method returns [LoadStatusNotLoaded].
-
-[GDExtension]: https://pkg.go.dev/graphics.gd/classdb/GDExtension
-*/
-//go:nosplit
 func (self class) UnloadExtension(path String.Readable) LoadStatus { //gd:GDExtensionManager.unload_extension
 	once.Do(singleton)
 	var r_ret = noescape.Call[LoadStatus](gd.ObjectChecked(self.AsObject()), methods.unload_extension, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the extension at the given file 'path' has already been loaded successfully. See also [GetLoadedExtensions].
-*/
-//go:nosplit
 func (self class) IsExtensionLoaded(path String.Readable) bool { //gd:GDExtensionManager.is_extension_loaded
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_extension_loaded, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the file paths of all currently loaded extensions.
-*/
-//go:nosplit
 func (self class) GetLoadedExtensions() Packed.Strings { //gd:GDExtensionManager.get_loaded_extensions
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_loaded_extensions, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns the [GDExtension] at the given file 'path', or null if it has not been loaded or does not exist.
-
-[GDExtension]: https://pkg.go.dev/graphics.gd/classdb/GDExtension
-*/
-//go:nosplit
 func (self class) GetExtension(path String.Readable) [1]gdclass.GDExtension { //gd:GDExtensionManager.get_extension
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_extension, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})

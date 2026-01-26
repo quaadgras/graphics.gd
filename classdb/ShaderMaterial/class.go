@@ -209,41 +209,20 @@ func (self Instance) SetShader(value Shader.Instance) Instance { //gd:ShaderMate
 	return self
 }
 
-//go:nosplit
 func (self class) SetShader(shader [1]gdclass.Shader) { //gd:ShaderMaterial.set_shader
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shader, 0|(gdextension.SizeObject<<4), &struct{ shader gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetShader(shader[0])))})
 }
-
-//go:nosplit
 func (self class) GetShader() [1]gdclass.Shader { //gd:ShaderMaterial.get_shader
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shader, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Shader{gdclass.NewShader(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Changes the value set for this material of a uniform in the shader.
-
-Note: 'param' is case-sensitive and must match the name of the uniform in the code exactly (not the capitalized name in the inspector).
-
-Note: Changes to the shader uniform will be effective on all instances using this [ShaderMaterial]. To prevent this, use per-instance uniforms with [GeometryInstance3D.SetInstanceShaderParameter] or duplicate the [ShaderMaterial] resource using [Resource.Duplicate]. Per-instance uniforms allow for better shader reuse and are therefore faster, so they should be preferred over duplicating the [ShaderMaterial] when possible.
-
-[GeometryInstance3D.SetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.SetInstanceShaderParameter
-[Resource.Duplicate]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.Duplicate
-[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
-*/
-//go:nosplit
 func (self class) SetShaderParameter(param String.Name, value variant.Any) { //gd:ShaderMaterial.set_shader_parameter
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shader_parameter, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), &struct {
 		param gdextension.StringName
 		value gdextension.Variant
 	}{pointers.Get(gd.InternalStringName(param)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-/*
-Returns the current value set for this material of a uniform in the shader.
-*/
-//go:nosplit
 func (self class) GetShaderParameter(param String.Name) variant.Any { //gd:ShaderMaterial.get_shader_parameter
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_shader_parameter, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ param gdextension.StringName }{pointers.Get(gd.InternalStringName(param))})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))

@@ -217,25 +217,11 @@ func New() Instance {
 	return casted
 }
 
-/*
-Packs the given container into a binary representation. The 'value' must be either slice or data structure, any other type will result in invalid data error.
-
-Note: Subsequent calls to this method will overwrite the existing data.
-*/
-//go:nosplit
 func (self class) Pack(value variant.Any) Error.Code { //gd:PackedDataContainer.pack
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.pack, gdextension.SizeInt|(gdextension.SizeVariant<<4), &struct{ value gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns the size of the packed container (see [Array.Size] and [Dictionary.Size]).
-
-[Array.Size]: https://pkg.go.dev/graphics.gd/classdb/Array#Instance.Size
-[Dictionary.Size]: https://pkg.go.dev/graphics.gd/classdb/Dictionary#Instance.Size
-*/
-//go:nosplit
 func (self class) Size() int64 { //gd:PackedDataContainer.size
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

@@ -289,14 +289,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Virtual method which can be overridden to return syntax highlighting data.
-
-See [GetLineSyntaxHighlighting] for more details.
-
-[GetLineSyntaxHighlighting]: https://pkg.go.dev/graphics.gd/classdb/SyntaxHighlighter#Instance.GetLineSyntaxHighlighting
-*/
 func (class) _get_line_syntax_highlighting(impl func(ptr gdclass.Receiver, line int64) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var line = gd.UnsafeGet[int64](p_args, 0)
@@ -310,20 +302,12 @@ func (class) _get_line_syntax_highlighting(impl func(ptr gdclass.Receiver, line 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Virtual method which can be overridden to clear any local caches.
-*/
 func (class) _clear_highlighting_cache(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
-
-/*
-Virtual method which can be overridden to update any local caches.
-*/
 func (class) _update_cache(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -331,65 +315,17 @@ func (class) _update_cache(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClas
 	}
 }
 
-/*
-Returns the syntax highlighting data for the line at index 'line'. If the line is not cached, calls [GetLineSyntaxHighlighting] first to calculate the data.
-
-Each entry is a column number containing a nested data structure. The column number denotes the start of a region, the region will end if another region is found, or at the end of the line. The nested data structure contains the data for that region. Currently only the key "color" is supported.
-
-Example: Possible return value. This means columns 0 to 4 should be red, and columns 5 to the end of the line should be green:
-
-
-	var example = map[int]SyntaxHighlighter.Entry{
-		0: {
-			Color: Color.RGBA{1, 0, 0, 1},
-		},
-		5: {
-			Color: Color.RGBA{0, 1, 0, 1},
-		},
-	}
-
-
-[GetLineSyntaxHighlighting]: https://pkg.go.dev/graphics.gd/classdb/SyntaxHighlighter#Interface
-*/
-//go:nosplit
 func (self class) GetLineSyntaxHighlighting(line int64) Dictionary.Any { //gd:SyntaxHighlighter.get_line_syntax_highlighting
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_line_syntax_highlighting, gdextension.SizeDictionary|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Clears then updates the [SyntaxHighlighter] caches. Override [UpdateCache] for a callback.
-
-Note: This is called automatically when the associated [TextEdit] node, updates its own cache.
-
-[SyntaxHighlighter]: https://pkg.go.dev/graphics.gd/classdb/SyntaxHighlighter
-[TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
-[UpdateCache]: https://pkg.go.dev/graphics.gd/classdb/SyntaxHighlighter#Interface
-*/
-//go:nosplit
 func (self class) UpdateCache() { //gd:SyntaxHighlighter.update_cache
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_cache, 0, &struct{}{})
 }
-
-/*
-Clears all cached syntax highlighting data.
-
-Then calls overridable method [ClearHighlightingCache].
-
-[ClearHighlightingCache]: https://pkg.go.dev/graphics.gd/classdb/SyntaxHighlighter#Interface
-*/
-//go:nosplit
 func (self class) ClearHighlightingCache() { //gd:SyntaxHighlighter.clear_highlighting_cache
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_highlighting_cache, 0, &struct{}{})
 }
-
-/*
-Returns the associated [TextEdit] node.
-
-[TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
-*/
-//go:nosplit
 func (self class) GetTextEdit() [1]gdclass.TextEdit { //gd:SyntaxHighlighter.get_text_edit
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_text_edit, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.TextEdit{gdclass.NewTextEdit(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}

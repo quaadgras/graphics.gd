@@ -222,10 +222,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Called when the profiler is enabled/disabled, along with a set of 'options'.
-*/
 func (class) _toggle(impl func(ptr gdclass.Receiver, enable bool, options Array.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var enable = gd.UnsafeGet[bool](p_args, 0)
@@ -235,12 +231,6 @@ func (class) _toggle(impl func(ptr gdclass.Receiver, enable bool, options Array.
 		impl(self, enable, options)
 	}
 }
-
-/*
-Called when data is added to profiler using [EngineDebugger.ProfilerAddFrameData].
-
-[EngineDebugger.ProfilerAddFrameData]: https://pkg.go.dev/graphics.gd/classdb/EngineDebugger#ProfilerAddFrameData
-*/
 func (class) _add_frame(impl func(ptr gdclass.Receiver, data Array.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var data = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0))))
@@ -249,10 +239,6 @@ func (class) _add_frame(impl func(ptr gdclass.Receiver, data Array.Any)) (cb gd.
 		impl(self, data)
 	}
 }
-
-/*
-Called once every engine iteration when the profiler is active with information about the current frame. All time values are in seconds. Lower values represent faster processing times and are therefore considered better.
-*/
 func (class) _tick(impl func(ptr gdclass.Receiver, frame_time float64, process_time float64, physics_time float64, physics_frame_time float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var frame_time = gd.UnsafeGet[float64](p_args, 0)

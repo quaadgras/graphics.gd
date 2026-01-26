@@ -1063,121 +1063,60 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns the image's width.
-*/
-//go:nosplit
 func (self class) GetWidth() int64 { //gd:Image.get_width
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_width, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the image's height.
-*/
-//go:nosplit
 func (self class) GetHeight() int64 { //gd:Image.get_height
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the image's size (width and height).
-*/
-//go:nosplit
 func (self class) GetSize() Vector2i.XY { //gd:Image.get_size
 	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the image has generated mipmaps.
-*/
-//go:nosplit
 func (self class) HasMipmaps() bool { //gd:Image.has_mipmaps
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_mipmaps, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns this image's format.
-*/
-//go:nosplit
 func (self class) GetFormat() Format { //gd:Image.get_format
 	var r_ret = noescape.Call[Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a copy of the image's raw data.
-*/
-//go:nosplit
 func (self class) GetData() Packed.Bytes { //gd:Image.get_data
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_data, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-
-/*
-Returns size (in bytes) of the image's raw data.
-*/
-//go:nosplit
 func (self class) GetDataSize() int64 { //gd:Image.get_data_size
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_data_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Converts this image's format to the given 'format'.
-*/
-//go:nosplit
 func (self class) Convert(format Format) { //gd:Image.convert
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.convert, 0|(gdextension.SizeInt<<4), &struct{ format Format }{format})
 }
-
-/*
-Returns the number of mipmap levels or 0 if the image has no mipmaps. The largest main level image is not counted as a mipmap level by this method, so if you want to include it you can add 1 to this count.
-*/
-//go:nosplit
 func (self class) GetMipmapCount() int64 { //gd:Image.get_mipmap_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_mipmap_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the offset where the image's mipmap with index 'mipmap' is stored in the [Data] dictionary.
-
-[Data]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.Data
-*/
-//go:nosplit
 func (self class) GetMipmapOffset(mipmap int64) int64 { //gd:Image.get_mipmap_offset
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_mipmap_offset, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ mipmap int64 }{mipmap})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Resizes the image to the nearest power of 2 for the width and height. If 'square' is true, sets width and height to be the same. New pixels are calculated using the 'interpolation' mode defined via [Interpolation] constants.
-*/
-//go:nosplit
 func (self class) ResizeToPo2(square bool, interpolation Interpolation) { //gd:Image.resize_to_po2
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resize_to_po2, 0|(gdextension.SizeBool<<4)|(gdextension.SizeInt<<8), &struct {
 		square        bool
 		interpolation Interpolation
 	}{square, interpolation})
 }
-
-/*
-Resizes the image to the given 'width' and 'height'. New pixels are calculated using the 'interpolation' mode defined via [Interpolation] constants.
-*/
-//go:nosplit
 func (self class) Resize(width int64, height int64, interpolation Interpolation) { //gd:Image.resize
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resize, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		width         int64
@@ -1185,72 +1124,29 @@ func (self class) Resize(width int64, height int64, interpolation Interpolation)
 		interpolation Interpolation
 	}{width, height, interpolation})
 }
-
-/*
-Shrinks the image by a factor of 2 on each axis (this divides the pixel count by 4).
-*/
-//go:nosplit
 func (self class) ShrinkX2() { //gd:Image.shrink_x2
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shrink_x2, 0, &struct{}{})
 }
-
-/*
-Crops the image to the given 'width' and 'height'. If the specified size is larger than the current size, the extra area is filled with black pixels.
-*/
-//go:nosplit
 func (self class) Crop(width int64, height int64) { //gd:Image.crop
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.crop, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		width  int64
 		height int64
 	}{width, height})
 }
-
-/*
-Flips the image horizontally.
-*/
-//go:nosplit
 func (self class) FlipX() { //gd:Image.flip_x
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.flip_x, 0, &struct{}{})
 }
-
-/*
-Flips the image vertically.
-*/
-//go:nosplit
 func (self class) FlipY() { //gd:Image.flip_y
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.flip_y, 0, &struct{}{})
 }
-
-/*
-Generates mipmaps for the image. Mipmaps are precalculated lower-resolution copies of the image that are automatically used if the image needs to be scaled down when rendered. They help improve image quality and performance when rendering. This method returns an error if the image is compressed, in a custom format, or if the image's width/height is 0. Enabling 'renormalize' when generating mipmaps for normal map textures will make sure all resulting vector values are normalized.
-
-It is possible to check if the image has mipmaps by calling [HasMipmaps] or [GetMipmapCount]. Calling [GenerateMipmaps] on an image that already has mipmaps will replace existing mipmaps in the image.
-
-[GenerateMipmaps]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.GenerateMipmaps
-[GetMipmapCount]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.GetMipmapCount
-[HasMipmaps]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.HasMipmaps
-*/
-//go:nosplit
 func (self class) GenerateMipmaps(renormalize bool) Error.Code { //gd:Image.generate_mipmaps
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.generate_mipmaps, gdextension.SizeInt|(gdextension.SizeBool<<4), &struct{ renormalize bool }{renormalize})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Removes the image's mipmaps.
-*/
-//go:nosplit
 func (self class) ClearMipmaps() { //gd:Image.clear_mipmaps
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_mipmaps, 0, &struct{}{})
 }
-
-/*
-Creates an empty image of the given size and format. If 'use_mipmaps' is true, generates mipmaps for this image. See the [GenerateMipmaps].
-
-[GenerateMipmaps]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.GenerateMipmaps
-*/
-//go:nosplit
 func (self class) Create(width int64, height int64, use_mipmaps bool, format Format) [1]gdclass.Image { //gd:Image.create
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.create, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeInt<<16), &struct {
 		width       int64
@@ -1261,13 +1157,6 @@ func (self class) Create(width int64, height int64, use_mipmaps bool, format For
 	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Creates an empty image of the given size and format. If 'use_mipmaps' is true, generates mipmaps for this image. See the [GenerateMipmaps].
-
-[GenerateMipmaps]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.GenerateMipmaps
-*/
-//go:nosplit
 func (self class) CreateEmpty(width int64, height int64, use_mipmaps bool, format Format) [1]gdclass.Image { //gd:Image.create_empty
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.create_empty, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeInt<<16), &struct {
 		width       int64
@@ -1278,13 +1167,6 @@ func (self class) CreateEmpty(width int64, height int64, use_mipmaps bool, forma
 	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Creates a new image of the given size and format. Fills the image with the given raw data. If 'use_mipmaps' is true, loads the mipmaps for this image from 'data'. See [GenerateMipmaps].
-
-[GenerateMipmaps]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.GenerateMipmaps
-*/
-//go:nosplit
 func (self class) CreateFromData(width int64, height int64, use_mipmaps bool, format Format, data Packed.Bytes) [1]gdclass.Image { //gd:Image.create_from_data
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.create_from_data, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeInt<<16)|(gdextension.SizePackedArray<<20), &struct {
 		width       int64
@@ -1296,13 +1178,6 @@ func (self class) CreateFromData(width int64, height int64, use_mipmaps bool, fo
 	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Overwrites data of an existing [Image]. Non-static equivalent of [CreateFromData].
-
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-*/
-//go:nosplit
 func (self class) SetData(width int64, height int64, use_mipmaps bool, format Format, data Packed.Bytes) { //gd:Image.set_data
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_data, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeInt<<16)|(gdextension.SizePackedArray<<20), &struct {
 		width       int64
@@ -1312,74 +1187,31 @@ func (self class) SetData(width int64, height int64, use_mipmaps bool, format Fo
 		data        gdextension.PackedArray[byte]
 	}{width, height, use_mipmaps, format, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 }
-
-/*
-Returns true if the image has no data.
-*/
-//go:nosplit
 func (self class) IsEmpty() bool { //gd:Image.is_empty
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_empty, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Loads an image from file 'path'. See [Supported image formats] for a list of supported image formats and limitations.
-
-Warning: This method should only be used in the editor or in cases when you need to load external images at run-time, such as images located at the user:// directory, and may not work in exported projects.
-
-See also [ImageTexture] description for usage examples.
-
-[ImageTexture]: https://pkg.go.dev/graphics.gd/classdb/ImageTexture
-[Supported image formats]: https://docs.godotengine.org/tutorials/assets_pipeline/importing_images.html#supported-image-formats
-*/
-//go:nosplit
 func (self class) Load(path String.Readable) Error.Code { //gd:Image.load
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Creates a new [Image] and loads data from the specified file.
-
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-*/
-//go:nosplit
 func (self class) LoadFromFile(path String.Readable) [1]gdclass.Image { //gd:Image.load_from_file
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.load_from_file, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Saves the image as a PNG file to the file at 'path'.
-*/
-//go:nosplit
 func (self class) SavePng(path String.Readable) Error.Code { //gd:Image.save_png
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save_png, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Saves the image as a PNG file to a byte array.
-*/
-//go:nosplit
 func (self class) SavePngToBuffer() Packed.Bytes { //gd:Image.save_png_to_buffer
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.save_png_to_buffer, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-
-/*
-Saves the image as a JPEG file to 'path' with the specified 'quality' between 0.01 and 1.0 (inclusive). Higher 'quality' values result in better-looking output at the cost of larger file sizes. Recommended 'quality' values are between 0.75 and 0.90. Even at quality 1.00, JPEG compression remains lossy.
-
-Note: JPEG does not save an alpha channel. If the [Image] contains an alpha channel, the image will still be saved, but the resulting JPEG file won't contain the alpha channel.
-
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-*/
-//go:nosplit
 func (self class) SaveJpg(path String.Readable, quality float64) Error.Code { //gd:Image.save_jpg
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save_jpg, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeFloat<<8), &struct {
 		path    gdextension.String
@@ -1388,29 +1220,11 @@ func (self class) SaveJpg(path String.Readable, quality float64) Error.Code { //
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Saves the image as a JPEG file to a byte array with the specified 'quality' between 0.01 and 1.0 (inclusive). Higher 'quality' values result in better-looking output at the cost of larger byte array sizes (and therefore memory usage). Recommended 'quality' values are between 0.75 and 0.90. Even at quality 1.00, JPEG compression remains lossy.
-
-Note: JPEG does not save an alpha channel. If the [Image] contains an alpha channel, the image will still be saved, but the resulting byte array won't contain the alpha channel.
-
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-*/
-//go:nosplit
 func (self class) SaveJpgToBuffer(quality float64) Packed.Bytes { //gd:Image.save_jpg_to_buffer
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.save_jpg_to_buffer, gdextension.SizePackedArray|(gdextension.SizeFloat<<4), &struct{ quality float64 }{quality})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-
-/*
-Saves the image as an EXR file to 'path'. If 'grayscale' is true and the image has only one channel, it will be saved explicitly as monochrome rather than one red channel. This function will return [ErrUnavailable] if Godot was compiled without the TinyEXR module.
-
-Note: The TinyEXR module is disabled in non-editor builds, which means [SaveExr] will return [ErrUnavailable] when it is called from an exported project.
-
-[SaveExr]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.SaveExr
-*/
-//go:nosplit
 func (self class) SaveExr(path String.Readable, grayscale bool) Error.Code { //gd:Image.save_exr
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save_exr, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		path      gdextension.String
@@ -1419,55 +1233,21 @@ func (self class) SaveExr(path String.Readable, grayscale bool) Error.Code { //g
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Saves the image as an EXR file to a byte array. If 'grayscale' is true and the image has only one channel, it will be saved explicitly as monochrome rather than one red channel. This function will return an empty byte array if Godot was compiled without the TinyEXR module.
-
-Note: The TinyEXR module is disabled in non-editor builds, which means [SaveExrToBuffer] will return an empty byte array when it is called from an exported project.
-
-[SaveExrToBuffer]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.SaveExrToBuffer
-*/
-//go:nosplit
 func (self class) SaveExrToBuffer(grayscale bool) Packed.Bytes { //gd:Image.save_exr_to_buffer
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.save_exr_to_buffer, gdextension.SizePackedArray|(gdextension.SizeBool<<4), &struct{ grayscale bool }{grayscale})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-
-/*
-Saves the image as a DDS (DirectDraw Surface) file to 'path'. DDS is a container format that can store textures in various compression formats, such as DXT1, DXT5, or BC7. This function will return [ErrUnavailable] if Godot was compiled without the DDS module.
-
-Note: The DDS module may be disabled in certain builds, which means [SaveDds] will return [ErrUnavailable] when it is called from an exported project.
-
-[SaveDds]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.SaveDds
-*/
-//go:nosplit
 func (self class) SaveDds(path String.Readable) Error.Code { //gd:Image.save_dds
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save_dds, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Saves the image as a DDS (DirectDraw Surface) file to a byte array. DDS is a container format that can store textures in various compression formats, such as DXT1, DXT5, or BC7. This function will return an empty byte array if Godot was compiled without the DDS module.
-
-Note: The DDS module may be disabled in certain builds, which means [SaveDdsToBuffer] will return an empty byte array when it is called from an exported project.
-
-[SaveDdsToBuffer]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.SaveDdsToBuffer
-*/
-//go:nosplit
 func (self class) SaveDdsToBuffer() Packed.Bytes { //gd:Image.save_dds_to_buffer
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.save_dds_to_buffer, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-
-/*
-Saves the image as a WebP (Web Picture) file to the file at 'path'. By default it will save lossless. If 'lossy' is true, the image will be saved lossy, using the 'quality' setting between 0.0 and 1.0 (inclusive). Lossless WebP offers more efficient compression than PNG.
-
-Note: The WebP format is limited to a size of 16383×16383 pixels, while PNG can save larger images.
-*/
-//go:nosplit
 func (self class) SaveWebp(path String.Readable, lossy bool, quality float64) Error.Code { //gd:Image.save_webp
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save_webp, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12), &struct {
 		path    gdextension.String
@@ -1477,13 +1257,6 @@ func (self class) SaveWebp(path String.Readable, lossy bool, quality float64) Er
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Saves the image as a WebP (Web Picture) file to a byte array. By default it will save lossless. If 'lossy' is true, the image will be saved lossy, using the 'quality' setting between 0.0 and 1.0 (inclusive). Lossless WebP offers more efficient compression than PNG.
-
-Note: The WebP format is limited to a size of 16383×16383 pixels, while PNG can save larger images.
-*/
-//go:nosplit
 func (self class) SaveWebpToBuffer(lossy bool, quality float64) Packed.Bytes { //gd:Image.save_webp_to_buffer
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.save_webp_to_buffer, gdextension.SizePackedArray|(gdextension.SizeBool<<4)|(gdextension.SizeFloat<<8), &struct {
 		lossy   bool
@@ -1492,45 +1265,21 @@ func (self class) SaveWebpToBuffer(lossy bool, quality float64) Packed.Bytes { /
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-
-/*
-Returns [AlphaBlend] if the image has data for alpha values. Returns [AlphaBit] if all the alpha values are stored in a single bit. Returns [AlphaNone] if no data for alpha values is found.
-*/
-//go:nosplit
 func (self class) DetectAlpha() AlphaMode { //gd:Image.detect_alpha
 	var r_ret = noescape.Call[AlphaMode](gd.ObjectChecked(self.AsObject()), methods.detect_alpha, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if all the image's pixels have an alpha value of 0. Returns false if any pixel has an alpha value higher than 0.
-*/
-//go:nosplit
 func (self class) IsInvisible() bool { //gd:Image.is_invisible
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_invisible, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the color channels used by this image. If the image is compressed, the original 'source' must be specified.
-*/
-//go:nosplit
 func (self class) DetectUsedChannels(source CompressSource) UsedChannels { //gd:Image.detect_used_channels
 	var r_ret = noescape.Call[UsedChannels](gd.ObjectChecked(self.AsObject()), methods.detect_used_channels, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ source CompressSource }{source})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Compresses the image to use less memory. Can not directly access pixel data while the image is compressed. Returns error if the chosen compression mode is not available.
-
-The 'source' parameter helps to pick the best compression method for DXT and ETC2 formats. It is ignored for ASTC compression.
-
-For ASTC compression, the 'astc_format' parameter must be supplied.
-*/
-//go:nosplit
 func (self class) Compress(mode CompressMode, source CompressSource, astc_format ASTCFormat) Error.Code { //gd:Image.compress
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.compress, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		mode        CompressMode
@@ -1540,17 +1289,6 @@ func (self class) Compress(mode CompressMode, source CompressSource, astc_format
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Compresses the image to use less memory. Can not directly access pixel data while the image is compressed. Returns error if the chosen compression mode is not available.
-
-This is an alternative to [Compress] that lets the user supply the channels used in order for the compressor to pick the best DXT and ETC2 formats. For other formats (non DXT or ETC2), this argument is ignored.
-
-For ASTC compression, the 'astc_format' parameter must be supplied.
-
-[Compress]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.Compress
-*/
-//go:nosplit
 func (self class) CompressFromChannels(mode CompressMode, channels UsedChannels, astc_format ASTCFormat) Error.Code { //gd:Image.compress_from_channels
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.compress_from_channels, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		mode        CompressMode
@@ -1560,111 +1298,45 @@ func (self class) CompressFromChannels(mode CompressMode, channels UsedChannels,
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Decompresses the image if it is VRAM compressed in a supported format. Returns [Ok] if the format is supported, otherwise [ErrUnavailable].
-
-Note: The following formats can be decompressed: DXT, RGTC, BPTC. The formats ETC1 and ETC2 are not supported.
-*/
-//go:nosplit
 func (self class) Decompress() Error.Code { //gd:Image.decompress
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.decompress, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns true if the image is compressed.
-*/
-//go:nosplit
 func (self class) IsCompressed() bool { //gd:Image.is_compressed
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_compressed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Rotates the image in the specified 'direction' by 90 degrees. The width and height of the image must be greater than 1. If the width and height are not equal, the image will be resized.
-*/
-//go:nosplit
 func (self class) Rotate90(direction Angle.Direction) { //gd:Image.rotate_90
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.rotate_90, 0|(gdextension.SizeInt<<4), &struct{ direction Angle.Direction }{direction})
 }
-
-/*
-Rotates the image by 180 degrees. The width and height of the image must be greater than 1.
-*/
-//go:nosplit
 func (self class) Rotate180() { //gd:Image.rotate_180
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.rotate_180, 0, &struct{}{})
 }
-
-/*
-Blends low-alpha pixels with nearby pixels.
-*/
-//go:nosplit
 func (self class) FixAlphaEdges() { //gd:Image.fix_alpha_edges
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.fix_alpha_edges, 0, &struct{}{})
 }
-
-/*
-Multiplies color values with alpha values. Resulting color values for a pixel are (color * alpha)/256. See also [CanvasItemMaterial.BlendMode].
-
-[CanvasItemMaterial.BlendMode]: https://pkg.go.dev/graphics.gd/classdb/CanvasItemMaterial#Instance.BlendMode
-*/
-//go:nosplit
 func (self class) PremultiplyAlpha() { //gd:Image.premultiply_alpha
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.premultiply_alpha, 0, &struct{}{})
 }
-
-/*
-Converts the raw data from the sRGB colorspace to a linear scale. Only works on images with [FormatRgb8] or [FormatRgba8] formats.
-*/
-//go:nosplit
 func (self class) SrgbToLinear() { //gd:Image.srgb_to_linear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.srgb_to_linear, 0, &struct{}{})
 }
-
-/*
-Converts the entire image from the linear colorspace to the sRGB colorspace. Only works on images with [FormatRgb8] or [FormatRgba8] formats.
-*/
-//go:nosplit
 func (self class) LinearToSrgb() { //gd:Image.linear_to_srgb
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.linear_to_srgb, 0, &struct{}{})
 }
-
-/*
-Converts the image's data to represent coordinates on a 3D plane. This is used when the image represents a normal map. A normal map can add lots of detail to a 3D surface without increasing the polygon count.
-*/
-//go:nosplit
 func (self class) NormalMapToXy() { //gd:Image.normal_map_to_xy
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.normal_map_to_xy, 0, &struct{}{})
 }
-
-/*
-Converts a standard RGBE (Red Green Blue Exponent) image to an sRGB image.
-*/
-//go:nosplit
 func (self class) RgbeToSrgb() [1]gdclass.Image { //gd:Image.rgbe_to_srgb
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.rgbe_to_srgb, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Converts a bump map to a normal map. A bump map provides a height offset per-pixel, while a normal map provides a normal direction per pixel.
-*/
-//go:nosplit
 func (self class) BumpMapToNormalMap(bump_scale float64) { //gd:Image.bump_map_to_normal_map
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.bump_map_to_normal_map, 0|(gdextension.SizeFloat<<4), &struct{ bump_scale float64 }{bump_scale})
 }
-
-/*
-Compute image metrics on the current image and the compared image.
-
-The dictionary contains max, mean, mean_squared, root_mean_squared and peak_snr.
-*/
-//go:nosplit
 func (self class) ComputeImageMetrics(compared_image [1]gdclass.Image, use_luma bool) Dictionary.Any { //gd:Image.compute_image_metrics
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.compute_image_metrics, gdextension.SizeDictionary|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		compared_image gdextension.Object
@@ -1673,15 +1345,6 @@ func (self class) ComputeImageMetrics(compared_image [1]gdclass.Image, use_luma 
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Copies 'src_rect' from 'src' image to this image at coordinates 'dst', clipped accordingly to both image bounds. This image and 'src' image must have the same format. 'src_rect' with non-positive size is treated as empty.
-
-Note: The alpha channel data in 'src' will overwrite the corresponding data in this image at the target position. To blend alpha channels, use [BlendRect] instead.
-
-[BlendRect]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.BlendRect
-*/
-//go:nosplit
 func (self class) BlitRect(src [1]gdclass.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blit_rect
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.blit_rect, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2i<<8)|(gdextension.SizeVector2i<<12), &struct {
 		src      gdextension.Object
@@ -1689,11 +1352,6 @@ func (self class) BlitRect(src [1]gdclass.Image, src_rect Rect2i.PositionSize, d
 		dst      Vector2i.XY
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(src[0]))), src_rect, dst})
 }
-
-/*
-Blits 'src_rect' area from 'src' image to this image at the coordinates given by 'dst', clipped accordingly to both image bounds. 'src' pixel is copied onto 'dst' if the corresponding 'mask' pixel's alpha value is not 0. This image and 'src' image must have the same format. 'src' image and 'mask' image must have the same size (width and height) but they can have different formats. 'src_rect' with non-positive size is treated as empty.
-*/
-//go:nosplit
 func (self class) BlitRectMask(src [1]gdclass.Image, mask [1]gdclass.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blit_rect_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.blit_rect_mask, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeRect2i<<12)|(gdextension.SizeVector2i<<16), &struct {
 		src      gdextension.Object
@@ -1702,11 +1360,6 @@ func (self class) BlitRectMask(src [1]gdclass.Image, mask [1]gdclass.Image, src_
 		dst      Vector2i.XY
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(src[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetImage(mask[0]))), src_rect, dst})
 }
-
-/*
-Alpha-blends 'src_rect' from 'src' image to this image at coordinates 'dst', clipped accordingly to both image bounds. This image and 'src' image must have the same format. 'src_rect' with non-positive size is treated as empty.
-*/
-//go:nosplit
 func (self class) BlendRect(src [1]gdclass.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blend_rect
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.blend_rect, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2i<<8)|(gdextension.SizeVector2i<<12), &struct {
 		src      gdextension.Object
@@ -1714,11 +1367,6 @@ func (self class) BlendRect(src [1]gdclass.Image, src_rect Rect2i.PositionSize, 
 		dst      Vector2i.XY
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(src[0]))), src_rect, dst})
 }
-
-/*
-Alpha-blends 'src_rect' from 'src' image to this image using 'mask' image at coordinates 'dst', clipped accordingly to both image bounds. Alpha channels are required for both 'src' and 'mask'. 'dst' pixels and 'src' pixels will blend if the corresponding mask pixel's alpha value is not 0. This image and 'src' image must have the same format. 'src' image and 'mask' image must have the same size (width and height) but they can have different formats. 'src_rect' with non-positive size is treated as empty.
-*/
-//go:nosplit
 func (self class) BlendRectMask(src [1]gdclass.Image, mask [1]gdclass.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blend_rect_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.blend_rect_mask, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeRect2i<<12)|(gdextension.SizeVector2i<<16), &struct {
 		src      gdextension.Object
@@ -1727,82 +1375,33 @@ func (self class) BlendRectMask(src [1]gdclass.Image, mask [1]gdclass.Image, src
 		dst      Vector2i.XY
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(src[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetImage(mask[0]))), src_rect, dst})
 }
-
-/*
-Fills the image with 'color'.
-*/
-//go:nosplit
 func (self class) Fill(color Color.RGBA) { //gd:Image.fill
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.fill, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
-
-/*
-Fills 'rect' with 'color'.
-*/
-//go:nosplit
 func (self class) FillRect(rect Rect2i.PositionSize, color Color.RGBA) { //gd:Image.fill_rect
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.fill_rect, 0|(gdextension.SizeRect2i<<4)|(gdextension.SizeColor<<8), &struct {
 		rect  Rect2i.PositionSize
 		color Color.RGBA
 	}{rect, color})
 }
-
-/*
-Returns a [Rect2i.PositionSize] enclosing the visible portion of the image, considering each pixel with a non-zero alpha channel as visible.
-
-[Rect2i.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2i#PositionSize
-*/
-//go:nosplit
 func (self class) GetUsedRect() Rect2i.PositionSize { //gd:Image.get_used_rect
 	var r_ret = noescape.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_used_rect, gdextension.SizeRect2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a new [Image] that is a copy of this [Image]'s area specified with 'region'.
-
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-*/
-//go:nosplit
 func (self class) GetRegion(region Rect2i.PositionSize) [1]gdclass.Image { //gd:Image.get_region
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_region, gdextension.SizeObject|(gdextension.SizeRect2i<<4), &struct{ region Rect2i.PositionSize }{region})
 	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Copies 'src' image to this image.
-*/
-//go:nosplit
 func (self class) CopyFrom(src [1]gdclass.Image) { //gd:Image.copy_from
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.copy_from, 0|(gdextension.SizeObject<<4), &struct{ src gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(src[0])))})
 }
-
-/*
-Returns the color of the pixel at 'point'.
-
-This is the same as [GetPixel], but with a [Vector2i.XY] argument instead of two integer arguments.
-
-[GetPixel]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.GetPixel
-[Vector2i.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2i#XY
-*/
-//go:nosplit
 func (self class) GetPixelv(point Vector2i.XY) Color.RGBA { //gd:Image.get_pixelv
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_pixelv, gdextension.SizeColor|(gdextension.SizeVector2i<<4), &struct{ point Vector2i.XY }{point})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the color of the pixel at (x, y).
-
-This is the same as [GetPixelv], but with two integer arguments instead of a [Vector2i.XY] argument.
-
-[GetPixelv]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.GetPixelv
-[Vector2i.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2i#XY
-*/
-//go:nosplit
 func (self class) GetPixel(x int64, y int64) Color.RGBA { //gd:Image.get_pixel
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_pixel, gdextension.SizeColor|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		x int64
@@ -1811,48 +1410,12 @@ func (self class) GetPixel(x int64, y int64) Color.RGBA { //gd:Image.get_pixel
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the [Color.RGBA] of the pixel at 'point' to 'color'.
-
-
-	var imgWidth = 10
-	var imgHeight = 5
-	var img = Image.Create(imgWidth, imgHeight, false, Image.FormatRgba8)
-	img.SetPixelv(Vector2i.New(1, 2), Color.W3C.Red) // Sets the color at (1, 2) to red.
-
-
-This is the same as [SetPixel], but with a [Vector2i.XY] argument instead of two integer arguments.
-
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
-[SetPixel]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.SetPixel
-[Vector2i.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2i#XY
-*/
-//go:nosplit
 func (self class) SetPixelv(point Vector2i.XY, color Color.RGBA) { //gd:Image.set_pixelv
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pixelv, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeColor<<8), &struct {
 		point Vector2i.XY
 		color Color.RGBA
 	}{point, color})
 }
-
-/*
-Sets the [Color.RGBA] of the pixel at (x, y) to 'color'.
-
-
-	var imgWidth = 10
-	var imgHeight = 5
-	var img = Image.Create(imgWidth, imgHeight, false, Image.FormatRgba8)
-	img.SetPixelv(Vector2i.New(1, 2), Color.W3C.Red) // Sets the color at (1, 2) to red.
-
-
-This is the same as [SetPixelv], but with a two integer arguments instead of a [Vector2i.XY] argument.
-
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
-[SetPixelv]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.SetPixelv
-[Vector2i.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2i#XY
-*/
-//go:nosplit
 func (self class) SetPixel(x int64, y int64, color Color.RGBA) { //gd:Image.set_pixel
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pixel, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeColor<<12), &struct {
 		x     int64
@@ -1860,13 +1423,6 @@ func (self class) SetPixel(x int64, y int64, color Color.RGBA) { //gd:Image.set_
 		color Color.RGBA
 	}{x, y, color})
 }
-
-/*
-Adjusts this image's 'brightness', 'contrast', and 'saturation' by the given values. Does not work if the image is compressed (see [IsCompressed]).
-
-[IsCompressed]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.IsCompressed
-*/
-//go:nosplit
 func (self class) AdjustBcs(brightness float64, contrast float64, saturation float64) { //gd:Image.adjust_bcs
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.adjust_bcs, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
 		brightness float64
@@ -1874,99 +1430,41 @@ func (self class) AdjustBcs(brightness float64, contrast float64, saturation flo
 		saturation float64
 	}{brightness, contrast, saturation})
 }
-
-/*
-Loads an image from the binary contents of a PNG file.
-*/
-//go:nosplit
 func (self class) LoadPngFromBuffer(buffer Packed.Bytes) Error.Code { //gd:Image.load_png_from_buffer
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_png_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Loads an image from the binary contents of a JPEG file.
-*/
-//go:nosplit
 func (self class) LoadJpgFromBuffer(buffer Packed.Bytes) Error.Code { //gd:Image.load_jpg_from_buffer
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_jpg_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Loads an image from the binary contents of a WebP file.
-*/
-//go:nosplit
 func (self class) LoadWebpFromBuffer(buffer Packed.Bytes) Error.Code { //gd:Image.load_webp_from_buffer
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_webp_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Loads an image from the binary contents of a TGA file.
-
-Note: This method is only available in engine builds with the TGA module enabled. By default, the TGA module is enabled, but it can be disabled at build-time using the module_tga_enabled=no SCons option.
-*/
-//go:nosplit
 func (self class) LoadTgaFromBuffer(buffer Packed.Bytes) Error.Code { //gd:Image.load_tga_from_buffer
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_tga_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Loads an image from the binary contents of a BMP file.
-
-Note: Godot's BMP module doesn't support 16-bit per pixel images. Only 1-bit, 4-bit, 8-bit, 24-bit, and 32-bit per pixel images are supported.
-
-Note: This method is only available in engine builds with the BMP module enabled. By default, the BMP module is enabled, but it can be disabled at build-time using the module_bmp_enabled=no SCons option.
-*/
-//go:nosplit
 func (self class) LoadBmpFromBuffer(buffer Packed.Bytes) Error.Code { //gd:Image.load_bmp_from_buffer
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_bmp_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Loads an image from the binary contents of a [KTX] file. Unlike most image formats, KTX can store VRAM-compressed data and embed mipmaps.
-
-Note: Godot's libktx implementation only supports 2D images. Cubemaps, texture arrays, and de-padding are not supported.
-
-Note: This method is only available in engine builds with the KTX module enabled. By default, the KTX module is enabled, but it can be disabled at build-time using the module_ktx_enabled=no SCons option.
-
-[KTX]: https://github.com/KhronosGroup/KTX-Software
-*/
-//go:nosplit
 func (self class) LoadKtxFromBuffer(buffer Packed.Bytes) Error.Code { //gd:Image.load_ktx_from_buffer
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_ktx_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Loads an image from the binary contents of a DDS file.
-
-Note: This method is only available in engine builds with the DDS module enabled. By default, the DDS module is enabled, but it can be disabled at build-time using the module_dds_enabled=no SCons option.
-*/
-//go:nosplit
 func (self class) LoadDdsFromBuffer(buffer Packed.Bytes) Error.Code { //gd:Image.load_dds_from_buffer
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_dds_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Loads an image from the UTF-8 binary contents of an uncompressed SVG file (.svg).
-
-Note: Beware when using compressed SVG files (like .svgz), they need to be decompressed before loading.
-
-Note: This method is only available in engine builds with the SVG module enabled. By default, the SVG module is enabled, but it can be disabled at build-time using the module_svg_enabled=no SCons option.
-*/
-//go:nosplit
 func (self class) LoadSvgFromBuffer(buffer Packed.Bytes, scale float64) Error.Code { //gd:Image.load_svg_from_buffer
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_svg_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4)|(gdextension.SizeFloat<<8), &struct {
 		buffer gdextension.PackedArray[byte]
@@ -1975,13 +1473,6 @@ func (self class) LoadSvgFromBuffer(buffer Packed.Bytes, scale float64) Error.Co
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Loads an image from the string contents of an SVG file (.svg).
-
-Note: This method is only available in engine builds with the SVG module enabled. By default, the SVG module is enabled, but it can be disabled at build-time using the module_svg_enabled=no SCons option.
-*/
-//go:nosplit
 func (self class) LoadSvgFromString(svg_str String.Readable, scale float64) Error.Code { //gd:Image.load_svg_from_string
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_svg_from_string, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeFloat<<8), &struct {
 		svg_str gdextension.String

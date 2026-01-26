@@ -175,12 +175,9 @@ func (self Instance) SetUseTopLeft(value bool) Instance { //gd:CenterContainer.u
 	return self
 }
 
-//go:nosplit
 func (self class) SetUseTopLeft(enable bool) { //gd:CenterContainer.set_use_top_left
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_top_left, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsUsingTopLeft() bool { //gd:CenterContainer.is_using_top_left
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_top_left, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

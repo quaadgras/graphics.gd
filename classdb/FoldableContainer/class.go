@@ -320,143 +320,79 @@ func (self Instance) SetLanguage(value string) Instance { //gd:FoldableContainer
 	return self
 }
 
-/*
-Folds the container and emits [OnFoldingChanged].
-
-[OnFoldingChanged]: https://pkg.go.dev/graphics.gd/classdb/FoldableContainer#Instance.OnFoldingChanged
-*/
-//go:nosplit
 func (self class) Fold() { //gd:FoldableContainer.fold
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.fold, 0, &struct{}{})
 }
-
-/*
-Expands the container and emits [OnFoldingChanged].
-
-[OnFoldingChanged]: https://pkg.go.dev/graphics.gd/classdb/FoldableContainer#Instance.OnFoldingChanged
-*/
-//go:nosplit
 func (self class) Expand() { //gd:FoldableContainer.expand
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.expand, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetFolded(folded bool) { //gd:FoldableContainer.set_folded
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_folded, 0|(gdextension.SizeBool<<4), &struct{ folded bool }{folded})
 }
-
-//go:nosplit
 func (self class) IsFolded() bool { //gd:FoldableContainer.is_folded
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_folded, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFoldableGroup(button_group [1]gdclass.FoldableGroup) { //gd:FoldableContainer.set_foldable_group
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_foldable_group, 0|(gdextension.SizeObject<<4), &struct{ button_group gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetFoldableGroup(button_group[0])))})
 }
-
-//go:nosplit
 func (self class) GetFoldableGroup() [1]gdclass.FoldableGroup { //gd:FoldableContainer.get_foldable_group
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_foldable_group, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.FoldableGroup{gdclass.NewFoldableGroup(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTitle(text String.Readable) { //gd:FoldableContainer.set_title
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_title, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
-
-//go:nosplit
 func (self class) GetTitle() String.Readable { //gd:FoldableContainer.get_title
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_title, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTitleAlignment(alignment GUI.HorizontalAlignment) { //gd:FoldableContainer.set_title_alignment
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_title_alignment, 0|(gdextension.SizeInt<<4), &struct{ alignment GUI.HorizontalAlignment }{alignment})
 }
-
-//go:nosplit
 func (self class) GetTitleAlignment() GUI.HorizontalAlignment { //gd:FoldableContainer.get_title_alignment
 	var r_ret = noescape.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_title_alignment, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetLanguage(language String.Readable) { //gd:FoldableContainer.set_language
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_language, 0|(gdextension.SizeString<<4), &struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))})
 }
-
-//go:nosplit
 func (self class) GetLanguage() String.Readable { //gd:FoldableContainer.get_language
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTitleTextDirection(text_direction Control.TextDirection) { //gd:FoldableContainer.set_title_text_direction
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_title_text_direction, 0|(gdextension.SizeInt<<4), &struct{ text_direction Control.TextDirection }{text_direction})
 }
-
-//go:nosplit
 func (self class) GetTitleTextDirection() Control.TextDirection { //gd:FoldableContainer.get_title_text_direction
 	var r_ret = noescape.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), methods.get_title_text_direction, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTitleTextOverrunBehavior(overrun_behavior TextServer.OverrunBehavior) { //gd:FoldableContainer.set_title_text_overrun_behavior
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_title_text_overrun_behavior, 0|(gdextension.SizeInt<<4), &struct{ overrun_behavior TextServer.OverrunBehavior }{overrun_behavior})
 }
-
-//go:nosplit
 func (self class) GetTitleTextOverrunBehavior() TextServer.OverrunBehavior { //gd:FoldableContainer.get_title_text_overrun_behavior
 	var r_ret = noescape.Call[TextServer.OverrunBehavior](gd.ObjectChecked(self.AsObject()), methods.get_title_text_overrun_behavior, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTitlePosition(title_position TitlePosition) { //gd:FoldableContainer.set_title_position
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_title_position, 0|(gdextension.SizeInt<<4), &struct{ title_position TitlePosition }{title_position})
 }
-
-//go:nosplit
 func (self class) GetTitlePosition() TitlePosition { //gd:FoldableContainer.get_title_position
 	var r_ret = noescape.Call[TitlePosition](gd.ObjectChecked(self.AsObject()), methods.get_title_position, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a [Control] that will be placed next to the container's title, obscuring the clickable area. Prime usage is adding [Button] nodes, but it can be any [Control].
-
-The control will be added as a child of this container and removed from previous parent if necessary. The controls will be placed aligned to the right, with the first added control being the leftmost one.
-
-[Button]: https://pkg.go.dev/graphics.gd/classdb/Button
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-*/
-//go:nosplit
 func (self class) AddTitleBarControl(control [1]gdclass.Control) { //gd:FoldableContainer.add_title_bar_control
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_title_bar_control, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetControl(control[0])[0]))})
 }
-
-/*
-Removes a [Control] added with [AddTitleBarControl]. The node is not freed automatically, you need to use [Node.QueueFree].
-
-[AddTitleBarControl]: https://pkg.go.dev/graphics.gd/classdb/FoldableContainer#Instance.AddTitleBarControl
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
-*/
-//go:nosplit
 func (self class) RemoveTitleBarControl(control [1]gdclass.Control) { //gd:FoldableContainer.remove_title_bar_control
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_title_bar_control, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0])))})
 }

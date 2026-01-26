@@ -635,14 +635,6 @@ func (self Instance) SetDiagonalMode(value DiagonalMode) Instance { //gd:AStarGr
 	class(self).SetDiagonalMode(value)
 	return self
 }
-
-/*
-Called when estimating the cost between a point and the path's ending point.
-
-Note that this function is hidden in the default [AStarGrid2D] class.
-
-[AStarGrid2D]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D
-*/
 func (class) _estimate_cost(impl func(ptr gdclass.Receiver, from_id Vector2i.XY, end_id Vector2i.XY) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_id = gd.UnsafeGet[Vector2i.XY](p_args, 0)
@@ -652,14 +644,6 @@ func (class) _estimate_cost(impl func(ptr gdclass.Receiver, from_id Vector2i.XY,
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called when computing the cost between two connected points.
-
-Note that this function is hidden in the default [AStarGrid2D] class.
-
-[AStarGrid2D]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D
-*/
 func (class) _compute_cost(impl func(ptr gdclass.Receiver, from_id Vector2i.XY, to_id Vector2i.XY) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_id = gd.UnsafeGet[Vector2i.XY](p_args, 0)
@@ -670,72 +654,46 @@ func (class) _compute_cost(impl func(ptr gdclass.Receiver, from_id Vector2i.XY, 
 	}
 }
 
-//go:nosplit
 func (self class) SetRegion(region Rect2i.PositionSize) { //gd:AStarGrid2D.set_region
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_region, 0|(gdextension.SizeRect2i<<4), &struct{ region Rect2i.PositionSize }{region})
 }
-
-//go:nosplit
 func (self class) GetRegion() Rect2i.PositionSize { //gd:AStarGrid2D.get_region
 	var r_ret = noescape.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_region, gdextension.SizeRect2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSize(size Vector2i.XY) { //gd:AStarGrid2D.set_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector2i<<4), &struct{ size Vector2i.XY }{size})
 }
-
-//go:nosplit
 func (self class) GetSize() Vector2i.XY { //gd:AStarGrid2D.get_size
 	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetOffset(offset Vector2.XY) { //gd:AStarGrid2D.set_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
-
-//go:nosplit
 func (self class) GetOffset() Vector2.XY { //gd:AStarGrid2D.get_offset
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCellSize(cell_size Vector2.XY) { //gd:AStarGrid2D.set_cell_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cell_size, 0|(gdextension.SizeVector2<<4), &struct{ cell_size Vector2.XY }{cell_size})
 }
-
-//go:nosplit
 func (self class) GetCellSize() Vector2.XY { //gd:AStarGrid2D.get_cell_size
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_cell_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCellShape(cell_shape CellShape) { //gd:AStarGrid2D.set_cell_shape
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cell_shape, 0|(gdextension.SizeInt<<4), &struct{ cell_shape CellShape }{cell_shape})
 }
-
-//go:nosplit
 func (self class) GetCellShape() CellShape { //gd:AStarGrid2D.get_cell_shape
 	var r_ret = noescape.Call[CellShape](gd.ObjectChecked(self.AsObject()), methods.get_cell_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the 'x' and 'y' is a valid grid coordinate (id), i.e. if it is inside [Region]. Equivalent to region.has_point(Vector2i(x, y)).
-
-[Region]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.Region
-*/
-//go:nosplit
 func (self class) IsInBounds(x int64, y int64) bool { //gd:AStarGrid2D.is_in_bounds
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_in_bounds, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		x int64
@@ -744,223 +702,98 @@ func (self class) IsInBounds(x int64, y int64) bool { //gd:AStarGrid2D.is_in_bou
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the 'id' vector is a valid grid coordinate, i.e. if it is inside [Region]. Equivalent to region.has_point(id).
-
-[Region]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.Region
-*/
-//go:nosplit
 func (self class) IsInBoundsv(id Vector2i.XY) bool { //gd:AStarGrid2D.is_in_boundsv
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_in_boundsv, gdextension.SizeBool|(gdextension.SizeVector2i<<4), &struct{ id Vector2i.XY }{id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Indicates that the grid parameters were changed and [Update] needs to be called.
-
-[Update]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.Update
-*/
-//go:nosplit
 func (self class) IsDirty() bool { //gd:AStarGrid2D.is_dirty
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dirty, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Updates the internal state of the grid according to the parameters to prepare it to search the path. Needs to be called if parameters like [Region], [CellSize] or [Offset] are changed. [IsDirty] will return true if this is the case and this needs to be called.
-
-Note: All point data (solidity and weight scale) will be cleared.
-
-[CellSize]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.CellSize
-[IsDirty]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.IsDirty
-[Offset]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.Offset
-[Region]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.Region
-*/
-//go:nosplit
 func (self class) Update() { //gd:AStarGrid2D.update
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetJumpingEnabled(enabled bool) { //gd:AStarGrid2D.set_jumping_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_jumping_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsJumpingEnabled() bool { //gd:AStarGrid2D.is_jumping_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_jumping_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDiagonalMode(mode DiagonalMode) { //gd:AStarGrid2D.set_diagonal_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_diagonal_mode, 0|(gdextension.SizeInt<<4), &struct{ mode DiagonalMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetDiagonalMode() DiagonalMode { //gd:AStarGrid2D.get_diagonal_mode
 	var r_ret = noescape.Call[DiagonalMode](gd.ObjectChecked(self.AsObject()), methods.get_diagonal_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDefaultComputeHeuristic(heuristic Heuristic) { //gd:AStarGrid2D.set_default_compute_heuristic
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_compute_heuristic, 0|(gdextension.SizeInt<<4), &struct{ heuristic Heuristic }{heuristic})
 }
-
-//go:nosplit
 func (self class) GetDefaultComputeHeuristic() Heuristic { //gd:AStarGrid2D.get_default_compute_heuristic
 	var r_ret = noescape.Call[Heuristic](gd.ObjectChecked(self.AsObject()), methods.get_default_compute_heuristic, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDefaultEstimateHeuristic(heuristic Heuristic) { //gd:AStarGrid2D.set_default_estimate_heuristic
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_estimate_heuristic, 0|(gdextension.SizeInt<<4), &struct{ heuristic Heuristic }{heuristic})
 }
-
-//go:nosplit
 func (self class) GetDefaultEstimateHeuristic() Heuristic { //gd:AStarGrid2D.get_default_estimate_heuristic
 	var r_ret = noescape.Call[Heuristic](gd.ObjectChecked(self.AsObject()), methods.get_default_estimate_heuristic, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Disables or enables the specified point for pathfinding. Useful for making an obstacle. By default, all points are enabled.
-
-Note: Calling [Update] is not needed after the call of this function.
-
-[Update]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.Update
-*/
-//go:nosplit
 func (self class) SetPointSolid(id Vector2i.XY, solid bool) { //gd:AStarGrid2D.set_point_solid
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_solid, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeBool<<8), &struct {
 		id    Vector2i.XY
 		solid bool
 	}{id, solid})
 }
-
-/*
-Returns true if a point is disabled for pathfinding. By default, all points are enabled.
-*/
-//go:nosplit
 func (self class) IsPointSolid(id Vector2i.XY) bool { //gd:AStarGrid2D.is_point_solid
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_point_solid, gdextension.SizeBool|(gdextension.SizeVector2i<<4), &struct{ id Vector2i.XY }{id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the 'weight_scale' for the point with the given 'id'. The 'weight_scale' is multiplied by the result of [ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point.
-
-Note: Calling [Update] is not needed after the call of this function.
-
-[ComputeCost]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Interface
-[Update]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.Update
-*/
-//go:nosplit
 func (self class) SetPointWeightScale(id Vector2i.XY, weight_scale float64) { //gd:AStarGrid2D.set_point_weight_scale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_weight_scale, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeFloat<<8), &struct {
 		id           Vector2i.XY
 		weight_scale float64
 	}{id, weight_scale})
 }
-
-/*
-Returns the weight scale of the point associated with the given 'id'.
-*/
-//go:nosplit
 func (self class) GetPointWeightScale(id Vector2i.XY) float64 { //gd:AStarGrid2D.get_point_weight_scale
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_point_weight_scale, gdextension.SizeFloat|(gdextension.SizeVector2i<<4), &struct{ id Vector2i.XY }{id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Fills the given 'region' on the grid with the specified value for the solid flag.
-
-Note: Calling [Update] is not needed after the call of this function.
-
-[Update]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.Update
-*/
-//go:nosplit
 func (self class) FillSolidRegion(region Rect2i.PositionSize, solid bool) { //gd:AStarGrid2D.fill_solid_region
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.fill_solid_region, 0|(gdextension.SizeRect2i<<4)|(gdextension.SizeBool<<8), &struct {
 		region Rect2i.PositionSize
 		solid  bool
 	}{region, solid})
 }
-
-/*
-Fills the given 'region' on the grid with the specified value for the weight scale.
-
-Note: Calling [Update] is not needed after the call of this function.
-
-[Update]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.Update
-*/
-//go:nosplit
 func (self class) FillWeightScaleRegion(region Rect2i.PositionSize, weight_scale float64) { //gd:AStarGrid2D.fill_weight_scale_region
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.fill_weight_scale_region, 0|(gdextension.SizeRect2i<<4)|(gdextension.SizeFloat<<8), &struct {
 		region       Rect2i.PositionSize
 		weight_scale float64
 	}{region, weight_scale})
 }
-
-/*
-Clears the grid and sets the [Region] to Rect2i(0, 0, 0, 0).
-
-[Region]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.Region
-*/
-//go:nosplit
 func (self class) Clear() { //gd:AStarGrid2D.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
-
-/*
-Returns the position of the point associated with the given 'id'.
-*/
-//go:nosplit
 func (self class) GetPointPosition(id Vector2i.XY) Vector2.XY { //gd:AStarGrid2D.get_point_position
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_point_position, gdextension.SizeVector2|(gdextension.SizeVector2i<<4), &struct{ id Vector2i.XY }{id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns an array of dictionaries with point data (id: [Vector2i.XY], position: [Vector2.XY], solid: bool, weight_scale: [Float.X]) within a 'region'.
-
-[Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
-[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
-[Vector2i.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2i#XY
-*/
-//go:nosplit
 func (self class) GetPointDataInRegion(region Rect2i.PositionSize) Array.Contains[Dictionary.Any] { //gd:AStarGrid2D.get_point_data_in_region
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_point_data_in_region, gdextension.SizeArray|(gdextension.SizeRect2i<<4), &struct{ region Rect2i.PositionSize }{region})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns an array with the points that are in the path found by [AStarGrid2D] between the given points. The array is ordered from the starting point to the ending point of the path.
-
-If there is no valid path to the target, and 'allow_partial_path' is true, returns a path to the point closest to the target that can be reached.
-
-Note: This method is not thread-safe; it can only be used from a single [Thread] at a given time. Consider using [Mutex] to ensure exclusive access to one thread to avoid race conditions.
-
-Additionally, when 'allow_partial_path' is true and 'to_id' is solid the search may take an unusually long time to finish.
-
-[AStarGrid2D]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D
-[Mutex]: https://pkg.go.dev/graphics.gd/classdb/Mutex
-[Thread]: https://pkg.go.dev/graphics.gd/classdb/Thread
-*/
-//go:nosplit
 func (self class) GetPointPath(from_id Vector2i.XY, to_id Vector2i.XY, allow_partial_path bool) Packed.Array[Vector2.XY] { //gd:AStarGrid2D.get_point_path
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_point_path, gdextension.SizePackedArray|(gdextension.SizeVector2i<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeBool<<12), &struct {
 		from_id            Vector2i.XY
@@ -970,15 +803,6 @@ func (self class) GetPointPath(from_id Vector2i.XY, to_id Vector2i.XY, allow_par
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns an array with the IDs of the points that form the path found by AStar2D between the given points. The array is ordered from the starting point to the ending point of the path.
-
-If there is no valid path to the target, and 'allow_partial_path' is true, returns a path to the point closest to the target that can be reached.
-
-Note: When 'allow_partial_path' is true and 'to_id' is solid the search may take an unusually long time to finish.
-*/
-//go:nosplit
 func (self class) GetIdPath(from_id Vector2i.XY, to_id Vector2i.XY, allow_partial_path bool) Array.Contains[Vector2i.XY] { //gd:AStarGrid2D.get_id_path
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_id_path, gdextension.SizeArray|(gdextension.SizeVector2i<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeBool<<12), &struct {
 		from_id            Vector2i.XY

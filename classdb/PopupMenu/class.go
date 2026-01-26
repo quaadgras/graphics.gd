@@ -1409,18 +1409,6 @@ func (self Instance) SetItemCount(value int) Instance { //gd:PopupMenu.item_coun
 	return self
 }
 
-/*
-Checks the provided 'event' against the [PopupMenu]'s shortcuts and accelerators, and activates the first item with matching events. If 'for_global_only' is true, only shortcuts and accelerators with global set to true will be called.
-
-Returns true if an item was successfully activated.
-
-Note: Certain [Control]s, such as [MenuButton], will call this method automatically.
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[MenuButton]: https://pkg.go.dev/graphics.gd/classdb/MenuButton
-[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
-*/
-//go:nosplit
 func (self class) ActivateItemByEvent(event [1]gdclass.InputEvent, for_global_only bool) bool { //gd:PopupMenu.activate_item_by_event
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.activate_item_by_event, gdextension.SizeBool|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		event           gdextension.Object
@@ -1429,44 +1417,19 @@ func (self class) ActivateItemByEvent(event [1]gdclass.InputEvent, for_global_on
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPreferNativeMenu(enabled bool) { //gd:PopupMenu.set_prefer_native_menu
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_prefer_native_menu, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsPreferNativeMenu() bool { //gd:PopupMenu.is_prefer_native_menu
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_prefer_native_menu, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the system native menu is supported and currently used by this [PopupMenu].
-
-[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
-*/
-//go:nosplit
 func (self class) IsNativeMenu() bool { //gd:PopupMenu.is_native_menu
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_native_menu, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a new item with text 'label'.
-
-An 'id' can optionally be provided, as well as an accelerator ('accel'). If no 'id' is provided, one will be created from the index. If no 'accel' is provided, then the default value of 0 (corresponding to [@Globalscope.KeyNone]) will be assigned to the item (which means it won't have any accelerator). See [GetItemAccelerator] for more info on accelerators.
-
-Note: The provided 'id' is used only in [OnIdPressed] and [OnIdFocused] signals. It's not related to the index arguments in e.g. [SetItemChecked].
-
-[GetItemAccelerator]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.GetItemAccelerator
-[OnIdFocused]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.OnIdFocused
-[OnIdPressed]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.OnIdPressed
-[SetItemChecked]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.SetItemChecked
-*/
-//go:nosplit
 func (self class) AddItem(label String.Readable, id int64, accel Input.Key) { //gd:PopupMenu.add_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		label gdextension.String
@@ -1474,15 +1437,6 @@ func (self class) AddItem(label String.Readable, id int64, accel Input.Key) { //
 		accel Input.Key
 	}{pointers.Get(gd.InternalString(label)), id, accel})
 }
-
-/*
-Adds a new item with text 'label' and icon 'texture'.
-
-An 'id' can optionally be provided, as well as an accelerator ('accel'). If no 'id' is provided, one will be created from the index. If no 'accel' is provided, then the default value of 0 (corresponding to [@Globalscope.KeyNone]) will be assigned to the item (which means it won't have any accelerator). See [GetItemAccelerator] for more info on accelerators.
-
-[GetItemAccelerator]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.GetItemAccelerator
-*/
-//go:nosplit
 func (self class) AddIconItem(texture [1]gdclass.Texture2D, label String.Readable, id int64, accel Input.Key) { //gd:PopupMenu.add_icon_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_icon_item, 0|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
 		texture gdextension.Object
@@ -1491,18 +1445,6 @@ func (self class) AddIconItem(texture [1]gdclass.Texture2D, label String.Readabl
 		accel   Input.Key
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), pointers.Get(gd.InternalString(label)), id, accel})
 }
-
-/*
-Adds a new checkable item with text 'label'.
-
-An 'id' can optionally be provided, as well as an accelerator ('accel'). If no 'id' is provided, one will be created from the index. If no 'accel' is provided, then the default value of 0 (corresponding to [@Globalscope.KeyNone]) will be assigned to the item (which means it won't have any accelerator). See [GetItemAccelerator] for more info on accelerators.
-
-Note: Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [SetItemChecked] for more info on how to control it.
-
-[GetItemAccelerator]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.GetItemAccelerator
-[SetItemChecked]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.SetItemChecked
-*/
-//go:nosplit
 func (self class) AddCheckItem(label String.Readable, id int64, accel Input.Key) { //gd:PopupMenu.add_check_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_check_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		label gdextension.String
@@ -1510,18 +1452,6 @@ func (self class) AddCheckItem(label String.Readable, id int64, accel Input.Key)
 		accel Input.Key
 	}{pointers.Get(gd.InternalString(label)), id, accel})
 }
-
-/*
-Adds a new checkable item with text 'label' and icon 'texture'.
-
-An 'id' can optionally be provided, as well as an accelerator ('accel'). If no 'id' is provided, one will be created from the index. If no 'accel' is provided, then the default value of 0 (corresponding to [@Globalscope.KeyNone]) will be assigned to the item (which means it won't have any accelerator). See [GetItemAccelerator] for more info on accelerators.
-
-Note: Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [SetItemChecked] for more info on how to control it.
-
-[GetItemAccelerator]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.GetItemAccelerator
-[SetItemChecked]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.SetItemChecked
-*/
-//go:nosplit
 func (self class) AddIconCheckItem(texture [1]gdclass.Texture2D, label String.Readable, id int64, accel Input.Key) { //gd:PopupMenu.add_icon_check_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_icon_check_item, 0|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
 		texture gdextension.Object
@@ -1530,18 +1460,6 @@ func (self class) AddIconCheckItem(texture [1]gdclass.Texture2D, label String.Re
 		accel   Input.Key
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), pointers.Get(gd.InternalString(label)), id, accel})
 }
-
-/*
-Adds a new radio check button with text 'label'.
-
-An 'id' can optionally be provided, as well as an accelerator ('accel'). If no 'id' is provided, one will be created from the index. If no 'accel' is provided, then the default value of 0 (corresponding to [@Globalscope.KeyNone]) will be assigned to the item (which means it won't have any accelerator). See [GetItemAccelerator] for more info on accelerators.
-
-Note: Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [SetItemChecked] for more info on how to control it.
-
-[GetItemAccelerator]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.GetItemAccelerator
-[SetItemChecked]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.SetItemChecked
-*/
-//go:nosplit
 func (self class) AddRadioCheckItem(label String.Readable, id int64, accel Input.Key) { //gd:PopupMenu.add_radio_check_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_radio_check_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		label gdextension.String
@@ -1549,13 +1467,6 @@ func (self class) AddRadioCheckItem(label String.Readable, id int64, accel Input
 		accel Input.Key
 	}{pointers.Get(gd.InternalString(label)), id, accel})
 }
-
-/*
-Same as [AddIconCheckItem], but uses a radio check button.
-
-[AddIconCheckItem]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.AddIconCheckItem
-*/
-//go:nosplit
 func (self class) AddIconRadioCheckItem(texture [1]gdclass.Texture2D, label String.Readable, id int64, accel Input.Key) { //gd:PopupMenu.add_icon_radio_check_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_icon_radio_check_item, 0|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
 		texture gdextension.Object
@@ -1564,37 +1475,6 @@ func (self class) AddIconRadioCheckItem(texture [1]gdclass.Texture2D, label Stri
 		accel   Input.Key
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), pointers.Get(gd.InternalString(label)), id, accel})
 }
-
-/*
-Adds a new multistate item with text 'label'.
-
-Contrarily to normal binary items, multistate items can have more than two states, as defined by 'max_states'. The default value is defined by 'default_state'.
-
-An 'id' can optionally be provided, as well as an accelerator ('accel'). If no 'id' is provided, one will be created from the index. If no 'accel' is provided, then the default value of 0 (corresponding to [@Globalscope.KeyNone]) will be assigned to the item (which means it won't have any accelerator). See [GetItemAccelerator] for more info on accelerators.
-
-
-	popup_menu.AddMultistateItem("Item", 3)
-	popup_menu.OnIndexPressed(func(index int) {
-		popup_menu.ToggleItemMultistate(index)
-		switch popup_menu.GetItemMultistate(index) {
-		case 0:
-			fmt.Println("First state")
-		case 1:
-			fmt.Println("Second state")
-		case 2:
-			fmt.Println("Third state")
-		}
-	})
-
-
-Note: Multistate items don't update their state automatically and must be done manually. See [ToggleItemMultistate], [SetItemMultistate] and [GetItemMultistate] for more info on how to control it.
-
-[GetItemAccelerator]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.GetItemAccelerator
-[GetItemMultistate]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.GetItemMultistate
-[SetItemMultistate]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.SetItemMultistate
-[ToggleItemMultistate]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.ToggleItemMultistate
-*/
-//go:nosplit
 func (self class) AddMultistateItem(label String.Readable, max_states int64, default_state int64, id int64, accel Input.Key) { //gd:PopupMenu.add_multistate_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_multistate_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), &struct {
 		label         gdextension.String
@@ -1604,17 +1484,6 @@ func (self class) AddMultistateItem(label String.Readable, max_states int64, def
 		accel         Input.Key
 	}{pointers.Get(gd.InternalString(label)), max_states, default_state, id, accel})
 }
-
-/*
-Adds a [Shortcut].
-
-An 'id' can optionally be provided. If no 'id' is provided, one will be created from the index.
-
-If 'allow_echo' is true, the shortcut can be activated with echo events.
-
-[Shortcut]: https://pkg.go.dev/graphics.gd/classdb/Shortcut
-*/
-//go:nosplit
 func (self class) AddShortcut(shortcut [1]gdclass.Shortcut, id int64, global bool, allow_echo bool) { //gd:PopupMenu.add_shortcut
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_shortcut, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
 		shortcut   gdextension.Object
@@ -1623,17 +1492,6 @@ func (self class) AddShortcut(shortcut [1]gdclass.Shortcut, id int64, global boo
 		allow_echo bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), id, global, allow_echo})
 }
-
-/*
-Adds a new item and assigns the specified [Shortcut] and icon 'texture' to it. Sets the label of the checkbox to the [Shortcut]'s name.
-
-An 'id' can optionally be provided. If no 'id' is provided, one will be created from the index.
-
-If 'allow_echo' is true, the shortcut can be activated with echo events.
-
-[Shortcut]: https://pkg.go.dev/graphics.gd/classdb/Shortcut
-*/
-//go:nosplit
 func (self class) AddIconShortcut(texture [1]gdclass.Texture2D, shortcut [1]gdclass.Shortcut, id int64, global bool, allow_echo bool) { //gd:PopupMenu.add_icon_shortcut
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_icon_shortcut, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), &struct {
 		texture    gdextension.Object
@@ -1643,18 +1501,6 @@ func (self class) AddIconShortcut(texture [1]gdclass.Texture2D, shortcut [1]gdcl
 		allow_echo bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), id, global, allow_echo})
 }
-
-/*
-Adds a new checkable item and assigns the specified [Shortcut] to it. Sets the label of the checkbox to the [Shortcut]'s name.
-
-An 'id' can optionally be provided. If no 'id' is provided, one will be created from the index.
-
-Note: Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [SetItemChecked] for more info on how to control it.
-
-[SetItemChecked]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.SetItemChecked
-[Shortcut]: https://pkg.go.dev/graphics.gd/classdb/Shortcut
-*/
-//go:nosplit
 func (self class) AddCheckShortcut(shortcut [1]gdclass.Shortcut, id int64, global bool) { //gd:PopupMenu.add_check_shortcut
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_check_shortcut, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		shortcut gdextension.Object
@@ -1662,18 +1508,6 @@ func (self class) AddCheckShortcut(shortcut [1]gdclass.Shortcut, id int64, globa
 		global   bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), id, global})
 }
-
-/*
-Adds a new checkable item and assigns the specified [Shortcut] and icon 'texture' to it. Sets the label of the checkbox to the [Shortcut]'s name.
-
-An 'id' can optionally be provided. If no 'id' is provided, one will be created from the index.
-
-Note: Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [SetItemChecked] for more info on how to control it.
-
-[SetItemChecked]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.SetItemChecked
-[Shortcut]: https://pkg.go.dev/graphics.gd/classdb/Shortcut
-*/
-//go:nosplit
 func (self class) AddIconCheckShortcut(texture [1]gdclass.Texture2D, shortcut [1]gdclass.Shortcut, id int64, global bool) { //gd:PopupMenu.add_icon_check_shortcut
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_icon_check_shortcut, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), &struct {
 		texture  gdextension.Object
@@ -1682,18 +1516,6 @@ func (self class) AddIconCheckShortcut(texture [1]gdclass.Texture2D, shortcut [1
 		global   bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), id, global})
 }
-
-/*
-Adds a new radio check button and assigns a [Shortcut] to it. Sets the label of the checkbox to the [Shortcut]'s name.
-
-An 'id' can optionally be provided. If no 'id' is provided, one will be created from the index.
-
-Note: Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [SetItemChecked] for more info on how to control it.
-
-[SetItemChecked]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.SetItemChecked
-[Shortcut]: https://pkg.go.dev/graphics.gd/classdb/Shortcut
-*/
-//go:nosplit
 func (self class) AddRadioCheckShortcut(shortcut [1]gdclass.Shortcut, id int64, global bool) { //gd:PopupMenu.add_radio_check_shortcut
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_radio_check_shortcut, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		shortcut gdextension.Object
@@ -1701,13 +1523,6 @@ func (self class) AddRadioCheckShortcut(shortcut [1]gdclass.Shortcut, id int64, 
 		global   bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), id, global})
 }
-
-/*
-Same as [AddIconCheckShortcut], but uses a radio check button.
-
-[AddIconCheckShortcut]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.AddIconCheckShortcut
-*/
-//go:nosplit
 func (self class) AddIconRadioCheckShortcut(texture [1]gdclass.Texture2D, shortcut [1]gdclass.Shortcut, id int64, global bool) { //gd:PopupMenu.add_icon_radio_check_shortcut
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_icon_radio_check_shortcut, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), &struct {
 		texture  gdextension.Object
@@ -1716,15 +1531,6 @@ func (self class) AddIconRadioCheckShortcut(texture [1]gdclass.Texture2D, shortc
 		global   bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), id, global})
 }
-
-/*
-Adds an item that will act as a submenu of the parent [PopupMenu] node when clicked. The 'submenu' argument must be the name of an existing [PopupMenu] that has been added as a child to this node. This submenu will be shown when the item is clicked, hovered for long enough, or activated using the ui_select or ui_right input actions.
-
-An 'id' can optionally be provided. If no 'id' is provided, one will be created from the index.
-
-[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
-*/
-//go:nosplit
 func (self class) AddSubmenuItem(label String.Readable, submenu String.Readable, id int64) { //gd:PopupMenu.add_submenu_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_submenu_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), &struct {
 		label   gdextension.String
@@ -1732,17 +1538,6 @@ func (self class) AddSubmenuItem(label String.Readable, submenu String.Readable,
 		id      int64
 	}{pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalString(submenu)), id})
 }
-
-/*
-Adds an item that will act as a submenu of the parent [PopupMenu] node when clicked. This submenu will be shown when the item is clicked, hovered for long enough, or activated using the ui_select or ui_right input actions.
-
-'submenu' must be either child of this [PopupMenu] or has no parent node (in which case it will be automatically added as a child). If the 'submenu' popup has another parent, this method will fail.
-
-An 'id' can optionally be provided. If no 'id' is provided, one will be created from the index.
-
-[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
-*/
-//go:nosplit
 func (self class) AddSubmenuNodeItem(label String.Readable, submenu [1]gdclass.PopupMenu, id int64) { //gd:PopupMenu.add_submenu_node_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_submenu_node_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12), &struct {
 		label   gdextension.String
@@ -1750,232 +1545,114 @@ func (self class) AddSubmenuNodeItem(label String.Readable, submenu [1]gdclass.P
 		id      int64
 	}{pointers.Get(gd.InternalString(label)), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetPopupMenu(submenu[0])[0])), id})
 }
-
-/*
-Sets the text of the item at the given 'index'.
-*/
-//go:nosplit
 func (self class) SetItemText(index int64, text String.Readable) { //gd:PopupMenu.set_item_text
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_text, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		index int64
 		text  gdextension.String
 	}{index, pointers.Get(gd.InternalString(text))})
 }
-
-/*
-Sets item's text base writing direction.
-*/
-//go:nosplit
 func (self class) SetItemTextDirection(index int64, direction Control.TextDirection) { //gd:PopupMenu.set_item_text_direction
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_text_direction, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index     int64
 		direction Control.TextDirection
 	}{index, direction})
 }
-
-/*
-Sets language code of item's text used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
-*/
-//go:nosplit
 func (self class) SetItemLanguage(index int64, language String.Readable) { //gd:PopupMenu.set_item_language
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_language, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		index    int64
 		language gdextension.String
 	}{index, pointers.Get(gd.InternalString(language))})
 }
-
-/*
-Sets the auto translate mode of the item at the given 'index'.
-
-Items use [Node.AutoTranslateModeInherit] by default, which uses the same auto translate mode as the [PopupMenu] itself.
-
-[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
-*/
-//go:nosplit
 func (self class) SetItemAutoTranslateMode(index int64, mode Node.AutoTranslateMode) { //gd:PopupMenu.set_item_auto_translate_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_auto_translate_mode, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index int64
 		mode  Node.AutoTranslateMode
 	}{index, mode})
 }
-
-/*
-Replaces the [Texture2D] icon of the item at the given 'index'.
-
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
-//go:nosplit
 func (self class) SetItemIcon(index int64, icon [1]gdclass.Texture2D) { //gd:PopupMenu.set_item_icon
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		index int64
 		icon  gdextension.Object
 	}{index, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
 }
-
-/*
-Sets the maximum allowed width of the icon for the item at the given 'index'. This limit is applied on top of the default size of the icon and on top of theme's 'icon_max_width'. The height is adjusted according to the icon's ratio.
-*/
-//go:nosplit
 func (self class) SetItemIconMaxWidth(index int64, width int64) { //gd:PopupMenu.set_item_icon_max_width
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_icon_max_width, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index int64
 		width int64
 	}{index, width})
 }
-
-/*
-Sets a modulating [Color.RGBA] of the item's icon at the given 'index'.
-
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
-*/
-//go:nosplit
 func (self class) SetItemIconModulate(index int64, modulate Color.RGBA) { //gd:PopupMenu.set_item_icon_modulate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_icon_modulate, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
 		index    int64
 		modulate Color.RGBA
 	}{index, modulate})
 }
-
-/*
-Sets the checkstate status of the item at the given 'index'.
-*/
-//go:nosplit
 func (self class) SetItemChecked(index int64, checked bool) { //gd:PopupMenu.set_item_checked
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_checked, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		index   int64
 		checked bool
 	}{index, checked})
 }
-
-/*
-Sets the 'id' of the item at the given 'index'.
-
-The 'id' is used in [OnIdPressed] and [OnIdFocused] signals.
-
-[OnIdFocused]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.OnIdFocused
-[OnIdPressed]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.OnIdPressed
-*/
-//go:nosplit
 func (self class) SetItemId(index int64, id int64) { //gd:PopupMenu.set_item_id
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_id, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index int64
 		id    int64
 	}{index, id})
 }
-
-/*
-Sets the accelerator of the item at the given 'index'. An accelerator is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. 'accel' is generally a combination of [KeyModifierMask]s and [Key]s using bitwise OR such as KEY_MASK_CTRL | KEY_A (Ctrl + A).
-*/
-//go:nosplit
 func (self class) SetItemAccelerator(index int64, accel Input.Key) { //gd:PopupMenu.set_item_accelerator
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_accelerator, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index int64
 		accel Input.Key
 	}{index, accel})
 }
-
-/*
-Sets the metadata of an item, which may be of any type. You can later get it with [GetItemMetadata], which provides a simple way of assigning context data to items.
-
-[GetItemMetadata]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.GetItemMetadata
-*/
-//go:nosplit
 func (self class) SetItemMetadata(index int64, metadata variant.Any) { //gd:PopupMenu.set_item_metadata
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_metadata, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVariant<<8), &struct {
 		index    int64
 		metadata gdextension.Variant
 	}{index, gdextension.Variant(pointers.Get(gd.InternalVariant(metadata)))})
 }
-
-/*
-Enables/disables the item at the given 'index'. When it is disabled, it can't be selected and its action can't be invoked.
-*/
-//go:nosplit
 func (self class) SetItemDisabled(index int64, disabled bool) { //gd:PopupMenu.set_item_disabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_disabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		index    int64
 		disabled bool
 	}{index, disabled})
 }
-
-/*
-Sets the submenu of the item at the given 'index'. The submenu is the name of a child [PopupMenu] node that would be shown when the item is clicked.
-
-[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
-*/
-//go:nosplit
 func (self class) SetItemSubmenu(index int64, submenu String.Readable) { //gd:PopupMenu.set_item_submenu
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_submenu, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		index   int64
 		submenu gdextension.String
 	}{index, pointers.Get(gd.InternalString(submenu))})
 }
-
-/*
-Sets the submenu of the item at the given 'index'. The submenu is a [PopupMenu] node that would be shown when the item is clicked. It must either be a child of this [PopupMenu] or has no parent (in which case it will be automatically added as a child). If the 'submenu' popup has another parent, this method will fail.
-
-[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
-*/
-//go:nosplit
 func (self class) SetItemSubmenuNode(index int64, submenu [1]gdclass.PopupMenu) { //gd:PopupMenu.set_item_submenu_node
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_submenu_node, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		index   int64
 		submenu gdextension.Object
 	}{index, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetPopupMenu(submenu[0])[0]))})
 }
-
-/*
-Mark the item at the given 'index' as a separator, which means that it would be displayed as a line. If false, sets the type of the item to plain text.
-*/
-//go:nosplit
 func (self class) SetItemAsSeparator(index int64, enable bool) { //gd:PopupMenu.set_item_as_separator
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_as_separator, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		index  int64
 		enable bool
 	}{index, enable})
 }
-
-/*
-Sets whether the item at the given 'index' has a checkbox. If false, sets the type of the item to plain text.
-
-Note: Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually.
-*/
-//go:nosplit
 func (self class) SetItemAsCheckable(index int64, enable bool) { //gd:PopupMenu.set_item_as_checkable
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_as_checkable, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		index  int64
 		enable bool
 	}{index, enable})
 }
-
-/*
-Sets the type of the item at the given 'index' to radio button. If false, sets the type of the item to plain text.
-*/
-//go:nosplit
 func (self class) SetItemAsRadioCheckable(index int64, enable bool) { //gd:PopupMenu.set_item_as_radio_checkable
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_as_radio_checkable, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		index  int64
 		enable bool
 	}{index, enable})
 }
-
-/*
-Sets the string tooltip of the item at the given 'index'.
-*/
-//go:nosplit
 func (self class) SetItemTooltip(index int64, tooltip String.Readable) { //gd:PopupMenu.set_item_tooltip
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_tooltip, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		index   int64
 		tooltip gdextension.String
 	}{index, pointers.Get(gd.InternalString(tooltip))})
 }
-
-/*
-Sets a [Shortcut] for the item at the given 'index'.
-
-[Shortcut]: https://pkg.go.dev/graphics.gd/classdb/Shortcut
-*/
-//go:nosplit
 func (self class) SetItemShortcut(index int64, shortcut [1]gdclass.Shortcut, global bool) { //gd:PopupMenu.set_item_shortcut
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_shortcut, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12), &struct {
 		index    int64
@@ -1983,486 +1660,235 @@ func (self class) SetItemShortcut(index int64, shortcut [1]gdclass.Shortcut, glo
 		global   bool
 	}{index, gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), global})
 }
-
-/*
-Sets the horizontal offset of the item at the given 'index'.
-*/
-//go:nosplit
 func (self class) SetItemIndent(index int64, indent int64) { //gd:PopupMenu.set_item_indent
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_indent, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index  int64
 		indent int64
 	}{index, indent})
 }
-
-/*
-Sets the state of a multistate item. See [AddMultistateItem] for details.
-
-[AddMultistateItem]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.AddMultistateItem
-*/
-//go:nosplit
 func (self class) SetItemMultistate(index int64, state int64) { //gd:PopupMenu.set_item_multistate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_multistate, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index int64
 		state int64
 	}{index, state})
 }
-
-/*
-Sets the max states of a multistate item. See [AddMultistateItem] for details.
-
-[AddMultistateItem]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.AddMultistateItem
-*/
-//go:nosplit
 func (self class) SetItemMultistateMax(index int64, max_states int64) { //gd:PopupMenu.set_item_multistate_max
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_multistate_max, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index      int64
 		max_states int64
 	}{index, max_states})
 }
-
-/*
-Disables the [Shortcut] of the item at the given 'index'.
-
-[Shortcut]: https://pkg.go.dev/graphics.gd/classdb/Shortcut
-*/
-//go:nosplit
 func (self class) SetItemShortcutDisabled(index int64, disabled bool) { //gd:PopupMenu.set_item_shortcut_disabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_shortcut_disabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		index    int64
 		disabled bool
 	}{index, disabled})
 }
-
-/*
-Toggles the check state of the item at the given 'index'.
-*/
-//go:nosplit
 func (self class) ToggleItemChecked(index int64) { //gd:PopupMenu.toggle_item_checked
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.toggle_item_checked, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
-
-/*
-Cycle to the next state of a multistate item. See [AddMultistateItem] for details.
-
-[AddMultistateItem]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.AddMultistateItem
-*/
-//go:nosplit
 func (self class) ToggleItemMultistate(index int64) { //gd:PopupMenu.toggle_item_multistate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.toggle_item_multistate, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
-
-/*
-Returns the text of the item at the given 'index'.
-*/
-//go:nosplit
 func (self class) GetItemText(index int64) String.Readable { //gd:PopupMenu.get_item_text
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_text, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns item's text base writing direction.
-*/
-//go:nosplit
 func (self class) GetItemTextDirection(index int64) Control.TextDirection { //gd:PopupMenu.get_item_text_direction
 	var r_ret = noescape.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), methods.get_item_text_direction, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns item's text language code.
-*/
-//go:nosplit
 func (self class) GetItemLanguage(index int64) String.Readable { //gd:PopupMenu.get_item_language
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_language, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the auto translate mode of the item at the given 'index'.
-*/
-//go:nosplit
 func (self class) GetItemAutoTranslateMode(index int64) Node.AutoTranslateMode { //gd:PopupMenu.get_item_auto_translate_mode
 	var r_ret = noescape.Call[Node.AutoTranslateMode](gd.ObjectChecked(self.AsObject()), methods.get_item_auto_translate_mode, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the icon of the item at the given 'index'.
-*/
-//go:nosplit
 func (self class) GetItemIcon(index int64) [1]gdclass.Texture2D { //gd:PopupMenu.get_item_icon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_item_icon, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the maximum allowed width of the icon for the item at the given 'index'.
-*/
-//go:nosplit
 func (self class) GetItemIconMaxWidth(index int64) int64 { //gd:PopupMenu.get_item_icon_max_width
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_icon_max_width, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a [Color.RGBA] modulating the item's icon at the given 'index'.
-
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
-*/
-//go:nosplit
 func (self class) GetItemIconModulate(index int64) Color.RGBA { //gd:PopupMenu.get_item_icon_modulate
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_item_icon_modulate, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the item at the given 'index' is checked.
-*/
-//go:nosplit
 func (self class) IsItemChecked(index int64) bool { //gd:PopupMenu.is_item_checked
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_checked, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the ID of the item at the given 'index'. id can be manually assigned, while index can not.
-*/
-//go:nosplit
 func (self class) GetItemId(index int64) int64 { //gd:PopupMenu.get_item_id
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_id, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the index of the item containing the specified 'id'. Index is automatically assigned to each item by the engine and can not be set manually.
-*/
-//go:nosplit
 func (self class) GetItemIndex(id int64) int64 { //gd:PopupMenu.get_item_index
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_index, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the accelerator of the item at the given 'index'. An accelerator is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. The return value is an integer which is generally a combination of [KeyModifierMask]s and [Key]s using bitwise OR such as KEY_MASK_CTRL | KEY_A (Ctrl + A). If no accelerator is defined for the specified 'index', [GetItemAccelerator] returns 0 (corresponding to [@Globalscope.KeyNone]).
-
-[GetItemAccelerator]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.GetItemAccelerator
-*/
-//go:nosplit
 func (self class) GetItemAccelerator(index int64) Input.Key { //gd:PopupMenu.get_item_accelerator
 	var r_ret = noescape.Call[Input.Key](gd.ObjectChecked(self.AsObject()), methods.get_item_accelerator, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the metadata of the specified item, which might be of any type. You can set it with [SetItemMetadata], which provides a simple way of assigning context data to items.
-
-[SetItemMetadata]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.SetItemMetadata
-*/
-//go:nosplit
 func (self class) GetItemMetadata(index int64) variant.Any { //gd:PopupMenu.get_item_metadata
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_item_metadata, gdextension.SizeVariant|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Returns true if the item at the given 'index' is disabled. When it is disabled it can't be selected, or its action invoked.
-
-See [SetItemDisabled] for more info on how to disable an item.
-
-[SetItemDisabled]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.SetItemDisabled
-*/
-//go:nosplit
 func (self class) IsItemDisabled(index int64) bool { //gd:PopupMenu.is_item_disabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the submenu name of the item at the given 'index'. See [AddSubmenuItem] for more info on how to add a submenu.
-
-[AddSubmenuItem]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.AddSubmenuItem
-*/
-//go:nosplit
 func (self class) GetItemSubmenu(index int64) String.Readable { //gd:PopupMenu.get_item_submenu
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_submenu, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the submenu of the item at the given 'index', or null if no submenu was added. See [AddSubmenuNodeItem] for more info on how to add a submenu.
-
-[AddSubmenuNodeItem]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.AddSubmenuNodeItem
-*/
-//go:nosplit
 func (self class) GetItemSubmenuNode(index int64) [1]gdclass.PopupMenu { //gd:PopupMenu.get_item_submenu_node
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_item_submenu_node, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = [1]gdclass.PopupMenu{gdclass.NewPopupMenu(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Returns true if the item is a separator. If it is, it will be displayed as a line. See [AddSeparator] for more info on how to add a separator.
-
-[AddSeparator]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.AddSeparator
-*/
-//go:nosplit
 func (self class) IsItemSeparator(index int64) bool { //gd:PopupMenu.is_item_separator
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_separator, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the item at the given 'index' is checkable in some way, i.e. if it has a checkbox or radio button.
-
-Note: Checkable items just display a checkmark or radio button, but don't have any built-in checking behavior and must be checked/unchecked manually.
-*/
-//go:nosplit
 func (self class) IsItemCheckable(index int64) bool { //gd:PopupMenu.is_item_checkable
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_checkable, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the item at the given 'index' has radio button-style checkability.
-
-Note: This is purely cosmetic; you must add the logic for checking/unchecking items in radio groups.
-*/
-//go:nosplit
 func (self class) IsItemRadioCheckable(index int64) bool { //gd:PopupMenu.is_item_radio_checkable
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_radio_checkable, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the specified item's shortcut is disabled.
-*/
-//go:nosplit
 func (self class) IsItemShortcutDisabled(index int64) bool { //gd:PopupMenu.is_item_shortcut_disabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_shortcut_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the tooltip associated with the item at the given 'index'.
-*/
-//go:nosplit
 func (self class) GetItemTooltip(index int64) String.Readable { //gd:PopupMenu.get_item_tooltip
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_tooltip, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the [Shortcut] associated with the item at the given 'index'.
-
-[Shortcut]: https://pkg.go.dev/graphics.gd/classdb/Shortcut
-*/
-//go:nosplit
 func (self class) GetItemShortcut(index int64) [1]gdclass.Shortcut { //gd:PopupMenu.get_item_shortcut
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_item_shortcut, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = [1]gdclass.Shortcut{gdclass.NewShortcut(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the horizontal offset of the item at the given 'index'.
-*/
-//go:nosplit
 func (self class) GetItemIndent(index int64) int64 { //gd:PopupMenu.get_item_indent
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_indent, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the max states of the item at the given 'index'.
-*/
-//go:nosplit
 func (self class) GetItemMultistateMax(index int64) int64 { //gd:PopupMenu.get_item_multistate_max
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_multistate_max, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the state of the item at the given 'index'.
-*/
-//go:nosplit
 func (self class) GetItemMultistate(index int64) int64 { //gd:PopupMenu.get_item_multistate
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_multistate, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the currently focused item as the given 'index'.
-
-Passing -1 as the index makes so that no item is focused.
-*/
-//go:nosplit
 func (self class) SetFocusedItem(index int64) { //gd:PopupMenu.set_focused_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focused_item, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
-
-/*
-Returns the index of the currently focused item. Returns -1 if no item is focused.
-*/
-//go:nosplit
 func (self class) GetFocusedItem() int64 { //gd:PopupMenu.get_focused_item
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_focused_item, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetItemCount(count int64) { //gd:PopupMenu.set_item_count
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
-
-//go:nosplit
 func (self class) GetItemCount() int64 { //gd:PopupMenu.get_item_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Moves the scroll view to make the item at the given 'index' visible.
-*/
-//go:nosplit
 func (self class) ScrollToItem(index int64) { //gd:PopupMenu.scroll_to_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.scroll_to_item, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
-
-/*
-Removes the item at the given 'index' from the menu.
-
-Note: The indices of items after the removed item will be shifted by one.
-*/
-//go:nosplit
 func (self class) RemoveItem(index int64) { //gd:PopupMenu.remove_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_item, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
-
-/*
-Adds a separator between items. Separators also occupy an index, which you can set by using the 'id' parameter.
-
-A 'label' can optionally be provided, which will appear at the center of the separator.
-*/
-//go:nosplit
 func (self class) AddSeparator(label String.Readable, id int64) { //gd:PopupMenu.add_separator
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_separator, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		label gdextension.String
 		id    int64
 	}{pointers.Get(gd.InternalString(label)), id})
 }
-
-/*
-Removes all items from the [PopupMenu]. If 'free_submenus' is true, the submenu nodes are automatically freed.
-
-[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
-*/
-//go:nosplit
 func (self class) Clear(free_submenus bool) { //gd:PopupMenu.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0|(gdextension.SizeBool<<4), &struct{ free_submenus bool }{free_submenus})
 }
-
-//go:nosplit
 func (self class) SetHideOnItemSelection(enable bool) { //gd:PopupMenu.set_hide_on_item_selection
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hide_on_item_selection, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsHideOnItemSelection() bool { //gd:PopupMenu.is_hide_on_item_selection
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hide_on_item_selection, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetHideOnCheckableItemSelection(enable bool) { //gd:PopupMenu.set_hide_on_checkable_item_selection
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hide_on_checkable_item_selection, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsHideOnCheckableItemSelection() bool { //gd:PopupMenu.is_hide_on_checkable_item_selection
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hide_on_checkable_item_selection, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetHideOnStateItemSelection(enable bool) { //gd:PopupMenu.set_hide_on_state_item_selection
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hide_on_state_item_selection, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsHideOnStateItemSelection() bool { //gd:PopupMenu.is_hide_on_state_item_selection
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hide_on_state_item_selection, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSubmenuPopupDelay(seconds float64) { //gd:PopupMenu.set_submenu_popup_delay
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_submenu_popup_delay, 0|(gdextension.SizeFloat<<4), &struct{ seconds float64 }{seconds})
 }
-
-//go:nosplit
 func (self class) GetSubmenuPopupDelay() float64 { //gd:PopupMenu.get_submenu_popup_delay
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_submenu_popup_delay, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAllowSearch(allow bool) { //gd:PopupMenu.set_allow_search
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_search, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
 }
-
-//go:nosplit
 func (self class) GetAllowSearch() bool { //gd:PopupMenu.get_allow_search
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_search, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the menu is bound to the special system menu.
-*/
-//go:nosplit
 func (self class) IsSystemMenu() bool { //gd:PopupMenu.is_system_menu
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_system_menu, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSystemMenu(system_menu_id NativeMenu.SystemMenus) { //gd:PopupMenu.set_system_menu
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_system_menu, 0|(gdextension.SizeInt<<4), &struct{ system_menu_id NativeMenu.SystemMenus }{system_menu_id})
 }
-
-//go:nosplit
 func (self class) GetSystemMenu() NativeMenu.SystemMenus { //gd:PopupMenu.get_system_menu
 	var r_ret = noescape.Call[NativeMenu.SystemMenus](gd.ObjectChecked(self.AsObject()), methods.get_system_menu, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

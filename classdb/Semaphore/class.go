@@ -211,34 +211,14 @@ func New() Instance {
 	return casted
 }
 
-/*
-Waits for the [Semaphore], if its value is zero, blocks until non-zero.
-
-[Semaphore]: https://pkg.go.dev/graphics.gd/classdb/Semaphore
-*/
-//go:nosplit
 func (self class) Wait() { //gd:Semaphore.wait
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.wait, 0, &struct{}{})
 }
-
-/*
-Like [Wait], but won't block, so if the value is zero, fails immediately and returns false. If non-zero, it returns true to report success.
-
-[Wait]: https://pkg.go.dev/graphics.gd/classdb/Semaphore#Instance.Wait
-*/
-//go:nosplit
 func (self class) TryWait() bool { //gd:Semaphore.try_wait
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.try_wait, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Lowers the [Semaphore], allowing one thread in, or more if 'count' is specified.
-
-[Semaphore]: https://pkg.go.dev/graphics.gd/classdb/Semaphore
-*/
-//go:nosplit
 func (self class) Post(count int64) { //gd:Semaphore.post
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.post, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }

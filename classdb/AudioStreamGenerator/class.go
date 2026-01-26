@@ -270,36 +270,25 @@ func (self Instance) SetBufferLength(value Float.X) Instance { //gd:AudioStreamG
 	return self
 }
 
-//go:nosplit
 func (self class) SetMixRate(hz float64) { //gd:AudioStreamGenerator.set_mix_rate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mix_rate, 0|(gdextension.SizeFloat<<4), &struct{ hz float64 }{hz})
 }
-
-//go:nosplit
 func (self class) GetMixRate() float64 { //gd:AudioStreamGenerator.get_mix_rate
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mix_rate, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMixRateMode(mode AudioStreamGeneratorMixRate) { //gd:AudioStreamGenerator.set_mix_rate_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mix_rate_mode, 0|(gdextension.SizeInt<<4), &struct{ mode AudioStreamGeneratorMixRate }{mode})
 }
-
-//go:nosplit
 func (self class) GetMixRateMode() AudioStreamGeneratorMixRate { //gd:AudioStreamGenerator.get_mix_rate_mode
 	var r_ret = noescape.Call[AudioStreamGeneratorMixRate](gd.ObjectChecked(self.AsObject()), methods.get_mix_rate_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBufferLength(seconds float64) { //gd:AudioStreamGenerator.set_buffer_length
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffer_length, 0|(gdextension.SizeFloat<<4), &struct{ seconds float64 }{seconds})
 }
-
-//go:nosplit
 func (self class) GetBufferLength() float64 { //gd:AudioStreamGenerator.get_buffer_length
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_buffer_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

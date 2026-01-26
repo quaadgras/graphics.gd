@@ -372,22 +372,6 @@ func (self Instance) SetData(value any) Instance { //gd:JSON.data
 	return self
 }
 
-/*
-Converts a any var to JSON text and returns the result. Useful for serializing data to store or send over the network.
-
-Note: The JSON specification does not define integer or float types, but only a number type. Therefore, converting a Variant to JSON text will convert all numerical values to [Float.X] types.
-
-Note: If 'full_precision' is true, when stringifying floats, the unreliable digits are stringified in addition to the reliable digits to guarantee exact decoding.
-
-The 'indent' parameter controls if and how something is indented; its contents will be used where there should be an indent in the output. Even spaces like "   " will work. \t and \n can also be used for a tab indent, or to make a newline for each indent respectively.
-
-Example output:
-
-
-
-[Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
-*/
-//go:nosplit
 func (self class) Stringify(data variant.Any, indent String.Readable, sort_keys bool, full_precision bool) String.Readable { //gd:JSON.stringify
 	var r_ret = noescape.CallStatic[gdextension.String](methods.stringify, gdextension.SizeString|(gdextension.SizeVariant<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
 		data           gdextension.Variant
@@ -398,32 +382,11 @@ func (self class) Stringify(data variant.Any, indent String.Readable, sort_keys 
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Attempts to parse the 'json_string' provided and returns the parsed data. Returns null if parse failed.
-*/
-//go:nosplit
 func (self class) ParseString(json_string String.Readable) variant.Any { //gd:JSON.parse_string
 	var r_ret = noescape.CallStatic[gdextension.Variant](methods.parse_string, gdextension.SizeVariant|(gdextension.SizeString<<4), &struct{ json_string gdextension.String }{pointers.Get(gd.InternalString(json_string))})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Attempts to parse the 'json_text' provided.
-
-Returns an [Error]. If the parse was successful, it returns [Ok] and the result can be retrieved using [Data]. If unsuccessful, use [GetErrorLine] and [GetErrorMessage] to identify the source of the failure.
-
-Non-static variant of [ParseString], if you want custom error handling.
-
-The optional 'keep_text' argument instructs the parser to keep a copy of the original text. This text can be obtained later by using the [GetParsedText] function and is used when saving the resource (instead of generating new text from [Data]).
-
-[Data]: https://pkg.go.dev/graphics.gd/classdb/JSON#Instance.Data
-[GetErrorLine]: https://pkg.go.dev/graphics.gd/classdb/JSON#Instance.GetErrorLine
-[GetErrorMessage]: https://pkg.go.dev/graphics.gd/classdb/JSON#Instance.GetErrorMessage
-[GetParsedText]: https://pkg.go.dev/graphics.gd/classdb/JSON#Instance.GetParsedText
-*/
-//go:nosplit
 func (self class) Parse(json_text String.Readable, keep_text bool) Error.Code { //gd:JSON.parse
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.parse, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		json_text gdextension.String
@@ -432,65 +395,29 @@ func (self class) Parse(json_text String.Readable, keep_text bool) Error.Code { 
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-//go:nosplit
 func (self class) GetData() variant.Any { //gd:JSON.get_data
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_data, gdextension.SizeVariant, &struct{}{})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetData(data variant.Any) { //gd:JSON.set_data
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_data, 0|(gdextension.SizeVariant<<4), &struct{ data gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(data)))})
 }
-
-/*
-Return the text parsed by [Parse] (requires passing keep_text to [Parse]).
-
-[Parse]: https://pkg.go.dev/graphics.gd/classdb/JSON#Instance.Parse
-*/
-//go:nosplit
 func (self class) GetParsedText() String.Readable { //gd:JSON.get_parsed_text
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_parsed_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns 0 if the last call to [Parse] was successful, or the line number where the parse failed.
-
-[Parse]: https://pkg.go.dev/graphics.gd/classdb/JSON#Instance.Parse
-*/
-//go:nosplit
 func (self class) GetErrorLine() int64 { //gd:JSON.get_error_line
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_error_line, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns an empty string if the last call to [Parse] was successful, or the error message if it failed.
-
-[Parse]: https://pkg.go.dev/graphics.gd/classdb/JSON#Instance.Parse
-*/
-//go:nosplit
 func (self class) GetErrorMessage() String.Readable { //gd:JSON.get_error_message
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_error_message, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Converts a native engine type to a JSON-compliant value.
-
-By default, objects are ignored for security reasons, unless 'full_objects' is true.
-
-You can convert a native value to a JSON string like this:
-
-
-*/
-//go:nosplit
 func (self class) FromNative(v variant.Any, full_objects bool) variant.Any { //gd:JSON.from_native
 	var r_ret = noescape.CallStatic[gdextension.Variant](methods.from_native, gdextension.SizeVariant|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), &struct {
 		v            gdextension.Variant
@@ -499,17 +426,6 @@ func (self class) FromNative(v variant.Any, full_objects bool) variant.Any { //g
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Converts a JSON-compliant value that was created with [FromNative] back to native engine types.
-
-By default, objects are ignored for security reasons, unless 'allow_objects' is true.
-
-You can convert a JSON string back to a native value like this:
-
-
-*/
-//go:nosplit
 func (self class) ToNative(json variant.Any, allow_objects bool) variant.Any { //gd:JSON.to_native
 	var r_ret = noescape.CallStatic[gdextension.Variant](methods.to_native, gdextension.SizeVariant|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), &struct {
 		json          gdextension.Variant

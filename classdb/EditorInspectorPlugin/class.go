@@ -352,10 +352,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Returns true if this object can be handled by this plugin.
-*/
 func (class) _can_handle(impl func(ptr gdclass.Receiver, obj [1]gd.Object) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
@@ -365,10 +361,6 @@ func (class) _can_handle(impl func(ptr gdclass.Receiver, obj [1]gd.Object) bool)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called to allow adding controls at the beginning of the property list for 'object'.
-*/
 func (class) _parse_begin(impl func(ptr gdclass.Receiver, obj [1]gd.Object)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
@@ -377,10 +369,6 @@ func (class) _parse_begin(impl func(ptr gdclass.Receiver, obj [1]gd.Object)) (cb
 		impl(self, obj)
 	}
 }
-
-/*
-Called to allow adding controls at the beginning of a category in the property list for 'object'.
-*/
 func (class) _parse_category(impl func(ptr gdclass.Receiver, obj [1]gd.Object, category String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
@@ -391,10 +379,6 @@ func (class) _parse_category(impl func(ptr gdclass.Receiver, obj [1]gd.Object, c
 		impl(self, obj, category)
 	}
 }
-
-/*
-Called to allow adding controls at the beginning of a group or a sub-group in the property list for 'object'.
-*/
 func (class) _parse_group(impl func(ptr gdclass.Receiver, obj [1]gd.Object, group String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
@@ -405,12 +389,6 @@ func (class) _parse_group(impl func(ptr gdclass.Receiver, obj [1]gd.Object, grou
 		impl(self, obj, group)
 	}
 }
-
-/*
-Called to allow adding property-specific editors to the property list for 'object'. The added editor control must extend [EditorProperty]. Returning true removes the built-in editor for this property, otherwise allows to insert a custom editor before the built-in one.
-
-[EditorProperty]: https://pkg.go.dev/graphics.gd/classdb/EditorProperty
-*/
 func (class) _parse_property(impl func(ptr gdclass.Receiver, obj [1]gd.Object, atype variant.Type, name String.Readable, hint_type ClassDB.PropertyHint, hint_string String.Readable, usage_flags ClassDB.PropertyUsageFlags, wide bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
@@ -428,10 +406,6 @@ func (class) _parse_property(impl func(ptr gdclass.Receiver, obj [1]gd.Object, a
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called to allow adding controls at the end of the property list for 'object'.
-*/
 func (class) _parse_end(impl func(ptr gdclass.Receiver, obj [1]gd.Object)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
@@ -441,26 +415,9 @@ func (class) _parse_end(impl func(ptr gdclass.Receiver, obj [1]gd.Object)) (cb g
 	}
 }
 
-/*
-Adds a custom control, which is not necessarily a property editor.
-*/
-//go:nosplit
 func (self class) AddCustomControl(control [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_custom_control
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_custom_control, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetControl(control[0])[0]))})
 }
-
-/*
-Adds a property editor for an individual property. The 'editor' control must extend [EditorProperty].
-
-There can be multiple property editors for a property. If 'add_to_end' is true, this newly added editor will be displayed after all the other editors of the property whose 'add_to_end' is false. For example, the editor uses this parameter to add an "Edit Region" button for [Sprite2D.RegionRect] below the regular [Rect2.PositionSize] editor.
-
-'label' can be used to choose a custom label for the property editor in the inspector. If left empty, the label is computed from the name of the property instead.
-
-[EditorProperty]: https://pkg.go.dev/graphics.gd/classdb/EditorProperty
-[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
-[Sprite2D.RegionRect]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.RegionRect
-*/
-//go:nosplit
 func (self class) AddPropertyEditor(property String.Readable, editor [1]gdclass.Control, add_to_end bool, label String.Readable) { //gd:EditorInspectorPlugin.add_property_editor
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_property_editor, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeString<<16), &struct {
 		property   gdextension.String
@@ -469,13 +426,6 @@ func (self class) AddPropertyEditor(property String.Readable, editor [1]gdclass.
 		label      gdextension.String
 	}{pointers.Get(gd.InternalString(property)), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetControl(editor[0])[0])), add_to_end, pointers.Get(gd.InternalString(label))})
 }
-
-/*
-Adds an editor that allows modifying multiple properties. The 'editor' control must extend [EditorProperty].
-
-[EditorProperty]: https://pkg.go.dev/graphics.gd/classdb/EditorProperty
-*/
-//go:nosplit
 func (self class) AddPropertyEditorForMultipleProperties(label String.Readable, properties Packed.Strings, editor [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_property_editor_for_multiple_properties
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_property_editor_for_multiple_properties, 0|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeObject<<12), &struct {
 		label      gdextension.String

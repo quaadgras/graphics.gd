@@ -3334,45 +3334,18 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetDisplayServer(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
-/*
-Returns true if the specified 'feature' is supported by the current [DisplayServer], false otherwise.
-
-[DisplayServer]: https://pkg.go.dev/graphics.gd/classdb/DisplayServer
-*/
-//go:nosplit
 func (self class) HasFeature(feature Feature) bool { //gd:DisplayServer.has_feature
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_feature, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ feature Feature }{feature})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the name of the [DisplayServer] currently in use. Most operating systems only have a single [DisplayServer], but Linux has access to more than one [DisplayServer] (currently X11 and Wayland).
-
-The names of built-in display servers are Windows, macOS, X11 (Linux), Wayland (Linux), Android, iOS, web (HTML5), and headless (when started with the --headless [command line argument]).
-
-[DisplayServer]: https://pkg.go.dev/graphics.gd/classdb/DisplayServer
-[command line argument]: https://docs.godotengine.org/tutorials/editor/command_line_tutorial.html
-*/
-//go:nosplit
 func (self class) GetName() String.Readable { //gd:DisplayServer.get_name
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Sets native help system search callbacks.
-
-'search_callback' has the following arguments: String search_string, int result_limit and return a data structure with "key, display name" pairs for the search results. Called when the user enters search terms in the Help menu.
-
-'action_callback' has the following arguments: String key. Called when the user selects a search result in the Help menu.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) HelpSetSearchCallbacks(search_callback Callable.Function, action_callback Callable.Function) { //gd:DisplayServer.help_set_search_callbacks
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.help_set_search_callbacks, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeCallable<<8), &struct {
@@ -3380,11 +3353,6 @@ func (self class) HelpSetSearchCallbacks(search_callback Callable.Function, acti
 		action_callback gdextension.Callable
 	}{pointers.Get(gd.InternalCallable(search_callback)), pointers.Get(gd.InternalCallable(action_callback))})
 }
-
-/*
-Registers callables to emit when the menu is respectively about to show or closed. Callback methods should have zero arguments.
-*/
-//go:nosplit
 func (self class) GlobalMenuSetPopupCallbacks(menu_root String.Readable, open_callback Callable.Function, close_callback Callable.Function) { //gd:DisplayServer.global_menu_set_popup_callbacks
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_popup_callbacks, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeCallable<<12), &struct {
@@ -3393,19 +3361,6 @@ func (self class) GlobalMenuSetPopupCallbacks(menu_root String.Readable, open_ca
 		close_callback gdextension.Callable
 	}{pointers.Get(gd.InternalString(menu_root)), pointers.Get(gd.InternalCallable(open_callback)), pointers.Get(gd.InternalCallable(close_callback))})
 }
-
-/*
-Adds an item that will act as a submenu of the global menu 'menu_root'. The 'submenu' argument is the ID of the global menu root that will be shown when the item is clicked.
-
-Returns index of the inserted item, it's not guaranteed to be the same as 'index' value.
-
-Note: This method is implemented only on macOS.
-
-Supported system menu IDs:
-
-
-*/
-//go:nosplit
 func (self class) GlobalMenuAddSubmenuItem(menu_root String.Readable, label String.Readable, submenu String.Readable, index int64) int64 { //gd:DisplayServer.global_menu_add_submenu_item
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_submenu_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16), &struct {
@@ -3417,23 +3372,6 @@ func (self class) GlobalMenuAddSubmenuItem(menu_root String.Readable, label Stri
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a new item with text 'label' to the global menu with ID 'menu_root'.
-
-Returns index of the inserted item, it's not guaranteed to be the same as 'index' value.
-
-An 'accelerator' can optionally be defined, which is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. The 'accelerator' is generally a combination of [KeyModifierMask]s and [Key]s using bitwise OR such as KEY_MASK_CTRL | KEY_A (Ctrl + A).
-
-Note: The 'callback' and 'key_callback' Callables need to accept exactly one Variant parameter, the parameter passed to the Callables will be the value passed to 'tag'.
-
-Note: This method is implemented only on macOS.
-
-Supported system menu IDs:
-
-
-*/
-//go:nosplit
 func (self class) GlobalMenuAddItem(menu_root String.Readable, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_item
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
@@ -3448,23 +3386,6 @@ func (self class) GlobalMenuAddItem(menu_root String.Readable, label String.Read
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a new checkable item with text 'label' to the global menu with ID 'menu_root'.
-
-Returns index of the inserted item, it's not guaranteed to be the same as 'index' value.
-
-An 'accelerator' can optionally be defined, which is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. The 'accelerator' is generally a combination of [KeyModifierMask]s and [Key]s using bitwise OR such as KEY_MASK_CTRL | KEY_A (Ctrl + A).
-
-Note: The 'callback' and 'key_callback' Callables need to accept exactly one Variant parameter, the parameter passed to the Callables will be the value passed to 'tag'.
-
-Note: This method is implemented only on macOS.
-
-Supported system menu IDs:
-
-
-*/
-//go:nosplit
 func (self class) GlobalMenuAddCheckItem(menu_root String.Readable, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_check_item
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_check_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
@@ -3479,23 +3400,6 @@ func (self class) GlobalMenuAddCheckItem(menu_root String.Readable, label String
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a new item with text 'label' and icon 'icon' to the global menu with ID 'menu_root'.
-
-Returns index of the inserted item, it's not guaranteed to be the same as 'index' value.
-
-An 'accelerator' can optionally be defined, which is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. The 'accelerator' is generally a combination of [KeyModifierMask]s and [Key]s using bitwise OR such as KEY_MASK_CTRL | KEY_A (Ctrl + A).
-
-Note: The 'callback' and 'key_callback' Callables need to accept exactly one Variant parameter, the parameter passed to the Callables will be the value passed to 'tag'.
-
-Note: This method is implemented only on macOS.
-
-Supported system menu IDs:
-
-
-*/
-//go:nosplit
 func (self class) GlobalMenuAddIconItem(menu_root String.Readable, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_icon_item
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_icon_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
@@ -3511,23 +3415,6 @@ func (self class) GlobalMenuAddIconItem(menu_root String.Readable, icon [1]gdcla
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a new checkable item with text 'label' and icon 'icon' to the global menu with ID 'menu_root'.
-
-Returns index of the inserted item, it's not guaranteed to be the same as 'index' value.
-
-An 'accelerator' can optionally be defined, which is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. The 'accelerator' is generally a combination of [KeyModifierMask]s and [Key]s using bitwise OR such as KEY_MASK_CTRL | KEY_A (Ctrl + A).
-
-Note: The 'callback' and 'key_callback' Callables need to accept exactly one Variant parameter, the parameter passed to the Callables will be the value passed to 'tag'.
-
-Note: This method is implemented only on macOS.
-
-Supported system menu IDs:
-
-
-*/
-//go:nosplit
 func (self class) GlobalMenuAddIconCheckItem(menu_root String.Readable, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_icon_check_item
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_icon_check_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
@@ -3543,25 +3430,6 @@ func (self class) GlobalMenuAddIconCheckItem(menu_root String.Readable, icon [1]
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a new radio-checkable item with text 'label' to the global menu with ID 'menu_root'.
-
-Returns index of the inserted item, it's not guaranteed to be the same as 'index' value.
-
-An 'accelerator' can optionally be defined, which is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. The 'accelerator' is generally a combination of [KeyModifierMask]s and [Key]s using bitwise OR such as KEY_MASK_CTRL | KEY_A (Ctrl + A).
-
-Note: Radio-checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [GlobalMenuSetItemChecked] for more info on how to control it.
-
-Note: The 'callback' and 'key_callback' Callables need to accept exactly one Variant parameter, the parameter passed to the Callables will be the value passed to 'tag'.
-
-Note: This method is implemented only on macOS.
-
-Supported system menu IDs:
-
-
-*/
-//go:nosplit
 func (self class) GlobalMenuAddRadioCheckItem(menu_root String.Readable, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_radio_check_item
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_radio_check_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
@@ -3576,25 +3444,6 @@ func (self class) GlobalMenuAddRadioCheckItem(menu_root String.Readable, label S
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a new radio-checkable item with text 'label' and icon 'icon' to the global menu with ID 'menu_root'.
-
-Returns index of the inserted item, it's not guaranteed to be the same as 'index' value.
-
-An 'accelerator' can optionally be defined, which is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. The 'accelerator' is generally a combination of [KeyModifierMask]s and [Key]s using bitwise OR such as KEY_MASK_CTRL | KEY_A (Ctrl + A).
-
-Note: Radio-checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [GlobalMenuSetItemChecked] for more info on how to control it.
-
-Note: The 'callback' and 'key_callback' Callables need to accept exactly one Variant parameter, the parameter passed to the Callables will be the value passed to 'tag'.
-
-Note: This method is implemented only on macOS.
-
-Supported system menu IDs:
-
-
-*/
-//go:nosplit
 func (self class) GlobalMenuAddIconRadioCheckItem(menu_root String.Readable, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_icon_radio_check_item
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_icon_radio_check_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
@@ -3610,27 +3459,6 @@ func (self class) GlobalMenuAddIconRadioCheckItem(menu_root String.Readable, ico
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a new item with text 'label' to the global menu with ID 'menu_root'.
-
-Contrarily to normal binary items, multistate items can have more than two states, as defined by 'max_states'. Each press or activate of the item will increase the state by one. The default value is defined by 'default_state'.
-
-Returns index of the inserted item, it's not guaranteed to be the same as 'index' value.
-
-An 'accelerator' can optionally be defined, which is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. The 'accelerator' is generally a combination of [KeyModifierMask]s and [Key]s using bitwise OR such as KEY_MASK_CTRL | KEY_A (Ctrl + A).
-
-Note: By default, there's no indication of the current item state, it should be changed manually.
-
-Note: The 'callback' and 'key_callback' Callables need to accept exactly one Variant parameter, the parameter passed to the Callables will be the value passed to 'tag'.
-
-Note: This method is implemented only on macOS.
-
-Supported system menu IDs:
-
-
-*/
-//go:nosplit
 func (self class) GlobalMenuAddMultistateItem(menu_root String.Readable, label String.Readable, max_states int64, default_state int64, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_multistate_item
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_multistate_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeCallable<<24)|(gdextension.SizeVariant<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36), &struct {
@@ -3647,19 +3475,6 @@ func (self class) GlobalMenuAddMultistateItem(menu_root String.Readable, label S
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a separator between items to the global menu with ID 'menu_root'. Separators also occupy an index.
-
-Returns index of the inserted item, it's not guaranteed to be the same as 'index' value.
-
-Note: This method is implemented only on macOS.
-
-Supported system menu IDs:
-
-
-*/
-//go:nosplit
 func (self class) GlobalMenuAddSeparator(menu_root String.Readable, index int64) int64 { //gd:DisplayServer.global_menu_add_separator
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_separator, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -3669,13 +3484,6 @@ func (self class) GlobalMenuAddSeparator(menu_root String.Readable, index int64)
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the index of the item with the specified 'text'. Indices are automatically assigned to each item by the engine, and cannot be set manually.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuGetItemIndexFromText(menu_root String.Readable, text String.Readable) int64 { //gd:DisplayServer.global_menu_get_item_index_from_text
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_index_from_text, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
@@ -3685,13 +3493,6 @@ func (self class) GlobalMenuGetItemIndexFromText(menu_root String.Readable, text
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the index of the item with the specified 'tag'. Indices are automatically assigned to each item by the engine, and cannot be set manually.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuGetItemIndexFromTag(menu_root String.Readable, tag variant.Any) int64 { //gd:DisplayServer.global_menu_get_item_index_from_tag
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_index_from_tag, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), &struct {
@@ -3701,13 +3502,6 @@ func (self class) GlobalMenuGetItemIndexFromTag(menu_root String.Readable, tag v
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the item at index 'idx' is checked.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuIsItemChecked(menu_root String.Readable, idx int64) bool { //gd:DisplayServer.global_menu_is_item_checked
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.global_menu_is_item_checked, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -3717,13 +3511,6 @@ func (self class) GlobalMenuIsItemChecked(menu_root String.Readable, idx int64) 
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the item at index 'idx' is checkable in some way, i.e. if it has a checkbox or radio button.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuIsItemCheckable(menu_root String.Readable, idx int64) bool { //gd:DisplayServer.global_menu_is_item_checkable
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.global_menu_is_item_checkable, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -3733,15 +3520,6 @@ func (self class) GlobalMenuIsItemCheckable(menu_root String.Readable, idx int64
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the item at index 'idx' has radio button-style checkability.
-
-Note: This is purely cosmetic; you must add the logic for checking/unchecking items in radio groups.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuIsItemRadioCheckable(menu_root String.Readable, idx int64) bool { //gd:DisplayServer.global_menu_is_item_radio_checkable
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.global_menu_is_item_radio_checkable, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -3751,13 +3529,6 @@ func (self class) GlobalMenuIsItemRadioCheckable(menu_root String.Readable, idx 
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the callback of the item at index 'idx'.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuGetItemCallback(menu_root String.Readable, idx int64) Callable.Function { //gd:DisplayServer.global_menu_get_item_callback
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_callback, gdextension.SizeCallable|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -3767,13 +3538,6 @@ func (self class) GlobalMenuGetItemCallback(menu_root String.Readable, idx int64
 	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret)))
 	return ret
 }
-
-/*
-Returns the callback of the item accelerator at index 'idx'.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuGetItemKeyCallback(menu_root String.Readable, idx int64) Callable.Function { //gd:DisplayServer.global_menu_get_item_key_callback
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_key_callback, gdextension.SizeCallable|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -3783,13 +3547,6 @@ func (self class) GlobalMenuGetItemKeyCallback(menu_root String.Readable, idx in
 	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret)))
 	return ret
 }
-
-/*
-Returns the metadata of the specified item, which might be of any type. You can set it with [GlobalMenuSetItemTag], which provides a simple way of assigning context data to items.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuGetItemTag(menu_root String.Readable, idx int64) variant.Any { //gd:DisplayServer.global_menu_get_item_tag
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_tag, gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -3799,13 +3556,6 @@ func (self class) GlobalMenuGetItemTag(menu_root String.Readable, idx int64) var
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Returns the text of the item at index 'idx'.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuGetItemText(menu_root String.Readable, idx int64) String.Readable { //gd:DisplayServer.global_menu_get_item_text
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_text, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -3815,13 +3565,6 @@ func (self class) GlobalMenuGetItemText(menu_root String.Readable, idx int64) St
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the submenu ID of the item at index 'idx'. See [GlobalMenuAddSubmenuItem] for more info on how to add a submenu.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuGetItemSubmenu(menu_root String.Readable, idx int64) String.Readable { //gd:DisplayServer.global_menu_get_item_submenu
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_submenu, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -3831,13 +3574,6 @@ func (self class) GlobalMenuGetItemSubmenu(menu_root String.Readable, idx int64)
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the accelerator of the item at index 'idx'. Accelerators are special combinations of keys that activate the item, no matter which control is focused.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuGetItemAccelerator(menu_root String.Readable, idx int64) Input.Key { //gd:DisplayServer.global_menu_get_item_accelerator
 	once.Do(singleton)
 	var r_ret = noescape.Call[Input.Key](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_accelerator, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -3847,15 +3583,6 @@ func (self class) GlobalMenuGetItemAccelerator(menu_root String.Readable, idx in
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the item at index 'idx' is disabled. When it is disabled it can't be selected, or its action invoked.
-
-See [GlobalMenuSetItemDisabled] for more info on how to disable an item.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuIsItemDisabled(menu_root String.Readable, idx int64) bool { //gd:DisplayServer.global_menu_is_item_disabled
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.global_menu_is_item_disabled, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -3865,15 +3592,6 @@ func (self class) GlobalMenuIsItemDisabled(menu_root String.Readable, idx int64)
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the item at index 'idx' is hidden.
-
-See [GlobalMenuSetItemHidden] for more info on how to hide an item.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuIsItemHidden(menu_root String.Readable, idx int64) bool { //gd:DisplayServer.global_menu_is_item_hidden
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.global_menu_is_item_hidden, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -3883,13 +3601,6 @@ func (self class) GlobalMenuIsItemHidden(menu_root String.Readable, idx int64) b
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the tooltip associated with the specified index 'idx'.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuGetItemTooltip(menu_root String.Readable, idx int64) String.Readable { //gd:DisplayServer.global_menu_get_item_tooltip
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_tooltip, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -3899,13 +3610,6 @@ func (self class) GlobalMenuGetItemTooltip(menu_root String.Readable, idx int64)
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the state of a multistate item. See [GlobalMenuAddMultistateItem] for details.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuGetItemState(menu_root String.Readable, idx int64) int64 { //gd:DisplayServer.global_menu_get_item_state
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_state, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -3915,13 +3619,6 @@ func (self class) GlobalMenuGetItemState(menu_root String.Readable, idx int64) i
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns number of states of a multistate item. See [GlobalMenuAddMultistateItem] for details.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuGetItemMaxStates(menu_root String.Readable, idx int64) int64 { //gd:DisplayServer.global_menu_get_item_max_states
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_max_states, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -3931,13 +3628,6 @@ func (self class) GlobalMenuGetItemMaxStates(menu_root String.Readable, idx int6
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the icon of the item at index 'idx'.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuGetItemIcon(menu_root String.Readable, idx int64) [1]gdclass.Texture2D { //gd:DisplayServer.global_menu_get_item_icon
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_icon, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -3947,13 +3637,6 @@ func (self class) GlobalMenuGetItemIcon(menu_root String.Readable, idx int64) [1
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the horizontal offset of the item at the given 'idx'.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuGetItemIndentationLevel(menu_root String.Readable, idx int64) int64 { //gd:DisplayServer.global_menu_get_item_indentation_level
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_indentation_level, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -3963,13 +3646,6 @@ func (self class) GlobalMenuGetItemIndentationLevel(menu_root String.Readable, i
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the checkstate status of the item at index 'idx'.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuSetItemChecked(menu_root String.Readable, idx int64, checked bool) { //gd:DisplayServer.global_menu_set_item_checked
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_checked, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
@@ -3978,13 +3654,6 @@ func (self class) GlobalMenuSetItemChecked(menu_root String.Readable, idx int64,
 		checked   bool
 	}{pointers.Get(gd.InternalString(menu_root)), idx, checked})
 }
-
-/*
-Sets whether the item at index 'idx' has a checkbox. If false, sets the type of the item to plain text.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuSetItemCheckable(menu_root String.Readable, idx int64, checkable bool) { //gd:DisplayServer.global_menu_set_item_checkable
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_checkable, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
@@ -3993,15 +3662,6 @@ func (self class) GlobalMenuSetItemCheckable(menu_root String.Readable, idx int6
 		checkable bool
 	}{pointers.Get(gd.InternalString(menu_root)), idx, checkable})
 }
-
-/*
-Sets the type of the item at the specified index 'idx' to radio button. If false, sets the type of the item to plain text.
-
-Note: This is purely cosmetic; you must add the logic for checking/unchecking items in radio groups.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuSetItemRadioCheckable(menu_root String.Readable, idx int64, checkable bool) { //gd:DisplayServer.global_menu_set_item_radio_checkable
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_radio_checkable, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
@@ -4010,15 +3670,6 @@ func (self class) GlobalMenuSetItemRadioCheckable(menu_root String.Readable, idx
 		checkable bool
 	}{pointers.Get(gd.InternalString(menu_root)), idx, checkable})
 }
-
-/*
-Sets the callback of the item at index 'idx'. Callback is emitted when an item is pressed.
-
-Note: The 'callback' Callable needs to accept exactly one Variant parameter, the parameter passed to the Callable will be the value passed to the tag parameter when the menu item was created.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuSetItemCallback(menu_root String.Readable, idx int64, callback Callable.Function) { //gd:DisplayServer.global_menu_set_item_callback
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_callback, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
@@ -4027,15 +3678,6 @@ func (self class) GlobalMenuSetItemCallback(menu_root String.Readable, idx int64
 		callback  gdextension.Callable
 	}{pointers.Get(gd.InternalString(menu_root)), idx, pointers.Get(gd.InternalCallable(callback))})
 }
-
-/*
-Sets the callback of the item at index 'idx'. The callback is emitted when an item is hovered.
-
-Note: The 'callback' Callable needs to accept exactly one Variant parameter, the parameter passed to the Callable will be the value passed to the tag parameter when the menu item was created.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuSetItemHoverCallbacks(menu_root String.Readable, idx int64, callback Callable.Function) { //gd:DisplayServer.global_menu_set_item_hover_callbacks
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_hover_callbacks, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
@@ -4044,15 +3686,6 @@ func (self class) GlobalMenuSetItemHoverCallbacks(menu_root String.Readable, idx
 		callback  gdextension.Callable
 	}{pointers.Get(gd.InternalString(menu_root)), idx, pointers.Get(gd.InternalCallable(callback))})
 }
-
-/*
-Sets the callback of the item at index 'idx'. Callback is emitted when its accelerator is activated.
-
-Note: The 'key_callback' Callable needs to accept exactly one Variant parameter, the parameter passed to the Callable will be the value passed to the tag parameter when the menu item was created.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuSetItemKeyCallback(menu_root String.Readable, idx int64, key_callback Callable.Function) { //gd:DisplayServer.global_menu_set_item_key_callback
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_key_callback, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
@@ -4061,13 +3694,6 @@ func (self class) GlobalMenuSetItemKeyCallback(menu_root String.Readable, idx in
 		key_callback gdextension.Callable
 	}{pointers.Get(gd.InternalString(menu_root)), idx, pointers.Get(gd.InternalCallable(key_callback))})
 }
-
-/*
-Sets the metadata of an item, which may be of any type. You can later get it with [GlobalMenuGetItemTag], which provides a simple way of assigning context data to items.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuSetItemTag(menu_root String.Readable, idx int64, tag variant.Any) { //gd:DisplayServer.global_menu_set_item_tag
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_tag, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
@@ -4076,13 +3702,6 @@ func (self class) GlobalMenuSetItemTag(menu_root String.Readable, idx int64, tag
 		tag       gdextension.Variant
 	}{pointers.Get(gd.InternalString(menu_root)), idx, gdextension.Variant(pointers.Get(gd.InternalVariant(tag)))})
 }
-
-/*
-Sets the text of the item at index 'idx'.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuSetItemText(menu_root String.Readable, idx int64, text String.Readable) { //gd:DisplayServer.global_menu_set_item_text
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_text, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
@@ -4091,13 +3710,6 @@ func (self class) GlobalMenuSetItemText(menu_root String.Readable, idx int64, te
 		text      gdextension.String
 	}{pointers.Get(gd.InternalString(menu_root)), idx, pointers.Get(gd.InternalString(text))})
 }
-
-/*
-Sets the submenu of the item at index 'idx'. The submenu is the ID of a global menu root that would be shown when the item is clicked.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuSetItemSubmenu(menu_root String.Readable, idx int64, submenu String.Readable) { //gd:DisplayServer.global_menu_set_item_submenu
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_submenu, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
@@ -4106,13 +3718,6 @@ func (self class) GlobalMenuSetItemSubmenu(menu_root String.Readable, idx int64,
 		submenu   gdextension.String
 	}{pointers.Get(gd.InternalString(menu_root)), idx, pointers.Get(gd.InternalString(submenu))})
 }
-
-/*
-Sets the accelerator of the item at index 'idx'. 'keycode' can be a single [Key], or a combination of [KeyModifierMask]s and [Key]s using bitwise OR such as KEY_MASK_CTRL | KEY_A (Ctrl + A).
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuSetItemAccelerator(menu_root String.Readable, idx int64, keycode Input.Key) { //gd:DisplayServer.global_menu_set_item_accelerator
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_accelerator, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
@@ -4121,13 +3726,6 @@ func (self class) GlobalMenuSetItemAccelerator(menu_root String.Readable, idx in
 		keycode   Input.Key
 	}{pointers.Get(gd.InternalString(menu_root)), idx, keycode})
 }
-
-/*
-Enables/disables the item at index 'idx'. When it is disabled, it can't be selected and its action can't be invoked.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuSetItemDisabled(menu_root String.Readable, idx int64, disabled bool) { //gd:DisplayServer.global_menu_set_item_disabled
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_disabled, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
@@ -4136,13 +3734,6 @@ func (self class) GlobalMenuSetItemDisabled(menu_root String.Readable, idx int64
 		disabled  bool
 	}{pointers.Get(gd.InternalString(menu_root)), idx, disabled})
 }
-
-/*
-Hides/shows the item at index 'idx'. When it is hidden, an item does not appear in a menu and its action cannot be invoked.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuSetItemHidden(menu_root String.Readable, idx int64, hidden bool) { //gd:DisplayServer.global_menu_set_item_hidden
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_hidden, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
@@ -4151,13 +3742,6 @@ func (self class) GlobalMenuSetItemHidden(menu_root String.Readable, idx int64, 
 		hidden    bool
 	}{pointers.Get(gd.InternalString(menu_root)), idx, hidden})
 }
-
-/*
-Sets the string tooltip of the item at the specified index 'idx'.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuSetItemTooltip(menu_root String.Readable, idx int64, tooltip String.Readable) { //gd:DisplayServer.global_menu_set_item_tooltip
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_tooltip, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
@@ -4166,13 +3750,6 @@ func (self class) GlobalMenuSetItemTooltip(menu_root String.Readable, idx int64,
 		tooltip   gdextension.String
 	}{pointers.Get(gd.InternalString(menu_root)), idx, pointers.Get(gd.InternalString(tooltip))})
 }
-
-/*
-Sets the state of a multistate item. See [GlobalMenuAddMultistateItem] for details.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuSetItemState(menu_root String.Readable, idx int64, state int64) { //gd:DisplayServer.global_menu_set_item_state
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_state, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
@@ -4181,13 +3758,6 @@ func (self class) GlobalMenuSetItemState(menu_root String.Readable, idx int64, s
 		state     int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx, state})
 }
-
-/*
-Sets number of state of a multistate item. See [GlobalMenuAddMultistateItem] for details.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuSetItemMaxStates(menu_root String.Readable, idx int64, max_states int64) { //gd:DisplayServer.global_menu_set_item_max_states
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_max_states, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
@@ -4196,17 +3766,6 @@ func (self class) GlobalMenuSetItemMaxStates(menu_root String.Readable, idx int6
 		max_states int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx, max_states})
 }
-
-/*
-Replaces the [Texture2D] icon of the specified 'idx'.
-
-Note: This method is implemented only on macOS.
-
-Note: This method is not supported by macOS "_dock" menu items.
-
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
-//go:nosplit
 func (self class) GlobalMenuSetItemIcon(menu_root String.Readable, idx int64, icon [1]gdclass.Texture2D) { //gd:DisplayServer.global_menu_set_item_icon
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_icon, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12), &struct {
@@ -4215,13 +3774,6 @@ func (self class) GlobalMenuSetItemIcon(menu_root String.Readable, idx int64, ic
 		icon      gdextension.Object
 	}{pointers.Get(gd.InternalString(menu_root)), idx, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
 }
-
-/*
-Sets the horizontal offset of the item at the given 'idx'.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuSetItemIndentationLevel(menu_root String.Readable, idx int64, level int64) { //gd:DisplayServer.global_menu_set_item_indentation_level
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_indentation_level, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
@@ -4230,28 +3782,12 @@ func (self class) GlobalMenuSetItemIndentationLevel(menu_root String.Readable, i
 		level     int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx, level})
 }
-
-/*
-Returns number of items in the global menu with ID 'menu_root'.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuGetItemCount(menu_root String.Readable) int64 { //gd:DisplayServer.global_menu_get_item_count
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_count, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ menu_root gdextension.String }{pointers.Get(gd.InternalString(menu_root))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Removes the item at index 'idx' from the global menu 'menu_root'.
-
-Note: The indices of items after the removed item will be shifted by one.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuRemoveItem(menu_root String.Readable, idx int64) { //gd:DisplayServer.global_menu_remove_item
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_remove_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -4259,117 +3795,40 @@ func (self class) GlobalMenuRemoveItem(menu_root String.Readable, idx int64) { /
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
 }
-
-/*
-Removes all items from the global menu with ID 'menu_root'.
-
-Note: This method is implemented only on macOS.
-
-Supported system menu IDs:
-
-
-*/
-//go:nosplit
 func (self class) GlobalMenuClear(menu_root String.Readable) { //gd:DisplayServer.global_menu_clear
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_clear, 0|(gdextension.SizeString<<4), &struct{ menu_root gdextension.String }{pointers.Get(gd.InternalString(menu_root))})
 }
-
-/*
-Returns Dictionary of supported system menu IDs and names.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) GlobalMenuGetSystemMenuRoots() Dictionary.Any { //gd:DisplayServer.global_menu_get_system_menu_roots
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_system_menu_roots, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Returns true if the synthesizer is generating speech, or have utterance waiting in the queue.
-
-Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-*/
-//go:nosplit
 func (self class) TtsIsSpeaking() bool { //gd:DisplayServer.tts_is_speaking
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.tts_is_speaking, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the synthesizer is in a paused state.
-
-Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-*/
-//go:nosplit
 func (self class) TtsIsPaused() bool { //gd:DisplayServer.tts_is_paused
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.tts_is_paused, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns an slice of voice information dictionaries.
-
-Each data structure contains two string entries:
-
-- name is voice name.
-
-- id is voice identifier.
-
-- language is language code in lang_Variant format. The lang part is a 2 or 3-letter code based on the ISO-639 standard, in lowercase. The Variant part is an engine-dependent string describing country, region or/and dialect.
-
-Note that Godot depends on system libraries for text-to-speech functionality. These libraries are installed by default on Windows and macOS, but not on all Linux distributions. If they are not present, this method will return an empty list. This applies to both Godot users on Linux, as well as end-users on Linux running Godot games that use text-to-speech.
-
-Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-*/
-//go:nosplit
 func (self class) TtsGetVoices() Array.Contains[Dictionary.Any] { //gd:DisplayServer.tts_get_voices
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.tts_get_voices, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns a []string of voice identifiers for the 'language'.
-
-Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-*/
-//go:nosplit
 func (self class) TtsGetVoicesForLanguage(language String.Readable) Packed.Strings { //gd:DisplayServer.tts_get_voices_for_language
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.tts_get_voices_for_language, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Adds an utterance to the queue. If 'interrupt' is true, the queue is cleared first.
-
-- 'voice' identifier is one of the "id" values returned by [TtsGetVoices] or one of the values returned by [TtsGetVoicesForLanguage].
-
-- 'volume' ranges from 0 (lowest) to 100 (highest).
-
-- 'pitch' ranges from 0.0 (lowest) to 2.0 (highest), 1.0 is default pitch for the current voice.
-
-- 'rate' ranges from 0.1 (lowest) to 10.0 (highest), 1.0 is a normal speaking rate. Other values act as a percentage relative.
-
-- 'utterance_id' is passed as a parameter to the callback functions.
-
-Note: On Windows and Linux (X11/Wayland), utterance 'text' can use SSML markup. SSML support is engine and voice dependent. If the engine does not support SSML, you should strip out all XML markup before calling [TtsSpeak].
-
-Note: The granularity of pitch, rate, and volume is engine and voice dependent. Values may be truncated.
-
-Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-*/
-//go:nosplit
 func (self class) TtsSpeak(text String.Readable, voice String.Readable, volume int64, pitch float64, rate float64, utterance_id int64, interrupt bool) { //gd:DisplayServer.tts_speak
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.tts_speak, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeBool<<28), &struct {
@@ -4382,52 +3841,18 @@ func (self class) TtsSpeak(text String.Readable, voice String.Readable, volume i
 		interrupt    bool
 	}{pointers.Get(gd.InternalString(text)), pointers.Get(gd.InternalString(voice)), volume, pitch, rate, utterance_id, interrupt})
 }
-
-/*
-Puts the synthesizer into a paused state.
-
-Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-*/
-//go:nosplit
 func (self class) TtsPause() { //gd:DisplayServer.tts_pause
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.tts_pause, 0, &struct{}{})
 }
-
-/*
-Resumes the synthesizer if it was paused.
-
-Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-*/
-//go:nosplit
 func (self class) TtsResume() { //gd:DisplayServer.tts_resume
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.tts_resume, 0, &struct{}{})
 }
-
-/*
-Stops synthesis in progress and removes all utterances from the queue.
-
-Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-*/
-//go:nosplit
 func (self class) TtsStop() { //gd:DisplayServer.tts_stop
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.tts_stop, 0, &struct{}{})
 }
-
-/*
-Adds a callback, which is called when the utterance has started, finished, canceled or reached a text boundary.
-
-- [TtsUtteranceStarted], [TtsUtteranceEnded], and [TtsUtteranceCanceled] callable's method should take one int parameter, the utterance ID.
-
-- [TtsUtteranceBoundary] callable's method should take two int parameters, the index of the character and the utterance ID.
-
-Note: The granularity of the boundary callbacks is engine dependent.
-
-Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-*/
-//go:nosplit
 func (self class) TtsSetUtteranceCallback(event TTSUtteranceEvent, callable Callable.Function) { //gd:DisplayServer.tts_set_utterance_callback
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.tts_set_utterance_callback, 0|(gdextension.SizeInt<<4)|(gdextension.SizeCallable<<8), &struct {
@@ -4435,490 +3860,200 @@ func (self class) TtsSetUtteranceCallback(event TTSUtteranceEvent, callable Call
 		callable gdextension.Callable
 	}{event, pointers.Get(gd.InternalCallable(callable))})
 }
-
-/*
-Returns true if OS supports dark mode.
-
-Note: This method is implemented on Android, iOS, macOS, Windows, and Linux (X11/Wayland).
-*/
-//go:nosplit
 func (self class) IsDarkModeSupported() bool { //gd:DisplayServer.is_dark_mode_supported
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dark_mode_supported, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if OS is using dark mode.
-
-Note: This method is implemented on Android, iOS, macOS, Windows, and Linux (X11/Wayland).
-*/
-//go:nosplit
 func (self class) IsDarkMode() bool { //gd:DisplayServer.is_dark_mode
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dark_mode, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns OS theme accent color. Returns Color(0, 0, 0, 0), if accent color is unknown.
-
-Note: This method is implemented on macOS, Windows, Android, and Linux (X11/Wayland).
-*/
-//go:nosplit
 func (self class) GetAccentColor() Color.RGBA { //gd:DisplayServer.get_accent_color
 	once.Do(singleton)
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_accent_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the OS theme base color (default control background). Returns Color(0, 0, 0, 0) if the base color is unknown.
-
-Note: This method is implemented on macOS, Windows, and Android.
-*/
-//go:nosplit
 func (self class) GetBaseColor() Color.RGBA { //gd:DisplayServer.get_base_color
 	once.Do(singleton)
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_base_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the 'callable' that should be called when system theme settings are changed. Callback method should have zero arguments.
-
-Note: This method is implemented on Android, iOS, macOS, Windows, and Linux (X11/Wayland).
-*/
-//go:nosplit
 func (self class) SetSystemThemeChangeCallback(callable Callable.Function) { //gd:DisplayServer.set_system_theme_change_callback
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_system_theme_change_callback, 0|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
 }
-
-/*
-Sets the current mouse mode. See also [MouseGetMode].
-*/
-//go:nosplit
 func (self class) MouseSetMode(mouse_mode MouseModeValue) { //gd:DisplayServer.mouse_set_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.mouse_set_mode, 0|(gdextension.SizeInt<<4), &struct{ mouse_mode MouseModeValue }{mouse_mode})
 }
-
-/*
-Returns the current mouse mode. See also [MouseSetMode].
-*/
-//go:nosplit
 func (self class) MouseGetMode() MouseModeValue { //gd:DisplayServer.mouse_get_mode
 	once.Do(singleton)
 	var r_ret = noescape.Call[MouseModeValue](gd.ObjectChecked(self.AsObject()), methods.mouse_get_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the mouse cursor position to the given 'position' relative to an origin at the upper left corner of the currently focused game Window Manager window.
-
-Note: [WarpMouse] is only supported on Windows, macOS, and Linux (X11/Wayland). It has no effect on Android, iOS, and Web.
-*/
-//go:nosplit
 func (self class) WarpMouse(position Vector2i.XY) { //gd:DisplayServer.warp_mouse
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.warp_mouse, 0|(gdextension.SizeVector2i<<4), &struct{ position Vector2i.XY }{position})
 }
-
-/*
-Returns the mouse cursor's current position in screen coordinates.
-*/
-//go:nosplit
 func (self class) MouseGetPosition() Vector2i.XY { //gd:DisplayServer.mouse_get_position
 	once.Do(singleton)
 	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.mouse_get_position, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the current state of mouse buttons (whether each button is pressed) as a bitmask. If multiple mouse buttons are pressed at the same time, the bits are added together. Equivalent to [Input.GetMouseButtonMask].
-
-[Input.GetMouseButtonMask]: https://pkg.go.dev/graphics.gd/classdb/Input#GetMouseButtonMask
-*/
-//go:nosplit
 func (self class) MouseGetButtonState() Input.MouseButtonMask { //gd:DisplayServer.mouse_get_button_state
 	once.Do(singleton)
 	var r_ret = noescape.Call[Input.MouseButtonMask](gd.ObjectChecked(self.AsObject()), methods.mouse_get_button_state, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the user's clipboard content to the given string.
-*/
-//go:nosplit
 func (self class) ClipboardSet(clipboard String.Readable) { //gd:DisplayServer.clipboard_set
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clipboard_set, 0|(gdextension.SizeString<<4), &struct{ clipboard gdextension.String }{pointers.Get(gd.InternalString(clipboard))})
 }
-
-/*
-Returns the user's clipboard as a string if possible.
-*/
-//go:nosplit
 func (self class) ClipboardGet() String.Readable { //gd:DisplayServer.clipboard_get
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.clipboard_get, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the user's clipboard as an image if possible.
-
-Note: This method uses the copied pixel data, e.g. from an image editing software or a web browser, not an image file copied from file explorer.
-*/
-//go:nosplit
 func (self class) ClipboardGetImage() [1]gdclass.Image { //gd:DisplayServer.clipboard_get_image
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.clipboard_get_image, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns true if there is a text content on the user's clipboard.
-*/
-//go:nosplit
 func (self class) ClipboardHas() bool { //gd:DisplayServer.clipboard_has
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.clipboard_has, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if there is an image content on the user's clipboard.
-*/
-//go:nosplit
 func (self class) ClipboardHasImage() bool { //gd:DisplayServer.clipboard_has_image
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.clipboard_has_image, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the user's [primary] clipboard content to the given string. This is the clipboard that is set when the user selects text in any application, rather than when pressing Ctrl + C. The clipboard data can then be pasted by clicking the middle mouse button in any application that supports the primary clipboard mechanism.
-
-Note: This method is only implemented on Linux (X11/Wayland).
-
-[primary]: https://unix.stackexchange.com/questions/139191/whats-the-difference-between-primary-selection-and-clipboard-buffer
-*/
-//go:nosplit
 func (self class) ClipboardSetPrimary(clipboard_primary String.Readable) { //gd:DisplayServer.clipboard_set_primary
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clipboard_set_primary, 0|(gdextension.SizeString<<4), &struct{ clipboard_primary gdextension.String }{pointers.Get(gd.InternalString(clipboard_primary))})
 }
-
-/*
-Returns the user's [primary] clipboard as a string if possible. This is the clipboard that is set when the user selects text in any application, rather than when pressing Ctrl + C. The clipboard data can then be pasted by clicking the middle mouse button in any application that supports the primary clipboard mechanism.
-
-Note: This method is only implemented on Linux (X11/Wayland).
-
-[primary]: https://unix.stackexchange.com/questions/139191/whats-the-difference-between-primary-selection-and-clipboard-buffer
-*/
-//go:nosplit
 func (self class) ClipboardGetPrimary() String.Readable { //gd:DisplayServer.clipboard_get_primary
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.clipboard_get_primary, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns an slice of [Rect2.PositionSize], each of which is the bounding rectangle for a display cutout or notch. These are non-functional areas on edge-to-edge screens used by cameras and sensors. Returns an empty array if the device does not have cutouts. See also [GetDisplaySafeArea].
-
-Note: Currently only implemented on Android. Other platforms will return an empty array even if they do have display cutouts or notches.
-
-[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
-*/
-//go:nosplit
 func (self class) GetDisplayCutouts() Array.Contains[Rect2.PositionSize] { //gd:DisplayServer.get_display_cutouts
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_display_cutouts, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Rect2.PositionSize]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns the unobscured area of the display where interactive controls should be rendered. See also [GetDisplayCutouts].
-
-Note: Currently only implemented on Android and iOS. On other platforms, screen_get_usable_rect(SCREEN_OF_MAIN_WINDOW) will be returned as a fallback. See also [ScreenGetUsableRect].
-*/
-//go:nosplit
 func (self class) GetDisplaySafeArea() Rect2i.PositionSize { //gd:DisplayServer.get_display_safe_area
 	once.Do(singleton)
 	var r_ret = noescape.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_display_safe_area, gdextension.SizeRect2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the number of displays available.
-
-Note: This method is implemented on Linux (X11 and Wayland), macOS, and Windows. On other platforms, this method always returns 1.
-*/
-//go:nosplit
 func (self class) GetScreenCount() int64 { //gd:DisplayServer.get_screen_count
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_screen_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns index of the primary screen.
-
-Note: This method is implemented on Linux/X11, macOS, and Windows. On other platforms, this method always returns 0.
-*/
-//go:nosplit
 func (self class) GetPrimaryScreen() int64 { //gd:DisplayServer.get_primary_screen
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_primary_screen, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the index of the screen containing the window with the keyboard focus, or the primary screen if there's no focused window.
-
-Note: This method is implemented on Linux/X11, macOS, and Windows. On other platforms, this method always returns the primary screen.
-*/
-//go:nosplit
 func (self class) GetKeyboardFocusScreen() int64 { //gd:DisplayServer.get_keyboard_focus_screen
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_keyboard_focus_screen, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the index of the screen that overlaps the most with the given rectangle. Returns [InvalidScreen] if the rectangle doesn't overlap with any screen or has no area.
-*/
-//go:nosplit
 func (self class) GetScreenFromRect(rect Rect2.PositionSize) int64 { //gd:DisplayServer.get_screen_from_rect
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_screen_from_rect, gdextension.SizeInt|(gdextension.SizeRect2<<4), &struct{ rect Rect2.PositionSize }{rect})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the screen's top-left corner position in pixels. Returns [Vector2i.Zero] if 'screen' is invalid. On multi-monitor setups, the screen position is relative to the virtual desktop area. On multi-monitor setups with different screen resolutions or orientations, the origin might be located outside any display like this:
-
-
-
-See also [ScreenGetSize].
-
-Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
-*/
-//go:nosplit
 func (self class) ScreenGetPosition(screen int64) Vector2i.XY { //gd:DisplayServer.screen_get_position
 	once.Do(singleton)
 	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.screen_get_position, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the screen's size in pixels. See also [ScreenGetPosition] and [ScreenGetUsableRect]. Returns [Vector2i.Zero] if 'screen' is invalid.
-
-Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
-*/
-//go:nosplit
 func (self class) ScreenGetSize(screen int64) Vector2i.XY { //gd:DisplayServer.screen_get_size
 	once.Do(singleton)
 	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.screen_get_size, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the portion of the screen that is not obstructed by a status bar in pixels. See also [ScreenGetSize].
-
-Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
-
-Note: This method is implemented on Linux/X11, macOS, and Windows. On other platforms, this method always returns Rect2i(screen_get_position(screen), screen_get_size(screen)).
-*/
-//go:nosplit
 func (self class) ScreenGetUsableRect(screen int64) Rect2i.PositionSize { //gd:DisplayServer.screen_get_usable_rect
 	once.Do(singleton)
 	var r_ret = noescape.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.screen_get_usable_rect, gdextension.SizeRect2i|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the dots per inch density of the specified screen. Returns platform specific default value if 'screen' is invalid.
-
-Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
-
-Note: On macOS, returned value is inaccurate if fractional display scaling mode is used.
-
-Note: On Android devices, the actual screen densities are grouped into six generalized densities:
-
-
-
-Note: This method is implemented on Android, iOS, Linux (X11/Wayland), macOS, Web, and Windows. On other platforms, this method always returns 72.
-*/
-//go:nosplit
 func (self class) ScreenGetDpi(screen int64) int64 { //gd:DisplayServer.screen_get_dpi
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.screen_get_dpi, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the scale factor of the specified screen by index. Returns 1.0 if 'screen' is invalid.
-
-Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
-
-Note: On macOS, the returned value is 2.0 for hiDPI (Retina) screens, and 1.0 for all other cases.
-
-Note: On Linux (Wayland), the returned value is accurate only when 'screen' is [ScreenOfMainWindow]. Due to API limitations, passing a direct index will return a rounded-up integer, if the screen has a fractional scale (e.g. 1.25 would get rounded up to 2.0).
-
-Note: This method is implemented on Android, iOS, Web, macOS, and Linux (Wayland). On other platforms, this method always returns 1.0.
-*/
-//go:nosplit
 func (self class) ScreenGetScale(screen int64) float64 { //gd:DisplayServer.screen_get_scale
 	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.screen_get_scale, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if touch events are available (Android or iOS), the capability is detected on the Web platform or if [ProjectSettings] "input_devices/pointing/emulate_touch_from_mouse" is true.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) IsTouchscreenAvailable() bool { //gd:DisplayServer.is_touchscreen_available
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_touchscreen_available, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the greatest scale factor of all screens.
-
-Note: On macOS returned value is 2.0 if there is at least one hiDPI (Retina) screen in the system, and 1.0 in all other cases.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) ScreenGetMaxScale() float64 { //gd:DisplayServer.screen_get_max_scale
 	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.screen_get_max_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the current refresh rate of the specified screen. Returns -1.0 if 'screen' is invalid or the [DisplayServer] fails to find the refresh rate for the specified screen.
-
-To fallback to a default refresh rate if the method fails, try:
-
-
-	var refresh_rate = DisplayServer.ScreenGetRefreshRate()
-	if refresh_rate < 0 {
-		refresh_rate = 60.0
-	}
-
-
-Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
-
-Note: This method is implemented on Android, iOS, macOS, Linux (X11 and Wayland), and Windows. On other platforms, this method always returns -1.0.
-
-[DisplayServer]: https://pkg.go.dev/graphics.gd/classdb/DisplayServer
-*/
-//go:nosplit
 func (self class) ScreenGetRefreshRate(screen int64) float64 { //gd:DisplayServer.screen_get_refresh_rate
 	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.screen_get_refresh_rate, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns color of the display pixel at the 'position'.
-
-Note: This method is implemented on Linux (X11, excluding XWayland), macOS, and Windows. On other platforms, this method always returns [Color.RGBA].
-
-Note: On macOS, this method requires the "Screen Recording" permission. If permission is not granted, this method returns a screenshot that will only contain the desktop wallpaper, the current application's window, and other related UI elements.
-
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
-*/
-//go:nosplit
 func (self class) ScreenGetPixel(position Vector2i.XY) Color.RGBA { //gd:DisplayServer.screen_get_pixel
 	once.Do(singleton)
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.screen_get_pixel, gdextension.SizeColor|(gdextension.SizeVector2i<<4), &struct{ position Vector2i.XY }{position})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a screenshot of the 'screen'. Returns null if 'screen' is invalid or the [DisplayServer] fails to capture screenshot.
-
-Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
-
-Note: This method is implemented on Linux (X11, excluding XWayland), macOS, and Windows. On other platforms, this method always returns null.
-
-Note: On macOS, this method requires the "Screen Recording" permission. If permission is not granted, this method returns a screenshot that will not include other application windows or OS elements not related to the application.
-
-[DisplayServer]: https://pkg.go.dev/graphics.gd/classdb/DisplayServer
-*/
-//go:nosplit
 func (self class) ScreenGetImage(screen int64) [1]gdclass.Image { //gd:DisplayServer.screen_get_image
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.screen_get_image, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns a screenshot of the screen region defined by 'rect'. Returns null if 'rect' is outside screen bounds or the [DisplayServer] fails to capture screenshot.
-
-Note: This method is implemented on macOS and Windows. On other platforms, this method always returns null.
-
-Note: On macOS, this method requires the "Screen Recording" permission. If permission is not granted, this method returns a screenshot that will not include other application windows or OS elements not related to the application.
-
-[DisplayServer]: https://pkg.go.dev/graphics.gd/classdb/DisplayServer
-*/
-//go:nosplit
 func (self class) ScreenGetImageRect(rect Rect2i.PositionSize) [1]gdclass.Image { //gd:DisplayServer.screen_get_image_rect
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.screen_get_image_rect, gdextension.SizeObject|(gdextension.SizeRect2i<<4), &struct{ rect Rect2i.PositionSize }{rect})
 	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Sets the 'screen''s 'orientation'. See also [ScreenGetOrientation].
-
-Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
-
-Note: This method is implemented on Android and iOS.
-
-Note: On iOS, this method has no effect if [ProjectSettings] "display/window/handheld/orientation" is not set to [ScreenSensor].
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) ScreenSetOrientation(orientation ScreenOrientation, screen int64) { //gd:DisplayServer.screen_set_orientation
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.screen_set_orientation, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
@@ -4926,74 +4061,34 @@ func (self class) ScreenSetOrientation(orientation ScreenOrientation, screen int
 		screen      int64
 	}{orientation, screen})
 }
-
-/*
-Returns the 'screen''s current orientation. See also [ScreenSetOrientation]. Returns [ScreenLandscape] if 'screen' is invalid.
-
-Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
-
-Note: This method is implemented on Android and iOS. On other platforms, this method always returns [ScreenLandscape].
-*/
-//go:nosplit
 func (self class) ScreenGetOrientation(screen int64) ScreenOrientation { //gd:DisplayServer.screen_get_orientation
 	once.Do(singleton)
 	var r_ret = noescape.Call[ScreenOrientation](gd.ObjectChecked(self.AsObject()), methods.screen_get_orientation, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets whether the screen should never be turned off by the operating system's power-saving measures. See also [ScreenIsKeptOn].
-*/
-//go:nosplit
 func (self class) ScreenSetKeepOn(enable bool) { //gd:DisplayServer.screen_set_keep_on
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.screen_set_keep_on, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-/*
-Returns true if the screen should never be turned off by the operating system's power-saving measures. See also [ScreenSetKeepOn].
-*/
-//go:nosplit
 func (self class) ScreenIsKeptOn() bool { //gd:DisplayServer.screen_is_kept_on
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.screen_is_kept_on, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the list of Godot window IDs belonging to this process.
-
-Note: Native dialogs are not included in this list.
-*/
-//go:nosplit
 func (self class) GetWindowList() Packed.Array[int32] { //gd:DisplayServer.get_window_list
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_window_list, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns the ID of the window at the specified screen 'position' (in pixels). On multi-monitor setups, the screen position is relative to the virtual desktop area. On multi-monitor setups with different screen resolutions or orientations, the origin may be located outside any display like this:
-
-
-*/
-//go:nosplit
 func (self class) GetWindowAtScreenPosition(position Vector2i.XY) int64 { //gd:DisplayServer.get_window_at_screen_position
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_window_at_screen_position, gdextension.SizeInt|(gdextension.SizeVector2i<<4), &struct{ position Vector2i.XY }{position})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns internal structure pointers for use in plugins.
-
-Note: This method is implemented on Android, Linux (X11/Wayland), macOS, and Windows.
-*/
-//go:nosplit
 func (self class) WindowGetNativeHandle(handle_type HandleType, window_id int64) int64 { //gd:DisplayServer.window_get_native_handle
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.window_get_native_handle, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5003,22 +4098,12 @@ func (self class) WindowGetNativeHandle(handle_type HandleType, window_id int64)
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns ID of the active popup window, or [InvalidWindowId] if there is none.
-*/
-//go:nosplit
 func (self class) WindowGetActivePopup() int64 { //gd:DisplayServer.window_get_active_popup
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.window_get_active_popup, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the bounding box of control, or menu item that was used to open the popup window, in the screen coordinate system. Clicking this area will not auto-close this popup.
-*/
-//go:nosplit
 func (self class) WindowSetPopupSafeRect(window int64, rect Rect2i.PositionSize) { //gd:DisplayServer.window_set_popup_safe_rect
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_popup_safe_rect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRect2i<<8), &struct {
@@ -5026,28 +4111,12 @@ func (self class) WindowSetPopupSafeRect(window int64, rect Rect2i.PositionSize)
 		rect   Rect2i.PositionSize
 	}{window, rect})
 }
-
-/*
-Returns the bounding box of control, or menu item that was used to open the popup window, in the screen coordinate system.
-*/
-//go:nosplit
 func (self class) WindowGetPopupSafeRect(window int64) Rect2i.PositionSize { //gd:DisplayServer.window_get_popup_safe_rect
 	once.Do(singleton)
 	var r_ret = noescape.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.window_get_popup_safe_rect, gdextension.SizeRect2i|(gdextension.SizeInt<<4), &struct{ window int64 }{window})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the title of the given window to 'title'.
-
-Note: It's recommended to change this value using [Window.Title] instead.
-
-Note: Avoid changing the window title every frame, as this can cause performance issues on certain window managers. Try to change the window title only a few times per second at most.
-
-[Window.Title]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Title
-*/
-//go:nosplit
 func (self class) WindowSetTitle(title String.Readable, window_id int64) { //gd:DisplayServer.window_set_title
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_title, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5055,13 +4124,6 @@ func (self class) WindowSetTitle(title String.Readable, window_id int64) { //gd:
 		window_id int64
 	}{pointers.Get(gd.InternalString(title)), window_id})
 }
-
-/*
-Returns the estimated window title bar size (including text and window buttons) for the window specified by 'window_id' (in pixels). This method does not change the window title.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) WindowGetTitleSize(title String.Readable, window_id int64) Vector2i.XY { //gd:DisplayServer.window_get_title_size
 	once.Do(singleton)
 	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.window_get_title_size, gdextension.SizeVector2i|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5071,28 +4133,6 @@ func (self class) WindowGetTitleSize(title String.Readable, window_id int64) Vec
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets a polygonal region of the window which accepts mouse events. Mouse events outside the region will be passed through.
-
-Passing an empty array will disable passthrough support (all mouse events will be intercepted by the window, which is the default behavior).
-
-
-	// Set region, using Path2D node.
-	DisplayServer.WindowSetMousePassthrough(path2d.Curve().GetBakedPoints(), 0)
-
-	// Set region, using Polygon2D node.
-	DisplayServer.WindowSetMousePassthrough(polygon2d.Polygon(), 0)
-
-	// Reset region to default.
-	DisplayServer.WindowSetMousePassthrough(nil, 0)
-
-
-Note: On Windows, the portion of a window that lies outside the region is not drawn, while on Linux (X11) and macOS it is.
-
-Note: This method is implemented on Linux (X11), macOS and Windows.
-*/
-//go:nosplit
 func (self class) WindowSetMousePassthrough(region Packed.Array[Vector2.XY], window_id int64) { //gd:DisplayServer.window_set_mouse_passthrough
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_mouse_passthrough, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5100,28 +4140,12 @@ func (self class) WindowSetMousePassthrough(region Packed.Array[Vector2.XY], win
 		window_id int64
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](region)), window_id})
 }
-
-/*
-Returns the screen the window specified by 'window_id' is currently positioned on. If the screen overlaps multiple displays, the screen where the window's center is located is returned. See also [WindowSetCurrentScreen]. Returns [InvalidScreen] if 'window_id' is invalid.
-
-Note: This method is implemented on Linux/X11, macOS, and Windows. On other platforms, this method always returns 0.
-*/
-//go:nosplit
 func (self class) WindowGetCurrentScreen(window_id int64) int64 { //gd:DisplayServer.window_get_current_screen
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.window_get_current_screen, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Moves the window specified by 'window_id' to the specified 'screen'. See also [WindowGetCurrentScreen].
-
-Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
-
-Note: This method is implemented on Linux/X11, macOS, and Windows.
-*/
-//go:nosplit
 func (self class) WindowSetCurrentScreen(screen int64, window_id int64) { //gd:DisplayServer.window_set_current_screen
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_current_screen, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5129,43 +4153,18 @@ func (self class) WindowSetCurrentScreen(screen int64, window_id int64) { //gd:D
 		window_id int64
 	}{screen, window_id})
 }
-
-/*
-Returns the position of the client area of the given window on the screen.
-*/
-//go:nosplit
 func (self class) WindowGetPosition(window_id int64) Vector2i.XY { //gd:DisplayServer.window_get_position
 	once.Do(singleton)
 	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.window_get_position, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the position of the given window on the screen including the borders drawn by the operating system. See also [WindowGetPosition].
-*/
-//go:nosplit
 func (self class) WindowGetPositionWithDecorations(window_id int64) Vector2i.XY { //gd:DisplayServer.window_get_position_with_decorations
 	once.Do(singleton)
 	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.window_get_position_with_decorations, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the position of the given window to 'position'. On multi-monitor setups, the screen position is relative to the virtual desktop area. On multi-monitor setups with different screen resolutions or orientations, the origin may be located outside any display like this:
-
-
-
-See also [WindowGetPosition] and [WindowSetSize].
-
-Note: It's recommended to change this value using [Window.Position] instead.
-
-Note: On Linux (Wayland): this method is a no-op.
-
-[Window.Position]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Position
-*/
-//go:nosplit
 func (self class) WindowSetPosition(position Vector2i.XY, window_id int64) { //gd:DisplayServer.window_set_position
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_position, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5173,26 +4172,12 @@ func (self class) WindowSetPosition(position Vector2i.XY, window_id int64) { //g
 		window_id int64
 	}{position, window_id})
 }
-
-/*
-Returns the size of the window specified by 'window_id' (in pixels), excluding the borders drawn by the operating system. This is also called the "client area". See also [WindowGetSizeWithDecorations], [WindowSetSize] and [WindowGetPosition].
-*/
-//go:nosplit
 func (self class) WindowGetSize(window_id int64) Vector2i.XY { //gd:DisplayServer.window_get_size
 	once.Do(singleton)
 	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.window_get_size, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the size of the given window to 'size' (in pixels). See also [WindowGetSize] and [WindowGetPosition].
-
-Note: It's recommended to change this value using [Window.Size] instead.
-
-[Window.Size]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Size
-*/
-//go:nosplit
 func (self class) WindowSetSize(size Vector2i.XY, window_id int64) { //gd:DisplayServer.window_set_size
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_size, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5200,15 +4185,6 @@ func (self class) WindowSetSize(size Vector2i.XY, window_id int64) { //gd:Displa
 		window_id int64
 	}{size, window_id})
 }
-
-/*
-Sets the 'callback' that will be called when the window specified by 'window_id' is moved or resized.
-
-Warning: Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
-
-[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
-*/
-//go:nosplit
 func (self class) WindowSetRectChangedCallback(callback Callable.Function, window_id int64) { //gd:DisplayServer.window_set_rect_changed_callback
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_rect_changed_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5216,15 +4192,6 @@ func (self class) WindowSetRectChangedCallback(callback Callable.Function, windo
 		window_id int64
 	}{pointers.Get(gd.InternalCallable(callback)), window_id})
 }
-
-/*
-Sets the 'callback' that will be called when an event occurs in the window specified by 'window_id'.
-
-Warning: Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
-
-[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
-*/
-//go:nosplit
 func (self class) WindowSetWindowEventCallback(callback Callable.Function, window_id int64) { //gd:DisplayServer.window_set_window_event_callback
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_window_event_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5232,16 +4199,6 @@ func (self class) WindowSetWindowEventCallback(callback Callable.Function, windo
 		window_id int64
 	}{pointers.Get(gd.InternalCallable(callback)), window_id})
 }
-
-/*
-Sets the 'callback' that should be called when any [InputEvent] is sent to the window specified by 'window_id'.
-
-Warning: Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
-
-[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
-[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
-*/
-//go:nosplit
 func (self class) WindowSetInputEventCallback(callback Callable.Function, window_id int64) { //gd:DisplayServer.window_set_input_event_callback
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_input_event_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5249,15 +4206,6 @@ func (self class) WindowSetInputEventCallback(callback Callable.Function, window
 		window_id int64
 	}{pointers.Get(gd.InternalCallable(callback)), window_id})
 }
-
-/*
-Sets the 'callback' that should be called when text is entered using the virtual keyboard to the window specified by 'window_id'.
-
-Warning: Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
-
-[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
-*/
-//go:nosplit
 func (self class) WindowSetInputTextCallback(callback Callable.Function, window_id int64) { //gd:DisplayServer.window_set_input_text_callback
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_input_text_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5265,17 +4213,6 @@ func (self class) WindowSetInputTextCallback(callback Callable.Function, window_
 		window_id int64
 	}{pointers.Get(gd.InternalCallable(callback)), window_id})
 }
-
-/*
-Sets the 'callback' that should be called when files are dropped from the operating system's file manager to the window specified by 'window_id'. 'callback' should take one []string argument, which is the list of dropped files.
-
-Warning: Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
-
-Note: This method is implemented on Windows, macOS, Linux (X11/Wayland), and Web.
-
-[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
-*/
-//go:nosplit
 func (self class) WindowSetDropFilesCallback(callback Callable.Function, window_id int64) { //gd:DisplayServer.window_set_drop_files_callback
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_drop_files_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5283,42 +4220,18 @@ func (self class) WindowSetDropFilesCallback(callback Callable.Function, window_
 		window_id int64
 	}{pointers.Get(gd.InternalCallable(callback)), window_id})
 }
-
-/*
-Returns the [Object.GetInstanceId] of the [Window] the 'window_id' is attached to.
-
-[Object.GetInstanceId]: https://pkg.go.dev/graphics.gd/variant/Object#GetInstanceId
-[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
-*/
-//go:nosplit
 func (self class) WindowGetAttachedInstanceId(window_id int64) int64 { //gd:DisplayServer.window_get_attached_instance_id
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.window_get_attached_instance_id, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the window's maximum size (in pixels). See also [WindowSetMaxSize].
-*/
-//go:nosplit
 func (self class) WindowGetMaxSize(window_id int64) Vector2i.XY { //gd:DisplayServer.window_get_max_size
 	once.Do(singleton)
 	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.window_get_max_size, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the maximum size of the window specified by 'window_id' in pixels. Normally, the user will not be able to drag the window to make it larger than the specified size. See also [WindowGetMaxSize].
-
-Note: It's recommended to change this value using [Window.MaxSize] instead.
-
-Note: Using third-party tools, it is possible for users to disable window geometry restrictions and therefore bypass this limit.
-
-[Window.MaxSize]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.MaxSize
-*/
-//go:nosplit
 func (self class) WindowSetMaxSize(max_size Vector2i.XY, window_id int64) { //gd:DisplayServer.window_set_max_size
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_max_size, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5326,30 +4239,12 @@ func (self class) WindowSetMaxSize(max_size Vector2i.XY, window_id int64) { //gd
 		window_id int64
 	}{max_size, window_id})
 }
-
-/*
-Returns the window's minimum size (in pixels). See also [WindowSetMinSize].
-*/
-//go:nosplit
 func (self class) WindowGetMinSize(window_id int64) Vector2i.XY { //gd:DisplayServer.window_get_min_size
 	once.Do(singleton)
 	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.window_get_min_size, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the minimum size for the given window to 'min_size' in pixels. Normally, the user will not be able to drag the window to make it smaller than the specified size. See also [WindowGetMinSize].
-
-Note: It's recommended to change this value using [Window.MinSize] instead.
-
-Note: By default, the main window has a minimum size of Vector2i(64, 64). This prevents issues that can arise when the window is resized to a near-zero size.
-
-Note: Using third-party tools, it is possible for users to disable window geometry restrictions and therefore bypass this limit.
-
-[Window.MinSize]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.MinSize
-*/
-//go:nosplit
 func (self class) WindowSetMinSize(min_size Vector2i.XY, window_id int64) { //gd:DisplayServer.window_set_min_size
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_min_size, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5357,37 +4252,18 @@ func (self class) WindowSetMinSize(min_size Vector2i.XY, window_id int64) { //gd
 		window_id int64
 	}{min_size, window_id})
 }
-
-/*
-Returns the size of the window specified by 'window_id' (in pixels), including the borders drawn by the operating system. See also [WindowGetSize].
-*/
-//go:nosplit
 func (self class) WindowGetSizeWithDecorations(window_id int64) Vector2i.XY { //gd:DisplayServer.window_get_size_with_decorations
 	once.Do(singleton)
 	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.window_get_size_with_decorations, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the mode of the given window.
-*/
-//go:nosplit
 func (self class) WindowGetMode(window_id int64) WindowMode { //gd:DisplayServer.window_get_mode
 	once.Do(singleton)
 	var r_ret = noescape.Call[WindowMode](gd.ObjectChecked(self.AsObject()), methods.window_get_mode, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets window mode for the given window to 'mode'.
-
-Note: On Android, setting it to [WindowModeFullscreen] or [WindowModeExclusiveFullscreen] will enable immersive mode.
-
-Note: Setting the window to full screen forcibly sets the borderless flag to true, so make sure to set it back to false when not wanted.
-*/
-//go:nosplit
 func (self class) WindowSetMode(mode WindowMode, window_id int64) { //gd:DisplayServer.window_set_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_mode, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5395,11 +4271,6 @@ func (self class) WindowSetMode(mode WindowMode, window_id int64) { //gd:Display
 		window_id int64
 	}{mode, window_id})
 }
-
-/*
-Enables or disables the given window's given 'flag'.
-*/
-//go:nosplit
 func (self class) WindowSetFlag(flag WindowFlags, enabled bool, window_id int64) { //gd:DisplayServer.window_set_flag
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_flag, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12), &struct {
@@ -5408,11 +4279,6 @@ func (self class) WindowSetFlag(flag WindowFlags, enabled bool, window_id int64)
 		window_id int64
 	}{flag, enabled, window_id})
 }
-
-/*
-Returns the current value of the given window's 'flag'.
-*/
-//go:nosplit
 func (self class) WindowGetFlag(flag WindowFlags, window_id int64) bool { //gd:DisplayServer.window_get_flag
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.window_get_flag, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5422,13 +4288,6 @@ func (self class) WindowGetFlag(flag WindowFlags, window_id int64) bool { //gd:D
 	var ret = r_ret
 	return ret
 }
-
-/*
-When [WindowFlagExtendToTitle] flag is set, set offset to the center of the first titlebar button.
-
-Note: This flag is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) WindowSetWindowButtonsOffset(offset Vector2i.XY, window_id int64) { //gd:DisplayServer.window_set_window_buttons_offset
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_window_buttons_offset, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5436,68 +4295,32 @@ func (self class) WindowSetWindowButtonsOffset(offset Vector2i.XY, window_id int
 		window_id int64
 	}{offset, window_id})
 }
-
-/*
-Returns left margins (x), right margins (y) and height (z) of the title that are safe to use (contains no buttons or other elements) when [WindowFlagExtendToTitle] flag is set.
-*/
-//go:nosplit
 func (self class) WindowGetSafeTitleMargins(window_id int64) Vector3i.XYZ { //gd:DisplayServer.window_get_safe_title_margins
 	once.Do(singleton)
 	var r_ret = noescape.Call[Vector3i.XYZ](gd.ObjectChecked(self.AsObject()), methods.window_get_safe_title_margins, gdextension.SizeVector3i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Makes the window specified by 'window_id' request attention, which is materialized by the window title and taskbar entry blinking until the window is focused. This usually has no visible effect if the window is currently focused. The exact behavior varies depending on the operating system.
-*/
-//go:nosplit
 func (self class) WindowRequestAttention(window_id int64) { //gd:DisplayServer.window_request_attention
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_request_attention, 0|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 }
-
-/*
-Moves the window specified by 'window_id' to the foreground, so that it is visible over other windows.
-*/
-//go:nosplit
 func (self class) WindowMoveToForeground(window_id int64) { //gd:DisplayServer.window_move_to_foreground
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_move_to_foreground, 0|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 }
-
-/*
-Returns true if the window specified by 'window_id' is focused.
-*/
-//go:nosplit
 func (self class) WindowIsFocused(window_id int64) bool { //gd:DisplayServer.window_is_focused
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.window_is_focused, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if anything can be drawn in the window specified by 'window_id', false otherwise. Using the --disable-render-loop command line argument or a headless build will return false.
-*/
-//go:nosplit
 func (self class) WindowCanDraw(window_id int64) bool { //gd:DisplayServer.window_can_draw
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.window_can_draw, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets window transient parent. Transient window will be destroyed with its transient parent and will return focus to their parent when closed. The transient window is displayed on top of a non-exclusive full-screen parent window. Transient windows can't enter full-screen mode.
-
-Note: It's recommended to change this value using [Window.Transient] instead.
-
-Note: The behavior might be different depending on the platform.
-
-[Window.Transient]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Transient
-*/
-//go:nosplit
 func (self class) WindowSetTransient(window_id int64, parent_window_id int64) { //gd:DisplayServer.window_set_transient
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_transient, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5505,15 +4328,6 @@ func (self class) WindowSetTransient(window_id int64, parent_window_id int64) { 
 		parent_window_id int64
 	}{window_id, parent_window_id})
 }
-
-/*
-If set to true, this window will always stay on top of its parent window, parent window will ignore input while this window is opened.
-
-Note: On macOS, exclusive windows are confined to the same space (virtual desktop or screen) as the parent window.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) WindowSetExclusive(window_id int64, exclusive bool) { //gd:DisplayServer.window_set_exclusive
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_exclusive, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
@@ -5521,13 +4335,6 @@ func (self class) WindowSetExclusive(window_id int64, exclusive bool) { //gd:Dis
 		exclusive bool
 	}{window_id, exclusive})
 }
-
-/*
-Sets whether [Input Method Editor] should be enabled for the window specified by 'window_id'. See also [WindowSetImePosition].
-
-[Input Method Editor]: https://en.wikipedia.org/wiki/Input_method
-*/
-//go:nosplit
 func (self class) WindowSetImeActive(active bool, window_id int64) { //gd:DisplayServer.window_set_ime_active
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_ime_active, 0|(gdextension.SizeBool<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5535,13 +4342,6 @@ func (self class) WindowSetImeActive(active bool, window_id int64) { //gd:Displa
 		window_id int64
 	}{active, window_id})
 }
-
-/*
-Sets the position of the [Input Method Editor] popup for the specified 'window_id'. Only effective if [WindowSetImeActive] was set to true for the specified 'window_id'.
-
-[Input Method Editor]: https://en.wikipedia.org/wiki/Input_method
-*/
-//go:nosplit
 func (self class) WindowSetImePosition(position Vector2i.XY, window_id int64) { //gd:DisplayServer.window_set_ime_position
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_ime_position, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5549,17 +4349,6 @@ func (self class) WindowSetImePosition(position Vector2i.XY, window_id int64) { 
 		window_id int64
 	}{position, window_id})
 }
-
-/*
-Sets the V-Sync mode of the given window. See also [ProjectSettings] "display/window/vsync/vsync_mode".
-
-Depending on the platform and used renderer, the engine will fall back to [VsyncEnabled] if the desired mode is not supported.
-
-Note: V-Sync modes other than [VsyncEnabled] are only supported in the Forward+ and Mobile rendering methods, not Compatibility.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) WindowSetVsyncMode(vsync_mode VSyncMode, window_id int64) { //gd:DisplayServer.window_set_vsync_mode
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_vsync_mode, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5567,72 +4356,34 @@ func (self class) WindowSetVsyncMode(vsync_mode VSyncMode, window_id int64) { //
 		window_id  int64
 	}{vsync_mode, window_id})
 }
-
-/*
-Returns the V-Sync mode of the given window.
-*/
-//go:nosplit
 func (self class) WindowGetVsyncMode(window_id int64) VSyncMode { //gd:DisplayServer.window_get_vsync_mode
 	once.Do(singleton)
 	var r_ret = noescape.Call[VSyncMode](gd.ObjectChecked(self.AsObject()), methods.window_get_vsync_mode, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the given window can be maximized (the maximize button is enabled).
-*/
-//go:nosplit
 func (self class) WindowIsMaximizeAllowed(window_id int64) bool { //gd:DisplayServer.window_is_maximize_allowed
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.window_is_maximize_allowed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true, if double-click on a window title should maximize it.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) WindowMaximizeOnTitleDblClick() bool { //gd:DisplayServer.window_maximize_on_title_dbl_click
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.window_maximize_on_title_dbl_click, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true, if double-click on a window title should minimize it.
-
-Note: This method is implemented only on macOS.
-*/
-//go:nosplit
 func (self class) WindowMinimizeOnTitleDblClick() bool { //gd:DisplayServer.window_minimize_on_title_dbl_click
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.window_minimize_on_title_dbl_click, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Starts an interactive drag operation on the window with the given 'window_id', using the current mouse position. Call this method when handling a mouse button being pressed to simulate a pressed event on the window's title bar. Using this method allows the window to participate in space switching, tiling, and other system features.
-
-Note: This method is implemented on Linux (X11/Wayland), macOS, and Windows.
-*/
-//go:nosplit
 func (self class) WindowStartDrag(window_id int64) { //gd:DisplayServer.window_start_drag
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_start_drag, 0|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 }
-
-/*
-Starts an interactive resize operation on the window with the given 'window_id', using the current mouse position. Call this method when handling a mouse button being pressed to simulate a pressed event on the window's edge.
-
-Note: This method is implemented on Linux (X11/Wayland), macOS, and Windows.
-*/
-//go:nosplit
 func (self class) WindowStartResize(edge WindowResizeEdge, window_id int64) { //gd:DisplayServer.window_start_resize
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_start_resize, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5640,71 +4391,30 @@ func (self class) WindowStartResize(edge WindowResizeEdge, window_id int64) { //
 		window_id int64
 	}{edge, window_id})
 }
-
-/*
-Returns 1 if a high-contrast user interface theme should be used, 0 otherwise. Returns -1 if status is unknown.
-
-Note: This method is implemented on Linux (X11/Wayland, GNOME), macOS, and Windows.
-*/
-//go:nosplit
 func (self class) AccessibilityShouldIncreaseContrast() int64 { //gd:DisplayServer.accessibility_should_increase_contrast
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.accessibility_should_increase_contrast, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns 1 if flashing, blinking, and other moving content that can cause seizures in users with photosensitive epilepsy should be disabled, 0 otherwise. Returns -1 if status is unknown.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) AccessibilityShouldReduceAnimation() int64 { //gd:DisplayServer.accessibility_should_reduce_animation
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.accessibility_should_reduce_animation, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns 1 if background images, transparency, and other features that can reduce the contrast between the foreground and background should be disabled, 0 otherwise. Returns -1 if status is unknown.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) AccessibilityShouldReduceTransparency() int64 { //gd:DisplayServer.accessibility_should_reduce_transparency
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.accessibility_should_reduce_transparency, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns 1 if a screen reader, Braille display or other assistive app is active, 0 otherwise. Returns -1 if status is unknown.
-
-Note: This method is implemented on Linux, macOS, and Windows.
-
-Note: Accessibility debugging tools, such as Accessibility Insights for Windows, macOS Accessibility Inspector, or AT-SPI Browser do not count as assistive apps and will not affect this value. To test your app with these tools, set [ProjectSettings] "accessibility/general/accessibility_support" to 1.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) AccessibilityScreenReaderActive() int64 { //gd:DisplayServer.accessibility_screen_reader_active
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.accessibility_screen_reader_active, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Creates a new, empty accessibility element resource.
-
-Note: An accessibility element is created and freed automatically for each [Node]. In general, this function should not be called manually.
-
-[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
-*/
-//go:nosplit
 func (self class) AccessibilityCreateElement(window_id int64, role AccessibilityRole) RID.Any { //gd:DisplayServer.accessibility_create_element
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.accessibility_create_element, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5714,13 +4424,6 @@ func (self class) AccessibilityCreateElement(window_id int64, role Accessibility
 	var ret = r_ret
 	return ret
 }
-
-/*
-Creates a new, empty accessibility sub-element resource. Sub-elements can be used to provide accessibility information for objects which are not [Node]s, such as list items, table cells, or menu items. Sub-elements are freed automatically when the parent element is freed, or can be freed early using the [AccessibilityFreeElement] method.
-
-[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
-*/
-//go:nosplit
 func (self class) AccessibilityCreateSubElement(parent_rid RID.Any, role AccessibilityRole, insert_pos int64) RID.Any { //gd:DisplayServer.accessibility_create_sub_element
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.accessibility_create_sub_element, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
@@ -5731,11 +4434,6 @@ func (self class) AccessibilityCreateSubElement(parent_rid RID.Any, role Accessi
 	var ret = r_ret
 	return ret
 }
-
-/*
-Creates a new, empty accessibility sub-element from the shaped text buffer. Sub-elements are freed automatically when the parent element is freed, or can be freed early using the [AccessibilityFreeElement] method.
-*/
-//go:nosplit
 func (self class) AccessibilityCreateSubTextEditElements(parent_rid RID.Any, shaped_text RID.Any, min_height float64, insert_pos int64) RID.Any { //gd:DisplayServer.accessibility_create_sub_text_edit_elements
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.accessibility_create_sub_text_edit_elements, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16), &struct {
@@ -5747,31 +4445,16 @@ func (self class) AccessibilityCreateSubTextEditElements(parent_rid RID.Any, sha
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if 'id' is a valid accessibility element.
-*/
-//go:nosplit
 func (self class) AccessibilityHasElement(id RID.Any) bool { //gd:DisplayServer.accessibility_has_element
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.accessibility_has_element, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Frees an object created by [AccessibilityCreateElement], [AccessibilityCreateSubElement], or [AccessibilityCreateSubTextEditElements].
-*/
-//go:nosplit
 func (self class) AccessibilityFreeElement(id RID.Any) { //gd:DisplayServer.accessibility_free_element
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_free_element, 0|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
 }
-
-/*
-Sets the metadata of the accessibility element.
-*/
-//go:nosplit
 func (self class) AccessibilityElementSetMeta(id RID.Any, meta variant.Any) { //gd:DisplayServer.accessibility_element_set_meta
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_element_set_meta, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVariant<<8), &struct {
@@ -5779,28 +4462,12 @@ func (self class) AccessibilityElementSetMeta(id RID.Any, meta variant.Any) { //
 		meta gdextension.Variant
 	}{id, gdextension.Variant(pointers.Get(gd.InternalVariant(meta)))})
 }
-
-/*
-Returns the metadata of the accessibility element.
-*/
-//go:nosplit
 func (self class) AccessibilityElementGetMeta(id RID.Any) variant.Any { //gd:DisplayServer.accessibility_element_get_meta
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.accessibility_element_get_meta, gdextension.SizeVariant|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Sets window outer (with decorations) and inner (without decorations) bounds for assistive apps.
-
-Note: This method is implemented on Linux, macOS, and Windows.
-
-Note: Advanced users only! [Window] objects call this method automatically.
-
-[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
-*/
-//go:nosplit
 func (self class) AccessibilitySetWindowRect(window_id int64, rect_out Rect2.PositionSize, rect_in Rect2.PositionSize) { //gd:DisplayServer.accessibility_set_window_rect
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_set_window_rect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2<<12), &struct {
@@ -5809,17 +4476,6 @@ func (self class) AccessibilitySetWindowRect(window_id int64, rect_out Rect2.Pos
 		rect_in   Rect2.PositionSize
 	}{window_id, rect_out, rect_in})
 }
-
-/*
-Sets the window focused state for assistive apps.
-
-Note: This method is implemented on Linux, macOS, and Windows.
-
-Note: Advanced users only! [Window] objects call this method automatically.
-
-[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
-*/
-//go:nosplit
 func (self class) AccessibilitySetWindowFocused(window_id int64, focused bool) { //gd:DisplayServer.accessibility_set_window_focused
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_set_window_focused, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
@@ -5827,31 +4483,16 @@ func (self class) AccessibilitySetWindowFocused(window_id int64, focused bool) {
 		focused   bool
 	}{window_id, focused})
 }
-
-/*
-Sets currently focused element.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetFocus(id RID.Any) { //gd:DisplayServer.accessibility_update_set_focus
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_focus, 0|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
 }
-
-/*
-Returns the main accessibility element of the OS native window.
-*/
-//go:nosplit
 func (self class) AccessibilityGetWindowRoot(window_id int64) RID.Any { //gd:DisplayServer.accessibility_get_window_root
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.accessibility_get_window_root, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets element accessibility role.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetRole(id RID.Any, role AccessibilityRole) { //gd:DisplayServer.accessibility_update_set_role
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_role, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -5859,11 +4500,6 @@ func (self class) AccessibilityUpdateSetRole(id RID.Any, role AccessibilityRole)
 		role AccessibilityRole
 	}{id, role})
 }
-
-/*
-Sets element accessibility name.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetName(id RID.Any, name String.Readable) { //gd:DisplayServer.accessibility_update_set_name
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_name, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
@@ -5871,11 +4507,6 @@ func (self class) AccessibilityUpdateSetName(id RID.Any, name String.Readable) {
 		name gdextension.String
 	}{id, pointers.Get(gd.InternalString(name))})
 }
-
-/*
-Sets element accessibility extra information added to the element name.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetExtraInfo(id RID.Any, name String.Readable) { //gd:DisplayServer.accessibility_update_set_extra_info
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_extra_info, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
@@ -5883,11 +4514,6 @@ func (self class) AccessibilityUpdateSetExtraInfo(id RID.Any, name String.Readab
 		name gdextension.String
 	}{id, pointers.Get(gd.InternalString(name))})
 }
-
-/*
-Sets element accessibility description.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetDescription(id RID.Any, description String.Readable) { //gd:DisplayServer.accessibility_update_set_description
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_description, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
@@ -5895,11 +4521,6 @@ func (self class) AccessibilityUpdateSetDescription(id RID.Any, description Stri
 		description gdextension.String
 	}{id, pointers.Get(gd.InternalString(description))})
 }
-
-/*
-Sets element text value.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetValue(id RID.Any, value String.Readable) { //gd:DisplayServer.accessibility_update_set_value
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_value, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
@@ -5907,11 +4528,6 @@ func (self class) AccessibilityUpdateSetValue(id RID.Any, value String.Readable)
 		value gdextension.String
 	}{id, pointers.Get(gd.InternalString(value))})
 }
-
-/*
-Sets tooltip text.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetTooltip(id RID.Any, tooltip String.Readable) { //gd:DisplayServer.accessibility_update_set_tooltip
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_tooltip, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
@@ -5919,11 +4535,6 @@ func (self class) AccessibilityUpdateSetTooltip(id RID.Any, tooltip String.Reada
 		tooltip gdextension.String
 	}{id, pointers.Get(gd.InternalString(tooltip))})
 }
-
-/*
-Sets element bounding box, relative to the node position.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetBounds(id RID.Any, p_rect Rect2.PositionSize) { //gd:DisplayServer.accessibility_update_set_bounds
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_bounds, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8), &struct {
@@ -5931,11 +4542,6 @@ func (self class) AccessibilityUpdateSetBounds(id RID.Any, p_rect Rect2.Position
 		p_rect Rect2.PositionSize
 	}{id, p_rect})
 }
-
-/*
-Sets element 2D transform.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetTransform(id RID.Any, transform Transform2D.OriginXY) { //gd:DisplayServer.accessibility_update_set_transform
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), &struct {
@@ -5943,15 +4549,6 @@ func (self class) AccessibilityUpdateSetTransform(id RID.Any, transform Transfor
 		transform Transform2D.OriginXY
 	}{id, transform})
 }
-
-/*
-Adds a child accessibility element.
-
-Note: [Node] children and sub-elements are added to the child list automatically.
-
-[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateAddChild(id RID.Any, child_id RID.Any) { //gd:DisplayServer.accessibility_update_add_child
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_child, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -5959,11 +4556,6 @@ func (self class) AccessibilityUpdateAddChild(id RID.Any, child_id RID.Any) { //
 		child_id RID.Any
 	}{id, child_id})
 }
-
-/*
-Adds an element that is controlled by this element.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateAddRelatedControls(id RID.Any, related_id RID.Any) { //gd:DisplayServer.accessibility_update_add_related_controls
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_related_controls, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -5971,11 +4563,6 @@ func (self class) AccessibilityUpdateAddRelatedControls(id RID.Any, related_id R
 		related_id RID.Any
 	}{id, related_id})
 }
-
-/*
-Adds an element that details this element.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateAddRelatedDetails(id RID.Any, related_id RID.Any) { //gd:DisplayServer.accessibility_update_add_related_details
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_related_details, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -5983,11 +4570,6 @@ func (self class) AccessibilityUpdateAddRelatedDetails(id RID.Any, related_id RI
 		related_id RID.Any
 	}{id, related_id})
 }
-
-/*
-Adds an element that describes this element.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateAddRelatedDescribedBy(id RID.Any, related_id RID.Any) { //gd:DisplayServer.accessibility_update_add_related_described_by
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_related_described_by, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -5995,11 +4577,6 @@ func (self class) AccessibilityUpdateAddRelatedDescribedBy(id RID.Any, related_i
 		related_id RID.Any
 	}{id, related_id})
 }
-
-/*
-Adds an element that this element flow into.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateAddRelatedFlowTo(id RID.Any, related_id RID.Any) { //gd:DisplayServer.accessibility_update_add_related_flow_to
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_related_flow_to, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -6007,11 +4584,6 @@ func (self class) AccessibilityUpdateAddRelatedFlowTo(id RID.Any, related_id RID
 		related_id RID.Any
 	}{id, related_id})
 }
-
-/*
-Adds an element that labels this element.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateAddRelatedLabeledBy(id RID.Any, related_id RID.Any) { //gd:DisplayServer.accessibility_update_add_related_labeled_by
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_related_labeled_by, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -6019,13 +4591,6 @@ func (self class) AccessibilityUpdateAddRelatedLabeledBy(id RID.Any, related_id 
 		related_id RID.Any
 	}{id, related_id})
 }
-
-/*
-Adds an element that is part of the same radio group.
-
-Note: This method should be called on each element of the group, using all other elements as 'related_id'.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateAddRelatedRadioGroup(id RID.Any, related_id RID.Any) { //gd:DisplayServer.accessibility_update_add_related_radio_group
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_related_radio_group, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -6033,11 +4598,6 @@ func (self class) AccessibilityUpdateAddRelatedRadioGroup(id RID.Any, related_id
 		related_id RID.Any
 	}{id, related_id})
 }
-
-/*
-Adds an element that is an active descendant of this element.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetActiveDescendant(id RID.Any, other_id RID.Any) { //gd:DisplayServer.accessibility_update_set_active_descendant
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_active_descendant, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -6045,11 +4605,6 @@ func (self class) AccessibilityUpdateSetActiveDescendant(id RID.Any, other_id RI
 		other_id RID.Any
 	}{id, other_id})
 }
-
-/*
-Sets next element on the line.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetNextOnLine(id RID.Any, other_id RID.Any) { //gd:DisplayServer.accessibility_update_set_next_on_line
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_next_on_line, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -6057,11 +4612,6 @@ func (self class) AccessibilityUpdateSetNextOnLine(id RID.Any, other_id RID.Any)
 		other_id RID.Any
 	}{id, other_id})
 }
-
-/*
-Sets previous element on the line.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetPreviousOnLine(id RID.Any, other_id RID.Any) { //gd:DisplayServer.accessibility_update_set_previous_on_line
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_previous_on_line, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -6069,11 +4619,6 @@ func (self class) AccessibilityUpdateSetPreviousOnLine(id RID.Any, other_id RID.
 		other_id RID.Any
 	}{id, other_id})
 }
-
-/*
-Sets the element to be a member of the group.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetMemberOf(id RID.Any, group_id RID.Any) { //gd:DisplayServer.accessibility_update_set_member_of
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_member_of, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -6081,11 +4626,6 @@ func (self class) AccessibilityUpdateSetMemberOf(id RID.Any, group_id RID.Any) {
 		group_id RID.Any
 	}{id, group_id})
 }
-
-/*
-Sets target element for the link.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetInPageLinkTarget(id RID.Any, other_id RID.Any) { //gd:DisplayServer.accessibility_update_set_in_page_link_target
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_in_page_link_target, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -6093,11 +4633,6 @@ func (self class) AccessibilityUpdateSetInPageLinkTarget(id RID.Any, other_id RI
 		other_id RID.Any
 	}{id, other_id})
 }
-
-/*
-Sets an element which contains an error message for this element.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetErrorMessage(id RID.Any, other_id RID.Any) { //gd:DisplayServer.accessibility_update_set_error_message
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_error_message, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
@@ -6105,11 +4640,6 @@ func (self class) AccessibilityUpdateSetErrorMessage(id RID.Any, other_id RID.An
 		other_id RID.Any
 	}{id, other_id})
 }
-
-/*
-Sets the priority of the live region updates.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetLive(id RID.Any, live AccessibilityLiveMode) { //gd:DisplayServer.accessibility_update_set_live
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_live, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6117,11 +4647,6 @@ func (self class) AccessibilityUpdateSetLive(id RID.Any, live AccessibilityLiveM
 		live AccessibilityLiveMode
 	}{id, live})
 }
-
-/*
-Adds a callback for the accessibility action (action which can be performed by using a special screen reader command or buttons on the Braille display), and marks this action as supported. The action callback receives one any argument, which value depends on action type.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateAddAction(id RID.Any, action AccessibilityAction, callable Callable.Function) { //gd:DisplayServer.accessibility_update_add_action
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_action, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
@@ -6130,11 +4655,6 @@ func (self class) AccessibilityUpdateAddAction(id RID.Any, action AccessibilityA
 		callable gdextension.Callable
 	}{id, action, pointers.Get(gd.InternalCallable(callable))})
 }
-
-/*
-Adds support for a custom accessibility action. 'action_id' is passed as an argument to the callback of [ActionCustom] action.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateAddCustomAction(id RID.Any, action_id int64, action_description String.Readable) { //gd:DisplayServer.accessibility_update_add_custom_action
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_custom_action, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
@@ -6143,11 +4663,6 @@ func (self class) AccessibilityUpdateAddCustomAction(id RID.Any, action_id int64
 		action_description gdextension.String
 	}{id, action_id, pointers.Get(gd.InternalString(action_description))})
 }
-
-/*
-Sets number of rows in the table.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetTableRowCount(id RID.Any, count int64) { //gd:DisplayServer.accessibility_update_set_table_row_count
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_table_row_count, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6155,11 +4670,6 @@ func (self class) AccessibilityUpdateSetTableRowCount(id RID.Any, count int64) {
 		count int64
 	}{id, count})
 }
-
-/*
-Sets number of columns in the table.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetTableColumnCount(id RID.Any, count int64) { //gd:DisplayServer.accessibility_update_set_table_column_count
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_table_column_count, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6167,11 +4677,6 @@ func (self class) AccessibilityUpdateSetTableColumnCount(id RID.Any, count int64
 		count int64
 	}{id, count})
 }
-
-/*
-Sets position of the row in the table.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetTableRowIndex(id RID.Any, index int64) { //gd:DisplayServer.accessibility_update_set_table_row_index
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_table_row_index, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6179,11 +4684,6 @@ func (self class) AccessibilityUpdateSetTableRowIndex(id RID.Any, index int64) {
 		index int64
 	}{id, index})
 }
-
-/*
-Sets position of the column.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetTableColumnIndex(id RID.Any, index int64) { //gd:DisplayServer.accessibility_update_set_table_column_index
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_table_column_index, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6191,11 +4691,6 @@ func (self class) AccessibilityUpdateSetTableColumnIndex(id RID.Any, index int64
 		index int64
 	}{id, index})
 }
-
-/*
-Sets cell position in the table.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetTableCellPosition(id RID.Any, row_index int64, column_index int64) { //gd:DisplayServer.accessibility_update_set_table_cell_position
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_table_cell_position, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
@@ -6204,11 +4699,6 @@ func (self class) AccessibilityUpdateSetTableCellPosition(id RID.Any, row_index 
 		column_index int64
 	}{id, row_index, column_index})
 }
-
-/*
-Sets cell row/column span.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetTableCellSpan(id RID.Any, row_span int64, column_span int64) { //gd:DisplayServer.accessibility_update_set_table_cell_span
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_table_cell_span, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
@@ -6217,11 +4707,6 @@ func (self class) AccessibilityUpdateSetTableCellSpan(id RID.Any, row_span int64
 		column_span int64
 	}{id, row_span, column_span})
 }
-
-/*
-Sets number of items in the list.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetListItemCount(id RID.Any, size int64) { //gd:DisplayServer.accessibility_update_set_list_item_count
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_list_item_count, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6229,11 +4714,6 @@ func (self class) AccessibilityUpdateSetListItemCount(id RID.Any, size int64) { 
 		size int64
 	}{id, size})
 }
-
-/*
-Sets the position of the element in the list.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetListItemIndex(id RID.Any, index int64) { //gd:DisplayServer.accessibility_update_set_list_item_index
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_list_item_index, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6241,11 +4721,6 @@ func (self class) AccessibilityUpdateSetListItemIndex(id RID.Any, index int64) {
 		index int64
 	}{id, index})
 }
-
-/*
-Sets the hierarchical level of the element in the list.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetListItemLevel(id RID.Any, level int64) { //gd:DisplayServer.accessibility_update_set_list_item_level
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_list_item_level, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6253,11 +4728,6 @@ func (self class) AccessibilityUpdateSetListItemLevel(id RID.Any, level int64) {
 		level int64
 	}{id, level})
 }
-
-/*
-Sets list/tree item selected status.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetListItemSelected(id RID.Any, selected bool) { //gd:DisplayServer.accessibility_update_set_list_item_selected
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_list_item_selected, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -6265,11 +4735,6 @@ func (self class) AccessibilityUpdateSetListItemSelected(id RID.Any, selected bo
 		selected bool
 	}{id, selected})
 }
-
-/*
-Sets list/tree item expanded status.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetListItemExpanded(id RID.Any, expanded bool) { //gd:DisplayServer.accessibility_update_set_list_item_expanded
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_list_item_expanded, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -6277,11 +4742,6 @@ func (self class) AccessibilityUpdateSetListItemExpanded(id RID.Any, expanded bo
 		expanded bool
 	}{id, expanded})
 }
-
-/*
-Sets popup type for popup buttons.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetPopupType(id RID.Any, popup AccessibilityPopupType) { //gd:DisplayServer.accessibility_update_set_popup_type
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_popup_type, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6289,11 +4749,6 @@ func (self class) AccessibilityUpdateSetPopupType(id RID.Any, popup Accessibilit
 		popup AccessibilityPopupType
 	}{id, popup})
 }
-
-/*
-Sets element checked state.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetChecked(id RID.Any, checekd bool) { //gd:DisplayServer.accessibility_update_set_checked
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_checked, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -6301,11 +4756,6 @@ func (self class) AccessibilityUpdateSetChecked(id RID.Any, checekd bool) { //gd
 		checekd bool
 	}{id, checekd})
 }
-
-/*
-Sets numeric value.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetNumValue(id RID.Any, position float64) { //gd:DisplayServer.accessibility_update_set_num_value
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_num_value, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -6313,11 +4763,6 @@ func (self class) AccessibilityUpdateSetNumValue(id RID.Any, position float64) {
 		position float64
 	}{id, position})
 }
-
-/*
-Sets numeric value range.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetNumRange(id RID.Any, min float64, max float64) { //gd:DisplayServer.accessibility_update_set_num_range
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_num_range, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
@@ -6326,11 +4771,6 @@ func (self class) AccessibilityUpdateSetNumRange(id RID.Any, min float64, max fl
 		max float64
 	}{id, min, max})
 }
-
-/*
-Sets numeric value step.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetNumStep(id RID.Any, step float64) { //gd:DisplayServer.accessibility_update_set_num_step
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_num_step, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -6338,11 +4778,6 @@ func (self class) AccessibilityUpdateSetNumStep(id RID.Any, step float64) { //gd
 		step float64
 	}{id, step})
 }
-
-/*
-Sets numeric value jump.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetNumJump(id RID.Any, jump float64) { //gd:DisplayServer.accessibility_update_set_num_jump
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_num_jump, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -6350,11 +4785,6 @@ func (self class) AccessibilityUpdateSetNumJump(id RID.Any, jump float64) { //gd
 		jump float64
 	}{id, jump})
 }
-
-/*
-Sets scroll bar x position.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetScrollX(id RID.Any, position float64) { //gd:DisplayServer.accessibility_update_set_scroll_x
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_scroll_x, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -6362,11 +4792,6 @@ func (self class) AccessibilityUpdateSetScrollX(id RID.Any, position float64) { 
 		position float64
 	}{id, position})
 }
-
-/*
-Sets scroll bar x range.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetScrollXRange(id RID.Any, min float64, max float64) { //gd:DisplayServer.accessibility_update_set_scroll_x_range
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_scroll_x_range, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
@@ -6375,11 +4800,6 @@ func (self class) AccessibilityUpdateSetScrollXRange(id RID.Any, min float64, ma
 		max float64
 	}{id, min, max})
 }
-
-/*
-Sets scroll bar y position.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetScrollY(id RID.Any, position float64) { //gd:DisplayServer.accessibility_update_set_scroll_y
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_scroll_y, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -6387,11 +4807,6 @@ func (self class) AccessibilityUpdateSetScrollY(id RID.Any, position float64) { 
 		position float64
 	}{id, position})
 }
-
-/*
-Sets scroll bar y range.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetScrollYRange(id RID.Any, min float64, max float64) { //gd:DisplayServer.accessibility_update_set_scroll_y_range
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_scroll_y_range, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
@@ -6400,11 +4815,6 @@ func (self class) AccessibilityUpdateSetScrollYRange(id RID.Any, min float64, ma
 		max float64
 	}{id, min, max})
 }
-
-/*
-Sets text underline/overline/strikethrough.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetTextDecorations(id RID.Any, underline bool, strikethrough bool, overline bool) { //gd:DisplayServer.accessibility_update_set_text_decorations
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_text_decorations, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
@@ -6414,11 +4824,6 @@ func (self class) AccessibilityUpdateSetTextDecorations(id RID.Any, underline bo
 		overline      bool
 	}{id, underline, strikethrough, overline})
 }
-
-/*
-Sets element text alignment.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetTextAlign(id RID.Any, align GUI.HorizontalAlignment) { //gd:DisplayServer.accessibility_update_set_text_align
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_text_align, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6426,11 +4831,6 @@ func (self class) AccessibilityUpdateSetTextAlign(id RID.Any, align GUI.Horizont
 		align GUI.HorizontalAlignment
 	}{id, align})
 }
-
-/*
-Sets text selection to the text field. 'text_start_id' and 'text_end_id' should be elements created by [AccessibilityCreateSubTextEditElements]. Character offsets are relative to the corresponding element.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetTextSelection(id RID.Any, text_start_id RID.Any, start_char int64, text_end_id RID.Any, end_char int64) { //gd:DisplayServer.accessibility_update_set_text_selection
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_text_selection, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeInt<<20), &struct {
@@ -6441,11 +4841,6 @@ func (self class) AccessibilityUpdateSetTextSelection(id RID.Any, text_start_id 
 		end_char      int64
 	}{id, text_start_id, start_char, text_end_id, end_char})
 }
-
-/*
-Sets element flag.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetFlag(id RID.Any, flag AccessibilityFlags, value bool) { //gd:DisplayServer.accessibility_update_set_flag
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_flag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
@@ -6454,11 +4849,6 @@ func (self class) AccessibilityUpdateSetFlag(id RID.Any, flag AccessibilityFlags
 		value bool
 	}{id, flag, value})
 }
-
-/*
-Sets element class name.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetClassname(id RID.Any, classname String.Readable) { //gd:DisplayServer.accessibility_update_set_classname
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_classname, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
@@ -6466,11 +4856,6 @@ func (self class) AccessibilityUpdateSetClassname(id RID.Any, classname String.R
 		classname gdextension.String
 	}{id, pointers.Get(gd.InternalString(classname))})
 }
-
-/*
-Sets placeholder text.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetPlaceholder(id RID.Any, placeholder String.Readable) { //gd:DisplayServer.accessibility_update_set_placeholder
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_placeholder, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
@@ -6478,11 +4863,6 @@ func (self class) AccessibilityUpdateSetPlaceholder(id RID.Any, placeholder Stri
 		placeholder gdextension.String
 	}{id, pointers.Get(gd.InternalString(placeholder))})
 }
-
-/*
-Sets element text language.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetLanguage(id RID.Any, language String.Readable) { //gd:DisplayServer.accessibility_update_set_language
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_language, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
@@ -6490,11 +4870,6 @@ func (self class) AccessibilityUpdateSetLanguage(id RID.Any, language String.Rea
 		language gdextension.String
 	}{id, pointers.Get(gd.InternalString(language))})
 }
-
-/*
-Sets text orientation.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetTextOrientation(id RID.Any, vertical bool) { //gd:DisplayServer.accessibility_update_set_text_orientation
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_text_orientation, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -6502,11 +4877,6 @@ func (self class) AccessibilityUpdateSetTextOrientation(id RID.Any, vertical boo
 		vertical bool
 	}{id, vertical})
 }
-
-/*
-Sets the orientation of the list elements.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetListOrientation(id RID.Any, vertical bool) { //gd:DisplayServer.accessibility_update_set_list_orientation
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_list_orientation, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -6514,11 +4884,6 @@ func (self class) AccessibilityUpdateSetListOrientation(id RID.Any, vertical boo
 		vertical bool
 	}{id, vertical})
 }
-
-/*
-Sets the list of keyboard shortcuts used by element.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetShortcut(id RID.Any, shortcut String.Readable) { //gd:DisplayServer.accessibility_update_set_shortcut
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_shortcut, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
@@ -6526,11 +4891,6 @@ func (self class) AccessibilityUpdateSetShortcut(id RID.Any, shortcut String.Rea
 		shortcut gdextension.String
 	}{id, pointers.Get(gd.InternalString(shortcut))})
 }
-
-/*
-Sets link URL.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetUrl(id RID.Any, url String.Readable) { //gd:DisplayServer.accessibility_update_set_url
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_url, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
@@ -6538,11 +4898,6 @@ func (self class) AccessibilityUpdateSetUrl(id RID.Any, url String.Readable) { /
 		url gdextension.String
 	}{id, pointers.Get(gd.InternalString(url))})
 }
-
-/*
-Sets element accessibility role description text.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetRoleDescription(id RID.Any, description String.Readable) { //gd:DisplayServer.accessibility_update_set_role_description
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_role_description, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
@@ -6550,11 +4905,6 @@ func (self class) AccessibilityUpdateSetRoleDescription(id RID.Any, description 
 		description gdextension.String
 	}{id, pointers.Get(gd.InternalString(description))})
 }
-
-/*
-Sets human-readable description of the current checked state.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetStateDescription(id RID.Any, description String.Readable) { //gd:DisplayServer.accessibility_update_set_state_description
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_state_description, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
@@ -6562,11 +4912,6 @@ func (self class) AccessibilityUpdateSetStateDescription(id RID.Any, description
 		description gdextension.String
 	}{id, pointers.Get(gd.InternalString(description))})
 }
-
-/*
-Sets element color value.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetColorValue(id RID.Any, color Color.RGBA) { //gd:DisplayServer.accessibility_update_set_color_value
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_color_value, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
@@ -6574,11 +4919,6 @@ func (self class) AccessibilityUpdateSetColorValue(id RID.Any, color Color.RGBA)
 		color Color.RGBA
 	}{id, color})
 }
-
-/*
-Sets element background color.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetBackgroundColor(id RID.Any, color Color.RGBA) { //gd:DisplayServer.accessibility_update_set_background_color
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_background_color, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
@@ -6586,11 +4926,6 @@ func (self class) AccessibilityUpdateSetBackgroundColor(id RID.Any, color Color.
 		color Color.RGBA
 	}{id, color})
 }
-
-/*
-Sets element foreground color.
-*/
-//go:nosplit
 func (self class) AccessibilityUpdateSetForegroundColor(id RID.Any, color Color.RGBA) { //gd:DisplayServer.accessibility_update_set_foreground_color
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_foreground_color, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
@@ -6598,60 +4933,18 @@ func (self class) AccessibilityUpdateSetForegroundColor(id RID.Any, color Color.
 		color Color.RGBA
 	}{id, color})
 }
-
-/*
-Returns the text selection in the [Input Method Editor] composition string, with the [Vector2i.XY]'s x component being the caret position and y being the length of the selection.
-
-Note: This method is implemented only on macOS.
-
-[Input Method Editor]: https://en.wikipedia.org/wiki/Input_method
-[Vector2i.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2i#XY
-*/
-//go:nosplit
 func (self class) ImeGetSelection() Vector2i.XY { //gd:DisplayServer.ime_get_selection
 	once.Do(singleton)
 	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.ime_get_selection, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the composition string contained within the [Input Method Editor] window.
-
-Note: This method is implemented only on macOS.
-
-[Input Method Editor]: https://en.wikipedia.org/wiki/Input_method
-*/
-//go:nosplit
 func (self class) ImeGetText() String.Readable { //gd:DisplayServer.ime_get_text
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.ime_get_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Shows the virtual keyboard if the platform has one.
-
-'existing_text' parameter is useful for implementing your own [LineEdit] or [TextEdit], as it tells the virtual keyboard what text has already been typed (the virtual keyboard uses it for auto-correct and predictions).
-
-'position' parameter is the screen space [Rect2.PositionSize] of the edited text.
-
-'type' parameter allows configuring which type of virtual keyboard to show.
-
-'max_length' limits the number of characters that can be entered if different from -1.
-
-'cursor_start' can optionally define the current text cursor position if 'cursor_end' is not set.
-
-'cursor_start' and 'cursor_end' can optionally define the current text selection.
-
-Note: This method is implemented on Android, iOS and Web.
-
-[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
-[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
-[TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
-*/
-//go:nosplit
 func (self class) VirtualKeyboardShow(existing_text String.Readable, position Rect2.PositionSize, atype VirtualKeyboardType, max_length int64, cursor_start int64, cursor_end int64) { //gd:DisplayServer.virtual_keyboard_show
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.virtual_keyboard_show, 0|(gdextension.SizeString<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), &struct {
@@ -6663,82 +4956,36 @@ func (self class) VirtualKeyboardShow(existing_text String.Readable, position Re
 		cursor_end    int64
 	}{pointers.Get(gd.InternalString(existing_text)), position, atype, max_length, cursor_start, cursor_end})
 }
-
-/*
-Hides the virtual keyboard if it is shown, does nothing otherwise.
-*/
-//go:nosplit
 func (self class) VirtualKeyboardHide() { //gd:DisplayServer.virtual_keyboard_hide
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.virtual_keyboard_hide, 0, &struct{}{})
 }
-
-/*
-Returns the on-screen keyboard's height in pixels. Returns 0 if there is no keyboard or if it is currently hidden.
-
-Note: On Android 7 and 8, the keyboard height may return 0 the first time the keyboard is opened in non-immersive mode. This behavior does not occur in immersive mode.
-*/
-//go:nosplit
 func (self class) VirtualKeyboardGetHeight() int64 { //gd:DisplayServer.virtual_keyboard_get_height
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.virtual_keyboard_get_height, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if a hardware keyboard is connected.
-
-Note: This method is implemented on Android and iOS. On other platforms, this method always returns true.
-*/
-//go:nosplit
 func (self class) HasHardwareKeyboard() bool { //gd:DisplayServer.has_hardware_keyboard
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_hardware_keyboard, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the 'callable' that should be called when hardware keyboard is connected/disconnected. 'callable' should accept a single bool parameter indicating whether the keyboard is connected (true) or disconnected (false).
-
-Note: This method is only implemented on Android.
-*/
-//go:nosplit
 func (self class) SetHardwareKeyboardConnectionChangeCallback(callable Callable.Function) { //gd:DisplayServer.set_hardware_keyboard_connection_change_callback
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hardware_keyboard_connection_change_callback, 0|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
 }
-
-/*
-Sets the default mouse cursor shape. The cursor's appearance will vary depending on the user's operating system and mouse cursor theme. See also [CursorGetShape] and [CursorSetCustomImage].
-*/
-//go:nosplit
 func (self class) CursorSetShape(shape CursorShape) { //gd:DisplayServer.cursor_set_shape
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.cursor_set_shape, 0|(gdextension.SizeInt<<4), &struct{ shape CursorShape }{shape})
 }
-
-/*
-Returns the default mouse cursor shape set by [CursorSetShape].
-*/
-//go:nosplit
 func (self class) CursorGetShape() CursorShape { //gd:DisplayServer.cursor_get_shape
 	once.Do(singleton)
 	var r_ret = noescape.Call[CursorShape](gd.ObjectChecked(self.AsObject()), methods.cursor_get_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets a custom mouse cursor image for the given 'shape'. This means the user's operating system and mouse cursor theme will no longer influence the mouse cursor's appearance.
-
-'cursor' can be either a [Texture2D] or an [Image], and it should not be larger than 256×256 to display correctly. Optionally, 'hotspot' can be set to offset the image's position relative to the click point. By default, 'hotspot' is set to the top-left corner of the image. See also [CursorSetShape].
-
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
-//go:nosplit
 func (self class) CursorSetCustomImage(cursor [1]gdclass.Resource, shape CursorShape, hotspot Vector2.XY) { //gd:DisplayServer.cursor_set_custom_image
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.cursor_set_custom_image, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector2<<12), &struct {
@@ -6747,40 +4994,16 @@ func (self class) CursorSetCustomImage(cursor [1]gdclass.Resource, shape CursorS
 		hotspot Vector2.XY
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetResource(cursor[0]))), shape, hotspot})
 }
-
-/*
-Returns true if positions of OK and Cancel buttons are swapped in dialogs. This is enabled by default on Windows to follow interface conventions, and be toggled by changing [ProjectSettings] "gui/common/swap_cancel_ok".
-
-Note: This doesn't affect native dialogs such as the ones spawned by [DisplayServer.DialogShow].
-
-[DisplayServer.DialogShow]: https://pkg.go.dev/graphics.gd/classdb/DisplayServer#DialogShow
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) GetSwapCancelOk() bool { //gd:DisplayServer.get_swap_cancel_ok
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_swap_cancel_ok, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Allows the 'process_id' PID to steal focus from this window. In other words, this disables the operating system's focus stealing protection for the specified PID.
-
-Note: This method is implemented only on Windows.
-*/
-//go:nosplit
 func (self class) EnableForStealingFocus(process_id int64) { //gd:DisplayServer.enable_for_stealing_focus
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.enable_for_stealing_focus, 0|(gdextension.SizeInt<<4), &struct{ process_id int64 }{process_id})
 }
-
-/*
-Shows a text dialog which uses the operating system's native look-and-feel. 'callback' should accept a single int parameter which corresponds to the index of the pressed button.
-
-Note: This method is implemented if the display server has the [FeatureNativeDialog] feature. Supported platforms include macOS, Windows, and Android.
-*/
-//go:nosplit
 func (self class) DialogShow(title String.Readable, description String.Readable, buttons Packed.Strings, callback Callable.Function) Error.Code { //gd:DisplayServer.dialog_show
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.dialog_show, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeCallable<<16), &struct {
@@ -6792,13 +5015,6 @@ func (self class) DialogShow(title String.Readable, description String.Readable,
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Shows a text input dialog which uses the operating system's native look-and-feel. 'callback' should accept a single string parameter which contains the text field's contents.
-
-Note: This method is implemented if the display server has the [FeatureNativeDialogInput] feature. Supported platforms include macOS, Windows, and Android.
-*/
-//go:nosplit
 func (self class) DialogInputText(title String.Readable, description String.Readable, existing_text String.Readable, callback Callable.Function) Error.Code { //gd:DisplayServer.dialog_input_text
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.dialog_input_text, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16), &struct {
@@ -6810,30 +5026,6 @@ func (self class) DialogInputText(title String.Readable, description String.Read
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Displays OS native dialog for selecting files or directories in the file system.
-
-Each filter string in the 'filters' array should be formatted like this: *.png,*.jpg,*.jpeg;Image Files;image/png,image/jpeg. The description text of the filter is optional and can be omitted. It is recommended to set both file extension and MIME type. See also [FileDialog.Filters].
-
-Callbacks have the following arguments: status: bool, selected_paths: PackedStringArray, selected_filter_index: int. On Android, the third callback argument (selected_filter_index) is always 0.
-
-Note: This method is implemented if the display server has the [FeatureNativeDialogFile] feature. Supported platforms include Linux (X11/Wayland), Windows, macOS, and Android (API level 29+).
-
-Note: 'current_directory' might be ignored.
-
-Note: Embedded file dialog and Windows file dialog support only file extensions, while Android, Linux, and macOS file dialogs also support MIME types.
-
-Note: On Android and Linux, 'show_hidden' is ignored.
-
-Note: On Android and macOS, native file dialogs have no title.
-
-Note: On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [OS.GetGrantedPermissions] to get a list of saved bookmarks.
-
-[FileDialog.Filters]: https://pkg.go.dev/graphics.gd/classdb/FileDialog#Instance.Filters
-[OS.GetGrantedPermissions]: https://pkg.go.dev/graphics.gd/classdb/OS#GetGrantedPermissions
-*/
-//go:nosplit
 func (self class) FileDialogShow(title String.Readable, current_directory String.Readable, filename String.Readable, show_hidden bool, mode FileDialogMode, filters Packed.Strings, callback Callable.Function, parent_window_id int64) Error.Code { //gd:DisplayServer.file_dialog_show
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.file_dialog_show, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20)|(gdextension.SizePackedArray<<24)|(gdextension.SizeCallable<<28)|(gdextension.SizeInt<<32), &struct {
@@ -6849,38 +5041,6 @@ func (self class) FileDialogShow(title String.Readable, current_directory String
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Displays OS native dialog for selecting files or directories in the file system with additional user selectable options.
-
-Each filter string in the 'filters' array should be formatted like this: *.png,*.jpg,*.jpeg;Image Files;image/png,image/jpeg. The description text of the filter is optional and can be omitted. It is recommended to set both file extension and MIME type. See also [FileDialog.Filters].
-
-'options' is array of data structures with the following keys:
-
-- "name" - option's name string.
-
-- "values" - []string of values. If empty, boolean option (check box) is used.
-
-- "default" - default selected option index (int) or default boolean value (bool).
-
-Callbacks have the following arguments: status: bool, selected_paths: PackedStringArray, selected_filter_index: int, selected_option: Dictionary.
-
-Note: This method is implemented if the display server has the [FeatureNativeDialogFileExtra] feature. Supported platforms include Linux (X11/Wayland), Windows, and macOS.
-
-Note: 'current_directory' might be ignored.
-
-Note: Embedded file dialog and Windows file dialog support only file extensions, while Android, Linux, and macOS file dialogs also support MIME types.
-
-Note: On Linux (X11), 'show_hidden' is ignored.
-
-Note: On macOS, native file dialogs have no title.
-
-Note: On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [OS.GetGrantedPermissions] to get a list of saved bookmarks.
-
-[FileDialog.Filters]: https://pkg.go.dev/graphics.gd/classdb/FileDialog#Instance.Filters
-[OS.GetGrantedPermissions]: https://pkg.go.dev/graphics.gd/classdb/OS#GetGrantedPermissions
-*/
-//go:nosplit
 func (self class) FileDialogWithOptionsShow(title String.Readable, current_directory String.Readable, root String.Readable, filename String.Readable, show_hidden bool, mode FileDialogMode, filters Packed.Strings, options Array.Contains[Dictionary.Any], callback Callable.Function, parent_window_id int64) Error.Code { //gd:DisplayServer.file_dialog_with_options_show
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.file_dialog_with_options_show, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeInt<<24)|(gdextension.SizePackedArray<<28)|(gdextension.SizeArray<<32)|(gdextension.SizeCallable<<36)|(gdextension.SizeInt<<40), &struct {
@@ -6898,192 +5058,76 @@ func (self class) FileDialogWithOptionsShow(title String.Readable, current_direc
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Plays the beep sound from the operative system, if possible. Because it comes from the OS, the beep sound will be audible even if the application is muted. It may also be disabled for the entire OS by the user.
-
-Note: This method is implemented on macOS, Linux (X11/Wayland), and Windows.
-*/
-//go:nosplit
 func (self class) Beep() { //gd:DisplayServer.beep
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.beep, 0, &struct{}{})
 }
-
-/*
-Returns the number of keyboard layouts.
-
-Note: This method is implemented on Linux (X11/Wayland), macOS and Windows.
-*/
-//go:nosplit
 func (self class) KeyboardGetLayoutCount() int64 { //gd:DisplayServer.keyboard_get_layout_count
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.keyboard_get_layout_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns active keyboard layout index.
-
-Note: This method is implemented on Linux (X11/Wayland), macOS, and Windows.
-*/
-//go:nosplit
 func (self class) KeyboardGetCurrentLayout() int64 { //gd:DisplayServer.keyboard_get_current_layout
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.keyboard_get_current_layout, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the active keyboard layout.
-
-Note: This method is implemented on Linux (X11/Wayland), macOS and Windows.
-*/
-//go:nosplit
 func (self class) KeyboardSetCurrentLayout(index int64) { //gd:DisplayServer.keyboard_set_current_layout
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.keyboard_set_current_layout, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
-
-/*
-Returns the ISO-639/BCP-47 language code of the keyboard layout at position 'index'.
-
-Note: This method is implemented on Linux (X11/Wayland), macOS and Windows.
-*/
-//go:nosplit
 func (self class) KeyboardGetLayoutLanguage(index int64) String.Readable { //gd:DisplayServer.keyboard_get_layout_language
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.keyboard_get_layout_language, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the localized name of the keyboard layout at position 'index'.
-
-Note: This method is implemented on Linux (X11/Wayland), macOS and Windows.
-*/
-//go:nosplit
 func (self class) KeyboardGetLayoutName(index int64) String.Readable { //gd:DisplayServer.keyboard_get_layout_name
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.keyboard_get_layout_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Converts a physical (US QWERTY) 'keycode' to one in the active keyboard layout.
-
-Note: This method is implemented on Linux (X11/Wayland), macOS and Windows.
-*/
-//go:nosplit
 func (self class) KeyboardGetKeycodeFromPhysical(keycode Input.Key) Input.Key { //gd:DisplayServer.keyboard_get_keycode_from_physical
 	once.Do(singleton)
 	var r_ret = noescape.Call[Input.Key](gd.ObjectChecked(self.AsObject()), methods.keyboard_get_keycode_from_physical, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ keycode Input.Key }{keycode})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Converts a physical (US QWERTY) 'keycode' to localized label printed on the key in the active keyboard layout.
-
-Note: This method is implemented on Linux (X11/Wayland), macOS and Windows.
-*/
-//go:nosplit
 func (self class) KeyboardGetLabelFromPhysical(keycode Input.Key) Input.Key { //gd:DisplayServer.keyboard_get_label_from_physical
 	once.Do(singleton)
 	var r_ret = noescape.Call[Input.Key](gd.ObjectChecked(self.AsObject()), methods.keyboard_get_label_from_physical, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ keycode Input.Key }{keycode})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Opens system emoji and symbol picker.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) ShowEmojiAndSymbolPicker() { //gd:DisplayServer.show_emoji_and_symbol_picker
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.show_emoji_and_symbol_picker, 0, &struct{}{})
 }
-
-/*
-Displays OS native color picker.
-
-Callbacks have the following arguments: status: bool, color: Color.
-
-Note: This method is implemented if the display server has the [FeatureNativeColorPicker] feature.
-
-Note: This method is only implemented on Linux (X11/Wayland).
-*/
-//go:nosplit
 func (self class) ColorPicker(callback Callable.Function) bool { //gd:DisplayServer.color_picker
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.color_picker, gdextension.SizeBool|(gdextension.SizeCallable<<4), &struct{ callback gdextension.Callable }{pointers.Get(gd.InternalCallable(callback))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Perform window manager processing, including input flushing. See also [ForceProcessAndDropEvents], [Input.FlushBufferedEvents] and [Input.UseAccumulatedInput].
-
-[Input.FlushBufferedEvents]: https://pkg.go.dev/graphics.gd/classdb/Input#FlushBufferedEvents
-[Input.UseAccumulatedInput]: https://pkg.go.dev/graphics.gd/classdb/Input#UseAccumulatedInput
-*/
-//go:nosplit
 func (self class) ProcessEvents() { //gd:DisplayServer.process_events
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.process_events, 0, &struct{}{})
 }
-
-/*
-Forces window manager processing while ignoring all [InputEvent]s. See also [ProcessEvents].
-
-Note: This method is implemented on Windows and macOS.
-
-[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
-*/
-//go:nosplit
 func (self class) ForceProcessAndDropEvents() { //gd:DisplayServer.force_process_and_drop_events
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_process_and_drop_events, 0, &struct{}{})
 }
-
-/*
-Sets the window icon (usually displayed in the top-left corner) in the operating system's native format. The file at 'filename' must be in .ico format on Windows or .icns on macOS. By using specially crafted .ico or .icns icons, [SetNativeIcon] allows specifying different icons depending on the size the icon is displayed at. This size is determined by the operating system and user preferences (including the display scale factor). To use icons in other formats, use [SetIcon] instead.
-
-Note: Requires support for [FeatureNativeIcon].
-*/
-//go:nosplit
 func (self class) SetNativeIcon(filename String.Readable) { //gd:DisplayServer.set_native_icon
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_native_icon, 0|(gdextension.SizeString<<4), &struct{ filename gdextension.String }{pointers.Get(gd.InternalString(filename))})
 }
-
-/*
-Sets the window icon (usually displayed in the top-left corner) with an [Image]. To use icons in the operating system's native format, use [SetNativeIcon] instead.
-
-Note: Requires support for [FeatureIcon].
-
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-*/
-//go:nosplit
 func (self class) SetIcon(image [1]gdclass.Image) { //gd:DisplayServer.set_icon
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon, 0|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0])))})
 }
-
-/*
-Creates a new application status indicator with the specified icon, tooltip, and activation callback.
-
-'callback' should take two arguments: the pressed mouse button (one of the [MouseButton] constants) and the click position in screen coordinates (a [Vector2i.XY]).
-
-[Vector2i.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2i#XY
-*/
-//go:nosplit
 func (self class) CreateStatusIndicator(icon [1]gdclass.Texture2D, tooltip String.Readable, callback Callable.Function) int64 { //gd:DisplayServer.create_status_indicator
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_status_indicator, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12), &struct {
@@ -7094,13 +5138,6 @@ func (self class) CreateStatusIndicator(icon [1]gdclass.Texture2D, tooltip Strin
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the application status indicator icon.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) StatusIndicatorSetIcon(id int64, icon [1]gdclass.Texture2D) { //gd:DisplayServer.status_indicator_set_icon
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.status_indicator_set_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
@@ -7108,13 +5145,6 @@ func (self class) StatusIndicatorSetIcon(id int64, icon [1]gdclass.Texture2D) { 
 		icon gdextension.Object
 	}{id, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
 }
-
-/*
-Sets the application status indicator tooltip.
-
-Note: This method is implemented on macOS and Windows.
-*/
-//go:nosplit
 func (self class) StatusIndicatorSetTooltip(id int64, tooltip String.Readable) { //gd:DisplayServer.status_indicator_set_tooltip
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.status_indicator_set_tooltip, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
@@ -7122,19 +5152,6 @@ func (self class) StatusIndicatorSetTooltip(id int64, tooltip String.Readable) {
 		tooltip gdextension.String
 	}{id, pointers.Get(gd.InternalString(tooltip))})
 }
-
-/*
-Sets the application status indicator native popup menu.
-
-Note: On macOS, the menu is activated by any mouse button. Its activation callback is not triggered.
-
-Note: On Windows, the menu is activated by the right mouse button, selecting the status icon and pressing Shift + F10, or the applications key. The menu's activation callback for the other mouse buttons is still triggered.
-
-Note: Native popup is only supported if [NativeMenu] supports the [Nativemenu.FeaturePopupMenu] feature.
-
-[NativeMenu]: https://pkg.go.dev/graphics.gd/classdb/NativeMenu
-*/
-//go:nosplit
 func (self class) StatusIndicatorSetMenu(id int64, menu_rid RID.Any) { //gd:DisplayServer.status_indicator_set_menu
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.status_indicator_set_menu, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8), &struct {
@@ -7142,15 +5159,6 @@ func (self class) StatusIndicatorSetMenu(id int64, menu_rid RID.Any) { //gd:Disp
 		menu_rid RID.Any
 	}{id, menu_rid})
 }
-
-/*
-Sets the application status indicator activation callback. 'callback' should take two arguments: int mouse button index (one of [MouseButton] values) and [Vector2i.XY] click position in screen coordinates.
-
-Note: This method is implemented on macOS and Windows.
-
-[Vector2i.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2i#XY
-*/
-//go:nosplit
 func (self class) StatusIndicatorSetCallback(id int64, callback Callable.Function) { //gd:DisplayServer.status_indicator_set_callback
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.status_indicator_set_callback, 0|(gdextension.SizeInt<<4)|(gdextension.SizeCallable<<8), &struct {
@@ -7158,130 +5166,52 @@ func (self class) StatusIndicatorSetCallback(id int64, callback Callable.Functio
 		callback gdextension.Callable
 	}{id, pointers.Get(gd.InternalCallable(callback))})
 }
-
-/*
-Returns the rectangle for the given status indicator 'id' in screen coordinates. If the status indicator is not visible, returns an empty [Rect2.PositionSize].
-
-Note: This method is implemented on macOS and Windows.
-
-[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
-*/
-//go:nosplit
 func (self class) StatusIndicatorGetRect(id int64) Rect2.PositionSize { //gd:DisplayServer.status_indicator_get_rect
 	once.Do(singleton)
 	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.status_indicator_get_rect, gdextension.SizeRect2|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Removes the application status indicator.
-*/
-//go:nosplit
 func (self class) DeleteStatusIndicator(id int64) { //gd:DisplayServer.delete_status_indicator
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.delete_status_indicator, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 }
-
-/*
-Returns the total number of available tablet drivers.
-
-Note: This method is implemented only on Windows.
-*/
-//go:nosplit
 func (self class) TabletGetDriverCount() int64 { //gd:DisplayServer.tablet_get_driver_count
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.tablet_get_driver_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the tablet driver name for the given index.
-
-Note: This method is implemented only on Windows.
-*/
-//go:nosplit
 func (self class) TabletGetDriverName(idx int64) String.Readable { //gd:DisplayServer.tablet_get_driver_name
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.tablet_get_driver_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns current active tablet driver name.
-
-Note: This method is implemented only on Windows.
-*/
-//go:nosplit
 func (self class) TabletGetCurrentDriver() String.Readable { //gd:DisplayServer.tablet_get_current_driver
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.tablet_get_current_driver, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Set active tablet driver name.
-
-Supported drivers:
-
-- winink: Windows Ink API, default.
-
-- wintab: Wacom Wintab API (compatible device driver required).
-
-- dummy: Dummy driver, tablet input is disabled.
-
-Note: This method is implemented only on Windows.
-*/
-//go:nosplit
 func (self class) TabletSetCurrentDriver(name String.Readable) { //gd:DisplayServer.tablet_set_current_driver
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.tablet_set_current_driver, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
-
-/*
-Returns true if the window background can be made transparent. This method returns false if [ProjectSettings] "display/window/per_pixel_transparency/allowed" is set to false, or if transparency is not supported by the renderer or OS compositor.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) IsWindowTransparencyAvailable() bool { //gd:DisplayServer.is_window_transparency_available
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_window_transparency_available, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Registers an [Object] which represents an additional output that will be rendered too, beyond normal windows. The [Object] is only used as an identifier, which can be later passed to [UnregisterAdditionalOutput].
-
-This can be used to prevent Godot from skipping rendering when no normal windows are visible.
-
-[Object]: https://pkg.go.dev/graphics.gd/variant/Object
-*/
-//go:nosplit
 func (self class) RegisterAdditionalOutput(obj [1]gd.Object) { //gd:DisplayServer.register_additional_output
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_additional_output, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0]))})
 }
-
-/*
-Unregisters an [Object] representing an additional output, that was registered via [RegisterAdditionalOutput].
-
-[Object]: https://pkg.go.dev/graphics.gd/variant/Object
-*/
-//go:nosplit
 func (self class) UnregisterAdditionalOutput(obj [1]gd.Object) { //gd:DisplayServer.unregister_additional_output
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_additional_output, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0])))})
 }
-
-/*
-Returns true if any additional outputs have been registered via [RegisterAdditionalOutput].
-*/
-//go:nosplit
 func (self class) HasAdditionalOutputs() bool { //gd:DisplayServer.has_additional_outputs
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_additional_outputs, gdextension.SizeBool, &struct{}{})

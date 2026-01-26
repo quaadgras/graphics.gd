@@ -1921,20 +1921,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Called when there is a root node in the current edited scene, [Handles] is implemented, and an [InputEvent] happens in the 2D viewport. If this method returns true, 'event' is intercepted by this [EditorPlugin], otherwise 'event' is forwarded to other Editor classes.
-
-	ForwardCanvasGuiInput := func(event InputEvent.Instance) bool {
-		return true // Prevents the InputEvent from reaching other Editor classes.
-	}
-
-This method must return false in order to forward the [InputEvent] to other Editor classes.
-
-[EditorPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin
-[Handles]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
-*/
 func (class) _forward_canvas_gui_input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1945,27 +1931,6 @@ func (class) _forward_canvas_gui_input(impl func(ptr gdclass.Receiver, event [1]
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called by the engine when the 2D editor's viewport is updated. 'viewport_control' is an overlay on top of the viewport and it can be used for drawing. You can update the viewport manually by calling [UpdateOverlays].
-
-	ForwardCanvasDrawOverViewport := func(overlay Control.Instance) {
-		// Draw a circle at cursor position.
-		overlay.AsCanvasItem().DrawCircle(overlay.AsCanvasItem().GetLocalMousePosition(), 64, Color.W3C.White)
-	}
-	ForwardCanvasGuiInput := func(event InputEvent.Instance) bool {
-		if Object.Is[InputEventMouseMotion.Instance](event) {
-			// Redraw viewport when cursor is moved.
-			// Note: UpdateOverlays is a method of EditorPlugin, so you would call it on the instance of your plugin.
-			// For this example, we'll just comment it out as we don't have the context here.
-			editorPlugin.UpdateOverlays()
-			return true
-		}
-		return false
-	}
-
-[UpdateOverlays]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.UpdateOverlays
-*/
 func (class) _forward_canvas_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var viewport_control = [1]gdclass.Control{gdclass.NewControl(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1975,15 +1940,6 @@ func (class) _forward_canvas_draw_over_viewport(impl func(ptr gdclass.Receiver, 
 		impl(self, viewport_control)
 	}
 }
-
-/*
-This method is the same as [ForwardCanvasDrawOverViewport], except it draws on top of everything. Useful when you need an extra layer that shows over anything else.
-
-You need to enable calling of this method by using [SetForceDrawOverForwardingEnabled].
-
-[ForwardCanvasDrawOverViewport]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-[SetForceDrawOverForwardingEnabled]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.SetForceDrawOverForwardingEnabled
-*/
 func (class) _forward_canvas_force_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var viewport_control = [1]gdclass.Control{gdclass.NewControl(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -1993,20 +1949,6 @@ func (class) _forward_canvas_force_draw_over_viewport(impl func(ptr gdclass.Rece
 		impl(self, viewport_control)
 	}
 }
-
-/*
-Called when there is a root node in the current edited scene, [Handles] is implemented, and an [InputEvent] happens in the 3D viewport. The return value decides whether the [InputEvent] is consumed or forwarded to other [EditorPlugin]s. See [AfterGUIInput] for options.
-
-	Forward3dGuiInput := func(viewport_camera Camera3D.Instance, event InputEvent.Instance) EditorPlugin.AfterGUIInput {
-		return EditorPlugin.AfterGuiInputStop
-	}
-
-This method must return [AfterGuiInputPass] in order to forward the [InputEvent] to other Editor classes.
-
-[EditorPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin
-[Handles]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
-*/
 func (class) _forward_3d_gui_input(impl func(ptr gdclass.Receiver, viewport_camera [1]gdclass.Camera3D, event [1]gdclass.InputEvent) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var viewport_camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -2020,25 +1962,6 @@ func (class) _forward_3d_gui_input(impl func(ptr gdclass.Receiver, viewport_came
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called by the engine when the 3D editor's viewport is updated. 'viewport_control' is an overlay on top of the viewport and it can be used for drawing. You can update the viewport manually by calling [UpdateOverlays].
-
-	Forward3dDrawOverViewport := func(overlay Control.Instance) {
-		// Draw a circle at cursor position.
-		overlay.AsCanvasItem().DrawCircle(overlay.AsCanvasItem().GetLocalMousePosition(), 64, Color.W3C.White)
-	}
-	Forward3dGuiInput := func(viewport_camera Camera3D.Instance, event InputEvent.Instance) EditorPlugin.AfterGUIInput {
-		if Object.Is[InputEventMouseMotion.Instance](event) {
-			// Redraw viewport when cursor is moved.
-			editorPlugin.UpdateOverlays()
-			return EditorPlugin.AfterGuiInputStop
-		}
-		return EditorPlugin.AfterGuiInputPass
-	}
-
-[UpdateOverlays]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.UpdateOverlays
-*/
 func (class) _forward_3d_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var viewport_control = [1]gdclass.Control{gdclass.NewControl(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -2048,15 +1971,6 @@ func (class) _forward_3d_draw_over_viewport(impl func(ptr gdclass.Receiver, view
 		impl(self, viewport_control)
 	}
 }
-
-/*
-This method is the same as [Forward3dDrawOverViewport], except it draws on top of everything. Useful when you need an extra layer that shows over anything else.
-
-You need to enable calling of this method by using [SetForceDrawOverForwardingEnabled].
-
-[Forward3dDrawOverViewport]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-[SetForceDrawOverForwardingEnabled]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.SetForceDrawOverForwardingEnabled
-*/
 func (class) _forward_3d_force_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var viewport_control = [1]gdclass.Control{gdclass.NewControl(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -2066,12 +1980,6 @@ func (class) _forward_3d_force_draw_over_viewport(impl func(ptr gdclass.Receiver
 		impl(self, viewport_control)
 	}
 }
-
-/*
-Override this method in your plugin to provide the name of the plugin when displayed in the Godot editor.
-
-For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", "Game", and "AssetLib" buttons.
-*/
 func (class) _get_plugin_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -2084,23 +1992,6 @@ func (class) _get_plugin_name(impl func(ptr gdclass.Receiver) String.Readable) (
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Override this method in your plugin to return a [Texture2D] in order to give it an icon.
-
-For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", "Game", and "AssetLib" buttons.
-
-Ideally, the plugin icon should be white with a transparent background and 16×16 pixels in size.
-
-	GetPluginIcon := func() Texture2D.Instance {
-		// You can use a custom icon:
-		return Resource.Load[Texture2D.Instance]("res://addons/my_plugin/my_plugin_icon.svg")
-		// Or use a built-in icon:
-		return EditorInterface.GetEditorTheme().GetIcon("Node", "EditorIcons")
-	}
-
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
 func (class) _get_plugin_icon(impl func(ptr gdclass.Receiver) [1]gdclass.Texture2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -2113,54 +2004,6 @@ func (class) _get_plugin_icon(impl func(ptr gdclass.Receiver) [1]gdclass.Texture
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Returns true if this is a main screen editor plugin (it goes in the workspace selector together with 2D, 3D, Script, Game, and AssetLib).
-
-When the plugin's workspace is selected, other main screen plugins will be hidden, but your plugin will not appear automatically. It needs to be added as a child of [EditorInterface.GetEditorMainScreen] and made visible inside [MakeVisible].
-
-Use [GetPluginName] and [GetPluginIcon] to customize the plugin button's appearance.
-
-	package main
-
-	import (
-		"graphics.gd/classdb/Control"
-		"graphics.gd/classdb/EditorInterface"
-		"graphics.gd/classdb/EditorPlugin"
-		"graphics.gd/classdb/PackedScene"
-		"graphics.gd/classdb/Resource"
-		"graphics.gd/classdb/Texture2D"
-	)
-
-	type EditorPluginWithMainScreen struct {
-		EditorPlugin.Extension[EditorPluginWithMainScreen]
-
-		pluginControl Control.Instance
-	}
-
-	func (e *EditorPluginWithMainScreen) EnterTree() {
-		e.pluginControl = Resource.Load[PackedScene.Is[Control.Instance]]("my_plugin_control.tscn").Instantiate()
-		EditorInterface.GetEditorMainScreen().AsNode().AddChild(e.pluginControl.AsNode())
-		e.pluginControl.AsCanvasItem().Hide()
-	}
-
-	func (e *EditorPluginWithMainScreen) HasMainScreen() bool { return true }
-
-	func (e *EditorPluginWithMainScreen) MakeVisible(visible bool) {
-		e.pluginControl.AsCanvasItem().SetVisible(visible)
-	}
-
-	func (e *EditorPluginWithMainScreen) GetPluginName() string { return "My Super Cool Plugin 3000" }
-
-	func (e *EditorPluginWithMainScreen) GetPluginIcon() Texture2D.Instance {
-		return EditorInterface.GetEditorTheme().GetIcon("Node", "EditorIcons")
-	}
-
-[EditorInterface.GetEditorMainScreen]: https://pkg.go.dev/graphics.gd/classdb/EditorInterface#GetEditorMainScreen
-[GetPluginIcon]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-[GetPluginName]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-[MakeVisible]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-*/
 func (class) _has_main_screen(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -2168,12 +2011,6 @@ func (class) _has_main_screen(impl func(ptr gdclass.Receiver) bool) (cb gd.Exten
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-This function will be called when the editor is requested to become visible. It is used for plugins that edit a specific object type.
-
-Remember that you have to manage the visibility of all your editor controls manually.
-*/
 func (class) _make_visible(impl func(ptr gdclass.Receiver, visible bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var visible = gd.UnsafeGet[bool](p_args, 0)
@@ -2181,12 +2018,6 @@ func (class) _make_visible(impl func(ptr gdclass.Receiver, visible bool)) (cb gd
 		impl(self, visible)
 	}
 }
-
-/*
-This function is used for plugins that edit specific object types (nodes or resources). It requests the editor to edit the given object.
-
-'object' can be null if the plugin was editing an object, but there is no longer any selected object handled by this plugin. It can be used to cleanup editing state.
-*/
 func (class) _edit(impl func(ptr gdclass.Receiver, obj [1]gd.Object)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
@@ -2195,17 +2026,6 @@ func (class) _edit(impl func(ptr gdclass.Receiver, obj [1]gd.Object)) (cb gd.Ext
 		impl(self, obj)
 	}
 }
-
-/*
-Implement this function if your plugin edits a specific type of object (Resource or Node). If you return true, then you will get the functions [Edit] and [MakeVisible] called when the editor requests them. If you have declared the methods [ForwardCanvasGuiInput] and [Forward3dGuiInput] these will be called too.
-
-Note: Each plugin should handle only one type of objects at a time. If a plugin handles more types of objects and they are edited at the same time, it will result in errors.
-
-[Edit]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-[Forward3dGuiInput]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-[ForwardCanvasGuiInput]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-[MakeVisible]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-*/
 func (class) _handles(impl func(ptr gdclass.Receiver, obj [1]gd.Object) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
@@ -2215,24 +2035,6 @@ func (class) _handles(impl func(ptr gdclass.Receiver, obj [1]gd.Object) bool) (c
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Override this method to provide a state data you want to be saved, like view position, grid settings, folding, etc. This is used when saving the scene (so state is kept when opening it again) and for switching tabs (so state can be restored when the tab returns). This data is automatically saved for each scene in an editstate file in the editor metadata folder. If you want to store global (scene-independent) editor data for your plugin, you can use [GetWindowLayout] instead.
-
-Use [SetState] to restore your saved state.
-
-Note: This method should not be used to save important settings that should persist with the project.
-
-Note: You must implement [GetPluginName] for the state to be stored and restored correctly.
-
-	GetState := func() map[any]any {
-		return map[any]any{"zoom": nil, "preferred_color": nil}
-	}
-
-[GetPluginName]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-[GetWindowLayout]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-[SetState]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-*/
 func (class) _get_state(impl func(ptr gdclass.Receiver) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -2245,22 +2047,6 @@ func (class) _get_state(impl func(ptr gdclass.Receiver) Dictionary.Any) (cb gd.E
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Restore the state saved by [GetState]. This method is called when the current scene tab is changed in the editor.
-
-Note: Your plugin must implement [GetPluginName], otherwise it will not be recognized and this method will not be called.
-
-	var zoom float64
-	var preferred_color Color.RGBA
-	SetState := func(data map[any]any) {
-		zoom = data["zoom"].(float64)
-		preferred_color = data["my_color"].(Color.RGBA)
-	}
-
-[GetPluginName]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-[GetState]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-*/
 func (class) _set_state(impl func(ptr gdclass.Receiver, state Dictionary.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 0))))
@@ -2269,42 +2055,12 @@ func (class) _set_state(impl func(ptr gdclass.Receiver, state Dictionary.Any)) (
 		impl(self, state)
 	}
 }
-
-/*
-Clear all the state and reset the object being edited to zero. This ensures your plugin does not keep editing a currently existing node, or a node from the wrong scene.
-*/
 func (class) _clear(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
-
-/*
-Override this method to provide a custom message that lists unsaved changes. The editor will call this method when exiting or when closing a scene, and display the returned string in a confirmation dialog. Return empty string if the plugin has no unsaved changes.
-
-When closing a scene, 'for_scene' is the path to the scene being closed. You can use it to handle built-in resources in that scene.
-
-If the user confirms saving, [SaveExternalData] will be called, before closing the editor.
-
-	var unsaved bool
-	GetUnsavedStatus := func(for_scene string) string {
-		if !unsaved {
-			return ""
-		}
-		if for_scene == "" {
-			return "Save changes in MyCustomPlugin before closing?"
-		}
-		return "Scene " + filepath.Base(for_scene) + " has changes from MyCustomPlugin. Save before closing?"
-	}
-	SaveExternalData := func() {
-		unsaved = false
-	}
-
-If the plugin has no scene-specific changes, you can ignore the calls when closing scenes:
-
-[SaveExternalData]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-*/
 func (class) _get_unsaved_status(impl func(ptr gdclass.Receiver, for_scene String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var for_scene = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -2319,32 +2075,18 @@ func (class) _get_unsaved_status(impl func(ptr gdclass.Receiver, for_scene Strin
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-This method is called after the editor saves the project or when it's closed. It asks the plugin to save edited external scenes/resources.
-*/
 func (class) _save_external_data(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
-
-/*
-This method is called when the editor is about to save the project, switch to another tab, etc. It asks the plugin to apply any pending state changes to ensure consistency.
-
-This is used, for example, in shader editors to let the plugin know that it must apply the shader code being written by the user to the object.
-*/
 func (class) _apply_changes(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
-
-/*
-This is for editors that edit script-based objects. You can return a list of breakpoints in the format (script:line), for example: res://path_to_script.gd:25.
-*/
 func (class) _get_breakpoints(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -2357,17 +2099,6 @@ func (class) _get_breakpoints(impl func(ptr gdclass.Receiver) Packed.Strings) (c
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Restore the plugin GUI layout and data saved by [GetWindowLayout]. This method is called for every plugin on editor startup. Use the provided 'configuration' file to read your saved data.
-
-	SetWindowLayout := func(configuration ConfigFile.Instance) {
-		window.SetPosition(configuration.MoreArgs().GetValue("MyPlugin", "window_position", Vector2i.Zero).(Vector2i.XY))
-		textureRect.AsCanvasItem().SetModulate(configuration.MoreArgs().GetValue("MyPlugin", "icon_color", Color.W3C.White).(Color.RGBA))
-	}
-
-[GetWindowLayout]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-*/
 func (class) _set_window_layout(impl func(ptr gdclass.Receiver, configuration [1]gdclass.ConfigFile)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var configuration = [1]gdclass.ConfigFile{gdclass.NewConfigFile(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -2377,20 +2108,6 @@ func (class) _set_window_layout(impl func(ptr gdclass.Receiver, configuration [1
 		impl(self, configuration)
 	}
 }
-
-/*
-Override this method to provide the GUI layout of the plugin or any other data you want to be stored. This is used to save the project's editor layout when [QueueSaveLayout] is called or the editor layout was changed (for example changing the position of a dock). The data is stored in the editor_layout.cfg file in the editor metadata directory.
-
-Use [SetWindowLayout] to restore your saved layout.
-
-	GetWindowLayout := func(configuration ConfigFile.Instance) {
-		configuration.SetValue("MyPlugin", "window_position", window.Position())
-		configuration.SetValue("MyPlugin", "icon_color", control.AsCanvasItem().Modulate())
-	}
-
-[QueueSaveLayout]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.QueueSaveLayout
-[SetWindowLayout]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-*/
 func (class) _get_window_layout(impl func(ptr gdclass.Receiver, configuration [1]gdclass.ConfigFile)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var configuration = [1]gdclass.ConfigFile{gdclass.NewConfigFile(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -2400,14 +2117,6 @@ func (class) _get_window_layout(impl func(ptr gdclass.Receiver, configuration [1
 		impl(self, configuration)
 	}
 }
-
-/*
-This method is called when the editor is about to run the project. The plugin can then perform required operations before the project runs.
-
-This method must return a boolean. If this method returns false, the project will not run. The run is aborted immediately, so this also prevents all other plugins' [Build] methods from running.
-
-[Build]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-*/
 func (class) _build(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -2415,24 +2124,12 @@ func (class) _build(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassC
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called by the engine when the user enables the [EditorPlugin] in the Plugin tab of the project settings window.
-
-[EditorPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin
-*/
 func (class) _enable_plugin(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
-
-/*
-Called by the engine when the user disables the [EditorPlugin] in the Plugin tab of the project settings window.
-
-[EditorPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin
-*/
 func (class) _disable_plugin(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -2440,33 +2137,12 @@ func (class) _disable_plugin(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionCl
 	}
 }
 
-/*
-Adds a custom control to a container in the editor UI.
-
-Please remember that you have to manage the visibility of your custom controls yourself (and likely hide it after adding it).
-
-When your plugin is deactivated, make sure to remove your custom control with [RemoveControlFromContainer] and free it with [Node.QueueFree].
-
-[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
-[RemoveControlFromContainer]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.RemoveControlFromContainer
-*/
-//go:nosplit
 func (self class) AddControlToContainer(container CustomControlContainer, control [1]gdclass.Control) { //gd:EditorPlugin.add_control_to_container
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_control_to_container, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		container CustomControlContainer
 		control   gdextension.Object
 	}{container, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetControl(control[0])[0]))})
 }
-
-/*
-Adds a control to the bottom panel (together with Output, Debug, Animation, etc.). Returns a reference to the button added. It's up to you to hide/show the button when needed. When your plugin is deactivated, make sure to remove your custom control with [RemoveControlFromBottomPanel] and free it with [Node.QueueFree].
-
-Optionally, you can specify a shortcut parameter. When pressed, this shortcut will toggle the bottom panel's visibility. See the default editor bottom panel shortcuts in the Editor Settings for inspiration. Per convention, they all use Alt modifier.
-
-[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
-[RemoveControlFromBottomPanel]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.RemoveControlFromBottomPanel
-*/
-//go:nosplit
 func (self class) AddControlToBottomPanel(control [1]gdclass.Control, title String.Readable, shortcut [1]gdclass.Shortcut) [1]gdclass.Button { //gd:EditorPlugin.add_control_to_bottom_panel
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.add_control_to_bottom_panel, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeObject<<12), &struct {
 		control  gdextension.Object
@@ -2476,20 +2152,6 @@ func (self class) AddControlToBottomPanel(control [1]gdclass.Control, title Stri
 	var ret = [1]gdclass.Button{gdclass.NewButton(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Adds the control to a specific dock slot.
-
-If the dock is repositioned and as long as the plugin is active, the editor will save the dock position on further sessions.
-
-When your plugin is deactivated, make sure to remove your custom control with [RemoveControlFromDocks] and free it with [Node.QueueFree].
-
-Optionally, you can specify a shortcut parameter. When pressed, this shortcut will open and focus the dock.
-
-[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
-[RemoveControlFromDocks]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.RemoveControlFromDocks
-*/
-//go:nosplit
 func (self class) AddControlToDock(slot DockSlot, control [1]gdclass.Control, shortcut [1]gdclass.Shortcut) { //gd:EditorPlugin.add_control_to_dock
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_control_to_dock, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), &struct {
 		slot     DockSlot
@@ -2497,112 +2159,44 @@ func (self class) AddControlToDock(slot DockSlot, control [1]gdclass.Control, sh
 		shortcut gdextension.Object
 	}{slot, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetControl(control[0])[0])), gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0])))})
 }
-
-/*
-Removes the control from the dock. You have to manually [Node.QueueFree] the control.
-
-[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
-*/
-//go:nosplit
 func (self class) RemoveControlFromDocks(control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_docks
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_control_from_docks, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0])))})
 }
-
-/*
-Removes the control from the bottom panel. You have to manually [Node.QueueFree] the control.
-
-[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
-*/
-//go:nosplit
 func (self class) RemoveControlFromBottomPanel(control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_bottom_panel
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_control_from_bottom_panel, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0])))})
 }
-
-/*
-Removes the control from the specified container. You have to manually [Node.QueueFree] the control.
-
-[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
-*/
-//go:nosplit
 func (self class) RemoveControlFromContainer(container CustomControlContainer, control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_container
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_control_from_container, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		container CustomControlContainer
 		control   gdextension.Object
 	}{container, gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0])))})
 }
-
-/*
-Sets the tab icon for the given control in a dock slot. Setting to null removes the icon.
-*/
-//go:nosplit
 func (self class) SetDockTabIcon(control [1]gdclass.Control, icon [1]gdclass.Texture2D) { //gd:EditorPlugin.set_dock_tab_icon
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dock_tab_icon, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
 		control gdextension.Object
 		icon    gdextension.Object
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
 }
-
-/*
-Adds a custom menu item to Project > Tools named 'name'. When clicked, the provided 'callable' will be called.
-*/
-//go:nosplit
 func (self class) AddToolMenuItem(name String.Readable, callable Callable.Function) { //gd:EditorPlugin.add_tool_menu_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_tool_menu_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), &struct {
 		name     gdextension.String
 		callable gdextension.Callable
 	}{pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalCallable(callable))})
 }
-
-/*
-Adds a custom [PopupMenu] submenu under Project > Tools > 'name'. Use [RemoveToolMenuItem] on plugin clean up to remove the menu.
-
-[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
-[RemoveToolMenuItem]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.RemoveToolMenuItem
-*/
-//go:nosplit
 func (self class) AddToolSubmenuItem(name String.Readable, submenu [1]gdclass.PopupMenu) { //gd:EditorPlugin.add_tool_submenu_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_tool_submenu_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
 		name    gdextension.String
 		submenu gdextension.Object
 	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetPopupMenu(submenu[0])[0]))})
 }
-
-/*
-Removes a menu 'name' from Project > Tools.
-*/
-//go:nosplit
 func (self class) RemoveToolMenuItem(name String.Readable) { //gd:EditorPlugin.remove_tool_menu_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_tool_menu_item, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
-
-/*
-Returns the [PopupMenu] under Scene > Export As....
-
-[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
-*/
-//go:nosplit
 func (self class) GetExportAsMenu() [1]gdclass.PopupMenu { //gd:EditorPlugin.get_export_as_menu
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_export_as_menu, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PopupMenu{gdclass.NewPopupMenu(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Adds a custom type, which will appear in the list of nodes or resources.
-
-When a given node or resource is selected, the base type will be instantiated (e.g. "Node3D", "Control", "Resource"), then the script will be loaded and set to this object.
-
-Note: The base type is the base engine class which this type's class hierarchy inherits, not any custom type parent classes.
-
-You can use the virtual method [Handles] to check if your custom object is being edited by checking the script or using the is keyword.
-
-During run-time, this will be a simple object with a script so this function does not need to be called then.
-
-Note: Custom types added this way are not true classes. They are just a helper to create a node with specific script.
-
-[Handles]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-*/
-//go:nosplit
 func (self class) AddCustomType(atype String.Readable, base String.Readable, script [1]gdclass.Script, icon [1]gdclass.Texture2D) { //gd:EditorPlugin.add_custom_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_custom_type, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeObject<<16), &struct {
 		atype  gdextension.String
@@ -2611,441 +2205,137 @@ func (self class) AddCustomType(atype String.Readable, base String.Readable, scr
 		icon   gdextension.Object
 	}{pointers.Get(gd.InternalString(atype)), pointers.Get(gd.InternalString(base)), gdextension.Object(gd.ObjectChecked(gdclass.GetScript(script[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
 }
-
-/*
-Removes a custom type added by [AddCustomType].
-
-[AddCustomType]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.AddCustomType
-*/
-//go:nosplit
 func (self class) RemoveCustomType(atype String.Readable) { //gd:EditorPlugin.remove_custom_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_custom_type, 0|(gdextension.SizeString<<4), &struct{ atype gdextension.String }{pointers.Get(gd.InternalString(atype))})
 }
-
-/*
-Adds a script at 'path' to the Autoload list as 'name'.
-*/
-//go:nosplit
 func (self class) AddAutoloadSingleton(name String.Readable, path String.Readable) { //gd:EditorPlugin.add_autoload_singleton
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_autoload_singleton, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		name gdextension.String
 		path gdextension.String
 	}{pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalString(path))})
 }
-
-/*
-Removes an Autoload 'name' from the list.
-*/
-//go:nosplit
 func (self class) RemoveAutoloadSingleton(name String.Readable) { //gd:EditorPlugin.remove_autoload_singleton
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_autoload_singleton, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
-
-/*
-Updates the overlays of the 2D and 3D editor viewport. Causes methods [ForwardCanvasDrawOverViewport], [ForwardCanvasForceDrawOverViewport], [Forward3dDrawOverViewport] and [Forward3dForceDrawOverViewport] to be called.
-
-[Forward3dDrawOverViewport]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-[Forward3dForceDrawOverViewport]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-[ForwardCanvasDrawOverViewport]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-[ForwardCanvasForceDrawOverViewport]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-*/
-//go:nosplit
 func (self class) UpdateOverlays() int64 { //gd:EditorPlugin.update_overlays
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.update_overlays, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Makes a specific item in the bottom panel visible.
-*/
-//go:nosplit
 func (self class) MakeBottomPanelItemVisible(item [1]gdclass.Control) { //gd:EditorPlugin.make_bottom_panel_item_visible
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.make_bottom_panel_item_visible, 0|(gdextension.SizeObject<<4), &struct{ item gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(item[0])))})
 }
-
-/*
-Minimizes the bottom panel.
-*/
-//go:nosplit
 func (self class) HideBottomPanel() { //gd:EditorPlugin.hide_bottom_panel
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.hide_bottom_panel, 0, &struct{}{})
 }
-
-/*
-Gets the undo/redo object. Most actions in the editor can be undoable, so use this object to make sure this happens when it's worth it.
-*/
-//go:nosplit
 func (self class) GetUndoRedo() [1]gdclass.EditorUndoRedoManager { //gd:EditorPlugin.get_undo_redo
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_undo_redo, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorUndoRedoManager{gdclass.NewEditorUndoRedoManager(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Hooks a callback into the undo/redo action creation when a property is modified in the inspector. This allows, for example, to save other properties that may be lost when a given property is modified.
-
-The callback should have 4 arguments: [Object] undo_redo, [Object] modified_object, string property and any new_value. They are, respectively, the [UndoRedo] object used by the inspector, the currently modified object, the name of the modified property and the new value the property is about to take.
-
-[Object]: https://pkg.go.dev/graphics.gd/variant/Object
-[UndoRedo]: https://pkg.go.dev/graphics.gd/classdb/UndoRedo
-*/
-//go:nosplit
 func (self class) AddUndoRedoInspectorHookCallback(callable Callable.Function) { //gd:EditorPlugin.add_undo_redo_inspector_hook_callback
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_undo_redo_inspector_hook_callback, 0|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
 }
-
-/*
-Removes a callback previously added by [AddUndoRedoInspectorHookCallback].
-
-[AddUndoRedoInspectorHookCallback]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.AddUndoRedoInspectorHookCallback
-*/
-//go:nosplit
 func (self class) RemoveUndoRedoInspectorHookCallback(callable Callable.Function) { //gd:EditorPlugin.remove_undo_redo_inspector_hook_callback
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_undo_redo_inspector_hook_callback, 0|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
 }
-
-/*
-Queue save the project's editor layout.
-*/
-//go:nosplit
 func (self class) QueueSaveLayout() { //gd:EditorPlugin.queue_save_layout
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_save_layout, 0, &struct{}{})
 }
-
-/*
-Registers a custom translation parser plugin for extracting translatable strings from custom files.
-*/
-//go:nosplit
 func (self class) AddTranslationParserPlugin(parser [1]gdclass.EditorTranslationParserPlugin) { //gd:EditorPlugin.add_translation_parser_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_translation_parser_plugin, 0|(gdextension.SizeObject<<4), &struct{ parser gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorTranslationParserPlugin(parser[0])))})
 }
-
-/*
-Removes a custom translation parser plugin registered by [AddTranslationParserPlugin].
-
-[AddTranslationParserPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.AddTranslationParserPlugin
-*/
-//go:nosplit
 func (self class) RemoveTranslationParserPlugin(parser [1]gdclass.EditorTranslationParserPlugin) { //gd:EditorPlugin.remove_translation_parser_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_translation_parser_plugin, 0|(gdextension.SizeObject<<4), &struct{ parser gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorTranslationParserPlugin(parser[0])))})
 }
-
-/*
-Registers a new [EditorImportPlugin]. Import plugins are used to import custom and unsupported assets as a custom [Resource] type.
-
-If 'first_priority' is true, the new import plugin is inserted first in the list and takes precedence over pre-existing plugins.
-
-Note: If you want to import custom 3D asset formats use [AddSceneFormatImporterPlugin] instead.
-
-See [AddInspectorPlugin] for an example of how to register a plugin.
-
-[AddInspectorPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.AddInspectorPlugin
-[AddSceneFormatImporterPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.AddSceneFormatImporterPlugin
-[EditorImportPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorImportPlugin
-[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
-*/
-//go:nosplit
 func (self class) AddImportPlugin(importer [1]gdclass.EditorImportPlugin, first_priority bool) { //gd:EditorPlugin.add_import_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_import_plugin, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		importer       gdextension.Object
 		first_priority bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorImportPlugin(importer[0]))), first_priority})
 }
-
-/*
-Removes an import plugin registered by [AddImportPlugin].
-
-[AddImportPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.AddImportPlugin
-*/
-//go:nosplit
 func (self class) RemoveImportPlugin(importer [1]gdclass.EditorImportPlugin) { //gd:EditorPlugin.remove_import_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_import_plugin, 0|(gdextension.SizeObject<<4), &struct{ importer gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorImportPlugin(importer[0])))})
 }
-
-/*
-Registers a new [EditorSceneFormatImporter]. Scene importers are used to import custom 3D asset formats as scenes.
-
-If 'first_priority' is true, the new import plugin is inserted first in the list and takes precedence over pre-existing plugins.
-
-[EditorSceneFormatImporter]: https://pkg.go.dev/graphics.gd/classdb/EditorSceneFormatImporter
-*/
-//go:nosplit
 func (self class) AddSceneFormatImporterPlugin(scene_format_importer [1]gdclass.EditorSceneFormatImporter, first_priority bool) { //gd:EditorPlugin.add_scene_format_importer_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_scene_format_importer_plugin, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		scene_format_importer gdextension.Object
 		first_priority        bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorSceneFormatImporter(scene_format_importer[0]))), first_priority})
 }
-
-/*
-Removes a scene format importer registered by [AddSceneFormatImporterPlugin].
-
-[AddSceneFormatImporterPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.AddSceneFormatImporterPlugin
-*/
-//go:nosplit
 func (self class) RemoveSceneFormatImporterPlugin(scene_format_importer [1]gdclass.EditorSceneFormatImporter) { //gd:EditorPlugin.remove_scene_format_importer_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_scene_format_importer_plugin, 0|(gdextension.SizeObject<<4), &struct{ scene_format_importer gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorSceneFormatImporter(scene_format_importer[0])))})
 }
-
-/*
-Add an [EditorScenePostImportPlugin]. These plugins allow customizing the import process of 3D assets by adding new options to the import dialogs.
-
-If 'first_priority' is true, the new import plugin is inserted first in the list and takes precedence over pre-existing plugins.
-
-[EditorScenePostImportPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin
-*/
-//go:nosplit
 func (self class) AddScenePostImportPlugin(scene_import_plugin [1]gdclass.EditorScenePostImportPlugin, first_priority bool) { //gd:EditorPlugin.add_scene_post_import_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_scene_post_import_plugin, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		scene_import_plugin gdextension.Object
 		first_priority      bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorScenePostImportPlugin(scene_import_plugin[0]))), first_priority})
 }
-
-/*
-Remove the [EditorScenePostImportPlugin], added with [AddScenePostImportPlugin].
-
-[AddScenePostImportPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.AddScenePostImportPlugin
-[EditorScenePostImportPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin
-*/
-//go:nosplit
 func (self class) RemoveScenePostImportPlugin(scene_import_plugin [1]gdclass.EditorScenePostImportPlugin) { //gd:EditorPlugin.remove_scene_post_import_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_scene_post_import_plugin, 0|(gdextension.SizeObject<<4), &struct{ scene_import_plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorScenePostImportPlugin(scene_import_plugin[0])))})
 }
-
-/*
-Registers a new [EditorExportPlugin]. Export plugins are used to perform tasks when the project is being exported.
-
-See [AddInspectorPlugin] for an example of how to register a plugin.
-
-[AddInspectorPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.AddInspectorPlugin
-[EditorExportPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin
-*/
-//go:nosplit
 func (self class) AddExportPlugin(plugin [1]gdclass.EditorExportPlugin) { //gd:EditorPlugin.add_export_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_export_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorExportPlugin(plugin[0])))})
 }
-
-/*
-Removes an export plugin registered by [AddExportPlugin].
-
-[AddExportPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.AddExportPlugin
-*/
-//go:nosplit
 func (self class) RemoveExportPlugin(plugin [1]gdclass.EditorExportPlugin) { //gd:EditorPlugin.remove_export_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_export_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorExportPlugin(plugin[0])))})
 }
-
-/*
-Registers a new [EditorExportPlatform]. Export platforms provides functionality of exporting to the specific platform.
-
-[EditorExportPlatform]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatform
-*/
-//go:nosplit
 func (self class) AddExportPlatform(platform [1]gdclass.EditorExportPlatform) { //gd:EditorPlugin.add_export_platform
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_export_platform, 0|(gdextension.SizeObject<<4), &struct{ platform gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorExportPlatform(platform[0])))})
 }
-
-/*
-Removes an export platform registered by [AddExportPlatform].
-
-[AddExportPlatform]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.AddExportPlatform
-*/
-//go:nosplit
 func (self class) RemoveExportPlatform(platform [1]gdclass.EditorExportPlatform) { //gd:EditorPlugin.remove_export_platform
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_export_platform, 0|(gdextension.SizeObject<<4), &struct{ platform gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorExportPlatform(platform[0])))})
 }
-
-/*
-Registers a new [EditorNode3DGizmoPlugin]. Gizmo plugins are used to add custom gizmos to the 3D preview viewport for a [Node3D].
-
-See [AddInspectorPlugin] for an example of how to register a plugin.
-
-[AddInspectorPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.AddInspectorPlugin
-[EditorNode3DGizmoPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmoPlugin
-[Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
-*/
-//go:nosplit
 func (self class) AddNode3dGizmoPlugin(plugin [1]gdclass.EditorNode3DGizmoPlugin) { //gd:EditorPlugin.add_node_3d_gizmo_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_node_3d_gizmo_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorNode3DGizmoPlugin(plugin[0])))})
 }
-
-/*
-Removes a gizmo plugin registered by [AddNode3dGizmoPlugin].
-
-[AddNode3dGizmoPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.AddNode3dGizmoPlugin
-*/
-//go:nosplit
 func (self class) RemoveNode3dGizmoPlugin(plugin [1]gdclass.EditorNode3DGizmoPlugin) { //gd:EditorPlugin.remove_node_3d_gizmo_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_node_3d_gizmo_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorNode3DGizmoPlugin(plugin[0])))})
 }
-
-/*
-Registers a new [EditorInspectorPlugin]. Inspector plugins are used to extend [EditorInspector] and provide custom configuration tools for your object's properties.
-
-Note: Always use [RemoveInspectorPlugin] to remove the registered [EditorInspectorPlugin] when your [EditorPlugin] is disabled to prevent leaks and an unexpected behavior.
-
-	package main
-
-	import (
-		"graphics.gd/classdb/EditorInspectorPlugin"
-		"graphics.gd/classdb/EditorPlugin"
-	)
-
-	type MyInspectorPlugin struct {
-		EditorInspectorPlugin.Extension[MyInspectorPlugin]
-	}
-
-	type MyEditorPlugin struct {
-		EditorPlugin.Extension[MyEditorPlugin]
-
-		inspector_plugin *MyInspectorPlugin
-	}
-
-	func (e *MyEditorPlugin) EnterTree() {
-		e.inspector_plugin = new(MyInspectorPlugin)
-		e.AsEditorPlugin().AddInspectorPlugin(e.inspector_plugin.AsEditorInspectorPlugin())
-	}
-
-	func (e *MyEditorPlugin) ExitTree() {
-		e.AsEditorPlugin().RemoveInspectorPlugin(e.inspector_plugin.AsEditorInspectorPlugin())
-	}
-
-
-[EditorInspector]: https://pkg.go.dev/graphics.gd/classdb/EditorInspector
-[EditorInspectorPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorInspectorPlugin
-[EditorPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin
-[RemoveInspectorPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.RemoveInspectorPlugin
-*/
-//go:nosplit
 func (self class) AddInspectorPlugin(plugin [1]gdclass.EditorInspectorPlugin) { //gd:EditorPlugin.add_inspector_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_inspector_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorInspectorPlugin(plugin[0])))})
 }
-
-/*
-Removes an inspector plugin registered by [AddInspectorPlugin].
-
-[AddInspectorPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.AddInspectorPlugin
-*/
-//go:nosplit
 func (self class) RemoveInspectorPlugin(plugin [1]gdclass.EditorInspectorPlugin) { //gd:EditorPlugin.remove_inspector_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_inspector_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorInspectorPlugin(plugin[0])))})
 }
-
-/*
-Registers a new [EditorResourceConversionPlugin]. Resource conversion plugins are used to add custom resource converters to the editor inspector.
-
-See [EditorResourceConversionPlugin] for an example of how to create a resource conversion plugin.
-
-[EditorResourceConversionPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorResourceConversionPlugin
-*/
-//go:nosplit
 func (self class) AddResourceConversionPlugin(plugin [1]gdclass.EditorResourceConversionPlugin) { //gd:EditorPlugin.add_resource_conversion_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_resource_conversion_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorResourceConversionPlugin(plugin[0])))})
 }
-
-/*
-Removes a resource conversion plugin registered by [AddResourceConversionPlugin].
-
-[AddResourceConversionPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.AddResourceConversionPlugin
-*/
-//go:nosplit
 func (self class) RemoveResourceConversionPlugin(plugin [1]gdclass.EditorResourceConversionPlugin) { //gd:EditorPlugin.remove_resource_conversion_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_conversion_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorResourceConversionPlugin(plugin[0])))})
 }
-
-/*
-Use this method if you always want to receive inputs from 3D view screen inside [Forward3dGuiInput]. It might be especially usable if your plugin will want to use raycast in the scene.
-
-[Forward3dGuiInput]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-*/
-//go:nosplit
 func (self class) SetInputEventForwardingAlwaysEnabled() { //gd:EditorPlugin.set_input_event_forwarding_always_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_event_forwarding_always_enabled, 0, &struct{}{})
 }
-
-/*
-Enables calling of [ForwardCanvasForceDrawOverViewport] for the 2D editor and [Forward3dForceDrawOverViewport] for the 3D editor when their viewports are updated. You need to call this method only once and it will work permanently for this plugin.
-
-[Forward3dForceDrawOverViewport]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-[ForwardCanvasForceDrawOverViewport]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-*/
-//go:nosplit
 func (self class) SetForceDrawOverForwardingEnabled() { //gd:EditorPlugin.set_force_draw_over_forwarding_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_force_draw_over_forwarding_enabled, 0, &struct{}{})
 }
-
-/*
-Adds a plugin to the context menu. 'slot' is the context menu where the plugin will be added.
-
-Note: A plugin instance can belong only to a single context menu slot.
-*/
-//go:nosplit
 func (self class) AddContextMenuPlugin(slot EditorContextMenuPlugin.ContextMenuSlot, plugin [1]gdclass.EditorContextMenuPlugin) { //gd:EditorPlugin.add_context_menu_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_context_menu_plugin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		slot   EditorContextMenuPlugin.ContextMenuSlot
 		plugin gdextension.Object
 	}{slot, gdextension.Object(gd.ObjectChecked(gdclass.GetEditorContextMenuPlugin(plugin[0])))})
 }
-
-/*
-Removes the specified context menu plugin.
-*/
-//go:nosplit
 func (self class) RemoveContextMenuPlugin(plugin [1]gdclass.EditorContextMenuPlugin) { //gd:EditorPlugin.remove_context_menu_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_context_menu_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorContextMenuPlugin(plugin[0])))})
 }
-
-/*
-Returns the [EditorInterface] singleton instance.
-
-[EditorInterface]: https://pkg.go.dev/graphics.gd/classdb/EditorInterface
-*/
-//go:nosplit
 func (self class) GetEditorInterface() [1]gdclass.EditorInterface { //gd:EditorPlugin.get_editor_interface
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_interface, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorInterface{gdclass.NewEditorInterface(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Gets the Editor's dialog used for making scripts.
-
-Note: Users can configure it before use.
-
-Warning: Removing and freeing this node will render a part of the editor useless and may cause a crash.
-*/
-//go:nosplit
 func (self class) GetScriptCreateDialog() [1]gdclass.ScriptCreateDialog { //gd:EditorPlugin.get_script_create_dialog
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_script_create_dialog, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ScriptCreateDialog{gdclass.NewScriptCreateDialog(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Adds a [Script] as debugger plugin to the Debugger. The script must extend [EditorDebuggerPlugin].
-
-[EditorDebuggerPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorDebuggerPlugin
-[Script]: https://pkg.go.dev/graphics.gd/classdb/Script
-*/
-//go:nosplit
 func (self class) AddDebuggerPlugin(script [1]gdclass.EditorDebuggerPlugin) { //gd:EditorPlugin.add_debugger_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_debugger_plugin, 0|(gdextension.SizeObject<<4), &struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorDebuggerPlugin(script[0])))})
 }
-
-/*
-Removes the debugger plugin with given script from the Debugger.
-*/
-//go:nosplit
 func (self class) RemoveDebuggerPlugin(script [1]gdclass.EditorDebuggerPlugin) { //gd:EditorPlugin.remove_debugger_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_debugger_plugin, 0|(gdextension.SizeObject<<4), &struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorDebuggerPlugin(script[0])))})
 }
-
-/*
-Provide the version of the plugin declared in the plugin.cfg config file.
-*/
-//go:nosplit
 func (self class) GetPluginVersion() String.Readable { //gd:EditorPlugin.get_plugin_version
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_plugin_version, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))

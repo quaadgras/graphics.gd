@@ -308,13 +308,6 @@ func (self Instance) SetNextPass(value Instance) Instance { //gd:Material.next_p
 	class(self).SetNextPass(value)
 	return self
 }
-
-/*
-Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools. Used to access the RID of the [Material]'s [Shader].
-
-[Material]: https://pkg.go.dev/graphics.gd/classdb/Material
-[Shader]: https://pkg.go.dev/graphics.gd/classdb/Shader
-*/
 func (class) _get_shader_rid(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -322,10 +315,6 @@ func (class) _get_shader_rid(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.Ext
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools.
-*/
 func (class) _get_shader_mode(impl func(ptr gdclass.Receiver) Shader.Mode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -333,12 +322,6 @@ func (class) _get_shader_mode(impl func(ptr gdclass.Receiver) Shader.Mode) (cb g
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Only exposed for the purpose of overriding. You cannot call this function directly. Used internally to determine if [NextPass] should be shown in the editor or not.
-
-[NextPass]: https://pkg.go.dev/graphics.gd/classdb/Material#Instance.NextPass
-*/
 func (class) _can_do_next_pass(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -346,12 +329,6 @@ func (class) _can_do_next_pass(impl func(ptr gdclass.Receiver) bool) (cb gd.Exte
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Only exposed for the purpose of overriding. You cannot call this function directly. Used internally to determine if [RenderPriority] should be shown in the editor or not.
-
-[RenderPriority]: https://pkg.go.dev/graphics.gd/classdb/Material#Instance.RenderPriority
-*/
 func (class) _can_use_render_priority(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -360,46 +337,25 @@ func (class) _can_use_render_priority(impl func(ptr gdclass.Receiver) bool) (cb 
 	}
 }
 
-//go:nosplit
 func (self class) SetNextPass(next_pass [1]gdclass.Material) { //gd:Material.set_next_pass
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_next_pass, 0|(gdextension.SizeObject<<4), &struct{ next_pass gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(next_pass[0])))})
 }
-
-//go:nosplit
 func (self class) GetNextPass() [1]gdclass.Material { //gd:Material.get_next_pass
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_next_pass, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRenderPriority(priority int64) { //gd:Material.set_render_priority
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_render_priority, 0|(gdextension.SizeInt<<4), &struct{ priority int64 }{priority})
 }
-
-//go:nosplit
 func (self class) GetRenderPriority() int64 { //gd:Material.get_render_priority
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_render_priority, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Only available when running in the editor. Opens a popup that visualizes the generated shader code, including all variants and internal shader code. See also [Shader.InspectNativeShaderCode].
-
-[Shader.InspectNativeShaderCode]: https://pkg.go.dev/graphics.gd/classdb/Shader#Instance.InspectNativeShaderCode
-*/
-//go:nosplit
 func (self class) InspectNativeShaderCode() { //gd:Material.inspect_native_shader_code
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.inspect_native_shader_code, 0, &struct{}{})
 }
-
-/*
-Creates a placeholder version of this resource ([PlaceholderMaterial]).
-
-[PlaceholderMaterial]: https://pkg.go.dev/graphics.gd/classdb/PlaceholderMaterial
-*/
-//go:nosplit
 func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:Material.create_placeholder
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_placeholder, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Resource{gdclass.NewResource(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

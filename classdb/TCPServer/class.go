@@ -232,16 +232,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Listen on the 'port' binding to 'bind_address'.
-
-If 'bind_address' is set as "*" (default), the server will listen on all available addresses (both IPv4 and IPv6).
-
-If 'bind_address' is set as "0.0.0.0" (for IPv4) or "::" (for IPv6), the server will listen on all available addresses matching that IP type.
-
-If 'bind_address' is set to any valid address (e.g. "192.168.1.101", "::1", etc.), the server will only listen on the interface with that address (or fail if no interface with the given address exists).
-*/
-//go:nosplit
 func (self class) Listen(port int64, bind_address String.Readable) Error.Code { //gd:TCPServer.listen
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.listen, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		port         int64
@@ -250,51 +240,26 @@ func (self class) Listen(port int64, bind_address String.Readable) Error.Code { 
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns true if a connection is available for taking.
-*/
-//go:nosplit
 func (self class) IsConnectionAvailable() bool { //gd:TCPServer.is_connection_available
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_connection_available, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the server is currently listening for connections.
-*/
-//go:nosplit
 func (self class) IsListening() bool { //gd:TCPServer.is_listening
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_listening, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the local port this server is listening to.
-*/
-//go:nosplit
 func (self class) GetLocalPort() int64 { //gd:TCPServer.get_local_port
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_local_port, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-If a connection is available, returns a StreamPeerTCP with the connection.
-*/
-//go:nosplit
 func (self class) TakeConnection() [1]gdclass.StreamPeerTCP { //gd:TCPServer.take_connection
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.take_connection, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.StreamPeerTCP{gdclass.NewStreamPeerTCP(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Stops listening.
-*/
-//go:nosplit
 func (self class) Stop() { //gd:TCPServer.stop
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, &struct{}{})
 }

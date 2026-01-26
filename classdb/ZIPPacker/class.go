@@ -258,12 +258,6 @@ func (self Instance) SetCompressionLevel(value int) Instance { //gd:ZIPPacker.co
 	return self
 }
 
-/*
-Opens a zip file for writing at the given path using the specified write mode.
-
-This must be called before everything else.
-*/
-//go:nosplit
 func (self class) Open(path String.Readable, append ZipAppend) Error.Code { //gd:ZIPPacker.open
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.open, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		path   gdextension.String
@@ -272,63 +266,29 @@ func (self class) Open(path String.Readable, append ZipAppend) Error.Code { //gd
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCompressionLevel(compression_level int64) { //gd:ZIPPacker.set_compression_level
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_compression_level, 0|(gdextension.SizeInt<<4), &struct{ compression_level int64 }{compression_level})
 }
-
-//go:nosplit
 func (self class) GetCompressionLevel() int64 { //gd:ZIPPacker.get_compression_level
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_compression_level, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Starts writing to a file within the archive. Only one file can be written at the same time.
-
-Must be called after [Open].
-
-[Open]: https://pkg.go.dev/graphics.gd/classdb/ZIPPacker#Instance.Open
-*/
-//go:nosplit
 func (self class) StartFile(path String.Readable) Error.Code { //gd:ZIPPacker.start_file
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start_file, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Write the given 'data' to the file.
-
-Needs to be called after [StartFile].
-
-[StartFile]: https://pkg.go.dev/graphics.gd/classdb/ZIPPacker#Instance.StartFile
-*/
-//go:nosplit
 func (self class) WriteFile(data Packed.Bytes) Error.Code { //gd:ZIPPacker.write_file
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.write_file, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Stops writing to a file within the archive.
-
-It will fail if there is no open file.
-*/
-//go:nosplit
 func (self class) CloseFile() Error.Code { //gd:ZIPPacker.close_file
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.close_file, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Closes the underlying resources used by this instance.
-*/
-//go:nosplit
 func (self class) Close() Error.Code { //gd:ZIPPacker.close
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.close, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)

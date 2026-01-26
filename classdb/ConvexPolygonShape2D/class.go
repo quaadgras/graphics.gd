@@ -202,27 +202,16 @@ func (self Instance) SetPoints(value []Vector2.XY) Instance { //gd:ConvexPolygon
 	return self
 }
 
-/*
-Based on the set of points provided, this assigns the [Points] property using the convex hull algorithm, removing all unneeded points. See [Geometry2D.ConvexHull] for details.
-
-[Geometry2D.ConvexHull]: https://pkg.go.dev/graphics.gd/classdb/Geometry2D#ConvexHull
-[Points]: https://pkg.go.dev/graphics.gd/classdb/ConvexPolygonShape2D#Instance.Points
-*/
-//go:nosplit
 func (self class) SetPointCloud(point_cloud Packed.Array[Vector2.XY]) { //gd:ConvexPolygonShape2D.set_point_cloud
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_cloud, 0|(gdextension.SizePackedArray<<4), &struct {
 		point_cloud gdextension.PackedArray[Vector2.XY]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](point_cloud))})
 }
-
-//go:nosplit
 func (self class) SetPoints(points Packed.Array[Vector2.XY]) { //gd:ConvexPolygonShape2D.set_points
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_points, 0|(gdextension.SizePackedArray<<4), &struct {
 		points gdextension.PackedArray[Vector2.XY]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))})
 }
-
-//go:nosplit
 func (self class) GetPoints() Packed.Array[Vector2.XY] { //gd:ConvexPolygonShape2D.get_points
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_points, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))

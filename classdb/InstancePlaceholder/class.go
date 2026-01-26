@@ -232,31 +232,11 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns the list of properties that will be applied to the node when [CreateInstance] is called.
-
-If 'with_order' is true, a key named .order (note the leading period) is added to the dictionary. This .order key is an slice of string property names specifying the order in which properties will be applied (with index 0 being the first).
-
-[CreateInstance]: https://pkg.go.dev/graphics.gd/classdb/InstancePlaceholder#Instance.CreateInstance
-*/
-//go:nosplit
 func (self class) GetStoredValues(with_order bool) Dictionary.Any { //gd:InstancePlaceholder.get_stored_values
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_stored_values, gdextension.SizeDictionary|(gdextension.SizeBool<<4), &struct{ with_order bool }{with_order})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Call this method to actually load in the node. The created node will be placed as a sibling above the [InstancePlaceholder] in the scene tree. The [Node]'s reference is also returned for convenience.
-
-Note: [CreateInstance] is not thread-safe. Use [Object.CallDeferred] if calling from a thread.
-
-[CreateInstance]: https://pkg.go.dev/graphics.gd/classdb/InstancePlaceholder#Instance.CreateInstance
-[InstancePlaceholder]: https://pkg.go.dev/graphics.gd/classdb/InstancePlaceholder
-[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
-[Object.CallDeferred]: https://pkg.go.dev/graphics.gd/variant/Object#CallDeferred
-*/
-//go:nosplit
 func (self class) CreateInstance(replace bool, custom_scene [1]gdclass.PackedScene) [1]gdclass.Node { //gd:InstancePlaceholder.create_instance
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_instance, gdextension.SizeObject|(gdextension.SizeBool<<4)|(gdextension.SizeObject<<8), &struct {
 		replace      bool
@@ -265,15 +245,6 @@ func (self class) CreateInstance(replace bool, custom_scene [1]gdclass.PackedSce
 	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Gets the path to the [PackedScene] resource file that is loaded by default when calling [CreateInstance]. Not thread-safe. Use [Object.CallDeferred] if calling from a thread.
-
-[CreateInstance]: https://pkg.go.dev/graphics.gd/classdb/InstancePlaceholder#Instance.CreateInstance
-[Object.CallDeferred]: https://pkg.go.dev/graphics.gd/variant/Object#CallDeferred
-[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
-*/
-//go:nosplit
 func (self class) GetInstancePath() String.Readable { //gd:InstancePlaceholder.get_instance_path
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_instance_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))

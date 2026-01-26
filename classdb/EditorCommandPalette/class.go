@@ -223,18 +223,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Adds a custom command to EditorCommandPalette.
-
-- 'command_name': string (Name of the Command. This is displayed to the user.)
-
-- 'key_name': string (Name of the key for a particular Command. This is used to uniquely identify the Command.)
-
-- 'binded_callable': func (Callable of the Command. This will be executed when the Command is selected.)
-
-- 'shortcut_text': string (Shortcut text of the Command if available.)
-*/
-//go:nosplit
 func (self class) AddCommand(command_name String.Readable, key_name String.Readable, binded_callable Callable.Function, shortcut_text String.Readable) { //gd:EditorCommandPalette.add_command
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_command, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeString<<16), &struct {
 		command_name    gdextension.String
@@ -243,13 +231,6 @@ func (self class) AddCommand(command_name String.Readable, key_name String.Reada
 		shortcut_text   gdextension.String
 	}{pointers.Get(gd.InternalString(command_name)), pointers.Get(gd.InternalString(key_name)), pointers.Get(gd.InternalCallable(binded_callable)), pointers.Get(gd.InternalString(shortcut_text))})
 }
-
-/*
-Removes the custom command from EditorCommandPalette.
-
-- 'key_name': string (Name of the key for a particular Command.)
-*/
-//go:nosplit
 func (self class) RemoveCommand(key_name String.Readable) { //gd:EditorCommandPalette.remove_command
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_command, 0|(gdextension.SizeString<<4), &struct{ key_name gdextension.String }{pointers.Get(gd.InternalString(key_name))})
 }

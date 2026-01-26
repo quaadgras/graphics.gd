@@ -174,12 +174,9 @@ func (self Instance) SetTexture(value CurveXYZTexture.Instance) Instance { //gd:
 	return self
 }
 
-//go:nosplit
 func (self class) SetTexture(texture [1]gdclass.CurveXYZTexture) { //gd:VisualShaderNodeCurveXYZTexture.set_texture
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCurveXYZTexture(texture[0])))})
 }
-
-//go:nosplit
 func (self class) GetTexture() [1]gdclass.CurveXYZTexture { //gd:VisualShaderNodeCurveXYZTexture.get_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.CurveXYZTexture{gdclass.NewCurveXYZTexture(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

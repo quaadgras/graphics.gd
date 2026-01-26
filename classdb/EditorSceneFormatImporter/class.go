@@ -315,10 +315,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Return supported file extensions for this scene importer.
-*/
 func (class) _get_extensions(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -331,13 +327,6 @@ func (class) _get_extensions(impl func(ptr gdclass.Receiver) Packed.Strings) (cb
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Perform the bulk of the scene import logic here, for example using [GLTFDocument] or [FBXDocument].
-
-[FBXDocument]: https://pkg.go.dev/graphics.gd/classdb/FBXDocument
-[GLTFDocument]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocument
-*/
 func (class) _import_scene(impl func(ptr gdclass.Receiver, path String.Readable, flags int64, options Dictionary.Any) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -355,19 +344,6 @@ func (class) _import_scene(impl func(ptr gdclass.Receiver, path String.Readable,
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Override to add general import options. These will appear in the main import dock on the editor. Add options via [AddImportOption] and [AddImportOptionAdvanced].
-
-Note: All [EditorSceneFormatImporter] and [EditorScenePostImportPlugin] instances will add options for all files. It is good practice to check the file extension when 'path' is non-empty.
-
-When the user is editing project settings, 'path' will be empty. It is recommended to add all options when 'path' is empty to allow the user to customize Import Defaults.
-
-[AddImportOption]: https://pkg.go.dev/graphics.gd/classdb/EditorSceneFormatImporter#Instance.AddImportOption
-[AddImportOptionAdvanced]: https://pkg.go.dev/graphics.gd/classdb/EditorSceneFormatImporter#Instance.AddImportOptionAdvanced
-[EditorSceneFormatImporter]: https://pkg.go.dev/graphics.gd/classdb/EditorSceneFormatImporter
-[EditorScenePostImportPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin
-*/
 func (class) _get_import_options(impl func(ptr gdclass.Receiver, path String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -376,10 +352,6 @@ func (class) _get_import_options(impl func(ptr gdclass.Receiver, path String.Rea
 		impl(self, path)
 	}
 }
-
-/*
-Should return true to show the given option, false to hide the given option, or null to ignore.
-*/
 func (class) _get_option_visibility(impl func(ptr gdclass.Receiver, path String.Readable, for_animation bool, option String.Readable) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -398,25 +370,12 @@ func (class) _get_option_visibility(impl func(ptr gdclass.Receiver, path String.
 	}
 }
 
-/*
-Add a specific import option (name and default value only). This function can only be called from [GetImportOptions].
-
-[GetImportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorSceneFormatImporter#Interface
-*/
-//go:nosplit
 func (self class) AddImportOption(name String.Readable, value variant.Any) { //gd:EditorSceneFormatImporter.add_import_option
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_import_option, 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), &struct {
 		name  gdextension.String
 		value gdextension.Variant
 	}{pointers.Get(gd.InternalString(name)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-/*
-Add a specific import option. This function can only be called from [GetImportOptions].
-
-[GetImportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorSceneFormatImporter#Interface
-*/
-//go:nosplit
 func (self class) AddImportOptionAdvanced(atype variant.Type, name String.Readable, default_value variant.Any, hint ClassDB.PropertyHint, hint_string String.Readable, usage_flags int64) { //gd:EditorSceneFormatImporter.add_import_option_advanced
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_import_option_advanced, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeString<<20)|(gdextension.SizeInt<<24), &struct {
 		atype         variant.Type

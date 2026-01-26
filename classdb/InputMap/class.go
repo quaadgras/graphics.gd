@@ -295,41 +295,18 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetInputMap(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
-/*
-Returns true if the [InputMap] has a registered action with the given name.
-
-[InputMap]: https://pkg.go.dev/graphics.gd/classdb/InputMap
-*/
-//go:nosplit
 func (self class) HasAction(action String.Name) bool { //gd:InputMap.has_action
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_action, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns an array of all actions in the [InputMap].
-
-[InputMap]: https://pkg.go.dev/graphics.gd/classdb/InputMap
-*/
-//go:nosplit
 func (self class) GetActions() Array.Contains[String.Name] { //gd:InputMap.get_actions
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_actions, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Adds an empty action to the [InputMap] with a configurable 'deadzone'.
-
-An [InputEvent] can then be added to this action with [ActionAddEvent].
-
-[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
-[InputMap]: https://pkg.go.dev/graphics.gd/classdb/InputMap
-*/
-//go:nosplit
 func (self class) AddAction(action String.Name, deadzone float64) { //gd:InputMap.add_action
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_action, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -337,33 +314,16 @@ func (self class) AddAction(action String.Name, deadzone float64) { //gd:InputMa
 		deadzone float64
 	}{pointers.Get(gd.InternalStringName(action)), deadzone})
 }
-
-/*
-Removes an action from the [InputMap].
-
-[InputMap]: https://pkg.go.dev/graphics.gd/classdb/InputMap
-*/
-//go:nosplit
 func (self class) EraseAction(action String.Name) { //gd:InputMap.erase_action
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.erase_action, 0|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
 }
-
-/*
-Returns the human-readable description of the given action.
-*/
-//go:nosplit
 func (self class) GetActionDescription(action String.Name) String.Readable { //gd:InputMap.get_action_description
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_action_description, gdextension.SizeString|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Sets a deadzone value for the action.
-*/
-//go:nosplit
 func (self class) ActionSetDeadzone(action String.Name, deadzone float64) { //gd:InputMap.action_set_deadzone
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.action_set_deadzone, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -371,24 +331,12 @@ func (self class) ActionSetDeadzone(action String.Name, deadzone float64) { //gd
 		deadzone float64
 	}{pointers.Get(gd.InternalStringName(action)), deadzone})
 }
-
-/*
-Returns a deadzone value for the action.
-*/
-//go:nosplit
 func (self class) ActionGetDeadzone(action String.Name) float64 { //gd:InputMap.action_get_deadzone
 	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.action_get_deadzone, gdextension.SizeFloat|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds an [InputEvent] to an action. This [InputEvent] will trigger the action.
-
-[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
-*/
-//go:nosplit
 func (self class) ActionAddEvent(action String.Name, event [1]gdclass.InputEvent) { //gd:InputMap.action_add_event
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.action_add_event, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
@@ -396,13 +344,6 @@ func (self class) ActionAddEvent(action String.Name, event [1]gdclass.InputEvent
 		event  gdextension.Object
 	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0])))})
 }
-
-/*
-Returns true if the action has the given [InputEvent] associated with it.
-
-[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
-*/
-//go:nosplit
 func (self class) ActionHasEvent(action String.Name, event [1]gdclass.InputEvent) bool { //gd:InputMap.action_has_event
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.action_has_event, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
@@ -412,13 +353,6 @@ func (self class) ActionHasEvent(action String.Name, event [1]gdclass.InputEvent
 	var ret = r_ret
 	return ret
 }
-
-/*
-Removes an [InputEvent] from an action.
-
-[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
-*/
-//go:nosplit
 func (self class) ActionEraseEvent(action String.Name, event [1]gdclass.InputEvent) { //gd:InputMap.action_erase_event
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.action_erase_event, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
@@ -426,44 +360,16 @@ func (self class) ActionEraseEvent(action String.Name, event [1]gdclass.InputEve
 		event  gdextension.Object
 	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0])))})
 }
-
-/*
-Removes all events from an action.
-*/
-//go:nosplit
 func (self class) ActionEraseEvents(action String.Name) { //gd:InputMap.action_erase_events
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.action_erase_events, 0|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
 }
-
-/*
-Returns an array of [InputEvent]s associated with a given action.
-
-Note: When used in the editor (e.g. a tool script or [EditorPlugin]), this method will return events for the editor action. If you want to access your project's input binds from the editor, read the input/* settings from [ProjectSettings].
-
-[EditorPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin
-[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) ActionGetEvents(action String.Name) Array.Contains[[1]gdclass.InputEvent] { //gd:InputMap.action_get_events
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.action_get_events, gdextension.SizeArray|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.InputEvent]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns true if the given event is part of an existing action. This method ignores keyboard modifiers if the given [InputEvent] is not pressed (for proper release detection). See [ActionHasEvent] if you don't want this behavior.
-
-If 'exact_match' is false, it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
-
-[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
-[InputEventJoypadMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadMotion
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-*/
-//go:nosplit
 func (self class) EventIsAction(event [1]gdclass.InputEvent, action String.Name, exact_match bool) bool { //gd:InputMap.event_is_action
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.event_is_action, gdextension.SizeBool|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeBool<<12), &struct {
@@ -474,15 +380,6 @@ func (self class) EventIsAction(event [1]gdclass.InputEvent, action String.Name,
 	var ret = r_ret
 	return ret
 }
-
-/*
-Clears all [InputEventAction] in the [InputMap] and load it anew from [ProjectSettings].
-
-[InputEventAction]: https://pkg.go.dev/graphics.gd/classdb/InputEventAction
-[InputMap]: https://pkg.go.dev/graphics.gd/classdb/InputMap
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) LoadFromProjectSettings() { //gd:InputMap.load_from_project_settings
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.load_from_project_settings, 0, &struct{}{})

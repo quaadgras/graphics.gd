@@ -174,12 +174,9 @@ func (self Instance) SetColor(value Color.RGBA) Instance { //gd:CanvasModulate.c
 	return self
 }
 
-//go:nosplit
 func (self class) SetColor(color Color.RGBA) { //gd:CanvasModulate.set_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
-
-//go:nosplit
 func (self class) GetColor() Color.RGBA { //gd:CanvasModulate.get_color
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret

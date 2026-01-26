@@ -637,173 +637,65 @@ func New() Instance {
 	return casted
 }
 
-/*
-Set to [Skin8Weights] to indicate that up to 8 bone influences per vertex may be used.
-
-By default, only 4 bone influences are used ([Skin4Weights]).
-
-Note: This function takes an enum, not the exact number of weights.
-*/
-//go:nosplit
 func (self class) SetSkinWeightCount(count SkinWeightCount) { //gd:SurfaceTool.set_skin_weight_count
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin_weight_count, 0|(gdextension.SizeInt<<4), &struct{ count SkinWeightCount }{count})
 }
-
-/*
-By default, returns [Skin4Weights] to indicate only 4 bone influences per vertex are used.
-
-Returns [Skin8Weights] if up to 8 influences are used.
-
-Note: This function returns an enum, not the exact number of weights.
-*/
-//go:nosplit
 func (self class) GetSkinWeightCount() SkinWeightCount { //gd:SurfaceTool.get_skin_weight_count
 	var r_ret = noescape.Call[SkinWeightCount](gd.ObjectChecked(self.AsObject()), methods.get_skin_weight_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the color format for this custom 'channel_index'. Use [CustomMax] to disable.
-
-Must be invoked after [Begin] and should be set before [Commit] or [CommitToArrays].
-
-[Begin]: https://pkg.go.dev/graphics.gd/classdb/SurfaceTool#Instance.Begin
-[Commit]: https://pkg.go.dev/graphics.gd/classdb/SurfaceTool#Instance.Commit
-[CommitToArrays]: https://pkg.go.dev/graphics.gd/classdb/SurfaceTool#Instance.CommitToArrays
-*/
-//go:nosplit
 func (self class) SetCustomFormat(channel_index int64, format CustomFormat) { //gd:SurfaceTool.set_custom_format
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_format, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		channel_index int64
 		format        CustomFormat
 	}{channel_index, format})
 }
-
-/*
-Returns the format for custom 'channel_index' (currently up to 4). Returns [CustomMax] if this custom channel is unused.
-*/
-//go:nosplit
 func (self class) GetCustomFormat(channel_index int64) CustomFormat { //gd:SurfaceTool.get_custom_format
 	var r_ret = noescape.Call[CustomFormat](gd.ObjectChecked(self.AsObject()), methods.get_custom_format, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ channel_index int64 }{channel_index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Called before adding any vertices. Takes the primitive type as an argument (e.g. [Mesh.PrimitiveTriangles]).
-*/
-//go:nosplit
 func (self class) Begin(primitive Mesh.PrimitiveType) { //gd:SurfaceTool.begin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.begin, 0|(gdextension.SizeInt<<4), &struct{ primitive Mesh.PrimitiveType }{primitive})
 }
-
-/*
-Specifies the position of current vertex. Should be called after specifying other vertex properties (e.g. Color, UV).
-*/
-//go:nosplit
 func (self class) AddVertex(vertex Vector3.XYZ) { //gd:SurfaceTool.add_vertex
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_vertex, 0|(gdextension.SizeVector3<<4), &struct{ vertex Vector3.XYZ }{vertex})
 }
-
-/*
-Specifies a [Color.RGBA] to use for the next vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
-
-Note: The material must have [BaseMaterial3D.VertexColorUseAsAlbedo] enabled for the vertex color to be visible.
-
-[BaseMaterial3D.VertexColorUseAsAlbedo]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.VertexColorUseAsAlbedo
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
-*/
-//go:nosplit
 func (self class) SetColor(color Color.RGBA) { //gd:SurfaceTool.set_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
-
-/*
-Specifies a normal to use for the next vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
-*/
-//go:nosplit
 func (self class) SetNormal(normal Vector3.XYZ) { //gd:SurfaceTool.set_normal
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normal, 0|(gdextension.SizeVector3<<4), &struct{ normal Vector3.XYZ }{normal})
 }
-
-/*
-Specifies a tangent to use for the next vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
-*/
-//go:nosplit
 func (self class) SetTangent(tangent Plane.NormalD) { //gd:SurfaceTool.set_tangent
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tangent, 0|(gdextension.SizePlane<<4), &struct{ tangent Plane.NormalD }{tangent})
 }
-
-/*
-Specifies a set of UV coordinates to use for the next vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
-*/
-//go:nosplit
 func (self class) SetUv(uv Vector2.XY) { //gd:SurfaceTool.set_uv
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uv, 0|(gdextension.SizeVector2<<4), &struct{ uv Vector2.XY }{uv})
 }
-
-/*
-Specifies an optional second set of UV coordinates to use for the next vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
-*/
-//go:nosplit
 func (self class) SetUv2(uv2 Vector2.XY) { //gd:SurfaceTool.set_uv2
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uv2, 0|(gdextension.SizeVector2<<4), &struct{ uv2 Vector2.XY }{uv2})
 }
-
-/*
-Specifies an array of bones to use for the next vertex. 'bones' must contain 4 integers.
-*/
-//go:nosplit
 func (self class) SetBones(bones Packed.Array[int32]) { //gd:SurfaceTool.set_bones
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bones, 0|(gdextension.SizePackedArray<<4), &struct {
 		bones gdextension.PackedArray[int32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](bones))})
 }
-
-/*
-Specifies weight values to use for the next vertex. 'weights' must contain 4 values. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
-*/
-//go:nosplit
 func (self class) SetWeights(weights Packed.Array[float32]) { //gd:SurfaceTool.set_weights
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_weights, 0|(gdextension.SizePackedArray<<4), &struct {
 		weights gdextension.PackedArray[float32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](weights))})
 }
-
-/*
-Sets the custom value on this vertex for 'channel_index'.
-
-[SetCustomFormat] must be called first for this 'channel_index'. Formats which are not RGBA will ignore other color channels.
-
-[SetCustomFormat]: https://pkg.go.dev/graphics.gd/classdb/SurfaceTool#Instance.SetCustomFormat
-*/
-//go:nosplit
 func (self class) SetCustom(channel_index int64, custom_color Color.RGBA) { //gd:SurfaceTool.set_custom
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
 		channel_index int64
 		custom_color  Color.RGBA
 	}{channel_index, custom_color})
 }
-
-/*
-Specifies the smooth group to use for the next vertex. If this is never called, all vertices will have the default smooth group of 0 and will be smoothed with adjacent vertices of the same group. To produce a mesh with flat normals, set the smooth group to -1.
-
-Note: This function actually takes a uint32_t, so C# users should use uint32.MaxValue instead of -1 to produce a mesh with flat normals.
-*/
-//go:nosplit
 func (self class) SetSmoothGroup(index int64) { //gd:SurfaceTool.set_smooth_group
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_smooth_group, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
-
-/*
-Inserts a triangle fan made of array data into [Mesh] being constructed.
-
-Requires the primitive type be set to [Mesh.PrimitiveTriangles].
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-*/
-//go:nosplit
 func (self class) AddTriangleFan(vertices Packed.Array[Vector3.XYZ], uvs Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uv2s Packed.Array[Vector2.XY], normals Packed.Array[Vector3.XYZ], tangents Array.Contains[Plane.NormalD]) { //gd:SurfaceTool.add_triangle_fan
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_triangle_fan, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizePackedArray<<20)|(gdextension.SizeArray<<24), &struct {
 		vertices gdextension.PackedArray[Vector3.XYZ]
@@ -814,83 +706,29 @@ func (self class) AddTriangleFan(vertices Packed.Array[Vector3.XYZ], uvs Packed.
 		tangents gdextension.Array
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs)), pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uv2s)), pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](normals)), pointers.Get(gd.InternalArray(tangents))})
 }
-
-/*
-Adds a vertex to index array if you are using indexed vertices. Does not need to be called before adding vertices.
-*/
-//go:nosplit
 func (self class) AddIndex(index int64) { //gd:SurfaceTool.add_index
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_index, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
-
-/*
-Shrinks the vertex array by creating an index array. This can improve performance by avoiding vertex reuse.
-*/
-//go:nosplit
 func (self class) Index() { //gd:SurfaceTool.index
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.index, 0, &struct{}{})
 }
-
-/*
-Removes the index array by expanding the vertex array.
-*/
-//go:nosplit
 func (self class) Deindex() { //gd:SurfaceTool.deindex
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.deindex, 0, &struct{}{})
 }
-
-/*
-Generates normals from vertices so you do not have to do it manually. If 'flip' is true, the resulting normals will be inverted. [GenerateNormals] should be called after generating geometry and before committing the mesh using [Commit] or [CommitToArrays]. For correct display of normal-mapped surfaces, you will also have to generate tangents using [GenerateTangents].
-
-Note: [GenerateNormals] only works if the primitive type is set to [Mesh.PrimitiveTriangles].
-
-Note: [GenerateNormals] takes smooth groups into account. To generate smooth normals, set the smooth group to a value greater than or equal to 0 using [SetSmoothGroup] or leave the smooth group at the default of 0. To generate flat normals, set the smooth group to -1 using [SetSmoothGroup] prior to adding vertices.
-
-[Commit]: https://pkg.go.dev/graphics.gd/classdb/SurfaceTool#Instance.Commit
-[CommitToArrays]: https://pkg.go.dev/graphics.gd/classdb/SurfaceTool#Instance.CommitToArrays
-[GenerateNormals]: https://pkg.go.dev/graphics.gd/classdb/SurfaceTool#Instance.GenerateNormals
-[GenerateTangents]: https://pkg.go.dev/graphics.gd/classdb/SurfaceTool#Instance.GenerateTangents
-[SetSmoothGroup]: https://pkg.go.dev/graphics.gd/classdb/SurfaceTool#Instance.SetSmoothGroup
-*/
-//go:nosplit
 func (self class) GenerateNormals(flip bool) { //gd:SurfaceTool.generate_normals
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.generate_normals, 0|(gdextension.SizeBool<<4), &struct{ flip bool }{flip})
 }
-
-/*
-Generates a tangent vector for each vertex. Requires that each vertex already has UVs and normals set (see [GenerateNormals]).
-
-[GenerateNormals]: https://pkg.go.dev/graphics.gd/classdb/SurfaceTool#Instance.GenerateNormals
-*/
-//go:nosplit
 func (self class) GenerateTangents() { //gd:SurfaceTool.generate_tangents
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.generate_tangents, 0, &struct{}{})
 }
-
-/*
-Optimizes triangle sorting for performance. Requires that [GetPrimitiveType] is [Mesh.PrimitiveTriangles].
-
-[GetPrimitiveType]: https://pkg.go.dev/graphics.gd/classdb/SurfaceTool#Instance.GetPrimitiveType
-*/
-//go:nosplit
 func (self class) OptimizeIndicesForCache() { //gd:SurfaceTool.optimize_indices_for_cache
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.optimize_indices_for_cache, 0, &struct{}{})
 }
-
-/*
-Returns the axis-aligned bounding box of the vertex positions.
-*/
-//go:nosplit
 func (self class) GetAabb() AABB.PositionSize { //gd:SurfaceTool.get_aabb
 	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_aabb, gdextension.SizeAABB, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Generates an LOD for a given 'nd_threshold' in linear units (square root of quadric error metric), using at most 'target_index_count' indices.
-*/
-//go:nosplit
 func (self class) GenerateLod(nd_threshold float64, target_index_count int64) Packed.Array[int32] { //gd:SurfaceTool.generate_lod
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.generate_lod, gdextension.SizePackedArray|(gdextension.SizeFloat<<4)|(gdextension.SizeInt<<8), &struct {
 		nd_threshold       float64
@@ -899,72 +737,29 @@ func (self class) GenerateLod(nd_threshold float64, target_index_count int64) Pa
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Sets [Material] to be used by the [Mesh] you are constructing.
-
-[Material]: https://pkg.go.dev/graphics.gd/classdb/Material
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-*/
-//go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:SurfaceTool.set_material
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
 }
-
-/*
-Returns the type of mesh geometry, such as [Mesh.PrimitiveTriangles].
-*/
-//go:nosplit
 func (self class) GetPrimitiveType() Mesh.PrimitiveType { //gd:SurfaceTool.get_primitive_type
 	var r_ret = noescape.Call[Mesh.PrimitiveType](gd.ObjectChecked(self.AsObject()), methods.get_primitive_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Clear all information passed into the surface tool so far.
-*/
-//go:nosplit
 func (self class) Clear() { //gd:SurfaceTool.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
-
-/*
-Creates a vertex array from an existing [Mesh].
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-*/
-//go:nosplit
 func (self class) CreateFrom(existing [1]gdclass.Mesh, surface int64) { //gd:SurfaceTool.create_from
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_from, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		existing gdextension.Object
 		surface  int64
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetMesh(existing[0]))), surface})
 }
-
-/*
-Creates this SurfaceTool from existing vertex arrays such as returned by [CommitToArrays], [Mesh.SurfaceGetArrays], [Mesh.SurfaceGetBlendShapeArrays], [ImporterMesh.GetSurfaceArrays], and [ImporterMesh.GetSurfaceBlendShapeArrays]. 'primitive_type' controls the type of mesh data, defaulting to [Mesh.PrimitiveTriangles].
-
-[CommitToArrays]: https://pkg.go.dev/graphics.gd/classdb/SurfaceTool#Instance.CommitToArrays
-[ImporterMesh.GetSurfaceArrays]: https://pkg.go.dev/graphics.gd/classdb/ImporterMesh#Instance.GetSurfaceArrays
-[ImporterMesh.GetSurfaceBlendShapeArrays]: https://pkg.go.dev/graphics.gd/classdb/ImporterMesh#Instance.GetSurfaceBlendShapeArrays
-[Mesh.SurfaceGetArrays]: https://pkg.go.dev/graphics.gd/classdb/Mesh#Instance.SurfaceGetArrays
-[Mesh.SurfaceGetBlendShapeArrays]: https://pkg.go.dev/graphics.gd/classdb/Mesh#Instance.SurfaceGetBlendShapeArrays
-*/
-//go:nosplit
 func (self class) CreateFromArrays(arrays Array.Any, primitive_type Mesh.PrimitiveType) { //gd:SurfaceTool.create_from_arrays
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_from_arrays, 0|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8), &struct {
 		arrays         gdextension.Array
 		primitive_type Mesh.PrimitiveType
 	}{pointers.Get(gd.InternalArray(arrays)), primitive_type})
 }
-
-/*
-Creates a vertex array from the specified blend shape of an existing [Mesh]. This can be used to extract a specific pose from a blend shape.
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-*/
-//go:nosplit
 func (self class) CreateFromBlendShape(existing [1]gdclass.Mesh, surface int64, blend_shape String.Readable) { //gd:SurfaceTool.create_from_blend_shape
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_from_blend_shape, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		existing    gdextension.Object
@@ -972,14 +767,6 @@ func (self class) CreateFromBlendShape(existing [1]gdclass.Mesh, surface int64, 
 		blend_shape gdextension.String
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetMesh(existing[0]))), surface, pointers.Get(gd.InternalString(blend_shape))})
 }
-
-/*
-Append vertices from a given [Mesh] surface onto the current vertex array with specified [Transform3D.BasisOrigin].
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
-*/
-//go:nosplit
 func (self class) AppendFrom(existing [1]gdclass.Mesh, surface int64, transform Transform3D.BasisOrigin) { //gd:SurfaceTool.append_from
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.append_from, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform3D<<12), &struct {
 		existing  gdextension.Object
@@ -987,15 +774,6 @@ func (self class) AppendFrom(existing [1]gdclass.Mesh, surface int64, transform 
 		transform Transform3D.BasisOrigin
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetMesh(existing[0]))), surface, gd.Transposed(transform)})
 }
-
-/*
-Returns a constructed [ArrayMesh] from current information passed in. If an existing [ArrayMesh] is passed in as an argument, will add an extra surface to the existing [ArrayMesh].
-
-The 'flags' argument can be the bitwise OR of [Mesh.ArrayFlagUseDynamicUpdate], [Mesh.ArrayFlagUse8BoneWeights], or [Mesh.ArrayFlagUsesEmptyVertexArray].
-
-[ArrayMesh]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh
-*/
-//go:nosplit
 func (self class) Commit(existing [1]gdclass.ArrayMesh, flags int64) [1]gdclass.ArrayMesh { //gd:SurfaceTool.commit
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.commit, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		existing gdextension.Object
@@ -1004,17 +782,6 @@ func (self class) Commit(existing [1]gdclass.ArrayMesh, flags int64) [1]gdclass.
 	var ret = [1]gdclass.ArrayMesh{gdclass.NewArrayMesh(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Commits the data to the same format used by [ArrayMesh.AddSurfaceFromArrays], [ImporterMesh.AddSurface], and [CreateFromArrays]. This way you can further process the mesh data using the [ArrayMesh] or [ImporterMesh] APIs.
-
-[ArrayMesh]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh
-[ArrayMesh.AddSurfaceFromArrays]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh#Instance.AddSurfaceFromArrays
-[CreateFromArrays]: https://pkg.go.dev/graphics.gd/classdb/SurfaceTool#Instance.CreateFromArrays
-[ImporterMesh]: https://pkg.go.dev/graphics.gd/classdb/ImporterMesh
-[ImporterMesh.AddSurface]: https://pkg.go.dev/graphics.gd/classdb/ImporterMesh#Instance.AddSurface
-*/
-//go:nosplit
 func (self class) CommitToArrays() Array.Any { //gd:SurfaceTool.commit_to_arrays
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.commit_to_arrays, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))

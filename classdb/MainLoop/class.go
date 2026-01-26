@@ -310,32 +310,12 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Called once during initialization.
-*/
 func (class) _initialize(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
-
-/*
-Called each physics tick. 'delta' is the logical time between physics ticks in seconds and is equal to [Engine.TimeScale] / [Engine.PhysicsTicksPerSecond]. Equivalent to [Node.PhysicsProcess].
-
-If implemented, the method must return a boolean value. true ends the main loop, while false lets it proceed to the next step.
-
-Note: [PhysicsProcess] may be called up to [Engine.MaxPhysicsStepsPerFrame] times per (idle) frame. This step limit may be reached when the engine is suffering performance issues.
-
-Note: Accumulated 'delta' may diverge from real world seconds.
-
-[Engine.MaxPhysicsStepsPerFrame]: https://pkg.go.dev/graphics.gd/classdb/Engine#MaxPhysicsStepsPerFrame
-[Engine.PhysicsTicksPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#PhysicsTicksPerSecond
-[Engine.TimeScale]: https://pkg.go.dev/graphics.gd/classdb/Engine#TimeScale
-[Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
-[PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/MainLoop#Interface
-*/
 func (class) _physics_process(impl func(ptr gdclass.Receiver, delta float64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
@@ -344,25 +324,6 @@ func (class) _physics_process(impl func(ptr gdclass.Receiver, delta float64) boo
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called on each idle frame, prior to rendering, and after physics ticks have been processed. 'delta' is the time between frames in seconds. Equivalent to [Node.Process].
-
-If implemented, the method must return a boolean value. true ends the main loop, while false lets it proceed to the next frame.
-
-Note: When the engine is struggling and the frame rate is lowered, 'delta' will increase. When 'delta' is increased, it's capped at a maximum of [Engine.TimeScale] * [Engine.MaxPhysicsStepsPerFrame] / [Engine.PhysicsTicksPerSecond]. As a result, accumulated 'delta' may not represent real world time.
-
-Note: When --fixed-fps is enabled or the engine is running in Movie Maker mode (see [MovieWriter]), process 'delta' will always be the same for every frame, regardless of how much time the frame took to render.
-
-Note: Frame delta may be post-processed by [OS.DeltaSmoothing] if this is enabled for the project.
-
-[Engine.MaxPhysicsStepsPerFrame]: https://pkg.go.dev/graphics.gd/classdb/Engine#MaxPhysicsStepsPerFrame
-[Engine.PhysicsTicksPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#PhysicsTicksPerSecond
-[Engine.TimeScale]: https://pkg.go.dev/graphics.gd/classdb/Engine#TimeScale
-[MovieWriter]: https://pkg.go.dev/graphics.gd/classdb/MovieWriter
-[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
-[OS.DeltaSmoothing]: https://pkg.go.dev/graphics.gd/classdb/OS#DeltaSmoothing
-*/
 func (class) _process(impl func(ptr gdclass.Receiver, delta float64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
@@ -371,10 +332,6 @@ func (class) _process(impl func(ptr gdclass.Receiver, delta float64) bool) (cb g
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called before the program exits.
-*/
 func (class) _finalize(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)

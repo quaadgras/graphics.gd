@@ -396,200 +396,119 @@ func (self Instance) SetPresetsVisible(value bool) Instance { //gd:ColorPicker.p
 	return self
 }
 
-//go:nosplit
 func (self class) SetPickColor(color Color.RGBA) { //gd:ColorPicker.set_pick_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pick_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
-
-//go:nosplit
 func (self class) GetPickColor() Color.RGBA { //gd:ColorPicker.get_pick_color
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_pick_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDeferredMode(mode bool) { //gd:ColorPicker.set_deferred_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_deferred_mode, 0|(gdextension.SizeBool<<4), &struct{ mode bool }{mode})
 }
-
-//go:nosplit
 func (self class) IsDeferredMode() bool { //gd:ColorPicker.is_deferred_mode
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_deferred_mode, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetColorMode(color_mode ColorModeType) { //gd:ColorPicker.set_color_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_mode, 0|(gdextension.SizeInt<<4), &struct{ color_mode ColorModeType }{color_mode})
 }
-
-//go:nosplit
 func (self class) GetColorMode() ColorModeType { //gd:ColorPicker.get_color_mode
 	var r_ret = noescape.Call[ColorModeType](gd.ObjectChecked(self.AsObject()), methods.get_color_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEditAlpha(show bool) { //gd:ColorPicker.set_edit_alpha
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edit_alpha, 0|(gdextension.SizeBool<<4), &struct{ show bool }{show})
 }
-
-//go:nosplit
 func (self class) IsEditingAlpha() bool { //gd:ColorPicker.is_editing_alpha
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_alpha, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEditIntensity(show bool) { //gd:ColorPicker.set_edit_intensity
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edit_intensity, 0|(gdextension.SizeBool<<4), &struct{ show bool }{show})
 }
-
-//go:nosplit
 func (self class) IsEditingIntensity() bool { //gd:ColorPicker.is_editing_intensity
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_intensity, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCanAddSwatches(enabled bool) { //gd:ColorPicker.set_can_add_swatches
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_can_add_swatches, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) AreSwatchesEnabled() bool { //gd:ColorPicker.are_swatches_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.are_swatches_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPresetsVisible(visible bool) { //gd:ColorPicker.set_presets_visible
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_presets_visible, 0|(gdextension.SizeBool<<4), &struct{ visible bool }{visible})
 }
-
-//go:nosplit
 func (self class) ArePresetsVisible() bool { //gd:ColorPicker.are_presets_visible
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.are_presets_visible, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetModesVisible(visible bool) { //gd:ColorPicker.set_modes_visible
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modes_visible, 0|(gdextension.SizeBool<<4), &struct{ visible bool }{visible})
 }
-
-//go:nosplit
 func (self class) AreModesVisible() bool { //gd:ColorPicker.are_modes_visible
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.are_modes_visible, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSamplerVisible(visible bool) { //gd:ColorPicker.set_sampler_visible
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sampler_visible, 0|(gdextension.SizeBool<<4), &struct{ visible bool }{visible})
 }
-
-//go:nosplit
 func (self class) IsSamplerVisible() bool { //gd:ColorPicker.is_sampler_visible
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_sampler_visible, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSlidersVisible(visible bool) { //gd:ColorPicker.set_sliders_visible
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sliders_visible, 0|(gdextension.SizeBool<<4), &struct{ visible bool }{visible})
 }
-
-//go:nosplit
 func (self class) AreSlidersVisible() bool { //gd:ColorPicker.are_sliders_visible
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.are_sliders_visible, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetHexVisible(visible bool) { //gd:ColorPicker.set_hex_visible
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hex_visible, 0|(gdextension.SizeBool<<4), &struct{ visible bool }{visible})
 }
-
-//go:nosplit
 func (self class) IsHexVisible() bool { //gd:ColorPicker.is_hex_visible
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hex_visible, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds the given color to a list of color presets. The presets are displayed in the color picker and the user will be able to select them.
-
-Note: The presets list is only for this color picker.
-*/
-//go:nosplit
 func (self class) AddPreset(color Color.RGBA) { //gd:ColorPicker.add_preset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_preset, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
-
-/*
-Removes the given color from the list of color presets of this color picker.
-*/
-//go:nosplit
 func (self class) ErasePreset(color Color.RGBA) { //gd:ColorPicker.erase_preset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.erase_preset, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
-
-/*
-Returns the list of colors in the presets of the color picker.
-*/
-//go:nosplit
 func (self class) GetPresets() Packed.Array[Color.RGBA] { //gd:ColorPicker.get_presets
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_presets, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Adds the given color to a list of color recent presets so that it can be picked later. Recent presets are the colors that were picked recently, a new preset is automatically created and added to recent presets when you pick a new color.
-
-Note: The recent presets list is only for this color picker.
-*/
-//go:nosplit
 func (self class) AddRecentPreset(color Color.RGBA) { //gd:ColorPicker.add_recent_preset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_recent_preset, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
-
-/*
-Removes the given color from the list of color recent presets of this color picker.
-*/
-//go:nosplit
 func (self class) EraseRecentPreset(color Color.RGBA) { //gd:ColorPicker.erase_recent_preset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.erase_recent_preset, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
-
-/*
-Returns the list of colors in the recent presets of the color picker.
-*/
-//go:nosplit
 func (self class) GetRecentPresets() Packed.Array[Color.RGBA] { //gd:ColorPicker.get_recent_presets
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_recent_presets, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPickerShape(shape PickerShapeType) { //gd:ColorPicker.set_picker_shape
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_picker_shape, 0|(gdextension.SizeInt<<4), &struct{ shape PickerShapeType }{shape})
 }
-
-//go:nosplit
 func (self class) GetPickerShape() PickerShapeType { //gd:ColorPicker.get_picker_shape
 	var r_ret = noescape.Call[PickerShapeType](gd.ObjectChecked(self.AsObject()), methods.get_picker_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

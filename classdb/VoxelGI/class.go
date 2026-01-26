@@ -300,82 +300,44 @@ func (self Instance) SetData(value VoxelGIData.Instance) Instance { //gd:VoxelGI
 	return self
 }
 
-//go:nosplit
 func (self class) SetProbeData(data [1]gdclass.VoxelGIData) { //gd:VoxelGI.set_probe_data
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_probe_data, 0|(gdextension.SizeObject<<4), &struct{ data gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetVoxelGIData(data[0])))})
 }
-
-//go:nosplit
 func (self class) GetProbeData() [1]gdclass.VoxelGIData { //gd:VoxelGI.get_probe_data
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_probe_data, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.VoxelGIData{gdclass.NewVoxelGIData(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSubdiv(subdiv Subdiv) { //gd:VoxelGI.set_subdiv
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_subdiv, 0|(gdextension.SizeInt<<4), &struct{ subdiv Subdiv }{subdiv})
 }
-
-//go:nosplit
 func (self class) GetSubdiv() Subdiv { //gd:VoxelGI.get_subdiv
 	var r_ret = noescape.Call[Subdiv](gd.ObjectChecked(self.AsObject()), methods.get_subdiv, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSize(size Vector3.XYZ) { //gd:VoxelGI.set_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), &struct{ size Vector3.XYZ }{size})
 }
-
-//go:nosplit
 func (self class) GetSize() Vector3.XYZ { //gd:VoxelGI.get_size
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCameraAttributes(camera_attributes [1]gdclass.CameraAttributes) { //gd:VoxelGI.set_camera_attributes
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera_attributes, 0|(gdextension.SizeObject<<4), &struct{ camera_attributes gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCameraAttributes(camera_attributes[0])))})
 }
-
-//go:nosplit
 func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes { //gd:VoxelGI.get_camera_attributes
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_camera_attributes, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.CameraAttributes{gdclass.NewCameraAttributes(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Bakes the effect from all [GeometryInstance3D]s marked with [Geometryinstance3d.GiModeStatic] and [Light3D]s marked with either [Light3d.BakeStatic] or [Light3d.BakeDynamic]. If 'create_visual_debug' is true, after baking the light, this will generate a [MultiMesh] that has a cube representing each solid cell with each cube colored to the cell's albedo color. This can be used to visualize the [VoxelGI]'s data and debug any issues that may be occurring.
-
-Note: [Bake] works from the editor and in exported projects. This makes it suitable for procedurally generated or user-built levels. Baking a [VoxelGI] node generally takes from 5 to 20 seconds in most scenes. Reducing [Subdiv] can speed up baking.
-
-Note: [GeometryInstance3D]s and [Light3D]s must be fully ready before [Bake] is called. If you are procedurally creating those and some meshes or lights are missing from your baked [VoxelGI], use call_deferred("bake") instead of calling [Bake] directly.
-
-[Bake]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI#Instance.Bake
-[GeometryInstance3D]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D
-[Light3D]: https://pkg.go.dev/graphics.gd/classdb/Light3D
-[MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
-[Subdiv]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI#Instance.Subdiv
-[VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
-*/
-//go:nosplit
 func (self class) Bake(from_node [1]gdclass.Node, create_visual_debug bool) { //gd:VoxelGI.bake
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.bake, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		from_node           gdextension.Object
 		create_visual_debug bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(from_node[0]))), create_visual_debug})
 }
-
-/*
-Calls [Bake] with create_visual_debug enabled.
-
-[Bake]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI#Instance.Bake
-*/
-//go:nosplit
 func (self class) DebugBake() { //gd:VoxelGI.debug_bake
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.debug_bake, 0, &struct{}{})
 }

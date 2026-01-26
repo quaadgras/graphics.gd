@@ -177,12 +177,9 @@ func (self Instance) SetFactor(value Float.X) Instance { //gd:InputEventMagnifyG
 	return self
 }
 
-//go:nosplit
 func (self class) SetFactor(factor float64) { //gd:InputEventMagnifyGesture.set_factor
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_factor, 0|(gdextension.SizeFloat<<4), &struct{ factor float64 }{factor})
 }
-
-//go:nosplit
 func (self class) GetFactor() float64 { //gd:InputEventMagnifyGesture.get_factor
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_factor, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

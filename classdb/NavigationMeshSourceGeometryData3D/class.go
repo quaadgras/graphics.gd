@@ -287,133 +287,61 @@ func (self Instance) SetProjectedObstructions(value []ProjectedObstruction3D) In
 	return self
 }
 
-/*
-Sets the parsed source geometry data vertices. The vertices need to be matched with appropriated indices.
-
-Warning: Inappropriate data can crash the baking process of the involved third-party libraries.
-*/
-//go:nosplit
 func (self class) SetVertices(vertices Packed.Array[float32]) { //gd:NavigationMeshSourceGeometryData3D.set_vertices
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertices, 0|(gdextension.SizePackedArray<<4), &struct {
 		vertices gdextension.PackedArray[float32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](vertices))})
 }
-
-/*
-Returns the parsed source geometry data vertices array.
-*/
-//go:nosplit
 func (self class) GetVertices() Packed.Array[float32] { //gd:NavigationMeshSourceGeometryData3D.get_vertices
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_vertices, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Sets the parsed source geometry data indices. The indices need to be matched with appropriated vertices.
-
-Warning: Inappropriate data can crash the baking process of the involved third-party libraries.
-*/
-//go:nosplit
 func (self class) SetIndices(indices Packed.Array[int32]) { //gd:NavigationMeshSourceGeometryData3D.set_indices
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_indices, 0|(gdextension.SizePackedArray<<4), &struct {
 		indices gdextension.PackedArray[int32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](indices))})
 }
-
-/*
-Returns the parsed source geometry data indices array.
-*/
-//go:nosplit
 func (self class) GetIndices() Packed.Array[int32] { //gd:NavigationMeshSourceGeometryData3D.get_indices
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_indices, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Appends arrays of 'vertices' and 'indices' at the end of the existing arrays. Adds the existing index as an offset to the appended indices.
-*/
-//go:nosplit
 func (self class) AppendArrays(vertices Packed.Array[float32], indices Packed.Array[int32]) { //gd:NavigationMeshSourceGeometryData3D.append_arrays
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.append_arrays, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), &struct {
 		vertices gdextension.PackedArray[float32]
 		indices  gdextension.PackedArray[int32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](vertices)), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](indices))})
 }
-
-/*
-Clears the internal data.
-*/
-//go:nosplit
 func (self class) Clear() { //gd:NavigationMeshSourceGeometryData3D.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
-
-/*
-Returns true when parsed source geometry data exists.
-*/
-//go:nosplit
 func (self class) HasData() bool { //gd:NavigationMeshSourceGeometryData3D.has_data
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_data, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds the geometry data of a [Mesh] resource to the navigation mesh baking data. The mesh must have valid triangulated mesh data to be considered. Since [NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using 'xform'.
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-[NavigationMesh]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh
-*/
-//go:nosplit
 func (self class) AddMesh(mesh [1]gdclass.Mesh, xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_mesh
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_mesh, 0|(gdextension.SizeObject<<4)|(gdextension.SizeTransform3D<<8), &struct {
 		mesh  gdextension.Object
 		xform Transform3D.BasisOrigin
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetMesh(mesh[0]))), gd.Transposed(xform)})
 }
-
-/*
-Adds an slice the size of [Mesh.ArrayMax] and with vertices at index [Mesh.ArrayVertex] and indices at index [Mesh.ArrayIndex] to the navigation mesh baking data. The array must have valid triangulated mesh data to be considered. Since [NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using 'xform'.
-
-[NavigationMesh]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh
-*/
-//go:nosplit
 func (self class) AddMeshArray(mesh_array Array.Any, xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_mesh_array
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_mesh_array, 0|(gdextension.SizeArray<<4)|(gdextension.SizeTransform3D<<8), &struct {
 		mesh_array gdextension.Array
 		xform      Transform3D.BasisOrigin
 	}{pointers.Get(gd.InternalArray(mesh_array)), gd.Transposed(xform)})
 }
-
-/*
-Adds an array of vertex positions to the geometry data for navigation mesh baking to form triangulated faces. For each face the array must have three vertex positions in clockwise winding order. Since [NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using 'xform'.
-
-[NavigationMesh]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh
-*/
-//go:nosplit
 func (self class) AddFaces(faces Packed.Array[Vector3.XYZ], xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_faces
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_faces, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeTransform3D<<8), &struct {
 		faces gdextension.PackedArray[Vector3.XYZ]
 		xform Transform3D.BasisOrigin
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](faces)), gd.Transposed(xform)})
 }
-
-/*
-Adds the geometry data of another [NavigationMeshSourceGeometryData3D] to the navigation mesh baking data.
-
-[NavigationMeshSourceGeometryData3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationMeshSourceGeometryData3D
-*/
-//go:nosplit
 func (self class) Merge(other_geometry [1]gdclass.NavigationMeshSourceGeometryData3D) { //gd:NavigationMeshSourceGeometryData3D.merge
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.merge, 0|(gdextension.SizeObject<<4), &struct{ other_geometry gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationMeshSourceGeometryData3D(other_geometry[0])))})
 }
-
-/*
-Adds a projected obstruction shape to the source geometry. The 'vertices' are considered projected on an xz-axes plane, placed at the global y-axis 'elevation' and extruded by 'height'. If 'carve' is true the carved shape will not be affected by additional offsets (e.g. agent radius) of the navigation mesh baking process.
-*/
-//go:nosplit
 func (self class) AddProjectedObstruction(vertices Packed.Array[Vector3.XYZ], elevation float64, height float64, carve bool) { //gd:NavigationMeshSourceGeometryData3D.add_projected_obstruction
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_projected_obstruction, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), &struct {
 		vertices  gdextension.PackedArray[Vector3.XYZ]
@@ -422,56 +350,17 @@ func (self class) AddProjectedObstruction(vertices Packed.Array[Vector3.XYZ], el
 		carve     bool
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices)), elevation, height, carve})
 }
-
-/*
-Clears all projected obstructions.
-*/
-//go:nosplit
 func (self class) ClearProjectedObstructions() { //gd:NavigationMeshSourceGeometryData3D.clear_projected_obstructions
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_projected_obstructions, 0, &struct{}{})
 }
-
-/*
-Sets the projected obstructions with an Array of Dictionaries with the following key value pairs:
-
-
-	type ProjectedObstruction3D struct {
-		Vertices  []float32 `gd:"vertices"`
-		Elevation float32   `gd:"elevation"`
-		Height    float32   `gd:"height"`
-		Carve     bool      `gd:"carve"`
-	}
-
-*/
-//go:nosplit
 func (self class) SetProjectedObstructions(projected_obstructions Array.Any) { //gd:NavigationMeshSourceGeometryData3D.set_projected_obstructions
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_projected_obstructions, 0|(gdextension.SizeArray<<4), &struct{ projected_obstructions gdextension.Array }{pointers.Get(gd.InternalArray(projected_obstructions))})
 }
-
-/*
-Returns the projected obstructions as an slice of dictionaries. Each data structure contains the following entries:
-
-- vertices - A []float32 that defines the outline points of the projected shape.
-
-- elevation - A [Float.X] that defines the projected shape placement on the y-axis.
-
-- height - A [Float.X] that defines how much the projected shape is extruded along the y-axis.
-
-- carve - A bool that defines how the obstacle affects the navigation mesh baking. If true the projected shape will not be affected by addition offsets, e.g. agent radius.
-
-[Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
-*/
-//go:nosplit
 func (self class) GetProjectedObstructions() Array.Any { //gd:NavigationMeshSourceGeometryData3D.get_projected_obstructions
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_projected_obstructions, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns an axis-aligned bounding box that covers all the stored geometry data. The bounds are calculated when calling this function with the result cached until further geometry changes are made.
-*/
-//go:nosplit
 func (self class) GetBounds() AABB.PositionSize { //gd:NavigationMeshSourceGeometryData3D.get_bounds
 	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_bounds, gdextension.SizeAABB, &struct{}{})
 	var ret = r_ret

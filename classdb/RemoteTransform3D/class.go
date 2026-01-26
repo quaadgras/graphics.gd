@@ -245,71 +245,44 @@ func (self Instance) SetUpdateScale(value bool) Instance { //gd:RemoteTransform3
 	return self
 }
 
-//go:nosplit
 func (self class) SetRemoteNode(path Path.ToNode) { //gd:RemoteTransform3D.set_remote_node
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_remote_node, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
-
-//go:nosplit
 func (self class) GetRemoteNode() Path.ToNode { //gd:RemoteTransform3D.get_remote_node
 	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_remote_node, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
-
-/*
-[RemoteTransform3D] caches the remote node. It may not notice if the remote node disappears; [ForceUpdateCache] forces it to update the cache again.
-
-[ForceUpdateCache]: https://pkg.go.dev/graphics.gd/classdb/RemoteTransform3D#Instance.ForceUpdateCache
-[RemoteTransform3D]: https://pkg.go.dev/graphics.gd/classdb/RemoteTransform3D
-*/
-//go:nosplit
 func (self class) ForceUpdateCache() { //gd:RemoteTransform3D.force_update_cache
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_update_cache, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetUseGlobalCoordinates(use_global_coordinates bool) { //gd:RemoteTransform3D.set_use_global_coordinates
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_global_coordinates, 0|(gdextension.SizeBool<<4), &struct{ use_global_coordinates bool }{use_global_coordinates})
 }
-
-//go:nosplit
 func (self class) GetUseGlobalCoordinates() bool { //gd:RemoteTransform3D.get_use_global_coordinates
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_global_coordinates, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUpdatePosition(update_remote_position bool) { //gd:RemoteTransform3D.set_update_position
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_update_position, 0|(gdextension.SizeBool<<4), &struct{ update_remote_position bool }{update_remote_position})
 }
-
-//go:nosplit
 func (self class) GetUpdatePosition() bool { //gd:RemoteTransform3D.get_update_position
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_update_position, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUpdateRotation(update_remote_rotation bool) { //gd:RemoteTransform3D.set_update_rotation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_update_rotation, 0|(gdextension.SizeBool<<4), &struct{ update_remote_rotation bool }{update_remote_rotation})
 }
-
-//go:nosplit
 func (self class) GetUpdateRotation() bool { //gd:RemoteTransform3D.get_update_rotation
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_update_rotation, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUpdateScale(update_remote_scale bool) { //gd:RemoteTransform3D.set_update_scale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_update_scale, 0|(gdextension.SizeBool<<4), &struct{ update_remote_scale bool }{update_remote_scale})
 }
-
-//go:nosplit
 func (self class) GetUpdateScale() bool { //gd:RemoteTransform3D.get_update_scale
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_update_scale, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

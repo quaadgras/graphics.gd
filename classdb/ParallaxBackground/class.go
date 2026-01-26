@@ -267,72 +267,49 @@ func (self Instance) SetScrollIgnoreCameraZoom(value bool) Instance { //gd:Paral
 	return self
 }
 
-//go:nosplit
 func (self class) SetScrollOffset(offset Vector2.XY) { //gd:ParallaxBackground.set_scroll_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
-
-//go:nosplit
 func (self class) GetScrollOffset() Vector2.XY { //gd:ParallaxBackground.get_scroll_offset
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_scroll_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetScrollBaseOffset(offset Vector2.XY) { //gd:ParallaxBackground.set_scroll_base_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_base_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
-
-//go:nosplit
 func (self class) GetScrollBaseOffset() Vector2.XY { //gd:ParallaxBackground.get_scroll_base_offset
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_scroll_base_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetScrollBaseScale(scale Vector2.XY) { //gd:ParallaxBackground.set_scroll_base_scale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_base_scale, 0|(gdextension.SizeVector2<<4), &struct{ scale Vector2.XY }{scale})
 }
-
-//go:nosplit
 func (self class) GetScrollBaseScale() Vector2.XY { //gd:ParallaxBackground.get_scroll_base_scale
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_scroll_base_scale, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetLimitBegin(offset Vector2.XY) { //gd:ParallaxBackground.set_limit_begin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_limit_begin, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
-
-//go:nosplit
 func (self class) GetLimitBegin() Vector2.XY { //gd:ParallaxBackground.get_limit_begin
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_limit_begin, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetLimitEnd(offset Vector2.XY) { //gd:ParallaxBackground.set_limit_end
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_limit_end, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
-
-//go:nosplit
 func (self class) GetLimitEnd() Vector2.XY { //gd:ParallaxBackground.get_limit_end
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_limit_end, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetIgnoreCameraZoom(ignore bool) { //gd:ParallaxBackground.set_ignore_camera_zoom
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ignore_camera_zoom, 0|(gdextension.SizeBool<<4), &struct{ ignore bool }{ignore})
 }
-
-//go:nosplit
 func (self class) IsIgnoreCameraZoom() bool { //gd:ParallaxBackground.is_ignore_camera_zoom
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ignore_camera_zoom, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

@@ -276,83 +276,42 @@ func (self Instance) SetMapData(value []float32) Instance { //gd:HeightMapShape3
 	return self
 }
 
-//go:nosplit
 func (self class) SetMapWidth(width int64) { //gd:HeightMapShape3D.set_map_width
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_map_width, 0|(gdextension.SizeInt<<4), &struct{ width int64 }{width})
 }
-
-//go:nosplit
 func (self class) GetMapWidth() int64 { //gd:HeightMapShape3D.get_map_width
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_map_width, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMapDepth(height int64) { //gd:HeightMapShape3D.set_map_depth
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_map_depth, 0|(gdextension.SizeInt<<4), &struct{ height int64 }{height})
 }
-
-//go:nosplit
 func (self class) GetMapDepth() int64 { //gd:HeightMapShape3D.get_map_depth
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_map_depth, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMapData(data Packed.Array[float32]) { //gd:HeightMapShape3D.set_map_data
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_map_data, 0|(gdextension.SizePackedArray<<4), &struct {
 		data gdextension.PackedArray[float32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](data))})
 }
-
-//go:nosplit
 func (self class) GetMapData() Packed.Array[float32] { //gd:HeightMapShape3D.get_map_data
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_map_data, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns the smallest height value found in [MapData]. Recalculates only when [MapData] changes.
-
-[MapData]: https://pkg.go.dev/graphics.gd/classdb/HeightMapShape3D#Instance.MapData
-*/
-//go:nosplit
 func (self class) GetMinHeight() float64 { //gd:HeightMapShape3D.get_min_height
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min_height, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the largest height value found in [MapData]. Recalculates only when [MapData] changes.
-
-[MapData]: https://pkg.go.dev/graphics.gd/classdb/HeightMapShape3D#Instance.MapData
-*/
-//go:nosplit
 func (self class) GetMaxHeight() float64 { //gd:HeightMapShape3D.get_max_height
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_height, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Updates [MapData] with data read from an [Image] reference. Automatically resizes heightmap [MapWidth] and [MapDepth] to fit the full image width and height.
-
-The image needs to be in either [Image.FormatRf] (32 bit), [Image.FormatRh] (16 bit), or [Image.FormatR8] (8 bit).
-
-Each image pixel is read in as a float on the range from 0.0 (black pixel) to 1.0 (white pixel). This range value gets remapped to 'height_min' and 'height_max' to form the final height value.
-
-Note: Using a heightmap with 16-bit or 32-bit data, stored in EXR or HDR format is recommended. Using 8-bit height data, or a format like PNG that Godot imports as 8-bit, will result in a terraced terrain.
-
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-[MapData]: https://pkg.go.dev/graphics.gd/classdb/HeightMapShape3D#Instance.MapData
-[MapDepth]: https://pkg.go.dev/graphics.gd/classdb/HeightMapShape3D#Instance.MapDepth
-[MapWidth]: https://pkg.go.dev/graphics.gd/classdb/HeightMapShape3D#Instance.MapWidth
-*/
-//go:nosplit
 func (self class) UpdateMapDataFromImage(image [1]gdclass.Image, height_min float64, height_max float64) { //gd:HeightMapShape3D.update_map_data_from_image
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_map_data_from_image, 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
 		image      gdextension.Object

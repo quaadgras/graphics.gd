@@ -310,40 +310,21 @@ func New() Instance {
 	return casted
 }
 
-/*
-Creates a bitmap with the specified size, filled with false.
-*/
-//go:nosplit
 func (self class) Create(size Vector2i.XY) { //gd:BitMap.create
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create, 0|(gdextension.SizeVector2i<<4), &struct{ size Vector2i.XY }{size})
 }
-
-/*
-Creates a bitmap that matches the given image dimensions, every element of the bitmap is set to false if the alpha value of the image at that position is equal to 'threshold' or less, and true in other case.
-*/
-//go:nosplit
 func (self class) CreateFromImageAlpha(image [1]gdclass.Image, threshold float64) { //gd:BitMap.create_from_image_alpha
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_from_image_alpha, 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8), &struct {
 		image     gdextension.Object
 		threshold float64
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0]))), threshold})
 }
-
-/*
-Sets the bitmap's element at the specified position, to the specified value.
-*/
-//go:nosplit
 func (self class) SetBitv(position Vector2i.XY, bit bool) { //gd:BitMap.set_bitv
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bitv, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeBool<<8), &struct {
 		position Vector2i.XY
 		bit      bool
 	}{position, bit})
 }
-
-/*
-Sets the bitmap's element at the specified position, to the specified value.
-*/
-//go:nosplit
 func (self class) SetBit(x int64, y int64, bit bool) { //gd:BitMap.set_bit
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bit, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		x   int64
@@ -351,21 +332,11 @@ func (self class) SetBit(x int64, y int64, bit bool) { //gd:BitMap.set_bit
 		bit bool
 	}{x, y, bit})
 }
-
-/*
-Returns bitmap's value at the specified position.
-*/
-//go:nosplit
 func (self class) GetBitv(position Vector2i.XY) bool { //gd:BitMap.get_bitv
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_bitv, gdextension.SizeBool|(gdextension.SizeVector2i<<4), &struct{ position Vector2i.XY }{position})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns bitmap's value at the specified position.
-*/
-//go:nosplit
 func (self class) GetBit(x int64, y int64) bool { //gd:BitMap.get_bit
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_bit, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		x int64
@@ -374,83 +345,36 @@ func (self class) GetBit(x int64, y int64) bool { //gd:BitMap.get_bit
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets a rectangular portion of the bitmap to the specified value.
-*/
-//go:nosplit
 func (self class) SetBitRect(rect Rect2i.PositionSize, bit bool) { //gd:BitMap.set_bit_rect
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bit_rect, 0|(gdextension.SizeRect2i<<4)|(gdextension.SizeBool<<8), &struct {
 		rect Rect2i.PositionSize
 		bit  bool
 	}{rect, bit})
 }
-
-/*
-Returns the number of bitmap elements that are set to true.
-*/
-//go:nosplit
 func (self class) GetTrueBitCount() int64 { //gd:BitMap.get_true_bit_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_true_bit_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns bitmap's dimensions.
-*/
-//go:nosplit
 func (self class) GetSize() Vector2i.XY { //gd:BitMap.get_size
 	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Resizes the image to 'new_size'.
-*/
-//go:nosplit
 func (self class) Resize(new_size Vector2i.XY) { //gd:BitMap.resize
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resize, 0|(gdextension.SizeVector2i<<4), &struct{ new_size Vector2i.XY }{new_size})
 }
-
-/*
-Applies morphological dilation or erosion to the bitmap. If 'pixels' is positive, dilation is applied to the bitmap. If 'pixels' is negative, erosion is applied to the bitmap. 'rect' defines the area where the morphological operation is applied. Pixels located outside the 'rect' are unaffected by [GrowMask].
-
-[GrowMask]: https://pkg.go.dev/graphics.gd/classdb/BitMap#Instance.GrowMask
-*/
-//go:nosplit
 func (self class) GrowMask(pixels int64, rect Rect2i.PositionSize) { //gd:BitMap.grow_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.grow_mask, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRect2i<<8), &struct {
 		pixels int64
 		rect   Rect2i.PositionSize
 	}{pixels, rect})
 }
-
-/*
-Returns an image of the same size as the bitmap and with an [Image.Format] of type [Image.FormatL8]. true bits of the bitmap are being converted into white pixels, and false bits into black.
-*/
-//go:nosplit
 func (self class) ConvertToImage() [1]gdclass.Image { //gd:BitMap.convert_to_image
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.convert_to_image, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Creates an slice of polygons covering a rectangular portion of the bitmap. It uses a marching squares algorithm, followed by Ramer-Douglas-Peucker (RDP) reduction of the number of vertices. Each polygon is described as a [][Vector2.XY] of its vertices.
-
-To get polygons covering the whole bitmap, pass:
-
-
-	var size = Rect2.PositionSize{Vector2.Zero, Vector2.From(bitmap.GetSize())}
-
-
-'epsilon' is passed to RDP to control how accurately the polygons cover the bitmap: a lower 'epsilon' corresponds to more points in the polygons.
-
-[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
-*/
-//go:nosplit
 func (self class) OpaqueToPolygons(rect Rect2i.PositionSize, epsilon float64) Array.Contains[Packed.Array[Vector2.XY]] { //gd:BitMap.opaque_to_polygons
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.opaque_to_polygons, gdextension.SizeArray|(gdextension.SizeRect2i<<4)|(gdextension.SizeFloat<<8), &struct {
 		rect    Rect2i.PositionSize

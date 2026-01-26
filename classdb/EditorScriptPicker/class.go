@@ -184,12 +184,9 @@ func (self Instance) SetScriptOwner(value Node.Instance) Instance { //gd:EditorS
 	return self
 }
 
-//go:nosplit
 func (self class) SetScriptOwner(owner_node [1]gdclass.Node) { //gd:EditorScriptPicker.set_script_owner
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_script_owner, 0|(gdextension.SizeObject<<4), &struct{ owner_node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetNode(owner_node[0])[0]))})
 }
-
-//go:nosplit
 func (self class) GetScriptOwner() [1]gdclass.Node { //gd:EditorScriptPicker.get_script_owner
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_script_owner, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}

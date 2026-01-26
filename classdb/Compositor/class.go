@@ -174,12 +174,9 @@ func (self Instance) SetCompositorEffects(value []CompositorEffect.Instance) Ins
 	return self
 }
 
-//go:nosplit
 func (self class) SetCompositorEffects(compositor_effects Array.Contains[[1]gdclass.CompositorEffect]) { //gd:Compositor.set_compositor_effects
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_compositor_effects, 0|(gdextension.SizeArray<<4), &struct{ compositor_effects gdextension.Array }{pointers.Get(gd.InternalArray(compositor_effects))})
 }
-
-//go:nosplit
 func (self class) GetCompositorEffects() Array.Contains[[1]gdclass.CompositorEffect] { //gd:Compositor.get_compositor_effects
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_compositor_effects, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.CompositorEffect]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))

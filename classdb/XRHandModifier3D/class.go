@@ -196,24 +196,17 @@ func (self Instance) SetBoneUpdate(value BoneUpdate) Instance { //gd:XRHandModif
 	return self
 }
 
-//go:nosplit
 func (self class) SetHandTracker(tracker_name String.Name) { //gd:XRHandModifier3D.set_hand_tracker
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hand_tracker, 0|(gdextension.SizeStringName<<4), &struct{ tracker_name gdextension.StringName }{pointers.Get(gd.InternalStringName(tracker_name))})
 }
-
-//go:nosplit
 func (self class) GetHandTracker() String.Name { //gd:XRHandModifier3D.get_hand_tracker
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_hand_tracker, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBoneUpdate(bone_update BoneUpdate) { //gd:XRHandModifier3D.set_bone_update
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_update, 0|(gdextension.SizeInt<<4), &struct{ bone_update BoneUpdate }{bone_update})
 }
-
-//go:nosplit
 func (self class) GetBoneUpdate() BoneUpdate { //gd:XRHandModifier3D.get_bone_update
 	var r_ret = noescape.Call[BoneUpdate](gd.ObjectChecked(self.AsObject()), methods.get_bone_update, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

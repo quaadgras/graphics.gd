@@ -731,10 +731,6 @@ func (self Instance) SetCallbackModeDiscrete(value AnimationCallbackModeDiscrete
 	class(self).SetCallbackModeDiscrete(value)
 	return self
 }
-
-/*
-A virtual function for processing after getting a key during playback.
-*/
 func (class) _post_process_key_value(impl func(ptr gdclass.Receiver, animation [1]gdclass.Animation, track int64, value variant.Any, object_id int64, object_sub_idx int64) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var animation = [1]gdclass.Animation{gdclass.NewAnimation(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -756,17 +752,6 @@ func (class) _post_process_key_value(impl func(ptr gdclass.Receiver, animation [
 	}
 }
 
-/*
-Adds 'library' to the animation player, under the key 'name'.
-
-AnimationMixer has a global library by default with an empty string as key. For adding an animation to the global library:
-
-
-	var global_library = mixer.GetAnimationLibrary("")
-	global_library.AddAnimation("animation_name", animation_resource)
-
-*/
-//go:nosplit
 func (self class) AddAnimationLibrary(name String.Name, library [1]gdclass.AnimationLibrary) Error.Code { //gd:AnimationMixer.add_animation_library
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_animation_library, gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name    gdextension.StringName
@@ -775,442 +760,153 @@ func (self class) AddAnimationLibrary(name String.Name, library [1]gdclass.Anima
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Removes the [AnimationLibrary] associated with the key 'name'.
-
-[AnimationLibrary]: https://pkg.go.dev/graphics.gd/classdb/AnimationLibrary
-*/
-//go:nosplit
 func (self class) RemoveAnimationLibrary(name String.Name) { //gd:AnimationMixer.remove_animation_library
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_animation_library, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
-
-/*
-Moves the [AnimationLibrary] associated with the key 'name' to the key 'newname'.
-
-[AnimationLibrary]: https://pkg.go.dev/graphics.gd/classdb/AnimationLibrary
-*/
-//go:nosplit
 func (self class) RenameAnimationLibrary(name String.Name, newname String.Name) { //gd:AnimationMixer.rename_animation_library
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.rename_animation_library, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name    gdextension.StringName
 		newname gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(newname))})
 }
-
-/*
-Returns true if the [AnimationMixer] stores an [AnimationLibrary] with key 'name'.
-
-[AnimationLibrary]: https://pkg.go.dev/graphics.gd/classdb/AnimationLibrary
-[AnimationMixer]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer
-*/
-//go:nosplit
 func (self class) HasAnimationLibrary(name String.Name) bool { //gd:AnimationMixer.has_animation_library
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_animation_library, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the first [AnimationLibrary] with key 'name' or null if not found.
-
-To get the [AnimationMixer]'s global animation library, use get_animation_library("").
-
-[AnimationLibrary]: https://pkg.go.dev/graphics.gd/classdb/AnimationLibrary
-[AnimationMixer]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer
-*/
-//go:nosplit
 func (self class) GetAnimationLibrary(name String.Name) [1]gdclass.AnimationLibrary { //gd:AnimationMixer.get_animation_library
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_animation_library, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = [1]gdclass.AnimationLibrary{gdclass.NewAnimationLibrary(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the list of stored library keys.
-*/
-//go:nosplit
 func (self class) GetAnimationLibraryList() Array.Contains[String.Name] { //gd:AnimationMixer.get_animation_library_list
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_animation_library_list, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns true if the [AnimationMixer] stores an [Animation] with key 'name'.
-
-[Animation]: https://pkg.go.dev/graphics.gd/classdb/Animation
-[AnimationMixer]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer
-*/
-//go:nosplit
 func (self class) HasAnimation(name String.Name) bool { //gd:AnimationMixer.has_animation
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_animation, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [Animation] with the key 'name'. If the animation does not exist, null is returned and an error is logged.
-
-[Animation]: https://pkg.go.dev/graphics.gd/classdb/Animation
-*/
-//go:nosplit
 func (self class) GetAnimation(name String.Name) [1]gdclass.Animation { //gd:AnimationMixer.get_animation
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_animation, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = [1]gdclass.Animation{gdclass.NewAnimation(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the list of stored animation keys.
-*/
-//go:nosplit
 func (self class) GetAnimationList() Packed.Strings { //gd:AnimationMixer.get_animation_list
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_animation_list, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetActive(active bool) { //gd:AnimationMixer.set_active
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_active, 0|(gdextension.SizeBool<<4), &struct{ active bool }{active})
 }
-
-//go:nosplit
 func (self class) IsActive() bool { //gd:AnimationMixer.is_active
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_active, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDeterministic(deterministic bool) { //gd:AnimationMixer.set_deterministic
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_deterministic, 0|(gdextension.SizeBool<<4), &struct{ deterministic bool }{deterministic})
 }
-
-//go:nosplit
 func (self class) IsDeterministic() bool { //gd:AnimationMixer.is_deterministic
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_deterministic, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRootNode(path Path.ToNode) { //gd:AnimationMixer.set_root_node
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_node, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
-
-//go:nosplit
 func (self class) GetRootNode() Path.ToNode { //gd:AnimationMixer.get_root_node
 	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root_node, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCallbackModeProcess(mode AnimationCallbackModeProcess) { //gd:AnimationMixer.set_callback_mode_process
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_callback_mode_process, 0|(gdextension.SizeInt<<4), &struct{ mode AnimationCallbackModeProcess }{mode})
 }
-
-//go:nosplit
 func (self class) GetCallbackModeProcess() AnimationCallbackModeProcess { //gd:AnimationMixer.get_callback_mode_process
 	var r_ret = noescape.Call[AnimationCallbackModeProcess](gd.ObjectChecked(self.AsObject()), methods.get_callback_mode_process, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCallbackModeMethod(mode AnimationCallbackModeMethod) { //gd:AnimationMixer.set_callback_mode_method
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_callback_mode_method, 0|(gdextension.SizeInt<<4), &struct{ mode AnimationCallbackModeMethod }{mode})
 }
-
-//go:nosplit
 func (self class) GetCallbackModeMethod() AnimationCallbackModeMethod { //gd:AnimationMixer.get_callback_mode_method
 	var r_ret = noescape.Call[AnimationCallbackModeMethod](gd.ObjectChecked(self.AsObject()), methods.get_callback_mode_method, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCallbackModeDiscrete(mode AnimationCallbackModeDiscrete) { //gd:AnimationMixer.set_callback_mode_discrete
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_callback_mode_discrete, 0|(gdextension.SizeInt<<4), &struct{ mode AnimationCallbackModeDiscrete }{mode})
 }
-
-//go:nosplit
 func (self class) GetCallbackModeDiscrete() AnimationCallbackModeDiscrete { //gd:AnimationMixer.get_callback_mode_discrete
 	var r_ret = noescape.Call[AnimationCallbackModeDiscrete](gd.ObjectChecked(self.AsObject()), methods.get_callback_mode_discrete, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAudioMaxPolyphony(max_polyphony int64) { //gd:AnimationMixer.set_audio_max_polyphony
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_audio_max_polyphony, 0|(gdextension.SizeInt<<4), &struct{ max_polyphony int64 }{max_polyphony})
 }
-
-//go:nosplit
 func (self class) GetAudioMaxPolyphony() int64 { //gd:AnimationMixer.get_audio_max_polyphony
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_audio_max_polyphony, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRootMotionTrack(path Path.ToNode) { //gd:AnimationMixer.set_root_motion_track
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_motion_track, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
-
-//go:nosplit
 func (self class) GetRootMotionTrack() Path.ToNode { //gd:AnimationMixer.get_root_motion_track
 	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_track, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRootMotionLocal(enabled bool) { //gd:AnimationMixer.set_root_motion_local
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_motion_local, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsRootMotionLocal() bool { //gd:AnimationMixer.is_root_motion_local
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_root_motion_local, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Retrieve the motion delta of position with the [RootMotionTrack] as a [Vector3.XYZ] that can be used elsewhere.
-
-If [RootMotionTrack] is not a path to a track of type [Animation.TypePosition3d], returns Vector3(0, 0, 0).
-
-See also [RootMotionTrack] and [RootMotionView].
-
-The most basic example is applying position to [CharacterBody3D]:
-
-
-	if Input.IsActionJustPressed("animate", false) {
-		current_rotation = characterBody3D.AsNode3D().Quaternion()
-		animationNodeStateMachinePlayback.Travel("Animate")
-	}
-	var velocity = Vector3.DivX(Quaternion.Rotate(animationTree.AsAnimationMixer().GetRootMotionPosition(), current_rotation), delta)
-	characterBody3D.SetVelocity(velocity)
-	characterBody3D.MoveAndSlide()
-
-
-By using this in combination with [GetRootMotionRotationAccumulator], you can apply the root motion position more correctly to account for the rotation of the node.
-
-
-
-If [RootMotionLocal] is true, returns the pre-multiplied translation value with the inverted rotation.
-
-In this case, the code can be written as follows:
-
-
-
-[CharacterBody3D]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D
-[GetRootMotionRotationAccumulator]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.GetRootMotionRotationAccumulator
-[RootMotionLocal]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.RootMotionLocal
-[RootMotionTrack]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.RootMotionTrack
-[RootMotionView]: https://pkg.go.dev/graphics.gd/classdb/RootMotionView
-[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
-*/
-//go:nosplit
 func (self class) GetRootMotionPosition() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_position
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_position, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Retrieve the motion delta of rotation with the [RootMotionTrack] as a [Quaternion.IJKX] that can be used elsewhere.
-
-If [RootMotionTrack] is not a path to a track of type [Animation.TypeRotation3d], returns Quaternion(0, 0, 0, 1).
-
-See also [RootMotionTrack] and [RootMotionView].
-
-The most basic example is applying rotation to [CharacterBody3D]:
-
-
-	if Input.IsActionJustPressed("animate", false) {
-		animationNodeStateMachinePlayback.Travel("Animate")
-	}
-	characterBody3D.AsNode3D().SetQuaternion(Quaternion.Mul(characterBody3D.AsNode3D().Quaternion(), animationTree.AsAnimationMixer().GetRootMotionRotation()))
-
-
-[CharacterBody3D]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D
-[Quaternion.IJKX]: https://pkg.go.dev/graphics.gd/variant/Quaternion#IJKX
-[RootMotionTrack]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.RootMotionTrack
-[RootMotionView]: https://pkg.go.dev/graphics.gd/classdb/RootMotionView
-*/
-//go:nosplit
 func (self class) GetRootMotionRotation() Quaternion.IJKX { //gd:AnimationMixer.get_root_motion_rotation
 	var r_ret = noescape.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_rotation, gdextension.SizeQuaternion, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Retrieve the motion delta of scale with the [RootMotionTrack] as a [Vector3.XYZ] that can be used elsewhere.
-
-If [RootMotionTrack] is not a path to a track of type [Animation.TypeScale3d], returns Vector3(0, 0, 0).
-
-See also [RootMotionTrack] and [RootMotionView].
-
-The most basic example is applying scale to [CharacterBody3D]:
-
-
-	var current_scale = Vector3.New(1, 1, 1)
-	var scale_accum = Vector3.New(1, 1, 1)
-
-	if Input.IsActionJustPressed("animate", false) {
-		current_scale = characterBody3D.AsNode3D().Scale()
-		scale_accum = Vector3.New(1, 1, 1)
-		animationNodeStateMachinePlayback.Travel("Animate")
-	}
-	scale_accum = Vector3.Add(scale_accum, animationTree.AsAnimationMixer().GetRootMotionScale())
-	characterBody3D.AsNode3D().SetScale(Vector3.Mul(current_scale, scale_accum))
-
-
-[CharacterBody3D]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D
-[RootMotionTrack]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.RootMotionTrack
-[RootMotionView]: https://pkg.go.dev/graphics.gd/classdb/RootMotionView
-[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
-*/
-//go:nosplit
 func (self class) GetRootMotionScale() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_scale
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_scale, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Retrieve the blended value of the position tracks with the [RootMotionTrack] as a [Vector3.XYZ] that can be used elsewhere.
-
-This is useful in cases where you want to respect the initial key values of the animation.
-
-For example, if an animation with only one key Vector3(0, 0, 0) is played in the previous frame and then an animation with only one key Vector3(1, 0, 1) is played in the next frame, the difference can be calculated as follows:
-
-
-	var prev_root_motion_position_accumulator Vector3.XYZ
-	if Input.IsActionJustPressed("animate", false) {
-		animationNodeStateMachinePlayback.Travel("Animate")
-	}
-	var current_root_motion_position_accumulator = animationTree.AsAnimationMixer().GetRootMotionPositionAccumulator()
-	var difference = Vector3.Sub(current_root_motion_position_accumulator, prev_root_motion_position_accumulator)
-	prev_root_motion_position_accumulator = current_root_motion_position_accumulator
-	transform := characterBody3D.AsNode3D().Transform()
-	transform.Origin = Vector3.Add(transform.Origin, difference)
-	characterBody3D.AsNode3D().SetTransform(transform)
-
-
-However, if the animation loops, an unintended discrete change may occur, so this is only useful for some simple use cases.
-
-[RootMotionTrack]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.RootMotionTrack
-[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
-*/
-//go:nosplit
 func (self class) GetRootMotionPositionAccumulator() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_position_accumulator
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_position_accumulator, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Retrieve the blended value of the rotation tracks with the [RootMotionTrack] as a [Quaternion.IJKX] that can be used elsewhere.
-
-This is necessary to apply the root motion position correctly, taking rotation into account. See also [GetRootMotionPosition].
-
-Also, this is useful in cases where you want to respect the initial key values of the animation.
-
-For example, if an animation with only one key Quaternion(0, 0, 0, 1) is played in the previous frame and then an animation with only one key Quaternion(0, 0.707, 0, 0.707) is played in the next frame, the difference can be calculated as follows:
-
-
-	var prev_root_motion_rotation_accumulator Quaternion.IJKX
-
-	if Input.IsActionJustPressed("animate", false) {
-		animationNodeStateMachinePlayback.Travel("Animate")
-	}
-	var current_root_motion_rotation_accumulator = animationTree.AsAnimationMixer().GetRootMotionRotationAccumulator()
-	var difference = Quaternion.Mul(Quaternion.Inverse(prev_root_motion_rotation_accumulator), current_root_motion_rotation_accumulator)
-	prev_root_motion_rotation_accumulator = current_root_motion_rotation_accumulator
-	transform := characterBody3D.AsNode3D().Transform()
-	transform.Basis = Basis.Mul(transform.Basis, Quaternion.AsBasis(difference))
-	characterBody3D.AsNode3D().SetTransform(transform)
-
-
-However, if the animation loops, an unintended discrete change may occur, so this is only useful for some simple use cases.
-
-[GetRootMotionPosition]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.GetRootMotionPosition
-[Quaternion.IJKX]: https://pkg.go.dev/graphics.gd/variant/Quaternion#IJKX
-[RootMotionTrack]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.RootMotionTrack
-*/
-//go:nosplit
 func (self class) GetRootMotionRotationAccumulator() Quaternion.IJKX { //gd:AnimationMixer.get_root_motion_rotation_accumulator
 	var r_ret = noescape.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_rotation_accumulator, gdextension.SizeQuaternion, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Retrieve the blended value of the scale tracks with the [RootMotionTrack] as a [Vector3.XYZ] that can be used elsewhere.
-
-For example, if an animation with only one key Vector3(1, 1, 1) is played in the previous frame and then an animation with only one key Vector3(2, 2, 2) is played in the next frame, the difference can be calculated as follows:
-
-
-	var prev_root_motion_scale_accumulator Vector3.XYZ
-
-	if Input.IsActionJustPressed("animate", false) {
-		animationNodeStateMachinePlayback.Travel("Animate")
-	}
-	var current_root_motion_scale_accumulator = animationTree.AsAnimationMixer().GetRootMotionScaleAccumulator()
-	var difference = Vector3.Sub(current_root_motion_scale_accumulator, prev_root_motion_scale_accumulator)
-	prev_root_motion_scale_accumulator = current_root_motion_scale_accumulator
-	transform := characterBody3D.AsNode3D().Transform()
-	transform.Basis = Basis.Scaled(transform.Basis, difference)
-	characterBody3D.AsNode3D().SetTransform(transform)
-
-
-However, if the animation loops, an unintended discrete change may occur, so this is only useful for some simple use cases.
-
-[RootMotionTrack]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.RootMotionTrack
-[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
-*/
-//go:nosplit
 func (self class) GetRootMotionScaleAccumulator() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_scale_accumulator
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_scale_accumulator, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-[AnimationMixer] caches animated nodes. It may not notice if a node disappears; [ClearCaches] forces it to update the cache again.
-
-[AnimationMixer]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer
-[ClearCaches]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.ClearCaches
-*/
-//go:nosplit
 func (self class) ClearCaches() { //gd:AnimationMixer.clear_caches
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_caches, 0, &struct{}{})
 }
-
-/*
-Manually advance the animations by the specified time (in seconds).
-*/
-//go:nosplit
 func (self class) Advance(delta float64) { //gd:AnimationMixer.advance
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.advance, 0|(gdextension.SizeFloat<<4), &struct{ delta float64 }{delta})
 }
-
-/*
-If the animation track specified by 'name' has an option [Animation.UpdateCapture], stores current values of the objects indicated by the track path as a cache. If there is already a captured cache, the old cache is discarded.
-
-After this it will interpolate with current animation blending result during the playback process for the time specified by 'duration', working like a crossfade.
-
-You can specify 'trans_type' as the curve for the interpolation. For better results, it may be appropriate to specify [Tween.TransLinear] for cases where the first key of the track begins with a non-zero value or where the key value does not change, and [Tween.TransQuad] for cases where the key value changes linearly.
-*/
-//go:nosplit
 func (self class) Capture(name String.Name, duration float64, trans_type Tween.TransitionType, ease_type Tween.EaseType) { //gd:AnimationMixer.capture
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.capture, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
 		name       gdextension.StringName
@@ -1219,35 +915,19 @@ func (self class) Capture(name String.Name, duration float64, trans_type Tween.T
 		ease_type  Tween.EaseType
 	}{pointers.Get(gd.InternalStringName(name)), duration, trans_type, ease_type})
 }
-
-//go:nosplit
 func (self class) SetResetOnSaveEnabled(enabled bool) { //gd:AnimationMixer.set_reset_on_save_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reset_on_save_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsResetOnSaveEnabled() bool { //gd:AnimationMixer.is_reset_on_save_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_reset_on_save_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the key of 'animation' or an empty string if not found.
-*/
-//go:nosplit
 func (self class) FindAnimation(animation [1]gdclass.Animation) String.Name { //gd:AnimationMixer.find_animation
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.find_animation, gdextension.SizeStringName|(gdextension.SizeObject<<4), &struct{ animation gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetAnimation(animation[0])))})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-
-/*
-Returns the key for the [AnimationLibrary] that contains 'animation' or an empty string if not found.
-
-[AnimationLibrary]: https://pkg.go.dev/graphics.gd/classdb/AnimationLibrary
-*/
-//go:nosplit
 func (self class) FindAnimationLibrary(animation [1]gdclass.Animation) String.Name { //gd:AnimationMixer.find_animation_library
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.find_animation_library, gdextension.SizeStringName|(gdextension.SizeObject<<4), &struct{ animation gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetAnimation(animation[0])))})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))

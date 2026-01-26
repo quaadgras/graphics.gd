@@ -189,22 +189,9 @@ func New() Instance {
 	return casted
 }
 
-/*
-Sets the [SkeletonModificationStack2D] that this modification is holding. This modification stack will then be executed when this modification is executed.
-
-[SkeletonModificationStack2D]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModificationStack2D
-*/
-//go:nosplit
 func (self class) SetHeldModificationStack(held_modification_stack [1]gdclass.SkeletonModificationStack2D) { //gd:SkeletonModification2DStackHolder.set_held_modification_stack
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_held_modification_stack, 0|(gdextension.SizeObject<<4), &struct{ held_modification_stack gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetSkeletonModificationStack2D(held_modification_stack[0])))})
 }
-
-/*
-Returns the [SkeletonModificationStack2D] that this modification is holding.
-
-[SkeletonModificationStack2D]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModificationStack2D
-*/
-//go:nosplit
 func (self class) GetHeldModificationStack() [1]gdclass.SkeletonModificationStack2D { //gd:SkeletonModification2DStackHolder.get_held_modification_stack
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_held_modification_stack, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.SkeletonModificationStack2D{gdclass.NewSkeletonModificationStack2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

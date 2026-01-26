@@ -182,25 +182,11 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns the underlying [Control] used for editing scripts. For text scripts, this is a [CodeEdit].
-
-[CodeEdit]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-*/
-//go:nosplit
 func (self class) GetBaseEditor() [1]gdclass.Control { //gd:ScriptEditorBase.get_base_editor
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_base_editor, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Adds an [EditorSyntaxHighlighter] to the open script.
-
-[EditorSyntaxHighlighter]: https://pkg.go.dev/graphics.gd/classdb/EditorSyntaxHighlighter
-*/
-//go:nosplit
 func (self class) AddSyntaxHighlighter(highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditorBase.add_syntax_highlighter
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_syntax_highlighter, 0|(gdextension.SizeObject<<4), &struct{ highlighter gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorSyntaxHighlighter(highlighter[0])))})
 }
