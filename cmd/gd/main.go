@@ -145,6 +145,11 @@ func gd(args ...string) error {
 			return xray.New(err)
 		}
 	}
+	var editorArgs []string
+	if len(args) > 0 && strings.HasPrefix(args[0], "-") {
+		editorArgs = args
+		args = nil
+	}
 	switch len(args) {
 	case 0:
 		if err := os.Chdir(project.Directory); err != nil {
@@ -159,7 +164,7 @@ func gd(args ...string) error {
 		if os.Getenv("RUNNING_INSIDE_GODOT") != "" {
 			return nil
 		}
-		return tooling.Godot.Exec("-e")
+		return tooling.Godot.Exec(append([]string{"-e"}, editorArgs...)...)
 	default:
 		switch args[0] {
 		case "build":
