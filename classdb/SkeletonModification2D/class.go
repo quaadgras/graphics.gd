@@ -160,7 +160,7 @@ Executes the given modification. This is where the modification performs whateve
 func (Instance) _execute(impl func(ptr gdclass.Receiver, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, Float.X(delta))
 	}
 }
@@ -173,7 +173,7 @@ func (Instance) _setup_modification(impl func(ptr gdclass.Receiver, modification
 		var modification_stack = [1]gdclass.SkeletonModificationStack2D{gdclass.NewSkeletonModificationStack2D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetSkeletonModificationStack2D(modification_stack[0])[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, modification_stack)
 	}
 }
@@ -188,7 +188,7 @@ Note: You will need to use the Skeleton2D from [SkeletonModificationStack2D.GetS
 */
 func (Instance) _draw_editor_gizmo(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -344,7 +344,7 @@ func (self Instance) SetExecutionMode(value int) Instance { //gd:SkeletonModific
 func (class) _execute(impl func(ptr gdclass.Receiver, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, delta)
 	}
 }
@@ -353,13 +353,13 @@ func (class) _setup_modification(impl func(ptr gdclass.Receiver, modification_st
 		var modification_stack = [1]gdclass.SkeletonModificationStack2D{gdclass.NewSkeletonModificationStack2D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetSkeletonModificationStack2D(modification_stack[0])[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, modification_stack)
 	}
 }
 func (class) _draw_editor_gizmo(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -438,11 +438,11 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_execute":
-		return gd.ValueOf(self._execute)
+		return reflect.ValueOf(self._execute)
 	case "_setup_modification":
-		return gd.ValueOf(self._setup_modification)
+		return reflect.ValueOf(self._setup_modification)
 	case "_draw_editor_gizmo":
-		return gd.ValueOf(self._draw_editor_gizmo)
+		return reflect.ValueOf(self._draw_editor_gizmo)
 	default:
 		return gd.VirtualByName(Resource.Advanced(self.AsResource()), name)
 	}
@@ -451,11 +451,11 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_execute":
-		return gd.ValueOf(self._execute)
+		return reflect.ValueOf(self._execute)
 	case "_setup_modification":
-		return gd.ValueOf(self._setup_modification)
+		return reflect.ValueOf(self._setup_modification)
 	case "_draw_editor_gizmo":
-		return gd.ValueOf(self._draw_editor_gizmo)
+		return reflect.ValueOf(self._draw_editor_gizmo)
 	default:
 		return gd.VirtualByName(Resource.Instance(self.AsResource()), name)
 	}

@@ -246,7 +246,7 @@ func (Instance) _use_tile_data_runtime_update(impl func(ptr gdclass.Receiver, la
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var layer = gd.UnsafeGet[int64](p_args, 0)
 		var coords = gd.UnsafeGet[Vector2i.XY](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(layer), coords)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -271,7 +271,7 @@ func (Instance) _tile_data_runtime_update(impl func(ptr gdclass.Receiver, layer 
 		var tile_data = [1]gdclass.TileData{gdclass.NewTileData(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))}))}
 
 		defer pointers.End(gdclass.GetTileData(tile_data[0])[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, int(layer), coords, tile_data)
 	}
 }
@@ -1165,7 +1165,7 @@ func (class) _use_tile_data_runtime_update(impl func(ptr gdclass.Receiver, layer
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var layer = gd.UnsafeGet[int64](p_args, 0)
 		var coords = gd.UnsafeGet[Vector2i.XY](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, layer, coords)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1177,7 +1177,7 @@ func (class) _tile_data_runtime_update(impl func(ptr gdclass.Receiver, layer int
 		var tile_data = [1]gdclass.TileData{gdclass.NewTileData(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))}))}
 
 		defer pointers.End(gdclass.GetTileData(tile_data[0])[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, layer, coords, tile_data)
 	}
 }
@@ -1574,9 +1574,9 @@ func (self Instance) AsNode() Node.Instance {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_use_tile_data_runtime_update":
-		return gd.ValueOf(self._use_tile_data_runtime_update)
+		return reflect.ValueOf(self._use_tile_data_runtime_update)
 	case "_tile_data_runtime_update":
-		return gd.ValueOf(self._tile_data_runtime_update)
+		return reflect.ValueOf(self._tile_data_runtime_update)
 	default:
 		return gd.VirtualByName(Node2D.Advanced(self.AsNode2D()), name)
 	}
@@ -1585,9 +1585,9 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_use_tile_data_runtime_update":
-		return gd.ValueOf(self._use_tile_data_runtime_update)
+		return reflect.ValueOf(self._use_tile_data_runtime_update)
 	case "_tile_data_runtime_update":
-		return gd.ValueOf(self._tile_data_runtime_update)
+		return reflect.ValueOf(self._tile_data_runtime_update)
 	default:
 		return gd.VirtualByName(Node2D.Instance(self.AsNode2D()), name)
 	}

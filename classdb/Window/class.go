@@ -284,7 +284,7 @@ Virtual method to be implemented by the user. Overrides the value returned by [G
 */
 func (Instance) _get_contents_minimum_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
@@ -2037,7 +2037,7 @@ func (self Instance) SetThemeTypeVariation(value string) Instance { //gd:Window.
 }
 func (class) _get_contents_minimum_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -2899,7 +2899,7 @@ func (self Instance) AsNode() Node.Instance {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_contents_minimum_size":
-		return gd.ValueOf(self._get_contents_minimum_size)
+		return reflect.ValueOf(self._get_contents_minimum_size)
 	default:
 		return gd.VirtualByName(Viewport.Advanced(self.AsViewport()), name)
 	}
@@ -2908,7 +2908,7 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_contents_minimum_size":
-		return gd.ValueOf(self._get_contents_minimum_size)
+		return reflect.ValueOf(self._get_contents_minimum_size)
 	default:
 		return gd.VirtualByName(Viewport.Instance(self.AsViewport()), name)
 	}

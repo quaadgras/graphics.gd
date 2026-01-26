@@ -140,7 +140,7 @@ Called when the video starts playing, to initialize and return a subclass of [Vi
 */
 func (Instance) _instantiate_playback(impl func(ptr gdclass.Receiver) VideoStreamPlayback.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gdclass.GetVideoStreamPlayback(ret[0])[0])
 
@@ -213,7 +213,7 @@ func (self Instance) SetFile(value string) Instance { //gd:VideoStream.file
 }
 func (class) _instantiate_playback(impl func(ptr gdclass.Receiver) [1]gdclass.VideoStreamPlayback) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gdclass.GetVideoStreamPlayback(ret[0])[0])
 
@@ -257,7 +257,7 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_instantiate_playback":
-		return gd.ValueOf(self._instantiate_playback)
+		return reflect.ValueOf(self._instantiate_playback)
 	default:
 		return gd.VirtualByName(Resource.Advanced(self.AsResource()), name)
 	}
@@ -266,7 +266,7 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_instantiate_playback":
-		return gd.ValueOf(self._instantiate_playback)
+		return reflect.ValueOf(self._instantiate_playback)
 	default:
 		return gd.VirtualByName(Resource.Instance(self.AsResource()), name)
 	}

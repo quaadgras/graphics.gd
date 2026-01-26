@@ -154,7 +154,7 @@ func (Instance) _process_animation_node(impl func(ptr gdclass.Receiver, playback
 		var playback_info = Packed.Array[float64](Array.Through(gd.PackedProxy[gd.PackedFloat64Array, float64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedFloat64Array, float64](playback_info))
 		var test_only = gd.UnsafeGet[bool](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, slices.Collect(playback_info.Values()), test_only)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedFloat32Array, float32](Packed.New(ret...)))
 
@@ -228,7 +228,7 @@ func (class) _process_animation_node(impl func(ptr gdclass.Receiver, playback_in
 		var playback_info = Packed.Array[float64](Array.Through(gd.PackedProxy[gd.PackedFloat64Array, float64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedFloat64Array, float64](playback_info))
 		var test_only = gd.UnsafeGet[bool](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, playback_info, test_only)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedFloat32Array, float32](ret))
 
@@ -290,7 +290,7 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_process_animation_node":
-		return gd.ValueOf(self._process_animation_node)
+		return reflect.ValueOf(self._process_animation_node)
 	default:
 		return gd.VirtualByName(AnimationNode.Advanced(self.AsAnimationNode()), name)
 	}
@@ -299,7 +299,7 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_process_animation_node":
-		return gd.ValueOf(self._process_animation_node)
+		return reflect.ValueOf(self._process_animation_node)
 	default:
 		return gd.VirtualByName(AnimationNode.Instance(self.AsAnimationNode()), name)
 	}

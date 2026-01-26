@@ -127,14 +127,14 @@ func (Instance) _mix_resampled(impl func(ptr gdclass.Receiver, dst_buffer *Audio
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
 		var frame_count = gd.UnsafeGet[int64](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, dst_buffer, int(frame_count))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 func (Instance) _get_stream_sampling_rate(impl func(ptr gdclass.Receiver) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -189,14 +189,14 @@ func (class) _mix_resampled(impl func(ptr gdclass.Receiver, dst_buffer *AudioFra
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
 		var frame_count = gd.UnsafeGet[int64](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, dst_buffer, frame_count)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_stream_sampling_rate(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -234,9 +234,9 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_mix_resampled":
-		return gd.ValueOf(self._mix_resampled)
+		return reflect.ValueOf(self._mix_resampled)
 	case "_get_stream_sampling_rate":
-		return gd.ValueOf(self._get_stream_sampling_rate)
+		return reflect.ValueOf(self._get_stream_sampling_rate)
 	default:
 		return gd.VirtualByName(AudioStreamPlayback.Advanced(self.AsAudioStreamPlayback()), name)
 	}
@@ -245,9 +245,9 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_mix_resampled":
-		return gd.ValueOf(self._mix_resampled)
+		return reflect.ValueOf(self._mix_resampled)
 	case "_get_stream_sampling_rate":
-		return gd.ValueOf(self._get_stream_sampling_rate)
+		return reflect.ValueOf(self._get_stream_sampling_rate)
 	default:
 		return gd.VirtualByName(AudioStreamPlayback.Instance(self.AsAudioStreamPlayback()), name)
 	}

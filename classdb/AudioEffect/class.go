@@ -191,7 +191,7 @@ Note: It is recommended to keep a reference to the original [AudioEffect] in the
 */
 func (Instance) _instantiate(impl func(ptr gdclass.Receiver) AudioEffectInstance.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gdclass.GetAudioEffectInstance(ret[0])[0])
 
@@ -246,7 +246,7 @@ func New() Instance {
 }
 func (class) _instantiate(impl func(ptr gdclass.Receiver) [1]gdclass.AudioEffectInstance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gdclass.GetAudioEffectInstance(ret[0])[0])
 
@@ -282,7 +282,7 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_instantiate":
-		return gd.ValueOf(self._instantiate)
+		return reflect.ValueOf(self._instantiate)
 	default:
 		return gd.VirtualByName(Resource.Advanced(self.AsResource()), name)
 	}
@@ -291,7 +291,7 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_instantiate":
-		return gd.ValueOf(self._instantiate)
+		return reflect.ValueOf(self._instantiate)
 	default:
 		return gd.VirtualByName(Resource.Instance(self.AsResource()), name)
 	}

@@ -135,7 +135,7 @@ Return the description of this class that is used for the title bar of the bindi
 */
 func (Instance) _get_description(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -153,7 +153,7 @@ Note: This must be data compatible with an XrBindingModificationBaseHeaderKHR st
 */
 func (Instance) _get_ip_modification(impl func(ptr gdclass.Receiver) []byte) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](Packed.BytesFrom(ret...).Array)))
 
@@ -208,7 +208,7 @@ func New() Instance {
 }
 func (class) _get_description(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -220,7 +220,7 @@ func (class) _get_description(impl func(ptr gdclass.Receiver) String.Readable) (
 }
 func (class) _get_ip_modification(impl func(ptr gdclass.Receiver) Packed.Bytes) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ret.Array)))
 
@@ -258,9 +258,9 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_description":
-		return gd.ValueOf(self._get_description)
+		return reflect.ValueOf(self._get_description)
 	case "_get_ip_modification":
-		return gd.ValueOf(self._get_ip_modification)
+		return reflect.ValueOf(self._get_ip_modification)
 	default:
 		return gd.VirtualByName(Resource.Advanced(self.AsResource()), name)
 	}
@@ -269,9 +269,9 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_description":
-		return gd.ValueOf(self._get_description)
+		return reflect.ValueOf(self._get_description)
 	case "_get_ip_modification":
-		return gd.ValueOf(self._get_ip_modification)
+		return reflect.ValueOf(self._get_ip_modification)
 	default:
 		return gd.VirtualByName(Resource.Instance(self.AsResource()), name)
 	}

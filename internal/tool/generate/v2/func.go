@@ -448,7 +448,7 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 			fmt.Fprintf(w, "\t\tdefer %s\n", gdtype.Name(expert).EndPointer(fixReserved(arg.Name)))
 		}
 	}
-	fmt.Fprintf(w, "\t\tself := gdclass.ReceiverOf(class)\n")
+	fmt.Fprintf(w, "\t\tself := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())\n")
 	if resultSimple != "" {
 		fmt.Fprintf(w, "\t\tret := ")
 	}

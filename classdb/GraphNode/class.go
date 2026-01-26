@@ -199,7 +199,7 @@ func (Instance) _draw_port(impl func(ptr gdclass.Receiver, slot_index int, posit
 		var position = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var left = gd.UnsafeGet[bool](p_args, 2)
 		var color = gd.UnsafeGet[Color.RGBA](p_args, 3)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, int(slot_index), position, left, color)
 	}
 }
@@ -625,7 +625,7 @@ func (class) _draw_port(impl func(ptr gdclass.Receiver, slot_index int64, positi
 		var position = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var left = gd.UnsafeGet[bool](p_args, 2)
 		var color = gd.UnsafeGet[Color.RGBA](p_args, 3)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, slot_index, position, left, color)
 	}
 }
@@ -905,7 +905,7 @@ func (self Instance) AsNode() Node.Instance {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_draw_port":
-		return gd.ValueOf(self._draw_port)
+		return reflect.ValueOf(self._draw_port)
 	default:
 		return gd.VirtualByName(GraphElement.Advanced(self.AsGraphElement()), name)
 	}
@@ -914,7 +914,7 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_draw_port":
-		return gd.ValueOf(self._draw_port)
+		return reflect.ValueOf(self._draw_port)
 	default:
 		return gd.VirtualByName(GraphElement.Instance(self.AsGraphElement()), name)
 	}

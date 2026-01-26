@@ -163,7 +163,7 @@ func (Instance) _get_packet(impl func(ptr gdclass.Receiver, r_buffer gdextension
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var r_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var r_buffer_size = gd.UnsafeGet[*int32](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, r_buffer, r_buffer_size)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -177,7 +177,7 @@ func (Instance) _put_packet(impl func(ptr gdclass.Receiver, p_buffer gdextension
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var p_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var p_buffer_size = gd.UnsafeGet[int64](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, p_buffer, int(p_buffer_size))
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -189,21 +189,21 @@ func (Instance) _put_packet(impl func(ptr gdclass.Receiver, p_buffer gdextension
 }
 func (Instance) _get_available_packet_count(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 func (Instance) _get_max_packet_size(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 func (Instance) _poll(impl func(ptr gdclass.Receiver) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -215,41 +215,41 @@ func (Instance) _poll(impl func(ptr gdclass.Receiver) error) (cb gd.ExtensionCla
 }
 func (Instance) _close(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
 func (Instance) _set_write_mode(impl func(ptr gdclass.Receiver, p_write_mode WebRTCDataChannel.WriteMode)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var p_write_mode = gd.UnsafeGet[WebRTCDataChannel.WriteMode](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, p_write_mode)
 	}
 }
 func (Instance) _get_write_mode(impl func(ptr gdclass.Receiver) WebRTCDataChannel.WriteMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (Instance) _was_string_packet(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (Instance) _get_ready_state(impl func(ptr gdclass.Receiver) WebRTCDataChannel.ChannelState) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (Instance) _get_label(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -261,35 +261,35 @@ func (Instance) _get_label(impl func(ptr gdclass.Receiver) string) (cb gd.Extens
 }
 func (Instance) _is_ordered(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (Instance) _get_id(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 func (Instance) _get_max_packet_life_time(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 func (Instance) _get_max_retransmits(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 func (Instance) _get_protocol(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -301,14 +301,14 @@ func (Instance) _get_protocol(impl func(ptr gdclass.Receiver) string) (cb gd.Ext
 }
 func (Instance) _is_negotiated(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (Instance) _get_buffered_amount(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -360,7 +360,7 @@ func (class) _get_packet(impl func(ptr gdclass.Receiver, r_buffer gdextension.Po
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var r_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var r_buffer_size = gd.UnsafeGet[*int32](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, r_buffer, r_buffer_size)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -374,7 +374,7 @@ func (class) _put_packet(impl func(ptr gdclass.Receiver, p_buffer gdextension.Po
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var p_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var p_buffer_size = gd.UnsafeGet[int64](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, p_buffer, p_buffer_size)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -386,21 +386,21 @@ func (class) _put_packet(impl func(ptr gdclass.Receiver, p_buffer gdextension.Po
 }
 func (class) _get_available_packet_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_max_packet_size(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _poll(impl func(ptr gdclass.Receiver) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -412,41 +412,41 @@ func (class) _poll(impl func(ptr gdclass.Receiver) Error.Code) (cb gd.ExtensionC
 }
 func (class) _close(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
 func (class) _set_write_mode(impl func(ptr gdclass.Receiver, p_write_mode WebRTCDataChannel.WriteMode)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var p_write_mode = gd.UnsafeGet[WebRTCDataChannel.WriteMode](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, p_write_mode)
 	}
 }
 func (class) _get_write_mode(impl func(ptr gdclass.Receiver) WebRTCDataChannel.WriteMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _was_string_packet(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_ready_state(impl func(ptr gdclass.Receiver) WebRTCDataChannel.ChannelState) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_label(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -458,35 +458,35 @@ func (class) _get_label(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.
 }
 func (class) _is_ordered(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_id(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_max_packet_life_time(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_max_retransmits(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_protocol(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -498,14 +498,14 @@ func (class) _get_protocol(impl func(ptr gdclass.Receiver) String.Readable) (cb 
 }
 func (class) _is_negotiated(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_buffered_amount(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -547,41 +547,41 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_packet":
-		return gd.ValueOf(self._get_packet)
+		return reflect.ValueOf(self._get_packet)
 	case "_put_packet":
-		return gd.ValueOf(self._put_packet)
+		return reflect.ValueOf(self._put_packet)
 	case "_get_available_packet_count":
-		return gd.ValueOf(self._get_available_packet_count)
+		return reflect.ValueOf(self._get_available_packet_count)
 	case "_get_max_packet_size":
-		return gd.ValueOf(self._get_max_packet_size)
+		return reflect.ValueOf(self._get_max_packet_size)
 	case "_poll":
-		return gd.ValueOf(self._poll)
+		return reflect.ValueOf(self._poll)
 	case "_close":
-		return gd.ValueOf(self._close)
+		return reflect.ValueOf(self._close)
 	case "_set_write_mode":
-		return gd.ValueOf(self._set_write_mode)
+		return reflect.ValueOf(self._set_write_mode)
 	case "_get_write_mode":
-		return gd.ValueOf(self._get_write_mode)
+		return reflect.ValueOf(self._get_write_mode)
 	case "_was_string_packet":
-		return gd.ValueOf(self._was_string_packet)
+		return reflect.ValueOf(self._was_string_packet)
 	case "_get_ready_state":
-		return gd.ValueOf(self._get_ready_state)
+		return reflect.ValueOf(self._get_ready_state)
 	case "_get_label":
-		return gd.ValueOf(self._get_label)
+		return reflect.ValueOf(self._get_label)
 	case "_is_ordered":
-		return gd.ValueOf(self._is_ordered)
+		return reflect.ValueOf(self._is_ordered)
 	case "_get_id":
-		return gd.ValueOf(self._get_id)
+		return reflect.ValueOf(self._get_id)
 	case "_get_max_packet_life_time":
-		return gd.ValueOf(self._get_max_packet_life_time)
+		return reflect.ValueOf(self._get_max_packet_life_time)
 	case "_get_max_retransmits":
-		return gd.ValueOf(self._get_max_retransmits)
+		return reflect.ValueOf(self._get_max_retransmits)
 	case "_get_protocol":
-		return gd.ValueOf(self._get_protocol)
+		return reflect.ValueOf(self._get_protocol)
 	case "_is_negotiated":
-		return gd.ValueOf(self._is_negotiated)
+		return reflect.ValueOf(self._is_negotiated)
 	case "_get_buffered_amount":
-		return gd.ValueOf(self._get_buffered_amount)
+		return reflect.ValueOf(self._get_buffered_amount)
 	default:
 		return gd.VirtualByName(WebRTCDataChannel.Advanced(self.AsWebRTCDataChannel()), name)
 	}
@@ -590,41 +590,41 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_packet":
-		return gd.ValueOf(self._get_packet)
+		return reflect.ValueOf(self._get_packet)
 	case "_put_packet":
-		return gd.ValueOf(self._put_packet)
+		return reflect.ValueOf(self._put_packet)
 	case "_get_available_packet_count":
-		return gd.ValueOf(self._get_available_packet_count)
+		return reflect.ValueOf(self._get_available_packet_count)
 	case "_get_max_packet_size":
-		return gd.ValueOf(self._get_max_packet_size)
+		return reflect.ValueOf(self._get_max_packet_size)
 	case "_poll":
-		return gd.ValueOf(self._poll)
+		return reflect.ValueOf(self._poll)
 	case "_close":
-		return gd.ValueOf(self._close)
+		return reflect.ValueOf(self._close)
 	case "_set_write_mode":
-		return gd.ValueOf(self._set_write_mode)
+		return reflect.ValueOf(self._set_write_mode)
 	case "_get_write_mode":
-		return gd.ValueOf(self._get_write_mode)
+		return reflect.ValueOf(self._get_write_mode)
 	case "_was_string_packet":
-		return gd.ValueOf(self._was_string_packet)
+		return reflect.ValueOf(self._was_string_packet)
 	case "_get_ready_state":
-		return gd.ValueOf(self._get_ready_state)
+		return reflect.ValueOf(self._get_ready_state)
 	case "_get_label":
-		return gd.ValueOf(self._get_label)
+		return reflect.ValueOf(self._get_label)
 	case "_is_ordered":
-		return gd.ValueOf(self._is_ordered)
+		return reflect.ValueOf(self._is_ordered)
 	case "_get_id":
-		return gd.ValueOf(self._get_id)
+		return reflect.ValueOf(self._get_id)
 	case "_get_max_packet_life_time":
-		return gd.ValueOf(self._get_max_packet_life_time)
+		return reflect.ValueOf(self._get_max_packet_life_time)
 	case "_get_max_retransmits":
-		return gd.ValueOf(self._get_max_retransmits)
+		return reflect.ValueOf(self._get_max_retransmits)
 	case "_get_protocol":
-		return gd.ValueOf(self._get_protocol)
+		return reflect.ValueOf(self._get_protocol)
 	case "_is_negotiated":
-		return gd.ValueOf(self._is_negotiated)
+		return reflect.ValueOf(self._is_negotiated)
 	case "_get_buffered_amount":
-		return gd.ValueOf(self._get_buffered_amount)
+		return reflect.ValueOf(self._get_buffered_amount)
 	default:
 		return gd.VirtualByName(WebRTCDataChannel.Instance(self.AsWebRTCDataChannel()), name)
 	}

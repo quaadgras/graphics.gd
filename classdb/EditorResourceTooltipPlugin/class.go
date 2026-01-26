@@ -180,7 +180,7 @@ func (Instance) _handles(impl func(ptr gdclass.Receiver, atype string) bool) (cb
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var atype = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(atype))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, atype.String())
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -220,7 +220,7 @@ func (Instance) _make_tooltip_for_path(impl func(ptr gdclass.Receiver, path stri
 		var base = [1]gdclass.Control{gdclass.NewControl(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))}))}
 
 		defer pointers.End(gdclass.GetControl(base[0])[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, path.String(), gd.DictionaryAs[map[string]interface{}](metadata), base)
 		ptr, ok := pointers.End(gdclass.GetControl(ret[0])[0])
 
@@ -287,7 +287,7 @@ func (class) _handles(impl func(ptr gdclass.Receiver, atype String.Readable) boo
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var atype = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(atype))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, atype)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -301,7 +301,7 @@ func (class) _make_tooltip_for_path(impl func(ptr gdclass.Receiver, path String.
 		var base = [1]gdclass.Control{gdclass.NewControl(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))}))}
 
 		defer pointers.End(gdclass.GetControl(base[0])[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, path, metadata, base)
 		ptr, ok := pointers.End(gdclass.GetControl(ret[0])[0])
 
@@ -338,9 +338,9 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_handles":
-		return gd.ValueOf(self._handles)
+		return reflect.ValueOf(self._handles)
 	case "_make_tooltip_for_path":
-		return gd.ValueOf(self._make_tooltip_for_path)
+		return reflect.ValueOf(self._make_tooltip_for_path)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -349,9 +349,9 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_handles":
-		return gd.ValueOf(self._handles)
+		return reflect.ValueOf(self._handles)
 	case "_make_tooltip_for_path":
-		return gd.ValueOf(self._make_tooltip_for_path)
+		return reflect.ValueOf(self._make_tooltip_for_path)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}

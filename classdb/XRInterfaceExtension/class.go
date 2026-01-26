@@ -264,7 +264,7 @@ Returns the name of this interface.
 */
 func (Instance) _get_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalStringName(String.Name(String.New(ret))))
 
@@ -280,7 +280,7 @@ Returns the capabilities of this interface.
 */
 func (Instance) _get_capabilities(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -291,7 +291,7 @@ Returns true if this interface has been initialized.
 */
 func (Instance) _is_initialized(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -302,7 +302,7 @@ Initializes the interface, returns true on success.
 */
 func (Instance) _initialize(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -313,7 +313,7 @@ Uninitialize the interface.
 */
 func (Instance) _uninitialize(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -323,7 +323,7 @@ Returns a data structure with system information related to this interface.
 */
 func (Instance) _get_system_info(impl func(ptr gdclass.Receiver) map[string]interface{}) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
 
@@ -340,7 +340,7 @@ Returns true if this interface supports this play area mode.
 func (Instance) _supports_play_area_mode(impl func(ptr gdclass.Receiver, mode XRInterface.PlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var mode = gd.UnsafeGet[XRInterface.PlayAreaMode](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, mode)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -351,7 +351,7 @@ Returns the play area mode that sets up our play area.
 */
 func (Instance) _get_play_area_mode(impl func(ptr gdclass.Receiver) XRInterface.PlayAreaMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -363,7 +363,7 @@ Set the play area mode for this interface.
 func (Instance) _set_play_area_mode(impl func(ptr gdclass.Receiver, mode XRInterface.PlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var mode = gd.UnsafeGet[XRInterface.PlayAreaMode](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, mode)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -376,7 +376,7 @@ Returns a [][Vector3.XYZ] that represents the play areas boundaries (if applicab
 */
 func (Instance) _get_play_area(impl func(ptr gdclass.Receiver) []Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](Packed.New(ret...)))
 
@@ -394,7 +394,7 @@ Returns the size of our render target for this interface, this overrides the siz
 */
 func (Instance) _get_render_target_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
@@ -405,7 +405,7 @@ Returns the number of views this interface requires, 1 for mono, 2 for stereosco
 */
 func (Instance) _get_view_count(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -419,7 +419,7 @@ Returns the [Transform3D.BasisOrigin] that positions the [XRCamera3D] in the wor
 */
 func (Instance) _get_camera_transform(impl func(ptr gdclass.Receiver) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Transposed(Transform3D.BasisOrigin(ret)))
 	}
@@ -434,7 +434,7 @@ func (Instance) _get_transform_for_view(impl func(ptr gdclass.Receiver, view int
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var view = gd.UnsafeGet[int64](p_args, 0)
 		var cam_transform = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 1))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(view), cam_transform)
 		gd.UnsafeSet(p_back, gd.Transposed(Transform3D.BasisOrigin(ret)))
 	}
@@ -449,7 +449,7 @@ func (Instance) _get_projection_for_view(impl func(ptr gdclass.Receiver, view in
 		var aspect = gd.UnsafeGet[float64](p_args, 1)
 		var z_near = gd.UnsafeGet[float64](p_args, 2)
 		var z_far = gd.UnsafeGet[float64](p_args, 3)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(view), Float.X(aspect), Float.X(z_near), Float.X(z_far))
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedFloat64Array, float64](Packed.New(ret...)))
 
@@ -461,7 +461,7 @@ func (Instance) _get_projection_for_view(impl func(ptr gdclass.Receiver, view in
 }
 func (Instance) _get_vrs_texture(impl func(ptr gdclass.Receiver) RID.Texture) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
@@ -474,7 +474,7 @@ Returns the format of the texture returned by [GetVrsTexture].
 */
 func (Instance) _get_vrs_texture_format(impl func(ptr gdclass.Receiver) XRInterface.VRSTextureFormat) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -488,7 +488,7 @@ Called if this [XRInterfaceExtension] is active before our physics and game proc
 */
 func (Instance) _process(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -500,7 +500,7 @@ Called if this [XRInterfaceExtension] is active before rendering starts. Most XR
 */
 func (Instance) _pre_render(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -514,7 +514,7 @@ Called if this is our primary [XRInterfaceExtension] before we start processing 
 func (Instance) _pre_draw_viewport(impl func(ptr gdclass.Receiver, render_target RID.Framebuffer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var render_target = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, RID.Framebuffer(render_target))
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -529,7 +529,7 @@ func (Instance) _post_draw_viewport(impl func(ptr gdclass.Receiver, render_targe
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var render_target = gd.UnsafeGet[RID.Any](p_args, 0)
 		var screen_rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, RID.Framebuffer(render_target), screen_rect)
 	}
 }
@@ -539,7 +539,7 @@ Called if interface is active and queues have been submitted.
 */
 func (Instance) _end_frame(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -549,7 +549,7 @@ Returns a []string with tracker names configured by this interface. Note that us
 */
 func (Instance) _get_suggested_tracker_names(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
@@ -567,7 +567,7 @@ func (Instance) _get_suggested_pose_names(impl func(ptr gdclass.Receiver, tracke
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var tracker_name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(tracker_name))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, tracker_name.String())
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
@@ -583,7 +583,7 @@ Returns an [XRInterface.TrackingStatus] specifying the current status of our tra
 */
 func (Instance) _get_tracking_status(impl func(ptr gdclass.Receiver) XRInterface.TrackingStatus) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -602,7 +602,7 @@ func (Instance) _trigger_haptic_pulse(impl func(ptr gdclass.Receiver, action_nam
 		var amplitude = gd.UnsafeGet[float64](p_args, 3)
 		var duration_sec = gd.UnsafeGet[float64](p_args, 4)
 		var delay_sec = gd.UnsafeGet[float64](p_args, 5)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, action_name.String(), tracker_name.String(), Float.X(frequency), Float.X(amplitude), Float.X(duration_sec), Float.X(delay_sec))
 	}
 }
@@ -612,7 +612,7 @@ Return true if anchor detection is enabled for this interface.
 */
 func (Instance) _get_anchor_detection_is_enabled(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -624,7 +624,7 @@ Enables anchor detection on this interface if supported.
 func (Instance) _set_anchor_detection_is_enabled(impl func(ptr gdclass.Receiver, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var enabled = gd.UnsafeGet[bool](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, enabled)
 	}
 }
@@ -637,7 +637,7 @@ Returns the camera feed ID for the [CameraFeed] registered with the [CameraServe
 */
 func (Instance) _get_camera_feed_id(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -648,7 +648,7 @@ Return color texture into which to render (if applicable).
 */
 func (Instance) _get_color_texture(impl func(ptr gdclass.Receiver) RID.Texture) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
@@ -659,7 +659,7 @@ Return depth texture into which to render (if applicable).
 */
 func (Instance) _get_depth_texture(impl func(ptr gdclass.Receiver) RID.Texture) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
@@ -670,7 +670,7 @@ Return velocity texture into which to render (if applicable).
 */
 func (Instance) _get_velocity_texture(impl func(ptr gdclass.Receiver) RID.Texture) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
@@ -745,7 +745,7 @@ func New() Instance {
 }
 func (class) _get_name(impl func(ptr gdclass.Receiver) String.Name) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalStringName(ret))
 
@@ -757,34 +757,34 @@ func (class) _get_name(impl func(ptr gdclass.Receiver) String.Name) (cb gd.Exten
 }
 func (class) _get_capabilities(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _is_initialized(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _initialize(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _uninitialize(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
 func (class) _get_system_info(impl func(ptr gdclass.Receiver) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalDictionary(ret))
 
@@ -797,14 +797,14 @@ func (class) _get_system_info(impl func(ptr gdclass.Receiver) Dictionary.Any) (c
 func (class) _supports_play_area_mode(impl func(ptr gdclass.Receiver, mode XRInterface.PlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var mode = gd.UnsafeGet[XRInterface.PlayAreaMode](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, mode)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_play_area_mode(impl func(ptr gdclass.Receiver) XRInterface.PlayAreaMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -812,14 +812,14 @@ func (class) _get_play_area_mode(impl func(ptr gdclass.Receiver) XRInterface.Pla
 func (class) _set_play_area_mode(impl func(ptr gdclass.Receiver, mode XRInterface.PlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var mode = gd.UnsafeGet[XRInterface.PlayAreaMode](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, mode)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_play_area(impl func(ptr gdclass.Receiver) Packed.Array[Vector3.XYZ]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](ret))
 
@@ -831,21 +831,21 @@ func (class) _get_play_area(impl func(ptr gdclass.Receiver) Packed.Array[Vector3
 }
 func (class) _get_render_target_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_view_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_camera_transform(impl func(ptr gdclass.Receiver) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Transposed(ret))
 	}
@@ -854,7 +854,7 @@ func (class) _get_transform_for_view(impl func(ptr gdclass.Receiver, view int64,
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var view = gd.UnsafeGet[int64](p_args, 0)
 		var cam_transform = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 1))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, view, cam_transform)
 		gd.UnsafeSet(p_back, gd.Transposed(ret))
 	}
@@ -865,7 +865,7 @@ func (class) _get_projection_for_view(impl func(ptr gdclass.Receiver, view int64
 		var aspect = gd.UnsafeGet[float64](p_args, 1)
 		var z_near = gd.UnsafeGet[float64](p_args, 2)
 		var z_far = gd.UnsafeGet[float64](p_args, 3)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, view, aspect, z_near, z_far)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedFloat64Array, float64](ret))
 
@@ -877,34 +877,34 @@ func (class) _get_projection_for_view(impl func(ptr gdclass.Receiver, view int64
 }
 func (class) _get_vrs_texture(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_vrs_texture_format(impl func(ptr gdclass.Receiver) XRInterface.VRSTextureFormat) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _process(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
 func (class) _pre_render(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
 func (class) _pre_draw_viewport(impl func(ptr gdclass.Receiver, render_target RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var render_target = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, render_target)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -913,19 +913,19 @@ func (class) _post_draw_viewport(impl func(ptr gdclass.Receiver, render_target R
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var render_target = gd.UnsafeGet[RID.Any](p_args, 0)
 		var screen_rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, render_target, screen_rect)
 	}
 }
 func (class) _end_frame(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
 func (class) _get_suggested_tracker_names(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
@@ -939,7 +939,7 @@ func (class) _get_suggested_pose_names(impl func(ptr gdclass.Receiver, tracker_n
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var tracker_name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(tracker_name))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, tracker_name)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
@@ -951,7 +951,7 @@ func (class) _get_suggested_pose_names(impl func(ptr gdclass.Receiver, tracker_n
 }
 func (class) _get_tracking_status(impl func(ptr gdclass.Receiver) XRInterface.TrackingStatus) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -966,13 +966,13 @@ func (class) _trigger_haptic_pulse(impl func(ptr gdclass.Receiver, action_name S
 		var amplitude = gd.UnsafeGet[float64](p_args, 3)
 		var duration_sec = gd.UnsafeGet[float64](p_args, 4)
 		var delay_sec = gd.UnsafeGet[float64](p_args, 5)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, action_name, tracker_name, frequency, amplitude, duration_sec, delay_sec)
 	}
 }
 func (class) _get_anchor_detection_is_enabled(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -980,34 +980,34 @@ func (class) _get_anchor_detection_is_enabled(impl func(ptr gdclass.Receiver) bo
 func (class) _set_anchor_detection_is_enabled(impl func(ptr gdclass.Receiver, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var enabled = gd.UnsafeGet[bool](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, enabled)
 	}
 }
 func (class) _get_camera_feed_id(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_color_texture(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_depth_texture(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_velocity_texture(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1075,69 +1075,69 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_name":
-		return gd.ValueOf(self._get_name)
+		return reflect.ValueOf(self._get_name)
 	case "_get_capabilities":
-		return gd.ValueOf(self._get_capabilities)
+		return reflect.ValueOf(self._get_capabilities)
 	case "_is_initialized":
-		return gd.ValueOf(self._is_initialized)
+		return reflect.ValueOf(self._is_initialized)
 	case "_initialize":
-		return gd.ValueOf(self._initialize)
+		return reflect.ValueOf(self._initialize)
 	case "_uninitialize":
-		return gd.ValueOf(self._uninitialize)
+		return reflect.ValueOf(self._uninitialize)
 	case "_get_system_info":
-		return gd.ValueOf(self._get_system_info)
+		return reflect.ValueOf(self._get_system_info)
 	case "_supports_play_area_mode":
-		return gd.ValueOf(self._supports_play_area_mode)
+		return reflect.ValueOf(self._supports_play_area_mode)
 	case "_get_play_area_mode":
-		return gd.ValueOf(self._get_play_area_mode)
+		return reflect.ValueOf(self._get_play_area_mode)
 	case "_set_play_area_mode":
-		return gd.ValueOf(self._set_play_area_mode)
+		return reflect.ValueOf(self._set_play_area_mode)
 	case "_get_play_area":
-		return gd.ValueOf(self._get_play_area)
+		return reflect.ValueOf(self._get_play_area)
 	case "_get_render_target_size":
-		return gd.ValueOf(self._get_render_target_size)
+		return reflect.ValueOf(self._get_render_target_size)
 	case "_get_view_count":
-		return gd.ValueOf(self._get_view_count)
+		return reflect.ValueOf(self._get_view_count)
 	case "_get_camera_transform":
-		return gd.ValueOf(self._get_camera_transform)
+		return reflect.ValueOf(self._get_camera_transform)
 	case "_get_transform_for_view":
-		return gd.ValueOf(self._get_transform_for_view)
+		return reflect.ValueOf(self._get_transform_for_view)
 	case "_get_projection_for_view":
-		return gd.ValueOf(self._get_projection_for_view)
+		return reflect.ValueOf(self._get_projection_for_view)
 	case "_get_vrs_texture":
-		return gd.ValueOf(self._get_vrs_texture)
+		return reflect.ValueOf(self._get_vrs_texture)
 	case "_get_vrs_texture_format":
-		return gd.ValueOf(self._get_vrs_texture_format)
+		return reflect.ValueOf(self._get_vrs_texture_format)
 	case "_process":
-		return gd.ValueOf(self._process)
+		return reflect.ValueOf(self._process)
 	case "_pre_render":
-		return gd.ValueOf(self._pre_render)
+		return reflect.ValueOf(self._pre_render)
 	case "_pre_draw_viewport":
-		return gd.ValueOf(self._pre_draw_viewport)
+		return reflect.ValueOf(self._pre_draw_viewport)
 	case "_post_draw_viewport":
-		return gd.ValueOf(self._post_draw_viewport)
+		return reflect.ValueOf(self._post_draw_viewport)
 	case "_end_frame":
-		return gd.ValueOf(self._end_frame)
+		return reflect.ValueOf(self._end_frame)
 	case "_get_suggested_tracker_names":
-		return gd.ValueOf(self._get_suggested_tracker_names)
+		return reflect.ValueOf(self._get_suggested_tracker_names)
 	case "_get_suggested_pose_names":
-		return gd.ValueOf(self._get_suggested_pose_names)
+		return reflect.ValueOf(self._get_suggested_pose_names)
 	case "_get_tracking_status":
-		return gd.ValueOf(self._get_tracking_status)
+		return reflect.ValueOf(self._get_tracking_status)
 	case "_trigger_haptic_pulse":
-		return gd.ValueOf(self._trigger_haptic_pulse)
+		return reflect.ValueOf(self._trigger_haptic_pulse)
 	case "_get_anchor_detection_is_enabled":
-		return gd.ValueOf(self._get_anchor_detection_is_enabled)
+		return reflect.ValueOf(self._get_anchor_detection_is_enabled)
 	case "_set_anchor_detection_is_enabled":
-		return gd.ValueOf(self._set_anchor_detection_is_enabled)
+		return reflect.ValueOf(self._set_anchor_detection_is_enabled)
 	case "_get_camera_feed_id":
-		return gd.ValueOf(self._get_camera_feed_id)
+		return reflect.ValueOf(self._get_camera_feed_id)
 	case "_get_color_texture":
-		return gd.ValueOf(self._get_color_texture)
+		return reflect.ValueOf(self._get_color_texture)
 	case "_get_depth_texture":
-		return gd.ValueOf(self._get_depth_texture)
+		return reflect.ValueOf(self._get_depth_texture)
 	case "_get_velocity_texture":
-		return gd.ValueOf(self._get_velocity_texture)
+		return reflect.ValueOf(self._get_velocity_texture)
 	default:
 		return gd.VirtualByName(XRInterface.Advanced(self.AsXRInterface()), name)
 	}
@@ -1146,69 +1146,69 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_name":
-		return gd.ValueOf(self._get_name)
+		return reflect.ValueOf(self._get_name)
 	case "_get_capabilities":
-		return gd.ValueOf(self._get_capabilities)
+		return reflect.ValueOf(self._get_capabilities)
 	case "_is_initialized":
-		return gd.ValueOf(self._is_initialized)
+		return reflect.ValueOf(self._is_initialized)
 	case "_initialize":
-		return gd.ValueOf(self._initialize)
+		return reflect.ValueOf(self._initialize)
 	case "_uninitialize":
-		return gd.ValueOf(self._uninitialize)
+		return reflect.ValueOf(self._uninitialize)
 	case "_get_system_info":
-		return gd.ValueOf(self._get_system_info)
+		return reflect.ValueOf(self._get_system_info)
 	case "_supports_play_area_mode":
-		return gd.ValueOf(self._supports_play_area_mode)
+		return reflect.ValueOf(self._supports_play_area_mode)
 	case "_get_play_area_mode":
-		return gd.ValueOf(self._get_play_area_mode)
+		return reflect.ValueOf(self._get_play_area_mode)
 	case "_set_play_area_mode":
-		return gd.ValueOf(self._set_play_area_mode)
+		return reflect.ValueOf(self._set_play_area_mode)
 	case "_get_play_area":
-		return gd.ValueOf(self._get_play_area)
+		return reflect.ValueOf(self._get_play_area)
 	case "_get_render_target_size":
-		return gd.ValueOf(self._get_render_target_size)
+		return reflect.ValueOf(self._get_render_target_size)
 	case "_get_view_count":
-		return gd.ValueOf(self._get_view_count)
+		return reflect.ValueOf(self._get_view_count)
 	case "_get_camera_transform":
-		return gd.ValueOf(self._get_camera_transform)
+		return reflect.ValueOf(self._get_camera_transform)
 	case "_get_transform_for_view":
-		return gd.ValueOf(self._get_transform_for_view)
+		return reflect.ValueOf(self._get_transform_for_view)
 	case "_get_projection_for_view":
-		return gd.ValueOf(self._get_projection_for_view)
+		return reflect.ValueOf(self._get_projection_for_view)
 	case "_get_vrs_texture":
-		return gd.ValueOf(self._get_vrs_texture)
+		return reflect.ValueOf(self._get_vrs_texture)
 	case "_get_vrs_texture_format":
-		return gd.ValueOf(self._get_vrs_texture_format)
+		return reflect.ValueOf(self._get_vrs_texture_format)
 	case "_process":
-		return gd.ValueOf(self._process)
+		return reflect.ValueOf(self._process)
 	case "_pre_render":
-		return gd.ValueOf(self._pre_render)
+		return reflect.ValueOf(self._pre_render)
 	case "_pre_draw_viewport":
-		return gd.ValueOf(self._pre_draw_viewport)
+		return reflect.ValueOf(self._pre_draw_viewport)
 	case "_post_draw_viewport":
-		return gd.ValueOf(self._post_draw_viewport)
+		return reflect.ValueOf(self._post_draw_viewport)
 	case "_end_frame":
-		return gd.ValueOf(self._end_frame)
+		return reflect.ValueOf(self._end_frame)
 	case "_get_suggested_tracker_names":
-		return gd.ValueOf(self._get_suggested_tracker_names)
+		return reflect.ValueOf(self._get_suggested_tracker_names)
 	case "_get_suggested_pose_names":
-		return gd.ValueOf(self._get_suggested_pose_names)
+		return reflect.ValueOf(self._get_suggested_pose_names)
 	case "_get_tracking_status":
-		return gd.ValueOf(self._get_tracking_status)
+		return reflect.ValueOf(self._get_tracking_status)
 	case "_trigger_haptic_pulse":
-		return gd.ValueOf(self._trigger_haptic_pulse)
+		return reflect.ValueOf(self._trigger_haptic_pulse)
 	case "_get_anchor_detection_is_enabled":
-		return gd.ValueOf(self._get_anchor_detection_is_enabled)
+		return reflect.ValueOf(self._get_anchor_detection_is_enabled)
 	case "_set_anchor_detection_is_enabled":
-		return gd.ValueOf(self._set_anchor_detection_is_enabled)
+		return reflect.ValueOf(self._set_anchor_detection_is_enabled)
 	case "_get_camera_feed_id":
-		return gd.ValueOf(self._get_camera_feed_id)
+		return reflect.ValueOf(self._get_camera_feed_id)
 	case "_get_color_texture":
-		return gd.ValueOf(self._get_color_texture)
+		return reflect.ValueOf(self._get_color_texture)
 	case "_get_depth_texture":
-		return gd.ValueOf(self._get_depth_texture)
+		return reflect.ValueOf(self._get_depth_texture)
 	case "_get_velocity_texture":
-		return gd.ValueOf(self._get_velocity_texture)
+		return reflect.ValueOf(self._get_velocity_texture)
 	default:
 		return gd.VirtualByName(XRInterface.Instance(self.AsXRInterface()), name)
 	}

@@ -193,7 +193,7 @@ func (Instance) _filter_neighbor(impl func(ptr gdclass.Receiver, from_id Point, 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_id = gd.UnsafeGet[int64](p_args, 0)
 		var neighbor_id = gd.UnsafeGet[int64](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, Point(from_id), Point(neighbor_id))
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -210,7 +210,7 @@ func (Instance) _estimate_cost(impl func(ptr gdclass.Receiver, from_id Point, en
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_id = gd.UnsafeGet[int64](p_args, 0)
 		var end_id = gd.UnsafeGet[int64](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, Point(from_id), Point(end_id))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -227,7 +227,7 @@ func (Instance) _compute_cost(impl func(ptr gdclass.Receiver, from_id Point, to_
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_id = gd.UnsafeGet[int64](p_args, 0)
 		var to_id = gd.UnsafeGet[int64](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, Point(from_id), Point(to_id))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -634,7 +634,7 @@ func (class) _filter_neighbor(impl func(ptr gdclass.Receiver, from_id int64, nei
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_id = gd.UnsafeGet[int64](p_args, 0)
 		var neighbor_id = gd.UnsafeGet[int64](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, from_id, neighbor_id)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -643,7 +643,7 @@ func (class) _estimate_cost(impl func(ptr gdclass.Receiver, from_id int64, end_i
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_id = gd.UnsafeGet[int64](p_args, 0)
 		var end_id = gd.UnsafeGet[int64](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, from_id, end_id)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -652,7 +652,7 @@ func (class) _compute_cost(impl func(ptr gdclass.Receiver, from_id int64, to_id 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_id = gd.UnsafeGet[int64](p_args, 0)
 		var to_id = gd.UnsafeGet[int64](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, from_id, to_id)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -813,11 +813,11 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_filter_neighbor":
-		return gd.ValueOf(self._filter_neighbor)
+		return reflect.ValueOf(self._filter_neighbor)
 	case "_estimate_cost":
-		return gd.ValueOf(self._estimate_cost)
+		return reflect.ValueOf(self._estimate_cost)
 	case "_compute_cost":
-		return gd.ValueOf(self._compute_cost)
+		return reflect.ValueOf(self._compute_cost)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -826,11 +826,11 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_filter_neighbor":
-		return gd.ValueOf(self._filter_neighbor)
+		return reflect.ValueOf(self._filter_neighbor)
 	case "_estimate_cost":
-		return gd.ValueOf(self._estimate_cost)
+		return reflect.ValueOf(self._estimate_cost)
 	case "_compute_cost":
-		return gd.ValueOf(self._compute_cost)
+		return reflect.ValueOf(self._compute_cost)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}

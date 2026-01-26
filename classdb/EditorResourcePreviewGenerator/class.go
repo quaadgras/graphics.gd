@@ -179,7 +179,7 @@ func (Instance) _handles(impl func(ptr gdclass.Receiver, atype string) bool) (cb
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var atype = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(atype))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, atype.String())
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -204,7 +204,7 @@ func (Instance) _generate(impl func(ptr gdclass.Receiver, resource Resource.Inst
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var metadata = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(metadata))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, resource, size, gd.DictionaryAs[map[string]interface{}](metadata))
 		ptr, ok := pointers.End(gdclass.GetTexture2D(ret[0])[0])
 
@@ -234,7 +234,7 @@ func (Instance) _generate_from_path(impl func(ptr gdclass.Receiver, path string,
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var metadata = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(metadata))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, path.String(), size, gd.DictionaryAs[map[string]interface{}](metadata))
 		ptr, ok := pointers.End(gdclass.GetTexture2D(ret[0])[0])
 
@@ -255,7 +255,7 @@ By default, it returns false.
 */
 func (Instance) _generate_small_preview_automatically(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -271,7 +271,7 @@ By default, it returns false.
 */
 func (Instance) _can_generate_small_preview(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -325,7 +325,7 @@ func (class) _handles(impl func(ptr gdclass.Receiver, atype String.Readable) boo
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var atype = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(atype))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, atype)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -338,7 +338,7 @@ func (class) _generate(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resou
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var metadata = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(metadata))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, resource, size, metadata)
 		ptr, ok := pointers.End(gdclass.GetTexture2D(ret[0])[0])
 
@@ -355,7 +355,7 @@ func (class) _generate_from_path(impl func(ptr gdclass.Receiver, path String.Rea
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var metadata = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(metadata))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, path, size, metadata)
 		ptr, ok := pointers.End(gdclass.GetTexture2D(ret[0])[0])
 
@@ -367,14 +367,14 @@ func (class) _generate_from_path(impl func(ptr gdclass.Receiver, path String.Rea
 }
 func (class) _generate_small_preview_automatically(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _can_generate_small_preview(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -400,15 +400,15 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_handles":
-		return gd.ValueOf(self._handles)
+		return reflect.ValueOf(self._handles)
 	case "_generate":
-		return gd.ValueOf(self._generate)
+		return reflect.ValueOf(self._generate)
 	case "_generate_from_path":
-		return gd.ValueOf(self._generate_from_path)
+		return reflect.ValueOf(self._generate_from_path)
 	case "_generate_small_preview_automatically":
-		return gd.ValueOf(self._generate_small_preview_automatically)
+		return reflect.ValueOf(self._generate_small_preview_automatically)
 	case "_can_generate_small_preview":
-		return gd.ValueOf(self._can_generate_small_preview)
+		return reflect.ValueOf(self._can_generate_small_preview)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -417,15 +417,15 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_handles":
-		return gd.ValueOf(self._handles)
+		return reflect.ValueOf(self._handles)
 	case "_generate":
-		return gd.ValueOf(self._generate)
+		return reflect.ValueOf(self._generate)
 	case "_generate_from_path":
-		return gd.ValueOf(self._generate_from_path)
+		return reflect.ValueOf(self._generate_from_path)
 	case "_generate_small_preview_automatically":
-		return gd.ValueOf(self._generate_small_preview_automatically)
+		return reflect.ValueOf(self._generate_small_preview_automatically)
 	case "_can_generate_small_preview":
-		return gd.ValueOf(self._can_generate_small_preview)
+		return reflect.ValueOf(self._can_generate_small_preview)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}

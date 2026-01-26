@@ -11,14 +11,6 @@ import (
 
 type Receiver unsafe.Pointer
 
-// ReceiverOf extracts the receiver pointer from a class value.
-// This is marked noinline to avoid 476+ copies of reflect.ValueOf being inlined.
-//
-//go:noinline
-func ReceiverOf(class any) Receiver {
-	return Receiver(reflect.ValueOf(class).UnsafePointer())
-}
-
 type Interface interface {
 	superType() reflect.Type
 	getObject() [1]gd.Object

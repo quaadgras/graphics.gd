@@ -183,7 +183,7 @@ func (Instance) _can_handle(impl func(ptr gdclass.Receiver, obj Object.Instance)
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(obj[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, obj)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -196,7 +196,7 @@ func (Instance) _parse_begin(impl func(ptr gdclass.Receiver, obj Object.Instance
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(obj[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, obj)
 	}
 }
@@ -210,7 +210,7 @@ func (Instance) _parse_category(impl func(ptr gdclass.Receiver, obj Object.Insta
 		defer pointers.End(obj[0])
 		var category = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(category))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, obj, category.String())
 	}
 }
@@ -224,7 +224,7 @@ func (Instance) _parse_group(impl func(ptr gdclass.Receiver, obj Object.Instance
 		defer pointers.End(obj[0])
 		var group = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(group))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, obj, group.String())
 	}
 }
@@ -246,7 +246,7 @@ func (Instance) _parse_property(impl func(ptr gdclass.Receiver, obj Object.Insta
 		defer pointers.End(gd.InternalString(hint_string))
 		var usage_flags = gd.UnsafeGet[ClassDB.PropertyUsageFlags](p_args, 5)
 		var wide = gd.UnsafeGet[bool](p_args, 6)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, obj, atype, name.String(), hint_type, hint_string.String(), usage_flags, wide)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -259,7 +259,7 @@ func (Instance) _parse_end(impl func(ptr gdclass.Receiver, obj Object.Instance))
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(obj[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, obj)
 	}
 }
@@ -356,7 +356,7 @@ func (class) _can_handle(impl func(ptr gdclass.Receiver, obj [1]gd.Object) bool)
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(obj[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, obj)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -365,7 +365,7 @@ func (class) _parse_begin(impl func(ptr gdclass.Receiver, obj [1]gd.Object)) (cb
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(obj[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, obj)
 	}
 }
@@ -375,7 +375,7 @@ func (class) _parse_category(impl func(ptr gdclass.Receiver, obj [1]gd.Object, c
 		defer pointers.End(obj[0])
 		var category = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(category))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, obj, category)
 	}
 }
@@ -385,7 +385,7 @@ func (class) _parse_group(impl func(ptr gdclass.Receiver, obj [1]gd.Object, grou
 		defer pointers.End(obj[0])
 		var group = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(group))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, obj, group)
 	}
 }
@@ -401,7 +401,7 @@ func (class) _parse_property(impl func(ptr gdclass.Receiver, obj [1]gd.Object, a
 		defer pointers.End(gd.InternalString(hint_string))
 		var usage_flags = gd.UnsafeGet[ClassDB.PropertyUsageFlags](p_args, 5)
 		var wide = gd.UnsafeGet[bool](p_args, 6)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, obj, atype, name, hint_type, hint_string, usage_flags, wide)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -410,7 +410,7 @@ func (class) _parse_end(impl func(ptr gdclass.Receiver, obj [1]gd.Object)) (cb g
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(obj[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, obj)
 	}
 }
@@ -453,17 +453,17 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_can_handle":
-		return gd.ValueOf(self._can_handle)
+		return reflect.ValueOf(self._can_handle)
 	case "_parse_begin":
-		return gd.ValueOf(self._parse_begin)
+		return reflect.ValueOf(self._parse_begin)
 	case "_parse_category":
-		return gd.ValueOf(self._parse_category)
+		return reflect.ValueOf(self._parse_category)
 	case "_parse_group":
-		return gd.ValueOf(self._parse_group)
+		return reflect.ValueOf(self._parse_group)
 	case "_parse_property":
-		return gd.ValueOf(self._parse_property)
+		return reflect.ValueOf(self._parse_property)
 	case "_parse_end":
-		return gd.ValueOf(self._parse_end)
+		return reflect.ValueOf(self._parse_end)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -472,17 +472,17 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_can_handle":
-		return gd.ValueOf(self._can_handle)
+		return reflect.ValueOf(self._can_handle)
 	case "_parse_begin":
-		return gd.ValueOf(self._parse_begin)
+		return reflect.ValueOf(self._parse_begin)
 	case "_parse_category":
-		return gd.ValueOf(self._parse_category)
+		return reflect.ValueOf(self._parse_category)
 	case "_parse_group":
-		return gd.ValueOf(self._parse_group)
+		return reflect.ValueOf(self._parse_group)
 	case "_parse_property":
-		return gd.ValueOf(self._parse_property)
+		return reflect.ValueOf(self._parse_property)
 	case "_parse_end":
-		return gd.ValueOf(self._parse_end)
+		return reflect.ValueOf(self._parse_end)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}

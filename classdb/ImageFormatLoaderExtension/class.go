@@ -143,7 +143,7 @@ Returns the list of file extensions for this image format. Files with the given 
 */
 func (Instance) _get_recognized_extensions(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
@@ -167,7 +167,7 @@ func (Instance) _load_image(impl func(ptr gdclass.Receiver, image Image.Instance
 		defer pointers.End(gdclass.GetFileAccess(fileaccess[0])[0])
 		var flags = gd.UnsafeGet[ImageFormatLoader.LoaderFlags](p_args, 2)
 		var scale = gd.UnsafeGet[float64](p_args, 3)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, image, fileaccess, flags, Float.X(scale))
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -238,7 +238,7 @@ func New() Instance {
 }
 func (class) _get_recognized_extensions(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
@@ -258,7 +258,7 @@ func (class) _load_image(impl func(ptr gdclass.Receiver, image [1]gdclass.Image,
 		defer pointers.End(gdclass.GetFileAccess(fileaccess[0])[0])
 		var flags = gd.UnsafeGet[ImageFormatLoader.LoaderFlags](p_args, 2)
 		var scale = gd.UnsafeGet[float64](p_args, 3)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, image, fileaccess, flags, scale)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -304,9 +304,9 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_recognized_extensions":
-		return gd.ValueOf(self._get_recognized_extensions)
+		return reflect.ValueOf(self._get_recognized_extensions)
 	case "_load_image":
-		return gd.ValueOf(self._load_image)
+		return reflect.ValueOf(self._load_image)
 	default:
 		return gd.VirtualByName(ImageFormatLoader.Advanced(self.AsImageFormatLoader()), name)
 	}
@@ -315,9 +315,9 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_recognized_extensions":
-		return gd.ValueOf(self._get_recognized_extensions)
+		return reflect.ValueOf(self._get_recognized_extensions)
 	case "_load_image":
-		return gd.ValueOf(self._load_image)
+		return reflect.ValueOf(self._load_image)
 	default:
 		return gd.VirtualByName(ImageFormatLoader.Instance(self.AsImageFormatLoader()), name)
 	}

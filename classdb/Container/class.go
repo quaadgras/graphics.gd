@@ -146,7 +146,7 @@ Note: Having no size flags is equal to having [Control.SizeShrinkBegin]. As such
 */
 func (Instance) _get_allowed_size_flags_horizontal(impl func(ptr gdclass.Receiver) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
@@ -164,7 +164,7 @@ Note: Having no size flags is equal to having [Control.SizeShrinkBegin]. As such
 */
 func (Instance) _get_allowed_size_flags_vertical(impl func(ptr gdclass.Receiver) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
@@ -232,7 +232,7 @@ func New() Instance {
 }
 func (class) _get_allowed_size_flags_horizontal(impl func(ptr gdclass.Receiver) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ret))
 
@@ -244,7 +244,7 @@ func (class) _get_allowed_size_flags_horizontal(impl func(ptr gdclass.Receiver) 
 }
 func (class) _get_allowed_size_flags_vertical(impl func(ptr gdclass.Receiver) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ret))
 
@@ -325,9 +325,9 @@ func (self Instance) AsNode() Node.Instance {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_allowed_size_flags_horizontal":
-		return gd.ValueOf(self._get_allowed_size_flags_horizontal)
+		return reflect.ValueOf(self._get_allowed_size_flags_horizontal)
 	case "_get_allowed_size_flags_vertical":
-		return gd.ValueOf(self._get_allowed_size_flags_vertical)
+		return reflect.ValueOf(self._get_allowed_size_flags_vertical)
 	default:
 		return gd.VirtualByName(Control.Advanced(self.AsControl()), name)
 	}
@@ -336,9 +336,9 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_allowed_size_flags_horizontal":
-		return gd.ValueOf(self._get_allowed_size_flags_horizontal)
+		return reflect.ValueOf(self._get_allowed_size_flags_horizontal)
 	case "_get_allowed_size_flags_vertical":
-		return gd.ValueOf(self._get_allowed_size_flags_vertical)
+		return reflect.ValueOf(self._get_allowed_size_flags_vertical)
 	default:
 		return gd.VirtualByName(Control.Instance(self.AsControl()), name)
 	}

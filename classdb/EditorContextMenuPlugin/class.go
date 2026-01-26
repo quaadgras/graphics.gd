@@ -155,7 +155,7 @@ func (Instance) _popup_menu(impl func(ptr gdclass.Receiver, paths []string)) (cb
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var paths = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
 		defer pointers.End(gd.InternalPackedStrings(paths))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, paths.Strings())
 	}
 }
@@ -297,7 +297,7 @@ func (class) _popup_menu(impl func(ptr gdclass.Receiver, paths Packed.Strings)) 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var paths = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
 		defer pointers.End(gd.InternalPackedStrings(paths))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, paths)
 	}
 }
@@ -349,7 +349,7 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_popup_menu":
-		return gd.ValueOf(self._popup_menu)
+		return reflect.ValueOf(self._popup_menu)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -358,7 +358,7 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_popup_menu":
-		return gd.ValueOf(self._popup_menu)
+		return reflect.ValueOf(self._popup_menu)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}

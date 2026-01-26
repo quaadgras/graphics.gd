@@ -211,7 +211,7 @@ Called when the [Texture2D]'s width is queried.
 */
 func (Instance) _get_width(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -224,7 +224,7 @@ Called when the [Texture2D]'s height is queried.
 */
 func (Instance) _get_height(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -239,7 +239,7 @@ func (Instance) _is_pixel_opaque(impl func(ptr gdclass.Receiver, x int, y int) b
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var x = gd.UnsafeGet[int64](p_args, 0)
 		var y = gd.UnsafeGet[int64](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(x), int(y))
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -252,7 +252,7 @@ Called when the presence of an alpha channel in the [Texture2D] is queried.
 */
 func (Instance) _has_alpha(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -272,7 +272,7 @@ func (Instance) _draw(impl func(ptr gdclass.Receiver, to_canvas_item RID.CanvasI
 		var pos = gd.UnsafeGet[Vector2.XY](p_args, 1)
 		var modulate = gd.UnsafeGet[Color.RGBA](p_args, 2)
 		var transpose = gd.UnsafeGet[bool](p_args, 3)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, RID.CanvasItem(to_canvas_item), pos, modulate, transpose)
 	}
 }
@@ -292,7 +292,7 @@ func (Instance) _draw_rect(impl func(ptr gdclass.Receiver, to_canvas_item RID.Ca
 		var tile = gd.UnsafeGet[bool](p_args, 2)
 		var modulate = gd.UnsafeGet[Color.RGBA](p_args, 3)
 		var transpose = gd.UnsafeGet[bool](p_args, 4)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, RID.CanvasItem(to_canvas_item), rect, tile, modulate, transpose)
 	}
 }
@@ -313,7 +313,7 @@ func (Instance) _draw_rect_region(impl func(ptr gdclass.Receiver, to_canvas_item
 		var modulate = gd.UnsafeGet[Color.RGBA](p_args, 3)
 		var transpose = gd.UnsafeGet[bool](p_args, 4)
 		var clip_uv = gd.UnsafeGet[bool](p_args, 5)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, RID.CanvasItem(to_canvas_item), rect, src_rect, modulate, transpose, clip_uv)
 	}
 }
@@ -476,14 +476,14 @@ func New() Instance {
 }
 func (class) _get_width(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_height(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -492,14 +492,14 @@ func (class) _is_pixel_opaque(impl func(ptr gdclass.Receiver, x int64, y int64) 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var x = gd.UnsafeGet[int64](p_args, 0)
 		var y = gd.UnsafeGet[int64](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, x, y)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _has_alpha(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -510,7 +510,7 @@ func (class) _draw(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, pos V
 		var pos = gd.UnsafeGet[Vector2.XY](p_args, 1)
 		var modulate = gd.UnsafeGet[Color.RGBA](p_args, 2)
 		var transpose = gd.UnsafeGet[bool](p_args, 3)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, to_canvas_item, pos, modulate, transpose)
 	}
 }
@@ -521,7 +521,7 @@ func (class) _draw_rect(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, 
 		var tile = gd.UnsafeGet[bool](p_args, 2)
 		var modulate = gd.UnsafeGet[Color.RGBA](p_args, 3)
 		var transpose = gd.UnsafeGet[bool](p_args, 4)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, to_canvas_item, rect, tile, modulate, transpose)
 	}
 }
@@ -533,7 +533,7 @@ func (class) _draw_rect_region(impl func(ptr gdclass.Receiver, to_canvas_item RI
 		var modulate = gd.UnsafeGet[Color.RGBA](p_args, 3)
 		var transpose = gd.UnsafeGet[bool](p_args, 4)
 		var clip_uv = gd.UnsafeGet[bool](p_args, 5)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, to_canvas_item, rect, src_rect, modulate, transpose, clip_uv)
 	}
 }
@@ -625,19 +625,19 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_width":
-		return gd.ValueOf(self._get_width)
+		return reflect.ValueOf(self._get_width)
 	case "_get_height":
-		return gd.ValueOf(self._get_height)
+		return reflect.ValueOf(self._get_height)
 	case "_is_pixel_opaque":
-		return gd.ValueOf(self._is_pixel_opaque)
+		return reflect.ValueOf(self._is_pixel_opaque)
 	case "_has_alpha":
-		return gd.ValueOf(self._has_alpha)
+		return reflect.ValueOf(self._has_alpha)
 	case "_draw":
-		return gd.ValueOf(self._draw)
+		return reflect.ValueOf(self._draw)
 	case "_draw_rect":
-		return gd.ValueOf(self._draw_rect)
+		return reflect.ValueOf(self._draw_rect)
 	case "_draw_rect_region":
-		return gd.ValueOf(self._draw_rect_region)
+		return reflect.ValueOf(self._draw_rect_region)
 	default:
 		return gd.VirtualByName(Texture.Advanced(self.AsTexture()), name)
 	}
@@ -646,19 +646,19 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_width":
-		return gd.ValueOf(self._get_width)
+		return reflect.ValueOf(self._get_width)
 	case "_get_height":
-		return gd.ValueOf(self._get_height)
+		return reflect.ValueOf(self._get_height)
 	case "_is_pixel_opaque":
-		return gd.ValueOf(self._is_pixel_opaque)
+		return reflect.ValueOf(self._is_pixel_opaque)
 	case "_has_alpha":
-		return gd.ValueOf(self._has_alpha)
+		return reflect.ValueOf(self._has_alpha)
 	case "_draw":
-		return gd.ValueOf(self._draw)
+		return reflect.ValueOf(self._draw)
 	case "_draw_rect":
-		return gd.ValueOf(self._draw_rect)
+		return reflect.ValueOf(self._draw_rect)
 	case "_draw_rect_region":
-		return gd.ValueOf(self._draw_rect_region)
+		return reflect.ValueOf(self._draw_rect_region)
 	default:
 		return gd.VirtualByName(Texture.Instance(self.AsTexture()), name)
 	}

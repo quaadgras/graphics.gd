@@ -177,7 +177,7 @@ Called when the [Texture3D]'s format is queried.
 */
 func (Instance) _get_format(impl func(ptr gdclass.Receiver) Image.Format) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -190,7 +190,7 @@ Called when the [Texture3D]'s width is queried.
 */
 func (Instance) _get_width(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -203,7 +203,7 @@ Called when the [Texture3D]'s height is queried.
 */
 func (Instance) _get_height(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -216,7 +216,7 @@ Called when the [Texture3D]'s depth is queried.
 */
 func (Instance) _get_depth(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -229,7 +229,7 @@ Called when the presence of mipmaps in the [Texture3D] is queried.
 */
 func (Instance) _has_mipmaps(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -242,7 +242,7 @@ Called when the [Texture3D]'s data is queried.
 */
 func (Instance) _get_data(impl func(ptr gdclass.Receiver) []Image.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](ret)))
 
@@ -360,42 +360,42 @@ func New() Instance {
 }
 func (class) _get_format(impl func(ptr gdclass.Receiver) Image.Format) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_width(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_height(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_depth(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _has_mipmaps(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_data(impl func(ptr gdclass.Receiver) Array.Contains[[1]gdclass.Image]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -471,17 +471,17 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_format":
-		return gd.ValueOf(self._get_format)
+		return reflect.ValueOf(self._get_format)
 	case "_get_width":
-		return gd.ValueOf(self._get_width)
+		return reflect.ValueOf(self._get_width)
 	case "_get_height":
-		return gd.ValueOf(self._get_height)
+		return reflect.ValueOf(self._get_height)
 	case "_get_depth":
-		return gd.ValueOf(self._get_depth)
+		return reflect.ValueOf(self._get_depth)
 	case "_has_mipmaps":
-		return gd.ValueOf(self._has_mipmaps)
+		return reflect.ValueOf(self._has_mipmaps)
 	case "_get_data":
-		return gd.ValueOf(self._get_data)
+		return reflect.ValueOf(self._get_data)
 	default:
 		return gd.VirtualByName(Texture.Advanced(self.AsTexture()), name)
 	}
@@ -490,17 +490,17 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_format":
-		return gd.ValueOf(self._get_format)
+		return reflect.ValueOf(self._get_format)
 	case "_get_width":
-		return gd.ValueOf(self._get_width)
+		return reflect.ValueOf(self._get_width)
 	case "_get_height":
-		return gd.ValueOf(self._get_height)
+		return reflect.ValueOf(self._get_height)
 	case "_get_depth":
-		return gd.ValueOf(self._get_depth)
+		return reflect.ValueOf(self._get_depth)
 	case "_has_mipmaps":
-		return gd.ValueOf(self._has_mipmaps)
+		return reflect.ValueOf(self._has_mipmaps)
 	case "_get_data":
-		return gd.ValueOf(self._get_data)
+		return reflect.ValueOf(self._get_data)
 	default:
 		return gd.VirtualByName(Texture.Instance(self.AsTexture()), name)
 	}
