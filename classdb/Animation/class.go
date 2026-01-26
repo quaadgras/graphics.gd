@@ -937,30 +937,30 @@ func (self MoreArgs) Compress(page_size int, fps int, split_tolerance Float.X) {
 type Advanced = class
 type class [1]gdclass.Animation
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetAnimation(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Animation](obj[0])
+		self[0] = gdclass.NewAnimation(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Animation](obj[0])
+		self[0] = gdclass.NewAnimation(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetAnimation(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.Animation{pointers.Add[gdclass.Animation]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.Animation{gdclass.NewAnimation(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetAnimation(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -970,7 +970,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.Animation{pointers.New[gdclass.Animation]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.Animation{gdclass.NewAnimation(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -1687,7 +1687,7 @@ func (self class) AudioTrackInsertKey(track_idx int64, time float64, stream [1]g
 		stream       gdextension.Object
 		start_offset float64
 		end_offset   float64
-	}{track_idx, time, gdextension.Object(gd.ObjectChecked(stream[0].AsObject())), start_offset, end_offset})
+	}{track_idx, time, gdextension.Object(gd.ObjectChecked(gdclass.GetResource(stream[0]))), start_offset, end_offset})
 	var ret = r_ret
 	return ret
 }
@@ -1701,7 +1701,7 @@ func (self class) AudioTrackSetKeyStream(track_idx int64, key_idx int64, stream 
 		track_idx int64
 		key_idx   int64
 		stream    gdextension.Object
-	}{track_idx, key_idx, gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))})
+	}{track_idx, key_idx, gdextension.Object(gd.ObjectChecked(gdclass.GetResource(stream[0])))})
 }
 
 /*
@@ -1737,7 +1737,7 @@ func (self class) AudioTrackGetKeyStream(track_idx int64, key_idx int64) [1]gdcl
 		track_idx int64
 		key_idx   int64
 	}{track_idx, key_idx})
-	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
+	var ret = [1]gdclass.Resource{gdclass.NewResource(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1983,7 +1983,7 @@ func (self class) CopyTrack(track_idx int64, to_animation [1]gdclass.Animation) 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.copy_track, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		track_idx    int64
 		to_animation gdextension.Object
-	}{track_idx, gdextension.Object(gd.ObjectChecked(to_animation[0].AsObject()))})
+	}{track_idx, gdextension.Object(gd.ObjectChecked(gdclass.GetAnimation(to_animation[0])))})
 }
 
 /*
@@ -2021,24 +2021,24 @@ func (self class) IsCaptureIncluded() bool { //gd:Animation.is_capture_included
 	var ret = r_ret
 	return ret
 }
-func (self class) AsAnimation() Advanced { return Advanced{pointers.AsA[gdclass.Animation](self[0])} }
+func (self class) AsAnimation() Advanced { return Advanced{gdclass.NewAnimation(self.AsObject()[0])} }
 func (self Instance) AsAnimation() Instance {
-	return Instance{pointers.AsA[gdclass.Animation](self[0])}
+	return Instance{gdclass.NewAnimation(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsAnimation() Instance { return self.Super().AsAnimation() }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -2055,7 +2055,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Animation", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.Animation](ptr)} })
+	gdclass.Register("Animation", func(ptr gd.Object) any { return Instance{gdclass.NewAnimation(ptr)} })
 }
 
 type TrackType int //gd:Animation.TrackType

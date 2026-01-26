@@ -199,7 +199,7 @@ var self [1]gdclass.OS
 var once sync.Once
 
 func singleton() {
-	self[0] = pointers.Raw[gdclass.OS]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
+	self[0] = gdclass.NewOS(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
 }
 
 /*
@@ -1365,22 +1365,22 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.OS
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetOS(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.OS](obj[0])
+		self[0] = gdclass.NewOS(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.OS](obj[0])
+		self[0] = gdclass.NewOS(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetOS(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
@@ -2846,7 +2846,7 @@ Add a custom logger to intercept the internal message stream.
 //go:nosplit
 func (self class) AddLogger(logger [1]gdclass.Logger) { //gd:OS.add_logger
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_logger, 0|(gdextension.SizeObject<<4), &struct{ logger gdextension.Object }{gdextension.Object(gd.ObjectChecked(logger[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_logger, 0|(gdextension.SizeObject<<4), &struct{ logger gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetLogger(logger[0])))})
 }
 
 /*
@@ -2855,7 +2855,7 @@ Remove a custom logger added by [AddLogger].
 //go:nosplit
 func (self class) RemoveLogger(logger [1]gdclass.Logger) { //gd:OS.remove_logger
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_logger, 0|(gdextension.SizeObject<<4), &struct{ logger gdextension.Object }{gdextension.Object(gd.ObjectChecked(logger[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_logger, 0|(gdextension.SizeObject<<4), &struct{ logger gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetLogger(logger[0])))})
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
@@ -2870,9 +2870,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(Object.Instance(self.AsObject()), name)
 	}
 }
-func init() {
-	gdclass.Register("OS", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.OS](ptr)} })
-}
+func init() { gdclass.Register("OS", func(ptr gd.Object) any { return Instance{gdclass.NewOS(ptr)} }) }
 
 type RenderingDriver int //gd:OS.RenderingDriver
 

@@ -190,9 +190,9 @@ A virtual function for processing after getting a key during playback.
 */
 func (Instance) _post_process_key_value(impl func(ptr gdclass.Receiver, animation Animation.Instance, track int, value any, object_id int, object_sub_idx int) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var animation = [1]gdclass.Animation{pointers.New[gdclass.Animation]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var animation = [1]gdclass.Animation{gdclass.NewAnimation(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(animation[0])
+		defer pointers.End(gdclass.GetAnimation(animation[0])[0])
 		var track = gd.UnsafeGet[int64](p_args, 1)
 		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(value))
@@ -523,30 +523,30 @@ func (self Instance) FindAnimationLibrary(animation Animation.Instance) string {
 type Advanced = class
 type class [1]gdclass.AnimationMixer
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetAnimationMixer(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.AnimationMixer](obj[0])
+		self[0] = gdclass.NewAnimationMixer(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.AnimationMixer](obj[0])
+		self[0] = gdclass.NewAnimationMixer(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetAnimationMixer(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.AnimationMixer{pointers.Add[gdclass.AnimationMixer]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.AnimationMixer{gdclass.NewAnimationMixer(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetAnimationMixer(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -556,7 +556,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.AnimationMixer{pointers.New[gdclass.AnimationMixer]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.AnimationMixer{gdclass.NewAnimationMixer(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -737,9 +737,9 @@ A virtual function for processing after getting a key during playback.
 */
 func (class) _post_process_key_value(impl func(ptr gdclass.Receiver, animation [1]gdclass.Animation, track int64, value variant.Any, object_id int64, object_sub_idx int64) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var animation = [1]gdclass.Animation{pointers.New[gdclass.Animation]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var animation = [1]gdclass.Animation{gdclass.NewAnimation(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(animation[0])
+		defer pointers.End(gdclass.GetAnimation(animation[0])[0])
 		var track = gd.UnsafeGet[int64](p_args, 1)
 		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(value))
@@ -771,7 +771,7 @@ func (self class) AddAnimationLibrary(name String.Name, library [1]gdclass.Anima
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_animation_library, gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name    gdextension.StringName
 		library gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(library[0].AsObject()))})
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetAnimationLibrary(library[0])))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -823,7 +823,7 @@ To get the [AnimationMixer]'s global animation library, use get_animation_librar
 //go:nosplit
 func (self class) GetAnimationLibrary(name String.Name) [1]gdclass.AnimationLibrary { //gd:AnimationMixer.get_animation_library
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_animation_library, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
-	var ret = [1]gdclass.AnimationLibrary{gd.PointerWithOwnershipTransferredToGo[gdclass.AnimationLibrary](r_ret)}
+	var ret = [1]gdclass.AnimationLibrary{gdclass.NewAnimationLibrary(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -858,7 +858,7 @@ Returns the [Animation] with the key 'name'. If the animation does not exist, nu
 //go:nosplit
 func (self class) GetAnimation(name String.Name) [1]gdclass.Animation { //gd:AnimationMixer.get_animation
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_animation, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
-	var ret = [1]gdclass.Animation{gd.PointerWithOwnershipTransferredToGo[gdclass.Animation](r_ret)}
+	var ret = [1]gdclass.Animation{gdclass.NewAnimation(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1237,7 +1237,7 @@ Returns the key of 'animation' or an empty string if not found.
 */
 //go:nosplit
 func (self class) FindAnimation(animation [1]gdclass.Animation) String.Name { //gd:AnimationMixer.find_animation
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.find_animation, gdextension.SizeStringName|(gdextension.SizeObject<<4), &struct{ animation gdextension.Object }{gdextension.Object(gd.ObjectChecked(animation[0].AsObject()))})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.find_animation, gdextension.SizeStringName|(gdextension.SizeObject<<4), &struct{ animation gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetAnimation(animation[0])))})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -1249,7 +1249,7 @@ Returns the key for the [AnimationLibrary] that contains 'animation' or an empty
 */
 //go:nosplit
 func (self class) FindAnimationLibrary(animation [1]gdclass.Animation) String.Name { //gd:AnimationMixer.find_animation_library
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.find_animation_library, gdextension.SizeStringName|(gdextension.SizeObject<<4), &struct{ animation gdextension.Object }{gdextension.Object(gd.ObjectChecked(animation[0].AsObject()))})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.find_animation_library, gdextension.SizeStringName|(gdextension.SizeObject<<4), &struct{ animation gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetAnimation(animation[0])))})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -1262,7 +1262,7 @@ func (self Instance) OnAnimationListChanged(cb func(), flags ...Signal.Flags) In
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("animation_list_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("animation_list_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1278,7 +1278,7 @@ func (self Instance) OnAnimationLibrariesUpdated(cb func(), flags ...Signal.Flag
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("animation_libraries_updated"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("animation_libraries_updated"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1296,7 +1296,7 @@ func (self Instance) OnAnimationFinished(cb func(anim_name string), flags ...Sig
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("animation_finished"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("animation_finished"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1314,7 +1314,7 @@ func (self Instance) OnAnimationStarted(cb func(anim_name string), flags ...Sign
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("animation_started"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("animation_started"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1332,7 +1332,7 @@ func (self Instance) OnCachesCleared(cb func(), flags ...Signal.Flags) Instance 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("caches_cleared"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("caches_cleared"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1348,7 +1348,7 @@ func (self Instance) OnMixerApplied(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("mixer_applied"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("mixer_applied"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1364,7 +1364,7 @@ func (self Instance) OnMixerUpdated(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("mixer_updated"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("mixer_updated"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1373,16 +1373,16 @@ func (self class) MixerUpdated() Signal.Any {
 }
 
 func (self class) AsAnimationMixer() Advanced {
-	return Advanced{pointers.AsA[gdclass.AnimationMixer](self[0])}
+	return Advanced{gdclass.NewAnimationMixer(self.AsObject()[0])}
 }
 func (self Instance) AsAnimationMixer() Instance {
-	return Instance{pointers.AsA[gdclass.AnimationMixer](self[0])}
+	return Instance{gdclass.NewAnimationMixer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsAnimationMixer() Instance { return self.Super().AsAnimationMixer() }
-func (self class) AsNode() Node.Advanced              { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced              { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance      { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -1403,7 +1403,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AnimationMixer", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.AnimationMixer](ptr)} })
+	gdclass.Register("AnimationMixer", func(ptr gd.Object) any { return Instance{gdclass.NewAnimationMixer(ptr)} })
 }
 
 type AnimationCallbackModeProcess int //gd:AnimationMixer.AnimationCallbackModeProcess

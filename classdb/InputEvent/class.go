@@ -404,30 +404,30 @@ func (self MoreArgs) XformedBy(xform Transform2D.OriginXY, local_ofs Vector2.XY)
 type Advanced = class
 type class [1]gdclass.InputEvent
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetInputEvent(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.InputEvent](obj[0])
+		self[0] = gdclass.NewInputEvent(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.InputEvent](obj[0])
+		self[0] = gdclass.NewInputEvent(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetInputEvent(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.InputEvent{pointers.Add[gdclass.InputEvent]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetInputEvent(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -437,7 +437,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -643,7 +643,7 @@ func (self class) IsMatch(event [1]gdclass.InputEvent, exact_match bool) bool { 
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_match, gdextension.SizeBool|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		event       gdextension.Object
 		exact_match bool
-	}{gdextension.Object(gd.ObjectChecked(event[0].AsObject())), exact_match})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0]))), exact_match})
 	var ret = r_ret
 	return ret
 }
@@ -673,7 +673,7 @@ The given input event's position, global position and speed will be copied. The 
 */
 //go:nosplit
 func (self class) Accumulate(with_event [1]gdclass.InputEvent) bool { //gd:InputEvent.accumulate
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.accumulate, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ with_event gdextension.Object }{gdextension.Object(gd.ObjectChecked(with_event[0].AsObject()))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.accumulate, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ with_event gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(with_event[0])))})
 	var ret = r_ret
 	return ret
 }
@@ -694,27 +694,27 @@ func (self class) XformedBy(xform Transform2D.OriginXY, local_ofs Vector2.XY) [1
 		xform     Transform2D.OriginXY
 		local_ofs Vector2.XY
 	}{xform, local_ofs})
-	var ret = [1]gdclass.InputEvent{gd.PointerWithOwnershipTransferredToGo[gdclass.InputEvent](r_ret)}
+	var ret = [1]gdclass.InputEvent{gdclass.NewInputEvent(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-func (self class) AsInputEvent() Advanced { return Advanced{pointers.AsA[gdclass.InputEvent](self[0])} }
+func (self class) AsInputEvent() Advanced { return Advanced{gdclass.NewInputEvent(self.AsObject()[0])} }
 func (self Instance) AsInputEvent() Instance {
-	return Instance{pointers.AsA[gdclass.InputEvent](self[0])}
+	return Instance{gdclass.NewInputEvent(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsInputEvent() Instance { return self.Super().AsInputEvent() }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -731,5 +731,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("InputEvent", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.InputEvent](ptr)} })
+	gdclass.Register("InputEvent", func(ptr gd.Object) any { return Instance{gdclass.NewInputEvent(ptr)} })
 }

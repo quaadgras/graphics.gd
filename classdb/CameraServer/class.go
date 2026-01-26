@@ -123,7 +123,7 @@ var self [1]gdclass.CameraServer
 var once sync.Once
 
 func singleton() {
-	self[0] = pointers.Raw[gdclass.CameraServer]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
+	self[0] = gdclass.NewCameraServer(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
 }
 
 /*
@@ -172,22 +172,22 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.CameraServer
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetCameraServer(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.CameraServer](obj[0])
+		self[0] = gdclass.NewCameraServer(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.CameraServer](obj[0])
+		self[0] = gdclass.NewCameraServer(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetCameraServer(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
@@ -231,7 +231,7 @@ Returns the [CameraFeed] corresponding to the camera with the given 'index'.
 func (self class) GetFeed(index int64) [1]gdclass.CameraFeed { //gd:CameraServer.get_feed
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_feed, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
-	var ret = [1]gdclass.CameraFeed{gd.PointerWithOwnershipTransferredToGo[gdclass.CameraFeed](r_ret)}
+	var ret = [1]gdclass.CameraFeed{gdclass.NewCameraFeed(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -267,7 +267,7 @@ Adds the camera 'feed' to the camera server.
 //go:nosplit
 func (self class) AddFeed(feed [1]gdclass.CameraFeed) { //gd:CameraServer.add_feed
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_feed, 0|(gdextension.SizeObject<<4), &struct{ feed gdextension.Object }{gdextension.Object(gd.ObjectChecked(feed[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_feed, 0|(gdextension.SizeObject<<4), &struct{ feed gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCameraFeed(feed[0])))})
 }
 
 /*
@@ -276,7 +276,7 @@ Removes the specified camera 'feed'.
 //go:nosplit
 func (self class) RemoveFeed(feed [1]gdclass.CameraFeed) { //gd:CameraServer.remove_feed
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_feed, 0|(gdextension.SizeObject<<4), &struct{ feed gdextension.Object }{gdextension.Object(gd.ObjectChecked(feed[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_feed, 0|(gdextension.SizeObject<<4), &struct{ feed gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCameraFeed(feed[0])))})
 }
 
 /*
@@ -290,7 +290,7 @@ func OnCameraFeedAdded(cb func(id int), flags ...Signal.Flags) {
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	self[0].AsObject()[0].Connect(gd.NewStringName("camera_feed_added"), gd.NewCallable(cb), int64(flags_together))
+	gdclass.GetCameraServer(self[0])[0].Connect(gd.NewStringName("camera_feed_added"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) CameraFeedAdded() Signal.Any {
@@ -309,7 +309,7 @@ func OnCameraFeedRemoved(cb func(id int), flags ...Signal.Flags) {
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	self[0].AsObject()[0].Connect(gd.NewStringName("camera_feed_removed"), gd.NewCallable(cb), int64(flags_together))
+	gdclass.GetCameraServer(self[0])[0].Connect(gd.NewStringName("camera_feed_removed"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) CameraFeedRemoved() Signal.Any {
@@ -326,7 +326,7 @@ func OnCameraFeedsUpdated(cb func(), flags ...Signal.Flags) {
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	self[0].AsObject()[0].Connect(gd.NewStringName("camera_feeds_updated"), gd.NewCallable(cb), int64(flags_together))
+	gdclass.GetCameraServer(self[0])[0].Connect(gd.NewStringName("camera_feeds_updated"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) CameraFeedsUpdated() Signal.Any {
@@ -348,5 +348,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("CameraServer", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.CameraServer](ptr)} })
+	gdclass.Register("CameraServer", func(ptr gd.Object) any { return Instance{gdclass.NewCameraServer(ptr)} })
 }

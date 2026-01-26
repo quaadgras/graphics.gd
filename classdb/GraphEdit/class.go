@@ -728,30 +728,30 @@ func (self Instance) SetSelected(node Node.Instance) Instance { //gd:GraphEdit.s
 type Advanced = class
 type class [1]gdclass.GraphEdit
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetGraphEdit(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.GraphEdit](obj[0])
+		self[0] = gdclass.NewGraphEdit(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.GraphEdit](obj[0])
+		self[0] = gdclass.NewGraphEdit(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetGraphEdit(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.GraphEdit{pointers.Add[gdclass.GraphEdit]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.GraphEdit{gdclass.NewGraphEdit(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetGraphEdit(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -761,7 +761,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.GraphEdit{pointers.New[gdclass.GraphEdit]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.GraphEdit{gdclass.NewGraphEdit(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -1549,7 +1549,7 @@ Returns the [GraphFrame] that contains the [GraphElement] with the given name.
 //go:nosplit
 func (self class) GetElementFrame(element String.Name) [1]gdclass.GraphFrame { //gd:GraphEdit.get_element_frame
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_element_frame, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ element gdextension.StringName }{pointers.Get(gd.InternalStringName(element))})
-	var ret = [1]gdclass.GraphFrame{gd.PointerLifetimeBoundTo[gdclass.GraphFrame](self.AsObject(), r_ret)}
+	var ret = [1]gdclass.GraphFrame{gdclass.NewGraphFrame(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 
@@ -1852,7 +1852,7 @@ Warning: This is a required internal node, removing and freeing it may cause a c
 //go:nosplit
 func (self class) GetMenuHbox() [1]gdclass.HBoxContainer { //gd:GraphEdit.get_menu_hbox
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_menu_hbox, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.HBoxContainer{gd.PointerLifetimeBoundTo[gdclass.HBoxContainer](self.AsObject(), r_ret)}
+	var ret = [1]gdclass.HBoxContainer{gdclass.NewHBoxContainer(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 
@@ -1869,7 +1869,7 @@ Sets the specified 'node' as the one selected.
 */
 //go:nosplit
 func (self class) SetSelected(node [1]gdclass.Node) { //gd:GraphEdit.set_selected
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selected, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selected, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
 }
 
 /*
@@ -1882,7 +1882,7 @@ func (self Instance) OnConnectionRequest(cb func(from_node string, from_port int
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("connection_request"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("connection_request"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1900,7 +1900,7 @@ func (self Instance) OnDisconnectionRequest(cb func(from_node string, from_port 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("disconnection_request"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("disconnection_request"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1916,7 +1916,7 @@ func (self Instance) OnConnectionToEmpty(cb func(from_node string, from_port int
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("connection_to_empty"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("connection_to_empty"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1932,7 +1932,7 @@ func (self Instance) OnConnectionFromEmpty(cb func(to_node string, to_port int, 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("connection_from_empty"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("connection_from_empty"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1948,7 +1948,7 @@ func (self Instance) OnConnectionDragStarted(cb func(from_node string, from_port
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("connection_drag_started"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("connection_drag_started"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1964,7 +1964,7 @@ func (self Instance) OnConnectionDragEnded(cb func(), flags ...Signal.Flags) Ins
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("connection_drag_ended"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("connection_drag_ended"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1983,7 +1983,7 @@ func (self Instance) OnCopyNodesRequest(cb func(), flags ...Signal.Flags) Instan
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("copy_nodes_request"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("copy_nodes_request"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2002,7 +2002,7 @@ func (self Instance) OnCutNodesRequest(cb func(), flags ...Signal.Flags) Instanc
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("cut_nodes_request"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("cut_nodes_request"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2021,7 +2021,7 @@ func (self Instance) OnPasteNodesRequest(cb func(), flags ...Signal.Flags) Insta
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("paste_nodes_request"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("paste_nodes_request"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2040,7 +2040,7 @@ func (self Instance) OnDuplicateNodesRequest(cb func(), flags ...Signal.Flags) I
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("duplicate_nodes_request"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("duplicate_nodes_request"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2060,7 +2060,7 @@ func (self Instance) OnDeleteNodesRequest(cb func(nodes []string), flags ...Sign
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("delete_nodes_request"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("delete_nodes_request"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2078,7 +2078,7 @@ func (self Instance) OnNodeSelected(cb func(node Node.Instance), flags ...Signal
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("node_selected"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("node_selected"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2096,7 +2096,7 @@ func (self Instance) OnNodeDeselected(cb func(node Node.Instance), flags ...Sign
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("node_deselected"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("node_deselected"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2114,7 +2114,7 @@ func (self Instance) OnFrameRectChanged(cb func(frame_ GraphFrame.Instance, new_
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("frame_rect_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("frame_rect_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2130,7 +2130,7 @@ func (self Instance) OnPopupRequest(cb func(at_position Vector2.XY), flags ...Si
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("popup_request"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("popup_request"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2148,7 +2148,7 @@ func (self Instance) OnBeginNodeMove(cb func(), flags ...Signal.Flags) Instance 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("begin_node_move"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("begin_node_move"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2166,7 +2166,7 @@ func (self Instance) OnEndNodeMove(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("end_node_move"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("end_node_move"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2187,7 +2187,7 @@ func (self Instance) OnGraphElementsLinkedToFrameRequest(cb func(elements []any,
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("graph_elements_linked_to_frame_request"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("graph_elements_linked_to_frame_request"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2203,7 +2203,7 @@ func (self Instance) OnScrollOffsetChanged(cb func(offset Vector2.XY), flags ...
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("scroll_offset_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("scroll_offset_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2211,29 +2211,29 @@ func (self class) ScrollOffsetChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`scroll_offset_changed`))))
 }
 
-func (self class) AsGraphEdit() Advanced { return Advanced{pointers.AsA[gdclass.GraphEdit](self[0])} }
+func (self class) AsGraphEdit() Advanced { return Advanced{gdclass.NewGraphEdit(self.AsObject()[0])} }
 func (self Instance) AsGraphEdit() Instance {
-	return Instance{pointers.AsA[gdclass.GraphEdit](self[0])}
+	return Instance{gdclass.NewGraphEdit(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsGraphEdit() Instance { return self.Super().AsGraphEdit() }
 func (self class) AsControl() Control.Advanced {
-	return Control.Advanced{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Advanced{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
-	return Control.Instance{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Instance{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
-	return CanvasItem.Advanced{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Advanced{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
-	return CanvasItem.Instance{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Instance{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -2266,7 +2266,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("GraphEdit", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.GraphEdit](ptr)} })
+	gdclass.Register("GraphEdit", func(ptr gd.Object) any { return Instance{gdclass.NewGraphEdit(ptr)} })
 }
 
 type PanningScheme int //gd:GraphEdit.PanningScheme

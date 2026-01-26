@@ -118,30 +118,30 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.TextServerAdvanced
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetTextServerAdvanced(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.TextServerAdvanced](obj[0])
+		self[0] = gdclass.NewTextServerAdvanced(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.TextServerAdvanced](obj[0])
+		self[0] = gdclass.NewTextServerAdvanced(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetTextServerAdvanced(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.TextServerAdvanced{pointers.Add[gdclass.TextServerAdvanced]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.TextServerAdvanced{gdclass.NewTextServerAdvanced(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetTextServerAdvanced(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -151,41 +151,41 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.TextServerAdvanced{pointers.New[gdclass.TextServerAdvanced]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.TextServerAdvanced{gdclass.NewTextServerAdvanced(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
 
 func (self class) AsTextServerAdvanced() Advanced {
-	return Advanced{pointers.AsA[gdclass.TextServerAdvanced](self[0])}
+	return Advanced{gdclass.NewTextServerAdvanced(self.AsObject()[0])}
 }
 func (self Instance) AsTextServerAdvanced() Instance {
-	return Instance{pointers.AsA[gdclass.TextServerAdvanced](self[0])}
+	return Instance{gdclass.NewTextServerAdvanced(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsTextServerAdvanced() Instance { return self.Super().AsTextServerAdvanced() }
 func (self class) AsTextServerExtension() TextServerExtension.Advanced {
-	return TextServerExtension.Advanced{pointers.AsA[gdclass.TextServerExtension](self[0])}
+	return TextServerExtension.Advanced{gdclass.NewTextServerExtension(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsTextServerExtension() TextServerExtension.Instance {
 	return self.Super().AsTextServerExtension()
 }
 func (self Instance) AsTextServerExtension() TextServerExtension.Instance {
-	return TextServerExtension.Instance{pointers.AsA[gdclass.TextServerExtension](self[0])}
+	return TextServerExtension.Instance{gdclass.NewTextServerExtension(self.AsObject()[0])}
 }
 func (self class) AsTextServer() TextServer.Advanced {
-	return TextServer.Advanced{pointers.AsA[gdclass.TextServer](self[0])}
+	return TextServer.Advanced{gdclass.NewTextServer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsTextServer() TextServer.Instance { return self.Super().AsTextServer() }
 func (self Instance) AsTextServer() TextServer.Instance {
-	return TextServer.Instance{pointers.AsA[gdclass.TextServer](self[0])}
+	return TextServer.Instance{gdclass.NewTextServer(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -202,5 +202,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("TextServerAdvanced", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.TextServerAdvanced](ptr)} })
+	gdclass.Register("TextServerAdvanced", func(ptr gd.Object) any { return Instance{gdclass.NewTextServerAdvanced(ptr)} })
 }

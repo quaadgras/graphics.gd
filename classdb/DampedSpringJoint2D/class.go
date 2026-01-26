@@ -126,30 +126,30 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.DampedSpringJoint2D
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetDampedSpringJoint2D(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.DampedSpringJoint2D](obj[0])
+		self[0] = gdclass.NewDampedSpringJoint2D(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.DampedSpringJoint2D](obj[0])
+		self[0] = gdclass.NewDampedSpringJoint2D(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetDampedSpringJoint2D(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.DampedSpringJoint2D{pointers.Add[gdclass.DampedSpringJoint2D]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.DampedSpringJoint2D{gdclass.NewDampedSpringJoint2D(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetDampedSpringJoint2D(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -159,7 +159,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.DampedSpringJoint2D{pointers.New[gdclass.DampedSpringJoint2D]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.DampedSpringJoint2D{gdclass.NewDampedSpringJoint2D(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -266,39 +266,39 @@ func (self class) GetDamping() float64 { //gd:DampedSpringJoint2D.get_damping
 	return ret
 }
 func (self class) AsDampedSpringJoint2D() Advanced {
-	return Advanced{pointers.AsA[gdclass.DampedSpringJoint2D](self[0])}
+	return Advanced{gdclass.NewDampedSpringJoint2D(self.AsObject()[0])}
 }
 func (self Instance) AsDampedSpringJoint2D() Instance {
-	return Instance{pointers.AsA[gdclass.DampedSpringJoint2D](self[0])}
+	return Instance{gdclass.NewDampedSpringJoint2D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsDampedSpringJoint2D() Instance {
 	return self.Super().AsDampedSpringJoint2D()
 }
 func (self class) AsJoint2D() Joint2D.Advanced {
-	return Joint2D.Advanced{pointers.AsA[gdclass.Joint2D](self[0])}
+	return Joint2D.Advanced{gdclass.NewJoint2D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsJoint2D() Joint2D.Instance { return self.Super().AsJoint2D() }
 func (self Instance) AsJoint2D() Joint2D.Instance {
-	return Joint2D.Instance{pointers.AsA[gdclass.Joint2D](self[0])}
+	return Joint2D.Instance{gdclass.NewJoint2D(self.AsObject()[0])}
 }
 func (self class) AsNode2D() Node2D.Advanced {
-	return Node2D.Advanced{pointers.AsA[gdclass.Node2D](self[0])}
+	return Node2D.Advanced{gdclass.NewNode2D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsNode2D() Node2D.Instance { return self.Super().AsNode2D() }
 func (self Instance) AsNode2D() Node2D.Instance {
-	return Node2D.Instance{pointers.AsA[gdclass.Node2D](self[0])}
+	return Node2D.Instance{gdclass.NewNode2D(self.AsObject()[0])}
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
-	return CanvasItem.Advanced{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Advanced{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
-	return CanvasItem.Instance{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Instance{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -315,5 +315,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("DampedSpringJoint2D", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.DampedSpringJoint2D](ptr)} })
+	gdclass.Register("DampedSpringJoint2D", func(ptr gd.Object) any { return Instance{gdclass.NewDampedSpringJoint2D(ptr)} })
 }

@@ -187,30 +187,30 @@ func (self Instance) UpdateLayer(image Image.Instance, layer int) { //gd:ImageTe
 type Advanced = class
 type class [1]gdclass.ImageTextureLayered
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetImageTextureLayered(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ImageTextureLayered](obj[0])
+		self[0] = gdclass.NewImageTextureLayered(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ImageTextureLayered](obj[0])
+		self[0] = gdclass.NewImageTextureLayered(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetImageTextureLayered(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.ImageTextureLayered{pointers.Add[gdclass.ImageTextureLayered]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.ImageTextureLayered{gdclass.NewImageTextureLayered(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetImageTextureLayered(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -220,7 +220,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.ImageTextureLayered{pointers.New[gdclass.ImageTextureLayered]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.ImageTextureLayered{gdclass.NewImageTextureLayered(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -294,46 +294,46 @@ func (self class) UpdateLayer(image [1]gdclass.Image, layer int64) { //gd:ImageT
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_layer, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		image gdextension.Object
 		layer int64
-	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), layer})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0]))), layer})
 }
 func (self class) AsImageTextureLayered() Advanced {
-	return Advanced{pointers.AsA[gdclass.ImageTextureLayered](self[0])}
+	return Advanced{gdclass.NewImageTextureLayered(self.AsObject()[0])}
 }
 func (self Instance) AsImageTextureLayered() Instance {
-	return Instance{pointers.AsA[gdclass.ImageTextureLayered](self[0])}
+	return Instance{gdclass.NewImageTextureLayered(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsImageTextureLayered() Instance {
 	return self.Super().AsImageTextureLayered()
 }
 func (self class) AsTextureLayered() TextureLayered.Advanced {
-	return TextureLayered.Advanced{pointers.AsA[gdclass.TextureLayered](self[0])}
+	return TextureLayered.Advanced{gdclass.NewTextureLayered(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsTextureLayered() TextureLayered.Instance {
 	return self.Super().AsTextureLayered()
 }
 func (self Instance) AsTextureLayered() TextureLayered.Instance {
-	return TextureLayered.Instance{pointers.AsA[gdclass.TextureLayered](self[0])}
+	return TextureLayered.Instance{gdclass.NewTextureLayered(self.AsObject()[0])}
 }
 func (self class) AsTexture() Texture.Advanced {
-	return Texture.Advanced{pointers.AsA[gdclass.Texture](self[0])}
+	return Texture.Advanced{gdclass.NewTexture(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsTexture() Texture.Instance { return self.Super().AsTexture() }
 func (self Instance) AsTexture() Texture.Instance {
-	return Texture.Instance{pointers.AsA[gdclass.Texture](self[0])}
+	return Texture.Instance{gdclass.NewTexture(self.AsObject()[0])}
 }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -350,5 +350,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ImageTextureLayered", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.ImageTextureLayered](ptr)} })
+	gdclass.Register("ImageTextureLayered", func(ptr gd.Object) any { return Instance{gdclass.NewImageTextureLayered(ptr)} })
 }

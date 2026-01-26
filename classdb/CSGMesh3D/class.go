@@ -132,30 +132,30 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.CSGMesh3D
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetCSGMesh3D(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.CSGMesh3D](obj[0])
+		self[0] = gdclass.NewCSGMesh3D(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.CSGMesh3D](obj[0])
+		self[0] = gdclass.NewCSGMesh3D(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetCSGMesh3D(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.CSGMesh3D{pointers.Add[gdclass.CSGMesh3D]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.CSGMesh3D{gdclass.NewCSGMesh3D(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetCSGMesh3D(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -165,7 +165,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.CSGMesh3D{pointers.New[gdclass.CSGMesh3D]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.CSGMesh3D{gdclass.NewCSGMesh3D(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -213,77 +213,77 @@ func (self Instance) SetMaterial(value Material.Instance) Instance { //gd:CSGMes
 
 //go:nosplit
 func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:CSGMesh3D.set_mesh
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMesh(mesh[0])))})
 }
 
 //go:nosplit
 func (self class) GetMesh() [1]gdclass.Mesh { //gd:CSGMesh3D.get_mesh
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Mesh{gd.PointerWithOwnershipTransferredToGo[gdclass.Mesh](r_ret)}
+	var ret = [1]gdclass.Mesh{gdclass.NewMesh(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:CSGMesh3D.set_material
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
 }
 
 //go:nosplit
 func (self class) GetMaterial() [1]gdclass.Material { //gd:CSGMesh3D.get_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
+	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-func (self class) AsCSGMesh3D() Advanced { return Advanced{pointers.AsA[gdclass.CSGMesh3D](self[0])} }
+func (self class) AsCSGMesh3D() Advanced { return Advanced{gdclass.NewCSGMesh3D(self.AsObject()[0])} }
 func (self Instance) AsCSGMesh3D() Instance {
-	return Instance{pointers.AsA[gdclass.CSGMesh3D](self[0])}
+	return Instance{gdclass.NewCSGMesh3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCSGMesh3D() Instance { return self.Super().AsCSGMesh3D() }
 func (self class) AsCSGPrimitive3D() CSGPrimitive3D.Advanced {
-	return CSGPrimitive3D.Advanced{pointers.AsA[gdclass.CSGPrimitive3D](self[0])}
+	return CSGPrimitive3D.Advanced{gdclass.NewCSGPrimitive3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCSGPrimitive3D() CSGPrimitive3D.Instance {
 	return self.Super().AsCSGPrimitive3D()
 }
 func (self Instance) AsCSGPrimitive3D() CSGPrimitive3D.Instance {
-	return CSGPrimitive3D.Instance{pointers.AsA[gdclass.CSGPrimitive3D](self[0])}
+	return CSGPrimitive3D.Instance{gdclass.NewCSGPrimitive3D(self.AsObject()[0])}
 }
 func (self class) AsCSGShape3D() CSGShape3D.Advanced {
-	return CSGShape3D.Advanced{pointers.AsA[gdclass.CSGShape3D](self[0])}
+	return CSGShape3D.Advanced{gdclass.NewCSGShape3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCSGShape3D() CSGShape3D.Instance { return self.Super().AsCSGShape3D() }
 func (self Instance) AsCSGShape3D() CSGShape3D.Instance {
-	return CSGShape3D.Instance{pointers.AsA[gdclass.CSGShape3D](self[0])}
+	return CSGShape3D.Instance{gdclass.NewCSGShape3D(self.AsObject()[0])}
 }
 func (self class) AsGeometryInstance3D() GeometryInstance3D.Advanced {
-	return GeometryInstance3D.Advanced{pointers.AsA[gdclass.GeometryInstance3D](self[0])}
+	return GeometryInstance3D.Advanced{gdclass.NewGeometryInstance3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsGeometryInstance3D() GeometryInstance3D.Instance {
 	return self.Super().AsGeometryInstance3D()
 }
 func (self Instance) AsGeometryInstance3D() GeometryInstance3D.Instance {
-	return GeometryInstance3D.Instance{pointers.AsA[gdclass.GeometryInstance3D](self[0])}
+	return GeometryInstance3D.Instance{gdclass.NewGeometryInstance3D(self.AsObject()[0])}
 }
 func (self class) AsVisualInstance3D() VisualInstance3D.Advanced {
-	return VisualInstance3D.Advanced{pointers.AsA[gdclass.VisualInstance3D](self[0])}
+	return VisualInstance3D.Advanced{gdclass.NewVisualInstance3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsVisualInstance3D() VisualInstance3D.Instance {
 	return self.Super().AsVisualInstance3D()
 }
 func (self Instance) AsVisualInstance3D() VisualInstance3D.Instance {
-	return VisualInstance3D.Instance{pointers.AsA[gdclass.VisualInstance3D](self[0])}
+	return VisualInstance3D.Instance{gdclass.NewVisualInstance3D(self.AsObject()[0])}
 }
 func (self class) AsNode3D() Node3D.Advanced {
-	return Node3D.Advanced{pointers.AsA[gdclass.Node3D](self[0])}
+	return Node3D.Advanced{gdclass.NewNode3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
 func (self Instance) AsNode3D() Node3D.Instance {
-	return Node3D.Instance{pointers.AsA[gdclass.Node3D](self[0])}
+	return Node3D.Instance{gdclass.NewNode3D(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -300,5 +300,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("CSGMesh3D", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.CSGMesh3D](ptr)} })
+	gdclass.Register("CSGMesh3D", func(ptr gd.Object) any { return Instance{gdclass.NewCSGMesh3D(ptr)} })
 }

@@ -132,7 +132,7 @@ var self [1]gdclass.XRServer
 var once sync.Once
 
 func singleton() {
-	self[0] = pointers.Raw[gdclass.XRServer]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
+	self[0] = gdclass.NewXRServer(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
 }
 
 /*
@@ -252,22 +252,22 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.XRServer
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetXRServer(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.XRServer](obj[0])
+		self[0] = gdclass.NewXRServer(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.XRServer](obj[0])
+		self[0] = gdclass.NewXRServer(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetXRServer(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
@@ -440,7 +440,7 @@ Registers an [XRInterface] object.
 //go:nosplit
 func (self class) AddInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.add_interface
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(intf[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetXRInterface(intf[0])))})
 }
 
 /*
@@ -460,7 +460,7 @@ Removes this 'interface'.
 //go:nosplit
 func (self class) RemoveInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.remove_interface
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(intf[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetXRInterface(intf[0])))})
 }
 
 /*
@@ -470,7 +470,7 @@ Returns the interface registered at the given 'idx' index in the list of interfa
 func (self class) GetInterface(idx int64) [1]gdclass.XRInterface { //gd:XRServer.get_interface
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_interface, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
-	var ret = [1]gdclass.XRInterface{gd.PointerWithOwnershipTransferredToGo[gdclass.XRInterface](r_ret)}
+	var ret = [1]gdclass.XRInterface{gdclass.NewXRInterface(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -492,7 +492,7 @@ Finds an interface by its 'name'. For example, if your project uses capabilities
 func (self class) FindInterface(name String.Readable) [1]gdclass.XRInterface { //gd:XRServer.find_interface
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_interface, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
-	var ret = [1]gdclass.XRInterface{gd.PointerWithOwnershipTransferredToGo[gdclass.XRInterface](r_ret)}
+	var ret = [1]gdclass.XRInterface{gdclass.NewXRInterface(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -504,7 +504,7 @@ Registers a new [XRTracker] that tracks a physical object.
 //go:nosplit
 func (self class) AddTracker(tracker [1]gdclass.XRTracker) { //gd:XRServer.add_tracker
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_tracker, 0|(gdextension.SizeObject<<4), &struct{ tracker gdextension.Object }{gdextension.Object(gd.ObjectChecked(tracker[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_tracker, 0|(gdextension.SizeObject<<4), &struct{ tracker gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetXRTracker(tracker[0])))})
 }
 
 /*
@@ -513,7 +513,7 @@ Removes this 'tracker'.
 //go:nosplit
 func (self class) RemoveTracker(tracker [1]gdclass.XRTracker) { //gd:XRServer.remove_tracker
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_tracker, 0|(gdextension.SizeObject<<4), &struct{ tracker gdextension.Object }{gdextension.Object(gd.ObjectChecked(tracker[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_tracker, 0|(gdextension.SizeObject<<4), &struct{ tracker gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetXRTracker(tracker[0])))})
 }
 
 /*
@@ -534,7 +534,7 @@ Returns the positional tracker with the given 'tracker_name'.
 func (self class) GetTracker(tracker_name String.Name) [1]gdclass.XRTracker { //gd:XRServer.get_tracker
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tracker, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ tracker_name gdextension.StringName }{pointers.Get(gd.InternalStringName(tracker_name))})
-	var ret = [1]gdclass.XRTracker{gd.PointerWithOwnershipTransferredToGo[gdclass.XRTracker](r_ret)}
+	var ret = [1]gdclass.XRTracker{gdclass.NewXRTracker(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -542,14 +542,14 @@ func (self class) GetTracker(tracker_name String.Name) [1]gdclass.XRTracker { //
 func (self class) GetPrimaryInterface() [1]gdclass.XRInterface { //gd:XRServer.get_primary_interface
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_primary_interface, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.XRInterface{gd.PointerWithOwnershipTransferredToGo[gdclass.XRInterface](r_ret)}
+	var ret = [1]gdclass.XRInterface{gdclass.NewXRInterface(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPrimaryInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.set_primary_interface
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_primary_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(intf[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_primary_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetXRInterface(intf[0])))})
 }
 
 /*
@@ -561,7 +561,7 @@ func OnReferenceFrameChanged(cb func(), flags ...Signal.Flags) {
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	self[0].AsObject()[0].Connect(gd.NewStringName("reference_frame_changed"), gd.NewCallable(cb), int64(flags_together))
+	gdclass.GetXRServer(self[0])[0].Connect(gd.NewStringName("reference_frame_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) ReferenceFrameChanged() Signal.Any {
@@ -578,7 +578,7 @@ func OnInterfaceAdded(cb func(interface_name string), flags ...Signal.Flags) {
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	self[0].AsObject()[0].Connect(gd.NewStringName("interface_added"), gd.NewCallable(cb), int64(flags_together))
+	gdclass.GetXRServer(self[0])[0].Connect(gd.NewStringName("interface_added"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) InterfaceAdded() Signal.Any {
@@ -595,7 +595,7 @@ func OnInterfaceRemoved(cb func(interface_name string), flags ...Signal.Flags) {
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	self[0].AsObject()[0].Connect(gd.NewStringName("interface_removed"), gd.NewCallable(cb), int64(flags_together))
+	gdclass.GetXRServer(self[0])[0].Connect(gd.NewStringName("interface_removed"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) InterfaceRemoved() Signal.Any {
@@ -615,7 +615,7 @@ func OnTrackerAdded(cb func(tracker_name string, atype int), flags ...Signal.Fla
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	self[0].AsObject()[0].Connect(gd.NewStringName("tracker_added"), gd.NewCallable(cb), int64(flags_together))
+	gdclass.GetXRServer(self[0])[0].Connect(gd.NewStringName("tracker_added"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) TrackerAdded() Signal.Any {
@@ -632,7 +632,7 @@ func OnTrackerUpdated(cb func(tracker_name string, atype int), flags ...Signal.F
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	self[0].AsObject()[0].Connect(gd.NewStringName("tracker_updated"), gd.NewCallable(cb), int64(flags_together))
+	gdclass.GetXRServer(self[0])[0].Connect(gd.NewStringName("tracker_updated"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) TrackerUpdated() Signal.Any {
@@ -652,7 +652,7 @@ func OnTrackerRemoved(cb func(tracker_name string, atype int), flags ...Signal.F
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	self[0].AsObject()[0].Connect(gd.NewStringName("tracker_removed"), gd.NewCallable(cb), int64(flags_together))
+	gdclass.GetXRServer(self[0])[0].Connect(gd.NewStringName("tracker_removed"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) TrackerRemoved() Signal.Any {
@@ -674,7 +674,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("XRServer", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.XRServer](ptr)} })
+	gdclass.Register("XRServer", func(ptr gd.Object) any { return Instance{gdclass.NewXRServer(ptr)} })
 }
 
 type RotationMode int //gd:XRServer.RotationMode

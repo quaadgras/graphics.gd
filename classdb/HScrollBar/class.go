@@ -121,30 +121,30 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.HScrollBar
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetHScrollBar(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.HScrollBar](obj[0])
+		self[0] = gdclass.NewHScrollBar(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.HScrollBar](obj[0])
+		self[0] = gdclass.NewHScrollBar(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetHScrollBar(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.HScrollBar{pointers.Add[gdclass.HScrollBar]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.HScrollBar{gdclass.NewHScrollBar(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetHScrollBar(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -154,48 +154,48 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.HScrollBar{pointers.New[gdclass.HScrollBar]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.HScrollBar{gdclass.NewHScrollBar(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
 
-func (self class) AsHScrollBar() Advanced { return Advanced{pointers.AsA[gdclass.HScrollBar](self[0])} }
+func (self class) AsHScrollBar() Advanced { return Advanced{gdclass.NewHScrollBar(self.AsObject()[0])} }
 func (self Instance) AsHScrollBar() Instance {
-	return Instance{pointers.AsA[gdclass.HScrollBar](self[0])}
+	return Instance{gdclass.NewHScrollBar(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsHScrollBar() Instance { return self.Super().AsHScrollBar() }
 func (self class) AsScrollBar() ScrollBar.Advanced {
-	return ScrollBar.Advanced{pointers.AsA[gdclass.ScrollBar](self[0])}
+	return ScrollBar.Advanced{gdclass.NewScrollBar(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsScrollBar() ScrollBar.Instance { return self.Super().AsScrollBar() }
 func (self Instance) AsScrollBar() ScrollBar.Instance {
-	return ScrollBar.Instance{pointers.AsA[gdclass.ScrollBar](self[0])}
+	return ScrollBar.Instance{gdclass.NewScrollBar(self.AsObject()[0])}
 }
 func (self class) AsRange() Range.Advanced {
-	return Range.Advanced{pointers.AsA[gdclass.Range](self[0])}
+	return Range.Advanced{gdclass.NewRange(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRange() Range.Instance { return self.Super().AsRange() }
 func (self Instance) AsRange() Range.Instance {
-	return Range.Instance{pointers.AsA[gdclass.Range](self[0])}
+	return Range.Instance{gdclass.NewRange(self.AsObject()[0])}
 }
 func (self class) AsControl() Control.Advanced {
-	return Control.Advanced{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Advanced{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
-	return Control.Instance{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Instance{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
-	return CanvasItem.Advanced{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Advanced{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
-	return CanvasItem.Instance{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Instance{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -212,5 +212,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("HScrollBar", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.HScrollBar](ptr)} })
+	gdclass.Register("HScrollBar", func(ptr gd.Object) any { return Instance{gdclass.NewHScrollBar(ptr)} })
 }

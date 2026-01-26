@@ -547,30 +547,30 @@ func (self Instance) GetMaterial() Material.Instance { //gd:MeshDataTool.get_mat
 type Advanced = class
 type class [1]gdclass.MeshDataTool
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetMeshDataTool(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.MeshDataTool](obj[0])
+		self[0] = gdclass.NewMeshDataTool(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.MeshDataTool](obj[0])
+		self[0] = gdclass.NewMeshDataTool(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetMeshDataTool(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.MeshDataTool{pointers.Add[gdclass.MeshDataTool]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.MeshDataTool{gdclass.NewMeshDataTool(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetMeshDataTool(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -580,7 +580,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.MeshDataTool{pointers.New[gdclass.MeshDataTool]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.MeshDataTool{gdclass.NewMeshDataTool(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -606,7 +606,7 @@ func (self class) CreateFromSurface(mesh [1]gdclass.ArrayMesh, surface int64) Er
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_from_surface, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		mesh    gdextension.Object
 		surface int64
-	}{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject())), surface})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetArrayMesh(mesh[0]))), surface})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -621,7 +621,7 @@ func (self class) CommitToSurface(mesh [1]gdclass.ArrayMesh, compression_flags i
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.commit_to_surface, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		mesh              gdextension.Object
 		compression_flags int64
-	}{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject())), compression_flags})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetArrayMesh(mesh[0]))), compression_flags})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -999,7 +999,7 @@ Sets the material to be used by newly-constructed [Mesh].
 */
 //go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:MeshDataTool.set_material
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
 }
 
 /*
@@ -1010,22 +1010,22 @@ Returns the material assigned to the [Mesh].
 //go:nosplit
 func (self class) GetMaterial() [1]gdclass.Material { //gd:MeshDataTool.get_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
+	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 func (self class) AsMeshDataTool() Advanced {
-	return Advanced{pointers.AsA[gdclass.MeshDataTool](self[0])}
+	return Advanced{gdclass.NewMeshDataTool(self.AsObject()[0])}
 }
 func (self Instance) AsMeshDataTool() Instance {
-	return Instance{pointers.AsA[gdclass.MeshDataTool](self[0])}
+	return Instance{gdclass.NewMeshDataTool(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsMeshDataTool() Instance { return self.Super().AsMeshDataTool() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -1042,5 +1042,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("MeshDataTool", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.MeshDataTool](ptr)} })
+	gdclass.Register("MeshDataTool", func(ptr gd.Object) any { return Instance{gdclass.NewMeshDataTool(ptr)} })
 }

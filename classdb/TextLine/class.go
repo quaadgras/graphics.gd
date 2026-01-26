@@ -339,30 +339,30 @@ func (self Instance) HitTest(coords Float.X) int { //gd:TextLine.hit_test
 type Advanced = class
 type class [1]gdclass.TextLine
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetTextLine(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.TextLine](obj[0])
+		self[0] = gdclass.NewTextLine(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.TextLine](obj[0])
+		self[0] = gdclass.NewTextLine(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetTextLine(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.TextLine{pointers.Add[gdclass.TextLine]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.TextLine{gdclass.NewTextLine(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetTextLine(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -372,7 +372,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.TextLine{pointers.New[gdclass.TextLine]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.TextLine{gdclass.NewTextLine(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -584,7 +584,7 @@ func (self class) AddString(text String.Readable, font [1]gdclass.Font, font_siz
 		font_size int64
 		language  gdextension.String
 		meta      gdextension.Variant
-	}{pointers.Get(gd.InternalString(text)), gdextension.Object(gd.ObjectChecked(font[0].AsObject())), font_size, pointers.Get(gd.InternalString(language)), gdextension.Variant(pointers.Get(gd.InternalVariant(meta)))})
+	}{pointers.Get(gd.InternalString(text)), gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0]))), font_size, pointers.Get(gd.InternalString(language)), gdextension.Variant(pointers.Get(gd.InternalVariant(meta)))})
 	var ret = r_ret
 	return ret
 }
@@ -816,15 +816,15 @@ func (self class) HitTest(coords float64) int64 { //gd:TextLine.hit_test
 	var ret = r_ret
 	return ret
 }
-func (self class) AsTextLine() Advanced         { return Advanced{pointers.AsA[gdclass.TextLine](self[0])} }
-func (self Instance) AsTextLine() Instance      { return Instance{pointers.AsA[gdclass.TextLine](self[0])} }
+func (self class) AsTextLine() Advanced         { return Advanced{gdclass.NewTextLine(self.AsObject()[0])} }
+func (self Instance) AsTextLine() Instance      { return Instance{gdclass.NewTextLine(self.AsObject()[0])} }
 func (self *Extension[T]) AsTextLine() Instance { return self.Super().AsTextLine() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -841,5 +841,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("TextLine", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.TextLine](ptr)} })
+	gdclass.Register("TextLine", func(ptr gd.Object) any { return Instance{gdclass.NewTextLine(ptr)} })
 }

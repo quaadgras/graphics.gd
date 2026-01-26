@@ -253,7 +253,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			fmt.Fprintf(file, "var self [1]gdclass.%s\n", class.Name)
 			fmt.Fprintf(file, "var once sync.Once\n")
 			fmt.Fprintf(file, "func singleton() {\n")
-			fmt.Fprintf(file, "\tself[0] = pointers.Raw[gdclass.%s]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})\n", class.Name)
+			fmt.Fprintf(file, "\tself[0] = gdclass.New%[1]v(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))\n", class.Name)
 			fmt.Fprintf(file, "}\n")
 		} else {
 			var hasDefaults bool
@@ -376,23 +376,23 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			fmt.Fprintf(file, "\ntype Advanced = class\n")
 		}
 		fmt.Fprintf(file, "type class [1]gdclass.%s\n", class.Name)
-		fmt.Fprintln(file, "func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }")
+		fmt.Fprintf(file, "func (self class) AsObject() [1]gd.Object { return gdclass.Get%[1]v(self[0]) }\n", class.Name)
 		fmt.Fprintln(file, "func (self *class) SetObject(obj [1]gd.Object) bool {")
 		fmt.Fprintln(file, "\tif gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {")
-		fmt.Fprintf(file, "\t\tself[0] = pointers.AsA[gdclass.%[1]s](obj[0])\n", class.Name)
+		fmt.Fprintf(file, "\t\tself[0] = gdclass.New%[1]s(obj[0])\n", class.Name)
 		fmt.Fprintln(file, "\t\treturn true")
 		fmt.Fprintln(file, "\t}")
 		fmt.Fprintln(file, "\treturn false")
 		fmt.Fprintln(file, "}")
 		fmt.Fprintln(file, "func (self *Instance) SetObject(obj [1]gd.Object) bool {")
 		fmt.Fprintln(file, "\tif gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {")
-		fmt.Fprintf(file, "\t\tself[0] = pointers.AsA[gdclass.%[1]s](obj[0])\n", class.Name)
+		fmt.Fprintf(file, "\t\tself[0] = gdclass.New%[1]s(obj[0])\n", class.Name)
 		fmt.Fprintln(file, "\t\treturn true")
 		fmt.Fprintln(file, "\t}")
 		fmt.Fprintln(file, "\treturn false")
 		fmt.Fprintln(file, "}")
 
-		fmt.Fprintln(file, "func (self Instance) AsObject() [1]gd.Object { return self[0].AsObject() }")
+		fmt.Fprintf(file, "func (self Instance) AsObject() [1]gd.Object { return gdclass.Get%[1]s(self[0]) }\n", class.Name)
 		fmt.Fprintln(file, "func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }")
 		if !singleton {
 			classDB.new(file, class)
@@ -408,8 +408,8 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		if class.Inherits != "" {
 			var i = 1
 			if !singleton {
-				fmt.Fprintf(file, "\nfunc (self class) As%[1]v() Advanced { return Advanced{pointers.AsA[gdclass.%[1]v](self[0])} }\n", class.Name)
-				fmt.Fprintf(file, "func (self Instance) As%[1]v() Instance { return Instance{pointers.AsA[gdclass.%[1]v](self[0])} }\n", class.Name)
+				fmt.Fprintf(file, "\nfunc (self class) As%[1]v() Advanced { return Advanced{gdclass.New%[1]v(self.AsObject()[0])} }\n", class.Name)
+				fmt.Fprintf(file, "func (self Instance) As%[1]v() Instance { return Instance{gdclass.New%[1]v(self.AsObject()[0])} }\n", class.Name)
 				fmt.Fprintf(file, "func (self *Extension[T]) As%[1]v() Instance { return self.Super().As%[1]v() }\n", class.Name)
 			}
 			super := classDB[class.Inherits]
@@ -419,16 +419,16 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 					continue
 				}
 				if super.Name == "RefCounted" {
-					fmt.Fprintf(file, "func (self class) AsRefCounted() [1]gd.RefCounted { return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))} }\n")
+					fmt.Fprintf(file, "func (self class) AsRefCounted() [1]gd.RefCounted { return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])} }\n")
 					fmt.Fprintf(file, "func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }\n")
 					if !singleton {
-						fmt.Fprintf(file, "func (self Instance) AsRefCounted() [1]gd.RefCounted { return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))} }\n")
+						fmt.Fprintf(file, "func (self Instance) AsRefCounted() [1]gd.RefCounted { return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])} }\n")
 					}
 				} else {
-					fmt.Fprintf(file, "func (self class) As%[2]v() %[2]v.Advanced { return %[2]v.Advanced{pointers.AsA[gdclass.%[2]v](self[0])} }\n", class.Name, super.Name)
+					fmt.Fprintf(file, "func (self class) As%[2]v() %[2]v.Advanced { return %[2]v.Advanced{gdclass.New%[2]v(self.AsObject()[0])} }\n", class.Name, super.Name)
 					fmt.Fprintf(file, "func (self *Extension[T]) As%[2]v() %[2]v.Instance { return self.Super().As%[2]v() }\n", class.Name, super.Name)
 					if !singleton {
-						fmt.Fprintf(file, "func (self Instance) As%[2]v() %[2]v.Instance { return  %[2]v.Instance{pointers.AsA[gdclass.%[2]v](self[0])} }\n", class.Name, super.Name)
+						fmt.Fprintf(file, "func (self Instance) As%[2]v() %[2]v.Instance { return  %[2]v.Instance{gdclass.New%[2]v(self.AsObject()[0])} }\n", class.Name, super.Name)
 					}
 				}
 				i++
@@ -456,7 +456,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			fmt.Fprintf(file, "}\n")
 		}
 		fmt.Fprintf(file, `func init() {`)
-		fmt.Fprintf(file, `gdclass.Register("%s", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.%[1]s](ptr)} })`, class.Name)
+		fmt.Fprintf(file, `gdclass.Register("%s", func(ptr gd.Object) any { return Instance{gdclass.New%[1]s(ptr)} })`, class.Name)
 		fmt.Fprintf(file, "}\n")
 		if class.Name != "RenderingDevice" {
 			for _, enum := range class.Enums {

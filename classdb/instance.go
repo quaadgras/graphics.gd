@@ -13,7 +13,10 @@ import (
 var instances threadsafe.Handles[*instanceImplementation, gdextension.ExtensionInstanceID]
 
 func nameOf(rtype reflect.Type) string {
-	if rtype.Kind() == reflect.Pointer || rtype.Kind() == reflect.Array {
+	if rtype.Kind() == reflect.Array {
+		return rtype.Elem().Name()
+	}
+	if rtype.Kind() == reflect.Pointer {
 		return nameOf(rtype.Elem())
 	}
 	isClass := reflect.PointerTo(rtype).Implements(reflect.TypeFor[gd.IsClass]()) || rtype.Implements(reflect.TypeFor[gd.IsClass]())

@@ -1024,30 +1024,30 @@ func (self MoreArgs) LoadSvgFromString(svg_str string, scale Float.X) error { //
 type Advanced = class
 type class [1]gdclass.Image
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetImage(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Image](obj[0])
+		self[0] = gdclass.NewImage(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Image](obj[0])
+		self[0] = gdclass.NewImage(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetImage(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.Image{pointers.Add[gdclass.Image]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.Image{gdclass.NewImage(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetImage(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -1057,7 +1057,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.Image{gdclass.NewImage(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -1258,7 +1258,7 @@ func (self class) Create(width int64, height int64, use_mipmaps bool, format For
 		use_mipmaps bool
 		format      Format
 	}{width, height, use_mipmaps, format})
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
+	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1275,7 +1275,7 @@ func (self class) CreateEmpty(width int64, height int64, use_mipmaps bool, forma
 		use_mipmaps bool
 		format      Format
 	}{width, height, use_mipmaps, format})
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
+	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1293,7 +1293,7 @@ func (self class) CreateFromData(width int64, height int64, use_mipmaps bool, fo
 		format      Format
 		data        gdextension.PackedArray[byte]
 	}{width, height, use_mipmaps, format, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
+	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1348,7 +1348,7 @@ Creates a new [Image] and loads data from the specified file.
 //go:nosplit
 func (self class) LoadFromFile(path String.Readable) [1]gdclass.Image { //gd:Image.load_from_file
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.load_from_file, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
+	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1647,7 +1647,7 @@ Converts a standard RGBE (Red Green Blue Exponent) image to an sRGB image.
 //go:nosplit
 func (self class) RgbeToSrgb() [1]gdclass.Image { //gd:Image.rgbe_to_srgb
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.rgbe_to_srgb, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
+	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1669,7 +1669,7 @@ func (self class) ComputeImageMetrics(compared_image [1]gdclass.Image, use_luma 
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.compute_image_metrics, gdextension.SizeDictionary|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		compared_image gdextension.Object
 		use_luma       bool
-	}{gdextension.Object(gd.ObjectChecked(compared_image[0].AsObject())), use_luma})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(compared_image[0]))), use_luma})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -1687,7 +1687,7 @@ func (self class) BlitRect(src [1]gdclass.Image, src_rect Rect2i.PositionSize, d
 		src      gdextension.Object
 		src_rect Rect2i.PositionSize
 		dst      Vector2i.XY
-	}{gdextension.Object(gd.ObjectChecked(src[0].AsObject())), src_rect, dst})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(src[0]))), src_rect, dst})
 }
 
 /*
@@ -1700,7 +1700,7 @@ func (self class) BlitRectMask(src [1]gdclass.Image, mask [1]gdclass.Image, src_
 		mask     gdextension.Object
 		src_rect Rect2i.PositionSize
 		dst      Vector2i.XY
-	}{gdextension.Object(gd.ObjectChecked(src[0].AsObject())), gdextension.Object(gd.ObjectChecked(mask[0].AsObject())), src_rect, dst})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(src[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetImage(mask[0]))), src_rect, dst})
 }
 
 /*
@@ -1712,7 +1712,7 @@ func (self class) BlendRect(src [1]gdclass.Image, src_rect Rect2i.PositionSize, 
 		src      gdextension.Object
 		src_rect Rect2i.PositionSize
 		dst      Vector2i.XY
-	}{gdextension.Object(gd.ObjectChecked(src[0].AsObject())), src_rect, dst})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(src[0]))), src_rect, dst})
 }
 
 /*
@@ -1725,7 +1725,7 @@ func (self class) BlendRectMask(src [1]gdclass.Image, mask [1]gdclass.Image, src
 		mask     gdextension.Object
 		src_rect Rect2i.PositionSize
 		dst      Vector2i.XY
-	}{gdextension.Object(gd.ObjectChecked(src[0].AsObject())), gdextension.Object(gd.ObjectChecked(mask[0].AsObject())), src_rect, dst})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(src[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetImage(mask[0]))), src_rect, dst})
 }
 
 /*
@@ -1767,7 +1767,7 @@ Returns a new [Image] that is a copy of this [Image]'s area specified with 'regi
 //go:nosplit
 func (self class) GetRegion(region Rect2i.PositionSize) [1]gdclass.Image { //gd:Image.get_region
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_region, gdextension.SizeObject|(gdextension.SizeRect2i<<4), &struct{ region Rect2i.PositionSize }{region})
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
+	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1776,7 +1776,7 @@ Copies 'src' image to this image.
 */
 //go:nosplit
 func (self class) CopyFrom(src [1]gdclass.Image) { //gd:Image.copy_from
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.copy_from, 0|(gdextension.SizeObject<<4), &struct{ src gdextension.Object }{gdextension.Object(gd.ObjectChecked(src[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.copy_from, 0|(gdextension.SizeObject<<4), &struct{ src gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(src[0])))})
 }
 
 /*
@@ -1990,22 +1990,22 @@ func (self class) LoadSvgFromString(svg_str String.Readable, scale float64) Erro
 	var ret = Error.Code(r_ret)
 	return ret
 }
-func (self class) AsImage() Advanced         { return Advanced{pointers.AsA[gdclass.Image](self[0])} }
-func (self Instance) AsImage() Instance      { return Instance{pointers.AsA[gdclass.Image](self[0])} }
+func (self class) AsImage() Advanced         { return Advanced{gdclass.NewImage(self.AsObject()[0])} }
+func (self Instance) AsImage() Instance      { return Instance{gdclass.NewImage(self.AsObject()[0])} }
 func (self *Extension[T]) AsImage() Instance { return self.Super().AsImage() }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -2022,7 +2022,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Image", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.Image](ptr)} })
+	gdclass.Register("Image", func(ptr gd.Object) any { return Instance{gdclass.NewImage(ptr)} })
 }
 
 type Format int //gd:Image.Format

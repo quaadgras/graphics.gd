@@ -231,30 +231,30 @@ func (self Instance) GetNodePosition(name string) Vector2.XY { //gd:AnimationNod
 type Advanced = class
 type class [1]gdclass.AnimationNodeBlendTree
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetAnimationNodeBlendTree(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.AnimationNodeBlendTree](obj[0])
+		self[0] = gdclass.NewAnimationNodeBlendTree(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.AnimationNodeBlendTree](obj[0])
+		self[0] = gdclass.NewAnimationNodeBlendTree(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetAnimationNodeBlendTree(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.AnimationNodeBlendTree{pointers.Add[gdclass.AnimationNodeBlendTree]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.AnimationNodeBlendTree{gdclass.NewAnimationNodeBlendTree(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetAnimationNodeBlendTree(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -264,7 +264,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.AnimationNodeBlendTree{pointers.New[gdclass.AnimationNodeBlendTree]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.AnimationNodeBlendTree{gdclass.NewAnimationNodeBlendTree(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -294,7 +294,7 @@ func (self class) AddNode(name String.Name, node [1]gdclass.AnimationNode, posit
 		name     gdextension.StringName
 		node     gdextension.Object
 		position Vector2.XY
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(node[0].AsObject())), position})
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetAnimationNode(node[0]))), position})
 }
 
 /*
@@ -303,7 +303,7 @@ Returns the sub animation node with the specified 'name'.
 //go:nosplit
 func (self class) GetNode(name String.Name) [1]gdclass.AnimationNode { //gd:AnimationNodeBlendTree.get_node
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_node, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
-	var ret = [1]gdclass.AnimationNode{gd.PointerWithOwnershipTransferredToGo[gdclass.AnimationNode](r_ret)}
+	var ret = [1]gdclass.AnimationNode{gdclass.NewAnimationNode(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -412,7 +412,7 @@ func (self Instance) OnNodeChanged(cb func(node_name string), flags ...Signal.Fl
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("node_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("node_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -421,45 +421,45 @@ func (self class) NodeChanged() Signal.Any {
 }
 
 func (self class) AsAnimationNodeBlendTree() Advanced {
-	return Advanced{pointers.AsA[gdclass.AnimationNodeBlendTree](self[0])}
+	return Advanced{gdclass.NewAnimationNodeBlendTree(self.AsObject()[0])}
 }
 func (self Instance) AsAnimationNodeBlendTree() Instance {
-	return Instance{pointers.AsA[gdclass.AnimationNodeBlendTree](self[0])}
+	return Instance{gdclass.NewAnimationNodeBlendTree(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsAnimationNodeBlendTree() Instance {
 	return self.Super().AsAnimationNodeBlendTree()
 }
 func (self class) AsAnimationRootNode() AnimationRootNode.Advanced {
-	return AnimationRootNode.Advanced{pointers.AsA[gdclass.AnimationRootNode](self[0])}
+	return AnimationRootNode.Advanced{gdclass.NewAnimationRootNode(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsAnimationRootNode() AnimationRootNode.Instance {
 	return self.Super().AsAnimationRootNode()
 }
 func (self Instance) AsAnimationRootNode() AnimationRootNode.Instance {
-	return AnimationRootNode.Instance{pointers.AsA[gdclass.AnimationRootNode](self[0])}
+	return AnimationRootNode.Instance{gdclass.NewAnimationRootNode(self.AsObject()[0])}
 }
 func (self class) AsAnimationNode() AnimationNode.Advanced {
-	return AnimationNode.Advanced{pointers.AsA[gdclass.AnimationNode](self[0])}
+	return AnimationNode.Advanced{gdclass.NewAnimationNode(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsAnimationNode() AnimationNode.Instance {
 	return self.Super().AsAnimationNode()
 }
 func (self Instance) AsAnimationNode() AnimationNode.Instance {
-	return AnimationNode.Instance{pointers.AsA[gdclass.AnimationNode](self[0])}
+	return AnimationNode.Instance{gdclass.NewAnimationNode(self.AsObject()[0])}
 }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -476,5 +476,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AnimationNodeBlendTree", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.AnimationNodeBlendTree](ptr)} })
+	gdclass.Register("AnimationNodeBlendTree", func(ptr gd.Object) any { return Instance{gdclass.NewAnimationNodeBlendTree(ptr)} })
 }

@@ -226,30 +226,30 @@ func (self Instance) FindDirIndex(name string) int { //gd:EditorFileSystemDirect
 type Advanced = class
 type class [1]gdclass.EditorFileSystemDirectory
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetEditorFileSystemDirectory(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.EditorFileSystemDirectory](obj[0])
+		self[0] = gdclass.NewEditorFileSystemDirectory(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.EditorFileSystemDirectory](obj[0])
+		self[0] = gdclass.NewEditorFileSystemDirectory(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetEditorFileSystemDirectory(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.EditorFileSystemDirectory{pointers.Add[gdclass.EditorFileSystemDirectory]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.EditorFileSystemDirectory{gdclass.NewEditorFileSystemDirectory(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetEditorFileSystemDirectory(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -259,7 +259,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.EditorFileSystemDirectory{pointers.New[gdclass.EditorFileSystemDirectory]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.EditorFileSystemDirectory{gdclass.NewEditorFileSystemDirectory(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -280,7 +280,7 @@ Returns the subdirectory at index 'idx'.
 //go:nosplit
 func (self class) GetSubdir(idx int64) [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystemDirectory.get_subdir
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_subdir, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
-	var ret = [1]gdclass.EditorFileSystemDirectory{gd.PointerMustAssertInstanceID[gdclass.EditorFileSystemDirectory](r_ret)}
+	var ret = [1]gdclass.EditorFileSystemDirectory{gdclass.NewEditorFileSystemDirectory(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -380,7 +380,7 @@ Returns the parent directory for this directory or null if called on a directory
 //go:nosplit
 func (self class) GetParent() [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystemDirectory.get_parent
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_parent, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.EditorFileSystemDirectory{gd.PointerMustAssertInstanceID[gdclass.EditorFileSystemDirectory](r_ret)}
+	var ret = [1]gdclass.EditorFileSystemDirectory{gdclass.NewEditorFileSystemDirectory(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -404,10 +404,10 @@ func (self class) FindDirIndex(name String.Readable) int64 { //gd:EditorFileSyst
 	return ret
 }
 func (self class) AsEditorFileSystemDirectory() Advanced {
-	return Advanced{pointers.AsA[gdclass.EditorFileSystemDirectory](self[0])}
+	return Advanced{gdclass.NewEditorFileSystemDirectory(self.AsObject()[0])}
 }
 func (self Instance) AsEditorFileSystemDirectory() Instance {
-	return Instance{pointers.AsA[gdclass.EditorFileSystemDirectory](self[0])}
+	return Instance{gdclass.NewEditorFileSystemDirectory(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsEditorFileSystemDirectory() Instance {
 	return self.Super().AsEditorFileSystemDirectory()
@@ -427,5 +427,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorFileSystemDirectory", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.EditorFileSystemDirectory](ptr)} })
+	gdclass.Register("EditorFileSystemDirectory", func(ptr gd.Object) any { return Instance{gdclass.NewEditorFileSystemDirectory(ptr)} })
 }

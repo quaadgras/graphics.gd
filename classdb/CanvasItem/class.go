@@ -1279,30 +1279,30 @@ func (self Instance) GetVisibilityLayerBit(layer int) bool { //gd:CanvasItem.get
 type Advanced = class
 type class [1]gdclass.CanvasItem
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetCanvasItem(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.CanvasItem](obj[0])
+		self[0] = gdclass.NewCanvasItem(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.CanvasItem](obj[0])
+		self[0] = gdclass.NewCanvasItem(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetCanvasItem(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.CanvasItem{pointers.Add[gdclass.CanvasItem]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.CanvasItem{gdclass.NewCanvasItem(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetCanvasItem(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -1312,7 +1312,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.CanvasItem{pointers.New[gdclass.CanvasItem]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.CanvasItem{gdclass.NewCanvasItem(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -1992,7 +1992,7 @@ func (self class) DrawTexture(texture [1]gdclass.Texture2D, position Vector2.XY,
 		texture  gdextension.Object
 		position Vector2.XY
 		modulate Color.RGBA
-	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), position, modulate})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), position, modulate})
 }
 
 /*
@@ -2009,7 +2009,7 @@ func (self class) DrawTextureRect(texture [1]gdclass.Texture2D, rect Rect2.Posit
 		tile      bool
 		modulate  Color.RGBA
 		transpose bool
-	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), rect, tile, modulate, transpose})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), rect, tile, modulate, transpose})
 }
 
 /*
@@ -2026,7 +2026,7 @@ func (self class) DrawTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2
 		modulate  Color.RGBA
 		transpose bool
 		clip_uv   bool
-	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), rect, src_rect, modulate, transpose, clip_uv})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), rect, src_rect, modulate, transpose, clip_uv})
 }
 
 /*
@@ -2048,7 +2048,7 @@ func (self class) DrawMsdfTextureRectRegion(texture [1]gdclass.Texture2D, rect R
 		outline     float64
 		pixel_range float64
 		scale       float64
-	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), rect, src_rect, modulate, outline, pixel_range, scale})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), rect, src_rect, modulate, outline, pixel_range, scale})
 }
 
 /*
@@ -2073,7 +2073,7 @@ func (self class) DrawLcdTextureRectRegion(texture [1]gdclass.Texture2D, rect Re
 		rect     Rect2.PositionSize
 		src_rect Rect2.PositionSize
 		modulate Color.RGBA
-	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), rect, src_rect, modulate})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), rect, src_rect, modulate})
 }
 
 /*
@@ -2084,7 +2084,7 @@ func (self class) DrawStyleBox(style_box [1]gdclass.StyleBox, rect Rect2.Positio
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_style_box, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2<<8), &struct {
 		style_box gdextension.Object
 		rect      Rect2.PositionSize
-	}{gdextension.Object(gd.ObjectChecked(style_box[0].AsObject())), rect})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetStyleBox(style_box[0]))), rect})
 }
 
 /*
@@ -2102,7 +2102,7 @@ func (self class) DrawPrimitive(points Packed.Array[Vector2.XY], colors Packed.A
 		colors  gdextension.PackedArray[Color.RGBA]
 		uvs     gdextension.PackedArray[Vector2.XY]
 		texture gdextension.Object
-	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs)), gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
 
 /*
@@ -2125,7 +2125,7 @@ func (self class) DrawPolygon(points Packed.Array[Vector2.XY], colors Packed.Arr
 		colors  gdextension.PackedArray[Color.RGBA]
 		uvs     gdextension.PackedArray[Vector2.XY]
 		texture gdextension.Object
-	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs)), gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
 
 /*
@@ -2146,7 +2146,7 @@ func (self class) DrawColoredPolygon(points Packed.Array[Vector2.XY], color Colo
 		color   Color.RGBA
 		uvs     gdextension.PackedArray[Vector2.XY]
 		texture gdextension.Object
-	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), color, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs)), gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), color, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
 
 /*
@@ -2182,7 +2182,7 @@ func (self class) DrawString(font [1]gdclass.Font, pos Vector2.XY, text String.R
 		direction           TextServer.Direction
 		orientation         TextServer.Orientation
 		oversampling        float64
-	}{gdextension.Object(gd.ObjectChecked(font[0].AsObject())), pos, pointers.Get(gd.InternalString(text)), alignment, width, font_size, modulate, justification_flags, direction, orientation, oversampling})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0]))), pos, pointers.Get(gd.InternalString(text)), alignment, width, font_size, modulate, justification_flags, direction, orientation, oversampling})
 }
 
 /*
@@ -2204,7 +2204,7 @@ func (self class) DrawMultilineString(font [1]gdclass.Font, pos Vector2.XY, text
 		direction           TextServer.Direction
 		orientation         TextServer.Orientation
 		oversampling        float64
-	}{gdextension.Object(gd.ObjectChecked(font[0].AsObject())), pos, pointers.Get(gd.InternalString(text)), alignment, width, font_size, max_lines, modulate, brk_flags, justification_flags, direction, orientation, oversampling})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0]))), pos, pointers.Get(gd.InternalString(text)), alignment, width, font_size, max_lines, modulate, brk_flags, justification_flags, direction, orientation, oversampling})
 }
 
 /*
@@ -2225,7 +2225,7 @@ func (self class) DrawStringOutline(font [1]gdclass.Font, pos Vector2.XY, text S
 		direction           TextServer.Direction
 		orientation         TextServer.Orientation
 		oversampling        float64
-	}{gdextension.Object(gd.ObjectChecked(font[0].AsObject())), pos, pointers.Get(gd.InternalString(text)), alignment, width, font_size, size, modulate, justification_flags, direction, orientation, oversampling})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0]))), pos, pointers.Get(gd.InternalString(text)), alignment, width, font_size, size, modulate, justification_flags, direction, orientation, oversampling})
 }
 
 /*
@@ -2248,7 +2248,7 @@ func (self class) DrawMultilineStringOutline(font [1]gdclass.Font, pos Vector2.X
 		direction           TextServer.Direction
 		orientation         TextServer.Orientation
 		oversampling        float64
-	}{gdextension.Object(gd.ObjectChecked(font[0].AsObject())), pos, pointers.Get(gd.InternalString(text)), alignment, width, font_size, max_lines, size, modulate, brk_flags, justification_flags, direction, orientation, oversampling})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0]))), pos, pointers.Get(gd.InternalString(text)), alignment, width, font_size, max_lines, size, modulate, brk_flags, justification_flags, direction, orientation, oversampling})
 }
 
 /*
@@ -2263,7 +2263,7 @@ func (self class) DrawChar(font [1]gdclass.Font, pos Vector2.XY, char String.Rea
 		font_size    int64
 		modulate     Color.RGBA
 		oversampling float64
-	}{gdextension.Object(gd.ObjectChecked(font[0].AsObject())), pos, pointers.Get(gd.InternalString(char)), font_size, modulate, oversampling})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0]))), pos, pointers.Get(gd.InternalString(char)), font_size, modulate, oversampling})
 }
 
 /*
@@ -2279,7 +2279,7 @@ func (self class) DrawCharOutline(font [1]gdclass.Font, pos Vector2.XY, char Str
 		size         int64
 		modulate     Color.RGBA
 		oversampling float64
-	}{gdextension.Object(gd.ObjectChecked(font[0].AsObject())), pos, pointers.Get(gd.InternalString(char)), font_size, size, modulate, oversampling})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0]))), pos, pointers.Get(gd.InternalString(char)), font_size, size, modulate, oversampling})
 }
 
 /*
@@ -2295,7 +2295,7 @@ func (self class) DrawMesh(mesh [1]gdclass.Mesh, texture [1]gdclass.Texture2D, t
 		texture   gdextension.Object
 		transform Transform2D.OriginXY
 		modulate  Color.RGBA
-	}{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject())), gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), transform, modulate})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetMesh(mesh[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), transform, modulate})
 }
 
 /*
@@ -2309,7 +2309,7 @@ func (self class) DrawMultimesh(multimesh [1]gdclass.MultiMesh, texture [1]gdcla
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_multimesh, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
 		multimesh gdextension.Object
 		texture   gdextension.Object
-	}{gdextension.Object(gd.ObjectChecked(multimesh[0].AsObject())), gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetMultiMesh(multimesh[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
 
 /*
@@ -2503,7 +2503,7 @@ Returns the [CanvasLayer] that contains this node, or null if the node is not in
 //go:nosplit
 func (self class) GetCanvasLayerNode() [1]gdclass.CanvasLayer { //gd:CanvasItem.get_canvas_layer_node
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_canvas_layer_node, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.CanvasLayer{gd.PointerLifetimeBoundTo[gdclass.CanvasLayer](self.AsObject(), r_ret)}
+	var ret = [1]gdclass.CanvasLayer{gdclass.NewCanvasLayer(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 
@@ -2519,19 +2519,19 @@ Usually, this is the same as this node's viewport (see [Node.GetViewport] and [V
 //go:nosplit
 func (self class) GetWorld2d() [1]gdclass.World2D { //gd:CanvasItem.get_world_2d
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_world_2d, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.World2D{gd.PointerWithOwnershipTransferredToGo[gdclass.World2D](r_ret)}
+	var ret = [1]gdclass.World2D{gdclass.NewWorld2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:CanvasItem.set_material
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
 }
 
 //go:nosplit
 func (self class) GetMaterial() [1]gdclass.Material { //gd:CanvasItem.get_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
+	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2665,8 +2665,8 @@ Returns a copy of the given 'event' with its coordinates converted from global s
 */
 //go:nosplit
 func (self class) MakeInputLocal(event [1]gdclass.InputEvent) [1]gdclass.InputEvent { //gd:CanvasItem.make_input_local
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.make_input_local, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ event gdextension.Object }{gdextension.Object(gd.ObjectChecked(event[0].AsObject()))})
-	var ret = [1]gdclass.InputEvent{gd.PointerWithOwnershipTransferredToGo[gdclass.InputEvent](r_ret)}
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.make_input_local, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ event gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0])))})
+	var ret = [1]gdclass.InputEvent{gdclass.NewInputEvent(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2756,7 +2756,7 @@ func (self Instance) OnDraw(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("draw"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("draw"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2778,7 +2778,7 @@ func (self Instance) OnVisibilityChanged(cb func(), flags ...Signal.Flags) Insta
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("visibility_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("visibility_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2796,7 +2796,7 @@ func (self Instance) OnHidden(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("hidden"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("hidden"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2815,7 +2815,7 @@ func (self Instance) OnItemRectChanged(cb func(), flags ...Signal.Flags) Instanc
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("item_rect_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("item_rect_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2823,15 +2823,15 @@ func (self class) ItemRectChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`item_rect_changed`))))
 }
 
-func (self class) AsCanvasItem() Advanced { return Advanced{pointers.AsA[gdclass.CanvasItem](self[0])} }
+func (self class) AsCanvasItem() Advanced { return Advanced{gdclass.NewCanvasItem(self.AsObject()[0])} }
 func (self Instance) AsCanvasItem() Instance {
-	return Instance{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return Instance{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCanvasItem() Instance { return self.Super().AsCanvasItem() }
-func (self class) AsNode() Node.Advanced          { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced          { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance  { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -2852,7 +2852,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("CanvasItem", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.CanvasItem](ptr)} })
+	gdclass.Register("CanvasItem", func(ptr gd.Object) any { return Instance{gdclass.NewCanvasItem(ptr)} })
 }
 
 type TextureFilter int //gd:CanvasItem.TextureFilter

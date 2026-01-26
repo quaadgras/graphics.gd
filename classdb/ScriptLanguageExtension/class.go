@@ -378,7 +378,7 @@ func (Instance) _make_template(impl func(ptr gdclass.Receiver, template string, 
 		defer pointers.End(gd.InternalString(base_class_name))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, template.String(), class_name.String(), base_class_name.String())
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetScript(ret[0])[0])
 
 		if !ok {
 			return
@@ -523,9 +523,9 @@ func (Instance) _can_make_function(impl func(ptr gdclass.Receiver) bool) (cb gd.
 }
 func (Instance) _open_in_external_editor(impl func(ptr gdclass.Receiver, script Script.Instance, line int, column int) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var script = [1]gdclass.Script{pointers.New[gdclass.Script]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var script = [1]gdclass.Script{gdclass.NewScript(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(script[0])
+		defer pointers.End(gdclass.GetScript(script[0])[0])
 		var line = gd.UnsafeGet[int64](p_args, 1)
 		var column = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -801,9 +801,9 @@ func (Instance) _reload_scripts(impl func(ptr gdclass.Receiver, scripts []Script
 }
 func (Instance) _reload_tool_script(impl func(ptr gdclass.Receiver, script Script.Instance, soft_reload bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var script = [1]gdclass.Script{pointers.New[gdclass.Script]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var script = [1]gdclass.Script{gdclass.NewScript(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(script[0])
+		defer pointers.End(gdclass.GetScript(script[0])[0])
 		var soft_reload = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, script, soft_reload)
@@ -928,30 +928,30 @@ func (Instance) _get_global_class_name(impl func(ptr gdclass.Receiver, path stri
 type Advanced = class
 type class [1]gdclass.ScriptLanguageExtension
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetScriptLanguageExtension(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ScriptLanguageExtension](obj[0])
+		self[0] = gdclass.NewScriptLanguageExtension(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ScriptLanguageExtension](obj[0])
+		self[0] = gdclass.NewScriptLanguageExtension(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetScriptLanguageExtension(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.ScriptLanguageExtension{pointers.Add[gdclass.ScriptLanguageExtension]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.ScriptLanguageExtension{gdclass.NewScriptLanguageExtension(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetScriptLanguageExtension(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -961,7 +961,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.ScriptLanguageExtension{pointers.New[gdclass.ScriptLanguageExtension]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.ScriptLanguageExtension{gdclass.NewScriptLanguageExtension(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -1091,7 +1091,7 @@ func (class) _make_template(impl func(ptr gdclass.Receiver, template String.Read
 		defer pointers.End(gd.InternalString(base_class_name))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, template, class_name, base_class_name)
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetScript(ret[0])[0])
 
 		if !ok {
 			return
@@ -1248,9 +1248,9 @@ func (class) _can_make_function(impl func(ptr gdclass.Receiver) bool) (cb gd.Ext
 
 func (class) _open_in_external_editor(impl func(ptr gdclass.Receiver, script [1]gdclass.Script, line int64, column int64) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var script = [1]gdclass.Script{pointers.New[gdclass.Script]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var script = [1]gdclass.Script{gdclass.NewScript(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(script[0])
+		defer pointers.End(gdclass.GetScript(script[0])[0])
 		var line = gd.UnsafeGet[int64](p_args, 1)
 		var column = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1549,9 +1549,9 @@ func (class) _reload_scripts(impl func(ptr gdclass.Receiver, scripts Array.Any, 
 
 func (class) _reload_tool_script(impl func(ptr gdclass.Receiver, script [1]gdclass.Script, soft_reload bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var script = [1]gdclass.Script{pointers.New[gdclass.Script]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var script = [1]gdclass.Script{gdclass.NewScript(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(script[0])
+		defer pointers.End(gdclass.GetScript(script[0])[0])
 		var soft_reload = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, script, soft_reload)
@@ -1685,22 +1685,22 @@ func (class) _get_global_class_name(impl func(ptr gdclass.Receiver, path String.
 }
 
 func (self class) AsScriptLanguageExtension() Advanced {
-	return Advanced{pointers.AsA[gdclass.ScriptLanguageExtension](self[0])}
+	return Advanced{gdclass.NewScriptLanguageExtension(self.AsObject()[0])}
 }
 func (self Instance) AsScriptLanguageExtension() Instance {
-	return Instance{pointers.AsA[gdclass.ScriptLanguageExtension](self[0])}
+	return Instance{gdclass.NewScriptLanguageExtension(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsScriptLanguageExtension() Instance {
 	return self.Super().AsScriptLanguageExtension()
 }
 func (self class) AsScriptLanguage() ScriptLanguage.Advanced {
-	return ScriptLanguage.Advanced{pointers.AsA[gdclass.ScriptLanguage](self[0])}
+	return ScriptLanguage.Advanced{gdclass.NewScriptLanguage(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsScriptLanguage() ScriptLanguage.Instance {
 	return self.Super().AsScriptLanguage()
 }
 func (self Instance) AsScriptLanguage() ScriptLanguage.Instance {
-	return ScriptLanguage.Instance{pointers.AsA[gdclass.ScriptLanguage](self[0])}
+	return ScriptLanguage.Instance{gdclass.NewScriptLanguage(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -1957,7 +1957,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ScriptLanguageExtension", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.ScriptLanguageExtension](ptr)} })
+	gdclass.Register("ScriptLanguageExtension", func(ptr gd.Object) any { return Instance{gdclass.NewScriptLanguageExtension(ptr)} })
 }
 
 type LookupResultType int //gd:ScriptLanguageExtension.LookupResultType

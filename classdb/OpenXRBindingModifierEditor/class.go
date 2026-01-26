@@ -139,30 +139,30 @@ func (self Instance) Setup(action_map OpenXRActionMap.Instance, binding_modifier
 type Advanced = class
 type class [1]gdclass.OpenXRBindingModifierEditor
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetOpenXRBindingModifierEditor(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.OpenXRBindingModifierEditor](obj[0])
+		self[0] = gdclass.NewOpenXRBindingModifierEditor(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.OpenXRBindingModifierEditor](obj[0])
+		self[0] = gdclass.NewOpenXRBindingModifierEditor(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetOpenXRBindingModifierEditor(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.OpenXRBindingModifierEditor{pointers.Add[gdclass.OpenXRBindingModifierEditor]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.OpenXRBindingModifierEditor{gdclass.NewOpenXRBindingModifierEditor(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetOpenXRBindingModifierEditor(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -172,7 +172,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.OpenXRBindingModifierEditor{pointers.New[gdclass.OpenXRBindingModifierEditor]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.OpenXRBindingModifierEditor{gdclass.NewOpenXRBindingModifierEditor(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -185,7 +185,7 @@ Returns the [OpenXRBindingModifier] currently being edited.
 //go:nosplit
 func (self class) GetBindingModifier() [1]gdclass.OpenXRBindingModifier { //gd:OpenXRBindingModifierEditor.get_binding_modifier
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_binding_modifier, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.OpenXRBindingModifier{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRBindingModifier](r_ret)}
+	var ret = [1]gdclass.OpenXRBindingModifier{gdclass.NewOpenXRBindingModifier(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -197,7 +197,7 @@ func (self class) Setup(action_map [1]gdclass.OpenXRActionMap, binding_modifier 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.setup, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
 		action_map       gdextension.Object
 		binding_modifier gdextension.Object
-	}{gdextension.Object(gd.ObjectChecked(action_map[0].AsObject())), gdextension.Object(gd.ObjectChecked(binding_modifier[0].AsObject()))})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRActionMap(action_map[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRBindingModifier(binding_modifier[0])))})
 }
 
 /*
@@ -208,7 +208,7 @@ func (self Instance) OnBindingModifierRemoved(cb func(binding_modifier_editor Ob
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("binding_modifier_removed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("binding_modifier_removed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -217,48 +217,48 @@ func (self class) BindingModifierRemoved() Signal.Any {
 }
 
 func (self class) AsOpenXRBindingModifierEditor() Advanced {
-	return Advanced{pointers.AsA[gdclass.OpenXRBindingModifierEditor](self[0])}
+	return Advanced{gdclass.NewOpenXRBindingModifierEditor(self.AsObject()[0])}
 }
 func (self Instance) AsOpenXRBindingModifierEditor() Instance {
-	return Instance{pointers.AsA[gdclass.OpenXRBindingModifierEditor](self[0])}
+	return Instance{gdclass.NewOpenXRBindingModifierEditor(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsOpenXRBindingModifierEditor() Instance {
 	return self.Super().AsOpenXRBindingModifierEditor()
 }
 func (self class) AsPanelContainer() PanelContainer.Advanced {
-	return PanelContainer.Advanced{pointers.AsA[gdclass.PanelContainer](self[0])}
+	return PanelContainer.Advanced{gdclass.NewPanelContainer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsPanelContainer() PanelContainer.Instance {
 	return self.Super().AsPanelContainer()
 }
 func (self Instance) AsPanelContainer() PanelContainer.Instance {
-	return PanelContainer.Instance{pointers.AsA[gdclass.PanelContainer](self[0])}
+	return PanelContainer.Instance{gdclass.NewPanelContainer(self.AsObject()[0])}
 }
 func (self class) AsContainer() Container.Advanced {
-	return Container.Advanced{pointers.AsA[gdclass.Container](self[0])}
+	return Container.Advanced{gdclass.NewContainer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsContainer() Container.Instance { return self.Super().AsContainer() }
 func (self Instance) AsContainer() Container.Instance {
-	return Container.Instance{pointers.AsA[gdclass.Container](self[0])}
+	return Container.Instance{gdclass.NewContainer(self.AsObject()[0])}
 }
 func (self class) AsControl() Control.Advanced {
-	return Control.Advanced{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Advanced{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
-	return Control.Instance{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Instance{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
-	return CanvasItem.Advanced{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Advanced{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
-	return CanvasItem.Instance{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Instance{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -275,5 +275,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("OpenXRBindingModifierEditor", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.OpenXRBindingModifierEditor](ptr)} })
+	gdclass.Register("OpenXRBindingModifierEditor", func(ptr gd.Object) any { return Instance{gdclass.NewOpenXRBindingModifierEditor(ptr)} })
 }

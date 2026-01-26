@@ -217,11 +217,11 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 		if ok {
 			switch semantics := gdjson.ClassMethodOwnership[class.Name][method.Name][arg.Name]; semantics {
 			case gdjson.OwnershipTransferred, gdjson.LifetimeBoundToClass:
-				fmt.Fprintf(w, "\tgdextension.Object(gd.PointerWithOwnershipTransferredToGodot(%v[0].AsObject()[0]))", fixReserved(arg.Name))
+				fmt.Fprintf(w, "\tgdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.Get%v(%v[0])[0]))", arg.Type, fixReserved(arg.Name))
 			case gdjson.IsTemporaryReference, gdjson.MustAssertInstanceID, gdjson.ReversesTheOwnership:
-				fmt.Fprintf(w, "\tgdextension.Object(gd.ObjectChecked(%v[0].AsObject()))", fixReserved(arg.Name))
+				fmt.Fprintf(w, "\tgdextension.Object(gd.ObjectChecked(gdclass.Get%v(%v[0])))", arg.Type, fixReserved(arg.Name))
 			case gdjson.RefCountedManagement:
-				fmt.Fprintf(w, "\tgdextension.Object(gd.ObjectChecked(%v[0].AsObject()))", fixReserved(arg.Name))
+				fmt.Fprintf(w, "\tgdextension.Object(gd.ObjectChecked(gdclass.Get%v(%v[0])))", arg.Type, fixReserved(arg.Name))
 			default:
 				panic("unknown ownership: " + fmt.Sprint(semantics))
 			}
@@ -248,13 +248,13 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 			} else {
 				switch semantics := gdjson.ClassMethodOwnership[class.Name][method.Name]["return value"]; semantics {
 				case gdjson.RefCountedManagement, gdjson.OwnershipTransferred:
-					fmt.Fprintf(w, "\tvar ret = [1]gdclass.%s{"+prefix+"PointerWithOwnershipTransferredToGo[gdclass.%[1]s](r_ret)}\n", method.ReturnValue.Type)
+					fmt.Fprintf(w, "\tvar ret = [1]gdclass.%s{gdclass.New%[1]s("+prefix+"PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}\n", method.ReturnValue.Type)
 				case gdjson.LifetimeBoundToClass:
-					fmt.Fprintf(w, "\tvar ret = [1]gdclass.%s{"+prefix+"PointerLifetimeBoundTo[gdclass.%[1]s](self.AsObject(), r_ret)}\n", method.ReturnValue.Type)
+					fmt.Fprintf(w, "\tvar ret = [1]gdclass.%s{gdclass.New%[1]s("+prefix+"PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}\n", method.ReturnValue.Type)
 				case gdjson.MustAssertInstanceID:
-					fmt.Fprintf(w, "\tvar ret = [1]gdclass.%s{"+prefix+"PointerMustAssertInstanceID[gdclass.%[1]s](r_ret)}\n", method.ReturnValue.Type)
+					fmt.Fprintf(w, "\tvar ret = [1]gdclass.%s{gdclass.New%[1]s("+prefix+"PointerMustAssertInstanceID[gd.Object](r_ret))}\n", method.ReturnValue.Type)
 				case gdjson.IsTemporaryReference:
-					fmt.Fprintf(w, "\tvar ret = [1]gdclass.%s{"+prefix+"PointerBorrowedTemporarily[gdclass.%[1]s](r_ret)}\n", method.ReturnValue.Type)
+					fmt.Fprintf(w, "\tvar ret = [1]gdclass.%s{gdclass.New%[1]s("+prefix+"PointerBorrowedTemporarily[gd.Object](r_ret))}\n", method.ReturnValue.Type)
 				default:
 					panic("unknown ownership: " + fmt.Sprint(semantics))
 				}

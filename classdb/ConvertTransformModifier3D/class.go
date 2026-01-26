@@ -343,30 +343,30 @@ func (self Instance) IsAdditive(index int) bool { //gd:ConvertTransformModifier3
 type Advanced = class
 type class [1]gdclass.ConvertTransformModifier3D
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetConvertTransformModifier3D(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ConvertTransformModifier3D](obj[0])
+		self[0] = gdclass.NewConvertTransformModifier3D(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ConvertTransformModifier3D](obj[0])
+		self[0] = gdclass.NewConvertTransformModifier3D(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetConvertTransformModifier3D(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.ConvertTransformModifier3D{pointers.Add[gdclass.ConvertTransformModifier3D]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.ConvertTransformModifier3D{gdclass.NewConvertTransformModifier3D(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetConvertTransformModifier3D(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -376,7 +376,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.ConvertTransformModifier3D{pointers.New[gdclass.ConvertTransformModifier3D]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.ConvertTransformModifier3D{gdclass.NewConvertTransformModifier3D(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -602,43 +602,43 @@ func (self class) IsAdditive(index int64) bool { //gd:ConvertTransformModifier3D
 	return ret
 }
 func (self class) AsConvertTransformModifier3D() Advanced {
-	return Advanced{pointers.AsA[gdclass.ConvertTransformModifier3D](self[0])}
+	return Advanced{gdclass.NewConvertTransformModifier3D(self.AsObject()[0])}
 }
 func (self Instance) AsConvertTransformModifier3D() Instance {
-	return Instance{pointers.AsA[gdclass.ConvertTransformModifier3D](self[0])}
+	return Instance{gdclass.NewConvertTransformModifier3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsConvertTransformModifier3D() Instance {
 	return self.Super().AsConvertTransformModifier3D()
 }
 func (self class) AsBoneConstraint3D() BoneConstraint3D.Advanced {
-	return BoneConstraint3D.Advanced{pointers.AsA[gdclass.BoneConstraint3D](self[0])}
+	return BoneConstraint3D.Advanced{gdclass.NewBoneConstraint3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsBoneConstraint3D() BoneConstraint3D.Instance {
 	return self.Super().AsBoneConstraint3D()
 }
 func (self Instance) AsBoneConstraint3D() BoneConstraint3D.Instance {
-	return BoneConstraint3D.Instance{pointers.AsA[gdclass.BoneConstraint3D](self[0])}
+	return BoneConstraint3D.Instance{gdclass.NewBoneConstraint3D(self.AsObject()[0])}
 }
 func (self class) AsSkeletonModifier3D() SkeletonModifier3D.Advanced {
-	return SkeletonModifier3D.Advanced{pointers.AsA[gdclass.SkeletonModifier3D](self[0])}
+	return SkeletonModifier3D.Advanced{gdclass.NewSkeletonModifier3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsSkeletonModifier3D() SkeletonModifier3D.Instance {
 	return self.Super().AsSkeletonModifier3D()
 }
 func (self Instance) AsSkeletonModifier3D() SkeletonModifier3D.Instance {
-	return SkeletonModifier3D.Instance{pointers.AsA[gdclass.SkeletonModifier3D](self[0])}
+	return SkeletonModifier3D.Instance{gdclass.NewSkeletonModifier3D(self.AsObject()[0])}
 }
 func (self class) AsNode3D() Node3D.Advanced {
-	return Node3D.Advanced{pointers.AsA[gdclass.Node3D](self[0])}
+	return Node3D.Advanced{gdclass.NewNode3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
 func (self Instance) AsNode3D() Node3D.Instance {
-	return Node3D.Instance{pointers.AsA[gdclass.Node3D](self[0])}
+	return Node3D.Instance{gdclass.NewNode3D(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -655,7 +655,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ConvertTransformModifier3D", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.ConvertTransformModifier3D](ptr)} })
+	gdclass.Register("ConvertTransformModifier3D", func(ptr gd.Object) any { return Instance{gdclass.NewConvertTransformModifier3D(ptr)} })
 }
 
 type TransformMode int //gd:ConvertTransformModifier3D.TransformMode

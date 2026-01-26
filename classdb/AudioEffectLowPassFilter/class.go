@@ -119,30 +119,30 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.AudioEffectLowPassFilter
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetAudioEffectLowPassFilter(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.AudioEffectLowPassFilter](obj[0])
+		self[0] = gdclass.NewAudioEffectLowPassFilter(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.AudioEffectLowPassFilter](obj[0])
+		self[0] = gdclass.NewAudioEffectLowPassFilter(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetAudioEffectLowPassFilter(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.AudioEffectLowPassFilter{pointers.Add[gdclass.AudioEffectLowPassFilter]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.AudioEffectLowPassFilter{gdclass.NewAudioEffectLowPassFilter(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetAudioEffectLowPassFilter(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -152,50 +152,50 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.AudioEffectLowPassFilter{pointers.New[gdclass.AudioEffectLowPassFilter]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.AudioEffectLowPassFilter{gdclass.NewAudioEffectLowPassFilter(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
 
 func (self class) AsAudioEffectLowPassFilter() Advanced {
-	return Advanced{pointers.AsA[gdclass.AudioEffectLowPassFilter](self[0])}
+	return Advanced{gdclass.NewAudioEffectLowPassFilter(self.AsObject()[0])}
 }
 func (self Instance) AsAudioEffectLowPassFilter() Instance {
-	return Instance{pointers.AsA[gdclass.AudioEffectLowPassFilter](self[0])}
+	return Instance{gdclass.NewAudioEffectLowPassFilter(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsAudioEffectLowPassFilter() Instance {
 	return self.Super().AsAudioEffectLowPassFilter()
 }
 func (self class) AsAudioEffectFilter() AudioEffectFilter.Advanced {
-	return AudioEffectFilter.Advanced{pointers.AsA[gdclass.AudioEffectFilter](self[0])}
+	return AudioEffectFilter.Advanced{gdclass.NewAudioEffectFilter(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsAudioEffectFilter() AudioEffectFilter.Instance {
 	return self.Super().AsAudioEffectFilter()
 }
 func (self Instance) AsAudioEffectFilter() AudioEffectFilter.Instance {
-	return AudioEffectFilter.Instance{pointers.AsA[gdclass.AudioEffectFilter](self[0])}
+	return AudioEffectFilter.Instance{gdclass.NewAudioEffectFilter(self.AsObject()[0])}
 }
 func (self class) AsAudioEffect() AudioEffect.Advanced {
-	return AudioEffect.Advanced{pointers.AsA[gdclass.AudioEffect](self[0])}
+	return AudioEffect.Advanced{gdclass.NewAudioEffect(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsAudioEffect() AudioEffect.Instance { return self.Super().AsAudioEffect() }
 func (self Instance) AsAudioEffect() AudioEffect.Instance {
-	return AudioEffect.Instance{pointers.AsA[gdclass.AudioEffect](self[0])}
+	return AudioEffect.Instance{gdclass.NewAudioEffect(self.AsObject()[0])}
 }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -212,5 +212,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AudioEffectLowPassFilter", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.AudioEffectLowPassFilter](ptr)} })
+	gdclass.Register("AudioEffectLowPassFilter", func(ptr gd.Object) any { return Instance{gdclass.NewAudioEffectLowPassFilter(ptr)} })
 }

@@ -240,7 +240,7 @@ func (name Name) LoadFromRawPointerValue(val string) string {
 		class_name := strings.TrimPrefix(string(name), "[1]gdclass.")
 		_, ok := ClassDB[class_name]
 		if ok && argIsPtr {
-			return fmt.Sprintf("%s{pointers.New[gdclass.%v]([3]uint64{uint64(%v)})}\n", name, class_name, val)
+			return fmt.Sprintf("%s{gdclass.New%s(pointers.New[gd.Object]([3]uint64{uint64(%v)}))}\n", name, class_name, val)
 		}
 		if argIsPtr {
 			return fmt.Sprintf("pointers.New[%v](%v)", name, val)
@@ -287,9 +287,12 @@ func (name Name) EndPointer(val string) string {
 	default:
 		name := strings.TrimPrefix(string(name), "classdb.")
 		name = strings.TrimPrefix(name, "[1]gdclass.")
-		_, ok := ClassDB[strings.TrimPrefix(name, "[1]gdclass.")]
-		if ok || name == "[1]gd.Object" {
+		if name == "[1]gd.Object" {
 			return fmt.Sprintf("pointers.End(%v[0])", val)
+		}
+		class, ok := ClassDB[strings.TrimPrefix(name, "[1]gdclass.")]
+		if ok {
+			return fmt.Sprintf("pointers.End(gdclass.Get%v(%v[0])[0])", class.Name, val)
 		}
 		return fmt.Sprintf("pointers.End(%v)", val)
 	}

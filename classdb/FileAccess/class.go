@@ -906,30 +906,30 @@ func GetReadOnlyAttribute(file string) bool { //gd:FileAccess.get_read_only_attr
 type Advanced = class
 type class [1]gdclass.FileAccess
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetFileAccess(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.FileAccess](obj[0])
+		self[0] = gdclass.NewFileAccess(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.FileAccess](obj[0])
+		self[0] = gdclass.NewFileAccess(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetFileAccess(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.FileAccess{pointers.Add[gdclass.FileAccess]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.FileAccess{gdclass.NewFileAccess(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetFileAccess(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -939,7 +939,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.FileAccess{pointers.New[gdclass.FileAccess]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.FileAccess{gdclass.NewFileAccess(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -976,7 +976,7 @@ func (self class) Open(path String.Readable, flags ModeFlags) [1]gdclass.FileAcc
 		path  gdextension.String
 		flags ModeFlags
 	}{pointers.Get(gd.InternalString(path)), flags})
-	var ret = [1]gdclass.FileAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.FileAccess](r_ret)}
+	var ret = [1]gdclass.FileAccess{gdclass.NewFileAccess(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -997,7 +997,7 @@ func (self class) OpenEncrypted(path String.Readable, mode_flags ModeFlags, key 
 		key        gdextension.PackedArray[byte]
 		iv         gdextension.PackedArray[byte]
 	}{pointers.Get(gd.InternalString(path)), mode_flags, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key.Array))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](iv.Array)))})
-	var ret = [1]gdclass.FileAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.FileAccess](r_ret)}
+	var ret = [1]gdclass.FileAccess{gdclass.NewFileAccess(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1015,7 +1015,7 @@ func (self class) OpenEncryptedWithPass(path String.Readable, mode_flags ModeFla
 		mode_flags ModeFlags
 		pass       gdextension.String
 	}{pointers.Get(gd.InternalString(path)), mode_flags, pointers.Get(gd.InternalString(pass))})
-	var ret = [1]gdclass.FileAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.FileAccess](r_ret)}
+	var ret = [1]gdclass.FileAccess{gdclass.NewFileAccess(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1036,7 +1036,7 @@ func (self class) OpenCompressed(path String.Readable, mode_flags ModeFlags, com
 		mode_flags       ModeFlags
 		compression_mode CompressionMode
 	}{pointers.Get(gd.InternalString(path)), mode_flags, compression_mode})
-	var ret = [1]gdclass.FileAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.FileAccess](r_ret)}
+	var ret = [1]gdclass.FileAccess{gdclass.NewFileAccess(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1071,7 +1071,7 @@ func (self class) CreateTemp(mode_flags int64, prefix String.Readable, extension
 		extension  gdextension.String
 		keep       bool
 	}{mode_flags, pointers.Get(gd.InternalString(prefix)), pointers.Get(gd.InternalString(extension)), keep})
-	var ret = [1]gdclass.FileAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.FileAccess](r_ret)}
+	var ret = [1]gdclass.FileAccess{gdclass.NewFileAccess(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1789,17 +1789,17 @@ func (self class) GetReadOnlyAttribute(file String.Readable) bool { //gd:FileAcc
 	var ret = r_ret
 	return ret
 }
-func (self class) AsFileAccess() Advanced { return Advanced{pointers.AsA[gdclass.FileAccess](self[0])} }
+func (self class) AsFileAccess() Advanced { return Advanced{gdclass.NewFileAccess(self.AsObject()[0])} }
 func (self Instance) AsFileAccess() Instance {
-	return Instance{pointers.AsA[gdclass.FileAccess](self[0])}
+	return Instance{gdclass.NewFileAccess(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsFileAccess() Instance { return self.Super().AsFileAccess() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -1816,7 +1816,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("FileAccess", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.FileAccess](ptr)} })
+	gdclass.Register("FileAccess", func(ptr gd.Object) any { return Instance{gdclass.NewFileAccess(ptr)} })
 }
 
 type ModeFlags int //gd:FileAccess.ModeFlags

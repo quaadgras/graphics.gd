@@ -338,30 +338,30 @@ func (self Instance) LoadBufferViewData(peer GLTFBufferView.Instance) []byte { /
 type Advanced = class
 type class [1]gdclass.GLTFState
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetGLTFState(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.GLTFState](obj[0])
+		self[0] = gdclass.NewGLTFState(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.GLTFState](obj[0])
+		self[0] = gdclass.NewGLTFState(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetGLTFState(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.GLTFState{pointers.Add[gdclass.GLTFState]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetGLTFState(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -371,7 +371,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -752,7 +752,7 @@ func (self class) AppendGltfNode(gltf_node [1]gdclass.GLTFNode, godot_scene_node
 		gltf_node         gdextension.Object
 		godot_scene_node  gdextension.Object
 		parent_node_index int64
-	}{gdextension.Object(gd.ObjectChecked(gltf_node[0].AsObject())), gdextension.Object(gd.ObjectChecked(godot_scene_node[0].AsObject())), parent_node_index})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFNode(gltf_node[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetNode(godot_scene_node[0]))), parent_node_index})
 	var ret = r_ret
 	return ret
 }
@@ -936,7 +936,7 @@ Returns the [AnimationPlayer] node with the given index. These nodes are only us
 //go:nosplit
 func (self class) GetAnimationPlayer(idx int64) [1]gdclass.AnimationPlayer { //gd:GLTFState.get_animation_player
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_animation_player, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
-	var ret = [1]gdclass.AnimationPlayer{gd.PointerMustAssertInstanceID[gdclass.AnimationPlayer](r_ret)}
+	var ret = [1]gdclass.AnimationPlayer{gdclass.NewAnimationPlayer(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1247,7 +1247,7 @@ Note: Not every [GLTFNode] will have a scene node generated, and not every gener
 //go:nosplit
 func (self class) GetSceneNode(idx int64) [1]gdclass.Node { //gd:GLTFState.get_scene_node
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_scene_node, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
-	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
+	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1261,7 +1261,7 @@ Note: Not every Godot scene node will have a corresponding [GLTFNode], and not e
 */
 //go:nosplit
 func (self class) GetNodeIndex(scene_node [1]gdclass.Node) int64 { //gd:GLTFState.get_node_index
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_node_index, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ scene_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(scene_node[0].AsObject()))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_node_index, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ scene_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(scene_node[0])))})
 	var ret = r_ret
 	return ret
 }
@@ -1320,24 +1320,24 @@ func (self class) GetBakeFps() float64 { //gd:GLTFState.get_bake_fps
 	var ret = r_ret
 	return ret
 }
-func (self class) AsGLTFState() Advanced { return Advanced{pointers.AsA[gdclass.GLTFState](self[0])} }
+func (self class) AsGLTFState() Advanced { return Advanced{gdclass.NewGLTFState(self.AsObject()[0])} }
 func (self Instance) AsGLTFState() Instance {
-	return Instance{pointers.AsA[gdclass.GLTFState](self[0])}
+	return Instance{gdclass.NewGLTFState(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsGLTFState() Instance { return self.Super().AsGLTFState() }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -1354,7 +1354,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("GLTFState", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.GLTFState](ptr)} })
+	gdclass.Register("GLTFState", func(ptr gd.Object) any { return Instance{gdclass.NewGLTFState(ptr)} })
 }
 
 type BinaryHandler int

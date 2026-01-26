@@ -211,30 +211,30 @@ func (self Instance) GetVisibilityFor(peer int) bool { //gd:MultiplayerSynchroni
 type Advanced = class
 type class [1]gdclass.MultiplayerSynchronizer
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetMultiplayerSynchronizer(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.MultiplayerSynchronizer](obj[0])
+		self[0] = gdclass.NewMultiplayerSynchronizer(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.MultiplayerSynchronizer](obj[0])
+		self[0] = gdclass.NewMultiplayerSynchronizer(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetMultiplayerSynchronizer(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.MultiplayerSynchronizer{pointers.Add[gdclass.MultiplayerSynchronizer]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.MultiplayerSynchronizer{gdclass.NewMultiplayerSynchronizer(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetMultiplayerSynchronizer(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -244,7 +244,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.MultiplayerSynchronizer{pointers.New[gdclass.MultiplayerSynchronizer]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.MultiplayerSynchronizer{gdclass.NewMultiplayerSynchronizer(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -373,13 +373,13 @@ func (self class) GetDeltaInterval() float64 { //gd:MultiplayerSynchronizer.get_
 
 //go:nosplit
 func (self class) SetReplicationConfig(config [1]gdclass.SceneReplicationConfig) { //gd:MultiplayerSynchronizer.set_replication_config
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_replication_config, 0|(gdextension.SizeObject<<4), &struct{ config gdextension.Object }{gdextension.Object(gd.ObjectChecked(config[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_replication_config, 0|(gdextension.SizeObject<<4), &struct{ config gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetSceneReplicationConfig(config[0])))})
 }
 
 //go:nosplit
 func (self class) GetReplicationConfig() [1]gdclass.SceneReplicationConfig { //gd:MultiplayerSynchronizer.get_replication_config
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_replication_config, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.SceneReplicationConfig{gd.PointerWithOwnershipTransferredToGo[gdclass.SceneReplicationConfig](r_ret)}
+	var ret = [1]gdclass.SceneReplicationConfig{gdclass.NewSceneReplicationConfig(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -464,7 +464,7 @@ func (self Instance) OnSynchronized(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("synchronized"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("synchronized"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -480,7 +480,7 @@ func (self Instance) OnDeltaSynchronized(cb func(), flags ...Signal.Flags) Insta
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("delta_synchronized"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("delta_synchronized"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -498,7 +498,7 @@ func (self Instance) OnVisibilityChanged(cb func(for_peer int), flags ...Signal.
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("visibility_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("visibility_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -507,18 +507,18 @@ func (self class) VisibilityChanged() Signal.Any {
 }
 
 func (self class) AsMultiplayerSynchronizer() Advanced {
-	return Advanced{pointers.AsA[gdclass.MultiplayerSynchronizer](self[0])}
+	return Advanced{gdclass.NewMultiplayerSynchronizer(self.AsObject()[0])}
 }
 func (self Instance) AsMultiplayerSynchronizer() Instance {
-	return Instance{pointers.AsA[gdclass.MultiplayerSynchronizer](self[0])}
+	return Instance{gdclass.NewMultiplayerSynchronizer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsMultiplayerSynchronizer() Instance {
 	return self.Super().AsMultiplayerSynchronizer()
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -535,7 +535,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("MultiplayerSynchronizer", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.MultiplayerSynchronizer](ptr)} })
+	gdclass.Register("MultiplayerSynchronizer", func(ptr gd.Object) any { return Instance{gdclass.NewMultiplayerSynchronizer(ptr)} })
 }
 
 type VisibilityUpdateMode int //gd:MultiplayerSynchronizer.VisibilityUpdateMode

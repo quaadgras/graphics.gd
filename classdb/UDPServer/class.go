@@ -283,30 +283,30 @@ func (self Instance) Stop() { //gd:UDPServer.stop
 type Advanced = class
 type class [1]gdclass.UDPServer
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetUDPServer(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.UDPServer](obj[0])
+		self[0] = gdclass.NewUDPServer(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.UDPServer](obj[0])
+		self[0] = gdclass.NewUDPServer(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetUDPServer(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.UDPServer{pointers.Add[gdclass.UDPServer]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.UDPServer{gdclass.NewUDPServer(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetUDPServer(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -316,7 +316,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.UDPServer{pointers.New[gdclass.UDPServer]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.UDPServer{gdclass.NewUDPServer(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -407,7 +407,7 @@ Returns the first pending connection (connected to the appropriate address/port)
 //go:nosplit
 func (self class) TakeConnection() [1]gdclass.PacketPeerUDP { //gd:UDPServer.take_connection
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.take_connection, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.PacketPeerUDP{gd.PointerWithOwnershipTransferredToGo[gdclass.PacketPeerUDP](r_ret)}
+	var ret = [1]gdclass.PacketPeerUDP{gdclass.NewPacketPeerUDP(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -433,17 +433,17 @@ func (self class) GetMaxPendingConnections() int64 { //gd:UDPServer.get_max_pend
 	var ret = r_ret
 	return ret
 }
-func (self class) AsUDPServer() Advanced { return Advanced{pointers.AsA[gdclass.UDPServer](self[0])} }
+func (self class) AsUDPServer() Advanced { return Advanced{gdclass.NewUDPServer(self.AsObject()[0])} }
 func (self Instance) AsUDPServer() Instance {
-	return Instance{pointers.AsA[gdclass.UDPServer](self[0])}
+	return Instance{gdclass.NewUDPServer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsUDPServer() Instance { return self.Super().AsUDPServer() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -460,5 +460,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("UDPServer", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.UDPServer](ptr)} })
+	gdclass.Register("UDPServer", func(ptr gd.Object) any { return Instance{gdclass.NewUDPServer(ptr)} })
 }

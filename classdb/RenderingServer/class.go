@@ -666,7 +666,7 @@ var self [1]gdclass.RenderingServer
 var once sync.Once
 
 func singleton() {
-	self[0] = pointers.Raw[gdclass.RenderingServer]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
+	self[0] = gdclass.NewRenderingServer(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
 }
 
 /*
@@ -5352,22 +5352,22 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.RenderingServer
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetRenderingServer(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.RenderingServer](obj[0])
+		self[0] = gdclass.NewRenderingServer(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.RenderingServer](obj[0])
+		self[0] = gdclass.NewRenderingServer(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetRenderingServer(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
@@ -5399,7 +5399,7 @@ Note: Not to be confused with [RenderingDevice.TextureCreate], which creates the
 //go:nosplit
 func (self class) Texture2dCreate(image [1]gdclass.Image) RID.Any { //gd:RenderingServer.texture_2d_create
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_2d_create, gdextension.SizeRID|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))})
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_2d_create, gdextension.SizeRID|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0])))})
 	var ret = r_ret
 	return ret
 }
@@ -5497,7 +5497,7 @@ func (self class) Texture2dUpdate(texture RID.Any, image [1]gdclass.Image, layer
 		texture RID.Any
 		image   gdextension.Object
 		layer   int64
-	}{texture, gdextension.Object(gd.ObjectChecked(image[0].AsObject())), layer})
+	}{texture, gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0]))), layer})
 }
 
 /*
@@ -5596,7 +5596,7 @@ Example: Get the test texture from [GetTestTexture] and apply it to a [Sprite2D]
 func (self class) Texture2dGet(texture RID.Any) [1]gdclass.Image { //gd:RenderingServer.texture_2d_get
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.texture_2d_get, gdextension.SizeObject|(gdextension.SizeRID<<4), &struct{ texture RID.Any }{texture})
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
+	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -5613,7 +5613,7 @@ func (self class) Texture2dLayerGet(texture RID.Any, layer int64) [1]gdclass.Ima
 		texture RID.Any
 		layer   int64
 	}{texture, layer})
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
+	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -9551,7 +9551,7 @@ func (self class) SkyBakePanorama(sky RID.Any, energy float64, bake_irradiance b
 		bake_irradiance bool
 		size            Vector2i.XY
 	}{sky, energy, bake_irradiance, size})
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
+	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -10096,7 +10096,7 @@ func (self class) EnvironmentBakePanorama(environment RID.Any, bake_irradiance b
 		bake_irradiance bool
 		size            Vector2i.XY
 	}{environment, bake_irradiance, size})
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
+	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -12582,7 +12582,7 @@ func (self class) SetBootImage(image [1]gdclass.Image, color Color.RGBA, scale b
 		color      Color.RGBA
 		scale      bool
 		use_filter bool
-	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), color, scale, use_filter})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0]))), color, scale, use_filter})
 }
 
 /*
@@ -12682,7 +12682,7 @@ Note: When using the OpenGL rendering driver or when running in headless mode, t
 func (self class) GetRenderingDevice() [1]gdclass.RenderingDevice { //gd:RenderingServer.get_rendering_device
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_rendering_device, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.RenderingDevice{gd.PointerBorrowedTemporarily[gdclass.RenderingDevice](r_ret)}
+	var ret = [1]gdclass.RenderingDevice{gdclass.NewRenderingDevice(gd.PointerBorrowedTemporarily[gd.Object](r_ret))}
 	return ret
 }
 
@@ -12695,7 +12695,7 @@ Note: When using the OpenGL rendering driver or when running in headless mode, t
 func (self class) CreateLocalRenderingDevice() [1]gdclass.RenderingDevice { //gd:RenderingServer.create_local_rendering_device
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_local_rendering_device, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.RenderingDevice{gd.PointerWithOwnershipTransferredToGo[gdclass.RenderingDevice](r_ret)}
+	var ret = [1]gdclass.RenderingDevice{gdclass.NewRenderingDevice(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -12741,7 +12741,7 @@ func OnFramePreDraw(cb func(), flags ...Signal.Flags) {
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	self[0].AsObject()[0].Connect(gd.NewStringName("frame_pre_draw"), gd.NewCallable(cb), int64(flags_together))
+	gdclass.GetRenderingServer(self[0])[0].Connect(gd.NewStringName("frame_pre_draw"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) FramePreDraw() Signal.Any {
@@ -12758,7 +12758,7 @@ func OnFramePostDraw(cb func(), flags ...Signal.Flags) {
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	self[0].AsObject()[0].Connect(gd.NewStringName("frame_post_draw"), gd.NewCallable(cb), int64(flags_together))
+	gdclass.GetRenderingServer(self[0])[0].Connect(gd.NewStringName("frame_post_draw"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) FramePostDraw() Signal.Any {
@@ -12780,7 +12780,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("RenderingServer", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.RenderingServer](ptr)} })
+	gdclass.Register("RenderingServer", func(ptr gd.Object) any { return Instance{gdclass.NewRenderingServer(ptr)} })
 }
 
 type TextureType int //gd:RenderingServer.TextureType

@@ -413,30 +413,30 @@ func (self Instance) GetUseDebanding() bool { //gd:RenderSceneBuffersRD.get_use_
 type Advanced = class
 type class [1]gdclass.RenderSceneBuffersRD
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetRenderSceneBuffersRD(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.RenderSceneBuffersRD](obj[0])
+		self[0] = gdclass.NewRenderSceneBuffersRD(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.RenderSceneBuffersRD](obj[0])
+		self[0] = gdclass.NewRenderSceneBuffersRD(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetRenderSceneBuffersRD(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.RenderSceneBuffersRD{pointers.Add[gdclass.RenderSceneBuffersRD]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.RenderSceneBuffersRD{gdclass.NewRenderSceneBuffersRD(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetRenderSceneBuffersRD(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -446,7 +446,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.RenderSceneBuffersRD{pointers.New[gdclass.RenderSceneBuffersRD]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.RenderSceneBuffersRD{gdclass.NewRenderSceneBuffersRD(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -497,7 +497,7 @@ func (self class) CreateTextureFromFormat(context String.Name, name String.Name,
 		format  gdextension.Object
 		view    gdextension.Object
 		unique  bool
-	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(format[0].AsObject())), gdextension.Object(gd.ObjectChecked(view[0].AsObject())), unique})
+	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetRDTextureFormat(format[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetRDTextureView(view[0]))), unique})
 	var ret = r_ret
 	return ret
 }
@@ -512,7 +512,7 @@ func (self class) CreateTextureView(context String.Name, name String.Name, view_
 		name      gdextension.StringName
 		view_name gdextension.StringName
 		view      gdextension.Object
-	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(view_name)), gdextension.Object(gd.ObjectChecked(view[0].AsObject()))})
+	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(view_name)), gdextension.Object(gd.ObjectChecked(gdclass.GetRDTextureView(view[0])))})
 	var ret = r_ret
 	return ret
 }
@@ -539,7 +539,7 @@ func (self class) GetTextureFormat(context String.Name, name String.Name) [1]gdc
 		context gdextension.StringName
 		name    gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name))})
-	var ret = [1]gdclass.RDTextureFormat{gd.PointerWithOwnershipTransferredToGo[gdclass.RDTextureFormat](r_ret)}
+	var ret = [1]gdclass.RDTextureFormat{gdclass.NewRDTextureFormat(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -573,7 +573,7 @@ func (self class) GetTextureSliceView(context String.Name, name String.Name, lay
 		layers  int64
 		mipmaps int64
 		view    gdextension.Object
-	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), layer, mipmap, layers, mipmaps, gdextension.Object(gd.ObjectChecked(view[0].AsObject()))})
+	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), layer, mipmap, layers, mipmaps, gdextension.Object(gd.ObjectChecked(gdclass.GetRDTextureView(view[0])))})
 	var ret = r_ret
 	return ret
 }
@@ -791,29 +791,29 @@ func (self class) GetUseDebanding() bool { //gd:RenderSceneBuffersRD.get_use_deb
 	return ret
 }
 func (self class) AsRenderSceneBuffersRD() Advanced {
-	return Advanced{pointers.AsA[gdclass.RenderSceneBuffersRD](self[0])}
+	return Advanced{gdclass.NewRenderSceneBuffersRD(self.AsObject()[0])}
 }
 func (self Instance) AsRenderSceneBuffersRD() Instance {
-	return Instance{pointers.AsA[gdclass.RenderSceneBuffersRD](self[0])}
+	return Instance{gdclass.NewRenderSceneBuffersRD(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRenderSceneBuffersRD() Instance {
 	return self.Super().AsRenderSceneBuffersRD()
 }
 func (self class) AsRenderSceneBuffers() RenderSceneBuffers.Advanced {
-	return RenderSceneBuffers.Advanced{pointers.AsA[gdclass.RenderSceneBuffers](self[0])}
+	return RenderSceneBuffers.Advanced{gdclass.NewRenderSceneBuffers(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRenderSceneBuffers() RenderSceneBuffers.Instance {
 	return self.Super().AsRenderSceneBuffers()
 }
 func (self Instance) AsRenderSceneBuffers() RenderSceneBuffers.Instance {
-	return RenderSceneBuffers.Instance{pointers.AsA[gdclass.RenderSceneBuffers](self[0])}
+	return RenderSceneBuffers.Instance{gdclass.NewRenderSceneBuffers(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -830,5 +830,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("RenderSceneBuffersRD", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.RenderSceneBuffersRD](ptr)} })
+	gdclass.Register("RenderSceneBuffersRD", func(ptr gd.Object) any { return Instance{gdclass.NewRenderSceneBuffersRD(ptr)} })
 }

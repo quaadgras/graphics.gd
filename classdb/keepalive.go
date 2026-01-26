@@ -80,7 +80,7 @@ func compile_keepalive(rtype reflect.Type) (keepalive func(reflect.Value)) {
 				if can_addr {
 					Object.Use((*Object.Instance)(val.Addr().UnsafePointer()))
 				} else {
-					Object.Use(Object.Instance(gdclass.GetObject(val.Interface().(gdclass.Interface))))
+					Object.Use(Object.Instance(gdclass.GetObjectFromInterface(val.Interface().(gdclass.Interface))))
 				}
 			}
 			if can_addr {

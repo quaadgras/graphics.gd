@@ -144,30 +144,30 @@ func (self Instance) AddSyntaxHighlighter(highlighter EditorSyntaxHighlighter.In
 type Advanced = class
 type class [1]gdclass.ScriptEditorBase
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetScriptEditorBase(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ScriptEditorBase](obj[0])
+		self[0] = gdclass.NewScriptEditorBase(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ScriptEditorBase](obj[0])
+		self[0] = gdclass.NewScriptEditorBase(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetScriptEditorBase(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.ScriptEditorBase{pointers.Add[gdclass.ScriptEditorBase]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.ScriptEditorBase{gdclass.NewScriptEditorBase(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetScriptEditorBase(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -177,7 +177,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.ScriptEditorBase{pointers.New[gdclass.ScriptEditorBase]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.ScriptEditorBase{gdclass.NewScriptEditorBase(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -191,7 +191,7 @@ Returns the underlying [Control] used for editing scripts. For text scripts, thi
 //go:nosplit
 func (self class) GetBaseEditor() [1]gdclass.Control { //gd:ScriptEditorBase.get_base_editor
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_base_editor, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret)}
+	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -202,7 +202,7 @@ Adds an [EditorSyntaxHighlighter] to the open script.
 */
 //go:nosplit
 func (self class) AddSyntaxHighlighter(highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditorBase.add_syntax_highlighter
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_syntax_highlighter, 0|(gdextension.SizeObject<<4), &struct{ highlighter gdextension.Object }{gdextension.Object(gd.ObjectChecked(highlighter[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_syntax_highlighter, 0|(gdextension.SizeObject<<4), &struct{ highlighter gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorSyntaxHighlighter(highlighter[0])))})
 }
 
 /*
@@ -213,7 +213,7 @@ func (self Instance) OnNameChanged(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("name_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("name_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -229,7 +229,7 @@ func (self Instance) OnEditedScriptChanged(cb func(), flags ...Signal.Flags) Ins
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("edited_script_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("edited_script_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -245,7 +245,7 @@ func (self Instance) OnRequestHelp(cb func(topic string), flags ...Signal.Flags)
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("request_help"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("request_help"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -263,7 +263,7 @@ func (self Instance) OnRequestOpenScriptAtLine(cb func(script Object.Instance, l
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("request_open_script_at_line"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("request_open_script_at_line"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -279,7 +279,7 @@ func (self Instance) OnRequestSaveHistory(cb func(), flags ...Signal.Flags) Inst
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("request_save_history"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("request_save_history"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -295,7 +295,7 @@ func (self Instance) OnRequestSavePreviousState(cb func(state map[any]any), flag
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("request_save_previous_state"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("request_save_previous_state"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -311,7 +311,7 @@ func (self Instance) OnGoToHelp(cb func(what string), flags ...Signal.Flags) Ins
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("go_to_help"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("go_to_help"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -327,7 +327,7 @@ func (self Instance) OnSearchInFilesRequested(cb func(text string), flags ...Sig
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("search_in_files_requested"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("search_in_files_requested"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -343,7 +343,7 @@ func (self Instance) OnReplaceInFilesRequested(cb func(text string), flags ...Si
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("replace_in_files_requested"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("replace_in_files_requested"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -361,7 +361,7 @@ func (self Instance) OnGoToMethod(cb func(script Object.Instance, method string)
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("go_to_method"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("go_to_method"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -370,55 +370,55 @@ func (self class) GoToMethod() Signal.Any {
 }
 
 func (self class) AsScriptEditorBase() Advanced {
-	return Advanced{pointers.AsA[gdclass.ScriptEditorBase](self[0])}
+	return Advanced{gdclass.NewScriptEditorBase(self.AsObject()[0])}
 }
 func (self Instance) AsScriptEditorBase() Instance {
-	return Instance{pointers.AsA[gdclass.ScriptEditorBase](self[0])}
+	return Instance{gdclass.NewScriptEditorBase(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsScriptEditorBase() Instance { return self.Super().AsScriptEditorBase() }
 func (self class) AsVBoxContainer() VBoxContainer.Advanced {
-	return VBoxContainer.Advanced{pointers.AsA[gdclass.VBoxContainer](self[0])}
+	return VBoxContainer.Advanced{gdclass.NewVBoxContainer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsVBoxContainer() VBoxContainer.Instance {
 	return self.Super().AsVBoxContainer()
 }
 func (self Instance) AsVBoxContainer() VBoxContainer.Instance {
-	return VBoxContainer.Instance{pointers.AsA[gdclass.VBoxContainer](self[0])}
+	return VBoxContainer.Instance{gdclass.NewVBoxContainer(self.AsObject()[0])}
 }
 func (self class) AsBoxContainer() BoxContainer.Advanced {
-	return BoxContainer.Advanced{pointers.AsA[gdclass.BoxContainer](self[0])}
+	return BoxContainer.Advanced{gdclass.NewBoxContainer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsBoxContainer() BoxContainer.Instance {
 	return self.Super().AsBoxContainer()
 }
 func (self Instance) AsBoxContainer() BoxContainer.Instance {
-	return BoxContainer.Instance{pointers.AsA[gdclass.BoxContainer](self[0])}
+	return BoxContainer.Instance{gdclass.NewBoxContainer(self.AsObject()[0])}
 }
 func (self class) AsContainer() Container.Advanced {
-	return Container.Advanced{pointers.AsA[gdclass.Container](self[0])}
+	return Container.Advanced{gdclass.NewContainer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsContainer() Container.Instance { return self.Super().AsContainer() }
 func (self Instance) AsContainer() Container.Instance {
-	return Container.Instance{pointers.AsA[gdclass.Container](self[0])}
+	return Container.Instance{gdclass.NewContainer(self.AsObject()[0])}
 }
 func (self class) AsControl() Control.Advanced {
-	return Control.Advanced{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Advanced{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
-	return Control.Instance{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Instance{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
-	return CanvasItem.Advanced{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Advanced{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
-	return CanvasItem.Instance{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Instance{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -435,5 +435,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ScriptEditorBase", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.ScriptEditorBase](ptr)} })
+	gdclass.Register("ScriptEditorBase", func(ptr gd.Object) any { return Instance{gdclass.NewScriptEditorBase(ptr)} })
 }

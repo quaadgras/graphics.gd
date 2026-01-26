@@ -119,30 +119,30 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.HSplitContainer
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetHSplitContainer(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.HSplitContainer](obj[0])
+		self[0] = gdclass.NewHSplitContainer(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.HSplitContainer](obj[0])
+		self[0] = gdclass.NewHSplitContainer(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetHSplitContainer(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.HSplitContainer{pointers.Add[gdclass.HSplitContainer]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.HSplitContainer{gdclass.NewHSplitContainer(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetHSplitContainer(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -152,52 +152,52 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.HSplitContainer{pointers.New[gdclass.HSplitContainer]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.HSplitContainer{gdclass.NewHSplitContainer(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
 
 func (self class) AsHSplitContainer() Advanced {
-	return Advanced{pointers.AsA[gdclass.HSplitContainer](self[0])}
+	return Advanced{gdclass.NewHSplitContainer(self.AsObject()[0])}
 }
 func (self Instance) AsHSplitContainer() Instance {
-	return Instance{pointers.AsA[gdclass.HSplitContainer](self[0])}
+	return Instance{gdclass.NewHSplitContainer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsHSplitContainer() Instance { return self.Super().AsHSplitContainer() }
 func (self class) AsSplitContainer() SplitContainer.Advanced {
-	return SplitContainer.Advanced{pointers.AsA[gdclass.SplitContainer](self[0])}
+	return SplitContainer.Advanced{gdclass.NewSplitContainer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsSplitContainer() SplitContainer.Instance {
 	return self.Super().AsSplitContainer()
 }
 func (self Instance) AsSplitContainer() SplitContainer.Instance {
-	return SplitContainer.Instance{pointers.AsA[gdclass.SplitContainer](self[0])}
+	return SplitContainer.Instance{gdclass.NewSplitContainer(self.AsObject()[0])}
 }
 func (self class) AsContainer() Container.Advanced {
-	return Container.Advanced{pointers.AsA[gdclass.Container](self[0])}
+	return Container.Advanced{gdclass.NewContainer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsContainer() Container.Instance { return self.Super().AsContainer() }
 func (self Instance) AsContainer() Container.Instance {
-	return Container.Instance{pointers.AsA[gdclass.Container](self[0])}
+	return Container.Instance{gdclass.NewContainer(self.AsObject()[0])}
 }
 func (self class) AsControl() Control.Advanced {
-	return Control.Advanced{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Advanced{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
-	return Control.Instance{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Instance{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
-	return CanvasItem.Advanced{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Advanced{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
-	return CanvasItem.Instance{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Instance{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -214,5 +214,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("HSplitContainer", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.HSplitContainer](ptr)} })
+	gdclass.Register("HSplitContainer", func(ptr gd.Object) any { return Instance{gdclass.NewHSplitContainer(ptr)} })
 }

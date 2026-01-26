@@ -600,30 +600,30 @@ func (Instance) _get_connection_status(impl func(ptr gdclass.Receiver) Multiplay
 type Advanced = class
 type class [1]gdclass.MultiplayerPeerExtension
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetMultiplayerPeerExtension(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.MultiplayerPeerExtension](obj[0])
+		self[0] = gdclass.NewMultiplayerPeerExtension(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.MultiplayerPeerExtension](obj[0])
+		self[0] = gdclass.NewMultiplayerPeerExtension(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetMultiplayerPeerExtension(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.MultiplayerPeerExtension{pointers.Add[gdclass.MultiplayerPeerExtension]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.MultiplayerPeerExtension{gdclass.NewMultiplayerPeerExtension(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetMultiplayerPeerExtension(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -633,7 +633,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.MultiplayerPeerExtension{pointers.New[gdclass.MultiplayerPeerExtension]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.MultiplayerPeerExtension{gdclass.NewMultiplayerPeerExtension(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -978,36 +978,36 @@ func (class) _get_connection_status(impl func(ptr gdclass.Receiver) MultiplayerP
 }
 
 func (self class) AsMultiplayerPeerExtension() Advanced {
-	return Advanced{pointers.AsA[gdclass.MultiplayerPeerExtension](self[0])}
+	return Advanced{gdclass.NewMultiplayerPeerExtension(self.AsObject()[0])}
 }
 func (self Instance) AsMultiplayerPeerExtension() Instance {
-	return Instance{pointers.AsA[gdclass.MultiplayerPeerExtension](self[0])}
+	return Instance{gdclass.NewMultiplayerPeerExtension(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsMultiplayerPeerExtension() Instance {
 	return self.Super().AsMultiplayerPeerExtension()
 }
 func (self class) AsMultiplayerPeer() MultiplayerPeer.Advanced {
-	return MultiplayerPeer.Advanced{pointers.AsA[gdclass.MultiplayerPeer](self[0])}
+	return MultiplayerPeer.Advanced{gdclass.NewMultiplayerPeer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsMultiplayerPeer() MultiplayerPeer.Instance {
 	return self.Super().AsMultiplayerPeer()
 }
 func (self Instance) AsMultiplayerPeer() MultiplayerPeer.Instance {
-	return MultiplayerPeer.Instance{pointers.AsA[gdclass.MultiplayerPeer](self[0])}
+	return MultiplayerPeer.Instance{gdclass.NewMultiplayerPeer(self.AsObject()[0])}
 }
 func (self class) AsPacketPeer() PacketPeer.Advanced {
-	return PacketPeer.Advanced{pointers.AsA[gdclass.PacketPeer](self[0])}
+	return PacketPeer.Advanced{gdclass.NewPacketPeer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsPacketPeer() PacketPeer.Instance { return self.Super().AsPacketPeer() }
 func (self Instance) AsPacketPeer() PacketPeer.Instance {
-	return PacketPeer.Instance{pointers.AsA[gdclass.PacketPeer](self[0])}
+	return PacketPeer.Instance{gdclass.NewPacketPeer(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -1116,5 +1116,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("MultiplayerPeerExtension", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.MultiplayerPeerExtension](ptr)} })
+	gdclass.Register("MultiplayerPeerExtension", func(ptr gd.Object) any { return Instance{gdclass.NewMultiplayerPeerExtension(ptr)} })
 }

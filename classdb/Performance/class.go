@@ -122,7 +122,7 @@ var self [1]gdclass.Performance
 var once sync.Once
 
 func singleton() {
-	self[0] = pointers.Raw[gdclass.Performance]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
+	self[0] = gdclass.NewPerformance(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
 }
 
 /*
@@ -206,22 +206,22 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.Performance
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetPerformance(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Performance](obj[0])
+		self[0] = gdclass.NewPerformance(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Performance](obj[0])
+		self[0] = gdclass.NewPerformance(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetPerformance(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
@@ -345,7 +345,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Performance", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.Performance](ptr)} })
+	gdclass.Register("Performance", func(ptr gd.Object) any { return Instance{gdclass.NewPerformance(ptr)} })
 }
 
 type Monitor int //gd:Performance.Monitor

@@ -121,30 +121,30 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.PopupPanel
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetPopupPanel(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.PopupPanel](obj[0])
+		self[0] = gdclass.NewPopupPanel(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.PopupPanel](obj[0])
+		self[0] = gdclass.NewPopupPanel(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetPopupPanel(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.PopupPanel{pointers.Add[gdclass.PopupPanel]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.PopupPanel{gdclass.NewPopupPanel(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetPopupPanel(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -154,41 +154,41 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.PopupPanel{pointers.New[gdclass.PopupPanel]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.PopupPanel{gdclass.NewPopupPanel(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
 
-func (self class) AsPopupPanel() Advanced { return Advanced{pointers.AsA[gdclass.PopupPanel](self[0])} }
+func (self class) AsPopupPanel() Advanced { return Advanced{gdclass.NewPopupPanel(self.AsObject()[0])} }
 func (self Instance) AsPopupPanel() Instance {
-	return Instance{pointers.AsA[gdclass.PopupPanel](self[0])}
+	return Instance{gdclass.NewPopupPanel(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsPopupPanel() Instance { return self.Super().AsPopupPanel() }
 func (self class) AsPopup() Popup.Advanced {
-	return Popup.Advanced{pointers.AsA[gdclass.Popup](self[0])}
+	return Popup.Advanced{gdclass.NewPopup(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsPopup() Popup.Instance { return self.Super().AsPopup() }
 func (self Instance) AsPopup() Popup.Instance {
-	return Popup.Instance{pointers.AsA[gdclass.Popup](self[0])}
+	return Popup.Instance{gdclass.NewPopup(self.AsObject()[0])}
 }
 func (self class) AsWindow() Window.Advanced {
-	return Window.Advanced{pointers.AsA[gdclass.Window](self[0])}
+	return Window.Advanced{gdclass.NewWindow(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsWindow() Window.Instance { return self.Super().AsWindow() }
 func (self Instance) AsWindow() Window.Instance {
-	return Window.Instance{pointers.AsA[gdclass.Window](self[0])}
+	return Window.Instance{gdclass.NewWindow(self.AsObject()[0])}
 }
 func (self class) AsViewport() Viewport.Advanced {
-	return Viewport.Advanced{pointers.AsA[gdclass.Viewport](self[0])}
+	return Viewport.Advanced{gdclass.NewViewport(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsViewport() Viewport.Instance { return self.Super().AsViewport() }
 func (self Instance) AsViewport() Viewport.Instance {
-	return Viewport.Instance{pointers.AsA[gdclass.Viewport](self[0])}
+	return Viewport.Instance{gdclass.NewViewport(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -205,5 +205,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PopupPanel", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.PopupPanel](ptr)} })
+	gdclass.Register("PopupPanel", func(ptr gd.Object) any { return Instance{gdclass.NewPopupPanel(ptr)} })
 }

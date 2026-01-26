@@ -38,8 +38,11 @@ func (classDB ClassDB) signalCall(w io.Writer, class gdjson.Class, signal gdjson
 	fmt.Fprint(w, "\t}\n\t")
 	if singleton {
 		fmt.Fprintf(w, "once.Do(singleton)\n\t")
+		fmt.Fprintf(w, "gdclass.Get%s(self[0])[0]", class.Name)
+	} else {
+		fmt.Fprintf(w, "self.AsObject()[0]")
 	}
-	fmt.Fprintf(w, `self[0].AsObject()[0].Connect(gd.NewStringName("%s"), gd.NewCallable(cb), int64(flags_together))`, signal.Name)
+	fmt.Fprintf(w, `.Connect(gd.NewStringName("%s"), gd.NewCallable(cb), int64(flags_together))`, signal.Name)
 	if !singleton {
 		fmt.Fprint(w, "\n\treturn self")
 	}

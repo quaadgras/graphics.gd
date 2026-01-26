@@ -133,7 +133,7 @@ var self [1]gdclass.NavigationMeshGenerator
 var once sync.Once
 
 func singleton() {
-	self[0] = pointers.Raw[gdclass.NavigationMeshGenerator]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
+	self[0] = gdclass.NewNavigationMeshGenerator(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
 }
 
 /*
@@ -177,22 +177,22 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.NavigationMeshGenerator
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetNavigationMeshGenerator(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.NavigationMeshGenerator](obj[0])
+		self[0] = gdclass.NewNavigationMeshGenerator(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.NavigationMeshGenerator](obj[0])
+		self[0] = gdclass.NewNavigationMeshGenerator(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetNavigationMeshGenerator(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
@@ -204,7 +204,7 @@ func (self class) Bake(navigation_mesh [1]gdclass.NavigationMesh, root_node [1]g
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.bake, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
 		navigation_mesh gdextension.Object
 		root_node       gdextension.Object
-	}{gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject())), gdextension.Object(gd.ObjectChecked(root_node[0].AsObject()))})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationMesh(navigation_mesh[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetNode(root_node[0])))})
 }
 
 /*
@@ -213,7 +213,7 @@ Removes all polygons and vertices from the provided 'navigation_mesh' resource.
 //go:nosplit
 func (self class) Clear(navigation_mesh [1]gdclass.NavigationMesh) { //gd:NavigationMeshGenerator.clear
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0|(gdextension.SizeObject<<4), &struct{ navigation_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0|(gdextension.SizeObject<<4), &struct{ navigation_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationMesh(navigation_mesh[0])))})
 }
 
 /*
@@ -235,7 +235,7 @@ func (self class) ParseSourceGeometryData(navigation_mesh [1]gdclass.NavigationM
 		source_geometry_data gdextension.Object
 		root_node            gdextension.Object
 		callback             gdextension.Callable
-	}{gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject())), gdextension.Object(gd.ObjectChecked(source_geometry_data[0].AsObject())), gdextension.Object(gd.ObjectChecked(root_node[0].AsObject())), pointers.Get(gd.InternalCallable(callback))})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationMesh(navigation_mesh[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationMeshSourceGeometryData3D(source_geometry_data[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetNode(root_node[0]))), pointers.Get(gd.InternalCallable(callback))})
 }
 
 /*
@@ -248,7 +248,7 @@ func (self class) BakeFromSourceGeometryData(navigation_mesh [1]gdclass.Navigati
 		navigation_mesh      gdextension.Object
 		source_geometry_data gdextension.Object
 		callback             gdextension.Callable
-	}{gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject())), gdextension.Object(gd.ObjectChecked(source_geometry_data[0].AsObject())), pointers.Get(gd.InternalCallable(callback))})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationMesh(navigation_mesh[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationMeshSourceGeometryData3D(source_geometry_data[0]))), pointers.Get(gd.InternalCallable(callback))})
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
@@ -264,5 +264,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("NavigationMeshGenerator", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.NavigationMeshGenerator](ptr)} })
+	gdclass.Register("NavigationMeshGenerator", func(ptr gd.Object) any { return Instance{gdclass.NewNavigationMeshGenerator(ptr)} })
 }

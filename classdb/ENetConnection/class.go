@@ -378,30 +378,30 @@ func (self Instance) SocketSend(destination_address string, destination_port int
 type Advanced = class
 type class [1]gdclass.ENetConnection
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetENetConnection(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ENetConnection](obj[0])
+		self[0] = gdclass.NewENetConnection(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ENetConnection](obj[0])
+		self[0] = gdclass.NewENetConnection(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetENetConnection(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.ENetConnection{pointers.Add[gdclass.ENetConnection]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.ENetConnection{gdclass.NewENetConnection(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetENetConnection(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -411,7 +411,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.ENetConnection{pointers.New[gdclass.ENetConnection]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.ENetConnection{gdclass.NewENetConnection(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -481,7 +481,7 @@ func (self class) ConnectToHost(address String.Readable, port int64, channels in
 		channels int64
 		data     int64
 	}{pointers.Get(gd.InternalString(address)), port, channels, data})
-	var ret = [1]gdclass.ENetPacketPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.ENetPacketPeer](r_ret)}
+	var ret = [1]gdclass.ENetPacketPeer{gdclass.NewENetPacketPeer(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -562,7 +562,7 @@ Configure this ENetHost to use the custom Godot extension allowing DTLS encrypti
 */
 //go:nosplit
 func (self class) DtlsServerSetup(server_options [1]gdclass.TLSOptions) Error.Code { //gd:ENetConnection.dtls_server_setup
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.dtls_server_setup, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ server_options gdextension.Object }{gdextension.Object(gd.ObjectChecked(server_options[0].AsObject()))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.dtls_server_setup, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ server_options gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTLSOptions(server_options[0])))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -579,7 +579,7 @@ func (self class) DtlsClientSetup(hostname String.Readable, client_options [1]gd
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.dtls_client_setup, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
 		hostname       gdextension.String
 		client_options gdextension.Object
-	}{pointers.Get(gd.InternalString(hostname)), gdextension.Object(gd.ObjectChecked(client_options[0].AsObject()))})
+	}{pointers.Get(gd.InternalString(hostname)), gdextension.Object(gd.ObjectChecked(gdclass.GetTLSOptions(client_options[0])))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -656,18 +656,18 @@ func (self class) SocketSend(destination_address String.Readable, destination_po
 	}{pointers.Get(gd.InternalString(destination_address)), destination_port, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](packet.Array)))})
 }
 func (self class) AsENetConnection() Advanced {
-	return Advanced{pointers.AsA[gdclass.ENetConnection](self[0])}
+	return Advanced{gdclass.NewENetConnection(self.AsObject()[0])}
 }
 func (self Instance) AsENetConnection() Instance {
-	return Instance{pointers.AsA[gdclass.ENetConnection](self[0])}
+	return Instance{gdclass.NewENetConnection(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsENetConnection() Instance { return self.Super().AsENetConnection() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -684,7 +684,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ENetConnection", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.ENetConnection](ptr)} })
+	gdclass.Register("ENetConnection", func(ptr gd.Object) any { return Instance{gdclass.NewENetConnection(ptr)} })
 }
 
 type CompressionMode int //gd:ENetConnection.CompressionMode

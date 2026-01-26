@@ -156,30 +156,30 @@ func (self Instance) RemoveResourceTooltipPlugin(plugin EditorResourceTooltipPlu
 type Advanced = class
 type class [1]gdclass.FileSystemDock
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetFileSystemDock(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.FileSystemDock](obj[0])
+		self[0] = gdclass.NewFileSystemDock(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.FileSystemDock](obj[0])
+		self[0] = gdclass.NewFileSystemDock(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetFileSystemDock(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.FileSystemDock{pointers.Add[gdclass.FileSystemDock]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.FileSystemDock{gdclass.NewFileSystemDock(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetFileSystemDock(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -189,7 +189,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.FileSystemDock{pointers.New[gdclass.FileSystemDock]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.FileSystemDock{gdclass.NewFileSystemDock(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -209,7 +209,7 @@ Registers a new [EditorResourceTooltipPlugin].
 */
 //go:nosplit
 func (self class) AddResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) { //gd:FileSystemDock.add_resource_tooltip_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_resource_tooltip_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_resource_tooltip_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorResourceTooltipPlugin(plugin[0])))})
 }
 
 /*
@@ -219,7 +219,7 @@ Removes an [EditorResourceTooltipPlugin]. Fails if the plugin wasn't previously 
 */
 //go:nosplit
 func (self class) RemoveResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) { //gd:FileSystemDock.remove_resource_tooltip_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_tooltip_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_tooltip_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorResourceTooltipPlugin(plugin[0])))})
 }
 
 /*
@@ -230,7 +230,7 @@ func (self Instance) OnInherit(cb func(file string), flags ...Signal.Flags) Inst
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("inherit"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("inherit"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -246,7 +246,7 @@ func (self Instance) OnInstantiate(cb func(files []string), flags ...Signal.Flag
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("instantiate"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("instantiate"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -262,7 +262,7 @@ func (self Instance) OnResourceRemoved(cb func(resource Resource.Instance), flag
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("resource_removed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("resource_removed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -278,7 +278,7 @@ func (self Instance) OnFileRemoved(cb func(file string), flags ...Signal.Flags) 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("file_removed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("file_removed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -294,7 +294,7 @@ func (self Instance) OnFolderRemoved(cb func(folder string), flags ...Signal.Fla
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("folder_removed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("folder_removed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -310,7 +310,7 @@ func (self Instance) OnFilesMoved(cb func(old_file string, new_file string), fla
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("files_moved"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("files_moved"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -326,7 +326,7 @@ func (self Instance) OnFolderMoved(cb func(old_folder string, new_folder string)
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("folder_moved"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("folder_moved"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -342,7 +342,7 @@ func (self Instance) OnFolderColorChanged(cb func(), flags ...Signal.Flags) Inst
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("folder_color_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("folder_color_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -358,7 +358,7 @@ func (self Instance) OnDisplayModeChanged(cb func(), flags ...Signal.Flags) Inst
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("display_mode_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("display_mode_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -367,55 +367,55 @@ func (self class) DisplayModeChanged() Signal.Any {
 }
 
 func (self class) AsFileSystemDock() Advanced {
-	return Advanced{pointers.AsA[gdclass.FileSystemDock](self[0])}
+	return Advanced{gdclass.NewFileSystemDock(self.AsObject()[0])}
 }
 func (self Instance) AsFileSystemDock() Instance {
-	return Instance{pointers.AsA[gdclass.FileSystemDock](self[0])}
+	return Instance{gdclass.NewFileSystemDock(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsFileSystemDock() Instance { return self.Super().AsFileSystemDock() }
 func (self class) AsVBoxContainer() VBoxContainer.Advanced {
-	return VBoxContainer.Advanced{pointers.AsA[gdclass.VBoxContainer](self[0])}
+	return VBoxContainer.Advanced{gdclass.NewVBoxContainer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsVBoxContainer() VBoxContainer.Instance {
 	return self.Super().AsVBoxContainer()
 }
 func (self Instance) AsVBoxContainer() VBoxContainer.Instance {
-	return VBoxContainer.Instance{pointers.AsA[gdclass.VBoxContainer](self[0])}
+	return VBoxContainer.Instance{gdclass.NewVBoxContainer(self.AsObject()[0])}
 }
 func (self class) AsBoxContainer() BoxContainer.Advanced {
-	return BoxContainer.Advanced{pointers.AsA[gdclass.BoxContainer](self[0])}
+	return BoxContainer.Advanced{gdclass.NewBoxContainer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsBoxContainer() BoxContainer.Instance {
 	return self.Super().AsBoxContainer()
 }
 func (self Instance) AsBoxContainer() BoxContainer.Instance {
-	return BoxContainer.Instance{pointers.AsA[gdclass.BoxContainer](self[0])}
+	return BoxContainer.Instance{gdclass.NewBoxContainer(self.AsObject()[0])}
 }
 func (self class) AsContainer() Container.Advanced {
-	return Container.Advanced{pointers.AsA[gdclass.Container](self[0])}
+	return Container.Advanced{gdclass.NewContainer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsContainer() Container.Instance { return self.Super().AsContainer() }
 func (self Instance) AsContainer() Container.Instance {
-	return Container.Instance{pointers.AsA[gdclass.Container](self[0])}
+	return Container.Instance{gdclass.NewContainer(self.AsObject()[0])}
 }
 func (self class) AsControl() Control.Advanced {
-	return Control.Advanced{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Advanced{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
-	return Control.Instance{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Instance{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
-	return CanvasItem.Advanced{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Advanced{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
-	return CanvasItem.Instance{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Instance{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -432,5 +432,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("FileSystemDock", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.FileSystemDock](ptr)} })
+	gdclass.Register("FileSystemDock", func(ptr gd.Object) any { return Instance{gdclass.NewFileSystemDock(ptr)} })
 }

@@ -503,30 +503,30 @@ func (self Instance) GetSpaceState() PhysicsDirectSpaceState3D.Instance { //gd:P
 type Advanced = class
 type class [1]gdclass.PhysicsDirectBodyState3D
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetPhysicsDirectBodyState3D(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.PhysicsDirectBodyState3D](obj[0])
+		self[0] = gdclass.NewPhysicsDirectBodyState3D(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.PhysicsDirectBodyState3D](obj[0])
+		self[0] = gdclass.NewPhysicsDirectBodyState3D(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetPhysicsDirectBodyState3D(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.PhysicsDirectBodyState3D{pointers.Add[gdclass.PhysicsDirectBodyState3D]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.PhysicsDirectBodyState3D{gdclass.NewPhysicsDirectBodyState3D(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetPhysicsDirectBodyState3D(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -536,7 +536,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.PhysicsDirectBodyState3D{pointers.New[gdclass.PhysicsDirectBodyState3D]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.PhysicsDirectBodyState3D{gdclass.NewPhysicsDirectBodyState3D(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -1147,14 +1147,14 @@ Returns the current state of the space, useful for queries.
 //go:nosplit
 func (self class) GetSpaceState() [1]gdclass.PhysicsDirectSpaceState3D { //gd:PhysicsDirectBodyState3D.get_space_state
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_space_state, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.PhysicsDirectSpaceState3D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectSpaceState3D](r_ret)}
+	var ret = [1]gdclass.PhysicsDirectSpaceState3D{gdclass.NewPhysicsDirectSpaceState3D(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 func (self class) AsPhysicsDirectBodyState3D() Advanced {
-	return Advanced{pointers.AsA[gdclass.PhysicsDirectBodyState3D](self[0])}
+	return Advanced{gdclass.NewPhysicsDirectBodyState3D(self.AsObject()[0])}
 }
 func (self Instance) AsPhysicsDirectBodyState3D() Instance {
-	return Instance{pointers.AsA[gdclass.PhysicsDirectBodyState3D](self[0])}
+	return Instance{gdclass.NewPhysicsDirectBodyState3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsPhysicsDirectBodyState3D() Instance {
 	return self.Super().AsPhysicsDirectBodyState3D()
@@ -1174,5 +1174,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PhysicsDirectBodyState3D", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.PhysicsDirectBodyState3D](ptr)} })
+	gdclass.Register("PhysicsDirectBodyState3D", func(ptr gd.Object) any { return Instance{gdclass.NewPhysicsDirectBodyState3D(ptr)} })
 }

@@ -143,9 +143,9 @@ Implement this in GDExtension to handle the (re)sizing of a viewport.
 */
 func (Instance) _configure(impl func(ptr gdclass.Receiver, config RenderSceneBuffersConfiguration.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var config = [1]gdclass.RenderSceneBuffersConfiguration{pointers.New[gdclass.RenderSceneBuffersConfiguration]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var config = [1]gdclass.RenderSceneBuffersConfiguration{gdclass.NewRenderSceneBuffersConfiguration(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(config[0])
+		defer pointers.End(gdclass.GetRenderSceneBuffersConfiguration(config[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, config)
 	}
@@ -199,30 +199,30 @@ func (Instance) _set_use_debanding(impl func(ptr gdclass.Receiver, use_debanding
 type Advanced = class
 type class [1]gdclass.RenderSceneBuffersExtension
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetRenderSceneBuffersExtension(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.RenderSceneBuffersExtension](obj[0])
+		self[0] = gdclass.NewRenderSceneBuffersExtension(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.RenderSceneBuffersExtension](obj[0])
+		self[0] = gdclass.NewRenderSceneBuffersExtension(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetRenderSceneBuffersExtension(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.RenderSceneBuffersExtension{pointers.Add[gdclass.RenderSceneBuffersExtension]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.RenderSceneBuffersExtension{gdclass.NewRenderSceneBuffersExtension(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetRenderSceneBuffersExtension(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -232,7 +232,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.RenderSceneBuffersExtension{pointers.New[gdclass.RenderSceneBuffersExtension]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.RenderSceneBuffersExtension{gdclass.NewRenderSceneBuffersExtension(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -243,9 +243,9 @@ Implement this in GDExtension to handle the (re)sizing of a viewport.
 */
 func (class) _configure(impl func(ptr gdclass.Receiver, config [1]gdclass.RenderSceneBuffersConfiguration)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var config = [1]gdclass.RenderSceneBuffersConfiguration{pointers.New[gdclass.RenderSceneBuffersConfiguration]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var config = [1]gdclass.RenderSceneBuffersConfiguration{gdclass.NewRenderSceneBuffersConfiguration(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(config[0])
+		defer pointers.End(gdclass.GetRenderSceneBuffersConfiguration(config[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, config)
 	}
@@ -296,29 +296,29 @@ func (class) _set_use_debanding(impl func(ptr gdclass.Receiver, use_debanding bo
 }
 
 func (self class) AsRenderSceneBuffersExtension() Advanced {
-	return Advanced{pointers.AsA[gdclass.RenderSceneBuffersExtension](self[0])}
+	return Advanced{gdclass.NewRenderSceneBuffersExtension(self.AsObject()[0])}
 }
 func (self Instance) AsRenderSceneBuffersExtension() Instance {
-	return Instance{pointers.AsA[gdclass.RenderSceneBuffersExtension](self[0])}
+	return Instance{gdclass.NewRenderSceneBuffersExtension(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRenderSceneBuffersExtension() Instance {
 	return self.Super().AsRenderSceneBuffersExtension()
 }
 func (self class) AsRenderSceneBuffers() RenderSceneBuffers.Advanced {
-	return RenderSceneBuffers.Advanced{pointers.AsA[gdclass.RenderSceneBuffers](self[0])}
+	return RenderSceneBuffers.Advanced{gdclass.NewRenderSceneBuffers(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRenderSceneBuffers() RenderSceneBuffers.Instance {
 	return self.Super().AsRenderSceneBuffers()
 }
 func (self Instance) AsRenderSceneBuffers() RenderSceneBuffers.Instance {
-	return RenderSceneBuffers.Instance{pointers.AsA[gdclass.RenderSceneBuffers](self[0])}
+	return RenderSceneBuffers.Instance{gdclass.NewRenderSceneBuffers(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -355,5 +355,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("RenderSceneBuffersExtension", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.RenderSceneBuffersExtension](ptr)} })
+	gdclass.Register("RenderSceneBuffersExtension", func(ptr gd.Object) any { return Instance{gdclass.NewRenderSceneBuffersExtension(ptr)} })
 }

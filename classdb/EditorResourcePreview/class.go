@@ -169,30 +169,30 @@ func (self Instance) CheckForInvalidation(path string) { //gd:EditorResourcePrev
 type Advanced = class
 type class [1]gdclass.EditorResourcePreview
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetEditorResourcePreview(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.EditorResourcePreview](obj[0])
+		self[0] = gdclass.NewEditorResourcePreview(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.EditorResourcePreview](obj[0])
+		self[0] = gdclass.NewEditorResourcePreview(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetEditorResourcePreview(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.EditorResourcePreview{pointers.Add[gdclass.EditorResourcePreview]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.EditorResourcePreview{gdclass.NewEditorResourcePreview(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetEditorResourcePreview(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -202,7 +202,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.EditorResourcePreview{pointers.New[gdclass.EditorResourcePreview]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.EditorResourcePreview{gdclass.NewEditorResourcePreview(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -221,7 +221,7 @@ func (self class) QueueResourcePreview(path String.Readable, receiver [1]gd.Obje
 		receiver      gdextension.Object
 		receiver_func gdextension.StringName
 		userdata      gdextension.Variant
-	}{pointers.Get(gd.InternalString(path)), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(receiver[0].AsObject()[0])), pointers.Get(gd.InternalStringName(receiver_func)), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))})
+	}{pointers.Get(gd.InternalString(path)), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(receiver[0])[0])), pointers.Get(gd.InternalStringName(receiver_func)), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))})
 }
 
 /*
@@ -238,7 +238,7 @@ func (self class) QueueEditedResourcePreview(resource [1]gdclass.Resource, recei
 		receiver      gdextension.Object
 		receiver_func gdextension.StringName
 		userdata      gdextension.Variant
-	}{gdextension.Object(gd.ObjectChecked(resource[0].AsObject())), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(receiver[0].AsObject()[0])), pointers.Get(gd.InternalStringName(receiver_func)), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetResource(resource[0]))), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(receiver[0])[0])), pointers.Get(gd.InternalStringName(receiver_func)), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))})
 }
 
 /*
@@ -246,7 +246,7 @@ Create an own, custom preview generator.
 */
 //go:nosplit
 func (self class) AddPreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) { //gd:EditorResourcePreview.add_preview_generator
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_preview_generator, 0|(gdextension.SizeObject<<4), &struct{ generator gdextension.Object }{gdextension.Object(gd.ObjectChecked(generator[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_preview_generator, 0|(gdextension.SizeObject<<4), &struct{ generator gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorResourcePreviewGenerator(generator[0])))})
 }
 
 /*
@@ -254,7 +254,7 @@ Removes a custom preview generator.
 */
 //go:nosplit
 func (self class) RemovePreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) { //gd:EditorResourcePreview.remove_preview_generator
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_preview_generator, 0|(gdextension.SizeObject<<4), &struct{ generator gdextension.Object }{gdextension.Object(gd.ObjectChecked(generator[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_preview_generator, 0|(gdextension.SizeObject<<4), &struct{ generator gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorResourcePreviewGenerator(generator[0])))})
 }
 
 /*
@@ -273,7 +273,7 @@ func (self Instance) OnPreviewInvalidated(cb func(path string), flags ...Signal.
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("preview_invalidated"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("preview_invalidated"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -282,18 +282,18 @@ func (self class) PreviewInvalidated() Signal.Any {
 }
 
 func (self class) AsEditorResourcePreview() Advanced {
-	return Advanced{pointers.AsA[gdclass.EditorResourcePreview](self[0])}
+	return Advanced{gdclass.NewEditorResourcePreview(self.AsObject()[0])}
 }
 func (self Instance) AsEditorResourcePreview() Instance {
-	return Instance{pointers.AsA[gdclass.EditorResourcePreview](self[0])}
+	return Instance{gdclass.NewEditorResourcePreview(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsEditorResourcePreview() Instance {
 	return self.Super().AsEditorResourcePreview()
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -310,5 +310,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorResourcePreview", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.EditorResourcePreview](ptr)} })
+	gdclass.Register("EditorResourcePreview", func(ptr gd.Object) any { return Instance{gdclass.NewEditorResourcePreview(ptr)} })
 }

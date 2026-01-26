@@ -795,9 +795,9 @@ This method must return false in order to forward the [InputEvent] to other Edit
 */
 func (Instance) _forward_canvas_gui_input(impl func(ptr gdclass.Receiver, event InputEvent.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(event[0])
+		defer pointers.End(gdclass.GetInputEvent(event[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, event)
 		gd.UnsafeSet(p_back, ret)
@@ -826,9 +826,9 @@ Called by the engine when the 2D editor's viewport is updated. 'viewport_control
 */
 func (Instance) _forward_canvas_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control Control.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var viewport_control = [1]gdclass.Control{gdclass.NewControl(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(viewport_control[0])
+		defer pointers.End(gdclass.GetControl(viewport_control[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, viewport_control)
 	}
@@ -844,9 +844,9 @@ You need to enable calling of this method by using [SetForceDrawOverForwardingEn
 */
 func (Instance) _forward_canvas_force_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control Control.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var viewport_control = [1]gdclass.Control{gdclass.NewControl(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(viewport_control[0])
+		defer pointers.End(gdclass.GetControl(viewport_control[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, viewport_control)
 	}
@@ -867,12 +867,12 @@ This method must return [AfterGuiInputPass] in order to forward the [InputEvent]
 */
 func (Instance) _forward_3d_gui_input(impl func(ptr gdclass.Receiver, viewport_camera Camera3D.Instance, event InputEvent.Instance) AfterGUIInput) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var viewport_camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var viewport_camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(viewport_camera[0])
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetCamera3D(viewport_camera[0])[0])
+		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(event[0])
+		defer pointers.End(gdclass.GetInputEvent(event[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, viewport_camera, event)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -899,9 +899,9 @@ Called by the engine when the 3D editor's viewport is updated. 'viewport_control
 */
 func (Instance) _forward_3d_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control Control.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var viewport_control = [1]gdclass.Control{gdclass.NewControl(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(viewport_control[0])
+		defer pointers.End(gdclass.GetControl(viewport_control[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, viewport_control)
 	}
@@ -917,9 +917,9 @@ You need to enable calling of this method by using [SetForceDrawOverForwardingEn
 */
 func (Instance) _forward_3d_force_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control Control.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var viewport_control = [1]gdclass.Control{gdclass.NewControl(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(viewport_control[0])
+		defer pointers.End(gdclass.GetControl(viewport_control[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, viewport_control)
 	}
@@ -963,7 +963,7 @@ func (Instance) _get_plugin_icon(impl func(ptr gdclass.Receiver) Texture2D.Insta
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetTexture2D(ret[0])[0])
 
 		if !ok {
 			return
@@ -1228,9 +1228,9 @@ Restore the plugin GUI layout and data saved by [GetWindowLayout]. This method i
 */
 func (Instance) _set_window_layout(impl func(ptr gdclass.Receiver, configuration ConfigFile.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var configuration = [1]gdclass.ConfigFile{pointers.New[gdclass.ConfigFile]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var configuration = [1]gdclass.ConfigFile{gdclass.NewConfigFile(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(configuration[0])
+		defer pointers.End(gdclass.GetConfigFile(configuration[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, configuration)
 	}
@@ -1251,9 +1251,9 @@ Use [SetWindowLayout] to restore your saved layout.
 */
 func (Instance) _get_window_layout(impl func(ptr gdclass.Receiver, configuration ConfigFile.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var configuration = [1]gdclass.ConfigFile{pointers.New[gdclass.ConfigFile]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var configuration = [1]gdclass.ConfigFile{gdclass.NewConfigFile(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(configuration[0])
+		defer pointers.End(gdclass.GetConfigFile(configuration[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, configuration)
 	}
@@ -1884,30 +1884,30 @@ func (self Instance) GetPluginVersion() string { //gd:EditorPlugin.get_plugin_ve
 type Advanced = class
 type class [1]gdclass.EditorPlugin
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetEditorPlugin(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.EditorPlugin](obj[0])
+		self[0] = gdclass.NewEditorPlugin(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.EditorPlugin](obj[0])
+		self[0] = gdclass.NewEditorPlugin(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetEditorPlugin(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.EditorPlugin{pointers.Add[gdclass.EditorPlugin]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.EditorPlugin{gdclass.NewEditorPlugin(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetEditorPlugin(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -1917,7 +1917,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.EditorPlugin{pointers.New[gdclass.EditorPlugin]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.EditorPlugin{gdclass.NewEditorPlugin(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -1937,9 +1937,9 @@ This method must return false in order to forward the [InputEvent] to other Edit
 */
 func (class) _forward_canvas_gui_input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(event[0])
+		defer pointers.End(gdclass.GetInputEvent(event[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, event)
 		gd.UnsafeSet(p_back, ret)
@@ -1968,9 +1968,9 @@ Called by the engine when the 2D editor's viewport is updated. 'viewport_control
 */
 func (class) _forward_canvas_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var viewport_control = [1]gdclass.Control{gdclass.NewControl(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(viewport_control[0])
+		defer pointers.End(gdclass.GetControl(viewport_control[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, viewport_control)
 	}
@@ -1986,9 +1986,9 @@ You need to enable calling of this method by using [SetForceDrawOverForwardingEn
 */
 func (class) _forward_canvas_force_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var viewport_control = [1]gdclass.Control{gdclass.NewControl(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(viewport_control[0])
+		defer pointers.End(gdclass.GetControl(viewport_control[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, viewport_control)
 	}
@@ -2009,12 +2009,12 @@ This method must return [AfterGuiInputPass] in order to forward the [InputEvent]
 */
 func (class) _forward_3d_gui_input(impl func(ptr gdclass.Receiver, viewport_camera [1]gdclass.Camera3D, event [1]gdclass.InputEvent) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var viewport_camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var viewport_camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(viewport_camera[0])
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetCamera3D(viewport_camera[0])[0])
+		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(event[0])
+		defer pointers.End(gdclass.GetInputEvent(event[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, viewport_camera, event)
 		gd.UnsafeSet(p_back, ret)
@@ -2041,9 +2041,9 @@ Called by the engine when the 3D editor's viewport is updated. 'viewport_control
 */
 func (class) _forward_3d_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var viewport_control = [1]gdclass.Control{gdclass.NewControl(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(viewport_control[0])
+		defer pointers.End(gdclass.GetControl(viewport_control[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, viewport_control)
 	}
@@ -2059,9 +2059,9 @@ You need to enable calling of this method by using [SetForceDrawOverForwardingEn
 */
 func (class) _forward_3d_force_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var viewport_control = [1]gdclass.Control{gdclass.NewControl(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(viewport_control[0])
+		defer pointers.End(gdclass.GetControl(viewport_control[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, viewport_control)
 	}
@@ -2105,7 +2105,7 @@ func (class) _get_plugin_icon(impl func(ptr gdclass.Receiver) [1]gdclass.Texture
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetTexture2D(ret[0])[0])
 
 		if !ok {
 			return
@@ -2370,9 +2370,9 @@ Restore the plugin GUI layout and data saved by [GetWindowLayout]. This method i
 */
 func (class) _set_window_layout(impl func(ptr gdclass.Receiver, configuration [1]gdclass.ConfigFile)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var configuration = [1]gdclass.ConfigFile{pointers.New[gdclass.ConfigFile]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var configuration = [1]gdclass.ConfigFile{gdclass.NewConfigFile(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(configuration[0])
+		defer pointers.End(gdclass.GetConfigFile(configuration[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, configuration)
 	}
@@ -2393,9 +2393,9 @@ Use [SetWindowLayout] to restore your saved layout.
 */
 func (class) _get_window_layout(impl func(ptr gdclass.Receiver, configuration [1]gdclass.ConfigFile)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var configuration = [1]gdclass.ConfigFile{pointers.New[gdclass.ConfigFile]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var configuration = [1]gdclass.ConfigFile{gdclass.NewConfigFile(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(configuration[0])
+		defer pointers.End(gdclass.GetConfigFile(configuration[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, configuration)
 	}
@@ -2455,7 +2455,7 @@ func (self class) AddControlToContainer(container CustomControlContainer, contro
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_control_to_container, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		container CustomControlContainer
 		control   gdextension.Object
-	}{container, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))})
+	}{container, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetControl(control[0])[0]))})
 }
 
 /*
@@ -2472,8 +2472,8 @@ func (self class) AddControlToBottomPanel(control [1]gdclass.Control, title Stri
 		control  gdextension.Object
 		title    gdextension.String
 		shortcut gdextension.Object
-	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0])), pointers.Get(gd.InternalString(title)), gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject()))})
-	var ret = [1]gdclass.Button{gd.PointerMustAssertInstanceID[gdclass.Button](r_ret)}
+	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetControl(control[0])[0])), pointers.Get(gd.InternalString(title)), gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0])))})
+	var ret = [1]gdclass.Button{gdclass.NewButton(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2495,7 +2495,7 @@ func (self class) AddControlToDock(slot DockSlot, control [1]gdclass.Control, sh
 		slot     DockSlot
 		control  gdextension.Object
 		shortcut gdextension.Object
-	}{slot, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0])), gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject()))})
+	}{slot, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetControl(control[0])[0])), gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0])))})
 }
 
 /*
@@ -2505,7 +2505,7 @@ Removes the control from the dock. You have to manually [Node.QueueFree] the con
 */
 //go:nosplit
 func (self class) RemoveControlFromDocks(control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_docks
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_control_from_docks, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_control_from_docks, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0])))})
 }
 
 /*
@@ -2515,7 +2515,7 @@ Removes the control from the bottom panel. You have to manually [Node.QueueFree]
 */
 //go:nosplit
 func (self class) RemoveControlFromBottomPanel(control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_bottom_panel
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_control_from_bottom_panel, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_control_from_bottom_panel, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0])))})
 }
 
 /*
@@ -2528,7 +2528,7 @@ func (self class) RemoveControlFromContainer(container CustomControlContainer, c
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_control_from_container, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		container CustomControlContainer
 		control   gdextension.Object
-	}{container, gdextension.Object(gd.ObjectChecked(control[0].AsObject()))})
+	}{container, gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0])))})
 }
 
 /*
@@ -2539,7 +2539,7 @@ func (self class) SetDockTabIcon(control [1]gdclass.Control, icon [1]gdclass.Tex
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dock_tab_icon, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
 		control gdextension.Object
 		icon    gdextension.Object
-	}{gdextension.Object(gd.ObjectChecked(control[0].AsObject())), gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
 }
 
 /*
@@ -2564,7 +2564,7 @@ func (self class) AddToolSubmenuItem(name String.Readable, submenu [1]gdclass.Po
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_tool_submenu_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
 		name    gdextension.String
 		submenu gdextension.Object
-	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(submenu[0].AsObject()[0]))})
+	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetPopupMenu(submenu[0])[0]))})
 }
 
 /*
@@ -2583,7 +2583,7 @@ Returns the [PopupMenu] under Scene > Export As....
 //go:nosplit
 func (self class) GetExportAsMenu() [1]gdclass.PopupMenu { //gd:EditorPlugin.get_export_as_menu
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_export_as_menu, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret)}
+	var ret = [1]gdclass.PopupMenu{gdclass.NewPopupMenu(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 
@@ -2609,7 +2609,7 @@ func (self class) AddCustomType(atype String.Readable, base String.Readable, scr
 		base   gdextension.String
 		script gdextension.Object
 		icon   gdextension.Object
-	}{pointers.Get(gd.InternalString(atype)), pointers.Get(gd.InternalString(base)), gdextension.Object(gd.ObjectChecked(script[0].AsObject())), gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))})
+	}{pointers.Get(gd.InternalString(atype)), pointers.Get(gd.InternalString(base)), gdextension.Object(gd.ObjectChecked(gdclass.GetScript(script[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
 }
 
 /*
@@ -2661,7 +2661,7 @@ Makes a specific item in the bottom panel visible.
 */
 //go:nosplit
 func (self class) MakeBottomPanelItemVisible(item [1]gdclass.Control) { //gd:EditorPlugin.make_bottom_panel_item_visible
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.make_bottom_panel_item_visible, 0|(gdextension.SizeObject<<4), &struct{ item gdextension.Object }{gdextension.Object(gd.ObjectChecked(item[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.make_bottom_panel_item_visible, 0|(gdextension.SizeObject<<4), &struct{ item gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(item[0])))})
 }
 
 /*
@@ -2678,7 +2678,7 @@ Gets the undo/redo object. Most actions in the editor can be undoable, so use th
 //go:nosplit
 func (self class) GetUndoRedo() [1]gdclass.EditorUndoRedoManager { //gd:EditorPlugin.get_undo_redo
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_undo_redo, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.EditorUndoRedoManager{gd.PointerLifetimeBoundTo[gdclass.EditorUndoRedoManager](self.AsObject(), r_ret)}
+	var ret = [1]gdclass.EditorUndoRedoManager{gdclass.NewEditorUndoRedoManager(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 
@@ -2718,7 +2718,7 @@ Registers a custom translation parser plugin for extracting translatable strings
 */
 //go:nosplit
 func (self class) AddTranslationParserPlugin(parser [1]gdclass.EditorTranslationParserPlugin) { //gd:EditorPlugin.add_translation_parser_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_translation_parser_plugin, 0|(gdextension.SizeObject<<4), &struct{ parser gdextension.Object }{gdextension.Object(gd.ObjectChecked(parser[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_translation_parser_plugin, 0|(gdextension.SizeObject<<4), &struct{ parser gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorTranslationParserPlugin(parser[0])))})
 }
 
 /*
@@ -2728,7 +2728,7 @@ Removes a custom translation parser plugin registered by [AddTranslationParserPl
 */
 //go:nosplit
 func (self class) RemoveTranslationParserPlugin(parser [1]gdclass.EditorTranslationParserPlugin) { //gd:EditorPlugin.remove_translation_parser_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_translation_parser_plugin, 0|(gdextension.SizeObject<<4), &struct{ parser gdextension.Object }{gdextension.Object(gd.ObjectChecked(parser[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_translation_parser_plugin, 0|(gdextension.SizeObject<<4), &struct{ parser gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorTranslationParserPlugin(parser[0])))})
 }
 
 /*
@@ -2750,7 +2750,7 @@ func (self class) AddImportPlugin(importer [1]gdclass.EditorImportPlugin, first_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_import_plugin, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		importer       gdextension.Object
 		first_priority bool
-	}{gdextension.Object(gd.ObjectChecked(importer[0].AsObject())), first_priority})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorImportPlugin(importer[0]))), first_priority})
 }
 
 /*
@@ -2760,7 +2760,7 @@ Removes an import plugin registered by [AddImportPlugin].
 */
 //go:nosplit
 func (self class) RemoveImportPlugin(importer [1]gdclass.EditorImportPlugin) { //gd:EditorPlugin.remove_import_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_import_plugin, 0|(gdextension.SizeObject<<4), &struct{ importer gdextension.Object }{gdextension.Object(gd.ObjectChecked(importer[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_import_plugin, 0|(gdextension.SizeObject<<4), &struct{ importer gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorImportPlugin(importer[0])))})
 }
 
 /*
@@ -2775,7 +2775,7 @@ func (self class) AddSceneFormatImporterPlugin(scene_format_importer [1]gdclass.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_scene_format_importer_plugin, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		scene_format_importer gdextension.Object
 		first_priority        bool
-	}{gdextension.Object(gd.ObjectChecked(scene_format_importer[0].AsObject())), first_priority})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorSceneFormatImporter(scene_format_importer[0]))), first_priority})
 }
 
 /*
@@ -2785,7 +2785,7 @@ Removes a scene format importer registered by [AddSceneFormatImporterPlugin].
 */
 //go:nosplit
 func (self class) RemoveSceneFormatImporterPlugin(scene_format_importer [1]gdclass.EditorSceneFormatImporter) { //gd:EditorPlugin.remove_scene_format_importer_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_scene_format_importer_plugin, 0|(gdextension.SizeObject<<4), &struct{ scene_format_importer gdextension.Object }{gdextension.Object(gd.ObjectChecked(scene_format_importer[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_scene_format_importer_plugin, 0|(gdextension.SizeObject<<4), &struct{ scene_format_importer gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorSceneFormatImporter(scene_format_importer[0])))})
 }
 
 /*
@@ -2800,7 +2800,7 @@ func (self class) AddScenePostImportPlugin(scene_import_plugin [1]gdclass.Editor
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_scene_post_import_plugin, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		scene_import_plugin gdextension.Object
 		first_priority      bool
-	}{gdextension.Object(gd.ObjectChecked(scene_import_plugin[0].AsObject())), first_priority})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorScenePostImportPlugin(scene_import_plugin[0]))), first_priority})
 }
 
 /*
@@ -2811,7 +2811,7 @@ Remove the [EditorScenePostImportPlugin], added with [AddScenePostImportPlugin].
 */
 //go:nosplit
 func (self class) RemoveScenePostImportPlugin(scene_import_plugin [1]gdclass.EditorScenePostImportPlugin) { //gd:EditorPlugin.remove_scene_post_import_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_scene_post_import_plugin, 0|(gdextension.SizeObject<<4), &struct{ scene_import_plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(scene_import_plugin[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_scene_post_import_plugin, 0|(gdextension.SizeObject<<4), &struct{ scene_import_plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorScenePostImportPlugin(scene_import_plugin[0])))})
 }
 
 /*
@@ -2824,7 +2824,7 @@ See [AddInspectorPlugin] for an example of how to register a plugin.
 */
 //go:nosplit
 func (self class) AddExportPlugin(plugin [1]gdclass.EditorExportPlugin) { //gd:EditorPlugin.add_export_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_export_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_export_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorExportPlugin(plugin[0])))})
 }
 
 /*
@@ -2834,7 +2834,7 @@ Removes an export plugin registered by [AddExportPlugin].
 */
 //go:nosplit
 func (self class) RemoveExportPlugin(plugin [1]gdclass.EditorExportPlugin) { //gd:EditorPlugin.remove_export_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_export_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_export_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorExportPlugin(plugin[0])))})
 }
 
 /*
@@ -2844,7 +2844,7 @@ Registers a new [EditorExportPlatform]. Export platforms provides functionality 
 */
 //go:nosplit
 func (self class) AddExportPlatform(platform [1]gdclass.EditorExportPlatform) { //gd:EditorPlugin.add_export_platform
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_export_platform, 0|(gdextension.SizeObject<<4), &struct{ platform gdextension.Object }{gdextension.Object(gd.ObjectChecked(platform[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_export_platform, 0|(gdextension.SizeObject<<4), &struct{ platform gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorExportPlatform(platform[0])))})
 }
 
 /*
@@ -2854,7 +2854,7 @@ Removes an export platform registered by [AddExportPlatform].
 */
 //go:nosplit
 func (self class) RemoveExportPlatform(platform [1]gdclass.EditorExportPlatform) { //gd:EditorPlugin.remove_export_platform
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_export_platform, 0|(gdextension.SizeObject<<4), &struct{ platform gdextension.Object }{gdextension.Object(gd.ObjectChecked(platform[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_export_platform, 0|(gdextension.SizeObject<<4), &struct{ platform gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorExportPlatform(platform[0])))})
 }
 
 /*
@@ -2868,7 +2868,7 @@ See [AddInspectorPlugin] for an example of how to register a plugin.
 */
 //go:nosplit
 func (self class) AddNode3dGizmoPlugin(plugin [1]gdclass.EditorNode3DGizmoPlugin) { //gd:EditorPlugin.add_node_3d_gizmo_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_node_3d_gizmo_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_node_3d_gizmo_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorNode3DGizmoPlugin(plugin[0])))})
 }
 
 /*
@@ -2878,7 +2878,7 @@ Removes a gizmo plugin registered by [AddNode3dGizmoPlugin].
 */
 //go:nosplit
 func (self class) RemoveNode3dGizmoPlugin(plugin [1]gdclass.EditorNode3DGizmoPlugin) { //gd:EditorPlugin.remove_node_3d_gizmo_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_node_3d_gizmo_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_node_3d_gizmo_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorNode3DGizmoPlugin(plugin[0])))})
 }
 
 /*
@@ -2920,7 +2920,7 @@ Note: Always use [RemoveInspectorPlugin] to remove the registered [EditorInspect
 */
 //go:nosplit
 func (self class) AddInspectorPlugin(plugin [1]gdclass.EditorInspectorPlugin) { //gd:EditorPlugin.add_inspector_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_inspector_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_inspector_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorInspectorPlugin(plugin[0])))})
 }
 
 /*
@@ -2930,7 +2930,7 @@ Removes an inspector plugin registered by [AddInspectorPlugin].
 */
 //go:nosplit
 func (self class) RemoveInspectorPlugin(plugin [1]gdclass.EditorInspectorPlugin) { //gd:EditorPlugin.remove_inspector_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_inspector_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_inspector_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorInspectorPlugin(plugin[0])))})
 }
 
 /*
@@ -2942,7 +2942,7 @@ See [EditorResourceConversionPlugin] for an example of how to create a resource 
 */
 //go:nosplit
 func (self class) AddResourceConversionPlugin(plugin [1]gdclass.EditorResourceConversionPlugin) { //gd:EditorPlugin.add_resource_conversion_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_resource_conversion_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_resource_conversion_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorResourceConversionPlugin(plugin[0])))})
 }
 
 /*
@@ -2952,7 +2952,7 @@ Removes a resource conversion plugin registered by [AddResourceConversionPlugin]
 */
 //go:nosplit
 func (self class) RemoveResourceConversionPlugin(plugin [1]gdclass.EditorResourceConversionPlugin) { //gd:EditorPlugin.remove_resource_conversion_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_conversion_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_conversion_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorResourceConversionPlugin(plugin[0])))})
 }
 
 /*
@@ -2986,7 +2986,7 @@ func (self class) AddContextMenuPlugin(slot EditorContextMenuPlugin.ContextMenuS
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_context_menu_plugin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		slot   EditorContextMenuPlugin.ContextMenuSlot
 		plugin gdextension.Object
-	}{slot, gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
+	}{slot, gdextension.Object(gd.ObjectChecked(gdclass.GetEditorContextMenuPlugin(plugin[0])))})
 }
 
 /*
@@ -2994,7 +2994,7 @@ Removes the specified context menu plugin.
 */
 //go:nosplit
 func (self class) RemoveContextMenuPlugin(plugin [1]gdclass.EditorContextMenuPlugin) { //gd:EditorPlugin.remove_context_menu_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_context_menu_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_context_menu_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorContextMenuPlugin(plugin[0])))})
 }
 
 /*
@@ -3005,7 +3005,7 @@ Returns the [EditorInterface] singleton instance.
 //go:nosplit
 func (self class) GetEditorInterface() [1]gdclass.EditorInterface { //gd:EditorPlugin.get_editor_interface
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_interface, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.EditorInterface{gd.PointerLifetimeBoundTo[gdclass.EditorInterface](self.AsObject(), r_ret)}
+	var ret = [1]gdclass.EditorInterface{gdclass.NewEditorInterface(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 
@@ -3019,7 +3019,7 @@ Warning: Removing and freeing this node will render a part of the editor useless
 //go:nosplit
 func (self class) GetScriptCreateDialog() [1]gdclass.ScriptCreateDialog { //gd:EditorPlugin.get_script_create_dialog
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_script_create_dialog, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.ScriptCreateDialog{gd.PointerLifetimeBoundTo[gdclass.ScriptCreateDialog](self.AsObject(), r_ret)}
+	var ret = [1]gdclass.ScriptCreateDialog{gdclass.NewScriptCreateDialog(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 
@@ -3031,7 +3031,7 @@ Adds a [Script] as debugger plugin to the Debugger. The script must extend [Edit
 */
 //go:nosplit
 func (self class) AddDebuggerPlugin(script [1]gdclass.EditorDebuggerPlugin) { //gd:EditorPlugin.add_debugger_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_debugger_plugin, 0|(gdextension.SizeObject<<4), &struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(script[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_debugger_plugin, 0|(gdextension.SizeObject<<4), &struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorDebuggerPlugin(script[0])))})
 }
 
 /*
@@ -3039,7 +3039,7 @@ Removes the debugger plugin with given script from the Debugger.
 */
 //go:nosplit
 func (self class) RemoveDebuggerPlugin(script [1]gdclass.EditorDebuggerPlugin) { //gd:EditorPlugin.remove_debugger_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_debugger_plugin, 0|(gdextension.SizeObject<<4), &struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(script[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_debugger_plugin, 0|(gdextension.SizeObject<<4), &struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorDebuggerPlugin(script[0])))})
 }
 
 /*
@@ -3060,7 +3060,7 @@ func (self Instance) OnSceneChanged(cb func(scene_root Node.Instance), flags ...
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("scene_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("scene_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3076,7 +3076,7 @@ func (self Instance) OnSceneClosed(cb func(filepath string), flags ...Signal.Fla
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("scene_closed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("scene_closed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3092,7 +3092,7 @@ func (self Instance) OnMainScreenChanged(cb func(screen_name string), flags ...S
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("main_screen_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("main_screen_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3110,7 +3110,7 @@ func (self Instance) OnResourceSaved(cb func(resource Resource.Instance), flags 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("resource_saved"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("resource_saved"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3128,7 +3128,7 @@ func (self Instance) OnSceneSaved(cb func(filepath string), flags ...Signal.Flag
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("scene_saved"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("scene_saved"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3144,7 +3144,7 @@ func (self Instance) OnProjectSettingsChanged(cb func(), flags ...Signal.Flags) 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("project_settings_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("project_settings_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3153,16 +3153,16 @@ func (self class) ProjectSettingsChanged() Signal.Any {
 }
 
 func (self class) AsEditorPlugin() Advanced {
-	return Advanced{pointers.AsA[gdclass.EditorPlugin](self[0])}
+	return Advanced{gdclass.NewEditorPlugin(self.AsObject()[0])}
 }
 func (self Instance) AsEditorPlugin() Instance {
-	return Instance{pointers.AsA[gdclass.EditorPlugin](self[0])}
+	return Instance{gdclass.NewEditorPlugin(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsEditorPlugin() Instance { return self.Super().AsEditorPlugin() }
-func (self class) AsNode() Node.Advanced            { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced            { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance    { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -3275,7 +3275,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorPlugin", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.EditorPlugin](ptr)} })
+	gdclass.Register("EditorPlugin", func(ptr gd.Object) any { return Instance{gdclass.NewEditorPlugin(ptr)} })
 }
 
 type CustomControlContainer int //gd:EditorPlugin.CustomControlContainer

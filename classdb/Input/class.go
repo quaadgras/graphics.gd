@@ -175,7 +175,7 @@ var self [1]gdclass.Input
 var once sync.Once
 
 func singleton() {
-	self[0] = pointers.Raw[gdclass.Input]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
+	self[0] = gdclass.NewInput(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
 }
 
 /*
@@ -785,22 +785,22 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.Input
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetInput(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Input](obj[0])
+		self[0] = gdclass.NewInput(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Input](obj[0])
+		self[0] = gdclass.NewInput(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetInput(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
@@ -1052,7 +1052,7 @@ func (self class) IsActionJustPressedByEvent(action String.Name, event [1]gdclas
 		action      gdextension.StringName
 		event       gdextension.Object
 		exact_match bool
-	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(event[0].AsObject())), exact_match})
+	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0]))), exact_match})
 	var ret = r_ret
 	return ret
 }
@@ -1078,7 +1078,7 @@ func (self class) IsActionJustReleasedByEvent(action String.Name, event [1]gdcla
 		action      gdextension.StringName
 		event       gdextension.Object
 		exact_match bool
-	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(event[0].AsObject())), exact_match})
+	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0]))), exact_match})
 	var ret = r_ret
 	return ret
 }
@@ -1622,7 +1622,7 @@ func (self class) SetCustomMouseCursor(image [1]gdclass.Resource, shape CursorSh
 		image   gdextension.Object
 		shape   CursorShape
 		hotspot Vector2.XY
-	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), shape, hotspot})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetResource(image[0]))), shape, hotspot})
 }
 
 /*
@@ -1645,7 +1645,7 @@ Note: Calling this function has no influence on the operating system. So for exa
 //go:nosplit
 func (self class) ParseInputEvent(event [1]gdclass.InputEvent) { //gd:Input.parse_input_event
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.parse_input_event, 0|(gdextension.SizeObject<<4), &struct{ event gdextension.Object }{gdextension.Object(gd.ObjectChecked(event[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.parse_input_event, 0|(gdextension.SizeObject<<4), &struct{ event gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0])))})
 }
 
 //go:nosplit
@@ -1712,7 +1712,7 @@ func OnJoyConnectionChanged(cb func(device Device, connected bool), flags ...Sig
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	self[0].AsObject()[0].Connect(gd.NewStringName("joy_connection_changed"), gd.NewCallable(cb), int64(flags_together))
+	gdclass.GetInput(self[0])[0].Connect(gd.NewStringName("joy_connection_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) JoyConnectionChanged() Signal.Any {
@@ -1734,7 +1734,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Input", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.Input](ptr)} })
+	gdclass.Register("Input", func(ptr gd.Object) any { return Instance{gdclass.NewInput(ptr)} })
 }
 
 type CursorShape int //gd:Input.CursorShape

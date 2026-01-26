@@ -186,30 +186,30 @@ func (self Instance) GetAnimationListSize() int { //gd:AnimationLibrary.get_anim
 type Advanced = class
 type class [1]gdclass.AnimationLibrary
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetAnimationLibrary(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.AnimationLibrary](obj[0])
+		self[0] = gdclass.NewAnimationLibrary(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.AnimationLibrary](obj[0])
+		self[0] = gdclass.NewAnimationLibrary(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetAnimationLibrary(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.AnimationLibrary{pointers.Add[gdclass.AnimationLibrary]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.AnimationLibrary{gdclass.NewAnimationLibrary(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetAnimationLibrary(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -219,7 +219,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.AnimationLibrary{pointers.New[gdclass.AnimationLibrary]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.AnimationLibrary{gdclass.NewAnimationLibrary(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -233,7 +233,7 @@ func (self class) AddAnimation(name String.Name, animation [1]gdclass.Animation)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_animation, gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name      gdextension.StringName
 		animation gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(animation[0].AsObject()))})
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetAnimation(animation[0])))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -281,7 +281,7 @@ Returns the [Animation] with the key 'name'. If the animation does not exist, nu
 //go:nosplit
 func (self class) GetAnimation(name String.Name) [1]gdclass.Animation { //gd:AnimationLibrary.get_animation
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_animation, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
-	var ret = [1]gdclass.Animation{gd.PointerWithOwnershipTransferredToGo[gdclass.Animation](r_ret)}
+	var ret = [1]gdclass.Animation{gdclass.NewAnimation(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -319,7 +319,7 @@ func (self Instance) OnAnimationAdded(cb func(name string), flags ...Signal.Flag
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("animation_added"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("animation_added"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -337,7 +337,7 @@ func (self Instance) OnAnimationRemoved(cb func(name string), flags ...Signal.Fl
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("animation_removed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("animation_removed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -355,7 +355,7 @@ func (self Instance) OnAnimationRenamed(cb func(name string, to_name string), fl
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("animation_renamed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("animation_renamed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -375,7 +375,7 @@ func (self Instance) OnAnimationChanged(cb func(name string), flags ...Signal.Fl
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("animation_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("animation_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -384,25 +384,25 @@ func (self class) AnimationChanged() Signal.Any {
 }
 
 func (self class) AsAnimationLibrary() Advanced {
-	return Advanced{pointers.AsA[gdclass.AnimationLibrary](self[0])}
+	return Advanced{gdclass.NewAnimationLibrary(self.AsObject()[0])}
 }
 func (self Instance) AsAnimationLibrary() Instance {
-	return Instance{pointers.AsA[gdclass.AnimationLibrary](self[0])}
+	return Instance{gdclass.NewAnimationLibrary(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsAnimationLibrary() Instance { return self.Super().AsAnimationLibrary() }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -419,5 +419,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AnimationLibrary", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.AnimationLibrary](ptr)} })
+	gdclass.Register("AnimationLibrary", func(ptr gd.Object) any { return Instance{gdclass.NewAnimationLibrary(ptr)} })
 }

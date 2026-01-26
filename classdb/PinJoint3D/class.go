@@ -139,30 +139,30 @@ func (self Instance) GetParam(param Param) Float.X { //gd:PinJoint3D.get_param
 type Advanced = class
 type class [1]gdclass.PinJoint3D
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetPinJoint3D(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.PinJoint3D](obj[0])
+		self[0] = gdclass.NewPinJoint3D(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.PinJoint3D](obj[0])
+		self[0] = gdclass.NewPinJoint3D(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetPinJoint3D(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.PinJoint3D{pointers.Add[gdclass.PinJoint3D]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.PinJoint3D{gdclass.NewPinJoint3D(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetPinJoint3D(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -172,7 +172,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.PinJoint3D{pointers.New[gdclass.PinJoint3D]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.PinJoint3D{gdclass.NewPinJoint3D(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -197,29 +197,29 @@ func (self class) GetParam(param Param) float64 { //gd:PinJoint3D.get_param
 	var ret = r_ret
 	return ret
 }
-func (self class) AsPinJoint3D() Advanced { return Advanced{pointers.AsA[gdclass.PinJoint3D](self[0])} }
+func (self class) AsPinJoint3D() Advanced { return Advanced{gdclass.NewPinJoint3D(self.AsObject()[0])} }
 func (self Instance) AsPinJoint3D() Instance {
-	return Instance{pointers.AsA[gdclass.PinJoint3D](self[0])}
+	return Instance{gdclass.NewPinJoint3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsPinJoint3D() Instance { return self.Super().AsPinJoint3D() }
 func (self class) AsJoint3D() Joint3D.Advanced {
-	return Joint3D.Advanced{pointers.AsA[gdclass.Joint3D](self[0])}
+	return Joint3D.Advanced{gdclass.NewJoint3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsJoint3D() Joint3D.Instance { return self.Super().AsJoint3D() }
 func (self Instance) AsJoint3D() Joint3D.Instance {
-	return Joint3D.Instance{pointers.AsA[gdclass.Joint3D](self[0])}
+	return Joint3D.Instance{gdclass.NewJoint3D(self.AsObject()[0])}
 }
 func (self class) AsNode3D() Node3D.Advanced {
-	return Node3D.Advanced{pointers.AsA[gdclass.Node3D](self[0])}
+	return Node3D.Advanced{gdclass.NewNode3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
 func (self Instance) AsNode3D() Node3D.Instance {
-	return Node3D.Instance{pointers.AsA[gdclass.Node3D](self[0])}
+	return Node3D.Instance{gdclass.NewNode3D(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -236,7 +236,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PinJoint3D", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.PinJoint3D](ptr)} })
+	gdclass.Register("PinJoint3D", func(ptr gd.Object) any { return Instance{gdclass.NewPinJoint3D(ptr)} })
 }
 
 type Param int //gd:PinJoint3D.Param

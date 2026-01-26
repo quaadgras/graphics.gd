@@ -125,7 +125,7 @@ var self [1]gdclass.InputMap
 var once sync.Once
 
 func singleton() {
-	self[0] = pointers.Raw[gdclass.InputMap]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
+	self[0] = gdclass.NewInputMap(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
 }
 
 /*
@@ -277,22 +277,22 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.InputMap
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetInputMap(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.InputMap](obj[0])
+		self[0] = gdclass.NewInputMap(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.InputMap](obj[0])
+		self[0] = gdclass.NewInputMap(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetInputMap(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
@@ -394,7 +394,7 @@ func (self class) ActionAddEvent(action String.Name, event [1]gdclass.InputEvent
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.action_add_event, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		action gdextension.StringName
 		event  gdextension.Object
-	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(event[0].AsObject()))})
+	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0])))})
 }
 
 /*
@@ -408,7 +408,7 @@ func (self class) ActionHasEvent(action String.Name, event [1]gdclass.InputEvent
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.action_has_event, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		action gdextension.StringName
 		event  gdextension.Object
-	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(event[0].AsObject()))})
+	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0])))})
 	var ret = r_ret
 	return ret
 }
@@ -424,7 +424,7 @@ func (self class) ActionEraseEvent(action String.Name, event [1]gdclass.InputEve
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.action_erase_event, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		action gdextension.StringName
 		event  gdextension.Object
-	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(event[0].AsObject()))})
+	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0])))})
 }
 
 /*
@@ -470,7 +470,7 @@ func (self class) EventIsAction(event [1]gdclass.InputEvent, action String.Name,
 		event       gdextension.Object
 		action      gdextension.StringName
 		exact_match bool
-	}{gdextension.Object(gd.ObjectChecked(event[0].AsObject())), pointers.Get(gd.InternalStringName(action)), exact_match})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0]))), pointers.Get(gd.InternalStringName(action)), exact_match})
 	var ret = r_ret
 	return ret
 }
@@ -501,5 +501,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("InputMap", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.InputMap](ptr)} })
+	gdclass.Register("InputMap", func(ptr gd.Object) any { return Instance{gdclass.NewInputMap(ptr)} })
 }

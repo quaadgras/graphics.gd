@@ -221,7 +221,7 @@ var self [1]gdclass.NativeMenu
 var once sync.Once
 
 func singleton() {
-	self[0] = pointers.Raw[gdclass.NativeMenu]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
+	self[0] = gdclass.NewNativeMenu(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
 }
 
 /*
@@ -1066,22 +1066,22 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.NativeMenu
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetNativeMenu(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.NativeMenu](obj[0])
+		self[0] = gdclass.NewNativeMenu(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.NativeMenu](obj[0])
+		self[0] = gdclass.NewNativeMenu(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetNativeMenu(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
@@ -1418,7 +1418,7 @@ func (self class) AddIconItem(rid RID.Any, icon [1]gdclass.Texture2D, label Stri
 		tag          gdextension.Variant
 		accelerator  Input.Key
 		index        int64
-	}{rid, gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index})
+	}{rid, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0]))), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index})
 	var ret = r_ret
 	return ret
 }
@@ -1448,7 +1448,7 @@ func (self class) AddIconCheckItem(rid RID.Any, icon [1]gdclass.Texture2D, label
 		tag          gdextension.Variant
 		accelerator  Input.Key
 		index        int64
-	}{rid, gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index})
+	}{rid, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0]))), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index})
 	var ret = r_ret
 	return ret
 }
@@ -1511,7 +1511,7 @@ func (self class) AddIconRadioCheckItem(rid RID.Any, icon [1]gdclass.Texture2D, 
 		tag          gdextension.Variant
 		accelerator  Input.Key
 		index        int64
-	}{rid, gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index})
+	}{rid, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0]))), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index})
 	var ret = r_ret
 	return ret
 }
@@ -1859,7 +1859,7 @@ func (self class) GetItemIcon(rid RID.Any, idx int64) [1]gdclass.Texture2D { //g
 		rid RID.Any
 		idx int64
 	}{rid, idx})
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2128,7 +2128,7 @@ func (self class) SetItemIcon(rid RID.Any, idx int64, icon [1]gdclass.Texture2D)
 		rid  RID.Any
 		idx  int64
 		icon gdextension.Object
-	}{rid, idx, gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))})
+	}{rid, idx, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
 }
 
 /*
@@ -2212,7 +2212,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("NativeMenu", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.NativeMenu](ptr)} })
+	gdclass.Register("NativeMenu", func(ptr gd.Object) any { return Instance{gdclass.NewNativeMenu(ptr)} })
 }
 
 type Feature int //gd:NativeMenu.Feature

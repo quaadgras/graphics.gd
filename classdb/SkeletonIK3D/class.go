@@ -226,30 +226,30 @@ func (self Instance) Stop() { //gd:SkeletonIK3D.stop
 type Advanced = class
 type class [1]gdclass.SkeletonIK3D
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetSkeletonIK3D(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.SkeletonIK3D](obj[0])
+		self[0] = gdclass.NewSkeletonIK3D(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.SkeletonIK3D](obj[0])
+		self[0] = gdclass.NewSkeletonIK3D(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetSkeletonIK3D(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.SkeletonIK3D{pointers.Add[gdclass.SkeletonIK3D]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.SkeletonIK3D{gdclass.NewSkeletonIK3D(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetSkeletonIK3D(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -259,7 +259,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.SkeletonIK3D{pointers.New[gdclass.SkeletonIK3D]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.SkeletonIK3D{gdclass.NewSkeletonIK3D(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -501,7 +501,7 @@ Returns the parent [Skeleton3D] node that was present when SkeletonIK entered th
 //go:nosplit
 func (self class) GetParentSkeleton() [1]gdclass.Skeleton3D { //gd:SkeletonIK3D.get_parent_skeleton
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_parent_skeleton, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Skeleton3D{gd.PointerMustAssertInstanceID[gdclass.Skeleton3D](r_ret)}
+	var ret = [1]gdclass.Skeleton3D{gdclass.NewSkeleton3D(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -575,32 +575,32 @@ func (self class) GetInterpolation() float64 { //gd:SkeletonIK3D.get_interpolati
 	return ret
 }
 func (self class) AsSkeletonIK3D() Advanced {
-	return Advanced{pointers.AsA[gdclass.SkeletonIK3D](self[0])}
+	return Advanced{gdclass.NewSkeletonIK3D(self.AsObject()[0])}
 }
 func (self Instance) AsSkeletonIK3D() Instance {
-	return Instance{pointers.AsA[gdclass.SkeletonIK3D](self[0])}
+	return Instance{gdclass.NewSkeletonIK3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsSkeletonIK3D() Instance { return self.Super().AsSkeletonIK3D() }
 func (self class) AsSkeletonModifier3D() SkeletonModifier3D.Advanced {
-	return SkeletonModifier3D.Advanced{pointers.AsA[gdclass.SkeletonModifier3D](self[0])}
+	return SkeletonModifier3D.Advanced{gdclass.NewSkeletonModifier3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsSkeletonModifier3D() SkeletonModifier3D.Instance {
 	return self.Super().AsSkeletonModifier3D()
 }
 func (self Instance) AsSkeletonModifier3D() SkeletonModifier3D.Instance {
-	return SkeletonModifier3D.Instance{pointers.AsA[gdclass.SkeletonModifier3D](self[0])}
+	return SkeletonModifier3D.Instance{gdclass.NewSkeletonModifier3D(self.AsObject()[0])}
 }
 func (self class) AsNode3D() Node3D.Advanced {
-	return Node3D.Advanced{pointers.AsA[gdclass.Node3D](self[0])}
+	return Node3D.Advanced{gdclass.NewNode3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
 func (self Instance) AsNode3D() Node3D.Instance {
-	return Node3D.Instance{pointers.AsA[gdclass.Node3D](self[0])}
+	return Node3D.Instance{gdclass.NewNode3D(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -617,5 +617,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("SkeletonIK3D", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.SkeletonIK3D](ptr)} })
+	gdclass.Register("SkeletonIK3D", func(ptr gd.Object) any { return Instance{gdclass.NewSkeletonIK3D(ptr)} })
 }

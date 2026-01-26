@@ -180,30 +180,30 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.InputEventMIDI
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetInputEventMIDI(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.InputEventMIDI](obj[0])
+		self[0] = gdclass.NewInputEventMIDI(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.InputEventMIDI](obj[0])
+		self[0] = gdclass.NewInputEventMIDI(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetInputEventMIDI(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.InputEventMIDI{pointers.Add[gdclass.InputEventMIDI]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.InputEventMIDI{gdclass.NewInputEventMIDI(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetInputEventMIDI(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -213,7 +213,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.InputEventMIDI{pointers.New[gdclass.InputEventMIDI]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.InputEventMIDI{gdclass.NewInputEventMIDI(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -443,32 +443,32 @@ func (self class) GetControllerValue() int64 { //gd:InputEventMIDI.get_controlle
 	return ret
 }
 func (self class) AsInputEventMIDI() Advanced {
-	return Advanced{pointers.AsA[gdclass.InputEventMIDI](self[0])}
+	return Advanced{gdclass.NewInputEventMIDI(self.AsObject()[0])}
 }
 func (self Instance) AsInputEventMIDI() Instance {
-	return Instance{pointers.AsA[gdclass.InputEventMIDI](self[0])}
+	return Instance{gdclass.NewInputEventMIDI(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsInputEventMIDI() Instance { return self.Super().AsInputEventMIDI() }
 func (self class) AsInputEvent() InputEvent.Advanced {
-	return InputEvent.Advanced{pointers.AsA[gdclass.InputEvent](self[0])}
+	return InputEvent.Advanced{gdclass.NewInputEvent(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsInputEvent() InputEvent.Instance { return self.Super().AsInputEvent() }
 func (self Instance) AsInputEvent() InputEvent.Instance {
-	return InputEvent.Instance{pointers.AsA[gdclass.InputEvent](self[0])}
+	return InputEvent.Instance{gdclass.NewInputEvent(self.AsObject()[0])}
 }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -485,7 +485,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("InputEventMIDI", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.InputEventMIDI](ptr)} })
+	gdclass.Register("InputEventMIDI", func(ptr gd.Object) any { return Instance{gdclass.NewInputEventMIDI(ptr)} })
 }
 
 type Message int //gd:MIDIMessage

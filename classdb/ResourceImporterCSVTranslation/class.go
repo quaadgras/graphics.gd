@@ -117,30 +117,32 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.ResourceImporterCSVTranslation
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetResourceImporterCSVTranslation(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ResourceImporterCSVTranslation](obj[0])
+		self[0] = gdclass.NewResourceImporterCSVTranslation(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ResourceImporterCSVTranslation](obj[0])
+		self[0] = gdclass.NewResourceImporterCSVTranslation(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object {
+	return gdclass.GetResourceImporterCSVTranslation(self[0])
+}
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.ResourceImporterCSVTranslation{pointers.Add[gdclass.ResourceImporterCSVTranslation]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.ResourceImporterCSVTranslation{gdclass.NewResourceImporterCSVTranslation(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetResourceImporterCSVTranslation(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -150,36 +152,36 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.ResourceImporterCSVTranslation{pointers.New[gdclass.ResourceImporterCSVTranslation]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.ResourceImporterCSVTranslation{gdclass.NewResourceImporterCSVTranslation(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
 
 func (self class) AsResourceImporterCSVTranslation() Advanced {
-	return Advanced{pointers.AsA[gdclass.ResourceImporterCSVTranslation](self[0])}
+	return Advanced{gdclass.NewResourceImporterCSVTranslation(self.AsObject()[0])}
 }
 func (self Instance) AsResourceImporterCSVTranslation() Instance {
-	return Instance{pointers.AsA[gdclass.ResourceImporterCSVTranslation](self[0])}
+	return Instance{gdclass.NewResourceImporterCSVTranslation(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResourceImporterCSVTranslation() Instance {
 	return self.Super().AsResourceImporterCSVTranslation()
 }
 func (self class) AsResourceImporter() ResourceImporter.Advanced {
-	return ResourceImporter.Advanced{pointers.AsA[gdclass.ResourceImporter](self[0])}
+	return ResourceImporter.Advanced{gdclass.NewResourceImporter(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResourceImporter() ResourceImporter.Instance {
 	return self.Super().AsResourceImporter()
 }
 func (self Instance) AsResourceImporter() ResourceImporter.Instance {
-	return ResourceImporter.Instance{pointers.AsA[gdclass.ResourceImporter](self[0])}
+	return ResourceImporter.Instance{gdclass.NewResourceImporter(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -196,5 +198,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ResourceImporterCSVTranslation", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.ResourceImporterCSVTranslation](ptr)} })
+	gdclass.Register("ResourceImporterCSVTranslation", func(ptr gd.Object) any { return Instance{gdclass.NewResourceImporterCSVTranslation(ptr)} })
 }

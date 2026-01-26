@@ -121,30 +121,30 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.Texture3DRD
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetTexture3DRD(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Texture3DRD](obj[0])
+		self[0] = gdclass.NewTexture3DRD(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Texture3DRD](obj[0])
+		self[0] = gdclass.NewTexture3DRD(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetTexture3DRD(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.Texture3DRD{pointers.Add[gdclass.Texture3DRD]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.Texture3DRD{gdclass.NewTexture3DRD(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetTexture3DRD(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -154,7 +154,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.Texture3DRD{pointers.New[gdclass.Texture3DRD]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.Texture3DRD{gdclass.NewTexture3DRD(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -187,39 +187,39 @@ func (self class) GetTextureRdRid() RID.Any { //gd:Texture3DRD.get_texture_rd_ri
 	return ret
 }
 func (self class) AsTexture3DRD() Advanced {
-	return Advanced{pointers.AsA[gdclass.Texture3DRD](self[0])}
+	return Advanced{gdclass.NewTexture3DRD(self.AsObject()[0])}
 }
 func (self Instance) AsTexture3DRD() Instance {
-	return Instance{pointers.AsA[gdclass.Texture3DRD](self[0])}
+	return Instance{gdclass.NewTexture3DRD(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsTexture3DRD() Instance { return self.Super().AsTexture3DRD() }
 func (self class) AsTexture3D() Texture3D.Advanced {
-	return Texture3D.Advanced{pointers.AsA[gdclass.Texture3D](self[0])}
+	return Texture3D.Advanced{gdclass.NewTexture3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsTexture3D() Texture3D.Instance { return self.Super().AsTexture3D() }
 func (self Instance) AsTexture3D() Texture3D.Instance {
-	return Texture3D.Instance{pointers.AsA[gdclass.Texture3D](self[0])}
+	return Texture3D.Instance{gdclass.NewTexture3D(self.AsObject()[0])}
 }
 func (self class) AsTexture() Texture.Advanced {
-	return Texture.Advanced{pointers.AsA[gdclass.Texture](self[0])}
+	return Texture.Advanced{gdclass.NewTexture(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsTexture() Texture.Instance { return self.Super().AsTexture() }
 func (self Instance) AsTexture() Texture.Instance {
-	return Texture.Instance{pointers.AsA[gdclass.Texture](self[0])}
+	return Texture.Instance{gdclass.NewTexture(self.AsObject()[0])}
 }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -236,5 +236,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Texture3DRD", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.Texture3DRD](ptr)} })
+	gdclass.Register("Texture3DRD", func(ptr gd.Object) any { return Instance{gdclass.NewTexture3DRD(ptr)} })
 }

@@ -1354,30 +1354,30 @@ func (self Instance) CallRecursive(method string, args ...any) { //gd:TreeItem.c
 type Advanced = class
 type class [1]gdclass.TreeItem
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetTreeItem(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.TreeItem](obj[0])
+		self[0] = gdclass.NewTreeItem(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.TreeItem](obj[0])
+		self[0] = gdclass.NewTreeItem(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetTreeItem(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.TreeItem{pointers.Add[gdclass.TreeItem]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.TreeItem{gdclass.NewTreeItem(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetTreeItem(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -1387,7 +1387,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.TreeItem{pointers.New[gdclass.TreeItem]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.TreeItem{gdclass.NewTreeItem(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -1777,7 +1777,7 @@ func (self class) SetIcon(column int64, texture [1]gdclass.Texture2D) { //gd:Tre
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		column  int64
 		texture gdextension.Object
-	}{column, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
+	}{column, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
 
 /*
@@ -1788,7 +1788,7 @@ Returns the given column's icon [Texture2D]. Error if no icon is set.
 //go:nosplit
 func (self class) GetIcon(column int64) [1]gdclass.Texture2D { //gd:TreeItem.get_icon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_icon, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1802,7 +1802,7 @@ func (self class) SetIconOverlay(column int64, texture [1]gdclass.Texture2D) { /
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon_overlay, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		column  int64
 		texture gdextension.Object
-	}{column, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
+	}{column, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
 
 /*
@@ -1813,7 +1813,7 @@ Returns the given column's icon overlay [Texture2D].
 //go:nosplit
 func (self class) GetIconOverlay(column int64) [1]gdclass.Texture2D { //gd:TreeItem.get_icon_overlay
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_icon_overlay, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1973,7 +1973,7 @@ func (self class) SetCustomDraw(column int64, obj [1]gd.Object, callback String.
 		column   int64
 		obj      gdextension.Object
 		callback gdextension.StringName
-	}{column, gdextension.Object(gd.ObjectChecked(obj[0].AsObject())), pointers.Get(gd.InternalStringName(callback))})
+	}{column, gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0]))), pointers.Get(gd.InternalStringName(callback))})
 }
 
 /*
@@ -2189,7 +2189,7 @@ func (self class) SetCustomFont(column int64, font [1]gdclass.Font) { //gd:TreeI
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_font, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		column int64
 		font   gdextension.Object
-	}{column, gdextension.Object(gd.ObjectChecked(font[0].AsObject()))})
+	}{column, gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0])))})
 }
 
 /*
@@ -2198,7 +2198,7 @@ Returns custom font used to draw text in the column 'column'.
 //go:nosplit
 func (self class) GetCustomFont(column int64) [1]gdclass.Font { //gd:TreeItem.get_custom_font
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_custom_font, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
-	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret)}
+	var ret = [1]gdclass.Font{gdclass.NewFont(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2302,7 +2302,7 @@ func (self class) AddButton(column int64, button [1]gdclass.Texture2D, id int64,
 		disabled     bool
 		tooltip_text gdextension.String
 		description  gdextension.String
-	}{column, gdextension.Object(gd.ObjectChecked(button[0].AsObject())), id, disabled, pointers.Get(gd.InternalString(tooltip_text)), pointers.Get(gd.InternalString(description))})
+	}{column, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(button[0]))), id, disabled, pointers.Get(gd.InternalString(tooltip_text)), pointers.Get(gd.InternalString(description))})
 }
 
 /*
@@ -2378,7 +2378,7 @@ func (self class) GetButton(column int64, button_index int64) [1]gdclass.Texture
 		column       int64
 		button_index int64
 	}{column, button_index})
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2405,7 +2405,7 @@ func (self class) SetButton(column int64, button_index int64, button [1]gdclass.
 		column       int64
 		button_index int64
 		button       gdextension.Object
-	}{column, button_index, gdextension.Object(gd.ObjectChecked(button[0].AsObject()))})
+	}{column, button_index, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(button[0])))})
 }
 
 /*
@@ -2551,7 +2551,7 @@ The new item will be inserted as position 'index' (the default value -1 means th
 //go:nosplit
 func (self class) CreateChild(index int64) [1]gdclass.TreeItem { //gd:TreeItem.create_child
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_child, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
-	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2564,7 +2564,7 @@ Adds a previously unparented [TreeItem] as a direct child of this one. The 'chil
 */
 //go:nosplit
 func (self class) AddChild(child [1]gdclass.TreeItem) { //gd:TreeItem.add_child
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_child, 0|(gdextension.SizeObject<<4), &struct{ child gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(child[0].AsObject()[0]))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_child, 0|(gdextension.SizeObject<<4), &struct{ child gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetTreeItem(child[0])[0]))})
 }
 
 /*
@@ -2581,7 +2581,7 @@ Note: If you want to move a child from one [Tree] to another, then instead of re
 */
 //go:nosplit
 func (self class) RemoveChild(child [1]gdclass.TreeItem) { //gd:TreeItem.remove_child
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_child, 0|(gdextension.SizeObject<<4), &struct{ child gdextension.Object }{gdextension.Object(gd.ObjectChecked(child[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_child, 0|(gdextension.SizeObject<<4), &struct{ child gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTreeItem(child[0])))})
 }
 
 /*
@@ -2592,7 +2592,7 @@ Returns the [Tree] that owns this TreeItem.
 //go:nosplit
 func (self class) GetTree() [1]gdclass.Tree { //gd:TreeItem.get_tree
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tree, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Tree{gd.PointerMustAssertInstanceID[gdclass.Tree](r_ret)}
+	var ret = [1]gdclass.Tree{gdclass.NewTree(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2602,7 +2602,7 @@ Returns the next sibling TreeItem in the tree or a null object if there is none.
 //go:nosplit
 func (self class) GetNext() [1]gdclass.TreeItem { //gd:TreeItem.get_next
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_next, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2612,7 +2612,7 @@ Returns the previous sibling TreeItem in the tree or a null object if there is n
 //go:nosplit
 func (self class) GetPrev() [1]gdclass.TreeItem { //gd:TreeItem.get_prev
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_prev, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2622,7 +2622,7 @@ Returns the parent TreeItem or a null object if there is none.
 //go:nosplit
 func (self class) GetParent() [1]gdclass.TreeItem { //gd:TreeItem.get_parent
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_parent, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2632,7 +2632,7 @@ Returns the TreeItem's first child.
 //go:nosplit
 func (self class) GetFirstChild() [1]gdclass.TreeItem { //gd:TreeItem.get_first_child
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_first_child, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2644,7 +2644,7 @@ If 'wrap' is enabled, the method will wrap around to the first element in the tr
 //go:nosplit
 func (self class) GetNextInTree(wrap bool) [1]gdclass.TreeItem { //gd:TreeItem.get_next_in_tree
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_next_in_tree, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ wrap bool }{wrap})
-	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2656,7 +2656,7 @@ If 'wrap' is enabled, the method will wrap around to the last element in the tre
 //go:nosplit
 func (self class) GetPrevInTree(wrap bool) [1]gdclass.TreeItem { //gd:TreeItem.get_prev_in_tree
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_prev_in_tree, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ wrap bool }{wrap})
-	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2668,7 +2668,7 @@ If 'wrap' is enabled, the method will wrap around to the first visible element i
 //go:nosplit
 func (self class) GetNextVisible(wrap bool) [1]gdclass.TreeItem { //gd:TreeItem.get_next_visible
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_next_visible, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ wrap bool }{wrap})
-	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2680,7 +2680,7 @@ If 'wrap' is enabled, the method will wrap around to the last visible element in
 //go:nosplit
 func (self class) GetPrevVisible(wrap bool) [1]gdclass.TreeItem { //gd:TreeItem.get_prev_visible
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_prev_visible, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ wrap bool }{wrap})
-	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2694,7 +2694,7 @@ Negative indices access the children from the last one.
 //go:nosplit
 func (self class) GetChild(index int64) [1]gdclass.TreeItem { //gd:TreeItem.get_child
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_child, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
-	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2735,7 +2735,7 @@ Note: You can't move to the root or move the root.
 */
 //go:nosplit
 func (self class) MoveBefore(item [1]gdclass.TreeItem) { //gd:TreeItem.move_before
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_before, 0|(gdextension.SizeObject<<4), &struct{ item gdextension.Object }{gdextension.Object(gd.ObjectChecked(item[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_before, 0|(gdextension.SizeObject<<4), &struct{ item gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTreeItem(item[0])))})
 }
 
 /*
@@ -2745,7 +2745,7 @@ Note: You can't move to the root or move the root.
 */
 //go:nosplit
 func (self class) MoveAfter(item [1]gdclass.TreeItem) { //gd:TreeItem.move_after
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_after, 0|(gdextension.SizeObject<<4), &struct{ item gdextension.Object }{gdextension.Object(gd.ObjectChecked(item[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_after, 0|(gdextension.SizeObject<<4), &struct{ item gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTreeItem(item[0])))})
 }
 
 /*
@@ -2765,8 +2765,8 @@ func (self class) CallRecursive(method String.Name, args ...gd.Variant) { //gd:T
 	_ = ret
 }
 
-func (self class) AsTreeItem() Advanced         { return Advanced{pointers.AsA[gdclass.TreeItem](self[0])} }
-func (self Instance) AsTreeItem() Instance      { return Instance{pointers.AsA[gdclass.TreeItem](self[0])} }
+func (self class) AsTreeItem() Advanced         { return Advanced{gdclass.NewTreeItem(self.AsObject()[0])} }
+func (self Instance) AsTreeItem() Instance      { return Instance{gdclass.NewTreeItem(self.AsObject()[0])} }
 func (self *Extension[T]) AsTreeItem() Instance { return self.Super().AsTreeItem() }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -2783,7 +2783,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("TreeItem", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.TreeItem](ptr)} })
+	gdclass.Register("TreeItem", func(ptr gd.Object) any { return Instance{gdclass.NewTreeItem(ptr)} })
 }
 
 type TreeCellMode int //gd:TreeItem.TreeCellMode

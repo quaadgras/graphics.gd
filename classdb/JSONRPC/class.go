@@ -235,30 +235,30 @@ func (self MoreArgs) MakeResponseError(code int, message string, id any) Respons
 type Advanced = class
 type class [1]gdclass.JSONRPC
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetJSONRPC(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.JSONRPC](obj[0])
+		self[0] = gdclass.NewJSONRPC(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.JSONRPC](obj[0])
+		self[0] = gdclass.NewJSONRPC(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetJSONRPC(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.JSONRPC{pointers.Add[gdclass.JSONRPC]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.JSONRPC{gdclass.NewJSONRPC(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetJSONRPC(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -268,7 +268,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.JSONRPC{pointers.New[gdclass.JSONRPC]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.JSONRPC{gdclass.NewJSONRPC(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -387,8 +387,8 @@ func (self class) MakeResponseError(code int64, message String.Readable, id vari
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-func (self class) AsJSONRPC() Advanced         { return Advanced{pointers.AsA[gdclass.JSONRPC](self[0])} }
-func (self Instance) AsJSONRPC() Instance      { return Instance{pointers.AsA[gdclass.JSONRPC](self[0])} }
+func (self class) AsJSONRPC() Advanced         { return Advanced{gdclass.NewJSONRPC(self.AsObject()[0])} }
+func (self Instance) AsJSONRPC() Instance      { return Instance{gdclass.NewJSONRPC(self.AsObject()[0])} }
 func (self *Extension[T]) AsJSONRPC() Instance { return self.Super().AsJSONRPC() }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -405,7 +405,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("JSONRPC", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.JSONRPC](ptr)} })
+	gdclass.Register("JSONRPC", func(ptr gd.Object) any { return Instance{gdclass.NewJSONRPC(ptr)} })
 }
 
 type ErrorCode int //gd:JSONRPC.ErrorCode
