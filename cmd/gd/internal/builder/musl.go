@@ -118,11 +118,11 @@ func (musl Musl) patch() error {
 	return nil
 }
 
-func (linux Musl) BuildMain(args ...string) error {
+func (musl Musl) BuildMain(args ...string) error {
 	return errors.New("not supported yet")
 }
 
-func (linux Musl) Run(args ...string) error {
+func (musl Musl) Run(args ...string) error {
 	var GOARCH = runtime.GOARCH
 	if goarch := os.Getenv("GOARCH"); goarch != "" {
 		GOARCH = goarch
@@ -130,7 +130,7 @@ func (linux Musl) Run(args ...string) error {
 	if runtime.GOOS != "linux" || runtime.GOARCH != GOARCH {
 		return fmt.Errorf("gd run: cannot run linux/%v executable on %v/%v", GOARCH, runtime.GOOS, runtime.GOARCH)
 	}
-	if err := linux.Build(args...); err != nil {
+	if err := musl.Build(args...); err != nil {
 		return xray.New(err)
 	}
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
