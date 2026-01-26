@@ -47,7 +47,7 @@ func builderFor(goos string) Builder {
 	case "linux", "ubuntu", "arch", "debian", "nix", "musl":
 		os.Setenv("GOOS", "linux")
 		if goos == "musl" {
-			return builder.Musl{}
+			return &builder.Musl{}
 		}
 		return builder.Linux{}
 	case "windows", "win":
@@ -90,19 +90,17 @@ func gd(args ...string) error {
 	if GOARCH != "amd64" && GOARCH != "arm64" && GOARCH != "wasm" {
 		return errors.New("gd requires an amd64, wasm, or arm64 GOARCH")
 	}
-	if runtime.GOOS == "linux" && os.Getenv("GOOS") == "" {
+	var build_godot = func() error { return nil }
+	if runtime.GOOS == "linux" {
 		version, err := tooling.ListDynamicDependencies.CombinedOutput("--version")
 		if strings.HasPrefix(version, "musl") {
-			GOOS = "musl"
+			build_godot = func() error {
+				return builder.Musl{}.Build("-gcflags=graphics.gd/classdb/...=-N -l")
+			}
+			if os.Getenv("GOOS") == "" {
+				GOOS = "musl"
+			}
 		} else if err != nil {
-			return xray.New(err)
-		}
-	}
-	if err := project.Setup(); err != nil {
-		return err
-	}
-	if project.IncludesGo {
-		if err := docgen.Process(project.Directory); err != nil {
 			return xray.New(err)
 		}
 	}
@@ -139,6 +137,14 @@ func gd(args ...string) error {
 			}
 		}
 	}
+	if err := project.Setup(build_godot); err != nil {
+		return err
+	}
+	if project.IncludesGo {
+		if err := docgen.Process(project.Directory); err != nil {
+			return xray.New(err)
+		}
+	}
 	switch len(args) {
 	case 0:
 		if err := os.Chdir(project.Directory); err != nil {
@@ -167,7 +173,7 @@ func gd(args ...string) error {
 			if err := os.MkdirAll(filepath.Join(project.ReleasesDirectory, GOOS, GOARCH), 0755); err != nil {
 				return xray.New(err)
 			}
-			return platform.BuildMain(args[1:]...)
+			return platform.BuildMain(append([]string{"-ldflags=-s -w"}, args[1:]...)...)
 		case "run":
 			if err := os.Chdir(project.Directory); err != nil {
 				return xray.New(err)

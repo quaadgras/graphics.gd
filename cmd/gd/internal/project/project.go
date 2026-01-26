@@ -78,7 +78,14 @@ func SetupVersion() {
 	}
 }
 
-func Setup() error {
+type Builder interface {
+	Run(...string) error       // go run
+	Build(...string) error     // go build -buildmode=c-shared
+	BuildMain(...string) error // go build
+	Test(...string) error      // go test
+}
+
+func Setup(build_godot func() error) error {
 	defer SetupVersion()
 	wd, err := os.Getwd()
 	if err != nil {
@@ -155,6 +162,9 @@ func Setup() error {
 		return xray.New(err)
 	}
 	if err := SetupFile(false, filepath.Join(GraphicsDirectory, ".gitignore"), gitignore); err != nil {
+		return xray.New(err)
+	}
+	if err := build_godot(); err != nil {
 		return xray.New(err)
 	}
 	gdextension_version, err := tooling.Godot.Output(tooling.Godot.VersionFlag)
