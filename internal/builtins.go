@@ -539,7 +539,7 @@ func (o Object) HasMethod(name StringName) bool {
 	}))
 }
 func (o Object) Call(method StringName, args ...Variant) (Variant, error) {
-	self := gdextension.Object(pointers.Get(o.AsObject()[0])[0])
+	self := gdextension.Object(pointers.Get(o)[0])
 	name := pointers.Get(method)
 	if gdextension.Host.Objects.Script.DefinesMethod(self, name) {
 		var converted []gdextension.Variant

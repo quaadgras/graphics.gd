@@ -191,7 +191,7 @@ func (obj Instance) SetMessageTranslation(enable bool) {
 // property values are still kept.
 func (obj Instance) SetScript(script [1]gdclass.Script) {
 	gd.PointerWithOwnershipTransferredToGodot(gdclass.GetScript(script[0])[0])
-	obj[0].SetScript(gd.NewVariant(script))
+	obj[0].SetScript(gd.NewVariant(gdclass.GetScript(script[0])[0]))
 }
 
 // String returns a String representing the object. Defaults to "<ClassName#RID>". Override _to_string to
