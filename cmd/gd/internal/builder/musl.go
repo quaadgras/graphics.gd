@@ -3,12 +3,12 @@ package builder
 import (
 	"bytes"
 	"embed"
-	"errors"
 	"fmt"
 	"os"
 	"os/user"
 	"path/filepath"
 	"runtime"
+	"strings"
 
 	"graphics.gd/cmd/gd/internal/gdpaths"
 	"graphics.gd/cmd/gd/internal/project"
@@ -22,17 +22,20 @@ var (
 	musl_sdk embed.FS
 )
 
-var built bool
+var built_musl bool
 
 type Musl struct {
+	lib string
+	out string
 }
 
-func (musl Musl) Build(args ...string) error {
-	if built {
+func (musl Musl) Build(args ...string) (err error) {
+	os.Setenv("GOOS", "linux")
+	if built_musl {
 		return nil
 	}
 	defer func() {
-		built = true
+		built_musl = true
 	}()
 	if !project.IncludesGo {
 		return nil
@@ -44,6 +47,26 @@ func (musl Musl) Build(args ...string) error {
 	zig, err := tooling.Zig.Lookup()
 	if err != nil {
 		return xray.New(err)
+	}
+	if musl.lib == "" {
+		libgodot, err := tooling.LibGodotEditor.LookupPlatform("musl", GOARCH)
+		if err != nil {
+			return xray.New(err)
+		}
+		musl.lib = libgodot
+	}
+	if musl.out == "" {
+		musl.out = filepath.Join(project.GraphicsDirectory, "musl_"+GOARCH+".editor")
+		if runtime.GOOS == "linux" {
+			version, _ := tooling.ListDynamicDependencies.CombinedOutput("--version")
+			if strings.HasPrefix(version, "musl") {
+				defer func() {
+					if err == nil {
+						tooling.Godot.Path = musl.out
+					}
+				}()
+			}
+		}
 	}
 	if err := project.SetupFiles(musl_sdk, "bundled/musl", filepath.Join(gdpaths.Lib, "musl")); err != nil {
 		return xray.New(err)
@@ -83,14 +106,9 @@ func (musl Musl) Build(args ...string) error {
 	if err := tooling.Go.Action("build", args, "-buildmode=c-archive", "-overlay="+overlay, "-o", libgo); err != nil {
 		return xray.New(err)
 	}
-	libgodot, err := tooling.LibGodotEditor.LookupPlatform("musl", GOARCH)
-	if err != nil {
+	if err := tooling.Zig.Exec("cc", "-target", target, musl.lib, libgo, "-o", musl.out); err != nil {
 		return xray.New(err)
 	}
-	if err := tooling.Zig.Exec("cc", "-target", target, libgodot, libgo, "-o", filepath.Join(project.GraphicsDirectory, "musl_"+GOARCH+".editor")); err != nil {
-		return xray.New(err)
-	}
-	tooling.Godot.Path = filepath.Join(project.GraphicsDirectory, "musl_"+GOARCH+".editor")
 	return nil
 }
 
@@ -119,7 +137,39 @@ func (musl Musl) patch() error {
 }
 
 func (musl Musl) BuildMain(args ...string) error {
-	return errors.New("not supported yet")
+	if err := os.Remove(filepath.Join(project.GraphicsDirectory, "library.gdextension")); err != nil {
+		return xray.New(err)
+	}
+	var GOARCH = runtime.GOARCH
+	if goarch := os.Getenv("GOARCH"); goarch != "" {
+		GOARCH = goarch
+	}
+	var err error
+	musl.out = filepath.Join(project.GraphicsDirectory, ".godot", "godot.musl.template_release.x86_64")
+	musl.lib, err = tooling.LibGodot.LookupPlatform("musl", GOARCH)
+	if err != nil {
+		return xray.New(err)
+	}
+	built_musl = false
+	if err := musl.Build(args...); err != nil {
+		return xray.New(err)
+	}
+	var export []string
+	switch GOARCH {
+	case "amd64":
+		export = []string{"--headless", "--export-release", "Musl x86_64"}
+	case "arm64":
+		export = []string{"--headless", "--export-release", "Musl arm64"}
+	default:
+		return fmt.Errorf("gd export: cannot export musl %v", GOARCH)
+	}
+	if err := os.Chdir(project.GraphicsDirectory); err != nil {
+		return xray.New(err)
+	}
+	if err := tooling.Godot.Exec(export...); err != nil {
+		return xray.New(err)
+	}
+	return nil
 }
 
 func (musl Musl) Run(args ...string) error {
@@ -140,6 +190,7 @@ func (musl Musl) Run(args ...string) error {
 }
 
 func (musl Musl) Test(args ...string) error {
+	os.Setenv("GOOS", "linux")
 	var GOARCH = runtime.GOARCH
 	if goarch := os.Getenv("GOARCH"); goarch != "" {
 		GOARCH = goarch
