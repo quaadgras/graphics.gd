@@ -38,7 +38,7 @@ func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.V
 	case reflect.Bool:
 		return reflect.ValueOf(gdextension.Host.Variants.Bool(pointers.Get(value))).Convert(rtype), nil
 	case reflect.Array:
-		if reflect.PointerTo(rtype).Implements(reflect.TypeOf([0]IsClassCastable{}).Elem()) {
+		if reflect.PointerTo(rtype).Implements(reflect.TypeFor[IsClassCastable]()) {
 			if value.Type() != gdextension.TypeObject {
 				return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %s to %s", value.Type(), rtype))
 			}
@@ -126,10 +126,10 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 		default:
 			rvalue := reflect.ValueOf(value)
-			if rvalue.Kind() == reflect.Array && rvalue.Type().Elem().Implements(reflect.TypeFor[IsClass]()) {
+			if rvalue.Kind() == reflect.Array && rvalue.Type().Implements(reflect.TypeFor[IsClass]()) {
 				if rtype.Name() == "ID" {
 					var id gdextension.ObjectID
-					gdextension.Host.Objects.ID.Get(gdextension.Object(gdextension.Object(pointers.Get(rvalue.Index(0).Interface().(IsClass).AsObject()[0])[0])), gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
+					gdextension.Host.Objects.ID.Get(gdextension.Object(gdextension.Object(pointers.Get(rvalue.Interface().(IsClass).AsObject()[0])[0])), gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
 					return reflect.ValueOf(id).Convert(rtype), nil
 				}
 			}
@@ -154,7 +154,7 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 		}
 	case reflect.Array:
-		if rtype.Elem().Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
+		if rtype.Implements(reflect.TypeFor[IsClass]()) {
 			var obj = reflect.New(rtype)
 			obj.Interface().(IsClassCastable).SetObject([1]Object{VariantAsObject(variant)})
 			return obj.Elem(), nil
