@@ -22,9 +22,18 @@ var (
 	musl_sdk embed.FS
 )
 
-type Musl struct{}
+var built bool
+
+type Musl struct {
+}
 
 func (musl Musl) Build(args ...string) error {
+	if built {
+		return nil
+	}
+	defer func() {
+		built = true
+	}()
 	if !project.IncludesGo {
 		return nil
 	}
