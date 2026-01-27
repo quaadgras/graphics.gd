@@ -311,6 +311,9 @@ func (exe *toolchain) LookupPlatform(GOOS, GOARCH string) (string, error) {
 	}(); err != nil {
 		return "", xray.New(err)
 	}
+	if err := os.RemoveAll(install_path); err != nil {
+		return "", xray.New(err)
+	}
 	var unzip = variables.Replace(exe.Unzip)
 	if exe.IsApp && runtime.GOOS == "darwin" {
 		unzip = ""
@@ -338,9 +341,6 @@ func (exe *toolchain) LookupPlatform(GOOS, GOARCH string) (string, error) {
 			return "", xray.New(err)
 		}
 	default:
-		if err := os.RemoveAll(install_path); err != nil {
-			return "", xray.New(err)
-		}
 		if err := os.Rename(dest, install_path); err != nil {
 			return "", xray.New(err)
 		}
