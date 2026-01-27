@@ -2,7 +2,7 @@ name: Go
 
 on:
   push:
-    branches: ["release"]
+    branches: ["release", "staging"]
   pull_request:
     branches: ["release"]
 
