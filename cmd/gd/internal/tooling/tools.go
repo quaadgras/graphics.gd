@@ -9,7 +9,8 @@ var Godot = toolchain{
 	DownloadURL:   "https://downloads.godotengine.org/?version=$(VERSION)&flavor=stable$(OS)",
 	DownloadOS:    map[string]string{"windows": "&slug=win64.exe.zip&platform=windows.64", "linux": "&slug=linux.x86_64.zip&platform=linux.64", "darwin": "&slug=macos.universal.zip&platform=macos.universal"},
 	DownloadARCH:  map[string]string{"amd64": "x86_64", "arm64": "arm64"},
-	Unzip:         "Godot_v$(VERSION)-stable_$(OS).$(ARCH)",
+	DownloadEXT:   map[string]string{"windows": "windows.64", "linux": "linux.x86_64", "darwin": "macos.universal"},
+	Unzip:         "Godot_v$(VERSION)-stable_$(EXT).$(ARCH)",
 	IsApp:         true,
 	RequiredFor:   "graphics",
 
