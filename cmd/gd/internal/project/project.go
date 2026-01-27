@@ -174,9 +174,6 @@ func Setup(build_godot func() error) error {
 	if tooling.Godot.Name == "blazium" {
 		gdextension_version = "4.1.0"
 	}
-	if err := SetupFile(true, filepath.Join(GraphicsDirectory, "library.gdextension"), library_gdextension, gdextension_version); err != nil {
-		return xray.New(err)
-	}
 	if _, err := os.Stat(filepath.Join(GraphicsDirectory, ".godot")); os.IsNotExist(err) {
 		current, err := os.Getwd()
 		if err != nil {
@@ -191,6 +188,9 @@ func Setup(build_godot func() error) error {
 		if err := os.Chdir(current); err != nil {
 			return xray.New(err)
 		}
+	}
+	if err := SetupFile(true, filepath.Join(GraphicsDirectory, "library.gdextension"), library_gdextension, gdextension_version); err != nil {
+		return xray.New(err)
 	}
 	if err := SetupFile(false, filepath.Join(GraphicsDirectory, ".godot", "extension_list.cfg"), extension_list_cfg); err != nil {
 		return xray.New(err)
