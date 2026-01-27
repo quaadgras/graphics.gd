@@ -311,9 +311,6 @@ func (exe *toolchain) LookupPlatform(GOOS, GOARCH string) (string, error) {
 	}(); err != nil {
 		return "", xray.New(err)
 	}
-	if err := os.RemoveAll(install_path); err != nil {
-		return "", xray.New(err)
-	}
 	var unzip = variables.Replace(exe.Unzip)
 	if exe.IsApp && runtime.GOOS == "darwin" {
 		unzip = ""
