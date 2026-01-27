@@ -338,6 +338,9 @@ func (exe *toolchain) LookupPlatform(GOOS, GOARCH string) (string, error) {
 			return "", xray.New(err)
 		}
 	default:
+		if err := os.RemoveAll(install_path); err != nil {
+			return "", xray.New(err)
+		}
 		if err := os.Rename(dest, install_path); err != nil {
 			return "", xray.New(err)
 		}
