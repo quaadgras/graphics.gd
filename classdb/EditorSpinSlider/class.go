@@ -108,6 +108,8 @@ var methods struct {
 	is_read_only        gdextension.MethodForClass `hash:"36873697"`
 	set_flat            gdextension.MethodForClass `hash:"2586408642"`
 	is_flat             gdextension.MethodForClass `hash:"36873697"`
+	set_control_state   gdextension.MethodForClass `hash:"1324557109"`
+	get_control_state   gdextension.MethodForClass `hash:"3406006200"`
 	set_hide_slider     gdextension.MethodForClass `hash:"2586408642"`
 	is_hiding_slider    gdextension.MethodForClass `hash:"36873697"`
 	set_editing_integer gdextension.MethodForClass `hash:"2586408642"`
@@ -229,6 +231,19 @@ func (self Instance) SetFlat(value bool) Instance { //gd:EditorSpinSlider.flat
 }
 
 /*
+The state in which the control used to manipulate the value will be.
+*/
+func (self Instance) ControlState() ControlState { //gd:EditorSpinSlider.control_state
+	return ControlState(class(self).GetControlState())
+}
+
+// SetControlState sets the property returned by [GetControlState]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetControlState(value ControlState) Instance { //gd:EditorSpinSlider.control_state
+	class(self).SetControlState(value)
+	return self
+}
+
+/*
 If true, the slider and up/down arrows are hidden.
 */
 func (self Instance) HideSlider() bool { //gd:EditorSpinSlider.hide_slider
@@ -242,8 +257,10 @@ func (self Instance) SetHideSlider(value bool) Instance { //gd:EditorSpinSlider.
 }
 
 /*
-If true, the [EditorSpinSlider] is considered to be editing an integer value. If false, the [EditorSpinSlider] is considered to be editing a floating-point value. This is used to determine whether a slider should be drawn. The slider is only drawn for floats; integers use up-down arrows similar to [SpinBox] instead.
+If true, the [EditorSpinSlider] is considered to be editing an integer value. If false, the [EditorSpinSlider] is considered to be editing a floating-point value. This is used to determine whether a slider should be drawn by default. The slider is only drawn for floats; integers use up-down arrows similar to [SpinBox] instead, unless [ControlState] is set to [ControlStatePreferSlider]. It will also use [EditorSettings] "interface/inspector/integer_drag_speed" instead of [EditorSettings] "interface/inspector/float_drag_speed" if the slider is available.
 
+[ControlState]: https://pkg.go.dev/graphics.gd/classdb/EditorSpinSlider#Instance.ControlState
+[EditorSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings
 [EditorSpinSlider]: https://pkg.go.dev/graphics.gd/classdb/EditorSpinSlider
 [SpinBox]: https://pkg.go.dev/graphics.gd/classdb/SpinBox
 */
@@ -286,6 +303,14 @@ func (self class) SetFlat(flat bool) { //gd:EditorSpinSlider.set_flat
 }
 func (self class) IsFlat() bool { //gd:EditorSpinSlider.is_flat
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flat, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetControlState(state ControlState) { //gd:EditorSpinSlider.set_control_state
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_control_state, 0|(gdextension.SizeInt<<4), &struct{ state ControlState }{state})
+}
+func (self class) GetControlState() ControlState { //gd:EditorSpinSlider.get_control_state
+	var r_ret = noescape.Call[ControlState](gd.ObjectChecked(self.AsObject()), methods.get_control_state, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -436,3 +461,18 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("EditorSpinSlider", func(ptr gd.Object) any { return Instance{gdclass.NewEditorSpinSlider(ptr)} })
 }
+
+type ControlState int //gd:EditorSpinSlider.ControlState
+
+const (
+	// The type of control used will depend on the value of [EditingInteger]. Up-down arrows if true, a slider if false.
+	//
+	// [EditingInteger]: https://pkg.go.dev/graphics.gd/classdb/#Instance.EditingInteger
+	ControlStateDefault ControlState = 0
+	// A slider will always be used, even if [EditingInteger] is enabled.
+	//
+	// [EditingInteger]: https://pkg.go.dev/graphics.gd/classdb/#Instance.EditingInteger
+	ControlStatePreferSlider ControlState = 1
+	// Neither the up-down arrows nor the slider will be shown.
+	ControlStateHide ControlState = 2
+)

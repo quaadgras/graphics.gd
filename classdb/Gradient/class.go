@@ -265,7 +265,7 @@ func (self Instance) SetInterpolationMode(value InterpolationMode) Instance { //
 }
 
 /*
-The color space used to interpolate between points of the gradient. It does not affect the returned colors, which will always be in sRGB space.
+The color space used to interpolate between points of the gradient. It does not affect the returned colors, which will always use nonlinear sRGB encoding.
 
 Note: This setting has no effect when [InterpolationMode] is set to [GradientInterpolateConstant].
 

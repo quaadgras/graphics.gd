@@ -106,6 +106,8 @@ var methods struct {
 	get_primary_rotation_axis   gdextension.MethodForClass `hash:"4131134770"`
 	set_use_secondary_rotation  gdextension.MethodForClass `hash:"300928843"`
 	is_using_secondary_rotation gdextension.MethodForClass `hash:"1116898809"`
+	set_relative                gdextension.MethodForClass `hash:"300928843"`
+	is_relative                 gdextension.MethodForClass `hash:"1116898809"`
 }
 
 func init() {
@@ -206,6 +208,29 @@ func (self Instance) IsUsingSecondaryRotation(index int) bool { //gd:AimModifier
 	return bool(Advanced(self).IsUsingSecondaryRotation(int64(index)))
 }
 
+/*
+Sets relative option in the setting at 'index' to 'enabled'.
+
+If sets 'enabled' to true, the rotation is applied relative to the pose.
+
+If sets 'enabled' to false, the rotation is applied relative to the rest. It means to replace the current pose with the [AimModifier3D]'s result.
+
+Returns 'self' to enable method chaining.
+
+[AimModifier3D]: https://pkg.go.dev/graphics.gd/classdb/AimModifier3D
+*/
+func (self Instance) SetRelative(index int, enabled bool) Instance { //gd:AimModifier3D.set_relative
+	Advanced(self).SetRelative(int64(index), enabled)
+	return self
+}
+
+/*
+Returns true if the relative option is enabled in the setting at 'index'.
+*/
+func (self Instance) IsRelative(index int) bool { //gd:AimModifier3D.is_relative
+	return bool(Advanced(self).IsRelative(int64(index)))
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.AimModifier3D
@@ -289,6 +314,17 @@ func (self class) SetUseSecondaryRotation(index int64, enabled bool) { //gd:AimM
 }
 func (self class) IsUsingSecondaryRotation(index int64) bool { //gd:AimModifier3D.is_using_secondary_rotation
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_secondary_rotation, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetRelative(index int64, enabled bool) { //gd:AimModifier3D.set_relative
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_relative, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+		index   int64
+		enabled bool
+	}{index, enabled})
+}
+func (self class) IsRelative(index int64) bool { //gd:AimModifier3D.is_relative
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_relative, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }

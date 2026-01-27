@@ -1,0 +1,3 @@
+package dlopen
+
+import "C"

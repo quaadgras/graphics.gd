@@ -3,9 +3,7 @@
 /*
 A unit of execution in a process. Can run methods on [Object]s simultaneously. The use of synchronization via [Mutex] or [Semaphore] is advised if working with shared objects.
 
-Warning:
-
-To ensure proper cleanup without crashes or deadlocks, when a [Thread]'s reference count reaches zero and it is therefore destroyed, the following conditions must be met:
+Warning: To ensure proper cleanup without crashes or deadlocks, when a [Thread]'s reference count reaches zero and it is therefore destroyed, the following conditions must be met:
 
 - It must not have any [Mutex] objects locked.
 
@@ -110,6 +108,7 @@ var methods struct {
 	is_alive                         gdextension.MethodForClass `hash:"36873697"`
 	wait_to_finish                   gdextension.MethodForClass `hash:"1460262497"`
 	set_thread_safety_checks_enabled gdextension.MethodForClass `hash:"2586408642"`
+	is_main_thread                   gdextension.MethodForClass `hash:"2240911060"`
 }
 
 func init() {
@@ -245,6 +244,18 @@ func SetThreadSafetyChecksEnabled(enabled bool) { //gd:Thread.set_thread_safety_
 	Advanced(self).SetThreadSafetyChecksEnabled(enabled)
 }
 
+/*
+Returns true if the thread this method was called from is the main thread.
+
+Note: This is a static method and isn't associated with a specific [Thread] object.
+
+[Thread]: https://pkg.go.dev/graphics.gd/classdb/Thread
+*/
+func IsMainThread() bool { //gd:Thread.is_main_thread
+	self := Instance{}
+	return bool(Advanced(self).IsMainThread())
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.Thread
@@ -318,6 +329,11 @@ func (self class) WaitToFinish() variant.Any { //gd:Thread.wait_to_finish
 }
 func (self class) SetThreadSafetyChecksEnabled(enabled bool) { //gd:Thread.set_thread_safety_checks_enabled
 	noescape.CallStatic[struct{}](methods.set_thread_safety_checks_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+}
+func (self class) IsMainThread() bool { //gd:Thread.is_main_thread
+	var r_ret = noescape.CallStatic[bool](methods.is_main_thread, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
 }
 func (self class) AsThread() Advanced         { return Advanced{gdclass.NewThread(self.AsObject()[0])} }
 func (self Instance) AsThread() Instance      { return Instance{gdclass.NewThread(self.AsObject()[0])} }

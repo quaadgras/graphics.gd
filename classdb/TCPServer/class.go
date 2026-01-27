@@ -21,6 +21,7 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
+import "graphics.gd/classdb/SocketServer"
 import "graphics.gd/classdb/StreamPeerTCP"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -93,12 +94,9 @@ type Instance [1]gdclass.TCPServer
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	listen                  gdextension.MethodForClass `hash:"3167955072"`
-	is_connection_available gdextension.MethodForClass `hash:"36873697"`
-	is_listening            gdextension.MethodForClass `hash:"36873697"`
-	get_local_port          gdextension.MethodForClass `hash:"3905245786"`
-	take_connection         gdextension.MethodForClass `hash:"30545006"`
-	stop                    gdextension.MethodForClass `hash:"3218959716"`
+	listen          gdextension.MethodForClass `hash:"3167955072"`
+	get_local_port  gdextension.MethodForClass `hash:"3905245786"`
+	take_connection gdextension.MethodForClass `hash:"30545006"`
 }
 
 func init() {
@@ -155,20 +153,6 @@ func (self MoreArgs) Listen(port int, bind_address string) error { //gd:TCPServe
 }
 
 /*
-Returns true if a connection is available for taking.
-*/
-func (self Instance) IsConnectionAvailable() bool { //gd:TCPServer.is_connection_available
-	return bool(Advanced(self).IsConnectionAvailable())
-}
-
-/*
-Returns true if the server is currently listening for connections.
-*/
-func (self Instance) IsListening() bool { //gd:TCPServer.is_listening
-	return bool(Advanced(self).IsListening())
-}
-
-/*
 Returns the local port this server is listening to.
 */
 func (self Instance) GetLocalPort() int { //gd:TCPServer.get_local_port
@@ -180,13 +164,6 @@ If a connection is available, returns a StreamPeerTCP with the connection.
 */
 func (self Instance) TakeConnection() StreamPeerTCP.Instance { //gd:TCPServer.take_connection
 	return StreamPeerTCP.Instance(Advanced(self).TakeConnection())
-}
-
-/*
-Stops listening.
-*/
-func (self Instance) Stop() { //gd:TCPServer.stop
-	Advanced(self).Stop()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -240,16 +217,6 @@ func (self class) Listen(port int64, bind_address String.Readable) Error.Code { 
 	var ret = Error.Code(r_ret)
 	return ret
 }
-func (self class) IsConnectionAvailable() bool { //gd:TCPServer.is_connection_available
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_connection_available, gdextension.SizeBool, &struct{}{})
-	var ret = r_ret
-	return ret
-}
-func (self class) IsListening() bool { //gd:TCPServer.is_listening
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_listening, gdextension.SizeBool, &struct{}{})
-	var ret = r_ret
-	return ret
-}
 func (self class) GetLocalPort() int64 { //gd:TCPServer.get_local_port
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_local_port, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
@@ -260,14 +227,20 @@ func (self class) TakeConnection() [1]gdclass.StreamPeerTCP { //gd:TCPServer.tak
 	var ret = [1]gdclass.StreamPeerTCP{gdclass.NewStreamPeerTCP(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-func (self class) Stop() { //gd:TCPServer.stop
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, &struct{}{})
-}
 func (self class) AsTCPServer() Advanced { return Advanced{gdclass.NewTCPServer(self.AsObject()[0])} }
 func (self Instance) AsTCPServer() Instance {
 	return Instance{gdclass.NewTCPServer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsTCPServer() Instance { return self.Super().AsTCPServer() }
+func (self class) AsSocketServer() SocketServer.Advanced {
+	return SocketServer.Advanced{gdclass.NewSocketServer(self.AsObject()[0])}
+}
+func (self *Extension[T]) AsSocketServer() SocketServer.Instance {
+	return self.Super().AsSocketServer()
+}
+func (self Instance) AsSocketServer() SocketServer.Instance {
+	return SocketServer.Instance{gdclass.NewSocketServer(self.AsObject()[0])}
+}
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
@@ -279,14 +252,14 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
+		return gd.VirtualByName(SocketServer.Advanced(self.AsSocketServer()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
+		return gd.VirtualByName(SocketServer.Instance(self.AsSocketServer()), name)
 	}
 }
 func init() {

@@ -348,28 +348,28 @@ func (self Instance) AddMessage(atype ExportMessageType, category string, messag
 }
 
 /*
-Returns number of messages in the export log.
+Returns the number of messages in the export log.
 */
 func (self Instance) GetMessageCount() int { //gd:EditorExportPlatform.get_message_count
 	return int(int(Advanced(self).GetMessageCount()))
 }
 
 /*
-Returns message type, for the message with 'index'.
+Returns the type for the message with the given 'index'.
 */
 func (self Instance) GetMessageType(index int) ExportMessageType { //gd:EditorExportPlatform.get_message_type
 	return ExportMessageType(Advanced(self).GetMessageType(int64(index)))
 }
 
 /*
-Returns message category, for the message with 'index'.
+Returns the message category for the message with the given 'index'.
 */
 func (self Instance) GetMessageCategory(index int) string { //gd:EditorExportPlatform.get_message_category
 	return string(Advanced(self).GetMessageCategory(int64(index)).String())
 }
 
 /*
-Returns message text, for the message with 'index'.
+Returns the text for the message with the given 'index'.
 */
 func (self Instance) GetMessageText(index int) string { //gd:EditorExportPlatform.get_message_text
 	return string(Advanced(self).GetMessageText(int64(index)).String())

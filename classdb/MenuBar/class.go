@@ -153,7 +153,7 @@ func (self Instance) SetDisableShortcuts(disabled bool) Instance { //gd:MenuBar.
 }
 
 /*
-Returns true, if system global menu is supported and used by this [MenuBar].
+Returns true if the current system's global menu is supported and used by this [MenuBar].
 
 [MenuBar]: https://pkg.go.dev/graphics.gd/classdb/MenuBar
 */
@@ -213,7 +213,7 @@ func (self Instance) SetMenuDisabled(menu int, disabled bool) Instance { //gd:Me
 }
 
 /*
-Returns true, if menu item is disabled.
+Returns true if the menu item is disabled.
 */
 func (self Instance) IsMenuDisabled(menu int) bool { //gd:MenuBar.is_menu_disabled
 	return bool(Advanced(self).IsMenuDisabled(int64(menu)))
@@ -230,7 +230,7 @@ func (self Instance) SetMenuHidden(menu int, hidden bool) Instance { //gd:MenuBa
 }
 
 /*
-Returns true, if menu item is hidden.
+Returns true if the menu item is hidden.
 */
 func (self Instance) IsMenuHidden(menu int) bool { //gd:MenuBar.is_menu_hidden
 	return bool(Advanced(self).IsMenuHidden(int64(menu)))
@@ -368,7 +368,7 @@ func (self Instance) SetTextDirection(value Control.TextDirection) Instance { //
 }
 
 /*
-Language code used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
+Language code used for line-breaking and text shaping algorithms. If left empty, the current locale is used instead.
 */
 func (self Instance) Language() string { //gd:MenuBar.language
 	return string(class(self).GetLanguage().String())

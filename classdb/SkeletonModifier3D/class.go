@@ -135,7 +135,11 @@ type Interface interface {
 	//
 	// 'delta' is passed from parent [Skeleton3D]. See also [Skeleton3D.Advance].
 	//
+	// Note: This method may be called outside [Node.Process] and [Node.PhysicsProcess] with 'delta' is 0.0, since the modification should be processed immediately after initialization of the [Skeleton3D].
+	//
 	// [Influence]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D#Instance.Influence
+	// [Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
+	// [Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
 	// [ProcessModificationWithDelta]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D#Interface
 	// [Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
 	// [Skeleton3D.Advance]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.Advance
@@ -150,7 +154,7 @@ type Interface interface {
 	ProcessModification()
 	// Called when the skeleton is changed.
 	SkeletonChanged(old_skeleton Skeleton3D.Instance, new_skeleton Skeleton3D.Instance)
-	// Called when bone name and index need to be validated such as the timing of the entering tree or changing skeleton.
+	// Called when bone names and indices need to be validated, such as when entering the scene tree or changing skeleton.
 	ValidateBoneNames()
 }
 
@@ -173,7 +177,11 @@ Override this virtual method to implement a custom skeleton modifier. You should
 
 'delta' is passed from parent [Skeleton3D]. See also [Skeleton3D.Advance].
 
+Note: This method may be called outside [Node.Process] and [Node.PhysicsProcess] with 'delta' is 0.0, since the modification should be processed immediately after initialization of the [Skeleton3D].
+
 [Influence]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D#Instance.Influence
+[Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
+[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
 [ProcessModificationWithDelta]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D#Interface
 [Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
 [Skeleton3D.Advance]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.Advance
@@ -219,7 +227,7 @@ func (Instance) _skeleton_changed(impl func(ptr gdclass.Receiver, old_skeleton S
 }
 
 /*
-Called when bone name and index need to be validated such as the timing of the entering tree or changing skeleton.
+Called when bone names and indices need to be validated, such as when entering the scene tree or changing skeleton.
 */
 func (Instance) _validate_bone_names(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -229,7 +237,7 @@ func (Instance) _validate_bone_names(impl func(ptr gdclass.Receiver)) (cb gd.Ext
 }
 
 /*
-Get parent [Skeleton3D] node if found.
+Returns the parent [Skeleton3D] node if it exists. Otherwise, returns null.
 
 [Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
 */
@@ -454,4 +462,59 @@ const (
 	BoneAxisPlusZ BoneAxis = 4
 	// Enumerated value for the -Z axis.
 	BoneAxisMinusZ BoneAxis = 5
+)
+
+type BoneDirection int //gd:SkeletonModifier3D.BoneDirection
+
+const (
+	// Enumerated value for the +X axis.
+	BoneDirectionPlusX BoneDirection = 0
+	// Enumerated value for the -X axis.
+	BoneDirectionMinusX BoneDirection = 1
+	// Enumerated value for the +Y axis.
+	BoneDirectionPlusY BoneDirection = 2
+	// Enumerated value for the -Y axis.
+	BoneDirectionMinusY BoneDirection = 3
+	// Enumerated value for the +Z axis.
+	BoneDirectionPlusZ BoneDirection = 4
+	// Enumerated value for the -Z axis.
+	BoneDirectionMinusZ BoneDirection = 5
+	// Enumerated value for the axis from a parent bone to the child bone.
+	BoneDirectionFromParent BoneDirection = 6
+)
+
+type SecondaryDirection int //gd:SkeletonModifier3D.SecondaryDirection
+
+const (
+	// Enumerated value for the case when the axis is undefined.
+	SecondaryDirectionNone SecondaryDirection = 0
+	// Enumerated value for the +X axis.
+	SecondaryDirectionPlusX SecondaryDirection = 1
+	// Enumerated value for the -X axis.
+	SecondaryDirectionMinusX SecondaryDirection = 2
+	// Enumerated value for the +Y axis.
+	SecondaryDirectionPlusY SecondaryDirection = 3
+	// Enumerated value for the -Y axis.
+	SecondaryDirectionMinusY SecondaryDirection = 4
+	// Enumerated value for the +Z axis.
+	SecondaryDirectionPlusZ SecondaryDirection = 5
+	// Enumerated value for the -Z axis.
+	SecondaryDirectionMinusZ SecondaryDirection = 6
+	// Enumerated value for an optional axis.
+	SecondaryDirectionCustom SecondaryDirection = 7
+)
+
+type RotationAxis int //gd:SkeletonModifier3D.RotationAxis
+
+const (
+	// Enumerated value for the rotation of the X axis.
+	RotationAxisX RotationAxis = 0
+	// Enumerated value for the rotation of the Y axis.
+	RotationAxisY RotationAxis = 1
+	// Enumerated value for the rotation of the Z axis.
+	RotationAxisZ RotationAxis = 2
+	// Enumerated value for the unconstrained rotation.
+	RotationAxisAll RotationAxis = 3
+	// Enumerated value for an optional rotation axis.
+	RotationAxisCustom RotationAxis = 4
 )

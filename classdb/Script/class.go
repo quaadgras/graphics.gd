@@ -239,7 +239,7 @@ func (self Instance) GetScriptMethodList() []Object.PropertyInfo { //gd:Script.g
 }
 
 /*
-Returns the list of user signals defined in this [Script].
+Returns the list of signals defined in this [Script].
 
 Note: The dictionaries returned by this method are formatted identically to those returned by [Object.GetSignalList].
 

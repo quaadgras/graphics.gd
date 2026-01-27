@@ -145,6 +145,8 @@ var methods struct {
 	get_scrolling_enabled         gdextension.MethodForClass `hash:"36873697"`
 	set_drag_to_rearrange_enabled gdextension.MethodForClass `hash:"2586408642"`
 	get_drag_to_rearrange_enabled gdextension.MethodForClass `hash:"36873697"`
+	set_switch_on_drag_hover      gdextension.MethodForClass `hash:"2586408642"`
+	get_switch_on_drag_hover      gdextension.MethodForClass `hash:"36873697"`
 	set_tabs_rearrange_group      gdextension.MethodForClass `hash:"1286410249"`
 	get_tabs_rearrange_group      gdextension.MethodForClass `hash:"3905245786"`
 	set_scroll_to_selected        gdextension.MethodForClass `hash:"2586408642"`
@@ -258,7 +260,7 @@ func (self Instance) GetTabTextDirection(tab_idx int) Control.TextDirection { //
 }
 
 /*
-Sets language code of tab title used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
+Sets the language code of the title for the tab at index 'tab_idx' to 'language'. This is used for line-breaking and text shaping algorithms. If 'language' is empty, the current locale is used.
 
 Returns 'self' to enable method chaining.
 */
@@ -512,7 +514,7 @@ func (self Instance) SetCurrentTab(value int) Instance { //gd:TabBar.current_tab
 }
 
 /*
-The position at which tabs will be placed.
+The horizontal alignment of the tabs.
 */
 func (self Instance) TabAlignment() AlignmentMode { //gd:TabBar.tab_alignment
 	return AlignmentMode(class(self).GetTabAlignment())
@@ -538,7 +540,7 @@ func (self Instance) SetClipTabs(value bool) Instance { //gd:TabBar.clip_tabs
 }
 
 /*
-If true, middle clicking on the mouse will fire the [OnTabClosePressed] signal.
+If true, middle-clicking on a tab will emit the [OnTabClosePressed] signal.
 
 [OnTabClosePressed]: https://pkg.go.dev/graphics.gd/classdb/TabBar#Instance.OnTabClosePressed
 */
@@ -601,6 +603,19 @@ func (self Instance) DragToRearrangeEnabled() bool { //gd:TabBar.drag_to_rearran
 // SetDragToRearrangeEnabled sets the property returned by [GetDragToRearrangeEnabled]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetDragToRearrangeEnabled(value bool) Instance { //gd:TabBar.drag_to_rearrange_enabled
 	class(self).SetDragToRearrangeEnabled(value)
+	return self
+}
+
+/*
+If true, hovering over a tab while dragging something will switch to that tab. Does not have effect when hovering another tab to rearrange. The delay for when this happens is dictated by theme's 'hover_switch_wait_msec'.
+*/
+func (self Instance) SwitchOnDragHover() bool { //gd:TabBar.switch_on_drag_hover
+	return bool(class(self).GetSwitchOnDragHover())
+}
+
+// SetSwitchOnDragHover sets the property returned by [GetSwitchOnDragHover]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSwitchOnDragHover(value bool) Instance { //gd:TabBar.switch_on_drag_hover
+	class(self).SetSwitchOnDragHover(value)
 	return self
 }
 
@@ -909,6 +924,14 @@ func (self class) GetDragToRearrangeEnabled() bool { //gd:TabBar.get_drag_to_rea
 	var ret = r_ret
 	return ret
 }
+func (self class) SetSwitchOnDragHover(enabled bool) { //gd:TabBar.set_switch_on_drag_hover
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_switch_on_drag_hover, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+}
+func (self class) GetSwitchOnDragHover() bool { //gd:TabBar.get_switch_on_drag_hover
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_switch_on_drag_hover, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
 func (self class) SetTabsRearrangeGroup(group_id int64) { //gd:TabBar.set_tabs_rearrange_group
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tabs_rearrange_group, 0|(gdextension.SizeInt<<4), &struct{ group_id int64 }{group_id})
 }
@@ -994,9 +1017,7 @@ func (self class) TabClicked() Signal.Any {
 }
 
 /*
-Emitted when a tab is right-clicked. [SelectWithRmb] must be enabled.
-
-[SelectWithRmb]: https://pkg.go.dev/graphics.gd/classdb/TabBar#Instance.SelectWithRmb
+Emitted when a tab is right-clicked.
 */
 func (self Instance) OnTabRmbClicked(cb func(tab int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
@@ -1012,9 +1033,9 @@ func (self class) TabRmbClicked() Signal.Any {
 }
 
 /*
-Emitted when a tab's close button is pressed or when middle-clicking on a tab, if [CloseWithMiddleMouse] is enabled.
+Emitted when a tab's close button is pressed or, if [CloseWithMiddleMouse] is true, when middle-clicking on a tab.
 
-Note: Tabs are not removed automatically once the close button is pressed, this behavior needs to be programmed manually. For example:
+Note: Tabs are not removed automatically; this behavior needs to be coded manually. For example:
 
 [CloseWithMiddleMouse]: https://pkg.go.dev/graphics.gd/classdb/TabBar#Instance.CloseWithMiddleMouse
 */
@@ -1126,11 +1147,11 @@ func init() {
 type AlignmentMode int //gd:TabBar.AlignmentMode
 
 const (
-	// Places tabs to the left.
+	// Aligns tabs to the left.
 	AlignmentLeft AlignmentMode = 0
-	// Places tabs in the middle.
+	// Aligns tabs in the middle.
 	AlignmentCenter AlignmentMode = 1
-	// Places tabs to the right.
+	// Aligns tabs to the right.
 	AlignmentRight AlignmentMode = 2
 	// Represents the size of the [AlignmentMode] enum.
 	AlignmentMax AlignmentMode = 3

@@ -574,7 +574,7 @@ func (self Instance) GetSupportedChars() string { //gd:Font.get_supported_chars
 }
 
 /*
-Returns true, if font supports given language ([ISO 639] code).
+Returns true if the font supports the given language (as a [ISO 639] code).
 
 [ISO 639]: https://en.wikipedia.org/wiki/ISO_639-1
 */
@@ -583,7 +583,7 @@ func (self Instance) IsLanguageSupported(language string) bool { //gd:Font.is_la
 }
 
 /*
-Returns true, if font supports given script ([ISO 15924] code).
+Returns true if the font supports the given script (as a [ISO 15924] code).
 
 [ISO 15924]: https://en.wikipedia.org/wiki/ISO_15924
 */

@@ -97,6 +97,7 @@ var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
 	clear                        gdextension.MethodForClass `hash:"3218959716"`
+	duplicate                    gdextension.MethodForClass `hash:"1912703884"`
 	set_direction                gdextension.MethodForClass `hash:"1418190634"`
 	get_direction                gdextension.MethodForClass `hash:"2516697328"`
 	get_inferred_direction       gdextension.MethodForClass `hash:"2516697328"`
@@ -110,6 +111,7 @@ var methods struct {
 	add_string                   gdextension.MethodForClass `hash:"621426851"`
 	add_object                   gdextension.MethodForClass `hash:"1316529304"`
 	resize_object                gdextension.MethodForClass `hash:"2095776372"`
+	has_object                   gdextension.MethodForClass `hash:"77467830"`
 	set_width                    gdextension.MethodForClass `hash:"373806689"`
 	get_width                    gdextension.MethodForClass `hash:"1740695150"`
 	set_horizontal_alignment     gdextension.MethodForClass `hash:"2312603777"`
@@ -167,6 +169,15 @@ Clears text line (removes text and inline objects).
 */
 func (self Instance) Clear() { //gd:TextLine.clear
 	Advanced(self).Clear()
+}
+
+/*
+Duplicates this [TextLine].
+
+[TextLine]: https://pkg.go.dev/graphics.gd/classdb/TextLine
+*/
+func (self Instance) Duplicate() Instance { //gd:TextLine.duplicate
+	return Instance(Advanced(self).Duplicate())
 }
 
 /*
@@ -228,6 +239,13 @@ Sets new size and alignment of embedded object.
 */
 func (self MoreArgs) ResizeObject(key any, size Vector2.XY, inline_align GUI.InlineAlignment, baseline Float.X) bool { //gd:TextLine.resize_object
 	return bool(Advanced(self).ResizeObject(variant.New(key), Vector2.XY(size), inline_align, float64(baseline)))
+}
+
+/*
+Returns true if an object with 'key' is embedded in this line.
+*/
+func (self Instance) HasObject(key any) bool { //gd:TextLine.has_object
+	return bool(Advanced(self).HasObject(variant.New(key)))
 }
 
 /*
@@ -500,6 +518,11 @@ func (self Instance) SetEllipsisChar(value string) Instance { //gd:TextLine.elli
 func (self class) Clear() { //gd:TextLine.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
+func (self class) Duplicate() [1]gdclass.TextLine { //gd:TextLine.duplicate
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.duplicate, gdextension.SizeObject, &struct{}{})
+	var ret = [1]gdclass.TextLine{gdclass.NewTextLine(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	return ret
+}
 func (self class) SetDirection(direction TextServer.Direction) { //gd:TextLine.set_direction
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_direction, 0|(gdextension.SizeInt<<4), &struct{ direction TextServer.Direction }{direction})
 }
@@ -569,6 +592,11 @@ func (self class) ResizeObject(key variant.Any, size Vector2.XY, inline_align GU
 		inline_align GUI.InlineAlignment
 		baseline     float64
 	}{gdextension.Variant(pointers.Get(gd.InternalVariant(key))), size, inline_align, baseline})
+	var ret = r_ret
+	return ret
+}
+func (self class) HasObject(key variant.Any) bool { //gd:TextLine.has_object
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_object, gdextension.SizeBool|(gdextension.SizeVariant<<4), &struct{ key gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(key)))})
 	var ret = r_ret
 	return ret
 }

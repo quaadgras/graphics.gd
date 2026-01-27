@@ -239,9 +239,11 @@ func (self Instance) SetUseCustomTimeline(value bool) Instance { //gd:AnimationN
 }
 
 /*
-If [UseCustomTimeline] is true, offset the start position of the animation.
+The length of the custom timeline.
 
-[UseCustomTimeline]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeAnimation#Instance.UseCustomTimeline
+If [StretchTimeScale] is true, scales the animation to this length.
+
+[StretchTimeScale]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeAnimation#Instance.StretchTimeScale
 */
 func (self Instance) TimelineLength() Float.X { //gd:AnimationNodeAnimation.timeline_length
 	return Float.X(Float.X(class(self).GetTimelineLength()))

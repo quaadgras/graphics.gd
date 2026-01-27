@@ -266,7 +266,7 @@ func (self Instance) RemoveExceptionRid(rid RID.Body2D) { //gd:RayCast2D.remove_
 }
 
 /*
-Removes a collision exception so the ray can report collisions with the specified specified 'node'.
+Removes a collision exception so the ray can report collisions with the specified 'node'.
 */
 func (self Instance) RemoveException(node CollisionObject2D.Instance) { //gd:RayCast2D.remove_exception
 	Advanced(self).RemoveException(node)

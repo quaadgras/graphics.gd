@@ -131,10 +131,11 @@ Changes the value set for this material of a uniform in the shader.
 
 Note: 'param' is case-sensitive and must match the name of the uniform in the code exactly (not the capitalized name in the inspector).
 
-Note: Changes to the shader uniform will be effective on all instances using this [ShaderMaterial]. To prevent this, use per-instance uniforms with [GeometryInstance3D.SetInstanceShaderParameter] or duplicate the [ShaderMaterial] resource using [Resource.Duplicate]. Per-instance uniforms allow for better shader reuse and are therefore faster, so they should be preferred over duplicating the [ShaderMaterial] when possible.
+Note: Changes to the shader uniform will be effective on all instances using this [ShaderMaterial]. To prevent this, use per-instance uniforms with [CanvasItem.SetInstanceShaderParameter], [GeometryInstance3D.SetInstanceShaderParameter] or duplicate the [ShaderMaterial] resource using [Resource.Duplicate]. Per-instance uniforms allow for better shader reuse and are therefore faster, so they should be preferred over duplicating the [ShaderMaterial] when possible.
 
 Returns 'self' to enable method chaining.
 
+[CanvasItem.SetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.SetInstanceShaderParameter
 [GeometryInstance3D.SetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.SetInstanceShaderParameter
 [Resource.Duplicate]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.Duplicate
 [ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial

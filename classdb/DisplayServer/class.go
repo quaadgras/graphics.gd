@@ -255,13 +255,14 @@ var methods struct {
 	window_minimize_on_title_dbl_click               gdextension.MethodForClass `hash:"36873697"`
 	window_start_drag                                gdextension.MethodForClass `hash:"1995695955"`
 	window_start_resize                              gdextension.MethodForClass `hash:"4009722312"`
+	window_set_color                                 gdextension.MethodForClass `hash:"2920490490"`
 	accessibility_should_increase_contrast           gdextension.MethodForClass `hash:"3905245786"`
 	accessibility_should_reduce_animation            gdextension.MethodForClass `hash:"3905245786"`
 	accessibility_should_reduce_transparency         gdextension.MethodForClass `hash:"3905245786"`
 	accessibility_screen_reader_active               gdextension.MethodForClass `hash:"3905245786"`
 	accessibility_create_element                     gdextension.MethodForClass `hash:"2968347744"`
 	accessibility_create_sub_element                 gdextension.MethodForClass `hash:"1949948826"`
-	accessibility_create_sub_text_edit_elements      gdextension.MethodForClass `hash:"3328635351"`
+	accessibility_create_sub_text_edit_elements      gdextension.MethodForClass `hash:"2702009895"`
 	accessibility_has_element                        gdextension.MethodForClass `hash:"4155700596"`
 	accessibility_free_element                       gdextension.MethodForClass `hash:"2722037293"`
 	accessibility_element_set_meta                   gdextension.MethodForClass `hash:"3175752987"`
@@ -1288,7 +1289,7 @@ func GetBaseColor() Color.RGBA { //gd:DisplayServer.get_base_color
 }
 
 /*
-Sets the 'callable' that should be called when system theme settings are changed. Callback method should have zero arguments.
+Sets the callback that should be called when the system's theme settings are changed. 'callable' should accept zero arguments.
 
 Note: This method is implemented on Android, iOS, macOS, Windows, and Linux (X11/Wayland).
 */
@@ -1424,7 +1425,7 @@ func GetScreenCount() int { //gd:DisplayServer.get_screen_count
 }
 
 /*
-Returns index of the primary screen.
+Returns the index of the primary screen.
 
 Note: This method is implemented on Linux/X11, macOS, and Windows. On other platforms, this method always returns 0.
 */
@@ -1591,7 +1592,7 @@ func ScreenGetMaxScale() Float.X { //gd:DisplayServer.screen_get_max_scale
 }
 
 /*
-Returns the current refresh rate of the specified screen. Returns -1.0 if 'screen' is invalid or the [DisplayServer] fails to find the refresh rate for the specified screen.
+Returns the current refresh rate of the specified screen. When V-Sync is enabled, this returns the maximum framerate the project can effectively reach. Returns -1.0 if 'screen' is invalid or the [DisplayServer] fails to find the refresh rate for the specified screen.
 
 To fallback to a default refresh rate if the method fails, try:
 
@@ -1611,7 +1612,7 @@ func ScreenGetRefreshRate() Float.X { //gd:DisplayServer.screen_get_refresh_rate
 }
 
 /*
-Returns the current refresh rate of the specified screen. Returns -1.0 if 'screen' is invalid or the [DisplayServer] fails to find the refresh rate for the specified screen.
+Returns the current refresh rate of the specified screen. When V-Sync is enabled, this returns the maximum framerate the project can effectively reach. Returns -1.0 if 'screen' is invalid or the [DisplayServer] fails to find the refresh rate for the specified screen.
 
 To fallback to a default refresh rate if the method fails, try:
 
@@ -1631,13 +1632,11 @@ func ScreenGetRefreshRateOptions(screen Screen) Float.X { //gd:DisplayServer.scr
 }
 
 /*
-Returns color of the display pixel at the 'position'.
+Returns the color of the pixel at the given screen 'position'. On multi-monitor setups, the screen position is relative to the virtual desktop area.
 
-Note: This method is implemented on Linux (X11, excluding XWayland), macOS, and Windows. On other platforms, this method always returns [Color.RGBA].
+Note: This method is implemented on Linux (X11, excluding XWayland), macOS, and Windows. On other platforms, this method always returns Color(0, 0, 0, 1).
 
-Note: On macOS, this method requires the "Screen Recording" permission. If permission is not granted, this method returns a screenshot that will only contain the desktop wallpaper, the current application's window, and other related UI elements.
-
-[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+Note: On macOS, this method requires the "Screen Recording" permission. If permission is not granted, this method returns a color from a screenshot that will not include other application windows or OS elements not related to the application.
 */
 func ScreenGetPixel(position Vector2i.XY) Color.RGBA { //gd:DisplayServer.screen_get_pixel
 	return Color.RGBA(Advanced().ScreenGetPixel(Vector2i.XY(position)))
@@ -2172,7 +2171,7 @@ func WindowIsMaximizeAllowed(window_id Window) bool { //gd:DisplayServer.window_
 }
 
 /*
-Returns true, if double-click on a window title should maximize it.
+Returns true if double-clicking on a window's title should maximize it.
 
 Note: This method is implemented only on macOS.
 */
@@ -2181,7 +2180,7 @@ func WindowMaximizeOnTitleDblClick() bool { //gd:DisplayServer.window_maximize_o
 }
 
 /*
-Returns true, if double-click on a window title should minimize it.
+Returns true if double-clicking on a window's title should minimize it.
 
 Note: This method is implemented only on macOS.
 */
@@ -2205,6 +2204,15 @@ Note: This method is implemented on Linux (X11/Wayland), macOS, and Windows.
 */
 func WindowStartResize(edge WindowResizeEdge, window_id Window) { //gd:DisplayServer.window_start_resize
 	Advanced().WindowStartResize(edge, int64(window_id))
+}
+
+/*
+Sets the background color of the root window.
+
+Note: This method is implemented only on Android.
+*/
+func WindowSetColor(color Color.RGBA) { //gd:DisplayServer.window_set_color
+	Advanced().WindowSetColor(Color.RGBA(color))
 }
 
 /*
@@ -2239,7 +2247,7 @@ Returns 1 if a screen reader, Braille display or other assistive app is active, 
 
 Note: This method is implemented on Linux, macOS, and Windows.
 
-Note: Accessibility debugging tools, such as Accessibility Insights for Windows, macOS Accessibility Inspector, or AT-SPI Browser do not count as assistive apps and will not affect this value. To test your app with these tools, set [ProjectSettings] "accessibility/general/accessibility_support" to 1.
+Note: Accessibility debugging tools, such as Accessibility Insights for Windows, Accessibility Inspector (macOS), or AT-SPI Browser (Linux/BSD), do not count as assistive apps and will not affect this value. To test your project with these tools, set [ProjectSettings] "accessibility/general/accessibility_support" to 1.
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
@@ -2278,16 +2286,20 @@ func AccessibilityCreateSubElementOptions(parent_rid RID.AccessibilityElement, r
 
 /*
 Creates a new, empty accessibility sub-element from the shaped text buffer. Sub-elements are freed automatically when the parent element is freed, or can be freed early using the [AccessibilityFreeElement] method.
+
+If 'is_last_line' is true, no trailing newline is appended to the text content. Set to true for the last line in multi-line text fields and for single-line text fields.
 */
-func AccessibilityCreateSubTextEditElements(parent_rid RID.AccessibilityElement, shaped_text RID.AccessibilityElement, min_height Float.X) RID.AccessibilityElement { //gd:DisplayServer.accessibility_create_sub_text_edit_elements
-	return RID.AccessibilityElement(RID.AccessibilityElement(Advanced().AccessibilityCreateSubTextEditElements(RID.Any(parent_rid), RID.Any(shaped_text), float64(min_height), int64(-1))))
+func AccessibilityCreateSubTextEditElements(parent_rid RID.AccessibilityElement, shaped_text RID.AccessibilityElement, min_height Float.X, is_last_line bool) RID.AccessibilityElement { //gd:DisplayServer.accessibility_create_sub_text_edit_elements
+	return RID.AccessibilityElement(RID.AccessibilityElement(Advanced().AccessibilityCreateSubTextEditElements(RID.Any(parent_rid), RID.Any(shaped_text), float64(min_height), int64(-1), is_last_line)))
 }
 
 /*
 Creates a new, empty accessibility sub-element from the shaped text buffer. Sub-elements are freed automatically when the parent element is freed, or can be freed early using the [AccessibilityFreeElement] method.
+
+If 'is_last_line' is true, no trailing newline is appended to the text content. Set to true for the last line in multi-line text fields and for single-line text fields.
 */
-func AccessibilityCreateSubTextEditElementsOptions(parent_rid RID.AccessibilityElement, shaped_text RID.AccessibilityElement, min_height Float.X, insert_pos int) RID.AccessibilityElement { //gd:DisplayServer.accessibility_create_sub_text_edit_elements
-	return RID.AccessibilityElement(RID.AccessibilityElement(Advanced().AccessibilityCreateSubTextEditElements(RID.Any(parent_rid), RID.Any(shaped_text), float64(min_height), int64(insert_pos))))
+func AccessibilityCreateSubTextEditElementsOptions(parent_rid RID.AccessibilityElement, shaped_text RID.AccessibilityElement, min_height Float.X, insert_pos int, is_last_line bool) RID.AccessibilityElement { //gd:DisplayServer.accessibility_create_sub_text_edit_elements
+	return RID.AccessibilityElement(RID.AccessibilityElement(Advanced().AccessibilityCreateSubTextEditElements(RID.Any(parent_rid), RID.Any(shaped_text), float64(min_height), int64(insert_pos), is_last_line)))
 }
 
 /*
@@ -2298,21 +2310,21 @@ func AccessibilityHasElement(id RID.AccessibilityElement) bool { //gd:DisplaySer
 }
 
 /*
-Frees an object created by [AccessibilityCreateElement], [AccessibilityCreateSubElement], or [AccessibilityCreateSubTextEditElements].
+Frees the accessibility element 'id' created by [AccessibilityCreateElement], [AccessibilityCreateSubElement], or [AccessibilityCreateSubTextEditElements].
 */
 func AccessibilityFreeElement(id RID.AccessibilityElement) { //gd:DisplayServer.accessibility_free_element
 	Advanced().AccessibilityFreeElement(RID.Any(id))
 }
 
 /*
-Sets the metadata of the accessibility element.
+Sets the metadata of the accessibility element 'id' to 'meta'.
 */
 func AccessibilityElementSetMeta(id RID.AccessibilityElement, meta any) { //gd:DisplayServer.accessibility_element_set_meta
 	Advanced().AccessibilityElementSetMeta(RID.Any(id), variant.New(meta))
 }
 
 /*
-Returns the metadata of the accessibility element.
+Returns the metadata of the accessibility element 'id'.
 */
 func AccessibilityElementGetMeta(id RID.AccessibilityElement) any { //gd:DisplayServer.accessibility_element_get_meta
 	return any(Advanced().AccessibilityElementGetMeta(RID.Any(id)).Interface())
@@ -2890,7 +2902,7 @@ func HasHardwareKeyboard() bool { //gd:DisplayServer.has_hardware_keyboard
 }
 
 /*
-Sets the 'callable' that should be called when hardware keyboard is connected/disconnected. 'callable' should accept a single bool parameter indicating whether the keyboard is connected (true) or disconnected (false).
+Sets the callback that should be called when a hardware keyboard is connected or disconnected. 'callable' should accept a single bool argument indicating whether the keyboard has been connected (true) or disconnected (false).
 
 Note: This method is only implemented on Android.
 */
@@ -2916,6 +2928,8 @@ func CursorGetShape() CursorShape { //gd:DisplayServer.cursor_get_shape
 Sets a custom mouse cursor image for the given 'shape'. This means the user's operating system and mouse cursor theme will no longer influence the mouse cursor's appearance.
 
 'cursor' can be either a [Texture2D] or an [Image], and it should not be larger than 256×256 to display correctly. Optionally, 'hotspot' can be set to offset the image's position relative to the click point. By default, 'hotspot' is set to the top-left corner of the image. See also [CursorSetShape].
+
+Note: On Web, calling this method every frame can cause the cursor to flicker.
 
 [Image]: https://pkg.go.dev/graphics.gd/classdb/Image
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
@@ -2974,7 +2988,7 @@ Note: This method is implemented if the display server has the [FeatureNativeDia
 
 Note: 'current_directory' might be ignored.
 
-Note: Embedded file dialog and Windows file dialog support only file extensions, while Android, Linux, and macOS file dialogs also support MIME types.
+Note: Embedded file dialogs and Windows file dialogs support only file extensions, while Android, Linux, and macOS file dialogs also support MIME types.
 
 Note: On Android and Linux, 'show_hidden' is ignored.
 
@@ -2982,6 +2996,17 @@ Note: On Android and macOS, native file dialogs have no title.
 
 Note: On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [OS.GetGrantedPermissions] to get a list of saved bookmarks.
 
+Note: On Android, this method uses the Android Storage Access Framework (SAF).
+
+The file picker returns a URI instead of a filesystem path. This URI can be passed directly to [FileAccess] to perform read/write operations.
+
+When using [FileDialogModeOpenDir], it returns a tree URI that grants full access to the selected directory. File operations inside this directory can be performed by passing a path on the form treeUri#relative/path/to/file to [FileAccess].
+
+To avoid opening the file picker again after each app restart, you can take persistable URI permission as follows:
+
+The persistable URI permission remains valid across app restarts as long as the directory is not moved, renamed, or deleted.
+
+[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
 [FileDialog.Filters]: https://pkg.go.dev/graphics.gd/classdb/FileDialog#Instance.Filters
 [OS.GetGrantedPermissions]: https://pkg.go.dev/graphics.gd/classdb/OS#GetGrantedPermissions
 */
@@ -3008,7 +3033,7 @@ Note: This method is implemented if the display server has the [FeatureNativeDia
 
 Note: 'current_directory' might be ignored.
 
-Note: Embedded file dialog and Windows file dialog support only file extensions, while Android, Linux, and macOS file dialogs also support MIME types.
+Note: Embedded file dialogs and Windows file dialogs support only file extensions, while Android, Linux, and macOS file dialogs also support MIME types.
 
 Note: On Linux (X11), 'show_hidden' is ignored.
 
@@ -4391,6 +4416,10 @@ func (self class) WindowStartResize(edge WindowResizeEdge, window_id int64) { //
 		window_id int64
 	}{edge, window_id})
 }
+func (self class) WindowSetColor(color Color.RGBA) { //gd:DisplayServer.window_set_color
+	once.Do(singleton)
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+}
 func (self class) AccessibilityShouldIncreaseContrast() int64 { //gd:DisplayServer.accessibility_should_increase_contrast
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.accessibility_should_increase_contrast, gdextension.SizeInt, &struct{}{})
@@ -4434,14 +4463,15 @@ func (self class) AccessibilityCreateSubElement(parent_rid RID.Any, role Accessi
 	var ret = r_ret
 	return ret
 }
-func (self class) AccessibilityCreateSubTextEditElements(parent_rid RID.Any, shaped_text RID.Any, min_height float64, insert_pos int64) RID.Any { //gd:DisplayServer.accessibility_create_sub_text_edit_elements
+func (self class) AccessibilityCreateSubTextEditElements(parent_rid RID.Any, shaped_text RID.Any, min_height float64, insert_pos int64, is_last_line bool) RID.Any { //gd:DisplayServer.accessibility_create_sub_text_edit_elements
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.accessibility_create_sub_text_edit_elements, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16), &struct {
-		parent_rid  RID.Any
-		shaped_text RID.Any
-		min_height  float64
-		insert_pos  int64
-	}{parent_rid, shaped_text, min_height, insert_pos})
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.accessibility_create_sub_text_edit_elements, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20), &struct {
+		parent_rid   RID.Any
+		shaped_text  RID.Any
+		min_height   float64
+		insert_pos   int64
+		is_last_line bool
+	}{parent_rid, shaped_text, min_height, insert_pos, is_last_line})
 	var ret = r_ret
 	return ret
 }
@@ -5268,7 +5298,12 @@ const (
 	FeatureWindowTransparency Feature = 11
 	// Display server supports querying the operating system's display scale factor. This allows automatically detecting the hiDPI display reliably, instead of guessing based on the screen resolution and the display's reported DPI (which might be unreliable due to broken monitor EDID). Windows, Linux (Wayland), macOS
 	FeatureHidpi Feature = 12
-	// Display server supports changing the window icon (usually displayed in the top-left corner). Windows, macOS, Linux (X11)
+	// Display server supports changing the window icon (usually displayed in the top-left corner). Windows, macOS, Linux (X11/Wayland)
+	//
+	// Note: Use on Wayland requires the compositor to implement the [xdg_toplevel_icon_v1] protocol, which not all compositors do. See [xdg_toplevel_icon_v1#compositor-support] for more information on individual compositor support.
+	//
+	// [xdg_toplevel_icon_v1]: https://wayland.app/protocols/xdg-toplevel-icon-v1#xdg_toplevel_icon_v1
+	// [xdg_toplevel_icon_v1#compositor-support]: https://wayland.app/protocols/xdg-toplevel-icon-v1#compositor-support
 	FeatureIcon Feature = 13
 	// Display server supports changing the window icon (usually displayed in the top-left corner). Windows, macOS
 	FeatureNativeIcon Feature = 14
@@ -5441,7 +5476,7 @@ type AccessibilityFlags int //gd:DisplayServer.AccessibilityFlags
 const (
 	// Element is hidden for accessibility tools.
 	FlagHidden AccessibilityFlags = 0
-	// Element is support multiple item selection.
+	// Element supports multiple item selection.
 	FlagMultiselectable AccessibilityFlags = 1
 	// Element require user input.
 	FlagRequired AccessibilityFlags = 2
@@ -5824,7 +5859,7 @@ const (
 	//
 	// Note: This flag is implemented on macOS and Windows.
 	WindowFlagMaximizeDisabled WindowFlags = 12
-	// Max value of the [WindowFlags].
+	// Represents the size of the [WindowFlags] enum.
 	WindowFlagMax WindowFlags = 13
 )
 
@@ -5853,7 +5888,7 @@ const (
 	//
 	// Note: This flag is implemented only on macOS.
 	WindowEventTitlebarChange WindowEvent = 7
-	// Sent when the window has been forcibly closed by the Display Server. The window shall immediately hide and clean any internal rendering references.
+	// Sent when the window has been forcibly closed by the display server. The window will immediately hide and clean any internal rendering references.
 	//
 	// Note: This flag is implemented only on Linux (Wayland).
 	WindowEventForceClose WindowEvent = 8

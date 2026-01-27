@@ -841,7 +841,11 @@ func GetVersionAlias() string { //gd:OS.get_version_alias
 }
 
 /*
-Returns the command-line arguments passed to the engine.
+Returns the command-line arguments passed to the engine, excluding arguments processed by the engine, such as --headless and --fullscreen.
+
+	// Engine has been executed with the following command:
+	// binary --headless --verbose --scene my_scene.tscn --custom
+	OS.GetCmdlineArgs() // Returns ["--scene", "my_scene.tscn", "--custom"]
 
 Command-line arguments can be written in any form, including both --key value and --key=value forms so they can be properly parsed, as long as custom command-line arguments do not conflict with engine arguments.
 
@@ -850,18 +854,6 @@ You can also incorporate environment variables using the [GetEnvironment] method
 You can set [ProjectSettings] "editor/run/main_run_args" to define command-line arguments to be passed by the editor when running the project.
 
 Example: Parse command-line arguments into a data structure using the --key=value form for arguments:
-
-	var arguments = map[string]string{}
-	for _, argument := range OS.GetCmdlineArgs() {
-		if strings.Contains(argument, "=") {
-			_, keyValue, _ := strings.Cut(argument, "=")
-			arguments[strings.TrimPrefix(keyValue, "--")] = keyValue
-		} else {
-			// Options without an argument will be present in the dictionary,
-			// with the value set to an empty string.
-			arguments[strings.TrimPrefix(argument, "--")] = ""
-		}
-	}
 
 Note: Passing custom user arguments directly is not recommended, as the engine may discard or modify them. Instead, pass the standard UNIX double dash (--) and then the custom arguments, which the engine will ignore by design. These can be read via [GetCmdlineUserArgs].
 
@@ -879,7 +871,7 @@ Returns the command-line user arguments passed to the engine. User arguments are
 	OS.GetCmdlineArgs()     // Returns ["--fullscreen", "--level=2", "--hardcore"]
 	OS.GetCmdlineUserArgs() // Returns ["--level=2", "--hardcore"]
 
-To get all passed arguments, use [GetCmdlineArgs].
+To get arguments passed before -- or ++, use [GetCmdlineArgs].
 */
 func GetCmdlineUserArgs() []string { //gd:OS.get_cmdline_user_args
 	return []string(Advanced().GetCmdlineUserArgs().Strings())

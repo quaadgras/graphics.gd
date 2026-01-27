@@ -3,10 +3,14 @@
 /*
 The default use of [AcceptDialog] is to allow it to only be accepted or closed, with the same result. However, the [OnConfirmed] and [OnCanceled] signals allow to make the two actions different, and the [AddButton] method allows to add custom buttons and actions.
 
+Note: [AcceptDialog] is invisible by default. To make it visible, call one of the popup_* methods from [Window] on the node, such as [Window.PopupCenteredClamped].
+
 [AcceptDialog]: https://pkg.go.dev/graphics.gd/classdb/AcceptDialog
 [AddButton]: https://pkg.go.dev/graphics.gd/classdb/AcceptDialog#Instance.AddButton
 [OnCanceled]: https://pkg.go.dev/graphics.gd/classdb/AcceptDialog#Instance.OnCanceled
 [OnConfirmed]: https://pkg.go.dev/graphics.gd/classdb/AcceptDialog#Instance.OnConfirmed
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+[Window.PopupCenteredClamped]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.PopupCenteredClamped
 */
 package AcceptDialog
 
@@ -321,7 +325,7 @@ func (self Instance) SetDialogHideOnOk(value bool) Instance { //gd:AcceptDialog.
 }
 
 /*
-If true, the dialog will be hidden when the ui_cancel action is pressed (by default, this action is bound to [KeyEscape]).
+If true, the dialog will be hidden when the ui_close_dialog action is pressed (by default, this action is bound to Escape, or Cmd + W on macOS).
 */
 func (self Instance) DialogCloseOnEscape() bool { //gd:AcceptDialog.dialog_close_on_escape
 	return bool(class(self).GetCloseOnEscape())

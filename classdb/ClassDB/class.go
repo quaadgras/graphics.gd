@@ -712,15 +712,15 @@ const (
 	//
 	// Example: "-360,360,1,or_greater,or_less".
 	//
-	// Additionally, other keywords can be included: "exp" for exponential range editing, "radians_as_degrees" for editing radian angles in degrees (the range values are also in degrees), "degrees" to hint at an angle and "hide_slider" to hide the slider.
+	// Additionally, other keywords can be included: "exp" for exponential range editing, "radians_as_degrees" for editing radian angles in degrees (the range values are also in degrees), "degrees" to hint at an angle, "prefer_slider" to show the slider for integers, "hide_control" to hide the slider or up-down arrows, and "suffix:px/s" to display a suffix indicating the value's unit (e.g. px/s for pixels per second).
 	//
 	// [Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
 	PropertyHintRange PropertyHint = 1
-	// Hints that an int or string property is an enumerated value to pick in a list specified via a hint string.
+	// Hints that an int, string, or string property is an enumerated value to pick in a list specified via a hint string.
 	//
-	// The hint string is a comma separated list of names such as "Hello,Something,Else". Whitespaces are not removed from either end of a name. For integer properties, the first name in the list has value 0, the next 1, and so on. Explicit values can also be specified by appending :integer to the name, e.g. "Zero,One,Three:3,Four,Six:6".
+	// The hint string is a comma separated list of names such as "Hello,Something,Else". Whitespace is not removed from either end of a name. For integer properties, the first name in the list has value 0, the next 1, and so on. Explicit values can also be specified by appending :integer to the name, e.g. "Zero,One,Three:3,Four,Six:6".
 	PropertyHintEnum PropertyHint = 2
-	// Hints that a string property can be an enumerated value to pick in a list specified via a hint string such as "Hello,Something,Else".
+	// Hints that a string or string property can be an enumerated value to pick in a list specified via a hint string such as "Hello,Something,Else". See [PropertyHintEnum] for details.
 	//
 	// Unlike [PropertyHintEnum], a property with this hint still accepts arbitrary values and can be empty. The list of values serves to suggest possible values.
 	PropertyHintEnumSuggestion PropertyHint = 3
@@ -735,7 +735,7 @@ const (
 	PropertyHintLink PropertyHint = 5
 	// Hints that an int property is a bitmask with named bit flags.
 	//
-	// The hint string is a comma separated list of names such as "Bit0,Bit1,Bit2,Bit3". Whitespaces are not removed from either end of a name. The first name in the list has value 1, the next 2, then 4, 8, 16 and so on. Explicit values can also be specified by appending :integer to the name, e.g. "A:4,B:8,C:16". You can also combine several flags ("A:4,B:8,AB:12,C:16").
+	// The hint string is a comma separated list of names such as "Bit0,Bit1,Bit2,Bit3". Whitespace is not removed from either end of a name. The first name in the list has value 1, the next 2, then 4, 8, 16 and so on. Explicit values can also be specified by appending :integer to the name, e.g. "A:4,B:8,C:16". You can also combine several flags ("A:4,B:8,AB:12,C:16").
 	//
 	// Note: A flag value must be at least 1 and at most 2 ** 32 - 1.
 	//
@@ -770,6 +770,10 @@ const (
 	// [Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
 	PropertyHintResourceType PropertyHint = 17
 	// Hints that a string property is text with line breaks. Editing it will show a text input field where line breaks can be typed.
+	//
+	// The hint string can be set to "monospace" to force the input field to use a monospaced font.
+	//
+	// If the hint string "no_wrap" is set, the input field will not wrap lines at boundaries, instead resorting to making the area scrollable.
 	PropertyHintMultilineText PropertyHint = 18
 	// Hints that a string property is an [Expression].
 	//
@@ -1019,7 +1023,26 @@ const (
 	PropertyUsageClassIsEnum PropertyUsageFlags = 65536
 	// If property has nil as default value, its type will be any.
 	PropertyUsageNilIsVariant PropertyUsageFlags = 131072
-	// The property is an array.
+	// The property is the element count of a property array, i.e. a list of groups of related properties. Properties defined with this usage also need a specific class_name field in the form of label,prefix. The field may also include additional comma-separated options:
+	//
+	// - page_size=N: Overrides [EditorSettings] "interface/inspector/max_array_dictionary_items_per_page" for this array.
+	//
+	// - add_button_text=text: The text displayed by the "Add Element" button.
+	//
+	// - static: The elements can't be re-arranged.
+	//
+	// - const: New elements can't be added.
+	//
+	// - numbered: An index will appear next to each element.
+	//
+	// - unfoldable: The array can't be folded.
+	//
+	// - swap_method=method_name: The method that will be called when two elements switch places. The method should take 2 int parameters, which will be indices of the elements being swapped.
+	//
+	// Note that making a full-fledged property array requires boilerplate code involving [Object.GetPropertyList].
+	//
+	// [EditorSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings
+	// [Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
 	PropertyUsageArray PropertyUsageFlags = 262144
 	// When duplicating a resource with [Resource.Duplicate], and this flag is set on a property of that resource, the property should always be duplicated, regardless of the subresources bool parameter.
 	//

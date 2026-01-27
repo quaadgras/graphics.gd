@@ -141,6 +141,8 @@ var methods struct {
 	has_system_menu              gdextension.MethodForClass `hash:"718213027"`
 	get_system_menu              gdextension.MethodForClass `hash:"469707506"`
 	get_system_menu_name         gdextension.MethodForClass `hash:"1281499290"`
+	get_system_menu_text         gdextension.MethodForClass `hash:"1281499290"`
+	set_system_menu_text         gdextension.MethodForClass `hash:"3925225603"`
 	create_menu                  gdextension.MethodForClass `hash:"529393457"`
 	has_menu                     gdextension.MethodForClass `hash:"4155700596"`
 	free_menu                    gdextension.MethodForClass `hash:"2722037293"`
@@ -260,6 +262,24 @@ Note: This method is implemented only on macOS.
 */
 func GetSystemMenuName(menu_id SystemMenus) string { //gd:NativeMenu.get_system_menu_name
 	return string(Advanced().GetSystemMenuName(menu_id).String())
+}
+
+/*
+Returns the text of the system menu item.
+
+Note: This method is implemented on macOS.
+*/
+func GetSystemMenuText(menu_id SystemMenus) string { //gd:NativeMenu.get_system_menu_text
+	return string(Advanced().GetSystemMenuText(menu_id).String())
+}
+
+/*
+Sets the text of the system menu item.
+
+Note: This method is implemented on macOS.
+*/
+func SetSystemMenuText(menu_id SystemMenus, name string) { //gd:NativeMenu.set_system_menu_text
+	Advanced().SetSystemMenuText(menu_id, String.New(name))
 }
 
 /*
@@ -1107,6 +1127,19 @@ func (self class) GetSystemMenuName(menu_id SystemMenus) String.Readable { //gd:
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_system_menu_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ menu_id SystemMenus }{menu_id})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
+}
+func (self class) GetSystemMenuText(menu_id SystemMenus) String.Readable { //gd:NativeMenu.get_system_menu_text
+	once.Do(singleton)
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_system_menu_text, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ menu_id SystemMenus }{menu_id})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+func (self class) SetSystemMenuText(menu_id SystemMenus, name String.Readable) { //gd:NativeMenu.set_system_menu_text
+	once.Do(singleton)
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_system_menu_text, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+		menu_id SystemMenus
+		name    gdextension.String
+	}{menu_id, pointers.Get(gd.InternalString(name))})
 }
 func (self class) CreateMenu() RID.Any { //gd:NativeMenu.create_menu
 	once.Do(singleton)

@@ -257,7 +257,7 @@ func (self Instance) SetLightTemperature(value Float.X) Instance { //gd:Light3D.
 }
 
 /*
-The light's color in the nonlinear sRGB color space. An overbright color can be used to achieve a result equivalent to increasing the light's [LightEnergy].
+The light's color in nonlinear sRGB encoding. An overbright color can be used to achieve a result equivalent to increasing the light's [LightEnergy].
 
 [LightEnergy]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightEnergy
 */

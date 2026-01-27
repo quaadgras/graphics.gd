@@ -90,6 +90,7 @@ type Instance [1]gdclass.JNISingleton
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
+	has_java_method gdextension.MethodForClass `hash:"2619796661"`
 }
 
 func init() {
@@ -110,6 +111,13 @@ var Nil Instance
 type Any interface {
 	gd.IsClass
 	AsJNISingleton() Instance
+}
+
+/*
+Returns true if the given 'method' name exists in the JNISingleton's Java methods.
+*/
+func (self Instance) HasJavaMethod(method string) bool { //gd:JNISingleton.has_java_method
+	return bool(Advanced(self).HasJavaMethod(String.Name(String.New(method))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -154,6 +162,11 @@ func New() Instance {
 	return casted
 }
 
+func (self class) HasJavaMethod(method String.Name) bool { //gd:JNISingleton.has_java_method
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_java_method, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ method gdextension.StringName }{pointers.Get(gd.InternalStringName(method))})
+	var ret = r_ret
+	return ret
+}
 func (self class) AsJNISingleton() Advanced {
 	return Advanced{gdclass.NewJNISingleton(self.AsObject()[0])}
 }

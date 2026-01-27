@@ -163,7 +163,7 @@ type Any interface {
 }
 
 /*
-Applies a rotation to the node, in radians, starting from its current rotation.
+Applies a rotation to the node, in radians, starting from its current rotation. This is equivalent to rotation += radians.
 */
 func (self Instance) Rotate(radians Angle.Radians) { //gd:Node2D.rotate
 	Advanced(self).Rotate(float64(radians))
@@ -206,7 +206,7 @@ func (self MoreArgs) MoveLocalY(delta Float.X, scaled bool) { //gd:Node2D.move_l
 }
 
 /*
-Translates the node by the given 'offset' in local coordinates.
+Translates the node by the given 'offset' in local coordinates. This is equivalent to position += offset.
 */
 func (self Instance) Translate(offset Vector2.XY) { //gd:Node2D.translate
 	Advanced(self).Translate(Vector2.XY(offset))
@@ -227,20 +227,24 @@ func (self Instance) ApplyScale(ratio Vector2.XY) { //gd:Node2D.apply_scale
 }
 
 /*
-Rotates the node so that its local +X axis points towards the 'point', which is expected to use global coordinates.
+Rotates the node so that its local +X axis points towards the 'point', which is expected to use global coordinates. This method is a combination of both [Rotate] and [GetAngleTo].
 
 'point' should not be the same as the node's position, otherwise the node always looks to the right.
+
+[GetAngleTo]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.GetAngleTo
+[Rotate]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Rotate
 */
 func (self Instance) LookAt(point Vector2.XY) { //gd:Node2D.look_at
 	Advanced(self).LookAt(Vector2.XY(point))
 }
 
 /*
-Returns the angle between the node and the 'point' in radians.
+Returns the angle between the node and the 'point' in radians. See also [LookAt].
 
 [Illustration of the returned angle.]
 
 [Illustration of the returned angle.]: https://raw.githubusercontent.com/godotengine/godot-docs/master/img/node2d_get_angle_to.png
+[LookAt]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.LookAt
 */
 func (self Instance) GetAngleTo(point Vector2.XY) Angle.Radians { //gd:Node2D.get_angle_to
 	return Angle.Radians(Float.X(Advanced(self).GetAngleTo(Vector2.XY(point))))

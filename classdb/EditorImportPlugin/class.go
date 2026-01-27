@@ -180,6 +180,8 @@ type Interface interface {
 	GetVisibleName() string
 	// Gets the number of initial presets defined by the plugin. Use [GetImportOptions] to get the default options for the preset and [GetPresetName] to get the name of the preset.
 	//
+	// By default, there are no presets.
+	//
 	// [GetImportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorImportPlugin#Interface
 	// [GetPresetName]: https://pkg.go.dev/graphics.gd/classdb/EditorImportPlugin#Interface
 	GetPresetCount() int
@@ -206,6 +208,8 @@ type Interface interface {
 	// Gets the order of this importer to be run when importing resources. Importers with lower import orders will be called first, and higher values will be called later. Use this to ensure the importer runs after the dependencies are already imported. The default import order is 0 unless overridden by a specific importer. See [ResourceImporter.ImportOrder] for some predefined values.
 	GetImportOrder() int
 	// Gets the format version of this importer. Increment this version when making incompatible changes to the format of the imported resources.
+	//
+	// If not overridden, the format version is 0.
 	GetFormatVersion() int
 	// Gets whether the import option specified by 'option_name' should be visible in the Import dock. The default implementation always returns true, making all options visible. This is mainly useful for hiding options that depend on others if one of them is disabled.
 	//
@@ -265,9 +269,9 @@ type Interface interface {
 	Import(source_file string, save_path string, options map[string]interface{}, platform_variants []string, gen_files []string) error
 	// Tells whether this importer can be run in parallel on threads, or, on the contrary, it's only safe for the editor to call it from the main thread, for one file at a time.
 	//
-	// If this method is not overridden, it will return false by default.
-	//
 	// If this importer's implementation is thread-safe and can be run in parallel, override this with true to optimize for concurrency.
+	//
+	// If not overridden, returns false.
 	CanImportThreaded() bool
 }
 
@@ -335,6 +339,8 @@ func (Instance) _get_visible_name(impl func(ptr gdclass.Receiver) string) (cb gd
 
 /*
 Gets the number of initial presets defined by the plugin. Use [GetImportOptions] to get the default options for the preset and [GetPresetName] to get the name of the preset.
+
+By default, there are no presets.
 
 [GetImportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorImportPlugin#Interface
 [GetPresetName]: https://pkg.go.dev/graphics.gd/classdb/EditorImportPlugin#Interface
@@ -463,6 +469,8 @@ func (Instance) _get_import_order(impl func(ptr gdclass.Receiver) int) (cb gd.Ex
 
 /*
 Gets the format version of this importer. Increment this version when making incompatible changes to the format of the imported resources.
+
+If not overridden, the format version is 0.
 */
 func (Instance) _get_format_version(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -526,9 +534,9 @@ func (Instance) _import(impl func(ptr gdclass.Receiver, source_file string, save
 /*
 Tells whether this importer can be run in parallel on threads, or, on the contrary, it's only safe for the editor to call it from the main thread, for one file at a time.
 
-If this method is not overridden, it will return false by default.
-
 If this importer's implementation is thread-safe and can be run in parallel, override this with true to optimize for concurrency.
+
+If not overridden, returns false.
 */
 func (Instance) _can_import_threaded(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {

@@ -451,9 +451,7 @@ func (self MoreArgs) Duplicate(deep bool) Instance { //gd:Resource.duplicate
 }
 
 /*
-Duplicates this resource, deeply, like [Duplicate](true), with extra control over how subresources are handled.
-
-'deep_subresources_mode' must be one of the values from [DeepDuplicateMode].
+Duplicates this resource, deeply, like [Duplicate] when passing true, with extra control over how subresources are handled.
 
 [Duplicate]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.Duplicate
 */
@@ -462,9 +460,7 @@ func (self Instance) DuplicateDeep() Instance { //gd:Resource.duplicate_deep
 }
 
 /*
-Duplicates this resource, deeply, like [Duplicate](true), with extra control over how subresources are handled.
-
-'deep_subresources_mode' must be one of the values from [DeepDuplicateMode].
+Duplicates this resource, deeply, like [Duplicate] when passing true, with extra control over how subresources are handled.
 
 [Duplicate]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.Duplicate
 */

@@ -13,7 +13,11 @@ To get cancel action, you can use:
 		dialog.GetCancelButton().AsBaseButton().OnPressed(func() {})
 	}
 
+Note: [AcceptDialog] is invisible by default. To make it visible, call one of the popup_* methods from [Window] on the node, such as [Window.PopupCenteredClamped].
+
 [AcceptDialog]: https://pkg.go.dev/graphics.gd/classdb/AcceptDialog
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+[Window.PopupCenteredClamped]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.PopupCenteredClamped
 */
 package ConfirmationDialog
 

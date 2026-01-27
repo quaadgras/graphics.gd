@@ -163,6 +163,8 @@ var methods struct {
 	get_content_scale_aspect         gdextension.MethodForClass `hash:"4158790715"`
 	set_content_scale_stretch        gdextension.MethodForClass `hash:"349355940"`
 	get_content_scale_stretch        gdextension.MethodForClass `hash:"536857316"`
+	set_nonclient_area               gdextension.MethodForClass `hash:"1763793166"`
+	get_nonclient_area               gdextension.MethodForClass `hash:"410525958"`
 	set_keep_title_visible           gdextension.MethodForClass `hash:"2586408642"`
 	get_keep_title_visible           gdextension.MethodForClass `hash:"36873697"`
 	set_content_scale_factor         gdextension.MethodForClass `hash:"373806689"`
@@ -291,7 +293,7 @@ func (Instance) _get_contents_minimum_size(impl func(ptr gdclass.Receiver) Vecto
 }
 
 /*
-Centers a native window on the current screen and an embedded window on its embedder [Viewport].
+Centers the window in the current screen. If the window is embedded, it is centered in the embedder [Viewport] instead.
 
 [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
@@ -1463,7 +1465,10 @@ func (self Instance) SetPosition(value Vector2i.XY) Instance { //gd:Window.posit
 }
 
 /*
-The window's size in pixels.
+The window's size in pixels. See also [ContentScaleSize], which doesn't set the window's physical size but affects how scaling works relative to the current [ContentScaleMode].
+
+[ContentScaleMode]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.ContentScaleMode
+[ContentScaleSize]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.ContentScaleSize
 */
 func (self Instance) Size() Vector2i.XY { //gd:Window.size
 	return Vector2i.XY(class(self).GetSize())
@@ -1485,6 +1490,21 @@ func (self Instance) CurrentScreen() int { //gd:Window.current_screen
 // SetCurrentScreen sets the property returned by [GetCurrentScreen]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetCurrentScreen(value int) Instance { //gd:Window.current_screen
 	class(self).SetCurrentScreen(int64(value))
+	return self
+}
+
+/*
+If set, defines the window's custom decoration area which will receive mouse input, even if normal input to the window is blocked (such as when it has an exclusive child opened). See also [OnNonclientWindowInput].
+
+[OnNonclientWindowInput]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.OnNonclientWindowInput
+*/
+func (self Instance) NonclientArea() Rect2i.PositionSize { //gd:Window.nonclient_area
+	return Rect2i.PositionSize(class(self).GetNonclientArea())
+}
+
+// SetNonclientArea sets the property returned by [GetNonclientArea]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNonclientArea(value Rect2i.PositionSize) Instance { //gd:Window.nonclient_area
+	class(self).SetNonclientArea(Rect2i.PositionSize(value))
 	return self
 }
 
@@ -1883,9 +1903,18 @@ func (self Instance) SetKeepTitleVisible(value bool) Instance { //gd:Window.keep
 }
 
 /*
-Base size of the content (i.e. nodes that are drawn inside the window). If non-zero, [Window]'s content will be scaled when the window is resized to a different size.
+The content's base size in "virtual" pixels. Not to be confused with [Size], which sets the actual window's physical size in pixels. If set to a value greater than 0 and [ContentScaleMode] is set to a value other than [ContentScaleModeDisabled], the [Window]'s content will be scaled when the window is resized to a different size. Higher values will make the content appear smaller, as it will be able to fit more of the project in view. On the root [Window], this is set to match [ProjectSettings] "display/window/size/viewport_width" and [ProjectSettings] "display/window/size/viewport_height" by default.
 
+For example, when using [ContentScaleModeCanvasItems] and [ContentScaleSize] set to Vector2i(1280, 720), using a window size of 2560×1440 will make 2D elements appear at double their original size, as the content is scaled by a factor of 2.0 (2560.0 / 1280.0 = 2.0, 1440.0 / 720.0 = 2.0).
+
+See [the Base size section of the Multiple resolutions documentation] for details.
+
+[ContentScaleMode]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.ContentScaleMode
+[ContentScaleSize]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.ContentScaleSize
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[Size]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Size
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+[the Base size section of the Multiple resolutions documentation]: https://docs.godotengine.org/tutorials/rendering/multiple_resolutions.html#base-size
 */
 func (self Instance) ContentScaleSize() Vector2i.XY { //gd:Window.content_scale_size
 	return Vector2i.XY(class(self).GetContentScaleSize())
@@ -2260,6 +2289,14 @@ func (self class) SetContentScaleStretch(stretch ContentScaleStretch) { //gd:Win
 }
 func (self class) GetContentScaleStretch() ContentScaleStretch { //gd:Window.get_content_scale_stretch
 	var r_ret = noescape.Call[ContentScaleStretch](gd.ObjectChecked(self.AsObject()), methods.get_content_scale_stretch, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetNonclientArea(area Rect2i.PositionSize) { //gd:Window.set_nonclient_area
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_nonclient_area, 0|(gdextension.SizeRect2i<<4), &struct{ area Rect2i.PositionSize }{area})
+}
+func (self class) GetNonclientArea() Rect2i.PositionSize { //gd:Window.get_nonclient_area
+	var r_ret = noescape.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_nonclient_area, gdextension.SizeRect2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2638,6 +2675,24 @@ func (self Instance) OnWindowInput(cb func(event InputEvent.Instance), flags ...
 
 func (self class) WindowInput() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`window_input`))))
+}
+
+/*
+Emitted when the mouse event is received by the custom decoration area defined by [NonclientArea], and normal input to the window is blocked (such as when it has an exclusive child opened). 'event”s position is in the embedder's coordinate system.
+
+[NonclientArea]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.NonclientArea
+*/
+func (self Instance) OnNonclientWindowInput(cb func(event InputEvent.Instance), flags ...Signal.Flags) Instance {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self.AsObject()[0].Connect(gd.NewStringName("nonclient_window_input"), gd.NewCallable(cb), int64(flags_together))
+	return self
+}
+
+func (self class) NonclientWindowInput() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`nonclient_window_input`))))
 }
 
 /*
@@ -3049,8 +3104,9 @@ const (
 type ContentScaleMode int //gd:Window.ContentScaleMode
 
 const (
-	// The content will not be scaled to match the [Window]'s size.
+	// The content will not be scaled to match the [Window]'s size ([ContentScaleSize] is ignored).
 	//
+	// [ContentScaleSize]: https://pkg.go.dev/graphics.gd/classdb/#Instance.ContentScaleSize
 	// [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 	ContentScaleModeDisabled ContentScaleMode = 0
 	// The content will be rendered at the target size. This is more performance-expensive than [ContentScaleModeViewport], but provides better results.

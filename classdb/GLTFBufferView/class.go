@@ -98,6 +98,8 @@ var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
 	load_buffer_view_data gdextension.MethodForClass `hash:"3945446907"`
+	from_dictionary       gdextension.MethodForClass `hash:"2594413512"`
+	to_dictionary         gdextension.MethodForClass `hash:"3102165223"`
 	get_buffer            gdextension.MethodForClass `hash:"3905245786"`
 	set_buffer            gdextension.MethodForClass `hash:"1286410249"`
 	get_byte_offset       gdextension.MethodForClass `hash:"3905245786"`
@@ -130,6 +132,21 @@ var Nil Instance
 type Any interface {
 	gd.IsClass
 	AsGLTFBufferView() Instance
+}
+
+/*
+Creates a new GLTFBufferView instance by parsing the given data structure.
+*/
+func FromDictionary(dictionary map[string]interface{}) Instance { //gd:GLTFBufferView.from_dictionary
+	self := Instance{}
+	return Instance(Advanced(self).FromDictionary(gd.DictionaryFromMap(dictionary)))
+}
+
+/*
+Serializes this GLTFBufferView instance into a data structure.
+*/
+func (self Instance) ToDictionary() map[string]interface{} { //gd:GLTFBufferView.to_dictionary
+	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](Advanced(self).ToDictionary()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -260,6 +277,16 @@ func (self Instance) SetVertexAttributes(value bool) Instance { //gd:GLTFBufferV
 func (self class) LoadBufferViewData(state [1]gdclass.GLTFState) Packed.Bytes { //gd:GLTFBufferView.load_buffer_view_data
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.load_buffer_view_data, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ state gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFState(state[0])))})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
+	return ret
+}
+func (self class) FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFBufferView { //gd:GLTFBufferView.from_dictionary
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_dictionary, gdextension.SizeObject|(gdextension.SizeDictionary<<4), &struct{ dictionary gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(dictionary))})
+	var ret = [1]gdclass.GLTFBufferView{gdclass.NewGLTFBufferView(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	return ret
+}
+func (self class) ToDictionary() Dictionary.Any { //gd:GLTFBufferView.to_dictionary
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.to_dictionary, gdextension.SizeDictionary, &struct{}{})
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 func (self class) GetBuffer() int64 { //gd:GLTFBufferView.get_buffer

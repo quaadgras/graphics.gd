@@ -3,7 +3,11 @@
 /*
 This texture class allows you to use a 2D texture created directly on the [RenderingDevice] as a texture for materials, meshes, etc.
 
+Note: [Texture2DRD] is intended for low-level usage with [RenderingDevice]. For most use cases, use [Texture2D] instead.
+
 [RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
+[Texture2DRD]: https://pkg.go.dev/graphics.gd/classdb/Texture2DRD
 */
 package Texture2DRD
 

@@ -236,8 +236,8 @@ Note: The screen rotation can be different from [Node2D.GlobalRotation] if the c
 [Node2D.GlobalRotation]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.GlobalRotation
 [RotationSmoothingEnabled]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.RotationSmoothingEnabled
 */
-func (self Instance) GetScreenRotation() Float.X { //gd:Camera2D.get_screen_rotation
-	return Float.X(Float.X(Advanced(self).GetScreenRotation()))
+func (self Instance) GetScreenRotation() Angle.Radians { //gd:Camera2D.get_screen_rotation
+	return Angle.Radians(Float.X(Advanced(self).GetScreenRotation()))
 }
 
 /*
@@ -260,6 +260,10 @@ func (self Instance) ResetSmoothing() { //gd:Camera2D.reset_smoothing
 
 /*
 Aligns the camera to the tracked node.
+
+Note: Calling [ForceUpdateScroll] after this method is not required.
+
+[ForceUpdateScroll]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.ForceUpdateScroll
 */
 func (self Instance) Align() { //gd:Camera2D.align
 	Advanced(self).Align()

@@ -9,7 +9,7 @@ Note: A [ViewportTexture] is always local to its scene (see [Resource.ResourceLo
 
 Note: Instantiating scenes containing a high-resolution [ViewportTexture] may cause noticeable stutter.
 
-Note: When using a [Viewport] with [Viewport.UseHdr2d] set to true, the returned texture will be an HDR image encoded in linear space. This may look darker than normal when displayed directly on screen. To convert to gamma space, you can do the following:
+Note: When using a [Viewport] with [Viewport.UseHdr2d] set to true, the returned texture will be an HDR image that uses linear encoding. This may look darker than normal when displayed directly on screen. To convert to nonlinear sRGB encoding, you can do the following:
 
 	package main
 

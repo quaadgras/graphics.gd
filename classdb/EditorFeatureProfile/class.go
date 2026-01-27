@@ -383,6 +383,10 @@ const (
 	FeatureHistoryDock Feature = 7
 	// The Game tab, which allows embedding the game window and selecting nodes by clicking inside of it. If this feature is disabled, the Game tab won't display.
 	FeatureGame Feature = 8
+	// The Signals dock. If this feature is disabled, signals won't be visible and modifiable from the editor.
+	FeatureSignalsDock Feature = 9
+	// The Groups dock. If this feature is disabled, groups won't be visible and modifiable from the editor.
+	FeatureGroupsDock Feature = 10
 	// Represents the size of the [Feature] enum.
-	FeatureMax Feature = 9
+	FeatureMax Feature = 11
 )

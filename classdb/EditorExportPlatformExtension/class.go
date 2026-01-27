@@ -201,9 +201,9 @@ type Interface interface {
 	//
 	// [EditorInterface.GetEditorScale]: https://pkg.go.dev/graphics.gd/classdb/EditorInterface#GetEditorScale
 	GetRunIcon() Texture2D.Instance
-	// Returns true, if specified 'preset' is valid and can be exported. Use [SetConfigError] and [SetConfigMissingTemplates] to set error details.
+	// Returns true if the specified 'preset' is valid and can be exported. Use [SetConfigError] and [SetConfigMissingTemplates] to set error details.
 	//
-	// Usual implementation can call [HasValidExportConfiguration] and [HasValidProjectConfiguration] to determine if export is possible.
+	// Usual implementations call [HasValidExportConfiguration] and [HasValidProjectConfiguration] to determine if exporting is possible.
 	//
 	// [HasValidExportConfiguration]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatformExtension#Interface
 	// [HasValidProjectConfiguration]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatformExtension#Interface
@@ -250,6 +250,8 @@ type Interface interface {
 	GetPlatformFeatures() []string
 	// Returns protocol used for remote debugging. Default implementation return tcp://.
 	GetDebugProtocol() string
+	// Initializes the plugin. Called by the editor when platform is registered.
+	Initialize()
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -317,6 +319,7 @@ func (self implementation) ExportZipPatch(preset EditorExportPreset.Instance, de
 }
 func (self implementation) GetPlatformFeatures() (_ []string) { return }
 func (self implementation) GetDebugProtocol() (_ string)      { return }
+func (self implementation) Initialize()                       { return }
 
 /*
 Returns array of platform specific features for the specified 'preset'.
@@ -654,9 +657,9 @@ func (Instance) _get_run_icon(impl func(ptr gdclass.Receiver) Texture2D.Instance
 }
 
 /*
-Returns true, if specified 'preset' is valid and can be exported. Use [SetConfigError] and [SetConfigMissingTemplates] to set error details.
+Returns true if the specified 'preset' is valid and can be exported. Use [SetConfigError] and [SetConfigMissingTemplates] to set error details.
 
-Usual implementation can call [HasValidExportConfiguration] and [HasValidProjectConfiguration] to determine if export is possible.
+Usual implementations call [HasValidExportConfiguration] and [HasValidProjectConfiguration] to determine if exporting is possible.
 
 [HasValidExportConfiguration]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatformExtension#Interface
 [HasValidProjectConfiguration]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatformExtension#Interface
@@ -891,6 +894,16 @@ func (Instance) _get_debug_protocol(impl func(ptr gdclass.Receiver) string) (cb 
 			return
 		}
 		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
+Initializes the plugin. Called by the editor when platform is registered.
+*/
+func (Instance) _initialize(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self)
 	}
 }
 
@@ -1379,6 +1392,12 @@ func (class) _get_debug_protocol(impl func(ptr gdclass.Receiver) String.Readable
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
+func (class) _initialize(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self)
+	}
+}
 
 func (self class) SetConfigError(error_text String.Readable) { //gd:EditorExportPlatformExtension.set_config_error
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_config_error, 0|(gdextension.SizeString<<4), &struct{ error_text gdextension.String }{pointers.Get(gd.InternalString(error_text))})
@@ -1484,6 +1503,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._get_platform_features)
 	case "_get_debug_protocol":
 		return reflect.ValueOf(self._get_debug_protocol)
+	case "_initialize":
+		return reflect.ValueOf(self._initialize)
 	default:
 		return gd.VirtualByName(EditorExportPlatform.Advanced(self.AsEditorExportPlatform()), name)
 	}
@@ -1551,6 +1572,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._get_platform_features)
 	case "_get_debug_protocol":
 		return reflect.ValueOf(self._get_debug_protocol)
+	case "_initialize":
+		return reflect.ValueOf(self._initialize)
 	default:
 		return gd.VirtualByName(EditorExportPlatform.Instance(self.AsEditorExportPlatform()), name)
 	}

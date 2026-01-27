@@ -32,6 +32,7 @@ import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Font"
 import "graphics.gd/classdb/GUI"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/StyleBox"
 import "graphics.gd/classdb/TextServer"
 import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
@@ -155,6 +156,8 @@ var methods struct {
 	set_custom_draw                           gdextension.MethodForClass `hash:"272420368"`
 	set_custom_draw_callback                  gdextension.MethodForClass `hash:"957362965"`
 	get_custom_draw_callback                  gdextension.MethodForClass `hash:"1317077508"`
+	set_custom_stylebox                       gdextension.MethodForClass `hash:"1433009359"`
+	get_custom_stylebox                       gdextension.MethodForClass `hash:"3362509644"`
 	set_collapsed                             gdextension.MethodForClass `hash:"2586408642"`
 	is_collapsed                              gdextension.MethodForClass `hash:"2240911060"`
 	set_collapsed_recursive                   gdextension.MethodForClass `hash:"2586408642"`
@@ -490,7 +493,7 @@ func (self Instance) GetStructuredTextBidiOverrideOptions(column int) []any { //
 }
 
 /*
-Sets language code of item's text used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
+Sets the language code of the given 'column”s text to 'language'. This is used for line-breaking and text shaping algorithms. If 'language' is empty, the current locale is used.
 
 Returns 'self' to enable method chaining.
 */
@@ -732,6 +735,29 @@ func (self Instance) GetCustomDrawCallback(column int) Callable.Function { //gd:
 }
 
 /*
+Sets the given column's custom [StyleBox] used to draw the background.
+
+Note: If a custom background color is set, the [StyleBox] will be drawn in front of it.
+
+Returns 'self' to enable method chaining.
+
+[StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
+*/
+func (self Instance) SetCustomStylebox(column int, stylebox StyleBox.Instance) Instance { //gd:TreeItem.set_custom_stylebox
+	Advanced(self).SetCustomStylebox(int64(column), stylebox)
+	return self
+}
+
+/*
+Returns the given column's custom [StyleBox] used to draw the background.
+
+[StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
+*/
+func (self Instance) GetCustomStylebox(column int) StyleBox.Instance { //gd:TreeItem.get_custom_stylebox
+	return StyleBox.Instance(Advanced(self).GetCustomStylebox(int64(column)))
+}
+
+/*
 Collapses or uncollapses this [TreeItem] and all the descendants of this item.
 
 Returns 'self' to enable method chaining.
@@ -899,7 +925,11 @@ func (self Instance) GetCustomFontSize(column int) int { //gd:TreeItem.get_custo
 /*
 Sets the given column's custom background color and whether to just use it as an outline.
 
+Note: If a custom [StyleBox] is set, the background color will be drawn behind it.
+
 Returns 'self' to enable method chaining.
+
+[StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
 */
 func (self Instance) SetCustomBgColor(column int, color Color.RGBA) Instance { //gd:TreeItem.set_custom_bg_color
 	Advanced(self).SetCustomBgColor(int64(column), Color.RGBA(color), false)
@@ -909,7 +939,11 @@ func (self Instance) SetCustomBgColor(column int, color Color.RGBA) Instance { /
 /*
 Sets the given column's custom background color and whether to just use it as an outline.
 
+Note: If a custom [StyleBox] is set, the background color will be drawn behind it.
+
 Returns 'self' to enable method chaining.
+
+[StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
 */
 func (self MoreArgs) SetCustomBgColor(column int, color Color.RGBA, just_outline bool) MoreArgs { //gd:TreeItem.set_custom_bg_color
 	Advanced(self).SetCustomBgColor(int64(column), Color.RGBA(color), just_outline)
@@ -1715,6 +1749,17 @@ func (self class) SetCustomDrawCallback(column int64, callback Callable.Function
 func (self class) GetCustomDrawCallback(column int64) Callable.Function { //gd:TreeItem.get_custom_draw_callback
 	var r_ret = noescape.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_custom_draw_callback, gdextension.SizeCallable|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
 	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret)))
+	return ret
+}
+func (self class) SetCustomStylebox(column int64, stylebox [1]gdclass.StyleBox) { //gd:TreeItem.set_custom_stylebox
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_stylebox, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
+		column   int64
+		stylebox gdextension.Object
+	}{column, gdextension.Object(gd.ObjectChecked(gdclass.GetStyleBox(stylebox[0])))})
+}
+func (self class) GetCustomStylebox(column int64) [1]gdclass.StyleBox { //gd:TreeItem.get_custom_stylebox
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_custom_stylebox, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
+	var ret = [1]gdclass.StyleBox{gdclass.NewStyleBox(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 func (self class) SetCollapsed(enable bool) { //gd:TreeItem.set_collapsed

@@ -122,6 +122,7 @@ var methods struct {
 	get_support_data_info                       gdextension.MethodForClass `hash:"201670096"`
 	save_support_data                           gdextension.MethodForClass `hash:"3927539163"`
 	get_support_data                            gdextension.MethodForClass `hash:"2362200018"`
+	is_locale_using_support_data                gdextension.MethodForClass `hash:"3927539163"`
 	is_locale_right_to_left                     gdextension.MethodForClass `hash:"3927539163"`
 	name_to_tag                                 gdextension.MethodForClass `hash:"1321353865"`
 	tag_to_name                                 gdextension.MethodForClass `hash:"844755477"`
@@ -256,6 +257,7 @@ var methods struct {
 	draw_hex_code_box                           gdextension.MethodForClass `hash:"1602046441"`
 	create_shaped_text                          gdextension.MethodForClass `hash:"1231398698"`
 	shaped_text_clear                           gdextension.MethodForClass `hash:"2722037293"`
+	shaped_text_duplicate                       gdextension.MethodForClass `hash:"41030802"`
 	shaped_text_set_direction                   gdextension.MethodForClass `hash:"1551430183"`
 	shaped_text_get_direction                   gdextension.MethodForClass `hash:"3065904362"`
 	shaped_text_get_inferred_direction          gdextension.MethodForClass `hash:"3065904362"`
@@ -275,6 +277,7 @@ var methods struct {
 	shaped_text_add_string                      gdextension.MethodForClass `hash:"623473029"`
 	shaped_text_add_object                      gdextension.MethodForClass `hash:"3664424789"`
 	shaped_text_resize_object                   gdextension.MethodForClass `hash:"790361552"`
+	shaped_text_has_object                      gdextension.MethodForClass `hash:"2360964694"`
 	shaped_get_text                             gdextension.MethodForClass `hash:"642473191"`
 	shaped_get_span_count                       gdextension.MethodForClass `hash:"2198884583"`
 	shaped_get_span_meta                        gdextension.MethodForClass `hash:"4069510997"`
@@ -437,6 +440,13 @@ func (self Instance) GetSupportData() []byte { //gd:TextServer.get_support_data
 }
 
 /*
+Returns true if the locale requires text server support data for line/word breaking.
+*/
+func (self Instance) IsLocaleUsingSupportData(locale string) bool { //gd:TextServer.is_locale_using_support_data
+	return bool(Advanced(self).IsLocaleUsingSupportData(String.New(locale)))
+}
+
+/*
 Returns true if locale is right-to-left.
 */
 func (self Instance) IsLocaleRightToLeft(locale string) bool { //gd:TextServer.is_locale_right_to_left
@@ -444,14 +454,14 @@ func (self Instance) IsLocaleRightToLeft(locale string) bool { //gd:TextServer.i
 }
 
 /*
-Converts readable feature, variation, script, or language name to OpenType tag.
+Converts the given readable name of a feature, variation, script, or language to an OpenType tag.
 */
 func (self Instance) NameToTag(name string) int { //gd:TextServer.name_to_tag
 	return int(int(Advanced(self).NameToTag(String.New(name))))
 }
 
 /*
-Converts OpenType tag to readable feature, variation, script, or language name.
+Converts the given OpenType tag to the readable name of a feature, variation, script, or language.
 */
 func (self Instance) TagToName(tag int) string { //gd:TextServer.tag_to_name
 	return string(Advanced(self).TagToName(int64(tag)).String())
@@ -772,7 +782,7 @@ func (self Instance) FontSetModulateColorGlyphs(font_rid RID.Font, force_autohin
 }
 
 /*
-Returns true, if color modulation is applied when drawing colored glyphs.
+Returns true if color modulation is applied when drawing the font's colored glyphs.
 */
 func (self Instance) FontIsModulateColorGlyphs(font_rid RID.Font) bool { //gd:TextServer.font_is_modulate_color_glyphs
 	return bool(Advanced(self).FontIsModulateColorGlyphs(RID.Any(font_rid)))
@@ -1362,7 +1372,7 @@ func (self MoreArgs) FontDrawGlyphOutline(font_rid RID.Font, canvas RID.Canvas, 
 }
 
 /*
-Returns true, if font supports given language ([ISO 639] code).
+Returns true if the font supports the given language (as a [ISO 639] code).
 
 [ISO 639]: https://en.wikipedia.org/wiki/ISO_639-1
 */
@@ -1401,7 +1411,9 @@ func (self Instance) FontGetLanguageSupportOverrides(font_rid RID.Font) []string
 }
 
 /*
-Returns true, if font supports given script (ISO 15924 code).
+Returns true if the font supports the given script (as a [ISO 15924] code).
+
+[ISO 15924]: https://en.wikipedia.org/wiki/ISO_15924
 */
 func (self Instance) FontIsScriptSupported(font_rid RID.Font, script string) bool { //gd:TextServer.font_is_script_supported
 	return bool(Advanced(self).FontIsScriptSupported(RID.Any(font_rid), String.New(script)))
@@ -1478,14 +1490,14 @@ func (self Instance) FontSupportedVariationList(font_rid RID.Font) map[int]struc
 }
 
 /*
-Deprecated. This method always returns 1.0.
+This method does nothing and always returns 1.0.
 */
 func (self Instance) FontGetGlobalOversampling() Float.X { //gd:TextServer.font_get_global_oversampling
 	return Float.X(Float.X(Advanced(self).FontGetGlobalOversampling()))
 }
 
 /*
-Deprecated. This method does nothing.
+This method does nothing.
 */
 func (self Instance) FontSetGlobalOversampling(oversampling Float.X) { //gd:TextServer.font_set_global_oversampling
 	Advanced(self).FontSetGlobalOversampling(float64(oversampling))
@@ -1538,6 +1550,13 @@ Clears text buffer (removes text and inline objects).
 */
 func (self Instance) ShapedTextClear(rid RID.TextBuffer) { //gd:TextServer.shaped_text_clear
 	Advanced(self).ShapedTextClear(RID.Any(rid))
+}
+
+/*
+Duplicates shaped text buffer.
+*/
+func (self Instance) ShapedTextDuplicate(rid RID.TextBuffer) RID.TextBuffer { //gd:TextServer.shaped_text_duplicate
+	return RID.TextBuffer(RID.TextBuffer(Advanced(self).ShapedTextDuplicate(RID.Any(rid))))
 }
 
 /*
@@ -1726,6 +1745,13 @@ Sets new size and alignment of embedded object.
 */
 func (self MoreArgs) ShapedTextResizeObject(shaped RID.TextBuffer, key any, size Vector2.XY, inline_align GUI.InlineAlignment, baseline Float.X) bool { //gd:TextServer.shaped_text_resize_object
 	return bool(Advanced(self).ShapedTextResizeObject(RID.Any(shaped), variant.New(key), Vector2.XY(size), inline_align, float64(baseline)))
+}
+
+/*
+Returns true if an object with 'key' is embedded in this shaped text buffer.
+*/
+func (self Instance) ShapedTextHasObject(shaped RID.TextBuffer, key any) bool { //gd:TextServer.shaped_text_has_object
+	return bool(Advanced(self).ShapedTextHasObject(RID.Any(shaped), variant.New(key)))
 }
 
 /*
@@ -2208,46 +2234,54 @@ func (self Instance) ShapedTextGetDominantDirectionInRange(shaped RID.TextBuffer
 }
 
 /*
-Converts a number from the Western Arabic (0..9) to the numeral systems used in 'language'.
+Converts a number from Western Arabic (0..9) to the numeral system used in the given 'language'.
 
-If 'language' is omitted, the active locale will be used.
+If 'language' is an empty string, the active locale will be used.
 */
 func (self Instance) FormatNumber(number string) string { //gd:TextServer.format_number
 	return string(Advanced(self).FormatNumber(String.New(number), String.New("")).String())
 }
 
 /*
-Converts a number from the Western Arabic (0..9) to the numeral systems used in 'language'.
+Converts a number from Western Arabic (0..9) to the numeral system used in the given 'language'.
 
-If 'language' is omitted, the active locale will be used.
+If 'language' is an empty string, the active locale will be used.
 */
 func (self MoreArgs) FormatNumber(number string, language string) string { //gd:TextServer.format_number
 	return string(Advanced(self).FormatNumber(String.New(number), String.New(language)).String())
 }
 
 /*
-Converts 'number' from the numeral systems used in 'language' to Western Arabic (0..9).
+Converts 'number' from the numeral system used in the given 'language' to Western Arabic (0..9).
+
+If 'language' is an empty string, the active locale will be used.
 */
 func (self Instance) ParseNumber(number string) string { //gd:TextServer.parse_number
 	return string(Advanced(self).ParseNumber(String.New(number), String.New("")).String())
 }
 
 /*
-Converts 'number' from the numeral systems used in 'language' to Western Arabic (0..9).
+Converts 'number' from the numeral system used in the given 'language' to Western Arabic (0..9).
+
+If 'language' is an empty string, the active locale will be used.
 */
 func (self MoreArgs) ParseNumber(number string, language string) string { //gd:TextServer.parse_number
 	return string(Advanced(self).ParseNumber(String.New(number), String.New(language)).String())
 }
 
 /*
-Returns percent sign used in the 'language'.
+Returns the percent sign used in the given 'language'.
+
+If 'language' is an empty string, the active locale will be used.
 */
 func (self Instance) PercentSign() string { //gd:TextServer.percent_sign
 	return string(Advanced(self).PercentSign(String.New("")).String())
 }
 
 /*
-Returns percent sign used in the 'language'.
+Returns the percent sign used in the given 'language'.
+
+If 'language' is an empty string, the active locale will be used.
 */
 func (self MoreArgs) PercentSign(language string) string { //gd:TextServer.percent_sign
 	return string(Advanced(self).PercentSign(String.New(language)).String())
@@ -2347,7 +2381,7 @@ func (self Instance) IsValidLetter(unicode int) bool { //gd:TextServer.is_valid_
 }
 
 /*
-Returns the string converted to uppercase.
+Returns the string converted to UPPERCASE.
 
 Note: Casing is locale dependent and context sensitive if server support [FeatureContextSensitiveCaseConversion] feature (supported by [TextServerAdvanced]).
 
@@ -2360,7 +2394,7 @@ func (self Instance) StringToUpper(s string) string { //gd:TextServer.string_to_
 }
 
 /*
-Returns the string converted to uppercase.
+Returns the string converted to UPPERCASE.
 
 Note: Casing is locale dependent and context sensitive if server support [FeatureContextSensitiveCaseConversion] feature (supported by [TextServerAdvanced]).
 
@@ -2399,7 +2433,7 @@ func (self MoreArgs) StringToLower(s string, language string) string { //gd:Text
 }
 
 /*
-Returns the string converted to title case.
+Returns the string converted to Title Case.
 
 Note: Casing is locale dependent and context sensitive if server support [FeatureContextSensitiveCaseConversion] feature (supported by [TextServerAdvanced]).
 
@@ -2412,7 +2446,7 @@ func (self Instance) StringToTitle(s string) string { //gd:TextServer.string_to_
 }
 
 /*
-Returns the string converted to title case.
+Returns the string converted to Title Case.
 
 Note: Casing is locale dependent and context sensitive if server support [FeatureContextSensitiveCaseConversion] feature (supported by [TextServerAdvanced]).
 
@@ -2512,6 +2546,11 @@ func (self class) SaveSupportData(filename String.Readable) bool { //gd:TextServ
 func (self class) GetSupportData() Packed.Bytes { //gd:TextServer.get_support_data
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_support_data, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
+	return ret
+}
+func (self class) IsLocaleUsingSupportData(locale String.Readable) bool { //gd:TextServer.is_locale_using_support_data
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_locale_using_support_data, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ locale gdextension.String }{pointers.Get(gd.InternalString(locale))})
+	var ret = r_ret
 	return ret
 }
 func (self class) IsLocaleRightToLeft(locale String.Readable) bool { //gd:TextServer.is_locale_right_to_left
@@ -3376,6 +3415,11 @@ func (self class) CreateShapedText(direction Direction, orientation Orientation)
 func (self class) ShapedTextClear(rid RID.Any) { //gd:TextServer.shaped_text_clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shaped_text_clear, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 }
+func (self class) ShapedTextDuplicate(rid RID.Any) RID.Any { //gd:TextServer.shaped_text_duplicate
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.shaped_text_duplicate, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	var ret = r_ret
+	return ret
+}
 func (self class) ShapedTextSetDirection(shaped RID.Any, direction Direction) { //gd:TextServer.shaped_text_set_direction
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shaped_text_set_direction, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		shaped    RID.Any
@@ -3501,6 +3545,14 @@ func (self class) ShapedTextResizeObject(shaped RID.Any, key variant.Any, size V
 		inline_align GUI.InlineAlignment
 		baseline     float64
 	}{shaped, gdextension.Variant(pointers.Get(gd.InternalVariant(key))), size, inline_align, baseline})
+	var ret = r_ret
+	return ret
+}
+func (self class) ShapedTextHasObject(shaped RID.Any, key variant.Any) bool { //gd:TextServer.shaped_text_has_object
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.shaped_text_has_object, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeVariant<<8), &struct {
+		shaped RID.Any
+		key    gdextension.Variant
+	}{shaped, gdextension.Variant(pointers.Get(gd.InternalVariant(key)))})
 	var ret = r_ret
 	return ret
 }
@@ -4233,6 +4285,8 @@ const (
 	OverrunEnforceEllipsis TextOverrunFlag = 8
 	// Accounts for the text being justified before attempting to trim it (see [JustificationFlag]).
 	OverrunJustificationAware TextOverrunFlag = 16
+	// Determines whether the ellipsis should be added regardless of the string length, otherwise it is added only if the string is 6 characters or longer.
+	OverrunShortStringEllipsis TextOverrunFlag = 32
 )
 
 type GraphemeFlag int //gd:TextServer.GraphemeFlag

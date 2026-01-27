@@ -60,16 +60,16 @@ func Performance_AddCustomMonitor() {
 		return rand.IntN(25)
 	}
 	// Adds monitor with name "MyName" to category "MyCategory".
-	Performance.AddCustomMonitor("MyCategory/MyMonitor", Callable.New(monitorValue), nil)
+	Performance.AddCustomMonitor("MyCategory/MyMonitor", Callable.New(monitorValue), nil, 0)
 
 	// Adds monitor with name "MyName" to category "Custom".
 	// Note: "MyCategory/MyMonitor" and "MyMonitor" have same name but different ids so the code is valid.
-	Performance.AddCustomMonitor("MyMonitor", Callable.New(monitorValue), nil)
+	Performance.AddCustomMonitor("MyMonitor", Callable.New(monitorValue), nil, 0)
 
 	// Adds monitor with name "MyName" to category "Custom".
 	// Note: "MyMonitor" and "Custom/MyMonitor" have same name and same category but different ids so the code is valid.
-	Performance.AddCustomMonitor("Custom/MyMonitor", Callable.New(monitorValue), nil)
+	Performance.AddCustomMonitor("Custom/MyMonitor", Callable.New(monitorValue), nil, 0)
 
 	// Adds monitor with name "MyCategoryOne/MyCategoryTwo/MyMonitor" to category "Custom".
-	Performance.AddCustomMonitor("MyCategoryOne/MyCategoryTwo/MyMonitor", Callable.New(monitorValue), nil)
+	Performance.AddCustomMonitor("MyCategoryOne/MyCategoryTwo/MyMonitor", Callable.New(monitorValue), nil, 0)
 }

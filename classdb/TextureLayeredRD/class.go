@@ -3,9 +3,14 @@
 /*
 Base class for [Texture2DArrayRD], [TextureCubemapRD] and [TextureCubemapArrayRD]. Cannot be used directly, but contains all the functions necessary for accessing the derived resource types.
 
+Note: [TextureLayeredRD] is intended for low-level usage with [RenderingDevice]. For most use cases, use [TextureLayered] instead.
+
+[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
 [Texture2DArrayRD]: https://pkg.go.dev/graphics.gd/classdb/Texture2DArrayRD
 [TextureCubemapArrayRD]: https://pkg.go.dev/graphics.gd/classdb/TextureCubemapArrayRD
 [TextureCubemapRD]: https://pkg.go.dev/graphics.gd/classdb/TextureCubemapRD
+[TextureLayered]: https://pkg.go.dev/graphics.gd/classdb/TextureLayered
+[TextureLayeredRD]: https://pkg.go.dev/graphics.gd/classdb/TextureLayeredRD
 */
 package TextureLayeredRD
 

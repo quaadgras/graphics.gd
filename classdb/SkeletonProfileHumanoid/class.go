@@ -3,7 +3,7 @@
 /*
 A [SkeletonProfile] as a preset that is optimized for the human form. This exists for standardization, so all parameters are read-only.
 
-A humanoid skeleton profile contains 54 bones divided in 4 groups: "Body", "Face", "LeftHand", and "RightHand". It is structured as follows:
+A humanoid skeleton profile contains 56 bones divided into 4 groups: "Body", "Face", "LeftHand", and "RightHand". It is structured as follows:
 
 [SkeletonProfile]: https://pkg.go.dev/graphics.gd/classdb/SkeletonProfile
 */

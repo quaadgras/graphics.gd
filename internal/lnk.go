@@ -14,28 +14,38 @@ import (
 )
 
 var Linked bool = false
+var LinkedCore bool = false
+var LinkedEditor bool = false
 
 var Links []func()
+var LinkStartup func()
 
 // Link needs to be called once for the API to load in all of the
 // dynamic function pointers. Typically, the link layer will take
 // care of this (and you won't need to call it yourself).
 func Init(level gdextension.InitializationLevel) {
-	if level == gdextension.InitializationLevelScene {
+	if !LinkedCore && level == gdextension.InitializationLevelCore {
 		linkBuiltin()
 		linkTypeset()
 		linkTypesetCreation()
 		LinkMethods(pointers.Get(NewStringName("Object")), &object_methods, false)
+		if LinkStartup != nil {
+			LinkStartup()
+		}
+		LinkedCore = true
+	}
+	if !Linked && level == gdextension.InitializationLevelScene {
 		LinkMethods(pointers.Get(NewStringName("RefCounted")), &refcounted_methods, false)
 		for _, fn := range Links {
 			fn()
 		}
 		Linked = true
 	}
-	if level == gdextension.InitializationLevelEditor {
+	if !LinkedEditor && level == gdextension.InitializationLevelEditor {
 		for _, fn := range EditorStartupFunctions {
 			fn()
 		}
+		LinkedEditor = true
 	}
 }
 
@@ -83,7 +93,7 @@ func LinkMethods(className gdextension.StringName, methods any, editor bool) {
 		}
 		bind := gdextension.Host.Objects.Method.Lookup(className, pointers.Get(methodName), hash)
 		if bind == 0 {
-			fmt.Println("null bind ", pointers.Raw[StringName](className), method.Name)
+			fmt.Println("null bind ", method.Name)
 		}
 		*(direct.Interface().(*gdextension.MethodForClass)) = bind
 

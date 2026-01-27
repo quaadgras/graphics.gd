@@ -146,6 +146,8 @@ var methods struct {
 	is_draw_line_numbers_enabled          gdextension.MethodForClass `hash:"36873697"`
 	set_line_numbers_zero_padded          gdextension.MethodForClass `hash:"2586408642"`
 	is_line_numbers_zero_padded           gdextension.MethodForClass `hash:"36873697"`
+	set_line_numbers_min_digits           gdextension.MethodForClass `hash:"1286410249"`
+	get_line_numbers_min_digits           gdextension.MethodForClass `hash:"3905245786"`
 	set_draw_fold_gutter                  gdextension.MethodForClass `hash:"2586408642"`
 	is_drawing_fold_gutter                gdextension.MethodForClass `hash:"36873697"`
 	set_line_folding_enabled              gdextension.MethodForClass `hash:"2586408642"`
@@ -1172,6 +1174,19 @@ func (self Instance) SetGuttersZeroPadLineNumbers(value bool) Instance { //gd:Co
 }
 
 /*
+The minimum width in digits reserved for the line number gutter.
+*/
+func (self Instance) GuttersLineNumbersMinDigits() int { //gd:CodeEdit.gutters_line_numbers_min_digits
+	return int(int(class(self).GetLineNumbersMinDigits()))
+}
+
+// SetGuttersLineNumbersMinDigits sets the property returned by [GetLineNumbersMinDigits]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGuttersLineNumbersMinDigits(value int) Instance { //gd:CodeEdit.gutters_line_numbers_min_digits
+	class(self).SetLineNumbersMinDigits(int64(value))
+	return self
+}
+
+/*
 If true, the fold gutter is drawn. In this gutter, the theme's 'can_fold_code_region' icon is drawn for each foldable line (see [CanFoldLine]) and the theme's 'folded_code_region' icon is drawn for each folded line (see [IsLineFolded]). These icons can be clicked to toggle the fold state, see [ToggleFoldableLine]. [LineFolding] must be true to show icons.
 
 [CanFoldLine]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.CanFoldLine
@@ -1564,6 +1579,14 @@ func (self class) SetLineNumbersZeroPadded(enable bool) { //gd:CodeEdit.set_line
 }
 func (self class) IsLineNumbersZeroPadded() bool { //gd:CodeEdit.is_line_numbers_zero_padded
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_line_numbers_zero_padded, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetLineNumbersMinDigits(count int64) { //gd:CodeEdit.set_line_numbers_min_digits
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_line_numbers_min_digits, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
+}
+func (self class) GetLineNumbersMinDigits() int64 { //gd:CodeEdit.get_line_numbers_min_digits
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_line_numbers_min_digits, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

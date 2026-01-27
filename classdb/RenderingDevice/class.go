@@ -186,6 +186,7 @@ var methods struct {
 	draw_list_bind_render_pipeline         gdextension.MethodForClass `hash:"4040184819"`
 	draw_list_bind_uniform_set             gdextension.MethodForClass `hash:"749655778"`
 	draw_list_bind_vertex_array            gdextension.MethodForClass `hash:"4040184819"`
+	draw_list_bind_vertex_buffers_format   gdextension.MethodForClass `hash:"2008628980"`
 	draw_list_bind_index_array             gdextension.MethodForClass `hash:"4040184819"`
 	draw_list_set_push_constant            gdextension.MethodForClass `hash:"2772371345"`
 	draw_list_draw                         gdextension.MethodForClass `hash:"4230067973"`
@@ -306,6 +307,8 @@ func (self MoreArgs) TextureCreate(format RDTextureFormat.Instance, view RDTextu
 
 /*
 Creates a shared texture using the specified 'view' and the texture information from 'with_texture'.
+
+This will be freed automatically when the 'with_texture' is freed.
 */
 func (self Instance) TextureCreateShared(view RDTextureView.Instance, with_texture RID.Texture) RID.Texture { //gd:RenderingDevice.texture_create_shared
 	return RID.Texture(RID.Texture(Advanced(self).TextureCreateShared(view, RID.Any(with_texture))))
@@ -317,6 +320,8 @@ Creates a shared texture using the specified 'view' and the texture information 
 For 2D textures (which only have one layer), 'layer' must be 0.
 
 Note: Layer slicing is only supported for 2D texture arrays, not 3D textures or cubemaps.
+
+This will be freed automatically when the 'with_texture' is freed.
 
 [TextureCreateShared]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.TextureCreateShared
 */
@@ -330,6 +335,8 @@ Creates a shared texture using the specified 'view' and the texture information 
 For 2D textures (which only have one layer), 'layer' must be 0.
 
 Note: Layer slicing is only supported for 2D texture arrays, not 3D textures or cubemaps.
+
+This will be freed automatically when the 'with_texture' is freed.
 
 [TextureCreateShared]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.TextureCreateShared
 */
@@ -575,6 +582,8 @@ Creates a new framebuffer. It can be accessed with the RID that is returned.
 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [FreeRid] method.
 
+This will be freed automatically when any of the 'textures' is freed.
+
 [FreeRid]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.FreeRid
 */
 func (self Instance) FramebufferCreate(textures []RID.Texture) RID.Framebuffer { //gd:RenderingDevice.framebuffer_create
@@ -585,6 +594,8 @@ func (self Instance) FramebufferCreate(textures []RID.Texture) RID.Framebuffer {
 Creates a new framebuffer. It can be accessed with the RID that is returned.
 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [FreeRid] method.
+
+This will be freed automatically when any of the 'textures' is freed.
 
 [FreeRid]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.FreeRid
 */
@@ -597,6 +608,8 @@ Creates a new multipass framebuffer. It can be accessed with the RID that is ret
 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [FreeRid] method.
 
+This will be freed automatically when any of the 'textures' is freed.
+
 [FreeRid]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.FreeRid
 */
 func (self Instance) FramebufferCreateMultipass(textures []RID.Texture, passes []RDFramebufferPass.Instance) RID.Framebuffer { //gd:RenderingDevice.framebuffer_create_multipass
@@ -607,6 +620,8 @@ func (self Instance) FramebufferCreateMultipass(textures []RID.Texture, passes [
 Creates a new multipass framebuffer. It can be accessed with the RID that is returned.
 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [FreeRid] method.
+
+This will be freed automatically when any of the 'textures' is freed.
 
 [FreeRid]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.FreeRid
 */
@@ -699,6 +714,12 @@ func (self Instance) VertexFormatCreate(vertex_descriptions []RDVertexAttribute.
 
 /*
 Creates a vertex array based on the specified buffers. Optionally, 'offsets' (in bytes) may be defined for each buffer.
+
+Once finished with your RID, you will want to free the RID using the RenderingDevice's [FreeRid] method.
+
+This will be freed automatically when any of the 'src_buffers' is freed.
+
+[FreeRid]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.FreeRid
 */
 func (self Instance) VertexArrayCreate(vertex_count int, vertex_format int, src_buffers []RID.VertexBuffer) RID.VertexArray { //gd:RenderingDevice.vertex_array_create
 	return RID.VertexArray(RID.VertexArray(Advanced(self).VertexArrayCreate(int64(vertex_count), int64(vertex_format), gd.ArrayFromSlice[Array.Contains[RID.Any]](src_buffers), Packed.New([1][]int64{}[0]...))))
@@ -706,6 +727,12 @@ func (self Instance) VertexArrayCreate(vertex_count int, vertex_format int, src_
 
 /*
 Creates a vertex array based on the specified buffers. Optionally, 'offsets' (in bytes) may be defined for each buffer.
+
+Once finished with your RID, you will want to free the RID using the RenderingDevice's [FreeRid] method.
+
+This will be freed automatically when any of the 'src_buffers' is freed.
+
+[FreeRid]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.FreeRid
 */
 func (self MoreArgs) VertexArrayCreate(vertex_count int, vertex_format int, src_buffers []RID.VertexBuffer, offsets []int64) RID.VertexArray { //gd:RenderingDevice.vertex_array_create
 	return RID.VertexArray(RID.VertexArray(Advanced(self).VertexArrayCreate(int64(vertex_count), int64(vertex_format), gd.ArrayFromSlice[Array.Contains[RID.Any]](src_buffers), Packed.New(offsets...))))
@@ -737,6 +764,8 @@ func (self MoreArgs) IndexBufferCreate(size_indices int, format Rendering.IndexB
 Creates a new index array. It can be accessed with the RID that is returned.
 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [FreeRid] method.
+
+This will be freed automatically when the 'index_buffer' is freed.
 
 [FreeRid]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.FreeRid
 */
@@ -931,6 +960,8 @@ Creates a new uniform set. It can be accessed with the RID that is returned.
 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [FreeRid] method.
 
+This will be freed automatically when the 'shader' or any of the RIDs in the 'uniforms' is freed.
+
 [FreeRid]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.FreeRid
 */
 func (self Instance) UniformSetCreate(uniforms []RDUniform.Instance, shader RID.Shader, shader_set int) RID.UniformSet { //gd:RenderingDevice.uniform_set_create
@@ -1074,6 +1105,8 @@ Creates a new render pipeline. It can be accessed with the RID that is returned.
 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [FreeRid] method.
 
+This will be freed automatically when the 'shader' is freed.
+
 [FreeRid]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.FreeRid
 */
 func (self Instance) RenderPipelineCreate(shader RID.Shader, framebuffer_format int, vertex_format int, primitive Rendering.RenderPrimitive, rasterization_state RDPipelineRasterizationState.Instance, multisample_state RDPipelineMultisampleState.Instance, stencil_state RDPipelineDepthStencilState.Instance, color_blend_state RDPipelineColorBlendState.Instance) RID.RenderPipeline { //gd:RenderingDevice.render_pipeline_create
@@ -1084,6 +1117,8 @@ func (self Instance) RenderPipelineCreate(shader RID.Shader, framebuffer_format 
 Creates a new render pipeline. It can be accessed with the RID that is returned.
 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [FreeRid] method.
+
+This will be freed automatically when the 'shader' is freed.
 
 [FreeRid]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.FreeRid
 */
@@ -1103,6 +1138,8 @@ Creates a new compute pipeline. It can be accessed with the RID that is returned
 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [FreeRid] method.
 
+This will be freed automatically when the 'shader' is freed.
+
 [FreeRid]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.FreeRid
 */
 func (self Instance) ComputePipelineCreate(shader RID.Shader) RID.ComputePipeline { //gd:RenderingDevice.compute_pipeline_create
@@ -1113,6 +1150,8 @@ func (self Instance) ComputePipelineCreate(shader RID.Shader) RID.ComputePipelin
 Creates a new compute pipeline. It can be accessed with the RID that is returned.
 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [FreeRid] method.
+
+This will be freed automatically when the 'shader' is freed.
 
 [FreeRid]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.FreeRid
 */
@@ -1329,6 +1368,20 @@ Binds 'vertex_array' to the specified 'draw_list'.
 */
 func (self Instance) DrawListBindVertexArray(draw_list int, vertex_array RID.VertexArray) { //gd:RenderingDevice.draw_list_bind_vertex_array
 	Advanced(self).DrawListBindVertexArray(int64(draw_list), RID.Any(vertex_array))
+}
+
+/*
+Binds a set of 'vertex_buffers' directly to the specified 'draw_list' using 'vertex_format' without creating a vertex array RID. Provide the number of vertices in 'vertex_count'; optional per-buffer byte 'offsets' may also be supplied.
+*/
+func (self Instance) DrawListBindVertexBuffersFormat(draw_list int, vertex_format int, vertex_count int, vertex_buffers []RID.VertexBuffer) { //gd:RenderingDevice.draw_list_bind_vertex_buffers_format
+	Advanced(self).DrawListBindVertexBuffersFormat(int64(draw_list), int64(vertex_format), int64(vertex_count), gd.ArrayFromSlice[Array.Contains[RID.Any]](vertex_buffers), Packed.New([1][]int64{}[0]...))
+}
+
+/*
+Binds a set of 'vertex_buffers' directly to the specified 'draw_list' using 'vertex_format' without creating a vertex array RID. Provide the number of vertices in 'vertex_count'; optional per-buffer byte 'offsets' may also be supplied.
+*/
+func (self MoreArgs) DrawListBindVertexBuffersFormat(draw_list int, vertex_format int, vertex_count int, vertex_buffers []RID.VertexBuffer, offsets []int64) { //gd:RenderingDevice.draw_list_bind_vertex_buffers_format
+	Advanced(self).DrawListBindVertexBuffersFormat(int64(draw_list), int64(vertex_format), int64(vertex_count), gd.ArrayFromSlice[Array.Contains[RID.Any]](vertex_buffers), Packed.New(offsets...))
 }
 
 /*
@@ -2483,6 +2536,15 @@ func (self class) DrawListBindVertexArray(draw_list int64, vertex_array RID.Any)
 		draw_list    int64
 		vertex_array RID.Any
 	}{draw_list, vertex_array})
+}
+func (self class) DrawListBindVertexBuffersFormat(draw_list int64, vertex_format int64, vertex_count int64, vertex_buffers Array.Contains[RID.Any], offsets Packed.Array[int64]) { //gd:RenderingDevice.draw_list_bind_vertex_buffers_format
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_bind_vertex_buffers_format, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeArray<<16)|(gdextension.SizePackedArray<<20), &struct {
+		draw_list      int64
+		vertex_format  int64
+		vertex_count   int64
+		vertex_buffers gdextension.Array
+		offsets        gdextension.PackedArray[int64]
+	}{draw_list, vertex_format, vertex_count, pointers.Get(gd.InternalArray(vertex_buffers)), pointers.Get(gd.InternalPacked[gd.PackedInt64Array, int64](offsets))})
 }
 func (self class) DrawListBindIndexArray(draw_list int64, index_array RID.Any) { //gd:RenderingDevice.draw_list_bind_index_array
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_bind_index_array, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8), &struct {

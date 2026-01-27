@@ -1404,7 +1404,7 @@ func (self Instance) SetColorInitialRamp(value Texture2D.Instance) Instance { //
 /*
 The alpha value of each particle's color will be multiplied by this [CurveTexture] over its lifetime.
 
-Note: [AlphaCurve] multiplies the particle mesh's vertex colors. To have a visible effect on a [BaseMaterial3D], [BaseMaterial3D.VertexColorUseAsAlbedo] must be true. For a [ShaderMaterial], ALBEDO *= COLOR.rgb; must be inserted in the shader's fragment() function. Otherwise, [AlphaCurve] will have no visible effect.
+Note: [AlphaCurve] multiplies the particle mesh's vertex colors. To have a visible effect on a [BaseMaterial3D], [BaseMaterial3D.VertexColorUseAsAlbedo] must be true. For a [ShaderMaterial], ALPHA *= COLOR.a; must be inserted in the shader's fragment() function. Otherwise, [AlphaCurve] will have no visible effect.
 
 [AlphaCurve]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.AlphaCurve
 [BaseMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D

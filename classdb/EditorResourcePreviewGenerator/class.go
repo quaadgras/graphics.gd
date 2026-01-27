@@ -95,6 +95,7 @@ type Instance [1]gdclass.EditorResourcePreviewGenerator
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
+	request_draw_and_wait gdextension.MethodForClass `hash:"145472570"`
 }
 
 func init() {
@@ -277,6 +278,15 @@ func (Instance) _can_generate_small_preview(impl func(ptr gdclass.Receiver) bool
 	}
 }
 
+/*
+Call from within [Generate] to request the rendering server draw to the 'viewport'.
+
+[Generate]: https://pkg.go.dev/graphics.gd/classdb/EditorResourcePreviewGenerator#Interface
+*/
+func (self Instance) RequestDrawAndWait(viewport RID.Viewport) { //gd:EditorResourcePreviewGenerator.request_draw_and_wait
+	Advanced(self).RequestDrawAndWait(RID.Any(viewport))
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.EditorResourcePreviewGenerator
@@ -380,6 +390,9 @@ func (class) _can_generate_small_preview(impl func(ptr gdclass.Receiver) bool) (
 	}
 }
 
+func (self class) RequestDrawAndWait(viewport RID.Any) { //gd:EditorResourcePreviewGenerator.request_draw_and_wait
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_draw_and_wait, 0|(gdextension.SizeRID<<4), &struct{ viewport RID.Any }{viewport})
+}
 func (self class) AsEditorResourcePreviewGenerator() Advanced {
 	return Advanced{gdclass.NewEditorResourcePreviewGenerator(self.AsObject()[0])}
 }

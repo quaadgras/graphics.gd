@@ -165,6 +165,8 @@ var methods struct {
 	are_column_titles_visible       gdextension.MethodForClass `hash:"36873697"`
 	set_column_title                gdextension.MethodForClass `hash:"501894301"`
 	get_column_title                gdextension.MethodForClass `hash:"844755477"`
+	set_column_title_tooltip_text   gdextension.MethodForClass `hash:"501894301"`
+	get_column_title_tooltip_text   gdextension.MethodForClass `hash:"844755477"`
 	set_column_title_alignment      gdextension.MethodForClass `hash:"3276431499"`
 	get_column_title_alignment      gdextension.MethodForClass `hash:"4171562184"`
 	set_column_title_direction      gdextension.MethodForClass `hash:"1707680378"`
@@ -177,10 +179,16 @@ var methods struct {
 	is_h_scroll_enabled             gdextension.MethodForClass `hash:"36873697"`
 	set_v_scroll_enabled            gdextension.MethodForClass `hash:"2586408642"`
 	is_v_scroll_enabled             gdextension.MethodForClass `hash:"36873697"`
+	set_scroll_hint_mode            gdextension.MethodForClass `hash:"415911924"`
+	get_scroll_hint_mode            gdextension.MethodForClass `hash:"553087187"`
+	set_tile_scroll_hint            gdextension.MethodForClass `hash:"2586408642"`
+	is_scroll_hint_tiled            gdextension.MethodForClass `hash:"2240911060"`
 	set_hide_folding                gdextension.MethodForClass `hash:"2586408642"`
 	is_folding_hidden               gdextension.MethodForClass `hash:"36873697"`
 	set_enable_recursive_folding    gdextension.MethodForClass `hash:"2586408642"`
 	is_recursive_folding_enabled    gdextension.MethodForClass `hash:"36873697"`
+	set_enable_drag_unfolding       gdextension.MethodForClass `hash:"2586408642"`
+	is_drag_unfolding_enabled       gdextension.MethodForClass `hash:"36873697"`
 	set_drop_mode_flags             gdextension.MethodForClass `hash:"1286410249"`
 	get_drop_mode_flags             gdextension.MethodForClass `hash:"3905245786"`
 	set_allow_rmb_select            gdextension.MethodForClass `hash:"2586408642"`
@@ -535,6 +543,23 @@ func (self Instance) GetColumnTitle(column int) string { //gd:Tree.get_column_ti
 }
 
 /*
+Sets the column title's tooltip text.
+
+Returns 'self' to enable method chaining.
+*/
+func (self Instance) SetColumnTitleTooltipText(column int, tooltip_text string) Instance { //gd:Tree.set_column_title_tooltip_text
+	Advanced(self).SetColumnTitleTooltipText(int64(column), String.New(tooltip_text))
+	return self
+}
+
+/*
+Returns the column title's tooltip text.
+*/
+func (self Instance) GetColumnTitleTooltipText(column int) string { //gd:Tree.get_column_title_tooltip_text
+	return string(Advanced(self).GetColumnTitleTooltipText(int64(column)).String())
+}
+
+/*
 Sets the column title alignment. Note that [@Globalscope.HorizontalAlignmentFill] is not supported for column titles.
 
 Returns 'self' to enable method chaining.
@@ -569,7 +594,7 @@ func (self Instance) GetColumnTitleDirection(column int) Control.TextDirection {
 }
 
 /*
-Sets language code of column title used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
+Sets the language code of the given 'column”s title to 'language'. This is used for line-breaking and text shaping algorithms. If 'language' is empty, the current locale is used.
 
 Returns 'self' to enable method chaining.
 */
@@ -758,6 +783,19 @@ func (self Instance) SetEnableRecursiveFolding(value bool) Instance { //gd:Tree.
 }
 
 /*
+If true, tree items will unfold when hovered over during a drag-and-drop. The delay for when this happens is dictated by theme's 'dragging_unfold_wait_msec'.
+*/
+func (self Instance) EnableDragUnfolding() bool { //gd:Tree.enable_drag_unfolding
+	return bool(class(self).IsDragUnfoldingEnabled())
+}
+
+// SetEnableDragUnfolding sets the property returned by [IsDragUnfoldingEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnableDragUnfolding(value bool) Instance { //gd:Tree.enable_drag_unfolding
+	class(self).SetEnableDragUnfolding(value)
+	return self
+}
+
+/*
 If true, the tree's root is hidden.
 */
 func (self Instance) HideRoot() bool { //gd:Tree.hide_root
@@ -801,6 +839,22 @@ func (self Instance) SetSelectMode(value SelectMode) Instance { //gd:Tree.select
 }
 
 /*
+If true, tree items with no tooltip assigned display their text as their tooltip. See also [TreeItem.GetTooltipText] and [TreeItem.GetButtonTooltipText].
+
+[TreeItem.GetButtonTooltipText]: https://pkg.go.dev/graphics.gd/classdb/TreeItem#Instance.GetButtonTooltipText
+[TreeItem.GetTooltipText]: https://pkg.go.dev/graphics.gd/classdb/TreeItem#Instance.GetTooltipText
+*/
+func (self Instance) AutoTooltip() bool { //gd:Tree.auto_tooltip
+	return bool(class(self).IsAutoTooltipEnabled())
+}
+
+// SetAutoTooltip sets the property returned by [IsAutoTooltipEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoTooltip(value bool) Instance { //gd:Tree.auto_tooltip
+	class(self).SetAutoTooltip(value)
+	return self
+}
+
+/*
 If true, enables horizontal scrolling.
 */
 func (self Instance) ScrollHorizontalEnabled() bool { //gd:Tree.scroll_horizontal_enabled
@@ -827,18 +881,30 @@ func (self Instance) SetScrollVerticalEnabled(value bool) Instance { //gd:Tree.s
 }
 
 /*
-If true, tree items with no tooltip assigned display their text as their tooltip. See also [TreeItem.GetTooltipText] and [TreeItem.GetButtonTooltipText].
-
-[TreeItem.GetButtonTooltipText]: https://pkg.go.dev/graphics.gd/classdb/TreeItem#Instance.GetButtonTooltipText
-[TreeItem.GetTooltipText]: https://pkg.go.dev/graphics.gd/classdb/TreeItem#Instance.GetTooltipText
+The way which scroll hints (indicators that show that the content can still be scrolled in a certain direction) will be shown.
 */
-func (self Instance) AutoTooltip() bool { //gd:Tree.auto_tooltip
-	return bool(class(self).IsAutoTooltipEnabled())
+func (self Instance) ScrollHintMode() ScrollHintMode { //gd:Tree.scroll_hint_mode
+	return ScrollHintMode(class(self).GetScrollHintMode())
 }
 
-// SetAutoTooltip sets the property returned by [IsAutoTooltipEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoTooltip(value bool) Instance { //gd:Tree.auto_tooltip
-	class(self).SetAutoTooltip(value)
+// SetScrollHintMode sets the property returned by [GetScrollHintMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollHintMode(value ScrollHintMode) Instance { //gd:Tree.scroll_hint_mode
+	class(self).SetScrollHintMode(value)
+	return self
+}
+
+/*
+If true, the scroll hint texture will be tiled instead of stretched. See [ScrollHintMode].
+
+[ScrollHintMode]: https://pkg.go.dev/graphics.gd/classdb/Tree#Instance.ScrollHintMode
+*/
+func (self Instance) TileScrollHint() bool { //gd:Tree.tile_scroll_hint
+	return bool(class(self).IsScrollHintTiled())
+}
+
+// SetTileScrollHint sets the property returned by [IsScrollHintTiled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTileScrollHint(value bool) Instance { //gd:Tree.tile_scroll_hint
+	class(self).SetTileScrollHint(value)
 	return self
 }
 
@@ -1026,6 +1092,17 @@ func (self class) GetColumnTitle(column int64) String.Readable { //gd:Tree.get_c
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
+func (self class) SetColumnTitleTooltipText(column int64, tooltip_text String.Readable) { //gd:Tree.set_column_title_tooltip_text
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_column_title_tooltip_text, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+		column       int64
+		tooltip_text gdextension.String
+	}{column, pointers.Get(gd.InternalString(tooltip_text))})
+}
+func (self class) GetColumnTitleTooltipText(column int64) String.Readable { //gd:Tree.get_column_title_tooltip_text
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_column_title_tooltip_text, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
 func (self class) SetColumnTitleAlignment(column int64, title_alignment GUI.HorizontalAlignment) { //gd:Tree.set_column_title_alignment
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_column_title_alignment, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		column          int64
@@ -1086,6 +1163,22 @@ func (self class) IsVScrollEnabled() bool { //gd:Tree.is_v_scroll_enabled
 	var ret = r_ret
 	return ret
 }
+func (self class) SetScrollHintMode(scroll_hint_mode ScrollHintMode) { //gd:Tree.set_scroll_hint_mode
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_hint_mode, 0|(gdextension.SizeInt<<4), &struct{ scroll_hint_mode ScrollHintMode }{scroll_hint_mode})
+}
+func (self class) GetScrollHintMode() ScrollHintMode { //gd:Tree.get_scroll_hint_mode
+	var r_ret = noescape.Call[ScrollHintMode](gd.ObjectChecked(self.AsObject()), methods.get_scroll_hint_mode, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetTileScrollHint(tile_scroll_hint bool) { //gd:Tree.set_tile_scroll_hint
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_scroll_hint, 0|(gdextension.SizeBool<<4), &struct{ tile_scroll_hint bool }{tile_scroll_hint})
+}
+func (self class) IsScrollHintTiled() bool { //gd:Tree.is_scroll_hint_tiled
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scroll_hint_tiled, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
 func (self class) SetHideFolding(hide bool) { //gd:Tree.set_hide_folding
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hide_folding, 0|(gdextension.SizeBool<<4), &struct{ hide bool }{hide})
 }
@@ -1099,6 +1192,14 @@ func (self class) SetEnableRecursiveFolding(enable bool) { //gd:Tree.set_enable_
 }
 func (self class) IsRecursiveFoldingEnabled() bool { //gd:Tree.is_recursive_folding_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_recursive_folding_enabled, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetEnableDragUnfolding(enable bool) { //gd:Tree.set_enable_drag_unfolding
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_drag_unfolding, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+}
+func (self class) IsDragUnfoldingEnabled() bool { //gd:Tree.is_drag_unfolding_enabled
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drag_unfolding_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1468,4 +1569,17 @@ const (
 	//
 	// When combined with [DropModeOnItem], these drop sections halves the height and stays on top / bottom accordingly.
 	DropModeInbetween DropModeFlags = 2
+)
+
+type ScrollHintMode int //gd:Tree.ScrollHintMode
+
+const (
+	// Scroll hints will never be shown.
+	ScrollHintModeDisabled ScrollHintMode = 0
+	// Scroll hints will be shown at the top and bottom.
+	ScrollHintModeBoth ScrollHintMode = 1
+	// Only the top scroll hint will be shown.
+	ScrollHintModeTop ScrollHintMode = 2
+	// Only the bottom scroll hint will be shown.
+	ScrollHintModeBottom ScrollHintMode = 3
 )

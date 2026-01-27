@@ -267,7 +267,7 @@ func (self Instance) SetEditAlpha(value bool) Instance { //gd:ColorPicker.edit_a
 }
 
 /*
-If true, shows an intensity slider. The intensity is applied as follows: multiply the color by 2 ** intensity in linear RGB space, and then convert it back to sRGB.
+If true, shows an intensity slider. The intensity is applied as follows: convert the color to linear encoding, multiply it by 2 ** intensity, and then convert it back to nonlinear sRGB encoding.
 */
 func (self Instance) EditIntensity() bool { //gd:ColorPicker.edit_intensity
 	return bool(class(self).IsEditingIntensity())

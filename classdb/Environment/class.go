@@ -5,9 +5,11 @@ Resource for environment nodes (like [WorldEnvironment]) that define multiple en
 
 - Depth of Field Blur
 
+- Auto Exposure
+
 - Glow
 
-- Tonemap (Auto Exposure)
+- Tonemap
 
 - Adjustments
 
@@ -139,6 +141,10 @@ var methods struct {
 	get_tonemap_exposure                             gdextension.MethodForClass `hash:"1740695150"`
 	set_tonemap_white                                gdextension.MethodForClass `hash:"373806689"`
 	get_tonemap_white                                gdextension.MethodForClass `hash:"1740695150"`
+	set_tonemap_agx_white                            gdextension.MethodForClass `hash:"373806689"`
+	get_tonemap_agx_white                            gdextension.MethodForClass `hash:"1740695150"`
+	set_tonemap_agx_contrast                         gdextension.MethodForClass `hash:"373806689"`
+	get_tonemap_agx_contrast                         gdextension.MethodForClass `hash:"1740695150"`
 	set_ssr_enabled                                  gdextension.MethodForClass `hash:"2586408642"`
 	is_ssr_enabled                                   gdextension.MethodForClass `hash:"36873697"`
 	set_ssr_max_steps                                gdextension.MethodForClass `hash:"1286410249"`
@@ -603,10 +609,11 @@ func (self Instance) SetTonemapExposure(value Float.X) Instance { //gd:Environme
 }
 
 /*
-The white reference value for tonemapping, which indicates where bright white is located in the scale of values provided to the tonemapper. For photorealistic lighting, recommended values are between 6.0 and 8.0. Higher values result in less blown out highlights, but may make the scene appear lower contrast. See also [TonemapExposure].
+The white reference value for tonemapping, which indicates where bright white is located in the scale of values provided to the tonemapper. For photorealistic lighting, it is recommended to set [TonemapWhite] to at least 6.0. Higher values result in less blown out highlights, but may make the scene appear lower contrast. [TonemapAgxWhite] will be used instead when using the [ToneMapperAgx] tonemapper. See also [TonemapExposure].
 
-Note: [TonemapWhite] is ignored when using [ToneMapperLinear] or [ToneMapperAgx].
+Note: [TonemapWhite] must be set to 2.0 or lower on the Mobile renderer to produce bright images.
 
+[TonemapAgxWhite]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapAgxWhite
 [TonemapExposure]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapExposure
 [TonemapWhite]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapWhite
 */
@@ -617,6 +624,42 @@ func (self Instance) TonemapWhite() Float.X { //gd:Environment.tonemap_white
 // SetTonemapWhite sets the property returned by [GetTonemapWhite]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetTonemapWhite(value Float.X) Instance { //gd:Environment.tonemap_white
 	class(self).SetTonemapWhite(float64(value))
+	return self
+}
+
+/*
+The white reference value for tonemapping, which indicates where bright white is located in the scale of values provided to the tonemapper. For photorealistic lighting, it is recommended to set [TonemapAgxWhite] to at least 6.0. Higher values result in less blown out highlights, but may make the scene appear lower contrast. [TonemapAgxWhite] is the same as [TonemapWhite], but is only effective with the [ToneMapperAgx] tonemapper. See also [TonemapExposure].
+
+Note: When using the Mobile renderer with [Viewport.UseHdr2d] disabled, [TonemapAgxWhite] is ignored and a white value of 2.0 will always be used instead.
+
+[TonemapAgxWhite]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapAgxWhite
+[TonemapExposure]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapExposure
+[TonemapWhite]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapWhite
+[Viewport.UseHdr2d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.UseHdr2d
+*/
+func (self Instance) TonemapAgxWhite() Float.X { //gd:Environment.tonemap_agx_white
+	return Float.X(Float.X(class(self).GetTonemapAgxWhite()))
+}
+
+// SetTonemapAgxWhite sets the property returned by [GetTonemapAgxWhite]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTonemapAgxWhite(value Float.X) Instance { //gd:Environment.tonemap_agx_white
+	class(self).SetTonemapAgxWhite(float64(value))
+	return self
+}
+
+/*
+Increasing [TonemapAgxContrast] will make dark values darker and bright values brighter. Produces a higher quality result than [AdjustmentContrast] without any additional performance cost, but is only available when using the [ToneMapperAgx] tonemapper.
+
+[AdjustmentContrast]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.AdjustmentContrast
+[TonemapAgxContrast]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapAgxContrast
+*/
+func (self Instance) TonemapAgxContrast() Float.X { //gd:Environment.tonemap_agx_contrast
+	return Float.X(Float.X(class(self).GetTonemapAgxContrast()))
+}
+
+// SetTonemapAgxContrast sets the property returned by [GetTonemapAgxContrast]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTonemapAgxContrast(value Float.X) Instance { //gd:Environment.tonemap_agx_contrast
+	class(self).SetTonemapAgxContrast(float64(value))
 	return self
 }
 
@@ -696,7 +739,7 @@ func (self Instance) SetSsrDepthTolerance(value Float.X) Instance { //gd:Environ
 /*
 If true, the screen-space ambient occlusion effect is enabled. This darkens objects' corners and cavities to simulate ambient light not reaching the entire object as in real life. This works well for small, dynamic objects, but baked lighting or ambient occlusion textures will do a better job at displaying ambient occlusion on large static objects. Godot uses a form of SSAO called Adaptive Screen Space Ambient Occlusion which is itself a form of Horizon Based Ambient Occlusion.
 
-Note: SSAO is only supported in the Forward+ rendering method, not Mobile or Compatibility.
+Note: SSAO is only supported in the Forward+ and Compatibility rendering methods, not Mobile.
 */
 func (self Instance) SsaoEnabled() bool { //gd:Environment.ssao_enabled
 	return bool(class(self).IsSsaoEnabled())
@@ -1080,7 +1123,7 @@ func (self Instance) SetSdfgiProbeBias(value Float.X) Instance { //gd:Environmen
 }
 
 /*
-If true, the glow effect is enabled. This simulates real world eye/camera behavior where bright pixels bleed onto surrounding pixels.
+If true, the glow effect is enabled. This simulates real world atmosphere and eye/camera behavior by causing bright pixels to bleed onto surrounding pixels.
 
 Note: When using the Mobile rendering method, glow looks different due to the lower dynamic range available in the Mobile rendering method.
 
@@ -1121,7 +1164,7 @@ func (self Instance) SetGlowNormalized(value bool) Instance { //gd:Environment.g
 }
 
 /*
-The overall brightness multiplier of the glow effect. When using the Mobile rendering method (which only supports a lower dynamic range up to 2.0), this should be increased to 1.5 to compensate.
+The overall brightness multiplier that is applied to the glow effect just before it is blended with the scene. When using the Mobile rendering method (which only supports a lower dynamic range up to 2.0), this should be increased to 1.5 to compensate.
 */
 func (self Instance) GlowIntensity() Float.X { //gd:Environment.glow_intensity
 	return Float.X(Float.X(class(self).GetGlowIntensity()))
@@ -1134,7 +1177,7 @@ func (self Instance) SetGlowIntensity(value Float.X) Instance { //gd:Environment
 }
 
 /*
-The strength of the glow effect. This applies as the glow is blurred across the screen and increases the distance and intensity of the blur. When using the Mobile rendering method, this should be increased to compensate for the lower dynamic range.
+The strength that is used when blurring across the screen to generate the glow effect. This affects the distance and intensity of the blur. When using the Mobile rendering method, this should be increased to compensate for the lower dynamic range.
 
 Note: [GlowStrength] has no effect when using the Compatibility rendering method, due to this rendering method using a simpler glow implementation optimized for low-end devices.
 
@@ -1186,7 +1229,7 @@ func (self Instance) SetGlowBloom(value Float.X) Instance { //gd:Environment.glo
 /*
 The glow blending mode.
 
-Note: [GlowBlendMode] has no effect when using the Compatibility rendering method, due to this rendering method using a simpler glow implementation optimized for low-end devices.
+Note: The Compatibility renderer always uses [GlowBlendModeScreen] and [GlowBlendMode] will have no effect.
 
 [GlowBlendMode]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.GlowBlendMode
 */
@@ -1214,7 +1257,9 @@ func (self Instance) SetGlowHdrThreshold(value Float.X) Instance { //gd:Environm
 }
 
 /*
-The bleed scale of the HDR glow.
+Smooths the transition between values that are below and above [GlowHdrThreshold] by reducing the amount of glow generated by values that are close to [GlowHdrThreshold]. Values above glow_hdr_threshold + glow_hdr_scale will not have glow reduced in this way.
+
+[GlowHdrThreshold]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.GlowHdrThreshold
 */
 func (self Instance) GlowHdrScale() Float.X { //gd:Environment.glow_hdr_scale
 	return Float.X(Float.X(class(self).GetGlowHdrBleedScale()))
@@ -1703,9 +1748,10 @@ func (self Instance) SetAdjustmentEnabled(value bool) Instance { //gd:Environmen
 }
 
 /*
-The global brightness value of the rendered scene. Effective only if [AdjustmentEnabled] is true.
+Applies a simple brightness adjustment to the rendered image after tonemaping. To adjust scene brightness use [TonemapExposure] instead, which is applied before tonemapping and thus less prone to issues with bright colors. Effective only if [AdjustmentEnabled] is true.
 
 [AdjustmentEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.AdjustmentEnabled
+[TonemapExposure]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapExposure
 */
 func (self Instance) AdjustmentBrightness() Float.X { //gd:Environment.adjustment_brightness
 	return Float.X(Float.X(class(self).GetAdjustmentBrightness()))
@@ -1718,8 +1764,9 @@ func (self Instance) SetAdjustmentBrightness(value Float.X) Instance { //gd:Envi
 }
 
 /*
-The global contrast value of the rendered scene (default value is 1). Effective only if [AdjustmentEnabled] is true.
+Increasing [AdjustmentContrast] will make dark values darker and bright values brighter. This simple adjustment is applied to the rendered image after tonemaping. When set to a value greater than 1.0, [AdjustmentContrast] is prone to clipping colors that become too bright or too dark. Effective only if [AdjustmentEnabled] is true.
 
+[AdjustmentContrast]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.AdjustmentContrast
 [AdjustmentEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.AdjustmentEnabled
 */
 func (self Instance) AdjustmentContrast() Float.X { //gd:Environment.adjustment_contrast
@@ -1733,9 +1780,10 @@ func (self Instance) SetAdjustmentContrast(value Float.X) Instance { //gd:Enviro
 }
 
 /*
-The global color saturation value of the rendered scene (default value is 1). Effective only if [AdjustmentEnabled] is true.
+Applies a simple saturation adjustment to the rendered image after tonemaping. When [AdjustmentSaturation] is set to 0.0, the rendered image will be fully converted to a grayscale image. Effective only if [AdjustmentEnabled] is true.
 
 [AdjustmentEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.AdjustmentEnabled
+[AdjustmentSaturation]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.AdjustmentSaturation
 */
 func (self Instance) AdjustmentSaturation() Float.X { //gd:Environment.adjustment_saturation
 	return Float.X(Float.X(class(self).GetAdjustmentSaturation()))
@@ -1898,6 +1946,22 @@ func (self class) SetTonemapWhite(white float64) { //gd:Environment.set_tonemap_
 }
 func (self class) GetTonemapWhite() float64 { //gd:Environment.get_tonemap_white
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_tonemap_white, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetTonemapAgxWhite(white float64) { //gd:Environment.set_tonemap_agx_white
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tonemap_agx_white, 0|(gdextension.SizeFloat<<4), &struct{ white float64 }{white})
+}
+func (self class) GetTonemapAgxWhite() float64 { //gd:Environment.get_tonemap_agx_white
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_tonemap_agx_white, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetTonemapAgxContrast(contrast float64) { //gd:Environment.set_tonemap_agx_contrast
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tonemap_agx_contrast, 0|(gdextension.SizeFloat<<4), &struct{ contrast float64 }{contrast})
+}
+func (self class) GetTonemapAgxContrast() float64 { //gd:Environment.get_tonemap_agx_contrast
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_tonemap_agx_contrast, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2613,26 +2677,27 @@ const (
 	//
 	// Note: This tonemapping operator is called "ACES Fitted" in Godot 3.x.
 	ToneMapperAces ToneMapper = 3
-	// Uses a film-like tonemapping curve and desaturates bright values for a more realistic appearance. Better than other tonemappers at maintaining the hue of colors as they become brighter. The slowest tonemapping option.
-	//
-	// Note: [TonemapWhite] is fixed at a value of 16.29, which makes [ToneMapperAgx] unsuitable for use with the Mobile rendering method.
-	//
-	// [TonemapWhite]: https://pkg.go.dev/graphics.gd/classdb/#Instance.TonemapWhite
+	// Uses an adjustable film-like tonemapping curve and desaturates bright values for a more realistic appearance. Better than other tonemappers at maintaining the hue of colors as they become brighter. The slowest tonemapping option.
 	ToneMapperAgx ToneMapper = 4
 )
 
 type GlowBlendMode int //gd:Environment.GlowBlendMode
 
 const (
-	// Additive glow blending mode. Mostly used for particles, glows (bloom), lens flare, bright sources.
+	// Adds the glow effect to the scene.
 	GlowBlendModeAdditive GlowBlendMode = 0
-	// Screen glow blending mode. Increases brightness, used frequently with bloom.
+	// Adds the glow effect to the scene after modifying the glow influence based on the scene value; dark values will be highly influenced by glow and bright values will not be influenced by glow. This approach avoids bright values becoming overly bright from the glow effect. [TonemapWhite] is used to determine the maximum scene value where the glow should have no influence. When [TonemapMode] is set to [ToneMapperLinear], a value of 1.0 will be used as the maximum scene value.
+	//
+	// [TonemapMode]: https://pkg.go.dev/graphics.gd/classdb/#Instance.TonemapMode
+	// [TonemapWhite]: https://pkg.go.dev/graphics.gd/classdb/#Instance.TonemapWhite
 	GlowBlendModeScreen GlowBlendMode = 1
-	// Soft light glow blending mode. Modifies contrast, exposes shadows and highlights (vivid bloom).
+	// Adds the glow effect to the tonemapped image after modifying the glow influence based on the image value; dark values and bright values will not be influenced by glow and mid-range values will be highly influenced by glow. This approach avoids bright values becoming overly bright from the glow effect. The glow will have the largest influence on image values of 0.25 and will have no influence when applied to image values greater than 1.0.
 	GlowBlendModeSoftlight GlowBlendMode = 2
-	// Replace glow blending mode. Replaces all pixels' color by the glow value. This can be used to simulate a full-screen blur effect by tweaking the glow parameters to match the original image's brightness.
+	// Replaces all pixels' color by the glow effect. This can be used to simulate a full-screen blur effect by tweaking the glow parameters to match the original image's brightness or to preview glow configuration in the editor.
 	GlowBlendModeReplace GlowBlendMode = 3
-	// Mixes the glow with the underlying color to avoid increasing brightness as much while still maintaining a glow effect.
+	// Mixes the glow image with the scene image. Best used with [GlowBloom] to avoid darkening the scene.
+	//
+	// [GlowBloom]: https://pkg.go.dev/graphics.gd/classdb/#Instance.GlowBloom
 	GlowBlendModeMix GlowBlendMode = 4
 )
 

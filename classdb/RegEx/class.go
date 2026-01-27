@@ -3,7 +3,7 @@
 /*
 A regular expression (or regex) is a compact language that can be used to recognize strings that follow a specific pattern, such as URLs, email addresses, complete sentences, etc. For example, a regex of ab[0-9] would find any string that is ab followed by any number from 0 to 9. For a more in-depth look, you can easily find various tutorials and detailed explanations on the Internet.
 
-To begin, the RegEx object needs to be compiled with the search pattern using [Compile] before it can be used.
+To begin, the RegEx object needs to be compiled with the search pattern using [Compile] before it can be used. Alternatively, the static method [CreateFromString] can be used to create and compile a RegEx object in a single method call.
 
 	package main
 
@@ -12,6 +12,9 @@ To begin, the RegEx object needs to be compiled with the search pattern using [C
 	func ExampleRegEx() {
 		var regex = RegEx.New()
 		regex.Compile(`\w-(\d+)`)
+		// Shorthand to create and compile a regex (used in the examples below):
+		var regex2 = RegEx.CreateFromString("\\w-(\\d+)")
+		_ = regex2
 	}
 
 The search pattern must be escaped first for GDScript before it is escaped for the expression. For example, compile("\\d+") would be read by RegEx as \d+. Similarly, compile("\"(?:\\\\.|[^\"])*\"") would be read as "(?:\\.|[^"])*". In GDScript, you can also use raw string literals (r-strings). For example, compile(r'"(?:\\.|[^"])*"') would be read the same.

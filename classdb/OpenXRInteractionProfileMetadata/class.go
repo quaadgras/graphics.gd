@@ -90,6 +90,7 @@ var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
 	register_profile_rename      gdextension.MethodForClass `hash:"3186203200"`
+	register_path_rename         gdextension.MethodForClass `hash:"3186203200"`
 	register_top_level_path      gdextension.MethodForClass `hash:"254767734"`
 	register_interaction_profile gdextension.MethodForClass `hash:"254767734"`
 	register_io_path             gdextension.MethodForClass `hash:"3443511926"`
@@ -116,41 +117,48 @@ type Any interface {
 }
 
 /*
-Allows for renaming old interaction profile paths to new paths to maintain backwards compatibility with older action maps.
+Allows for renaming old interaction profile paths to new paths in order to load and process older action maps.
 */
 func (self Instance) RegisterProfileRename(old_name string, new_name string) { //gd:OpenXRInteractionProfileMetadata.register_profile_rename
 	Advanced(self).RegisterProfileRename(String.New(old_name), String.New(new_name))
 }
 
 /*
+Allows for renaming old input/output paths to new paths in order to load and process older action maps.
+*/
+func (self Instance) RegisterPathRename(old_name string, new_name string) { //gd:OpenXRInteractionProfileMetadata.register_path_rename
+	Advanced(self).RegisterPathRename(String.New(old_name), String.New(new_name))
+}
+
+/*
 Registers a top level path to which profiles can be bound. For instance /user/hand/left refers to the bind point for the player's left hand. Extensions can register additional top level paths, for instance a haptic vest extension might register /user/body/vest.
 
-'display_name' is the name shown to the user. 'openxr_path' is the top level path being registered. 'openxr_extension_name' is optional and ensures the top level path is only used if the specified extension is available/enabled.
+'display_name' is the name shown to the user. 'openxr_path' is the top level path being registered. 'openxr_extension_names' is optional and ensures the top level path is only used if the specified extension is available/enabled.
 
 When a top level path ends up being bound by OpenXR, an [XRPositionalTracker] is instantiated to manage the state of the device.
 
 [XRPositionalTracker]: https://pkg.go.dev/graphics.gd/classdb/XRPositionalTracker
 */
-func (self Instance) RegisterTopLevelPath(display_name string, openxr_path string, openxr_extension_name string) { //gd:OpenXRInteractionProfileMetadata.register_top_level_path
-	Advanced(self).RegisterTopLevelPath(String.New(display_name), String.New(openxr_path), String.New(openxr_extension_name))
+func (self Instance) RegisterTopLevelPath(display_name string, openxr_path string, openxr_extension_names string) { //gd:OpenXRInteractionProfileMetadata.register_top_level_path
+	Advanced(self).RegisterTopLevelPath(String.New(display_name), String.New(openxr_path), String.New(openxr_extension_names))
 }
 
 /*
 Registers an interaction profile using its OpenXR designation (e.g. /interaction_profiles/khr/simple_controller is the profile for OpenXR's simple controller profile).
 
-'display_name' is the description shown to the user. 'openxr_path' is the interaction profile path being registered. 'openxr_extension_name' optionally restricts this profile to the given extension being enabled/available. If the extension is not available, the profile and all related entries used in an action map are filtered out.
+'display_name' is the description shown to the user. 'openxr_path' is the interaction profile path being registered. 'openxr_extension_names' optionally restricts this profile to the given extension being enabled/available. If the extension is not available, the profile and all related entries used in an action map are filtered out.
 */
-func (self Instance) RegisterInteractionProfile(display_name string, openxr_path string, openxr_extension_name string) { //gd:OpenXRInteractionProfileMetadata.register_interaction_profile
-	Advanced(self).RegisterInteractionProfile(String.New(display_name), String.New(openxr_path), String.New(openxr_extension_name))
+func (self Instance) RegisterInteractionProfile(display_name string, openxr_path string, openxr_extension_names string) { //gd:OpenXRInteractionProfileMetadata.register_interaction_profile
+	Advanced(self).RegisterInteractionProfile(String.New(display_name), String.New(openxr_path), String.New(openxr_extension_names))
 }
 
 /*
-Registers an input/output path for the given 'interaction_profile'. The profile should previously have been registered using [RegisterInteractionProfile]. 'display_name' is the description shown to the user. 'toplevel_path' specifies the bind path this input/output can be bound to (e.g. /user/hand/left or /user/hand/right). 'openxr_path' is the action input/output being registered (e.g. /user/hand/left/input/aim/pose). 'openxr_extension_name' restricts this input/output to an enabled/available extension, this doesn't need to repeat the extension on the profile but relates to overlapping extension (e.g. XR_EXT_palm_pose that introduces …/input/palm_ext/pose input paths). 'action_type' defines the type of input or output provided by OpenXR.
+Registers an input/output path for the given 'interaction_profile'. The profile should previously have been registered using [RegisterInteractionProfile]. 'display_name' is the description shown to the user. 'toplevel_path' specifies the bind path this input/output can be bound to (e.g. /user/hand/left or /user/hand/right). 'openxr_path' is the action input/output being registered (e.g. /user/hand/left/input/aim/pose). 'openxr_extension_names' restricts this input/output to an enabled/available extension, this doesn't need to repeat the extension on the profile but relates to overlapping extension (e.g. XR_EXT_palm_pose that introduces …/input/palm_ext/pose input paths). 'action_type' defines the type of input or output provided by OpenXR.
 
 [RegisterInteractionProfile]: https://pkg.go.dev/graphics.gd/classdb/OpenXRInteractionProfileMetadata#Instance.RegisterInteractionProfile
 */
-func (self Instance) RegisterIoPath(interaction_profile string, display_name string, toplevel_path string, openxr_path string, openxr_extension_name string, action_type OpenXRAction.ActionType) { //gd:OpenXRInteractionProfileMetadata.register_io_path
-	Advanced(self).RegisterIoPath(String.New(interaction_profile), String.New(display_name), String.New(toplevel_path), String.New(openxr_path), String.New(openxr_extension_name), action_type)
+func (self Instance) RegisterIoPath(interaction_profile string, display_name string, toplevel_path string, openxr_path string, openxr_extension_names string, action_type OpenXRAction.ActionType) { //gd:OpenXRInteractionProfileMetadata.register_io_path
+	Advanced(self).RegisterIoPath(String.New(interaction_profile), String.New(display_name), String.New(toplevel_path), String.New(openxr_path), String.New(openxr_extension_names), action_type)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -205,29 +213,35 @@ func (self class) RegisterProfileRename(old_name String.Readable, new_name Strin
 		new_name gdextension.String
 	}{pointers.Get(gd.InternalString(old_name)), pointers.Get(gd.InternalString(new_name))})
 }
-func (self class) RegisterTopLevelPath(display_name String.Readable, openxr_path String.Readable, openxr_extension_name String.Readable) { //gd:OpenXRInteractionProfileMetadata.register_top_level_path
+func (self class) RegisterPathRename(old_name String.Readable, new_name String.Readable) { //gd:OpenXRInteractionProfileMetadata.register_path_rename
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_path_rename, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
+		old_name gdextension.String
+		new_name gdextension.String
+	}{pointers.Get(gd.InternalString(old_name)), pointers.Get(gd.InternalString(new_name))})
+}
+func (self class) RegisterTopLevelPath(display_name String.Readable, openxr_path String.Readable, openxr_extension_names String.Readable) { //gd:OpenXRInteractionProfileMetadata.register_top_level_path
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_top_level_path, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12), &struct {
-		display_name          gdextension.String
-		openxr_path           gdextension.String
-		openxr_extension_name gdextension.String
-	}{pointers.Get(gd.InternalString(display_name)), pointers.Get(gd.InternalString(openxr_path)), pointers.Get(gd.InternalString(openxr_extension_name))})
+		display_name           gdextension.String
+		openxr_path            gdextension.String
+		openxr_extension_names gdextension.String
+	}{pointers.Get(gd.InternalString(display_name)), pointers.Get(gd.InternalString(openxr_path)), pointers.Get(gd.InternalString(openxr_extension_names))})
 }
-func (self class) RegisterInteractionProfile(display_name String.Readable, openxr_path String.Readable, openxr_extension_name String.Readable) { //gd:OpenXRInteractionProfileMetadata.register_interaction_profile
+func (self class) RegisterInteractionProfile(display_name String.Readable, openxr_path String.Readable, openxr_extension_names String.Readable) { //gd:OpenXRInteractionProfileMetadata.register_interaction_profile
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_interaction_profile, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12), &struct {
-		display_name          gdextension.String
-		openxr_path           gdextension.String
-		openxr_extension_name gdextension.String
-	}{pointers.Get(gd.InternalString(display_name)), pointers.Get(gd.InternalString(openxr_path)), pointers.Get(gd.InternalString(openxr_extension_name))})
+		display_name           gdextension.String
+		openxr_path            gdextension.String
+		openxr_extension_names gdextension.String
+	}{pointers.Get(gd.InternalString(display_name)), pointers.Get(gd.InternalString(openxr_path)), pointers.Get(gd.InternalString(openxr_extension_names))})
 }
-func (self class) RegisterIoPath(interaction_profile String.Readable, display_name String.Readable, toplevel_path String.Readable, openxr_path String.Readable, openxr_extension_name String.Readable, action_type OpenXRAction.ActionType) { //gd:OpenXRInteractionProfileMetadata.register_io_path
+func (self class) RegisterIoPath(interaction_profile String.Readable, display_name String.Readable, toplevel_path String.Readable, openxr_path String.Readable, openxr_extension_names String.Readable, action_type OpenXRAction.ActionType) { //gd:OpenXRInteractionProfileMetadata.register_io_path
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_io_path, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeString<<20)|(gdextension.SizeInt<<24), &struct {
-		interaction_profile   gdextension.String
-		display_name          gdextension.String
-		toplevel_path         gdextension.String
-		openxr_path           gdextension.String
-		openxr_extension_name gdextension.String
-		action_type           OpenXRAction.ActionType
-	}{pointers.Get(gd.InternalString(interaction_profile)), pointers.Get(gd.InternalString(display_name)), pointers.Get(gd.InternalString(toplevel_path)), pointers.Get(gd.InternalString(openxr_path)), pointers.Get(gd.InternalString(openxr_extension_name)), action_type})
+		interaction_profile    gdextension.String
+		display_name           gdextension.String
+		toplevel_path          gdextension.String
+		openxr_path            gdextension.String
+		openxr_extension_names gdextension.String
+		action_type            OpenXRAction.ActionType
+	}{pointers.Get(gd.InternalString(interaction_profile)), pointers.Get(gd.InternalString(display_name)), pointers.Get(gd.InternalString(toplevel_path)), pointers.Get(gd.InternalString(openxr_path)), pointers.Get(gd.InternalString(openxr_extension_names)), action_type})
 }
 func (self class) AsOpenXRInteractionProfileMetadata() Advanced {
 	return Advanced{gdclass.NewOpenXRInteractionProfileMetadata(self.AsObject()[0])}

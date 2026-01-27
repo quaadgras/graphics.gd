@@ -97,6 +97,8 @@ var methods struct {
 	get_original_scene       gdextension.MethodForClass `hash:"201670096"`
 	set_recording_properties gdextension.MethodForClass `hash:"2586408642"`
 	is_recording_properties  gdextension.MethodForClass `hash:"36873697"`
+	set_recording_signals    gdextension.MethodForClass `hash:"2586408642"`
+	is_recording_signals     gdextension.MethodForClass `hash:"36873697"`
 }
 
 func init() {
@@ -202,6 +204,19 @@ func (self Instance) SetRecordingProperties(value bool) Instance { //gd:MissingN
 	return self
 }
 
+/*
+If true, allows new signals to be connected to along with existing ones. If false, only existing signals can be connected to, and new signals cannot be added.
+*/
+func (self Instance) RecordingSignals() bool { //gd:MissingNode.recording_signals
+	return bool(class(self).IsRecordingSignals())
+}
+
+// SetRecordingSignals sets the property returned by [IsRecordingSignals]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRecordingSignals(value bool) Instance { //gd:MissingNode.recording_signals
+	class(self).SetRecordingSignals(value)
+	return self
+}
+
 func (self class) SetOriginalClass(name String.Readable) { //gd:MissingNode.set_original_class
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_original_class, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
@@ -223,6 +238,14 @@ func (self class) SetRecordingProperties(enable bool) { //gd:MissingNode.set_rec
 }
 func (self class) IsRecordingProperties() bool { //gd:MissingNode.is_recording_properties
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_recording_properties, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetRecordingSignals(enable bool) { //gd:MissingNode.set_recording_signals
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_recording_signals, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+}
+func (self class) IsRecordingSignals() bool { //gd:MissingNode.is_recording_signals
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_recording_signals, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

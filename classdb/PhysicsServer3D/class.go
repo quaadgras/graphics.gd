@@ -308,39 +308,127 @@ var once sync.Once
 func singleton() {
 	self[0] = gdclass.NewPhysicsServer3D(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
 }
+
+/*
+Creates a 3D world boundary shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the shape's normal direction and distance properties.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func WorldBoundaryShapeCreate() RID.Shape3D { //gd:PhysicsServer3D.world_boundary_shape_create
 	return RID.Shape3D(RID.Shape3D(Advanced().WorldBoundaryShapeCreate()))
 }
+
+/*
+Creates a 3D separation ray shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the shape's length and slide_on_slope properties.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func SeparationRayShapeCreate() RID.Shape3D { //gd:PhysicsServer3D.separation_ray_shape_create
 	return RID.Shape3D(RID.Shape3D(Advanced().SeparationRayShapeCreate()))
 }
+
+/*
+Creates a 3D sphere shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the sphere's radius.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func SphereShapeCreate() RID.Shape3D { //gd:PhysicsServer3D.sphere_shape_create
 	return RID.Shape3D(RID.Shape3D(Advanced().SphereShapeCreate()))
 }
+
+/*
+Creates a 3D box shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the box's half-extents.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func BoxShapeCreate() RID.Shape3D { //gd:PhysicsServer3D.box_shape_create
 	return RID.Shape3D(RID.Shape3D(Advanced().BoxShapeCreate()))
 }
+
+/*
+Creates a 3D capsule shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the capsule's height and radius.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func CapsuleShapeCreate() RID.Shape3D { //gd:PhysicsServer3D.capsule_shape_create
 	return RID.Shape3D(RID.Shape3D(Advanced().CapsuleShapeCreate()))
 }
+
+/*
+Creates a 3D cylinder shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the cylinder's height and radius.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func CylinderShapeCreate() RID.Shape3D { //gd:PhysicsServer3D.cylinder_shape_create
 	return RID.Shape3D(RID.Shape3D(Advanced().CylinderShapeCreate()))
 }
+
+/*
+Creates a 3D convex polygon shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the convex polygon's points.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func ConvexPolygonShapeCreate() RID.Shape3D { //gd:PhysicsServer3D.convex_polygon_shape_create
 	return RID.Shape3D(RID.Shape3D(Advanced().ConvexPolygonShapeCreate()))
 }
+
+/*
+Creates a 3D concave polygon shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the concave polygon's triangles.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func ConcavePolygonShapeCreate() RID.Shape3D { //gd:PhysicsServer3D.concave_polygon_shape_create
 	return RID.Shape3D(RID.Shape3D(Advanced().ConcavePolygonShapeCreate()))
 }
+
+/*
+Creates a 3D heightmap shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the heightmap's data.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func HeightmapShapeCreate() RID.Shape3D { //gd:PhysicsServer3D.heightmap_shape_create
 	return RID.Shape3D(RID.Shape3D(Advanced().HeightmapShapeCreate()))
 }
+
+/*
+Creates a custom shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the shape's data.
+
+Note: Custom shapes are not supported by the built-in physics servers, so calling this method always produces an error when using Godot Physics or Jolt Physics. Custom physics servers implemented as GDExtensions may support a custom shape.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func CustomShapeCreate() RID.Shape3D { //gd:PhysicsServer3D.custom_shape_create
 	return RID.Shape3D(RID.Shape3D(Advanced().CustomShapeCreate()))
 }
 
 /*
-Sets the shape data that defines its shape and size. The data to be passed depends on the kind of shape created [ShapeGetType].
+Sets the shape data that configures the shape. The 'data' to be passed depends on the shape's type (see [ShapeGetType]):
+
+- [ShapeWorldBoundary]: a [Plane.NormalD],
+
+- [ShapeSeparationRay]: a dictionary containing the key "length" with a [Float.X] value and the key "slide_on_slope" with a bool value,
+
+- [ShapeSphere]: a [Float.X] that is the radius of the sphere,
+
+- [ShapeBox]: a [Vector3.XYZ] containing the half-extents of the box,
+
+- [ShapeCapsule]: a dictionary containing the keys "height" and "radius" with [Float.X] values,
+
+- [ShapeCylinder]: a dictionary containing the keys "height" and "radius" with [Float.X] values,
+
+- [ShapeConvexPolygon]: a [][Vector3.XYZ] of points defining a convex polygon (the shape will be the convex hull of the points),
+
+- [ShapeConcavePolygon]: a dictionary containing the key "faces" with a [][Vector3.XYZ] value (with a length divisible by 3, so that each 3-tuple of points forms a face) and the key "backface_collision" with a bool value,
+
+- [ShapeHeightmap]: a dictionary containing the keys "width" and "depth" with int values, and the key "heights" with a value that is a packed array of [Float.X]s of length width * depth (that is a []float32, or a []float64 if Godot was compiled with the precision=double option), and optionally the keys "min_height" and "max_height" with [Float.X] values,
+
+- [ShapeSoftBody]: the input 'data' is ignored and this method has no effect,
+
+- [ShapeCustom]: the input 'data' is interpreted by a custom physics server, if it supports custom shapes.
+
+[Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
+[Plane.NormalD]: https://pkg.go.dev/graphics.gd/variant/Plane#NormalD
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 */
 func ShapeSetData(shape RID.Shape3D, data any) { //gd:PhysicsServer3D.shape_set_data
 	Advanced().ShapeSetData(RID.Any(shape), variant.New(data))
@@ -356,14 +444,14 @@ func ShapeSetMargin(shape RID.Shape3D, margin Float.X) { //gd:PhysicsServer3D.sh
 }
 
 /*
-Returns the type of shape.
+Returns the shape's type.
 */
 func ShapeGetType(shape RID.Shape3D) ShapeType { //gd:PhysicsServer3D.shape_get_type
 	return ShapeType(Advanced().ShapeGetType(RID.Any(shape)))
 }
 
 /*
-Returns the shape data.
+Returns the shape data that configures the shape, such as the half-extents of a box or the triangles of a concave (trimesh) shape. See [ShapeSetData] for the precise format of this data in each case.
 */
 func ShapeGetData(shape RID.Shape3D) any { //gd:PhysicsServer3D.shape_get_data
 	return any(Advanced().ShapeGetData(RID.Any(shape)).Interface())
@@ -3099,56 +3187,45 @@ const (
 type ShapeType int //gd:PhysicsServer3D.ShapeType
 
 const (
-	// The [Shape3D] is a [WorldBoundaryShape3D].
+	// Constant for creating a world boundary shape (used by the [WorldBoundaryShape3D] resource).
 	//
-	// [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 	// [WorldBoundaryShape3D]: https://pkg.go.dev/graphics.gd/classdb/WorldBoundaryShape3D
 	ShapeWorldBoundary ShapeType = 0
-	// The [Shape3D] is a [SeparationRayShape3D].
+	// Constant for creating a separation ray shape (used by the [SeparationRayShape3D] resource).
 	//
 	// [SeparationRayShape3D]: https://pkg.go.dev/graphics.gd/classdb/SeparationRayShape3D
-	// [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 	ShapeSeparationRay ShapeType = 1
-	// The [Shape3D] is a [SphereShape3D].
+	// Constant for creating a sphere shape (used by the [SphereShape3D] resource).
 	//
-	// [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 	// [SphereShape3D]: https://pkg.go.dev/graphics.gd/classdb/SphereShape3D
 	ShapeSphere ShapeType = 2
-	// The [Shape3D] is a [BoxShape3D].
+	// Constant for creating a box shape (used by the [BoxShape3D] resource).
 	//
 	// [BoxShape3D]: https://pkg.go.dev/graphics.gd/classdb/BoxShape3D
-	// [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 	ShapeBox ShapeType = 3
-	// The [Shape3D] is a [CapsuleShape3D].
+	// Constant for creating a capsule shape (used by the [CapsuleShape3D] resource).
 	//
 	// [CapsuleShape3D]: https://pkg.go.dev/graphics.gd/classdb/CapsuleShape3D
-	// [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 	ShapeCapsule ShapeType = 4
-	// The [Shape3D] is a [CylinderShape3D].
+	// Constant for creating a cylinder shape (used by the [CylinderShape3D] resource).
 	//
 	// [CylinderShape3D]: https://pkg.go.dev/graphics.gd/classdb/CylinderShape3D
-	// [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 	ShapeCylinder ShapeType = 5
-	// The [Shape3D] is a [ConvexPolygonShape3D].
+	// Constant for creating a convex polygon shape (used by the [ConvexPolygonShape3D] resource).
 	//
 	// [ConvexPolygonShape3D]: https://pkg.go.dev/graphics.gd/classdb/ConvexPolygonShape3D
-	// [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 	ShapeConvexPolygon ShapeType = 6
-	// The [Shape3D] is a [ConcavePolygonShape3D].
+	// Constant for creating a concave polygon (trimesh) shape (used by the [ConcavePolygonShape3D] resource).
 	//
 	// [ConcavePolygonShape3D]: https://pkg.go.dev/graphics.gd/classdb/ConcavePolygonShape3D
-	// [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 	ShapeConcavePolygon ShapeType = 7
-	// The [Shape3D] is a [HeightMapShape3D].
+	// Constant for creating a heightmap shape (used by the [HeightMapShape3D] resource).
 	//
 	// [HeightMapShape3D]: https://pkg.go.dev/graphics.gd/classdb/HeightMapShape3D
-	// [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 	ShapeHeightmap ShapeType = 8
-	// The [Shape3D] is used internally for a soft body. Any attempt to create this kind of shape results in an error.
-	//
-	// [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
+	// Constant used internally for a soft body shape. Any attempt to create this kind of shape results in an error.
 	ShapeSoftBody ShapeType = 9
-	// This constant is used internally by the engine. Any attempt to create this kind of shape results in an error.
+	// Constant used internally for a custom shape. Any attempt to create this kind of shape results in an error when using Godot Physics or Jolt Physics.
 	ShapeCustom ShapeType = 10
 )
 

@@ -192,7 +192,7 @@ type Interface interface {
 	GetSuggestedTrackerNames() []string
 	// Returns a []string with pose names configured by this interface. Note that user configuration can override this list.
 	GetSuggestedPoseNames(tracker_name string) []string
-	// Returns an [XRInterface.TrackingStatus] specifying the current status of our tracking.
+	// Returns the current status of our tracking.
 	GetTrackingStatus() XRInterface.TrackingStatus
 	// Triggers a haptic pulse to be emitted on the specified tracker.
 	TriggerHapticPulse(action_name string, tracker_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X)
@@ -579,7 +579,7 @@ func (Instance) _get_suggested_pose_names(impl func(ptr gdclass.Receiver, tracke
 }
 
 /*
-Returns an [XRInterface.TrackingStatus] specifying the current status of our tracking.
+Returns the current status of our tracking.
 */
 func (Instance) _get_tracking_status(impl func(ptr gdclass.Receiver) XRInterface.TrackingStatus) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {

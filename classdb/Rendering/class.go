@@ -96,6 +96,8 @@ const (
 	//
 	// - Vulkan: VkQueue.
 	//
+	// - D3D12: ID3D12CommandQueue.
+	//
 	// - Metal: MTLCommandQueue.
 	DriverResourceCommandQueue DriverResource = 3
 	// The specific family the main queue belongs to (rid parameter is ignored).
@@ -103,6 +105,8 @@ const (
 	// - Vulkan: The queue family index, a uint32_t.
 	DriverResourceQueueFamily DriverResource = 4
 	// - Vulkan: VkImage.
+	//
+	// - D3D12: ID3D12Resource.
 	DriverResourceTexture DriverResource = 5
 	// The view of an owned or shared texture.
 	//
@@ -185,7 +189,7 @@ const (
 	DataFormatR8Uint DataFormat = 12
 	// 8-bit-per-channel signed integer red channel data format. Values are in the [-127, 127] range.
 	DataFormatR8Sint DataFormat = 13
-	// 8-bit-per-channel unsigned floating-point red channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range.
+	// 8-bit-per-channel unsigned floating-point red channel data format with normalized value and nonlinear sRGB encoding. Values are in the [0.0, 1.0] range.
 	DataFormatR8Srgb DataFormat = 14
 	// 8-bit-per-channel unsigned floating-point red/green channel data format with normalized value. Values are in the [0.0, 1.0] range.
 	DataFormatR8g8Unorm DataFormat = 15
@@ -199,7 +203,7 @@ const (
 	DataFormatR8g8Uint DataFormat = 19
 	// 8-bit-per-channel signed integer red/green channel data format. Values are in the [-127, 127] range.
 	DataFormatR8g8Sint DataFormat = 20
-	// 8-bit-per-channel unsigned floating-point red/green channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range.
+	// 8-bit-per-channel unsigned floating-point red/green channel data format with normalized value and nonlinear sRGB encoding. Values are in the [0.0, 1.0] range.
 	DataFormatR8g8Srgb DataFormat = 21
 	// 8-bit-per-channel unsigned floating-point red/green/blue channel data format with normalized value. Values are in the [0.0, 1.0] range.
 	DataFormatR8g8b8Unorm DataFormat = 22
@@ -213,7 +217,7 @@ const (
 	DataFormatR8g8b8Uint DataFormat = 26
 	// 8-bit-per-channel signed integer red/green/blue channel data format. Values are in the [-127, 127] range.
 	DataFormatR8g8b8Sint DataFormat = 27
-	// 8-bit-per-channel unsigned floating-point red/green/blue channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range.
+	// 8-bit-per-channel unsigned floating-point red/green/blue channel data format with normalized value and nonlinear sRGB encoding. Values are in the [0.0, 1.0] range.
 	DataFormatR8g8b8Srgb DataFormat = 28
 	// 8-bit-per-channel unsigned floating-point blue/green/red channel data format with normalized value. Values are in the [0.0, 1.0] range.
 	DataFormatB8g8r8Unorm DataFormat = 29
@@ -227,7 +231,7 @@ const (
 	DataFormatB8g8r8Uint DataFormat = 33
 	// 8-bit-per-channel signed integer blue/green/red channel data format. Values are in the [-127, 127] range.
 	DataFormatB8g8r8Sint DataFormat = 34
-	// 8-bit-per-channel unsigned floating-point blue/green/red data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range.
+	// 8-bit-per-channel unsigned floating-point blue/green/red data format with normalized value and nonlinear sRGB encoding. Values are in the [0.0, 1.0] range.
 	DataFormatB8g8r8Srgb DataFormat = 35
 	// 8-bit-per-channel unsigned floating-point red/green/blue/alpha channel data format with normalized value. Values are in the [0.0, 1.0] range.
 	DataFormatR8g8b8a8Unorm DataFormat = 36
@@ -241,7 +245,7 @@ const (
 	DataFormatR8g8b8a8Uint DataFormat = 40
 	// 8-bit-per-channel signed integer red/green/blue/alpha channel data format. Values are in the [-127, 127] range.
 	DataFormatR8g8b8a8Sint DataFormat = 41
-	// 8-bit-per-channel unsigned floating-point red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range.
+	// 8-bit-per-channel unsigned floating-point red/green/blue/alpha channel data format with normalized value and nonlinear sRGB encoding. Values are in the [0.0, 1.0] range.
 	DataFormatR8g8b8a8Srgb DataFormat = 42
 	// 8-bit-per-channel unsigned floating-point blue/green/red/alpha channel data format with normalized value. Values are in the [0.0, 1.0] range.
 	DataFormatB8g8r8a8Unorm DataFormat = 43
@@ -255,7 +259,7 @@ const (
 	DataFormatB8g8r8a8Uint DataFormat = 47
 	// 8-bit-per-channel signed integer blue/green/red/alpha channel data format. Values are in the [-127, 127] range.
 	DataFormatB8g8r8a8Sint DataFormat = 48
-	// 8-bit-per-channel unsigned floating-point blue/green/red/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range.
+	// 8-bit-per-channel unsigned floating-point blue/green/red/alpha channel data format with normalized value and nonlinear sRGB encoding. Values are in the [0.0, 1.0] range.
 	DataFormatB8g8r8a8Srgb DataFormat = 49
 	// 8-bit-per-channel unsigned floating-point alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Values are in the [0.0, 1.0] range.
 	DataFormatA8b8g8r8UnormPack32 DataFormat = 50
@@ -269,7 +273,7 @@ const (
 	DataFormatA8b8g8r8UintPack32 DataFormat = 54
 	// 8-bit-per-channel signed integer alpha/red/green/blue channel data format, packed in 32 bits. Values are in the [-127, 127] range.
 	DataFormatA8b8g8r8SintPack32 DataFormat = 55
-	// 8-bit-per-channel unsigned floating-point alpha/red/green/blue channel data format with normalized value and non-linear sRGB encoding, packed in 32 bits. Values are in the [0.0, 1.0] range.
+	// 8-bit-per-channel unsigned floating-point alpha/red/green/blue channel data format with normalized value and nonlinear sRGB encoding, packed in 32 bits. Values are in the [0.0, 1.0] range.
 	DataFormatA8b8g8r8SrgbPack32 DataFormat = 56
 	// Unsigned floating-point alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of red, 10 bits of green and 10 bits of blue. Values are in the [0.0, 1.0] range.
 	DataFormatA2r10g10b10UnormPack32 DataFormat = 57
@@ -419,19 +423,19 @@ const (
 	DataFormatD32SfloatS8Uint DataFormat = 129
 	// VRAM-compressed unsigned red/green/blue channel data format with normalized value. Values are in the [0.0, 1.0] range. The format's precision is 5 bits of red channel, 6 bits of green channel and 5 bits of blue channel. Using BC1 texture compression (also known as S3TC DXT1).
 	DataFormatBc1RgbUnormBlock DataFormat = 130
-	// VRAM-compressed unsigned red/green/blue channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range. The format's precision is 5 bits of red channel, 6 bits of green channel and 5 bits of blue channel. Using BC1 texture compression (also known as S3TC DXT1).
+	// VRAM-compressed unsigned red/green/blue channel data format with normalized value and nonlinear sRGB encoding. Values are in the [0.0, 1.0] range. The format's precision is 5 bits of red channel, 6 bits of green channel, and 5 bits of blue channel. Using BC1 texture compression (also known as S3TC DXT1).
 	DataFormatBc1RgbSrgbBlock DataFormat = 131
 	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [0.0, 1.0] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel and 1 bit of alpha channel. Using BC1 texture compression (also known as S3TC DXT1).
 	DataFormatBc1RgbaUnormBlock DataFormat = 132
-	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel and 1 bit of alpha channel. Using BC1 texture compression (also known as S3TC DXT1).
+	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and nonlinear sRGB encoding. Values are in the [0.0, 1.0] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel, and 1 bit of alpha channel. Using BC1 texture compression (also known as S3TC DXT1).
 	DataFormatBc1RgbaSrgbBlock DataFormat = 133
 	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [0.0, 1.0] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel and 4 bits of alpha channel. Using BC2 texture compression (also known as S3TC DXT3).
 	DataFormatBc2UnormBlock DataFormat = 134
-	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel and 4 bits of alpha channel. Using BC2 texture compression (also known as S3TC DXT3).
+	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and nonlinear sRGB encoding. Values are in the [0.0, 1.0] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel, and 4 bits of alpha channel. Using BC2 texture compression (also known as S3TC DXT3).
 	DataFormatBc2SrgbBlock DataFormat = 135
 	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [0.0, 1.0] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel and 8 bits of alpha channel. Using BC3 texture compression (also known as S3TC DXT5).
 	DataFormatBc3UnormBlock DataFormat = 136
-	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel and 8 bits of alpha channel. Using BC3 texture compression (also known as S3TC DXT5).
+	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and nonlinear sRGB encoding. Values are in the [0.0, 1.0] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel, and 8 bits of alpha channel. Using BC3 texture compression (also known as S3TC DXT5).
 	DataFormatBc3SrgbBlock DataFormat = 137
 	// VRAM-compressed unsigned red channel data format with normalized value. Values are in the [0.0, 1.0] range. The format's precision is 8 bits of red channel. Using BC4 texture compression.
 	DataFormatBc4UnormBlock DataFormat = 138
@@ -447,19 +451,19 @@ const (
 	DataFormatBc6hSfloatBlock DataFormat = 143
 	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [0.0, 1.0] range. The format's precision is between 4 and 7 bits for the red/green/blue channels and between 0 and 8 bits for the alpha channel. Also known as BPTC LDR.
 	DataFormatBc7UnormBlock DataFormat = 144
-	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range. The format's precision is between 4 and 7 bits for the red/green/blue channels and between 0 and 8 bits for the alpha channel. Also known as BPTC LDR.
+	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and nonlinear sRGB encoding. Values are in the [0.0, 1.0] range. The format's precision is between 4 and 7 bits for the red/green/blue channels and between 0 and 8 bits for the alpha channel. Also known as BPTC LDR.
 	DataFormatBc7SrgbBlock DataFormat = 145
 	// VRAM-compressed unsigned red/green/blue channel data format with normalized value. Values are in the [0.0, 1.0] range. Using ETC2 texture compression.
 	DataFormatEtc2R8g8b8UnormBlock DataFormat = 146
-	// VRAM-compressed unsigned red/green/blue channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range. Using ETC2 texture compression.
+	// VRAM-compressed unsigned red/green/blue channel data format with normalized value and nonlinear sRGB encoding. Values are in the [0.0, 1.0] range. Using ETC2 texture compression.
 	DataFormatEtc2R8g8b8SrgbBlock DataFormat = 147
 	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [0.0, 1.0] range. Red/green/blue use 8 bit of precision each, with alpha using 1 bit of precision. Using ETC2 texture compression.
 	DataFormatEtc2R8g8b8a1UnormBlock DataFormat = 148
-	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range. Red/green/blue use 8 bit of precision each, with alpha using 1 bit of precision. Using ETC2 texture compression.
+	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and nonlinear sRGB encoding. Values are in the [0.0, 1.0] range. Red/green/blue use 8 bit of precision each, with alpha using 1 bit of precision. Using ETC2 texture compression.
 	DataFormatEtc2R8g8b8a1SrgbBlock DataFormat = 149
 	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [0.0, 1.0] range. Red/green/blue use 8 bits of precision each, with alpha using 8 bits of precision. Using ETC2 texture compression.
 	DataFormatEtc2R8g8b8a8UnormBlock DataFormat = 150
-	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range. Red/green/blue use 8 bits of precision each, with alpha using 8 bits of precision. Using ETC2 texture compression.
+	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and nonlinear sRGB encoding. Values are in the [0.0, 1.0] range. Red/green/blue use 8 bits of precision each, with alpha using 8 bits of precision. Using ETC2 texture compression.
 	DataFormatEtc2R8g8b8a8SrgbBlock DataFormat = 151
 	// 11-bit VRAM-compressed unsigned red channel data format with normalized value. Values are in the [0.0, 1.0] range. Using ETC2 texture compression.
 	DataFormatEacR11UnormBlock DataFormat = 152
@@ -471,59 +475,59 @@ const (
 	DataFormatEacR11g11SnormBlock DataFormat = 155
 	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 4×4 blocks (highest quality). Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc4x4UnormBlock DataFormat = 156
-	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 4×4 blocks (highest quality). Values are in the [0.0, 1.0] range. Using ASTC compression.
+	// VRAM-compressed unsigned floating-point data format with normalized value and nonlinear sRGB encoding, packed in 4×4 blocks (highest quality). Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc4x4SrgbBlock DataFormat = 157
 	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 5×4 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc5x4UnormBlock DataFormat = 158
-	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 5×4 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
+	// VRAM-compressed unsigned floating-point data format with normalized value and nonlinear sRGB encoding, packed in 5×4 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc5x4SrgbBlock DataFormat = 159
 	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 5×5 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc5x5UnormBlock DataFormat = 160
-	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 5×5 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
+	// VRAM-compressed unsigned floating-point data format with normalized value and nonlinear sRGB encoding, packed in 5×5 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc5x5SrgbBlock DataFormat = 161
 	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 6×5 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc6x5UnormBlock DataFormat = 162
-	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 6×5 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
+	// VRAM-compressed unsigned floating-point data format with normalized value and nonlinear sRGB encoding, packed in 6×5 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc6x5SrgbBlock DataFormat = 163
 	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 6×6 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc6x6UnormBlock DataFormat = 164
-	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 6×6 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
+	// VRAM-compressed unsigned floating-point data format with normalized value and nonlinear sRGB encoding, packed in 6×6 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc6x6SrgbBlock DataFormat = 165
 	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 8×5 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc8x5UnormBlock DataFormat = 166
-	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 8×5 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
+	// VRAM-compressed unsigned floating-point data format with normalized value and nonlinear sRGB encoding, packed in 8×5 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc8x5SrgbBlock DataFormat = 167
 	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 8×6 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc8x6UnormBlock DataFormat = 168
-	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 8×6 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
+	// VRAM-compressed unsigned floating-point data format with normalized value and nonlinear sRGB encoding, packed in 8×6 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc8x6SrgbBlock DataFormat = 169
 	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 8×8 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc8x8UnormBlock DataFormat = 170
-	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 8×8 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
+	// VRAM-compressed unsigned floating-point data format with normalized value and nonlinear sRGB encoding, packed in 8×8 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc8x8SrgbBlock DataFormat = 171
 	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 10×5 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc10x5UnormBlock DataFormat = 172
-	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 10×5 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
+	// VRAM-compressed unsigned floating-point data format with normalized value and nonlinear sRGB encoding, packed in 10×5 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc10x5SrgbBlock DataFormat = 173
 	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 10×6 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc10x6UnormBlock DataFormat = 174
-	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 10×6 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
+	// VRAM-compressed unsigned floating-point data format with normalized value and nonlinear sRGB encoding, packed in 10×6 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc10x6SrgbBlock DataFormat = 175
 	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 10×8 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc10x8UnormBlock DataFormat = 176
-	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 10×8 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
+	// VRAM-compressed unsigned floating-point data format with normalized value and nonlinear sRGB encoding, packed in 10×8 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc10x8SrgbBlock DataFormat = 177
 	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 10×10 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc10x10UnormBlock DataFormat = 178
-	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 10×10 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
+	// VRAM-compressed unsigned floating-point data format with normalized value and nonlinear sRGB encoding, packed in 10×10 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc10x10SrgbBlock DataFormat = 179
 	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 12×10 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc12x10UnormBlock DataFormat = 180
-	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 12×10 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
+	// VRAM-compressed unsigned floating-point data format with normalized value and nonlinear sRGB encoding, packed in 12×10 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc12x10SrgbBlock DataFormat = 181
 	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 12 blocks (lowest quality). Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc12x12UnormBlock DataFormat = 182
-	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 12 blocks (lowest quality). Values are in the [0.0, 1.0] range. Using ASTC compression.
+	// VRAM-compressed unsigned floating-point data format with normalized value and nonlinear sRGB encoding, packed in 12 blocks (lowest quality). Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc12x12SrgbBlock DataFormat = 183
 	// 8-bit-per-channel unsigned floating-point green/blue/red channel data format with normalized value. Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).
 	DataFormatG8b8g8r8422Unorm DataFormat = 184
@@ -685,6 +689,8 @@ const (
 	TextureUsageColorAttachmentBit TextureUsageBits = 2
 	// Texture can be used as a depth/stencil attachment in a framebuffer.
 	TextureUsageDepthStencilAttachmentBit TextureUsageBits = 4
+	// Texture can be used as a depth/stencil resolve attachment in a framebuffer.
+	TextureUsageDepthResolveAttachmentBit TextureUsageBits = 4096
 	// Texture can be used as a [storage image].
 	//
 	// [storage image]: https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#descriptorsets-storageimage
@@ -872,8 +878,20 @@ const (
 	UniformTypeStorageBuffer UniformType = 8
 	// Input attachment uniform.
 	UniformTypeInputAttachment UniformType = 9
+	// Same as UNIFORM_TYPE_UNIFORM_BUFFER but for buffers created with BUFFER_CREATION_DYNAMIC_PERSISTENT_BIT.
+	//
+	// Note: This flag is not available to GD users due to being too dangerous (i.e. wrong usage can result in visual glitches).
+	//
+	// It's exposed in case GD users receive a buffer created with such flag from Godot.
+	UniformTypeUniformBufferDynamic UniformType = 10
+	// Same as UNIFORM_TYPE_STORAGE_BUFFER but for buffers created with BUFFER_CREATION_DYNAMIC_PERSISTENT_BIT.
+	//
+	// Note: This flag is not available to GD users due to being too dangerous (i.e. wrong usage can result in visual glitches).
+	//
+	// It's exposed in case GD users receive a buffer created with such flag from Godot.
+	UniformTypeStorageBufferDynamic UniformType = 11
 	// Represents the size of the [UniformType] enum.
-	UniformTypeMax UniformType = 10
+	UniformTypeMax UniformType = 12
 )
 
 type RenderPrimitive int //gd:RenderingDevice.RenderPrimitive

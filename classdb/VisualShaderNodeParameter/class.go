@@ -96,6 +96,8 @@ var methods struct {
 	get_parameter_name gdextension.MethodForClass `hash:"201670096"`
 	set_qualifier      gdextension.MethodForClass `hash:"1276489447"`
 	get_qualifier      gdextension.MethodForClass `hash:"3558406205"`
+	set_instance_index gdextension.MethodForClass `hash:"1286410249"`
+	get_instance_index gdextension.MethodForClass `hash:"3905245786"`
 }
 
 func init() {
@@ -189,6 +191,19 @@ func (self Instance) SetQualifier(value Qualifier) Instance { //gd:VisualShaderN
 	return self
 }
 
+/*
+The index within 0-15 range, which is used to avoid clashes when shader used on multiple materials.
+*/
+func (self Instance) InstanceIndex() int { //gd:VisualShaderNodeParameter.instance_index
+	return int(int(class(self).GetInstanceIndex()))
+}
+
+// SetInstanceIndex sets the property returned by [GetInstanceIndex]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInstanceIndex(value int) Instance { //gd:VisualShaderNodeParameter.instance_index
+	class(self).SetInstanceIndex(int64(value))
+	return self
+}
+
 func (self class) SetParameterName(name String.Readable) { //gd:VisualShaderNodeParameter.set_parameter_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_parameter_name, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
@@ -202,6 +217,14 @@ func (self class) SetQualifier(qualifier Qualifier) { //gd:VisualShaderNodeParam
 }
 func (self class) GetQualifier() Qualifier { //gd:VisualShaderNodeParameter.get_qualifier
 	var r_ret = noescape.Call[Qualifier](gd.ObjectChecked(self.AsObject()), methods.get_qualifier, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetInstanceIndex(instance_index int64) { //gd:VisualShaderNodeParameter.set_instance_index
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_instance_index, 0|(gdextension.SizeInt<<4), &struct{ instance_index int64 }{instance_index})
+}
+func (self class) GetInstanceIndex() int64 { //gd:VisualShaderNodeParameter.get_instance_index
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_instance_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -268,6 +291,11 @@ const (
 	//
 	// [ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
 	QualInstance Qualifier = 2
+	// The parameter will be tied to the node with attached [ShaderMaterial] using this shader. Enables setting a [InstanceIndex] property.
+	//
+	// [InstanceIndex]: https://pkg.go.dev/graphics.gd/classdb/#Instance.InstanceIndex
+	// [ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
+	QualInstanceIndex Qualifier = 3
 	// Represents the size of the [Qualifier] enum.
-	QualMax Qualifier = 3
+	QualMax Qualifier = 4
 )

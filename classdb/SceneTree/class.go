@@ -142,6 +142,7 @@ var methods struct {
 	get_current_scene                 gdextension.MethodForClass `hash:"3160264692"`
 	change_scene_to_file              gdextension.MethodForClass `hash:"166001499"`
 	change_scene_to_packed            gdextension.MethodForClass `hash:"107349098"`
+	change_scene_to_node              gdextension.MethodForClass `hash:"2584678054"`
 	reload_current_scene              gdextension.MethodForClass `hash:"166280745"`
 	unload_current_scene              gdextension.MethodForClass `hash:"3218959716"`
 	set_multiplayer                   gdextension.MethodForClass `hash:"2385607013"`
@@ -449,9 +450,9 @@ Changes the running scene to the one at the given 'path', after loading it into 
 
 Returns [Ok] on success, [ErrCantOpen] if the 'path' cannot be loaded into a [PackedScene], or [ErrCantCreate] if that scene cannot be instantiated.
 
-Note: See [ChangeSceneToPacked] for details on the order of operations.
+Note: See [ChangeSceneToNode] for details on the order of operations.
 
-[ChangeSceneToPacked]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.ChangeSceneToPacked
+[ChangeSceneToNode]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.ChangeSceneToNode
 [PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
 */
 func (self Instance) ChangeSceneToFile(path string) error { //gd:SceneTree.change_scene_to_file
@@ -463,25 +464,42 @@ Changes the running scene to a new instance of the given [PackedScene] (which mu
 
 Returns [Ok] on success, [ErrCantCreate] if the scene cannot be instantiated, or [ErrInvalidParameter] if the scene is invalid.
 
-Note: Operations happen in the following order when [ChangeSceneToPacked] is called:
+Note: See [ChangeSceneToNode] for details on the order of operations.
 
-1. The current scene node is immediately removed from the tree. From that point, [Node.GetTree] called on the current (outgoing) scene will return null. [CurrentScene] will be null, too, because the new scene is not available yet.
+[ChangeSceneToNode]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.ChangeSceneToNode
+[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
+*/
+func (self Instance) ChangeSceneToPacked(packed_scene PackedScene.Instance) error { //gd:SceneTree.change_scene_to_packed
+	return error(gd.ToError(Advanced(self).ChangeSceneToPacked(packed_scene)))
+}
 
-2. At the end of the frame, the formerly current scene, already removed from the tree, will be deleted (freed from memory) and then the new scene will be instantiated and added to the tree. [Node.GetTree] and [CurrentScene] will be back to working as usual.
+/*
+Changes the running scene to the provided [Node]. Useful when you want to set up the new scene before changing.
+
+Returns [Ok] on success, [ErrInvalidParameter] if the 'node' is null, or [ErrUnconfigured] if the 'node' is already inside the scene tree.
+
+Note: Operations happen in the following order when [ChangeSceneToNode] is called:
+
+1. The current scene node is immediately removed from the tree. From that point, [Node.GetTree] called on the current (outgoing) scene will return null. [CurrentScene] will be null too, because the new scene is not available yet.
+
+2. At the end of the frame, the formerly current scene, already removed from the tree, will be deleted (freed from memory) and then the new scene node will be added to the tree. [Node.GetTree] and [CurrentScene] will be back to working as usual.
 
 This ensures that both scenes aren't running at the same time, while still freeing the previous scene in a safe way similar to [Node.QueueFree].
 
 If you want to reliably access the new scene, await the [OnSceneChanged] signal.
 
-[ChangeSceneToPacked]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.ChangeSceneToPacked
+Warning: After using this method, the [SceneTree] will take ownership of the node and will free it automatically when changing scene again. Any references you had to that node will become invalid.
+
+[ChangeSceneToNode]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.ChangeSceneToNode
 [CurrentScene]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.CurrentScene
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
 [Node.GetTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetTree
 [Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
 [OnSceneChanged]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.OnSceneChanged
-[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
-func (self Instance) ChangeSceneToPacked(packed_scene PackedScene.Instance) error { //gd:SceneTree.change_scene_to_packed
-	return error(gd.ToError(Advanced(self).ChangeSceneToPacked(packed_scene)))
+func (self Instance) ChangeSceneToNode(node Node.Instance) error { //gd:SceneTree.change_scene_to_node
+	return error(gd.ToError(Advanced(self).ChangeSceneToNode(node)))
 }
 
 /*
@@ -1013,6 +1031,11 @@ func (self class) ChangeSceneToFile(path String.Readable) Error.Code { //gd:Scen
 }
 func (self class) ChangeSceneToPacked(packed_scene [1]gdclass.PackedScene) Error.Code { //gd:SceneTree.change_scene_to_packed
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.change_scene_to_packed, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ packed_scene gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetPackedScene(packed_scene[0])))})
+	var ret = Error.Code(r_ret)
+	return ret
+}
+func (self class) ChangeSceneToNode(node [1]gdclass.Node) Error.Code { //gd:SceneTree.change_scene_to_node
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.change_scene_to_node, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
 	var ret = Error.Code(r_ret)
 	return ret
 }

@@ -91,4 +91,9 @@ type (
 	TextBuffer                       Any
 
 	RenderModel Any
+
+	PersistenceContext Any
+	SpatialContext     Any
+	SpatialSnapshot    Any
+	SpatialEntity      Any
 )

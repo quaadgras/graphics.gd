@@ -105,16 +105,20 @@ type Instance [1]gdclass.AnimationNodeStateMachinePlayback
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	travel                    gdextension.MethodForClass `hash:"3823612587"`
-	start                     gdextension.MethodForClass `hash:"3823612587"`
-	next                      gdextension.MethodForClass `hash:"3218959716"`
-	stop                      gdextension.MethodForClass `hash:"3218959716"`
-	is_playing                gdextension.MethodForClass `hash:"36873697"`
-	get_current_node          gdextension.MethodForClass `hash:"2002593661"`
-	get_current_play_position gdextension.MethodForClass `hash:"1740695150"`
-	get_current_length        gdextension.MethodForClass `hash:"1740695150"`
-	get_fading_from_node      gdextension.MethodForClass `hash:"2002593661"`
-	get_travel_path           gdextension.MethodForClass `hash:"3995934104"`
+	travel                        gdextension.MethodForClass `hash:"3823612587"`
+	start                         gdextension.MethodForClass `hash:"3823612587"`
+	next                          gdextension.MethodForClass `hash:"3218959716"`
+	stop                          gdextension.MethodForClass `hash:"3218959716"`
+	is_playing                    gdextension.MethodForClass `hash:"36873697"`
+	get_current_node              gdextension.MethodForClass `hash:"2002593661"`
+	get_current_play_position     gdextension.MethodForClass `hash:"1740695150"`
+	get_current_length            gdextension.MethodForClass `hash:"1740695150"`
+	get_fading_from_node          gdextension.MethodForClass `hash:"2002593661"`
+	get_fading_from_play_position gdextension.MethodForClass `hash:"1740695150"`
+	get_fading_from_length        gdextension.MethodForClass `hash:"1740695150"`
+	get_fading_position           gdextension.MethodForClass `hash:"1740695150"`
+	get_fading_length             gdextension.MethodForClass `hash:"1740695150"`
+	get_travel_path               gdextension.MethodForClass `hash:"3995934104"`
 }
 
 func init() {
@@ -240,6 +244,38 @@ func (self Instance) GetFadingFromNode() string { //gd:AnimationNodeStateMachine
 }
 
 /*
+Returns the playback position of the node from [GetFadingFromNode]. Returns 0 if no animation fade is occurring.
+
+[GetFadingFromNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachinePlayback#Instance.GetFadingFromNode
+*/
+func (self Instance) GetFadingFromPlayPosition() Float.X { //gd:AnimationNodeStateMachinePlayback.get_fading_from_play_position
+	return Float.X(Float.X(Advanced(self).GetFadingFromPlayPosition()))
+}
+
+/*
+Returns the playback state length of the node from [GetFadingFromNode]. Returns 0 if no animation fade is occurring.
+
+[GetFadingFromNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachinePlayback#Instance.GetFadingFromNode
+*/
+func (self Instance) GetFadingFromLength() Float.X { //gd:AnimationNodeStateMachinePlayback.get_fading_from_length
+	return Float.X(Float.X(Advanced(self).GetFadingFromLength()))
+}
+
+/*
+Returns the playback position of the current fade animation. Returns 0 if no animation fade is occurring.
+*/
+func (self Instance) GetFadingPosition() Float.X { //gd:AnimationNodeStateMachinePlayback.get_fading_position
+	return Float.X(Float.X(Advanced(self).GetFadingPosition()))
+}
+
+/*
+Returns the length of the current fade animation. Returns 0 if no animation fade is occurring.
+*/
+func (self Instance) GetFadingLength() Float.X { //gd:AnimationNodeStateMachinePlayback.get_fading_length
+	return Float.X(Float.X(Advanced(self).GetFadingLength()))
+}
+
+/*
 Returns the current travel path as computed internally by the A* algorithm.
 */
 func (self Instance) GetTravelPath() []string { //gd:AnimationNodeStateMachinePlayback.get_travel_path
@@ -334,6 +370,26 @@ func (self class) GetCurrentLength() float64 { //gd:AnimationNodeStateMachinePla
 func (self class) GetFadingFromNode() String.Name { //gd:AnimationNodeStateMachinePlayback.get_fading_from_node
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_fading_from_node, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
+	return ret
+}
+func (self class) GetFadingFromPlayPosition() float64 { //gd:AnimationNodeStateMachinePlayback.get_fading_from_play_position
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fading_from_play_position, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) GetFadingFromLength() float64 { //gd:AnimationNodeStateMachinePlayback.get_fading_from_length
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fading_from_length, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) GetFadingPosition() float64 { //gd:AnimationNodeStateMachinePlayback.get_fading_position
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fading_position, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) GetFadingLength() float64 { //gd:AnimationNodeStateMachinePlayback.get_fading_length
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fading_length, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
 	return ret
 }
 func (self class) GetTravelPath() Array.Contains[String.Name] { //gd:AnimationNodeStateMachinePlayback.get_travel_path

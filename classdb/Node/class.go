@@ -819,7 +819,7 @@ func (Instance) _get_focused_accessibility_element(impl func(ptr gdclass.Receive
 /*
 Prints all orphan nodes (nodes outside the [SceneTree]). Useful for debugging.
 
-Note: This method only works in debug builds. Does nothing in a project exported in release mode.
+Note: This method only works in debug builds. It does nothing in a project exported in release mode.
 
 [SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
@@ -1353,7 +1353,7 @@ func (self MoreArgs) GetPathTo(node Instance, use_unique_path bool) string { //g
 /*
 Adds the node to the 'group'. Groups can be helpful to organize a subset of nodes, for example "enemies" or "collectables". See notes in the description, and the group methods in [SceneTree].
 
-If 'persistent' is true, the group will be stored when saved inside a [PackedScene]. All groups created and displayed in the Node dock are persistent.
+If 'persistent' is true, the group will be stored when saved inside a [PackedScene]. All groups created and displayed in the Groups dock are persistent.
 
 Note: To improve performance, the order of group names is not guaranteed and may vary between project runs. Therefore, do not rely on the group order.
 
@@ -1370,7 +1370,7 @@ func (self Instance) AddToGroup(group string) { //gd:Node.add_to_group
 /*
 Adds the node to the 'group'. Groups can be helpful to organize a subset of nodes, for example "enemies" or "collectables". See notes in the description, and the group methods in [SceneTree].
 
-If 'persistent' is true, the group will be stored when saved inside a [PackedScene]. All groups created and displayed in the Node dock are persistent.
+If 'persistent' is true, the group will be stored when saved inside a [PackedScene]. All groups created and displayed in the Groups dock are persistent.
 
 Note: To improve performance, the order of group names is not guaranteed and may vary between project runs. Therefore, do not rely on the group order.
 
@@ -1921,9 +1921,11 @@ func (self Instance) CreateTween() Tween.Instance { //gd:Node.create_tween
 }
 
 /*
-Duplicates the node, returning a new node with all of its properties, signals, groups, and children copied from the original. The behavior can be tweaked through the 'flags' (see [DuplicateFlags]). Internal nodes are not duplicated.
+Duplicates the node, returning a new node with all of its properties, signals, groups, and children copied from the original, recursively. The behavior can be tweaked through the 'flags' (see [DuplicateFlags]). Internal nodes are not duplicated.
 
 Note: For nodes with a [Script] attached, if [Object.Init] has been defined with required parameters, the duplicated node will not have a [Script].
+
+Note: By default, this method will duplicate only properties marked for serialization (i.e. using [@Globalscope.PropertyUsageStorage], or in GDScript, ). If you want to duplicate all properties, use [constant DUPLICATE_INTERNAL_STATE].). If you want to duplicate all properties, use [DuplicateInternalState].
 
 [Object.Init]: https://pkg.go.dev/graphics.gd/variant/Object#Init
 [Script]: https://pkg.go.dev/graphics.gd/classdb/Script
@@ -1933,9 +1935,11 @@ func (self Instance) Duplicate() Instance { //gd:Node.duplicate
 }
 
 /*
-Duplicates the node, returning a new node with all of its properties, signals, groups, and children copied from the original. The behavior can be tweaked through the 'flags' (see [DuplicateFlags]). Internal nodes are not duplicated.
+Duplicates the node, returning a new node with all of its properties, signals, groups, and children copied from the original, recursively. The behavior can be tweaked through the 'flags' (see [DuplicateFlags]). Internal nodes are not duplicated.
 
 Note: For nodes with a [Script] attached, if [Object.Init] has been defined with required parameters, the duplicated node will not have a [Script].
+
+Note: By default, this method will duplicate only properties marked for serialization (i.e. using [@Globalscope.PropertyUsageStorage], or in GDScript, ). If you want to duplicate all properties, use [constant DUPLICATE_INTERNAL_STATE].). If you want to duplicate all properties, use [DuplicateInternalState].
 
 [Object.Init]: https://pkg.go.dev/graphics.gd/variant/Object#Init
 [Script]: https://pkg.go.dev/graphics.gd/classdb/Script
@@ -2465,7 +2469,10 @@ The owner of this node. The owner must be an ancestor of this node. When packing
 
 Note: In the editor, nodes not owned by the scene root are usually not displayed in the Scene dock, and will not be saved. To prevent this, remember to set the owner after calling [AddChild].
 
+Note: The owner needs to be the current scene root. See [Instancing scenes] in the documentation for more information.
+
 [AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[Instancing scenes]: https://docs.godotengine.org/tutorials/plugins/running_code_in_the_editor.html#instancing-scenes
 [PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
 [UniqueNameInOwner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UniqueNameInOwner
 */
@@ -2616,7 +2623,7 @@ func (self Instance) SetPhysicsInterpolationMode(value PhysicsInterpolationMode)
 }
 
 /*
-Defines if any text should automatically change to its translated version depending on the current locale (for nodes such as [Label], [RichTextLabel], [Window], etc.). Also decides if the node's strings should be parsed for POT generation.
+Defines if any text should automatically change to its translated version depending on the current locale (for nodes such as [Label], [RichTextLabel], [Window], etc.). Also decides if the node's strings should be parsed for translation template generation.
 
 Note: For the root node, auto translate mode can also be set via [ProjectSettings] "internationalization/rendering/root_node_auto_translate".
 
@@ -3710,6 +3717,18 @@ const (
 	//
 	// [PackedScene.Instantiate]: https://pkg.go.dev/graphics.gd/classdb/PackedScene#Instance.Instantiate
 	DuplicateUseInstantiation DuplicateFlags = 8
+	// Duplicate also non-serializable variables (i.e. without [@Globalscope.PropertyUsageStorage]).
+	DuplicateInternalState DuplicateFlags = 16
+	// Duplicate using default flags. This constant is useful to add or remove a single flag.
+	//
+	//
+	//
+	// # Duplicate non-exported variables.
+	//
+	// var dupe = duplicate(DUPLICATE_DEFAULT | DUPLICATE_INTERNAL_STATE)
+	//
+	//
+	DuplicateDefault DuplicateFlags = 15
 )
 
 type InternalMode int //gd:Node.InternalMode
@@ -3734,7 +3753,7 @@ const (
 	AutoTranslateModeAlways AutoTranslateMode = 1
 	// Never automatically translate. This is the inverse of [AutoTranslateModeAlways].
 	//
-	// String parsing for POT generation will be skipped for this node and children that are set to [AutoTranslateModeInherit].
+	// String parsing for translation template generation will be skipped for this node and children that are set to [AutoTranslateModeInherit].
 	AutoTranslateModeDisabled AutoTranslateMode = 2
 )
 const NotificationEnterTree Object.Notification = 10                   //gd:Node.NOTIFICATION_ENTER_TREE

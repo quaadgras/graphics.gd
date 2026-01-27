@@ -110,6 +110,10 @@ var methods struct {
 	get_vertical_scroll_mode   gdextension.MethodForClass `hash:"3987985145"`
 	set_deadzone               gdextension.MethodForClass `hash:"1286410249"`
 	get_deadzone               gdextension.MethodForClass `hash:"3905245786"`
+	set_scroll_hint_mode       gdextension.MethodForClass `hash:"578158943"`
+	get_scroll_hint_mode       gdextension.MethodForClass `hash:"246835423"`
+	set_tile_scroll_hint       gdextension.MethodForClass `hash:"2586408642"`
+	is_scroll_hint_tiled       gdextension.MethodForClass `hash:"2240911060"`
 	set_follow_focus           gdextension.MethodForClass `hash:"2586408642"`
 	is_following_focus         gdextension.MethodForClass `hash:"36873697"`
 	get_h_scroll_bar           gdextension.MethodForClass `hash:"4004517983"`
@@ -357,6 +361,36 @@ func (self Instance) SetScrollDeadzone(value int) Instance { //gd:ScrollContaine
 	return self
 }
 
+/*
+The way which scroll hints (indicators that show that the content can still be scrolled in a certain direction) will be shown.
+
+Note: Hints won't be shown if the content can be scrolled both vertically and horizontally.
+*/
+func (self Instance) ScrollHintMode() ScrollHintMode { //gd:ScrollContainer.scroll_hint_mode
+	return ScrollHintMode(class(self).GetScrollHintMode())
+}
+
+// SetScrollHintMode sets the property returned by [GetScrollHintMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollHintMode(value ScrollHintMode) Instance { //gd:ScrollContainer.scroll_hint_mode
+	class(self).SetScrollHintMode(value)
+	return self
+}
+
+/*
+If true, the scroll hint texture will be tiled instead of stretched. See [ScrollHintMode].
+
+[ScrollHintMode]: https://pkg.go.dev/graphics.gd/classdb/ScrollContainer#Instance.ScrollHintMode
+*/
+func (self Instance) TileScrollHint() bool { //gd:ScrollContainer.tile_scroll_hint
+	return bool(class(self).IsScrollHintTiled())
+}
+
+// SetTileScrollHint sets the property returned by [IsScrollHintTiled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTileScrollHint(value bool) Instance { //gd:ScrollContainer.tile_scroll_hint
+	class(self).SetTileScrollHint(value)
+	return self
+}
+
 func (self class) SetHScroll(value int64) { //gd:ScrollContainer.set_h_scroll
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_scroll, 0|(gdextension.SizeInt<<4), &struct{ value int64 }{value})
 }
@@ -410,6 +444,22 @@ func (self class) SetDeadzone(deadzone int64) { //gd:ScrollContainer.set_deadzon
 }
 func (self class) GetDeadzone() int64 { //gd:ScrollContainer.get_deadzone
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_deadzone, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetScrollHintMode(scroll_hint_mode ScrollHintMode) { //gd:ScrollContainer.set_scroll_hint_mode
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_hint_mode, 0|(gdextension.SizeInt<<4), &struct{ scroll_hint_mode ScrollHintMode }{scroll_hint_mode})
+}
+func (self class) GetScrollHintMode() ScrollHintMode { //gd:ScrollContainer.get_scroll_hint_mode
+	var r_ret = noescape.Call[ScrollHintMode](gd.ObjectChecked(self.AsObject()), methods.get_scroll_hint_mode, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetTileScrollHint(tile_scroll_hint bool) { //gd:ScrollContainer.set_tile_scroll_hint
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_scroll_hint, 0|(gdextension.SizeBool<<4), &struct{ tile_scroll_hint bool }{tile_scroll_hint})
+}
+func (self class) IsScrollHintTiled() bool { //gd:ScrollContainer.is_scroll_hint_tiled
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scroll_hint_tiled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -547,4 +597,17 @@ const (
 	ScrollModeShowNever ScrollMode = 3
 	// Combines [ScrollModeAuto] and [ScrollModeShowAlways]. The scrollbar is only visible if necessary, but the content size is adjusted as if it was always visible. It's useful for ensuring that content size stays the same regardless if the scrollbar is visible.
 	ScrollModeReserve ScrollMode = 4
+)
+
+type ScrollHintMode int //gd:ScrollContainer.ScrollHintMode
+
+const (
+	// Scroll hints will never be shown.
+	ScrollHintModeDisabled ScrollHintMode = 0
+	// Scroll hints will be shown at the top and bottom (if vertical), or left and right (if horizontal).
+	ScrollHintModeAll ScrollHintMode = 1
+	// Scroll hints will be shown at the top (if vertical), or the left (if horizontal).
+	ScrollHintModeTopAndLeft ScrollHintMode = 2
+	// Scroll hints will be shown at the bottom (if horizontal), or the right (if horizontal).
+	ScrollHintModeBottomAndRight ScrollHintMode = 3
 )

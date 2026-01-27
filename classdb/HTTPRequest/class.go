@@ -512,8 +512,11 @@ func (self Instance) SetMaxRedirects(value int) Instance { //gd:HTTPRequest.max_
 }
 
 /*
-The duration to wait in seconds before a request times out. If [Timeout] is set to 0.0 then the request will never time out. For simple requests, such as communication with a REST API, it is recommended that [Timeout] is set to a value suitable for the server response time (e.g. between 1.0 and 10.0). This will help prevent unwanted timeouts caused by variation in server response times while still allowing the application to detect when a request has timed out. For larger requests such as file downloads it is suggested the [Timeout] be set to 0.0, disabling the timeout functionality. This will help to prevent large transfers from failing due to exceeding the timeout value.
+The duration to wait before a request times out, in seconds (independent of [Engine.TimeScale]). If [Timeout] is set to 0.0, the request will never time out.
 
+For simple requests, such as communication with a REST API, it is recommended to set [Timeout] to a value suitable for the server response time (commonly between 1.0 and 10.0). This will help prevent unwanted timeouts caused by variation in response times while still allowing the application to detect when a request has timed out. For larger requests such as file downloads, it is recommended to set [Timeout] to 0.0, disabling the timeout functionality. This will help prevent large transfers from failing due to exceeding the timeout value.
+
+[Engine.TimeScale]: https://pkg.go.dev/graphics.gd/classdb/Engine#TimeScale
 [Timeout]: https://pkg.go.dev/graphics.gd/classdb/HTTPRequest#Instance.Timeout
 */
 func (self Instance) Timeout() Float.X { //gd:HTTPRequest.timeout

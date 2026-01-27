@@ -9,6 +9,8 @@ All set_* methods allow negative item indices, i.e. -1 to access the last item, 
 
 Incremental search: Like [ItemList] and [Tree], [PopupMenu] supports searching within the list while the control is focused. Press a key that matches the first letter of an item's name to select the first item starting with the given letter. After that point, there are two ways to perform incremental search: 1) Press the same key again before the timeout duration to select the next item starting with the same letter. 2) Press letter keys that match the rest of the word before the timeout duration to match to select the item in question directly. Both of these actions will be reset to the beginning of the list if the timeout duration has passed since the last keystroke was registered. You can adjust the timeout duration by changing [ProjectSettings] "gui/timers/incremental_search_max_interval_msec".
 
+Note: [PopupMenu] is invisible by default. To make it visible, call one of the popup_* methods from [Window] on the node, such as [Window.PopupCenteredClamped].
+
 Note: The ID values used for items are limited to 32 bits, not full 64 bits of int. This has a range of -2^32 to 2^32 - 1, i.e. -2147483648 to 2147483647.
 
 [ItemList]: https://pkg.go.dev/graphics.gd/classdb/ItemList
@@ -16,7 +18,9 @@ Note: The ID values used for items are limited to 32 bits, not full 64 bits of i
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [ScrollContainer]: https://pkg.go.dev/graphics.gd/classdb/ScrollContainer
 [Tree]: https://pkg.go.dev/graphics.gd/classdb/Tree
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 [Window.MaxSize]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.MaxSize
+[Window.PopupCenteredClamped]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.PopupCenteredClamped
 */
 package PopupMenu
 
@@ -203,6 +207,10 @@ var methods struct {
 	is_system_menu                       gdextension.MethodForClass `hash:"36873697"`
 	set_system_menu                      gdextension.MethodForClass `hash:"600639674"`
 	get_system_menu                      gdextension.MethodForClass `hash:"1222557358"`
+	set_shrink_height                    gdextension.MethodForClass `hash:"2586408642"`
+	get_shrink_height                    gdextension.MethodForClass `hash:"36873697"`
+	set_shrink_width                     gdextension.MethodForClass `hash:"2586408642"`
+	get_shrink_width                     gdextension.MethodForClass `hash:"36873697"`
 }
 
 func init() {
@@ -712,7 +720,7 @@ func (self Instance) SetItemTextDirection(index int, direction Control.TextDirec
 }
 
 /*
-Sets language code of item's text used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
+Sets the language code of the text for the item at the given index to 'language'. This is used for line-breaking and text shaping algorithms. If 'language' is empty, the current locale is used.
 
 Returns 'self' to enable method chaining.
 */
@@ -1335,6 +1343,8 @@ func (self Instance) SetHideOnStateItemSelection(value bool) Instance { //gd:Pop
 
 /*
 Sets the delay time in seconds for the submenu item to popup on mouse hovering. If the popup menu is added as a child of another (acting as a submenu), it will inherit the delay time of the parent menu item.
+
+Note: If the mouse is exiting a submenu item with an open submenu and enters a different submenu item, the submenu popup delay time is affected by the direction of the mouse movement toward the open submenu. If the mouse is moving toward the submenu, the open submenu will wait approximately 0.5 seconds before closing, which then allows the hovered submenu item to open. This additional delay allows the mouse time to move to the open submenu across other menu items without prematurely closing. If the mouse is not moving toward the open submenu, for example in a downward direction, the open submenu will close immediately.
 */
 func (self Instance) SubmenuPopupDelay() Float.X { //gd:PopupMenu.submenu_popup_delay
 	return Float.X(Float.X(class(self).GetSubmenuPopupDelay()))
@@ -1393,6 +1403,36 @@ func (self Instance) PreferNativeMenu() bool { //gd:PopupMenu.prefer_native_menu
 // SetPreferNativeMenu sets the property returned by [IsPreferNativeMenu]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetPreferNativeMenu(value bool) Instance { //gd:PopupMenu.prefer_native_menu
 	class(self).SetPreferNativeMenu(value)
+	return self
+}
+
+/*
+If true, shrinks [PopupMenu] to minimum height when it's shown.
+
+[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
+*/
+func (self Instance) ShrinkHeight() bool { //gd:PopupMenu.shrink_height
+	return bool(class(self).GetShrinkHeight())
+}
+
+// SetShrinkHeight sets the property returned by [GetShrinkHeight]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShrinkHeight(value bool) Instance { //gd:PopupMenu.shrink_height
+	class(self).SetShrinkHeight(value)
+	return self
+}
+
+/*
+If true, shrinks [PopupMenu] to minimum width when it's shown.
+
+[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
+*/
+func (self Instance) ShrinkWidth() bool { //gd:PopupMenu.shrink_width
+	return bool(class(self).GetShrinkWidth())
+}
+
+// SetShrinkWidth sets the property returned by [GetShrinkWidth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShrinkWidth(value bool) Instance { //gd:PopupMenu.shrink_width
+	class(self).SetShrinkWidth(value)
 	return self
 }
 
@@ -1894,9 +1934,25 @@ func (self class) GetSystemMenu() NativeMenu.SystemMenus { //gd:PopupMenu.get_sy
 	var ret = r_ret
 	return ret
 }
+func (self class) SetShrinkHeight(shrink bool) { //gd:PopupMenu.set_shrink_height
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shrink_height, 0|(gdextension.SizeBool<<4), &struct{ shrink bool }{shrink})
+}
+func (self class) GetShrinkHeight() bool { //gd:PopupMenu.get_shrink_height
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_shrink_height, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetShrinkWidth(shrink bool) { //gd:PopupMenu.set_shrink_width
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shrink_width, 0|(gdextension.SizeBool<<4), &struct{ shrink bool }{shrink})
+}
+func (self class) GetShrinkWidth() bool { //gd:PopupMenu.get_shrink_width
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_shrink_width, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
 
 /*
-Emitted when an item of some 'id' is pressed or its accelerator is activated.
+Emitted when an item of some 'id' is pressed. Also emitted when its accelerator is activated on macOS.
 
 Note: If 'id' is negative (either explicitly or due to overflow), this will return the corresponding index instead.
 */
@@ -1932,7 +1988,7 @@ func (self class) IdFocused() Signal.Any {
 }
 
 /*
-Emitted when an item of some 'index' is pressed or its accelerator is activated.
+Emitted when an item of some 'index' is pressed. Also emitted when its accelerator is activated on macOS.
 */
 func (self Instance) OnIndexPressed(cb func(index int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags

@@ -270,7 +270,7 @@ func (self Instance) SetTransparency(value Float.X) Instance { //gd:GeometryInst
 }
 
 /*
-The selected shadow casting flag.
+The mode used to cast shadows from this instance.
 */
 func (self Instance) CastShadow() ShadowCastingSetting { //gd:GeometryInstance3D.cast_shadow
 	return ShadowCastingSetting(class(self).GetCastShadowsSetting())

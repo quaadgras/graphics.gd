@@ -152,6 +152,11 @@ var methods struct {
 	is_distraction_free_mode_enabled gdextension.MethodForClass `hash:"36873697"`
 	is_multi_window_enabled          gdextension.MethodForClass `hash:"36873697"`
 	get_editor_scale                 gdextension.MethodForClass `hash:"1740695150"`
+	get_editor_language              gdextension.MethodForClass `hash:"201670096"`
+	is_node_3d_snap_enabled          gdextension.MethodForClass `hash:"36873697"`
+	get_node_3d_translate_snap       gdextension.MethodForClass `hash:"1740695150"`
+	get_node_3d_rotate_snap          gdextension.MethodForClass `hash:"1740695150"`
+	get_node_3d_scale_snap           gdextension.MethodForClass `hash:"1740695150"`
 	popup_dialog                     gdextension.MethodForClass `hash:"2015770942"`
 	popup_dialog_centered            gdextension.MethodForClass `hash:"346557367"`
 	popup_dialog_centered_ratio      gdextension.MethodForClass `hash:"2093669136"`
@@ -175,9 +180,12 @@ var methods struct {
 	edit_script                      gdextension.MethodForClass `hash:"219829402"`
 	open_scene_from_path             gdextension.MethodForClass `hash:"1168363258"`
 	reload_scene_from_path           gdextension.MethodForClass `hash:"83702148"`
+	set_object_edited                gdextension.MethodForClass `hash:"1462101905"`
+	is_object_edited                 gdextension.MethodForClass `hash:"397768994"`
 	get_open_scenes                  gdextension.MethodForClass `hash:"1139954409"`
 	get_open_scene_roots             gdextension.MethodForClass `hash:"3995934104"`
 	get_edited_scene_root            gdextension.MethodForClass `hash:"3160264692"`
+	add_root_node                    gdextension.MethodForClass `hash:"1078189570"`
 	save_scene                       gdextension.MethodForClass `hash:"166280745"`
 	save_scene_as                    gdextension.MethodForClass `hash:"3647332257"`
 	save_all_scenes                  gdextension.MethodForClass `hash:"3218959716"`
@@ -426,6 +434,41 @@ func GetEditorScale() Float.X { //gd:EditorInterface.get_editor_scale
 }
 
 /*
+Returns the language currently used for the editor interface.
+*/
+func GetEditorLanguage() string { //gd:EditorInterface.get_editor_language
+	return string(Advanced().GetEditorLanguage().String())
+}
+
+/*
+Returns true if the 3D editor currently has snapping mode enabled, and false otherwise.
+*/
+func IsNode3dSnapEnabled() bool { //gd:EditorInterface.is_node_3d_snap_enabled
+	return bool(Advanced().IsNode3dSnapEnabled())
+}
+
+/*
+Returns the amount of units the 3D editor's translation snapping is set to.
+*/
+func GetNode3dTranslateSnap() Float.X { //gd:EditorInterface.get_node_3d_translate_snap
+	return Float.X(Float.X(Advanced().GetNode3dTranslateSnap()))
+}
+
+/*
+Returns the amount of degrees the 3D editor's rotational snapping is set to.
+*/
+func GetNode3dRotateSnap() Float.X { //gd:EditorInterface.get_node_3d_rotate_snap
+	return Float.X(Float.X(Advanced().GetNode3dRotateSnap()))
+}
+
+/*
+Returns the amount of units the 3D editor's scale snapping is set to.
+*/
+func GetNode3dScaleSnap() Float.X { //gd:EditorInterface.get_node_3d_scale_snap
+	return Float.X(Float.X(Advanced().GetNode3dScaleSnap()))
+}
+
+/*
 Pops up the 'dialog' in the editor UI with [Window.PopupExclusive]. The dialog must have no current parent, otherwise the method fails.
 
 See also [Window.SetUnparentWhenInvisible].
@@ -565,7 +608,7 @@ func PopupQuickOpen(callback func(selected string), base_types []string) { //gd:
 /*
 Pops up an editor dialog for creating an object.
 
-The 'callback' must take a single argument of type string which will contain the type name of the selected object or be empty if no item is selected.
+The 'callback' must take a single argument of type string, which will contain the type name of the selected object (or the script path of the type, if the type is created from a script), or be an empty string if no item is selected.
 
 The 'base_type' specifies the base type of objects to display. For example, if you set this to "Resource", all types derived from [Resource] will display in the create dialog.
 
@@ -699,6 +742,26 @@ func ReloadSceneFromPath(scene_filepath string) { //gd:EditorInterface.reload_sc
 }
 
 /*
+If 'edited' is true, the object is marked as edited.
+
+Note: This is primarily used by the editor for [Resource] based objects to track their modified state. For example, any changes to an open scene, a resource in the inspector, or an edited script will cause this method to be called with true. Saving the scene, script, or resource resets the edited state by calling this method with false.
+
+Note: Each call to this method increments the object's edited version. This is used to track changes in the editor and to trigger when thumbnails should be regenerated for resources.
+
+[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
+*/
+func SetObjectEdited(obj Object.Instance, edited bool) { //gd:EditorInterface.set_object_edited
+	Advanced().SetObjectEdited(obj, edited)
+}
+
+/*
+Returns true if the object has been marked as edited through [SetObjectEdited].
+*/
+func IsObjectEdited(obj Object.Instance) bool { //gd:EditorInterface.is_object_edited
+	return bool(Advanced().IsObjectEdited(obj))
+}
+
+/*
 Returns an array with the file paths of the currently opened scenes.
 */
 func GetOpenScenes() []string { //gd:EditorInterface.get_open_scenes
@@ -719,6 +782,13 @@ Returns the edited (current) scene's root [Node].
 */
 func GetEditedSceneRoot() Node.Instance { //gd:EditorInterface.get_edited_scene_root
 	return Node.Instance(Advanced().GetEditedSceneRoot())
+}
+
+/*
+Makes 'node' root of the currently opened scene. Only works if the scene is empty. If the 'node' is a scene instance, an inheriting scene will be created.
+*/
+func AddRootNode(node Node.Instance) { //gd:EditorInterface.add_root_node
+	Advanced().AddRootNode(node)
 }
 
 /*
@@ -994,6 +1064,36 @@ func (self class) GetEditorScale() float64 { //gd:EditorInterface.get_editor_sca
 	var ret = r_ret
 	return ret
 }
+func (self class) GetEditorLanguage() String.Readable { //gd:EditorInterface.get_editor_language
+	once.Do(singleton)
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_editor_language, gdextension.SizeString, &struct{}{})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+func (self class) IsNode3dSnapEnabled() bool { //gd:EditorInterface.is_node_3d_snap_enabled
+	once.Do(singleton)
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_node_3d_snap_enabled, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) GetNode3dTranslateSnap() float64 { //gd:EditorInterface.get_node_3d_translate_snap
+	once.Do(singleton)
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_node_3d_translate_snap, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) GetNode3dRotateSnap() float64 { //gd:EditorInterface.get_node_3d_rotate_snap
+	once.Do(singleton)
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_node_3d_rotate_snap, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) GetNode3dScaleSnap() float64 { //gd:EditorInterface.get_node_3d_scale_snap
+	once.Do(singleton)
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_node_3d_scale_snap, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
 func (self class) PopupDialog(dialog [1]gdclass.Window, rect Rect2i.PositionSize) { //gd:EditorInterface.popup_dialog
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_dialog, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2i<<8), &struct {
@@ -1145,6 +1245,19 @@ func (self class) ReloadSceneFromPath(scene_filepath String.Readable) { //gd:Edi
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reload_scene_from_path, 0|(gdextension.SizeString<<4), &struct{ scene_filepath gdextension.String }{pointers.Get(gd.InternalString(scene_filepath))})
 }
+func (self class) SetObjectEdited(obj [1]gd.Object, edited bool) { //gd:EditorInterface.set_object_edited
+	once.Do(singleton)
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_object_edited, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
+		obj    gdextension.Object
+		edited bool
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0]))), edited})
+}
+func (self class) IsObjectEdited(obj [1]gd.Object) bool { //gd:EditorInterface.is_object_edited
+	once.Do(singleton)
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_object_edited, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0])))})
+	var ret = r_ret
+	return ret
+}
 func (self class) GetOpenScenes() Packed.Strings { //gd:EditorInterface.get_open_scenes
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_open_scenes, gdextension.SizePackedArray, &struct{}{})
@@ -1162,6 +1275,10 @@ func (self class) GetEditedSceneRoot() [1]gdclass.Node { //gd:EditorInterface.ge
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_scene_root, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
+}
+func (self class) AddRootNode(node [1]gdclass.Node) { //gd:EditorInterface.add_root_node
+	once.Do(singleton)
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_root_node, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
 }
 func (self class) SaveScene() Error.Code { //gd:EditorInterface.save_scene
 	once.Do(singleton)

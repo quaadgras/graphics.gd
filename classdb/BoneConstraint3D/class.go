@@ -101,10 +101,14 @@ var methods struct {
 	get_apply_bone_name     gdextension.MethodForClass `hash:"844755477"`
 	set_apply_bone          gdextension.MethodForClass `hash:"3937882851"`
 	get_apply_bone          gdextension.MethodForClass `hash:"923996154"`
+	set_reference_type      gdextension.MethodForClass `hash:"1830520418"`
+	get_reference_type      gdextension.MethodForClass `hash:"3456416152"`
 	set_reference_bone_name gdextension.MethodForClass `hash:"501894301"`
 	get_reference_bone_name gdextension.MethodForClass `hash:"844755477"`
 	set_reference_bone      gdextension.MethodForClass `hash:"3937882851"`
 	get_reference_bone      gdextension.MethodForClass `hash:"923996154"`
+	set_reference_node      gdextension.MethodForClass `hash:"2761262315"`
+	get_reference_node      gdextension.MethodForClass `hash:"408788394"`
 	set_setting_count       gdextension.MethodForClass `hash:"1286410249"`
 	get_setting_count       gdextension.MethodForClass `hash:"3905245786"`
 	clear_setting           gdextension.MethodForClass `hash:"3218959716"`
@@ -182,6 +186,23 @@ func (self Instance) GetApplyBone(index int) int { //gd:BoneConstraint3D.get_app
 }
 
 /*
+Sets the reference target type of the setting at 'index' to 'type'. See also [ReferenceType].
+
+Returns 'self' to enable method chaining.
+*/
+func (self Instance) SetReferenceType(index int, atype ReferenceType) Instance { //gd:BoneConstraint3D.set_reference_type
+	Advanced(self).SetReferenceType(int64(index), atype)
+	return self
+}
+
+/*
+Returns the reference target type of the setting at 'index'. See also [ReferenceType].
+*/
+func (self Instance) GetReferenceType(index int) ReferenceType { //gd:BoneConstraint3D.get_reference_type
+	return ReferenceType(Advanced(self).GetReferenceType(int64(index)))
+}
+
+/*
 Sets the reference bone of the setting at 'index' to 'bone_name'.
 
 This bone will be only referenced and not modified by this modifier.
@@ -221,6 +242,27 @@ This bone will be only referenced and not modified by this modifier.
 */
 func (self Instance) GetReferenceBone(index int) int { //gd:BoneConstraint3D.get_reference_bone
 	return int(int(Advanced(self).GetReferenceBone(int64(index))))
+}
+
+/*
+Sets the reference node path of the setting at 'index' to 'node'.
+
+This node will be only referenced and not modified by this modifier.
+
+Returns 'self' to enable method chaining.
+*/
+func (self Instance) SetReferenceNode(index int, node string) Instance { //gd:BoneConstraint3D.set_reference_node
+	Advanced(self).SetReferenceNode(int64(index), Path.ToNode(String.New(node)))
+	return self
+}
+
+/*
+Returns the reference node path of the setting at 'index'.
+
+This node will be only referenced and not modified by this modifier.
+*/
+func (self Instance) GetReferenceNode(index int) string { //gd:BoneConstraint3D.get_reference_node
+	return string(Advanced(self).GetReferenceNode(int64(index)).String())
 }
 
 /*
@@ -322,6 +364,17 @@ func (self class) GetApplyBone(index int64) int64 { //gd:BoneConstraint3D.get_ap
 	var ret = r_ret
 	return ret
 }
+func (self class) SetReferenceType(index int64, atype ReferenceType) { //gd:BoneConstraint3D.set_reference_type
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reference_type, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+		index int64
+		atype ReferenceType
+	}{index, atype})
+}
+func (self class) GetReferenceType(index int64) ReferenceType { //gd:BoneConstraint3D.get_reference_type
+	var r_ret = noescape.Call[ReferenceType](gd.ObjectChecked(self.AsObject()), methods.get_reference_type, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var ret = r_ret
+	return ret
+}
 func (self class) SetReferenceBoneName(index int64, bone_name String.Readable) { //gd:BoneConstraint3D.set_reference_bone_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reference_bone_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		index     int64
@@ -342,6 +395,17 @@ func (self class) SetReferenceBone(index int64, bone int64) { //gd:BoneConstrain
 func (self class) GetReferenceBone(index int64) int64 { //gd:BoneConstraint3D.get_reference_bone
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_reference_bone, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
+	return ret
+}
+func (self class) SetReferenceNode(index int64, node Path.ToNode) { //gd:BoneConstraint3D.set_reference_node
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reference_node, 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), &struct {
+		index int64
+		node  gdextension.NodePath
+	}{index, pointers.Get(gd.InternalNodePath(node))})
+}
+func (self class) GetReferenceNode(index int64) Path.ToNode { //gd:BoneConstraint3D.get_reference_node
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_reference_node, gdextension.SizeNodePath|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 func (self class) SetSettingCount(count int64) { //gd:BoneConstraint3D.set_setting_count
@@ -400,3 +464,18 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("BoneConstraint3D", func(ptr gd.Object) any { return Instance{gdclass.NewBoneConstraint3D(ptr)} })
 }
+
+type ReferenceType int //gd:BoneConstraint3D.ReferenceType
+
+const (
+	// The reference target is a bone. In this case, the reference target spaces is local space.
+	ReferenceTypeBone ReferenceType = 0
+	// The reference target is a [Node3D]. In this case, the reference target spaces is model space.
+	//
+	// In other words, the reference target's coordinates are treated as if it were placed directly under [Skeleton3D] which parent of the [BoneConstraint3D].
+	//
+	// [BoneConstraint3D]: https://pkg.go.dev/graphics.gd/classdb/BoneConstraint3D
+	// [Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
+	// [Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
+	ReferenceTypeNode ReferenceType = 1
+)

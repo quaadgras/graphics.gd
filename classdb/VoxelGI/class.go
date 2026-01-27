@@ -251,9 +251,9 @@ func (self Instance) SetSubdiv(value Subdiv) Instance { //gd:VoxelGI.subdiv
 }
 
 /*
-The size of the area covered by the [VoxelGI]. If you make the size larger without increasing the subdivisions with [Subdiv], the size of each cell will increase and result in lower detailed lighting.
+The size of the area covered by the [VoxelGI]. This must be 1.0 or greater on each axis.
 
-Note: Size is clamped to 1.0 unit or more on each axis.
+Note: If you make the size larger without increasing the number of subdivisions with [Subdiv], the size of each cell will increase and result in less detailed lighting.
 
 [Subdiv]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI#Instance.Subdiv
 [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI

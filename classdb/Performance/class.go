@@ -98,12 +98,13 @@ var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
 	get_monitor                   gdextension.MethodForClass `hash:"1943275655"`
-	add_custom_monitor            gdextension.MethodForClass `hash:"4099036814"`
+	add_custom_monitor            gdextension.MethodForClass `hash:"3655788610"`
 	remove_custom_monitor         gdextension.MethodForClass `hash:"3304788590"`
 	has_custom_monitor            gdextension.MethodForClass `hash:"2041966384"`
 	get_custom_monitor            gdextension.MethodForClass `hash:"2138907829"`
 	get_monitor_modification_time gdextension.MethodForClass `hash:"2455072627"`
 	get_custom_monitor_names      gdextension.MethodForClass `hash:"2915620761"`
+	get_custom_monitor_types      gdextension.MethodForClass `hash:"969006518"`
 }
 
 func init() {
@@ -143,25 +144,25 @@ Adds a custom monitor with the name 'id'. You can specify the category of the mo
 		return rand.IntN(25)
 	}
 	// Adds monitor with name "MyName" to category "MyCategory".
-	Performance.AddCustomMonitor("MyCategory/MyMonitor", Callable.New(monitorValue), nil)
+	Performance.AddCustomMonitor("MyCategory/MyMonitor", Callable.New(monitorValue), nil, 0)
 
 	// Adds monitor with name "MyName" to category "Custom".
 	// Note: "MyCategory/MyMonitor" and "MyMonitor" have same name but different ids so the code is valid.
-	Performance.AddCustomMonitor("MyMonitor", Callable.New(monitorValue), nil)
+	Performance.AddCustomMonitor("MyMonitor", Callable.New(monitorValue), nil, 0)
 
 	// Adds monitor with name "MyName" to category "Custom".
 	// Note: "MyMonitor" and "Custom/MyMonitor" have same name and same category but different ids so the code is valid.
-	Performance.AddCustomMonitor("Custom/MyMonitor", Callable.New(monitorValue), nil)
+	Performance.AddCustomMonitor("Custom/MyMonitor", Callable.New(monitorValue), nil, 0)
 
 	// Adds monitor with name "MyCategoryOne/MyCategoryTwo/MyMonitor" to category "Custom".
-	Performance.AddCustomMonitor("MyCategoryOne/MyCategoryTwo/MyMonitor", Callable.New(monitorValue), nil)
+	Performance.AddCustomMonitor("MyCategoryOne/MyCategoryTwo/MyMonitor", Callable.New(monitorValue), nil, 0)
 
 The debugger calls the callable to get the value of custom monitor. The callable must return a zero or positive integer or floating-point number.
 
 Callables are called with arguments supplied in argument array.
 */
-func AddCustomMonitor(id string, callable Callable.Function, arguments []any) { //gd:Performance.add_custom_monitor
-	Advanced().AddCustomMonitor(String.Name(String.New(id)), Callable.New(callable), gd.EngineArrayFromSlice(arguments))
+func AddCustomMonitor(id string, callable Callable.Function, arguments []any, atype MonitorType) { //gd:Performance.add_custom_monitor
+	Advanced().AddCustomMonitor(String.Name(String.New(id)), Callable.New(callable), gd.EngineArrayFromSlice(arguments), atype)
 }
 
 /*
@@ -201,6 +202,13 @@ func GetCustomMonitorNames() []string { //gd:Performance.get_custom_monitor_name
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(Advanced().GetCustomMonitorNames())))
 }
 
+/*
+Returns the [MonitorType] values of active custom monitors in an slice.
+*/
+func GetCustomMonitorTypes() []int32 { //gd:Performance.get_custom_monitor_types
+	return []int32(slices.Collect(Advanced().GetCustomMonitorTypes().Values()))
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 func Advanced() class { once.Do(singleton); return self }
 
@@ -230,13 +238,14 @@ func (self class) GetMonitor(monitor Monitor) float64 { //gd:Performance.get_mon
 	var ret = r_ret
 	return ret
 }
-func (self class) AddCustomMonitor(id String.Name, callable Callable.Function, arguments Array.Any) { //gd:Performance.add_custom_monitor
+func (self class) AddCustomMonitor(id String.Name, callable Callable.Function, arguments Array.Any, atype MonitorType) { //gd:Performance.add_custom_monitor
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_custom_monitor, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeArray<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_custom_monitor, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeArray<<12)|(gdextension.SizeInt<<16), &struct {
 		id        gdextension.StringName
 		callable  gdextension.Callable
 		arguments gdextension.Array
-	}{pointers.Get(gd.InternalStringName(id)), pointers.Get(gd.InternalCallable(callable)), pointers.Get(gd.InternalArray(arguments))})
+		atype     MonitorType
+	}{pointers.Get(gd.InternalStringName(id)), pointers.Get(gd.InternalCallable(callable)), pointers.Get(gd.InternalArray(arguments)), atype})
 }
 func (self class) RemoveCustomMonitor(id String.Name) { //gd:Performance.remove_custom_monitor
 	once.Do(singleton)
@@ -264,6 +273,12 @@ func (self class) GetCustomMonitorNames() Array.Contains[String.Name] { //gd:Per
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_custom_monitor_names, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
+	return ret
+}
+func (self class) GetCustomMonitorTypes() Packed.Array[int32] { //gd:Performance.get_custom_monitor_types
+	once.Do(singleton)
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_custom_monitor_types, gdextension.SizePackedArray, &struct{}{})
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) Virtual(name string) reflect.Value {
@@ -307,6 +322,8 @@ const (
 	// Number of nodes currently instantiated in the scene tree. This also includes the root node. Lower is better.
 	ObjectNodeCount Monitor = 9
 	// Number of orphan nodes, i.e. nodes which are not parented to a node of the scene tree. Lower is better.
+	//
+	// Note: This is only available in debug mode and will always return 0 when used in a project exported in release mode.
 	ObjectOrphanNodeCount Monitor = 10
 	// The total number of objects in the last rendered frame. This metric doesn't include culled objects (either via hiding nodes, frustum culling or occlusion culling). Lower is better.
 	RenderTotalObjectsInFrame Monitor = 11
@@ -342,10 +359,12 @@ const (
 	// [AudioServer]: https://pkg.go.dev/graphics.gd/classdb/AudioServer
 	// [AudioServer.GetOutputLatency]: https://pkg.go.dev/graphics.gd/classdb/AudioServer#GetOutputLatency
 	AudioOutputLatency Monitor = 23
-	// Number of active navigation maps in [NavigationServer2D] and [NavigationServer3D]. This also includes the two empty default navigation maps created by World2D and World3D.
+	// Number of active navigation maps in [NavigationServer2D] and [NavigationServer3D]. This also includes the empty default navigation maps created by [World2D] and [World3D] instances.
 	//
 	// [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
 	// [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
+	// [World2D]: https://pkg.go.dev/graphics.gd/classdb/World2D
+	// [World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
 	NavigationActiveMaps Monitor = 24
 	// Number of active navigation regions in [NavigationServer2D] and [NavigationServer3D].
 	//
@@ -402,9 +421,10 @@ const (
 	PipelineCompilationsDraw Monitor = 37
 	// Number of pipeline compilations that were triggered to optimize the current scene. These compilations are done in the background and should not cause any stutters whatsoever.
 	PipelineCompilationsSpecialization Monitor = 38
-	// Number of active navigation maps in the [NavigationServer2D]. This also includes the two empty default navigation maps created by World2D.
+	// Number of active navigation maps in the [NavigationServer2D]. This also includes the empty default navigation maps created by [World2D] instances.
 	//
 	// [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
+	// [World2D]: https://pkg.go.dev/graphics.gd/classdb/World2D
 	Navigation2dActiveMaps Monitor = 39
 	// Number of active navigation regions in the [NavigationServer2D].
 	//
@@ -442,9 +462,10 @@ const (
 	//
 	// [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
 	Navigation2dObstacleCount Monitor = 48
-	// Number of active navigation maps in the [NavigationServer3D]. This also includes the two empty default navigation maps created by World3D.
+	// Number of active navigation maps in the [NavigationServer3D]. This also includes the empty default navigation maps created by [World3D] instances.
 	//
 	// [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
+	// [World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
 	Navigation3dActiveMaps Monitor = 49
 	// Number of active navigation regions in the [NavigationServer3D].
 	//
@@ -484,4 +505,17 @@ const (
 	Navigation3dObstacleCount Monitor = 58
 	// Represents the size of the [Monitor] enum.
 	MonitorMax Monitor = 59
+)
+
+type MonitorType int //gd:Performance.MonitorType
+
+const (
+	// Monitor output is formatted as an integer value.
+	MonitorTypeQuantity MonitorType = 0
+	// Monitor output is formatted as computer memory. Submitted values should represent a number of bytes.
+	MonitorTypeMemory MonitorType = 1
+	// Monitor output is formatted as time in milliseconds. Submitted values should represent a time in seconds (not milliseconds).
+	MonitorTypeTime MonitorType = 2
+	// Monitor output is formatted as a percentage. Submitted values should represent a fractional value rather than the percentage directly, e.g. 0.5 for 50.00%.
+	MonitorTypePercentage MonitorType = 3
 )

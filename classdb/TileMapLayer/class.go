@@ -603,6 +603,8 @@ func (self Instance) HasBodyRid(body RID.Body2D) bool { //gd:TileMapLayer.has_bo
 /*
 Returns the coordinates of the physics quadrant (see [PhysicsQuadrantSize]) for given physics body [Resource.ID]. Such an [Resource.ID] can be retrieved from [KinematicCollision2D.GetColliderRid], when colliding with a tile.
 
+Note: Higher values of [PhysicsQuadrantSize] will make this function less precise. To get the exact cell coordinates, you need to set [PhysicsQuadrantSize] to 1, which disables physics chunking.
+
 [KinematicCollision2D.GetColliderRid]: https://pkg.go.dev/graphics.gd/classdb/KinematicCollision2D#Instance.GetColliderRid
 [PhysicsQuadrantSize]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer#Instance.PhysicsQuadrantSize
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
@@ -910,7 +912,7 @@ The [TileMapLayer]'s physics quadrant size. Within a physics quadrant, cells wit
 
 Note: As quadrants are created according to the map's coordinate system, the quadrant's "square shape" might not look like square in the [TileMapLayer]'s local coordinate system.
 
-Note: This impacts the value returned by [GetCoordsForBodyRid].
+Note: This impacts the value returned by [GetCoordsForBodyRid]. Higher values will make that function less precise. To get the exact cell coordinates, you need to set [PhysicsQuadrantSize] to 1, which disables physics chunking.
 
 [GetCoordsForBodyRid]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer#Instance.GetCoordsForBodyRid
 [PhysicsQuadrantSize]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer#Instance.PhysicsQuadrantSize

@@ -311,7 +311,7 @@ func (self Instance) GetHistoryUndoRedo(id int) UndoRedo.Instance { //gd:EditorU
 }
 
 /*
-Clears the given undo history. You can clear history for a specific scene, global history, or for all scenes at once if 'id' is [InvalidHistory].
+Clears the given undo history. You can clear history for a specific scene, global history, or for all histories at once (except [RemoteHistory]) if 'id' is [InvalidHistory].
 
 If 'increase_version' is true, the undo history version will be increased, marking it as unsaved. Useful for operations that modify the scene, but don't support undo.
 
@@ -328,7 +328,7 @@ func (self Instance) ClearHistory() { //gd:EditorUndoRedoManager.clear_history
 }
 
 /*
-Clears the given undo history. You can clear history for a specific scene, global history, or for all scenes at once if 'id' is [InvalidHistory].
+Clears the given undo history. You can clear history for a specific scene, global history, or for all histories at once (except [RemoteHistory]) if 'id' is [InvalidHistory].
 
 If 'increase_version' is true, the undo history version will be increased, marking it as unsaved. Useful for operations that modify the scene, but don't support undo.
 

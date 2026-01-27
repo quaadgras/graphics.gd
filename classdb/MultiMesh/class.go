@@ -106,35 +106,36 @@ type Instance [1]gdclass.MultiMesh
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	set_mesh                             gdextension.MethodForClass `hash:"194775623"`
-	get_mesh                             gdextension.MethodForClass `hash:"1808005922"`
-	set_use_colors                       gdextension.MethodForClass `hash:"2586408642"`
-	is_using_colors                      gdextension.MethodForClass `hash:"36873697"`
-	set_use_custom_data                  gdextension.MethodForClass `hash:"2586408642"`
-	is_using_custom_data                 gdextension.MethodForClass `hash:"36873697"`
-	set_transform_format                 gdextension.MethodForClass `hash:"2404750322"`
-	get_transform_format                 gdextension.MethodForClass `hash:"2444156481"`
-	set_instance_count                   gdextension.MethodForClass `hash:"1286410249"`
-	get_instance_count                   gdextension.MethodForClass `hash:"3905245786"`
-	set_visible_instance_count           gdextension.MethodForClass `hash:"1286410249"`
-	get_visible_instance_count           gdextension.MethodForClass `hash:"3905245786"`
-	set_physics_interpolation_quality    gdextension.MethodForClass `hash:"1819488408"`
-	get_physics_interpolation_quality    gdextension.MethodForClass `hash:"1465701882"`
-	set_instance_transform               gdextension.MethodForClass `hash:"3616898986"`
-	set_instance_transform_2d            gdextension.MethodForClass `hash:"30160968"`
-	get_instance_transform               gdextension.MethodForClass `hash:"1965739696"`
-	get_instance_transform_2d            gdextension.MethodForClass `hash:"3836996910"`
-	set_instance_color                   gdextension.MethodForClass `hash:"2878471219"`
-	get_instance_color                   gdextension.MethodForClass `hash:"3457211756"`
-	set_instance_custom_data             gdextension.MethodForClass `hash:"2878471219"`
-	get_instance_custom_data             gdextension.MethodForClass `hash:"3457211756"`
-	reset_instance_physics_interpolation gdextension.MethodForClass `hash:"1286410249"`
-	set_custom_aabb                      gdextension.MethodForClass `hash:"259215842"`
-	get_custom_aabb                      gdextension.MethodForClass `hash:"1068685055"`
-	get_aabb                             gdextension.MethodForClass `hash:"1068685055"`
-	get_buffer                           gdextension.MethodForClass `hash:"675695659"`
-	set_buffer                           gdextension.MethodForClass `hash:"2899603908"`
-	set_buffer_interpolated              gdextension.MethodForClass `hash:"3514430332"`
+	set_mesh                              gdextension.MethodForClass `hash:"194775623"`
+	get_mesh                              gdextension.MethodForClass `hash:"1808005922"`
+	set_use_colors                        gdextension.MethodForClass `hash:"2586408642"`
+	is_using_colors                       gdextension.MethodForClass `hash:"36873697"`
+	set_use_custom_data                   gdextension.MethodForClass `hash:"2586408642"`
+	is_using_custom_data                  gdextension.MethodForClass `hash:"36873697"`
+	set_transform_format                  gdextension.MethodForClass `hash:"2404750322"`
+	get_transform_format                  gdextension.MethodForClass `hash:"2444156481"`
+	set_instance_count                    gdextension.MethodForClass `hash:"1286410249"`
+	get_instance_count                    gdextension.MethodForClass `hash:"3905245786"`
+	set_visible_instance_count            gdextension.MethodForClass `hash:"1286410249"`
+	get_visible_instance_count            gdextension.MethodForClass `hash:"3905245786"`
+	set_physics_interpolation_quality     gdextension.MethodForClass `hash:"1819488408"`
+	get_physics_interpolation_quality     gdextension.MethodForClass `hash:"1465701882"`
+	set_instance_transform                gdextension.MethodForClass `hash:"3616898986"`
+	set_instance_transform_2d             gdextension.MethodForClass `hash:"30160968"`
+	get_instance_transform                gdextension.MethodForClass `hash:"1965739696"`
+	get_instance_transform_2d             gdextension.MethodForClass `hash:"3836996910"`
+	set_instance_color                    gdextension.MethodForClass `hash:"2878471219"`
+	get_instance_color                    gdextension.MethodForClass `hash:"3457211756"`
+	set_instance_custom_data              gdextension.MethodForClass `hash:"2878471219"`
+	get_instance_custom_data              gdextension.MethodForClass `hash:"3457211756"`
+	reset_instance_physics_interpolation  gdextension.MethodForClass `hash:"1286410249"`
+	reset_instances_physics_interpolation gdextension.MethodForClass `hash:"3218959716"`
+	set_custom_aabb                       gdextension.MethodForClass `hash:"259215842"`
+	get_custom_aabb                       gdextension.MethodForClass `hash:"1068685055"`
+	get_aabb                              gdextension.MethodForClass `hash:"1068685055"`
+	get_buffer                            gdextension.MethodForClass `hash:"675695659"`
+	set_buffer                            gdextension.MethodForClass `hash:"2899603908"`
+	set_buffer_interpolated               gdextension.MethodForClass `hash:"3514430332"`
 }
 
 func init() {
@@ -257,6 +258,15 @@ This allows you to move instances instantaneously, and should usually be used wh
 */
 func (self Instance) ResetInstancePhysicsInterpolation(instance int) { //gd:MultiMesh.reset_instance_physics_interpolation
 	Advanced(self).ResetInstancePhysicsInterpolation(int64(instance))
+}
+
+/*
+When using physics interpolation, this function allows you to prevent interpolation for all instances in the current physics tick.
+
+This allows you to move all instances instantaneously, and should usually be used when initially placing instances to prevent graphical glitches.
+*/
+func (self Instance) ResetInstancesPhysicsInterpolation() { //gd:MultiMesh.reset_instances_physics_interpolation
+	Advanced(self).ResetInstancesPhysicsInterpolation()
 }
 
 /*
@@ -563,6 +573,9 @@ func (self class) GetInstanceCustomData(instance int64) Color.RGBA { //gd:MultiM
 }
 func (self class) ResetInstancePhysicsInterpolation(instance int64) { //gd:MultiMesh.reset_instance_physics_interpolation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_instance_physics_interpolation, 0|(gdextension.SizeInt<<4), &struct{ instance int64 }{instance})
+}
+func (self class) ResetInstancesPhysicsInterpolation() { //gd:MultiMesh.reset_instances_physics_interpolation
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_instances_physics_interpolation, 0, &struct{}{})
 }
 func (self class) SetCustomAabb(aabb AABB.PositionSize) { //gd:MultiMesh.set_custom_aabb
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_aabb, 0|(gdextension.SizeAABB<<4), &struct{ aabb AABB.PositionSize }{aabb})

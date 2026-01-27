@@ -377,8 +377,9 @@ func (self Instance) GetSlideCollisionCount() int { //gd:CharacterBody3D.get_sli
 }
 
 /*
-Returns a [KinematicCollision3D], which contains information about a collision that occurred during the last call to [MoveAndSlide]. Since the body can collide several times in a single call to [MoveAndSlide], you must specify the index of the collision in the range 0 to ([GetSlideCollisionCount] - 1).
+Returns a [KinematicCollision3D], which contains information about a collision that occurred during the last call to [MoveAndSlide]. Since the body can collide several times in a single call to [MoveAndSlide], you must specify the index of the collision in the range 0 to ([GetSlideCollisionCount] - 1). See also [GetLastSlideCollision].
 
+[GetLastSlideCollision]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.GetLastSlideCollision
 [GetSlideCollisionCount]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.GetSlideCollisionCount
 [KinematicCollision3D]: https://pkg.go.dev/graphics.gd/classdb/KinematicCollision3D
 [MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
@@ -388,8 +389,9 @@ func (self Instance) GetSlideCollision(slide_idx int) KinematicCollision3D.Insta
 }
 
 /*
-Returns a [KinematicCollision3D], which contains information about the latest collision that occurred during the last call to [MoveAndSlide].
+Returns a [KinematicCollision3D] if a collision occurred. The returned value contains information about the latest collision that occurred during the last call to [MoveAndSlide]. Returns null if no collision occurred. See also [GetSlideCollision].
 
+[GetSlideCollision]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.GetSlideCollision
 [KinematicCollision3D]: https://pkg.go.dev/graphics.gd/classdb/KinematicCollision3D
 [MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
 */
@@ -486,7 +488,7 @@ func (self Instance) SetSlideOnCeiling(value bool) Instance { //gd:CharacterBody
 /*
 Current velocity vector (typically meters per second), used and modified during calls to [MoveAndSlide].
 
-This property should not be set to a value multiplied by delta, because this happens internally in [MoveAndSlide]. Otherwise, the simulation will run at an incorrect speed.
+Note: A common mistake is setting this property to the desired velocity multiplied by delta, which produces a motion vector (typically in meters).
 
 [MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
 */

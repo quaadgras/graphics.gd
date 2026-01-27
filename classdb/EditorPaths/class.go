@@ -178,7 +178,7 @@ func (self Instance) GetSelfContainedFile() string { //gd:EditorPaths.get_self_c
 }
 
 /*
-Returns the project-specific editor settings path. Projects all have a unique subdirectory inside the settings path where project-specific editor settings are saved.
+Returns the relative path to the editor settings for this project. This is usually "res://.godot/editor". Projects all have a unique subdirectory inside the settings path where project-specific editor settings are saved.
 */
 func (self Instance) GetProjectSettingsDir() string { //gd:EditorPaths.get_project_settings_dir
 	return string(Advanced(self).GetProjectSettingsDir().String())

@@ -27,6 +27,7 @@ import "graphics.gd/classdb/ConfigFile"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/EditorContextMenuPlugin"
 import "graphics.gd/classdb/EditorDebuggerPlugin"
+import "graphics.gd/classdb/EditorDock"
 import "graphics.gd/classdb/EditorExportPlatform"
 import "graphics.gd/classdb/EditorExportPlugin"
 import "graphics.gd/classdb/EditorImportPlugin"
@@ -119,19 +120,21 @@ type Instance [1]gdclass.EditorPlugin
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
+	add_dock                                  gdextension.MethodForClass `hash:"158651717"`
+	remove_dock                               gdextension.MethodForClass `hash:"158651717"`
 	add_control_to_container                  gdextension.MethodForClass `hash:"3092750152"`
-	add_control_to_bottom_panel               gdextension.MethodForClass `hash:"111032269"`
-	add_control_to_dock                       gdextension.MethodForClass `hash:"2994930786"`
-	remove_control_from_docks                 gdextension.MethodForClass `hash:"1496901182"`
-	remove_control_from_bottom_panel          gdextension.MethodForClass `hash:"1496901182"`
 	remove_control_from_container             gdextension.MethodForClass `hash:"3092750152"`
-	set_dock_tab_icon                         gdextension.MethodForClass `hash:"3450529724"`
 	add_tool_menu_item                        gdextension.MethodForClass `hash:"2137474292"`
 	add_tool_submenu_item                     gdextension.MethodForClass `hash:"1019428915"`
 	remove_tool_menu_item                     gdextension.MethodForClass `hash:"83702148"`
 	get_export_as_menu                        gdextension.MethodForClass `hash:"1775878644"`
 	add_custom_type                           gdextension.MethodForClass `hash:"1986814599"`
 	remove_custom_type                        gdextension.MethodForClass `hash:"83702148"`
+	add_control_to_dock                       gdextension.MethodForClass `hash:"2994930786"`
+	remove_control_from_docks                 gdextension.MethodForClass `hash:"1496901182"`
+	set_dock_tab_icon                         gdextension.MethodForClass `hash:"3450529724"`
+	add_control_to_bottom_panel               gdextension.MethodForClass `hash:"111032269"`
+	remove_control_from_bottom_panel          gdextension.MethodForClass `hash:"1496901182"`
 	add_autoload_singleton                    gdextension.MethodForClass `hash:"3186203200"`
 	remove_autoload_singleton                 gdextension.MethodForClass `hash:"83702148"`
 	update_overlays                           gdextension.MethodForClass `hash:"3905245786"`
@@ -736,6 +739,22 @@ type Interface interface {
 	//
 	// [Build]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
 	Build() bool
+	// This function is called when an individual scene is about to be played in the editor. 'args' is a list of command line arguments that will be passed to the new Godot instance, which will be replaced by the list returned by this function.
+	//
+	//
+	//
+	// func _run_scene(scene, args):
+	//
+	// 	args.append("--an-extra-argument")
+	//
+	// 	return args
+	//
+	//
+	//
+	// Note: Text that is printed in this method will not be visible in the editor's Output panel unless [EditorSettings] "run/output/always_clear_output_on_play" is false.
+	//
+	// [EditorSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings
+	RunScene(scene string, args []string) []string
 	// Called by the engine when the user enables the [EditorPlugin] in the Plugin tab of the project settings window.
 	//
 	// [EditorPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin
@@ -777,6 +796,7 @@ func (self implementation) GetBreakpoints() (_ []string)                        
 func (self implementation) SetWindowLayout(configuration ConfigFile.Instance)                { return }
 func (self implementation) GetWindowLayout(configuration ConfigFile.Instance)                { return }
 func (self implementation) Build() (_ bool)                                                  { return }
+func (self implementation) RunScene(scene string, args []string) (_ []string)                { return }
 func (self implementation) EnablePlugin()                                                    { return }
 func (self implementation) DisablePlugin()                                                   { return }
 
@@ -1275,6 +1295,37 @@ func (Instance) _build(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionCla
 }
 
 /*
+This function is called when an individual scene is about to be played in the editor. 'args' is a list of command line arguments that will be passed to the new Godot instance, which will be replaced by the list returned by this function.
+
+	package main
+
+	func (MyEditorPlugin) RunScene(scene string, args []string) []string {
+		args = append(args, "--an-extra-argument")
+		return args
+	}
+
+Note: Text that is printed in this method will not be visible in the editor's Output panel unless [EditorSettings] "run/output/always_clear_output_on_play" is false.
+
+[EditorSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings
+*/
+func (Instance) _run_scene(impl func(ptr gdclass.Receiver, scene string, args []string) []string) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var scene = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
+		defer pointers.End(gd.InternalString(scene))
+		var args = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
+		defer pointers.End(gd.InternalPackedStrings(args))
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, scene.String(), args.Strings())
+		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
 Called by the engine when the user enables the [EditorPlugin] in the Plugin tab of the project settings window.
 
 [EditorPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin
@@ -1299,6 +1350,27 @@ func (Instance) _disable_plugin(impl func(ptr gdclass.Receiver)) (cb gd.Extensio
 }
 
 /*
+Adds a new dock.
+
+When your plugin is deactivated, make sure to remove your custom dock with [RemoveDock] and free it with [Node.QueueFree].
+
+[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
+[RemoveDock]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.RemoveDock
+*/
+func (self Instance) AddDock(dock EditorDock.Instance) { //gd:EditorPlugin.add_dock
+	Advanced(self).AddDock(dock)
+}
+
+/*
+Removes 'dock' from the available docks. You should manually call [Node.QueueFree] to free it.
+
+[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
+*/
+func (self Instance) RemoveDock(dock EditorDock.Instance) { //gd:EditorPlugin.remove_dock
+	Advanced(self).RemoveDock(dock)
+}
+
+/*
 Adds a custom control to a container in the editor UI.
 
 Please remember that you have to manage the visibility of your custom controls yourself (and likely hide it after adding it).
@@ -1313,96 +1385,12 @@ func (self Instance) AddControlToContainer(container CustomControlContainer, con
 }
 
 /*
-Adds a control to the bottom panel (together with Output, Debug, Animation, etc.). Returns a reference to the button added. It's up to you to hide/show the button when needed. When your plugin is deactivated, make sure to remove your custom control with [RemoveControlFromBottomPanel] and free it with [Node.QueueFree].
-
-Optionally, you can specify a shortcut parameter. When pressed, this shortcut will toggle the bottom panel's visibility. See the default editor bottom panel shortcuts in the Editor Settings for inspiration. Per convention, they all use Alt modifier.
-
-[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
-[RemoveControlFromBottomPanel]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.RemoveControlFromBottomPanel
-*/
-func (self Instance) AddControlToBottomPanel(control Control.Instance, title string) Button.Instance { //gd:EditorPlugin.add_control_to_bottom_panel
-	return Button.Instance(Advanced(self).AddControlToBottomPanel(control, String.New(title), [1]Shortcut.Instance{}[0]))
-}
-
-/*
-Adds a control to the bottom panel (together with Output, Debug, Animation, etc.). Returns a reference to the button added. It's up to you to hide/show the button when needed. When your plugin is deactivated, make sure to remove your custom control with [RemoveControlFromBottomPanel] and free it with [Node.QueueFree].
-
-Optionally, you can specify a shortcut parameter. When pressed, this shortcut will toggle the bottom panel's visibility. See the default editor bottom panel shortcuts in the Editor Settings for inspiration. Per convention, they all use Alt modifier.
-
-[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
-[RemoveControlFromBottomPanel]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.RemoveControlFromBottomPanel
-*/
-func (self MoreArgs) AddControlToBottomPanel(control Control.Instance, title string, shortcut Shortcut.Instance) Button.Instance { //gd:EditorPlugin.add_control_to_bottom_panel
-	return Button.Instance(Advanced(self).AddControlToBottomPanel(control, String.New(title), shortcut))
-}
-
-/*
-Adds the control to a specific dock slot.
-
-If the dock is repositioned and as long as the plugin is active, the editor will save the dock position on further sessions.
-
-When your plugin is deactivated, make sure to remove your custom control with [RemoveControlFromDocks] and free it with [Node.QueueFree].
-
-Optionally, you can specify a shortcut parameter. When pressed, this shortcut will open and focus the dock.
-
-[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
-[RemoveControlFromDocks]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.RemoveControlFromDocks
-*/
-func (self Instance) AddControlToDock(slot DockSlot, control Control.Instance) { //gd:EditorPlugin.add_control_to_dock
-	Advanced(self).AddControlToDock(slot, control, [1]Shortcut.Instance{}[0])
-}
-
-/*
-Adds the control to a specific dock slot.
-
-If the dock is repositioned and as long as the plugin is active, the editor will save the dock position on further sessions.
-
-When your plugin is deactivated, make sure to remove your custom control with [RemoveControlFromDocks] and free it with [Node.QueueFree].
-
-Optionally, you can specify a shortcut parameter. When pressed, this shortcut will open and focus the dock.
-
-[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
-[RemoveControlFromDocks]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.RemoveControlFromDocks
-*/
-func (self MoreArgs) AddControlToDock(slot DockSlot, control Control.Instance, shortcut Shortcut.Instance) { //gd:EditorPlugin.add_control_to_dock
-	Advanced(self).AddControlToDock(slot, control, shortcut)
-}
-
-/*
-Removes the control from the dock. You have to manually [Node.QueueFree] the control.
-
-[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
-*/
-func (self Instance) RemoveControlFromDocks(control Control.Instance) { //gd:EditorPlugin.remove_control_from_docks
-	Advanced(self).RemoveControlFromDocks(control)
-}
-
-/*
-Removes the control from the bottom panel. You have to manually [Node.QueueFree] the control.
-
-[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
-*/
-func (self Instance) RemoveControlFromBottomPanel(control Control.Instance) { //gd:EditorPlugin.remove_control_from_bottom_panel
-	Advanced(self).RemoveControlFromBottomPanel(control)
-}
-
-/*
 Removes the control from the specified container. You have to manually [Node.QueueFree] the control.
 
 [Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
 */
 func (self Instance) RemoveControlFromContainer(container CustomControlContainer, control Control.Instance) { //gd:EditorPlugin.remove_control_from_container
 	Advanced(self).RemoveControlFromContainer(container, control)
-}
-
-/*
-Sets the tab icon for the given control in a dock slot. Setting to null removes the icon.
-
-Returns 'self' to enable method chaining.
-*/
-func (self Instance) SetDockTabIcon(control Control.Instance, icon Texture2D.Instance) Instance { //gd:EditorPlugin.set_dock_tab_icon
-	Advanced(self).SetDockTabIcon(control, icon)
-	return self
 }
 
 /*
@@ -1464,6 +1452,94 @@ Removes a custom type added by [AddCustomType].
 */
 func (self Instance) RemoveCustomType(atype string) { //gd:EditorPlugin.remove_custom_type
 	Advanced(self).RemoveCustomType(String.New(atype))
+}
+
+/*
+Adds the control to a specific dock slot.
+
+If the dock is repositioned and as long as the plugin is active, the editor will save the dock position on further sessions.
+
+When your plugin is deactivated, make sure to remove your custom control with [RemoveControlFromDocks] and free it with [Node.QueueFree].
+
+Optionally, you can specify a shortcut parameter. When pressed, this shortcut will open and focus the dock.
+
+[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
+[RemoveControlFromDocks]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.RemoveControlFromDocks
+*/
+func (self Instance) AddControlToDock(slot DockSlot, control Control.Instance) { //gd:EditorPlugin.add_control_to_dock
+	Advanced(self).AddControlToDock(slot, control, [1]Shortcut.Instance{}[0])
+}
+
+/*
+Adds the control to a specific dock slot.
+
+If the dock is repositioned and as long as the plugin is active, the editor will save the dock position on further sessions.
+
+When your plugin is deactivated, make sure to remove your custom control with [RemoveControlFromDocks] and free it with [Node.QueueFree].
+
+Optionally, you can specify a shortcut parameter. When pressed, this shortcut will open and focus the dock.
+
+[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
+[RemoveControlFromDocks]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.RemoveControlFromDocks
+*/
+func (self MoreArgs) AddControlToDock(slot DockSlot, control Control.Instance, shortcut Shortcut.Instance) { //gd:EditorPlugin.add_control_to_dock
+	Advanced(self).AddControlToDock(slot, control, shortcut)
+}
+
+/*
+Removes the control from the dock. You have to manually [Node.QueueFree] the control.
+
+[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
+*/
+func (self Instance) RemoveControlFromDocks(control Control.Instance) { //gd:EditorPlugin.remove_control_from_docks
+	Advanced(self).RemoveControlFromDocks(control)
+}
+
+/*
+Sets the tab icon for the given control in a dock slot. Setting to null removes the icon.
+
+Returns 'self' to enable method chaining.
+*/
+func (self Instance) SetDockTabIcon(control Control.Instance, icon Texture2D.Instance) Instance { //gd:EditorPlugin.set_dock_tab_icon
+	Advanced(self).SetDockTabIcon(control, icon)
+	return self
+}
+
+/*
+Adds a control to the bottom panel (together with Output, Debug, Animation, etc.). Returns a reference to a button that is outside the scene tree. It's up to you to hide/show the button when needed. When your plugin is deactivated, make sure to remove your custom control with [RemoveControlFromBottomPanel] and free it with [Node.QueueFree].
+
+'shortcut' is a shortcut that, when activated, will toggle the bottom panel's visibility. The shortcut object is only set when this control is added to the bottom panel.
+
+Note See the default editor bottom panel shortcuts in the Editor Settings for inspiration. By convention, they all use Alt modifier.
+
+[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
+[RemoveControlFromBottomPanel]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.RemoveControlFromBottomPanel
+*/
+func (self Instance) AddControlToBottomPanel(control Control.Instance, title string) Button.Instance { //gd:EditorPlugin.add_control_to_bottom_panel
+	return Button.Instance(Advanced(self).AddControlToBottomPanel(control, String.New(title), [1]Shortcut.Instance{}[0]))
+}
+
+/*
+Adds a control to the bottom panel (together with Output, Debug, Animation, etc.). Returns a reference to a button that is outside the scene tree. It's up to you to hide/show the button when needed. When your plugin is deactivated, make sure to remove your custom control with [RemoveControlFromBottomPanel] and free it with [Node.QueueFree].
+
+'shortcut' is a shortcut that, when activated, will toggle the bottom panel's visibility. The shortcut object is only set when this control is added to the bottom panel.
+
+Note See the default editor bottom panel shortcuts in the Editor Settings for inspiration. By convention, they all use Alt modifier.
+
+[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
+[RemoveControlFromBottomPanel]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.RemoveControlFromBottomPanel
+*/
+func (self MoreArgs) AddControlToBottomPanel(control Control.Instance, title string, shortcut Shortcut.Instance) Button.Instance { //gd:EditorPlugin.add_control_to_bottom_panel
+	return Button.Instance(Advanced(self).AddControlToBottomPanel(control, String.New(title), shortcut))
+}
+
+/*
+Removes the control from the bottom panel. You have to manually [Node.QueueFree] the control.
+
+[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
+*/
+func (self Instance) RemoveControlFromBottomPanel(control Control.Instance) { //gd:EditorPlugin.remove_control_from_bottom_panel
+	Advanced(self).RemoveControlFromBottomPanel(control)
 }
 
 /*
@@ -2124,6 +2200,22 @@ func (class) _build(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassC
 		gd.UnsafeSet(p_back, ret)
 	}
 }
+func (class) _run_scene(impl func(ptr gdclass.Receiver, scene String.Readable, args Packed.Strings) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var scene = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
+		defer pointers.End(gd.InternalString(scene))
+		var args = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
+		defer pointers.End(gd.InternalPackedStrings(args))
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, scene, args)
+		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
 func (class) _enable_plugin(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -2137,45 +2229,23 @@ func (class) _disable_plugin(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionCl
 	}
 }
 
+func (self class) AddDock(dock [1]gdclass.EditorDock) { //gd:EditorPlugin.add_dock
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_dock, 0|(gdextension.SizeObject<<4), &struct{ dock gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetEditorDock(dock[0])[0]))})
+}
+func (self class) RemoveDock(dock [1]gdclass.EditorDock) { //gd:EditorPlugin.remove_dock
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_dock, 0|(gdextension.SizeObject<<4), &struct{ dock gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorDock(dock[0])))})
+}
 func (self class) AddControlToContainer(container CustomControlContainer, control [1]gdclass.Control) { //gd:EditorPlugin.add_control_to_container
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_control_to_container, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		container CustomControlContainer
 		control   gdextension.Object
 	}{container, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetControl(control[0])[0]))})
 }
-func (self class) AddControlToBottomPanel(control [1]gdclass.Control, title String.Readable, shortcut [1]gdclass.Shortcut) [1]gdclass.Button { //gd:EditorPlugin.add_control_to_bottom_panel
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.add_control_to_bottom_panel, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeObject<<12), &struct {
-		control  gdextension.Object
-		title    gdextension.String
-		shortcut gdextension.Object
-	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetControl(control[0])[0])), pointers.Get(gd.InternalString(title)), gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0])))})
-	var ret = [1]gdclass.Button{gdclass.NewButton(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
-	return ret
-}
-func (self class) AddControlToDock(slot DockSlot, control [1]gdclass.Control, shortcut [1]gdclass.Shortcut) { //gd:EditorPlugin.add_control_to_dock
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_control_to_dock, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), &struct {
-		slot     DockSlot
-		control  gdextension.Object
-		shortcut gdextension.Object
-	}{slot, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetControl(control[0])[0])), gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0])))})
-}
-func (self class) RemoveControlFromDocks(control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_docks
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_control_from_docks, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0])))})
-}
-func (self class) RemoveControlFromBottomPanel(control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_bottom_panel
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_control_from_bottom_panel, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0])))})
-}
 func (self class) RemoveControlFromContainer(container CustomControlContainer, control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_container
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_control_from_container, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		container CustomControlContainer
 		control   gdextension.Object
 	}{container, gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0])))})
-}
-func (self class) SetDockTabIcon(control [1]gdclass.Control, icon [1]gdclass.Texture2D) { //gd:EditorPlugin.set_dock_tab_icon
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dock_tab_icon, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
-		control gdextension.Object
-		icon    gdextension.Object
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
 }
 func (self class) AddToolMenuItem(name String.Readable, callable Callable.Function) { //gd:EditorPlugin.add_tool_menu_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_tool_menu_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), &struct {
@@ -2207,6 +2277,34 @@ func (self class) AddCustomType(atype String.Readable, base String.Readable, scr
 }
 func (self class) RemoveCustomType(atype String.Readable) { //gd:EditorPlugin.remove_custom_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_custom_type, 0|(gdextension.SizeString<<4), &struct{ atype gdextension.String }{pointers.Get(gd.InternalString(atype))})
+}
+func (self class) AddControlToDock(slot DockSlot, control [1]gdclass.Control, shortcut [1]gdclass.Shortcut) { //gd:EditorPlugin.add_control_to_dock
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_control_to_dock, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), &struct {
+		slot     DockSlot
+		control  gdextension.Object
+		shortcut gdextension.Object
+	}{slot, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetControl(control[0])[0])), gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0])))})
+}
+func (self class) RemoveControlFromDocks(control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_docks
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_control_from_docks, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0])))})
+}
+func (self class) SetDockTabIcon(control [1]gdclass.Control, icon [1]gdclass.Texture2D) { //gd:EditorPlugin.set_dock_tab_icon
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dock_tab_icon, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
+		control gdextension.Object
+		icon    gdextension.Object
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
+}
+func (self class) AddControlToBottomPanel(control [1]gdclass.Control, title String.Readable, shortcut [1]gdclass.Shortcut) [1]gdclass.Button { //gd:EditorPlugin.add_control_to_bottom_panel
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.add_control_to_bottom_panel, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeObject<<12), &struct {
+		control  gdextension.Object
+		title    gdextension.String
+		shortcut gdextension.Object
+	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetControl(control[0])[0])), pointers.Get(gd.InternalString(title)), gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0])))})
+	var ret = [1]gdclass.Button{gdclass.NewButton(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	return ret
+}
+func (self class) RemoveControlFromBottomPanel(control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_bottom_panel
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_control_from_bottom_panel, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0])))})
 }
 func (self class) AddAutoloadSingleton(name String.Readable, path String.Readable) { //gd:EditorPlugin.add_autoload_singleton
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_autoload_singleton, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
@@ -2501,6 +2599,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._get_window_layout)
 	case "_build":
 		return reflect.ValueOf(self._build)
+	case "_run_scene":
+		return reflect.ValueOf(self._run_scene)
 	case "_enable_plugin":
 		return reflect.ValueOf(self._enable_plugin)
 	case "_disable_plugin":
@@ -2556,6 +2656,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._get_window_layout)
 	case "_build":
 		return reflect.ValueOf(self._build)
+	case "_run_scene":
+		return reflect.ValueOf(self._run_scene)
 	case "_enable_plugin":
 		return reflect.ValueOf(self._enable_plugin)
 	case "_disable_plugin":
@@ -2600,6 +2702,8 @@ const (
 type DockSlot int //gd:EditorPlugin.DockSlot
 
 const (
+	// The dock is closed.
+	DockSlotNone DockSlot = -1
 	// Dock slot, left side, upper-left (empty in default layout).
 	DockSlotLeftUl DockSlot = 0
 	// Dock slot, left side, bottom-left (empty in default layout).
@@ -2616,8 +2720,10 @@ const (
 	DockSlotRightUr DockSlot = 6
 	// Dock slot, right side, bottom-right (empty in default layout).
 	DockSlotRightBr DockSlot = 7
+	// Bottom panel.
+	DockSlotBottom DockSlot = 8
 	// Represents the size of the [DockSlot] enum.
-	DockSlotMax DockSlot = 8
+	DockSlotMax DockSlot = 9
 )
 
 type AfterGUIInput int //gd:EditorPlugin.AfterGUIInput

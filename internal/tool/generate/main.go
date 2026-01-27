@@ -323,6 +323,9 @@ func generate() error {
 		if !inCore(class.Name) {
 			pkg = "classdb"
 		}
+		if class.Name == "GodotInstance" {
+			class.Name = "Startup"
+		}
 		class.Package = pkg
 		for _, enum := range class.Enums {
 			classDB[class.Name+strings.Replace(enum.Name, ".", "", -1)] = gdjson.Class{

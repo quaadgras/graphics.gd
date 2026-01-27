@@ -99,6 +99,10 @@ var methods struct {
 	add_translation                                  gdextension.MethodForClass `hash:"1466479800"`
 	remove_translation                               gdextension.MethodForClass `hash:"1466479800"`
 	clear                                            gdextension.MethodForClass `hash:"3218959716"`
+	get_translations                                 gdextension.MethodForClass `hash:"3995934104"`
+	has_translation_for_locale                       gdextension.MethodForClass `hash:"2034713381"`
+	has_translation                                  gdextension.MethodForClass `hash:"2696976312"`
+	find_translations                                gdextension.MethodForClass `hash:"2109650934"`
 	translate                                        gdextension.MethodForClass `hash:"1829228469"`
 	translate_plural                                 gdextension.MethodForClass `hash:"229954002"`
 	get_locale_override                              gdextension.MethodForClass `hash:"201670096"`
@@ -181,6 +185,43 @@ Removes all translations.
 */
 func (self Instance) Clear() { //gd:TranslationDomain.clear
 	Advanced(self).Clear()
+}
+
+/*
+Returns all available [Translation] instances as added by [AddTranslation].
+
+[AddTranslation]: https://pkg.go.dev/graphics.gd/classdb/TranslationDomain#Instance.AddTranslation
+[Translation]: https://pkg.go.dev/graphics.gd/classdb/Translation
+*/
+func (self Instance) GetTranslations() []Translation.Instance { //gd:TranslationDomain.get_translations
+	return []Translation.Instance(gd.ArrayAs[[]Translation.Instance](gd.InternalArray(Advanced(self).GetTranslations())))
+}
+
+/*
+Returns true if there are any [Translation] instances that match 'locale' (see [TranslationServer.CompareLocales]). If 'exact' is true, only instances whose locale exactly equals 'locale' are considered.
+
+[Translation]: https://pkg.go.dev/graphics.gd/classdb/Translation
+[TranslationServer.CompareLocales]: https://pkg.go.dev/graphics.gd/classdb/TranslationServer#CompareLocales
+*/
+func (self Instance) HasTranslationForLocale(locale string, exact bool) bool { //gd:TranslationDomain.has_translation_for_locale
+	return bool(Advanced(self).HasTranslationForLocale(String.New(locale), exact))
+}
+
+/*
+Returns true if this translation domain contains the given 'translation'.
+*/
+func (self Instance) HasTranslation(translation Translation.Instance) bool { //gd:TranslationDomain.has_translation
+	return bool(Advanced(self).HasTranslation(translation))
+}
+
+/*
+Returns the [Translation] instances that match 'locale' (see [TranslationServer.CompareLocales]). If 'exact' is true, only instances whose locale exactly equals 'locale' will be returned.
+
+[Translation]: https://pkg.go.dev/graphics.gd/classdb/Translation
+[TranslationServer.CompareLocales]: https://pkg.go.dev/graphics.gd/classdb/TranslationServer#CompareLocales
+*/
+func (self Instance) FindTranslations(locale string, exact bool) []Translation.Instance { //gd:TranslationDomain.find_translations
+	return []Translation.Instance(gd.ArrayAs[[]Translation.Instance](gd.InternalArray(Advanced(self).FindTranslations(String.New(locale), exact))))
 }
 
 /*
@@ -450,6 +491,32 @@ func (self class) RemoveTranslation(translation [1]gdclass.Translation) { //gd:T
 }
 func (self class) Clear() { //gd:TranslationDomain.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
+}
+func (self class) GetTranslations() Array.Contains[[1]gdclass.Translation] { //gd:TranslationDomain.get_translations
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_translations, gdextension.SizeArray, &struct{}{})
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Translation]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
+	return ret
+}
+func (self class) HasTranslationForLocale(locale String.Readable, exact bool) bool { //gd:TranslationDomain.has_translation_for_locale
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_translation_for_locale, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+		locale gdextension.String
+		exact  bool
+	}{pointers.Get(gd.InternalString(locale)), exact})
+	var ret = r_ret
+	return ret
+}
+func (self class) HasTranslation(translation [1]gdclass.Translation) bool { //gd:TranslationDomain.has_translation
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_translation, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ translation gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTranslation(translation[0])))})
+	var ret = r_ret
+	return ret
+}
+func (self class) FindTranslations(locale String.Readable, exact bool) Array.Contains[[1]gdclass.Translation] { //gd:TranslationDomain.find_translations
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.find_translations, gdextension.SizeArray|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+		locale gdextension.String
+		exact  bool
+	}{pointers.Get(gd.InternalString(locale)), exact})
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Translation]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
+	return ret
 }
 func (self class) Translate(message String.Name, context String.Name) String.Name { //gd:TranslationDomain.translate
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.translate, gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {

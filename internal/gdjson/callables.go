@@ -152,4 +152,15 @@ var Callables = map[string][]string{
 	"PhysicsServer3DExtension._area_set_area_monitor_callback.callback":       {"void", "int status", "RID body_rid", "ObjectID instance_id", "int body_shape_idx", "int self_shape_idx"},
 	"PhysicsServer3DExtension._body_set_state_sync_callback.callable":         {"void", "PhysicsDirectBodyState3D state"},
 	"PhysicsServer3DExtension._body_set_force_integration_callback.callable":  {"void", "PhysicsDirectBodyState3D state", "Variant userdata"},
+
+	"OpenXRSpatialAnchorCapability.create_persistence_context.user_callback": {"void"},
+	"OpenXRSpatialAnchorCapability.persist_anchor.user_callback":             {"void"},
+	"OpenXRSpatialAnchorCapability.unpersist_anchor.user_callback":           {"void"},
+	"OpenXRSpatialEntityExtension.create_spatial_context.user_callback":      {"void"},
+	"OpenXRSpatialEntityExtension.discover_spatial_entities.user_callback":   {"void"},
+
+	"NavigationServer3DManager.register_server.create_callback": {"void"},
+	"NavigationServer2DManager.register_server.create_callback": {"void"},
+	"FileDialog.set_get_icon_callback.callback":                 {"Texture2D", "String path"},
+	"FileDialog.set_get_thumbnail_callback.callback":            {"Texture2D", "String path"},
 }

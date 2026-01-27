@@ -591,7 +591,7 @@ If true, the body is frozen. Gravity and forces are not applied anymore.
 
 See [FreezeMode] to set the body's behavior when frozen.
 
-For a body that is always frozen, use [StaticBody2D] or [AnimatableBody2D] instead.
+Note: For a body that is always frozen, use [StaticBody2D] or [AnimatableBody2D] instead.
 
 [AnimatableBody2D]: https://pkg.go.dev/graphics.gd/classdb/AnimatableBody2D
 [FreezeMode]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.FreezeMode
@@ -608,9 +608,9 @@ func (self Instance) SetFreeze(value bool) Instance { //gd:RigidBody2D.freeze
 }
 
 /*
-The body's freeze mode. Can be used to set the body's behavior when [Freeze] is enabled.
+The body's freeze mode. Determines the body's behavior when [Freeze] is true.
 
-For a body that is always frozen, use [StaticBody2D] or [AnimatableBody2D] instead.
+Note: For a body that is always frozen, use [StaticBody2D] or [AnimatableBody2D] instead.
 
 [AnimatableBody2D]: https://pkg.go.dev/graphics.gd/classdb/AnimatableBody2D
 [Freeze]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.Freeze

@@ -117,6 +117,8 @@ var methods struct {
 	save                                          gdextension.MethodForClass `hash:"166280745"`
 	load_resource_pack                            gdextension.MethodForClass `hash:"708980503"`
 	save_custom                                   gdextension.MethodForClass `hash:"166001499"`
+	get_changed_settings                          gdextension.MethodForClass `hash:"1139954409"`
+	check_changed_settings_in_group               gdextension.MethodForClass `hash:"3927539163"`
 }
 
 func init() {
@@ -376,6 +378,20 @@ func SaveCustom(file string) error { //gd:ProjectSettings.save_custom
 	return error(gd.ToError(Advanced().SaveCustom(String.New(file))))
 }
 
+/*
+Gets an array of the settings which have been changed since the last save. Note that internally changed_settings is cleared after a successful save, so generally the most appropriate place to use this method is when processing [OnSettingsChanged].
+*/
+func GetChangedSettings() []string { //gd:ProjectSettings.get_changed_settings
+	return []string(Advanced().GetChangedSettings().Strings())
+}
+
+/*
+Checks if any settings with the prefix 'setting_prefix' exist in the set of changed settings. See also [GetChangedSettings].
+*/
+func CheckChangedSettingsInGroup(setting_prefix string) bool { //gd:ProjectSettings.check_changed_settings_in_group
+	return bool(Advanced().CheckChangedSettingsInGroup(String.New(setting_prefix)))
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 func Advanced() class { once.Do(singleton); return self }
 
@@ -523,6 +539,18 @@ func (self class) SaveCustom(file String.Readable) Error.Code { //gd:ProjectSett
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save_custom, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
 	var ret = Error.Code(r_ret)
+	return ret
+}
+func (self class) GetChangedSettings() Packed.Strings { //gd:ProjectSettings.get_changed_settings
+	once.Do(singleton)
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_changed_settings, gdextension.SizePackedArray, &struct{}{})
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
+	return ret
+}
+func (self class) CheckChangedSettingsInGroup(setting_prefix String.Readable) bool { //gd:ProjectSettings.check_changed_settings_in_group
+	once.Do(singleton)
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.check_changed_settings_in_group, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ setting_prefix gdextension.String }{pointers.Get(gd.InternalString(setting_prefix))})
+	var ret = r_ret
 	return ret
 }
 

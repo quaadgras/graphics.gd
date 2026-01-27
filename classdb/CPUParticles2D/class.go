@@ -100,79 +100,83 @@ type Instance [1]gdclass.CPUParticles2D
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	set_emitting               gdextension.MethodForClass `hash:"2586408642"`
-	set_amount                 gdextension.MethodForClass `hash:"1286410249"`
-	set_lifetime               gdextension.MethodForClass `hash:"373806689"`
-	set_one_shot               gdextension.MethodForClass `hash:"2586408642"`
-	set_pre_process_time       gdextension.MethodForClass `hash:"373806689"`
-	set_explosiveness_ratio    gdextension.MethodForClass `hash:"373806689"`
-	set_randomness_ratio       gdextension.MethodForClass `hash:"373806689"`
-	set_lifetime_randomness    gdextension.MethodForClass `hash:"373806689"`
-	set_use_local_coordinates  gdextension.MethodForClass `hash:"2586408642"`
-	set_fixed_fps              gdextension.MethodForClass `hash:"1286410249"`
-	set_fractional_delta       gdextension.MethodForClass `hash:"2586408642"`
-	set_speed_scale            gdextension.MethodForClass `hash:"373806689"`
-	request_particles_process  gdextension.MethodForClass `hash:"373806689"`
-	is_emitting                gdextension.MethodForClass `hash:"36873697"`
-	get_amount                 gdextension.MethodForClass `hash:"3905245786"`
-	get_lifetime               gdextension.MethodForClass `hash:"1740695150"`
-	get_one_shot               gdextension.MethodForClass `hash:"36873697"`
-	get_pre_process_time       gdextension.MethodForClass `hash:"1740695150"`
-	get_explosiveness_ratio    gdextension.MethodForClass `hash:"1740695150"`
-	get_randomness_ratio       gdextension.MethodForClass `hash:"1740695150"`
-	get_lifetime_randomness    gdextension.MethodForClass `hash:"1740695150"`
-	get_use_local_coordinates  gdextension.MethodForClass `hash:"36873697"`
-	get_fixed_fps              gdextension.MethodForClass `hash:"3905245786"`
-	get_fractional_delta       gdextension.MethodForClass `hash:"36873697"`
-	get_speed_scale            gdextension.MethodForClass `hash:"1740695150"`
-	set_use_fixed_seed         gdextension.MethodForClass `hash:"2586408642"`
-	get_use_fixed_seed         gdextension.MethodForClass `hash:"36873697"`
-	set_seed                   gdextension.MethodForClass `hash:"1286410249"`
-	get_seed                   gdextension.MethodForClass `hash:"3905245786"`
-	set_draw_order             gdextension.MethodForClass `hash:"4183193490"`
-	get_draw_order             gdextension.MethodForClass `hash:"1668655735"`
-	set_texture                gdextension.MethodForClass `hash:"4051416890"`
-	get_texture                gdextension.MethodForClass `hash:"3635182373"`
-	restart                    gdextension.MethodForClass `hash:"107499316"`
-	set_direction              gdextension.MethodForClass `hash:"743155724"`
-	get_direction              gdextension.MethodForClass `hash:"3341600327"`
-	set_spread                 gdextension.MethodForClass `hash:"373806689"`
-	get_spread                 gdextension.MethodForClass `hash:"1740695150"`
-	set_param_min              gdextension.MethodForClass `hash:"3320615296"`
-	get_param_min              gdextension.MethodForClass `hash:"2038050600"`
-	set_param_max              gdextension.MethodForClass `hash:"3320615296"`
-	get_param_max              gdextension.MethodForClass `hash:"2038050600"`
-	set_param_curve            gdextension.MethodForClass `hash:"2959350143"`
-	get_param_curve            gdextension.MethodForClass `hash:"2603158474"`
-	set_color                  gdextension.MethodForClass `hash:"2920490490"`
-	get_color                  gdextension.MethodForClass `hash:"3444240500"`
-	set_color_ramp             gdextension.MethodForClass `hash:"2756054477"`
-	get_color_ramp             gdextension.MethodForClass `hash:"132272999"`
-	set_color_initial_ramp     gdextension.MethodForClass `hash:"2756054477"`
-	get_color_initial_ramp     gdextension.MethodForClass `hash:"132272999"`
-	set_particle_flag          gdextension.MethodForClass `hash:"4178137949"`
-	get_particle_flag          gdextension.MethodForClass `hash:"2829976507"`
-	set_emission_shape         gdextension.MethodForClass `hash:"393763892"`
-	get_emission_shape         gdextension.MethodForClass `hash:"1740246024"`
-	set_emission_sphere_radius gdextension.MethodForClass `hash:"373806689"`
-	get_emission_sphere_radius gdextension.MethodForClass `hash:"1740695150"`
-	set_emission_rect_extents  gdextension.MethodForClass `hash:"743155724"`
-	get_emission_rect_extents  gdextension.MethodForClass `hash:"3341600327"`
-	set_emission_points        gdextension.MethodForClass `hash:"1509147220"`
-	get_emission_points        gdextension.MethodForClass `hash:"2961356807"`
-	set_emission_normals       gdextension.MethodForClass `hash:"1509147220"`
-	get_emission_normals       gdextension.MethodForClass `hash:"2961356807"`
-	set_emission_colors        gdextension.MethodForClass `hash:"3546319833"`
-	get_emission_colors        gdextension.MethodForClass `hash:"1392750486"`
-	get_gravity                gdextension.MethodForClass `hash:"3341600327"`
-	set_gravity                gdextension.MethodForClass `hash:"743155724"`
-	get_split_scale            gdextension.MethodForClass `hash:"2240911060"`
-	set_split_scale            gdextension.MethodForClass `hash:"2586408642"`
-	get_scale_curve_x          gdextension.MethodForClass `hash:"2460114913"`
-	set_scale_curve_x          gdextension.MethodForClass `hash:"270443179"`
-	get_scale_curve_y          gdextension.MethodForClass `hash:"2460114913"`
-	set_scale_curve_y          gdextension.MethodForClass `hash:"270443179"`
-	convert_from_particles     gdextension.MethodForClass `hash:"1078189570"`
+	set_emitting                   gdextension.MethodForClass `hash:"2586408642"`
+	set_amount                     gdextension.MethodForClass `hash:"1286410249"`
+	set_lifetime                   gdextension.MethodForClass `hash:"373806689"`
+	set_one_shot                   gdextension.MethodForClass `hash:"2586408642"`
+	set_pre_process_time           gdextension.MethodForClass `hash:"373806689"`
+	set_explosiveness_ratio        gdextension.MethodForClass `hash:"373806689"`
+	set_randomness_ratio           gdextension.MethodForClass `hash:"373806689"`
+	set_lifetime_randomness        gdextension.MethodForClass `hash:"373806689"`
+	set_use_local_coordinates      gdextension.MethodForClass `hash:"2586408642"`
+	set_fixed_fps                  gdextension.MethodForClass `hash:"1286410249"`
+	set_fractional_delta           gdextension.MethodForClass `hash:"2586408642"`
+	set_speed_scale                gdextension.MethodForClass `hash:"373806689"`
+	request_particles_process      gdextension.MethodForClass `hash:"373806689"`
+	is_emitting                    gdextension.MethodForClass `hash:"36873697"`
+	get_amount                     gdextension.MethodForClass `hash:"3905245786"`
+	get_lifetime                   gdextension.MethodForClass `hash:"1740695150"`
+	get_one_shot                   gdextension.MethodForClass `hash:"36873697"`
+	get_pre_process_time           gdextension.MethodForClass `hash:"1740695150"`
+	get_explosiveness_ratio        gdextension.MethodForClass `hash:"1740695150"`
+	get_randomness_ratio           gdextension.MethodForClass `hash:"1740695150"`
+	get_lifetime_randomness        gdextension.MethodForClass `hash:"1740695150"`
+	get_use_local_coordinates      gdextension.MethodForClass `hash:"36873697"`
+	get_fixed_fps                  gdextension.MethodForClass `hash:"3905245786"`
+	get_fractional_delta           gdextension.MethodForClass `hash:"36873697"`
+	get_speed_scale                gdextension.MethodForClass `hash:"1740695150"`
+	set_use_fixed_seed             gdextension.MethodForClass `hash:"2586408642"`
+	get_use_fixed_seed             gdextension.MethodForClass `hash:"36873697"`
+	set_seed                       gdextension.MethodForClass `hash:"1286410249"`
+	get_seed                       gdextension.MethodForClass `hash:"3905245786"`
+	set_draw_order                 gdextension.MethodForClass `hash:"4183193490"`
+	get_draw_order                 gdextension.MethodForClass `hash:"1668655735"`
+	set_texture                    gdextension.MethodForClass `hash:"4051416890"`
+	get_texture                    gdextension.MethodForClass `hash:"3635182373"`
+	restart                        gdextension.MethodForClass `hash:"107499316"`
+	set_direction                  gdextension.MethodForClass `hash:"743155724"`
+	get_direction                  gdextension.MethodForClass `hash:"3341600327"`
+	set_spread                     gdextension.MethodForClass `hash:"373806689"`
+	get_spread                     gdextension.MethodForClass `hash:"1740695150"`
+	set_param_min                  gdextension.MethodForClass `hash:"3320615296"`
+	get_param_min                  gdextension.MethodForClass `hash:"2038050600"`
+	set_param_max                  gdextension.MethodForClass `hash:"3320615296"`
+	get_param_max                  gdextension.MethodForClass `hash:"2038050600"`
+	set_param_curve                gdextension.MethodForClass `hash:"2959350143"`
+	get_param_curve                gdextension.MethodForClass `hash:"2603158474"`
+	set_color                      gdextension.MethodForClass `hash:"2920490490"`
+	get_color                      gdextension.MethodForClass `hash:"3444240500"`
+	set_color_ramp                 gdextension.MethodForClass `hash:"2756054477"`
+	get_color_ramp                 gdextension.MethodForClass `hash:"132272999"`
+	set_color_initial_ramp         gdextension.MethodForClass `hash:"2756054477"`
+	get_color_initial_ramp         gdextension.MethodForClass `hash:"132272999"`
+	set_particle_flag              gdextension.MethodForClass `hash:"4178137949"`
+	get_particle_flag              gdextension.MethodForClass `hash:"2829976507"`
+	set_emission_shape             gdextension.MethodForClass `hash:"393763892"`
+	get_emission_shape             gdextension.MethodForClass `hash:"1740246024"`
+	set_emission_sphere_radius     gdextension.MethodForClass `hash:"373806689"`
+	get_emission_sphere_radius     gdextension.MethodForClass `hash:"1740695150"`
+	set_emission_rect_extents      gdextension.MethodForClass `hash:"743155724"`
+	get_emission_rect_extents      gdextension.MethodForClass `hash:"3341600327"`
+	set_emission_points            gdextension.MethodForClass `hash:"1509147220"`
+	get_emission_points            gdextension.MethodForClass `hash:"2961356807"`
+	set_emission_normals           gdextension.MethodForClass `hash:"1509147220"`
+	get_emission_normals           gdextension.MethodForClass `hash:"2961356807"`
+	set_emission_colors            gdextension.MethodForClass `hash:"3546319833"`
+	get_emission_colors            gdextension.MethodForClass `hash:"1392750486"`
+	set_emission_ring_inner_radius gdextension.MethodForClass `hash:"373806689"`
+	get_emission_ring_inner_radius gdextension.MethodForClass `hash:"1740695150"`
+	set_emission_ring_radius       gdextension.MethodForClass `hash:"373806689"`
+	get_emission_ring_radius       gdextension.MethodForClass `hash:"1740695150"`
+	get_gravity                    gdextension.MethodForClass `hash:"3341600327"`
+	set_gravity                    gdextension.MethodForClass `hash:"743155724"`
+	get_split_scale                gdextension.MethodForClass `hash:"2240911060"`
+	set_split_scale                gdextension.MethodForClass `hash:"2586408642"`
+	get_scale_curve_x              gdextension.MethodForClass `hash:"2460114913"`
+	set_scale_curve_x              gdextension.MethodForClass `hash:"270443179"`
+	get_scale_curve_y              gdextension.MethodForClass `hash:"2460114913"`
+	set_scale_curve_y              gdextension.MethodForClass `hash:"270443179"`
+	convert_from_particles         gdextension.MethodForClass `hash:"1078189570"`
 }
 
 func init() {
@@ -583,6 +587,36 @@ func (self Instance) EmissionColors() []Color.RGBA { //gd:CPUParticles2D.emissio
 // SetEmissionColors sets the property returned by [GetEmissionColors]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetEmissionColors(value []Color.RGBA) Instance { //gd:CPUParticles2D.emission_colors
 	class(self).SetEmissionColors(Packed.New(value...))
+	return self
+}
+
+/*
+The ring's inner radius if [EmissionShape] is set to [EmissionShapeRing].
+
+[EmissionShape]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.EmissionShape
+*/
+func (self Instance) EmissionRingInnerRadius() Float.X { //gd:CPUParticles2D.emission_ring_inner_radius
+	return Float.X(Float.X(class(self).GetEmissionRingInnerRadius()))
+}
+
+// SetEmissionRingInnerRadius sets the property returned by [GetEmissionRingInnerRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEmissionRingInnerRadius(value Float.X) Instance { //gd:CPUParticles2D.emission_ring_inner_radius
+	class(self).SetEmissionRingInnerRadius(float64(value))
+	return self
+}
+
+/*
+The ring's outer radius if [EmissionShape] is set to [EmissionShapeRing].
+
+[EmissionShape]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.EmissionShape
+*/
+func (self Instance) EmissionRingRadius() Float.X { //gd:CPUParticles2D.emission_ring_radius
+	return Float.X(Float.X(class(self).GetEmissionRingRadius()))
+}
+
+// SetEmissionRingRadius sets the property returned by [GetEmissionRingRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEmissionRingRadius(value Float.X) Instance { //gd:CPUParticles2D.emission_ring_radius
+	class(self).SetEmissionRingRadius(float64(value))
 	return self
 }
 
@@ -1519,6 +1553,22 @@ func (self class) GetEmissionColors() Packed.Array[Color.RGBA] { //gd:CPUParticl
 	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
+func (self class) SetEmissionRingInnerRadius(inner_radius float64) { //gd:CPUParticles2D.set_emission_ring_inner_radius
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_ring_inner_radius, 0|(gdextension.SizeFloat<<4), &struct{ inner_radius float64 }{inner_radius})
+}
+func (self class) GetEmissionRingInnerRadius() float64 { //gd:CPUParticles2D.get_emission_ring_inner_radius
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_ring_inner_radius, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetEmissionRingRadius(radius float64) { //gd:CPUParticles2D.set_emission_ring_radius
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_ring_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
+}
+func (self class) GetEmissionRingRadius() float64 { //gd:CPUParticles2D.get_emission_ring_radius
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_ring_radius, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
 func (self class) GetGravity() Vector2.XY { //gd:CPUParticles2D.get_gravity
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_gravity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
@@ -1743,6 +1793,8 @@ const (
 	// [EmissionNormals]: https://pkg.go.dev/graphics.gd/classdb/#Instance.EmissionNormals
 	// [EmissionPoints]: https://pkg.go.dev/graphics.gd/classdb/#Instance.EmissionPoints
 	EmissionShapeDirectedPoints EmissionShape = 5
+	// Particles will be emitted in the area of a ring parameterized by its outer and inner radius.
+	EmissionShapeRing EmissionShape = 6
 	// Represents the size of the [EmissionShape] enum.
-	EmissionShapeMax EmissionShape = 6
+	EmissionShapeMax EmissionShape = 7
 )

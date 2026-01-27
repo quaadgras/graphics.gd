@@ -130,9 +130,9 @@ type Any interface {
 /*
 Registers a callback for the given method name.
 
-- 'name' The name that clients can use to access the callback.
+- 'name': The name that clients can use to access the callback.
 
-- 'callback' The callback which will handle the specific method.
+- 'callback': The callback which will handle the specified method.
 
 Returns 'self' to enable method chaining.
 */

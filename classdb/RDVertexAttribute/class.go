@@ -91,6 +91,8 @@ type Instance [1]gdclass.RDVertexAttribute
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
+	set_binding   gdextension.MethodForClass `hash:"1286410249"`
+	get_binding   gdextension.MethodForClass `hash:"3905245786"`
 	set_location  gdextension.MethodForClass `hash:"1286410249"`
 	get_location  gdextension.MethodForClass `hash:"3905245786"`
 	set_offset    gdextension.MethodForClass `hash:"1286410249"`
@@ -167,6 +169,21 @@ func New() Instance {
 }
 
 /*
+The index of the buffer in the vertex buffer array to bind this vertex attribute. When set to -1, it defaults to the index of the attribute.
+
+Note: You cannot mix binding explicitly assigned attributes with implicitly assigned ones (i.e. -1). Either all attributes must have their binding set to -1, or all must have explicit bindings.
+*/
+func (self Instance) Binding() int { //gd:RDVertexAttribute.binding
+	return int(int(class(self).GetBinding()))
+}
+
+// SetBinding sets the property returned by [GetBinding]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBinding(value int) Instance { //gd:RDVertexAttribute.binding
+	class(self).SetBinding(int64(value))
+	return self
+}
+
+/*
 The location in the shader that this attribute is bound to.
 */
 func (self Instance) Location() int { //gd:RDVertexAttribute.location
@@ -231,6 +248,14 @@ func (self Instance) SetFrequency(value Rendering.VertexFrequency) Instance { //
 	return self
 }
 
+func (self class) SetBinding(p_member int64) { //gd:RDVertexAttribute.set_binding
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_binding, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
+}
+func (self class) GetBinding() int64 { //gd:RDVertexAttribute.get_binding
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_binding, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
 func (self class) SetLocation(p_member int64) { //gd:RDVertexAttribute.set_location
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_location, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
 }

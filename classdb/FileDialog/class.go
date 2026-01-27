@@ -3,9 +3,13 @@
 /*
 [FileDialog] is a preset dialog used to choose files and directories in the filesystem. It supports filter masks. [FileDialog] automatically sets its window title according to the [FileMode]. If you want to use a custom title, disable this by setting [ModeOverridesTitle] to false.
 
+Note: [FileDialog] is invisible by default. To make it visible, call one of the popup_* methods from [Window] on the node, such as [Window.PopupCenteredClamped].
+
 [FileDialog]: https://pkg.go.dev/graphics.gd/classdb/FileDialog
 [FileMode]: https://pkg.go.dev/graphics.gd/classdb/FileDialog#Instance.FileMode
 [ModeOverridesTitle]: https://pkg.go.dev/graphics.gd/classdb/FileDialog#Instance.ModeOverridesTitle
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+[Window.PopupCenteredClamped]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.PopupCenteredClamped
 */
 package FileDialog
 
@@ -25,6 +29,7 @@ import "graphics.gd/classdb/AcceptDialog"
 import "graphics.gd/classdb/ConfirmationDialog"
 import "graphics.gd/classdb/LineEdit"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/classdb/VBoxContainer"
 import "graphics.gd/classdb/Viewport"
 import "graphics.gd/classdb/Window"
@@ -100,7 +105,7 @@ var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
 	clear_filters                  gdextension.MethodForClass `hash:"3218959716"`
-	add_filter                     gdextension.MethodForClass `hash:"3388804757"`
+	add_filter                     gdextension.MethodForClass `hash:"914921954"`
 	set_filters                    gdextension.MethodForClass `hash:"4015028928"`
 	get_filters                    gdextension.MethodForClass `hash:"1139954409"`
 	clear_filename_filter          gdextension.MethodForClass `hash:"3218959716"`
@@ -141,6 +146,13 @@ var methods struct {
 	set_customization_flag_enabled gdextension.MethodForClass `hash:"3849177100"`
 	is_customization_flag_enabled  gdextension.MethodForClass `hash:"3722277863"`
 	deselect_all                   gdextension.MethodForClass `hash:"3218959716"`
+	set_favorite_list              gdextension.MethodForClass `hash:"4015028928"`
+	get_favorite_list              gdextension.MethodForClass `hash:"2981934095"`
+	set_recent_list                gdextension.MethodForClass `hash:"4015028928"`
+	get_recent_list                gdextension.MethodForClass `hash:"2981934095"`
+	set_get_icon_callback          gdextension.MethodForClass `hash:"1611583062"`
+	set_get_thumbnail_callback     gdextension.MethodForClass `hash:"1611583062"`
+	popup_file_dialog              gdextension.MethodForClass `hash:"3218959716"`
 	invalidate                     gdextension.MethodForClass `hash:"3218959716"`
 }
 
@@ -179,29 +191,33 @@ func (self Instance) ClearFilters() { //gd:FileDialog.clear_filters
 }
 
 /*
-Adds a comma-separated file name 'filter' option to the [FileDialog] with an optional 'description', which restricts what files can be picked.
+Adds a comma-separated file extension 'filter' and comma-separated MIME type 'mime_type' option to the [FileDialog] with an optional 'description', which restricts what files can be picked.
 
 A 'filter' should be of the form "filename.extension", where filename and extension can be * to match any string. Filters starting with . (i.e. empty filenames) are not allowed.
 
-For example, a 'filter' of "*.png, *.jpg" and a 'description' of "Images" results in filter text "Images (*.png, *.jpg)".
+For example, a 'filter' of "*.png, *.jpg", a 'mime_type' of image/png, image/jpeg, and a 'description' of "Images" results in filter text "Images (*.png, *.jpg)".
+
+Note: Embedded file dialogs and Windows file dialogs support only file extensions, while Android, Linux, and macOS file dialogs also support MIME types.
 
 [FileDialog]: https://pkg.go.dev/graphics.gd/classdb/FileDialog
 */
 func (self Instance) AddFilter(filter string) { //gd:FileDialog.add_filter
-	Advanced(self).AddFilter(String.New(filter), String.New(""))
+	Advanced(self).AddFilter(String.New(filter), String.New(""), String.New(""))
 }
 
 /*
-Adds a comma-separated file name 'filter' option to the [FileDialog] with an optional 'description', which restricts what files can be picked.
+Adds a comma-separated file extension 'filter' and comma-separated MIME type 'mime_type' option to the [FileDialog] with an optional 'description', which restricts what files can be picked.
 
 A 'filter' should be of the form "filename.extension", where filename and extension can be * to match any string. Filters starting with . (i.e. empty filenames) are not allowed.
 
-For example, a 'filter' of "*.png, *.jpg" and a 'description' of "Images" results in filter text "Images (*.png, *.jpg)".
+For example, a 'filter' of "*.png, *.jpg", a 'mime_type' of image/png, image/jpeg, and a 'description' of "Images" results in filter text "Images (*.png, *.jpg)".
+
+Note: Embedded file dialogs and Windows file dialogs support only file extensions, while Android, Linux, and macOS file dialogs also support MIME types.
 
 [FileDialog]: https://pkg.go.dev/graphics.gd/classdb/FileDialog
 */
-func (self MoreArgs) AddFilter(filter string, description string) { //gd:FileDialog.add_filter
-	Advanced(self).AddFilter(String.New(filter), String.New(description))
+func (self MoreArgs) AddFilter(filter string, description string, mime_type string) { //gd:FileDialog.add_filter
+	Advanced(self).AddFilter(String.New(filter), String.New(description), String.New(mime_type))
 }
 
 /*
@@ -333,7 +349,110 @@ func (self Instance) DeselectAll() { //gd:FileDialog.deselect_all
 }
 
 /*
-Invalidate and update the current dialog content list.
+Sets the list of favorite directories, which is shared by all [FileDialog] nodes. Useful to restore the list of favorites saved with [GetFavoriteList]. This method can be called only from the main thread.
+
+Note: [FileDialog] will update its internal [ItemList] of favorites when its visibility changes. Be sure to call this method earlier if you want your changes to have effect.
+
+[FileDialog]: https://pkg.go.dev/graphics.gd/classdb/FileDialog
+[ItemList]: https://pkg.go.dev/graphics.gd/classdb/ItemList
+*/
+func SetFavoriteList(favorites []string) { //gd:FileDialog.set_favorite_list
+	self := Instance{}
+	Advanced(self).SetFavoriteList(Packed.MakeStrings(favorites...))
+}
+
+/*
+Returns the list of favorite directories, which is shared by all [FileDialog] nodes. Useful to store the list of favorites between project sessions. This method can be called only from the main thread.
+
+[FileDialog]: https://pkg.go.dev/graphics.gd/classdb/FileDialog
+*/
+func GetFavoriteList() []string { //gd:FileDialog.get_favorite_list
+	self := Instance{}
+	return []string(Advanced(self).GetFavoriteList().Strings())
+}
+
+/*
+Sets the list of recent directories, which is shared by all [FileDialog] nodes. Useful to restore the list of recents saved with [SetRecentList]. This method can be called only from the main thread.
+
+Note: [FileDialog] will update its internal [ItemList] of recent directories when its visibility changes. Be sure to call this method earlier if you want your changes to have effect.
+
+[FileDialog]: https://pkg.go.dev/graphics.gd/classdb/FileDialog
+[ItemList]: https://pkg.go.dev/graphics.gd/classdb/ItemList
+*/
+func SetRecentList(recents []string) { //gd:FileDialog.set_recent_list
+	self := Instance{}
+	Advanced(self).SetRecentList(Packed.MakeStrings(recents...))
+}
+
+/*
+Returns the list of recent directories, which is shared by all [FileDialog] nodes. Useful to store the list of recents between project sessions. This method can be called only from the main thread.
+
+[FileDialog]: https://pkg.go.dev/graphics.gd/classdb/FileDialog
+*/
+func GetRecentList() []string { //gd:FileDialog.get_recent_list
+	self := Instance{}
+	return []string(Advanced(self).GetRecentList().Strings())
+}
+
+/*
+Sets the callback used by the [FileDialog] nodes to get a file icon, when [DisplayList] mode is used. The callback should take a single string argument (file path), and return a [Texture2D]. If an invalid texture is returned, the theme's 'file' icon will be used instead.
+
+[FileDialog]: https://pkg.go.dev/graphics.gd/classdb/FileDialog
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
+*/
+func SetGetIconCallback(callback func(path string) Texture2D.Instance) { //gd:FileDialog.set_get_icon_callback
+	self := Instance{}
+	Advanced(self).SetGetIconCallback(Callable.New(callback))
+}
+
+/*
+Sets the callback used by the [FileDialog] nodes to get a file icon, when [DisplayThumbnails] mode is used. The callback should take a single string argument (file path), and return a [Texture2D]. If an invalid texture is returned, the theme's 'file_thumbnail' icon will be used instead.
+
+Thumbnails are usually more complex and may take a while to load. To avoid stalling the application, you can use [ImageTexture] to asynchronously create the thumbnail.
+
+	package main
+
+	import (
+		"graphics.gd/classdb/FileDialog"
+		"graphics.gd/classdb/ImageTexture"
+		"graphics.gd/classdb/Texture2D"
+		"graphics.gd/variant/Object"
+	)
+
+	type Thumbnails struct {
+		Object.Extension[Thumbnails]
+	}
+
+	func (Thumbnails) Ready() {
+		FileDialog.SetGetThumbnailCallback(thumbnail_method)
+	}
+
+	func thumbnail_method(path string) Texture2D.Instance {
+		var image_texture = ImageTexture.New()
+		make_thumbnail_async(path, image_texture)
+		return image_texture
+	}
+
+[FileDialog]: https://pkg.go.dev/graphics.gd/classdb/FileDialog
+[ImageTexture]: https://pkg.go.dev/graphics.gd/classdb/ImageTexture
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
+*/
+func SetGetThumbnailCallback(callback func(path string) Texture2D.Instance) { //gd:FileDialog.set_get_thumbnail_callback
+	self := Instance{}
+	Advanced(self).SetGetThumbnailCallback(Callable.New(callback))
+}
+
+/*
+Shows the [FileDialog] using the default size and position for file dialogs, and selects the file name if there is a current file.
+
+[FileDialog]: https://pkg.go.dev/graphics.gd/classdb/FileDialog
+*/
+func (self Instance) PopupFileDialog() { //gd:FileDialog.popup_file_dialog
+	Advanced(self).PopupFileDialog()
+}
+
+/*
+Invalidates and updates this dialog's content list.
 
 Note: This method does nothing on native file dialogs.
 */
@@ -461,7 +580,7 @@ func (self Instance) SetRootSubfolder(value string) Instance { //gd:FileDialog.r
 /*
 The available file type filters. Each filter string in the array should be formatted like this: *.png,*.jpg,*.jpeg;Image Files;image/png,image/jpeg. The description text of the filter is optional and can be omitted. Both file extensions and MIME type should be always set.
 
-Note: Embedded file dialog and Windows file dialog support only file extensions, while Android, Linux, and macOS file dialogs also support MIME types.
+Note: Embedded file dialogs and Windows file dialogs support only file extensions, while Android, Linux, and macOS file dialogs also support MIME types.
 */
 func (self Instance) Filters() []string { //gd:FileDialog.filters
 	return []string(class(self).GetFilters().Strings())
@@ -517,7 +636,10 @@ Note: On macOS, sandboxed apps will save security-scoped bookmarks to retain acc
 
 Note: Native dialogs are isolated from the base process, file dialog properties can't be modified once the dialog is shown.
 
+Note: This property is ignored in [EditorFileDialog].
+
 [DisplayServer]: https://pkg.go.dev/graphics.gd/classdb/DisplayServer
+[EditorFileDialog]: https://pkg.go.dev/graphics.gd/classdb/EditorFileDialog
 [OS.GetGrantedPermissions]: https://pkg.go.dev/graphics.gd/classdb/OS#GetGrantedPermissions
 */
 func (self Instance) UseNativeDialog() bool { //gd:FileDialog.use_native_dialog
@@ -586,7 +708,7 @@ func (self Instance) SetFileSortOptionsEnabled(value bool) Instance { //gd:FileD
 }
 
 /*
-If true, shows the button for creating new directories (when using [FileModeOpenDir], [FileModeOpenAny], or [FileModeSaveFile]).
+If true, shows the button for creating new directories (when using [FileModeOpenDir], [FileModeOpenAny], or [FileModeSaveFile]), and the context menu will have the "New Folder..." option.
 */
 func (self Instance) FolderCreationEnabled() bool { //gd:FileDialog.folder_creation_enabled
 	return bool(class(self).IsCustomizationFlagEnabled(1))
@@ -638,6 +760,34 @@ func (self Instance) SetLayoutToggleEnabled(value bool) Instance { //gd:FileDial
 }
 
 /*
+If true, the [FileDialog] will warn the user before overwriting files in save mode.
+
+[FileDialog]: https://pkg.go.dev/graphics.gd/classdb/FileDialog
+*/
+func (self Instance) OverwriteWarningEnabled() bool { //gd:FileDialog.overwrite_warning_enabled
+	return bool(class(self).IsCustomizationFlagEnabled(7))
+}
+
+// SetOverwriteWarningEnabled sets the property returned by [IsCustomizationFlagEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOverwriteWarningEnabled(value bool) Instance { //gd:FileDialog.overwrite_warning_enabled
+	class(self).SetCustomizationFlagEnabled(7, value)
+	return self
+}
+
+/*
+If true, the context menu will show the "Delete" option, which allows moving files and folders to trash.
+*/
+func (self Instance) DeletingEnabled() bool { //gd:FileDialog.deleting_enabled
+	return bool(class(self).IsCustomizationFlagEnabled(8))
+}
+
+// SetDeletingEnabled sets the property returned by [IsCustomizationFlagEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDeletingEnabled(value bool) Instance { //gd:FileDialog.deleting_enabled
+	class(self).SetCustomizationFlagEnabled(8, value)
+	return self
+}
+
+/*
 The current working directory of the file dialog.
 
 Note: For native file dialogs, this property is only treated as a hint and may not be respected by specific OS implementations.
@@ -681,11 +831,12 @@ func (self Instance) SetCurrentPath(value string) Instance { //gd:FileDialog.cur
 func (self class) ClearFilters() { //gd:FileDialog.clear_filters
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_filters, 0, &struct{}{})
 }
-func (self class) AddFilter(filter String.Readable, description String.Readable) { //gd:FileDialog.add_filter
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_filter, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
+func (self class) AddFilter(filter String.Readable, description String.Readable, mime_type String.Readable) { //gd:FileDialog.add_filter
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_filter, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12), &struct {
 		filter      gdextension.String
 		description gdextension.String
-	}{pointers.Get(gd.InternalString(filter)), pointers.Get(gd.InternalString(description))})
+		mime_type   gdextension.String
+	}{pointers.Get(gd.InternalString(filter)), pointers.Get(gd.InternalString(description)), pointers.Get(gd.InternalString(mime_type))})
 }
 func (self class) SetFilters(filters Packed.Strings) { //gd:FileDialog.set_filters
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_filters, 0|(gdextension.SizePackedArray<<4), &struct {
@@ -864,6 +1015,35 @@ func (self class) IsCustomizationFlagEnabled(flag Customization) bool { //gd:Fil
 }
 func (self class) DeselectAll() { //gd:FileDialog.deselect_all
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.deselect_all, 0, &struct{}{})
+}
+func (self class) SetFavoriteList(favorites Packed.Strings) { //gd:FileDialog.set_favorite_list
+	noescape.CallStatic[struct{}](methods.set_favorite_list, 0|(gdextension.SizePackedArray<<4), &struct {
+		favorites gdextension.PackedArray[gdextension.String]
+	}{pointers.Get(gd.InternalPackedStrings(favorites))})
+}
+func (self class) GetFavoriteList() Packed.Strings { //gd:FileDialog.get_favorite_list
+	var r_ret = noescape.CallStatic[gd.PackedPointers](methods.get_favorite_list, gdextension.SizePackedArray, &struct{}{})
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
+	return ret
+}
+func (self class) SetRecentList(recents Packed.Strings) { //gd:FileDialog.set_recent_list
+	noescape.CallStatic[struct{}](methods.set_recent_list, 0|(gdextension.SizePackedArray<<4), &struct {
+		recents gdextension.PackedArray[gdextension.String]
+	}{pointers.Get(gd.InternalPackedStrings(recents))})
+}
+func (self class) GetRecentList() Packed.Strings { //gd:FileDialog.get_recent_list
+	var r_ret = noescape.CallStatic[gd.PackedPointers](methods.get_recent_list, gdextension.SizePackedArray, &struct{}{})
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
+	return ret
+}
+func (self class) SetGetIconCallback(callback Callable.Function) { //gd:FileDialog.set_get_icon_callback
+	noescape.CallStatic[struct{}](methods.set_get_icon_callback, 0|(gdextension.SizeCallable<<4), &struct{ callback gdextension.Callable }{pointers.Get(gd.InternalCallable(callback))})
+}
+func (self class) SetGetThumbnailCallback(callback Callable.Function) { //gd:FileDialog.set_get_thumbnail_callback
+	noescape.CallStatic[struct{}](methods.set_get_thumbnail_callback, 0|(gdextension.SizeCallable<<4), &struct{ callback gdextension.Callable }{pointers.Get(gd.InternalCallable(callback))})
+}
+func (self class) PopupFileDialog() { //gd:FileDialog.popup_file_dialog
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_file_dialog, 0, &struct{}{})
 }
 func (self class) Invalidate() { //gd:FileDialog.invalidate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.invalidate, 0, &struct{}{})
@@ -1075,4 +1255,17 @@ const (
 	//
 	// [LayoutToggleEnabled]: https://pkg.go.dev/graphics.gd/classdb/#Instance.LayoutToggleEnabled
 	CustomizationLayout Customization = 6
+	// If enabled, the [FileDialog] will warn the user before overwriting files in save mode.
+	//
+	// Equivalent to [OverwriteWarningEnabled].
+	//
+	// [FileDialog]: https://pkg.go.dev/graphics.gd/classdb/FileDialog
+	// [OverwriteWarningEnabled]: https://pkg.go.dev/graphics.gd/classdb/#Instance.OverwriteWarningEnabled
+	CustomizationOverwriteWarning Customization = 7
+	// If enabled, the context menu will show the "Delete" option, which allows moving files and folders to trash.
+	//
+	// Equivalent to [DeletingEnabled].
+	//
+	// [DeletingEnabled]: https://pkg.go.dev/graphics.gd/classdb/#Instance.DeletingEnabled
+	CustomizationDelete Customization = 8
 )

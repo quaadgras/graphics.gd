@@ -154,11 +154,13 @@ var methods struct {
 	draw_dashed_line                        gdextension.MethodForClass `hash:"3653831622"`
 	draw_polyline                           gdextension.MethodForClass `hash:"3797364428"`
 	draw_polyline_colors                    gdextension.MethodForClass `hash:"2311979562"`
+	draw_ellipse_arc                        gdextension.MethodForClass `hash:"936174114"`
 	draw_arc                                gdextension.MethodForClass `hash:"4140652635"`
 	draw_multiline                          gdextension.MethodForClass `hash:"3797364428"`
 	draw_multiline_colors                   gdextension.MethodForClass `hash:"2311979562"`
 	draw_rect                               gdextension.MethodForClass `hash:"2773573813"`
 	draw_circle                             gdextension.MethodForClass `hash:"3153026596"`
+	draw_ellipse                            gdextension.MethodForClass `hash:"3790774806"`
 	draw_texture                            gdextension.MethodForClass `hash:"520200117"`
 	draw_texture_rect                       gdextension.MethodForClass `hash:"3832805018"`
 	draw_texture_rect_region                gdextension.MethodForClass `hash:"3883821411"`
@@ -469,26 +471,56 @@ func (self MoreArgs) DrawPolylineColors(points []Vector2.XY, colors []Color.RGBA
 }
 
 /*
-Draws an unfilled arc between the given angles with a uniform 'color' and 'width' and optional antialiasing (supported only for positive 'width'). The larger the value of 'point_count', the smoother the curve. 'center' is defined in local space. See also [DrawCircle].
+Draws an unfilled elliptical arc between the given angles with a uniform 'color' and 'width' and optional antialiasing (supported only for positive 'width'). The larger the value of 'point_count', the smoother the curve. For circular arcs, see [DrawArc]. See also [DrawEllipse].
+
+If 'width' is negative, it will be ignored and the arc will be drawn using [Renderingserver.PrimitiveLineStrip]. This means that when the CanvasItem is scaled, the arc will remain thin. If this behavior is not desired, then pass a positive 'width' like 1.0.
+
+The arc is drawn from 'start_angle' towards the value of 'end_angle' so in clockwise direction if start_angle < end_angle and counter-clockwise otherwise. Passing the same angles but in reversed order will produce the same arc. If absolute difference of 'start_angle' and 'end_angle' is greater than [@Gdscript.Tau] radians, then a full ellipse is drawn (i.e. arc will not overlap itself).
+
+[DrawArc]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawArc
+[DrawEllipse]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawEllipse
+*/
+func (self Instance) DrawEllipseArc(center Vector2.XY, major Float.X, minor Float.X, start_angle Angle.Radians, end_angle Angle.Radians, point_count int, color Color.RGBA) { //gd:CanvasItem.draw_ellipse_arc
+	Advanced(self).DrawEllipseArc(Vector2.XY(center), float64(major), float64(minor), float64(start_angle), float64(end_angle), int64(point_count), Color.RGBA(color), float64(-1.0), false)
+}
+
+/*
+Draws an unfilled elliptical arc between the given angles with a uniform 'color' and 'width' and optional antialiasing (supported only for positive 'width'). The larger the value of 'point_count', the smoother the curve. For circular arcs, see [DrawArc]. See also [DrawEllipse].
+
+If 'width' is negative, it will be ignored and the arc will be drawn using [Renderingserver.PrimitiveLineStrip]. This means that when the CanvasItem is scaled, the arc will remain thin. If this behavior is not desired, then pass a positive 'width' like 1.0.
+
+The arc is drawn from 'start_angle' towards the value of 'end_angle' so in clockwise direction if start_angle < end_angle and counter-clockwise otherwise. Passing the same angles but in reversed order will produce the same arc. If absolute difference of 'start_angle' and 'end_angle' is greater than [@Gdscript.Tau] radians, then a full ellipse is drawn (i.e. arc will not overlap itself).
+
+[DrawArc]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawArc
+[DrawEllipse]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawEllipse
+*/
+func (self MoreArgs) DrawEllipseArc(center Vector2.XY, major Float.X, minor Float.X, start_angle Angle.Radians, end_angle Angle.Radians, point_count int, color Color.RGBA, width Float.X, antialiased bool) { //gd:CanvasItem.draw_ellipse_arc
+	Advanced(self).DrawEllipseArc(Vector2.XY(center), float64(major), float64(minor), float64(start_angle), float64(end_angle), int64(point_count), Color.RGBA(color), float64(width), antialiased)
+}
+
+/*
+Draws an unfilled arc between the given angles with a uniform 'color' and 'width' and optional antialiasing (supported only for positive 'width'). The larger the value of 'point_count', the smoother the curve. 'center' is defined in local space. For elliptical arcs, see [DrawEllipseArc]. See also [DrawCircle].
 
 If 'width' is negative, it will be ignored and the arc will be drawn using [Renderingserver.PrimitiveLineStrip]. This means that when the CanvasItem is scaled, the arc will remain thin. If this behavior is not desired, then pass a positive 'width' like 1.0.
 
 The arc is drawn from 'start_angle' towards the value of 'end_angle' so in clockwise direction if start_angle < end_angle and counter-clockwise otherwise. Passing the same angles but in reversed order will produce the same arc. If absolute difference of 'start_angle' and 'end_angle' is greater than [@Gdscript.Tau] radians, then a full circle arc is drawn (i.e. arc will not overlap itself).
 
 [DrawCircle]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawCircle
+[DrawEllipseArc]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawEllipseArc
 */
 func (self Instance) DrawArc(center Vector2.XY, radius Float.X, start_angle Angle.Radians, end_angle Angle.Radians, point_count int, color Color.RGBA) { //gd:CanvasItem.draw_arc
 	Advanced(self).DrawArc(Vector2.XY(center), float64(radius), float64(start_angle), float64(end_angle), int64(point_count), Color.RGBA(color), float64(-1.0), false)
 }
 
 /*
-Draws an unfilled arc between the given angles with a uniform 'color' and 'width' and optional antialiasing (supported only for positive 'width'). The larger the value of 'point_count', the smoother the curve. 'center' is defined in local space. See also [DrawCircle].
+Draws an unfilled arc between the given angles with a uniform 'color' and 'width' and optional antialiasing (supported only for positive 'width'). The larger the value of 'point_count', the smoother the curve. 'center' is defined in local space. For elliptical arcs, see [DrawEllipseArc]. See also [DrawCircle].
 
 If 'width' is negative, it will be ignored and the arc will be drawn using [Renderingserver.PrimitiveLineStrip]. This means that when the CanvasItem is scaled, the arc will remain thin. If this behavior is not desired, then pass a positive 'width' like 1.0.
 
 The arc is drawn from 'start_angle' towards the value of 'end_angle' so in clockwise direction if start_angle < end_angle and counter-clockwise otherwise. Passing the same angles but in reversed order will produce the same arc. If absolute difference of 'start_angle' and 'end_angle' is greater than [@Gdscript.Tau] radians, then a full circle arc is drawn (i.e. arc will not overlap itself).
 
 [DrawCircle]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawCircle
+[DrawEllipseArc]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawEllipseArc
 */
 func (self MoreArgs) DrawArc(center Vector2.XY, radius Float.X, start_angle Angle.Radians, end_angle Angle.Radians, point_count int, color Color.RGBA, width Float.X, antialiased bool) { //gd:CanvasItem.draw_arc
 	Advanced(self).DrawArc(Vector2.XY(center), float64(radius), float64(start_angle), float64(end_angle), int64(point_count), Color.RGBA(color), float64(width), antialiased)
@@ -585,7 +617,7 @@ func (self MoreArgs) DrawRect(rect Rect2.PositionSize, color Color.RGBA, filled 
 }
 
 /*
-Draws a circle, with 'position' defined in local space. See also [DrawArc], [DrawPolyline], and [DrawPolygon].
+Draws a circle, with 'position' defined in local space. See also [DrawEllipse], [DrawArc], [DrawPolyline], and [DrawPolygon].
 
 If 'filled' is true, the circle will be filled with the 'color' specified. If 'filled' is false, the circle will be drawn as a stroke with the 'color' and 'width' specified.
 
@@ -596,6 +628,7 @@ If 'antialiased' is true, half transparent "feathers" will be attached to the bo
 Note: 'width' is only effective if 'filled' is false.
 
 [DrawArc]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawArc
+[DrawEllipse]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawEllipse
 [DrawPolygon]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolygon
 [DrawPolyline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolyline
 */
@@ -604,7 +637,7 @@ func (self Instance) DrawCircle(position Vector2.XY, radius Float.X, color Color
 }
 
 /*
-Draws a circle, with 'position' defined in local space. See also [DrawArc], [DrawPolyline], and [DrawPolygon].
+Draws a circle, with 'position' defined in local space. See also [DrawEllipse], [DrawArc], [DrawPolyline], and [DrawPolygon].
 
 If 'filled' is true, the circle will be filled with the 'color' specified. If 'filled' is false, the circle will be drawn as a stroke with the 'color' and 'width' specified.
 
@@ -615,6 +648,7 @@ If 'antialiased' is true, half transparent "feathers" will be attached to the bo
 Note: 'width' is only effective if 'filled' is false.
 
 [DrawArc]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawArc
+[DrawEllipse]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawEllipse
 [DrawPolygon]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolygon
 [DrawPolyline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolyline
 */
@@ -623,7 +657,49 @@ func (self MoreArgs) DrawCircle(position Vector2.XY, radius Float.X, color Color
 }
 
 /*
+Draws an ellipse with semi-major axis 'major' and semi-minor axis 'minor'. See also [DrawCircle], [DrawEllipseArc], [DrawPolyline], and [DrawPolygon].
+
+If 'filled' is true, the ellipse will be filled with the 'color' specified. If 'filled' is false, the ellipse will be drawn as a stroke with the 'color' and 'width' specified.
+
+If 'width' is negative, then two-point primitives will be drawn instead of four-point ones. This means that when the CanvasItem is scaled, the lines will remain thin. If this behavior is not desired, then pass a positive 'width' like 1.0.
+
+If 'antialiased' is true, half transparent "feathers" will be attached to the boundary, making outlines smooth.
+
+Note: 'width' is only effective if 'filled' is false.
+
+[DrawCircle]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawCircle
+[DrawEllipseArc]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawEllipseArc
+[DrawPolygon]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolygon
+[DrawPolyline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolyline
+*/
+func (self Instance) DrawEllipse(position Vector2.XY, major Float.X, minor Float.X, color Color.RGBA) { //gd:CanvasItem.draw_ellipse
+	Advanced(self).DrawEllipse(Vector2.XY(position), float64(major), float64(minor), Color.RGBA(color), true, float64(-1.0), false)
+}
+
+/*
+Draws an ellipse with semi-major axis 'major' and semi-minor axis 'minor'. See also [DrawCircle], [DrawEllipseArc], [DrawPolyline], and [DrawPolygon].
+
+If 'filled' is true, the ellipse will be filled with the 'color' specified. If 'filled' is false, the ellipse will be drawn as a stroke with the 'color' and 'width' specified.
+
+If 'width' is negative, then two-point primitives will be drawn instead of four-point ones. This means that when the CanvasItem is scaled, the lines will remain thin. If this behavior is not desired, then pass a positive 'width' like 1.0.
+
+If 'antialiased' is true, half transparent "feathers" will be attached to the boundary, making outlines smooth.
+
+Note: 'width' is only effective if 'filled' is false.
+
+[DrawCircle]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawCircle
+[DrawEllipseArc]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawEllipseArc
+[DrawPolygon]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolygon
+[DrawPolyline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolyline
+*/
+func (self MoreArgs) DrawEllipse(position Vector2.XY, major Float.X, minor Float.X, color Color.RGBA, filled bool, width Float.X, antialiased bool) { //gd:CanvasItem.draw_ellipse
+	Advanced(self).DrawEllipse(Vector2.XY(position), float64(major), float64(minor), Color.RGBA(color), filled, float64(width), antialiased)
+}
+
+/*
 Draws a texture at a given position. The 'position' is defined in local space.
+
+Note: Styleboxes, textures, and meshes stored only inside local variables should not be used with this method in GDScript, because the drawing operation doesn't begin immediately once this method is called. In GDScript, when the function with the local variables ends, the local variables get destroyed before the rendering takes place.
 */
 func (self Instance) DrawTexture(texture Texture2D.Instance, position Vector2.XY) { //gd:CanvasItem.draw_texture
 	Advanced(self).DrawTexture(texture, Vector2.XY(position), Color.RGBA(gd.Color{1, 1, 1, 1}))
@@ -631,6 +707,8 @@ func (self Instance) DrawTexture(texture Texture2D.Instance, position Vector2.XY
 
 /*
 Draws a texture at a given position. The 'position' is defined in local space.
+
+Note: Styleboxes, textures, and meshes stored only inside local variables should not be used with this method in GDScript, because the drawing operation doesn't begin immediately once this method is called. In GDScript, when the function with the local variables ends, the local variables get destroyed before the rendering takes place.
 */
 func (self MoreArgs) DrawTexture(texture Texture2D.Instance, position Vector2.XY, modulate Color.RGBA) { //gd:CanvasItem.draw_texture
 	Advanced(self).DrawTexture(texture, Vector2.XY(position), Color.RGBA(modulate))
@@ -638,6 +716,8 @@ func (self MoreArgs) DrawTexture(texture Texture2D.Instance, position Vector2.XY
 
 /*
 Draws a textured rectangle at a given position, optionally modulated by a color. The 'rect' is defined in local space. If 'transpose' is true, the texture will have its X and Y coordinates swapped. See also [DrawRect] and [DrawTextureRectRegion].
+
+Note: Styleboxes, textures, and meshes stored only inside local variables should not be used with this method in GDScript, because the drawing operation doesn't begin immediately once this method is called. In GDScript, when the function with the local variables ends, the local variables get destroyed before the rendering takes place.
 
 [DrawRect]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawRect
 [DrawTextureRectRegion]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawTextureRectRegion
@@ -649,6 +729,8 @@ func (self Instance) DrawTextureRect(texture Texture2D.Instance, rect Rect2.Posi
 /*
 Draws a textured rectangle at a given position, optionally modulated by a color. The 'rect' is defined in local space. If 'transpose' is true, the texture will have its X and Y coordinates swapped. See also [DrawRect] and [DrawTextureRectRegion].
 
+Note: Styleboxes, textures, and meshes stored only inside local variables should not be used with this method in GDScript, because the drawing operation doesn't begin immediately once this method is called. In GDScript, when the function with the local variables ends, the local variables get destroyed before the rendering takes place.
+
 [DrawRect]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawRect
 [DrawTextureRectRegion]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawTextureRectRegion
 */
@@ -659,6 +741,8 @@ func (self MoreArgs) DrawTextureRect(texture Texture2D.Instance, rect Rect2.Posi
 /*
 Draws a textured rectangle from a texture's region (specified by 'src_rect') at a given position in local space, optionally modulated by a color. If 'transpose' is true, the texture will have its X and Y coordinates swapped. See also [DrawTextureRect].
 
+Note: Styleboxes, textures, and meshes stored only inside local variables should not be used with this method in GDScript, because the drawing operation doesn't begin immediately once this method is called. In GDScript, when the function with the local variables ends, the local variables get destroyed before the rendering takes place.
+
 [DrawTextureRect]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawTextureRect
 */
 func (self Instance) DrawTextureRectRegion(texture Texture2D.Instance, rect Rect2.PositionSize, src_rect Rect2.PositionSize) { //gd:CanvasItem.draw_texture_rect_region
@@ -667,6 +751,8 @@ func (self Instance) DrawTextureRectRegion(texture Texture2D.Instance, rect Rect
 
 /*
 Draws a textured rectangle from a texture's region (specified by 'src_rect') at a given position in local space, optionally modulated by a color. If 'transpose' is true, the texture will have its X and Y coordinates swapped. See also [DrawTextureRect].
+
+Note: Styleboxes, textures, and meshes stored only inside local variables should not be used with this method in GDScript, because the drawing operation doesn't begin immediately once this method is called. In GDScript, when the function with the local variables ends, the local variables get destroyed before the rendering takes place.
 
 [DrawTextureRect]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawTextureRect
 */
@@ -681,6 +767,8 @@ If 'outline' is positive, each alpha channel value of pixel in region is set to 
 
 Value of the 'pixel_range' should the same that was used during distance field texture generation.
 
+Note: Styleboxes, textures, and meshes stored only inside local variables should not be used with this method in GDScript, because the drawing operation doesn't begin immediately once this method is called. In GDScript, when the function with the local variables ends, the local variables get destroyed before the rendering takes place.
+
 [FontFile.MultichannelSignedDistanceField]: https://pkg.go.dev/graphics.gd/classdb/FontFile#Instance.MultichannelSignedDistanceField
 */
 func (self Instance) DrawMsdfTextureRectRegion(texture Texture2D.Instance, rect Rect2.PositionSize, src_rect Rect2.PositionSize) { //gd:CanvasItem.draw_msdf_texture_rect_region
@@ -693,6 +781,8 @@ Draws a textured rectangle region of the multichannel signed distance field text
 If 'outline' is positive, each alpha channel value of pixel in region is set to maximum value of true distance in the 'outline' radius.
 
 Value of the 'pixel_range' should the same that was used during distance field texture generation.
+
+Note: Styleboxes, textures, and meshes stored only inside local variables should not be used with this method in GDScript, because the drawing operation doesn't begin immediately once this method is called. In GDScript, when the function with the local variables ends, the local variables get destroyed before the rendering takes place.
 
 [FontFile.MultichannelSignedDistanceField]: https://pkg.go.dev/graphics.gd/classdb/FontFile#Instance.MultichannelSignedDistanceField
 */
@@ -711,6 +801,8 @@ Texture is drawn using the following blend operation, blend mode of the [CanvasI
 	dst.B = texture.B*modulate.B*modulate.A + dst.B*(1.0-texture.B*modulate.A)
 	dst.A = modulate.A + dst.A*(1.0-modulate.A)
 
+Note: Styleboxes, textures, and meshes stored only inside local variables should not be used with this method in GDScript, because the drawing operation doesn't begin immediately once this method is called. In GDScript, when the function with the local variables ends, the local variables get destroyed before the rendering takes place.
+
 [CanvasItemMaterial]: https://pkg.go.dev/graphics.gd/classdb/CanvasItemMaterial
 */
 func (self Instance) DrawLcdTextureRectRegion(texture Texture2D.Instance, rect Rect2.PositionSize, src_rect Rect2.PositionSize) { //gd:CanvasItem.draw_lcd_texture_rect_region
@@ -728,6 +820,8 @@ Texture is drawn using the following blend operation, blend mode of the [CanvasI
 	dst.B = texture.B*modulate.B*modulate.A + dst.B*(1.0-texture.B*modulate.A)
 	dst.A = modulate.A + dst.A*(1.0-modulate.A)
 
+Note: Styleboxes, textures, and meshes stored only inside local variables should not be used with this method in GDScript, because the drawing operation doesn't begin immediately once this method is called. In GDScript, when the function with the local variables ends, the local variables get destroyed before the rendering takes place.
+
 [CanvasItemMaterial]: https://pkg.go.dev/graphics.gd/classdb/CanvasItemMaterial
 */
 func (self MoreArgs) DrawLcdTextureRectRegion(texture Texture2D.Instance, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA) { //gd:CanvasItem.draw_lcd_texture_rect_region
@@ -736,6 +830,8 @@ func (self MoreArgs) DrawLcdTextureRectRegion(texture Texture2D.Instance, rect R
 
 /*
 Draws a custom primitive. 1 point for a point, 2 points for a line, 3 points for a triangle, and 4 points for a quad. If 0 points or more than 4 points are specified, nothing will be drawn and an error message will be printed. The 'points' array is defined in local space. See also [DrawLine], [DrawPolyline], [DrawPolygon], and [DrawRect].
+
+Note: Styleboxes, textures, and meshes stored only inside local variables should not be used with this method in GDScript, because the drawing operation doesn't begin immediately once this method is called. In GDScript, when the function with the local variables ends, the local variables get destroyed before the rendering takes place.
 
 [DrawLine]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawLine
 [DrawPolygon]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolygon
@@ -748,6 +844,8 @@ func (self Instance) DrawPrimitive(points []Vector2.XY, colors []Color.RGBA, uvs
 
 /*
 Draws a custom primitive. 1 point for a point, 2 points for a line, 3 points for a triangle, and 4 points for a quad. If 0 points or more than 4 points are specified, nothing will be drawn and an error message will be printed. The 'points' array is defined in local space. See also [DrawLine], [DrawPolyline], [DrawPolygon], and [DrawRect].
+
+Note: Styleboxes, textures, and meshes stored only inside local variables should not be used with this method in GDScript, because the drawing operation doesn't begin immediately once this method is called. In GDScript, when the function with the local variables ends, the local variables get destroyed before the rendering takes place.
 
 [DrawLine]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawLine
 [DrawPolygon]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolygon
@@ -762,6 +860,8 @@ func (self MoreArgs) DrawPrimitive(points []Vector2.XY, colors []Color.RGBA, uvs
 Draws a solid polygon of any number of points, convex or concave. Unlike [DrawColoredPolygon], each point's color can be changed individually. The 'points' array is defined in local space. See also [DrawPolyline] and [DrawPolylineColors]. If you need more flexibility (such as being able to use bones), use [RenderingServer.CanvasItemAddTriangleArray] instead.
 
 Note: If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [Geometry2D.TriangulatePolygon] and using [DrawMesh], [DrawMultimesh], or [RenderingServer.CanvasItemAddTriangleArray].
+
+Note: Styleboxes, textures, and meshes stored only inside local variables should not be used with this method in GDScript, because the drawing operation doesn't begin immediately once this method is called. In GDScript, when the function with the local variables ends, the local variables get destroyed before the rendering takes place.
 
 [DrawColoredPolygon]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawColoredPolygon
 [DrawMesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMesh
@@ -780,6 +880,8 @@ Draws a solid polygon of any number of points, convex or concave. Unlike [DrawCo
 
 Note: If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [Geometry2D.TriangulatePolygon] and using [DrawMesh], [DrawMultimesh], or [RenderingServer.CanvasItemAddTriangleArray].
 
+Note: Styleboxes, textures, and meshes stored only inside local variables should not be used with this method in GDScript, because the drawing operation doesn't begin immediately once this method is called. In GDScript, when the function with the local variables ends, the local variables get destroyed before the rendering takes place.
+
 [DrawColoredPolygon]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawColoredPolygon
 [DrawMesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMesh
 [DrawMultimesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultimesh
@@ -797,6 +899,8 @@ Draws a colored polygon of any number of points, convex or concave. The points i
 
 Note: If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [Geometry2D.TriangulatePolygon] and using [DrawMesh], [DrawMultimesh], or [RenderingServer.CanvasItemAddTriangleArray].
 
+Note: Styleboxes, textures, and meshes stored only inside local variables should not be used with this method in GDScript, because the drawing operation doesn't begin immediately once this method is called. In GDScript, when the function with the local variables ends, the local variables get destroyed before the rendering takes place.
+
 [DrawMesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMesh
 [DrawMultimesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultimesh
 [DrawPolygon]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolygon
@@ -811,6 +915,8 @@ func (self Instance) DrawColoredPolygon(points []Vector2.XY, color Color.RGBA) {
 Draws a colored polygon of any number of points, convex or concave. The points in the 'points' array are defined in local space. Unlike [DrawPolygon], a single color must be specified for the whole polygon.
 
 Note: If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [Geometry2D.TriangulatePolygon] and using [DrawMesh], [DrawMultimesh], or [RenderingServer.CanvasItemAddTriangleArray].
+
+Note: Styleboxes, textures, and meshes stored only inside local variables should not be used with this method in GDScript, because the drawing operation doesn't begin immediately once this method is called. In GDScript, when the function with the local variables ends, the local variables get destroyed before the rendering takes place.
 
 [DrawMesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMesh
 [DrawMultimesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultimesh
@@ -937,6 +1043,8 @@ func (self MoreArgs) DrawCharOutline(font Font.Instance, pos Vector2.XY, char st
 /*
 Draws a [Mesh] in 2D, using the provided texture. See [MeshInstance2D] for related documentation. The 'transform' is defined in local space.
 
+Note: Styleboxes, textures, and meshes stored only inside local variables should not be used with this method in GDScript, because the drawing operation doesn't begin immediately once this method is called. In GDScript, when the function with the local variables ends, the local variables get destroyed before the rendering takes place.
+
 [Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
 [MeshInstance2D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance2D
 */
@@ -947,6 +1055,8 @@ func (self Instance) DrawMesh(mesh Mesh.Instance, texture Texture2D.Instance) { 
 /*
 Draws a [Mesh] in 2D, using the provided texture. See [MeshInstance2D] for related documentation. The 'transform' is defined in local space.
 
+Note: Styleboxes, textures, and meshes stored only inside local variables should not be used with this method in GDScript, because the drawing operation doesn't begin immediately once this method is called. In GDScript, when the function with the local variables ends, the local variables get destroyed before the rendering takes place.
+
 [Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
 [MeshInstance2D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance2D
 */
@@ -956,6 +1066,8 @@ func (self MoreArgs) DrawMesh(mesh Mesh.Instance, texture Texture2D.Instance, tr
 
 /*
 Draws a [MultiMesh] in 2D with the provided texture. See [MultiMeshInstance2D] for related documentation.
+
+Note: Styleboxes, textures, and meshes stored only inside local variables should not be used with this method in GDScript, because the drawing operation doesn't begin immediately once this method is called. In GDScript, when the function with the local variables ends, the local variables get destroyed before the rendering takes place.
 
 [MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
 [MultiMeshInstance2D]: https://pkg.go.dev/graphics.gd/classdb/MultiMeshInstance2D
@@ -1081,10 +1193,10 @@ func (self Instance) GetCanvasTransform() Transform2D.OriginXY { //gd:CanvasItem
 /*
 Returns the transform of this [CanvasItem] in global screen coordinates (i.e. taking window position into account). Mostly useful for editor plugins.
 
-Equals to [GetGlobalTransform] if the window is embedded (see [Viewport.GuiEmbedSubwindows]).
+Equivalent to [GetGlobalTransformWithCanvas] if the window is embedded (see [Viewport.GuiEmbedSubwindows]).
 
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[GetGlobalTransform]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.GetGlobalTransform
+[GetGlobalTransformWithCanvas]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.GetGlobalTransformWithCanvas
 [Viewport.GuiEmbedSubwindows]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GuiEmbedSubwindows
 */
 func (self Instance) GetScreenTransform() Transform2D.OriginXY { //gd:CanvasItem.get_screen_transform
@@ -1196,7 +1308,7 @@ func (self Instance) IsLocalTransformNotificationEnabled() bool { //gd:CanvasIte
 }
 
 /*
-If true, the node will receive [NotificationTransformChanged] whenever global transform changes.
+If true, the node will receive [NotificationTransformChanged] whenever its global transform changes.
 
 Note: Many canvas items such as [Camera2D] or [Light2D] automatically enable this in order to function correctly.
 
@@ -1440,8 +1552,13 @@ func (self Instance) SetLightMask(value int) Instance { //gd:CanvasItem.light_ma
 /*
 The rendering layer in which this [CanvasItem] is rendered by [Viewport] nodes. A [Viewport] will render a [CanvasItem] if it and all its parents share a layer with the [Viewport]'s canvas cull mask.
 
+Note: A [CanvasItem] does not inherit its parents' visibility layers. This means that if a parent [CanvasItem] does not have all the same layers as its child, the child may not be visible even if both the parent and child have [Visible] set to true. For example, if a parent has layer 1 and a child has layer 2, the child will not be visible in a [Viewport] with the canvas cull mask set to layer 1 or 2 (see [Viewport.CanvasCullMask]). To ensure that both the parent and child are visible, the parent must have both layers 1 and 2, or the child must have [TopLevel] set to true.
+
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[TopLevel]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.TopLevel
 [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+[Viewport.CanvasCullMask]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.CanvasCullMask
+[Visible]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Visible
 */
 func (self Instance) VisibilityLayer() int { //gd:CanvasItem.visibility_layer
 	return int(int(class(self).GetVisibilityLayer()))
@@ -1711,6 +1828,19 @@ func (self class) DrawPolylineColors(points Packed.Array[Vector2.XY], colors Pac
 		antialiased bool
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)), width, antialiased})
 }
+func (self class) DrawEllipseArc(center Vector2.XY, major float64, minor float64, start_angle float64, end_angle float64, point_count int64, color Color.RGBA, width float64, antialiased bool) { //gd:CanvasItem.draw_ellipse_arc
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_ellipse_arc, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeColor<<28)|(gdextension.SizeFloat<<32)|(gdextension.SizeBool<<36), &struct {
+		center      Vector2.XY
+		major       float64
+		minor       float64
+		start_angle float64
+		end_angle   float64
+		point_count int64
+		color       Color.RGBA
+		width       float64
+		antialiased bool
+	}{center, major, minor, start_angle, end_angle, point_count, color, width, antialiased})
+}
 func (self class) DrawArc(center Vector2.XY, radius float64, start_angle float64, end_angle float64, point_count int64, color Color.RGBA, width float64, antialiased bool) { //gd:CanvasItem.draw_arc
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_arc, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeColor<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeBool<<32), &struct {
 		center      Vector2.XY
@@ -1757,6 +1887,17 @@ func (self class) DrawCircle(position Vector2.XY, radius float64, color Color.RG
 		width       float64
 		antialiased bool
 	}{position, radius, color, filled, width, antialiased})
+}
+func (self class) DrawEllipse(position Vector2.XY, major float64, minor float64, color Color.RGBA, filled bool, width float64, antialiased bool) { //gd:CanvasItem.draw_ellipse
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_ellipse, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeBool<<28), &struct {
+		position    Vector2.XY
+		major       float64
+		minor       float64
+		color       Color.RGBA
+		filled      bool
+		width       float64
+		antialiased bool
+	}{position, major, minor, color, filled, width, antialiased})
 }
 func (self class) DrawTexture(texture [1]gdclass.Texture2D, position Vector2.XY, modulate Color.RGBA) { //gd:CanvasItem.draw_texture
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_texture, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeColor<<12), &struct {

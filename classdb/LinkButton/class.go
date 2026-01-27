@@ -99,6 +99,10 @@ var sname gdextension.StringName
 var methods struct {
 	set_text                                  gdextension.MethodForClass `hash:"83702148"`
 	get_text                                  gdextension.MethodForClass `hash:"201670096"`
+	set_text_overrun_behavior                 gdextension.MethodForClass `hash:"1008890932"`
+	get_text_overrun_behavior                 gdextension.MethodForClass `hash:"3779142101"`
+	set_ellipsis_char                         gdextension.MethodForClass `hash:"83702148"`
+	get_ellipsis_char                         gdextension.MethodForClass `hash:"201670096"`
 	set_text_direction                        gdextension.MethodForClass `hash:"119160795"`
 	get_text_direction                        gdextension.MethodForClass `hash:"797257663"`
 	set_language                              gdextension.MethodForClass `hash:"83702148"`
@@ -219,6 +223,32 @@ func (self Instance) SetUri(value string) Instance { //gd:LinkButton.uri
 }
 
 /*
+Sets the clipping behavior when the text exceeds the node's bounding rectangle.
+*/
+func (self Instance) TextOverrunBehavior() TextServer.OverrunBehavior { //gd:LinkButton.text_overrun_behavior
+	return TextServer.OverrunBehavior(class(self).GetTextOverrunBehavior())
+}
+
+// SetTextOverrunBehavior sets the property returned by [GetTextOverrunBehavior]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) Instance { //gd:LinkButton.text_overrun_behavior
+	class(self).SetTextOverrunBehavior(value)
+	return self
+}
+
+/*
+Ellipsis character used for text clipping.
+*/
+func (self Instance) EllipsisChar() string { //gd:LinkButton.ellipsis_char
+	return string(class(self).GetEllipsisChar().String())
+}
+
+// SetEllipsisChar sets the property returned by [GetEllipsisChar]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEllipsisChar(value string) Instance { //gd:LinkButton.ellipsis_char
+	class(self).SetEllipsisChar(String.New(value))
+	return self
+}
+
+/*
 Base text writing direction.
 */
 func (self Instance) TextDirection() Control.TextDirection { //gd:LinkButton.text_direction
@@ -232,7 +262,7 @@ func (self Instance) SetTextDirection(value Control.TextDirection) Instance { //
 }
 
 /*
-Language code used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
+Language code used for line-breaking and text shaping algorithms. If left empty, the current locale is used instead.
 */
 func (self Instance) Language() string { //gd:LinkButton.language
 	return string(class(self).GetLanguage().String())
@@ -275,6 +305,22 @@ func (self class) SetText(text String.Readable) { //gd:LinkButton.set_text
 }
 func (self class) GetText() String.Readable { //gd:LinkButton.get_text
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_text, gdextension.SizeString, &struct{}{})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+func (self class) SetTextOverrunBehavior(overrun_behavior TextServer.OverrunBehavior) { //gd:LinkButton.set_text_overrun_behavior
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_overrun_behavior, 0|(gdextension.SizeInt<<4), &struct{ overrun_behavior TextServer.OverrunBehavior }{overrun_behavior})
+}
+func (self class) GetTextOverrunBehavior() TextServer.OverrunBehavior { //gd:LinkButton.get_text_overrun_behavior
+	var r_ret = noescape.Call[TextServer.OverrunBehavior](gd.ObjectChecked(self.AsObject()), methods.get_text_overrun_behavior, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetEllipsisChar(char String.Readable) { //gd:LinkButton.set_ellipsis_char
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ellipsis_char, 0|(gdextension.SizeString<<4), &struct{ char gdextension.String }{pointers.Get(gd.InternalString(char))})
+}
+func (self class) GetEllipsisChar() String.Readable { //gd:LinkButton.get_ellipsis_char
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_ellipsis_char, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

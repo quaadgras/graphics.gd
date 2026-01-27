@@ -122,17 +122,27 @@ type Interface interface {
 	//
 	// Additionally, 'script_backtraces' provides backtraces for each of the script languages. These will only contain stack frames in editor builds and debug builds by default. To enable them for release builds as well, you need to enable [ProjectSettings] "debug/settings/gdscript/always_track_call_stacks".
 	//
-	// Warning: This function may be called from multiple different threads, so you may need to do your own locking.
+	// Warning: This method will be called from threads other than the main thread, possibly at the same time, so you will need to have some kind of thread-safety in your implementation of it, like a [Mutex].
 	//
 	// Note: 'script_backtraces' will not contain any captured variables, due to its prohibitively high cost. To get those you will need to capture the backtraces yourself, from within the [Logger] virtual methods, using [Engine.CaptureScriptBacktraces].
 	//
+	// Note: Logging errors from this method using functions like [@GlobalScope.PushError] or [@GlobalScope.PushWarning] is not supported, as it could cause infinite recursion. These errors will only show up in the console output.
+	//
+	// [@GlobalScope.PushError]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.PushError
+	// [@GlobalScope.PushWarning]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.PushWarning
 	// [Engine.CaptureScriptBacktraces]: https://pkg.go.dev/graphics.gd/classdb/Engine#CaptureScriptBacktraces
 	// [Logger]: https://pkg.go.dev/graphics.gd/classdb/Logger
+	// [Mutex]: https://pkg.go.dev/graphics.gd/classdb/Mutex
 	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	LogError(function string, file string, line int, code string, rationale string, editor_notify bool, error_type int, script_backtraces []ScriptBacktrace.Instance)
 	// Called when a message is logged. If 'error' is true, then this message was meant to be sent to stderr.
 	//
-	// Warning: This function may be called from multiple different threads, so you may need to do your own locking.
+	// Warning: This method will be called from threads other than the main thread, possibly at the same time, so you will need to have some kind of thread-safety in your implementation of it, like a [Mutex].
+	//
+	// Note: Logging another message from this method using functions like [@GlobalScope.Print] is not supported, as it could cause infinite recursion. These messages will only show up in the console output.
+	//
+	// [@GlobalScope.Print]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.Print
+	// [Mutex]: https://pkg.go.dev/graphics.gd/classdb/Mutex
 	LogMessage(message string, error bool)
 }
 
@@ -153,12 +163,17 @@ The type of error provided by 'error_type' is described in the [ErrorType] enume
 
 Additionally, 'script_backtraces' provides backtraces for each of the script languages. These will only contain stack frames in editor builds and debug builds by default. To enable them for release builds as well, you need to enable [ProjectSettings] "debug/settings/gdscript/always_track_call_stacks".
 
-Warning: This function may be called from multiple different threads, so you may need to do your own locking.
+Warning: This method will be called from threads other than the main thread, possibly at the same time, so you will need to have some kind of thread-safety in your implementation of it, like a [Mutex].
 
 Note: 'script_backtraces' will not contain any captured variables, due to its prohibitively high cost. To get those you will need to capture the backtraces yourself, from within the [Logger] virtual methods, using [Engine.CaptureScriptBacktraces].
 
+Note: Logging errors from this method using functions like [@GlobalScope.PushError] or [@GlobalScope.PushWarning] is not supported, as it could cause infinite recursion. These errors will only show up in the console output.
+
+[@GlobalScope.PushError]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.PushError
+[@GlobalScope.PushWarning]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.PushWarning
 [Engine.CaptureScriptBacktraces]: https://pkg.go.dev/graphics.gd/classdb/Engine#CaptureScriptBacktraces
 [Logger]: https://pkg.go.dev/graphics.gd/classdb/Logger
+[Mutex]: https://pkg.go.dev/graphics.gd/classdb/Mutex
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func (Instance) _log_error(impl func(ptr gdclass.Receiver, function string, file string, line int, code string, rationale string, editor_notify bool, error_type int, script_backtraces []ScriptBacktrace.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -184,7 +199,12 @@ func (Instance) _log_error(impl func(ptr gdclass.Receiver, function string, file
 /*
 Called when a message is logged. If 'error' is true, then this message was meant to be sent to stderr.
 
-Warning: This function may be called from multiple different threads, so you may need to do your own locking.
+Warning: This method will be called from threads other than the main thread, possibly at the same time, so you will need to have some kind of thread-safety in your implementation of it, like a [Mutex].
+
+Note: Logging another message from this method using functions like [@GlobalScope.Print] is not supported, as it could cause infinite recursion. These messages will only show up in the console output.
+
+[@GlobalScope.Print]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.Print
+[Mutex]: https://pkg.go.dev/graphics.gd/classdb/Mutex
 */
 func (Instance) _log_message(impl func(ptr gdclass.Receiver, message string, error bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {

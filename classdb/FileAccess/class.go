@@ -127,68 +127,74 @@ type Instance [1]gdclass.FileAccess
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	open                     gdextension.MethodForClass `hash:"1247358404"`
-	open_encrypted           gdextension.MethodForClass `hash:"788003459"`
-	open_encrypted_with_pass gdextension.MethodForClass `hash:"790283377"`
-	open_compressed          gdextension.MethodForClass `hash:"3686439335"`
-	get_open_error           gdextension.MethodForClass `hash:"166280745"`
-	create_temp              gdextension.MethodForClass `hash:"3075606245"`
-	get_file_as_bytes        gdextension.MethodForClass `hash:"659035735"`
-	get_file_as_string       gdextension.MethodForClass `hash:"1703090593"`
-	resize                   gdextension.MethodForClass `hash:"844576869"`
-	flush                    gdextension.MethodForClass `hash:"3218959716"`
-	get_path                 gdextension.MethodForClass `hash:"201670096"`
-	get_path_absolute        gdextension.MethodForClass `hash:"201670096"`
-	is_open                  gdextension.MethodForClass `hash:"36873697"`
-	seek                     gdextension.MethodForClass `hash:"1286410249"`
-	seek_end                 gdextension.MethodForClass `hash:"1995695955"`
-	get_position             gdextension.MethodForClass `hash:"3905245786"`
-	get_length               gdextension.MethodForClass `hash:"3905245786"`
-	eof_reached              gdextension.MethodForClass `hash:"36873697"`
-	get_8                    gdextension.MethodForClass `hash:"3905245786"`
-	get_16                   gdextension.MethodForClass `hash:"3905245786"`
-	get_32                   gdextension.MethodForClass `hash:"3905245786"`
-	get_64                   gdextension.MethodForClass `hash:"3905245786"`
-	get_half                 gdextension.MethodForClass `hash:"1740695150"`
-	get_float                gdextension.MethodForClass `hash:"1740695150"`
-	get_double               gdextension.MethodForClass `hash:"1740695150"`
-	get_real                 gdextension.MethodForClass `hash:"1740695150"`
-	get_buffer               gdextension.MethodForClass `hash:"4131300905"`
-	get_line                 gdextension.MethodForClass `hash:"201670096"`
-	get_csv_line             gdextension.MethodForClass `hash:"2358116058"`
-	get_as_text              gdextension.MethodForClass `hash:"1162154673"`
-	get_md5                  gdextension.MethodForClass `hash:"1703090593"`
-	get_sha256               gdextension.MethodForClass `hash:"1703090593"`
-	is_big_endian            gdextension.MethodForClass `hash:"36873697"`
-	set_big_endian           gdextension.MethodForClass `hash:"2586408642"`
-	get_error                gdextension.MethodForClass `hash:"3185525595"`
-	get_var                  gdextension.MethodForClass `hash:"189129690"`
-	store_8                  gdextension.MethodForClass `hash:"3067735520"`
-	store_16                 gdextension.MethodForClass `hash:"3067735520"`
-	store_32                 gdextension.MethodForClass `hash:"3067735520"`
-	store_64                 gdextension.MethodForClass `hash:"3067735520"`
-	store_half               gdextension.MethodForClass `hash:"330693286"`
-	store_float              gdextension.MethodForClass `hash:"330693286"`
-	store_double             gdextension.MethodForClass `hash:"330693286"`
-	store_real               gdextension.MethodForClass `hash:"330693286"`
-	store_buffer             gdextension.MethodForClass `hash:"114037665"`
-	store_line               gdextension.MethodForClass `hash:"2323990056"`
-	store_csv_line           gdextension.MethodForClass `hash:"1611473434"`
-	store_string             gdextension.MethodForClass `hash:"2323990056"`
-	store_var                gdextension.MethodForClass `hash:"117357437"`
-	store_pascal_string      gdextension.MethodForClass `hash:"2323990056"`
-	get_pascal_string        gdextension.MethodForClass `hash:"2841200299"`
-	close                    gdextension.MethodForClass `hash:"3218959716"`
-	file_exists              gdextension.MethodForClass `hash:"2323990056"`
-	get_modified_time        gdextension.MethodForClass `hash:"1597066294"`
-	get_access_time          gdextension.MethodForClass `hash:"1597066294"`
-	get_size                 gdextension.MethodForClass `hash:"1597066294"`
-	get_unix_permissions     gdextension.MethodForClass `hash:"524341837"`
-	set_unix_permissions     gdextension.MethodForClass `hash:"846038644"`
-	get_hidden_attribute     gdextension.MethodForClass `hash:"2323990056"`
-	set_hidden_attribute     gdextension.MethodForClass `hash:"2892558115"`
-	set_read_only_attribute  gdextension.MethodForClass `hash:"2892558115"`
-	get_read_only_attribute  gdextension.MethodForClass `hash:"2323990056"`
+	open                          gdextension.MethodForClass `hash:"1247358404"`
+	open_encrypted                gdextension.MethodForClass `hash:"788003459"`
+	open_encrypted_with_pass      gdextension.MethodForClass `hash:"790283377"`
+	open_compressed               gdextension.MethodForClass `hash:"3686439335"`
+	get_open_error                gdextension.MethodForClass `hash:"166280745"`
+	create_temp                   gdextension.MethodForClass `hash:"171914364"`
+	get_file_as_bytes             gdextension.MethodForClass `hash:"659035735"`
+	get_file_as_string            gdextension.MethodForClass `hash:"1703090593"`
+	resize                        gdextension.MethodForClass `hash:"844576869"`
+	flush                         gdextension.MethodForClass `hash:"3218959716"`
+	get_path                      gdextension.MethodForClass `hash:"201670096"`
+	get_path_absolute             gdextension.MethodForClass `hash:"201670096"`
+	is_open                       gdextension.MethodForClass `hash:"36873697"`
+	seek                          gdextension.MethodForClass `hash:"1286410249"`
+	seek_end                      gdextension.MethodForClass `hash:"1995695955"`
+	get_position                  gdextension.MethodForClass `hash:"3905245786"`
+	get_length                    gdextension.MethodForClass `hash:"3905245786"`
+	eof_reached                   gdextension.MethodForClass `hash:"36873697"`
+	get_8                         gdextension.MethodForClass `hash:"3905245786"`
+	get_16                        gdextension.MethodForClass `hash:"3905245786"`
+	get_32                        gdextension.MethodForClass `hash:"3905245786"`
+	get_64                        gdextension.MethodForClass `hash:"3905245786"`
+	get_half                      gdextension.MethodForClass `hash:"1740695150"`
+	get_float                     gdextension.MethodForClass `hash:"1740695150"`
+	get_double                    gdextension.MethodForClass `hash:"1740695150"`
+	get_real                      gdextension.MethodForClass `hash:"1740695150"`
+	get_buffer                    gdextension.MethodForClass `hash:"4131300905"`
+	get_line                      gdextension.MethodForClass `hash:"201670096"`
+	get_csv_line                  gdextension.MethodForClass `hash:"2358116058"`
+	get_as_text                   gdextension.MethodForClass `hash:"201670096"`
+	get_md5                       gdextension.MethodForClass `hash:"1703090593"`
+	get_sha256                    gdextension.MethodForClass `hash:"1703090593"`
+	is_big_endian                 gdextension.MethodForClass `hash:"36873697"`
+	set_big_endian                gdextension.MethodForClass `hash:"2586408642"`
+	get_error                     gdextension.MethodForClass `hash:"3185525595"`
+	get_var                       gdextension.MethodForClass `hash:"189129690"`
+	store_8                       gdextension.MethodForClass `hash:"3067735520"`
+	store_16                      gdextension.MethodForClass `hash:"3067735520"`
+	store_32                      gdextension.MethodForClass `hash:"3067735520"`
+	store_64                      gdextension.MethodForClass `hash:"3067735520"`
+	store_half                    gdextension.MethodForClass `hash:"330693286"`
+	store_float                   gdextension.MethodForClass `hash:"330693286"`
+	store_double                  gdextension.MethodForClass `hash:"330693286"`
+	store_real                    gdextension.MethodForClass `hash:"330693286"`
+	store_buffer                  gdextension.MethodForClass `hash:"114037665"`
+	store_line                    gdextension.MethodForClass `hash:"2323990056"`
+	store_csv_line                gdextension.MethodForClass `hash:"1611473434"`
+	store_string                  gdextension.MethodForClass `hash:"2323990056"`
+	store_var                     gdextension.MethodForClass `hash:"117357437"`
+	store_pascal_string           gdextension.MethodForClass `hash:"2323990056"`
+	get_pascal_string             gdextension.MethodForClass `hash:"2841200299"`
+	close                         gdextension.MethodForClass `hash:"3218959716"`
+	file_exists                   gdextension.MethodForClass `hash:"2323990056"`
+	get_modified_time             gdextension.MethodForClass `hash:"1597066294"`
+	get_access_time               gdextension.MethodForClass `hash:"1597066294"`
+	get_size                      gdextension.MethodForClass `hash:"1597066294"`
+	get_unix_permissions          gdextension.MethodForClass `hash:"524341837"`
+	set_unix_permissions          gdextension.MethodForClass `hash:"846038644"`
+	get_hidden_attribute          gdextension.MethodForClass `hash:"2323990056"`
+	set_hidden_attribute          gdextension.MethodForClass `hash:"2892558115"`
+	set_read_only_attribute       gdextension.MethodForClass `hash:"2892558115"`
+	get_read_only_attribute       gdextension.MethodForClass `hash:"2323990056"`
+	get_extended_attribute        gdextension.MethodForClass `hash:"955893464"`
+	get_extended_attribute_string gdextension.MethodForClass `hash:"1218461987"`
+	set_extended_attribute        gdextension.MethodForClass `hash:"2643421469"`
+	set_extended_attribute_string gdextension.MethodForClass `hash:"699024349"`
+	remove_extended_attribute     gdextension.MethodForClass `hash:"852856452"`
+	get_extended_attributes_list  gdextension.MethodForClass `hash:"3538744774"`
 }
 
 func init() {
@@ -292,9 +298,9 @@ Returns null if opening the file failed. You can use [GetOpenError] to check the
 
 [FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
 */
-func CreateTemp(mode_flags int, prefix string, extension string, keep bool) Instance { //gd:FileAccess.create_temp
+func CreateTemp(mode_flags ModeFlags, prefix string, extension string, keep bool) Instance { //gd:FileAccess.create_temp
 	self := Instance{}
-	return Instance(Advanced(self).CreateTemp(int64(mode_flags), String.New(prefix), String.New(extension), keep))
+	return Instance(Advanced(self).CreateTemp(mode_flags, String.New(prefix), String.New(extension), keep))
 }
 
 /*
@@ -357,7 +363,7 @@ func (self Instance) IsOpen() bool { //gd:FileAccess.is_open
 }
 
 /*
-Changes the file reading/writing cursor to the specified position (in bytes from the beginning of the file). This changes the value returned by [GetPosition].
+Sets the file cursor to the specified position in bytes, from the beginning of the file. This changes the value returned by [GetPosition].
 
 [GetPosition]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.GetPosition
 */
@@ -366,9 +372,9 @@ func (self Instance) SeekTo(position int) { //gd:FileAccess.seek
 }
 
 /*
-Changes the file reading/writing cursor to the specified position (in bytes from the end of the file). This changes the value returned by [GetPosition].
+Sets the file cursor to the specified position in bytes, from the end of the file. This changes the value returned by [GetPosition].
 
-Note: This is an offset, so you should use negative numbers or the file cursor will be at the end of the file.
+Note: This is an offset, so you should use negative numbers otherwise the file cursor will be at the end of the file.
 
 [GetPosition]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.GetPosition
 */
@@ -377,9 +383,9 @@ func (self Instance) SeekEnd() { //gd:FileAccess.seek_end
 }
 
 /*
-Changes the file reading/writing cursor to the specified position (in bytes from the end of the file). This changes the value returned by [GetPosition].
+Sets the file cursor to the specified position in bytes, from the end of the file. This changes the value returned by [GetPosition].
 
-Note: This is an offset, so you should use negative numbers or the file cursor will be at the end of the file.
+Note: This is an offset, so you should use negative numbers otherwise the file cursor will be at the end of the file.
 
 [GetPosition]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.GetPosition
 */
@@ -523,20 +529,9 @@ func (self MoreArgs) GetCsvLine(delim string) []string { //gd:FileAccess.get_csv
 
 /*
 Returns the whole file as a string. Text is interpreted as being UTF-8 encoded. This ignores the file cursor and does not affect it.
-
-If 'skip_cr' is true, carriage return characters (\r, CR) will be ignored when parsing the UTF-8, so that only line feed characters (\n, LF) represent a new line (Unix convention).
 */
 func (self Instance) GetAsText() string { //gd:FileAccess.get_as_text
-	return string(Advanced(self).GetAsText(false).String())
-}
-
-/*
-Returns the whole file as a string. Text is interpreted as being UTF-8 encoded. This ignores the file cursor and does not affect it.
-
-If 'skip_cr' is true, carriage return characters (\r, CR) will be ignored when parsing the UTF-8, so that only line feed characters (\n, LF) represent a new line (Unix convention).
-*/
-func (self MoreArgs) GetAsText(skip_cr bool) string { //gd:FileAccess.get_as_text
-	return string(Advanced(self).GetAsText(skip_cr).String())
+	return string(Advanced(self).GetAsText().String())
 }
 
 /*
@@ -707,7 +702,7 @@ func (self Instance) StoreLine(line string) bool { //gd:FileAccess.store_line
 }
 
 /*
-Store the given []string in the file as a line formatted in the CSV (Comma-Separated Values) format. You can pass a different delimiter 'delim' to use other than the default "," (comma). This delimiter must be one-character long.
+Stores the given []string in the file as a line formatted in the CSV (Comma-Separated Values) format. You can pass a different delimiter 'delim' to use other than the default "," (comma). This delimiter must be one-character long.
 
 Text will be encoded as UTF-8. Returns true if the operation is successful.
 
@@ -718,7 +713,7 @@ func (self Instance) StoreCsvLine(values []string) bool { //gd:FileAccess.store_
 }
 
 /*
-Store the given []string in the file as a line formatted in the CSV (Comma-Separated Values) format. You can pass a different delimiter 'delim' to use other than the default "," (comma). This delimiter must be one-character long.
+Stores the given []string in the file as a line formatted in the CSV (Comma-Separated Values) format. You can pass a different delimiter 'delim' to use other than the default "," (comma). This delimiter must be one-character long.
 
 Text will be encoded as UTF-8. Returns true if the operation is successful.
 
@@ -835,7 +830,7 @@ func GetAccessTime(file string) int { //gd:FileAccess.get_access_time
 }
 
 /*
-Returns file size in bytes, or -1 on error.
+Returns the size of the file at the given path, in bytes, or -1 on error.
 */
 func GetSize(file string) int { //gd:FileAccess.get_size
 	self := Instance{}
@@ -843,7 +838,7 @@ func GetSize(file string) int { //gd:FileAccess.get_size
 }
 
 /*
-Returns file UNIX permissions.
+Returns the UNIX permissions of the file at the given path.
 
 Note: This method is implemented on iOS, Linux/BSD, and macOS.
 */
@@ -863,7 +858,7 @@ func SetUnixPermissions(file string, permissions UnixPermissionFlags) error { //
 }
 
 /*
-Returns true, if file hidden attribute is set.
+Returns true if the hidden attribute is set on the file at the given path.
 
 Note: This method is implemented on iOS, BSD, macOS, and Windows.
 */
@@ -893,13 +888,109 @@ func SetReadOnlyAttribute(file string, ro bool) error { //gd:FileAccess.set_read
 }
 
 /*
-Returns true, if file read only attribute is set.
+Returns true if the read only attribute is set on the file at the given path.
 
 Note: This method is implemented on iOS, BSD, macOS, and Windows.
 */
 func GetReadOnlyAttribute(file string) bool { //gd:FileAccess.get_read_only_attribute
 	self := Instance{}
 	return bool(Advanced(self).GetReadOnlyAttribute(String.New(file)))
+}
+
+/*
+Reads the file extended attribute with name 'attribute_name' as a byte array.
+
+Note: This method is implemented on Linux, macOS, and Windows.
+
+Note: Extended attributes support depends on the file system. Attributes will be lost when the file is moved between incompatible file systems.
+
+Note: On Linux, only "user" namespace attributes are accessible, namespace prefix should not be included.
+
+Note: On Windows, alternate data streams are used to store extended attributes.
+*/
+func GetExtendedAttribute(file string, attribute_name string) []byte { //gd:FileAccess.get_extended_attribute
+	self := Instance{}
+	return []byte(Advanced(self).GetExtendedAttribute(String.New(file), String.New(attribute_name)).Bytes())
+}
+
+/*
+Reads the file extended attribute with name 'attribute_name' as a UTF-8 encoded string.
+
+Note: This method is implemented on Linux, macOS, and Windows.
+
+Note: Extended attributes support depends on the file system. Attributes will be lost when the file is moved between incompatible file systems.
+
+Note: On Linux, only "user" namespace attributes are accessible, namespace prefix should not be included.
+
+Note: On Windows, alternate data streams are used to store extended attributes.
+*/
+func GetExtendedAttributeString(file string, attribute_name string) string { //gd:FileAccess.get_extended_attribute_string
+	self := Instance{}
+	return string(Advanced(self).GetExtendedAttributeString(String.New(file), String.New(attribute_name)).String())
+}
+
+/*
+Writes file extended attribute with name 'attribute_name' as a byte array.
+
+Note: This method is implemented on Linux, macOS, and Windows.
+
+Note: Extended attributes support depends on the file system. Attributes will be lost when the file is moved between incompatible file systems.
+
+Note: On Linux, only "user" namespace attributes are accessible, namespace prefix should not be included.
+
+Note: On Windows, alternate data streams are used to store extended attributes.
+*/
+func SetExtendedAttribute(file string, attribute_name string, data []byte) error { //gd:FileAccess.set_extended_attribute
+	self := Instance{}
+	return error(gd.ToError(Advanced(self).SetExtendedAttribute(String.New(file), String.New(attribute_name), Packed.BytesFrom(data...))))
+}
+
+/*
+Writes file extended attribute with name 'attribute_name' as a UTF-8 encoded string.
+
+Note: This method is implemented on Linux, macOS, and Windows.
+
+Note: Extended attributes support depends on the file system. Attributes will be lost when the file is moved between incompatible file systems.
+
+Note: On Linux, only "user" namespace attributes are accessible, namespace prefix should not be included.
+
+Note: On Windows, alternate data streams are used to store extended attributes.
+*/
+func SetExtendedAttributeString(file string, attribute_name string, data string) error { //gd:FileAccess.set_extended_attribute_string
+	self := Instance{}
+	return error(gd.ToError(Advanced(self).SetExtendedAttributeString(String.New(file), String.New(attribute_name), String.New(data))))
+}
+
+/*
+Removes file extended attribute with name 'attribute_name'.
+
+Note: This method is implemented on Linux, macOS, and Windows.
+
+Note: Extended attributes support depends on the file system. Attributes will be lost when the file is moved between incompatible file systems.
+
+Note: On Linux, only "user" namespace attributes are accessible, namespace prefix should not be included.
+
+Note: On Windows, alternate data streams are used to store extended attributes.
+*/
+func RemoveExtendedAttribute(file string, attribute_name string) error { //gd:FileAccess.remove_extended_attribute
+	self := Instance{}
+	return error(gd.ToError(Advanced(self).RemoveExtendedAttribute(String.New(file), String.New(attribute_name))))
+}
+
+/*
+Returns a list of file extended attributes.
+
+Note: This method is implemented on Linux, macOS, and Windows.
+
+Note: Extended attributes support depends on the file system. Attributes will be lost when the file is moved between incompatible file systems.
+
+Note: On Linux, only "user" namespace attributes are accessible, namespace prefix should not be included.
+
+Note: On Windows, alternate data streams are used to store extended attributes.
+*/
+func GetExtendedAttributesList(file string) []string { //gd:FileAccess.get_extended_attributes_list
+	self := Instance{}
+	return []string(Advanced(self).GetExtendedAttributesList(String.New(file)).Strings())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -1004,9 +1095,9 @@ func (self class) GetOpenError() Error.Code { //gd:FileAccess.get_open_error
 	var ret = Error.Code(r_ret)
 	return ret
 }
-func (self class) CreateTemp(mode_flags int64, prefix String.Readable, extension String.Readable, keep bool) [1]gdclass.FileAccess { //gd:FileAccess.create_temp
+func (self class) CreateTemp(mode_flags ModeFlags, prefix String.Readable, extension String.Readable, keep bool) [1]gdclass.FileAccess { //gd:FileAccess.create_temp
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.create_temp, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeBool<<16), &struct {
-		mode_flags int64
+		mode_flags ModeFlags
 		prefix     gdextension.String
 		extension  gdextension.String
 		keep       bool
@@ -1123,8 +1214,8 @@ func (self class) GetCsvLine(delim String.Readable) Packed.Strings { //gd:FileAc
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-func (self class) GetAsText(skip_cr bool) String.Readable { //gd:FileAccess.get_as_text
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_as_text, gdextension.SizeString|(gdextension.SizeBool<<4), &struct{ skip_cr bool }{skip_cr})
+func (self class) GetAsText() String.Readable { //gd:FileAccess.get_as_text
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_as_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1299,6 +1390,53 @@ func (self class) GetReadOnlyAttribute(file String.Readable) bool { //gd:FileAcc
 	var ret = r_ret
 	return ret
 }
+func (self class) GetExtendedAttribute(file String.Readable, attribute_name String.Readable) Packed.Bytes { //gd:FileAccess.get_extended_attribute
+	var r_ret = noescape.CallStatic[gd.PackedPointers](methods.get_extended_attribute, gdextension.SizePackedArray|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
+		file           gdextension.String
+		attribute_name gdextension.String
+	}{pointers.Get(gd.InternalString(file)), pointers.Get(gd.InternalString(attribute_name))})
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
+	return ret
+}
+func (self class) GetExtendedAttributeString(file String.Readable, attribute_name String.Readable) String.Readable { //gd:FileAccess.get_extended_attribute_string
+	var r_ret = noescape.CallStatic[gdextension.String](methods.get_extended_attribute_string, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
+		file           gdextension.String
+		attribute_name gdextension.String
+	}{pointers.Get(gd.InternalString(file)), pointers.Get(gd.InternalString(attribute_name))})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+func (self class) SetExtendedAttribute(file String.Readable, attribute_name String.Readable, data Packed.Bytes) Error.Code { //gd:FileAccess.set_extended_attribute
+	var r_ret = noescape.CallStatic[int64](methods.set_extended_attribute, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizePackedArray<<12), &struct {
+		file           gdextension.String
+		attribute_name gdextension.String
+		data           gdextension.PackedArray[byte]
+	}{pointers.Get(gd.InternalString(file)), pointers.Get(gd.InternalString(attribute_name)), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
+	var ret = Error.Code(r_ret)
+	return ret
+}
+func (self class) SetExtendedAttributeString(file String.Readable, attribute_name String.Readable, data String.Readable) Error.Code { //gd:FileAccess.set_extended_attribute_string
+	var r_ret = noescape.CallStatic[int64](methods.set_extended_attribute_string, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12), &struct {
+		file           gdextension.String
+		attribute_name gdextension.String
+		data           gdextension.String
+	}{pointers.Get(gd.InternalString(file)), pointers.Get(gd.InternalString(attribute_name)), pointers.Get(gd.InternalString(data))})
+	var ret = Error.Code(r_ret)
+	return ret
+}
+func (self class) RemoveExtendedAttribute(file String.Readable, attribute_name String.Readable) Error.Code { //gd:FileAccess.remove_extended_attribute
+	var r_ret = noescape.CallStatic[int64](methods.remove_extended_attribute, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
+		file           gdextension.String
+		attribute_name gdextension.String
+	}{pointers.Get(gd.InternalString(file)), pointers.Get(gd.InternalString(attribute_name))})
+	var ret = Error.Code(r_ret)
+	return ret
+}
+func (self class) GetExtendedAttributesList(file String.Readable) Packed.Strings { //gd:FileAccess.get_extended_attributes_list
+	var r_ret = noescape.CallStatic[gd.PackedPointers](methods.get_extended_attributes_list, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
+	return ret
+}
 func (self class) AsFileAccess() Advanced { return Advanced{gdclass.NewFileAccess(self.AsObject()[0])} }
 func (self Instance) AsFileAccess() Instance {
 	return Instance{gdclass.NewFileAccess(self.AsObject()[0])}
@@ -1334,7 +1472,7 @@ type ModeFlags int //gd:FileAccess.ModeFlags
 const (
 	// Opens the file for read operations. The file cursor is positioned at the beginning of the file.
 	Read ModeFlags = 1
-	// Opens the file for write operations. The file is created if it does not exist, and truncated if it does.
+	// Opens the file for write operations. If the file exists, it is truncated to zero length and its contents are cleared. Otherwise, it is created.
 	//
 	// Note: When creating a file it must be in an already existing directory. To recursively create directories for a file path, see [DirAccess.MakeDirRecursive].
 	//
@@ -1342,7 +1480,7 @@ const (
 	Write ModeFlags = 2
 	// Opens the file for read and write operations. Does not truncate the file. The file cursor is positioned at the beginning of the file.
 	ReadWrite ModeFlags = 3
-	// Opens the file for read and write operations. The file is created if it does not exist, and truncated if it does. The file cursor is positioned at the beginning of the file.
+	// Opens the file for read and write operations. If the file exists, it is truncated to zero length and its contents are cleared. Otherwise, it is created. The file cursor is positioned at the beginning of the file.
 	//
 	// Note: When creating a file it must be in an already existing directory. To recursively create directories for a file path, see [DirAccess.MakeDirRecursive].
 	//

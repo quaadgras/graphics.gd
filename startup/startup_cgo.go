@@ -22,6 +22,9 @@ import (
 	"graphics.gd/internal/pointers"
 )
 
+var initDone = false
+var exitDone = false
+
 func init() {
 	// little hack to enable `gd test` to work, we strip away the headless flag
 	// so that 'go test' doesn't complain on startup.
@@ -32,22 +35,24 @@ func init() {
 	}
 	gdextension.On.Engine = gdextension.CallbacksForEngine{
 		Init: func(level gdextension.InitializationLevel) {
-			internal.Linked = true
 			internal.Init(level)
-			if level == 2 {
+			if level == 2 && !initDone {
 				for _, fn := range internal.StartupFunctions {
 					fn()
 				}
-				close(intialized)
-				resume_main, stop_main = iter.Pull(call_main_in_steps())
-				resume_main()
+				if !weNeedToStartupTheEngine {
+					close(intialized)
+					resume_main, stop_main = iter.Pull(call_main_in_steps())
+					resume_main()
+				}
 				for _, fn := range internal.PostStartupFunctions {
 					fn()
 				}
+				initDone = true
 			}
 		},
 		Exit: func(level gdextension.InitializationLevel) {
-			if level == 2 {
+			if !exitDone && level == 2 {
 				for _, cleanup := range slices.Backward(internal.Cleanups()) {
 					cleanup()
 				}
@@ -57,6 +62,7 @@ func init() {
 					resume_main()
 				}
 				internal.Linked = false
+				exitDone = true
 			}
 		},
 	}
@@ -64,6 +70,11 @@ func init() {
 
 //go:linkname main main.main
 func main()
+
+//export go_main
+func go_main() {
+	main()
+}
 
 // call_main_in_steps calls the main function on the main thread in steps,
 // so that we can yield control back to the engine every frame and before

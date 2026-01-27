@@ -243,6 +243,7 @@ func (self Instance) TestMask(point Vector2.XY, rect Rect2.PositionSize) bool { 
 
 /*
 Draws a styled rectangle. The [param rect] is defined in local space.
+[b]Note:[/b] Styleboxes, textures, and meshes stored only inside local variables should [b]not[/b] be used with this method in GDScript, because the drawing operation doesn't begin immediately once this method is called. In GDScript, when the function with the local variables ends, the local variables get destroyed before the rendering takes place.
 */
 func (self Instance) Draw(peer CanvasItem.Instance, rect Rect2.PositionSize) { //gd:CanvasItem.draw_style_box
 	CanvasItem.Advanced(peer).DrawStyleBox(self, Rect2.PositionSize(rect))

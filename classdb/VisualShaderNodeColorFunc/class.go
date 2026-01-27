@@ -270,7 +270,7 @@ const (
 	//
 	//
 	FuncSepia Function = 3
-	// Converts color from linear color space to sRGB color space using the following formula:
+	// Converts color from linear encoding to nonlinear sRGB encoding using the following formula:
 	//
 	//
 	//
@@ -292,7 +292,7 @@ const (
 	//
 	//
 	FuncLinearToSrgb Function = 4
-	// Converts color from sRGB color space to linear color space using the following formula:
+	// Converts color from nonlinear sRGB encoding to linear encoding using the following formula:
 	//
 	//
 	//

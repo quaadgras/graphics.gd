@@ -128,6 +128,8 @@ var methods struct {
 	get_slot_color_left                gdextension.MethodForClass `hash:"3457211756"`
 	set_slot_custom_icon_left          gdextension.MethodForClass `hash:"666127730"`
 	get_slot_custom_icon_left          gdextension.MethodForClass `hash:"3536238170"`
+	set_slot_metadata_left             gdextension.MethodForClass `hash:"2152698145"`
+	get_slot_metadata_left             gdextension.MethodForClass `hash:"4227898402"`
 	is_slot_enabled_right              gdextension.MethodForClass `hash:"1116898809"`
 	set_slot_enabled_right             gdextension.MethodForClass `hash:"300928843"`
 	set_slot_type_right                gdextension.MethodForClass `hash:"3937882851"`
@@ -136,6 +138,8 @@ var methods struct {
 	get_slot_color_right               gdextension.MethodForClass `hash:"3457211756"`
 	set_slot_custom_icon_right         gdextension.MethodForClass `hash:"666127730"`
 	get_slot_custom_icon_right         gdextension.MethodForClass `hash:"3536238170"`
+	set_slot_metadata_right            gdextension.MethodForClass `hash:"2152698145"`
+	get_slot_metadata_right            gdextension.MethodForClass `hash:"4227898402"`
 	is_slot_draw_stylebox              gdextension.MethodForClass `hash:"1116898809"`
 	set_slot_draw_stylebox             gdextension.MethodForClass `hash:"300928843"`
 	set_ignore_invalid_connection_type gdextension.MethodForClass `hash:"2586408642"`
@@ -359,6 +363,23 @@ func (self Instance) GetSlotCustomIconLeft(slot_index int) Texture2D.Instance { 
 }
 
 /*
+Sets the custom metadata for the left (input) side of the slot with the given 'slot_index' to 'value'.
+
+Returns 'self' to enable method chaining.
+*/
+func (self Instance) SetSlotMetadataLeft(slot_index int, value any) Instance { //gd:GraphNode.set_slot_metadata_left
+	Advanced(self).SetSlotMetadataLeft(int64(slot_index), variant.New(value))
+	return self
+}
+
+/*
+Returns the left (input) metadata of the slot with the given 'slot_index'.
+*/
+func (self Instance) GetSlotMetadataLeft(slot_index int) any { //gd:GraphNode.get_slot_metadata_left
+	return any(Advanced(self).GetSlotMetadataLeft(int64(slot_index)).Interface())
+}
+
+/*
 Returns true if right (output) side of the slot with the given 'slot_index' is enabled.
 */
 func (self Instance) IsSlotEnabledRight(slot_index int) bool { //gd:GraphNode.is_slot_enabled_right
@@ -432,6 +453,23 @@ Returns the right (output) custom [Texture2D] of the slot with the given 'slot_i
 */
 func (self Instance) GetSlotCustomIconRight(slot_index int) Texture2D.Instance { //gd:GraphNode.get_slot_custom_icon_right
 	return Texture2D.Instance(Advanced(self).GetSlotCustomIconRight(int64(slot_index)))
+}
+
+/*
+Sets the custom metadata for the right (output) side of the slot with the given 'slot_index' to 'value'.
+
+Returns 'self' to enable method chaining.
+*/
+func (self Instance) SetSlotMetadataRight(slot_index int, value any) Instance { //gd:GraphNode.set_slot_metadata_right
+	Advanced(self).SetSlotMetadataRight(int64(slot_index), variant.New(value))
+	return self
+}
+
+/*
+Returns the right (output) metadata of the slot with the given 'slot_index'.
+*/
+func (self Instance) GetSlotMetadataRight(slot_index int) any { //gd:GraphNode.get_slot_metadata_right
+	return any(Advanced(self).GetSlotMetadataRight(int64(slot_index)).Interface())
 }
 
 /*
@@ -707,6 +745,17 @@ func (self class) GetSlotCustomIconLeft(slot_index int64) [1]gdclass.Texture2D {
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
+func (self class) SetSlotMetadataLeft(slot_index int64, value variant.Any) { //gd:GraphNode.set_slot_metadata_left
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_metadata_left, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVariant<<8), &struct {
+		slot_index int64
+		value      gdextension.Variant
+	}{slot_index, gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
+}
+func (self class) GetSlotMetadataLeft(slot_index int64) variant.Any { //gd:GraphNode.get_slot_metadata_left
+	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_slot_metadata_left, gdextension.SizeVariant|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
+	return ret
+}
 func (self class) IsSlotEnabledRight(slot_index int64) bool { //gd:GraphNode.is_slot_enabled_right
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_slot_enabled_right, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
 	var ret = r_ret
@@ -749,6 +798,17 @@ func (self class) SetSlotCustomIconRight(slot_index int64, custom_icon [1]gdclas
 func (self class) GetSlotCustomIconRight(slot_index int64) [1]gdclass.Texture2D { //gd:GraphNode.get_slot_custom_icon_right
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_slot_custom_icon_right, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	return ret
+}
+func (self class) SetSlotMetadataRight(slot_index int64, value variant.Any) { //gd:GraphNode.set_slot_metadata_right
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_metadata_right, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVariant<<8), &struct {
+		slot_index int64
+		value      gdextension.Variant
+	}{slot_index, gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
+}
+func (self class) GetSlotMetadataRight(slot_index int64) variant.Any { //gd:GraphNode.get_slot_metadata_right
+	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_slot_metadata_right, gdextension.SizeVariant|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 func (self class) IsSlotDrawStylebox(slot_index int64) bool { //gd:GraphNode.is_slot_draw_stylebox
