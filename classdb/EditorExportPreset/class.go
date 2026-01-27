@@ -113,7 +113,7 @@ var methods struct {
 	get_encrypt_pck              gdextension.MethodForClass `hash:"36873697"`
 	get_encrypt_directory        gdextension.MethodForClass `hash:"36873697"`
 	get_encryption_key           gdextension.MethodForClass `hash:"201670096"`
-	get_script_export_mode       gdextension.MethodForClass `hash:"3905245786"`
+	get_script_export_mode       gdextension.MethodForClass `hash:"2835358398"`
 	get_or_env                   gdextension.MethodForClass `hash:"389838787"`
 	get_version                  gdextension.MethodForClass `hash:"1132184663"`
 }
@@ -313,8 +313,8 @@ func (self Instance) GetEncryptionKey() string { //gd:EditorExportPreset.get_enc
 /*
 Returns the export mode used by GDScript files. 0 for "Text", 1 for "Binary tokens", and 2 for "Compressed binary tokens (smaller files)".
 */
-func (self Instance) GetScriptExportMode() int { //gd:EditorExportPreset.get_script_export_mode
-	return int(int(Advanced(self).GetScriptExportMode()))
+func (self Instance) GetScriptExportMode() ScriptExportMode { //gd:EditorExportPreset.get_script_export_mode
+	return ScriptExportMode(Advanced(self).GetScriptExportMode())
 }
 
 /*
@@ -491,8 +491,8 @@ func (self class) GetEncryptionKey() String.Readable { //gd:EditorExportPreset.g
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-func (self class) GetScriptExportMode() int64 { //gd:EditorExportPreset.get_script_export_mode
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_script_export_mode, gdextension.SizeInt, &struct{}{})
+func (self class) GetScriptExportMode() ScriptExportMode { //gd:EditorExportPreset.get_script_export_mode
+	var r_ret = noescape.Call[ScriptExportMode](gd.ObjectChecked(self.AsObject()), methods.get_script_export_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

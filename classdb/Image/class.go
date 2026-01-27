@@ -5,8 +5,11 @@ Native image datatype. Contains image data which can be converted to an [ImageTe
 
 An [Image] cannot be assigned to a texture property of an object directly (such as [Sprite2D.Texture]), and has to be converted manually to an [ImageTexture] first.
 
+Note: Methods that modify the image data cannot be used on VRAM-compressed images. Use [Decompress] to convert the image to an uncompressed format first.
+
 Note: The maximum image size is 16384×16384 pixels due to graphics hardware limitations. Larger images may fail to import.
 
+[Decompress]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.Decompress
 [Image]: https://pkg.go.dev/graphics.gd/classdb/Image
 [ImageTexture]: https://pkg.go.dev/graphics.gd/classdb/ImageTexture
 [Sprite2D.Texture]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Texture
@@ -173,6 +176,7 @@ var methods struct {
 	load_bmp_from_buffer   gdextension.MethodForClass `hash:"680677267"`
 	load_ktx_from_buffer   gdextension.MethodForClass `hash:"680677267"`
 	load_dds_from_buffer   gdextension.MethodForClass `hash:"680677267"`
+	load_exr_from_buffer   gdextension.MethodForClass `hash:"680677267"`
 	load_svg_from_buffer   gdextension.MethodForClass `hash:"311853421"`
 	load_svg_from_string   gdextension.MethodForClass `hash:"3254053600"`
 }
@@ -366,7 +370,7 @@ func (self Instance) ClearMipmaps() { //gd:Image.clear_mipmaps
 }
 
 /*
-Creates an empty image of the given size and format. If 'use_mipmaps' is true, generates mipmaps for this image. See the [GenerateMipmaps].
+Creates an empty image of the given size and format. If 'use_mipmaps' is true, generates mipmaps for this image (see [GenerateMipmaps]).
 
 [GenerateMipmaps]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.GenerateMipmaps
 */
@@ -376,7 +380,7 @@ func Create(width int, height int, use_mipmaps bool, format Format) Instance { /
 }
 
 /*
-Creates an empty image of the given size and format. If 'use_mipmaps' is true, generates mipmaps for this image. See the [GenerateMipmaps].
+Creates an empty image of the given size and format. If 'use_mipmaps' is true, generates mipmaps for this image (see [GenerateMipmaps]).
 
 [GenerateMipmaps]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.GenerateMipmaps
 */
@@ -498,10 +502,6 @@ func (self MoreArgs) SaveJpgToBuffer(quality Float.X) []byte { //gd:Image.save_j
 
 /*
 Saves the image as an EXR file to 'path'. If 'grayscale' is true and the image has only one channel, it will be saved explicitly as monochrome rather than one red channel. This function will return [ErrUnavailable] if Godot was compiled without the TinyEXR module.
-
-Note: The TinyEXR module is disabled in non-editor builds, which means [SaveExr] will return [ErrUnavailable] when it is called from an exported project.
-
-[SaveExr]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.SaveExr
 */
 func (self Instance) SaveExr(path string) error { //gd:Image.save_exr
 	return error(gd.ToError(Advanced(self).SaveExr(String.New(path), false)))
@@ -509,10 +509,6 @@ func (self Instance) SaveExr(path string) error { //gd:Image.save_exr
 
 /*
 Saves the image as an EXR file to 'path'. If 'grayscale' is true and the image has only one channel, it will be saved explicitly as monochrome rather than one red channel. This function will return [ErrUnavailable] if Godot was compiled without the TinyEXR module.
-
-Note: The TinyEXR module is disabled in non-editor builds, which means [SaveExr] will return [ErrUnavailable] when it is called from an exported project.
-
-[SaveExr]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.SaveExr
 */
 func (self MoreArgs) SaveExr(path string, grayscale bool) error { //gd:Image.save_exr
 	return error(gd.ToError(Advanced(self).SaveExr(String.New(path), grayscale)))
@@ -520,10 +516,6 @@ func (self MoreArgs) SaveExr(path string, grayscale bool) error { //gd:Image.sav
 
 /*
 Saves the image as an EXR file to a byte array. If 'grayscale' is true and the image has only one channel, it will be saved explicitly as monochrome rather than one red channel. This function will return an empty byte array if Godot was compiled without the TinyEXR module.
-
-Note: The TinyEXR module is disabled in non-editor builds, which means [SaveExrToBuffer] will return an empty byte array when it is called from an exported project.
-
-[SaveExrToBuffer]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.SaveExrToBuffer
 */
 func (self Instance) SaveExrToBuffer() []byte { //gd:Image.save_exr_to_buffer
 	return []byte(Advanced(self).SaveExrToBuffer(false).Bytes())
@@ -531,10 +523,6 @@ func (self Instance) SaveExrToBuffer() []byte { //gd:Image.save_exr_to_buffer
 
 /*
 Saves the image as an EXR file to a byte array. If 'grayscale' is true and the image has only one channel, it will be saved explicitly as monochrome rather than one red channel. This function will return an empty byte array if Godot was compiled without the TinyEXR module.
-
-Note: The TinyEXR module is disabled in non-editor builds, which means [SaveExrToBuffer] will return an empty byte array when it is called from an exported project.
-
-[SaveExrToBuffer]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.SaveExrToBuffer
 */
 func (self MoreArgs) SaveExrToBuffer(grayscale bool) []byte { //gd:Image.save_exr_to_buffer
 	return []byte(Advanced(self).SaveExrToBuffer(grayscale).Bytes())
@@ -627,57 +615,69 @@ func (self MoreArgs) DetectUsedChannels(source CompressSource) UsedChannels { //
 }
 
 /*
-Compresses the image to use less memory. Can not directly access pixel data while the image is compressed. Returns error if the chosen compression mode is not available.
+Compresses the image with a VRAM-compressed format to use less memory. Can not directly access pixel data while the image is compressed. Returns error if the chosen compression mode is not available.
 
 The 'source' parameter helps to pick the best compression method for DXT and ETC2 formats. It is ignored for ASTC compression.
 
-For ASTC compression, the 'astc_format' parameter must be supplied.
+The 'astc_format' parameter is only taken into account when using ASTC compression; it is ignored for all other formats.
+
+Note: [Compress] is only supported in editor builds. When run in an exported project, this method always returns [ErrUnavailable].
+
+[Compress]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.Compress
 */
 func (self Instance) Compress(mode CompressMode) error { //gd:Image.compress
 	return error(gd.ToError(Advanced(self).Compress(mode, 0, 0)))
 }
 
 /*
-Compresses the image to use less memory. Can not directly access pixel data while the image is compressed. Returns error if the chosen compression mode is not available.
+Compresses the image with a VRAM-compressed format to use less memory. Can not directly access pixel data while the image is compressed. Returns error if the chosen compression mode is not available.
 
 The 'source' parameter helps to pick the best compression method for DXT and ETC2 formats. It is ignored for ASTC compression.
 
-For ASTC compression, the 'astc_format' parameter must be supplied.
+The 'astc_format' parameter is only taken into account when using ASTC compression; it is ignored for all other formats.
+
+Note: [Compress] is only supported in editor builds. When run in an exported project, this method always returns [ErrUnavailable].
+
+[Compress]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.Compress
 */
 func (self MoreArgs) Compress(mode CompressMode, source CompressSource, astc_format ASTCFormat) error { //gd:Image.compress
 	return error(gd.ToError(Advanced(self).Compress(mode, source, astc_format)))
 }
 
 /*
-Compresses the image to use less memory. Can not directly access pixel data while the image is compressed. Returns error if the chosen compression mode is not available.
+Compresses the image with a VRAM-compressed format to use less memory. Can not directly access pixel data while the image is compressed. Returns error if the chosen compression mode is not available.
 
 This is an alternative to [Compress] that lets the user supply the channels used in order for the compressor to pick the best DXT and ETC2 formats. For other formats (non DXT or ETC2), this argument is ignored.
 
-For ASTC compression, the 'astc_format' parameter must be supplied.
+The 'astc_format' parameter is only taken into account when using ASTC compression; it is ignored for all other formats.
+
+Note: [CompressFromChannels] is only supported in editor builds. When run in an exported project, this method always returns [ErrUnavailable].
 
 [Compress]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.Compress
+[CompressFromChannels]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.CompressFromChannels
 */
 func (self Instance) CompressFromChannels(mode CompressMode, channels UsedChannels) error { //gd:Image.compress_from_channels
 	return error(gd.ToError(Advanced(self).CompressFromChannels(mode, channels, 0)))
 }
 
 /*
-Compresses the image to use less memory. Can not directly access pixel data while the image is compressed. Returns error if the chosen compression mode is not available.
+Compresses the image with a VRAM-compressed format to use less memory. Can not directly access pixel data while the image is compressed. Returns error if the chosen compression mode is not available.
 
 This is an alternative to [Compress] that lets the user supply the channels used in order for the compressor to pick the best DXT and ETC2 formats. For other formats (non DXT or ETC2), this argument is ignored.
 
-For ASTC compression, the 'astc_format' parameter must be supplied.
+The 'astc_format' parameter is only taken into account when using ASTC compression; it is ignored for all other formats.
+
+Note: [CompressFromChannels] is only supported in editor builds. When run in an exported project, this method always returns [ErrUnavailable].
 
 [Compress]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.Compress
+[CompressFromChannels]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.CompressFromChannels
 */
 func (self MoreArgs) CompressFromChannels(mode CompressMode, channels UsedChannels, astc_format ASTCFormat) error { //gd:Image.compress_from_channels
 	return error(gd.ToError(Advanced(self).CompressFromChannels(mode, channels, astc_format)))
 }
 
 /*
-Decompresses the image if it is VRAM compressed in a supported format. Returns [Ok] if the format is supported, otherwise [ErrUnavailable].
-
-Note: The following formats can be decompressed: DXT, RGTC, BPTC. The formats ETC1 and ETC2 are not supported.
+Decompresses the image if it is VRAM-compressed in a supported format. This increases memory utilization, but allows modifying the image. Returns [Ok] if the format is supported, otherwise [ErrUnavailable]. All VRAM-compressed formats supported by Godot can be decompressed with this method, except [FormatEtc2R11s], [FormatEtc2Rg11s], and [FormatEtc2Rgb8a1].
 */
 func (self Instance) Decompress() error { //gd:Image.decompress
 	return error(gd.ToError(Advanced(self).Decompress()))
@@ -721,14 +721,16 @@ func (self Instance) PremultiplyAlpha() { //gd:Image.premultiply_alpha
 }
 
 /*
-Converts the raw data from the sRGB colorspace to a linear scale. Only works on images with [FormatRgb8] or [FormatRgba8] formats.
+Converts the raw data from nonlinear sRGB encoding to linear encoding using a lookup table. Only works on images with [FormatRgb8] or [FormatRgba8] formats.
+
+Note: The 8-bit formats required by this method are not suitable for storing linearly encoded values; a significant amount of color information will be lost in darker values. To maintain image quality, this method should not be used.
 */
 func (self Instance) SrgbToLinear() { //gd:Image.srgb_to_linear
 	Advanced(self).SrgbToLinear()
 }
 
 /*
-Converts the entire image from the linear colorspace to the sRGB colorspace. Only works on images with [FormatRgb8] or [FormatRgba8] formats.
+Converts the entire image from linear encoding to nonlinear sRGB encoding by using a lookup table. Only works on images with [FormatRgb8] or [FormatRgba8] formats.
 */
 func (self Instance) LinearToSrgb() { //gd:Image.linear_to_srgb
 	Advanced(self).LinearToSrgb()
@@ -742,7 +744,7 @@ func (self Instance) NormalMapToXy() { //gd:Image.normal_map_to_xy
 }
 
 /*
-Converts a standard RGBE (Red Green Blue Exponent) image to an sRGB image.
+Converts a standard linear RGBE (Red Green Blue Exponent) image to an image that uses nonlinear sRGB encoding.
 */
 func (self Instance) RgbeToSrgb() Instance { //gd:Image.rgbe_to_srgb
 	return Instance(Advanced(self).RgbeToSrgb())
@@ -763,7 +765,7 @@ func (self MoreArgs) BumpMapToNormalMap(bump_scale Float.X) { //gd:Image.bump_ma
 }
 
 /*
-Compute image metrics on the current image and the compared image.
+Compute image metrics on the current image and the compared image. This can be used to calculate the similarity between two images.
 
 The dictionary contains max, mean, mean_squared, root_mean_squared and peak_snr.
 */
@@ -876,9 +878,15 @@ Sets the [Color.RGBA] of the pixel at 'point' to 'color'.
 
 This is the same as [SetPixel], but with a [Vector2i.XY] argument instead of two integer arguments.
 
+Note: Depending on the image's format, the color set here may be clamped or lose precision. Do not assume the color returned by [GetPixelv] to be identical to the one set here; any comparisons will likely need to use an approximation like [Color.IsEqualApprox].
+
+Note: On grayscale image formats, only the red channel of 'color' is used (and alpha if relevant). The green and blue channels are ignored.
+
 Returns 'self' to enable method chaining.
 
+[Color.IsEqualApprox]: https://pkg.go.dev/graphics.gd/classdb/Color#Instance.IsEqualApprox
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+[GetPixelv]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.GetPixelv
 [SetPixel]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.SetPixel
 [Vector2i.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2i#XY
 */
@@ -897,9 +905,15 @@ Sets the [Color.RGBA] of the pixel at (x, y) to 'color'.
 
 This is the same as [SetPixelv], but with a two integer arguments instead of a [Vector2i.XY] argument.
 
+Note: Depending on the image's format, the color set here may be clamped or lose precision. Do not assume the color returned by [GetPixel] to be identical to the one set here; any comparisons will likely need to use an approximation like [Color.IsEqualApprox].
+
+Note: On grayscale image formats, only the red channel of 'color' is used (and alpha if relevant). The green and blue channels are ignored.
+
 Returns 'self' to enable method chaining.
 
+[Color.IsEqualApprox]: https://pkg.go.dev/graphics.gd/classdb/Color#Instance.IsEqualApprox
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+[GetPixel]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.GetPixel
 [SetPixelv]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.SetPixelv
 [Vector2i.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2i#XY
 */
@@ -978,6 +992,13 @@ Note: This method is only available in engine builds with the DDS module enabled
 */
 func (self Instance) LoadDdsFromBuffer(buffer []byte) error { //gd:Image.load_dds_from_buffer
 	return error(gd.ToError(Advanced(self).LoadDdsFromBuffer(Packed.BytesFrom(buffer...))))
+}
+
+/*
+Loads an image from the binary contents of an OpenEXR file.
+*/
+func (self Instance) LoadExrFromBuffer(buffer []byte) error { //gd:Image.load_exr_from_buffer
+	return error(gd.ToError(Advanced(self).LoadExrFromBuffer(Packed.BytesFrom(buffer...))))
 }
 
 /*
@@ -1465,6 +1486,11 @@ func (self class) LoadDdsFromBuffer(buffer Packed.Bytes) Error.Code { //gd:Image
 	var ret = Error.Code(r_ret)
 	return ret
 }
+func (self class) LoadExrFromBuffer(buffer Packed.Bytes) Error.Code { //gd:Image.load_exr_from_buffer
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_exr_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array)))})
+	var ret = Error.Code(r_ret)
+	return ret
+}
 func (self class) LoadSvgFromBuffer(buffer Packed.Bytes, scale float64) Error.Code { //gd:Image.load_svg_from_buffer
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_svg_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4)|(gdextension.SizeFloat<<8), &struct {
 		buffer gdextension.PackedArray[byte]
@@ -1529,13 +1555,13 @@ const (
 	FormatRg8 Format = 3
 	// OpenGL texture format RGB with three components, each with a bitdepth of 8.
 	//
-	// Note: When creating an [ImageTexture], an sRGB to linear color space conversion is performed.
+	// Note: When creating an [ImageTexture], a nonlinear sRGB to linear encoding conversion is performed.
 	//
 	// [ImageTexture]: https://pkg.go.dev/graphics.gd/classdb/ImageTexture
 	FormatRgb8 Format = 4
 	// OpenGL texture format RGBA with four components, each with a bitdepth of 8.
 	//
-	// Note: When creating an [ImageTexture], an sRGB to linear color space conversion is performed.
+	// Note: When creating an [ImageTexture], a nonlinear sRGB to linear encoding conversion is performed.
 	//
 	// [ImageTexture]: https://pkg.go.dev/graphics.gd/classdb/ImageTexture
 	FormatRgba8 Format = 5
@@ -1563,21 +1589,21 @@ const (
 	FormatRgbe9995 Format = 16
 	// The [S3TC] texture format that uses Block Compression 1, and is the smallest variation of S3TC, only providing 1 bit of alpha and color data being premultiplied with alpha.
 	//
-	// Note: When creating an [ImageTexture], an sRGB to linear color space conversion is performed.
+	// Note: When creating an [ImageTexture], a nonlinear sRGB to linear encoding conversion is performed.
 	//
 	// [ImageTexture]: https://pkg.go.dev/graphics.gd/classdb/ImageTexture
 	// [S3TC]: https://en.wikipedia.org/wiki/S3_Texture_Compression
 	FormatDxt1 Format = 17
 	// The [S3TC] texture format that uses Block Compression 2, and color data is interpreted as not having been premultiplied by alpha. Well suited for images with sharp alpha transitions between translucent and opaque areas.
 	//
-	// Note: When creating an [ImageTexture], an sRGB to linear color space conversion is performed.
+	// Note: When creating an [ImageTexture], a nonlinear sRGB to linear encoding conversion is performed.
 	//
 	// [ImageTexture]: https://pkg.go.dev/graphics.gd/classdb/ImageTexture
 	// [S3TC]: https://en.wikipedia.org/wiki/S3_Texture_Compression
 	FormatDxt3 Format = 18
 	// The [S3TC] texture format also known as Block Compression 3 or BC3 that contains 64 bits of alpha channel data followed by 64 bits of DXT1-encoded color data. Color data is not premultiplied by alpha, same as DXT3. DXT5 generally produces superior results for transparent gradients compared to DXT3.
 	//
-	// Note: When creating an [ImageTexture], an sRGB to linear color space conversion is performed.
+	// Note: When creating an [ImageTexture], a nonlinear sRGB to linear encoding conversion is performed.
 	//
 	// [ImageTexture]: https://pkg.go.dev/graphics.gd/classdb/ImageTexture
 	// [S3TC]: https://en.wikipedia.org/wiki/S3_Texture_Compression
@@ -1592,7 +1618,7 @@ const (
 	FormatRgtcRg Format = 21
 	// Texture format that uses [BPTC] compression with unsigned normalized RGBA components.
 	//
-	// Note: When creating an [ImageTexture], an sRGB to linear color space conversion is performed.
+	// Note: When creating an [ImageTexture], a nonlinear sRGB to linear encoding conversion is performed.
 	//
 	// [BPTC]: https://www.khronos.org/opengl/wiki/BPTC_Texture_Compression
 	// [ImageTexture]: https://pkg.go.dev/graphics.gd/classdb/ImageTexture
@@ -1627,21 +1653,21 @@ const (
 	FormatEtc2Rg11s Format = 29
 	// [Ericsson Texture Compression format 2] (RGB8 variant), which is a follow-up of ETC1 and compresses RGB888 data.
 	//
-	// Note: When creating an [ImageTexture], an sRGB to linear color space conversion is performed.
+	// Note: When creating an [ImageTexture], a nonlinear sRGB to linear encoding conversion is performed.
 	//
 	// [Ericsson Texture Compression format 2]: https://en.wikipedia.org/wiki/Ericsson_Texture_Compression#ETC2_and_EAC
 	// [ImageTexture]: https://pkg.go.dev/graphics.gd/classdb/ImageTexture
 	FormatEtc2Rgb8 Format = 30
 	// [Ericsson Texture Compression format 2] (RGBA8variant), which compresses RGBA8888 data with full alpha support.
 	//
-	// Note: When creating an [ImageTexture], an sRGB to linear color space conversion is performed.
+	// Note: When creating an [ImageTexture], a nonlinear sRGB to linear encoding conversion is performed.
 	//
 	// [Ericsson Texture Compression format 2]: https://en.wikipedia.org/wiki/Ericsson_Texture_Compression#ETC2_and_EAC
 	// [ImageTexture]: https://pkg.go.dev/graphics.gd/classdb/ImageTexture
 	FormatEtc2Rgba8 Format = 31
 	// [Ericsson Texture Compression format 2] (RGB8_PUNCHTHROUGH_ALPHA1 variant), which compresses RGBA data to make alpha either fully transparent or fully opaque.
 	//
-	// Note: When creating an [ImageTexture], an sRGB to linear color space conversion is performed.
+	// Note: When creating an [ImageTexture], a nonlinear sRGB to linear encoding conversion is performed.
 	//
 	// [Ericsson Texture Compression format 2]: https://en.wikipedia.org/wiki/Ericsson_Texture_Compression#ETC2_and_EAC
 	// [ImageTexture]: https://pkg.go.dev/graphics.gd/classdb/ImageTexture
@@ -1666,8 +1692,60 @@ const (
 	FormatAstc8x8 Format = 37
 	// Same format as [FormatAstc8x8], but with the hint to let the GPU know it is used for HDR.
 	FormatAstc8x8Hdr Format = 38
+	// OpenGL texture format GL_R16 where there's one component, a 16-bit unsigned normalized integer value. Since the value is normalized, each component is clamped between 0.0 and 1.0 (inclusive).
+	//
+	// Note: Due to limited hardware support, it is mainly recommended to be used on desktop or console devices. It may be unsupported on mobile or web, and will consequently be converted to [FormatRf].
+	FormatR16 Format = 39
+	// OpenGL texture format GL_RG16 where there are two components, each a 16-bit unsigned normalized integer value. Since the value is normalized, each component is clamped between 0.0 and 1.0 (inclusive).
+	//
+	// Note: Due to limited hardware support, it is mainly recommended to be used on desktop or console devices. It may be unsupported on mobile or web, and will consequently be converted to [FormatRgf].
+	FormatRg16 Format = 40
+	// OpenGL texture format GL_RGB16 where there are three components, each a 16-bit unsigned normalized integer value. Since the value is normalized, each component is clamped between 0.0 and 1.0 (inclusive).
+	//
+	// Note: Due to limited hardware support, it is mainly recommended to be used on desktop or console devices. It may be unsupported on mobile or web, and will consequently be converted to [FormatRgbf].
+	FormatRgb16 Format = 41
+	// OpenGL texture format GL_RGBA16 where there are four components, each a 16-bit unsigned normalized integer value. Since the value is normalized, each component is clamped between 0.0 and 1.0 (inclusive).
+	//
+	// Note: Due to limited hardware support, it is mainly recommended to be used on desktop or console devices. It may be unsupported on mobile or web, and will consequently be converted to [FormatRgbaf].
+	FormatRgba16 Format = 42
+	// OpenGL texture format GL_R16UI where there's one component, a 16-bit unsigned integer value. Each component is clamped between 0 and 65535 (inclusive).
+	//
+	// Note: When used in a shader, the texture requires usage of usampler samplers. Additionally, it only supports nearest-neighbor filtering under the Compatibility renderer.
+	//
+	// Note: When sampling using [Image.GetPixel], returned [Color.RGBA]s have to be divided by 65535 to get the correct color value.
+	//
+	// [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+	// [Image.GetPixel]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.GetPixel
+	FormatR16i Format = 43
+	// OpenGL texture format GL_RG16UI where there are two components, each a 16-bit unsigned integer value. Each component is clamped between 0 and 65535 (inclusive).
+	//
+	// Note: When used in a shader, the texture requires usage of usampler samplers. Additionally, it only supports nearest-neighbor filtering under the Compatibility renderer.
+	//
+	// Note: When sampling using [Image.GetPixel], returned [Color.RGBA]s have to be divided by 65535 to get the correct color value.
+	//
+	// [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+	// [Image.GetPixel]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.GetPixel
+	FormatRg16i Format = 44
+	// OpenGL texture format GL_RGB16UI where there are three components, each a 16-bit unsigned integer value. Each component is clamped between 0 and 65535 (inclusive).
+	//
+	// Note: When used in a shader, the texture requires usage of usampler samplers. Additionally, it only supports nearest-neighbor filtering under the Compatibility renderer.
+	//
+	// Note: When sampling using [Image.GetPixel], returned [Color.RGBA]s have to be divided by 65535 to get the correct color value.
+	//
+	// [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+	// [Image.GetPixel]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.GetPixel
+	FormatRgb16i Format = 45
+	// OpenGL texture format GL_RGBA16UI where there are four components, each a 16-bit unsigned integer value. Each component is clamped between 0 and 65535 (inclusive).
+	//
+	// Note: When used in a shader, the texture requires usage of usampler samplers. Additionally, it only supports nearest-neighbor filtering under the Compatibility renderer.
+	//
+	// Note: When sampling using [Image.GetPixel], returned [Color.RGBA]s have to be divided by 65535 to get the correct color value.
+	//
+	// [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+	// [Image.GetPixel]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.GetPixel
+	FormatRgba16i Format = 46
 	// Represents the size of the [Format] enum.
-	FormatMax Format = 39
+	FormatMax Format = 47
 )
 
 type Interpolation int //gd:Image.Interpolation
@@ -1698,11 +1776,11 @@ const (
 type AlphaMode int //gd:Image.AlphaMode
 
 const (
-	// Image does not have alpha.
+	// Image is fully opaque. It does not store alpha data.
 	AlphaNone AlphaMode = 0
-	// Image stores alpha in a single bit.
+	// Image stores either fully opaque or fully transparent pixels. Also known as punchthrough alpha.
 	AlphaBit AlphaMode = 1
-	// Image uses alpha.
+	// Image stores alpha data with values varying between 0.0 and 1.0.
 	AlphaBlend AlphaMode = 2
 )
 
@@ -1745,7 +1823,7 @@ type CompressSource int //gd:Image.CompressSource
 const (
 	// Source texture (before compression) is a regular texture. Default for all textures.
 	CompressSourceGeneric CompressSource = 0
-	// Source texture (before compression) is in sRGB space.
+	// Source texture (before compression) uses nonlinear sRGB encoding.
 	CompressSourceSrgb CompressSource = 1
 	// Source texture (before compression) is a normal texture (e.g. it can be compressed into two channels).
 	CompressSourceNormal CompressSource = 2

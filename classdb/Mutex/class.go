@@ -5,8 +5,6 @@ A synchronization mutex (mutual exclusion). This is used to synchronize multiple
 
 This is a reentrant mutex, meaning that it can be locked multiple times by one thread, provided it also unlocks it as many times.
 
-Warning: Mutexes must be used carefully to avoid deadlocks.
-
 Warning: To ensure proper cleanup without crashes or deadlocks, the following conditions must be met:
 
 - When a [Mutex]'s reference count reaches zero and it is therefore destroyed, no threads (including the one on which the destruction will happen) must have it locked.
@@ -154,7 +152,7 @@ Unlocks this [Mutex], leaving it to other threads.
 
 Note: If a thread called [Lock] or [TryLock] multiple times while already having ownership of the mutex, it must also call [Unlock] the same number of times in order to unlock it correctly.
 
-Warning: Calling [Unlock] more times that [Lock] on a given thread, thus ending up trying to unlock a non-locked mutex, is wrong and may causes crashes or deadlocks.
+Warning: Calling [Unlock] more times than [Lock] on a given thread, thus ending up trying to unlock a non-locked mutex, is wrong and may causes crashes or deadlocks.
 
 [Lock]: https://pkg.go.dev/graphics.gd/classdb/Mutex#Instance.Lock
 [Mutex]: https://pkg.go.dev/graphics.gd/classdb/Mutex

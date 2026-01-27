@@ -170,7 +170,7 @@ func (self Instance) PutPartialData(data []byte) (error, int) { //gd:StreamPeer.
 }
 
 /*
-Returns a chunk data with the received bytes. The number of bytes to be received can be requested in the 'bytes' argument. If not enough bytes are available, the function will block until the desired amount is received. This function returns two values, an [Error] code and a data array.
+Returns a chunk data with the received bytes, as an slice containing two elements: an [Error] constant and a []byte. 'bytes' is the number of bytes to be received. If not enough bytes are available, the function will block until the desired amount is received.
 */
 func (self Instance) GetData(bytes int) (error, []uint8) { //gd:StreamPeer.get_data
 	results := gd.InternalArray(Advanced(self).GetData(int64(bytes)))
@@ -178,7 +178,7 @@ func (self Instance) GetData(bytes int) (error, []uint8) { //gd:StreamPeer.get_d
 }
 
 /*
-Returns a chunk data with the received bytes. The number of bytes to be received can be requested in the 'bytes' argument. If not enough bytes are available, the function will return how many were actually received. This function returns two values: an [Error] code and a data array.
+Returns a chunk data with the received bytes, as an slice containing two elements: an [Error] constant and a []byte. 'bytes' is the number of bytes to be received. If not enough bytes are available, the function will return how many were actually received.
 */
 func (self Instance) GetPartialData(bytes int) (error, []uint8) { //gd:StreamPeer.get_partial_data
 	results := gd.InternalArray(Advanced(self).GetPartialData(int64(bytes)))

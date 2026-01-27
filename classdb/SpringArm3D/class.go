@@ -206,7 +206,7 @@ func New() Instance {
 }
 
 /*
-The layers against which the collision check shall be done. See [Collision layers and masks] in the documentation for more information.
+The layers against which the collision check will be done. See [Collision layers and masks] in the documentation for more information.
 
 [Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
 */

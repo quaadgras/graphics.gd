@@ -655,7 +655,7 @@ func (self Instance) SetTextDirection(value TextServer.Direction) Instance { //g
 }
 
 /*
-Language code used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
+Language code used for line-breaking and text shaping algorithms. If left empty, the current locale is used instead.
 */
 func (self Instance) Language() string { //gd:Label3D.language
 	return string(class(self).GetLanguage().String())

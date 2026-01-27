@@ -215,7 +215,7 @@ func PathToUid(path string) string { //gd:ResourceUID.path_to_uid
 }
 
 /*
-Returns a path, converting 'path_or_uid' if necessary. Prints an error if provided an invalid UID.
+Returns a path, converting 'path_or_uid' if necessary. Fails and returns an empty string if an invalid UID is provided.
 */
 func EnsurePath(path_or_uid string) string { //gd:ResourceUID.ensure_path
 	return string(Advanced().EnsurePath(String.New(path_or_uid)).String())

@@ -317,7 +317,15 @@ func (self Instance) GetVertexNormal(idx int) Vector3.XYZ { //gd:MeshDataTool.ge
 /*
 Sets the tangent of the given vertex.
 
+Note: Even though 'tangent' is a [Plane.NormalD], it does not directly represent the tangent plane. Its [Plane.X], [Plane.Y], and [Plane.Z] represent the tangent vector and [Plane.D] should be either -1 or 1. See also [Mesh.ArrayTangent].
+
 Returns 'self' to enable method chaining.
+
+[Plane.D]: https://pkg.go.dev/graphics.gd/classdb/Plane#Instance.D
+[Plane.NormalD]: https://pkg.go.dev/graphics.gd/variant/Plane#NormalD
+[Plane.X]: https://pkg.go.dev/graphics.gd/classdb/Plane#Instance.X
+[Plane.Y]: https://pkg.go.dev/graphics.gd/classdb/Plane#Instance.Y
+[Plane.Z]: https://pkg.go.dev/graphics.gd/classdb/Plane#Instance.Z
 */
 func (self Instance) SetVertexTangent(idx int, tangent Plane.NormalD) Instance { //gd:MeshDataTool.set_vertex_tangent
 	Advanced(self).SetVertexTangent(int64(idx), Plane.NormalD(tangent))

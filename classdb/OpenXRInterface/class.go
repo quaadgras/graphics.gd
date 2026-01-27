@@ -156,9 +156,9 @@ func (self Instance) GetSessionState() SessionState { //gd:OpenXRInterface.get_s
 }
 
 /*
-Returns true if OpenXR's foveation extension is supported, the interface must be initialized before this returns a valid value.
+Returns true if OpenXR's foveation extension is supported. The interface must be initialized before this returns a valid value.
 
-Note: This feature is only available on the Compatibility renderer and currently only available on some stand alone headsets. For Vulkan set [Viewport.VrsMode] to VRS_XR on desktop.
+Note: When using the Vulkan rendering driver, [Viewport.VrsMode] must be set to [Viewport.VrsXr] to support foveation.
 
 [Viewport.VrsMode]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.VrsMode
 */
@@ -191,7 +191,7 @@ func (self Instance) GetActionSets() []OpenXRActionSet.Instance { //gd:OpenXRInt
 }
 
 /*
-Returns display refresh rates supported by the current HMD. Only returned if this feature is supported by the OpenXR runtime and after the interface has been initialized.
+Returns a list of display refresh rates supported by the current HMD. Only returned if this feature is supported by the OpenXR runtime and after the interface has been initialized.
 */
 func (self Instance) GetAvailableDisplayRefreshRates() []float32 { //gd:OpenXRInterface.get_available_display_refresh_rates
 	return []float32(gd.ArrayAs[[]float32](gd.InternalArray(Advanced(self).GetAvailableDisplayRefreshRates())))
@@ -386,7 +386,7 @@ func (self Instance) SetRenderTargetSizeMultiplier(value Float.X) Instance { //g
 }
 
 /*
-Set foveation level from 0 (off) to 3 (high), the interface must be initialized before this is accessible.
+The foveation level, from 0 (off) to 3 (high). The interface must be initialized before this is accessible.
 
 Note: Only works on the Compatibility renderer.
 */
@@ -401,7 +401,7 @@ func (self Instance) SetFoveationLevel(value int) Instance { //gd:OpenXRInterfac
 }
 
 /*
-Enable dynamic foveation adjustment, the interface must be initialized before this is accessible. If enabled foveation will automatically adjusted between low and [FoveationLevel].
+If true, enables dynamic foveation adjustment. The interface must be initialized before this is accessible. If enabled, foveation will automatically be adjusted between low and [FoveationLevel].
 
 Note: Only works on the Compatibility renderer.
 
@@ -868,7 +868,7 @@ const (
 	//
 	// [OnSessionLossPending]: https://pkg.go.dev/graphics.gd/classdb/#Instance.OnSessionLossPending
 	SessionStateLossPending SessionState = 7
-	// The OpenXR instance is about to be destroyed and we're existing. [OnInstanceExiting] is emitted when we change to this state.
+	// The OpenXR instance is about to be destroyed and we're exiting. [OnInstanceExiting] is emitted when we change to this state.
 	//
 	// [OnInstanceExiting]: https://pkg.go.dev/graphics.gd/classdb/#Instance.OnInstanceExiting
 	SessionStateExiting SessionState = 8

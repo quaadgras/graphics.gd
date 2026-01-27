@@ -275,12 +275,6 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"add_side_menu": {
 			"menu": OwnershipTransferred,
 		},
-		"get_vbox": {
-			"return value": LifetimeBoundToClass,
-		},
-		"get_line_edit": {
-			"return value": LifetimeBoundToClass,
-		},
 	},
 	"EditorFileSystem": {
 		"get_filesystem": {
@@ -417,6 +411,15 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"edit_node": {
 			"node": MustAssertInstanceID,
 		},
+		"set_object_edited": {
+			"object": IsTemporaryReference,
+		},
+		"is_object_edited": {
+			"object": IsTemporaryReference,
+		},
+		"add_root_node": {
+			"node": IsTemporaryReference,
+		},
 	},
 	"EditorNode3DGizmo": {
 		"set_node_3d": {
@@ -459,6 +462,12 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"add_control_to_bottom_panel": {
 			"return value": MustAssertInstanceID,
 			"control":      OwnershipTransferred,
+		},
+		"add_dock": {
+			"dock": OwnershipTransferred,
+		},
+		"remove_dock": {
+			"dock": ReversesTheOwnership,
 		},
 		"add_control_to_dock": {
 			"control": OwnershipTransferred,
@@ -1179,6 +1188,9 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		},
 		"queue_delete": {
 			"obj": OwnershipTransferred,
+		},
+		"change_scene_to_node": {
+			"node": IsTemporaryReference,
 		},
 	},
 	"SkeletonModifier3D": {

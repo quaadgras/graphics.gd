@@ -221,7 +221,7 @@ func (self Instance) SetBoneName(bone_idx int, name string) Instance { //gd:Skel
 }
 
 /*
-Returns the metadata for the bone at index 'bone_idx' with 'key'.
+Returns the metadata with the given 'key' for the bone at index 'bone_idx'.
 */
 func (self Instance) GetBoneMeta(bone_idx int, key string) any { //gd:Skeleton3D.get_bone_meta
 	return any(Advanced(self).GetBoneMeta(int64(bone_idx), String.Name(String.New(key))).Interface())
@@ -235,14 +235,14 @@ func (self Instance) GetBoneMetaList(bone_idx int) []string { //gd:Skeleton3D.ge
 }
 
 /*
-Returns true if the bone at index 'bone_idx' has metadata with the key 'key'.
+Returns true if the bone at index 'bone_idx' has metadata with the given 'key'.
 */
 func (self Instance) HasBoneMeta(bone_idx int, key string) bool { //gd:Skeleton3D.has_bone_meta
 	return bool(Advanced(self).HasBoneMeta(int64(bone_idx), String.Name(String.New(key))))
 }
 
 /*
-Sets the metadata for the bone at index 'bone_idx', setting the 'key' meta to 'value'.
+Sets the metadata with the given 'key' to 'value' for the bone at index 'bone_idx'.
 
 Returns 'self' to enable method chaining.
 */

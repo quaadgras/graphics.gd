@@ -114,6 +114,8 @@ var methods struct {
 	get_alpha_blend          gdextension.MethodForClass `hash:"36873697"`
 	get_android_surface      gdextension.MethodForClass `hash:"3277089691"`
 	is_natively_supported    gdextension.MethodForClass `hash:"36873697"`
+	is_protected_content     gdextension.MethodForClass `hash:"36873697"`
+	set_protected_content    gdextension.MethodForClass `hash:"2586408642"`
 	set_min_filter           gdextension.MethodForClass `hash:"3653437593"`
 	get_min_filter           gdextension.MethodForClass `hash:"845677307"`
 	set_mag_filter           gdextension.MethodForClass `hash:"3653437593"`
@@ -264,6 +266,21 @@ func (self Instance) UseAndroidSurface() bool { //gd:OpenXRCompositionLayer.use_
 // SetUseAndroidSurface sets the property returned by [GetUseAndroidSurface]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetUseAndroidSurface(value bool) Instance { //gd:OpenXRCompositionLayer.use_android_surface
 	class(self).SetUseAndroidSurface(value)
+	return self
+}
+
+/*
+If enabled, the OpenXR swapchain will be created with the XR_SWAPCHAIN_CREATE_PROTECTED_CONTENT_BIT flag, which will protect its contents from CPU access.
+
+When used with an Android Surface, this may allow DRM content to be presented, and will only take effect when the Surface is first created; later changes to this property will have no effect.
+*/
+func (self Instance) ProtectedContent() bool { //gd:OpenXRCompositionLayer.protected_content
+	return bool(class(self).IsProtectedContent())
+}
+
+// SetProtectedContent sets the property returned by [IsProtectedContent]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetProtectedContent(value bool) Instance { //gd:OpenXRCompositionLayer.protected_content
+	class(self).SetProtectedContent(value)
 	return self
 }
 
@@ -553,6 +570,14 @@ func (self class) IsNativelySupported() bool { //gd:OpenXRCompositionLayer.is_na
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_natively_supported, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
+}
+func (self class) IsProtectedContent() bool { //gd:OpenXRCompositionLayer.is_protected_content
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_protected_content, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetProtectedContent(protected_content bool) { //gd:OpenXRCompositionLayer.set_protected_content
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_protected_content, 0|(gdextension.SizeBool<<4), &struct{ protected_content bool }{protected_content})
 }
 func (self class) SetMinFilter(mode Filter) { //gd:OpenXRCompositionLayer.set_min_filter
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_filter, 0|(gdextension.SizeInt<<4), &struct{ mode Filter }{mode})

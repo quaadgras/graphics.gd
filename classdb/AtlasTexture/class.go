@@ -197,6 +197,8 @@ func (self Instance) SetAtlas(value Texture2D.Instance) Instance { //gd:AtlasTex
 /*
 The region used to draw the [Atlas]. If either dimension of the region's size is 0, the value from [Atlas] size will be used for that axis instead.
 
+Note: The image size is always an integer, so the actual region size is rounded down.
+
 [Atlas]: https://pkg.go.dev/graphics.gd/classdb/AtlasTexture#Instance.Atlas
 */
 func (self Instance) Region() Rect2.PositionSize { //gd:AtlasTexture.region

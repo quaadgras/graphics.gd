@@ -23,14 +23,14 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
-import "graphics.gd/classdb/BoxContainer"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/EditorDock"
 import "graphics.gd/classdb/EditorResourceTooltipPlugin"
+import "graphics.gd/classdb/MarginContainer"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/classdb/VBoxContainer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -333,6 +333,24 @@ func (self class) FolderColorChanged() Signal.Any {
 }
 
 /*
+Emitted when the selection changes. Use [EditorInterface.GetSelectedPaths] in the connected method to get the selected paths.
+
+[EditorInterface.GetSelectedPaths]: https://pkg.go.dev/graphics.gd/classdb/EditorInterface#GetSelectedPaths
+*/
+func (self Instance) OnSelectionChanged(cb func(), flags ...Signal.Flags) Instance {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self.AsObject()[0].Connect(gd.NewStringName("selection_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
+}
+
+func (self class) SelectionChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`selection_changed`))))
+}
+
+/*
 Emitted when the user switches file display mode or split mode.
 */
 func (self Instance) OnDisplayModeChanged(cb func(), flags ...Signal.Flags) Instance {
@@ -355,23 +373,21 @@ func (self Instance) AsFileSystemDock() Instance {
 	return Instance{gdclass.NewFileSystemDock(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsFileSystemDock() Instance { return self.Super().AsFileSystemDock() }
-func (self class) AsVBoxContainer() VBoxContainer.Advanced {
-	return VBoxContainer.Advanced{gdclass.NewVBoxContainer(self.AsObject()[0])}
+func (self class) AsEditorDock() EditorDock.Advanced {
+	return EditorDock.Advanced{gdclass.NewEditorDock(self.AsObject()[0])}
 }
-func (self *Extension[T]) AsVBoxContainer() VBoxContainer.Instance {
-	return self.Super().AsVBoxContainer()
+func (self *Extension[T]) AsEditorDock() EditorDock.Instance { return self.Super().AsEditorDock() }
+func (self Instance) AsEditorDock() EditorDock.Instance {
+	return EditorDock.Instance{gdclass.NewEditorDock(self.AsObject()[0])}
 }
-func (self Instance) AsVBoxContainer() VBoxContainer.Instance {
-	return VBoxContainer.Instance{gdclass.NewVBoxContainer(self.AsObject()[0])}
+func (self class) AsMarginContainer() MarginContainer.Advanced {
+	return MarginContainer.Advanced{gdclass.NewMarginContainer(self.AsObject()[0])}
 }
-func (self class) AsBoxContainer() BoxContainer.Advanced {
-	return BoxContainer.Advanced{gdclass.NewBoxContainer(self.AsObject()[0])}
+func (self *Extension[T]) AsMarginContainer() MarginContainer.Instance {
+	return self.Super().AsMarginContainer()
 }
-func (self *Extension[T]) AsBoxContainer() BoxContainer.Instance {
-	return self.Super().AsBoxContainer()
-}
-func (self Instance) AsBoxContainer() BoxContainer.Instance {
-	return BoxContainer.Instance{gdclass.NewBoxContainer(self.AsObject()[0])}
+func (self Instance) AsMarginContainer() MarginContainer.Instance {
+	return MarginContainer.Instance{gdclass.NewMarginContainer(self.AsObject()[0])}
 }
 func (self class) AsContainer() Container.Advanced {
 	return Container.Advanced{gdclass.NewContainer(self.AsObject()[0])}
@@ -403,14 +419,14 @@ func (self Instance) AsNode() Node.Instance {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(VBoxContainer.Advanced(self.AsVBoxContainer()), name)
+		return gd.VirtualByName(EditorDock.Advanced(self.AsEditorDock()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(VBoxContainer.Instance(self.AsVBoxContainer()), name)
+		return gd.VirtualByName(EditorDock.Instance(self.AsEditorDock()), name)
 	}
 }
 func init() {

@@ -454,6 +454,9 @@ func (self Instance) SetSkin(value Skin.Instance) Instance { //gd:MeshInstance3D
 /*
 node path to the [Skeleton3D] associated with the instance.
 
+Note: The default value of this property has changed in Godot 4.6. Enable [ProjectSettings] "animation/compatibility/default_parent_skeleton_in_mesh_instance_3d" if the old behavior is needed for compatibility.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
 */
 func (self Instance) Skeleton() string { //gd:MeshInstance3D.skeleton

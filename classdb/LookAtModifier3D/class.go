@@ -110,6 +110,8 @@ var methods struct {
 	get_primary_rotation_axis             gdextension.MethodForClass `hash:"3050976882"`
 	set_use_secondary_rotation            gdextension.MethodForClass `hash:"2586408642"`
 	is_using_secondary_rotation           gdextension.MethodForClass `hash:"36873697"`
+	set_relative                          gdextension.MethodForClass `hash:"2586408642"`
+	is_relative                           gdextension.MethodForClass `hash:"36873697"`
 	set_origin_safe_margin                gdextension.MethodForClass `hash:"373806689"`
 	get_origin_safe_margin                gdextension.MethodForClass `hash:"1740695150"`
 	set_origin_from                       gdextension.MethodForClass `hash:"4254695669"`
@@ -345,6 +347,21 @@ func (self Instance) SetUseSecondaryRotation(value bool) Instance { //gd:LookAtM
 }
 
 /*
+The relative option. If true, the rotation is applied relative to the pose. If false, the rotation is applied relative to the rest. It means to replace the current pose with the [LookAtModifier3D]'s result.
+
+[LookAtModifier3D]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D
+*/
+func (self Instance) Relative() bool { //gd:LookAtModifier3D.relative
+	return bool(class(self).IsRelative())
+}
+
+// SetRelative sets the property returned by [IsRelative]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRelative(value bool) Instance { //gd:LookAtModifier3D.relative
+	class(self).SetRelative(value)
+	return self
+}
+
+/*
 This value determines from what origin is retrieved for use in the calculation of the forward vector.
 */
 func (self Instance) OriginFrom() OriginFrom { //gd:LookAtModifier3D.origin_from
@@ -519,7 +536,7 @@ func (self Instance) SetSymmetryLimitation(value bool) Instance { //gd:LookAtMod
 }
 
 /*
-The limit angle of the primary rotation when [SymmetryLimitation] is true.
+The limit angle of the primary rotation when [SymmetryLimitation] is true, in radians.
 
 [SymmetryLimitation]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.SymmetryLimitation
 */
@@ -551,7 +568,7 @@ func (self Instance) SetPrimaryDampThreshold(value Float.X) Instance { //gd:Look
 }
 
 /*
-The limit angle of positive side of the primary rotation when [SymmetryLimitation] is false.
+The limit angle of positive side of the primary rotation when [SymmetryLimitation] is false, in radians.
 
 [SymmetryLimitation]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.SymmetryLimitation
 */
@@ -581,7 +598,7 @@ func (self Instance) SetPrimaryPositiveDampThreshold(value Float.X) Instance { /
 }
 
 /*
-The limit angle of negative side of the primary rotation when [SymmetryLimitation] is false.
+The limit angle of negative side of the primary rotation when [SymmetryLimitation] is false, in radians.
 
 [SymmetryLimitation]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.SymmetryLimitation
 */
@@ -611,7 +628,7 @@ func (self Instance) SetPrimaryNegativeDampThreshold(value Float.X) Instance { /
 }
 
 /*
-The limit angle of the secondary rotation when [SymmetryLimitation] is true.
+The limit angle of the secondary rotation when [SymmetryLimitation] is true, in radians.
 
 [SymmetryLimitation]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.SymmetryLimitation
 */
@@ -641,7 +658,7 @@ func (self Instance) SetSecondaryDampThreshold(value Float.X) Instance { //gd:Lo
 }
 
 /*
-The limit angle of positive side of the secondary rotation when [SymmetryLimitation] is false.
+The limit angle of positive side of the secondary rotation when [SymmetryLimitation] is false, in radians.
 
 [SymmetryLimitation]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.SymmetryLimitation
 */
@@ -671,7 +688,7 @@ func (self Instance) SetSecondaryPositiveDampThreshold(value Float.X) Instance {
 }
 
 /*
-The limit angle of negative side of the secondary rotation when [SymmetryLimitation] is false.
+The limit angle of negative side of the secondary rotation when [SymmetryLimitation] is false, in radians.
 
 [SymmetryLimitation]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.SymmetryLimitation
 */
@@ -745,6 +762,14 @@ func (self class) SetUseSecondaryRotation(enabled bool) { //gd:LookAtModifier3D.
 }
 func (self class) IsUsingSecondaryRotation() bool { //gd:LookAtModifier3D.is_using_secondary_rotation
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_secondary_rotation, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetRelative(enabled bool) { //gd:LookAtModifier3D.set_relative
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_relative, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+}
+func (self class) IsRelative() bool { //gd:LookAtModifier3D.is_relative
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_relative, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

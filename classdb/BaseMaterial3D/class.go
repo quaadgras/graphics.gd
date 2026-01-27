@@ -438,7 +438,7 @@ func (self Instance) SetNoDepthTest(value bool) Instance { //gd:BaseMaterial3D.n
 }
 
 /*
-Determines which comparison operator is used when testing depth. See [DepthTest].
+Determines which comparison operator is used when testing depth.
 
 Note: Changing [DepthTest] to a non-default value only has a visible effect when used on a transparent material, or a material that has [DepthDrawMode] set to [DepthDrawDisabled].
 
@@ -556,7 +556,7 @@ func (self Instance) SetVertexColorUseAsAlbedo(value bool) Instance { //gd:BaseM
 }
 
 /*
-If true, vertex colors are considered to be stored in sRGB color space and are converted to linear color space during rendering. If false, vertex colors are considered to be stored in linear color space and are rendered as-is. See also [AlbedoTextureForceSrgb].
+If true, vertex colors are considered to be stored in nonlinear sRGB encoding and are converted to linear encoding during rendering. If false, vertex colors are considered to be stored in linear encoding and are rendered as-is. See also [AlbedoTextureForceSrgb].
 
 Note: Only effective when using the Forward+ and Mobile rendering methods, not Compatibility.
 
@@ -610,7 +610,7 @@ func (self Instance) SetAlbedoTexture(value Texture2D.Instance) Instance { //gd:
 }
 
 /*
-If true, forces a conversion of the [AlbedoTexture] from sRGB color space to linear color space. See also [VertexColorIsSrgb].
+If true, forces a conversion of the [AlbedoTexture] from nonlinear sRGB encoding to linear encoding. See also [VertexColorIsSrgb].
 
 This should only be enabled when needed (typically when using a [ViewportTexture] as [AlbedoTexture]). If [AlbedoTextureForceSrgb] is true when it shouldn't be, the texture will appear to be too dark. If [AlbedoTextureForceSrgb] is false when it shouldn't be, the texture will appear to be too bright.
 
@@ -2243,7 +2243,7 @@ func (self Instance) SetDistanceFadeMaxDistance(value Float.X) Instance { //gd:B
 }
 
 /*
-The stencil effect mode. See [StencilMode].
+The stencil effect mode.
 */
 func (self Instance) StencilMode() StencilMode { //gd:BaseMaterial3D.stencil_mode
 	return StencilMode(class(self).GetStencilMode())
@@ -2256,7 +2256,7 @@ func (self Instance) SetStencilMode(value StencilMode) Instance { //gd:BaseMater
 }
 
 /*
-The flags dictating how the stencil operation behaves. See [StencilFlags].
+The flags dictating how the stencil operation behaves.
 */
 func (self Instance) StencilFlags() int { //gd:BaseMaterial3D.stencil_flags
 	return int(int(class(self).GetStencilFlags()))
@@ -2269,7 +2269,7 @@ func (self Instance) SetStencilFlags(value int) Instance { //gd:BaseMaterial3D.s
 }
 
 /*
-The comparison operator to use for stencil masking operations. See [StencilCompare].
+The comparison operator to use for stencil masking operations.
 */
 func (self Instance) StencilCompare() StencilCompare { //gd:BaseMaterial3D.stencil_compare
 	return StencilCompare(class(self).GetStencilCompare())
@@ -3229,7 +3229,7 @@ const (
 	FlagDisableDepthTest Flags = 0
 	// Set ALBEDO to the per-vertex color specified in the mesh.
 	FlagAlbedoFromVertexColor Flags = 1
-	// Vertex colors are considered to be stored in sRGB color space and are converted to linear color space during rendering. See also [VertexColorIsSrgb].
+	// Vertex colors are considered to be stored in nonlinear sRGB encoding and are converted to linear encoding during rendering. See also [VertexColorIsSrgb].
 	//
 	// Note: Only effective when using the Forward+ and Mobile rendering methods.
 	//
@@ -3259,7 +3259,7 @@ const (
 	//
 	// [EmissionTexture]: https://pkg.go.dev/graphics.gd/classdb/#Instance.EmissionTexture
 	FlagEmissionOnUv2 Flags = 11
-	// Forces the shader to convert albedo from sRGB space to linear space. See also [AlbedoTextureForceSrgb].
+	// Forces the shader to convert albedo from nonlinear sRGB encoding to linear encoding. See also [AlbedoTextureForceSrgb].
 	//
 	// [AlbedoTextureForceSrgb]: https://pkg.go.dev/graphics.gd/classdb/#Instance.AlbedoTextureForceSrgb
 	FlagAlbedoTextureForceSrgb Flags = 12
@@ -3410,7 +3410,7 @@ const (
 type StencilFlags int //gd:BaseMaterial3D.StencilFlags
 
 const (
-	// The material will only be rendered where it passes a stencil comparison with existing stencil buffer values. See [StencilCompare].
+	// The material will only be rendered where it passes a stencil comparison with existing stencil buffer values.
 	StencilFlagRead StencilFlags = 1
 	// The material will write the reference value to the stencil buffer where it passes the depth test.
 	StencilFlagWrite StencilFlags = 2

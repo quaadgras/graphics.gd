@@ -5,6 +5,8 @@ Object that holds the project-independent editor settings. These settings are ge
 
 Property names use slash delimiters to distinguish sections. Setting values can be of any any type. It's recommended to use snake_case for editor settings to be consistent with the Godot editor itself.
 
+Editor settings are saved automatically when changed.
+
 Accessing the settings can be done using the following methods, such as:
 
 	package main
@@ -42,6 +44,7 @@ import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Shortcut"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -126,6 +129,12 @@ var methods struct {
 	set_recent_dirs                 gdextension.MethodForClass `hash:"4015028928"`
 	get_recent_dirs                 gdextension.MethodForClass `hash:"1139954409"`
 	set_builtin_action_override     gdextension.MethodForClass `hash:"1209351045"`
+	add_shortcut                    gdextension.MethodForClass `hash:"4124020929"`
+	remove_shortcut                 gdextension.MethodForClass `hash:"83702148"`
+	is_shortcut                     gdextension.MethodForClass `hash:"699917945"`
+	has_shortcut                    gdextension.MethodForClass `hash:"3927539163"`
+	get_shortcut                    gdextension.MethodForClass `hash:"1149070301"`
+	get_shortcut_list               gdextension.MethodForClass `hash:"2981934095"`
 	check_changed_settings_in_group gdextension.MethodForClass `hash:"3927539163"`
 	get_changed_settings            gdextension.MethodForClass `hash:"1139954409"`
 	mark_setting_changed            gdextension.MethodForClass `hash:"83702148"`
@@ -291,6 +300,58 @@ func (self Instance) SetBuiltinActionOverride(name string, actions_list []InputE
 }
 
 /*
+Adds a 'shortcut' whose path is specified by 'path'.
+
+The 'path' determines how the shortcut is organized and displayed in the editor's shortcut settings. The path format affects the display as follows:
+
+- "name" (no slash): Creates a category named name with the shortcut displayed as name.
+
+- "category/name" (single slash): Displays as name in the category section.
+
+- "category/name/extra" (multiple slashes): Extra path components are ignored, so this behaves the same as "category/name".
+
+Note: Shortcuts are only saved to the editor settings if they differ from their original/default state. This means empty shortcuts that were originally empty will not persist between editor sessions and must be re-added. If a shortcut with the same 'path' already exists, this method will update it with the new 'shortcut' instead of creating a duplicate.
+*/
+func (self Instance) AddShortcut(path string, shortcut Shortcut.Instance) { //gd:EditorSettings.add_shortcut
+	Advanced(self).AddShortcut(String.New(path), shortcut)
+}
+
+/*
+Removes the shortcut specified by 'path'.
+*/
+func (self Instance) RemoveShortcut(path string) { //gd:EditorSettings.remove_shortcut
+	Advanced(self).RemoveShortcut(String.New(path))
+}
+
+/*
+Returns true if the shortcut specified by 'path' matches the event specified by 'event', false otherwise.
+*/
+func (self Instance) IsShortcut(path string, event InputEvent.Instance) bool { //gd:EditorSettings.is_shortcut
+	return bool(Advanced(self).IsShortcut(String.New(path), event))
+}
+
+/*
+Returns true if the shortcut specified by 'path' exists, false otherwise.
+*/
+func (self Instance) HasShortcut(path string) bool { //gd:EditorSettings.has_shortcut
+	return bool(Advanced(self).HasShortcut(String.New(path)))
+}
+
+/*
+Returns the shortcut specified by 'path'. Tries to find a built-in action if no shortcut with the provided path is found in the shortcut list. If found, adds it to the list and returns it, otherwise returns null.
+*/
+func (self Instance) GetShortcut(path string) Shortcut.Instance { //gd:EditorSettings.get_shortcut
+	return Shortcut.Instance(Advanced(self).GetShortcut(String.New(path)))
+}
+
+/*
+Returns the list of stored shortcut paths.
+*/
+func (self Instance) GetShortcutList() []string { //gd:EditorSettings.get_shortcut_list
+	return []string(Advanced(self).GetShortcutList().Strings())
+}
+
+/*
 Checks if any settings with the prefix 'setting_prefix' exist in the set of changed settings. See also [GetChangedSettings].
 
 [GetChangedSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings#Instance.GetChangedSettings
@@ -429,6 +490,38 @@ func (self class) SetBuiltinActionOverride(name String.Readable, actions_list Ar
 		name         gdextension.String
 		actions_list gdextension.Array
 	}{pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalArray(actions_list))})
+}
+func (self class) AddShortcut(path String.Readable, shortcut [1]gdclass.Shortcut) { //gd:EditorSettings.add_shortcut
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_shortcut, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
+		path     gdextension.String
+		shortcut gdextension.Object
+	}{pointers.Get(gd.InternalString(path)), gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0])))})
+}
+func (self class) RemoveShortcut(path String.Readable) { //gd:EditorSettings.remove_shortcut
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_shortcut, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+}
+func (self class) IsShortcut(path String.Readable, event [1]gdclass.InputEvent) bool { //gd:EditorSettings.is_shortcut
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shortcut, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
+		path  gdextension.String
+		event gdextension.Object
+	}{pointers.Get(gd.InternalString(path)), gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0])))})
+	var ret = r_ret
+	return ret
+}
+func (self class) HasShortcut(path String.Readable) bool { //gd:EditorSettings.has_shortcut
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_shortcut, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var ret = r_ret
+	return ret
+}
+func (self class) GetShortcut(path String.Readable) [1]gdclass.Shortcut { //gd:EditorSettings.get_shortcut
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shortcut, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var ret = [1]gdclass.Shortcut{gdclass.NewShortcut(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	return ret
+}
+func (self class) GetShortcutList() Packed.Strings { //gd:EditorSettings.get_shortcut_list
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_shortcut_list, gdextension.SizePackedArray, &struct{}{})
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
+	return ret
 }
 func (self class) CheckChangedSettingsInGroup(setting_prefix String.Readable) bool { //gd:EditorSettings.check_changed_settings_in_group
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.check_changed_settings_in_group, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ setting_prefix gdextension.String }{pointers.Get(gd.InternalString(setting_prefix))})

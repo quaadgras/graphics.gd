@@ -2532,32 +2532,6 @@ func (self Instance) SetDragAndDropSelectionEnabled(value bool) Instance { //gd:
 }
 
 /*
-If true, the native virtual keyboard is enabled on platforms that support it.
-*/
-func (self Instance) VirtualKeyboardEnabled() bool { //gd:TextEdit.virtual_keyboard_enabled
-	return bool(class(self).IsVirtualKeyboardEnabled())
-}
-
-// SetVirtualKeyboardEnabled sets the property returned by [IsVirtualKeyboardEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVirtualKeyboardEnabled(value bool) Instance { //gd:TextEdit.virtual_keyboard_enabled
-	class(self).SetVirtualKeyboardEnabled(value)
-	return self
-}
-
-/*
-If true, the native virtual keyboard is shown on focus events on platforms that support it.
-*/
-func (self Instance) VirtualKeyboardShowOnFocus() bool { //gd:TextEdit.virtual_keyboard_show_on_focus
-	return bool(class(self).GetVirtualKeyboardShowOnFocus())
-}
-
-// SetVirtualKeyboardShowOnFocus sets the property returned by [GetVirtualKeyboardShowOnFocus]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVirtualKeyboardShowOnFocus(value bool) Instance { //gd:TextEdit.virtual_keyboard_show_on_focus
-	class(self).SetVirtualKeyboardShowOnFocus(value)
-	return self
-}
-
-/*
 If false, using middle mouse button to paste clipboard will be disabled.
 
 Note: This method is only implemented on Linux.
@@ -2639,6 +2613,32 @@ func (self Instance) TabInputMode() bool { //gd:TextEdit.tab_input_mode
 // SetTabInputMode sets the property returned by [GetTabInputMode]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetTabInputMode(value bool) Instance { //gd:TextEdit.tab_input_mode
 	class(self).SetTabInputMode(value)
+	return self
+}
+
+/*
+If true, the native virtual keyboard is enabled on platforms that support it.
+*/
+func (self Instance) VirtualKeyboardEnabled() bool { //gd:TextEdit.virtual_keyboard_enabled
+	return bool(class(self).IsVirtualKeyboardEnabled())
+}
+
+// SetVirtualKeyboardEnabled sets the property returned by [IsVirtualKeyboardEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVirtualKeyboardEnabled(value bool) Instance { //gd:TextEdit.virtual_keyboard_enabled
+	class(self).SetVirtualKeyboardEnabled(value)
+	return self
+}
+
+/*
+If true, the native virtual keyboard is shown on focus events on platforms that support it.
+*/
+func (self Instance) VirtualKeyboardShowOnFocus() bool { //gd:TextEdit.virtual_keyboard_show_on_focus
+	return bool(class(self).GetVirtualKeyboardShowOnFocus())
+}
+
+// SetVirtualKeyboardShowOnFocus sets the property returned by [GetVirtualKeyboardShowOnFocus]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVirtualKeyboardShowOnFocus(value bool) Instance { //gd:TextEdit.virtual_keyboard_show_on_focus
+	class(self).SetVirtualKeyboardShowOnFocus(value)
 	return self
 }
 
@@ -2990,7 +2990,7 @@ func (self Instance) SetTextDirection(value Control.TextDirection) Instance { //
 }
 
 /*
-Language code used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
+Language code used for line-breaking and text shaping algorithms. If left empty, the current locale is used instead.
 */
 func (self Instance) Language() string { //gd:TextEdit.language
 	return string(class(self).GetLanguage().String())

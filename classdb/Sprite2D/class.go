@@ -144,9 +144,9 @@ type Any interface {
 }
 
 /*
-Returns true, if the pixel at the given position is opaque and false in other case. The position is in local coordinates.
+Returns true if the pixel at the given position is opaque, false otherwise. Also returns false if the given position is out of bounds or this sprite's [Texture] is null. 'pos' is in local coordinates.
 
-Note: It also returns false, if the sprite's texture is null or if the given position is invalid.
+[Texture]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Texture
 */
 func (self Instance) IsPixelOpaque(pos Vector2.XY) bool { //gd:Sprite2D.is_pixel_opaque
 	return bool(Advanced(self).IsPixelOpaque(Vector2.XY(pos)))

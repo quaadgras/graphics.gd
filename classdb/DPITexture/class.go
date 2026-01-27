@@ -131,7 +131,7 @@ type Any interface {
 }
 
 /*
-Creates a new [DPITexture] and initializes it by allocating and setting the SVG data from string.
+Creates a new [DPITexture] and initializes it by allocating and setting the SVG data to 'source'.
 
 [DPITexture]: https://pkg.go.dev/graphics.gd/classdb/DPITexture
 */
@@ -151,7 +151,7 @@ func CreateFromString(source string, color_map map[struct {
 }
 
 /*
-Creates a new [DPITexture] and initializes it by allocating and setting the SVG data from string.
+Creates a new [DPITexture] and initializes it by allocating and setting the SVG data to 'source'.
 
 [DPITexture]: https://pkg.go.dev/graphics.gd/classdb/DPITexture
 */
@@ -171,7 +171,7 @@ func CreateFromStringOptions(source string, scale Float.X, saturation Float.X, c
 }
 
 /*
-Sets SVG source code.
+Sets this SVG texture's source code.
 
 Returns 'self' to enable method chaining.
 */
@@ -181,7 +181,7 @@ func (self Instance) SetSource(source string) Instance { //gd:DPITexture.set_sou
 }
 
 /*
-Returns SVG source code.
+Returns this SVG texture's source code.
 */
 func (self Instance) GetSource() string { //gd:DPITexture.get_source
 	return string(Advanced(self).GetSource().String())

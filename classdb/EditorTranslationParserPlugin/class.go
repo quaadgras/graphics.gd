@@ -3,11 +3,11 @@
 /*
 [EditorTranslationParserPlugin] is invoked when a file is being parsed to extract strings that require translation. To define the parsing and string extraction logic, override the [ParseFile] method in script.
 
-The return value should be an slice of []strings, one for each extracted translatable string. Each entry should contain [msgid, msgctxt, msgid_plural, comment], where all except msgid are optional. Empty strings will be ignored.
+The return value should be an slice of []strings, one for each extracted translatable string. Each entry should contain [msgid, msgctxt, msgid_plural, comment, source_line], where all except msgid are optional. Empty strings will be ignored.
 
-The extracted strings will be written into a POT file selected by user under "POT Generation" in "Localization" tab in "Project Settings" menu.
+The extracted strings will be written into a translation template file selected by user under "Template Generation" in "Localization" tab in "Project Settings" menu.
 
-Below shows an example of a custom parser that extracts strings from a CSV file to write into a POT.
+Below shows an example of a custom parser that extracts strings from a CSV file to write into a template.
 
 	package main
 
@@ -36,7 +36,7 @@ Below shows an example of a custom parser that extracts strings from a CSV file 
 		return []string{"csv"}
 	}
 
-To add a translatable string associated with a context, plural, or comment:
+To add a translatable string associated with a context, plural, comment, or source line:
 
 	package main
 

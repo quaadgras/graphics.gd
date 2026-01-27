@@ -594,28 +594,28 @@ func (self Instance) PushLanguage(language string) { //gd:RichTextLabel.push_lan
 }
 
 /*
-Adds a [u] tag to the tag stack. If 'color' alpha value is zero, current font color with alpha multiplied by theme's 'underline_alpha' is used.
+Adds a [u] tag to the tag stack. If 'color”s alpha value is 0.0, the current font's color with its alpha multiplied by theme's 'underline_alpha' is used.
 */
 func (self Instance) PushUnderline() { //gd:RichTextLabel.push_underline
 	Advanced(self).PushUnderline(Color.RGBA(gd.Color{0, 0, 0, 0}))
 }
 
 /*
-Adds a [u] tag to the tag stack. If 'color' alpha value is zero, current font color with alpha multiplied by theme's 'underline_alpha' is used.
+Adds a [u] tag to the tag stack. If 'color”s alpha value is 0.0, the current font's color with its alpha multiplied by theme's 'underline_alpha' is used.
 */
 func (self MoreArgs) PushUnderline(color Color.RGBA) { //gd:RichTextLabel.push_underline
 	Advanced(self).PushUnderline(Color.RGBA(color))
 }
 
 /*
-Adds a [s] tag to the tag stack. If 'color' alpha value is zero, current font color with alpha multiplied by theme's 'strikethrough_alpha' is used.
+Adds a [s] tag to the tag stack. If 'color”s alpha value is 0.0, the current font's color with its alpha multiplied by theme's 'strikethrough_alpha' is used.
 */
 func (self Instance) PushStrikethrough() { //gd:RichTextLabel.push_strikethrough
 	Advanced(self).PushStrikethrough(Color.RGBA(gd.Color{0, 0, 0, 0}))
 }
 
 /*
-Adds a [s] tag to the tag stack. If 'color' alpha value is zero, current font color with alpha multiplied by theme's 'strikethrough_alpha' is used.
+Adds a [s] tag to the tag stack. If 'color”s alpha value is 0.0, the current font's color with its alpha multiplied by theme's 'strikethrough_alpha' is used.
 */
 func (self MoreArgs) PushStrikethrough(color Color.RGBA) { //gd:RichTextLabel.push_strikethrough
 	Advanced(self).PushStrikethrough(Color.RGBA(color))
@@ -1442,7 +1442,7 @@ func (self Instance) SetShortcutKeysEnabled(value bool) Instance { //gd:RichText
 }
 
 /*
-Controls the text's horizontal alignment. Supports left, center, right, and fill, or justify.
+Controls the text's horizontal alignment. Supports left, center, right, and fill (also known as justify).
 */
 func (self Instance) HorizontalAlignment() GUI.HorizontalAlignment { //gd:RichTextLabel.horizontal_alignment
 	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
@@ -1675,7 +1675,7 @@ func (self Instance) SetTextDirection(value Control.TextDirection) Instance { //
 }
 
 /*
-Language code used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
+Language code used for line-breaking and text shaping algorithms. If left empty, the current locale is used instead.
 */
 func (self Instance) Language() string { //gd:RichTextLabel.language
 	return string(class(self).GetLanguage().String())

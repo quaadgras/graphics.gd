@@ -94,12 +94,13 @@ type Instance [1]gdclass.GDExtensionManager
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	load_extension        gdextension.MethodForClass `hash:"4024158731"`
-	reload_extension      gdextension.MethodForClass `hash:"4024158731"`
-	unload_extension      gdextension.MethodForClass `hash:"4024158731"`
-	is_extension_loaded   gdextension.MethodForClass `hash:"3927539163"`
-	get_loaded_extensions gdextension.MethodForClass `hash:"1139954409"`
-	get_extension         gdextension.MethodForClass `hash:"49743343"`
+	load_extension               gdextension.MethodForClass `hash:"4024158731"`
+	load_extension_from_function gdextension.MethodForClass `hash:"1565094761"`
+	reload_extension             gdextension.MethodForClass `hash:"4024158731"`
+	unload_extension             gdextension.MethodForClass `hash:"4024158731"`
+	is_extension_loaded          gdextension.MethodForClass `hash:"3927539163"`
+	get_loaded_extensions        gdextension.MethodForClass `hash:"1139954409"`
+	get_extension                gdextension.MethodForClass `hash:"49743343"`
 }
 
 func init() {
@@ -128,6 +129,13 @@ Loads an extension by absolute file path. The 'path' needs to point to a valid [
 */
 func LoadExtension(path string) LoadStatus { //gd:GDExtensionManager.load_extension
 	return LoadStatus(Advanced().LoadExtension(String.New(path)))
+}
+
+/*
+Loads the extension already in address space via the given path and initialization function. The 'path' needs to be unique and start with "libgodot://". Returns [LoadStatusOk] if successful.
+*/
+func LoadExtensionFromFunction(path string, init_func *GDExtensionInitializationFunction) LoadStatus { //gd:GDExtensionManager.load_extension_from_function
+	return LoadStatus(Advanced().LoadExtensionFromFunction(String.New(path), init_func))
 }
 
 /*
@@ -199,6 +207,15 @@ func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject
 func (self class) LoadExtension(path String.Readable) LoadStatus { //gd:GDExtensionManager.load_extension
 	once.Do(singleton)
 	var r_ret = noescape.Call[LoadStatus](gd.ObjectChecked(self.AsObject()), methods.load_extension, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var ret = r_ret
+	return ret
+}
+func (self class) LoadExtensionFromFunction(path String.Readable, init_func *GDExtensionInitializationFunction) LoadStatus { //gd:GDExtensionManager.load_extension_from_function
+	once.Do(singleton)
+	var r_ret = noescape.Call[LoadStatus](gd.ObjectChecked(self.AsObject()), methods.load_extension_from_function, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
+		path      gdextension.String
+		init_func *GDExtensionInitializationFunction
+	}{pointers.Get(gd.InternalString(path)), init_func})
 	var ret = r_ret
 	return ret
 }

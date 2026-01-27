@@ -3,6 +3,8 @@
 /*
 A control for displaying plain text. It gives you control over the horizontal and vertical alignment and can wrap the text inside the node's bounding rectangle. It doesn't support bold, italics, or other rich text formatting. For that, use [RichTextLabel] instead.
 
+Note: A single Label node is not designed to display huge amounts of text. To display large amounts of text in a single node, consider using [RichTextLabel] instead as it supports features like an integrated scroll bar and threading. [RichTextLabel] generally performs better when displaying large amounts of text (several pages or more).
+
 [RichTextLabel]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel
 */
 package Label
@@ -538,7 +540,7 @@ func (self Instance) SetTextDirection(value Control.TextDirection) Instance { //
 }
 
 /*
-Language code used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
+Language code used for line-breaking and text shaping algorithms. If left empty, the current locale is used instead.
 */
 func (self Instance) Language() string { //gd:Label.language
 	return string(class(self).GetLanguage().String())

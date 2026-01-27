@@ -371,7 +371,7 @@ func (self Instance) GetSlideCollisionCount() int { //gd:CharacterBody2D.get_sli
 }
 
 /*
-Returns a [KinematicCollision2D], which contains information about a collision that occurred during the last call to [MoveAndSlide]. Since the body can collide several times in a single call to [MoveAndSlide], you must specify the index of the collision in the range 0 to ([GetSlideCollisionCount] - 1).
+Returns a [KinematicCollision2D], which contains information about a collision that occurred during the last call to [MoveAndSlide]. Since the body can collide several times in a single call to [MoveAndSlide], you must specify the index of the collision in the range 0 to ([GetSlideCollisionCount] - 1). See also [GetLastSlideCollision].
 
 Example: Iterate through the collisions with a for loop:
 
@@ -380,6 +380,7 @@ Example: Iterate through the collisions with a for loop:
 		fmt.Println("Collided with: ", Object.To[Node.Instance](collision.GetCollider()).Name())
 	}
 
+[GetLastSlideCollision]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody2D#Instance.GetLastSlideCollision
 [GetSlideCollisionCount]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody2D#Instance.GetSlideCollisionCount
 [KinematicCollision2D]: https://pkg.go.dev/graphics.gd/classdb/KinematicCollision2D
 [MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody2D#Instance.MoveAndSlide
@@ -389,8 +390,9 @@ func (self Instance) GetSlideCollision(slide_idx int) KinematicCollision2D.Insta
 }
 
 /*
-Returns a [KinematicCollision2D], which contains information about the latest collision that occurred during the last call to [MoveAndSlide].
+Returns a [KinematicCollision2D] if a collision occurred. The returned value contains information about the latest collision that occurred during the last call to [MoveAndSlide]. Returns null if no collision occurred. See also [GetSlideCollision].
 
+[GetSlideCollision]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody2D#Instance.GetSlideCollision
 [KinematicCollision2D]: https://pkg.go.dev/graphics.gd/classdb/KinematicCollision2D
 [MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody2D#Instance.MoveAndSlide
 */
@@ -474,7 +476,7 @@ func (self Instance) SetUpDirection(value Vector2.XY) Instance { //gd:CharacterB
 /*
 Current velocity vector in pixels per second, used and modified during calls to [MoveAndSlide].
 
-This property should not be set to a value multiplied by delta, because this happens internally in [MoveAndSlide]. Otherwise, the simulation will run at an incorrect speed.
+Note: A common mistake is setting this property to the desired velocity multiplied by delta, which produces a motion vector in pixels.
 
 [MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody2D#Instance.MoveAndSlide
 */

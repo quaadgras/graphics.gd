@@ -187,6 +187,14 @@ func (self Instance) SurfaceSetNormal(normal Vector3.XYZ) { //gd:ImmediateMesh.s
 
 /*
 Set the tangent attribute that will be pushed with the next vertex.
+
+Note: Even though 'tangent' is a [Plane.NormalD], it does not directly represent the tangent plane. Its [Plane.X], [Plane.Y], and [Plane.Z] represent the tangent vector and [Plane.D] should be either -1 or 1. See also [Mesh.ArrayTangent].
+
+[Plane.D]: https://pkg.go.dev/graphics.gd/classdb/Plane#Instance.D
+[Plane.NormalD]: https://pkg.go.dev/graphics.gd/variant/Plane#NormalD
+[Plane.X]: https://pkg.go.dev/graphics.gd/classdb/Plane#Instance.X
+[Plane.Y]: https://pkg.go.dev/graphics.gd/classdb/Plane#Instance.Y
+[Plane.Z]: https://pkg.go.dev/graphics.gd/classdb/Plane#Instance.Z
 */
 func (self Instance) SurfaceSetTangent(tangent Plane.NormalD) { //gd:ImmediateMesh.surface_set_tangent
 	Advanced(self).SurfaceSetTangent(Plane.NormalD(tangent))

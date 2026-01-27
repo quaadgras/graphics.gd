@@ -112,72 +112,74 @@ var methods struct {
 	add_used_extension           gdextension.MethodForClass `hash:"2678287736"`
 	append_data_to_buffers       gdextension.MethodForClass `hash:"1460416665"`
 	append_gltf_node             gdextension.MethodForClass `hash:"3562288551"`
-	get_json                     gdextension.MethodForClass `hash:"2382534195"`
+	get_json                     gdextension.MethodForClass `hash:"3102165223"`
 	set_json                     gdextension.MethodForClass `hash:"4155329257"`
-	get_major_version            gdextension.MethodForClass `hash:"2455072627"`
+	get_major_version            gdextension.MethodForClass `hash:"3905245786"`
 	set_major_version            gdextension.MethodForClass `hash:"1286410249"`
-	get_minor_version            gdextension.MethodForClass `hash:"2455072627"`
+	get_minor_version            gdextension.MethodForClass `hash:"3905245786"`
 	set_minor_version            gdextension.MethodForClass `hash:"1286410249"`
 	get_copyright                gdextension.MethodForClass `hash:"201670096"`
 	set_copyright                gdextension.MethodForClass `hash:"83702148"`
-	get_glb_data                 gdextension.MethodForClass `hash:"2115431945"`
+	get_glb_data                 gdextension.MethodForClass `hash:"2362200018"`
 	set_glb_data                 gdextension.MethodForClass `hash:"2971499966"`
-	get_use_named_skin_binds     gdextension.MethodForClass `hash:"2240911060"`
+	get_use_named_skin_binds     gdextension.MethodForClass `hash:"36873697"`
 	set_use_named_skin_binds     gdextension.MethodForClass `hash:"2586408642"`
-	get_nodes                    gdextension.MethodForClass `hash:"2915620761"`
+	get_nodes                    gdextension.MethodForClass `hash:"3995934104"`
 	set_nodes                    gdextension.MethodForClass `hash:"381264803"`
-	get_buffers                  gdextension.MethodForClass `hash:"2915620761"`
+	get_buffers                  gdextension.MethodForClass `hash:"3995934104"`
 	set_buffers                  gdextension.MethodForClass `hash:"381264803"`
-	get_buffer_views             gdextension.MethodForClass `hash:"2915620761"`
+	get_buffer_views             gdextension.MethodForClass `hash:"3995934104"`
 	set_buffer_views             gdextension.MethodForClass `hash:"381264803"`
-	get_accessors                gdextension.MethodForClass `hash:"2915620761"`
+	get_accessors                gdextension.MethodForClass `hash:"3995934104"`
 	set_accessors                gdextension.MethodForClass `hash:"381264803"`
-	get_meshes                   gdextension.MethodForClass `hash:"2915620761"`
+	get_meshes                   gdextension.MethodForClass `hash:"3995934104"`
 	set_meshes                   gdextension.MethodForClass `hash:"381264803"`
-	get_animation_players_count  gdextension.MethodForClass `hash:"3744713108"`
-	get_animation_player         gdextension.MethodForClass `hash:"925043400"`
-	get_materials                gdextension.MethodForClass `hash:"2915620761"`
+	get_animation_players_count  gdextension.MethodForClass `hash:"923996154"`
+	get_animation_player         gdextension.MethodForClass `hash:"1550200483"`
+	get_materials                gdextension.MethodForClass `hash:"3995934104"`
 	set_materials                gdextension.MethodForClass `hash:"381264803"`
-	get_scene_name               gdextension.MethodForClass `hash:"2841200299"`
+	get_scene_name               gdextension.MethodForClass `hash:"201670096"`
 	set_scene_name               gdextension.MethodForClass `hash:"83702148"`
-	get_base_path                gdextension.MethodForClass `hash:"2841200299"`
+	get_base_path                gdextension.MethodForClass `hash:"201670096"`
 	set_base_path                gdextension.MethodForClass `hash:"83702148"`
 	get_filename                 gdextension.MethodForClass `hash:"201670096"`
 	set_filename                 gdextension.MethodForClass `hash:"83702148"`
-	get_root_nodes               gdextension.MethodForClass `hash:"969006518"`
+	get_root_nodes               gdextension.MethodForClass `hash:"1930428628"`
 	set_root_nodes               gdextension.MethodForClass `hash:"3614634198"`
-	get_textures                 gdextension.MethodForClass `hash:"2915620761"`
+	get_textures                 gdextension.MethodForClass `hash:"3995934104"`
 	set_textures                 gdextension.MethodForClass `hash:"381264803"`
-	get_texture_samplers         gdextension.MethodForClass `hash:"2915620761"`
+	get_texture_samplers         gdextension.MethodForClass `hash:"3995934104"`
 	set_texture_samplers         gdextension.MethodForClass `hash:"381264803"`
-	get_images                   gdextension.MethodForClass `hash:"2915620761"`
+	get_images                   gdextension.MethodForClass `hash:"3995934104"`
 	set_images                   gdextension.MethodForClass `hash:"381264803"`
-	get_skins                    gdextension.MethodForClass `hash:"2915620761"`
+	get_skins                    gdextension.MethodForClass `hash:"3995934104"`
 	set_skins                    gdextension.MethodForClass `hash:"381264803"`
-	get_cameras                  gdextension.MethodForClass `hash:"2915620761"`
+	get_cameras                  gdextension.MethodForClass `hash:"3995934104"`
 	set_cameras                  gdextension.MethodForClass `hash:"381264803"`
-	get_lights                   gdextension.MethodForClass `hash:"2915620761"`
+	get_lights                   gdextension.MethodForClass `hash:"3995934104"`
 	set_lights                   gdextension.MethodForClass `hash:"381264803"`
-	get_unique_names             gdextension.MethodForClass `hash:"2915620761"`
+	get_unique_names             gdextension.MethodForClass `hash:"3995934104"`
 	set_unique_names             gdextension.MethodForClass `hash:"381264803"`
-	get_unique_animation_names   gdextension.MethodForClass `hash:"2915620761"`
+	get_unique_animation_names   gdextension.MethodForClass `hash:"3995934104"`
 	set_unique_animation_names   gdextension.MethodForClass `hash:"381264803"`
-	get_skeletons                gdextension.MethodForClass `hash:"2915620761"`
+	get_skeletons                gdextension.MethodForClass `hash:"3995934104"`
 	set_skeletons                gdextension.MethodForClass `hash:"381264803"`
-	get_create_animations        gdextension.MethodForClass `hash:"2240911060"`
+	get_create_animations        gdextension.MethodForClass `hash:"36873697"`
 	set_create_animations        gdextension.MethodForClass `hash:"2586408642"`
-	get_import_as_skeleton_bones gdextension.MethodForClass `hash:"2240911060"`
+	get_import_as_skeleton_bones gdextension.MethodForClass `hash:"36873697"`
 	set_import_as_skeleton_bones gdextension.MethodForClass `hash:"2586408642"`
-	get_animations               gdextension.MethodForClass `hash:"2915620761"`
+	get_animations               gdextension.MethodForClass `hash:"3995934104"`
 	set_animations               gdextension.MethodForClass `hash:"381264803"`
-	get_scene_node               gdextension.MethodForClass `hash:"4253421667"`
-	get_node_index               gdextension.MethodForClass `hash:"1205807060"`
-	get_additional_data          gdextension.MethodForClass `hash:"2138907829"`
+	get_scene_node               gdextension.MethodForClass `hash:"539202265"`
+	get_node_index               gdextension.MethodForClass `hash:"3810805390"`
+	get_additional_data          gdextension.MethodForClass `hash:"2760726917"`
 	set_additional_data          gdextension.MethodForClass `hash:"3776071444"`
-	get_handle_binary_image      gdextension.MethodForClass `hash:"2455072627"`
-	set_handle_binary_image      gdextension.MethodForClass `hash:"1286410249"`
+	get_handle_binary_image_mode gdextension.MethodForClass `hash:"1363384196"`
+	set_handle_binary_image_mode gdextension.MethodForClass `hash:"854676334"`
 	set_bake_fps                 gdextension.MethodForClass `hash:"373806689"`
 	get_bake_fps                 gdextension.MethodForClass `hash:"1740695150"`
+	get_handle_binary_image      gdextension.MethodForClass `hash:"3905245786"`
+	set_handle_binary_image      gdextension.MethodForClass `hash:"1286410249"`
 }
 
 func init() {
@@ -247,8 +249,8 @@ Returns the number of [AnimationPlayer] nodes in this [GLTFState]. These nodes a
 [AnimationPlayer]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer
 [GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
 */
-func (self Instance) GetAnimationPlayersCount(idx int) int { //gd:GLTFState.get_animation_players_count
-	return int(int(Advanced(self).GetAnimationPlayersCount(int64(idx))))
+func (self Instance) GetAnimationPlayersCount(anim_player_index int) int { //gd:GLTFState.get_animation_players_count
+	return int(int(Advanced(self).GetAnimationPlayersCount(int64(anim_player_index))))
 }
 
 /*
@@ -256,8 +258,8 @@ Returns the [AnimationPlayer] node with the given index. These nodes are only us
 
 [AnimationPlayer]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer
 */
-func (self Instance) GetAnimationPlayer(idx int) AnimationPlayer.Instance { //gd:GLTFState.get_animation_player
-	return AnimationPlayer.Instance(Advanced(self).GetAnimationPlayer(int64(idx)))
+func (self Instance) GetAnimationPlayer(anim_player_index int) AnimationPlayer.Instance { //gd:GLTFState.get_animation_player
+	return AnimationPlayer.Instance(Advanced(self).GetAnimationPlayer(int64(anim_player_index)))
 }
 
 /*
@@ -268,8 +270,8 @@ Note: Not every [GLTFNode] will have a scene node generated, and not every gener
 [GLTFNode]: https://pkg.go.dev/graphics.gd/classdb/GLTFNode
 [GetNodeIndex]: https://pkg.go.dev/graphics.gd/classdb/GLTFState#Instance.GetNodeIndex
 */
-func (self Instance) GetSceneNode(idx int) Node.Instance { //gd:GLTFState.get_scene_node
-	return Node.Instance(Advanced(self).GetSceneNode(int64(idx)))
+func (self Instance) GetSceneNode(gltf_node_index int) Node.Instance { //gd:GLTFState.get_scene_node
+	return Node.Instance(Advanced(self).GetSceneNode(int64(gltf_node_index)))
 }
 
 /*
@@ -683,13 +685,18 @@ func (self Instance) SetAnimations(value []GLTFAnimation.Instance) Instance { //
 	return self
 }
 
-func (self Instance) HandleBinaryImage() BinaryHandler { //gd:GLTFState.handle_binary_image
-	return BinaryHandler(BinaryHandler(class(self).GetHandleBinaryImage()))
+/*
+When importing a glTF file with unimported raw binary images embedded inside of binary blob buffers, in data URIs, or separate files not imported by Godot, this controls how the images are handled. Images can be discarded, saved as separate files, or embedded in the scene lossily or losslessly. See [HandleBinaryImageMode] for options.
+
+This property does nothing for image files in the res:// folder imported by Godot, as those are handled by Godot's image importer directly, and then the Godot scene generated from the glTF file will use the images as Godot imported them.
+*/
+func (self Instance) HandleBinaryImageMode() HandleBinaryImageMode { //gd:GLTFState.handle_binary_image_mode
+	return HandleBinaryImageMode(class(self).GetHandleBinaryImageMode())
 }
 
-// SetHandleBinaryImage sets the property returned by [GetHandleBinaryImage]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHandleBinaryImage(value BinaryHandler) Instance { //gd:GLTFState.handle_binary_image
-	class(self).SetHandleBinaryImage(int64(value))
+// SetHandleBinaryImageMode sets the property returned by [GetHandleBinaryImageMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHandleBinaryImageMode(value HandleBinaryImageMode) Instance { //gd:GLTFState.handle_binary_image_mode
+	class(self).SetHandleBinaryImageMode(value)
 	return self
 }
 
@@ -703,6 +710,16 @@ func (self Instance) BakeFps() Float.X { //gd:GLTFState.bake_fps
 // SetBakeFps sets the property returned by [GetBakeFps]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetBakeFps(value Float.X) Instance { //gd:GLTFState.bake_fps
 	class(self).SetBakeFps(float64(value))
+	return self
+}
+
+func (self Instance) HandleBinaryImage() BinaryHandler { //gd:GLTFState.handle_binary_image
+	return BinaryHandler(BinaryHandler(class(self).GetHandleBinaryImage()))
+}
+
+// SetHandleBinaryImage sets the property returned by [GetHandleBinaryImage]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHandleBinaryImage(value BinaryHandler) Instance { //gd:GLTFState.handle_binary_image
+	class(self).SetHandleBinaryImage(int64(value))
 	return self
 }
 
@@ -817,13 +834,13 @@ func (self class) GetMeshes() Array.Contains[[1]gdclass.GLTFMesh] { //gd:GLTFSta
 func (self class) SetMeshes(meshes Array.Contains[[1]gdclass.GLTFMesh]) { //gd:GLTFState.set_meshes
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_meshes, 0|(gdextension.SizeArray<<4), &struct{ meshes gdextension.Array }{pointers.Get(gd.InternalArray(meshes))})
 }
-func (self class) GetAnimationPlayersCount(idx int64) int64 { //gd:GLTFState.get_animation_players_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_animation_players_count, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+func (self class) GetAnimationPlayersCount(anim_player_index int64) int64 { //gd:GLTFState.get_animation_players_count
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_animation_players_count, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ anim_player_index int64 }{anim_player_index})
 	var ret = r_ret
 	return ret
 }
-func (self class) GetAnimationPlayer(idx int64) [1]gdclass.AnimationPlayer { //gd:GLTFState.get_animation_player
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_animation_player, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+func (self class) GetAnimationPlayer(anim_player_index int64) [1]gdclass.AnimationPlayer { //gd:GLTFState.get_animation_player
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_animation_player, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ anim_player_index int64 }{anim_player_index})
 	var ret = [1]gdclass.AnimationPlayer{gdclass.NewAnimationPlayer(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
@@ -965,8 +982,8 @@ func (self class) GetAnimations() Array.Contains[[1]gdclass.GLTFAnimation] { //g
 func (self class) SetAnimations(animations Array.Contains[[1]gdclass.GLTFAnimation]) { //gd:GLTFState.set_animations
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_animations, 0|(gdextension.SizeArray<<4), &struct{ animations gdextension.Array }{pointers.Get(gd.InternalArray(animations))})
 }
-func (self class) GetSceneNode(idx int64) [1]gdclass.Node { //gd:GLTFState.get_scene_node
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_scene_node, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+func (self class) GetSceneNode(gltf_node_index int64) [1]gdclass.Node { //gd:GLTFState.get_scene_node
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_scene_node, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ gltf_node_index int64 }{gltf_node_index})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
@@ -986,13 +1003,13 @@ func (self class) SetAdditionalData(extension_name String.Name, additional_data 
 		additional_data gdextension.Variant
 	}{pointers.Get(gd.InternalStringName(extension_name)), gdextension.Variant(pointers.Get(gd.InternalVariant(additional_data)))})
 }
-func (self class) GetHandleBinaryImage() int64 { //gd:GLTFState.get_handle_binary_image
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_handle_binary_image, gdextension.SizeInt, &struct{}{})
+func (self class) GetHandleBinaryImageMode() HandleBinaryImageMode { //gd:GLTFState.get_handle_binary_image_mode
+	var r_ret = noescape.Call[HandleBinaryImageMode](gd.ObjectChecked(self.AsObject()), methods.get_handle_binary_image_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-func (self class) SetHandleBinaryImage(method int64) { //gd:GLTFState.set_handle_binary_image
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_handle_binary_image, 0|(gdextension.SizeInt<<4), &struct{ method int64 }{method})
+func (self class) SetHandleBinaryImageMode(method HandleBinaryImageMode) { //gd:GLTFState.set_handle_binary_image_mode
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_handle_binary_image_mode, 0|(gdextension.SizeInt<<4), &struct{ method HandleBinaryImageMode }{method})
 }
 func (self class) SetBakeFps(value float64) { //gd:GLTFState.set_bake_fps
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_fps, 0|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
@@ -1001,6 +1018,14 @@ func (self class) GetBakeFps() float64 { //gd:GLTFState.get_bake_fps
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bake_fps, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
+}
+func (self class) GetHandleBinaryImage() int64 { //gd:GLTFState.get_handle_binary_image
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_handle_binary_image, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetHandleBinaryImage(method int64) { //gd:GLTFState.set_handle_binary_image
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_handle_binary_image, 0|(gdextension.SizeInt<<4), &struct{ method int64 }{method})
 }
 func (self class) AsGLTFState() Advanced { return Advanced{gdclass.NewGLTFState(self.AsObject()[0])} }
 func (self Instance) AsGLTFState() Instance {
@@ -1038,6 +1063,25 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("GLTFState", func(ptr gd.Object) any { return Instance{gdclass.NewGLTFState(ptr)} })
 }
+
+type HandleBinaryImageMode int //gd:GLTFState.HandleBinaryImageMode
+
+const (
+	// When importing a glTF file with embedded binary images, discards all images and uses untextured materials in their place. Images stored as separate files in the res:// folder are not affected by this; those will be used as Godot imported them.
+	HandleBinaryImageModeDiscardTextures HandleBinaryImageMode = 0
+	// When importing a glTF file with embedded binary images, extracts them and saves them to their own files. This allows the image to be imported by Godot's image importer, which can then have their import options customized by the user, including optionally compressing the image to VRAM texture formats.
+	//
+	// This will save the images's bytes exactly as-is, without recompression. For image formats supplied by glTF extensions, the file will have a filename ending with the file extension supplied by [GLTFDocumentExtension.GetImageFileExtension] of the extension class.
+	//
+	// Note: This option is editor-only. At runtime, this acts the same as [HandleBinaryImageModeEmbedAsUncompressed].
+	//
+	// [GLTFDocumentExtension.GetImageFileExtension]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocumentExtension#Instance.GetImageFileExtension
+	HandleBinaryImageModeExtractTextures HandleBinaryImageMode = 1
+	// When importing a glTF file with embedded binary images, embeds textures VRAM compressed with Basis Universal into the generated scene. Images stored as separate files in the res:// folder are not affected by this; those will be used as Godot imported them.
+	HandleBinaryImageModeEmbedAsBasisu HandleBinaryImageMode = 2
+	// When importing a glTF file with embedded binary images, embeds textures compressed losslessly into the generated scene. Images stored as separate files in the res:// folder are not affected by this; those will be used as Godot imported them.
+	HandleBinaryImageModeEmbedAsUncompressed HandleBinaryImageMode = 3
+)
 
 type BinaryHandler int
 

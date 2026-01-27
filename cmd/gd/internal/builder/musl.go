@@ -106,10 +106,10 @@ func (musl Musl) Build(args ...string) (err error) {
 		return fmt.Errorf("gd build: cannot cross-compile linux %v on %v", GOARCH, runtime.GOOS)
 	}
 	libgo := filepath.Join(project.GraphicsDirectory, fmt.Sprintf("musl_%v.a", GOARCH))
-	if err := tooling.Go.Action("build", args, "-buildmode=c-archive", "-overlay="+overlay, "-o", libgo); err != nil {
+	if err := tooling.Go.Action("build", args, "-tags", "musl", "-buildmode=c-archive", "-overlay="+overlay, "-o", libgo); err != nil {
 		return xray.New(err)
 	}
-	if err := tooling.Zig.Exec("cc", "-target", target, musl.lib, libgo, "-o", musl.out); err != nil {
+	if err := tooling.Zig.Exec("cc", "-target", target, "-lc++", musl.lib, libgo, "-o", musl.out); err != nil {
 		return xray.New(err)
 	}
 	return nil
@@ -239,7 +239,7 @@ func (musl Musl) Test(args ...string) error {
 		return fmt.Errorf("gd build: cannot cross-compile linux %v on %v", GOARCH, runtime.GOOS)
 	}
 	libgo := filepath.Join(project.GraphicsDirectory, fmt.Sprintf("musl_%v.a", GOARCH))
-	if err := tooling.Go.Action("test", args, "-c", "-buildmode=c-archive", "-overlay="+overlay, "-o", libgo); err != nil {
+	if err := tooling.Go.Action("test", args, "-c", "-tags", "musl", "-buildmode=c-archive", "-overlay="+overlay, "-o", libgo); err != nil {
 		return xray.New(err)
 	}
 	libgodot, err := tooling.LibGodotEditor.LookupPlatform("musl", GOARCH)

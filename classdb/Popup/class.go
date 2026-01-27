@@ -3,7 +3,11 @@
 /*
 [Popup] is a base class for contextual windows and panels with fixed position. It's a modal by default (see [Window.PopupWindow]) and provides methods for implementing custom popup behavior.
 
+Note: [Popup] is invisible by default. To make it visible, call one of the popup_* methods from [Window] on the node, such as [Window.PopupCenteredClamped].
+
 [Popup]: https://pkg.go.dev/graphics.gd/classdb/Popup
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+[Window.PopupCenteredClamped]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.PopupCenteredClamped
 [Window.PopupWindow]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.PopupWindow
 */
 package Popup

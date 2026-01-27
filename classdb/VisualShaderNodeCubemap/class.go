@@ -302,7 +302,7 @@ type TextureType int //gd:VisualShaderNodeCubemap.TextureType
 const (
 	// No hints are added to the uniform declaration.
 	TypeData TextureType = 0
-	// Adds source_color as hint to the uniform declaration for proper sRGB to linear conversion.
+	// Adds source_color as hint to the uniform declaration for proper conversion from nonlinear sRGB encoding to linear encoding.
 	TypeColor TextureType = 1
 	// Adds hint_normal as hint to the uniform declaration, which internally converts the texture for proper usage as normal map.
 	TypeNormalMap TextureType = 2

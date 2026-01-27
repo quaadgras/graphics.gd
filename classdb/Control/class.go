@@ -15,9 +15,9 @@ Input events are propagated through the [SceneTree] from the root node to all ch
 
 Call [AcceptEvent] so no other node receives the event. Once you accept an input, it becomes handled so [Node.UnhandledInput] will not process it.
 
-Only one [Control] node can be in focus. Only the node in focus will receive events. To get the focus, call [GrabFocus]. [Control] nodes lose focus when another node grabs it, or if you hide the node in focus.
+Only one [Control] node can be in focus. Only the node in focus will receive events. To get the focus, call [GrabFocus]. [Control] nodes lose focus when another node grabs it, or if you hide the node in focus. Focus will not be represented visually if gained via mouse/touch input, only appearing with keyboard/gamepad input (for accessibility), or via [GrabFocus].
 
-Sets [MouseFilter] to [MouseFilterIgnore] to tell a [Control] node to ignore mouse or touch events. You'll need it if you place an icon on top of a button.
+Set [MouseFilter] to [MouseFilterIgnore] to tell a [Control] node to ignore mouse or touch events. You'll need it if you place an icon on top of a button.
 
 [Theme] resources change the control's appearance. The [Theme] of a [Control] node affects all of its direct and indirect children (as long as a chain of controls is uninterrupted). To override some of the theme items, call one of the add_theme_*_override methods, like [AddThemeFontOverride]. You can also override theme items in the Inspector.
 
@@ -167,6 +167,7 @@ var methods struct {
 	set_rotation_degrees                 gdextension.MethodForClass `hash:"373806689"`
 	set_scale                            gdextension.MethodForClass `hash:"743155724"`
 	set_pivot_offset                     gdextension.MethodForClass `hash:"743155724"`
+	set_pivot_offset_ratio               gdextension.MethodForClass `hash:"743155724"`
 	get_begin                            gdextension.MethodForClass `hash:"3341600327"`
 	get_end                              gdextension.MethodForClass `hash:"3341600327"`
 	get_position                         gdextension.MethodForClass `hash:"3341600327"`
@@ -175,6 +176,8 @@ var methods struct {
 	get_rotation_degrees                 gdextension.MethodForClass `hash:"1740695150"`
 	get_scale                            gdextension.MethodForClass `hash:"3341600327"`
 	get_pivot_offset                     gdextension.MethodForClass `hash:"3341600327"`
+	get_pivot_offset_ratio               gdextension.MethodForClass `hash:"3341600327"`
+	get_combined_pivot_offset            gdextension.MethodForClass `hash:"3341600327"`
 	get_custom_minimum_size              gdextension.MethodForClass `hash:"3341600327"`
 	get_parent_area_size                 gdextension.MethodForClass `hash:"3341600327"`
 	get_global_position                  gdextension.MethodForClass `hash:"3341600327"`
@@ -186,8 +189,8 @@ var methods struct {
 	get_focus_mode_with_override         gdextension.MethodForClass `hash:"2132829277"`
 	set_focus_behavior_recursive         gdextension.MethodForClass `hash:"4256832521"`
 	get_focus_behavior_recursive         gdextension.MethodForClass `hash:"2435707181"`
-	has_focus                            gdextension.MethodForClass `hash:"36873697"`
-	grab_focus                           gdextension.MethodForClass `hash:"3218959716"`
+	has_focus                            gdextension.MethodForClass `hash:"3302206351"`
+	grab_focus                           gdextension.MethodForClass `hash:"107499316"`
 	release_focus                        gdextension.MethodForClass `hash:"3218959716"`
 	find_prev_valid_focus                gdextension.MethodForClass `hash:"2783021301"`
 	find_next_valid_focus                gdextension.MethodForClass `hash:"2783021301"`
@@ -540,7 +543,7 @@ type Interface interface {
 	//
 	//
 	//
-	// Example: Usa a scene instance as a tooltip:
+	// Example: Use a scene instance as a tooltip:
 	//
 	//
 	//
@@ -862,7 +865,7 @@ Example: Use a constructed node as a tooltip:
 		return label.AsControl()
 	}
 
-Example: Usa a scene instance as a tooltip:
+Example: Use a scene instance as a tooltip:
 
 [CanvasItem.Visible]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Visible
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
@@ -1287,6 +1290,16 @@ func (self Instance) GetEnd() Vector2.XY { //gd:Control.get_end
 }
 
 /*
+Returns the combined value of [PivotOffset] and [PivotOffsetRatio], in pixels. The ratio is multiplied by the control's size.
+
+[PivotOffset]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.PivotOffset
+[PivotOffsetRatio]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.PivotOffsetRatio
+*/
+func (self Instance) GetCombinedPivotOffset() Vector2.XY { //gd:Control.get_combined_pivot_offset
+	return Vector2.XY(Advanced(self).GetCombinedPivotOffset())
+}
+
+/*
 Returns the width/height occupied in the parent control.
 */
 func (self Instance) GetParentAreaSize() Vector2.XY { //gd:Control.get_parent_area_size
@@ -1296,7 +1309,7 @@ func (self Instance) GetParentAreaSize() Vector2.XY { //gd:Control.get_parent_ar
 /*
 Returns the position of this [Control] in global screen coordinates (i.e. taking window position into account). Mostly useful for editor plugins.
 
-Equals to [GlobalPosition] if the window is embedded (see [Viewport.GuiEmbedSubwindows]).
+Equivalent to get_screen_transform().origin (see [CanvasItem.GetScreenTransform]).
 
 Example: Show a popup at the mouse position:
 
@@ -1304,9 +1317,8 @@ Example: Show a popup at the mouse position:
 	popup_menu.AsWindow().ResetSize()
 	popup_menu.AsWindow().Popup()
 
+[CanvasItem.GetScreenTransform]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.GetScreenTransform
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[GlobalPosition]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GlobalPosition
-[Viewport.GuiEmbedSubwindows]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GuiEmbedSubwindows
 */
 func (self Instance) GetScreenPosition() Vector2.XY { //gd:Control.get_screen_position
 	return Vector2.XY(Advanced(self).GetScreenPosition())
@@ -1360,23 +1372,61 @@ func (self Instance) GetFocusModeWithOverride() FocusMode { //gd:Control.get_foc
 /*
 Returns true if this is the current focused control. See [FocusMode].
 
+If 'ignore_hidden_focus' is true, controls that have their focus hidden will always return false. Hidden focus happens automatically when controls gain focus via mouse input, or manually using [GrabFocus] with hide_focus set to true.
+
 [FocusMode]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.FocusMode
+[GrabFocus]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GrabFocus
 */
 func (self Instance) HasFocus() bool { //gd:Control.has_focus
-	return bool(Advanced(self).HasFocus())
+	return bool(Advanced(self).HasFocus(false))
+}
+
+/*
+Returns true if this is the current focused control. See [FocusMode].
+
+If 'ignore_hidden_focus' is true, controls that have their focus hidden will always return false. Hidden focus happens automatically when controls gain focus via mouse input, or manually using [GrabFocus] with hide_focus set to true.
+
+[FocusMode]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.FocusMode
+[GrabFocus]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GrabFocus
+*/
+func (self MoreArgs) HasFocus(ignore_hidden_focus bool) bool { //gd:Control.has_focus
+	return bool(Advanced(self).HasFocus(ignore_hidden_focus))
 }
 
 /*
 Steal the focus from another control and become the focused control (see [FocusMode]).
 
+If 'hide_focus' is true, the control will not visually show its focused state. Has no effect for [LineEdit] and [TextEdit] when [ProjectSettings] "gui/common/show_focus_state_on_pointer_event" is set to Control Supports Keyboard Input, or for any control when it is set to Always.
+
 Note: Using this method together with [Callable.CallDeferred] makes it more reliable, especially when called inside [Node.Ready].
 
 [Callable.CallDeferred]: https://pkg.go.dev/graphics.gd/classdb/Callable#Instance.CallDeferred
 [FocusMode]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.FocusMode
+[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
 [Node.Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Ready
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
 */
 func (self Instance) GrabFocus() { //gd:Control.grab_focus
-	Advanced(self).GrabFocus()
+	Advanced(self).GrabFocus(false)
+}
+
+/*
+Steal the focus from another control and become the focused control (see [FocusMode]).
+
+If 'hide_focus' is true, the control will not visually show its focused state. Has no effect for [LineEdit] and [TextEdit] when [ProjectSettings] "gui/common/show_focus_state_on_pointer_event" is set to Control Supports Keyboard Input, or for any control when it is set to Always.
+
+Note: Using this method together with [Callable.CallDeferred] makes it more reliable, especially when called inside [Node.Ready].
+
+[Callable.CallDeferred]: https://pkg.go.dev/graphics.gd/classdb/Callable#Instance.CallDeferred
+[FocusMode]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.FocusMode
+[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
+[Node.Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Ready
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
+*/
+func (self MoreArgs) GrabFocus(hide_focus bool) { //gd:Control.grab_focus
+	Advanced(self).GrabFocus(hide_focus)
 }
 
 /*
@@ -2508,11 +2558,13 @@ func (self Instance) SetScale(value Vector2.XY) Instance { //gd:Control.scale
 }
 
 /*
-By default, the node's pivot is its top-left corner. When you change its [Rotation] or [Scale], it will rotate or scale around this pivot. Set this property to [Size] / 2 to pivot around the Control's center.
+By default, the node's pivot is its top-left corner. When you change its [Rotation] or [Scale], it will rotate or scale around this pivot.
 
+The actual offset is the combined value of this property and [PivotOffsetRatio].
+
+[PivotOffsetRatio]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.PivotOffsetRatio
 [Rotation]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Rotation
 [Scale]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Scale
-[Size]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Size
 */
 func (self Instance) PivotOffset() Vector2.XY { //gd:Control.pivot_offset
 	return Vector2.XY(class(self).GetPivotOffset())
@@ -2521,6 +2573,23 @@ func (self Instance) PivotOffset() Vector2.XY { //gd:Control.pivot_offset
 // SetPivotOffset sets the property returned by [GetPivotOffset]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetPivotOffset(value Vector2.XY) Instance { //gd:Control.pivot_offset
 	class(self).SetPivotOffset(Vector2.XY(value))
+	return self
+}
+
+/*
+Same as [PivotOffset], but expressed as uniform vector, where Vector2(0, 0) is the top-left corner of this control, and Vector2(1, 1) is its bottom-right corner. Set this property to Vector2(0.5, 0.5) to pivot around this control's center.
+
+The actual offset is the combined value of this property and [PivotOffset].
+
+[PivotOffset]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.PivotOffset
+*/
+func (self Instance) PivotOffsetRatio() Vector2.XY { //gd:Control.pivot_offset_ratio
+	return Vector2.XY(class(self).GetPivotOffsetRatio())
+}
+
+// SetPivotOffsetRatio sets the property returned by [GetPivotOffsetRatio]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPivotOffsetRatio(value Vector2.XY) Instance { //gd:Control.pivot_offset_ratio
+	class(self).SetPivotOffsetRatio(Vector2.XY(value))
 	return self
 }
 
@@ -3231,6 +3300,9 @@ func (self class) SetScale(scale Vector2.XY) { //gd:Control.set_scale
 func (self class) SetPivotOffset(pivot_offset Vector2.XY) { //gd:Control.set_pivot_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pivot_offset, 0|(gdextension.SizeVector2<<4), &struct{ pivot_offset Vector2.XY }{pivot_offset})
 }
+func (self class) SetPivotOffsetRatio(ratio Vector2.XY) { //gd:Control.set_pivot_offset_ratio
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pivot_offset_ratio, 0|(gdextension.SizeVector2<<4), &struct{ ratio Vector2.XY }{ratio})
+}
 func (self class) GetBegin() Vector2.XY { //gd:Control.get_begin
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_begin, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
@@ -3268,6 +3340,16 @@ func (self class) GetScale() Vector2.XY { //gd:Control.get_scale
 }
 func (self class) GetPivotOffset() Vector2.XY { //gd:Control.get_pivot_offset
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_pivot_offset, gdextension.SizeVector2, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) GetPivotOffsetRatio() Vector2.XY { //gd:Control.get_pivot_offset_ratio
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_pivot_offset_ratio, gdextension.SizeVector2, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) GetCombinedPivotOffset() Vector2.XY { //gd:Control.get_combined_pivot_offset
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_combined_pivot_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3322,13 +3404,13 @@ func (self class) GetFocusBehaviorRecursive() FocusBehaviorRecursive { //gd:Cont
 	var ret = r_ret
 	return ret
 }
-func (self class) HasFocus() bool { //gd:Control.has_focus
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_focus, gdextension.SizeBool, &struct{}{})
+func (self class) HasFocus(ignore_hidden_focus bool) bool { //gd:Control.has_focus
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_focus, gdextension.SizeBool|(gdextension.SizeBool<<4), &struct{ ignore_hidden_focus bool }{ignore_hidden_focus})
 	var ret = r_ret
 	return ret
 }
-func (self class) GrabFocus() { //gd:Control.grab_focus
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.grab_focus, 0, &struct{}{})
+func (self class) GrabFocus(hide_focus bool) { //gd:Control.grab_focus
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.grab_focus, 0|(gdextension.SizeBool<<4), &struct{ hide_focus bool }{hide_focus})
 }
 func (self class) ReleaseFocus() { //gd:Control.release_focus
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.release_focus, 0, &struct{}{})
@@ -4129,7 +4211,7 @@ const (
 	//
 	// [GetMouseFilterWithOverride]: https://pkg.go.dev/graphics.gd/classdb/#Instance.GetMouseFilterWithOverride
 	MouseBehaviorDisabled MouseBehaviorRecursive = 1
-	// Allows the control to be receive mouse input, depending on the [MouseFilter]. This can be used to ignore the parent's [MouseBehaviorRecursive]. [GetMouseFilterWithOverride] will return the [MouseFilter].
+	// Allows the control to receive mouse input, depending on the [MouseFilter]. This can be used to ignore the parent's [MouseBehaviorRecursive]. [GetMouseFilterWithOverride] will return the [MouseFilter].
 	//
 	// [GetMouseFilterWithOverride]: https://pkg.go.dev/graphics.gd/classdb/#Instance.GetMouseFilterWithOverride
 	// [MouseBehaviorRecursive]: https://pkg.go.dev/graphics.gd/classdb/#Instance.MouseBehaviorRecursive

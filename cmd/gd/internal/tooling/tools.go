@@ -2,14 +2,15 @@ package tooling
 
 var Godot = toolchain{
 	Name:          "godot",
-	Version:       "4.5.1",
+	Version:       "4.6",
 	VersionFlag:   "--version",
-	VersionPrefix: "4.5.1.",
+	VersionPrefix: "4.6",
 	DownloadHint:  "https://godotengine.org/download",
-	DownloadURL:   "https://github.com/godotengine/godot/releases/download/$(VERSION)-stable/Godot_v$(VERSION)-stable_$(OS).zip",
-	DownloadOS:    map[string]string{"windows": "win64.exe", "linux": "linux.$(ARCH)", "darwin": "macos.universal"},
-	DownloadARCH:  map[string]string{"amd64": "x86_64", "arm64": "arm64"},
-	Unzip:         "Godot_v$(VERSION)-stable_$(OS)",
+	DownloadURL:   "https://downloads.godotengine.org/?version=$(VERSION)&flavor=stable&platform=$(OS)",
+	DownloadOS:    map[string]string{"windows": "windows.$(ARCH)", "linux": "linux.$(ARCH)", "darwin": "macos.universal"},
+	DownloadARCH:  map[string]string{"amd64": "64", "arm64": "arm64"},
+	DownloadEXT:   map[string]string{"windows": "x86_64", "linux": "x86_64", "darwin": "universal"},
+	Unzip:         "Godot_v$(VERSION)-stable_$(OS).$(EXT)",
 	IsApp:         true,
 	RequiredFor:   "graphics",
 

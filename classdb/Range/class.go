@@ -278,7 +278,7 @@ func (self Instance) SetMaxValue(value Float.X) Instance { //gd:Range.max_value
 }
 
 /*
-If greater than 0, [Value] will always be rounded to a multiple of this property's value above [MinValue]. For example, if [MinValue] is 0.1 and step is 0.2, then [Value] is limited to 0.1, 0.3, 0.5, and so on. If [Rounded] is also true, [Value] will first be rounded to a multiple of this property's value, then rounded to the nearest integer.
+If greater than 0.0, [Value] will always be rounded to a multiple of this property's value above [MinValue]. For example, if [MinValue] is 0.1 and step is 0.2, then [Value] is limited to 0.1, 0.3, 0.5, and so on. If [Rounded] is also true, [Value] will first be rounded to a multiple of this property's value, then rounded to the nearest integer.
 
 [MinValue]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.MinValue
 [Rounded]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Rounded

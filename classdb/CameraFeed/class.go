@@ -111,6 +111,7 @@ var methods struct {
 	set_transform      gdextension.MethodForClass `hash:"2761652528"`
 	set_rgb_image      gdextension.MethodForClass `hash:"532598488"`
 	set_ycbcr_image    gdextension.MethodForClass `hash:"532598488"`
+	set_ycbcr_images   gdextension.MethodForClass `hash:"1986484629"`
 	set_external       gdextension.MethodForClass `hash:"3937882851"`
 	get_texture_tex_id gdextension.MethodForClass `hash:"1135699418"`
 	get_datatype       gdextension.MethodForClass `hash:"1477782850"`
@@ -232,6 +233,16 @@ Returns 'self' to enable method chaining.
 */
 func (self Instance) SetYcbcrImage(ycbcr_image Image.Instance) Instance { //gd:CameraFeed.set_ycbcr_image
 	Advanced(self).SetYcbcrImage(ycbcr_image)
+	return self
+}
+
+/*
+Sets Y and CbCr images for this feed.
+
+Returns 'self' to enable method chaining.
+*/
+func (self Instance) SetYcbcrImages(y_image Image.Instance, cbcr_image Image.Instance) Instance { //gd:CameraFeed.set_ycbcr_images
+	Advanced(self).SetYcbcrImages(y_image, cbcr_image)
 	return self
 }
 
@@ -405,6 +416,12 @@ func (self class) SetRgbImage(rgb_image [1]gdclass.Image) { //gd:CameraFeed.set_
 }
 func (self class) SetYcbcrImage(ycbcr_image [1]gdclass.Image) { //gd:CameraFeed.set_ycbcr_image
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ycbcr_image, 0|(gdextension.SizeObject<<4), &struct{ ycbcr_image gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(ycbcr_image[0])))})
+}
+func (self class) SetYcbcrImages(y_image [1]gdclass.Image, cbcr_image [1]gdclass.Image) { //gd:CameraFeed.set_ycbcr_images
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ycbcr_images, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
+		y_image    gdextension.Object
+		cbcr_image gdextension.Object
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(y_image[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetImage(cbcr_image[0])))})
 }
 func (self class) SetExternal(width int64, height int64) { //gd:CameraFeed.set_external
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_external, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {

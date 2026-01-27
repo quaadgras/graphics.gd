@@ -194,6 +194,8 @@ Note: If 'full_precision' is true, when stringifying floats, the unreliable digi
 
 The 'indent' parameter controls if and how something is indented; its contents will be used where there should be an indent in the output. Even spaces like "   " will work. \t and \n can also be used for a tab indent, or to make a newline for each indent respectively.
 
+Warning: Non-finite numbers are not supported in JSON. Any occurrences of [@Gdscript.Inf] will be replaced with 1e99999, and negative [@Gdscript.Inf] will be replaced with -1e99999, but they will be interpreted correctly as infinity by most JSON parsers. [@Gdscript.Nan] will be replaced with null, and it will not be interpreted as NaN in JSON parsers. If you expect non-finite numbers, consider passing your data through [FromNative] first.
+
 Example output:
 
 [Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
@@ -211,6 +213,8 @@ Note: The JSON specification does not define integer or float types, but only a 
 Note: If 'full_precision' is true, when stringifying floats, the unreliable digits are stringified in addition to the reliable digits to guarantee exact decoding.
 
 The 'indent' parameter controls if and how something is indented; its contents will be used where there should be an indent in the output. Even spaces like "   " will work. \t and \n can also be used for a tab indent, or to make a newline for each indent respectively.
+
+Warning: Non-finite numbers are not supported in JSON. Any occurrences of [@Gdscript.Inf] will be replaced with 1e99999, and negative [@Gdscript.Inf] will be replaced with -1e99999, but they will be interpreted correctly as infinity by most JSON parsers. [@Gdscript.Nan] will be replaced with null, and it will not be interpreted as NaN in JSON parsers. If you expect non-finite numbers, consider passing your data through [FromNative] first.
 
 Example output:
 

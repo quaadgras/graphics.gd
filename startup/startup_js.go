@@ -12,7 +12,6 @@ import (
 func init() {
 	gdextension.On.Engine = gdextension.CallbacksForEngine{
 		Init: func(level gdextension.InitializationLevel) {
-			internal.Linked = true
 			gd.Init(level)
 			if level == 2 {
 				for _, fn := range gd.StartupFunctions {

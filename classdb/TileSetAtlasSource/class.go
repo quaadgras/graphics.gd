@@ -472,7 +472,7 @@ func (self MoreArgs) GetTileTextureRegion(atlas_coords Vector2i.XY, frame_ int) 
 }
 
 /*
-If [UseTexturePadding] is false, returns [Texture]. Otherwise, returns and internal [ImageTexture] created that includes the padding.
+If [UseTexturePadding] is false, returns [Texture]. Otherwise, returns an internal [ImageTexture] created that includes the padding.
 
 [ImageTexture]: https://pkg.go.dev/graphics.gd/classdb/ImageTexture
 [Texture]: https://pkg.go.dev/graphics.gd/classdb/TileSetAtlasSource#Instance.Texture

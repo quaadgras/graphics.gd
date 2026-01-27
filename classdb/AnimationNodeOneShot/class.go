@@ -131,6 +131,8 @@ var methods struct {
 	get_fadeout_curve            gdextension.MethodForClass `hash:"2460114913"`
 	set_break_loop_at_end        gdextension.MethodForClass `hash:"2586408642"`
 	is_loop_broken_at_end        gdextension.MethodForClass `hash:"36873697"`
+	set_abort_on_reset           gdextension.MethodForClass `hash:"2586408642"`
+	is_aborted_on_reset          gdextension.MethodForClass `hash:"36873697"`
 	set_autorestart              gdextension.MethodForClass `hash:"2586408642"`
 	has_autorestart              gdextension.MethodForClass `hash:"36873697"`
 	set_autorestart_delay        gdextension.MethodForClass `hash:"373806689"`
@@ -295,6 +297,19 @@ func (self Instance) SetBreakLoopAtEnd(value bool) Instance { //gd:AnimationNode
 }
 
 /*
+If true, the sub-animation will abort if resumed with a reset after a prior interruption.
+*/
+func (self Instance) AbortOnReset() bool { //gd:AnimationNodeOneShot.abort_on_reset
+	return bool(class(self).IsAbortedOnReset())
+}
+
+// SetAbortOnReset sets the property returned by [IsAbortedOnReset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAbortOnReset(value bool) Instance { //gd:AnimationNodeOneShot.abort_on_reset
+	class(self).SetAbortOnReset(value)
+	return self
+}
+
+/*
 If true, the sub-animation will restart automatically after finishing.
 
 In other words, to start auto restarting, the animation must be played once with the [OneShotRequestFire] request. The [OneShotRequestAbort] request stops the auto restarting, but it does not disable the [Autorestart] itself. So, the [OneShotRequestFire] request will start auto restarting again.
@@ -377,6 +392,14 @@ func (self class) SetBreakLoopAtEnd(enable bool) { //gd:AnimationNodeOneShot.set
 }
 func (self class) IsLoopBrokenAtEnd() bool { //gd:AnimationNodeOneShot.is_loop_broken_at_end
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_loop_broken_at_end, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetAbortOnReset(enable bool) { //gd:AnimationNodeOneShot.set_abort_on_reset
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_abort_on_reset, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+}
+func (self class) IsAbortedOnReset() bool { //gd:AnimationNodeOneShot.is_aborted_on_reset
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_aborted_on_reset, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -98,6 +98,7 @@ type Instance [1]gdclass.OpenXRAPIExtension
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
+	get_openxr_version                             gdextension.MethodForClass `hash:"2455072627"`
 	get_instance                                   gdextension.MethodForClass `hash:"2455072627"`
 	get_system_id                                  gdextension.MethodForClass `hash:"2455072627"`
 	get_session                                    gdextension.MethodForClass `hash:"2455072627"`
@@ -143,6 +144,7 @@ var methods struct {
 	set_render_region                              gdextension.MethodForClass `hash:"1763793166"`
 	set_emulate_environment_blend_mode_alpha_blend gdextension.MethodForClass `hash:"2586408642"`
 	is_environment_blend_mode_alpha_supported      gdextension.MethodForClass `hash:"1579290861"`
+	update_main_swapchain_size                     gdextension.MethodForClass `hash:"3218959716"`
 }
 
 func init() {
@@ -166,6 +168,15 @@ type Any interface {
 }
 
 /*
+Returns the version of OpenXR that was initialized. Only valid after the OpenXR instance has been created. See [XR_MAKE_VERSION] for how the version is calculated.
+
+[XR_MAKE_VERSION]: https://registry.khronos.org/OpenXR/specs/1.1/html/xrspec.html#XR_MAKE_VERSION
+*/
+func (self Instance) GetOpenxrVersion() int { //gd:OpenXRAPIExtension.get_openxr_version
+	return int(int(Advanced(self).GetOpenxrVersion()))
+}
+
+/*
 Returns the [XrInstance] created during the initialization of the OpenXR API.
 
 [XrInstance]: https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrInstance.html
@@ -175,7 +186,7 @@ func (self Instance) GetInstance() int { //gd:OpenXRAPIExtension.get_instance
 }
 
 /*
-Returns the id of the system, which is an [XrSystemId] cast to an integer.
+Returns the ID of the system, which is an [XrSystemId] cast to an integer.
 
 [XrSystemId]: https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSystemId.html
 */
@@ -366,6 +377,10 @@ func (self Instance) GetHandTracker(hand_index int) int { //gd:OpenXRAPIExtensio
 
 /*
 Registers the given extension as a composition layer provider.
+
+Note: This cannot be called after the OpenXR session has started. However, it can be called in [OpenXRExtensionWrapper.OnSessionCreated].
+
+[OpenXRExtensionWrapper.OnSessionCreated]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Instance.OnSessionCreated
 */
 func (self Instance) RegisterCompositionLayerProvider(extension OpenXRExtensionWrapper.Instance) { //gd:OpenXRAPIExtension.register_composition_layer_provider
 	Advanced(self).RegisterCompositionLayerProvider(extension)
@@ -373,6 +388,8 @@ func (self Instance) RegisterCompositionLayerProvider(extension OpenXRExtensionW
 
 /*
 Unregisters the given extension as a composition layer provider.
+
+Note: This cannot be called while the OpenXR session is still running.
 */
 func (self Instance) UnregisterCompositionLayerProvider(extension OpenXRExtensionWrapper.Instance) { //gd:OpenXRAPIExtension.unregister_composition_layer_provider
 	Advanced(self).UnregisterCompositionLayerProvider(extension)
@@ -380,6 +397,10 @@ func (self Instance) UnregisterCompositionLayerProvider(extension OpenXRExtensio
 
 /*
 Registers the given extension as a provider of additional data structures to projections views.
+
+Note: This cannot be called after the OpenXR session has started. However, it can be called in [OpenXRExtensionWrapper.OnSessionCreated].
+
+[OpenXRExtensionWrapper.OnSessionCreated]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Instance.OnSessionCreated
 */
 func (self Instance) RegisterProjectionViewsExtension(extension OpenXRExtensionWrapper.Instance) { //gd:OpenXRAPIExtension.register_projection_views_extension
 	Advanced(self).RegisterProjectionViewsExtension(extension)
@@ -387,6 +408,8 @@ func (self Instance) RegisterProjectionViewsExtension(extension OpenXRExtensionW
 
 /*
 Unregisters the given extension as a provider of additional data structures to projections views.
+
+Note: This cannot be called while the OpenXR session is still running.
 */
 func (self Instance) UnregisterProjectionViewsExtension(extension OpenXRExtensionWrapper.Instance) { //gd:OpenXRAPIExtension.unregister_projection_views_extension
 	Advanced(self).UnregisterProjectionViewsExtension(extension)
@@ -395,6 +418,9 @@ func (self Instance) UnregisterProjectionViewsExtension(extension OpenXRExtensio
 /*
 Registers the given extension as modifying frame info via the [OpenXRExtensionWrapper.SetFrameWaitInfoAndGetNextPointer], [OpenXRExtensionWrapper.SetViewLocateInfoAndGetNextPointer], or [OpenXRExtensionWrapper.SetFrameEndInfoAndGetNextPointer] virtual methods.
 
+Note: This cannot be called after the OpenXR session has started. However, it can be called in [OpenXRExtensionWrapper.OnSessionCreated].
+
+[OpenXRExtensionWrapper.OnSessionCreated]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Instance.OnSessionCreated
 [OpenXRExtensionWrapper.SetFrameEndInfoAndGetNextPointer]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Instance.SetFrameEndInfoAndGetNextPointer
 [OpenXRExtensionWrapper.SetFrameWaitInfoAndGetNextPointer]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Instance.SetFrameWaitInfoAndGetNextPointer
 [OpenXRExtensionWrapper.SetViewLocateInfoAndGetNextPointer]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Instance.SetViewLocateInfoAndGetNextPointer
@@ -405,6 +431,8 @@ func (self Instance) RegisterFrameInfoExtension(extension OpenXRExtensionWrapper
 
 /*
 Unregisters the given extension as modifying frame info.
+
+Note: This cannot be called while the OpenXR session is still running.
 */
 func (self Instance) UnregisterFrameInfoExtension(extension OpenXRExtensionWrapper.Instance) { //gd:OpenXRAPIExtension.unregister_frame_info_extension
 	Advanced(self).UnregisterFrameInfoExtension(extension)
@@ -544,6 +572,13 @@ func (self Instance) IsEnvironmentBlendModeAlphaSupported() OpenXRAlphaBlendMode
 }
 
 /*
+Request the recommended resolution from the OpenXR runtime and update the main swapchain size if it has changed.
+*/
+func (self Instance) UpdateMainSwapchainSize() { //gd:OpenXRAPIExtension.update_main_swapchain_size
+	Advanced(self).UpdateMainSwapchainSize()
+}
+
+/*
 Returns the created [OpenXRAPIExtension], which can be used to access the OpenXR API.
 */
 func GetFromWrapper(peer OpenXRExtensionWrapper.Instance) Instance { //gd:OpenXRExtensionWrapper.get_openxr_api
@@ -593,6 +628,11 @@ func New() Instance {
 	return casted
 }
 
+func (self class) GetOpenxrVersion() int64 { //gd:OpenXRAPIExtension.get_openxr_version
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_openxr_version, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
 func (self class) GetInstance() int64 { //gd:OpenXRAPIExtension.get_instance
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_instance, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
@@ -798,6 +838,9 @@ func (self class) IsEnvironmentBlendModeAlphaSupported() OpenXRAlphaBlendModeSup
 	var r_ret = noescape.Call[OpenXRAlphaBlendModeSupport](gd.ObjectChecked(self.AsObject()), methods.is_environment_blend_mode_alpha_supported, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
+}
+func (self class) UpdateMainSwapchainSize() { //gd:OpenXRAPIExtension.update_main_swapchain_size
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_main_swapchain_size, 0, &struct{}{})
 }
 func (self class) AsOpenXRAPIExtension() Advanced {
 	return Advanced{gdclass.NewOpenXRAPIExtension(self.AsObject()[0])}

@@ -146,11 +146,13 @@ type Interface interface {
 	SaveSupportData(filename string) bool
 	// Returns default TextServer database (e.g. ICU break iterators and dictionaries).
 	GetSupportData() []byte
+	// Returns true if the locale requires text server support data for line/word breaking.
+	IsLocaleUsingSupportData(locale string) bool
 	// Returns true if locale is right-to-left.
 	IsLocaleRightToLeft(locale string) bool
-	// Converts readable feature, variation, script, or language name to OpenType tag.
+	// Converts the given readable name of a feature, variation, script, or language to an OpenType tag.
 	NameToTag(name string) int
-	// Converts OpenType tag to readable feature, variation, script, or language name.
+	// Converts the given OpenType tag to the readable name of a feature, variation, script, or language.
 	TagToName(tag int) string
 	// Creates a new, empty font cache entry resource.
 	CreateFont() RID.Font
@@ -234,7 +236,7 @@ type Interface interface {
 	FontIsForceAutohinter(font_rid RID.Font) bool
 	// If set to true, color modulation is applied when drawing colored glyphs, otherwise it's applied to the monochrome glyphs only.
 	FontSetModulateColorGlyphs(font_rid RID.Font, modulate bool)
-	// Returns true, if color modulation is applied when drawing colored glyphs.
+	// Returns true if color modulation is applied when drawing the font's colored glyphs.
 	FontIsModulateColorGlyphs(font_rid RID.Font) bool
 	// Sets font hinting mode. Used by dynamic fonts only.
 	FontSetHinting(font_rid RID.Font, hinting TextServer.Hinting)
@@ -380,7 +382,7 @@ type Interface interface {
 	FontDrawGlyph(font_rid RID.Font, canvas RID.Canvas, size int, pos Vector2.XY, index int, color Color.RGBA, oversampling Float.X)
 	// Draws single glyph outline of size 'outline_size' into a canvas item at the position, using 'font_rid' at the size 'size'. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 	FontDrawGlyphOutline(font_rid RID.Font, canvas RID.Canvas, size int, outline_size int, pos Vector2.XY, index int, color Color.RGBA, oversampling Float.X)
-	// Returns true, if font supports given language ([ISO 639] code).
+	// Returns true if the font supports the given language (as a [ISO 639] code).
 	//
 	// [ISO 639]: https://en.wikipedia.org/wiki/ISO_639-1
 	FontIsLanguageSupported(font_rid RID.Font, language string) bool
@@ -394,7 +396,9 @@ type Interface interface {
 	FontRemoveLanguageSupportOverride(font_rid RID.Font, language string)
 	// Returns list of language support overrides.
 	FontGetLanguageSupportOverrides(font_rid RID.Font) []string
-	// Returns true, if font supports given script (ISO 15924 code).
+	// Returns true if the font supports the given script (as a [ISO 15924] code).
+	//
+	// [ISO 15924]: https://en.wikipedia.org/wiki/ISO_15924
 	FontIsScriptSupported(font_rid RID.Font, script string) bool
 	// Adds override for [FontIsScriptSupported].
 	//
@@ -438,6 +442,8 @@ type Interface interface {
 	CreateShapedText(direction TextServer.Direction, orientation TextServer.Orientation) RID.TextBuffer
 	// Clears text buffer (removes text and inline objects).
 	ShapedTextClear(shaped RID.TextBuffer)
+	// Duplicates shaped text buffer.
+	ShapedTextDuplicate(shaped RID.TextBuffer) RID.TextBuffer
 	// Sets desired text direction. If set to [Textserver.DirectionAuto], direction will be detected based on the buffer contents and current locale.
 	ShapedTextSetDirection(shaped RID.TextBuffer, direction TextServer.Direction)
 	// Returns direction of the text.
@@ -476,6 +482,8 @@ type Interface interface {
 	ShapedTextAddObject(shaped RID.TextBuffer, key any, size Vector2.XY, inline_align GUI.InlineAlignment, length int, baseline Float.X) bool
 	// Sets new size and alignment of embedded object.
 	ShapedTextResizeObject(shaped RID.TextBuffer, key any, size Vector2.XY, inline_align GUI.InlineAlignment, baseline Float.X) bool
+	// Returns true if an object with 'key' is embedded in this shaped text buffer.
+	ShapedTextHasObject(shaped RID.TextBuffer, key any) bool
 	// Returns the text buffer source text, including object replacement characters.
 	ShapedGetText(shaped RID.TextBuffer) string
 	// Returns number of text spans added using [ShapedTextAddString] or [ShapedTextAddObject].
@@ -597,11 +605,15 @@ type Interface interface {
 	ShapedTextPrevCharacterPos(shaped RID.TextBuffer, pos int) int
 	// Returns composite character position closest to the 'pos'.
 	ShapedTextClosestCharacterPos(shaped RID.TextBuffer, pos int) int
-	// Converts a number from the Western Arabic (0..9) to the numeral systems used in 'language'.
+	// Converts a number from Western Arabic (0..9) to the numeral system used in the given 'language'.
+	//
+	// If 'language' is an empty string, the active locale will be used.
 	FormatNumber(number string, language string) string
-	// Converts 'number' from the numeral systems used in 'language' to Western Arabic (0..9).
+	// Converts 'number' from the numeral system used in the given 'language' to Western Arabic (0..9).
+	//
+	// If 'language' is an empty string, the active locale will be used.
 	ParseNumber(number string, language string) string
-	// Returns percent sign used in the 'language'.
+	// Returns percent sign used in the given 'language'.
 	PercentSign(language string) string
 	// Strips diacritics from the string.
 	StripDiacritics(s string) string
@@ -616,11 +628,11 @@ type Interface interface {
 	IsConfusable(s string, dict []string) int
 	// Returns true if 'string' is likely to be an attempt at confusing the reader.
 	SpoofCheck(s string) bool
-	// Returns the string converted to uppercase.
+	// Returns the string converted to UPPERCASE.
 	StringToUpper(s string, language string) string
 	// Returns the string converted to lowercase.
 	StringToLower(s string, language string) string
-	// Returns the string converted to title case.
+	// Returns the string converted to Title Case.
 	StringToTitle(s string, language string) string
 	// Default implementation of the BiDi algorithm override function.
 	ParseStructuredText(parser_type TextServer.StructuredTextParser, args []any, text string) []Vector3i.XYZ
@@ -643,6 +655,7 @@ func (self implementation) GetSupportDataFilename() (_ string)                  
 func (self implementation) GetSupportDataInfo() (_ string)                           { return }
 func (self implementation) SaveSupportData(filename string) (_ bool)                 { return }
 func (self implementation) GetSupportData() (_ []byte)                               { return }
+func (self implementation) IsLocaleUsingSupportData(locale string) (_ bool)          { return }
 func (self implementation) IsLocaleRightToLeft(locale string) (_ bool)               { return }
 func (self implementation) NameToTag(name string) (_ int)                            { return }
 func (self implementation) TagToName(tag int) (_ string)                             { return }
@@ -893,7 +906,8 @@ func (self implementation) DrawHexCodeBox(canvas RID.Canvas, size int, pos Vecto
 func (self implementation) CreateShapedText(direction TextServer.Direction, orientation TextServer.Orientation) (_ RID.TextBuffer) {
 	return
 }
-func (self implementation) ShapedTextClear(shaped RID.TextBuffer) { return }
+func (self implementation) ShapedTextClear(shaped RID.TextBuffer)                        { return }
+func (self implementation) ShapedTextDuplicate(shaped RID.TextBuffer) (_ RID.TextBuffer) { return }
 func (self implementation) ShapedTextSetDirection(shaped RID.TextBuffer, direction TextServer.Direction) {
 	return
 }
@@ -935,9 +949,10 @@ func (self implementation) ShapedTextAddObject(shaped RID.TextBuffer, key any, s
 func (self implementation) ShapedTextResizeObject(shaped RID.TextBuffer, key any, size Vector2.XY, inline_align GUI.InlineAlignment, baseline Float.X) (_ bool) {
 	return
 }
-func (self implementation) ShapedGetText(shaped RID.TextBuffer) (_ string)             { return }
-func (self implementation) ShapedGetSpanCount(shaped RID.TextBuffer) (_ int)           { return }
-func (self implementation) ShapedGetSpanMeta(shaped RID.TextBuffer, index int) (_ any) { return }
+func (self implementation) ShapedTextHasObject(shaped RID.TextBuffer, key any) (_ bool) { return }
+func (self implementation) ShapedGetText(shaped RID.TextBuffer) (_ string)              { return }
+func (self implementation) ShapedGetSpanCount(shaped RID.TextBuffer) (_ int)            { return }
+func (self implementation) ShapedGetSpanMeta(shaped RID.TextBuffer, index int) (_ any)  { return }
 func (self implementation) ShapedGetSpanEmbeddedObject(shaped RID.TextBuffer, index int) (_ any) {
 	return
 }
@@ -1197,6 +1212,19 @@ func (Instance) _get_support_data(impl func(ptr gdclass.Receiver) []byte) (cb gd
 }
 
 /*
+Returns true if the locale requires text server support data for line/word breaking.
+*/
+func (Instance) _is_locale_using_support_data(impl func(ptr gdclass.Receiver, locale string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var locale = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
+		defer pointers.End(gd.InternalString(locale))
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, locale.String())
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
 Returns true if locale is right-to-left.
 */
 func (Instance) _is_locale_right_to_left(impl func(ptr gdclass.Receiver, locale string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1210,7 +1238,7 @@ func (Instance) _is_locale_right_to_left(impl func(ptr gdclass.Receiver, locale 
 }
 
 /*
-Converts readable feature, variation, script, or language name to OpenType tag.
+Converts the given readable name of a feature, variation, script, or language to an OpenType tag.
 */
 func (Instance) _name_to_tag(impl func(ptr gdclass.Receiver, name string) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1223,7 +1251,7 @@ func (Instance) _name_to_tag(impl func(ptr gdclass.Receiver, name string) int) (
 }
 
 /*
-Converts OpenType tag to readable feature, variation, script, or language name.
+Converts the given OpenType tag to the readable name of a feature, variation, script, or language.
 */
 func (Instance) _tag_to_name(impl func(ptr gdclass.Receiver, tag int) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1738,7 +1766,7 @@ func (Instance) _font_set_modulate_color_glyphs(impl func(ptr gdclass.Receiver, 
 }
 
 /*
-Returns true, if color modulation is applied when drawing colored glyphs.
+Returns true if color modulation is applied when drawing the font's colored glyphs.
 */
 func (Instance) _font_is_modulate_color_glyphs(impl func(ptr gdclass.Receiver, font_rid RID.Font) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -2713,7 +2741,7 @@ func (Instance) _font_draw_glyph_outline(impl func(ptr gdclass.Receiver, font_ri
 }
 
 /*
-Returns true, if font supports given language ([ISO 639] code).
+Returns true if the font supports the given language (as a [ISO 639] code).
 
 [ISO 639]: https://en.wikipedia.org/wiki/ISO_639-1
 */
@@ -2789,7 +2817,9 @@ func (Instance) _font_get_language_support_overrides(impl func(ptr gdclass.Recei
 }
 
 /*
-Returns true, if font supports given script (ISO 15924 code).
+Returns true if the font supports the given script (as a [ISO 15924] code).
+
+[ISO 15924]: https://en.wikipedia.org/wiki/ISO_15924
 */
 func (Instance) _font_is_script_supported(impl func(ptr gdclass.Receiver, font_rid RID.Font, script string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -3027,6 +3057,18 @@ func (Instance) _shaped_text_clear(impl func(ptr gdclass.Receiver, shaped RID.Te
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, RID.TextBuffer(shaped))
+	}
+}
+
+/*
+Duplicates shaped text buffer.
+*/
+func (Instance) _shaped_text_duplicate(impl func(ptr gdclass.Receiver, shaped RID.TextBuffer) RID.TextBuffer) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, RID.TextBuffer(shaped))
+		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
 
@@ -3285,6 +3327,20 @@ func (Instance) _shaped_text_resize_object(impl func(ptr gdclass.Receiver, shape
 		var baseline = gd.UnsafeGet[float64](p_args, 4)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, RID.TextBuffer(shaped), key.Interface(), size, inline_align, Float.X(baseline))
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
+Returns true if an object with 'key' is embedded in this shaped text buffer.
+*/
+func (Instance) _shaped_text_has_object(impl func(ptr gdclass.Receiver, shaped RID.TextBuffer, key any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
+		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
+		defer pointers.End(gd.InternalVariant(key))
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, RID.TextBuffer(shaped), key.Interface())
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -4134,7 +4190,9 @@ func (Instance) _shaped_text_closest_character_pos(impl func(ptr gdclass.Receive
 }
 
 /*
-Converts a number from the Western Arabic (0..9) to the numeral systems used in 'language'.
+Converts a number from Western Arabic (0..9) to the numeral system used in the given 'language'.
+
+If 'language' is an empty string, the active locale will be used.
 */
 func (Instance) _format_number(impl func(ptr gdclass.Receiver, number string, language string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -4154,7 +4212,9 @@ func (Instance) _format_number(impl func(ptr gdclass.Receiver, number string, la
 }
 
 /*
-Converts 'number' from the numeral systems used in 'language' to Western Arabic (0..9).
+Converts 'number' from the numeral system used in the given 'language' to Western Arabic (0..9).
+
+If 'language' is an empty string, the active locale will be used.
 */
 func (Instance) _parse_number(impl func(ptr gdclass.Receiver, number string, language string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -4174,7 +4234,7 @@ func (Instance) _parse_number(impl func(ptr gdclass.Receiver, number string, lan
 }
 
 /*
-Returns percent sign used in the 'language'.
+Returns percent sign used in the given 'language'.
 */
 func (Instance) _percent_sign(impl func(ptr gdclass.Receiver, language string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -4300,7 +4360,7 @@ func (Instance) _spoof_check(impl func(ptr gdclass.Receiver, s string) bool) (cb
 }
 
 /*
-Returns the string converted to uppercase.
+Returns the string converted to UPPERCASE.
 */
 func (Instance) _string_to_upper(impl func(ptr gdclass.Receiver, s string, language string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -4340,7 +4400,7 @@ func (Instance) _string_to_lower(impl func(ptr gdclass.Receiver, s string, langu
 }
 
 /*
-Returns the string converted to title case.
+Returns the string converted to Title Case.
 */
 func (Instance) _string_to_title(impl func(ptr gdclass.Receiver, s string, language string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -4526,6 +4586,15 @@ func (class) _get_support_data(impl func(ptr gdclass.Receiver) Packed.Bytes) (cb
 			return
 		}
 		gd.UnsafeSet(p_back, ptr)
+	}
+}
+func (class) _is_locale_using_support_data(impl func(ptr gdclass.Receiver, locale String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var locale = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
+		defer pointers.End(gd.InternalString(locale))
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, locale)
+		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _is_locale_right_to_left(impl func(ptr gdclass.Receiver, locale String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -5800,6 +5869,14 @@ func (class) _shaped_text_clear(impl func(ptr gdclass.Receiver, shaped RID.Any))
 		impl(self, shaped)
 	}
 }
+func (class) _shaped_text_duplicate(impl func(ptr gdclass.Receiver, shaped RID.Any) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
 func (class) _shaped_text_set_direction(impl func(ptr gdclass.Receiver, shaped RID.Any, direction TextServer.Direction)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -5980,6 +6057,16 @@ func (class) _shaped_text_resize_object(impl func(ptr gdclass.Receiver, shaped R
 		var baseline = gd.UnsafeGet[float64](p_args, 4)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, key, size, inline_align, baseline)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+func (class) _shaped_text_has_object(impl func(ptr gdclass.Receiver, shaped RID.Any, key variant.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
+		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
+		defer pointers.End(gd.InternalVariant(key))
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, shaped, key)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -6836,6 +6923,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._save_support_data)
 	case "_get_support_data":
 		return reflect.ValueOf(self._get_support_data)
+	case "_is_locale_using_support_data":
+		return reflect.ValueOf(self._is_locale_using_support_data)
 	case "_is_locale_right_to_left":
 		return reflect.ValueOf(self._is_locale_right_to_left)
 	case "_name_to_tag":
@@ -7106,6 +7195,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._create_shaped_text)
 	case "_shaped_text_clear":
 		return reflect.ValueOf(self._shaped_text_clear)
+	case "_shaped_text_duplicate":
+		return reflect.ValueOf(self._shaped_text_duplicate)
 	case "_shaped_text_set_direction":
 		return reflect.ValueOf(self._shaped_text_set_direction)
 	case "_shaped_text_get_direction":
@@ -7144,6 +7235,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._shaped_text_add_object)
 	case "_shaped_text_resize_object":
 		return reflect.ValueOf(self._shaped_text_resize_object)
+	case "_shaped_text_has_object":
+		return reflect.ValueOf(self._shaped_text_has_object)
 	case "_shaped_get_text":
 		return reflect.ValueOf(self._shaped_get_text)
 	case "_shaped_get_span_count":
@@ -7319,6 +7412,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._save_support_data)
 	case "_get_support_data":
 		return reflect.ValueOf(self._get_support_data)
+	case "_is_locale_using_support_data":
+		return reflect.ValueOf(self._is_locale_using_support_data)
 	case "_is_locale_right_to_left":
 		return reflect.ValueOf(self._is_locale_right_to_left)
 	case "_name_to_tag":
@@ -7589,6 +7684,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._create_shaped_text)
 	case "_shaped_text_clear":
 		return reflect.ValueOf(self._shaped_text_clear)
+	case "_shaped_text_duplicate":
+		return reflect.ValueOf(self._shaped_text_duplicate)
 	case "_shaped_text_set_direction":
 		return reflect.ValueOf(self._shaped_text_set_direction)
 	case "_shaped_text_get_direction":
@@ -7627,6 +7724,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._shaped_text_add_object)
 	case "_shaped_text_resize_object":
 		return reflect.ValueOf(self._shaped_text_resize_object)
+	case "_shaped_text_has_object":
+		return reflect.ValueOf(self._shaped_text_has_object)
 	case "_shaped_get_text":
 		return reflect.ValueOf(self._shaped_get_text)
 	case "_shaped_get_span_count":

@@ -188,6 +188,10 @@ var methods struct {
 	ensure_current_is_visible    gdextension.MethodForClass `hash:"3218959716"`
 	get_v_scroll_bar             gdextension.MethodForClass `hash:"2630340773"`
 	get_h_scroll_bar             gdextension.MethodForClass `hash:"4004517983"`
+	set_scroll_hint_mode         gdextension.MethodForClass `hash:"2917787337"`
+	get_scroll_hint_mode         gdextension.MethodForClass `hash:"2522227939"`
+	set_tile_scroll_hint         gdextension.MethodForClass `hash:"2586408642"`
+	is_scroll_hint_tiled         gdextension.MethodForClass `hash:"2240911060"`
 	set_text_overrun_behavior    gdextension.MethodForClass `hash:"1008890932"`
 	get_text_overrun_behavior    gdextension.MethodForClass `hash:"3779142101"`
 	set_wraparound_items         gdextension.MethodForClass `hash:"2586408642"`
@@ -312,7 +316,7 @@ func (self Instance) GetItemTextDirection(idx int) Control.TextDirection { //gd:
 }
 
 /*
-Sets language code of item's text used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
+Sets the language code of the text for the item at the given index to 'language'. This is used for line-breaking and text shaping algorithms. If 'language' is empty, the current locale is used.
 
 Returns 'self' to enable method chaining.
 */
@@ -867,6 +871,34 @@ func (self Instance) SetWraparoundItems(value bool) Instance { //gd:ItemList.wra
 }
 
 /*
+The way which scroll hints (indicators that show that the content can still be scrolled in a certain direction) will be shown.
+*/
+func (self Instance) ScrollHintMode() ScrollHintMode { //gd:ItemList.scroll_hint_mode
+	return ScrollHintMode(class(self).GetScrollHintMode())
+}
+
+// SetScrollHintMode sets the property returned by [GetScrollHintMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollHintMode(value ScrollHintMode) Instance { //gd:ItemList.scroll_hint_mode
+	class(self).SetScrollHintMode(value)
+	return self
+}
+
+/*
+If true, the scroll hint texture will be tiled instead of stretched. See [ScrollHintMode].
+
+[ScrollHintMode]: https://pkg.go.dev/graphics.gd/classdb/ItemList#Instance.ScrollHintMode
+*/
+func (self Instance) TileScrollHint() bool { //gd:ItemList.tile_scroll_hint
+	return bool(class(self).IsScrollHintTiled())
+}
+
+// SetTileScrollHint sets the property returned by [IsScrollHintTiled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTileScrollHint(value bool) Instance { //gd:ItemList.tile_scroll_hint
+	class(self).SetTileScrollHint(value)
+	return self
+}
+
+/*
 The number of items currently in the list.
 */
 func (self Instance) ItemCount() int { //gd:ItemList.item_count
@@ -1334,6 +1366,22 @@ func (self class) GetHScrollBar() [1]gdclass.HScrollBar { //gd:ItemList.get_h_sc
 	var ret = [1]gdclass.HScrollBar{gdclass.NewHScrollBar(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
+func (self class) SetScrollHintMode(scroll_hint_mode ScrollHintMode) { //gd:ItemList.set_scroll_hint_mode
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_hint_mode, 0|(gdextension.SizeInt<<4), &struct{ scroll_hint_mode ScrollHintMode }{scroll_hint_mode})
+}
+func (self class) GetScrollHintMode() ScrollHintMode { //gd:ItemList.get_scroll_hint_mode
+	var r_ret = noescape.Call[ScrollHintMode](gd.ObjectChecked(self.AsObject()), methods.get_scroll_hint_mode, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetTileScrollHint(tile_scroll_hint bool) { //gd:ItemList.set_tile_scroll_hint
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_scroll_hint, 0|(gdextension.SizeBool<<4), &struct{ tile_scroll_hint bool }{tile_scroll_hint})
+}
+func (self class) IsScrollHintTiled() bool { //gd:ItemList.is_scroll_hint_tiled
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scroll_hint_tiled, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
 func (self class) SetTextOverrunBehavior(overrun_behavior TextServer.OverrunBehavior) { //gd:ItemList.set_text_overrun_behavior
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_overrun_behavior, 0|(gdextension.SizeInt<<4), &struct{ overrun_behavior TextServer.OverrunBehavior }{overrun_behavior})
 }
@@ -1500,4 +1548,17 @@ const (
 	SelectMulti SelectMode = 1
 	// Allows selecting multiple items by toggling them on and off.
 	SelectToggle SelectMode = 2
+)
+
+type ScrollHintMode int //gd:ItemList.ScrollHintMode
+
+const (
+	// Scroll hints will never be shown.
+	ScrollHintModeDisabled ScrollHintMode = 0
+	// Scroll hints will be shown at the top and bottom.
+	ScrollHintModeBoth ScrollHintMode = 1
+	// Only the top scroll hint will be shown.
+	ScrollHintModeTop ScrollHintMode = 2
+	// Only the bottom scroll hint will be shown.
+	ScrollHintModeBottom ScrollHintMode = 3
 )

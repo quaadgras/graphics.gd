@@ -739,9 +739,9 @@ func init() {
 type SamplePartitionType int //gd:NavigationPolygon.SamplePartitionType
 
 const (
-	// Convex partitioning that yields navigation mesh with convex polygons.
+	// Convex partitioning that results in a navigation mesh with convex polygons.
 	SamplePartitionConvexPartition SamplePartitionType = 0
-	// Triangulation partitioning that yields navigation mesh with triangle polygons.
+	// Triangulation partitioning that results in a navigation mesh with triangle polygons.
 	SamplePartitionTriangulate SamplePartitionType = 1
 	// Represents the size of the [SamplePartitionType] enum.
 	SamplePartitionMax SamplePartitionType = 2

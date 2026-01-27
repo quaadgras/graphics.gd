@@ -65,6 +65,9 @@ func generate() error {
 		if !gdtype.Name(class.Name).InCore() {
 			pkg = "classdb"
 		}
+		if class.Name == "GodotInstance" {
+			class.Name = "Startup"
+		}
 		class.Package = pkg
 		spec.Classes[i] = class
 		classDB[class.Name] = class
@@ -236,11 +239,13 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		}
 		fmt.Fprintf(file, "}\n")
 		fmt.Fprintf(file, "func init() {\n")
-		fmt.Fprintf(file, "\tgd.Links = append(gd.Links, func() {\n")
-		fmt.Fprintf(file, "\t\tsname = gdextension.Host.Strings.Intern.UTF8(%q)\n", class.Name)
-		fmt.Fprintf(file, "\t\totype = gdextension.Host.Objects.Type(sname)\n")
-		fmt.Fprintf(file, "\t\tgd.LinkMethods(sname, &methods, %v)\n", class.APIType == "editor")
-		fmt.Fprintf(file, "\t\t})\n")
+		if class.Name != "Startup" {
+			fmt.Fprintf(file, "\tgd.Links = append(gd.Links, func() {\n")
+			fmt.Fprintf(file, "\t\tsname = gdextension.Host.Strings.Intern.UTF8(%q)\n", class.Name)
+			fmt.Fprintf(file, "\t\totype = gdextension.Host.Objects.Type(sname)\n")
+			fmt.Fprintf(file, "\t\tgd.LinkMethods(sname, &methods, %v)\n", class.APIType == "editor")
+			fmt.Fprintf(file, "\t\t})\n")
+		}
 		fmt.Fprintf(file, "\tgd.RegisterCleanup(func() {\n")
 		fmt.Fprintf(file, "\t\tnoescape.Free(gdextension.TypeStringName, &sname)\n")
 		fmt.Fprintf(file, "\t})\n")

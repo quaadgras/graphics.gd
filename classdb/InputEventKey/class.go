@@ -269,7 +269,7 @@ func (self Instance) SetPressed(value bool) Instance { //gd:InputEventKey.presse
 }
 
 /*
-Latin label printed on the key in the current keyboard layout, which corresponds to one of the [Key] constants.
+Latin label printed on the key in the current keyboard layout, which corresponds to one of the [Key] constants. Key codes are meant for shortcuts expressed with a standard Latin keyboard, such as Ctrl + S for a "Save" shortcut.
 
 To get a human-readable representation of the [InputEventKey], use OS.get_keycode_string(event.keycode) where event is the [InputEventKey].
 
@@ -286,11 +286,12 @@ func (self Instance) SetKeycode(value Input.Key) Instance { //gd:InputEventKey.k
 }
 
 /*
-Represents the physical location of a key on the 101/102-key US QWERTY keyboard, which corresponds to one of the [Key] constants.
+Represents the physical location of a key on the 101/102-key US QWERTY keyboard, which corresponds to one of the [Key] constants. Physical key codes meant for game input, such as WASD movement, where only the location of the keys is important.
 
-To get a human-readable representation of the [InputEventKey], use [OS.GetKeycodeString] in combination with [DisplayServer.KeyboardGetKeycodeFromPhysical]:
+To get a human-readable representation of the [InputEventKey], use [OS.GetKeycodeString] in combination with [DisplayServer.KeyboardGetKeycodeFromPhysical] or [DisplayServer.KeyboardGetLabelFromPhysical]:
 
 [DisplayServer.KeyboardGetKeycodeFromPhysical]: https://pkg.go.dev/graphics.gd/classdb/DisplayServer#KeyboardGetKeycodeFromPhysical
+[DisplayServer.KeyboardGetLabelFromPhysical]: https://pkg.go.dev/graphics.gd/classdb/DisplayServer#KeyboardGetLabelFromPhysical
 [InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
 [OS.GetKeycodeString]: https://pkg.go.dev/graphics.gd/classdb/OS#GetKeycodeString
 */
@@ -305,7 +306,7 @@ func (self Instance) SetPhysicalKeycode(value Input.Key) Instance { //gd:InputEv
 }
 
 /*
-Represents the localized label printed on the key in the current keyboard layout, which corresponds to one of the [Key] constants or any valid Unicode character.
+Represents the localized label printed on the key in the current keyboard layout, which corresponds to one of the [Key] constants or any valid Unicode character. Key labels are meant for key prompts.
 
 For keyboard layouts with a single label on the key, it is equivalent to [Keycode].
 
@@ -325,7 +326,9 @@ func (self Instance) SetKeyLabel(value Input.Key) Instance { //gd:InputEventKey.
 }
 
 /*
-The key Unicode character code (when relevant), shifted by modifier keys. Unicode character codes for composite characters and complex scripts may not be available unless IME input mode is active. See [Window.SetImeActive] for more information.
+The key Unicode character code (when relevant), shifted by modifier keys. Unicode character codes for composite characters and complex scripts may not be available unless IME input mode is active. See [Window.SetImeActive] for more information. Unicode character codes are meant for text input.
+
+Note: This property is set by the engine only for a pressed event. If the event is sent by an IME or a virtual keyboard, no corresponding key released event is sent.
 
 [Window.SetImeActive]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.SetImeActive
 */

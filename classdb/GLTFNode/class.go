@@ -427,7 +427,7 @@ func (self Instance) SetLight(value int) Instance { //gd:GLTFNode.light
 }
 
 /*
-If true, the GLTF node is visible. If false, the GLTF node is not visible. This is translated to the [Node3D.Visible] property in the Godot scene, and is exported to KHR_node_visibility when false.
+If true, the GLTF node is visible. If false, the GLTF node is not visible. This is converted to the [Node3D.Visible] property in the Godot scene, and is exported to KHR_node_visibility when false.
 
 [Node3D.Visible]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Visible
 */

@@ -138,6 +138,8 @@ var methods struct {
 	set_editable               gdextension.MethodForClass `hash:"2586408642"`
 	set_custom_arrow_step      gdextension.MethodForClass `hash:"373806689"`
 	get_custom_arrow_step      gdextension.MethodForClass `hash:"1740695150"`
+	set_custom_arrow_round     gdextension.MethodForClass `hash:"2586408642"`
+	is_custom_arrow_rounding   gdextension.MethodForClass `hash:"36873697"`
 	is_editable                gdextension.MethodForClass `hash:"36873697"`
 	set_update_on_text_changed gdextension.MethodForClass `hash:"2586408642"`
 	get_update_on_text_changed gdextension.MethodForClass `hash:"36873697"`
@@ -334,6 +336,22 @@ func (self Instance) SetCustomArrowStep(value Float.X) Instance { //gd:SpinBox.c
 }
 
 /*
+If true, the value will be rounded to a multiple of [CustomArrowStep] when interacting with the arrow buttons. Otherwise, increments the value by [CustomArrowStep] and then rounds it according to [Range.Step].
+
+[CustomArrowStep]: https://pkg.go.dev/graphics.gd/classdb/SpinBox#Instance.CustomArrowStep
+[Range.Step]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Step
+*/
+func (self Instance) CustomArrowRound() bool { //gd:SpinBox.custom_arrow_round
+	return bool(class(self).IsCustomArrowRounding())
+}
+
+// SetCustomArrowRound sets the property returned by [IsCustomArrowRounding]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCustomArrowRound(value bool) Instance { //gd:SpinBox.custom_arrow_round
+	class(self).SetCustomArrowRound(value)
+	return self
+}
+
+/*
 If true, the [SpinBox] will select the whole text when the [LineEdit] gains focus. Clicking the up and down arrows won't trigger this behavior.
 
 [LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
@@ -381,6 +399,14 @@ func (self class) SetCustomArrowStep(arrow_step float64) { //gd:SpinBox.set_cust
 }
 func (self class) GetCustomArrowStep() float64 { //gd:SpinBox.get_custom_arrow_step
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_custom_arrow_step, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetCustomArrowRound(round bool) { //gd:SpinBox.set_custom_arrow_round
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_arrow_round, 0|(gdextension.SizeBool<<4), &struct{ round bool }{round})
+}
+func (self class) IsCustomArrowRounding() bool { //gd:SpinBox.is_custom_arrow_rounding
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_custom_arrow_rounding, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

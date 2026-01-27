@@ -567,12 +567,19 @@ func SetPrintToStdout(value bool) { //gd:Engine.print_to_stdout
 }
 
 /*
-The number of fixed iterations per second. This controls how often physics simulation and [Node.PhysicsProcess] methods are run. This value should generally always be set to 60 or above, as Godot doesn't interpolate the physics step. As a result, values lower than 60 will look stuttery. This value can be increased to make input more reactive or work around collision tunneling issues, but keep in mind doing so will increase CPU usage. See also [MaxFps] and [ProjectSettings] "physics/common/physics_ticks_per_second".
+The number of fixed iterations per second. This controls how often physics simulation and the [Node.PhysicsProcess] method are run.
+
+CPU usage scales approximately with the physics tick rate. However, at very low tick rates (usually below 30), physics behavior can break down. Input can also become less responsive at low tick rates as there can be a gap between input being registered, and the response on the next physics tick. High tick rates give more accurate physics simulation, particularly for fast moving objects. For example, racing games may benefit from increasing the tick rate above the default 60.
+
+See also [MaxFps] and [ProjectSettings] "physics/common/physics_ticks_per_second".
 
 Note: Only [MaxPhysicsStepsPerFrame] physics ticks may be simulated per rendered frame at most. If more physics ticks have to be simulated per rendered frame to keep up with rendering, the project will appear to slow down (even if delta is used consistently in physics calculations). Therefore, it is recommended to also increase [MaxPhysicsStepsPerFrame] if increasing [PhysicsTicksPerSecond] significantly above its default value.
 
+Note: Consider enabling [physics interpolation] if you change [PhysicsTicksPerSecond] to a value that is not a multiple of 60. Using physics interpolation will avoid jittering when the monitor refresh rate and physics update rate don't exactly match.
+
 [Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[physics interpolation]: https://docs.godotengine.org/tutorials/physics/interpolation/index.html
 */
 func PhysicsTicksPerSecond() int { //gd:Engine.physics_ticks_per_second
 	once.Do(singleton)
@@ -606,16 +613,15 @@ The maximum number of frames that can be rendered every second (FPS). A value of
 
 Limiting the FPS can be useful to reduce the host machine's power consumption, which reduces heat, noise emissions, and improves battery life.
 
-If [ProjectSettings] "display/window/vsync/vsync_mode" is Enabled or Adaptive, the setting takes precedence and the max FPS number cannot exceed the monitor's refresh rate.
+If [ProjectSettings] "display/window/vsync/vsync_mode" is Enabled or Adaptive, the setting takes precedence and the max FPS number cannot exceed the monitor's refresh rate. See also [DisplayServer.ScreenGetRefreshRate].
 
-If [ProjectSettings] "display/window/vsync/vsync_mode" is Enabled, on monitors with variable refresh rate enabled (G-Sync/FreeSync), using an FPS limit a few frames lower than the monitor's refresh rate will [reduce input lag while avoiding tearing].
-
-See also [PhysicsTicksPerSecond] and [ProjectSettings] "application/run/max_fps".
+If [ProjectSettings] "display/window/vsync/vsync_mode" is Enabled, on monitors with variable refresh rate enabled (G-Sync/FreeSync), using an FPS limit a few frames lower than the monitor's refresh rate will [reduce input lag while avoiding tearing]. At higher refresh rates, the difference between the FPS limit and the monitor refresh rate should be increased to ensure frames to account for timing inaccuracies. The optimal formula for the FPS limit value in this scenario is r - (r * r) / 3600.0, where r is the monitor's refresh rate.
 
 Note: The actual number of frames per second may still be below this value if the CPU or GPU cannot keep up with the project's logic and rendering.
 
 Note: If [ProjectSettings] "display/window/vsync/vsync_mode" is Disabled, limiting the FPS to a high value that can be consistently reached on the system can reduce input lag compared to an uncapped framerate. Since this works by ensuring the GPU load is lower than 100%, this latency reduction is only effective in GPU-bottlenecked scenarios, not CPU-bottlenecked scenarios.
 
+[DisplayServer.ScreenGetRefreshRate]: https://pkg.go.dev/graphics.gd/classdb/DisplayServer#ScreenGetRefreshRate
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [reduce input lag while avoiding tearing]: https://blurbusters.com/howto-low-lag-vsync-on/
 */

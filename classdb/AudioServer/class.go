@@ -35,6 +35,7 @@ import "graphics.gd/variant/Path"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
 
@@ -143,6 +144,10 @@ var methods struct {
 	get_input_device_list                 gdextension.MethodForClass `hash:"2981934095"`
 	get_input_device                      gdextension.MethodForClass `hash:"2841200299"`
 	set_input_device                      gdextension.MethodForClass `hash:"83702148"`
+	set_input_device_active               gdextension.MethodForClass `hash:"1413768114"`
+	get_input_frames_available            gdextension.MethodForClass `hash:"2455072627"`
+	get_input_buffer_length_frames        gdextension.MethodForClass `hash:"2455072627"`
+	get_input_frames                      gdextension.MethodForClass `hash:"2649534757"`
 	set_bus_layout                        gdextension.MethodForClass `hash:"3319058824"`
 	generate_bus_layout                   gdextension.MethodForClass `hash:"3769973890"`
 	set_enable_tagging_used_audio_streams gdextension.MethodForClass `hash:"2586408642"`
@@ -494,6 +499,42 @@ Note: [ProjectSettings] "audio/driver/enable_input" must be true for audio input
 */
 func GetInputDeviceList() []string { //gd:AudioServer.get_input_device_list
 	return []string(Advanced().GetInputDeviceList().Strings())
+}
+
+/*
+If 'active' is true, starts the microphone input stream specified by [InputDevice] or returns an error if it failed.
+
+If 'active' is false, stops the input stream if it is running.
+*/
+func SetInputDeviceActive(active bool) error { //gd:AudioServer.set_input_device_active
+	return error(gd.ToError(Advanced().SetInputDeviceActive(active)))
+}
+
+/*
+Returns the number of frames available to read using [GetInputFrames].
+*/
+func GetInputFramesAvailable() int { //gd:AudioServer.get_input_frames_available
+	return int(int(Advanced().GetInputFramesAvailable()))
+}
+
+/*
+Returns the absolute size of the microphone input buffer. This is set to a multiple of the audio latency and can be used to estimate the minimum rate at which the frames need to be fetched.
+*/
+func GetInputBufferLengthFrames() int { //gd:AudioServer.get_input_buffer_length_frames
+	return int(int(Advanced().GetInputBufferLengthFrames()))
+}
+
+/*
+Returns a [][Vector2.XY] containing exactly 'frames' audio samples from the internal microphone buffer if available, otherwise returns an empty [][Vector2.XY].
+
+The buffer is filled at the rate of [GetInputMixRate] frames per second when [SetInputDeviceActive] has successfully been set to true.
+
+The samples are signed floating-point PCM values between -1 and 1.
+
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
+*/
+func GetInputFrames(frames int) []Vector2.XY { //gd:AudioServer.get_input_frames
+	return []Vector2.XY(slices.Collect(Advanced().GetInputFrames(int64(frames)).Values()))
 }
 
 /*
@@ -932,6 +973,30 @@ func (self class) GetInputDevice() String.Readable { //gd:AudioServer.get_input_
 func (self class) SetInputDevice(name String.Readable) { //gd:AudioServer.set_input_device
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_device, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+}
+func (self class) SetInputDeviceActive(active bool) Error.Code { //gd:AudioServer.set_input_device_active
+	once.Do(singleton)
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.set_input_device_active, gdextension.SizeInt|(gdextension.SizeBool<<4), &struct{ active bool }{active})
+	var ret = Error.Code(r_ret)
+	return ret
+}
+func (self class) GetInputFramesAvailable() int64 { //gd:AudioServer.get_input_frames_available
+	once.Do(singleton)
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_input_frames_available, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) GetInputBufferLengthFrames() int64 { //gd:AudioServer.get_input_buffer_length_frames
+	once.Do(singleton)
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_input_buffer_length_frames, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) GetInputFrames(frames int64) Packed.Array[Vector2.XY] { //gd:AudioServer.get_input_frames
+	once.Do(singleton)
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_input_frames, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ frames int64 }{frames})
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
+	return ret
 }
 func (self class) SetBusLayout(bus_layout [1]gdclass.AudioBusLayout) { //gd:AudioServer.set_bus_layout
 	once.Do(singleton)

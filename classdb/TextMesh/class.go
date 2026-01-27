@@ -235,8 +235,13 @@ func (self Instance) SetFont(value Font.Instance) Instance { //gd:TextMesh.font
 }
 
 /*
-Font size of the [TextMesh]'s text.
+Font size of the [TextMesh]'s text. This property works in tandem with [PixelSize]. Higher values will result in a more detailed font, regardless of [CurveStep] and [PixelSize]. Consider keeping this value below 63 (inclusive) for good performance, and adjust [PixelSize] as needed to enlarge text.
 
+Note: Changing this property will regenerate the mesh, which is a slow operation, especially with large font sizes and long texts. To change the text's size in real-time efficiently, change the node's [Node3D.Scale] instead.
+
+[CurveStep]: https://pkg.go.dev/graphics.gd/classdb/TextMesh#Instance.CurveStep
+[Node3D.Scale]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Scale
+[PixelSize]: https://pkg.go.dev/graphics.gd/classdb/TextMesh#Instance.PixelSize
 [TextMesh]: https://pkg.go.dev/graphics.gd/classdb/TextMesh
 */
 func (self Instance) FontSize() int { //gd:TextMesh.font_size
@@ -250,7 +255,7 @@ func (self Instance) SetFontSize(value int) Instance { //gd:TextMesh.font_size
 }
 
 /*
-Controls the text's horizontal alignment. Supports left, center, right, and fill, or justify.
+Controls the text's horizontal alignment. Supports left, center, right, and fill (also known as justify).
 */
 func (self Instance) HorizontalAlignment() GUI.HorizontalAlignment { //gd:TextMesh.horizontal_alignment
 	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
@@ -328,7 +333,12 @@ func (self Instance) SetJustificationFlags(value TextServer.JustificationFlag) I
 }
 
 /*
-The size of one pixel's width on the text to scale it in 3D.
+The size of one pixel's width on the text to scale it in 3D. This property works in tandem with [FontSize].
+
+Note: Changing this property will regenerate the mesh, which is a slow operation, especially with large font sizes and long texts. To change the text's size in real-time efficiently, change the node's [Node3D.Scale] instead.
+
+[FontSize]: https://pkg.go.dev/graphics.gd/classdb/TextMesh#Instance.FontSize
+[Node3D.Scale]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Scale
 */
 func (self Instance) PixelSize() Float.X { //gd:TextMesh.pixel_size
 	return Float.X(Float.X(class(self).GetPixelSize()))
@@ -341,7 +351,9 @@ func (self Instance) SetPixelSize(value Float.X) Instance { //gd:TextMesh.pixel_
 }
 
 /*
-Step (in pixels) used to approximate Bézier curves.
+Step (in pixels) used to approximate Bézier curves. Lower values result in smoother curves, but is slower to generate and render. Consider adjusting this according to the font size and the typical viewing distance.
+
+Note: Changing this property will regenerate the mesh, which is a slow operation, especially with large font sizes and long texts.
 */
 func (self Instance) CurveStep() Float.X { //gd:TextMesh.curve_step
 	return Float.X(Float.X(class(self).GetCurveStep()))
@@ -381,6 +393,10 @@ func (self Instance) SetWidth(value Float.X) Instance { //gd:TextMesh.width
 
 /*
 The text drawing offset (in pixels).
+
+Note: Changing this property will regenerate the mesh, which is a slow operation. To change the text's position in real-time efficiently, change the node's [Node3D.Position] instead.
+
+[Node3D.Position]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Position
 */
 func (self Instance) Offset() Vector2.XY { //gd:TextMesh.offset
 	return Vector2.XY(class(self).GetOffset())
@@ -406,7 +422,7 @@ func (self Instance) SetTextDirection(value TextServer.Direction) Instance { //g
 }
 
 /*
-Language code used for text shaping algorithms, if left empty current locale is used instead.
+Language code used for line-breaking and text shaping algorithms. If left empty, the current locale is used instead.
 */
 func (self Instance) Language() string { //gd:TextMesh.language
 	return string(class(self).GetLanguage().String())

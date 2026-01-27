@@ -125,18 +125,19 @@ var methods struct {
 	pause                               gdextension.MethodForClass `hash:"3218959716"`
 	stop                                gdextension.MethodForClass `hash:"107499316"`
 	is_playing                          gdextension.MethodForClass `hash:"36873697"`
-	set_current_animation               gdextension.MethodForClass `hash:"83702148"`
-	get_current_animation               gdextension.MethodForClass `hash:"201670096"`
-	set_assigned_animation              gdextension.MethodForClass `hash:"83702148"`
-	get_assigned_animation              gdextension.MethodForClass `hash:"201670096"`
+	is_animation_active                 gdextension.MethodForClass `hash:"36873697"`
+	set_current_animation               gdextension.MethodForClass `hash:"3304788590"`
+	get_current_animation               gdextension.MethodForClass `hash:"2002593661"`
+	set_assigned_animation              gdextension.MethodForClass `hash:"3304788590"`
+	get_assigned_animation              gdextension.MethodForClass `hash:"2002593661"`
 	queue                               gdextension.MethodForClass `hash:"3304788590"`
-	get_queue                           gdextension.MethodForClass `hash:"2981934095"`
+	get_queue                           gdextension.MethodForClass `hash:"2915620761"`
 	clear_queue                         gdextension.MethodForClass `hash:"3218959716"`
 	set_speed_scale                     gdextension.MethodForClass `hash:"373806689"`
 	get_speed_scale                     gdextension.MethodForClass `hash:"1740695150"`
 	get_playing_speed                   gdextension.MethodForClass `hash:"1740695150"`
-	set_autoplay                        gdextension.MethodForClass `hash:"83702148"`
-	get_autoplay                        gdextension.MethodForClass `hash:"201670096"`
+	set_autoplay                        gdextension.MethodForClass `hash:"3304788590"`
+	get_autoplay                        gdextension.MethodForClass `hash:"2002593661"`
 	set_movie_quit_on_finish_enabled    gdextension.MethodForClass `hash:"2586408642"`
 	is_movie_quit_on_finish_enabled     gdextension.MethodForClass `hash:"36873697"`
 	get_current_animation_position      gdextension.MethodForClass `hash:"1740695150"`
@@ -455,6 +456,18 @@ func (self Instance) IsPlaying() bool { //gd:AnimationPlayer.is_playing
 }
 
 /*
+Returns true if the an animation is currently active. An animation is active if it was played by calling [Play] and was not finished yet, or was stopped by calling [Stop].
+
+This can be used to check whether an animation is currently paused or stopped.
+
+[Play]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.Play
+[Stop]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.Stop
+*/
+func (self Instance) IsAnimationActive() bool { //gd:AnimationPlayer.is_animation_active
+	return bool(Advanced(self).IsAnimationActive())
+}
+
+/*
 Queues an animation for playback once the current animation and all previously queued animations are done.
 
 Note: If a looped animation is currently playing, the queued animation will never play unless the looped animation is stopped somehow.
@@ -467,7 +480,7 @@ func (self Instance) Queue(name string) { //gd:AnimationPlayer.queue
 Returns a list of the animation keys that are currently queued to play.
 */
 func (self Instance) GetQueue() []string { //gd:AnimationPlayer.get_queue
-	return []string(Advanced(self).GetQueue().Strings())
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(Advanced(self).GetQueue())))
 }
 
 /*
@@ -704,7 +717,7 @@ func (self Instance) CurrentAnimation() string { //gd:AnimationPlayer.current_an
 
 // SetCurrentAnimation sets the property returned by [GetCurrentAnimation]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetCurrentAnimation(value string) Instance { //gd:AnimationPlayer.current_animation
-	class(self).SetCurrentAnimation(String.New(value))
+	class(self).SetCurrentAnimation(String.Name(String.New(value)))
 	return self
 }
 
@@ -719,7 +732,7 @@ func (self Instance) AssignedAnimation() string { //gd:AnimationPlayer.assigned_
 
 // SetAssignedAnimation sets the property returned by [GetAssignedAnimation]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetAssignedAnimation(value string) Instance { //gd:AnimationPlayer.assigned_animation
-	class(self).SetAssignedAnimation(String.New(value))
+	class(self).SetAssignedAnimation(String.Name(String.New(value)))
 	return self
 }
 
@@ -732,7 +745,7 @@ func (self Instance) Autoplay() string { //gd:AnimationPlayer.autoplay
 
 // SetAutoplay sets the property returned by [GetAutoplay]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetAutoplay(value string) Instance { //gd:AnimationPlayer.autoplay
-	class(self).SetAutoplay(String.New(value))
+	class(self).SetAutoplay(String.Name(String.New(value)))
 	return self
 }
 
@@ -1000,28 +1013,33 @@ func (self class) IsPlaying() bool { //gd:AnimationPlayer.is_playing
 	var ret = r_ret
 	return ret
 }
-func (self class) SetCurrentAnimation(animation String.Readable) { //gd:AnimationPlayer.set_current_animation
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_animation, 0|(gdextension.SizeString<<4), &struct{ animation gdextension.String }{pointers.Get(gd.InternalString(animation))})
-}
-func (self class) GetCurrentAnimation() String.Readable { //gd:AnimationPlayer.get_current_animation
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_animation, gdextension.SizeString, &struct{}{})
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+func (self class) IsAnimationActive() bool { //gd:AnimationPlayer.is_animation_active
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_animation_active, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
 	return ret
 }
-func (self class) SetAssignedAnimation(animation String.Readable) { //gd:AnimationPlayer.set_assigned_animation
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_assigned_animation, 0|(gdextension.SizeString<<4), &struct{ animation gdextension.String }{pointers.Get(gd.InternalString(animation))})
+func (self class) SetCurrentAnimation(animation String.Name) { //gd:AnimationPlayer.set_current_animation
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_animation, 0|(gdextension.SizeStringName<<4), &struct{ animation gdextension.StringName }{pointers.Get(gd.InternalStringName(animation))})
 }
-func (self class) GetAssignedAnimation() String.Readable { //gd:AnimationPlayer.get_assigned_animation
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_assigned_animation, gdextension.SizeString, &struct{}{})
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+func (self class) GetCurrentAnimation() String.Name { //gd:AnimationPlayer.get_current_animation
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_current_animation, gdextension.SizeStringName, &struct{}{})
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
+	return ret
+}
+func (self class) SetAssignedAnimation(animation String.Name) { //gd:AnimationPlayer.set_assigned_animation
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_assigned_animation, 0|(gdextension.SizeStringName<<4), &struct{ animation gdextension.StringName }{pointers.Get(gd.InternalStringName(animation))})
+}
+func (self class) GetAssignedAnimation() String.Name { //gd:AnimationPlayer.get_assigned_animation
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_assigned_animation, gdextension.SizeStringName, &struct{}{})
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 func (self class) Queue(name String.Name) { //gd:AnimationPlayer.queue
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
-func (self class) GetQueue() Packed.Strings { //gd:AnimationPlayer.get_queue
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_queue, gdextension.SizePackedArray, &struct{}{})
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
+func (self class) GetQueue() Array.Contains[String.Name] { //gd:AnimationPlayer.get_queue
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_queue, gdextension.SizeArray, &struct{}{})
+	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) ClearQueue() { //gd:AnimationPlayer.clear_queue
@@ -1040,12 +1058,12 @@ func (self class) GetPlayingSpeed() float64 { //gd:AnimationPlayer.get_playing_s
 	var ret = r_ret
 	return ret
 }
-func (self class) SetAutoplay(name String.Readable) { //gd:AnimationPlayer.set_autoplay
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoplay, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+func (self class) SetAutoplay(name String.Name) { //gd:AnimationPlayer.set_autoplay
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoplay, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
-func (self class) GetAutoplay() String.Readable { //gd:AnimationPlayer.get_autoplay
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_autoplay, gdextension.SizeString, &struct{}{})
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+func (self class) GetAutoplay() String.Name { //gd:AnimationPlayer.get_autoplay
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_autoplay, gdextension.SizeStringName, &struct{}{})
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 func (self class) SetMovieQuitOnFinishEnabled(enabled bool) { //gd:AnimationPlayer.set_movie_quit_on_finish_enabled

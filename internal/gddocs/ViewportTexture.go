@@ -1,6 +1,6 @@
 /*
 img.convert(Image.FORMAT_RGBA8)
-imb.linear_to_srgb()
+img.linear_to_srgb()
 */
 
 package main

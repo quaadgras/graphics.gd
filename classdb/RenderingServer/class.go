@@ -165,6 +165,7 @@ var methods struct {
 	material_get_param                                        gdextension.MethodForClass `hash:"2621281810"`
 	material_set_render_priority                              gdextension.MethodForClass `hash:"3411492887"`
 	material_set_next_pass                                    gdextension.MethodForClass `hash:"395945892"`
+	material_set_use_debanding                                gdextension.MethodForClass `hash:"2586408642"`
 	mesh_create_from_surfaces                                 gdextension.MethodForClass `hash:"4291747531"`
 	mesh_create                                               gdextension.MethodForClass `hash:"529393457"`
 	mesh_surface_get_format_offset                            gdextension.MethodForClass `hash:"2981368685"`
@@ -219,6 +220,7 @@ var methods struct {
 	multimesh_set_physics_interpolated                        gdextension.MethodForClass `hash:"1265174801"`
 	multimesh_set_physics_interpolation_quality               gdextension.MethodForClass `hash:"3934808223"`
 	multimesh_instance_reset_physics_interpolation            gdextension.MethodForClass `hash:"3411492887"`
+	multimesh_instances_reset_physics_interpolation           gdextension.MethodForClass `hash:"2722037293"`
 	skeleton_create                                           gdextension.MethodForClass `hash:"529393457"`
 	skeleton_allocate_data                                    gdextension.MethodForClass `hash:"1904426712"`
 	skeleton_get_bone_count                                   gdextension.MethodForClass `hash:"2198884583"`
@@ -449,6 +451,7 @@ var methods struct {
 	environment_set_ambient_light                             gdextension.MethodForClass `hash:"1214961493"`
 	environment_set_glow                                      gdextension.MethodForClass `hash:"2421724940"`
 	environment_set_tonemap                                   gdextension.MethodForClass `hash:"2914312638"`
+	environment_set_tonemap_agx_contrast                      gdextension.MethodForClass `hash:"1794382983"`
 	environment_set_adjustment                                gdextension.MethodForClass `hash:"876799838"`
 	environment_set_ssr                                       gdextension.MethodForClass `hash:"3607294374"`
 	environment_set_ssao                                      gdextension.MethodForClass `hash:"3994732740"`
@@ -457,6 +460,7 @@ var methods struct {
 	environment_set_sdfgi                                     gdextension.MethodForClass `hash:"3519144388"`
 	environment_set_volumetric_fog                            gdextension.MethodForClass `hash:"1553633833"`
 	environment_glow_set_use_bicubic_upscale                  gdextension.MethodForClass `hash:"2586408642"`
+	environment_set_ssr_half_size                             gdextension.MethodForClass `hash:"2586408642"`
 	environment_set_ssr_roughness_quality                     gdextension.MethodForClass `hash:"1190026788"`
 	environment_set_ssao_quality                              gdextension.MethodForClass `hash:"189753569"`
 	environment_set_ssil_quality                              gdextension.MethodForClass `hash:"1713836683"`
@@ -545,6 +549,7 @@ var methods struct {
 	canvas_item_add_multiline                                 gdextension.MethodForClass `hash:"3098767073"`
 	canvas_item_add_rect                                      gdextension.MethodForClass `hash:"3523446176"`
 	canvas_item_add_circle                                    gdextension.MethodForClass `hash:"333077949"`
+	canvas_item_add_ellipse                                   gdextension.MethodForClass `hash:"4188642757"`
 	canvas_item_add_texture_rect                              gdextension.MethodForClass `hash:"324864032"`
 	canvas_item_add_msdf_texture_rect_region                  gdextension.MethodForClass `hash:"97408773"`
 	canvas_item_add_lcd_texture_rect_region                   gdextension.MethodForClass `hash:"359793297"`
@@ -633,6 +638,7 @@ var methods struct {
 	get_test_cube                                             gdextension.MethodForClass `hash:"529393457"`
 	get_test_texture                                          gdextension.MethodForClass `hash:"529393457"`
 	get_white_texture                                         gdextension.MethodForClass `hash:"529393457"`
+	set_boot_image_with_stretch                               gdextension.MethodForClass `hash:"1104470771"`
 	set_boot_image                                            gdextension.MethodForClass `hash:"3759744527"`
 	get_default_clear_color                                   gdextension.MethodForClass `hash:"3200896285"`
 	set_default_clear_color                                   gdextension.MethodForClass `hash:"2920490490"`
@@ -719,7 +725,7 @@ func TextureProxyCreate(base RID.TextureProxy) RID.TextureProxy { //gd:Rendering
 /*
 Creates a texture based on a native handle that was created outside of Godot's renderer.
 
-Note: If using only the rendering device renderer, it's recommend to use [RenderingDevice.TextureCreateFromExtension] together with [RenderingServer.TextureRdCreate], rather than this method. It will give you much more control over the texture's format and usage.
+Note: If using only the rendering device renderer, it's recommend to use [RenderingDevice.TextureCreateFromExtension] together with [RenderingServer.TextureRdCreate], rather than this method. This way, the texture's format and usage can be controlled more effectively.
 
 [RenderingDevice.TextureCreateFromExtension]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.TextureCreateFromExtension
 [RenderingServer.TextureRdCreate]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#TextureRdCreate
@@ -731,7 +737,7 @@ func TextureCreateFromNativeHandle(atype TextureType, format Image.Format, nativ
 /*
 Creates a texture based on a native handle that was created outside of Godot's renderer.
 
-Note: If using only the rendering device renderer, it's recommend to use [RenderingDevice.TextureCreateFromExtension] together with [RenderingServer.TextureRdCreate], rather than this method. It will give you much more control over the texture's format and usage.
+Note: If using only the rendering device renderer, it's recommend to use [RenderingDevice.TextureCreateFromExtension] together with [RenderingServer.TextureRdCreate], rather than this method. This way, the texture's format and usage can be controlled more effectively.
 
 [RenderingDevice.TextureCreateFromExtension]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.TextureCreateFromExtension
 [RenderingServer.TextureRdCreate]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#TextureRdCreate
@@ -873,7 +879,12 @@ func TextureSetForceRedrawIfVisible(texture RID.Texture, enable bool) { //gd:Ren
 /*
 Creates a new texture object based on a texture created directly on the [RenderingDevice]. If the texture contains layers, 'layer_type' is used to define the layer type.
 
+Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
+
+Note: The RenderingServer's [FreeRid] won't free the underlying 'rd_texture', you will want to free the 'rd_texture' using [RenderingDevice.FreeRid].
+
 [RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
+[RenderingDevice.FreeRid]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.FreeRid
 */
 func TextureRdCreate(rd_texture RID.Texture, layer_type TextureLayeredType) RID.Texture { //gd:RenderingServer.texture_rd_create
 	return RID.Texture(RID.Texture(Advanced().TextureRdCreate(RID.Any(rd_texture), layer_type)))
@@ -881,6 +892,8 @@ func TextureRdCreate(rd_texture RID.Texture, layer_type TextureLayeredType) RID.
 
 /*
 Returns a texture [Resource.ID] that can be used with [RenderingDevice].
+
+'srgb' should be true when the texture uses nonlinear sRGB encoding and false when the texture uses linear encoding.
 
 [RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
@@ -891,6 +904,8 @@ func TextureGetRdTexture(texture RID.Texture, srgb bool) RID.Texture { //gd:Rend
 
 /*
 Returns the internal graphics handle for this texture object. For use when communicating with third-party APIs mostly with GDExtension.
+
+'srgb' should be true when the texture uses nonlinear sRGB encoding and false when the texture uses linear encoding.
 
 Note: This function returns a uint64_t which internally maps to a GLuint (OpenGL) or VkImage (Vulkan).
 */
@@ -1013,6 +1028,23 @@ Sets an object's next material.
 */
 func MaterialSetNextPass(material RID.Material, next_material RID.Material) { //gd:RenderingServer.material_set_next_pass
 	Advanced().MaterialSetNextPass(RID.Any(material), RID.Any(next_material))
+}
+
+/*
+When using the Mobile renderer, [MaterialSetUseDebanding] can be used to enable or disable the debanding feature of 3D materials ([BaseMaterial3D] and [ShaderMaterial]).
+
+[MaterialSetUseDebanding] has no effect when using the Compatibility or Forward+ renderer. In Forward+, [Viewport] debanding can be used instead.
+
+See also [ProjectSettings] "rendering/anti_aliasing/quality/use_debanding" and [RenderingServer.ViewportSetUseDebanding].
+
+[BaseMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[RenderingServer.ViewportSetUseDebanding]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#ViewportSetUseDebanding
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+*/
+func MaterialSetUseDebanding(enable bool) { //gd:RenderingServer.material_set_use_debanding
+	Advanced().MaterialSetUseDebanding(enable)
 }
 func MeshCreateFromSurfaces(surfaces []Surface, blend_shape_count int) RID.Mesh { //gd:RenderingServer.mesh_create_from_surfaces
 	return RID.Mesh(RID.Mesh(Advanced().MeshCreateFromSurfaces(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](surfaces), int64(blend_shape_count))))
@@ -1427,6 +1459,15 @@ func MultimeshInstanceResetPhysicsInterpolation(multimesh RID.MultiMesh, index i
 }
 
 /*
+Prevents physics interpolation for all instances during the current physics tick.
+
+This is useful when moving all instances to new locations, to give instantaneous changes rather than interpolation from the previous locations.
+*/
+func MultimeshInstancesResetPhysicsInterpolation(multimesh RID.MultiMesh) { //gd:RenderingServer.multimesh_instances_reset_physics_interpolation
+	Advanced().MultimeshInstancesResetPhysicsInterpolation(RID.Any(multimesh))
+}
+
+/*
 Creates a skeleton and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all skeleton_* RenderingServer functions.
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
@@ -1838,7 +1879,7 @@ func ReflectionProbeSetReflectionMask(probe RID.ReflectionProbe, layers int) { /
 }
 
 /*
-Sets the resolution to use when rendering the specified reflection probe. The 'resolution' is specified for each cubemap face: for instance, specifying 512 will allocate 6 faces of 512×512 each (plus mipmaps for roughness levels).
+Deprecated. This method does nothing.
 */
 func ReflectionProbeSetResolution(probe RID.ReflectionProbe, resolution int) { //gd:RenderingServer.reflection_probe_set_resolution
 	Advanced().ReflectionProbeSetResolution(RID.Any(probe), int64(resolution))
@@ -3045,11 +3086,9 @@ func ViewportSetMsaa2d(viewport RID.Viewport, msaa ViewportMSAA) { //gd:Renderin
 }
 
 /*
-If true, 2D rendering will use a high dynamic range (HDR) format framebuffer matching the bit depth of the 3D framebuffer. When using the Forward+ or Compatibility renderer, this will be an RGBA16 framebuffer. When using the Mobile renderer, it will be an RGB10_A2 framebuffer.
+If true, 2D rendering will use a high dynamic range (HDR) RGBA16 format framebuffer. Additionally, 2D rendering will be performed on linear values and will be converted using the appropriate transfer function immediately before blitting to the screen (if the Viewport is attached to the screen).
 
-Additionally, 2D rendering will take place in linear color space and will be converted to sRGB space immediately before blitting to the screen (if the Viewport is attached to the screen).
-
-Practically speaking, this means that the end result of the Viewport will not be clamped to the 0-1 range and can be used in 3D rendering without color space adjustments. This allows 2D rendering to take advantage of effects requiring high dynamic range (e.g. 2D glow) as well as substantially improves the appearance of effects requiring highly detailed gradients. This setting has the same effect as [Viewport.UseHdr2d].
+Practically speaking, this means that the end result of the Viewport will not be clamped to the 0-1 range and can be used in 3D rendering without color encoding adjustments. This allows 2D rendering to take advantage of effects requiring high dynamic range (e.g. 2D glow) as well as substantially improves the appearance of effects requiring highly detailed gradients. This setting has the same effect as [Viewport.UseHdr2d].
 
 [Viewport.UseHdr2d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.UseHdr2d
 */
@@ -3237,7 +3276,7 @@ func SkySetMaterial(sky RID.Sky, material RID.Material) { //gd:RenderingServer.s
 /*
 Generates and returns an [Image] containing the radiance map for the specified 'sky' RID. This supports built-in sky material and custom sky shaders. If 'bake_irradiance' is true, the irradiance map is saved instead of the radiance map. The radiance map is used to render reflected light, while the irradiance map is used to render ambient light. See also [EnvironmentBakePanorama].
 
-Note: The image is saved in linear color space without any tonemapping performed, which means it will look too dark if viewed directly in an image editor. 'energy' values above 1.0 can be used to brighten the resulting image.
+Note: The image is saved using linear encoding without any tonemapping performed, which means it will look too dark if viewed directly in an image editor. 'energy' values above 1.0 can be used to brighten the resulting image.
 
 Note: 'size' should be a 2:1 aspect ratio for the generated panorama to have square pixels. For radiance maps, there is no point in using a height greater than [Sky.RadianceSize], as it won't increase detail. Irradiance maps only contain low-frequency data, so there is usually no point in going past a size of 128×64 pixels when saving an irradiance map.
 
@@ -3412,6 +3451,15 @@ func EnvironmentSetTonemap(env RID.Environment, tone_mapper EnvironmentToneMappe
 }
 
 /*
+See [Environment.TonemapAgxContrast] for more details.
+
+[Environment.TonemapAgxContrast]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapAgxContrast
+*/
+func EnvironmentSetTonemapAgxContrast(env RID.Environment, agx_contrast Float.X) { //gd:RenderingServer.environment_set_tonemap_agx_contrast
+	Advanced().EnvironmentSetTonemapAgxContrast(RID.Any(env), float64(agx_contrast))
+}
+
+/*
 Sets the values to be used with the "adjustments" post-process effect. See [Environment] for more details.
 
 [Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
@@ -3484,6 +3532,13 @@ Note: This setting is only effective when using the Forward+ or Mobile rendering
 func EnvironmentGlowSetUseBicubicUpscale(enable bool) { //gd:RenderingServer.environment_glow_set_use_bicubic_upscale
 	Advanced().EnvironmentGlowSetUseBicubicUpscale(enable)
 }
+
+/*
+Sets whether screen-space reflections will be rendered at full or half size. Half size is faster, but may look pixelated or cause flickering.
+*/
+func EnvironmentSetSsrHalfSize(half_size bool) { //gd:RenderingServer.environment_set_ssr_half_size
+	Advanced().EnvironmentSetSsrHalfSize(half_size)
+}
 func EnvironmentSetSsrRoughnessQuality(quality EnvironmentSSRRoughnessQuality) { //gd:RenderingServer.environment_set_ssr_roughness_quality
 	Advanced().EnvironmentSetSsrRoughnessQuality(quality)
 }
@@ -3550,7 +3605,7 @@ func EnvironmentSetVolumetricFogFilterActive(active bool) { //gd:RenderingServer
 /*
 Generates and returns an [Image] containing the radiance map for the specified 'environment' RID's sky. This supports built-in sky material and custom sky shaders. If 'bake_irradiance' is true, the irradiance map is saved instead of the radiance map. The radiance map is used to render reflected light, while the irradiance map is used to render ambient light. See also [SkyBakePanorama].
 
-Note: The image is saved in linear color space without any tonemapping performed, which means it will look too dark if viewed directly in an image editor.
+Note: The image is saved using linear encoding without any tonemapping performed, which means it will look too dark if viewed directly in an image editor.
 
 Note: 'size' should be a 2:1 aspect ratio for the generated panorama to have square pixels. For radiance maps, there is no point in using a height greater than [Sky.RadianceSize], as it won't increase detail. Irradiance maps only contain low-frequency data, so there is usually no point in going past a size of 128×64 pixels when saving an irradiance map.
 
@@ -4344,6 +4399,17 @@ Draws a circle on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See a
 */
 func CanvasItemAddCircle(item RID.CanvasItem, pos Vector2.XY, radius Float.X, color Color.RGBA, antialiased bool) { //gd:RenderingServer.canvas_item_add_circle
 	Advanced().CanvasItemAddCircle(RID.Any(item), Vector2.XY(pos), float64(radius), Color.RGBA(color), antialiased)
+}
+
+/*
+Draws an ellipse with semi-major axis 'major' and semi-minor axis 'minor' on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawEllipse].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawEllipse]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawEllipse
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
+func CanvasItemAddEllipse(item RID.CanvasItem, pos Vector2.XY, major Float.X, minor Float.X, color Color.RGBA, antialiased bool) { //gd:RenderingServer.canvas_item_add_ellipse
+	Advanced().CanvasItemAddEllipse(RID.Any(item), Vector2.XY(pos), float64(major), float64(minor), Color.RGBA(color), antialiased)
 }
 
 /*
@@ -5235,14 +5301,28 @@ func GetWhiteTexture() RID.Texture { //gd:RenderingServer.get_white_texture
 }
 
 /*
-Sets a boot image. The color defines the background color. If 'scale' is true, the image will be scaled to fit the screen size. If 'use_filter' is true, the image will be scaled with linear interpolation. If 'use_filter' is false, the image will be scaled with nearest-neighbor interpolation.
+Sets a boot image. The 'color' defines the background color. The value of 'stretch_mode' indicates how the image will be stretched (see [SplashStretchMode] for possible values). If 'use_filter' is true, the image will be scaled with linear interpolation. If 'use_filter' is false, the image will be scaled with nearest-neighbor interpolation.
+*/
+func SetBootImageWithStretch(image Image.Instance, color Color.RGBA, stretch_mode SplashStretchMode) { //gd:RenderingServer.set_boot_image_with_stretch
+	Advanced().SetBootImageWithStretch(image, Color.RGBA(color), stretch_mode, true)
+}
+
+/*
+Sets a boot image. The 'color' defines the background color. The value of 'stretch_mode' indicates how the image will be stretched (see [SplashStretchMode] for possible values). If 'use_filter' is true, the image will be scaled with linear interpolation. If 'use_filter' is false, the image will be scaled with nearest-neighbor interpolation.
+*/
+func SetBootImageWithStretchOptions(image Image.Instance, color Color.RGBA, stretch_mode SplashStretchMode, use_filter bool) { //gd:RenderingServer.set_boot_image_with_stretch
+	Advanced().SetBootImageWithStretch(image, Color.RGBA(color), stretch_mode, use_filter)
+}
+
+/*
+Sets a boot image. The 'color' defines the background color. The value of 'scale' indicates if the image will be scaled to fit the screen size. If 'use_filter' is true, the image will be scaled with linear interpolation. If 'use_filter' is false, the image will be scaled with nearest-neighbor interpolation.
 */
 func SetBootImage(image Image.Instance, color Color.RGBA, scale bool) { //gd:RenderingServer.set_boot_image
 	Advanced().SetBootImage(image, Color.RGBA(color), scale, true)
 }
 
 /*
-Sets a boot image. The color defines the background color. If 'scale' is true, the image will be scaled to fit the screen size. If 'use_filter' is true, the image will be scaled with linear interpolation. If 'use_filter' is false, the image will be scaled with nearest-neighbor interpolation.
+Sets a boot image. The 'color' defines the background color. The value of 'scale' indicates if the image will be scaled to fit the screen size. If 'use_filter' is true, the image will be scaled with linear interpolation. If 'use_filter' is false, the image will be scaled with nearest-neighbor interpolation.
 */
 func SetBootImageOptions(image Image.Instance, color Color.RGBA, scale bool, use_filter bool) { //gd:RenderingServer.set_boot_image
 	Advanced().SetBootImage(image, Color.RGBA(color), scale, use_filter)
@@ -5666,6 +5746,10 @@ func (self class) MaterialSetNextPass(material RID.Any, next_material RID.Any) {
 		next_material RID.Any
 	}{material, next_material})
 }
+func (self class) MaterialSetUseDebanding(enable bool) { //gd:RenderingServer.material_set_use_debanding
+	once.Do(singleton)
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.material_set_use_debanding, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+}
 func (self class) MeshCreateFromSurfaces(surfaces Array.Contains[Dictionary.Any], blend_shape_count int64) RID.Any { //gd:RenderingServer.mesh_create_from_surfaces
 	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.mesh_create_from_surfaces, gdextension.SizeRID|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8), &struct {
@@ -6079,6 +6163,10 @@ func (self class) MultimeshInstanceResetPhysicsInterpolation(multimesh RID.Any, 
 		multimesh RID.Any
 		index     int64
 	}{multimesh, index})
+}
+func (self class) MultimeshInstancesResetPhysicsInterpolation(multimesh RID.Any) { //gd:RenderingServer.multimesh_instances_reset_physics_interpolation
+	once.Do(singleton)
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.multimesh_instances_reset_physics_interpolation, 0|(gdextension.SizeRID<<4), &struct{ multimesh RID.Any }{multimesh})
 }
 func (self class) SkeletonCreate() RID.Any { //gd:RenderingServer.skeleton_create
 	once.Do(singleton)
@@ -7690,6 +7778,13 @@ func (self class) EnvironmentSetTonemap(env RID.Any, tone_mapper EnvironmentTone
 		white       float64
 	}{env, tone_mapper, exposure, white})
 }
+func (self class) EnvironmentSetTonemapAgxContrast(env RID.Any, agx_contrast float64) { //gd:RenderingServer.environment_set_tonemap_agx_contrast
+	once.Do(singleton)
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_tonemap_agx_contrast, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+		env          RID.Any
+		agx_contrast float64
+	}{env, agx_contrast})
+}
 func (self class) EnvironmentSetAdjustment(env RID.Any, enable bool, brightness float64, contrast float64, saturation float64, use_1d_color_correction bool, color_correction RID.Any) { //gd:RenderingServer.environment_set_adjustment
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_adjustment, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24)|(gdextension.SizeRID<<28), &struct {
@@ -7791,6 +7886,10 @@ func (self class) EnvironmentSetVolumetricFog(env RID.Any, enable bool, density 
 func (self class) EnvironmentGlowSetUseBicubicUpscale(enable bool) { //gd:RenderingServer.environment_glow_set_use_bicubic_upscale
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_glow_set_use_bicubic_upscale, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+}
+func (self class) EnvironmentSetSsrHalfSize(half_size bool) { //gd:RenderingServer.environment_set_ssr_half_size
+	once.Do(singleton)
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_ssr_half_size, 0|(gdextension.SizeBool<<4), &struct{ half_size bool }{half_size})
 }
 func (self class) EnvironmentSetSsrRoughnessQuality(quality EnvironmentSSRRoughnessQuality) { //gd:RenderingServer.environment_set_ssr_roughness_quality
 	once.Do(singleton)
@@ -8447,6 +8546,17 @@ func (self class) CanvasItemAddCircle(item RID.Any, pos Vector2.XY, radius float
 		antialiased bool
 	}{item, pos, radius, color, antialiased})
 }
+func (self class) CanvasItemAddEllipse(item RID.Any, pos Vector2.XY, major float64, minor float64, color Color.RGBA, antialiased bool) { //gd:RenderingServer.canvas_item_add_ellipse
+	once.Do(singleton)
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_add_ellipse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeBool<<24), &struct {
+		item        RID.Any
+		pos         Vector2.XY
+		major       float64
+		minor       float64
+		color       Color.RGBA
+		antialiased bool
+	}{item, pos, major, minor, color, antialiased})
+}
 func (self class) CanvasItemAddTextureRect(item RID.Any, rect Rect2.PositionSize, texture RID.Any, tile bool, modulate Color.RGBA, transpose bool) { //gd:RenderingServer.canvas_item_add_texture_rect
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.canvas_item_add_texture_rect, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeBool<<24), &struct {
@@ -9089,6 +9199,15 @@ func (self class) GetWhiteTexture() RID.Any { //gd:RenderingServer.get_white_tex
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_white_texture, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
+}
+func (self class) SetBootImageWithStretch(image [1]gdclass.Image, color Color.RGBA, stretch_mode SplashStretchMode, use_filter bool) { //gd:RenderingServer.set_boot_image_with_stretch
+	once.Do(singleton)
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_boot_image_with_stretch, 0|(gdextension.SizeObject<<4)|(gdextension.SizeColor<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), &struct {
+		image        gdextension.Object
+		color        Color.RGBA
+		stretch_mode SplashStretchMode
+		use_filter   bool
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0]))), color, stretch_mode, use_filter})
 }
 func (self class) SetBootImage(image [1]gdclass.Image, color Color.RGBA, scale bool, use_filter bool) { //gd:RenderingServer.set_boot_image
 	once.Do(singleton)
@@ -10095,6 +10214,8 @@ const (
 	ViewportDebugDrawSdfgi ViewportDebugDraw = 16
 	// Draws SDFGI probe data. This is the data structure that is used to give indirect lighting dynamic objects moving within the scene.
 	//
+	// When in the editor, left-clicking a probe will display additional bright dots that show its occlusion information. A white dot means the light is not occluded at all at the dot's position, while a red dot means the light is fully occluded. Intermediate values are possible.
+	//
 	// Note: Only supported when using the Forward+ rendering method.
 	ViewportDebugDrawSdfgiProbes ViewportDebugDraw = 17
 	// Draws the global illumination buffer from [VoxelGI] or SDFGI. Requires [VoxelGI] (at least one visible baked VoxelGI node) or SDFGI ([Environment.SdfgiEnabled]) to be enabled to have a visible effect.
@@ -10315,11 +10436,7 @@ const (
 	//
 	// Note: This tonemapping operator is called "ACES Fitted" in Godot 3.x.
 	EnvToneMapperAces EnvironmentToneMapper = 3
-	// Uses a film-like tonemapping curve and desaturates bright values for a more realistic appearance. Better than other tonemappers at maintaining the hue of colors as they become brighter. The slowest tonemapping option.
-	//
-	// Note: [Environment.TonemapWhite] is fixed at a value of 16.29, which makes [EnvToneMapperAgx] unsuitable for use with the Mobile rendering method.
-	//
-	// [Environment.TonemapWhite]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapWhite
+	// Uses an adjustable film-like tonemapping curve and desaturates bright values for a more realistic appearance. Better than other tonemappers at maintaining the hue of colors as they become brighter. The slowest tonemapping option.
 	EnvToneMapperAgx EnvironmentToneMapper = 4
 )
 
@@ -10849,6 +10966,23 @@ const (
 	PipelineSourceSpecialization PipelineSource = 4
 	// Represents the size of the [PipelineSource] enum.
 	PipelineSourceMax PipelineSource = 5
+)
+
+type SplashStretchMode int //gd:RenderingServer.SplashStretchMode
+
+const (
+	// No stretching is applied.
+	SplashStretchModeDisabled SplashStretchMode = 0
+	// Stretches image to fullscreen while preserving aspect ratio.
+	SplashStretchModeKeep SplashStretchMode = 1
+	// Stretches the height of the image based on the width of the screen.
+	SplashStretchModeKeepWidth SplashStretchMode = 2
+	// Stretches the width of the image based on the height of the screen.
+	SplashStretchModeKeepHeight SplashStretchMode = 3
+	// Stretches the image to cover the entire screen while preserving aspect ratio.
+	SplashStretchModeCover SplashStretchMode = 4
+	// Stretches the image to cover the entire screen but doesn't preserve aspect ratio.
+	SplashStretchModeIgnore SplashStretchMode = 5
 )
 
 type Features int //gd:RenderingServer.Features

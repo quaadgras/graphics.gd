@@ -21,6 +21,9 @@ Not Relative + Not Additive:
 
 - Extract reference pose absolutely and the apply bone's pose is replaced with it.
 
+Note: Relative option is available only in the case [BoneConstraint3D.GetReferenceType] is [Boneconstraint3d.ReferenceTypeBone]. See also [BoneConstraint3D.ReferenceType].
+
+[BoneConstraint3D.GetReferenceType]: https://pkg.go.dev/graphics.gd/classdb/BoneConstraint3D#Instance.GetReferenceType
 [BoneConstraint3D.SetApplyBone]: https://pkg.go.dev/graphics.gd/classdb/BoneConstraint3D#Instance.SetApplyBone
 [BoneConstraint3D.SetReferenceBone]: https://pkg.go.dev/graphics.gd/classdb/BoneConstraint3D#Instance.SetReferenceBone
 [SetAdditive]: https://pkg.go.dev/graphics.gd/classdb/CopyTransformModifier3D#Instance.SetAdditive

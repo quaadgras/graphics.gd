@@ -3,7 +3,19 @@
 /*
 Comma-separated values are a plain text table storage format. The format's simplicity makes it easy to edit in any text editor or spreadsheet software. This makes it a common choice for game localization.
 
+In the CSV file used for translation, the first column contains string identifiers, and the first row serves as the header. The first column's header can be any value. The remaining headers indicate the locale for that column. Columns whose headers begin with an underscore (_) will be ignored.
+
 Example CSV file:
+
+Although keys in the first column typically use uppercase string identifiers, it is not uncommon to directly use strings appearing in the game as keys. To avoid string ambiguity, you can use a special ?context column to specify the context to use with [Object.Tr].
+
+To set the plural form of a string to use with [Object.TrN], add a special ?plural column. After setting the plural form of the source string in this column, you can add additional rows to provide translations for more plural forms. The first column and all special columns in these plural form rows must be empty.
+
+Godot includes built-in plural rules for some languages. You can also customize them using a special ?pluralrule row. See [GNU gettext] for examples and more info.
+
+[GNU gettext]: https://www.gnu.org/software/gettext/manual/html_node/Plural-forms.html
+[Object.Tr]: https://pkg.go.dev/graphics.gd/variant/Object#Tr
+[Object.TrN]: https://pkg.go.dev/graphics.gd/variant/Object#TrN
 */
 package ResourceImporterCSVTranslation
 

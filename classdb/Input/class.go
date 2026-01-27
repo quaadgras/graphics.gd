@@ -30,6 +30,7 @@ import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
@@ -138,6 +139,8 @@ var methods struct {
 	set_accelerometer                gdextension.MethodForClass `hash:"3460891852"`
 	set_magnetometer                 gdextension.MethodForClass `hash:"3460891852"`
 	set_gyroscope                    gdextension.MethodForClass `hash:"3460891852"`
+	set_joy_light                    gdextension.MethodForClass `hash:"2878471219"`
+	has_joy_light                    gdextension.MethodForClass `hash:"1116898809"`
 	get_last_mouse_velocity          gdextension.MethodForClass `hash:"1497962370"`
 	get_last_mouse_screen_velocity   gdextension.MethodForClass `hash:"1497962370"`
 	get_mouse_button_mask            gdextension.MethodForClass `hash:"2512161324"`
@@ -640,6 +643,26 @@ func SetGyroscope(value Vector3.XYZ) { //gd:Input.set_gyroscope
 }
 
 /*
+Sets the joypad's LED light, if available, to the specified color. See also [HasJoyLight].
+
+Note: There is no way to get the color of the light from a joypad. If you need to know the assigned color, store it separately.
+
+Note: This feature is only supported on Windows, Linux, and macOS.
+*/
+func SetJoyLight(device Device, color Color.RGBA) { //gd:Input.set_joy_light
+	Advanced().SetJoyLight(int64(device), Color.RGBA(color))
+}
+
+/*
+Returns true if the joypad has an LED light that can change colors and/or brightness. See also [SetJoyLight].
+
+Note: This feature is only supported on Windows, Linux, and macOS.
+*/
+func HasJoyLight(device Device) bool { //gd:Input.has_joy_light
+	return bool(Advanced().HasJoyLight(int64(device)))
+}
+
+/*
 Returns the last mouse velocity. To provide a precise and jitter-free velocity, mouse velocity is only calculated every 0.1s. Therefore, mouse velocity will lag mouse movements.
 */
 func GetLastMouseVelocity() Vector2.XY { //gd:Input.get_last_mouse_velocity
@@ -1122,6 +1145,19 @@ func (self class) SetMagnetometer(value Vector3.XYZ) { //gd:Input.set_magnetomet
 func (self class) SetGyroscope(value Vector3.XYZ) { //gd:Input.set_gyroscope
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gyroscope, 0|(gdextension.SizeVector3<<4), &struct{ value Vector3.XYZ }{value})
+}
+func (self class) SetJoyLight(device int64, color Color.RGBA) { //gd:Input.set_joy_light
+	once.Do(singleton)
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joy_light, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
+		device int64
+		color  Color.RGBA
+	}{device, color})
+}
+func (self class) HasJoyLight(device int64) bool { //gd:Input.has_joy_light
+	once.Do(singleton)
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_joy_light, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
+	var ret = r_ret
+	return ret
 }
 func (self class) GetLastMouseVelocity() Vector2.XY { //gd:Input.get_last_mouse_velocity
 	once.Do(singleton)

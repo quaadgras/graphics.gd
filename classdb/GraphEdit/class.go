@@ -581,7 +581,7 @@ func (self Instance) AddValidRightDisconnectType(atype int) { //gd:GraphEdit.add
 }
 
 /*
-Disallows to disconnect nodes when dragging from the right port of the [GraphNode]'s slot if it has the specified type. Use this to disable disconnection previously allowed with [AddValidRightDisconnectType].
+Disallows to disconnect nodes when dragging from the right port of the [GraphNode]'s slot if it has the specified type. Use this to disable a disconnection previously allowed with [AddValidRightDisconnectType].
 
 [AddValidRightDisconnectType]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit#Instance.AddValidRightDisconnectType
 [GraphNode]: https://pkg.go.dev/graphics.gd/classdb/GraphNode
@@ -601,7 +601,7 @@ func (self Instance) AddValidLeftDisconnectType(atype int) { //gd:GraphEdit.add_
 }
 
 /*
-Disallows to disconnect nodes when dragging from the left port of the [GraphNode]'s slot if it has the specified type. Use this to disable disconnection previously allowed with [AddValidLeftDisconnectType].
+Disallows to disconnect nodes when dragging from the left port of the [GraphNode]'s slot if it has the specified type. Use this to disable a disconnection previously allowed with [AddValidLeftDisconnectType].
 
 [AddValidLeftDisconnectType]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit#Instance.AddValidLeftDisconnectType
 [GraphNode]: https://pkg.go.dev/graphics.gd/classdb/GraphNode
@@ -858,7 +858,7 @@ func (self Instance) SetRightDisconnects(value bool) Instance { //gd:GraphEdit.r
 }
 
 /*
-data structure of human readable port type names.
+data structure of human-readable port type names.
 */
 func (self Instance) TypeNames() map[int]string { //gd:GraphEdit.type_names
 	return map[int]string(gd.DictionaryAs[map[int]string](class(self).GetTypeNames()))

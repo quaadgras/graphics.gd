@@ -129,8 +129,8 @@ var methods struct {
 	get_end_bone                     gdextension.MethodForClass `hash:"923996154"`
 	set_extend_end_bone              gdextension.MethodForClass `hash:"300928843"`
 	is_end_bone_extended             gdextension.MethodForClass `hash:"1116898809"`
-	set_end_bone_direction           gdextension.MethodForClass `hash:"204796492"`
-	get_end_bone_direction           gdextension.MethodForClass `hash:"2438315700"`
+	set_end_bone_direction           gdextension.MethodForClass `hash:"2838484201"`
+	get_end_bone_direction           gdextension.MethodForClass `hash:"1843036459"`
 	set_end_bone_length              gdextension.MethodForClass `hash:"1602489585"`
 	get_end_bone_length              gdextension.MethodForClass `hash:"2339986948"`
 	set_center_from                  gdextension.MethodForClass `hash:"2551505749"`
@@ -143,8 +143,8 @@ var methods struct {
 	get_center_bone                  gdextension.MethodForClass `hash:"923996154"`
 	set_radius                       gdextension.MethodForClass `hash:"1602489585"`
 	get_radius                       gdextension.MethodForClass `hash:"2339986948"`
-	set_rotation_axis                gdextension.MethodForClass `hash:"3534169209"`
-	get_rotation_axis                gdextension.MethodForClass `hash:"748837671"`
+	set_rotation_axis                gdextension.MethodForClass `hash:"1539703856"`
+	get_rotation_axis                gdextension.MethodForClass `hash:"2844851118"`
 	set_rotation_axis_vector         gdextension.MethodForClass `hash:"1530502735"`
 	get_rotation_axis_vector         gdextension.MethodForClass `hash:"711720468"`
 	set_radius_damping_curve         gdextension.MethodForClass `hash:"1447180063"`
@@ -170,8 +170,8 @@ var methods struct {
 	is_config_individual             gdextension.MethodForClass `hash:"1116898809"`
 	get_joint_bone_name              gdextension.MethodForClass `hash:"1391810591"`
 	get_joint_bone                   gdextension.MethodForClass `hash:"3175239445"`
-	set_joint_rotation_axis          gdextension.MethodForClass `hash:"4224018032"`
-	get_joint_rotation_axis          gdextension.MethodForClass `hash:"2488679199"`
+	set_joint_rotation_axis          gdextension.MethodForClass `hash:"1391134969"`
+	get_joint_rotation_axis          gdextension.MethodForClass `hash:"3312594080"`
 	set_joint_rotation_axis_vector   gdextension.MethodForClass `hash:"2866752138"`
 	get_joint_rotation_axis_vector   gdextension.MethodForClass `hash:"1592972041"`
 	set_joint_radius                 gdextension.MethodForClass `hash:"3506521499"`
@@ -199,6 +199,8 @@ var methods struct {
 	clear_collisions                 gdextension.MethodForClass `hash:"1286410249"`
 	set_external_force               gdextension.MethodForClass `hash:"3460891852"`
 	get_external_force               gdextension.MethodForClass `hash:"3360562783"`
+	set_mutable_bone_axes            gdextension.MethodForClass `hash:"2586408642"`
+	are_bone_axes_mutable            gdextension.MethodForClass `hash:"36873697"`
 	reset                            gdextension.MethodForClass `hash:"3218959716"`
 }
 
@@ -295,11 +297,9 @@ func (self Instance) GetEndBone(index int) int { //gd:SpringBoneSimulator3D.get_
 }
 
 /*
-If 'enabled' is true, the end bone is extended to have the tail.
+If 'enabled' is true, the end bone is extended to have a tail.
 
-The extended tail config is allocated to the last element in the joint list.
-
-In other words, if you set 'enabled' is false, the config of last element in the joint list has no effect in the simulated result.
+The extended tail config is allocated to the last element in the joint list. In other words, if you set 'enabled' to false, the config of the last element in the joint list has no effect in the simulated result.
 
 Returns 'self' to enable method chaining.
 */
@@ -309,7 +309,7 @@ func (self Instance) SetExtendEndBone(index int, enabled bool) Instance { //gd:S
 }
 
 /*
-Returns true if the end bone is extended to have the tail.
+Returns true if the end bone is extended to have a tail.
 */
 func (self Instance) IsEndBoneExtended(index int) bool { //gd:SpringBoneSimulator3D.is_end_bone_extended
 	return bool(Advanced(self).IsEndBoneExtended(int64(index)))
@@ -322,18 +322,18 @@ Returns 'self' to enable method chaining.
 
 [IsEndBoneExtended]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.IsEndBoneExtended
 */
-func (self Instance) SetEndBoneDirection(index int, bone_direction BoneDirection) Instance { //gd:SpringBoneSimulator3D.set_end_bone_direction
+func (self Instance) SetEndBoneDirection(index int, bone_direction SkeletonModifier3D.BoneDirection) Instance { //gd:SpringBoneSimulator3D.set_end_bone_direction
 	Advanced(self).SetEndBoneDirection(int64(index), bone_direction)
 	return self
 }
 
 /*
-Returns the end bone's tail direction of the bone chain when [IsEndBoneExtended] is true.
+Returns the tail direction of the end bone of the bone chain when [IsEndBoneExtended] is true.
 
 [IsEndBoneExtended]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.IsEndBoneExtended
 */
-func (self Instance) GetEndBoneDirection(index int) BoneDirection { //gd:SpringBoneSimulator3D.get_end_bone_direction
-	return BoneDirection(Advanced(self).GetEndBoneDirection(int64(index)))
+func (self Instance) GetEndBoneDirection(index int) SkeletonModifier3D.BoneDirection { //gd:SpringBoneSimulator3D.get_end_bone_direction
+	return SkeletonModifier3D.BoneDirection(Advanced(self).GetEndBoneDirection(int64(index)))
 }
 
 /*
@@ -349,7 +349,7 @@ func (self Instance) SetEndBoneLength(index int, length Float.X) Instance { //gd
 }
 
 /*
-Returns the end bone's tail length of the bone chain when [IsEndBoneExtended] is true.
+Returns the end bone tail length of the bone chain when [IsEndBoneExtended] is true.
 
 [IsEndBoneExtended]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.IsEndBoneExtended
 */
@@ -458,7 +458,7 @@ func (self Instance) GetRadius(index int) Float.X { //gd:SpringBoneSimulator3D.g
 /*
 Sets the rotation axis of the bone chain. If set to a specific axis, it acts like a hinge joint. The value is cached in each joint setting in the joint list.
 
-The axes are based on the [Skeleton3D.GetBoneRest]'s space, if 'axis' is [RotationAxisCustom], you can specify any axis.
+The axes are based on the [Skeleton3D.GetBoneRest]'s space, if 'axis' is [Skeletonmodifier3d.RotationAxisCustom], you can specify any axis.
 
 Note: The rotation axis vector and the forward vector shouldn't be colinear to avoid unintended rotation since [SpringBoneSimulator3D] does not factor in twisting forces.
 
@@ -467,7 +467,7 @@ Returns 'self' to enable method chaining.
 [Skeleton3D.GetBoneRest]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.GetBoneRest
 [SpringBoneSimulator3D]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D
 */
-func (self Instance) SetRotationAxis(index int, axis RotationAxis) Instance { //gd:SpringBoneSimulator3D.set_rotation_axis
+func (self Instance) SetRotationAxis(index int, axis SkeletonModifier3D.RotationAxis) Instance { //gd:SpringBoneSimulator3D.set_rotation_axis
 	Advanced(self).SetRotationAxis(int64(index), axis)
 	return self
 }
@@ -475,8 +475,8 @@ func (self Instance) SetRotationAxis(index int, axis RotationAxis) Instance { //
 /*
 Returns the rotation axis of the bone chain.
 */
-func (self Instance) GetRotationAxis(index int) RotationAxis { //gd:SpringBoneSimulator3D.get_rotation_axis
-	return RotationAxis(Advanced(self).GetRotationAxis(int64(index)))
+func (self Instance) GetRotationAxis(index int) SkeletonModifier3D.RotationAxis { //gd:SpringBoneSimulator3D.get_rotation_axis
+	return SkeletonModifier3D.RotationAxis(Advanced(self).GetRotationAxis(int64(index)))
 }
 
 /*
@@ -484,7 +484,7 @@ Sets the rotation axis vector of the bone chain. The value is cached in each joi
 
 This vector is normalized by an internal process and represents the axis around which the bone chain can rotate.
 
-If the vector length is 0, it is considered synonymous with [RotationAxisAll].
+If the vector length is 0, it is considered synonymous with [Skeletonmodifier3d.RotationAxisAll].
 
 Returns 'self' to enable method chaining.
 */
@@ -496,7 +496,7 @@ func (self Instance) SetRotationAxisVector(index int, vector Vector3.XYZ) Instan
 /*
 Returns the rotation axis vector of the bone chain. This vector represents the axis around which the bone chain can rotate. It is determined based on the rotation axis set for the bone chain.
 
-If [GetRotationAxis] is [RotationAxisAll], this method returns Vector3(0, 0, 0).
+If [GetRotationAxis] is [Skeletonmodifier3d.RotationAxisAll], this method returns Vector3(0, 0, 0).
 
 [GetRotationAxis]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.GetRotationAxis
 */
@@ -702,7 +702,7 @@ func (self Instance) GetJointBone(index int, joint int) int { //gd:SpringBoneSim
 /*
 Sets the rotation axis at 'joint' in the bone chain's joint list when [IsConfigIndividual] is true.
 
-The axes are based on the [Skeleton3D.GetBoneRest]'s space, if 'axis' is [RotationAxisCustom], you can specify any axis.
+The axes are based on the [Skeleton3D.GetBoneRest]'s space, if 'axis' is [Skeletonmodifier3d.RotationAxisCustom], you can specify any axis.
 
 Note: The rotation axis and the forward vector shouldn't be colinear to avoid unintended rotation since [SpringBoneSimulator3D] does not factor in twisting forces.
 
@@ -712,7 +712,7 @@ Returns 'self' to enable method chaining.
 [Skeleton3D.GetBoneRest]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.GetBoneRest
 [SpringBoneSimulator3D]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D
 */
-func (self Instance) SetJointRotationAxis(index int, joint int, axis RotationAxis) Instance { //gd:SpringBoneSimulator3D.set_joint_rotation_axis
+func (self Instance) SetJointRotationAxis(index int, joint int, axis SkeletonModifier3D.RotationAxis) Instance { //gd:SpringBoneSimulator3D.set_joint_rotation_axis
 	Advanced(self).SetJointRotationAxis(int64(index), int64(joint), axis)
 	return self
 }
@@ -720,8 +720,8 @@ func (self Instance) SetJointRotationAxis(index int, joint int, axis RotationAxi
 /*
 Returns the rotation axis at 'joint' in the bone chain's joint list.
 */
-func (self Instance) GetJointRotationAxis(index int, joint int) RotationAxis { //gd:SpringBoneSimulator3D.get_joint_rotation_axis
-	return RotationAxis(Advanced(self).GetJointRotationAxis(int64(index), int64(joint)))
+func (self Instance) GetJointRotationAxis(index int, joint int) SkeletonModifier3D.RotationAxis { //gd:SpringBoneSimulator3D.get_joint_rotation_axis
+	return SkeletonModifier3D.RotationAxis(Advanced(self).GetJointRotationAxis(int64(index), int64(joint)))
 }
 
 /*
@@ -729,7 +729,7 @@ Sets the rotation axis vector for the specified joint in the bone chain.
 
 This vector is normalized by an internal process and represents the axis around which the bone chain can rotate.
 
-If the vector length is 0, it is considered synonymous with [RotationAxisAll].
+If the vector length is 0, it is considered synonymous with [Skeletonmodifier3d.RotationAxisAll].
 
 Returns 'self' to enable method chaining.
 */
@@ -741,7 +741,7 @@ func (self Instance) SetJointRotationAxisVector(index int, joint int, vector Vec
 /*
 Returns the rotation axis vector for the specified joint in the bone chain. This vector represents the axis around which the joint can rotate. It is determined based on the rotation axis set for the joint.
 
-If [GetJointRotationAxis] is [RotationAxisAll], this method returns Vector3(0, 0, 0).
+If [GetJointRotationAxis] is [Skeletonmodifier3d.RotationAxisAll], this method returns Vector3(0, 0, 0).
 
 [GetJointRotationAxis]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.GetJointRotationAxis
 */
@@ -1054,6 +1054,23 @@ func (self Instance) SetExternalForce(value Vector3.XYZ) Instance { //gd:SpringB
 }
 
 /*
+If true, the solver retrieves the bone axis from the bone pose every frame.
+
+If false, the solver retrieves the bone axis from the bone rest and caches it, which increases performance slightly, but position changes in the bone pose made before processing this [SpringBoneSimulator3D] are ignored.
+
+[SpringBoneSimulator3D]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D
+*/
+func (self Instance) MutableBoneAxes() bool { //gd:SpringBoneSimulator3D.mutable_bone_axes
+	return bool(class(self).AreBoneAxesMutable())
+}
+
+// SetMutableBoneAxes sets the property returned by [AreBoneAxesMutable]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMutableBoneAxes(value bool) Instance { //gd:SpringBoneSimulator3D.mutable_bone_axes
+	class(self).SetMutableBoneAxes(value)
+	return self
+}
+
+/*
 The number of settings.
 */
 func (self Instance) SettingCount() int { //gd:SpringBoneSimulator3D.setting_count
@@ -1121,14 +1138,14 @@ func (self class) IsEndBoneExtended(index int64) bool { //gd:SpringBoneSimulator
 	var ret = r_ret
 	return ret
 }
-func (self class) SetEndBoneDirection(index int64, bone_direction BoneDirection) { //gd:SpringBoneSimulator3D.set_end_bone_direction
+func (self class) SetEndBoneDirection(index int64, bone_direction SkeletonModifier3D.BoneDirection) { //gd:SpringBoneSimulator3D.set_end_bone_direction
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_end_bone_direction, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index          int64
-		bone_direction BoneDirection
+		bone_direction SkeletonModifier3D.BoneDirection
 	}{index, bone_direction})
 }
-func (self class) GetEndBoneDirection(index int64) BoneDirection { //gd:SpringBoneSimulator3D.get_end_bone_direction
-	var r_ret = noescape.Call[BoneDirection](gd.ObjectChecked(self.AsObject()), methods.get_end_bone_direction, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+func (self class) GetEndBoneDirection(index int64) SkeletonModifier3D.BoneDirection { //gd:SpringBoneSimulator3D.get_end_bone_direction
+	var r_ret = noescape.Call[SkeletonModifier3D.BoneDirection](gd.ObjectChecked(self.AsObject()), methods.get_end_bone_direction, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -1198,14 +1215,14 @@ func (self class) GetRadius(index int64) float64 { //gd:SpringBoneSimulator3D.ge
 	var ret = r_ret
 	return ret
 }
-func (self class) SetRotationAxis(index int64, axis RotationAxis) { //gd:SpringBoneSimulator3D.set_rotation_axis
+func (self class) SetRotationAxis(index int64, axis SkeletonModifier3D.RotationAxis) { //gd:SpringBoneSimulator3D.set_rotation_axis
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_axis, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index int64
-		axis  RotationAxis
+		axis  SkeletonModifier3D.RotationAxis
 	}{index, axis})
 }
-func (self class) GetRotationAxis(index int64) RotationAxis { //gd:SpringBoneSimulator3D.get_rotation_axis
-	var r_ret = noescape.Call[RotationAxis](gd.ObjectChecked(self.AsObject()), methods.get_rotation_axis, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+func (self class) GetRotationAxis(index int64) SkeletonModifier3D.RotationAxis { //gd:SpringBoneSimulator3D.get_rotation_axis
+	var r_ret = noescape.Call[SkeletonModifier3D.RotationAxis](gd.ObjectChecked(self.AsObject()), methods.get_rotation_axis, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -1346,15 +1363,15 @@ func (self class) GetJointBone(index int64, joint int64) int64 { //gd:SpringBone
 	var ret = r_ret
 	return ret
 }
-func (self class) SetJointRotationAxis(index int64, joint int64, axis RotationAxis) { //gd:SpringBoneSimulator3D.set_joint_rotation_axis
+func (self class) SetJointRotationAxis(index int64, joint int64, axis SkeletonModifier3D.RotationAxis) { //gd:SpringBoneSimulator3D.set_joint_rotation_axis
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joint_rotation_axis, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		index int64
 		joint int64
-		axis  RotationAxis
+		axis  SkeletonModifier3D.RotationAxis
 	}{index, joint, axis})
 }
-func (self class) GetJointRotationAxis(index int64, joint int64) RotationAxis { //gd:SpringBoneSimulator3D.get_joint_rotation_axis
-	var r_ret = noescape.Call[RotationAxis](gd.ObjectChecked(self.AsObject()), methods.get_joint_rotation_axis, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+func (self class) GetJointRotationAxis(index int64, joint int64) SkeletonModifier3D.RotationAxis { //gd:SpringBoneSimulator3D.get_joint_rotation_axis
+	var r_ret = noescape.Call[SkeletonModifier3D.RotationAxis](gd.ObjectChecked(self.AsObject()), methods.get_joint_rotation_axis, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index int64
 		joint int64
 	}{index, joint})
@@ -1533,6 +1550,14 @@ func (self class) GetExternalForce() Vector3.XYZ { //gd:SpringBoneSimulator3D.ge
 	var ret = r_ret
 	return ret
 }
+func (self class) SetMutableBoneAxes(enabled bool) { //gd:SpringBoneSimulator3D.set_mutable_bone_axes
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mutable_bone_axes, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+}
+func (self class) AreBoneAxesMutable() bool { //gd:SpringBoneSimulator3D.are_bone_axes_mutable
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.are_bone_axes_mutable, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
 func (self class) Reset() { //gd:SpringBoneSimulator3D.reset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset, 0, &struct{}{})
 }
@@ -1584,25 +1609,6 @@ func init() {
 	gdclass.Register("SpringBoneSimulator3D", func(ptr gd.Object) any { return Instance{gdclass.NewSpringBoneSimulator3D(ptr)} })
 }
 
-type BoneDirection int //gd:SpringBoneSimulator3D.BoneDirection
-
-const (
-	// Enumerated value for the +X axis.
-	BoneDirectionPlusX BoneDirection = 0
-	// Enumerated value for the -X axis.
-	BoneDirectionMinusX BoneDirection = 1
-	// Enumerated value for the +Y axis.
-	BoneDirectionPlusY BoneDirection = 2
-	// Enumerated value for the -Y axis.
-	BoneDirectionMinusY BoneDirection = 3
-	// Enumerated value for the +Z axis.
-	BoneDirectionPlusZ BoneDirection = 4
-	// Enumerated value for the -Z axis.
-	BoneDirectionMinusZ BoneDirection = 5
-	// Enumerated value for the axis from a parent bone to the child bone.
-	BoneDirectionFromParent BoneDirection = 6
-)
-
 type CenterFrom int //gd:SpringBoneSimulator3D.CenterFrom
 
 const (
@@ -1624,21 +1630,4 @@ const (
 	// [SetCenterBone]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetCenterBone
 	// [Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
 	CenterFromBone CenterFrom = 2
-)
-
-type RotationAxis int //gd:SpringBoneSimulator3D.RotationAxis
-
-const (
-	// Enumerated value for the rotation of the X axis.
-	RotationAxisX RotationAxis = 0
-	// Enumerated value for the rotation of the Y axis.
-	RotationAxisY RotationAxis = 1
-	// Enumerated value for the rotation of the Z axis.
-	RotationAxisZ RotationAxis = 2
-	// Enumerated value for the unconstrained rotation.
-	RotationAxisAll RotationAxis = 3
-	// Enumerated value for an optional rotation axis. See also [SetJointRotationAxisVector].
-	//
-	// [SetJointRotationAxisVector]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetJointRotationAxisVector
-	RotationAxisCustom RotationAxis = 4
 )

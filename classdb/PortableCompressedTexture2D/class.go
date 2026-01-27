@@ -179,7 +179,7 @@ func (self Instance) GetCompressionMode() CompressionMode { //gd:PortableCompres
 /*
 Sets the compressor parameters for Basis Universal compression. See also the settings in [ResourceImporterTexture].
 
-Note: This must be set before [CreateFromImage] to take effect.
+Note: This method must be called before [CreateFromImage] for this to work.
 
 Returns 'self' to enable method chaining.
 
@@ -192,7 +192,7 @@ func (self Instance) SetBasisuCompressorParams(uastc_level int, rdo_quality_loss
 }
 
 /*
-Overrides the flag globally for all textures of this type. This is used primarily by the editor.
+If 'keep' is true, overrides the flag globally for all textures of this type. This is used primarily by the editor.
 */
 func SetKeepAllCompressedBuffers(keep bool) { //gd:PortableCompressedTexture2D.set_keep_all_compressed_buffers
 	self := Instance{}
@@ -200,7 +200,7 @@ func SetKeepAllCompressedBuffers(keep bool) { //gd:PortableCompressedTexture2D.s
 }
 
 /*
-Return whether the flag is overridden for all textures of this type.
+Returns true if the flag is overridden for all textures of this type.
 */
 func IsKeepingAllCompressedBuffers() bool { //gd:PortableCompressedTexture2D.is_keeping_all_compressed_buffers
 	self := Instance{}
@@ -251,7 +251,7 @@ func New() Instance {
 }
 
 /*
-Allow overriding the texture size (for 2D only).
+Allows overriding the texture's size (for 2D only).
 */
 func (self Instance) SizeOverride() Vector2.XY { //gd:PortableCompressedTexture2D.size_override
 	return Vector2.XY(class(self).GetSizeOverride())
@@ -264,11 +264,9 @@ func (self Instance) SetSizeOverride(value Vector2.XY) Instance { //gd:PortableC
 }
 
 /*
-When running on the editor, this class will keep the source compressed data in memory. Otherwise, the source compressed data is lost after loading and the resource can't be re saved.
+If true, when running in the editor, this texture will keep the source-compressed data in memory, allowing the data to persist after loading. Otherwise, the source-compressed data is lost after loading and the texture can't be re-saved.
 
-This flag allows to keep the compressed data in memory if you intend it to persist after loading.
-
-Note: This must be set before [CreateFromImage] to take effect.
+Note: This property must be set before [CreateFromImage] for this to work.
 
 [CreateFromImage]: https://pkg.go.dev/graphics.gd/classdb/PortableCompressedTexture2D#Instance.CreateFromImage
 */

@@ -107,16 +107,24 @@ var methods struct {
 	get_all_countries              gdextension.MethodForClass `hash:"1139954409"`
 	get_country_name               gdextension.MethodForClass `hash:"3135753539"`
 	get_locale_name                gdextension.MethodForClass `hash:"3135753539"`
+	get_plural_rules               gdextension.MethodForClass `hash:"3135753539"`
 	translate                      gdextension.MethodForClass `hash:"1829228469"`
 	translate_plural               gdextension.MethodForClass `hash:"229954002"`
 	add_translation                gdextension.MethodForClass `hash:"1466479800"`
 	remove_translation             gdextension.MethodForClass `hash:"1466479800"`
 	get_translation_object         gdextension.MethodForClass `hash:"2065240175"`
+	get_translations               gdextension.MethodForClass `hash:"3995934104"`
+	find_translations              gdextension.MethodForClass `hash:"2109650934"`
+	has_translation_for_locale     gdextension.MethodForClass `hash:"2034713381"`
+	has_translation                gdextension.MethodForClass `hash:"2696976312"`
 	has_domain                     gdextension.MethodForClass `hash:"2619796661"`
 	get_or_add_domain              gdextension.MethodForClass `hash:"397200075"`
 	remove_domain                  gdextension.MethodForClass `hash:"3304788590"`
 	clear                          gdextension.MethodForClass `hash:"3218959716"`
 	get_loaded_locales             gdextension.MethodForClass `hash:"1139954409"`
+	format_number                  gdextension.MethodForClass `hash:"315676799"`
+	get_percent_sign               gdextension.MethodForClass `hash:"3135753539"`
+	parse_number                   gdextension.MethodForClass `hash:"315676799"`
 	is_pseudolocalization_enabled  gdextension.MethodForClass `hash:"36873697"`
 	set_pseudolocalization_enabled gdextension.MethodForClass `hash:"2586408642"`
 	reload_pseudolocalization      gdextension.MethodForClass `hash:"3218959716"`
@@ -236,6 +244,13 @@ func GetLocaleName(locale string) string { //gd:TranslationServer.get_locale_nam
 }
 
 /*
+Returns the default plural rules for the 'locale'.
+*/
+func GetPluralRules(locale string) string { //gd:TranslationServer.get_plural_rules
+	return string(Advanced().GetPluralRules(String.New(locale)).String())
+}
+
+/*
 Returns the current locale's translation for the given message and context.
 
 Note: This method always uses the main translation domain.
@@ -279,6 +294,40 @@ func GetTranslationObject(locale string) Translation.Instance { //gd:Translation
 }
 
 /*
+Returns all available [Translation] instances in the main translation domain as added by [AddTranslation].
+
+[Translation]: https://pkg.go.dev/graphics.gd/classdb/Translation
+*/
+func GetTranslations() []Translation.Instance { //gd:TranslationServer.get_translations
+	return []Translation.Instance(gd.ArrayAs[[]Translation.Instance](gd.InternalArray(Advanced().GetTranslations())))
+}
+
+/*
+Returns the [Translation] instances in the main translation domain that match 'locale' (see [CompareLocales]). If 'exact' is true, only instances whose locale exactly equals 'locale' will be returned.
+
+[Translation]: https://pkg.go.dev/graphics.gd/classdb/Translation
+*/
+func FindTranslations(locale string, exact bool) []Translation.Instance { //gd:TranslationServer.find_translations
+	return []Translation.Instance(gd.ArrayAs[[]Translation.Instance](gd.InternalArray(Advanced().FindTranslations(String.New(locale), exact))))
+}
+
+/*
+Returns true if there are any [Translation] instances in the main translation domain that match 'locale' (see [CompareLocales]). If 'exact' is true, only instances whose locale exactly equals 'locale' are considered.
+
+[Translation]: https://pkg.go.dev/graphics.gd/classdb/Translation
+*/
+func HasTranslationForLocale(locale string, exact bool) bool { //gd:TranslationServer.has_translation_for_locale
+	return bool(Advanced().HasTranslationForLocale(String.New(locale), exact))
+}
+
+/*
+Returns true if the main translation domain contains the given 'translation'.
+*/
+func HasTranslation(translation Translation.Instance) bool { //gd:TranslationServer.has_translation
+	return bool(Advanced().HasTranslation(translation))
+}
+
+/*
 Returns true if a translation domain with the specified name exists.
 */
 func HasDomain(domain string) bool { //gd:TranslationServer.has_domain
@@ -313,6 +362,27 @@ Returns an array of all loaded locales of the project.
 */
 func GetLoadedLocales() []string { //gd:TranslationServer.get_loaded_locales
 	return []string(Advanced().GetLoadedLocales().Strings())
+}
+
+/*
+Converts a number from Western Arabic (0..9) to the numeral system used in the given 'locale'.
+*/
+func FormatNumber(number string, locale string) string { //gd:TranslationServer.format_number
+	return string(Advanced().FormatNumber(String.New(number), String.New(locale)).String())
+}
+
+/*
+Returns the percent sign used in the given 'locale'.
+*/
+func GetPercentSign(locale string) string { //gd:TranslationServer.get_percent_sign
+	return string(Advanced().GetPercentSign(String.New(locale)).String())
+}
+
+/*
+Converts 'number' from the numeral system used in the given 'locale' to Western Arabic (0..9).
+*/
+func ParseNumber(number string, locale string) string { //gd:TranslationServer.parse_number
+	return string(Advanced().ParseNumber(String.New(number), String.New(locale)).String())
 }
 
 /*
@@ -446,6 +516,12 @@ func (self class) GetLocaleName(locale String.Readable) String.Readable { //gd:T
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
+func (self class) GetPluralRules(locale String.Readable) String.Readable { //gd:TranslationServer.get_plural_rules
+	once.Do(singleton)
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_plural_rules, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ locale gdextension.String }{pointers.Get(gd.InternalString(locale))})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
 func (self class) Translate(message String.Name, context String.Name) String.Name { //gd:TranslationServer.translate
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.translate, gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
@@ -480,6 +556,36 @@ func (self class) GetTranslationObject(locale String.Readable) [1]gdclass.Transl
 	var ret = [1]gdclass.Translation{gdclass.NewTranslation(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
+func (self class) GetTranslations() Array.Contains[[1]gdclass.Translation] { //gd:TranslationServer.get_translations
+	once.Do(singleton)
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_translations, gdextension.SizeArray, &struct{}{})
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Translation]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
+	return ret
+}
+func (self class) FindTranslations(locale String.Readable, exact bool) Array.Contains[[1]gdclass.Translation] { //gd:TranslationServer.find_translations
+	once.Do(singleton)
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.find_translations, gdextension.SizeArray|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+		locale gdextension.String
+		exact  bool
+	}{pointers.Get(gd.InternalString(locale)), exact})
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Translation]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
+	return ret
+}
+func (self class) HasTranslationForLocale(locale String.Readable, exact bool) bool { //gd:TranslationServer.has_translation_for_locale
+	once.Do(singleton)
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_translation_for_locale, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+		locale gdextension.String
+		exact  bool
+	}{pointers.Get(gd.InternalString(locale)), exact})
+	var ret = r_ret
+	return ret
+}
+func (self class) HasTranslation(translation [1]gdclass.Translation) bool { //gd:TranslationServer.has_translation
+	once.Do(singleton)
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_translation, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ translation gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTranslation(translation[0])))})
+	var ret = r_ret
+	return ret
+}
 func (self class) HasDomain(domain String.Name) bool { //gd:TranslationServer.has_domain
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_domain, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ domain gdextension.StringName }{pointers.Get(gd.InternalStringName(domain))})
@@ -504,6 +610,30 @@ func (self class) GetLoadedLocales() Packed.Strings { //gd:TranslationServer.get
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_loaded_locales, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
+	return ret
+}
+func (self class) FormatNumber(number String.Readable, locale String.Readable) String.Readable { //gd:TranslationServer.format_number
+	once.Do(singleton)
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.format_number, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
+		number gdextension.String
+		locale gdextension.String
+	}{pointers.Get(gd.InternalString(number)), pointers.Get(gd.InternalString(locale))})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+func (self class) GetPercentSign(locale String.Readable) String.Readable { //gd:TranslationServer.get_percent_sign
+	once.Do(singleton)
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_percent_sign, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ locale gdextension.String }{pointers.Get(gd.InternalString(locale))})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+func (self class) ParseNumber(number String.Readable, locale String.Readable) String.Readable { //gd:TranslationServer.parse_number
+	once.Do(singleton)
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.parse_number, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
+		number gdextension.String
+		locale gdextension.String
+	}{pointers.Get(gd.InternalString(number)), pointers.Get(gd.InternalString(locale))})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) IsPseudolocalizationEnabled() bool { //gd:TranslationServer.is_pseudolocalization_enabled

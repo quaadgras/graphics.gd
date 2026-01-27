@@ -227,9 +227,9 @@ type Interface interface {
 	//
 	// Defining this method is optional.
 	GetGlobalCode(mode Shader.Mode) string
-	// Override this method to enable high-end mark in the Visual Shader Editor's members dialog.
+	// Override this method to enable the high-end mark in the Visual Shader Editor's members dialog. This should return true for nodes that only work when using the Forward+ and Mobile renderers.
 	//
-	// Defining this method is optional. If not overridden, it's false.
+	// Defining this method is optional. If not overridden, it's false, which indicates this node works with all renderers (including Compatibility).
 	IsHighend() bool
 	// Override this method to prevent the node to be visible in the member dialog for the certain 'mode' and/or 'type'.
 	//
@@ -607,9 +607,9 @@ func (Instance) _get_global_code(impl func(ptr gdclass.Receiver, mode Shader.Mod
 }
 
 /*
-Override this method to enable high-end mark in the Visual Shader Editor's members dialog.
+Override this method to enable the high-end mark in the Visual Shader Editor's members dialog. This should return true for nodes that only work when using the Forward+ and Mobile renderers.
 
-Defining this method is optional. If not overridden, it's false.
+Defining this method is optional. If not overridden, it's false, which indicates this node works with all renderers (including Compatibility).
 */
 func (Instance) _is_highend(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {

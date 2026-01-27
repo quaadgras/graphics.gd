@@ -1044,4 +1044,9 @@ var Structables = map[string]reflect.Type{
 	"TextServerExtension._font_get_size_cache_info.":                                                         reflect.TypeFor[FontSizeCacheInfo](),
 	"TriangleMesh.intersect_segment.":                                                                        reflect.TypeFor[Intersection](),
 	"TriangleMesh.intersect_ray.":                                                                            reflect.TypeFor[Intersection](),
+
+	"GLTFBufferView.from_dictionary.dictionary": reflect.TypeFor[map[string]any](),
+	"GLTFBufferView.to_dictionary.":             reflect.TypeFor[map[string]any](),
+	"GLTFAccessor.from_dictionary.dictionary":   reflect.TypeFor[map[string]any](),
+	"GLTFAccessor.to_dictionary.":               reflect.TypeFor[map[string]any](),
 }

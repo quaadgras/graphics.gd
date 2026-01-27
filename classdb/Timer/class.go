@@ -5,7 +5,7 @@ The [Timer] node is a countdown timer and is the simplest way to handle time-bas
 
 After a timer enters the scene tree, it can be manually started with [Start]. A timer node is also started automatically if [Autostart] is true.
 
-Without requiring much code, a timer node can be added and configured in the editor. The [OnTimeout] signal it emits can also be connected through the Node dock in the editor:
+Without requiring much code, a timer node can be added and configured in the editor. The [OnTimeout] signal it emits can also be connected through the Signals dock in the editor:
 
 	package main
 

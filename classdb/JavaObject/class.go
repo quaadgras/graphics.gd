@@ -5,12 +5,11 @@ Represents an object from the Java Native Interface. It can be returned from Jav
 
 Note: This class only works on Android. On any other platform, this class does nothing.
 
-Note: This class is not to be confused with [JavaScriptObject].
+Note: This class is not to be confused with JavaScriptObject.
 
 [JavaClass]: https://pkg.go.dev/graphics.gd/classdb/JavaClass
 [JavaClassWrapper]: https://pkg.go.dev/graphics.gd/classdb/JavaClassWrapper
 [JavaObject]: https://pkg.go.dev/graphics.gd/classdb/JavaObject
-[JavaScriptObject]: https://pkg.go.dev/graphics.gd/classdb/JavaScriptObject
 */
 package JavaObject
 
@@ -98,7 +97,8 @@ type Instance [1]gdclass.JavaObject
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	get_java_class gdextension.MethodForClass `hash:"541536347"`
+	get_java_class  gdextension.MethodForClass `hash:"541536347"`
+	has_java_method gdextension.MethodForClass `hash:"2619796661"`
 }
 
 func init() {
@@ -128,6 +128,13 @@ Returns the [JavaClass] that this object is an instance of.
 */
 func (self Instance) GetJavaClass() JavaClass.Instance { //gd:JavaObject.get_java_class
 	return JavaClass.Instance(Advanced(self).GetJavaClass())
+}
+
+/*
+Returns true if the given 'method' name exists in the object's Java methods.
+*/
+func (self Instance) HasJavaMethod(method string) bool { //gd:JavaObject.has_java_method
+	return bool(Advanced(self).HasJavaMethod(String.Name(String.New(method))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -176,6 +183,11 @@ func New() Instance {
 func (self class) GetJavaClass() [1]gdclass.JavaClass { //gd:JavaObject.get_java_class
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_java_class, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.JavaClass{gdclass.NewJavaClass(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	return ret
+}
+func (self class) HasJavaMethod(method String.Name) bool { //gd:JavaObject.has_java_method
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_java_method, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ method gdextension.StringName }{pointers.Get(gd.InternalStringName(method))})
+	var ret = r_ret
 	return ret
 }
 func (self class) AsJavaObject() Advanced { return Advanced{gdclass.NewJavaObject(self.AsObject()[0])} }

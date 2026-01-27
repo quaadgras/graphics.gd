@@ -105,6 +105,8 @@ var methods struct {
 	is_selectable       gdextension.MethodForClass `hash:"2240911060"`
 	set_selected        gdextension.MethodForClass `hash:"2586408642"`
 	is_selected         gdextension.MethodForClass `hash:"2240911060"`
+	set_scaling_menus   gdextension.MethodForClass `hash:"2586408642"`
+	is_scaling_menus    gdextension.MethodForClass `hash:"36873697"`
 	set_position_offset gdextension.MethodForClass `hash:"743155724"`
 	get_position_offset gdextension.MethodForClass `hash:"3341600327"`
 }
@@ -243,6 +245,22 @@ func (self Instance) SetSelected(value bool) Instance { //gd:GraphElement.select
 	return self
 }
 
+/*
+If true, [PopupMenu]s that are descendants of the GraphElement are scaled with the [GraphEdit] zoom.
+
+[GraphEdit]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit
+[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
+*/
+func (self Instance) ScalingMenus() bool { //gd:GraphElement.scaling_menus
+	return bool(class(self).IsScalingMenus())
+}
+
+// SetScalingMenus sets the property returned by [IsScalingMenus]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScalingMenus(value bool) Instance { //gd:GraphElement.scaling_menus
+	class(self).SetScalingMenus(value)
+	return self
+}
+
 func (self class) SetResizable(resizable bool) { //gd:GraphElement.set_resizable
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_resizable, 0|(gdextension.SizeBool<<4), &struct{ resizable bool }{resizable})
 }
@@ -272,6 +290,14 @@ func (self class) SetSelected(selected bool) { //gd:GraphElement.set_selected
 }
 func (self class) IsSelected() bool { //gd:GraphElement.is_selected
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_selected, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetScalingMenus(scaling_menus bool) { //gd:GraphElement.set_scaling_menus
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scaling_menus, 0|(gdextension.SizeBool<<4), &struct{ scaling_menus bool }{scaling_menus})
+}
+func (self class) IsScalingMenus() bool { //gd:GraphElement.is_scaling_menus
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scaling_menus, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

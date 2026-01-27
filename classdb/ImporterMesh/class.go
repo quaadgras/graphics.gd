@@ -121,6 +121,7 @@ var methods struct {
 	set_surface_material           gdextension.MethodForClass `hash:"3671737478"`
 	generate_lods                  gdextension.MethodForClass `hash:"2491878677"`
 	get_mesh                       gdextension.MethodForClass `hash:"1457573577"`
+	from_mesh                      gdextension.MethodForClass `hash:"283226343"`
 	clear                          gdextension.MethodForClass `hash:"3218959716"`
 	set_lightmap_size_hint         gdextension.MethodForClass `hash:"1130785943"`
 	get_lightmap_size_hint         gdextension.MethodForClass `hash:"3690982128"`
@@ -409,6 +410,17 @@ func (self MoreArgs) GetMesh(base_mesh ArrayMesh.Instance) ArrayMesh.Instance { 
 }
 
 /*
+Converts the given [Mesh] into an [ImporterMesh] by copying all its surfaces, blend shapes, materials, and metadata into a new [ImporterMesh] object.
+
+[ImporterMesh]: https://pkg.go.dev/graphics.gd/classdb/ImporterMesh
+[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
+*/
+func FromMesh(mesh Mesh.Instance) Instance { //gd:ImporterMesh.from_mesh
+	self := Instance{}
+	return Instance(Advanced(self).FromMesh(mesh))
+}
+
+/*
 Removes all surfaces and blend shapes from this [ImporterMesh].
 
 [ImporterMesh]: https://pkg.go.dev/graphics.gd/classdb/ImporterMesh
@@ -590,6 +602,11 @@ func (self class) GenerateLods(normal_merge_angle float64, normal_split_angle fl
 func (self class) GetMesh(base_mesh [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh { //gd:ImporterMesh.get_mesh
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ base_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetArrayMesh(base_mesh[0])))})
 	var ret = [1]gdclass.ArrayMesh{gdclass.NewArrayMesh(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	return ret
+}
+func (self class) FromMesh(mesh [1]gdclass.Mesh) [1]gdclass.ImporterMesh { //gd:ImporterMesh.from_mesh
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_mesh, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMesh(mesh[0])))})
+	var ret = [1]gdclass.ImporterMesh{gdclass.NewImporterMesh(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 func (self class) Clear() { //gd:ImporterMesh.clear

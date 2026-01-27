@@ -175,7 +175,7 @@ var methods struct {
 	apply_ime                                         gdextension.MethodForClass `hash:"3218959716"`
 	set_horizontal_alignment                          gdextension.MethodForClass `hash:"2312603777"`
 	get_horizontal_alignment                          gdextension.MethodForClass `hash:"341400642"`
-	edit                                              gdextension.MethodForClass `hash:"3218959716"`
+	edit                                              gdextension.MethodForClass `hash:"107499316"`
 	unedit                                            gdextension.MethodForClass `hash:"3218959716"`
 	is_editing                                        gdextension.MethodForClass `hash:"36873697"`
 	set_keep_editing_on_text_submit                   gdextension.MethodForClass `hash:"2586408642"`
@@ -259,6 +259,10 @@ var methods struct {
 	is_drag_and_drop_selection_enabled                gdextension.MethodForClass `hash:"36873697"`
 	set_right_icon                                    gdextension.MethodForClass `hash:"4051416890"`
 	get_right_icon                                    gdextension.MethodForClass `hash:"255860311"`
+	set_icon_expand_mode                              gdextension.MethodForClass `hash:"3019903192"`
+	get_icon_expand_mode                              gdextension.MethodForClass `hash:"3273584435"`
+	set_right_icon_scale                              gdextension.MethodForClass `hash:"373806689"`
+	get_right_icon_scale                              gdextension.MethodForClass `hash:"1740695150"`
 	set_flat                                          gdextension.MethodForClass `hash:"2586408642"`
 	is_flat                                           gdextension.MethodForClass `hash:"36873697"`
 	set_select_all_on_focus                           gdextension.MethodForClass `hash:"2586408642"`
@@ -320,15 +324,29 @@ func (self Instance) ApplyIme() { //gd:LineEdit.apply_ime
 }
 
 /*
-Allows entering edit mode whether the [LineEdit] is focused or not.
+Allows entering edit mode whether the [LineEdit] is focused or not. If 'hide_focus' is true, the focused state will not be shown (see [Control.GrabFocus]).
 
 See also [KeepEditingOnTextSubmit].
 
+[Control.GrabFocus]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GrabFocus
 [KeepEditingOnTextSubmit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit#Instance.KeepEditingOnTextSubmit
 [LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
 */
 func (self Instance) Edit() { //gd:LineEdit.edit
-	Advanced(self).Edit()
+	Advanced(self).Edit(false)
+}
+
+/*
+Allows entering edit mode whether the [LineEdit] is focused or not. If 'hide_focus' is true, the focused state will not be shown (see [Control.GrabFocus]).
+
+See also [KeepEditingOnTextSubmit].
+
+[Control.GrabFocus]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GrabFocus
+[KeepEditingOnTextSubmit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit#Instance.KeepEditingOnTextSubmit
+[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
+*/
+func (self MoreArgs) Edit(hide_focus bool) { //gd:LineEdit.edit
+	Advanced(self).Edit(hide_focus)
 }
 
 /*
@@ -614,7 +632,7 @@ func (self Instance) SetPlaceholderText(value string) Instance { //gd:LineEdit.p
 }
 
 /*
-Text alignment as defined in the [HorizontalAlignment] enum.
+The text's horizontal alignment.
 */
 func (self Instance) Alignment() GUI.HorizontalAlignment { //gd:LineEdit.alignment
 	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
@@ -734,45 +752,6 @@ func (self Instance) SetBackspaceDeletesCompositeCharacterEnabled(value bool) In
 }
 
 /*
-If true, the native virtual keyboard is enabled on platforms that support it.
-*/
-func (self Instance) VirtualKeyboardEnabled() bool { //gd:LineEdit.virtual_keyboard_enabled
-	return bool(class(self).IsVirtualKeyboardEnabled())
-}
-
-// SetVirtualKeyboardEnabled sets the property returned by [IsVirtualKeyboardEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVirtualKeyboardEnabled(value bool) Instance { //gd:LineEdit.virtual_keyboard_enabled
-	class(self).SetVirtualKeyboardEnabled(value)
-	return self
-}
-
-/*
-If true, the native virtual keyboard is shown on focus events on platforms that support it.
-*/
-func (self Instance) VirtualKeyboardShowOnFocus() bool { //gd:LineEdit.virtual_keyboard_show_on_focus
-	return bool(class(self).GetVirtualKeyboardShowOnFocus())
-}
-
-// SetVirtualKeyboardShowOnFocus sets the property returned by [GetVirtualKeyboardShowOnFocus]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVirtualKeyboardShowOnFocus(value bool) Instance { //gd:LineEdit.virtual_keyboard_show_on_focus
-	class(self).SetVirtualKeyboardShowOnFocus(value)
-	return self
-}
-
-/*
-Specifies the type of virtual keyboard to show.
-*/
-func (self Instance) VirtualKeyboardType() VirtualKeyboardType { //gd:LineEdit.virtual_keyboard_type
-	return VirtualKeyboardType(class(self).GetVirtualKeyboardType())
-}
-
-// SetVirtualKeyboardType sets the property returned by [GetVirtualKeyboardType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVirtualKeyboardType(value VirtualKeyboardType) Instance { //gd:LineEdit.virtual_keyboard_type
-	class(self).SetVirtualKeyboardType(value)
-	return self
-}
-
-/*
 If true, the [LineEdit] will show a clear button if [Text] is not empty, which can be used to clear the text quickly.
 
 [LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
@@ -856,23 +835,6 @@ func (self Instance) SetDragAndDropSelectionEnabled(value bool) Instance { //gd:
 }
 
 /*
-Sets the icon that will appear in the right end of the [LineEdit] if there's no [Text], or always, if [ClearButtonEnabled] is set to false.
-
-[ClearButtonEnabled]: https://pkg.go.dev/graphics.gd/classdb/LineEdit#Instance.ClearButtonEnabled
-[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
-[Text]: https://pkg.go.dev/graphics.gd/classdb/LineEdit#Instance.Text
-*/
-func (self Instance) RightIcon() Texture2D.Instance { //gd:LineEdit.right_icon
-	return Texture2D.Instance(class(self).GetRightIcon())
-}
-
-// SetRightIcon sets the property returned by [GetRightIcon]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRightIcon(value Texture2D.Instance) Instance { //gd:LineEdit.right_icon
-	class(self).SetRightIcon(value)
-	return self
-}
-
-/*
 If true, the [LineEdit] doesn't display decoration.
 
 [LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
@@ -912,6 +874,45 @@ func (self Instance) SelectAllOnFocus() bool { //gd:LineEdit.select_all_on_focus
 // SetSelectAllOnFocus sets the property returned by [IsSelectAllOnFocus]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetSelectAllOnFocus(value bool) Instance { //gd:LineEdit.select_all_on_focus
 	class(self).SetSelectAllOnFocus(value)
+	return self
+}
+
+/*
+If true, the native virtual keyboard is enabled on platforms that support it.
+*/
+func (self Instance) VirtualKeyboardEnabled() bool { //gd:LineEdit.virtual_keyboard_enabled
+	return bool(class(self).IsVirtualKeyboardEnabled())
+}
+
+// SetVirtualKeyboardEnabled sets the property returned by [IsVirtualKeyboardEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVirtualKeyboardEnabled(value bool) Instance { //gd:LineEdit.virtual_keyboard_enabled
+	class(self).SetVirtualKeyboardEnabled(value)
+	return self
+}
+
+/*
+If true, the native virtual keyboard is shown on focus events on platforms that support it.
+*/
+func (self Instance) VirtualKeyboardShowOnFocus() bool { //gd:LineEdit.virtual_keyboard_show_on_focus
+	return bool(class(self).GetVirtualKeyboardShowOnFocus())
+}
+
+// SetVirtualKeyboardShowOnFocus sets the property returned by [GetVirtualKeyboardShowOnFocus]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVirtualKeyboardShowOnFocus(value bool) Instance { //gd:LineEdit.virtual_keyboard_show_on_focus
+	class(self).SetVirtualKeyboardShowOnFocus(value)
+	return self
+}
+
+/*
+Specifies the type of virtual keyboard to show.
+*/
+func (self Instance) VirtualKeyboardType() VirtualKeyboardType { //gd:LineEdit.virtual_keyboard_type
+	return VirtualKeyboardType(class(self).GetVirtualKeyboardType())
+}
+
+// SetVirtualKeyboardType sets the property returned by [GetVirtualKeyboardType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVirtualKeyboardType(value VirtualKeyboardType) Instance { //gd:LineEdit.virtual_keyboard_type
+	class(self).SetVirtualKeyboardType(value)
 	return self
 }
 
@@ -1028,7 +1029,7 @@ func (self Instance) SetTextDirection(value Control.TextDirection) Instance { //
 }
 
 /*
-Language code used for line-breaking and text shaping algorithms. If left empty, current locale is used instead.
+Language code used for line-breaking and text shaping algorithms. If left empty, the current locale is used instead.
 */
 func (self Instance) Language() string { //gd:LineEdit.language
 	return string(class(self).GetLanguage().String())
@@ -1066,6 +1067,53 @@ func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) Instance 
 	return self
 }
 
+/*
+Sets the icon that will appear in the right end of the [LineEdit] if there's no [Text], or always, if [ClearButtonEnabled] is set to false.
+
+[ClearButtonEnabled]: https://pkg.go.dev/graphics.gd/classdb/LineEdit#Instance.ClearButtonEnabled
+[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
+[Text]: https://pkg.go.dev/graphics.gd/classdb/LineEdit#Instance.Text
+*/
+func (self Instance) RightIcon() Texture2D.Instance { //gd:LineEdit.right_icon
+	return Texture2D.Instance(class(self).GetRightIcon())
+}
+
+// SetRightIcon sets the property returned by [GetRightIcon]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRightIcon(value Texture2D.Instance) Instance { //gd:LineEdit.right_icon
+	class(self).SetRightIcon(value)
+	return self
+}
+
+/*
+Define the scaling behavior of the [RightIcon].
+
+[RightIcon]: https://pkg.go.dev/graphics.gd/classdb/LineEdit#Instance.RightIcon
+*/
+func (self Instance) IconExpandMode() ExpandMode { //gd:LineEdit.icon_expand_mode
+	return ExpandMode(class(self).GetIconExpandMode())
+}
+
+// SetIconExpandMode sets the property returned by [GetIconExpandMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIconExpandMode(value ExpandMode) Instance { //gd:LineEdit.icon_expand_mode
+	class(self).SetIconExpandMode(value)
+	return self
+}
+
+/*
+Scale ratio of the icon when [IconExpandMode] is set to [ExpandModeFitToLineEdit].
+
+[IconExpandMode]: https://pkg.go.dev/graphics.gd/classdb/LineEdit#Instance.IconExpandMode
+*/
+func (self Instance) RightIconScale() Float.X { //gd:LineEdit.right_icon_scale
+	return Float.X(Float.X(class(self).GetRightIconScale()))
+}
+
+// SetRightIconScale sets the property returned by [GetRightIconScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRightIconScale(value Float.X) Instance { //gd:LineEdit.right_icon_scale
+	class(self).SetRightIconScale(float64(value))
+	return self
+}
+
 func (self class) HasImeText() bool { //gd:LineEdit.has_ime_text
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_ime_text, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
@@ -1085,8 +1133,8 @@ func (self class) GetHorizontalAlignment() GUI.HorizontalAlignment { //gd:LineEd
 	var ret = r_ret
 	return ret
 }
-func (self class) Edit() { //gd:LineEdit.edit
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit, 0, &struct{}{})
+func (self class) Edit(hide_focus bool) { //gd:LineEdit.edit
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit, 0|(gdextension.SizeBool<<4), &struct{ hide_focus bool }{hide_focus})
 }
 func (self class) Unedit() { //gd:LineEdit.unedit
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unedit, 0, &struct{}{})
@@ -1431,6 +1479,22 @@ func (self class) GetRightIcon() [1]gdclass.Texture2D { //gd:LineEdit.get_right_
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
+func (self class) SetIconExpandMode(mode ExpandMode) { //gd:LineEdit.set_icon_expand_mode
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon_expand_mode, 0|(gdextension.SizeInt<<4), &struct{ mode ExpandMode }{mode})
+}
+func (self class) GetIconExpandMode() ExpandMode { //gd:LineEdit.get_icon_expand_mode
+	var r_ret = noescape.Call[ExpandMode](gd.ObjectChecked(self.AsObject()), methods.get_icon_expand_mode, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetRightIconScale(scale float64) { //gd:LineEdit.set_right_icon_scale
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_right_icon_scale, 0|(gdextension.SizeFloat<<4), &struct{ scale float64 }{scale})
+}
+func (self class) GetRightIconScale() float64 { //gd:LineEdit.get_right_icon_scale
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_right_icon_scale, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
 func (self class) SetFlat(enabled bool) { //gd:LineEdit.set_flat
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flat, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
@@ -1656,4 +1720,15 @@ const (
 	KeyboardTypePassword VirtualKeyboardType = 6
 	// Virtual keyboard with additional keys to assist with typing URLs.
 	KeyboardTypeUrl VirtualKeyboardType = 7
+)
+
+type ExpandMode int //gd:LineEdit.ExpandMode
+
+const (
+	// Use the original size for the right icon.
+	ExpandModeOriginalSize ExpandMode = 0
+	// Scale the right icon's size to match the size of the text.
+	ExpandModeFitToText ExpandMode = 1
+	// Scale the right icon to fit the LineEdit.
+	ExpandModeFitToLineEdit ExpandMode = 2
 )

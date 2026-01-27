@@ -20,6 +20,7 @@ import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/StreamPeer"
+import "graphics.gd/classdb/StreamPeerSocket"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -91,15 +92,12 @@ type Instance [1]gdclass.StreamPeerTCP
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	bind                 gdextension.MethodForClass `hash:"3167955072"`
-	connect_to_host      gdextension.MethodForClass `hash:"993915709"`
-	poll                 gdextension.MethodForClass `hash:"166280745"`
-	get_status           gdextension.MethodForClass `hash:"859471121"`
-	get_connected_host   gdextension.MethodForClass `hash:"201670096"`
-	get_connected_port   gdextension.MethodForClass `hash:"3905245786"`
-	get_local_port       gdextension.MethodForClass `hash:"3905245786"`
-	disconnect_from_host gdextension.MethodForClass `hash:"3218959716"`
-	set_no_delay         gdextension.MethodForClass `hash:"2586408642"`
+	bind               gdextension.MethodForClass `hash:"3167955072"`
+	connect_to_host    gdextension.MethodForClass `hash:"993915709"`
+	get_connected_host gdextension.MethodForClass `hash:"201670096"`
+	get_connected_port gdextension.MethodForClass `hash:"3905245786"`
+	get_local_port     gdextension.MethodForClass `hash:"3905245786"`
+	set_no_delay       gdextension.MethodForClass `hash:"2586408642"`
 }
 
 func init() {
@@ -159,22 +157,6 @@ func (self Instance) ConnectToHost(host string, port int) error { //gd:StreamPee
 }
 
 /*
-Poll the socket, updating its state. See [GetStatus].
-
-[GetStatus]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTCP#Instance.GetStatus
-*/
-func (self Instance) Poll() error { //gd:StreamPeerTCP.poll
-	return error(gd.ToError(Advanced(self).Poll()))
-}
-
-/*
-Returns the status of the connection.
-*/
-func (self Instance) GetStatus() Status { //gd:StreamPeerTCP.get_status
-	return Status(Advanced(self).GetStatus())
-}
-
-/*
 Returns the IP of this peer.
 */
 func (self Instance) GetConnectedHost() string { //gd:StreamPeerTCP.get_connected_host
@@ -193,13 +175,6 @@ Returns the local port to which this peer is bound.
 */
 func (self Instance) GetLocalPort() int { //gd:StreamPeerTCP.get_local_port
 	return int(int(Advanced(self).GetLocalPort()))
-}
-
-/*
-Disconnects from host.
-*/
-func (self Instance) DisconnectFromHost() { //gd:StreamPeerTCP.disconnect_from_host
-	Advanced(self).DisconnectFromHost()
 }
 
 /*
@@ -275,16 +250,6 @@ func (self class) ConnectToHost(host String.Readable, port int64) Error.Code { /
 	var ret = Error.Code(r_ret)
 	return ret
 }
-func (self class) Poll() Error.Code { //gd:StreamPeerTCP.poll
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.poll, gdextension.SizeInt, &struct{}{})
-	var ret = Error.Code(r_ret)
-	return ret
-}
-func (self class) GetStatus() Status { //gd:StreamPeerTCP.get_status
-	var r_ret = noescape.Call[Status](gd.ObjectChecked(self.AsObject()), methods.get_status, gdextension.SizeInt, &struct{}{})
-	var ret = r_ret
-	return ret
-}
 func (self class) GetConnectedHost() String.Readable { //gd:StreamPeerTCP.get_connected_host
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_connected_host, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
@@ -300,9 +265,6 @@ func (self class) GetLocalPort() int64 { //gd:StreamPeerTCP.get_local_port
 	var ret = r_ret
 	return ret
 }
-func (self class) DisconnectFromHost() { //gd:StreamPeerTCP.disconnect_from_host
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.disconnect_from_host, 0, &struct{}{})
-}
 func (self class) SetNoDelay(enabled bool) { //gd:StreamPeerTCP.set_no_delay
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_no_delay, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
@@ -313,6 +275,15 @@ func (self Instance) AsStreamPeerTCP() Instance {
 	return Instance{gdclass.NewStreamPeerTCP(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsStreamPeerTCP() Instance { return self.Super().AsStreamPeerTCP() }
+func (self class) AsStreamPeerSocket() StreamPeerSocket.Advanced {
+	return StreamPeerSocket.Advanced{gdclass.NewStreamPeerSocket(self.AsObject()[0])}
+}
+func (self *Extension[T]) AsStreamPeerSocket() StreamPeerSocket.Instance {
+	return self.Super().AsStreamPeerSocket()
+}
+func (self Instance) AsStreamPeerSocket() StreamPeerSocket.Instance {
+	return StreamPeerSocket.Instance{gdclass.NewStreamPeerSocket(self.AsObject()[0])}
+}
 func (self class) AsStreamPeer() StreamPeer.Advanced {
 	return StreamPeer.Advanced{gdclass.NewStreamPeer(self.AsObject()[0])}
 }
@@ -331,37 +302,16 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(StreamPeer.Advanced(self.AsStreamPeer()), name)
+		return gd.VirtualByName(StreamPeerSocket.Advanced(self.AsStreamPeerSocket()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(StreamPeer.Instance(self.AsStreamPeer()), name)
+		return gd.VirtualByName(StreamPeerSocket.Instance(self.AsStreamPeerSocket()), name)
 	}
 }
 func init() {
 	gdclass.Register("StreamPeerTCP", func(ptr gd.Object) any { return Instance{gdclass.NewStreamPeerTCP(ptr)} })
 }
-
-type Status int //gd:StreamPeerTCP.Status
-
-const (
-	// The initial status of the [StreamPeerTCP]. This is also the status after disconnecting.
-	//
-	// [StreamPeerTCP]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTCP
-	StatusNone Status = 0
-	// A status representing a [StreamPeerTCP] that is connecting to a host.
-	//
-	// [StreamPeerTCP]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTCP
-	StatusConnecting Status = 1
-	// A status representing a [StreamPeerTCP] that is connected to a host.
-	//
-	// [StreamPeerTCP]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTCP
-	StatusConnected Status = 2
-	// A status representing a [StreamPeerTCP] in error state.
-	//
-	// [StreamPeerTCP]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTCP
-	StatusError Status = 3
-)

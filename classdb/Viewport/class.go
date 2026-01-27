@@ -195,6 +195,8 @@ var methods struct {
 	set_embedding_subwindows                    gdextension.MethodForClass `hash:"2586408642"`
 	is_embedding_subwindows                     gdextension.MethodForClass `hash:"36873697"`
 	get_embedded_subwindows                     gdextension.MethodForClass `hash:"3995934104"`
+	set_drag_threshold                          gdextension.MethodForClass `hash:"1286410249"`
+	get_drag_threshold                          gdextension.MethodForClass `hash:"3905245786"`
 	set_canvas_cull_mask                        gdextension.MethodForClass `hash:"1286410249"`
 	get_canvas_cull_mask                        gdextension.MethodForClass `hash:"3905245786"`
 	set_canvas_cull_mask_bit                    gdextension.MethodForClass `hash:"300928843"`
@@ -341,7 +343,7 @@ Note: When trying to store the current texture (e.g. in a file), it might be com
 		viewport.GetTexture().AsTexture2D().GetImage().SavePng("user://Screenshot.png")
 	})
 
-Note: When [UseHdr2d] is true the returned texture will be an HDR image encoded in linear space.
+Note: When [UseHdr2d] is true the returned texture will be an HDR image using linear encoding.
 
 [Node.Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Ready
 [OnRenderingserver.FramePostDraw]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.OnRenderingserver.FramePostDraw
@@ -604,14 +606,14 @@ func (self Instance) GuiGetDragData() any { //gd:Viewport.gui_get_drag_data
 }
 
 /*
-Returns the drag data human-readable description.
+Returns the human-readable description of the drag data, used for assistive apps.
 */
 func (self Instance) GuiGetDragDescription() string { //gd:Viewport.gui_get_drag_description
 	return string(Advanced(self).GuiGetDragDescription().String())
 }
 
 /*
-Sets the drag data human-readable description.
+Sets the human-readable description of the drag data to 'description', used for assistive apps.
 */
 func (self Instance) GuiSetDragDescription(description string) { //gd:Viewport.gui_set_drag_description
 	Advanced(self).GuiSetDragDescription(String.New(description))
@@ -664,7 +666,7 @@ func (self Instance) GuiGetHoveredControl() Control.Instance { //gd:Viewport.gui
 }
 
 /*
-Stops the input from propagating further down the [SceneTree].
+Stops the input from propagating further up the [SceneTree].
 
 Note: This does not affect the methods in [Input], only the way events are propagated.
 
@@ -724,6 +726,11 @@ func (self Instance) GetAudioListener2d() AudioListener2D.Instance { //gd:Viewpo
 
 /*
 Returns the currently active 2D camera. Returns null if there are no active cameras.
+
+Note: If called while the Camera Override system is active in editor, this will return the internally managed override camera. It is therefore advised to avoid caching the return value, or to check that the cached value is still a valid instance and is the current camera before use. See [@GlobalScope.IsInstanceValid] and [Camera2D.IsCurrent].
+
+[@GlobalScope.IsInstanceValid]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.IsInstanceValid
+[Camera2D.IsCurrent]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.IsCurrent
 */
 func (self Instance) GetCamera2d() Camera2D.Instance { //gd:Viewport.get_camera_2d
 	return Camera2D.Instance(Advanced(self).GetCamera2d())
@@ -747,7 +754,12 @@ func (self Instance) GetAudioListener3d() AudioListener3D.Instance { //gd:Viewpo
 }
 
 /*
-Returns the currently active 3D camera.
+Returns the currently active 3D camera. Returns null if there are no active cameras.
+
+Note: If called while the Camera Override system is active in editor, this will return the internally managed override camera. It is therefore advised to avoid caching the return value, or to check that the cached value is a valid instance and is the current camera before use. See [@GlobalScope.IsInstanceValid] and [Camera3D.Current].
+
+[@GlobalScope.IsInstanceValid]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.IsInstanceValid
+[Camera3D.Current]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Current
 */
 func (self Instance) GetCamera3d() Camera3D.Instance { //gd:Viewport.get_camera_3d
 	return Camera3D.Instance(Advanced(self).GetCamera3d())
@@ -1019,15 +1031,17 @@ func (self Instance) SetUseTaa(value bool) Instance { //gd:Viewport.use_taa
 }
 
 /*
-If true, uses a fast post-processing filter to make banding significantly less visible. If [UseHdr2d] is false, 2D rendering is not affected by debanding unless the [Environment.BackgroundMode] is [Environment.BgCanvas]. If [UseHdr2d] is true, debanding will only be applied if this is the root [Viewport] and will affect all 2D and 3D rendering, including canvas items.
+When using the Mobile or Forward+ renderers, set [UseDebanding] to enable or disable the debanding feature of this [Viewport]. If [UseHdr2d] is false, 2D rendering is not affected by debanding unless the [Environment.BackgroundMode] is [Environment.BgCanvas]. If [UseHdr2d] is true, debanding will only be applied if this is the root [Viewport] and will affect all 2D and 3D rendering, including canvas items.
 
-In some cases, debanding may introduce a slightly noticeable dithering pattern. It's recommended to enable debanding only when actually needed since the dithering pattern will make lossless-compressed screenshots larger.
+[UseDebanding] has no effect when using the Compatibility rendering method. The Mobile renderer can also use material debanding, which can be set with [RenderingServer.MaterialSetUseDebanding] or configured with [ProjectSettings] "rendering/anti_aliasing/quality/use_debanding".
 
-See also [ProjectSettings] "rendering/anti_aliasing/quality/use_debanding" and [RenderingServer.ViewportSetUseDebanding].
+See also [ProjectSettings] "rendering/anti_aliasing/quality/use_debanding", [RenderingServer.MaterialSetUseDebanding], and [RenderingServer.ViewportSetUseDebanding].
 
 [Environment.BackgroundMode]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.BackgroundMode
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[RenderingServer.MaterialSetUseDebanding]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#MaterialSetUseDebanding
 [RenderingServer.ViewportSetUseDebanding]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#ViewportSetUseDebanding
+[UseDebanding]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.UseDebanding
 [UseHdr2d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.UseHdr2d
 [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
@@ -1100,11 +1114,9 @@ func (self Instance) SetDebugDraw(value DebugDraw) Instance { //gd:Viewport.debu
 }
 
 /*
-If true, 2D rendering will use a high dynamic range (HDR) format framebuffer matching the bit depth of the 3D framebuffer. When using the Forward+ or Compatibility renderer, this will be an RGBA16 framebuffer. When using the Mobile renderer, it will be an RGB10_A2 framebuffer.
+If true, 2D rendering will use a high dynamic range (HDR) RGBA16 format framebuffer. Additionally, 2D rendering will be performed on linear values and will be converted using the appropriate transfer function immediately before blitting to the screen (if the Viewport is attached to the screen).
 
-Additionally, 2D rendering will take place in linear color space and will be converted to sRGB space immediately before blitting to the screen (if the Viewport is attached to the screen).
-
-Practically speaking, this means that the end result of the Viewport will not be clamped to the 0-1 range and can be used in 3D rendering without color space adjustments. This allows 2D rendering to take advantage of effects requiring high dynamic range (e.g. 2D glow) as well as substantially improves the appearance of effects requiring highly detailed gradients.
+Practically speaking, this means that the end result of the Viewport will not be clamped to the 0-1 range and can be used in 3D rendering without color encoding adjustments. This allows 2D rendering to take advantage of effects requiring high dynamic range (e.g. 2D glow) as well as substantially improves the appearance of effects requiring highly detailed gradients.
 */
 func (self Instance) UseHdr2d() bool { //gd:Viewport.use_hdr_2d
 	return bool(class(self).IsUsingHdr2d())
@@ -1263,7 +1275,7 @@ func (self Instance) SetVrsTexture(value Texture2D.Instance) Instance { //gd:Vie
 }
 
 /*
-Sets the default filter mode used by [CanvasItem]s in this Viewport.
+The default filter mode used by [CanvasItem] nodes in this viewport.
 
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
@@ -1278,7 +1290,7 @@ func (self Instance) SetCanvasItemDefaultTextureFilter(value DefaultCanvasItemTe
 }
 
 /*
-Sets the default repeat mode used by [CanvasItem]s in this Viewport.
+The default repeat mode used by [CanvasItem] nodes in this viewport.
 
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
@@ -1407,6 +1419,19 @@ func (self Instance) GuiEmbedSubwindows() bool { //gd:Viewport.gui_embed_subwind
 // SetGuiEmbedSubwindows sets the property returned by [IsEmbeddingSubwindows]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetGuiEmbedSubwindows(value bool) Instance { //gd:Viewport.gui_embed_subwindows
 	class(self).SetEmbeddingSubwindows(value)
+	return self
+}
+
+/*
+The minimum distance the mouse cursor must move while pressed before a drag operation begins.
+*/
+func (self Instance) GuiDragThreshold() int { //gd:Viewport.gui_drag_threshold
+	return int(int(class(self).GetDragThreshold()))
+}
+
+// SetGuiDragThreshold sets the property returned by [GetDragThreshold]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGuiDragThreshold(value int) Instance { //gd:Viewport.gui_drag_threshold
+	class(self).SetDragThreshold(int64(value))
 	return self
 }
 
@@ -1553,7 +1578,10 @@ func (self Instance) SetGlobalCanvasTransform(value Transform2D.OriginXY) Instan
 /*
 The rendering layers in which this [Viewport] renders [CanvasItem] nodes.
 
+Note: A [CanvasItem] does not inherit its parents' visibility layers. See [CanvasItem.VisibilityLayer]'s description for details.
+
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.VisibilityLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.VisibilityLayer
 [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
 func (self Instance) CanvasCullMask() int { //gd:Viewport.canvas_cull_mask
@@ -1949,6 +1977,14 @@ func (self class) IsEmbeddingSubwindows() bool { //gd:Viewport.is_embedding_subw
 func (self class) GetEmbeddedSubwindows() Array.Contains[[1]gdclass.Window] { //gd:Viewport.get_embedded_subwindows
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_embedded_subwindows, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Window]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
+	return ret
+}
+func (self class) SetDragThreshold(threshold int64) { //gd:Viewport.set_drag_threshold
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_threshold, 0|(gdextension.SizeInt<<4), &struct{ threshold int64 }{threshold})
+}
+func (self class) GetDragThreshold() int64 { //gd:Viewport.get_drag_threshold
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_drag_threshold, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
 	return ret
 }
 func (self class) SetCanvasCullMask(mask int64) { //gd:Viewport.set_canvas_cull_mask
@@ -2444,6 +2480,8 @@ const (
 	// [Environment.SdfgiEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiEnabled
 	DebugDrawSdfgi DebugDraw = 16
 	// Draws the probes used for signed distance field global illumination (SDFGI).
+	//
+	// When in the editor, left-clicking a probe will display additional bright dots that show its occlusion information. A white dot means the light is not occluded at all at the dot's position, while a red dot means the light is fully occluded. Intermediate values are possible.
 	//
 	// Does nothing if the current environment's [Environment.SdfgiEnabled] is false.
 	//

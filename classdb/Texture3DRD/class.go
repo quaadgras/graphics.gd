@@ -3,7 +3,11 @@
 /*
 This texture class allows you to use a 3D texture created directly on the [RenderingDevice] as a texture for materials, meshes, etc.
 
+Note: [Texture3DRD] is intended for low-level usage with [RenderingDevice]. For most use cases, use [Texture3D] instead.
+
 [RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
+[Texture3D]: https://pkg.go.dev/graphics.gd/classdb/Texture3D
+[Texture3DRD]: https://pkg.go.dev/graphics.gd/classdb/Texture3DRD
 */
 package Texture3DRD
 

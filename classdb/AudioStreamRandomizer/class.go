@@ -101,6 +101,8 @@ var methods struct {
 	get_streams_count             gdextension.MethodForClass `hash:"3905245786"`
 	set_random_pitch              gdextension.MethodForClass `hash:"373806689"`
 	get_random_pitch              gdextension.MethodForClass `hash:"1740695150"`
+	set_random_pitch_semitones    gdextension.MethodForClass `hash:"373806689"`
+	get_random_pitch_semitones    gdextension.MethodForClass `hash:"1740695150"`
 	set_random_volume_offset_db   gdextension.MethodForClass `hash:"373806689"`
 	get_random_volume_offset_db   gdextension.MethodForClass `hash:"1740695150"`
 	set_playback_mode             gdextension.MethodForClass `hash:"3950967023"`
@@ -253,7 +255,11 @@ func (self Instance) SetPlaybackMode(value PlaybackMode) Instance { //gd:AudioSt
 }
 
 /*
-The intensity of random pitch variation. A value of 1 means no variation.
+The largest possible frequency multiplier of the random pitch variation. Pitch will be randomly chosen within a range of 1.0 / random_pitch and random_pitch. A value of 1.0 means no variation. A value of 2.0 means pitch will be randomized between double and half.
+
+Note: Setting this property also sets [RandomPitchSemitones].
+
+[RandomPitchSemitones]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamRandomizer#Instance.RandomPitchSemitones
 */
 func (self Instance) RandomPitch() Float.X { //gd:AudioStreamRandomizer.random_pitch
 	return Float.X(Float.X(class(self).GetRandomPitch()))
@@ -266,7 +272,24 @@ func (self Instance) SetRandomPitch(value Float.X) Instance { //gd:AudioStreamRa
 }
 
 /*
-The intensity of random volume variation. A value of 0 means no variation.
+The largest possible distance, in semitones, of the random pitch variation. A value of 0.0 means no variation.
+
+Note: Setting this property also sets [RandomPitch].
+
+[RandomPitch]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamRandomizer#Instance.RandomPitch
+*/
+func (self Instance) RandomPitchSemitones() Float.X { //gd:AudioStreamRandomizer.random_pitch_semitones
+	return Float.X(Float.X(class(self).GetRandomPitchSemitones()))
+}
+
+// SetRandomPitchSemitones sets the property returned by [GetRandomPitchSemitones]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRandomPitchSemitones(value Float.X) Instance { //gd:AudioStreamRandomizer.random_pitch_semitones
+	class(self).SetRandomPitchSemitones(float64(value))
+	return self
+}
+
+/*
+The intensity of random volume variation. Volume will be increased or decreased by a random value up to random_volume_offset_db. A value of 0.0 means no variation. A value of 3.0 means volume will be randomized between -3.0 dB and +3.0 dB.
 */
 func (self Instance) RandomVolumeOffsetDb() Float.X { //gd:AudioStreamRandomizer.random_volume_offset_db
 	return Float.X(Float.X(class(self).GetRandomVolumeOffsetDb()))
@@ -342,6 +365,14 @@ func (self class) SetRandomPitch(scale float64) { //gd:AudioStreamRandomizer.set
 }
 func (self class) GetRandomPitch() float64 { //gd:AudioStreamRandomizer.get_random_pitch
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_random_pitch, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetRandomPitchSemitones(semitones float64) { //gd:AudioStreamRandomizer.set_random_pitch_semitones
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_random_pitch_semitones, 0|(gdextension.SizeFloat<<4), &struct{ semitones float64 }{semitones})
+}
+func (self class) GetRandomPitchSemitones() float64 { //gd:AudioStreamRandomizer.get_random_pitch_semitones
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_random_pitch_semitones, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

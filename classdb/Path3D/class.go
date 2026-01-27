@@ -181,9 +181,9 @@ func (self Instance) SetCurve(value Curve3D.Instance) Instance { //gd:Path3D.cur
 }
 
 /*
-The custom color to use to draw the shape in the editor.
+The custom color used to draw the path in the editor. If set to [Color.Black] (as by default), the color set in [ProjectSettings] "debug/shapes/paths/geometry_color" is used.
 
-If set to Color(0.0, 0.0, 0.0) (by default), the color set in EditorSettings is used.
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func (self Instance) DebugCustomColor() Color.RGBA { //gd:Path3D.debug_custom_color
 	return Color.RGBA(class(self).GetDebugCustomColor())

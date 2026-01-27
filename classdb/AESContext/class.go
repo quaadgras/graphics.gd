@@ -316,9 +316,9 @@ const (
 	ModeEcbEncrypt Mode = 0
 	// AES electronic codebook decryption mode.
 	ModeEcbDecrypt Mode = 1
-	// AES cipher blocker chaining encryption mode.
+	// AES cipher block chaining encryption mode.
 	ModeCbcEncrypt Mode = 2
-	// AES cipher blocker chaining decryption mode.
+	// AES cipher block chaining decryption mode.
 	ModeCbcDecrypt Mode = 3
 	// Maximum value for the mode enum.
 	ModeMax Mode = 4

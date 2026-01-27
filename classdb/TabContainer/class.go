@@ -139,6 +139,8 @@ var methods struct {
 	get_tab_idx_from_control         gdextension.MethodForClass `hash:"2787397975"`
 	set_popup                        gdextension.MethodForClass `hash:"1078189570"`
 	get_popup                        gdextension.MethodForClass `hash:"111095082"`
+	set_switch_on_drag_hover         gdextension.MethodForClass `hash:"2586408642"`
+	get_switch_on_drag_hover         gdextension.MethodForClass `hash:"36873697"`
 	set_drag_to_rearrange_enabled    gdextension.MethodForClass `hash:"2586408642"`
 	get_drag_to_rearrange_enabled    gdextension.MethodForClass `hash:"36873697"`
 	set_tabs_rearrange_group         gdextension.MethodForClass `hash:"1286410249"`
@@ -490,7 +492,7 @@ func (self Instance) SetCurrentTab(value int) Instance { //gd:TabContainer.curre
 }
 
 /*
-The position of the tab bar.
+The horizontal alignment of the tabs.
 */
 func (self Instance) TabsPosition() TabPosition { //gd:TabContainer.tabs_position
 	return TabPosition(class(self).GetTabsPosition())
@@ -538,6 +540,19 @@ func (self Instance) AllTabsInFront() bool { //gd:TabContainer.all_tabs_in_front
 // SetAllTabsInFront sets the property returned by [IsAllTabsInFront]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetAllTabsInFront(value bool) Instance { //gd:TabContainer.all_tabs_in_front
 	class(self).SetAllTabsInFront(value)
+	return self
+}
+
+/*
+If true, hovering over a tab while dragging something will switch to that tab. Does not have effect when hovering another tab to rearrange.
+*/
+func (self Instance) SwitchOnDragHover() bool { //gd:TabContainer.switch_on_drag_hover
+	return bool(class(self).GetSwitchOnDragHover())
+}
+
+// SetSwitchOnDragHover sets the property returned by [GetSwitchOnDragHover]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSwitchOnDragHover(value bool) Instance { //gd:TabContainer.switch_on_drag_hover
+	class(self).SetSwitchOnDragHover(value)
 	return self
 }
 
@@ -806,6 +821,14 @@ func (self class) SetPopup(popup [1]gdclass.Node) { //gd:TabContainer.set_popup
 func (self class) GetPopup() [1]gdclass.Popup { //gd:TabContainer.get_popup
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_popup, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Popup{gdclass.NewPopup(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	return ret
+}
+func (self class) SetSwitchOnDragHover(enabled bool) { //gd:TabContainer.set_switch_on_drag_hover
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_switch_on_drag_hover, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+}
+func (self class) GetSwitchOnDragHover() bool { //gd:TabContainer.get_switch_on_drag_hover
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_switch_on_drag_hover, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
 	return ret
 }
 func (self class) SetDragToRearrangeEnabled(enabled bool) { //gd:TabContainer.set_drag_to_rearrange_enabled
