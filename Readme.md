@@ -20,7 +20,7 @@ _Why use graphics.gd?_
 Not just a 1:1 wrapper for gdextension! `graphics.gd` has been designed from the ground up to
 provide a cohesive and curated experience for using [Go](https://go.dev/) on top of
 [Godot](https://godotengine.org/) +
-[GDExtension](https://docs.godotengine.org/en/4.4/tutorials/scripting/gdextension/what_is_gdextension.html).
+[GDExtension](https://docs.godotengine.org/en/stable/tutorials/scripting/gdextension/what_is_gdextension.html).
 
 ## Hello World
 
