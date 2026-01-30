@@ -166,6 +166,8 @@ func gd(args ...string) error {
 		return tooling.Godot.Exec(append([]string{"-e"}, editorArgs...)...)
 	default:
 		switch args[0] {
+		case "doc":
+			return doc(args[1:]...)
 		case "build":
 			if err := os.Chdir(project.Directory); err != nil {
 				return xray.New(err)
