@@ -44,24 +44,7 @@ type editorPlugin struct {
 func (*editorPlugin) Build() bool {
 	gd, err := exec.LookPath("gd")
 	if err != nil {
-		Engine.Raise(err)
-		GOPATH, err := exec.Command("go", "env", "GOPATH").CombinedOutput()
-		if err != nil {
-			Engine.Raise(err)
-			Engine.RaiseWarning("go and gd command not found, cannot build Go source")
-			return true
-		}
-		gd = filepath.Join(string(GOPATH), "bin", "gd")
-		if _, err := os.Stat(gd); os.IsNotExist(err) {
-			cmd := exec.Command("go", "install", "graphics.gd/cmd/gd@release")
-			cmd.Stdout = os.Stdout
-			cmd.Stderr = os.Stderr
-			if err := cmd.Run(); err != nil {
-				Engine.Raise(err)
-				Engine.RaiseWarning("failed to install the gd command, cannot build Go source")
-				return true
-			}
-		}
+		return true // no gd, passthrough to usual process.
 	}
 	cmd := exec.Command(gd)
 	environ := os.Environ()
