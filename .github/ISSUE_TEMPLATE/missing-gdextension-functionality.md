@@ -8,7 +8,9 @@ assignees: ''
 ---
 
 **Have you searched for the symbol that is missing?**
-All Engine symbols in graphics.gd are prefixed with `//gd:symbol_name` as described in the readme, make sure you have had a look for the symbol/function in question before reporting it missing.
+All Engine symbols in graphics.gd are prefixed with `//gd:symbol_name` as described in the readme, make sure you have 
+had a look for the symbol/function in question before reporting it missing. You can use `gd doc [gdscript_name]` to find
+them.
 
 **Missing Functionality Description**
 Describe what aspect of GDExtension is missing.
