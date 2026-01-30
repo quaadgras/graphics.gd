@@ -4,14 +4,14 @@ go 1.25.0
 
 require (
 	github.com/hajimehoshi/ebiten/v2 v2.8.6
-	graphics.gd v0.0.0-20250923075705-9b8b2467f208
+	graphics.gd v0.0.0-20260130205534-84c588b52be3
 )
 
 require (
 	github.com/tetratelabs/wazero v1.8.2 // indirect
-	golang.org/x/mod v0.24.0 // indirect
-	golang.org/x/sync v0.14.0 // indirect
-	golang.org/x/text v0.20.0 // indirect
-	golang.org/x/tools v0.33.0 // indirect
+	golang.org/x/mod v0.30.0 // indirect
+	golang.org/x/sync v0.19.0 // indirect
+	golang.org/x/text v0.32.0 // indirect
+	golang.org/x/tools v0.39.0 // indirect
 	runtime.link v0.0.0-20250814043127-466c6970c4a5 // indirect
 )

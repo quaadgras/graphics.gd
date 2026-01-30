@@ -8,12 +8,16 @@ github.com/tetratelabs/wazero v1.8.2 h1:yIgLR/b2bN31bjxwXHD8a3d+BogigR952csSDdLY
 github.com/tetratelabs/wazero v1.8.2/go.mod h1:yAI0XTsMBhREkM/YDAK/zNou3GoiAce1P6+rp/wQhjs=
 golang.org/x/mod v0.24.0 h1:ZfthKaKaT4NrhGVZHO1/WDTwGES4De8KtWO0SIbNJMU=
 golang.org/x/mod v0.24.0/go.mod h1:IXM97Txy2VM4PJ3gI61r1YEk/gAj6zAHN3AdZt6S9Ww=
+golang.org/x/mod v0.30.0/go.mod h1:lAsf5O2EvJeSFMiBxXDki7sCgAxEUcZHXoXMKT4GJKc=
 golang.org/x/sync v0.14.0 h1:woo0S4Yywslg6hp4eUFjTVOyKt0RookbpAHG4c1HmhQ=
 golang.org/x/sync v0.14.0/go.mod h1:1dzgHSNfp02xaA81J2MS99Qcpr2w7fw1gpm99rleRqA=
+golang.org/x/sync v0.19.0/go.mod h1:9KTHXmSnoGruLpwFjVSX0lNNA75CykiMECbovNTZqGI=
 golang.org/x/text v0.20.0 h1:gK/Kv2otX8gz+wn7Rmb3vT96ZwuoxnQlY+HlJVj7Qug=
 golang.org/x/text v0.20.0/go.mod h1:D4IsuqiFMhST5bX19pQ9ikHC2GsaKyk/oF+pn3ducp4=
+golang.org/x/text v0.32.0/go.mod h1:o/rUWzghvpD5TXrTIBuJU77MTaN0ljMWE47kxGJQ7jY=
 golang.org/x/tools v0.33.0 h1:4qz2S3zmRxbGIhDIAgjxvFutSvH5EfnsYrRBj0UI0bc=
 golang.org/x/tools v0.33.0/go.mod h1:CIJMaWEY88juyUfo7UbgPqbC8rU2OqfAV1h2Qp0oMYI=
+golang.org/x/tools v0.39.0/go.mod h1:JnefbkDPyD8UU2kI5fuf8ZX4/yUeh9W877ZeBONxUqQ=
 graphics.gd v0.0.0-20250906140245-de799668831d h1:PzNFBhT77LhaVbg4cy1ihaFezsspPQ5e/n3DbESgu14=
 graphics.gd v0.0.0-20250906140245-de799668831d/go.mod h1:38FJ2OVFsi1UfqbLrFiFq4br5MDMeSpeRUTsuuKD5Uo=
 graphics.gd v0.0.0-20250908061402-156fa99d7e8f h1:HqzkQzsVdrM3jRXL/F0LHe20+zMyFSLo0hfzL48lcAY=
@@ -22,5 +26,7 @@ graphics.gd v0.0.0-20250918084819-07f62693fe03 h1:RfQ7/EV0QqVl3wmnVstRQRKUauNzR/
 graphics.gd v0.0.0-20250918084819-07f62693fe03/go.mod h1:Nluf2LGGLPNe29SN+K0P+AEMOBs7aqkaseU5GLhTohU=
 graphics.gd v0.0.0-20250923075705-9b8b2467f208 h1:Pba0oSo4iBH1wyzFuYq52ER4mxXCvv5c5ZPiSVokoec=
 graphics.gd v0.0.0-20250923075705-9b8b2467f208/go.mod h1:Nluf2LGGLPNe29SN+K0P+AEMOBs7aqkaseU5GLhTohU=
+graphics.gd v0.0.0-20260130205534-84c588b52be3 h1:w1qia76qZkToQWffkFo/QpH4wJFh6z8fxHzfUU0Z8XE=
+graphics.gd v0.0.0-20260130205534-84c588b52be3/go.mod h1:UmqOdm6wFB9UlHnWKBHP8Aexai+2T6wThrT1V04jDZM=
 runtime.link v0.0.0-20250814043127-466c6970c4a5 h1:e1oLgkoXIW0pOIc+9OMnQO6Q0uyTGOQ1favaVg2S2lI=
 runtime.link v0.0.0-20250814043127-466c6970c4a5/go.mod h1:13rTs4Rs4/Z512Vh1Rkak+nJUERb9f4MpCZQyUrcTwM=
