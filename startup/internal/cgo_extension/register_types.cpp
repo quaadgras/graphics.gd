@@ -30,7 +30,6 @@
 
 #include "register_types.h"
 #include "core/object/class_db.h"
-#include "core/extension/gdextension_interface.h"
 #include "core/extension/gdextension_loader.h"
 #include "core/extension/gdextension_manager.h"
 
