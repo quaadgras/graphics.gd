@@ -35,6 +35,7 @@ func init() {
 	}
 	gdextension.On.Engine = gdextension.CallbacksForEngine{
 		Init: func(level gdextension.InitializationLevel) {
+			running_as_gdextension = true
 			internal.Init(level)
 			if level == 2 && !initDone {
 				for _, fn := range internal.StartupFunctions {
