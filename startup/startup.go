@@ -43,6 +43,10 @@ var theMainFunctionIsWaitingForTheEngineToShutDown = false
 
 // Scene starts up the SceneTree and blocks until the engine shuts down.
 func Scene() {
+	if !running_as_gdextension {
+		loadEngineAsSharedLibrary()
+		return
+	}
 	if weNeedToStartupTheEngine {
 		startupTheEngine()
 		return
@@ -203,6 +207,7 @@ var (
 
 	weNeedToStartupTheEngine bool
 	startupTheEngine         func()
+	running_as_gdextension   bool
 )
 
 // AsExtension requests graphics.gd to startup the library as a GDExtension suitable for

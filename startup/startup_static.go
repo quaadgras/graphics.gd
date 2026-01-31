@@ -22,6 +22,7 @@ import (
 
 // libgodot MVP
 func init() {
+	running_as_gdextension = true
 	weNeedToStartupTheEngine = true
 	startupTheEngine = func() {
 		var cargs []*C.char

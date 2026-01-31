@@ -9,7 +9,10 @@ import (
 	"graphics.gd/internal/pointers"
 )
 
+func loadEngineAsSharedLibrary() {}
+
 func init() {
+	running_as_gdextension = true
 	gdextension.On.Engine = gdextension.CallbacksForEngine{
 		Init: func(level gdextension.InitializationLevel) {
 			gd.Init(level)
