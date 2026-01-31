@@ -3,7 +3,7 @@
 package startup
 
 /*
-#cgo LDFLAGS: -Wl,-rpath=$ORIGIN
+#cgo linux LDFLAGS: -Wl,-rpath=$ORIGIN
 #include <gdextension_interface.h>
 #include <dlfcn.h>
 GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc_address, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization);
