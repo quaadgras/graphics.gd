@@ -51,7 +51,7 @@ func loadEngineAsSharedLibrary() {
 	for _, arg := range os.Args {
 		cargs = append(cargs, C.CString(arg))
 	}
-	ptr := C.call_libgodot_create_godot_instance(libgodot_create_godot_instance, C.int(len(os.Args)), &cargs[0], (C.GDExtensionInitializationFunction)(C.cgo_extension_init))
+	ptr := C.call_libgodot_create_godot_instance(unsafe.Pointer(libgodot_create_godot_instance), C.int(len(os.Args)), &cargs[0], (C.GDExtensionInitializationFunction)(C.cgo_extension_init))
 	if ptr == nil {
 		return
 	}
