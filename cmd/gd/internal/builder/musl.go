@@ -246,7 +246,7 @@ func (musl Musl) Test(args ...string) error {
 	if err != nil {
 		return xray.New(err)
 	}
-	if err := tooling.Zig.Exec("cc", "-target", target, libgodot, libgo, "-o", filepath.Join(project.GraphicsDirectory, "musl_"+GOARCH+".editor")); err != nil {
+	if err := tooling.Zig.Exec("c++", "-target", target, libgo, libgodot, "-o", filepath.Join(project.GraphicsDirectory, "musl_"+GOARCH+".editor")); err != nil {
 		return xray.New(err)
 	}
 	tooling.Godot.Path = filepath.Join(project.GraphicsDirectory, "musl_"+GOARCH+".editor")
