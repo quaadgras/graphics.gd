@@ -44,10 +44,12 @@ var theMainFunctionIsWaitingForTheEngineToShutDown = false
 // Scene starts up the SceneTree and blocks until the engine shuts down.
 func Scene() {
 	if !running_as_gdextension {
+		classdb.Register[goSceneTree]()
 		loadEngineAsSharedLibrary()
 		return
 	}
 	if weNeedToStartupTheEngine {
+		classdb.Register[goSceneTree]()
 		startupTheEngine()
 		return
 	}
@@ -104,6 +106,9 @@ var main_loop_initialized = make(chan struct{})
 // Called once during initialization.
 func (loop goMainLoop) Initialize() {
 	Callable.Cycle()
+	if weNeedToStartupTheEngine {
+		return
+	}
 	if mainloop != nil {
 		mainloop.Initialize()
 	} else if pause_main != nil {
@@ -114,6 +119,9 @@ func (loop goMainLoop) Initialize() {
 // Called each physics frame with the time since the last physics frame as argument ([param delta], in seconds). Equivalent to [method Node._physics_process].
 // If implemented, the method must return a boolean value. [code]true[/code] ends the main loop, while [code]false[/code] lets it proceed to the next frame.
 func (loop goMainLoop) PhysicsProcess(delta Float.X) bool {
+	if weNeedToStartupTheEngine {
+		return false
+	}
 	if mainloop != nil {
 		return mainloop.PhysicsProcess(delta)
 	}
@@ -133,6 +141,9 @@ func (loop goMainLoop) Process(delta Float.X) bool {
 	if mainloop != nil {
 		return mainloop.Process(delta)
 	}
+	if weNeedToStartupTheEngine {
+		return false
+	}
 	dt = delta
 	if pause_main != nil {
 		close, _ := resume_main()
@@ -146,6 +157,9 @@ var main_loop_shutdown = make(chan struct{})
 
 // Called before the program exits.
 func (loop goMainLoop) Finalize() {
+	if weNeedToStartupTheEngine {
+		return
+	}
 	if mainloop != nil {
 		mainloop.Finalize()
 	} else if pause_main != nil {
