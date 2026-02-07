@@ -93,8 +93,14 @@ func gd(args ...string) error {
 	if runtime.GOOS == "linux" {
 		version, err := tooling.ListDynamicDependencies.CombinedOutput("--version")
 		if strings.HasPrefix(version, "musl") {
-			build_godot = func() error {
-				return builder.Musl{}.Build("-gcflags=graphics.gd/classdb/...=-N -l")
+			if len(args) > 0 && args[0] == "test" {
+				build_godot = func() error {
+					return builder.Musl{}.Test("-gcflags=graphics.gd/classdb/...=-N -l")
+				}
+			} else {
+				build_godot = func() error {
+					return builder.Musl{}.Build("-gcflags=graphics.gd/classdb/...=-N -l")
+				}
 			}
 			if os.Getenv("GOOS") == "" {
 				GOOS = "musl"
