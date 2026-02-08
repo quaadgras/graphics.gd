@@ -44,6 +44,7 @@ func (m *MyProject) Draw() {
 }
 
 func main() {
+	classdb.Register[MyProject]()
 	startup.LoadingScene()
 	SceneTree.Add(new(MyProject))
 	startup.Scene()
