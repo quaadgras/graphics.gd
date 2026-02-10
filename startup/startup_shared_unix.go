@@ -1,4 +1,4 @@
-//go:build cgo && unix
+//go:build unix && cgo
 
 package startup
 
@@ -10,10 +10,16 @@ GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc
 
 
 typedef GDExtensionObjectPtr (*libgodot_create_godot_instance_func_t)(int p_argc, char *p_argv[], GDExtensionInitializationFunction p_init_func);
+typedef void (*libgodot_destroy_godot_instance_func_t)(GDExtensionObjectPtr p_godot_instance);
 
 GDExtensionObjectPtr call_libgodot_create_godot_instance(void *p_func, int p_argc, char *p_argv[], GDExtensionInitializationFunction p_init_func) {
 	libgodot_create_godot_instance_func_t func = (libgodot_create_godot_instance_func_t)p_func;
 	return func(p_argc, p_argv, p_init_func);
+}
+
+void call_libgodot_destroy_godot_instance(void *p_func, GDExtensionObjectPtr p_godot_instance) {
+	libgodot_destroy_godot_instance_func_t func = (libgodot_destroy_godot_instance_func_t)p_func;
+	func(p_godot_instance);
 }
 */
 import "C"
@@ -29,14 +35,11 @@ import (
 	"graphics.gd/internal/pointers"
 )
 
-func loadEngineAsSharedLibrary() {
-	weNeedToStartupTheEngine = true
+func (engine *engineAsSharedLibrary) Start() {
 	var ext string
 	switch runtime.GOOS {
 	case "linux":
 		ext = ".so"
-	case "windows":
-		ext = ".dll"
 	case "darwin":
 		ext = ".dylib"
 	}
@@ -48,6 +51,8 @@ func loadEngineAsSharedLibrary() {
 		os.Exit(1)
 	}
 	var libgodot_create_godot_instance = C.dlsym(libgodot, (*C.char)(unsafe.Pointer(&init[0])))
+	destroyName := []byte("libgodot_destroy_godot_instance\000")
+	var libgodot_destroy_godot_instance = C.dlsym(libgodot, (*C.char)(unsafe.Pointer(&destroyName[0])))
 	var cargs []*C.char
 	for _, arg := range os.Args {
 		cargs = append(cargs, C.CString(arg))
@@ -56,9 +61,9 @@ func loadEngineAsSharedLibrary() {
 	if ptr == nil {
 		return
 	}
-	engine := Startup.Instance([1]gdclass.Startup{gdclass.NewStartup(pointers.Raw[gd.Object]([3]uint64{uint64(uintptr(ptr))}))})
-	engine.Start()
-	for !engine.Iteration() {
+	engine.Library = Startup.Instance([1]gdclass.Startup{gdclass.NewStartup(pointers.Raw[gd.Object]([3]uint64{uint64(uintptr(ptr))}))})
+	engine.destroy = func() {
+		C.call_libgodot_destroy_godot_instance(libgodot_destroy_godot_instance, ptr)
 	}
-	os.Exit(0)
+	engine.Library.Start()
 }

@@ -1,4 +1,4 @@
-//go:build cgo && windows
+//go:build windows && cgo
 
 package startup
 
@@ -9,17 +9,22 @@ package startup
 GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc_address, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization);
 
 typedef GDExtensionObjectPtr (*libgodot_create_godot_instance_func_t)(int p_argc, char *p_argv[], GDExtensionInitializationFunction p_init_func);
+typedef void (*libgodot_destroy_godot_instance_func_t)(GDExtensionObjectPtr p_godot_instance);
 
 GDExtensionObjectPtr call_libgodot_create_godot_instance(void *p_func, int p_argc, char *p_argv[], GDExtensionInitializationFunction p_init_func) {
 	libgodot_create_godot_instance_func_t func = (libgodot_create_godot_instance_func_t)p_func;
 	return func(p_argc, p_argv, p_init_func);
+}
+
+void call_libgodot_destroy_godot_instance(void *p_func, GDExtensionObjectPtr p_godot_instance) {
+	libgodot_destroy_godot_instance_func_t func = (libgodot_destroy_godot_instance_func_t)p_func;
+	func(p_godot_instance);
 }
 */
 import "C"
 import (
 	"fmt"
 	"os"
-	"runtime"
 	"unsafe"
 
 	"graphics.gd/classdb/Startup"
@@ -28,25 +33,17 @@ import (
 	"graphics.gd/internal/pointers"
 )
 
-func loadEngineAsSharedLibrary() {
-	weNeedToStartupTheEngine = true
-	var ext string
-	switch runtime.GOOS {
-	case "linux":
-		ext = ".so"
-	case "windows":
-		ext = ".dll"
-	case "darwin":
-		ext = ".dylib"
-	}
-	path := []byte("libgodot" + ext + "\000")
+func (engine *engineAsSharedLibrary) Start() {
+	path := []byte("libgodot.dll\000")
 	init := []byte("libgodot_create_godot_instance\000")
 	var libgodot = C.LoadLibraryA((*C.char)(unsafe.Pointer(&path[0])))
 	if libgodot == nil {
-		fmt.Fprintln(os.Stderr, "failed to load libgodot"+ext)
+		fmt.Fprintln(os.Stderr, "failed to load libgodot.dll")
 		os.Exit(1)
 	}
 	var libgodot_create_godot_instance = C.GetProcAddress(libgodot, (*C.char)(unsafe.Pointer(&init[0])))
+	destroyName := []byte("libgodot_destroy_godot_instance\000")
+	var libgodot_destroy_godot_instance = C.GetProcAddress(libgodot, (*C.char)(unsafe.Pointer(&destroyName[0])))
 	var cargs []*C.char
 	for _, arg := range os.Args {
 		cargs = append(cargs, C.CString(arg))
@@ -55,9 +52,9 @@ func loadEngineAsSharedLibrary() {
 	if ptr == nil {
 		return
 	}
-	engine := Startup.Instance([1]gdclass.Startup{gdclass.NewStartup(pointers.Raw[gd.Object]([3]uint64{uint64(uintptr(ptr))}))})
-	engine.Start()
-	for !engine.Iteration() {
+	engine.Library = Startup.Instance([1]gdclass.Startup{gdclass.NewStartup(pointers.Raw[gd.Object]([3]uint64{uint64(uintptr(ptr))}))})
+	engine.destroy = func() {
+		C.call_libgodot_destroy_godot_instance(unsafe.Pointer(libgodot_destroy_godot_instance), ptr)
 	}
-	os.Exit(0)
+	engine.Library.Start()
 }
