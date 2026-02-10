@@ -168,7 +168,7 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 	}
 	var isExtensionClass bool
 	var converted reflect.Value
-	if value.Type() == gdextension.TypeObject {
+	if value.Type() == gdextension.TypeObject && field.Kind() != reflect.Uint64 { // support setting Object.ID fields with Object
 		obj := gd.VariantAsObject(value)
 		ext := gd.ExtensionInstanceLookup(gdextension.Object(pointers.Get(obj)[0]))
 		if ext != nil {
