@@ -191,6 +191,12 @@ func (musl Musl) Run(args ...string) error {
 }
 
 func (musl Musl) Test(args ...string) error {
+	if built_musl {
+		return nil
+	}
+	defer func() {
+		built_musl = true
+	}()
 	os.Remove(filepath.Join(project.GraphicsDirectory, "library.gdextension"))
 	os.Setenv("GOOS", "linux")
 	var GOARCH = runtime.GOARCH

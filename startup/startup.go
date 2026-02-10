@@ -3,11 +3,13 @@ package startup
 
 import (
 	"iter"
+	"time"
 
 	"graphics.gd/classdb"
 	EngineClass "graphics.gd/classdb/Engine"
 	MainLoopClass "graphics.gd/classdb/MainLoop"
 	"graphics.gd/classdb/SceneTree"
+	"graphics.gd/classdb/Startup"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Dictionary"
@@ -15,57 +17,23 @@ import (
 )
 
 var mainloop MainLoopClass.Interface
-
-var intialized = make(chan struct{})
-var shutdown = make(chan struct{})
+var loadingSceneWasCalled bool
 
 // MainLoop uses the given struct as the main loop implementation. This will take care of initialising
 // the Go runtime correctly, blocks until the main loop has shutdown.
 func MainLoop(loop MainLoopClass.Interface) {
-	if pause_main != nil {
-		if EngineClass.IsEditorHint() {
-			stop_main()
-		}
-		theMainFunctionIsWaitingForTheEngineToShutDown = true
-	} else {
-		<-intialized
-	}
 	classdb.Register[goMainLoop]()
 	mainloop = loop
-	if pause_main != nil {
-		pause_main(false) // We pause here until the engine has fully started up.
-	} else {
-		<-shutdown
-	}
+	Scene()
 }
-
-var theMainFunctionIsWaitingForTheEngineToShutDown = false
 
 // Scene starts up the SceneTree and blocks until the engine shuts down.
 func Scene() {
-	if !running_as_gdextension {
-		classdb.Register[goSceneTree]()
-		loadEngineAsSharedLibrary()
-		return
-	}
-	if weNeedToStartupTheEngine {
-		classdb.Register[goSceneTree]()
-		startupTheEngine()
-		return
-	}
 	if !loadingSceneWasCalled {
 		LoadingScene()
 	}
-	if pause_main != nil {
-		theMainFunctionIsWaitingForTheEngineToShutDown = true
-		pause_main(false)
-	} else {
-		<-shutdown
-	}
+	startup.Scene()
 }
-
-var loaded = make(chan struct{})
-var loadingSceneWasCalled bool
 
 // LoadingScene starts up loading the main scene after this function is called, all
 // graphics.gd functionality will be available to use.
@@ -76,20 +44,13 @@ var loadingSceneWasCalled bool
 // editor-accessible classes before calling this function if you want them to be
 // available in the editor.
 func LoadingScene() {
+	if startup == nil {
+		startup = new(engineAsSharedLibrary)
+	}
 	loadingSceneWasCalled = true
 	classdb.Register[goSceneTree]()
-	if pause_main != nil {
-		pause_main(false)
-		if EngineClass.IsEditorHint() {
-			stop_main()
-		}
-	} else {
-		<-intialized
-		<-loaded
-	}
+	startup.Start()
 }
-
-var hasLoaded bool
 
 // There are two main loop implementations, we decide on which one to use based on
 // what startup functions are called in the main function.
@@ -101,31 +62,16 @@ type goSceneTree struct {
 	SceneTree.Extension[goSceneTree] `gd:"GoMainLoop"`
 }
 
-var main_loop_initialized = make(chan struct{})
-
 // Called once during initialization.
 func (loop goMainLoop) Initialize() {
 	Callable.Cycle()
-	if weNeedToStartupTheEngine {
-		return
-	}
-	if mainloop != nil {
-		mainloop.Initialize()
-	} else if pause_main != nil {
-		resume_main()
-	}
+	mainloop.Initialize()
 }
 
 // Called each physics frame with the time since the last physics frame as argument ([param delta], in seconds). Equivalent to [method Node._physics_process].
 // If implemented, the method must return a boolean value. [code]true[/code] ends the main loop, while [code]false[/code] lets it proceed to the next frame.
 func (loop goMainLoop) PhysicsProcess(delta Float.X) bool {
-	if weNeedToStartupTheEngine {
-		return false
-	}
-	if mainloop != nil {
-		return mainloop.PhysicsProcess(delta)
-	}
-	return false
+	return mainloop.PhysicsProcess(delta)
 }
 
 var dt Float.X
@@ -138,35 +84,12 @@ func (loop goMainLoop) Process(delta Float.X) bool {
 	defer Callable.Cycle()
 	defer keep_reachable_instances_alive()
 	defer pointers.Cycle()
-	if mainloop != nil {
-		return mainloop.Process(delta)
-	}
-	if weNeedToStartupTheEngine {
-		return false
-	}
-	dt = delta
-	if pause_main != nil {
-		close, _ := resume_main()
-		return close
-	}
-	frame_ready <- false
-	return <-frame_ready
+	return mainloop.Process(delta)
 }
-
-var main_loop_shutdown = make(chan struct{})
 
 // Called before the program exits.
 func (loop goMainLoop) Finalize() {
-	if weNeedToStartupTheEngine {
-		return
-	}
-	if mainloop != nil {
-		mainloop.Finalize()
-	} else if pause_main != nil {
-		resume_main()
-	} else {
-		close(main_loop_shutdown)
-	}
+	mainloop.Finalize()
 }
 
 // Rendering waits for the engine to startup and returns a frame iterator for the primary viewport that is
@@ -181,48 +104,8 @@ func (loop goMainLoop) Finalize() {
 //			// finalize
 //		}
 func Rendering() iter.Seq[Float.X] {
-	classdb.Register[goMainLoop]()
-	if pause_main != nil {
-		if EngineClass.IsEditorHint() {
-			stop_main()
-		}
-		pause_main(false) // We pause here until the engine has fully started up.
-		return func(yield func(Float.X) bool) {
-			pause_main(false) // we pause here until the MainLoop initialize function is called.
-			for {
-				pause_main(false) // we pause here until the next frame is ready (next Process callback).
-				if !yield(dt) {
-					break
-				}
-			}
-			pause_main(true) // we pause here until the engine has fully shut down.
-		}
-	} else {
-		<-frame_ready
-		return func(yield func(Float.X) bool) {
-			frame_ready <- false
-			for {
-				<-frame_ready // we pause here until the next frame is ready (next Process callback).
-				if !yield(dt) {
-					frame_ready <- true
-					break
-				}
-				frame_ready <- false
-			}
-			<-main_loop_shutdown
-		}
-	}
+	return startup.Rendering()
 }
-
-var (
-	pause_main  func(bool) bool
-	resume_main func() (bool, bool)
-	stop_main   func()
-
-	weNeedToStartupTheEngine bool
-	startupTheEngine         func()
-	running_as_gdextension   bool
-)
 
 // AsExtension requests graphics.gd to startup the library as a GDExtension suitable for
 // inclusion in Godot engine projects. Please note that only a single Go runtime can be
@@ -246,4 +129,50 @@ func OnSuspend(func(Dictionary.Any)) {
 // version) Individual classes can also implement their own Restore(Dictionary.Any) method.
 func OnRestore(func(Dictionary.Any)) {
 
+}
+
+var startup interface {
+	Start()
+	Scene()
+	Rendering() iter.Seq[Float.X]
+}
+
+type engineAsLibrary struct {
+	Library Startup.Instance
+	destroy func()
+}
+
+type engineAsSharedLibrary struct {
+	engineAsLibrary
+}
+
+func (engine *engineAsLibrary) Start() {}
+
+func (engine *engineAsLibrary) Scene() {
+	for !engine.Library.Iteration() {
+	}
+	if engine.destroy != nil {
+		engine.destroy()
+	}
+}
+
+func (engine *engineAsLibrary) Rendering() iter.Seq[Float.X] {
+	classdb.Register[goSceneTree]()
+
+	startup.Start()
+	if EngineClass.IsEditorHint() {
+		startup.Scene()
+		return func(yield func(dt Float.X) bool) {}
+	}
+	return func(yield func(dt Float.X) bool) {
+		var dt = time.Now()
+		for !engine.Library.Iteration() {
+			if !yield(Float.X(time.Since(dt).Seconds())) {
+				break
+			}
+		}
+		if engine.destroy != nil {
+			engine.destroy()
+		}
+	}
 }
