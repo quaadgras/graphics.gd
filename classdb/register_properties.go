@@ -57,26 +57,29 @@ func propertyOf(class gd.StringName, field reflect.StructField, push_into gdexte
 			if !ok {
 				return false
 			}
-			if vtype == gdextension.TypeArray && (field.Type.Kind() == reflect.Array || field.Type.Kind() == reflect.Slice) {
-				elem := field.Type.Elem()
-				etype, ok := gd.VariantTypeOf(elem)
-				if !ok {
-					return false
-				}
-				if elem.Implements(reflect.TypeFor[Resource.Any]()) {
-					hintString = fmt.Sprintf("%d/%d:%s", gdextension.TypeObject, PropertyHintResourceType, nameOf(elem)) // MAKE_RESOURCE_TYPE_HINT
-				} else if etype != gdextension.TypeNil {
-					hint |= PropertyHintArrayType
-					hintString = etype.String()
+			if vtype == gdextension.TypeObject {
+				if field.Type.Implements(reflect.TypeFor[Resource.Any]()) {
+					hintString = fmt.Sprintf("%d/%d:%s", gdextension.TypeObject, PropertyHintResourceType, nameOf(field.Type)) // MAKE_RESOURCE_TYPE_HINT
+				} else {
+					hintString = nameOf(field.Type)
 				}
 			}
-			if vtype == gdextension.TypeArray && field.Type.Implements(reflect.TypeFor[Array.Interface]()) {
-				elem := reflect.Zero(field.Type).Interface().(Array.Interface).ElemType()
-				etype, ok := gd.VariantTypeOf(elem)
-				if !ok {
-					return false
-				}
-				if etype != gdextension.TypeNil {
+			if vtype == gdextension.TypeArray {
+				if field.Type.Implements(reflect.TypeFor[Array.Interface]()) {
+					elem := reflect.Zero(field.Type).Interface().(Array.Interface).ElemType()
+					etype, ok := gd.VariantTypeOf(elem)
+					if !ok {
+						return false
+					}
+					if etype != gdextension.TypeNil {
+						hint |= PropertyHintArrayType
+						hintString = etype.String()
+					}
+				} else {
+					etype, ok := gd.VariantTypeOf(field.Type.Elem())
+					if !ok {
+						return false
+					}
 					hint |= PropertyHintArrayType
 					hintString = etype.String()
 				}
