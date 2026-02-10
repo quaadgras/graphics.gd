@@ -17,32 +17,38 @@ import (
 	"runtime/debug"
 	"slices"
 
+	"graphics.gd/classdb"
+	EngineClass "graphics.gd/classdb/Engine"
+	"graphics.gd/classdb/SceneTree"
 	internal "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/variant/Callable"
+	"graphics.gd/variant/Float"
 )
 
 var initDone = false
 var exitDone = false
 
 func init() {
-	// little hack to enable `gd test` to work, we strip away the headless flag
-	// so that 'go test' doesn't complain on startup.
-	for i := 0; i < len(os.Args); i++ {
-		if os.Args[i] == "--headless" {
-			os.Args = append(os.Args[:i], os.Args[i+1:]...)
-		}
-	}
 	gdextension.On.Engine = gdextension.CallbacksForEngine{
 		Init: func(level gdextension.InitializationLevel) {
-			running_as_gdextension = true
+			if startup == nil {
+				startup = engineLoadingSharedGo{}
+				// little hack to enable `gd test` to work, we strip away the headless flag
+				// so that 'go test' doesn't complain on startup.
+				for i := 0; i < len(os.Args); i++ {
+					if os.Args[i] == "--headless" {
+						os.Args = append(os.Args[:i], os.Args[i+1:]...)
+					}
+				}
+			}
 			internal.Init(level)
 			if level == 2 && !initDone {
 				for _, fn := range internal.StartupFunctions {
 					fn()
 				}
-				if !weNeedToStartupTheEngine {
-					close(intialized)
+				if _, ok := startup.(engineLoadingSharedGo); ok {
 					resume_main, stop_main = iter.Pull(call_main_in_steps())
 					resume_main()
 				}
@@ -91,4 +97,81 @@ func call_main_in_steps() iter.Seq[bool] {
 		pause_main = yield
 		main()
 	}
+}
+
+var (
+	pause_main  func(bool) bool
+	resume_main func() (bool, bool)
+	stop_main   func()
+)
+var theMainFunctionIsWaitingForTheEngineToShutDown = false
+
+type engineLoadingSharedGo struct{}
+
+func (engineLoadingSharedGo) Start() {
+	pause_main(false)
+	if EngineClass.IsEditorHint() {
+		stop_main()
+	}
+}
+
+func (engineLoadingSharedGo) Scene() {
+	theMainFunctionIsWaitingForTheEngineToShutDown = true
+	pause_main(false)
+}
+
+func (engineLoadingSharedGo) Rendering() iter.Seq[Float.X] {
+	classdb.Register[goMain]()
+	if EngineClass.IsEditorHint() {
+		stop_main()
+	}
+	pause_main(false) // We pause here until the engine has fully started up.
+	return func(yield func(Float.X) bool) {
+		pause_main(false) // we pause here until the MainLoop initialize function is called.
+		for {
+			pause_main(false) // we pause here until the next frame is ready (next Process callback).
+			if !yield(dt) {
+				break
+			}
+		}
+		pause_main(true) // we pause here until the engine has fully shut down.
+	}
+}
+
+func init() {
+	gdextension.On.MainLoop.FirstFrame = func() {
+		Callable.Cycle()
+		if EngineClass.IsEditorHint() {
+			editorSetup()
+		}
+		if pause_main != nil {
+			resume_main()
+		}
+	}
+}
+
+type goMain struct {
+	SceneTree.Extension[goSceneTree] `gd:"GoMainLoop"`
+}
+
+func (loop goMain) Initialize() {
+	Callable.Cycle()
+	resume_main()
+}
+
+func (loop goMain) PhysicsProcess(delta Float.X) bool {
+	return false
+}
+
+func (loop goMain) Process(delta Float.X) bool {
+	defer Callable.Cycle()
+	defer keep_reachable_instances_alive()
+	defer pointers.Cycle()
+	dt = delta
+	close, _ := resume_main()
+	return close
+}
+
+func (loop goMain) Finalize() {
+	resume_main()
 }
