@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"iter"
 	"maps"
 	"os"
 	"path"
@@ -13,6 +14,7 @@ import (
 	"runtime"
 	"runtime/debug"
 	"strings"
+	"unsafe"
 
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
@@ -827,7 +829,7 @@ func (instance *instanceImplementation) Free() {
 		type isNode interface {
 			AsNode() Node.Instance
 		}
-		nodeType := reflect.TypeOf([0]isNode{}).Elem()
+		nodeType := reflect.TypeFor[isNode]()
 		if field.Type.Implements(nodeType) || reflect.PointerTo(field.Type).Implements(nodeType) {
 			continue
 		}
@@ -852,6 +854,30 @@ func (instance *instanceImplementation) Free() {
 	instance.freed = true
 }
 
+func flatFieldsOf(rtype reflect.Type) iter.Seq[reflect.StructField] {
+	return func(yield func(reflect.StructField) bool) {
+		for i := 0; i < rtype.NumField(); i++ {
+			field := rtype.Field(i)
+			if field.Name == "Extension" || field.Name == "Singleton" {
+				continue
+			}
+			if field.Anonymous {
+				for child := range flatFieldsOf(field.Type) {
+					child.Offset += field.Offset
+					child.Index = append(field.Index, child.Index...)
+					if !yield(child) {
+						break
+					}
+				}
+				continue
+			}
+			if !yield(field) {
+				break
+			}
+		}
+	}
+}
+
 // ready is responsible for asserting the scene tree for struct members that implement
 // Super().AsNode() and asserting that these nodes are added as children to the Super.
 //
@@ -863,16 +889,27 @@ func (instance *instanceImplementation) ready() {
 		return
 	}
 	var rvalue = reflect.ValueOf(instance.Value).Elem()
-	for _, field := range reflect.VisibleFields(rvalue.Type()) {
-		if !field.IsExported() || field.Name == "Extension" {
-			continue
-		}
+	var front = true
+	for field := range flatFieldsOf(rvalue.Type()) {
 		if field.Type.Kind() == reflect.Pointer {
 			if _, ok := singletons.Lookup(field.Type.Elem()); ok {
 				continue
 			}
 		}
-		instance.assertChild(rvalue.FieldByIndex(field.Index).Addr().Interface(), field, parent, parent)
+		var internal = Node.InternalModeDisabled
+		var pointer any
+		if field.IsExported() {
+			pointer = rvalue.FieldByIndex(field.Index).Addr().Interface()
+			front = false
+		} else {
+			pointer = reflect.NewAt(field.Type, unsafe.Add(rvalue.Addr().UnsafePointer(), field.Offset)).Interface()
+			if front {
+				internal = Node.InternalModeFront
+			} else {
+				internal = Node.InternalModeBack
+			}
+		}
+		instance.assertChild(pointer, field, parent, parent, internal)
 	}
 	if !instance.isEditor {
 		switch ready := instance.Value.(type) {
@@ -882,20 +919,32 @@ func (instance *instanceImplementation) ready() {
 	}
 }
 
-func (instance *instanceImplementation) assertChild(value any, field reflect.StructField, parent, owner [1]gdclass.Node) {
+func (instance *instanceImplementation) assertChild(value any, field reflect.StructField, parent, owner [1]gdclass.Node, internal Node.InternalMode) {
 	type isNode interface {
 		AsNode() Node.Instance
 	}
 	var (
 		rvalue = reflect.ValueOf(value)
 	)
-	nodeType := reflect.TypeOf([0]isNode{}).Elem()
+	nodeType := reflect.TypeFor[isNode]()
 	if !field.Type.Implements(nodeType) && !reflect.PointerTo(field.Type).Implements(nodeType) {
 		if field.Type.Kind() == reflect.Struct {
+			var front = true
 			for _, field := range reflect.VisibleFields(field.Type) {
+				var pointer any
+				var internal = Node.InternalModeDisabled
 				if field.IsExported() {
-					instance.assertChild(rvalue.Elem().FieldByIndex(field.Index).Addr().Interface(), field, parent, owner)
+					pointer = rvalue.Elem().FieldByIndex(field.Index).Addr().Interface()
+					front = false
+				} else {
+					pointer = reflect.NewAt(field.Type, unsafe.Add(rvalue.UnsafePointer(), field.Offset)).Interface()
+					if front {
+						internal = Node.InternalModeFront
+					} else {
+						internal = Node.InternalModeBack
+					}
 				}
+				instance.assertChild(pointer, field, parent, owner, internal)
 			}
 		}
 		return
@@ -915,11 +964,25 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 	if rvalue.Elem().Kind() == reflect.Struct {
 		defer func() {
 			rvalue := rvalue.Elem()
+			var front = true
 			for _, field := range reflect.VisibleFields(rvalue.Type()) {
-				if !field.IsExported() || field.Name == "Class" || field.Anonymous {
+				if field.Name == "Class" || field.Anonymous {
 					continue
 				}
-				instance.assertChild(rvalue.FieldByIndex(field.Index).Addr().Interface(), field, class.AsNode(), owner)
+				var pointer any
+				var internal = Node.InternalModeDisabled
+				if field.IsExported() {
+					pointer = rvalue.Elem().FieldByIndex(field.Index).Addr().Interface()
+					front = false
+				} else {
+					pointer = reflect.NewAt(field.Type, unsafe.Add(rvalue.UnsafePointer(), field.Offset)).Interface()
+					if front {
+						internal = Node.InternalModeFront
+					} else {
+						internal = Node.InternalModeBack
+					}
+				}
+				instance.assertChild(pointer, field, class.AsNode(), owner, internal)
 			}
 		}()
 	}
@@ -941,7 +1004,7 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 				class.(gd.IsClassCastable).SetObject([1]gd.Object{pointers.Raw[gd.Object](pointers.Get(child[0]))})
 			}
 		}
-		var mode Node.InternalMode = Node.InternalModeDisabled
+		var mode Node.InternalMode = Node.InternalModeDisabled | internal
 		if !field.IsExported() {
 			mode = Node.InternalModeFront
 		}
