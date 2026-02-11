@@ -57,18 +57,21 @@ func (exe toolchain) PathToCommand() string {
 }
 
 func (exe toolchain) Exec(args ...string) error {
-	for i, arg := range args {
+	var converted []string
+	for _, arg := range args {
 		if strings.Contains(arg, "=") {
 			arg, _, _ = strings.Cut(arg, "=")
 		}
 		if newarg, ok := exe.ConvertArguments[arg]; ok {
 			if newarg == "" {
-				args = append(args[:i], args[i+1:]...)
 				continue
 			}
-			args[i] = newarg
+			converted = append(converted, newarg)
+		} else {
+			converted = append(converted, arg)
 		}
 	}
+	args = converted
 	path, err := exe.Lookup()
 	if err != nil {
 		return xray.New(err)
