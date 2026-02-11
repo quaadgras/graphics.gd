@@ -122,10 +122,22 @@ func gd(args ...string) error {
 		if strings.HasPrefix(version, "musl") {
 			if len(args) > 0 && args[0] == "test" {
 				build_godot = func() error {
+					current, err := os.Getwd()
+					if err != nil {
+						return xray.New(err)
+					}
+					os.Chdir(project.Directory)
+					defer os.Chdir(current)
 					return builder.Musl{}.Test(append([]string{"-gcflags=graphics.gd/classdb/...=-N -l"}, testArgs(args[1:]...)...)...)
 				}
 			} else {
 				build_godot = func() error {
+					current, err := os.Getwd()
+					if err != nil {
+						return xray.New(err)
+					}
+					os.Chdir(project.Directory)
+					defer os.Chdir(current)
 					return builder.Musl{}.Build("-gcflags=graphics.gd/classdb/...=-N -l")
 				}
 			}

@@ -164,9 +164,6 @@ func Setup(build_godot func() error) error {
 	if err := SetupFile(false, filepath.Join(GraphicsDirectory, ".gitignore"), gitignore); err != nil {
 		return xray.New(err)
 	}
-	if err := os.Chdir(Directory); err != nil {
-		return xray.New(err)
-	}
 	if err := build_godot(); err != nil {
 		return xray.New(err)
 	}
@@ -178,13 +175,17 @@ func Setup(build_godot func() error) error {
 		gdextension_version = "4.1.0"
 	}
 	if _, err := os.Stat(filepath.Join(GraphicsDirectory, ".godot")); os.IsNotExist(err) {
+		current, err := os.Getwd()
+		if err != nil {
+			return xray.New(err)
+		}
 		if err := os.Chdir(GraphicsDirectory); err != nil {
 			return xray.New(err)
 		}
 		if err := tooling.Godot.Exec("--import", "--headless"); err != nil {
 			return xray.New(err)
 		}
-		if err := os.Chdir(Directory); err != nil {
+		if err := os.Chdir(current); err != nil {
 			return xray.New(err)
 		}
 	}
