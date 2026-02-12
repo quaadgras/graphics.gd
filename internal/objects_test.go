@@ -65,6 +65,15 @@ func init() {
 	classdb.Register[MyObject]()
 }
 
+type MyTool struct {
+	Object.Extension[MyTool]
+	classdb.Tool
+}
+
+func init() {
+	classdb.Register[MyTool]()
+}
+
 func TestGetSet(t *testing.T) {
 	var basis_test string = `extends Object
 
@@ -92,6 +101,17 @@ func TestObjectAsGoClass(t *testing.T) {
 	ptr, ok := Object.As[*MyObject](Object.Instance(object.AsObject()))
 	if !ok {
 		t.Error("Expected to convert Object to *MyObject")
+	}
+	if ptr != object {
+		t.Error("Expected to get the same pointer back")
+	}
+}
+
+func TestObjectAsGoTool(t *testing.T) {
+	var object = new(MyTool)
+	ptr, ok := Object.As[*MyTool](Object.Instance(object.AsObject()))
+	if !ok {
+		t.Error("Expected to convert Object to *MyTool")
 	}
 	if ptr != object {
 		t.Error("Expected to get the same pointer back")

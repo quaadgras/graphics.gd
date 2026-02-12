@@ -855,13 +855,15 @@ func (instance *instanceImplementation) Free() {
 }
 
 func flatFieldsOf(rtype reflect.Type) iter.Seq[reflect.StructField] {
+	if rtype.Kind() != reflect.Struct {
+		return func(yield func(reflect.StructField) bool) {}
+	}
 	return func(yield func(reflect.StructField) bool) {
-		for i := 0; i < rtype.NumField(); i++ {
-			field := rtype.Field(i)
+		for field := range rtype.Fields() {
 			if field.Name == "Extension" || field.Name == "Singleton" {
 				continue
 			}
-			if field.Anonymous {
+			if field.Anonymous && field.Type.Kind() == reflect.Struct {
 				for child := range flatFieldsOf(field.Type) {
 					child.Offset += field.Offset
 					child.Index = append(field.Index, child.Index...)
