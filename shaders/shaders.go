@@ -435,6 +435,9 @@ func compileExpression(w io.Writer, expression dsl.Evaluator) {
 			fmt.Fprintf(w, " : ")
 			compileExpression(w, value.B)
 			fmt.Fprintf(w, ")")
+		case dsl.Select:
+			compileExpression(w, value.Value)
+			fmt.Fprintf(w, ".%s", value.Field)
 		case dsl.FunctionCall:
 			compileCall(w, string(value.Name), value.Args...)
 		default:
