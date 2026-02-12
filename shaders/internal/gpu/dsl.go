@@ -8,17 +8,18 @@ import (
 )
 
 type Expression struct {
+	identity *byte
 	indirect Evaluator
 	uniform  string
 	shader   ShaderMaterial.Any
 }
 
 func Uniform(name string, shader ShaderMaterial.Any) Evaluator {
-	return Expression{uniform: name, shader: shader}
+	return Expression{identity: new(byte), uniform: name, shader: shader}
 }
 
 func New(e Evaluator) Expression {
-	return Expression{indirect: e}
+	return Expression{identity: new(byte), indirect: e}
 }
 
 func Op(a Evaluator, op string, b Evaluator) Expression {
@@ -43,7 +44,7 @@ func (e *Expression) set(ptr Pointer, val Evaluator) {
 	}
 	ifc := reflect.ValueOf(ptr).Elem()
 	for field, value := range ifc.Fields() {
-		if !field.IsExported() {
+		if !field.IsExported() || field.Anonymous {
 			continue
 		}
 		if ptr, ok := reflect.TypeAssert[Pointer](value.Addr()); ok {
@@ -53,6 +54,10 @@ func (e *Expression) set(ptr Pointer, val Evaluator) {
 			}))
 		}
 	}
+}
+
+func (e Expression) Identity() *byte {
+	return e.identity
 }
 
 func (e Expression) getShader() ShaderMaterial.Any {
