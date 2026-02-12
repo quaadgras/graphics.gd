@@ -414,8 +414,7 @@ func newDictionary(val reflect.Value) Dictionary {
 			dict.SetIndex(NewVariant(key.Interface()), NewVariant(val.MapIndex(key).Interface()))
 		}
 	case reflect.Struct:
-		for i := 0; i < val.NumField(); i++ {
-			field := val.Type().Field(i)
+		for field, rvalue := range val.Fields() {
 			if !field.IsExported() {
 				continue
 			}
@@ -423,7 +422,7 @@ func newDictionary(val reflect.Value) Dictionary {
 			if tag := field.Tag.Get("gd"); tag != "" {
 				name = tag
 			}
-			dict.SetIndex(NewVariant(name), NewVariant(val.Field(i).Interface()))
+			dict.SetIndex(NewVariant(name), NewVariant(rvalue.Interface()))
 		}
 	}
 	return dict
