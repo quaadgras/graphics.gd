@@ -16,6 +16,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"slices"
 	"strings"
 
 	"graphics.gd/cmd/gd/internal/builder"
@@ -128,7 +129,11 @@ func gd(args ...string) error {
 					}
 					os.Chdir(project.Directory)
 					defer os.Chdir(current)
-					return builder.Musl{}.Test(append([]string{"-gcflags=graphics.gd/classdb/...=-N -l"}, testArgs(args[1:]...)...)...)
+					var faster_compile = []string{"-gcflags=graphics.gd/classdb/...=-N -l"}
+					if slices.Contains(args, "-bench") {
+						faster_compile = nil
+					}
+					return builder.Musl{}.Test(append(faster_compile, testArgs(args[1:]...)...)...)
 				}
 			} else {
 				build_godot = func() error {
