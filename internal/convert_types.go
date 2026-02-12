@@ -278,8 +278,10 @@ func convertToGoStruct(rtype reflect.Type, value any) (reflect.Value, error) {
 	case IsClass:
 		var object = value.AsObject()
 		var structure = reflect.New(rtype).Elem()
-		for i := 0; i < rtype.NumField(); i++ {
-			field := rtype.Field(i)
+		for field, rvalue := range structure.Fields() {
+			if !field.IsExported() {
+				continue
+			}
 			name := field.Name
 			if tag := field.Tag.Get("gd"); tag != "" {
 				name = tag
@@ -288,14 +290,16 @@ func convertToGoStruct(rtype reflect.Type, value any) (reflect.Value, error) {
 			if err != nil {
 				return reflect.Value{}, xray.New(err)
 			}
-			structure.Field(i).Set(fieldValue)
+			rvalue.Set(fieldValue)
 		}
 		return structure, nil
 	case Dictionary:
 		var structure = reflect.New(rtype).Elem()
 		var dictionary = value
-		for i := 0; i < rtype.NumField(); i++ {
-			field := rtype.Field(i)
+		for field, rvalue := range structure.Fields() {
+			if !field.IsExported() {
+				continue
+			}
 			name := field.Name
 			if tag := field.Tag.Get("gd"); tag != "" {
 				name = tag
@@ -304,7 +308,7 @@ func convertToGoStruct(rtype reflect.Type, value any) (reflect.Value, error) {
 			if err != nil {
 				return reflect.Value{}, xray.New(err)
 			}
-			structure.Field(i).Set(fieldValue)
+			rvalue.Set(fieldValue)
 		}
 		return structure, nil
 	case ArrayType.Any:
@@ -352,8 +356,7 @@ func convertToGoStruct(rtype reflect.Type, value any) (reflect.Value, error) {
 		}
 		var structure = reflect.New(rtype).Elem()
 		var dictionary = value
-		for i := 0; i < rtype.NumField(); i++ {
-			field := rtype.Field(i)
+		for field, rvalue := range structure.Fields() {
 			name := field.Name
 			if tag := field.Tag.Get("gd"); tag != "" {
 				name = tag
@@ -362,7 +365,7 @@ func convertToGoStruct(rtype reflect.Type, value any) (reflect.Value, error) {
 			if err != nil {
 				return reflect.Value{}, xray.New(err)
 			}
-			structure.Field(i).Set(fieldValue)
+			rvalue.Set(fieldValue)
 		}
 		return structure, nil
 	default:

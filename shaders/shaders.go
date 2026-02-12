@@ -194,28 +194,24 @@ func compile(prog Any, v, f, m, l reflect.Type) {
 
 func linkup(in any) {
 	value := reflect.ValueOf(in).Elem()
-	rtype := value.Type()
-	for i := range rtype.NumField() {
-		if value.Field(i).Kind() == reflect.Struct && rtype.Field(i).IsExported() {
-			linkup(value.Field(i).Addr().Interface())
+	for field, rvalue := range value.Fields() {
+		if field.Type.Kind() == reflect.Struct && field.IsExported() {
+			linkup(rvalue.Addr().Interface())
 		}
-		if tag := rtype.Field(i).Tag.Get("gd"); tag != "" {
-			field := value.Field(i)
-			switch ptr := field.Addr().Interface().(type) {
+		if tag := field.Tag.Get("gd"); tag != "" {
+			switch ptr := rvalue.Addr().Interface().(type) {
 			case *vec2.XY:
 				dsl.Set(&ptr.X, dsl.Identifier(tag+".x"))
 				dsl.Set(&ptr.Y, dsl.Identifier(tag+".y"))
 			}
-			dsl.Set(value.Field(i).Addr().Interface().(dsl.Pointer), dsl.Identifier(tag))
+			dsl.Set(rvalue.Addr().Interface().(dsl.Pointer), dsl.Identifier(tag))
 		}
 	}
 }
 
 func compileUniforms(w io.Writer, prog Any) {
 	value := reflect.ValueOf(prog).Elem()
-	rtype := value.Type()
-	for i := range rtype.NumField() {
-		field := rtype.Field(i)
+	for field, rvalue := range value.Fields() {
 		if field.Name == "Shader" {
 			continue
 		}
@@ -228,7 +224,7 @@ func compileUniforms(w io.Writer, prog Any) {
 			}
 		}
 		fmt.Fprintf(w, "uniform %s %s", glslTypeFor(field.Type), name)
-		dsl.Set(value.Field(i).Addr().Interface().(dsl.Pointer), gpu.Uniform(name, prog))
+		dsl.Set(rvalue.Addr().Interface().(dsl.Pointer), gpu.Uniform(name, prog))
 		if options != "" {
 			fmt.Fprintf(w, ": ")
 			var first bool = true
@@ -349,13 +345,12 @@ type compilationContext struct {
 func compileFunction(w io.Writer, data any, name string) {
 	fmt.Fprintf(w, "void %s() {\n", name)
 	value := reflect.ValueOf(data)
-	rtype := value.Type()
 
 	// Phase 1: Count how many times each expression identity is used.
 	counts := make(map[*byte]int)
-	for i := range rtype.NumField() {
-		expr, ok := value.Field(i).Interface().(dsl.Evaluator)
-		if ok && !value.Field(i).IsZero() {
+	for _, rvalue := range value.Fields() {
+		expr, ok := rvalue.Interface().(dsl.Evaluator)
+		if ok && !rvalue.IsZero() {
 			countUses(expr, counts)
 		}
 	}
@@ -364,9 +359,9 @@ func compileFunction(w io.Writer, data any, name string) {
 	seen := make(map[*byte]bool)
 	var vars []varInfo
 	nextVar := 0
-	for i := range rtype.NumField() {
-		expr, ok := value.Field(i).Interface().(dsl.Evaluator)
-		if ok && !value.Field(i).IsZero() {
+	for _, rvalue := range value.Fields() {
+		expr, ok := rvalue.Interface().(dsl.Evaluator)
+		if ok && !rvalue.IsZero() {
 			orderVariables(expr, counts, seen, &vars, &nextVar)
 		}
 	}
@@ -383,10 +378,9 @@ func compileFunction(w io.Writer, data any, name string) {
 			}
 		}
 	}
-	for i := range rtype.NumField() {
-		field := rtype.Field(i)
-		expr, ok := value.Field(i).Interface().(dsl.Evaluator)
-		if ok && !value.Field(i).IsZero() {
+	for field, rvalue := range value.Fields() {
+		expr, ok := rvalue.Interface().(dsl.Evaluator)
+		if ok && !rvalue.IsZero() {
 			fmt.Fprintf(w, "\t%s = ", field.Tag.Get("gd"))
 			compileExpression(w, expr, ctx)
 			fmt.Fprintf(w, ";\n")
@@ -432,12 +426,11 @@ func countChildren(resolved dsl.Evaluator, counts map[*byte]int) {
 	default:
 		rvalue := reflect.ValueOf(resolved)
 		if rvalue.Kind() == reflect.Struct {
-			rtype := rvalue.Type()
-			for i := range rtype.NumField() {
-				if !rtype.Field(i).IsExported() {
+			for field, rvalue := range rvalue.Fields() {
+				if !field.IsExported() {
 					continue
 				}
-				if ev, ok := rvalue.Field(i).Interface().(dsl.Evaluator); ok {
+				if ev, ok := rvalue.Interface().(dsl.Evaluator); ok {
 					countUses(ev, counts)
 				}
 			}

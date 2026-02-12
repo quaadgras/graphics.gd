@@ -50,12 +50,11 @@ func compile_keepalive(rtype reflect.Type) (keepalive func(reflect.Value)) {
 	case reflect.Struct:
 		is_extension_class := rtype.Implements(reflect.TypeFor[gdclass.Interface]())
 		var keepalives []keep_struct_field_alive
-		for i := 0; i < rtype.NumField(); i++ {
-			field := rtype.Field(i)
+		for field := range rtype.Fields() {
 			if is_extension_class && field.Type.Implements(reflect.TypeFor[Node.Any]()) && field.IsExported() {
 				continue
 			}
-			if is_extension_class && i == 0 {
+			if is_extension_class && field.Index[0] == 0 {
 				continue
 			}
 			if keepalive := compile_keepalive(field.Type); keepalive != nil {

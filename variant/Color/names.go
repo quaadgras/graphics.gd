@@ -320,10 +320,9 @@ func String(s string) RGBA { //gd:Color.from_string
 		rvalue = reflect.ValueOf(W3C)
 		s = s[3:]
 	}
-	rtype := rvalue.Type()
-	for i := 0; i < rtype.NumField(); i++ {
-		if strings.ToUpper(rtype.Field(i).Name) == s {
-			return rvalue.Field(i).Interface().(RGBA)
+	for field, rvalue := range rvalue.Fields() {
+		if strings.ToUpper(field.Name) == s {
+			return rvalue.Interface().(RGBA)
 		}
 	}
 	return Transparent

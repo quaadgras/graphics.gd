@@ -540,8 +540,8 @@ func registerStructables(rtype reflect.Type) {
 		registerStructables(rtype.Key())
 		registerStructables(rtype.Elem())
 	case reflect.Struct:
-		for i := range rtype.NumField() {
-			registerStructables(rtype.Field(i).Type)
+		for field := range rtype.Fields() {
+			registerStructables(field.Type)
 		}
 	}
 }
@@ -556,8 +556,7 @@ func generateStructables(file io.Writer) {
 		case reflect.Struct:
 			var w strings.Builder
 			fmt.Fprintf(&w, "type %v struct {\n", rtype.Name())
-			for i := range rtype.NumField() {
-				field := rtype.Field(i)
+			for field := range rtype.Fields() {
 				if field.PkgPath != "" {
 					continue
 				}
