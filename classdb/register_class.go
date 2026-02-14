@@ -965,9 +965,8 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 	class := value.(isNode)
 	if rvalue.Elem().Kind() == reflect.Struct {
 		defer func() {
-			rvalue := rvalue.Elem()
 			var front = true
-			for field := range flatFieldsOf(rvalue.Type()) {
+			for field := range flatFieldsOf(rvalue.Elem().Type()) {
 				var pointer any
 				var internal = Node.InternalModeDisabled
 				if field.IsExported() {
