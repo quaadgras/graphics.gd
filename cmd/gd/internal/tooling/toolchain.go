@@ -207,7 +207,8 @@ func (exe *toolchain) LookupPlatform(GOOS, GOARCH string) (string, error) {
 			exe_path = filepath.Join(install_path, "Contents", "MacOS", name)
 		}
 		if exe.Name == "godot" && os.Getenv("RUNNING_INSIDE_GODOT") != "" {
-			return install_path, nil
+			exe.Path = install_path
+			return exe.PathToCommand(), nil
 		}
 		version, err := exec.Command(exe_path, exe.VersionFlag).CombinedOutput()
 		version = bytes.TrimSpace(version)
