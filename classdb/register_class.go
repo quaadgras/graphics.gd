@@ -932,7 +932,7 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 	if !field.Type.Implements(nodeType) && !reflect.PointerTo(field.Type).Implements(nodeType) {
 		if field.Type.Kind() == reflect.Struct {
 			var front = true
-			for _, field := range reflect.VisibleFields(field.Type) {
+			for field := range flatFieldsOf(field.Type) {
 				var pointer any
 				var internal = Node.InternalModeDisabled
 				if field.IsExported() {
@@ -967,10 +967,7 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		defer func() {
 			rvalue := rvalue.Elem()
 			var front = true
-			for _, field := range reflect.VisibleFields(rvalue.Type()) {
-				if field.Name == "Class" || field.Anonymous {
-					continue
-				}
+			for field := range flatFieldsOf(rvalue.Type()) {
 				var pointer any
 				var internal = Node.InternalModeDisabled
 				if field.IsExported() {
