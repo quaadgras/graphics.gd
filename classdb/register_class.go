@@ -893,6 +893,9 @@ func (instance *instanceImplementation) ready() {
 	var rvalue = reflect.ValueOf(instance.Value).Elem()
 	var front = true
 	for field := range flatFieldsOf(rvalue.Type()) {
+		if field.Tag.Get("gd") == "-" {
+			continue
+		}
 		if field.Type.Kind() == reflect.Pointer {
 			if _, ok := singletons.Lookup(field.Type.Elem()); ok {
 				continue
@@ -986,6 +989,9 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 	}
 	name := field.Name
 	if tag := field.Tag.Get("gd"); tag != "" {
+		if tag == "-" {
+			return
+		}
 		name = tag
 	}
 	path := Path.ToNode(String.New(name))
