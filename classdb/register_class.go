@@ -893,7 +893,7 @@ func (instance *instanceImplementation) ready() {
 	var rvalue = reflect.ValueOf(instance.Value).Elem()
 	var front = true
 	for field := range flatFieldsOf(rvalue.Type()) {
-		if field.Tag.Get("gd") == "-" {
+		if _, hasTag := field.Tag.Lookup("gd"); !hasTag && !field.IsExported() {
 			continue
 		}
 		if field.Type.Kind() == reflect.Pointer {
@@ -936,6 +936,9 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		if field.Type.Kind() == reflect.Struct {
 			var front = true
 			for field := range flatFieldsOf(field.Type) {
+				if _, hasTag := field.Tag.Lookup("gd"); !hasTag && !field.IsExported() {
+					continue
+				}
 				var pointer any
 				var internal = Node.InternalModeDisabled
 				if field.IsExported() {
@@ -970,6 +973,9 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		defer func() {
 			var front = true
 			for field := range flatFieldsOf(rvalue.Elem().Type()) {
+				if _, hasTag := field.Tag.Lookup("gd"); !hasTag && !field.IsExported() {
+					continue
+				}
 				var pointer any
 				var internal = Node.InternalModeDisabled
 				if field.IsExported() {
