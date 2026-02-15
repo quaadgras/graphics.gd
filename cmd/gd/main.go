@@ -16,6 +16,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"slices"
 	"strings"
 
 	"graphics.gd/cmd/gd/internal/builder"
@@ -77,6 +78,33 @@ func builderFor(goos string) Builder {
 	}
 }
 
+func testArgs(args ...string) []string {
+	converted := []string{}
+	var benchmark bool
+	for _, arg := range args {
+		switch arg {
+		case "-bench":
+			benchmark = true
+			fallthrough
+		case "-benchmem", "-benchtime", "blockprofile",
+			"-blockprofilerate", "-count", "-coverprofile", "-cpu",
+			"-cpuprofile", "-failfast", "-fullpath", "-fuzz", "-fuzzcachedir",
+			"-fuzzminimizetime", "-fuzztime", "-fuzzworker", "-gocoverdir",
+			"-list", "-memprofile", "-memprofilerate", "-mutexprofile",
+			"-mutexprofilefraction", "-outputdir", "-paniconexit0",
+			"-parallel", "-run", "-short", "-shuffle", "-skip", "-testlogfile",
+			"-timeout", "-trace", "-v":
+			converted = append(converted, "-test."+strings.TrimPrefix(arg, "-"))
+		default:
+			converted = append(converted, arg)
+		}
+	}
+	if !benchmark {
+		converted = append([]string{"-gcflags=graphics.gd/classdb/...=-N -l"}, converted...)
+	}
+	return converted
+}
+
 func gd(args ...string) error {
 	var GOARCH = runtime.GOARCH
 	var GOOS = runtime.GOOS
@@ -95,10 +123,26 @@ func gd(args ...string) error {
 		if strings.HasPrefix(version, "musl") {
 			if len(args) > 0 && args[0] == "test" {
 				build_godot = func() error {
-					return builder.Musl{}.Test("-gcflags=graphics.gd/classdb/...=-N -l")
+					current, err := os.Getwd()
+					if err != nil {
+						return xray.New(err)
+					}
+					os.Chdir(project.Directory)
+					defer os.Chdir(current)
+					var faster_compile = []string{"-gcflags=graphics.gd/classdb/...=-N -l"}
+					if slices.Contains(args, "-bench") {
+						faster_compile = nil
+					}
+					return builder.Musl{}.Test(append(faster_compile, testArgs(args[1:]...)...)...)
 				}
 			} else {
 				build_godot = func() error {
+					current, err := os.Getwd()
+					if err != nil {
+						return xray.New(err)
+					}
+					os.Chdir(project.Directory)
+					defer os.Chdir(current)
 					return builder.Musl{}.Build("-gcflags=graphics.gd/classdb/...=-N -l")
 				}
 			}
@@ -195,30 +239,7 @@ func gd(args ...string) error {
 			if !project.IncludesGo {
 				return errors.New("cannot run 'gd test' on a project that does not include Go code")
 			}
-			converted := []string{}
-			var benchmark bool
-			for _, arg := range args[1:] {
-				switch arg {
-				case "-bench":
-					benchmark = true
-					fallthrough
-				case "-benchmem", "-benchtime", "blockprofile",
-					"-blockprofilerate", "-count", "-coverprofile", "-cpu",
-					"-cpuprofile", "-failfast", "-fullpath", "-fuzz", "-fuzzcachedir",
-					"-fuzzminimizetime", "-fuzztime", "-fuzzworker", "-gocoverdir",
-					"-list", "-memprofile", "-memprofilerate", "-mutexprofile",
-					"-mutexprofilefraction", "-outputdir", "-paniconexit0",
-					"-parallel", "-run", "-short", "-shuffle", "-skip", "-testlogfile",
-					"-timeout", "-trace", "-v":
-					converted = append(converted, "-test."+strings.TrimPrefix(arg, "-"))
-				default:
-					converted = append(converted, arg)
-				}
-			}
-			if !benchmark {
-				converted = append([]string{"-gcflags=graphics.gd/classdb/...=-N -l"}, converted...)
-			}
-			return platform.Test(converted...)
+			return platform.Test(testArgs(args[1:]...)...)
 		default:
 			return tooling.Go.Exec(args...)
 		}

@@ -203,6 +203,9 @@ func (c Converter) ValidRID(r Resource.ID) bool      { return r == c.RID() }
 func (c Converter) ValidObject(o Object.Instance) bool {
 	return o.AsObject()[0].GetClass().String() == "Object"
 }
+func (c Converter) ValidNode(o Node.Instance) bool {
+	return o.AsObject()[0].GetClass().String() == "Converter"
+}
 func (c Converter) ValidCallable(cc Callable.Function) bool {
 	return cc.Call().String() == c.Callable().Call().String()
 }

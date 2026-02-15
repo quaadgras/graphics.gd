@@ -67,6 +67,7 @@ func TestSignalString(t *testing.T) {
 	}))
 	Signal.Via(gd.SignalProxy{}, pointers.Pack(signal)).Emit(variant.New("Hello World"))
 	signal.Emit(gd.NewVariant("Hello World"))
+	Callable.Cycle()
 	if triggered != 4 {
 		t.Fatalf("Expected 4 triggers, got %d", triggered)
 	}

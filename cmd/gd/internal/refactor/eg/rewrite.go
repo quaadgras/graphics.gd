@@ -225,8 +225,7 @@ func (tr *Transformer) apply(f func(reflect.Value) (reflect.Value, bool, map[str
 	case reflect.Struct:
 		changed := false
 		var envp map[string]ast.Expr
-		for i := 0; i < v.NumField(); i++ {
-			e := v.Field(i)
+		for _, e := range v.Fields() {
 			o, localchanged, env := f(e)
 			if localchanged {
 				changed = true
@@ -334,7 +333,7 @@ func (tr *Transformer) subst(env map[string]ast.Expr, pattern, pos reflect.Value
 		}
 		return v
 
-	case reflect.Ptr:
+	case reflect.Pointer:
 		v := reflect.New(p.Type()).Elem()
 		if elem := p.Elem(); elem.IsValid() {
 			v.Set(tr.subst(env, elem, pos).Addr())

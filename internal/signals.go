@@ -71,12 +71,22 @@ func (SignalProxy) Consumers(raw complex128) iter.Seq[SignalType.Consumer] {
 	}
 }
 func (SignalProxy) Emit(raw complex128, values ...VariantPkg.Any) {
-	sig := pointers.Load[Signal](raw)
-	vargs := make([]Variant, len(values))
-	for i, v := range values {
-		vargs[i] = NewVariant(v)
+	if gdextension.Host.Threads.Main() {
+		sig := pointers.Load[Signal](raw)
+		vargs := make([]Variant, len(values))
+		for i, v := range values {
+			vargs[i] = NewVariant(v)
+		}
+		sig.Emit(vargs...)
 	}
-	sig.Emit(vargs...)
+	CallableType.Defer(CallableType.New(func() {
+		sig := pointers.Load[Signal](raw)
+		vargs := make([]Variant, len(values))
+		for i, v := range values {
+			vargs[i] = NewVariant(v)
+		}
+		sig.Emit(vargs...)
+	}))
 }
 func (SignalProxy) Emitter(raw complex128) VariantPkg.Any {
 	return VariantPkg.New(pointers.Get(pointers.Load[Signal](raw).GetObject()))

@@ -56,8 +56,7 @@ func linkBuiltin() {
 	for i := 1; i < rvalue.NumField(); i++ {
 		class := rvalue.Type().Field(i)
 		value := reflect.NewAt(class.Type, unsafe.Add(rvalue.Addr().UnsafePointer(), class.Offset))
-		for j := 0; j < class.Type.NumField(); j++ {
-			method := class.Type.Field(j)
+		for method := range class.Type.Fields() {
 			method.Name = strings.TrimSuffix(method.Name, "_")
 			direct := reflect.NewAt(method.Type, unsafe.Add(value.UnsafePointer(), method.Offset))
 			methodName := NewStringName(method.Name)
@@ -79,8 +78,7 @@ func LinkMethods(className gdextension.StringName, methods any, editor bool) {
 		return
 	}
 	rvalue := reflect.ValueOf(methods)
-	for i := range rvalue.Elem().NumField() {
-		method := rvalue.Elem().Type().Field(i)
+	for method := range rvalue.Elem().Fields() {
 		direct := reflect.NewAt(method.Type, unsafe.Add(rvalue.UnsafePointer(), method.Offset))
 
 		method.Name = strings.TrimSuffix(method.Name, "_")
@@ -110,8 +108,7 @@ func linkTypeset() {
 // linkTypesetCreation, each field is an array of constructors.
 func linkTypesetCreation() {
 	rvalue := reflect.ValueOf(&builtin.creation).Elem()
-	for i := 0; i < rvalue.NumField(); i++ {
-		field := rvalue.Type().Field(i)
+	for field := range rvalue.Type().Fields() {
 		esize := field.Type.Elem().Size()
 		vtype, _ := variantTypeFromName(field.Name)
 		for i := 0; i < field.Type.Len(); i++ {
