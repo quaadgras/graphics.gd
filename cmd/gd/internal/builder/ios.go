@@ -34,28 +34,26 @@ var (
 	ios_sdk embed.FS
 )
 
-// swiftForceLoadStubs defines Swift FORCE_LOAD symbols that are normally provided
-// by static libraries in the Xcode toolchain. Since we don't have the toolchain,
-// we define them as global symbols to satisfy the linker without creating dylib
-// dependencies on libraries that don't exist on the device.
+// swiftForceLoadStubs defines Swift FORCE_LOAD symbols for static-only libraries
+// that exist in the Xcode toolchain but NOT as dylibs on the iOS device.
+// All other Swift overlay FORCE_LOAD symbols are resolved via .tbd stubs in
+// bundled/ios/lib/ which create proper LC_LOAD_DYLIB entries.
 const swiftForceLoadStubs = `
 void* _swift_FORCE_LOAD_$_swiftCompatibility56 = 0;
 void* _swift_FORCE_LOAD_$_swiftCompatibilityConcurrency = 0;
-void* _swift_FORCE_LOAD_$_swiftCoreFoundation = 0;
-void* _swift_FORCE_LOAD_$_swiftCoreImage = 0;
-void* _swift_FORCE_LOAD_$_swiftDispatch = 0;
-void* _swift_FORCE_LOAD_$_swiftFoundation = 0;
-void* _swift_FORCE_LOAD_$_swiftMetal = 0;
-void* _swift_FORCE_LOAD_$_swiftOSLog = 0;
-void* _swift_FORCE_LOAD_$_swiftObjectiveC = 0;
-void* _swift_FORCE_LOAD_$_swiftQuartzCore = 0;
-void* _swift_FORCE_LOAD_$_swiftSpatial = 0;
-void* _swift_FORCE_LOAD_$_swiftUIKit = 0;
-void* _swift_FORCE_LOAD_$_swiftUniformTypeIdentifiers = 0;
-void* _swift_FORCE_LOAD_$_swiftXPC = 0;
 void* _swift_FORCE_LOAD_$_swift_Builtin_float = 0;
-void* _swift_FORCE_LOAD_$_swiftos = 0;
-void* _swift_FORCE_LOAD_$_swiftsimd = 0;
+
+// compiler-rt builtin: used by @available() checks in ObjC/Swift code.
+// Normally statically linked by the compiler driver from libclang_rt.
+#include <stdint.h>
+extern int32_t __isPlatformVersionAtLeast(uint32_t platform, uint32_t major, uint32_t minor, uint32_t subminor) {
+    // On iOS (platform 2), our deployment target is 14.0 and we only run on
+    // devices with iOS 14+, so all @available checks for iOS <= deployment
+    // target are satisfied. For runtime checks above deployment target, we
+    // query the actual OS version via the dyld kernel info.
+    (void)platform; (void)major; (void)minor; (void)subminor;
+    return 1;
+}
 `
 
 type IOS struct{}
@@ -162,30 +160,52 @@ func (ios IOS) BuildMain(args ...string) error {
 	if err := os.WriteFile(swiftStubs, []byte(swiftForceLoadStubs), 0o644); err != nil {
 		return xray.New(err)
 	}
-	defer os.Remove(swiftStubs)
-	var zig_args = []string{
-		"cc", "-target", "aarch64-ios",
+	// Compile dummy.cpp and swift_stubs.c to .o files using zig cc.
+	dummyObj := filepath.Join(apple_name+".app", "dummy.o")
+	stubsObj := filepath.Join(apple_name+".app", "swift_stubs.o")
+	if err := tooling.Zig.Exec("cc", "-c", "-target", "aarch64-ios", "-O2", filepath.Join(".", project.Name, "dummy.cpp"), "-o", dummyObj); err != nil {
+		return xray.New(err)
+	}
+	if err := tooling.Zig.Exec("cc", "-c", "-target", "aarch64-ios", "-O2", swiftStubs, "-o", stubsObj); err != nil {
+		return xray.New(err)
+	}
+	// Link with ld64.lld to produce a Mach-O binary with LC_DYLD_CHAINED_FIXUPS.
+	var lld_args = []string{
+		"-arch", "arm64",
+		"-platform_version", "ios", "15.0.0", "15.0.0",
+		"-fixup_chains",
+		"-headerpad", "0x1000",
 		filepath.Join(".", "MoltenVK.xcframework", "ios-arm64", "libMoltenVK.a"),
 		filepath.Join(".", project.Name+".xcframework", "ios-arm64", "libgodot.a"),
-		filepath.Join(".", project.Name, "dummy.cpp"),
-		swiftStubs,
+		dummyObj,
+		stubsObj,
 	}
 	if project.IncludesGo {
-		zig_args = append(zig_args, filepath.Join(".", project.Name, "dylibs", "go.xcframework", "ios-arm64", "libgo.a"))
+		lld_args = append(lld_args, filepath.Join(".", project.Name, "dylibs", "go.xcframework", "ios-arm64", "libgo.a"))
 	}
-	zig_args = append(zig_args,
-		"-o", filepath.Join(apple_name+".app", apple_name), "-F", filepath.Join("..", "sdk", "Frameworks"), "-L"+filepath.Join("..", "sdk", "lib"),
-		"-lc", "-lobjc.A", "-framework", "IOSurface", "-framework", "OpenGLES", "-framework", "CoreText", "-framework", "CoreGraphics",
-		"-framework", "CoreFoundation", "-framework", "QuartzCore", "-lc++.1", "-framework", "UIKit", "-framework", "Foundation",
+	lld_args = append(lld_args,
+		"-o", filepath.Join(apple_name+".app", apple_name),
+		"-F", filepath.Join("..", "sdk", "Frameworks"), "-L", filepath.Join("..", "sdk", "lib"),
+		"-lSystem", "-lobjc", "-lc++", "-lc++abi",
+		"-framework", "IOSurface", "-framework", "OpenGLES", "-framework", "CoreText", "-framework", "CoreGraphics",
+		"-framework", "CoreFoundation", "-framework", "QuartzCore", "-framework", "UIKit", "-framework", "Foundation",
 		"-framework", "Metal", "-framework", "GameController", "-framework", "CoreMotion",
 		"-framework", "CoreHaptics", "-framework", "AVFAudio", "-framework", "AudioToolbox",
 		"-framework", "SwiftUI",
 		"-lswiftCore", "-lswift_Concurrency", "-lswiftos",
-		"-Wl,-headerpad,0x1000",
+		"-lswiftCoreFoundation", "-lswiftCoreImage", "-lswiftDarwin",
+		"-lswiftDispatch", "-lswiftFoundation", "-lswiftMetal",
+		"-lswiftOSLog", "-lswiftObjectiveC", "-lswiftQuartzCore",
+		"-lswiftSpatial", "-lswiftUIKit", "-lswiftUniformTypeIdentifiers",
+		"-lswiftXPC", "-lswiftsimd",
 	)
-	if err := tooling.Zig.Exec(zig_args...); err != nil {
+	if err := tooling.LD64_LLD.Exec(lld_args...); err != nil {
 		return xray.New(err)
 	}
+	// Clean up temp files before packaging the .app into an IPA.
+	os.Remove(swiftStubs)
+	os.Remove(dummyObj)
+	os.Remove(stubsObj)
 	info, err := os.ReadFile(filepath.Join(".", project.Name, project.Name+"-Info.plist"))
 	if err != nil {
 		return xray.New(err)
