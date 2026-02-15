@@ -199,7 +199,7 @@ func (ios IOS) BuildMain(args ...string) error {
 		"-lswiftSpatial", "-lswiftUIKit", "-lswiftUniformTypeIdentifiers",
 		"-lswiftXPC", "-lswiftsimd",
 	)
-	if err := tooling.LD64_LLD.Exec(lld_args...); err != nil {
+	if err := tooling.LLVM.Exec(append([]string{"ld64.lld"}, lld_args...)...); err != nil {
 		return xray.New(err)
 	}
 	// Clean up temp files before packaging the .app into an IPA.

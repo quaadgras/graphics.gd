@@ -20,14 +20,14 @@ var Godot = toolchain{
 	},
 }
 
-var LD64_LLD = toolchain{
-	Name:          "ld64.lld",
+var LLVM = toolchain{
+	Name:          "llvm",
 	Version:       "21.1.8",
-	VersionFlag:   "--version",
-	VersionPrefix: "LLD 21.",
-	DownloadURL:   "https://release.graphics.gd/ld64.lld.$(GOOS).$(GOARCH)$(EXT)",
+	VersionFlag:   "clang --version",
+	VersionPrefix: "clang version 21.",
+	DownloadURL:   "https://release.graphics.gd/llvm.$(GOOS).$(GOARCH)$(EXT)",
 	DownloadEXT:   map[string]string{"linux": "", "windows": ".exe", "darwin": ""},
-	RequiredFor:   "iOS linking",
+	RequiredFor:   "linking iOS builds",
 }
 
 var Zig = toolchain{
