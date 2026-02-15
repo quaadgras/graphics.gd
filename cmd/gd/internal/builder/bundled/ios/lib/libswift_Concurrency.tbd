@@ -1,0 +1,15 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/usr/lib/swift/libswift_Concurrency.dylib'
+targets:
+ - arm64-ios
+exports:
+ - targets: [ arm64-ios ]
+   symbols:
+    - _$sScA15unownedExecutorScevgTj
+    - _$sScM6sharedScMvgZ
+    - _$sScMMa
+    - _$sScMScAsMc
+    - _swift_task_isCurrentExecutor
+    - _swift_task_reportUnexpectedExecutor
+...

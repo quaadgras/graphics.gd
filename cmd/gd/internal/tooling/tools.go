@@ -20,9 +20,19 @@ var Godot = toolchain{
 	},
 }
 
+var LLVM = toolchain{
+	Name:          "llvm",
+	Version:       "21.1.8",
+	VersionFlag:   "clang --version",
+	VersionPrefix: "clang version 21.",
+	DownloadURL:   "https://release.graphics.gd/llvm.$(GOOS).$(GOARCH)$(EXT)",
+	DownloadEXT:   map[string]string{"linux": "", "windows": ".exe", "darwin": ""},
+	RequiredFor:   "linking iOS builds",
+}
+
 var Zig = toolchain{
 	Name:         "zig",
-	Version:      "0.15.1",
+	Version:      "0.15.2",
 	VersionFlag:  "version",
 	DownloadHint: "https://ziglang.org/download/",
 	DownloadURL:  "https://ziglang.org/download/$(VERSION)/zig-$(ARCH)-$(OS)-$(VERSION)$(EXT)",

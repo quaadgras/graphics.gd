@@ -137,6 +137,9 @@ func gd(args ...string) error {
 				}
 			} else {
 				build_godot = func() error {
+					GOARCH := os.Getenv("GOARCH")
+					os.Setenv("GOARCH", runtime.GOARCH)
+					defer os.Setenv("GOARCH", GOARCH)
 					current, err := os.Getwd()
 					if err != nil {
 						return xray.New(err)
