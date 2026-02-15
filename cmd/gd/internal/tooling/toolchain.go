@@ -23,7 +23,7 @@ var debug = os.Getenv("DEBUG_CMD") != ""
 type toolchain struct {
 	Name          string                       // as found in $PATH
 	Version       string                       // expected version
-	VersionFlag   string                       // to extract version
+	VersionFlags  []string                     // to extract version
 	VersionPrefix string                       // version prefix
 	Downloads     map[string]map[string]string // specific GOOS/GOARCH download URLs
 	DownloadURL   string                       // base Download URL with $(VERSION), $(OS), $(ARCH) variables
@@ -210,7 +210,7 @@ func (exe *toolchain) LookupPlatform(GOOS, GOARCH string) (string, error) {
 			exe.Path = install_path
 			return exe.PathToCommand(), nil
 		}
-		version, err := exec.Command(exe_path, exe.VersionFlag).CombinedOutput()
+		version, err := exec.Command(exe_path, exe.VersionFlags...).CombinedOutput()
 		version = bytes.TrimSpace(version)
 		if err == nil {
 			if (exe.Version != "" && string(version) == exe.Version) || (exe.VersionPrefix != "" && strings.HasPrefix(string(version), exe.VersionPrefix)) {
@@ -236,7 +236,7 @@ func (exe *toolchain) LookupPlatform(GOOS, GOARCH string) (string, error) {
 		// if the expected version of the tool is already installed in $PATH, then we can
 		// just use it.
 		if path, err := exec.LookPath(name); err == nil {
-			version, _ := exec.Command(path, exe.VersionFlag).CombinedOutput()
+			version, _ := exec.Command(path, exe.VersionFlags...).CombinedOutput()
 			if (exe.Version != "" && string(version) == exe.Version) || (exe.VersionPrefix != "" && strings.HasPrefix(string(version), exe.VersionPrefix)) || (exe.Version == "" && exe.VersionPrefix == "") {
 				exe.Path = path
 				if exe.IsApp {
