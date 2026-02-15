@@ -173,7 +173,7 @@ func (ios IOS) BuildMain(args ...string) error {
 	var lld_args = []string{
 		"-arch", "arm64",
 		"-platform_version", "ios", "15.0.0", "15.0.0",
-		"-fixup_chains",
+		"-fixup_chains", "-ignore_auto_link",
 		"-headerpad", "0x1000",
 		filepath.Join(".", "MoltenVK.xcframework", "ios-arm64", "libMoltenVK.a"),
 		filepath.Join(".", project.Name+".xcframework", "ios-arm64", "libgodot.a"),
