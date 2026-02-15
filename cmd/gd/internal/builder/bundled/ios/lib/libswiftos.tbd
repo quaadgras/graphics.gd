@@ -1,0 +1,10 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/usr/lib/swift/libswiftos.dylib'
+targets:
+ - arm64-ios
+exports:
+ - targets: [ arm64-ios ]
+   symbols:
+    - _$sSo13os_log_type_ta0A0E5faultABvgZ
+...

@@ -34,6 +34,30 @@ var (
 	ios_sdk embed.FS
 )
 
+// swiftForceLoadStubs defines Swift FORCE_LOAD symbols that are normally provided
+// by static libraries in the Xcode toolchain. Since we don't have the toolchain,
+// we define them as global symbols to satisfy the linker without creating dylib
+// dependencies on libraries that don't exist on the device.
+const swiftForceLoadStubs = `
+void* _swift_FORCE_LOAD_$_swiftCompatibility56 = 0;
+void* _swift_FORCE_LOAD_$_swiftCompatibilityConcurrency = 0;
+void* _swift_FORCE_LOAD_$_swiftCoreFoundation = 0;
+void* _swift_FORCE_LOAD_$_swiftCoreImage = 0;
+void* _swift_FORCE_LOAD_$_swiftDispatch = 0;
+void* _swift_FORCE_LOAD_$_swiftFoundation = 0;
+void* _swift_FORCE_LOAD_$_swiftMetal = 0;
+void* _swift_FORCE_LOAD_$_swiftOSLog = 0;
+void* _swift_FORCE_LOAD_$_swiftObjectiveC = 0;
+void* _swift_FORCE_LOAD_$_swiftQuartzCore = 0;
+void* _swift_FORCE_LOAD_$_swiftSpatial = 0;
+void* _swift_FORCE_LOAD_$_swiftUIKit = 0;
+void* _swift_FORCE_LOAD_$_swiftUniformTypeIdentifiers = 0;
+void* _swift_FORCE_LOAD_$_swiftXPC = 0;
+void* _swift_FORCE_LOAD_$_swift_Builtin_float = 0;
+void* _swift_FORCE_LOAD_$_swiftos = 0;
+void* _swift_FORCE_LOAD_$_swiftsimd = 0;
+`
+
 type IOS struct{}
 
 func (IOS) Build(args ...string) error {
@@ -129,11 +153,22 @@ func (ios IOS) BuildMain(args ...string) error {
 	if err := os.MkdirAll(apple_name+".app", 0o755); err != nil {
 		return xray.New(err)
 	}
+	// Write a small C file that defines Swift FORCE_LOAD symbols as no-ops.
+	// These symbols are linker markers emitted by the Swift compiler to force-link
+	// overlay libraries. Some of them (compatibility libs, Builtin_float) are static
+	// libraries in the Xcode toolchain and do NOT exist as dylibs on the device,
+	// so we must provide them directly rather than via .tbd stubs.
+	swiftStubs := filepath.Join(apple_name+".app", "swift_stubs.c")
+	if err := os.WriteFile(swiftStubs, []byte(swiftForceLoadStubs), 0o644); err != nil {
+		return xray.New(err)
+	}
+	defer os.Remove(swiftStubs)
 	var zig_args = []string{
 		"cc", "-target", "aarch64-ios",
 		filepath.Join(".", "MoltenVK.xcframework", "ios-arm64", "libMoltenVK.a"),
 		filepath.Join(".", project.Name+".xcframework", "ios-arm64", "libgodot.a"),
 		filepath.Join(".", project.Name, "dummy.cpp"),
+		swiftStubs,
 	}
 	if project.IncludesGo {
 		zig_args = append(zig_args, filepath.Join(".", project.Name, "dylibs", "go.xcframework", "ios-arm64", "libgo.a"))
@@ -144,6 +179,9 @@ func (ios IOS) BuildMain(args ...string) error {
 		"-framework", "CoreFoundation", "-framework", "QuartzCore", "-lc++.1", "-framework", "UIKit", "-framework", "Foundation",
 		"-framework", "Metal", "-framework", "GameController", "-framework", "CoreMotion",
 		"-framework", "CoreHaptics", "-framework", "AVFAudio", "-framework", "AudioToolbox",
+		"-framework", "SwiftUI",
+		"-lswiftCore", "-lswift_Concurrency", "-lswiftos",
+		"-Wl,-headerpad,0x1000",
 	)
 	if err := tooling.Zig.Exec(zig_args...); err != nil {
 		return xray.New(err)

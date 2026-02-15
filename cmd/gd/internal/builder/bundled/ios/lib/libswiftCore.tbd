@@ -1,0 +1,45 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/usr/lib/swift/libswiftCore.dylib'
+targets:
+ - arm64-ios
+exports:
+ - targets: [ arm64-ios ]
+   symbols:
+    - _$sSSN
+    - _$sSS8UTF8ViewV13_foreignCountSiyF
+    - _$ss5NeverOMn
+    - _$ss5UInt8VMn
+    - _$ss23_ContiguousArrayStorageCMn
+    - _$ss11_StringGutsV8copyUTF84intoSiSgSrys5UInt8VG_tF
+    - _$ss11_StringGutsVN
+    - _$ss13_StringObjectV10sharedUTF8SRys5UInt8VGvg
+    - _$ss5print_9separator10terminatoryypd_S2StF
+    - _$sytWV
+    - _swift_allocObject
+    - _swift_bridgeObjectRelease
+    - _swift_bridgeObjectRetain
+    - _swift_deallocObject
+    - _swift_getAtKeyPath
+    - _swift_getEnumCaseMultiPayload
+    - _swift_getEnumTagSinglePayloadGeneric
+    - _swift_getKeyPath
+    - _swift_getObjCClassMetadata
+    - _swift_getObjectType
+    - _swift_getOpaqueTypeConformance
+    - _swift_getSingletonMetadata
+    - _swift_getTypeByMangledNameInContext
+    - _swift_getTypeByMangledNameInContextInMetadataState
+    - _swift_getWitnessTable
+    - _swift_initStaticObject
+    - _swift_initStructMetadata
+    - _swift_isUniquelyReferenced_nonNull_native
+    - _swift_release
+    - _swift_retain
+    - _swift_slowAlloc
+    - _swift_slowDealloc
+    - _swift_storeEnumTagMultiPayload
+    - _swift_storeEnumTagSinglePayloadGeneric
+    - _swift_unknownObjectRetain
+    - __swiftEmptyArrayStorage
+...

@@ -33,8 +33,10 @@ exports:
     - _objc_autoreleasePoolPush
     - _objc_autoreleasePoolPop
     - _objc_autorelease
+    - _objc_allocWithZone
     - _objc_alloc_init
     - _objc_alloc
+    - _objc_opt_self
     - __objc_empty_cache
    objc-classes:
     - NSObject
