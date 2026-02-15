@@ -1,0 +1,76 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/SwiftUI.framework/SwiftUI'
+targets:
+ - arm64-ios
+exports:
+ - targets: [ arm64-ios ]
+   symbols:
+    - _$s11Coordinator7SwiftUI29UIViewControllerRepresentablePTl
+    - _$s20UIViewControllerType7SwiftUI0aB13RepresentablePTl
+    - _$s4Body7SwiftUI3AppPTl
+    - _$s4Body7SwiftUI4ViewPTl
+    - _$s7SwiftUI10ScenePhaseO10backgroundyA2CmFWC
+    - _$s7SwiftUI10ScenePhaseO6activeyA2CmFWC
+    - _$s7SwiftUI10ScenePhaseO8inactiveyA2CmFWC
+    - _$s7SwiftUI10ScenePhaseOMa
+    - _$s7SwiftUI10ScenePhaseOMn
+    - _$s7SwiftUI11EnvironmentV7ContentOMa
+    - _$s7SwiftUI11EnvironmentV7ContentOMn
+    - _$s7SwiftUI11EnvironmentVMn
+    - _$s7SwiftUI11WindowGroupV2id5title11lazyContentACyxGSSSg_AA4TextVSgxyctcfC
+    - _$s7SwiftUI11WindowGroupV7contentACyxGxyXE_tcfC
+    - _$s7SwiftUI11WindowGroupVMn
+    - _$s7SwiftUI11WindowGroupVyxGAA5SceneAAMc
+    - _$s7SwiftUI12SceneBuilderV10buildBlockyxxAA0C0RzlFZ
+    - _$s7SwiftUI15ModifiedContentVMn
+    - _$s7SwiftUI15ModifiedContentVyxq_GAA4ViewA2aERzAA0E8ModifierR_rlMc
+    - _$s7SwiftUI15SafeAreaRegionsV3allACvgZ
+    - _$s7SwiftUI17EnvironmentValuesV10scenePhaseAA05SceneF0Ovg
+    - _$s7SwiftUI17EnvironmentValuesV10scenePhaseAA05SceneF0OvpMV
+    - _$s7SwiftUI17EnvironmentValuesV10scenePhaseAA05SceneF0Ovs
+    - _$s7SwiftUI17EnvironmentValuesVACycfC
+    - _$s7SwiftUI17EnvironmentValuesVMa
+    - _$s7SwiftUI17EnvironmentValuesVMn
+    - _$s7SwiftUI20_ValueActionModifierVMn
+    - _$s7SwiftUI20_ValueActionModifierVyxGAA04ViewE0AAMc
+    - _$s7SwiftUI28UIApplicationDelegateAdaptorV12wrappedValuexvg
+    - _$s7SwiftUI28UIApplicationDelegateAdaptorVMa
+    - _$s7SwiftUI28UIApplicationDelegateAdaptorVMn
+    - _$s7SwiftUI28UIApplicationDelegateAdaptorVyACyxGxmcfC
+    - _$s7SwiftUI29UIViewControllerRepresentableMp
+    - _$s7SwiftUI29UIViewControllerRepresentableP04makecD07context0cD4TypeQzAA0cdE7ContextVyxG_tFTq
+    - _$s7SwiftUI29UIViewControllerRepresentableP06updatecD0_7contexty0cD4TypeQz_AA0cdE7ContextVyxGtFTq
+    - _$s7SwiftUI29UIViewControllerRepresentableP09dismantlecD0_11coordinatory0cD4TypeQz_11CoordinatorQztFZTq
+    - _$s7SwiftUI29UIViewControllerRepresentableP12sizeThatFits_06uiViewD07contextSo6CGSizeVSgAA08ProposedJ4SizeV_0cD4TypeQzAA0cdE7ContextVyxGtFTq
+    - _$s7SwiftUI29UIViewControllerRepresentableP14_layoutOptionsyAA013_PlatformViewe6LayoutG0V0cD4TypeQzFZTq
+    - _$s7SwiftUI29UIViewControllerRepresentableP15makeCoordinator0G0QzyFTq
+    - _$s7SwiftUI29UIViewControllerRepresentableP19_identifiedViewTree2inAA011_IdentifiedgH0O0cD4TypeQz_tFTq
+    - _$s7SwiftUI29UIViewControllerRepresentablePAA4ViewTb
+    - _$s7SwiftUI29UIViewControllerRepresentablePAAE09dismantlecD0_11coordinatory0cD4TypeQz_11CoordinatorQztFZ
+    - _$s7SwiftUI29UIViewControllerRepresentablePAAE12sizeThatFits_06uiViewD07contextSo6CGSizeVSgAA08ProposedJ4SizeV_0cD4TypeQzAA0cdE7ContextVyxGtF
+    - _$s7SwiftUI29UIViewControllerRepresentablePAAE13_makeViewList4view6inputsAA01_gH7OutputsVAA11_GraphValueVyxG_AA01_gH6InputsVtFZ
+    - _$s7SwiftUI29UIViewControllerRepresentablePAAE14_layoutOptionsyAA013_PlatformViewe6LayoutG0V0cD4TypeQzFZ
+    - _$s7SwiftUI29UIViewControllerRepresentablePAAE19_identifiedViewTree2inAA011_IdentifiedgH0O0cD4TypeQz_tF
+    - _$s7SwiftUI29UIViewControllerRepresentablePAAE4bodys5NeverOvg
+    - _$s7SwiftUI29UIViewControllerRepresentablePAAE9_makeView4view6inputsAA01_G7OutputsVAA11_GraphValueVyxG_AA01_G6InputsVtFZ
+    - _$s7SwiftUI29UIViewControllerRepresentablePAAyt11CoordinatorRtzrlE04makeF0yyF
+    - _$s7SwiftUI30_SafeAreaRegionsIgnoringLayoutVAA12ViewModifierAAWP
+    - _$s7SwiftUI30_SafeAreaRegionsIgnoringLayoutVMn
+    - _$s7SwiftUI3AppMp
+    - _$s7SwiftUI3AppP4BodyAC_AA5SceneTn
+    - _$s7SwiftUI3AppP4body4BodyQzvgTq
+    - _$s7SwiftUI3AppPAAE4mainyyFZ
+    - _$s7SwiftUI3AppPxycfCTq
+    - _$s7SwiftUI3LogO013runtimeIssuesC0So9OS_os_logCvgZ
+    - _$s7SwiftUI4EdgeO3SetV3allAEvgZ
+    - _$s7SwiftUI4ViewMp
+    - _$s7SwiftUI4ViewP05_makeC04view6inputsAA01_C7OutputsVAA11_GraphValueVyxG_AA01_C6InputsVtFZTq
+    - _$s7SwiftUI4ViewP05_makeC4List4view6inputsAA01_cE7OutputsVAA11_GraphValueVyxG_AA01_cE6InputsVtFZTq
+    - _$s7SwiftUI4ViewP14_viewListCount6inputsSiSgAA01_ceF6InputsV_tFZTq
+    - _$s7SwiftUI4ViewP4BodyAC_AaBTn
+    - _$s7SwiftUI4ViewP4body4BodyQzvgTq
+    - _$s7SwiftUI4ViewPAAE14_viewListCount6inputsSiSgAA01_ceF6InputsV_tFZ
+    - _$s7SwiftUI5SceneMp
+    - _$ss5NeverO7SwiftUI4ViewACWP
+...
