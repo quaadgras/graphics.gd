@@ -117,14 +117,14 @@ func VariantTypeOf(rtype reflect.Type) (vtype gdextension.VariantType, ok bool) 
 	case reflect.Complex64, reflect.Complex128:
 		return gdextension.TypeVector2, true
 	case reflect.Pointer:
-		if rtype.Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
+		if rtype.Implements(reflect.TypeFor[IsClass]()) {
 			return gdextension.TypeObject, true
 		}
 		return VariantTypeOf(rtype.Elem())
 	case reflect.Func:
 		return gdextension.TypeCallable, true
 	case reflect.Array:
-		if rtype.Elem().Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
+		if rtype.Implements(reflect.TypeFor[IsClass]()) {
 			return gdextension.TypeObject, true
 		}
 		return gdextension.TypeArray, true

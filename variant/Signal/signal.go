@@ -128,9 +128,7 @@ type Void struct {
 // Emit the signal to all connected signal handlers. Safe to call from any goroutine.
 // This function is safe to call from any goroutine.
 func (signal Void) Emit() {
-	Callable.Defer(Callable.New(func() {
-		signal.Any.Emit()
-	}))
+	signal.Any.Emit()
 }
 
 // Solo value that can be signaled, add this as a field inside a [classdb.Extension]
@@ -147,9 +145,7 @@ func (signal Solo[A]) Call(fn func(A)) {
 
 // Emit the value to all connected signal handlers. Safe to call from any goroutine.
 func (signal Solo[A]) Emit(a A) {
-	Callable.Defer(Callable.New(func() {
-		signal.Any.Emit(variant.New(a))
-	}))
+	signal.Any.Emit(variant.New(a))
 }
 
 // Pair of values that can be signaled, add this as a field inside a [classdb.Extension]
@@ -166,9 +162,7 @@ func (signal Pair[A, B]) Call(fn func(A, B)) {
 
 // Emit the pair of values to all connected signal handlers. Safe to call from any goroutine.
 func (signal Pair[A, B]) Emit(a A, b B) {
-	Callable.Defer(Callable.New(func() {
-		signal.Any.Emit(variant.New(a), variant.New(b))
-	}))
+	signal.Any.Emit(variant.New(a), variant.New(b))
 }
 
 // Trio of values that can be signaled, add this as a field inside a [classdb.Extension]
@@ -185,9 +179,7 @@ func (signal Trio[A, B, C]) Call(fn func(A, B, C)) {
 
 // Emit the pair of values to all connected signal handlers. Safe to call from any goroutine.
 func (signal Trio[A, B, C]) Emit(a A, b B, c C) {
-	Callable.Defer(Callable.New(func() {
-		signal.Any.Emit(variant.New(a), variant.New(b), variant.New(c))
-	}))
+	signal.Any.Emit(variant.New(a), variant.New(b), variant.New(c))
 }
 
 // Quad of values that can be signaled, add this as a field inside a [classdb.Extension]
@@ -204,9 +196,7 @@ func (signal Quad[A, B, C, D]) Call(fn func(A, B, C, D)) {
 
 // Emit the pair of values to all connected signal handlers. Safe to call from any goroutine.
 func (signal Quad[A, B, C, D]) Emit(a A, b B, c C, d D) {
-	Callable.Defer(Callable.New(func() {
-		signal.Any.Emit(variant.New(a), variant.New(b), variant.New(c), variant.New(d))
-	}))
+	signal.Any.Emit(variant.New(a), variant.New(b), variant.New(c), variant.New(d))
 }
 
 // Quin of values that can be signaled, add this as a field inside a [classdb.Extension]
@@ -224,9 +214,7 @@ func (signal Quin[A, B, C, D, E]) Call(fn func(A, B, C, D, E)) {
 // Emit the pair of values to all connected signal handlers. Safe to call from any goroutine.
 // This function is safe to call from any goroutine.
 func (signal Quin[A, B, C, D, E]) Emit(a A, b B, c C, d D, e E) {
-	Callable.Defer(Callable.New(func() {
-		signal.Any.Emit(variant.New(a), variant.New(b), variant.New(c), variant.New(d), variant.New(e))
-	}))
+	signal.Any.Emit(variant.New(a), variant.New(b), variant.New(c), variant.New(d), variant.New(e))
 }
 
 // Hexa of values that can be signaled, add this as a field inside a [classdb.Extension]
@@ -244,7 +232,5 @@ func (signal Hexa[A, B, C, D, E, F]) Call(fn func(A, B, C, D, E, F)) {
 // Emit the pair of values to all connected signal handlers. Safe to call from any goroutine.
 // This function is safe to call from any goroutine.
 func (signal Hexa[A, B, C, D, E, F]) Emit(a A, b B, c C, d D, e E, f F) {
-	Callable.Defer(Callable.New(func() {
-		signal.Any.Emit(variant.New(a), variant.New(b), variant.New(c), variant.New(d), variant.New(e), variant.New(f))
-	}))
+	signal.Any.Emit(variant.New(a), variant.New(b), variant.New(c), variant.New(d), variant.New(e), variant.New(f))
 }

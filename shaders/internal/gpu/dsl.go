@@ -1,21 +1,25 @@
 package gpu
 
 import (
+	"reflect"
+	"strings"
+
 	"graphics.gd/classdb/ShaderMaterial"
 )
 
 type Expression struct {
+	identity *byte
 	indirect Evaluator
 	uniform  string
 	shader   ShaderMaterial.Any
 }
 
 func Uniform(name string, shader ShaderMaterial.Any) Evaluator {
-	return Expression{uniform: name, shader: shader}
+	return Expression{identity: new(byte), uniform: name, shader: shader}
 }
 
 func New(e Evaluator) Expression {
-	return Expression{indirect: e}
+	return Expression{identity: new(byte), indirect: e}
 }
 
 func Op(a Evaluator, op string, b Evaluator) Expression {
@@ -32,12 +36,28 @@ func (e Expression) evaluate() Evaluator {
 	return nil
 }
 
-func (e *Expression) set(val Evaluator) {
+func (e *Expression) set(ptr Pointer, val Evaluator) {
 	if expr, ok := val.(Expression); ok {
 		*e = expr
-		return
+	} else {
+		*e = New(val)
 	}
-	*e = New(val)
+	ifc := reflect.ValueOf(ptr).Elem()
+	for field, value := range ifc.Fields() {
+		if !field.IsExported() || field.Anonymous {
+			continue
+		}
+		if ptr, ok := reflect.TypeAssert[Pointer](value.Addr()); ok {
+			ptr.set(ptr, New(Select{
+				Value: val,
+				Field: strings.ToLower(field.Name),
+			}))
+		}
+	}
+}
+
+func (e Expression) Identity() *byte {
+	return e.identity
 }
 
 func (e Expression) getShader() ShaderMaterial.Any {
@@ -63,7 +83,7 @@ type HasShader interface {
 }
 
 type Pointer interface {
-	set(Evaluator)
+	set(Pointer, Evaluator)
 }
 
 type Operation struct {
@@ -85,7 +105,16 @@ func Evaluate(e Evaluator) Evaluator {
 }
 
 func Set(ptr Pointer, val Evaluator) {
-	ptr.set(val)
+	ptr.set(ptr, val)
+}
+
+type Select struct {
+	Value Evaluator
+	Field string
+}
+
+func (i Select) evaluate() Evaluator {
+	return i
 }
 
 type Ternary struct {

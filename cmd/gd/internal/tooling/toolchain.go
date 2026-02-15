@@ -57,18 +57,21 @@ func (exe toolchain) PathToCommand() string {
 }
 
 func (exe toolchain) Exec(args ...string) error {
-	for i, arg := range args {
+	var converted []string
+	for _, arg := range args {
 		if strings.Contains(arg, "=") {
 			arg, _, _ = strings.Cut(arg, "=")
 		}
 		if newarg, ok := exe.ConvertArguments[arg]; ok {
 			if newarg == "" {
-				args = append(args[:i], args[i+1:]...)
 				continue
 			}
-			args[i] = newarg
+			converted = append(converted, newarg)
+		} else {
+			converted = append(converted, arg)
 		}
 	}
+	args = converted
 	path, err := exe.Lookup()
 	if err != nil {
 		return xray.New(err)
@@ -204,7 +207,8 @@ func (exe *toolchain) LookupPlatform(GOOS, GOARCH string) (string, error) {
 			exe_path = filepath.Join(install_path, "Contents", "MacOS", name)
 		}
 		if exe.Name == "godot" && os.Getenv("RUNNING_INSIDE_GODOT") != "" {
-			return install_path, nil
+			exe.Path = install_path
+			return exe.PathToCommand(), nil
 		}
 		version, err := exec.Command(exe_path, exe.VersionFlag).CombinedOutput()
 		version = bytes.TrimSpace(version)
