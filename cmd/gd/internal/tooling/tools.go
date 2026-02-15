@@ -20,6 +20,16 @@ var Godot = toolchain{
 	},
 }
 
+var LD64_LLD = toolchain{
+	Name:          "ld64.lld",
+	Version:       "21.1.8",
+	VersionFlag:   "--version",
+	VersionPrefix: "LLD 21.",
+	DownloadURL:   "https://release.graphics.gd/ld64.lld.$(GOOS).$(GOARCH)$(EXT)",
+	DownloadEXT:   map[string]string{"linux": "", "windows": ".exe", "darwin": ""},
+	RequiredFor:   "iOS linking",
+}
+
 var Zig = toolchain{
 	Name:         "zig",
 	Version:      "0.15.2",
