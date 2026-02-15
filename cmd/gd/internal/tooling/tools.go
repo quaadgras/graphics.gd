@@ -3,7 +3,7 @@ package tooling
 var Godot = toolchain{
 	Name:          "godot",
 	Version:       "4.6",
-	VersionFlag:   "--version",
+	VersionFlags:  []string{"--version"},
 	VersionPrefix: "4.6",
 	DownloadHint:  "https://godotengine.org/download",
 	DownloadURL:   "https://github.com/godotengine/godot/releases/download/$(VERSION)-stable/Godot_v$(VERSION)-stable_$(OS).zip",
@@ -23,7 +23,7 @@ var Godot = toolchain{
 var LLVM = toolchain{
 	Name:          "llvm",
 	Version:       "21.1.8",
-	VersionFlag:   "clang --version",
+	VersionFlags:  []string{"clang", "--version"},
 	VersionPrefix: "clang version 21.",
 	DownloadURL:   "https://release.graphics.gd/llvm.$(GOOS).$(GOARCH)$(EXT)",
 	DownloadEXT:   map[string]string{"linux": "", "windows": ".exe", "darwin": ""},
@@ -33,7 +33,7 @@ var LLVM = toolchain{
 var Zig = toolchain{
 	Name:         "zig",
 	Version:      "0.15.2",
-	VersionFlag:  "version",
+	VersionFlags: []string{"version"},
 	DownloadHint: "https://ziglang.org/download/",
 	DownloadURL:  "https://ziglang.org/download/$(VERSION)/zig-$(ARCH)-$(OS)-$(VERSION)$(EXT)",
 	DownloadOS:   map[string]string{"windows": "windows", "darwin": "macos", "linux": "linux"},
@@ -44,7 +44,7 @@ var Zig = toolchain{
 
 var Go = toolchain{
 	Name:          "go",
-	VersionFlag:   "version",
+	VersionFlags:  []string{"version"},
 	Version:       "1.26.0",
 	DownloadHint:  "https://go.dev/dl/",
 	VersionPrefix: "go version go1.26.",
@@ -58,24 +58,24 @@ var Go = toolchain{
 var Velopack = toolchain{
 	Name:          "vpk",
 	Version:       "0.0.1298",
-	VersionFlag:   "--help",
+	VersionFlags:  []string{"--help"},
 	VersionPrefix: "Description:\n  Velopack CLI 0.0.1298,",
 	RequiredFor:   "self-updating-bundles",
 }
 
 var AndroidPackageSigner = toolchain{
-	Name:        "apksigner",
-	Version:     "0.9",
-	VersionFlag: "--version",
-	DownloadURL: "https://release.graphics.gd/apksigner.$(GOOS).$(GOARCH)$(EXT)",
-	DownloadEXT: map[string]string{"linux": "", "windows": ".exe", "darwin": ""},
-	RequiredFor: "building the .apk",
+	Name:         "apksigner",
+	Version:      "0.9",
+	VersionFlags: []string{"--version"},
+	DownloadURL:  "https://release.graphics.gd/apksigner.$(GOOS).$(GOARCH)$(EXT)",
+	DownloadEXT:  map[string]string{"linux": "", "windows": ".exe", "darwin": ""},
+	RequiredFor:  "building the .apk",
 }
 
 var AndroidDebugBridge = toolchain{
 	Name:            "adb",
 	Version:         "1.0.41",
-	VersionFlag:     "--version",
+	VersionFlags:    []string{"--version"},
 	VersionPrefix:   "Android Debug Bridge version 1.0.41",
 	DownloadURL:     "https://release.graphics.gd/adb.$(GOOS).$(GOARCH)$(EXT)",
 	DownloadEXT:     map[string]string{"linux": "", "windows": ".zip", "darwin": ""},
@@ -86,7 +86,7 @@ var AndroidDebugBridge = toolchain{
 var UltimatePackerForExecutables = toolchain{
 	Name:          "upx",
 	Version:       "5.0.2",
-	VersionFlag:   "--version",
+	VersionFlags:  []string{"--version"},
 	VersionPrefix: "upx 5.0.2",
 	DownloadHint:  "https://github.com/upx/upx/releases/latest",
 	Downloads: map[string]map[string]string{
@@ -104,7 +104,7 @@ var AndroidPackageKitTool = toolchain{
 	Name:          "apktool",
 	Version:       "2.12.1",
 	VersionPrefix: "2.12.1-",
-	VersionFlag:   "v",
+	VersionFlags:  []string{"v"},
 	DownloadURL:   "https://release.graphics.gd/apktool.$(GOOS).$(GOARCH)$(EXT)",
 	DownloadEXT:   map[string]string{"linux": "", "windows": ".exe", "darwin": ""},
 	RequiredFor:   "converting the exported .apk into an .aab",
@@ -114,7 +114,7 @@ var AndroidAssetPackagingTool = toolchain{
 	Name:            "aapt2",
 	Version:         "2.19-android-13.0.0_r6",
 	VersionPrefix:   "Android Asset Packaging Tool (aapt) 2.",
-	VersionFlag:     "version",
+	VersionFlags:    []string{"version"},
 	DownloadURL:     "https://release.graphics.gd/aapt2.$(GOOS).$(GOARCH)$(EXT)",
 	DownloadEXT:     map[string]string{"linux": "", "windows": ".exe", "darwin": ""},
 	RequiredFor:     "converting the exported .apk into an .aab",
@@ -122,12 +122,12 @@ var AndroidAssetPackagingTool = toolchain{
 }
 
 var BundleTool = toolchain{
-	Name:        "bundletool",
-	Version:     "1.18.3",
-	VersionFlag: "version",
-	DownloadURL: "https://release.graphics.gd/bundletool.$(GOOS).$(GOARCH)$(EXT)",
-	DownloadEXT: map[string]string{"linux": "", "windows": ".exe", "darwin": ""},
-	RequiredFor: "converting the exported .apk into an .aab",
+	Name:         "bundletool",
+	Version:      "1.18.3",
+	VersionFlags: []string{"version"},
+	DownloadURL:  "https://release.graphics.gd/bundletool.$(GOOS).$(GOARCH)$(EXT)",
+	DownloadEXT:  map[string]string{"linux": "", "windows": ".exe", "darwin": ""},
+	RequiredFor:  "converting the exported .apk into an .aab",
 }
 
 var Android = toolchain{

@@ -167,7 +167,7 @@ func Setup(build_godot func() error) error {
 	if err := build_godot(); err != nil {
 		return xray.New(err)
 	}
-	gdextension_version, err := tooling.Godot.Output(tooling.Godot.VersionFlag)
+	gdextension_version, err := tooling.Godot.Output(tooling.Godot.VersionFlags...)
 	if err != nil {
 		return xray.New(err)
 	}
