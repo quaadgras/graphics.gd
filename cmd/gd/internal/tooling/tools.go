@@ -22,7 +22,7 @@ var Godot = toolchain{
 
 var Zig = toolchain{
 	Name:         "zig",
-	Version:      "0.15.1",
+	Version:      "0.15.2",
 	VersionFlag:  "version",
 	DownloadHint: "https://ziglang.org/download/",
 	DownloadURL:  "https://ziglang.org/download/$(VERSION)/zig-$(ARCH)-$(OS)-$(VERSION)$(EXT)",

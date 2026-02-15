@@ -81,7 +81,9 @@ exports:
     - __ZNSt3__16thread20hardware_concurrencyEv
     - __ZNSt3__16localeaSERKS0_
     - __ZNSt3__16localeD1Ev
+    - __ZNSt3__16localeC1Ev
     - __ZNSt3__16localeC1ERKS0_
+    - __ZTVNSt3__115basic_streambufIcNS_11char_traitsIcEEEE
     - __ZNSt3__16locale7classicEv
     - __ZNSt3__16chrono12system_clock3nowEv
     - __ZNSt3__16chrono12steady_clock3nowEv
