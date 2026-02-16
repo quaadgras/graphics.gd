@@ -1,6 +1,8 @@
 // Package Error provides generic or codes for use as error return values that do not allocate.
 package Error
 
+import "strconv" 
+
 // Code is an error code.
 type Code uint8
 
@@ -163,6 +165,6 @@ func (code Code) Error() string { //gd:or_string
 	case PrinterOnFire:
 		return "Printer on fire"
 	default:
-		return "Unknown or"
+		return "Unknown Error.Code: " + strconv.Itoa(int(code))
 	}
 }
