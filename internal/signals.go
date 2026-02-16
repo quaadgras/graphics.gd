@@ -78,6 +78,7 @@ func (SignalProxy) Emit(raw complex128, values ...VariantPkg.Any) {
 			vargs[i] = NewVariant(v)
 		}
 		sig.Emit(vargs...)
+		return
 	}
 	CallableType.Defer(CallableType.New(func() {
 		sig := pointers.Load[Signal](raw)
