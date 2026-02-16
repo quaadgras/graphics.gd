@@ -50,7 +50,7 @@ func NewSignalCheck(SignalProxy, complex128) bool {
 
 func (SignalProxy) Attach(raw complex128, fn CallableType.Function, flags SignalType.Flags) error {
 	sig := pointers.Load[Signal](raw)
-	return ErrorType.Code(sig.Connect(InternalCallable(fn), Int(flags)))
+	return ToError(ErrorType.Code(sig.Connect(InternalCallable(fn), Int(flags)))) 
 }
 func (SignalProxy) Remove(raw complex128, fn CallableType.Function) {
 	sig := pointers.Load[Signal](raw)
