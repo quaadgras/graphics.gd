@@ -9,6 +9,7 @@ import (
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/internal/threadcheck"
 	VariantPkg "graphics.gd/variant"
 	CallableType "graphics.gd/variant/Callable"
 	DictionaryType "graphics.gd/variant/Dictionary"
@@ -50,7 +51,7 @@ func NewSignalCheck(SignalProxy, complex128) bool {
 
 func (SignalProxy) Attach(raw complex128, fn CallableType.Function, flags SignalType.Flags) error {
 	sig := pointers.Load[Signal](raw)
-	return ToError(ErrorType.Code(sig.Connect(InternalCallable(fn), Int(flags)))) 
+	return ToError(ErrorType.Code(sig.Connect(InternalCallable(fn), Int(flags))))
 }
 func (SignalProxy) Remove(raw complex128, fn CallableType.Function) {
 	sig := pointers.Load[Signal](raw)
@@ -71,7 +72,7 @@ func (SignalProxy) Consumers(raw complex128) iter.Seq[SignalType.Consumer] {
 	}
 }
 func (SignalProxy) Emit(raw complex128, values ...VariantPkg.Any) {
-	if gdextension.Host.Threads.Main() {
+	if threadcheck.Main() {
 		sig := pointers.Load[Signal](raw)
 		vargs := make([]Variant, len(values))
 		for i, v := range values {

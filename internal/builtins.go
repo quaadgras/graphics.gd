@@ -6,9 +6,11 @@ import (
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/internal/ring"
 )
 
 func callBuiltinMethod[T any](self unsafe.Pointer, method gdextension.MethodForBuiltinType, shape gdextension.Shape, args unsafe.Pointer) T {
+	ring.Main.Flush()
 	var result T
 	call_builtin_noescape(self, method, unsafe.Pointer(&result), shape, args)
 	return result
@@ -539,6 +541,7 @@ func (o Object) HasMethod(name StringName) bool {
 	}))
 }
 func (o Object) Call(method StringName, args ...Variant) (Variant, error) {
+	ring.Main.Flush()
 	self := gdextension.Object(pointers.Get(o)[0])
 	name := pointers.Get(method)
 	if gdextension.Host.Objects.Script.DefinesMethod(self, name) {

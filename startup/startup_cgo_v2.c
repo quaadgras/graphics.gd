@@ -1131,6 +1131,31 @@ void gd_object_unsafe_call(uintptr_t obj, uintptr_t method, ANY result, UINT64(s
     gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)result);
 };
 
+typedef struct {
+    uintptr_t object;
+    uintptr_t method;
+    uint64_t  shape;
+    uint8_t   args[256];
+    uint8_t   result[64];
+    uint16_t  refs[16];
+    uintptr_t owner;
+} ring_entry;
+
+void gd_ring_flush(void *entries, uint32_t tail, uint32_t head) {
+    ring_entry *ring = (ring_entry *)entries;
+    for (uint32_t i = tail; i != head; i++) {
+        ring_entry *e = &ring[i & 0xFF];
+        void *points[16];
+        prepare_callframe(1, &points[0], e->shape, e->args);
+        gdextension_object_method_bind_ptrcall(
+            (GDExtensionMethodBindPtr)e->method,
+            (GDExtensionObjectPtr)e->object,
+            (const GDExtensionConstTypePtr*)&points[0],
+            (GDExtensionTypePtr)e->result
+        );
+    }
+}
+
 uint64_t gd_object_unsafe_call_8(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args) {
     void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
     uint64_t result = 0;

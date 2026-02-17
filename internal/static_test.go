@@ -10,10 +10,12 @@ import (
 )
 
 func TestStatic(t *testing.T) {
-	var image Image.Instance = Image.Create(1, 1, false, Image.FormatRgb8)
-	if image.GetWidth() != 1 {
-		t.Fail()
-	}
+	runOnMain(t, func(t testing.TB) {
+		var image Image.Instance = Image.Create(1, 1, false, Image.FormatRgb8)
+		if image.GetWidth() != 1 {
+			t.Fail()
+		}
+	})
 }
 
 type ClassWithStaticMethods struct {
@@ -23,25 +25,27 @@ type ClassWithStaticMethods struct {
 func CallStatic() {}
 
 func TestRegisterStaticMethod(t *testing.T) {
-	classdb.Register[ClassWithStaticMethods](
-		map[string]any{
-			"call_static": CallStatic,
-		},
-	)
+	runOnMain(t, func(t testing.TB) {
+		classdb.Register[ClassWithStaticMethods](
+			map[string]any{
+				"call_static": CallStatic,
+			},
+		)
 
-	var runner = Object.New()
-	var script = GDScript.New().AsScript()
-	script.SetSourceCode(`extends Object
+		var runner = Object.New()
+		var script = GDScript.New().AsScript()
+		script.SetSourceCode(`extends Object
 
 func test_static(obj):
     obj.call_static()
     return true
 `)
-	script.Reload()
-	runner.SetScript(script)
+		script.Reload()
+		runner.SetScript(script)
 
-	done, ok := Object.Call(runner, "test_static", new(ClassWithStaticMethods)).(bool)
-	if !done || !ok {
-		t.Fail()
-	}
+		done, ok := Object.Call(runner, "test_static", new(ClassWithStaticMethods)).(bool)
+		if !done || !ok {
+			t.Fail()
+		}
+	})
 }
