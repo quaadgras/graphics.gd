@@ -25,6 +25,8 @@ import (
 	"unsafe"
 
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/ring"
+	"graphics.gd/internal/threadcheck"
 )
 
 func Call[T any](object gdextension.Object, method gdextension.MethodForClass, shape gdextension.Shape, args any) T {
@@ -33,10 +35,18 @@ func Call[T any](object gdextension.Object, method gdextension.MethodForClass, s
 	if args != nil {
 		argptr = reflect.ValueOf(args).UnsafePointer()
 	}
-	switch {
-	case unsafe.Sizeof(result) == 0:
+	if unsafe.Sizeof(result) == 0 {
+		if threadcheck.Main() {
+			ring.Main.Buffer(uintptr(object), uintptr(method), uint64(shape), argptr)
+			return result
+		}
 		call_noescape(object, method, unsafe.Pointer(&result), shape, argptr)
 		return result
+	}
+	if ring.Main.Pending() && threadcheck.Main() {
+		ring.Main.Flush()
+	}
+	switch {
 	case unsafe.Sizeof(result) <= 8:
 		var r8 = call_8_noescape(object, method, shape, argptr)
 		result = *(*T)(unsafe.Pointer(&r8))

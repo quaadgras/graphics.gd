@@ -25,7 +25,8 @@ func init() {
 
 // TestDictionaryStringFields tests that string fields within a dictionary are not inappropriately freed.
 func TestDictionaryStringFields(t *testing.T) {
-	const source string = `extends BuggyNode
+	runOnMain(t, func(t testing.TB) {
+		const source string = `extends BuggyNode
 
 func test_dictionary_string_fields() -> String:
 	var the_string = "Hello world!"
@@ -35,18 +36,19 @@ func test_dictionary_string_fields() -> String:
 	})
 	return the_string
 `
-	var runner = new(BuggyNode)
-	var script = GDScript.New().AsScript()
-	script.SetSourceCode(source)
-	script.Reload()
-	Object.Instance(runner.AsObject()).SetScript(script)
-	engine := Object.Call(runner, "test_dictionary_string_fields").(String.Readable)
-	if engine.String() != "Hello world!" {
-		t.Fatalf("Expected 'Hello world!', got '%s'", engine)
-	}
+		var runner = new(BuggyNode)
+		var script = GDScript.New().AsScript()
+		script.SetSourceCode(source)
+		script.Reload()
+		Object.Instance(runner.AsObject()).SetScript(script)
+		engine := Object.Call(runner, "test_dictionary_string_fields").(String.Readable)
+		if engine.String() != "Hello world!" {
+			t.Fatalf("Expected 'Hello world!', got '%s'", engine)
+		}
 
-	engine = Object.Call(runner, "test_dictionary_string_fields").(String.Readable)
-	if engine.String() != "Hello world!" {
-		t.Fatalf("Expected 'Hello world!', got '%s'", engine)
-	}
+		engine = Object.Call(runner, "test_dictionary_string_fields").(String.Readable)
+		if engine.String() != "Hello world!" {
+			t.Fatalf("Expected 'Hello world!', got '%s'", engine)
+		}
+	})
 }

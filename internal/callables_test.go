@@ -23,23 +23,25 @@ func get_node() -> Node:
 `
 
 func TestCallables(t *testing.T) {
-	var runner = Object.New()
-	var script = GDScript.New().AsScript()
-	script.SetSourceCode(callable_test)
-	script.Reload()
-	runner.SetScript(script)
+	runOnMain(t, func(t testing.TB) {
+		var runner = Object.New()
+		var script = GDScript.New().AsScript()
+		script.SetSourceCode(callable_test)
+		script.Reload()
+		runner.SetScript(script)
 
-	Object.Call(runner, "test_callable", Callable.New(func() Node.Instance {
-		var node = Node.New()
-		node.SetName("TestNode")
-		return node
-	}))
-	pointers.Cycle()
-	runner.ClassName()
-	pointers.Cycle()
+		Object.Call(runner, "test_callable", Callable.New(func() Node.Instance {
+			var node = Node.New()
+			node.SetName("TestNode")
+			return node
+		}))
+		pointers.Cycle()
+		runner.ClassName()
+		pointers.Cycle()
 
-	var node = Object.Call(runner, "get_node").(Node.Instance)
-	if node.Name() != "TestNode" {
-		t.Fatalf("Expected 'TestNode', got '%s'", node.Name())
-	}
+		var node = Object.Call(runner, "get_node").(Node.Instance)
+		if node.Name() != "TestNode" {
+			t.Fatalf("Expected 'TestNode', got '%s'", node.Name())
+		}
+	})
 }

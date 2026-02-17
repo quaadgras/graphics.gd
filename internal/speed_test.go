@@ -8,39 +8,50 @@ import (
 	"graphics.gd/classdb/Engine"
 	"graphics.gd/classdb/GDScript"
 	gd "graphics.gd/internal"
+	"graphics.gd/internal/threadcheck"
 	"graphics.gd/variant/Object"
 )
 
 func BenchmarkBuiltinPointerCall(B *testing.B) {
-	B.ReportAllocs()
-	s := gd.NewString("Hello, World!")
-	var sum int64
-	for B.Loop() {
-		sum += s.Length()
-	}
-	if sum != int64(B.N)*int64(len("Hello, World!")) {
-		B.Fail()
-	}
+	benchOnMain(B, func(B *channelB) {
+		B.ReportAllocs()
+		s := gd.NewString("Hello, World!")
+		var sum int64
+		for B.Loop() {
+			sum += s.Length()
+		}
+		if sum != int64(B.N)*int64(len("Hello, World!")) {
+			B.Fail()
+		}
+	})
 }
 
 func BenchmarkMethodBindCall(B *testing.B) {
-	B.ReportAllocs()
-	for B.Loop() {
-		Engine.GetFramesPerSecond()
-	}
+	benchOnMain(B, func(B *channelB) {
+		B.ReportAllocs()
+		for B.Loop() {
+			Engine.GetFramesPerSecond()
+		}
+	})
 }
 
 func BenchmarkMethodBindCallWithArgument(B *testing.B) {
-	B.ReportAllocs()
-	for B.Loop() {
-		Engine.SetMaxFps(60)
-	}
+	benchOnMain(B, func(B *channelB) {
+		if !threadcheck.Main() {
+			B.Fatal("not main!")
+		}
+		B.ReportAllocs()
+		for B.Loop() {
+			Engine.SetMaxFps(60)
+		}
+	})
 }
 
 func BenchmarkScriptCall(B *testing.B) {
-	B.ReportAllocs()
-	var script = GDScript.New().AsScript()
-	script.SetSourceCode(`extends Object
+	benchOnMain(B, func(B *channelB) {
+		B.ReportAllocs()
+		var script = GDScript.New().AsScript()
+		script.SetSourceCode(`extends Object
 var n: int
 func bench():
 	var sum = 0
@@ -48,26 +59,28 @@ func bench():
 		sum += "Hello, World!".length()
 	return sum
 `)
-	script.Reload()
-	obj := Object.New()
-	obj.SetScript(script)
-	obj[0].Set(gd.NewStringName("n"), gd.NewVariant(B.N))
-	bench := gd.NewStringName("bench")
-	var result gd.Variant
-	B.Cleanup(func() {
-		if result.Interface().(int64) != int64(B.N*len("Hello, World!")) {
-			B.Fail()
-		}
+		script.Reload()
+		obj := Object.New()
+		obj.SetScript(script)
+		obj[0].Set(gd.NewStringName("n"), gd.NewVariant(B.N))
+		bench := gd.NewStringName("bench")
+		var result gd.Variant
+		B.Cleanup(func() {
+			if result.Interface().(int64) != int64(B.N*len("Hello, World!")) {
+				B.Fail()
+			}
+		})
+		B.ResetTimer()
+		result, _ = obj[0].Call(bench)
+		obj[0].Free()
 	})
-	B.ResetTimer()
-	result, _ = obj[0].Call(bench)
-	obj[0].Free()
 }
 
 func BenchmarkCallable(B *testing.B) {
-	B.ReportAllocs()
-	var script = GDScript.New().AsScript()
-	script.SetSourceCode(`extends Object
+	benchOnMain(B, func(B *channelB) {
+		B.ReportAllocs()
+		var script = GDScript.New().AsScript()
+		script.SetSourceCode(`extends Object
 var n: int
 func bench(c):
 	var sum = 0
@@ -75,22 +88,23 @@ func bench(c):
 		sum += c.call()
 	return sum
 `)
-	script.Reload()
-	obj := Object.New()
-	obj.SetScript(script)
-	obj[0].Set(gd.NewStringName("n"), gd.NewVariant(B.N))
-	bench := gd.NewStringName("bench")
-	var array []gd.Variant
-	array = append(array, gd.NewVariant(gd.NewCallable(func() int {
-		return 1
-	})))
-	var result gd.Variant
-	B.Cleanup(func() {
-		if result.Interface().(int64) != int64(B.N) {
-			B.Fail()
-		}
+		script.Reload()
+		obj := Object.New()
+		obj.SetScript(script)
+		obj[0].Set(gd.NewStringName("n"), gd.NewVariant(B.N))
+		bench := gd.NewStringName("bench")
+		var array []gd.Variant
+		array = append(array, gd.NewVariant(gd.NewCallable(func() int {
+			return 1
+		})))
+		var result gd.Variant
+		B.Cleanup(func() {
+			if result.Interface().(int64) != int64(B.N) {
+				B.Fail()
+			}
+		})
+		B.ResetTimer()
+		result, _ = obj[0].Call(bench, array...)
+		obj[0].Free()
 	})
-	B.ResetTimer()
-	result, _ = obj[0].Call(bench, array...)
-	obj[0].Free()
 }

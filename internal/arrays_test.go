@@ -14,53 +14,59 @@ import (
 )
 
 func TestArrays(t *testing.T) {
-	var numbers = Array.New[int]()
-	numbers.Append(1)
-	if numbers.Index(0) != 1 {
-		t.Error("expected 1")
-	}
-	var packed Packed.Array[Vector3.XYZ]
-	packed.Append(Vector3.XYZ{1, 2, 3})
-	if packed.Index(0) != (Vector3.XYZ{1, 2, 3}) {
-		t.Error("expected 1, 2, 3")
-	}
-	var float32s Packed.Array[float32]
-	float32s.Resize(2)
-	float32s.SetIndex(0, 1)
-	float32s.SetIndex(1, 2)
-	if float32s.Index(0) != 1 {
-		t.Error("expected 1")
-	}
-	if float32s.Index(1) != 2 {
-		t.Error("expected 2")
-	}
+	runOnMain(t, func(t testing.TB) {
+		var numbers = Array.New[int]()
+		numbers.Append(1)
+		if numbers.Index(0) != 1 {
+			t.Error("expected 1")
+		}
+		var packed Packed.Array[Vector3.XYZ]
+		packed.Append(Vector3.XYZ{1, 2, 3})
+		if packed.Index(0) != (Vector3.XYZ{1, 2, 3}) {
+			t.Error("expected 1, 2, 3")
+		}
+		var float32s Packed.Array[float32]
+		float32s.Resize(2)
+		float32s.SetIndex(0, 1)
+		float32s.SetIndex(1, 2)
+		if float32s.Index(0) != 1 {
+			t.Error("expected 1")
+		}
+		if float32s.Index(1) != 2 {
+			t.Error("expected 2")
+		}
+	})
 }
 
 func TestArrayConversions(t *testing.T) {
-	info := Engine.GetCopyrightInfo()
-	if len(info) == 0 {
-		t.Error("expected non-empty string")
-	}
-	date := Time.GetDateDictFromSystem(false)
-	if date.Year != time.Now().Year() {
-		t.Error("expected current year")
-	}
-	advanced := Engine.Advanced().GetCopyrightInfo()
-	if advanced.Len() != len(info) {
-		t.Error("expected same length")
-	}
-	var array Array.Any
-	array.Append(variant.New(1))
-	if array.Index(0).Int() != 1 {
-		t.Error("expected 1")
-	}
-	pointers.Cycle()
-	pointers.Cycle()
+	runOnMain(t, func(t testing.TB) {
+		info := Engine.GetCopyrightInfo()
+		if len(info) == 0 {
+			t.Error("expected non-empty string")
+		}
+		date := Time.GetDateDictFromSystem(false)
+		if date.Year != time.Now().Year() {
+			t.Error("expected current year")
+		}
+		advanced := Engine.Advanced().GetCopyrightInfo()
+		if advanced.Len() != len(info) {
+			t.Error("expected same length")
+		}
+		var array Array.Any
+		array.Append(variant.New(1))
+		if array.Index(0).Int() != 1 {
+			t.Error("expected 1")
+		}
+		pointers.Cycle()
+		pointers.Cycle()
+	})
 }
 
 func BenchmarkAllocsForArrayReturnedByEngine(t *testing.B) {
-	t.ReportAllocs()
-	for t.Loop() {
-		Engine.Advanced().GetCopyrightInfo()
-	}
+	benchOnMain(t, func(t *channelB) {
+		t.ReportAllocs()
+		for t.Loop() {
+			Engine.Advanced().GetCopyrightInfo()
+		}
+	})
 }

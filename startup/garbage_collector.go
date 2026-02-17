@@ -2,7 +2,7 @@ package startup
 
 import (
 	"graphics.gd/internal/gdextension"
-	"graphics.gd/internal/pointers"
+	"graphics.gd/internal/ring"
 	"graphics.gd/variant/Callable"
 
 	_ "unsafe"
@@ -14,8 +14,9 @@ func keep_reachable_instances_alive()
 func init() {
 	gdextension.On.MainLoop.EveryFrame = func() {
 		Callable.Cycle()
+		ring.Main.Flush()
 		keep_reachable_instances_alive()
-		pointers.Cycle()
+		//pointers.Cycle()
 	}
 	gdextension.On.MainLoop.FinalFrame = func() {
 

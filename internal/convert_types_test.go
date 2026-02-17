@@ -271,18 +271,20 @@ func (c Converter) ValidTime(t time.Time) bool {
 }
 
 func TestConversions(t *testing.T) {
-	converter := &Converter{}
-	var script = GDScript.New().AsScript()
-	script.SetSourceCode(convert_types_test)
-	script.Reload()
-	Object.Instance(converter.AsObject()).SetScript(script)
-	SceneTree.Add(converter)
-	select {
-	case err := <-doneConversionsTest:
-		if err != nil {
-			t.Fatal(err)
+	runOnMain(t, func(t testing.TB) {
+		converter := &Converter{}
+		var script = GDScript.New().AsScript()
+		script.SetSourceCode(convert_types_test)
+		script.Reload()
+		Object.Instance(converter.AsObject()).SetScript(script)
+		SceneTree.Add(converter)
+		select {
+		case err := <-doneConversionsTest:
+			if err != nil {
+				t.Fatal(err)
+			}
+		case <-time.NewTimer(500 * time.Millisecond).C:
+			t.Fatal("timeout")
 		}
-	case <-time.NewTimer(500 * time.Millisecond).C:
-		t.Fatal("timeout")
-	}
+	})
 }

@@ -16,6 +16,10 @@ func currentg() uintptr
 
 var mainG = currentg()
 
+func Init() {
+	mainG = currentg()
+}
+
 // Main reports whether the caller is running on the main goroutine
 // (which is locked to the main OS thread).
 func Main() bool {
