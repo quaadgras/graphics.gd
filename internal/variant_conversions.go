@@ -5,6 +5,7 @@ package gd
 import (
 	"fmt"
 	"reflect"
+	"time"
 	"unsafe"
 
 	"graphics.gd/internal/gdextension"
@@ -391,6 +392,9 @@ func CutVariant(v any, cut bool) Variant {
 			}
 			var arg = pointers.Cut(val, cut)
 			((*noescape.Variant)(&ret)).LoadNative(gdextension.TypePackedColorArray, gdextension.SizePackedArray, unsafe.Pointer(&arg))
+		case time.Time:
+			var arg = val.UnixNano()
+			((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeInt, gdextension.SizeInt, unsafe.Pointer(&arg))
 		default:
 			var arg = pointers.Cut(newDictionary(value), cut)
 			((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeDictionary, gdextension.SizeDictionary, unsafe.Pointer(&arg))

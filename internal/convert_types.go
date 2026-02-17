@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"reflect"
 	"slices"
+	"time"
 	"unsafe"
 
 	"graphics.gd/internal/gdextension"
@@ -267,14 +268,18 @@ func convertToGoMap(rtype reflect.Type, value any) (reflect.Value, error) {
 	}
 }
 
-func convertToGoStruct(rtype reflect.Type, value any) (reflect.Value, error) {
-	i64, isInt64 := value.(Int)
-	if reflect.PointerTo(rtype).Implements(reflect.TypeFor[Enum.Pointer]()) && isInt64 {
-		enum := reflect.New(rtype)
-		enum.Interface().(Enum.Pointer).SetInt(int(i64))
-		return enum.Elem(), nil
+func convertToGoStruct(rtype reflect.Type, engineValue any) (reflect.Value, error) {
+	if i64, isInt64 := engineValue.(Int); isInt64 {
+		if reflect.PointerTo(rtype).Implements(reflect.TypeFor[Enum.Pointer]()) {
+			enum := reflect.New(rtype)
+			enum.Interface().(Enum.Pointer).SetInt(int(i64))
+			return enum.Elem(), nil
+		}
+		if rtype == reflect.TypeFor[time.Time]() {
+			return reflect.ValueOf(time.Unix(0, int64(i64))), nil
+		}
 	}
-	switch value := value.(type) {
+	switch value := engineValue.(type) {
 	case IsClass:
 		var object = value.AsObject()
 		var structure = reflect.New(rtype).Elem()

@@ -161,6 +161,12 @@ func (c Converter) CustomObject() *CustomConverterObject {
 	return &CustomConverterObject{Value: 42}
 }
 
+var refTime = time.Now()
+
+func (c Converter) Time() time.Time {
+	return refTime
+}
+
 func (c Converter) ValidInt(i int) bool               { return i == c.Int() }
 func (c Converter) ValidBool(b bool) bool             { return b == c.Bool() }
 func (c Converter) ValidInt8(i int8) bool             { return i == c.Int8() }
@@ -258,6 +264,10 @@ func (c Converter) ValidArrayInt(a Array.Contains[int]) bool {
 func (c Converter) ValidEnum(e MyEnum) bool { return e == MyEnums.B }
 func (c Converter) ValidCustomObject(a *CustomConverterObject) bool {
 	return a.Value == 42
+}
+
+func (c Converter) ValidTime(t time.Time) bool {
+	return t.Equal(refTime)
 }
 
 func TestConversions(t *testing.T) {

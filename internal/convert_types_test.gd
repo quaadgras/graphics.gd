@@ -148,6 +148,9 @@ func _init():
     if en != Converter.MyEnum.B: push_fail("Enum()")
     if !valid_enum(en): push_fail("ValidEnum()")
 
+    var time = self.time()
+    if !valid_time(time): push_fail("Time()")
+
     done()
 
 func push_fail(name: String):
