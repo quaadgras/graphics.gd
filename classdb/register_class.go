@@ -1035,7 +1035,17 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		rvalue.Elem().Set(reflect.ValueOf(native))
 		pointers.End(gdclass.GetNode(node[0])[0])
 	} else {
-		if !class.(gd.IsClassCastable).SetObject([1]gd.Object{pointers.Raw[gd.Object](pointers.Get(gdclass.GetNode(node[0])[0]))}) {
+		castable, ok := class.(gd.IsClassCastable)
+		if !ok {
+			panic(fmt.Sprintf(
+				"gd.Register: Node %s.%s (%s) does not implement gd.IsClassCastable (concrete type: %T)",
+				rvalue.Type().Name(),
+				field.Name,
+				name,
+				class,
+			))
+		}
+		if !castable.SetObject([1]gd.Object{pointers.Raw[gd.Object](pointers.Get(gdclass.GetNode(node[0])[0]))}) {
 			fmt.Printf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name)
 			panic(fmt.Sprintf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name))
 		}
