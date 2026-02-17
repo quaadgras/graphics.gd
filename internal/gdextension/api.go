@@ -231,8 +231,8 @@ type API struct {
 		Set func(dict Dictionary, index, value Variant)                       `gd:"packed_dictionary_modify"`
 	}
 	Callables struct {
-		Create func(id CallableID, object ObjectID, result CallReturns[Callable]) `gd:"callable_create"`
-		Lookup func(Callable) CallableID                                          `gd:"callable_lookup"`
+		Create func(id FunctionID, object ObjectID, result CallReturns[Callable]) `gd:"callable_create"`
+		Lookup func(Callable) FunctionID                                          `gd:"callable_lookup"`
 	}
 	Objects struct {
 		Make func(name StringName) Object                                                                                                               `gd:"object_make"`
