@@ -47,6 +47,43 @@ type CustomStringSignals struct {
 	StringSignal Signal.Solo[string] `gd:"on_string(s)"`
 }
 
+// TestSignalDisconnect tests that a callable created with Callable.New can be
+// disconnected from a Godot signal after being connected, using the same
+// Callable.Function value for both operations. This is the bug reported in
+// https://github.com/quaadgras/graphics.gd/discussions/263
+func TestSignalDisconnect(t *testing.T) {
+	custom := new(CustomStringSignals)
+	signal := gd.NewSignalOf(custom.AsObject(), gd.NewStringName("on_string"))
+
+	var callCount int
+	do := func(s string) {
+		callCount++
+	}
+	mycb := Callable.New(do)
+
+	// Connect via InternalCallable (this is what SignalProxy.Attach does)
+	c1 := gd.InternalCallable(mycb)
+	if err := signal.Connect(c1, 0); err != 0 {
+		t.Fatalf("Failed to connect signal: %d", err)
+	}
+
+	// Emit and verify the callable fires
+	signal.Emit(gd.NewVariant("test"))
+	if callCount != 1 {
+		t.Fatalf("Expected 1 call after connect, got %d", callCount)
+	}
+
+	// Disconnect via InternalCallable (this is what SignalProxy.Remove does)
+	c2 := gd.InternalCallable(mycb)
+	signal.Disconnect(c2)
+
+	// Emit again and verify the callable no longer fires
+	signal.Emit(gd.NewVariant("test2"))
+	if callCount != 1 {
+		t.Fatalf("Expected callCount to remain 1 after disconnect, got %d", callCount)
+	}
+}
+
 func TestSignalString(t *testing.T) {
 	custom := new(CustomStringSignals)
 	signal := gd.NewSignalOf(custom.AsObject(), gd.NewStringName("on_string"))

@@ -477,7 +477,7 @@ func (wasm *wasmRuntime) variant_type_unsafe_free(ctx context.Context, m api.Mod
 
 func (wasm *wasmRuntime) callable_create(ctx context.Context, m api.Module, stack []uint64) {
 	// Call gdextension.Host.Host.Callables.Create
-	// TODO: handle arg type gdextension.CallableID
+	// TODO: handle arg type gdextension.FunctionID
 	arg1 := stack[0]
 	// TODO: handle arg type gdextension.CallReturns[graphics.gd/internal/gdextension.Callable]
 	result := wasm.engine.Callables.Create(arg0, arg1, arg2)
@@ -487,7 +487,7 @@ func (wasm *wasmRuntime) callable_lookup(ctx context.Context, m api.Module, stac
 	// Call gdextension.Host.Host.Callables.Lookup
 	// TODO: handle arg type gdextension.Callable
 	result := wasm.engine.Callables.Lookup(arg0)
-	// TODO: handle result type gdextension.CallableID
+	// TODO: handle result type gdextension.FunctionID
 }
 
 func (wasm *wasmRuntime) classdb_FileAccess_write(ctx context.Context, m api.Module, stack []uint64) {

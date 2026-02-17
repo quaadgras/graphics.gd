@@ -3,22 +3,35 @@
 package gd
 
 import (
+	"hash/maphash"
 	"reflect"
 
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdmemory"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/internal/threadsafe"
 	VariantPkg "graphics.gd/variant"
 	ArrayType "graphics.gd/variant/Array"
 	CallableType "graphics.gd/variant/Callable"
 )
 
+var callables threadsafe.Handles[comparableCallable, gdextension.FunctionID]
+var callables_hash = maphash.MakeSeed()
+
+// comparableCallable wraps a Go function together with a stable identity,
+// so that two Godot callables created from the same [CallableType.Function]
+// can be recognized as equal even though they have different CGO handles.
+type comparableCallable struct {
+	fn any
+	id any // comparable
+}
+
 func init() {
 	gdextension.On.Callables = gdextension.CallbacksForCallables{
 		Call: func(fn gdextension.FunctionID, result gdextension.Returns[gdextension.Variant], arg_count int, args gdextension.Accepts[gdextension.Variant], call_error gdextension.Returns[gdextension.CallError]) {
 			defer Recover()
-			value := cgoHandle(fn).Value()
-			switch cb := value.(type) {
+			callable := callables.Get(fn)
+			switch cb := callable.fn.(type) {
 			case func():
 				cb()
 				gdmemory.Set(gdextension.Pointer(result), gdextension.Variant{})
@@ -26,7 +39,7 @@ func init() {
 				return
 			}
 			vargs := make([]reflect.Value, min(arg_count, 16))
-			rtype := reflect.TypeOf(value)
+			rtype := reflect.TypeOf(callable.fn)
 			for i := range arg_count {
 				var to_type reflect.Type
 				if rtype.IsVariadic() && i >= rtype.NumIn()-1 {
@@ -60,7 +73,7 @@ func init() {
 				})
 				return
 			}
-			results := reflect.ValueOf(value).Call(vargs)
+			results := reflect.ValueOf(callable.fn).Call(vargs)
 			if len(results) > 0 {
 				raw, _ := pointers.End(CutVariant(results[0].Interface(), true))
 				gdmemory.Set(gdextension.Pointer(result), raw)
@@ -68,37 +81,52 @@ func init() {
 			gdmemory.Set(gdextension.Pointer(call_error), gdextension.CallError{})
 		},
 		Hash: func(fn gdextension.FunctionID) uint32 {
-			return uint32(cgoHandle(fn))
+			return uint32(maphash.Comparable(callables_hash, callables.Get(fn).id))
 		},
 		Stringify: func(fn gdextension.FunctionID, err gdextension.Returns[gdextension.CallError]) gdextension.String {
-			s := NewString(reflect.ValueOf(cgoHandle(fn).Value()).String())
+			s := NewString(reflect.ValueOf(callables.Get(fn).fn).String())
 			raw, _ := pointers.End(s)
 			return raw
 		},
 		ArgumentCount: func(fn gdextension.FunctionID, err gdextension.Returns[gdextension.CallError]) int {
-			value := reflect.ValueOf(cgoHandle(fn).Value())
-			return value.Type().NumIn()
+			return reflect.ValueOf(callables.Get(fn)).Type().NumIn()
 		},
 		Validation: func(fn gdextension.FunctionID) bool {
-			return cgoHandle(fn).Value() != nil
+			return callables.Get(fn).fn != nil
 		},
 		Compare: func(fn, other gdextension.FunctionID) bool {
-			return cgoHandle(fn) == cgoHandle(other)
+			if cgoHandle(fn) == cgoHandle(other) {
+				return true
+			}
+			a := callables.Get(fn).id
+			b := callables.Get(other).id
+			if a != nil && b != nil {
+				return a == b
+			}
+			return false
 		},
 		LessThan: func(fn, other gdextension.FunctionID) bool {
-			return cgoHandle(fn) < cgoHandle(other)
+			return gdextension.On.Callables.Hash(fn) < gdextension.On.Callables.Hash(other)
 		},
 		Free: func(fn gdextension.FunctionID) {
-			cgoHandle(fn).Delete()
+			callables.Del(fn)
 		},
 	}
 }
 
-// Callable creates a new callable out of the given function which must only accept
+// NewCallable creates a new callable out of the given function which must only accept
 // godot-compatible types and return up to one godot-compatible type.
 func NewCallable(fn any) Callable {
 	var result gdextension.Callable
-	gdextension.Host.Callables.Create(gdextension.CallableID(cgoNewHandle(fn)), 0, gdextension.CallReturns[gdextension.Callable](&result))
+	gdextension.Host.Callables.Create(callables.New(comparableCallable{fn: fn}), 0, gdextension.CallReturns[gdextension.Callable](&result))
+	return pointers.New[Callable](result)
+}
+
+// NewComparableCallable creates a new comparable callable from the given function which must only accept
+// godot-compatible types and return up to one godot-compatible type.
+func NewComparableCallable[T comparable](fn any, id T) Callable {
+	var result gdextension.Callable
+	gdextension.Host.Callables.Create(callables.New(comparableCallable{fn: fn, id: id}), 0, gdextension.CallReturns[gdextension.Callable](&result))
 	return pointers.New[Callable](result)
 }
 
@@ -106,7 +134,7 @@ func InternalCallable(fn CallableType.Function) Callable {
 	if fn == (CallableType.Function{}) {
 		return Callable{}
 	}
-	return NewCallable(fn.Call)
+	return NewComparableCallable(fn.Call, fn)
 }
 
 type CallableProxy struct{}

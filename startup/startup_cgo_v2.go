@@ -3,9 +3,12 @@
 
 package startup
 
-import "unsafe"
-import "runtime"
-import "graphics.gd/internal/gdextension"
+import (
+	"runtime"
+	"unsafe"
+
+	"graphics.gd/internal/gdextension"
+)
 
 // #include "gdextension_interface.h"
 // #include "startup_cgo_v2.h"
@@ -409,12 +412,12 @@ func init() {
 		C.gd_variant_type_unsafe_free(C.uint32_t(p0), C.uint64_t(shape), unsafe.Pointer(p2))
 		return
 	}
-	gdextension.Host.Callables.Create = func(p0 gdextension.CallableID, p1 gdextension.ObjectID, p2 gdextension.CallReturns[gdextension.Callable]) {
+	gdextension.Host.Callables.Create = func(p0 gdextension.FunctionID, p1 gdextension.ObjectID, p2 gdextension.CallReturns[gdextension.Callable]) {
 		C.gd_callable_create(C.uintptr_t(p0), C.uint64_t(p1), unsafe.Pointer(p2))
 		return
 	}
-	gdextension.Host.Callables.Lookup = func(p0 gdextension.Callable) (result gdextension.CallableID) {
-		result = gdextension.CallableID(C.gd_callable_lookup(C.uint64_t(p0[0]), C.uint64_t(p0[1])))
+	gdextension.Host.Callables.Lookup = func(p0 gdextension.Callable) (result gdextension.FunctionID) {
+		result = gdextension.FunctionID(C.gd_callable_lookup(C.uint64_t(p0[0]), C.uint64_t(p0[1])))
 		return
 	}
 	gdextension.Host.ClassDB.FileAccess.Write = func(p0 gdextension.Object, p1 []byte) {
