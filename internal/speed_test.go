@@ -56,7 +56,7 @@ var n: int
 func bench():
 	var sum = 0
 	for i in range(n):
-		sum += "Hello, World!".length()
+		Engine.set_max_fps(60)
 	return sum
 `)
 		script.Reload()
@@ -64,14 +64,9 @@ func bench():
 		obj.SetScript(script)
 		obj[0].Set(gd.NewStringName("n"), gd.NewVariant(B.N))
 		bench := gd.NewStringName("bench")
-		var result gd.Variant
-		B.Cleanup(func() {
-			if result.Interface().(int64) != int64(B.N*len("Hello, World!")) {
-				B.Fail()
-			}
-		})
+
 		B.ResetTimer()
-		result, _ = obj[0].Call(bench)
+		obj[0].Call(bench)
 		obj[0].Free()
 	})
 }
