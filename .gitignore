@@ -26,3 +26,4 @@ package-lock.json
 releases/
 testing
 graphics
+/startup/internal/dlopen_old
