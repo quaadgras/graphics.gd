@@ -10,9 +10,9 @@ import (
 	"slices"
 	"strings"
 
-	"graphics.gd/internal/gdfunc"
 	"graphics.gd/internal/gdjson"
 	"graphics.gd/internal/gdtype"
+	"graphics.gd/internal/tool/generate/gdfunc"
 	"graphics.gd/variant/String"
 	"runtime.link/api/xray"
 )
