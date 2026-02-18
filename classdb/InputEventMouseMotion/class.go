@@ -21,6 +21,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -142,7 +143,7 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.InputEventMouseMotion
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetInputEventMouseMotion(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewInputEventMouseMotion(obj[0])
@@ -157,8 +158,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetInputEventMouseMotion(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.InputEventMouseMotion{gdclass.NewInputEventMouseMotion(pointers.Add[gd.Object]([3]uint64{}))})
@@ -358,63 +359,45 @@ func (self class) GetScreenVelocity() Vector2.XY { //gd:InputEventMouseMotion.ge
 	var ret = r_ret
 	return ret
 }
-func (self class) AsInputEventMouseMotion() Advanced {
-	return Advanced{gdclass.NewInputEventMouseMotion(self.AsObject()[0])}
+func (o class) AsInputEventMouseMotion() Advanced         { return Advanced(o) }
+func (o Instance) AsInputEventMouseMotion() Instance      { return o }
+func (o *Extension[T]) AsInputEventMouseMotion() Instance { return o.Super() }
+func (o class) AsInputEventMouse() InputEventMouse.Advanced {
+	return *(*InputEventMouse.Advanced)(ie.As(&o))
 }
-func (self Instance) AsInputEventMouseMotion() Instance {
-	return Instance{gdclass.NewInputEventMouseMotion(self.AsObject()[0])}
+func (o *Extension[T]) AsInputEventMouse() InputEventMouse.Instance {
+	return o.Super().AsInputEventMouse()
 }
-func (self *Extension[T]) AsInputEventMouseMotion() Instance {
-	return self.Super().AsInputEventMouseMotion()
+func (o Instance) AsInputEventMouse() InputEventMouse.Instance {
+	return *(*InputEventMouse.Instance)(ie.As(&o))
 }
-func (self class) AsInputEventMouse() InputEventMouse.Advanced {
-	return InputEventMouse.Advanced{gdclass.NewInputEventMouse(self.AsObject()[0])}
+func (o class) AsInputEventWithModifiers() InputEventWithModifiers.Advanced {
+	return *(*InputEventWithModifiers.Advanced)(ie.As(&o))
 }
-func (self *Extension[T]) AsInputEventMouse() InputEventMouse.Instance {
-	return self.Super().AsInputEventMouse()
+func (o *Extension[T]) AsInputEventWithModifiers() InputEventWithModifiers.Instance {
+	return o.Super().AsInputEventWithModifiers()
 }
-func (self Instance) AsInputEventMouse() InputEventMouse.Instance {
-	return InputEventMouse.Instance{gdclass.NewInputEventMouse(self.AsObject()[0])}
+func (o Instance) AsInputEventWithModifiers() InputEventWithModifiers.Instance {
+	return *(*InputEventWithModifiers.Instance)(ie.As(&o))
 }
-func (self class) AsInputEventWithModifiers() InputEventWithModifiers.Advanced {
-	return InputEventWithModifiers.Advanced{gdclass.NewInputEventWithModifiers(self.AsObject()[0])}
+func (o class) AsInputEventFromWindow() InputEventFromWindow.Advanced {
+	return *(*InputEventFromWindow.Advanced)(ie.As(&o))
 }
-func (self *Extension[T]) AsInputEventWithModifiers() InputEventWithModifiers.Instance {
-	return self.Super().AsInputEventWithModifiers()
+func (o *Extension[T]) AsInputEventFromWindow() InputEventFromWindow.Instance {
+	return o.Super().AsInputEventFromWindow()
 }
-func (self Instance) AsInputEventWithModifiers() InputEventWithModifiers.Instance {
-	return InputEventWithModifiers.Instance{gdclass.NewInputEventWithModifiers(self.AsObject()[0])}
+func (o Instance) AsInputEventFromWindow() InputEventFromWindow.Instance {
+	return *(*InputEventFromWindow.Instance)(ie.As(&o))
 }
-func (self class) AsInputEventFromWindow() InputEventFromWindow.Advanced {
-	return InputEventFromWindow.Advanced{gdclass.NewInputEventFromWindow(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsInputEventFromWindow() InputEventFromWindow.Instance {
-	return self.Super().AsInputEventFromWindow()
-}
-func (self Instance) AsInputEventFromWindow() InputEventFromWindow.Instance {
-	return InputEventFromWindow.Instance{gdclass.NewInputEventFromWindow(self.AsObject()[0])}
-}
-func (self class) AsInputEvent() InputEvent.Advanced {
-	return InputEvent.Advanced{gdclass.NewInputEvent(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsInputEvent() InputEvent.Instance { return self.Super().AsInputEvent() }
-func (self Instance) AsInputEvent() InputEvent.Instance {
-	return InputEvent.Instance{gdclass.NewInputEvent(self.AsObject()[0])}
-}
-func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
-func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
-}
-func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
-func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
+func (o class) AsInputEvent() InputEvent.Advanced         { return *(*InputEvent.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsInputEvent() InputEvent.Instance { return o.Super().AsInputEvent() }
+func (o Instance) AsInputEvent() InputEvent.Instance      { return *(*InputEvent.Instance)(ie.As(&o)) }
+func (o class) AsResource() Resource.Advanced             { return *(*Resource.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsResource() Resource.Instance     { return o.Super().AsResource() }
+func (o Instance) AsResource() Resource.Instance          { return *(*Resource.Instance)(ie.As(&o)) }
+func (o class) AsRefCounted() ie.RC                       { return *(*ie.RC)(ie.As(&o)) }
+func (o *Extension[T]) AsRefCounted() ie.RC               { return o.Super().AsRefCounted() }
+func (o Instance) AsRefCounted() ie.RC                    { return *(*ie.RC)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

@@ -17,6 +17,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -128,7 +129,7 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.DirectionalLight3D
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetDirectionalLight3D(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewDirectionalLight3D(obj[0])
@@ -143,8 +144,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetDirectionalLight3D(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.DirectionalLight3D{gdclass.NewDirectionalLight3D(pointers.Add[gd.Object]([3]uint64{}))})
@@ -233,41 +234,27 @@ func (self class) GetSkyMode() SkyMode { //gd:DirectionalLight3D.get_sky_mode
 	var ret = r_ret
 	return ret
 }
-func (self class) AsDirectionalLight3D() Advanced {
-	return Advanced{gdclass.NewDirectionalLight3D(self.AsObject()[0])}
+func (o class) AsDirectionalLight3D() Advanced         { return Advanced(o) }
+func (o Instance) AsDirectionalLight3D() Instance      { return o }
+func (o *Extension[T]) AsDirectionalLight3D() Instance { return o.Super() }
+func (o class) AsLight3D() Light3D.Advanced            { return *(*Light3D.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsLight3D() Light3D.Instance    { return o.Super().AsLight3D() }
+func (o Instance) AsLight3D() Light3D.Instance         { return *(*Light3D.Instance)(ie.As(&o)) }
+func (o class) AsVisualInstance3D() VisualInstance3D.Advanced {
+	return *(*VisualInstance3D.Advanced)(ie.As(&o))
 }
-func (self Instance) AsDirectionalLight3D() Instance {
-	return Instance{gdclass.NewDirectionalLight3D(self.AsObject()[0])}
+func (o *Extension[T]) AsVisualInstance3D() VisualInstance3D.Instance {
+	return o.Super().AsVisualInstance3D()
 }
-func (self *Extension[T]) AsDirectionalLight3D() Instance { return self.Super().AsDirectionalLight3D() }
-func (self class) AsLight3D() Light3D.Advanced {
-	return Light3D.Advanced{gdclass.NewLight3D(self.AsObject()[0])}
+func (o Instance) AsVisualInstance3D() VisualInstance3D.Instance {
+	return *(*VisualInstance3D.Instance)(ie.As(&o))
 }
-func (self *Extension[T]) AsLight3D() Light3D.Instance { return self.Super().AsLight3D() }
-func (self Instance) AsLight3D() Light3D.Instance {
-	return Light3D.Instance{gdclass.NewLight3D(self.AsObject()[0])}
-}
-func (self class) AsVisualInstance3D() VisualInstance3D.Advanced {
-	return VisualInstance3D.Advanced{gdclass.NewVisualInstance3D(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsVisualInstance3D() VisualInstance3D.Instance {
-	return self.Super().AsVisualInstance3D()
-}
-func (self Instance) AsVisualInstance3D() VisualInstance3D.Instance {
-	return VisualInstance3D.Instance{gdclass.NewVisualInstance3D(self.AsObject()[0])}
-}
-func (self class) AsNode3D() Node3D.Advanced {
-	return Node3D.Advanced{gdclass.NewNode3D(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
-func (self Instance) AsNode3D() Node3D.Instance {
-	return Node3D.Instance{gdclass.NewNode3D(self.AsObject()[0])}
-}
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
-func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
-func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
-}
+func (o class) AsNode3D() Node3D.Advanced         { return *(*Node3D.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsNode3D() Node3D.Instance { return o.Super().AsNode3D() }
+func (o Instance) AsNode3D() Node3D.Instance      { return *(*Node3D.Instance)(ie.As(&o)) }
+func (o class) AsNode() Node.Advanced             { return *(*Node.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsNode() Node.Instance     { return o.Super().AsNode() }
+func (o Instance) AsNode() Node.Instance          { return *(*Node.Instance)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

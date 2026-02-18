@@ -24,6 +24,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -344,7 +345,7 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.Time
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetTime(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewTime(obj[0])
@@ -359,30 +360,30 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetTime(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 
 func (self class) GetDatetimeDictFromUnixTime(unix_time_val int64) Dictionary.Any { //gd:Time.get_datetime_dict_from_unix_time
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_datetime_dict_from_unix_time, gdextension.SizeDictionary|(gdextension.SizeInt<<4), &struct{ unix_time_val int64 }{unix_time_val})
+	var r_ret = noescape.Call[gdextension.Dictionary](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_datetime_dict_from_unix_time, gdextension.SizeDictionary|(gdextension.SizeInt<<4), &struct{ unix_time_val int64 }{unix_time_val})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 func (self class) GetDateDictFromUnixTime(unix_time_val int64) Dictionary.Any { //gd:Time.get_date_dict_from_unix_time
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_date_dict_from_unix_time, gdextension.SizeDictionary|(gdextension.SizeInt<<4), &struct{ unix_time_val int64 }{unix_time_val})
+	var r_ret = noescape.Call[gdextension.Dictionary](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_date_dict_from_unix_time, gdextension.SizeDictionary|(gdextension.SizeInt<<4), &struct{ unix_time_val int64 }{unix_time_val})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 func (self class) GetTimeDictFromUnixTime(unix_time_val int64) Dictionary.Any { //gd:Time.get_time_dict_from_unix_time
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_time_dict_from_unix_time, gdextension.SizeDictionary|(gdextension.SizeInt<<4), &struct{ unix_time_val int64 }{unix_time_val})
+	var r_ret = noescape.Call[gdextension.Dictionary](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_time_dict_from_unix_time, gdextension.SizeDictionary|(gdextension.SizeInt<<4), &struct{ unix_time_val int64 }{unix_time_val})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 func (self class) GetDatetimeStringFromUnixTime(unix_time_val int64, use_space bool) String.Readable { //gd:Time.get_datetime_string_from_unix_time
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_datetime_string_from_unix_time, gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_datetime_string_from_unix_time, gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		unix_time_val int64
 		use_space     bool
 	}{unix_time_val, use_space})
@@ -391,19 +392,19 @@ func (self class) GetDatetimeStringFromUnixTime(unix_time_val int64, use_space b
 }
 func (self class) GetDateStringFromUnixTime(unix_time_val int64) String.Readable { //gd:Time.get_date_string_from_unix_time
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_date_string_from_unix_time, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ unix_time_val int64 }{unix_time_val})
+	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_date_string_from_unix_time, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ unix_time_val int64 }{unix_time_val})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetTimeStringFromUnixTime(unix_time_val int64) String.Readable { //gd:Time.get_time_string_from_unix_time
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_time_string_from_unix_time, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ unix_time_val int64 }{unix_time_val})
+	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_time_string_from_unix_time, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ unix_time_val int64 }{unix_time_val})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetDatetimeDictFromDatetimeString(datetime String.Readable, weekday bool) Dictionary.Any { //gd:Time.get_datetime_dict_from_datetime_string
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_datetime_dict_from_datetime_string, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Dictionary](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_datetime_dict_from_datetime_string, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		datetime gdextension.String
 		weekday  bool
 	}{pointers.Get(gd.InternalString(datetime)), weekday})
@@ -412,7 +413,7 @@ func (self class) GetDatetimeDictFromDatetimeString(datetime String.Readable, we
 }
 func (self class) GetDatetimeStringFromDatetimeDict(datetime Dictionary.Any, use_space bool) String.Readable { //gd:Time.get_datetime_string_from_datetime_dict
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_datetime_string_from_datetime_dict, gdextension.SizeString|(gdextension.SizeDictionary<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_datetime_string_from_datetime_dict, gdextension.SizeString|(gdextension.SizeDictionary<<4)|(gdextension.SizeBool<<8), &struct {
 		datetime  gdextension.Dictionary
 		use_space bool
 	}{pointers.Get(gd.InternalDictionary(datetime)), use_space})
@@ -421,43 +422,43 @@ func (self class) GetDatetimeStringFromDatetimeDict(datetime Dictionary.Any, use
 }
 func (self class) GetUnixTimeFromDatetimeDict(datetime Dictionary.Any) int64 { //gd:Time.get_unix_time_from_datetime_dict
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_unix_time_from_datetime_dict, gdextension.SizeInt|(gdextension.SizeDictionary<<4), &struct{ datetime gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(datetime))})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_unix_time_from_datetime_dict, gdextension.SizeInt|(gdextension.SizeDictionary<<4), &struct{ datetime gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(datetime))})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetUnixTimeFromDatetimeString(datetime String.Readable) int64 { //gd:Time.get_unix_time_from_datetime_string
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_unix_time_from_datetime_string, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ datetime gdextension.String }{pointers.Get(gd.InternalString(datetime))})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_unix_time_from_datetime_string, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ datetime gdextension.String }{pointers.Get(gd.InternalString(datetime))})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetOffsetStringFromOffsetMinutes(offset_minutes int64) String.Readable { //gd:Time.get_offset_string_from_offset_minutes
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_offset_string_from_offset_minutes, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ offset_minutes int64 }{offset_minutes})
+	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_offset_string_from_offset_minutes, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ offset_minutes int64 }{offset_minutes})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetDatetimeDictFromSystem(utc bool) Dictionary.Any { //gd:Time.get_datetime_dict_from_system
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_datetime_dict_from_system, gdextension.SizeDictionary|(gdextension.SizeBool<<4), &struct{ utc bool }{utc})
+	var r_ret = noescape.Call[gdextension.Dictionary](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_datetime_dict_from_system, gdextension.SizeDictionary|(gdextension.SizeBool<<4), &struct{ utc bool }{utc})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 func (self class) GetDateDictFromSystem(utc bool) Dictionary.Any { //gd:Time.get_date_dict_from_system
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_date_dict_from_system, gdextension.SizeDictionary|(gdextension.SizeBool<<4), &struct{ utc bool }{utc})
+	var r_ret = noescape.Call[gdextension.Dictionary](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_date_dict_from_system, gdextension.SizeDictionary|(gdextension.SizeBool<<4), &struct{ utc bool }{utc})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 func (self class) GetTimeDictFromSystem(utc bool) Dictionary.Any { //gd:Time.get_time_dict_from_system
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_time_dict_from_system, gdextension.SizeDictionary|(gdextension.SizeBool<<4), &struct{ utc bool }{utc})
+	var r_ret = noescape.Call[gdextension.Dictionary](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_time_dict_from_system, gdextension.SizeDictionary|(gdextension.SizeBool<<4), &struct{ utc bool }{utc})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 func (self class) GetDatetimeStringFromSystem(utc bool, use_space bool) String.Readable { //gd:Time.get_datetime_string_from_system
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_datetime_string_from_system, gdextension.SizeString|(gdextension.SizeBool<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_datetime_string_from_system, gdextension.SizeString|(gdextension.SizeBool<<4)|(gdextension.SizeBool<<8), &struct {
 		utc       bool
 		use_space bool
 	}{utc, use_space})
@@ -466,37 +467,37 @@ func (self class) GetDatetimeStringFromSystem(utc bool, use_space bool) String.R
 }
 func (self class) GetDateStringFromSystem(utc bool) String.Readable { //gd:Time.get_date_string_from_system
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_date_string_from_system, gdextension.SizeString|(gdextension.SizeBool<<4), &struct{ utc bool }{utc})
+	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_date_string_from_system, gdextension.SizeString|(gdextension.SizeBool<<4), &struct{ utc bool }{utc})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetTimeStringFromSystem(utc bool) String.Readable { //gd:Time.get_time_string_from_system
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_time_string_from_system, gdextension.SizeString|(gdextension.SizeBool<<4), &struct{ utc bool }{utc})
+	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_time_string_from_system, gdextension.SizeString|(gdextension.SizeBool<<4), &struct{ utc bool }{utc})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetTimeZoneFromSystem() Dictionary.Any { //gd:Time.get_time_zone_from_system
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_time_zone_from_system, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Dictionary](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_time_zone_from_system, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 func (self class) GetUnixTimeFromSystem() float64 { //gd:Time.get_unix_time_from_system
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_unix_time_from_system, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_unix_time_from_system, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetTicksMsec() int64 { //gd:Time.get_ticks_msec
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_ticks_msec, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_ticks_msec, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetTicksUsec() int64 { //gd:Time.get_ticks_usec
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_ticks_usec, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_ticks_usec, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

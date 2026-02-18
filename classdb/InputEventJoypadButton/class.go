@@ -15,6 +15,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -124,7 +125,7 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.InputEventJoypadButton
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetInputEventJoypadButton(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewInputEventJoypadButton(obj[0])
@@ -139,8 +140,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetInputEventJoypadButton(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.InputEventJoypadButton{gdclass.NewInputEventJoypadButton(pointers.Add[gd.Object]([3]uint64{}))})
@@ -214,36 +215,18 @@ func (self class) GetPressure() float64 { //gd:InputEventJoypadButton.get_pressu
 func (self class) SetPressed(pressed bool) { //gd:InputEventJoypadButton.set_pressed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
 }
-func (self class) AsInputEventJoypadButton() Advanced {
-	return Advanced{gdclass.NewInputEventJoypadButton(self.AsObject()[0])}
-}
-func (self Instance) AsInputEventJoypadButton() Instance {
-	return Instance{gdclass.NewInputEventJoypadButton(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsInputEventJoypadButton() Instance {
-	return self.Super().AsInputEventJoypadButton()
-}
-func (self class) AsInputEvent() InputEvent.Advanced {
-	return InputEvent.Advanced{gdclass.NewInputEvent(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsInputEvent() InputEvent.Instance { return self.Super().AsInputEvent() }
-func (self Instance) AsInputEvent() InputEvent.Instance {
-	return InputEvent.Instance{gdclass.NewInputEvent(self.AsObject()[0])}
-}
-func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
-func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
-}
-func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
-func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
+func (o class) AsInputEventJoypadButton() Advanced         { return Advanced(o) }
+func (o Instance) AsInputEventJoypadButton() Instance      { return o }
+func (o *Extension[T]) AsInputEventJoypadButton() Instance { return o.Super() }
+func (o class) AsInputEvent() InputEvent.Advanced          { return *(*InputEvent.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsInputEvent() InputEvent.Instance  { return o.Super().AsInputEvent() }
+func (o Instance) AsInputEvent() InputEvent.Instance       { return *(*InputEvent.Instance)(ie.As(&o)) }
+func (o class) AsResource() Resource.Advanced              { return *(*Resource.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsResource() Resource.Instance      { return o.Super().AsResource() }
+func (o Instance) AsResource() Resource.Instance           { return *(*Resource.Instance)(ie.As(&o)) }
+func (o class) AsRefCounted() ie.RC                        { return *(*ie.RC)(ie.As(&o)) }
+func (o *Extension[T]) AsRefCounted() ie.RC                { return o.Super().AsRefCounted() }
+func (o Instance) AsRefCounted() ie.RC                     { return *(*ie.RC)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

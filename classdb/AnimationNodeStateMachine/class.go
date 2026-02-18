@@ -30,6 +30,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -322,7 +323,7 @@ func (self Instance) GetGraphOffset() Vector2.XY { //gd:AnimationNodeStateMachin
 type Advanced = class
 type class [1]gdclass.AnimationNodeStateMachine
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetAnimationNodeStateMachine(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewAnimationNodeStateMachine(obj[0])
@@ -337,8 +338,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetAnimationNodeStateMachine(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.AnimationNodeStateMachine{gdclass.NewAnimationNodeStateMachine(pointers.Add[gd.Object]([3]uint64{}))})
@@ -535,47 +536,29 @@ func (self class) AreEndsReset() bool { //gd:AnimationNodeStateMachine.are_ends_
 	var ret = r_ret
 	return ret
 }
-func (self class) AsAnimationNodeStateMachine() Advanced {
-	return Advanced{gdclass.NewAnimationNodeStateMachine(self.AsObject()[0])}
+func (o class) AsAnimationNodeStateMachine() Advanced         { return Advanced(o) }
+func (o Instance) AsAnimationNodeStateMachine() Instance      { return o }
+func (o *Extension[T]) AsAnimationNodeStateMachine() Instance { return o.Super() }
+func (o class) AsAnimationRootNode() AnimationRootNode.Advanced {
+	return *(*AnimationRootNode.Advanced)(ie.As(&o))
 }
-func (self Instance) AsAnimationNodeStateMachine() Instance {
-	return Instance{gdclass.NewAnimationNodeStateMachine(self.AsObject()[0])}
+func (o *Extension[T]) AsAnimationRootNode() AnimationRootNode.Instance {
+	return o.Super().AsAnimationRootNode()
 }
-func (self *Extension[T]) AsAnimationNodeStateMachine() Instance {
-	return self.Super().AsAnimationNodeStateMachine()
+func (o Instance) AsAnimationRootNode() AnimationRootNode.Instance {
+	return *(*AnimationRootNode.Instance)(ie.As(&o))
 }
-func (self class) AsAnimationRootNode() AnimationRootNode.Advanced {
-	return AnimationRootNode.Advanced{gdclass.NewAnimationRootNode(self.AsObject()[0])}
+func (o class) AsAnimationNode() AnimationNode.Advanced         { return *(*AnimationNode.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsAnimationNode() AnimationNode.Instance { return o.Super().AsAnimationNode() }
+func (o Instance) AsAnimationNode() AnimationNode.Instance {
+	return *(*AnimationNode.Instance)(ie.As(&o))
 }
-func (self *Extension[T]) AsAnimationRootNode() AnimationRootNode.Instance {
-	return self.Super().AsAnimationRootNode()
-}
-func (self Instance) AsAnimationRootNode() AnimationRootNode.Instance {
-	return AnimationRootNode.Instance{gdclass.NewAnimationRootNode(self.AsObject()[0])}
-}
-func (self class) AsAnimationNode() AnimationNode.Advanced {
-	return AnimationNode.Advanced{gdclass.NewAnimationNode(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsAnimationNode() AnimationNode.Instance {
-	return self.Super().AsAnimationNode()
-}
-func (self Instance) AsAnimationNode() AnimationNode.Instance {
-	return AnimationNode.Instance{gdclass.NewAnimationNode(self.AsObject()[0])}
-}
-func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
-func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
-}
-func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
-func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
+func (o class) AsResource() Resource.Advanced         { return *(*Resource.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsResource() Resource.Instance { return o.Super().AsResource() }
+func (o Instance) AsResource() Resource.Instance      { return *(*Resource.Instance)(ie.As(&o)) }
+func (o class) AsRefCounted() ie.RC                   { return *(*ie.RC)(ie.As(&o)) }
+func (o *Extension[T]) AsRefCounted() ie.RC           { return o.Super().AsRefCounted() }
+func (o Instance) AsRefCounted() ie.RC                { return *(*ie.RC)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

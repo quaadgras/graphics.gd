@@ -69,6 +69,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -411,7 +412,7 @@ func (self Instance) Undo() bool { //gd:UndoRedo.undo
 type Advanced = class
 type class [1]gdclass.UndoRedo
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetUndoRedo(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewUndoRedo(obj[0])
@@ -426,8 +427,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetUndoRedo(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.UndoRedo{gdclass.NewUndoRedo(pointers.Add[gd.Object]([3]uint64{}))})
@@ -587,9 +588,9 @@ func (self class) VersionChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`version_changed`))))
 }
 
-func (self class) AsUndoRedo() Advanced         { return Advanced{gdclass.NewUndoRedo(self.AsObject()[0])} }
-func (self Instance) AsUndoRedo() Instance      { return Instance{gdclass.NewUndoRedo(self.AsObject()[0])} }
-func (self *Extension[T]) AsUndoRedo() Instance { return self.Super().AsUndoRedo() }
+func (o class) AsUndoRedo() Advanced         { return Advanced(o) }
+func (o Instance) AsUndoRedo() Instance      { return o }
+func (o *Extension[T]) AsUndoRedo() Instance { return o.Super() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

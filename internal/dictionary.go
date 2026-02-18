@@ -58,8 +58,8 @@ func DictionaryAs[T any](dictionary DictionaryType.Any) T {
 		return [1]T{}[0]
 	}
 	if dict.Size() == 0 {
-        return [1]T{}[0]
-	} 
+		return [1]T{}[0]
+	}
 	result, err := ConvertToDesiredGoType(dict, reflect.TypeFor[T]())
 	if err != nil {
 		panic(fmt.Sprintf("could not convert dictionary to desired go type: %v", err))

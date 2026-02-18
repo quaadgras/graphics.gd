@@ -20,6 +20,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -137,7 +138,7 @@ func (self Instance) SetDelay(delay Float.X) Instance { //gd:CallbackTweener.set
 type Advanced = class
 type class [1]gdclass.CallbackTweener
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetCallbackTweener(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewCallbackTweener(obj[0])
@@ -152,8 +153,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetCallbackTweener(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.CallbackTweener{gdclass.NewCallbackTweener(pointers.Add[gd.Object]([3]uint64{}))})
@@ -181,27 +182,15 @@ func (self class) SetDelay(delay float64) [1]gdclass.CallbackTweener { //gd:Call
 	var ret = [1]gdclass.CallbackTweener{gdclass.NewCallbackTweener(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-func (self class) AsCallbackTweener() Advanced {
-	return Advanced{gdclass.NewCallbackTweener(self.AsObject()[0])}
-}
-func (self Instance) AsCallbackTweener() Instance {
-	return Instance{gdclass.NewCallbackTweener(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsCallbackTweener() Instance { return self.Super().AsCallbackTweener() }
-func (self class) AsTweener() Tweener.Advanced {
-	return Tweener.Advanced{gdclass.NewTweener(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsTweener() Tweener.Instance { return self.Super().AsTweener() }
-func (self Instance) AsTweener() Tweener.Instance {
-	return Tweener.Instance{gdclass.NewTweener(self.AsObject()[0])}
-}
-func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
-func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
+func (o class) AsCallbackTweener() Advanced         { return Advanced(o) }
+func (o Instance) AsCallbackTweener() Instance      { return o }
+func (o *Extension[T]) AsCallbackTweener() Instance { return o.Super() }
+func (o class) AsTweener() Tweener.Advanced         { return *(*Tweener.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsTweener() Tweener.Instance { return o.Super().AsTweener() }
+func (o Instance) AsTweener() Tweener.Instance      { return *(*Tweener.Instance)(ie.As(&o)) }
+func (o class) AsRefCounted() ie.RC                 { return *(*ie.RC)(ie.As(&o)) }
+func (o *Extension[T]) AsRefCounted() ie.RC         { return o.Super().AsRefCounted() }
+func (o Instance) AsRefCounted() ie.RC              { return *(*ie.RC)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

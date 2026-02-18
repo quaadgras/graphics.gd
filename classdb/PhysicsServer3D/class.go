@@ -30,6 +30,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -1694,7 +1695,7 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.PhysicsServer3D
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetPhysicsServer3D(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewPhysicsServer3D(obj[0])
@@ -1709,123 +1710,123 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetPhysicsServer3D(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 
 func (self class) WorldBoundaryShapeCreate() RID.Any { //gd:PhysicsServer3D.world_boundary_shape_create
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.world_boundary_shape_create, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.world_boundary_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SeparationRayShapeCreate() RID.Any { //gd:PhysicsServer3D.separation_ray_shape_create
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.separation_ray_shape_create, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.separation_ray_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SphereShapeCreate() RID.Any { //gd:PhysicsServer3D.sphere_shape_create
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.sphere_shape_create, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.sphere_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) BoxShapeCreate() RID.Any { //gd:PhysicsServer3D.box_shape_create
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.box_shape_create, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.box_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) CapsuleShapeCreate() RID.Any { //gd:PhysicsServer3D.capsule_shape_create
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.capsule_shape_create, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.capsule_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) CylinderShapeCreate() RID.Any { //gd:PhysicsServer3D.cylinder_shape_create
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.cylinder_shape_create, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.cylinder_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) ConvexPolygonShapeCreate() RID.Any { //gd:PhysicsServer3D.convex_polygon_shape_create
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.convex_polygon_shape_create, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.convex_polygon_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) ConcavePolygonShapeCreate() RID.Any { //gd:PhysicsServer3D.concave_polygon_shape_create
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.concave_polygon_shape_create, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.concave_polygon_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) HeightmapShapeCreate() RID.Any { //gd:PhysicsServer3D.heightmap_shape_create
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.heightmap_shape_create, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.heightmap_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) CustomShapeCreate() RID.Any { //gd:PhysicsServer3D.custom_shape_create
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.custom_shape_create, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.custom_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) ShapeSetData(shape RID.Any, data variant.Any) { //gd:PhysicsServer3D.shape_set_data
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_set_data, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVariant<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.shape_set_data, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVariant<<8), &struct {
 		shape RID.Any
 		data  gdextension.Variant
 	}{shape, gdextension.Variant(pointers.Get(gd.InternalVariant(data)))})
 }
 func (self class) ShapeSetMargin(shape RID.Any, margin float64) { //gd:PhysicsServer3D.shape_set_margin
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_set_margin, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.shape_set_margin, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		shape  RID.Any
 		margin float64
 	}{shape, margin})
 }
 func (self class) ShapeGetType(shape RID.Any) ShapeType { //gd:PhysicsServer3D.shape_get_type
 	once.Do(singleton)
-	var r_ret = noescape.Call[ShapeType](gd.ObjectChecked(self.AsObject()), methods.shape_get_type, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ shape RID.Any }{shape})
+	var r_ret = noescape.Call[ShapeType](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.shape_get_type, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ shape RID.Any }{shape})
 	var ret = r_ret
 	return ret
 }
 func (self class) ShapeGetData(shape RID.Any) variant.Any { //gd:PhysicsServer3D.shape_get_data
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.shape_get_data, gdextension.SizeVariant|(gdextension.SizeRID<<4), &struct{ shape RID.Any }{shape})
+	var r_ret = noescape.Call[gdextension.Variant](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.shape_get_data, gdextension.SizeVariant|(gdextension.SizeRID<<4), &struct{ shape RID.Any }{shape})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 func (self class) ShapeGetMargin(shape RID.Any) float64 { //gd:PhysicsServer3D.shape_get_margin
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.shape_get_margin, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ shape RID.Any }{shape})
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.shape_get_margin, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ shape RID.Any }{shape})
 	var ret = r_ret
 	return ret
 }
 func (self class) SpaceCreate() RID.Any { //gd:PhysicsServer3D.space_create
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.space_create, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.space_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SpaceSetActive(space RID.Any, active bool) { //gd:PhysicsServer3D.space_set_active
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.space_set_active, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.space_set_active, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		space  RID.Any
 		active bool
 	}{space, active})
 }
 func (self class) SpaceIsActive(space RID.Any) bool { //gd:PhysicsServer3D.space_is_active
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.space_is_active, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ space RID.Any }{space})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.space_is_active, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ space RID.Any }{space})
 	var ret = r_ret
 	return ret
 }
 func (self class) SpaceSetParam(space RID.Any, param SpaceParameter, value float64) { //gd:PhysicsServer3D.space_set_param
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.space_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.space_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
 		space RID.Any
 		param SpaceParameter
 		value float64
@@ -1833,7 +1834,7 @@ func (self class) SpaceSetParam(space RID.Any, param SpaceParameter, value float
 }
 func (self class) SpaceGetParam(space RID.Any, param SpaceParameter) float64 { //gd:PhysicsServer3D.space_get_param
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.space_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.space_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		space RID.Any
 		param SpaceParameter
 	}{space, param})
@@ -1842,32 +1843,32 @@ func (self class) SpaceGetParam(space RID.Any, param SpaceParameter) float64 { /
 }
 func (self class) SpaceGetDirectState(space RID.Any) [1]gdclass.PhysicsDirectSpaceState3D { //gd:PhysicsServer3D.space_get_direct_state
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.space_get_direct_state, gdextension.SizeObject|(gdextension.SizeRID<<4), &struct{ space RID.Any }{space})
+	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.space_get_direct_state, gdextension.SizeObject|(gdextension.SizeRID<<4), &struct{ space RID.Any }{space})
 	var ret = [1]gdclass.PhysicsDirectSpaceState3D{gdclass.NewPhysicsDirectSpaceState3D(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 func (self class) AreaCreate() RID.Any { //gd:PhysicsServer3D.area_create
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.area_create, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) AreaSetSpace(area RID.Any, space RID.Any) { //gd:PhysicsServer3D.area_set_space
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_space, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_set_space, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		area  RID.Any
 		space RID.Any
 	}{area, space})
 }
 func (self class) AreaGetSpace(area RID.Any) RID.Any { //gd:PhysicsServer3D.area_get_space
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.area_get_space, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
+	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_get_space, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
 	var ret = r_ret
 	return ret
 }
 func (self class) AreaAddShape(area RID.Any, shape RID.Any, transform Transform3D.BasisOrigin, disabled bool) { //gd:PhysicsServer3D.area_add_shape
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_add_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeBool<<16), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_add_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeBool<<16), &struct {
 		area      RID.Any
 		shape     RID.Any
 		transform Transform3D.BasisOrigin
@@ -1876,7 +1877,7 @@ func (self class) AreaAddShape(area RID.Any, shape RID.Any, transform Transform3
 }
 func (self class) AreaSetShape(area RID.Any, shape_idx int64, shape RID.Any) { //gd:PhysicsServer3D.area_set_shape
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_set_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), &struct {
 		area      RID.Any
 		shape_idx int64
 		shape     RID.Any
@@ -1884,7 +1885,7 @@ func (self class) AreaSetShape(area RID.Any, shape_idx int64, shape RID.Any) { /
 }
 func (self class) AreaSetShapeTransform(area RID.Any, shape_idx int64, transform Transform3D.BasisOrigin) { //gd:PhysicsServer3D.area_set_shape_transform
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_shape_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform3D<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_set_shape_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform3D<<12), &struct {
 		area      RID.Any
 		shape_idx int64
 		transform Transform3D.BasisOrigin
@@ -1892,7 +1893,7 @@ func (self class) AreaSetShapeTransform(area RID.Any, shape_idx int64, transform
 }
 func (self class) AreaSetShapeDisabled(area RID.Any, shape_idx int64, disabled bool) { //gd:PhysicsServer3D.area_set_shape_disabled
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_shape_disabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_set_shape_disabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		area      RID.Any
 		shape_idx int64
 		disabled  bool
@@ -1900,13 +1901,13 @@ func (self class) AreaSetShapeDisabled(area RID.Any, shape_idx int64, disabled b
 }
 func (self class) AreaGetShapeCount(area RID.Any) int64 { //gd:PhysicsServer3D.area_get_shape_count
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.area_get_shape_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_get_shape_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
 	var ret = r_ret
 	return ret
 }
 func (self class) AreaGetShape(area RID.Any, shape_idx int64) RID.Any { //gd:PhysicsServer3D.area_get_shape
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.area_get_shape, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_get_shape, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		area      RID.Any
 		shape_idx int64
 	}{area, shape_idx})
@@ -1915,7 +1916,7 @@ func (self class) AreaGetShape(area RID.Any, shape_idx int64) RID.Any { //gd:Phy
 }
 func (self class) AreaGetShapeTransform(area RID.Any, shape_idx int64) Transform3D.BasisOrigin { //gd:PhysicsServer3D.area_get_shape_transform
 	once.Do(singleton)
-	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.area_get_shape_transform, gdextension.SizeTransform3D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[Transform3D.BasisOrigin](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_get_shape_transform, gdextension.SizeTransform3D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		area      RID.Any
 		shape_idx int64
 	}{area, shape_idx})
@@ -1924,44 +1925,44 @@ func (self class) AreaGetShapeTransform(area RID.Any, shape_idx int64) Transform
 }
 func (self class) AreaRemoveShape(area RID.Any, shape_idx int64) { //gd:PhysicsServer3D.area_remove_shape
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_remove_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_remove_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		area      RID.Any
 		shape_idx int64
 	}{area, shape_idx})
 }
 func (self class) AreaClearShapes(area RID.Any) { //gd:PhysicsServer3D.area_clear_shapes
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_clear_shapes, 0|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_clear_shapes, 0|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
 }
 func (self class) AreaSetCollisionLayer(area RID.Any, layer int64) { //gd:PhysicsServer3D.area_set_collision_layer
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_collision_layer, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_set_collision_layer, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		area  RID.Any
 		layer int64
 	}{area, layer})
 }
 func (self class) AreaGetCollisionLayer(area RID.Any) int64 { //gd:PhysicsServer3D.area_get_collision_layer
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.area_get_collision_layer, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_get_collision_layer, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
 	var ret = r_ret
 	return ret
 }
 func (self class) AreaSetCollisionMask(area RID.Any, mask int64) { //gd:PhysicsServer3D.area_set_collision_mask
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_collision_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_set_collision_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		area RID.Any
 		mask int64
 	}{area, mask})
 }
 func (self class) AreaGetCollisionMask(area RID.Any) int64 { //gd:PhysicsServer3D.area_get_collision_mask
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.area_get_collision_mask, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_get_collision_mask, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
 	var ret = r_ret
 	return ret
 }
 func (self class) AreaSetParam(area RID.Any, param AreaParameter, value variant.Any) { //gd:PhysicsServer3D.area_set_param
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
 		area  RID.Any
 		param AreaParameter
 		value gdextension.Variant
@@ -1969,14 +1970,14 @@ func (self class) AreaSetParam(area RID.Any, param AreaParameter, value variant.
 }
 func (self class) AreaSetTransform(area RID.Any, transform Transform3D.BasisOrigin) { //gd:PhysicsServer3D.area_set_transform
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8), &struct {
 		area      RID.Any
 		transform Transform3D.BasisOrigin
 	}{area, gd.Transposed(transform)})
 }
 func (self class) AreaGetParam(area RID.Any, param AreaParameter) variant.Any { //gd:PhysicsServer3D.area_get_param
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.area_get_param, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Variant](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_get_param, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		area  RID.Any
 		param AreaParameter
 	}{area, param})
@@ -1985,125 +1986,125 @@ func (self class) AreaGetParam(area RID.Any, param AreaParameter) variant.Any { 
 }
 func (self class) AreaGetTransform(area RID.Any) Transform3D.BasisOrigin { //gd:PhysicsServer3D.area_get_transform
 	once.Do(singleton)
-	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.area_get_transform, gdextension.SizeTransform3D|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
+	var r_ret = noescape.Call[Transform3D.BasisOrigin](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_get_transform, gdextension.SizeTransform3D|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
 func (self class) AreaAttachObjectInstanceId(area RID.Any, id int64) { //gd:PhysicsServer3D.area_attach_object_instance_id
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_attach_object_instance_id, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_attach_object_instance_id, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		area RID.Any
 		id   int64
 	}{area, id})
 }
 func (self class) AreaGetObjectInstanceId(area RID.Any) int64 { //gd:PhysicsServer3D.area_get_object_instance_id
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.area_get_object_instance_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_get_object_instance_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
 	var ret = r_ret
 	return ret
 }
 func (self class) AreaSetMonitorCallback(area RID.Any, callback Callable.Function) { //gd:PhysicsServer3D.area_set_monitor_callback
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_monitor_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_set_monitor_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
 		area     RID.Any
 		callback gdextension.Callable
 	}{area, pointers.Get(gd.InternalCallable(callback))})
 }
 func (self class) AreaSetAreaMonitorCallback(area RID.Any, callback Callable.Function) { //gd:PhysicsServer3D.area_set_area_monitor_callback
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_area_monitor_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_set_area_monitor_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
 		area     RID.Any
 		callback gdextension.Callable
 	}{area, pointers.Get(gd.InternalCallable(callback))})
 }
 func (self class) AreaSetMonitorable(area RID.Any, monitorable bool) { //gd:PhysicsServer3D.area_set_monitorable
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_monitorable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_set_monitorable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		area        RID.Any
 		monitorable bool
 	}{area, monitorable})
 }
 func (self class) AreaSetRayPickable(area RID.Any, enable bool) { //gd:PhysicsServer3D.area_set_ray_pickable
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_ray_pickable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.area_set_ray_pickable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		area   RID.Any
 		enable bool
 	}{area, enable})
 }
 func (self class) BodyCreate() RID.Any { //gd:PhysicsServer3D.body_create
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.body_create, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) BodySetSpace(body RID.Any, space RID.Any) { //gd:PhysicsServer3D.body_set_space
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_space, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_set_space, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		body  RID.Any
 		space RID.Any
 	}{body, space})
 }
 func (self class) BodyGetSpace(body RID.Any) RID.Any { //gd:PhysicsServer3D.body_get_space
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.body_get_space, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_get_space, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
 func (self class) BodySetMode(body RID.Any, mode BodyMode) { //gd:PhysicsServer3D.body_set_mode
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_set_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body RID.Any
 		mode BodyMode
 	}{body, mode})
 }
 func (self class) BodyGetMode(body RID.Any) BodyMode { //gd:PhysicsServer3D.body_get_mode
 	once.Do(singleton)
-	var r_ret = noescape.Call[BodyMode](gd.ObjectChecked(self.AsObject()), methods.body_get_mode, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[BodyMode](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_get_mode, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
 func (self class) BodySetCollisionLayer(body RID.Any, layer int64) { //gd:PhysicsServer3D.body_set_collision_layer
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_collision_layer, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_set_collision_layer, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body  RID.Any
 		layer int64
 	}{body, layer})
 }
 func (self class) BodyGetCollisionLayer(body RID.Any) int64 { //gd:PhysicsServer3D.body_get_collision_layer
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.body_get_collision_layer, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_get_collision_layer, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
 func (self class) BodySetCollisionMask(body RID.Any, mask int64) { //gd:PhysicsServer3D.body_set_collision_mask
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_collision_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_set_collision_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body RID.Any
 		mask int64
 	}{body, mask})
 }
 func (self class) BodyGetCollisionMask(body RID.Any) int64 { //gd:PhysicsServer3D.body_get_collision_mask
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.body_get_collision_mask, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_get_collision_mask, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
 func (self class) BodySetCollisionPriority(body RID.Any, priority float64) { //gd:PhysicsServer3D.body_set_collision_priority
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_collision_priority, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_set_collision_priority, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		body     RID.Any
 		priority float64
 	}{body, priority})
 }
 func (self class) BodyGetCollisionPriority(body RID.Any) float64 { //gd:PhysicsServer3D.body_get_collision_priority
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.body_get_collision_priority, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_get_collision_priority, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
 func (self class) BodyAddShape(body RID.Any, shape RID.Any, transform Transform3D.BasisOrigin, disabled bool) { //gd:PhysicsServer3D.body_add_shape
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_add_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeBool<<16), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_add_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeBool<<16), &struct {
 		body      RID.Any
 		shape     RID.Any
 		transform Transform3D.BasisOrigin
@@ -2112,7 +2113,7 @@ func (self class) BodyAddShape(body RID.Any, shape RID.Any, transform Transform3
 }
 func (self class) BodySetShape(body RID.Any, shape_idx int64, shape RID.Any) { //gd:PhysicsServer3D.body_set_shape
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_set_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), &struct {
 		body      RID.Any
 		shape_idx int64
 		shape     RID.Any
@@ -2120,7 +2121,7 @@ func (self class) BodySetShape(body RID.Any, shape_idx int64, shape RID.Any) { /
 }
 func (self class) BodySetShapeTransform(body RID.Any, shape_idx int64, transform Transform3D.BasisOrigin) { //gd:PhysicsServer3D.body_set_shape_transform
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_shape_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform3D<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_set_shape_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform3D<<12), &struct {
 		body      RID.Any
 		shape_idx int64
 		transform Transform3D.BasisOrigin
@@ -2128,7 +2129,7 @@ func (self class) BodySetShapeTransform(body RID.Any, shape_idx int64, transform
 }
 func (self class) BodySetShapeDisabled(body RID.Any, shape_idx int64, disabled bool) { //gd:PhysicsServer3D.body_set_shape_disabled
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_shape_disabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_set_shape_disabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		body      RID.Any
 		shape_idx int64
 		disabled  bool
@@ -2136,13 +2137,13 @@ func (self class) BodySetShapeDisabled(body RID.Any, shape_idx int64, disabled b
 }
 func (self class) BodyGetShapeCount(body RID.Any) int64 { //gd:PhysicsServer3D.body_get_shape_count
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.body_get_shape_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_get_shape_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
 func (self class) BodyGetShape(body RID.Any, shape_idx int64) RID.Any { //gd:PhysicsServer3D.body_get_shape
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.body_get_shape, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_get_shape, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body      RID.Any
 		shape_idx int64
 	}{body, shape_idx})
@@ -2151,7 +2152,7 @@ func (self class) BodyGetShape(body RID.Any, shape_idx int64) RID.Any { //gd:Phy
 }
 func (self class) BodyGetShapeTransform(body RID.Any, shape_idx int64) Transform3D.BasisOrigin { //gd:PhysicsServer3D.body_get_shape_transform
 	once.Do(singleton)
-	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.body_get_shape_transform, gdextension.SizeTransform3D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[Transform3D.BasisOrigin](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_get_shape_transform, gdextension.SizeTransform3D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body      RID.Any
 		shape_idx int64
 	}{body, shape_idx})
@@ -2160,44 +2161,44 @@ func (self class) BodyGetShapeTransform(body RID.Any, shape_idx int64) Transform
 }
 func (self class) BodyRemoveShape(body RID.Any, shape_idx int64) { //gd:PhysicsServer3D.body_remove_shape
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_remove_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_remove_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body      RID.Any
 		shape_idx int64
 	}{body, shape_idx})
 }
 func (self class) BodyClearShapes(body RID.Any) { //gd:PhysicsServer3D.body_clear_shapes
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_clear_shapes, 0|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_clear_shapes, 0|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 }
 func (self class) BodyAttachObjectInstanceId(body RID.Any, id int64) { //gd:PhysicsServer3D.body_attach_object_instance_id
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_attach_object_instance_id, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_attach_object_instance_id, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body RID.Any
 		id   int64
 	}{body, id})
 }
 func (self class) BodyGetObjectInstanceId(body RID.Any) int64 { //gd:PhysicsServer3D.body_get_object_instance_id
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.body_get_object_instance_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_get_object_instance_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
 func (self class) BodySetEnableContinuousCollisionDetection(body RID.Any, enable bool) { //gd:PhysicsServer3D.body_set_enable_continuous_collision_detection
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_enable_continuous_collision_detection, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_set_enable_continuous_collision_detection, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		body   RID.Any
 		enable bool
 	}{body, enable})
 }
 func (self class) BodyIsContinuousCollisionDetectionEnabled(body RID.Any) bool { //gd:PhysicsServer3D.body_is_continuous_collision_detection_enabled
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.body_is_continuous_collision_detection_enabled, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_is_continuous_collision_detection_enabled, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
 func (self class) BodySetParam(body RID.Any, param BodyParameter, value variant.Any) { //gd:PhysicsServer3D.body_set_param
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
 		body  RID.Any
 		param BodyParameter
 		value gdextension.Variant
@@ -2205,7 +2206,7 @@ func (self class) BodySetParam(body RID.Any, param BodyParameter, value variant.
 }
 func (self class) BodyGetParam(body RID.Any, param BodyParameter) variant.Any { //gd:PhysicsServer3D.body_get_param
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.body_get_param, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Variant](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_get_param, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body  RID.Any
 		param BodyParameter
 	}{body, param})
@@ -2214,11 +2215,11 @@ func (self class) BodyGetParam(body RID.Any, param BodyParameter) variant.Any { 
 }
 func (self class) BodyResetMassProperties(body RID.Any) { //gd:PhysicsServer3D.body_reset_mass_properties
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_reset_mass_properties, 0|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_reset_mass_properties, 0|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 }
 func (self class) BodySetState(body RID.Any, state BodyState, value variant.Any) { //gd:PhysicsServer3D.body_set_state
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_state, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_set_state, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
 		body  RID.Any
 		state BodyState
 		value gdextension.Variant
@@ -2226,7 +2227,7 @@ func (self class) BodySetState(body RID.Any, state BodyState, value variant.Any)
 }
 func (self class) BodyGetState(body RID.Any, state BodyState) variant.Any { //gd:PhysicsServer3D.body_get_state
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.body_get_state, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Variant](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_get_state, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body  RID.Any
 		state BodyState
 	}{body, state})
@@ -2235,14 +2236,14 @@ func (self class) BodyGetState(body RID.Any, state BodyState) variant.Any { //gd
 }
 func (self class) BodyApplyCentralImpulse(body RID.Any, impulse Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_central_impulse
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_apply_central_impulse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_apply_central_impulse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
 		body    RID.Any
 		impulse Vector3.XYZ
 	}{body, impulse})
 }
 func (self class) BodyApplyImpulse(body RID.Any, impulse Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_impulse
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_apply_impulse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_apply_impulse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12), &struct {
 		body     RID.Any
 		impulse  Vector3.XYZ
 		position Vector3.XYZ
@@ -2250,21 +2251,21 @@ func (self class) BodyApplyImpulse(body RID.Any, impulse Vector3.XYZ, position V
 }
 func (self class) BodyApplyTorqueImpulse(body RID.Any, impulse Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_torque_impulse
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_apply_torque_impulse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_apply_torque_impulse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
 		body    RID.Any
 		impulse Vector3.XYZ
 	}{body, impulse})
 }
 func (self class) BodyApplyCentralForce(body RID.Any, force Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_central_force
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_apply_central_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_apply_central_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
 		body  RID.Any
 		force Vector3.XYZ
 	}{body, force})
 }
 func (self class) BodyApplyForce(body RID.Any, force Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_force
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_apply_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_apply_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12), &struct {
 		body     RID.Any
 		force    Vector3.XYZ
 		position Vector3.XYZ
@@ -2272,21 +2273,21 @@ func (self class) BodyApplyForce(body RID.Any, force Vector3.XYZ, position Vecto
 }
 func (self class) BodyApplyTorque(body RID.Any, torque Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_torque
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_apply_torque, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_apply_torque, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
 		body   RID.Any
 		torque Vector3.XYZ
 	}{body, torque})
 }
 func (self class) BodyAddConstantCentralForce(body RID.Any, force Vector3.XYZ) { //gd:PhysicsServer3D.body_add_constant_central_force
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_add_constant_central_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_add_constant_central_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
 		body  RID.Any
 		force Vector3.XYZ
 	}{body, force})
 }
 func (self class) BodyAddConstantForce(body RID.Any, force Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsServer3D.body_add_constant_force
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_add_constant_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_add_constant_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12), &struct {
 		body     RID.Any
 		force    Vector3.XYZ
 		position Vector3.XYZ
@@ -2294,47 +2295,47 @@ func (self class) BodyAddConstantForce(body RID.Any, force Vector3.XYZ, position
 }
 func (self class) BodyAddConstantTorque(body RID.Any, torque Vector3.XYZ) { //gd:PhysicsServer3D.body_add_constant_torque
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_add_constant_torque, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_add_constant_torque, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
 		body   RID.Any
 		torque Vector3.XYZ
 	}{body, torque})
 }
 func (self class) BodySetConstantForce(body RID.Any, force Vector3.XYZ) { //gd:PhysicsServer3D.body_set_constant_force
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_constant_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_set_constant_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
 		body  RID.Any
 		force Vector3.XYZ
 	}{body, force})
 }
 func (self class) BodyGetConstantForce(body RID.Any) Vector3.XYZ { //gd:PhysicsServer3D.body_get_constant_force
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.body_get_constant_force, gdextension.SizeVector3|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[Vector3.XYZ](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_get_constant_force, gdextension.SizeVector3|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
 func (self class) BodySetConstantTorque(body RID.Any, torque Vector3.XYZ) { //gd:PhysicsServer3D.body_set_constant_torque
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_constant_torque, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_set_constant_torque, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
 		body   RID.Any
 		torque Vector3.XYZ
 	}{body, torque})
 }
 func (self class) BodyGetConstantTorque(body RID.Any) Vector3.XYZ { //gd:PhysicsServer3D.body_get_constant_torque
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.body_get_constant_torque, gdextension.SizeVector3|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[Vector3.XYZ](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_get_constant_torque, gdextension.SizeVector3|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
 func (self class) BodySetAxisVelocity(body RID.Any, axis_velocity Vector3.XYZ) { //gd:PhysicsServer3D.body_set_axis_velocity
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_axis_velocity, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_set_axis_velocity, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
 		body          RID.Any
 		axis_velocity Vector3.XYZ
 	}{body, axis_velocity})
 }
 func (self class) BodySetAxisLock(body RID.Any, axis BodyAxis, lock bool) { //gd:PhysicsServer3D.body_set_axis_lock
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_axis_lock, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_set_axis_lock, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		body RID.Any
 		axis BodyAxis
 		lock bool
@@ -2342,7 +2343,7 @@ func (self class) BodySetAxisLock(body RID.Any, axis BodyAxis, lock bool) { //gd
 }
 func (self class) BodyIsAxisLocked(body RID.Any, axis BodyAxis) bool { //gd:PhysicsServer3D.body_is_axis_locked
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.body_is_axis_locked, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_is_axis_locked, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body RID.Any
 		axis BodyAxis
 	}{body, axis})
@@ -2351,54 +2352,54 @@ func (self class) BodyIsAxisLocked(body RID.Any, axis BodyAxis) bool { //gd:Phys
 }
 func (self class) BodyAddCollisionException(body RID.Any, excepted_body RID.Any) { //gd:PhysicsServer3D.body_add_collision_exception
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_add_collision_exception, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_add_collision_exception, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		body          RID.Any
 		excepted_body RID.Any
 	}{body, excepted_body})
 }
 func (self class) BodyRemoveCollisionException(body RID.Any, excepted_body RID.Any) { //gd:PhysicsServer3D.body_remove_collision_exception
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_remove_collision_exception, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_remove_collision_exception, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		body          RID.Any
 		excepted_body RID.Any
 	}{body, excepted_body})
 }
 func (self class) BodySetMaxContactsReported(body RID.Any, amount int64) { //gd:PhysicsServer3D.body_set_max_contacts_reported
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_max_contacts_reported, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_set_max_contacts_reported, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body   RID.Any
 		amount int64
 	}{body, amount})
 }
 func (self class) BodyGetMaxContactsReported(body RID.Any) int64 { //gd:PhysicsServer3D.body_get_max_contacts_reported
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.body_get_max_contacts_reported, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_get_max_contacts_reported, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
 func (self class) BodySetOmitForceIntegration(body RID.Any, enable bool) { //gd:PhysicsServer3D.body_set_omit_force_integration
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_omit_force_integration, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_set_omit_force_integration, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		body   RID.Any
 		enable bool
 	}{body, enable})
 }
 func (self class) BodyIsOmittingForceIntegration(body RID.Any) bool { //gd:PhysicsServer3D.body_is_omitting_force_integration
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.body_is_omitting_force_integration, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_is_omitting_force_integration, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
 func (self class) BodySetStateSyncCallback(body RID.Any, callable Callable.Function) { //gd:PhysicsServer3D.body_set_state_sync_callback
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_state_sync_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_set_state_sync_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
 		body     RID.Any
 		callable gdextension.Callable
 	}{body, pointers.Get(gd.InternalCallable(callable))})
 }
 func (self class) BodySetForceIntegrationCallback(body RID.Any, callable Callable.Function, userdata variant.Any) { //gd:PhysicsServer3D.body_set_force_integration_callback
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_force_integration_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeVariant<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_set_force_integration_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeVariant<<12), &struct {
 		body     RID.Any
 		callable gdextension.Callable
 		userdata gdextension.Variant
@@ -2406,14 +2407,14 @@ func (self class) BodySetForceIntegrationCallback(body RID.Any, callable Callabl
 }
 func (self class) BodySetRayPickable(body RID.Any, enable bool) { //gd:PhysicsServer3D.body_set_ray_pickable
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_ray_pickable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_set_ray_pickable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		body   RID.Any
 		enable bool
 	}{body, enable})
 }
 func (self class) BodyTestMotion(body RID.Any, parameters [1]gdclass.PhysicsTestMotionParameters3D, result [1]gdclass.PhysicsTestMotionResult3D) bool { //gd:PhysicsServer3D.body_test_motion
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.body_test_motion, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), &struct {
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_test_motion, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), &struct {
 		body       RID.Any
 		parameters gdextension.Object
 		result     gdextension.Object
@@ -2423,92 +2424,92 @@ func (self class) BodyTestMotion(body RID.Any, parameters [1]gdclass.PhysicsTest
 }
 func (self class) BodyGetDirectState(body RID.Any) [1]gdclass.PhysicsDirectBodyState3D { //gd:PhysicsServer3D.body_get_direct_state
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.body_get_direct_state, gdextension.SizeObject|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.body_get_direct_state, gdextension.SizeObject|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = [1]gdclass.PhysicsDirectBodyState3D{gdclass.NewPhysicsDirectBodyState3D(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 func (self class) SoftBodyCreate() RID.Any { //gd:PhysicsServer3D.soft_body_create
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.soft_body_create, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SoftBodyUpdateRenderingServer(body RID.Any, rendering_server_handler [1]gdclass.PhysicsServer3DRenderingServerHandler) { //gd:PhysicsServer3D.soft_body_update_rendering_server
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_update_rendering_server, 0|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_update_rendering_server, 0|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8), &struct {
 		body                     RID.Any
 		rendering_server_handler gdextension.Object
 	}{body, gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsServer3DRenderingServerHandler(rendering_server_handler[0])))})
 }
 func (self class) SoftBodySetSpace(body RID.Any, space RID.Any) { //gd:PhysicsServer3D.soft_body_set_space
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_space, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_set_space, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		body  RID.Any
 		space RID.Any
 	}{body, space})
 }
 func (self class) SoftBodyGetSpace(body RID.Any) RID.Any { //gd:PhysicsServer3D.soft_body_get_space
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_space, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_get_space, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
 func (self class) SoftBodySetMesh(body RID.Any, mesh RID.Any) { //gd:PhysicsServer3D.soft_body_set_mesh
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_mesh, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_set_mesh, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		body RID.Any
 		mesh RID.Any
 	}{body, mesh})
 }
 func (self class) SoftBodyGetBounds(body RID.Any) AABB.PositionSize { //gd:PhysicsServer3D.soft_body_get_bounds
 	once.Do(singleton)
-	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_bounds, gdextension.SizeAABB|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[AABB.PositionSize](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_get_bounds, gdextension.SizeAABB|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
 func (self class) SoftBodySetCollisionLayer(body RID.Any, layer int64) { //gd:PhysicsServer3D.soft_body_set_collision_layer
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_collision_layer, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_set_collision_layer, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body  RID.Any
 		layer int64
 	}{body, layer})
 }
 func (self class) SoftBodyGetCollisionLayer(body RID.Any) int64 { //gd:PhysicsServer3D.soft_body_get_collision_layer
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_collision_layer, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_get_collision_layer, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
 func (self class) SoftBodySetCollisionMask(body RID.Any, mask int64) { //gd:PhysicsServer3D.soft_body_set_collision_mask
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_collision_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_set_collision_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body RID.Any
 		mask int64
 	}{body, mask})
 }
 func (self class) SoftBodyGetCollisionMask(body RID.Any) int64 { //gd:PhysicsServer3D.soft_body_get_collision_mask
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_collision_mask, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_get_collision_mask, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
 func (self class) SoftBodyAddCollisionException(body RID.Any, body_b RID.Any) { //gd:PhysicsServer3D.soft_body_add_collision_exception
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_add_collision_exception, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_add_collision_exception, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		body   RID.Any
 		body_b RID.Any
 	}{body, body_b})
 }
 func (self class) SoftBodyRemoveCollisionException(body RID.Any, body_b RID.Any) { //gd:PhysicsServer3D.soft_body_remove_collision_exception
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_remove_collision_exception, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_remove_collision_exception, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		body   RID.Any
 		body_b RID.Any
 	}{body, body_b})
 }
 func (self class) SoftBodySetState(body RID.Any, state BodyState, v variant.Any) { //gd:PhysicsServer3D.soft_body_set_state
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_state, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_set_state, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
 		body  RID.Any
 		state BodyState
 		v     gdextension.Variant
@@ -2516,7 +2517,7 @@ func (self class) SoftBodySetState(body RID.Any, state BodyState, v variant.Any)
 }
 func (self class) SoftBodyGetState(body RID.Any, state BodyState) variant.Any { //gd:PhysicsServer3D.soft_body_get_state
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_state, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Variant](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_get_state, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body  RID.Any
 		state BodyState
 	}{body, state})
@@ -2525,112 +2526,112 @@ func (self class) SoftBodyGetState(body RID.Any, state BodyState) variant.Any { 
 }
 func (self class) SoftBodySetTransform(body RID.Any, transform Transform3D.BasisOrigin) { //gd:PhysicsServer3D.soft_body_set_transform
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8), &struct {
 		body      RID.Any
 		transform Transform3D.BasisOrigin
 	}{body, gd.Transposed(transform)})
 }
 func (self class) SoftBodySetRayPickable(body RID.Any, enable bool) { //gd:PhysicsServer3D.soft_body_set_ray_pickable
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_ray_pickable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_set_ray_pickable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		body   RID.Any
 		enable bool
 	}{body, enable})
 }
 func (self class) SoftBodySetSimulationPrecision(body RID.Any, simulation_precision int64) { //gd:PhysicsServer3D.soft_body_set_simulation_precision
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_simulation_precision, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_set_simulation_precision, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body                 RID.Any
 		simulation_precision int64
 	}{body, simulation_precision})
 }
 func (self class) SoftBodyGetSimulationPrecision(body RID.Any) int64 { //gd:PhysicsServer3D.soft_body_get_simulation_precision
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_simulation_precision, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_get_simulation_precision, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
 func (self class) SoftBodySetTotalMass(body RID.Any, total_mass float64) { //gd:PhysicsServer3D.soft_body_set_total_mass
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_total_mass, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_set_total_mass, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		body       RID.Any
 		total_mass float64
 	}{body, total_mass})
 }
 func (self class) SoftBodyGetTotalMass(body RID.Any) float64 { //gd:PhysicsServer3D.soft_body_get_total_mass
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_total_mass, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_get_total_mass, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
 func (self class) SoftBodySetLinearStiffness(body RID.Any, stiffness float64) { //gd:PhysicsServer3D.soft_body_set_linear_stiffness
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_linear_stiffness, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_set_linear_stiffness, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		body      RID.Any
 		stiffness float64
 	}{body, stiffness})
 }
 func (self class) SoftBodyGetLinearStiffness(body RID.Any) float64 { //gd:PhysicsServer3D.soft_body_get_linear_stiffness
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_linear_stiffness, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_get_linear_stiffness, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
 func (self class) SoftBodySetShrinkingFactor(body RID.Any, shrinking_factor float64) { //gd:PhysicsServer3D.soft_body_set_shrinking_factor
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_shrinking_factor, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_set_shrinking_factor, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		body             RID.Any
 		shrinking_factor float64
 	}{body, shrinking_factor})
 }
 func (self class) SoftBodyGetShrinkingFactor(body RID.Any) float64 { //gd:PhysicsServer3D.soft_body_get_shrinking_factor
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_shrinking_factor, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_get_shrinking_factor, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
 func (self class) SoftBodySetPressureCoefficient(body RID.Any, pressure_coefficient float64) { //gd:PhysicsServer3D.soft_body_set_pressure_coefficient
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_pressure_coefficient, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_set_pressure_coefficient, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		body                 RID.Any
 		pressure_coefficient float64
 	}{body, pressure_coefficient})
 }
 func (self class) SoftBodyGetPressureCoefficient(body RID.Any) float64 { //gd:PhysicsServer3D.soft_body_get_pressure_coefficient
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_pressure_coefficient, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_get_pressure_coefficient, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
 func (self class) SoftBodySetDampingCoefficient(body RID.Any, damping_coefficient float64) { //gd:PhysicsServer3D.soft_body_set_damping_coefficient
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_damping_coefficient, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_set_damping_coefficient, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		body                RID.Any
 		damping_coefficient float64
 	}{body, damping_coefficient})
 }
 func (self class) SoftBodyGetDampingCoefficient(body RID.Any) float64 { //gd:PhysicsServer3D.soft_body_get_damping_coefficient
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_damping_coefficient, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_get_damping_coefficient, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
 func (self class) SoftBodySetDragCoefficient(body RID.Any, drag_coefficient float64) { //gd:PhysicsServer3D.soft_body_set_drag_coefficient
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_drag_coefficient, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_set_drag_coefficient, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		body             RID.Any
 		drag_coefficient float64
 	}{body, drag_coefficient})
 }
 func (self class) SoftBodyGetDragCoefficient(body RID.Any) float64 { //gd:PhysicsServer3D.soft_body_get_drag_coefficient
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_drag_coefficient, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_get_drag_coefficient, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
 func (self class) SoftBodyMovePoint(body RID.Any, point_index int64, global_position Vector3.XYZ) { //gd:PhysicsServer3D.soft_body_move_point
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_move_point, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector3<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_move_point, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector3<<12), &struct {
 		body            RID.Any
 		point_index     int64
 		global_position Vector3.XYZ
@@ -2638,7 +2639,7 @@ func (self class) SoftBodyMovePoint(body RID.Any, point_index int64, global_posi
 }
 func (self class) SoftBodyGetPointGlobalPosition(body RID.Any, point_index int64) Vector3.XYZ { //gd:PhysicsServer3D.soft_body_get_point_global_position
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_point_global_position, gdextension.SizeVector3|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[Vector3.XYZ](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_get_point_global_position, gdextension.SizeVector3|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body        RID.Any
 		point_index int64
 	}{body, point_index})
@@ -2647,11 +2648,11 @@ func (self class) SoftBodyGetPointGlobalPosition(body RID.Any, point_index int64
 }
 func (self class) SoftBodyRemoveAllPinnedPoints(body RID.Any) { //gd:PhysicsServer3D.soft_body_remove_all_pinned_points
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_remove_all_pinned_points, 0|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_remove_all_pinned_points, 0|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 }
 func (self class) SoftBodyPinPoint(body RID.Any, point_index int64, pin bool) { //gd:PhysicsServer3D.soft_body_pin_point
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_pin_point, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_pin_point, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		body        RID.Any
 		point_index int64
 		pin         bool
@@ -2659,7 +2660,7 @@ func (self class) SoftBodyPinPoint(body RID.Any, point_index int64, pin bool) { 
 }
 func (self class) SoftBodyIsPointPinned(body RID.Any, point_index int64) bool { //gd:PhysicsServer3D.soft_body_is_point_pinned
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.soft_body_is_point_pinned, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_is_point_pinned, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body        RID.Any
 		point_index int64
 	}{body, point_index})
@@ -2668,7 +2669,7 @@ func (self class) SoftBodyIsPointPinned(body RID.Any, point_index int64) bool { 
 }
 func (self class) SoftBodyApplyPointImpulse(body RID.Any, point_index int64, impulse Vector3.XYZ) { //gd:PhysicsServer3D.soft_body_apply_point_impulse
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_apply_point_impulse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector3<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_apply_point_impulse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector3<<12), &struct {
 		body        RID.Any
 		point_index int64
 		impulse     Vector3.XYZ
@@ -2676,7 +2677,7 @@ func (self class) SoftBodyApplyPointImpulse(body RID.Any, point_index int64, imp
 }
 func (self class) SoftBodyApplyPointForce(body RID.Any, point_index int64, force Vector3.XYZ) { //gd:PhysicsServer3D.soft_body_apply_point_force
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_apply_point_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector3<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_apply_point_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector3<<12), &struct {
 		body        RID.Any
 		point_index int64
 		force       Vector3.XYZ
@@ -2684,31 +2685,31 @@ func (self class) SoftBodyApplyPointForce(body RID.Any, point_index int64, force
 }
 func (self class) SoftBodyApplyCentralImpulse(body RID.Any, impulse Vector3.XYZ) { //gd:PhysicsServer3D.soft_body_apply_central_impulse
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_apply_central_impulse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_apply_central_impulse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
 		body    RID.Any
 		impulse Vector3.XYZ
 	}{body, impulse})
 }
 func (self class) SoftBodyApplyCentralForce(body RID.Any, force Vector3.XYZ) { //gd:PhysicsServer3D.soft_body_apply_central_force
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_apply_central_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.soft_body_apply_central_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
 		body  RID.Any
 		force Vector3.XYZ
 	}{body, force})
 }
 func (self class) JointCreate() RID.Any { //gd:PhysicsServer3D.joint_create
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.joint_create, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.joint_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) JointClear(joint RID.Any) { //gd:PhysicsServer3D.joint_clear
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_clear, 0|(gdextension.SizeRID<<4), &struct{ joint RID.Any }{joint})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.joint_clear, 0|(gdextension.SizeRID<<4), &struct{ joint RID.Any }{joint})
 }
 func (self class) JointMakePin(joint RID.Any, body_A RID.Any, local_A Vector3.XYZ, body_B RID.Any, local_B Vector3.XYZ) { //gd:PhysicsServer3D.joint_make_pin
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_make_pin, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeVector3<<20), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.joint_make_pin, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeVector3<<20), &struct {
 		joint   RID.Any
 		body_A  RID.Any
 		local_A Vector3.XYZ
@@ -2718,7 +2719,7 @@ func (self class) JointMakePin(joint RID.Any, body_A RID.Any, local_A Vector3.XY
 }
 func (self class) PinJointSetParam(joint RID.Any, param PinJointParam, value float64) { //gd:PhysicsServer3D.pin_joint_set_param
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pin_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.pin_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
 		joint RID.Any
 		param PinJointParam
 		value float64
@@ -2726,7 +2727,7 @@ func (self class) PinJointSetParam(joint RID.Any, param PinJointParam, value flo
 }
 func (self class) PinJointGetParam(joint RID.Any, param PinJointParam) float64 { //gd:PhysicsServer3D.pin_joint_get_param
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.pin_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.pin_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		joint RID.Any
 		param PinJointParam
 	}{joint, param})
@@ -2735,33 +2736,33 @@ func (self class) PinJointGetParam(joint RID.Any, param PinJointParam) float64 {
 }
 func (self class) PinJointSetLocalA(joint RID.Any, local_A Vector3.XYZ) { //gd:PhysicsServer3D.pin_joint_set_local_a
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pin_joint_set_local_a, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.pin_joint_set_local_a, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
 		joint   RID.Any
 		local_A Vector3.XYZ
 	}{joint, local_A})
 }
 func (self class) PinJointGetLocalA(joint RID.Any) Vector3.XYZ { //gd:PhysicsServer3D.pin_joint_get_local_a
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.pin_joint_get_local_a, gdextension.SizeVector3|(gdextension.SizeRID<<4), &struct{ joint RID.Any }{joint})
+	var r_ret = noescape.Call[Vector3.XYZ](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.pin_joint_get_local_a, gdextension.SizeVector3|(gdextension.SizeRID<<4), &struct{ joint RID.Any }{joint})
 	var ret = r_ret
 	return ret
 }
 func (self class) PinJointSetLocalB(joint RID.Any, local_B Vector3.XYZ) { //gd:PhysicsServer3D.pin_joint_set_local_b
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pin_joint_set_local_b, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.pin_joint_set_local_b, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
 		joint   RID.Any
 		local_B Vector3.XYZ
 	}{joint, local_B})
 }
 func (self class) PinJointGetLocalB(joint RID.Any) Vector3.XYZ { //gd:PhysicsServer3D.pin_joint_get_local_b
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.pin_joint_get_local_b, gdextension.SizeVector3|(gdextension.SizeRID<<4), &struct{ joint RID.Any }{joint})
+	var r_ret = noescape.Call[Vector3.XYZ](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.pin_joint_get_local_b, gdextension.SizeVector3|(gdextension.SizeRID<<4), &struct{ joint RID.Any }{joint})
 	var ret = r_ret
 	return ret
 }
 func (self class) JointMakeHinge(joint RID.Any, body_A RID.Any, hinge_A Transform3D.BasisOrigin, body_B RID.Any, hinge_B Transform3D.BasisOrigin) { //gd:PhysicsServer3D.joint_make_hinge
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_make_hinge, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeTransform3D<<20), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.joint_make_hinge, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeTransform3D<<20), &struct {
 		joint   RID.Any
 		body_A  RID.Any
 		hinge_A Transform3D.BasisOrigin
@@ -2771,7 +2772,7 @@ func (self class) JointMakeHinge(joint RID.Any, body_A RID.Any, hinge_A Transfor
 }
 func (self class) HingeJointSetParam(joint RID.Any, param HingeJointParam, value float64) { //gd:PhysicsServer3D.hinge_joint_set_param
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.hinge_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.hinge_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
 		joint RID.Any
 		param HingeJointParam
 		value float64
@@ -2779,7 +2780,7 @@ func (self class) HingeJointSetParam(joint RID.Any, param HingeJointParam, value
 }
 func (self class) HingeJointGetParam(joint RID.Any, param HingeJointParam) float64 { //gd:PhysicsServer3D.hinge_joint_get_param
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.hinge_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.hinge_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		joint RID.Any
 		param HingeJointParam
 	}{joint, param})
@@ -2788,7 +2789,7 @@ func (self class) HingeJointGetParam(joint RID.Any, param HingeJointParam) float
 }
 func (self class) HingeJointSetFlag(joint RID.Any, flag HingeJointFlag, enabled bool) { //gd:PhysicsServer3D.hinge_joint_set_flag
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.hinge_joint_set_flag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.hinge_joint_set_flag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		joint   RID.Any
 		flag    HingeJointFlag
 		enabled bool
@@ -2796,7 +2797,7 @@ func (self class) HingeJointSetFlag(joint RID.Any, flag HingeJointFlag, enabled 
 }
 func (self class) HingeJointGetFlag(joint RID.Any, flag HingeJointFlag) bool { //gd:PhysicsServer3D.hinge_joint_get_flag
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.hinge_joint_get_flag, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.hinge_joint_get_flag, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		joint RID.Any
 		flag  HingeJointFlag
 	}{joint, flag})
@@ -2805,7 +2806,7 @@ func (self class) HingeJointGetFlag(joint RID.Any, flag HingeJointFlag) bool { /
 }
 func (self class) JointMakeSlider(joint RID.Any, body_A RID.Any, local_ref_A Transform3D.BasisOrigin, body_B RID.Any, local_ref_B Transform3D.BasisOrigin) { //gd:PhysicsServer3D.joint_make_slider
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_make_slider, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeTransform3D<<20), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.joint_make_slider, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeTransform3D<<20), &struct {
 		joint       RID.Any
 		body_A      RID.Any
 		local_ref_A Transform3D.BasisOrigin
@@ -2815,7 +2816,7 @@ func (self class) JointMakeSlider(joint RID.Any, body_A RID.Any, local_ref_A Tra
 }
 func (self class) SliderJointSetParam(joint RID.Any, param SliderJointParam, value float64) { //gd:PhysicsServer3D.slider_joint_set_param
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.slider_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.slider_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
 		joint RID.Any
 		param SliderJointParam
 		value float64
@@ -2823,7 +2824,7 @@ func (self class) SliderJointSetParam(joint RID.Any, param SliderJointParam, val
 }
 func (self class) SliderJointGetParam(joint RID.Any, param SliderJointParam) float64 { //gd:PhysicsServer3D.slider_joint_get_param
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.slider_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.slider_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		joint RID.Any
 		param SliderJointParam
 	}{joint, param})
@@ -2832,7 +2833,7 @@ func (self class) SliderJointGetParam(joint RID.Any, param SliderJointParam) flo
 }
 func (self class) JointMakeConeTwist(joint RID.Any, body_A RID.Any, local_ref_A Transform3D.BasisOrigin, body_B RID.Any, local_ref_B Transform3D.BasisOrigin) { //gd:PhysicsServer3D.joint_make_cone_twist
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_make_cone_twist, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeTransform3D<<20), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.joint_make_cone_twist, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeTransform3D<<20), &struct {
 		joint       RID.Any
 		body_A      RID.Any
 		local_ref_A Transform3D.BasisOrigin
@@ -2842,7 +2843,7 @@ func (self class) JointMakeConeTwist(joint RID.Any, body_A RID.Any, local_ref_A 
 }
 func (self class) ConeTwistJointSetParam(joint RID.Any, param ConeTwistJointParam, value float64) { //gd:PhysicsServer3D.cone_twist_joint_set_param
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.cone_twist_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.cone_twist_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
 		joint RID.Any
 		param ConeTwistJointParam
 		value float64
@@ -2850,7 +2851,7 @@ func (self class) ConeTwistJointSetParam(joint RID.Any, param ConeTwistJointPara
 }
 func (self class) ConeTwistJointGetParam(joint RID.Any, param ConeTwistJointParam) float64 { //gd:PhysicsServer3D.cone_twist_joint_get_param
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.cone_twist_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.cone_twist_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		joint RID.Any
 		param ConeTwistJointParam
 	}{joint, param})
@@ -2859,39 +2860,39 @@ func (self class) ConeTwistJointGetParam(joint RID.Any, param ConeTwistJointPara
 }
 func (self class) JointGetType(joint RID.Any) JointType { //gd:PhysicsServer3D.joint_get_type
 	once.Do(singleton)
-	var r_ret = noescape.Call[JointType](gd.ObjectChecked(self.AsObject()), methods.joint_get_type, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ joint RID.Any }{joint})
+	var r_ret = noescape.Call[JointType](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.joint_get_type, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ joint RID.Any }{joint})
 	var ret = r_ret
 	return ret
 }
 func (self class) JointSetSolverPriority(joint RID.Any, priority int64) { //gd:PhysicsServer3D.joint_set_solver_priority
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_set_solver_priority, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.joint_set_solver_priority, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		joint    RID.Any
 		priority int64
 	}{joint, priority})
 }
 func (self class) JointGetSolverPriority(joint RID.Any) int64 { //gd:PhysicsServer3D.joint_get_solver_priority
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.joint_get_solver_priority, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ joint RID.Any }{joint})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.joint_get_solver_priority, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ joint RID.Any }{joint})
 	var ret = r_ret
 	return ret
 }
 func (self class) JointDisableCollisionsBetweenBodies(joint RID.Any, disable bool) { //gd:PhysicsServer3D.joint_disable_collisions_between_bodies
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_disable_collisions_between_bodies, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.joint_disable_collisions_between_bodies, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		joint   RID.Any
 		disable bool
 	}{joint, disable})
 }
 func (self class) JointIsDisabledCollisionsBetweenBodies(joint RID.Any) bool { //gd:PhysicsServer3D.joint_is_disabled_collisions_between_bodies
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.joint_is_disabled_collisions_between_bodies, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ joint RID.Any }{joint})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.joint_is_disabled_collisions_between_bodies, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ joint RID.Any }{joint})
 	var ret = r_ret
 	return ret
 }
 func (self class) JointMakeGeneric6dof(joint RID.Any, body_A RID.Any, local_ref_A Transform3D.BasisOrigin, body_B RID.Any, local_ref_B Transform3D.BasisOrigin) { //gd:PhysicsServer3D.joint_make_generic_6dof
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_make_generic_6dof, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeTransform3D<<20), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.joint_make_generic_6dof, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeTransform3D<<20), &struct {
 		joint       RID.Any
 		body_A      RID.Any
 		local_ref_A Transform3D.BasisOrigin
@@ -2901,7 +2902,7 @@ func (self class) JointMakeGeneric6dof(joint RID.Any, body_A RID.Any, local_ref_
 }
 func (self class) Generic6dofJointSetParam(joint RID.Any, axis Vector3.Axis, param G6DOFJointAxisParam, value float64) { //gd:PhysicsServer3D.generic_6dof_joint_set_param
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.generic_6dof_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeFloat<<16), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.generic_6dof_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeFloat<<16), &struct {
 		joint RID.Any
 		axis  Vector3.Axis
 		param G6DOFJointAxisParam
@@ -2910,7 +2911,7 @@ func (self class) Generic6dofJointSetParam(joint RID.Any, axis Vector3.Axis, par
 }
 func (self class) Generic6dofJointGetParam(joint RID.Any, axis Vector3.Axis, param G6DOFJointAxisParam) float64 { //gd:PhysicsServer3D.generic_6dof_joint_get_param
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.generic_6dof_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.generic_6dof_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		joint RID.Any
 		axis  Vector3.Axis
 		param G6DOFJointAxisParam
@@ -2920,7 +2921,7 @@ func (self class) Generic6dofJointGetParam(joint RID.Any, axis Vector3.Axis, par
 }
 func (self class) Generic6dofJointSetFlag(joint RID.Any, axis Vector3.Axis, flag G6DOFJointAxisFlag, enable bool) { //gd:PhysicsServer3D.generic_6dof_joint_set_flag
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.generic_6dof_joint_set_flag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.generic_6dof_joint_set_flag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), &struct {
 		joint  RID.Any
 		axis   Vector3.Axis
 		flag   G6DOFJointAxisFlag
@@ -2929,7 +2930,7 @@ func (self class) Generic6dofJointSetFlag(joint RID.Any, axis Vector3.Axis, flag
 }
 func (self class) Generic6dofJointGetFlag(joint RID.Any, axis Vector3.Axis, flag G6DOFJointAxisFlag) bool { //gd:PhysicsServer3D.generic_6dof_joint_get_flag
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.generic_6dof_joint_get_flag, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.generic_6dof_joint_get_flag, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		joint RID.Any
 		axis  Vector3.Axis
 		flag  G6DOFJointAxisFlag
@@ -2939,15 +2940,15 @@ func (self class) Generic6dofJointGetFlag(joint RID.Any, axis Vector3.Axis, flag
 }
 func (self class) FreeRid(rid RID.Any) { //gd:PhysicsServer3D.free_rid
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.free_rid, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.free_rid, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 }
 func (self class) SetActive(active bool) { //gd:PhysicsServer3D.set_active
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_active, 0|(gdextension.SizeBool<<4), &struct{ active bool }{active})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_active, 0|(gdextension.SizeBool<<4), &struct{ active bool }{active})
 }
 func (self class) GetProcessInfo(process_info ProcessInfo) int64 { //gd:PhysicsServer3D.get_process_info
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_process_info, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ process_info ProcessInfo }{process_info})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_process_info, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ process_info ProcessInfo }{process_info})
 	var ret = r_ret
 	return ret
 }

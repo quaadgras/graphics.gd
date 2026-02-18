@@ -19,6 +19,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -141,7 +142,7 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.PhysicsServer3DManager
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetPhysicsServer3DManager(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewPhysicsServer3DManager(obj[0])
@@ -156,19 +157,19 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetPhysicsServer3DManager(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 
 func (self class) RegisterServer(name String.Readable, create_callback Callable.Function) { //gd:PhysicsServer3DManager.register_server
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_server, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.register_server, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), &struct {
 		name            gdextension.String
 		create_callback gdextension.Callable
 	}{pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalCallable(create_callback))})
 }
 func (self class) SetDefaultServer(name String.Readable, priority int64) { //gd:PhysicsServer3DManager.set_default_server
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_server, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_default_server, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		name     gdextension.String
 		priority int64
 	}{pointers.Get(gd.InternalString(name)), priority})

@@ -10,6 +10,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -280,7 +281,7 @@ func (Instance) _close(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCal
 type Advanced = class
 type class [1]gdclass.WebRTCPeerConnectionExtension
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetWebRTCPeerConnectionExtension(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewWebRTCPeerConnectionExtension(obj[0])
@@ -295,10 +296,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object {
-	return gdclass.GetWebRTCPeerConnectionExtension(self[0])
-}
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.WebRTCPeerConnectionExtension{gdclass.NewWebRTCPeerConnectionExtension(pointers.Add[gd.Object]([3]uint64{}))})
@@ -451,31 +450,21 @@ func (class) _close(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVi
 	}
 }
 
-func (self class) AsWebRTCPeerConnectionExtension() Advanced {
-	return Advanced{gdclass.NewWebRTCPeerConnectionExtension(self.AsObject()[0])}
+func (o class) AsWebRTCPeerConnectionExtension() Advanced         { return Advanced(o) }
+func (o Instance) AsWebRTCPeerConnectionExtension() Instance      { return o }
+func (o *Extension[T]) AsWebRTCPeerConnectionExtension() Instance { return o.Super() }
+func (o class) AsWebRTCPeerConnection() WebRTCPeerConnection.Advanced {
+	return *(*WebRTCPeerConnection.Advanced)(ie.As(&o))
 }
-func (self Instance) AsWebRTCPeerConnectionExtension() Instance {
-	return Instance{gdclass.NewWebRTCPeerConnectionExtension(self.AsObject()[0])}
+func (o *Extension[T]) AsWebRTCPeerConnection() WebRTCPeerConnection.Instance {
+	return o.Super().AsWebRTCPeerConnection()
 }
-func (self *Extension[T]) AsWebRTCPeerConnectionExtension() Instance {
-	return self.Super().AsWebRTCPeerConnectionExtension()
+func (o Instance) AsWebRTCPeerConnection() WebRTCPeerConnection.Instance {
+	return *(*WebRTCPeerConnection.Instance)(ie.As(&o))
 }
-func (self class) AsWebRTCPeerConnection() WebRTCPeerConnection.Advanced {
-	return WebRTCPeerConnection.Advanced{gdclass.NewWebRTCPeerConnection(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsWebRTCPeerConnection() WebRTCPeerConnection.Instance {
-	return self.Super().AsWebRTCPeerConnection()
-}
-func (self Instance) AsWebRTCPeerConnection() WebRTCPeerConnection.Instance {
-	return WebRTCPeerConnection.Instance{gdclass.NewWebRTCPeerConnection(self.AsObject()[0])}
-}
-func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
-func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
+func (o class) AsRefCounted() ie.RC         { return *(*ie.RC)(ie.As(&o)) }
+func (o *Extension[T]) AsRefCounted() ie.RC { return o.Super().AsRefCounted() }
+func (o Instance) AsRefCounted() ie.RC      { return *(*ie.RC)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

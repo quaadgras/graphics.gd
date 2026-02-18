@@ -19,6 +19,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -139,7 +140,7 @@ func (self Instance) SetArrays(vertices []Vector3.XYZ, indices []int32) Instance
 type Advanced = class
 type class [1]gdclass.ArrayOccluder3D
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetArrayOccluder3D(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewArrayOccluder3D(obj[0])
@@ -154,8 +155,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetArrayOccluder3D(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.ArrayOccluder3D{gdclass.NewArrayOccluder3D(pointers.Add[gd.Object]([3]uint64{}))})
@@ -221,34 +222,18 @@ func (self class) SetIndices(indices Packed.Array[int32]) { //gd:ArrayOccluder3D
 		indices gdextension.PackedArray[int32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](indices))})
 }
-func (self class) AsArrayOccluder3D() Advanced {
-	return Advanced{gdclass.NewArrayOccluder3D(self.AsObject()[0])}
-}
-func (self Instance) AsArrayOccluder3D() Instance {
-	return Instance{gdclass.NewArrayOccluder3D(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsArrayOccluder3D() Instance { return self.Super().AsArrayOccluder3D() }
-func (self class) AsOccluder3D() Occluder3D.Advanced {
-	return Occluder3D.Advanced{gdclass.NewOccluder3D(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsOccluder3D() Occluder3D.Instance { return self.Super().AsOccluder3D() }
-func (self Instance) AsOccluder3D() Occluder3D.Instance {
-	return Occluder3D.Instance{gdclass.NewOccluder3D(self.AsObject()[0])}
-}
-func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
-func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
-}
-func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
-func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
+func (o class) AsArrayOccluder3D() Advanced               { return Advanced(o) }
+func (o Instance) AsArrayOccluder3D() Instance            { return o }
+func (o *Extension[T]) AsArrayOccluder3D() Instance       { return o.Super() }
+func (o class) AsOccluder3D() Occluder3D.Advanced         { return *(*Occluder3D.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsOccluder3D() Occluder3D.Instance { return o.Super().AsOccluder3D() }
+func (o Instance) AsOccluder3D() Occluder3D.Instance      { return *(*Occluder3D.Instance)(ie.As(&o)) }
+func (o class) AsResource() Resource.Advanced             { return *(*Resource.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsResource() Resource.Instance     { return o.Super().AsResource() }
+func (o Instance) AsResource() Resource.Instance          { return *(*Resource.Instance)(ie.As(&o)) }
+func (o class) AsRefCounted() ie.RC                       { return *(*ie.RC)(ie.As(&o)) }
+func (o *Extension[T]) AsRefCounted() ie.RC               { return o.Super().AsRefCounted() }
+func (o Instance) AsRefCounted() ie.RC                    { return *(*ie.RC)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

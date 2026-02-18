@@ -16,6 +16,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -156,7 +157,7 @@ func LoadFromFile(path string) Instance { //gd:AudioStreamOggVorbis.load_from_fi
 type Advanced = class
 type class [1]gdclass.AudioStreamOggVorbis
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetAudioStreamOggVorbis(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewAudioStreamOggVorbis(obj[0])
@@ -171,8 +172,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetAudioStreamOggVorbis(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.AudioStreamOggVorbis{gdclass.NewAudioStreamOggVorbis(pointers.Add[gd.Object]([3]uint64{}))})
@@ -349,36 +350,18 @@ func (self class) GetTags() Dictionary.Any { //gd:AudioStreamOggVorbis.get_tags
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-func (self class) AsAudioStreamOggVorbis() Advanced {
-	return Advanced{gdclass.NewAudioStreamOggVorbis(self.AsObject()[0])}
-}
-func (self Instance) AsAudioStreamOggVorbis() Instance {
-	return Instance{gdclass.NewAudioStreamOggVorbis(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsAudioStreamOggVorbis() Instance {
-	return self.Super().AsAudioStreamOggVorbis()
-}
-func (self class) AsAudioStream() AudioStream.Advanced {
-	return AudioStream.Advanced{gdclass.NewAudioStream(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsAudioStream() AudioStream.Instance { return self.Super().AsAudioStream() }
-func (self Instance) AsAudioStream() AudioStream.Instance {
-	return AudioStream.Instance{gdclass.NewAudioStream(self.AsObject()[0])}
-}
-func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
-func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
-}
-func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
-func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
+func (o class) AsAudioStreamOggVorbis() Advanced            { return Advanced(o) }
+func (o Instance) AsAudioStreamOggVorbis() Instance         { return o }
+func (o *Extension[T]) AsAudioStreamOggVorbis() Instance    { return o.Super() }
+func (o class) AsAudioStream() AudioStream.Advanced         { return *(*AudioStream.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsAudioStream() AudioStream.Instance { return o.Super().AsAudioStream() }
+func (o Instance) AsAudioStream() AudioStream.Instance      { return *(*AudioStream.Instance)(ie.As(&o)) }
+func (o class) AsResource() Resource.Advanced               { return *(*Resource.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsResource() Resource.Instance       { return o.Super().AsResource() }
+func (o Instance) AsResource() Resource.Instance            { return *(*Resource.Instance)(ie.As(&o)) }
+func (o class) AsRefCounted() ie.RC                         { return *(*ie.RC)(ie.As(&o)) }
+func (o *Extension[T]) AsRefCounted() ie.RC                 { return o.Super().AsRefCounted() }
+func (o Instance) AsRefCounted() ie.RC                      { return *(*ie.RC)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

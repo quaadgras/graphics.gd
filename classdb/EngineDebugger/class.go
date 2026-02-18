@@ -16,6 +16,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -326,7 +327,7 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.EngineDebugger
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetEngineDebugger(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewEngineDebugger(obj[0])
@@ -341,48 +342,48 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetEngineDebugger(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 
 func (self class) IsActive() bool { //gd:EngineDebugger.is_active
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_active, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_active, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) RegisterProfiler(name String.Name, profiler [1]gdclass.EngineProfiler) { //gd:EngineDebugger.register_profiler
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_profiler, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.register_profiler, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name     gdextension.StringName
 		profiler gdextension.Object
 	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetEngineProfiler(profiler[0])))})
 }
 func (self class) UnregisterProfiler(name String.Name) { //gd:EngineDebugger.unregister_profiler
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_profiler, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.unregister_profiler, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 func (self class) IsProfiling(name String.Name) bool { //gd:EngineDebugger.is_profiling
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_profiling, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_profiling, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
 func (self class) HasProfiler(name String.Name) bool { //gd:EngineDebugger.has_profiler
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_profiler, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.has_profiler, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
 func (self class) ProfilerAddFrameData(name String.Name, data Array.Any) { //gd:EngineDebugger.profiler_add_frame_data
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.profiler_add_frame_data, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeArray<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.profiler_add_frame_data, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeArray<<8), &struct {
 		name gdextension.StringName
 		data gdextension.Array
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalArray(data))})
 }
 func (self class) ProfilerEnable(name String.Name, enable bool, arguments Array.Any) { //gd:EngineDebugger.profiler_enable
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.profiler_enable, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeArray<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.profiler_enable, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeArray<<12), &struct {
 		name      gdextension.StringName
 		enable    bool
 		arguments gdextension.Array
@@ -390,42 +391,42 @@ func (self class) ProfilerEnable(name String.Name, enable bool, arguments Array.
 }
 func (self class) RegisterMessageCapture(name String.Name, callable Callable.Function) { //gd:EngineDebugger.register_message_capture
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_message_capture, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeCallable<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.register_message_capture, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeCallable<<8), &struct {
 		name     gdextension.StringName
 		callable gdextension.Callable
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalCallable(callable))})
 }
 func (self class) UnregisterMessageCapture(name String.Name) { //gd:EngineDebugger.unregister_message_capture
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_message_capture, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.unregister_message_capture, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 func (self class) HasCapture(name String.Name) bool { //gd:EngineDebugger.has_capture
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_capture, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.has_capture, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
 func (self class) LinePoll() { //gd:EngineDebugger.line_poll
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.line_poll, 0, &struct{}{})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.line_poll, 0, &struct{}{})
 }
 func (self class) SendMessage(message String.Readable, data Array.Any) { //gd:EngineDebugger.send_message
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.send_message, 0|(gdextension.SizeString<<4)|(gdextension.SizeArray<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.send_message, 0|(gdextension.SizeString<<4)|(gdextension.SizeArray<<8), &struct {
 		message gdextension.String
 		data    gdextension.Array
 	}{pointers.Get(gd.InternalString(message)), pointers.Get(gd.InternalArray(data))})
 }
 func (self class) Debug(can_continue bool, is_error_breakpoint bool) { //gd:EngineDebugger.debug
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.debug, 0|(gdextension.SizeBool<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.debug, 0|(gdextension.SizeBool<<4)|(gdextension.SizeBool<<8), &struct {
 		can_continue        bool
 		is_error_breakpoint bool
 	}{can_continue, is_error_breakpoint})
 }
 func (self class) ScriptDebug(language [1]gdclass.ScriptLanguage, can_continue bool, is_error_breakpoint bool) { //gd:EngineDebugger.script_debug
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.script_debug, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.script_debug, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12), &struct {
 		language            gdextension.Object
 		can_continue        bool
 		is_error_breakpoint bool
@@ -433,27 +434,27 @@ func (self class) ScriptDebug(language [1]gdclass.ScriptLanguage, can_continue b
 }
 func (self class) SetLinesLeft(lines int64) { //gd:EngineDebugger.set_lines_left
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lines_left, 0|(gdextension.SizeInt<<4), &struct{ lines int64 }{lines})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_lines_left, 0|(gdextension.SizeInt<<4), &struct{ lines int64 }{lines})
 }
 func (self class) GetLinesLeft() int64 { //gd:EngineDebugger.get_lines_left
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_lines_left, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_lines_left, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetDepth(depth int64) { //gd:EngineDebugger.set_depth
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth, 0|(gdextension.SizeInt<<4), &struct{ depth int64 }{depth})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_depth, 0|(gdextension.SizeInt<<4), &struct{ depth int64 }{depth})
 }
 func (self class) GetDepth() int64 { //gd:EngineDebugger.get_depth
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_depth, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_depth, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsBreakpoint(line int64, source String.Name) bool { //gd:EngineDebugger.is_breakpoint
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_breakpoint, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), &struct {
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_breakpoint, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), &struct {
 		line   int64
 		source gdextension.StringName
 	}{line, pointers.Get(gd.InternalStringName(source))})
@@ -462,27 +463,27 @@ func (self class) IsBreakpoint(line int64, source String.Name) bool { //gd:Engin
 }
 func (self class) IsSkippingBreakpoints() bool { //gd:EngineDebugger.is_skipping_breakpoints
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_skipping_breakpoints, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_skipping_breakpoints, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) InsertBreakpoint(line int64, source String.Name) { //gd:EngineDebugger.insert_breakpoint
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.insert_breakpoint, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.insert_breakpoint, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), &struct {
 		line   int64
 		source gdextension.StringName
 	}{line, pointers.Get(gd.InternalStringName(source))})
 }
 func (self class) RemoveBreakpoint(line int64, source String.Name) { //gd:EngineDebugger.remove_breakpoint
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_breakpoint, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.remove_breakpoint, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), &struct {
 		line   int64
 		source gdextension.StringName
 	}{line, pointers.Get(gd.InternalStringName(source))})
 }
 func (self class) ClearBreakpoints() { //gd:EngineDebugger.clear_breakpoints
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_breakpoints, 0, &struct{}{})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.clear_breakpoints, 0, &struct{}{})
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

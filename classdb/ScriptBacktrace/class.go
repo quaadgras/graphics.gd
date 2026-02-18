@@ -19,6 +19,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -292,7 +293,7 @@ func (self MoreArgs) Format(indent_all int, indent_frames int) string { //gd:Scr
 type Advanced = class
 type class [1]gdclass.ScriptBacktrace
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetScriptBacktrace(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewScriptBacktrace(obj[0])
@@ -307,8 +308,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetScriptBacktrace(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.ScriptBacktrace{gdclass.NewScriptBacktrace(pointers.Add[gd.Object]([3]uint64{}))})
@@ -426,20 +427,12 @@ func (self class) Format(indent_all int64, indent_frames int64) String.Readable 
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-func (self class) AsScriptBacktrace() Advanced {
-	return Advanced{gdclass.NewScriptBacktrace(self.AsObject()[0])}
-}
-func (self Instance) AsScriptBacktrace() Instance {
-	return Instance{gdclass.NewScriptBacktrace(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsScriptBacktrace() Instance { return self.Super().AsScriptBacktrace() }
-func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
-func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
+func (o class) AsScriptBacktrace() Advanced         { return Advanced(o) }
+func (o Instance) AsScriptBacktrace() Instance      { return o }
+func (o *Extension[T]) AsScriptBacktrace() Instance { return o.Super() }
+func (o class) AsRefCounted() ie.RC                 { return *(*ie.RC)(ie.As(&o)) }
+func (o *Extension[T]) AsRefCounted() ie.RC         { return o.Super().AsRefCounted() }
+func (o Instance) AsRefCounted() ie.RC              { return *(*ie.RC)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

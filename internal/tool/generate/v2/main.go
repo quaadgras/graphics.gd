@@ -145,54 +145,57 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprint(file, "\n*/")
 	}
 	fmt.Fprintf(file, "\npackage %s\n\n", class.Name)
-	if singleton {
-		fmt.Fprintln(file, `import "sync"`)
-	}
-	fmt.Fprintln(file, `import "reflect"`)
-	fmt.Fprintln(file, `import "slices"`)
-	fmt.Fprintln(file, `import "graphics.gd/internal/pointers"`)
-	fmt.Fprintln(file, `import "graphics.gd/internal/callframe"`)
-	fmt.Fprintln(file, `import "graphics.gd/internal/gdextension"`)
-	fmt.Fprintln(file, `import "graphics.gd/internal/noescape"`)
-	fmt.Fprintln(file, `import gd "graphics.gd/internal"`)
-	fmt.Fprintln(file, `import "graphics.gd/internal/gdclass"`)
-	fmt.Fprintln(file, `import "graphics.gd/variant"`)
-	fmt.Fprintln(file, `import "graphics.gd/variant/Angle"`)
-	fmt.Fprintln(file, `import "graphics.gd/variant/Euler"`)
-	fmt.Fprintln(file, `import "graphics.gd/variant/Signal"`)
-	if class.Inherits != "" {
-		super := classDB[class.Inherits]
-		for super.Name != "" && super.Name != "Object" && super.Name != "RefCounted" && !classDB[super.Name].IsSingleton {
-			super = classDB[super.Inherits]
+	if !class.IsEphemeral {
+		if singleton {
+			fmt.Fprintln(file, `import "sync"`)
 		}
+		fmt.Fprintln(file, `import "reflect"`)
+		fmt.Fprintln(file, `import "slices"`)
+		fmt.Fprintln(file, `import "graphics.gd/internal/pointers"`)
+		fmt.Fprintln(file, `import "graphics.gd/internal/callframe"`)
+		fmt.Fprintln(file, `import "graphics.gd/internal/gdextension"`)
+		fmt.Fprintln(file, `import "graphics.gd/internal/noescape"`)
+		fmt.Fprintln(file, `import gd "graphics.gd/internal"`)
+		fmt.Fprintln(file, `import "graphics.gd/internal/gdclass"`)
+		fmt.Fprintln(file, `import "graphics.gd/internal/ie"`)
+		fmt.Fprintln(file, `import "graphics.gd/variant"`)
+		fmt.Fprintln(file, `import "graphics.gd/variant/Angle"`)
+		fmt.Fprintln(file, `import "graphics.gd/variant/Euler"`)
+		fmt.Fprintln(file, `import "graphics.gd/variant/Signal"`)
+		if class.Inherits != "" {
+			super := classDB[class.Inherits]
+			for super.Name != "" && super.Name != "Object" && super.Name != "RefCounted" && !classDB[super.Name].IsSingleton {
+				super = classDB[super.Inherits]
+			}
+		}
+		for pkg := range gdtype.ImportsForClass(class) {
+			fmt.Fprintf(file, "import %q\n", pkg)
+		}
+		fmt.Fprintln(file)
+		fmt.Fprintln(file, "var _ Object.ID")
+		fmt.Fprintln(file, "type _ gdclass.Node")
+		fmt.Fprintln(file, "var _ gd.Object")
+		fmt.Fprintln(file, "var _ RefCounted.Instance")
+		fmt.Fprintln(file, "var _ reflect.Type")
+		fmt.Fprintln(file, "var _ callframe.Frame")
+		fmt.Fprintln(file, "var _ = pointers.Cycle")
+		fmt.Fprintln(file, "var _ = Array.Nil")
+		fmt.Fprintln(file, "var _ variant.Any")
+		fmt.Fprintln(file, "var _ Callable.Function")
+		fmt.Fprintln(file, "var _ Dictionary.Any")
+		fmt.Fprintln(file, "var _ RID.Any")
+		fmt.Fprintln(file, "var _ noescape.Variant")
+		fmt.Fprintln(file, "var _ String.Readable")
+		fmt.Fprintln(file, "var _ Path.ToNode")
+		fmt.Fprintln(file, "var _ Packed.Bytes")
+		fmt.Fprintln(file, "var _ Error.Code")
+		fmt.Fprintln(file, "var _ Float.X")
+		fmt.Fprintln(file, "var _ Signal.Any")
+		fmt.Fprintln(file, "var _ Angle.Radians")
+		fmt.Fprintln(file, "var _ Euler.Radians")
+		fmt.Fprintln(file, "var _ gdextension.Object")
+		fmt.Fprintln(file, "var _ = slices.Delete[[]struct{}, struct{}]")
 	}
-	for pkg := range gdtype.ImportsForClass(class) {
-		fmt.Fprintf(file, "import %q\n", pkg)
-	}
-	fmt.Fprintln(file)
-	fmt.Fprintln(file, "var _ Object.ID")
-	fmt.Fprintln(file, "type _ gdclass.Node")
-	fmt.Fprintln(file, "var _ gd.Object")
-	fmt.Fprintln(file, "var _ RefCounted.Instance")
-	fmt.Fprintln(file, "var _ reflect.Type")
-	fmt.Fprintln(file, "var _ callframe.Frame")
-	fmt.Fprintln(file, "var _ = pointers.Cycle")
-	fmt.Fprintln(file, "var _ = Array.Nil")
-	fmt.Fprintln(file, "var _ variant.Any")
-	fmt.Fprintln(file, "var _ Callable.Function")
-	fmt.Fprintln(file, "var _ Dictionary.Any")
-	fmt.Fprintln(file, "var _ RID.Any")
-	fmt.Fprintln(file, "var _ noescape.Variant")
-	fmt.Fprintln(file, "var _ String.Readable")
-	fmt.Fprintln(file, "var _ Path.ToNode")
-	fmt.Fprintln(file, "var _ Packed.Bytes")
-	fmt.Fprintln(file, "var _ Error.Code")
-	fmt.Fprintln(file, "var _ Float.X")
-	fmt.Fprintln(file, "var _ Signal.Any")
-	fmt.Fprintln(file, "var _ Angle.Radians")
-	fmt.Fprintln(file, "var _ Euler.Radians")
-	fmt.Fprintln(file, "var _ gdextension.Object")
-	fmt.Fprintln(file, "var _ = slices.Delete[[]struct{}, struct{}]")
 	fmt.Fprintln(file)
 	var local_enums = make(map[string]bool)
 	if !class.IsEphemeral {
@@ -381,7 +384,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			fmt.Fprintf(file, "\ntype Advanced = class\n")
 		}
 		fmt.Fprintf(file, "type class [1]gdclass.%s\n", class.Name)
-		fmt.Fprintf(file, "func (self class) AsObject() [1]gd.Object { return gdclass.Get%[1]v(self[0]) }\n", class.Name)
+		fmt.Fprintf(file, "func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }\n")
 		fmt.Fprintln(file, "func (self *class) SetObject(obj [1]gd.Object) bool {")
 		fmt.Fprintln(file, "\tif gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {")
 		fmt.Fprintf(file, "\t\tself[0] = gdclass.New%[1]s(obj[0])\n", class.Name)
@@ -397,8 +400,8 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprintln(file, "\treturn false")
 		fmt.Fprintln(file, "}")
 
-		fmt.Fprintf(file, "func (self Instance) AsObject() [1]gd.Object { return gdclass.Get%[1]s(self[0]) }\n", class.Name)
-		fmt.Fprintln(file, "func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }")
+		fmt.Fprintf(file, "func (o Instance) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }\n")
+		fmt.Fprintln(file, "func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }")
 		if !singleton {
 			classDB.new(file, class)
 		}
@@ -413,9 +416,9 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		if class.Inherits != "" {
 			var i = 1
 			if !singleton {
-				fmt.Fprintf(file, "\nfunc (self class) As%[1]v() Advanced { return Advanced{gdclass.New%[1]v(self.AsObject()[0])} }\n", class.Name)
-				fmt.Fprintf(file, "func (self Instance) As%[1]v() Instance { return Instance{gdclass.New%[1]v(self.AsObject()[0])} }\n", class.Name)
-				fmt.Fprintf(file, "func (self *Extension[T]) As%[1]v() Instance { return self.Super().As%[1]v() }\n", class.Name)
+				fmt.Fprintf(file, "\nfunc (o class) As%[1]v() Advanced { return Advanced(o) }\n", class.Name)
+				fmt.Fprintf(file, "func (o Instance) As%[1]v() Instance { return o }\n", class.Name)
+				fmt.Fprintf(file, "func (o *Extension[T]) As%[1]v() Instance { return o.Super() }\n", class.Name)
 			}
 			super := classDB[class.Inherits]
 			for super.Name != "" && super.Name != "Object" {
@@ -424,16 +427,16 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 					continue
 				}
 				if super.Name == "RefCounted" {
-					fmt.Fprintf(file, "func (self class) AsRefCounted() [1]gd.RefCounted { return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])} }\n")
-					fmt.Fprintf(file, "func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }\n")
+					fmt.Fprintf(file, "func (o class) AsRefCounted() ie.RC { return *(*ie.RC)(ie.As(&o)) }\n")
+					fmt.Fprintf(file, "func (o *Extension[T]) AsRefCounted() ie.RC { return o.Super().AsRefCounted() }\n")
 					if !singleton {
-						fmt.Fprintf(file, "func (self Instance) AsRefCounted() [1]gd.RefCounted { return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])} }\n")
+						fmt.Fprintf(file, "func (o Instance) AsRefCounted() ie.RC { return *(*ie.RC)(ie.As(&o)) }\n")
 					}
 				} else {
-					fmt.Fprintf(file, "func (self class) As%[2]v() %[2]v.Advanced { return %[2]v.Advanced{gdclass.New%[2]v(self.AsObject()[0])} }\n", class.Name, super.Name)
-					fmt.Fprintf(file, "func (self *Extension[T]) As%[2]v() %[2]v.Instance { return self.Super().As%[2]v() }\n", class.Name, super.Name)
+					fmt.Fprintf(file, "func (o class) As%[2]v() %[2]v.Advanced { return *(*%[2]v.Advanced)(ie.As(&o)) }\n", class.Name, super.Name)
+					fmt.Fprintf(file, "func (o *Extension[T]) As%[2]v() %[2]v.Instance { return o.Super().As%[2]v() }\n", class.Name, super.Name)
 					if !singleton {
-						fmt.Fprintf(file, "func (self Instance) As%[2]v() %[2]v.Instance { return  %[2]v.Instance{gdclass.New%[2]v(self.AsObject()[0])} }\n", class.Name, super.Name)
+						fmt.Fprintf(file, "func (o Instance) As%[2]v() %[2]v.Instance { return *(*%[2]v.Instance)(ie.As(&o)) }\n", class.Name, super.Name)
 					}
 				}
 				i++

@@ -17,6 +17,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -989,9 +990,7 @@ func (Instance) _get_space_state(impl func(ptr gdclass.Receiver) PhysicsDirectSp
 type Advanced = class
 type class [1]gdclass.PhysicsDirectBodyState2DExtension
 
-func (self class) AsObject() [1]gd.Object {
-	return gdclass.GetPhysicsDirectBodyState2DExtension(self[0])
-}
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewPhysicsDirectBodyState2DExtension(obj[0])
@@ -1006,10 +1005,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object {
-	return gdclass.GetPhysicsDirectBodyState2DExtension(self[0])
-}
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.PhysicsDirectBodyState2DExtension{gdclass.NewPhysicsDirectBodyState2DExtension(pointers.Add[gd.Object]([3]uint64{}))})
@@ -1391,23 +1388,17 @@ func (class) _get_space_state(impl func(ptr gdclass.Receiver) [1]gdclass.Physics
 	}
 }
 
-func (self class) AsPhysicsDirectBodyState2DExtension() Advanced {
-	return Advanced{gdclass.NewPhysicsDirectBodyState2DExtension(self.AsObject()[0])}
+func (o class) AsPhysicsDirectBodyState2DExtension() Advanced         { return Advanced(o) }
+func (o Instance) AsPhysicsDirectBodyState2DExtension() Instance      { return o }
+func (o *Extension[T]) AsPhysicsDirectBodyState2DExtension() Instance { return o.Super() }
+func (o class) AsPhysicsDirectBodyState2D() PhysicsDirectBodyState2D.Advanced {
+	return *(*PhysicsDirectBodyState2D.Advanced)(ie.As(&o))
 }
-func (self Instance) AsPhysicsDirectBodyState2DExtension() Instance {
-	return Instance{gdclass.NewPhysicsDirectBodyState2DExtension(self.AsObject()[0])}
+func (o *Extension[T]) AsPhysicsDirectBodyState2D() PhysicsDirectBodyState2D.Instance {
+	return o.Super().AsPhysicsDirectBodyState2D()
 }
-func (self *Extension[T]) AsPhysicsDirectBodyState2DExtension() Instance {
-	return self.Super().AsPhysicsDirectBodyState2DExtension()
-}
-func (self class) AsPhysicsDirectBodyState2D() PhysicsDirectBodyState2D.Advanced {
-	return PhysicsDirectBodyState2D.Advanced{gdclass.NewPhysicsDirectBodyState2D(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsPhysicsDirectBodyState2D() PhysicsDirectBodyState2D.Instance {
-	return self.Super().AsPhysicsDirectBodyState2D()
-}
-func (self Instance) AsPhysicsDirectBodyState2D() PhysicsDirectBodyState2D.Instance {
-	return PhysicsDirectBodyState2D.Instance{gdclass.NewPhysicsDirectBodyState2D(self.AsObject()[0])}
+func (o Instance) AsPhysicsDirectBodyState2D() PhysicsDirectBodyState2D.Instance {
+	return *(*PhysicsDirectBodyState2D.Instance)(ie.As(&o))
 }
 
 func (self class) Virtual(name string) reflect.Value {

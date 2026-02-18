@@ -15,6 +15,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -119,7 +120,7 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.XRCamera3D
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetXRCamera3D(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewXRCamera3D(obj[0])
@@ -134,8 +135,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetXRCamera3D(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.XRCamera3D{gdclass.NewXRCamera3D(pointers.Add[gd.Object]([3]uint64{}))})
@@ -157,30 +158,18 @@ func New() Instance {
 	return casted
 }
 
-func (self class) AsXRCamera3D() Advanced { return Advanced{gdclass.NewXRCamera3D(self.AsObject()[0])} }
-func (self Instance) AsXRCamera3D() Instance {
-	return Instance{gdclass.NewXRCamera3D(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsXRCamera3D() Instance { return self.Super().AsXRCamera3D() }
-func (self class) AsCamera3D() Camera3D.Advanced {
-	return Camera3D.Advanced{gdclass.NewCamera3D(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsCamera3D() Camera3D.Instance { return self.Super().AsCamera3D() }
-func (self Instance) AsCamera3D() Camera3D.Instance {
-	return Camera3D.Instance{gdclass.NewCamera3D(self.AsObject()[0])}
-}
-func (self class) AsNode3D() Node3D.Advanced {
-	return Node3D.Advanced{gdclass.NewNode3D(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
-func (self Instance) AsNode3D() Node3D.Instance {
-	return Node3D.Instance{gdclass.NewNode3D(self.AsObject()[0])}
-}
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
-func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
-func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
-}
+func (o class) AsXRCamera3D() Advanced                { return Advanced(o) }
+func (o Instance) AsXRCamera3D() Instance             { return o }
+func (o *Extension[T]) AsXRCamera3D() Instance        { return o.Super() }
+func (o class) AsCamera3D() Camera3D.Advanced         { return *(*Camera3D.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsCamera3D() Camera3D.Instance { return o.Super().AsCamera3D() }
+func (o Instance) AsCamera3D() Camera3D.Instance      { return *(*Camera3D.Instance)(ie.As(&o)) }
+func (o class) AsNode3D() Node3D.Advanced             { return *(*Node3D.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsNode3D() Node3D.Instance     { return o.Super().AsNode3D() }
+func (o Instance) AsNode3D() Node3D.Instance          { return *(*Node3D.Instance)(ie.As(&o)) }
+func (o class) AsNode() Node.Advanced                 { return *(*Node.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsNode() Node.Instance         { return o.Super().AsNode() }
+func (o Instance) AsNode() Node.Instance              { return *(*Node.Instance)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

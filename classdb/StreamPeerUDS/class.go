@@ -15,6 +15,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -146,7 +147,7 @@ func (self Instance) GetConnectedPath() string { //gd:StreamPeerUDS.get_connecte
 type Advanced = class
 type class [1]gdclass.StreamPeerUDS
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetStreamPeerUDS(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewStreamPeerUDS(obj[0])
@@ -161,8 +162,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetStreamPeerUDS(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.StreamPeerUDS{gdclass.NewStreamPeerUDS(pointers.Add[gd.Object]([3]uint64{}))})
@@ -200,36 +201,24 @@ func (self class) GetConnectedPath() String.Readable { //gd:StreamPeerUDS.get_co
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-func (self class) AsStreamPeerUDS() Advanced {
-	return Advanced{gdclass.NewStreamPeerUDS(self.AsObject()[0])}
+func (o class) AsStreamPeerUDS() Advanced         { return Advanced(o) }
+func (o Instance) AsStreamPeerUDS() Instance      { return o }
+func (o *Extension[T]) AsStreamPeerUDS() Instance { return o.Super() }
+func (o class) AsStreamPeerSocket() StreamPeerSocket.Advanced {
+	return *(*StreamPeerSocket.Advanced)(ie.As(&o))
 }
-func (self Instance) AsStreamPeerUDS() Instance {
-	return Instance{gdclass.NewStreamPeerUDS(self.AsObject()[0])}
+func (o *Extension[T]) AsStreamPeerSocket() StreamPeerSocket.Instance {
+	return o.Super().AsStreamPeerSocket()
 }
-func (self *Extension[T]) AsStreamPeerUDS() Instance { return self.Super().AsStreamPeerUDS() }
-func (self class) AsStreamPeerSocket() StreamPeerSocket.Advanced {
-	return StreamPeerSocket.Advanced{gdclass.NewStreamPeerSocket(self.AsObject()[0])}
+func (o Instance) AsStreamPeerSocket() StreamPeerSocket.Instance {
+	return *(*StreamPeerSocket.Instance)(ie.As(&o))
 }
-func (self *Extension[T]) AsStreamPeerSocket() StreamPeerSocket.Instance {
-	return self.Super().AsStreamPeerSocket()
-}
-func (self Instance) AsStreamPeerSocket() StreamPeerSocket.Instance {
-	return StreamPeerSocket.Instance{gdclass.NewStreamPeerSocket(self.AsObject()[0])}
-}
-func (self class) AsStreamPeer() StreamPeer.Advanced {
-	return StreamPeer.Advanced{gdclass.NewStreamPeer(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsStreamPeer() StreamPeer.Instance { return self.Super().AsStreamPeer() }
-func (self Instance) AsStreamPeer() StreamPeer.Instance {
-	return StreamPeer.Instance{gdclass.NewStreamPeer(self.AsObject()[0])}
-}
-func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
-func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
+func (o class) AsStreamPeer() StreamPeer.Advanced         { return *(*StreamPeer.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsStreamPeer() StreamPeer.Instance { return o.Super().AsStreamPeer() }
+func (o Instance) AsStreamPeer() StreamPeer.Instance      { return *(*StreamPeer.Instance)(ie.As(&o)) }
+func (o class) AsRefCounted() ie.RC                       { return *(*ie.RC)(ie.As(&o)) }
+func (o *Extension[T]) AsRefCounted() ie.RC               { return o.Super().AsRefCounted() }
+func (o Instance) AsRefCounted() ie.RC                    { return *(*ie.RC)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

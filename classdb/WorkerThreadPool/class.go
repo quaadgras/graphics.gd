@@ -47,6 +47,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -259,7 +260,7 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.WorkerThreadPool
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetWorkerThreadPool(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewWorkerThreadPool(obj[0])
@@ -274,12 +275,12 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetWorkerThreadPool(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 
 func (self class) AddTask(action Callable.Function, high_priority bool, description String.Readable) int64 { //gd:WorkerThreadPool.add_task
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_task, gdextension.SizeInt|(gdextension.SizeCallable<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12), &struct {
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.add_task, gdextension.SizeInt|(gdextension.SizeCallable<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12), &struct {
 		action        gdextension.Callable
 		high_priority bool
 		description   gdextension.String
@@ -289,25 +290,25 @@ func (self class) AddTask(action Callable.Function, high_priority bool, descript
 }
 func (self class) IsTaskCompleted(task_id int64) bool { //gd:WorkerThreadPool.is_task_completed
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_task_completed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ task_id int64 }{task_id})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_task_completed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ task_id int64 }{task_id})
 	var ret = r_ret
 	return ret
 }
 func (self class) WaitForTaskCompletion(task_id int64) Error.Code { //gd:WorkerThreadPool.wait_for_task_completion
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.wait_for_task_completion, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ task_id int64 }{task_id})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.wait_for_task_completion, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ task_id int64 }{task_id})
 	var ret = Error.Code(r_ret)
 	return ret
 }
 func (self class) GetCallerTaskId() int64 { //gd:WorkerThreadPool.get_caller_task_id
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_caller_task_id, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_caller_task_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) AddGroupTask(action Callable.Function, elements int64, tasks_needed int64, high_priority bool, description String.Readable) int64 { //gd:WorkerThreadPool.add_group_task
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_group_task, gdextension.SizeInt|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeString<<20), &struct {
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.add_group_task, gdextension.SizeInt|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeString<<20), &struct {
 		action        gdextension.Callable
 		elements      int64
 		tasks_needed  int64
@@ -319,23 +320,23 @@ func (self class) AddGroupTask(action Callable.Function, elements int64, tasks_n
 }
 func (self class) IsGroupTaskCompleted(group_id int64) bool { //gd:WorkerThreadPool.is_group_task_completed
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_group_task_completed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ group_id int64 }{group_id})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_group_task_completed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ group_id int64 }{group_id})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetGroupProcessedElementCount(group_id int64) int64 { //gd:WorkerThreadPool.get_group_processed_element_count
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_group_processed_element_count, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ group_id int64 }{group_id})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_group_processed_element_count, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ group_id int64 }{group_id})
 	var ret = r_ret
 	return ret
 }
 func (self class) WaitForGroupTaskCompletion(group_id int64) { //gd:WorkerThreadPool.wait_for_group_task_completion
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.wait_for_group_task_completion, 0|(gdextension.SizeInt<<4), &struct{ group_id int64 }{group_id})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.wait_for_group_task_completion, 0|(gdextension.SizeInt<<4), &struct{ group_id int64 }{group_id})
 }
 func (self class) GetCallerGroupId() int64 { //gd:WorkerThreadPool.get_caller_group_id
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_caller_group_id, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_caller_group_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

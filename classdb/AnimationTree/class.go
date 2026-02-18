@@ -19,6 +19,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -148,7 +149,7 @@ func (self Instance) GetProcessCallback() AnimationProcessCallback { //gd:Animat
 type Advanced = class
 type class [1]gdclass.AnimationTree
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetAnimationTree(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewAnimationTree(obj[0])
@@ -163,8 +164,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetAnimationTree(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.AnimationTree{gdclass.NewAnimationTree(pointers.Add[gd.Object]([3]uint64{}))})
@@ -285,27 +286,21 @@ func (self class) AnimationPlayerChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`animation_player_changed`))))
 }
 
-func (self class) AsAnimationTree() Advanced {
-	return Advanced{gdclass.NewAnimationTree(self.AsObject()[0])}
+func (o class) AsAnimationTree() Advanced         { return Advanced(o) }
+func (o Instance) AsAnimationTree() Instance      { return o }
+func (o *Extension[T]) AsAnimationTree() Instance { return o.Super() }
+func (o class) AsAnimationMixer() AnimationMixer.Advanced {
+	return *(*AnimationMixer.Advanced)(ie.As(&o))
 }
-func (self Instance) AsAnimationTree() Instance {
-	return Instance{gdclass.NewAnimationTree(self.AsObject()[0])}
+func (o *Extension[T]) AsAnimationMixer() AnimationMixer.Instance {
+	return o.Super().AsAnimationMixer()
 }
-func (self *Extension[T]) AsAnimationTree() Instance { return self.Super().AsAnimationTree() }
-func (self class) AsAnimationMixer() AnimationMixer.Advanced {
-	return AnimationMixer.Advanced{gdclass.NewAnimationMixer(self.AsObject()[0])}
+func (o Instance) AsAnimationMixer() AnimationMixer.Instance {
+	return *(*AnimationMixer.Instance)(ie.As(&o))
 }
-func (self *Extension[T]) AsAnimationMixer() AnimationMixer.Instance {
-	return self.Super().AsAnimationMixer()
-}
-func (self Instance) AsAnimationMixer() AnimationMixer.Instance {
-	return AnimationMixer.Instance{gdclass.NewAnimationMixer(self.AsObject()[0])}
-}
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
-func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
-func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
-}
+func (o class) AsNode() Node.Advanced         { return *(*Node.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsNode() Node.Instance { return o.Super().AsNode() }
+func (o Instance) AsNode() Node.Instance      { return *(*Node.Instance)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
