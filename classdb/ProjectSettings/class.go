@@ -20,6 +20,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -138,7 +139,7 @@ var self [1]gdclass.ProjectSettings
 var once sync.Once
 
 func singleton() {
-	self[0] = gdclass.NewProjectSettings(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
+	self[0] = gdclass.NewProjectSettings(gdreference.RawObject(gdextension.Host.Objects.Global(sname)))
 }
 
 /*
@@ -400,14 +401,14 @@ type class [1]gdclass.ProjectSettings
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewProjectSettings(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewProjectSettings(obj[0])
 		return true
 	}
@@ -418,20 +419,20 @@ func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 
 func (self class) HasSetting(name String.Readable) bool { //gd:ProjectSettings.has_setting
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.has_setting, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.has_setting, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetSetting(name String.Readable, value variant.Any) { //gd:ProjectSettings.set_setting
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_setting, 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_setting, 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), &struct {
 		name  gdextension.String
 		value gdextension.Variant
 	}{pointers.Get(gd.InternalString(name)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
 func (self class) GetSetting(name String.Readable, default_value variant.Any) variant.Any { //gd:ProjectSettings.get_setting
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Variant](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_setting, gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Variant](gdreference.GetObject(self.AsObject()[0]), methods.get_setting, gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), &struct {
 		name          gdextension.String
 		default_value gdextension.Variant
 	}{pointers.Get(gd.InternalString(name)), gdextension.Variant(pointers.Get(gd.InternalVariant(default_value)))})
@@ -440,19 +441,19 @@ func (self class) GetSetting(name String.Readable, default_value variant.Any) va
 }
 func (self class) GetSettingWithOverride(name String.Name) variant.Any { //gd:ProjectSettings.get_setting_with_override
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Variant](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_setting_with_override, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	var r_ret = noescape.Call[gdextension.Variant](gdreference.GetObject(self.AsObject()[0]), methods.get_setting_with_override, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 func (self class) GetGlobalClassList() Array.Contains[Dictionary.Any] { //gd:ProjectSettings.get_global_class_list
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Array](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_global_class_list, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gdreference.GetObject(self.AsObject()[0]), methods.get_global_class_list, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) GetSettingWithOverrideAndCustomFeatures(name String.Name, features Packed.Strings) variant.Any { //gd:ProjectSettings.get_setting_with_override_and_custom_features
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Variant](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_setting_with_override_and_custom_features, gdextension.SizeVariant|(gdextension.SizeStringName<<4)|(gdextension.SizePackedArray<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Variant](gdreference.GetObject(self.AsObject()[0]), methods.get_setting_with_override_and_custom_features, gdextension.SizeVariant|(gdextension.SizeStringName<<4)|(gdextension.SizePackedArray<<8), &struct {
 		name     gdextension.StringName
 		features gdextension.PackedArray[gdextension.String]
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalPackedStrings(features))})
@@ -461,74 +462,74 @@ func (self class) GetSettingWithOverrideAndCustomFeatures(name String.Name, feat
 }
 func (self class) SetOrder(name String.Readable, position int64) { //gd:ProjectSettings.set_order
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_order, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_order, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		name     gdextension.String
 		position int64
 	}{pointers.Get(gd.InternalString(name)), position})
 }
 func (self class) GetOrder(name String.Readable) int64 { //gd:ProjectSettings.get_order
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_order, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_order, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetInitialValue(name String.Readable, value variant.Any) { //gd:ProjectSettings.set_initial_value
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_initial_value, 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_initial_value, 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), &struct {
 		name  gdextension.String
 		value gdextension.Variant
 	}{pointers.Get(gd.InternalString(name)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
 func (self class) SetAsBasic(name String.Readable, basic bool) { //gd:ProjectSettings.set_as_basic
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_as_basic, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_as_basic, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		name  gdextension.String
 		basic bool
 	}{pointers.Get(gd.InternalString(name)), basic})
 }
 func (self class) SetAsInternal(name String.Readable, internal_ bool) { //gd:ProjectSettings.set_as_internal
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_as_internal, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_as_internal, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		name      gdextension.String
 		internal_ bool
 	}{pointers.Get(gd.InternalString(name)), internal_})
 }
 func (self class) AddPropertyInfo(hint Dictionary.Any) { //gd:ProjectSettings.add_property_info
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.add_property_info, 0|(gdextension.SizeDictionary<<4), &struct{ hint gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(hint))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.add_property_info, 0|(gdextension.SizeDictionary<<4), &struct{ hint gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(hint))})
 }
 func (self class) SetRestartIfChanged(name String.Readable, restart bool) { //gd:ProjectSettings.set_restart_if_changed
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_restart_if_changed, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_restart_if_changed, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		name    gdextension.String
 		restart bool
 	}{pointers.Get(gd.InternalString(name)), restart})
 }
 func (self class) Clear(name String.Readable) { //gd:ProjectSettings.clear
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.clear, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.clear, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 func (self class) LocalizePath(path String.Readable) String.Readable { //gd:ProjectSettings.localize_path
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.localize_path, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.localize_path, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GlobalizePath(path String.Readable) String.Readable { //gd:ProjectSettings.globalize_path
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.globalize_path, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.globalize_path, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) Save() Error.Code { //gd:ProjectSettings.save
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.save, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.save, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
 func (self class) LoadResourcePack(pack String.Readable, replace_files bool, offset int64) bool { //gd:ProjectSettings.load_resource_pack
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.load_resource_pack, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12), &struct {
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.load_resource_pack, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12), &struct {
 		pack          gdextension.String
 		replace_files bool
 		offset        int64
@@ -538,19 +539,19 @@ func (self class) LoadResourcePack(pack String.Readable, replace_files bool, off
 }
 func (self class) SaveCustom(file String.Readable) Error.Code { //gd:ProjectSettings.save_custom
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.save_custom, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.save_custom, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
 func (self class) GetChangedSettings() Packed.Strings { //gd:ProjectSettings.get_changed_settings
 	once.Do(singleton)
-	var r_ret = noescape.Call[gd.PackedPointers](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_changed_settings, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.get_changed_settings, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) CheckChangedSettingsInGroup(setting_prefix String.Readable) bool { //gd:ProjectSettings.check_changed_settings_in_group
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.check_changed_settings_in_group, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ setting_prefix gdextension.String }{pointers.Get(gd.InternalString(setting_prefix))})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.check_changed_settings_in_group, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ setting_prefix gdextension.String }{pointers.Get(gd.InternalString(setting_prefix))})
 	var ret = r_ret
 	return ret
 }
@@ -564,7 +565,7 @@ func OnSettingsChanged(cb func(), flags ...Signal.Flags) {
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	gdclass.GetProjectSettings(self[0])[0].Connect(gd.NewStringName("settings_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(gdclass.GetProjectSettings(self[0])[0], gd.NewStringName("settings_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) SettingsChanged() Signal.Any {

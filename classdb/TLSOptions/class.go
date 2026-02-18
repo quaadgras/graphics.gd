@@ -29,6 +29,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -237,14 +238,14 @@ type class [1]gdclass.TLSOptions
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewTLSOptions(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewTLSOptions(obj[0])
 		return true
 	}
@@ -254,23 +255,23 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.TLSOptions{gdclass.NewTLSOptions(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.TLSOptions{gdclass.NewTLSOptions(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetTLSOptions(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetTLSOptions(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.TLSOptions{gdclass.NewTLSOptions(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
+	casted := Instance([1]gdclass.TLSOptions{gdclass.NewTLSOptions(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
 	casted.AsRefCounted()[0].InitRef()
-	casted.AsObject()[0].Notification(0, false)
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -279,12 +280,12 @@ func (self class) Client(trusted_chain [1]gdclass.X509Certificate, common_name_o
 		trusted_chain        gdextension.Object
 		common_name_override gdextension.String
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetX509Certificate(trusted_chain[0]))), pointers.Get(gd.InternalString(common_name_override))})
-	var ret = [1]gdclass.TLSOptions{gdclass.NewTLSOptions(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.TLSOptions{gdclass.NewTLSOptions(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) ClientUnsafe(trusted_chain [1]gdclass.X509Certificate) [1]gdclass.TLSOptions { //gd:TLSOptions.client_unsafe
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.client_unsafe, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ trusted_chain gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetX509Certificate(trusted_chain[0])))})
-	var ret = [1]gdclass.TLSOptions{gdclass.NewTLSOptions(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.TLSOptions{gdclass.NewTLSOptions(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) Server(key [1]gdclass.CryptoKey, certificate [1]gdclass.X509Certificate) [1]gdclass.TLSOptions { //gd:TLSOptions.server
@@ -292,7 +293,7 @@ func (self class) Server(key [1]gdclass.CryptoKey, certificate [1]gdclass.X509Ce
 		key         gdextension.Object
 		certificate gdextension.Object
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetCryptoKey(key[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetX509Certificate(certificate[0])))})
-	var ret = [1]gdclass.TLSOptions{gdclass.NewTLSOptions(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.TLSOptions{gdclass.NewTLSOptions(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) IsServer() bool { //gd:TLSOptions.is_server
@@ -312,17 +313,17 @@ func (self class) GetCommonNameOverride() String.Readable { //gd:TLSOptions.get_
 }
 func (self class) GetTrustedCaChain() [1]gdclass.X509Certificate { //gd:TLSOptions.get_trusted_ca_chain
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_trusted_ca_chain, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.X509Certificate{gdclass.NewX509Certificate(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.X509Certificate{gdclass.NewX509Certificate(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetPrivateKey() [1]gdclass.CryptoKey { //gd:TLSOptions.get_private_key
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_private_key, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.CryptoKey{gdclass.NewCryptoKey(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.CryptoKey{gdclass.NewCryptoKey(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetOwnCertificate() [1]gdclass.X509Certificate { //gd:TLSOptions.get_own_certificate
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_own_certificate, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.X509Certificate{gdclass.NewX509Certificate(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.X509Certificate{gdclass.NewX509Certificate(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (o class) AsTLSOptions() Advanced         { return Advanced(o) }

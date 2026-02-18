@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -147,14 +148,14 @@ type class [1]gdclass.ScriptEditorBase
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewScriptEditorBase(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewScriptEditorBase(obj[0])
 		return true
 	}
@@ -164,28 +165,28 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.ScriptEditorBase{gdclass.NewScriptEditorBase(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.ScriptEditorBase{gdclass.NewScriptEditorBase(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetScriptEditorBase(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetScriptEditorBase(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.ScriptEditorBase{gdclass.NewScriptEditorBase(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.ScriptEditorBase{gdclass.NewScriptEditorBase(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
 func (self class) GetBaseEditor() [1]gdclass.Control { //gd:ScriptEditorBase.get_base_editor
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_base_editor, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Control{gdclass.NewControl(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) AddSyntaxHighlighter(highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditorBase.add_syntax_highlighter
@@ -200,7 +201,7 @@ func (self Instance) OnNameChanged(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("name_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("name_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -216,7 +217,7 @@ func (self Instance) OnEditedScriptChanged(cb func(), flags ...Signal.Flags) Ins
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("edited_script_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("edited_script_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -232,7 +233,7 @@ func (self Instance) OnRequestHelp(cb func(topic string), flags ...Signal.Flags)
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("request_help"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("request_help"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -250,7 +251,7 @@ func (self Instance) OnRequestOpenScriptAtLine(cb func(script Object.Instance, l
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("request_open_script_at_line"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("request_open_script_at_line"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -266,7 +267,7 @@ func (self Instance) OnRequestSaveHistory(cb func(), flags ...Signal.Flags) Inst
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("request_save_history"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("request_save_history"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -282,7 +283,7 @@ func (self Instance) OnRequestSavePreviousState(cb func(state map[any]any), flag
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("request_save_previous_state"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("request_save_previous_state"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -298,7 +299,7 @@ func (self Instance) OnGoToHelp(cb func(what string), flags ...Signal.Flags) Ins
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("go_to_help"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("go_to_help"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -314,7 +315,7 @@ func (self Instance) OnSearchInFilesRequested(cb func(text string), flags ...Sig
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("search_in_files_requested"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("search_in_files_requested"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -330,7 +331,7 @@ func (self Instance) OnReplaceInFilesRequested(cb func(text string), flags ...Si
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("replace_in_files_requested"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("replace_in_files_requested"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -348,7 +349,7 @@ func (self Instance) OnGoToMethod(cb func(script Object.Instance, method string)
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("go_to_method"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("go_to_method"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 

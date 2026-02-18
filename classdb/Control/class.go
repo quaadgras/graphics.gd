@@ -53,6 +53,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -882,7 +883,7 @@ func (Instance) _make_custom_tooltip(impl func(ptr gdclass.Receiver, for_text st
 		defer pointers.End(gd.InternalString(for_text))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, for_text.String())
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := gdreference.EndObject(ret[0])
 
 		if !ok {
 			return
@@ -914,9 +915,9 @@ Override this method to return a human-readable description of the position of t
 */
 func (Instance) _get_accessibility_container_name(impl func(ptr gdclass.Receiver, node Node.Instance) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var node = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var node = [1]gdclass.Node{gdclass.NewNode(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetNode(node[0])[0])
+		defer gdreference.EndObject(gdclass.GetNode(node[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, node)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -963,9 +964,9 @@ Note: The 'event”s position is relative to this control's origin.
 */
 func (Instance) _gui_input(impl func(ptr gdclass.Receiver, event InputEvent.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetInputEvent(event[0])[0])
+		defer gdreference.EndObject(gdclass.GetInputEvent(event[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, event)
 	}
@@ -2266,14 +2267,14 @@ type class [1]gdclass.Control
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewControl(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewControl(obj[0])
 		return true
 	}
@@ -2283,22 +2284,22 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.Control{gdclass.NewControl(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.Control{gdclass.NewControl(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetControl(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetControl(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.Control{gdclass.NewControl(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.Control{gdclass.NewControl(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -3155,7 +3156,7 @@ func (class) _make_custom_tooltip(impl func(ptr gdclass.Receiver, for_text Strin
 		defer pointers.End(gd.InternalString(for_text))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, for_text)
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := gdreference.EndObject(ret[0])
 
 		if !ok {
 			return
@@ -3177,9 +3178,9 @@ func (class) _accessibility_get_contextual_info(impl func(ptr gdclass.Receiver) 
 }
 func (class) _get_accessibility_container_name(impl func(ptr gdclass.Receiver, node [1]gdclass.Node) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var node = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var node = [1]gdclass.Node{gdclass.NewNode(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetNode(node[0])[0])
+		defer gdreference.EndObject(gdclass.GetNode(node[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, node)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -3192,9 +3193,9 @@ func (class) _get_accessibility_container_name(impl func(ptr gdclass.Receiver, n
 }
 func (class) _gui_input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetInputEvent(event[0])[0])
+		defer gdreference.EndObject(gdclass.GetInputEvent(event[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, event)
 	}
@@ -3424,17 +3425,17 @@ func (self class) ReleaseFocus() { //gd:Control.release_focus
 }
 func (self class) FindPrevValidFocus() [1]gdclass.Control { //gd:Control.find_prev_valid_focus
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_prev_valid_focus, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Control{gdclass.NewControl(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) FindNextValidFocus() [1]gdclass.Control { //gd:Control.find_next_valid_focus
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_next_valid_focus, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Control{gdclass.NewControl(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) FindValidFocusNeighbor(side Rect2.Side) [1]gdclass.Control { //gd:Control.find_valid_focus_neighbor
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_valid_focus_neighbor, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ side Rect2.Side }{side})
-	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Control{gdclass.NewControl(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) SetHSizeFlags(flags SizeFlags) { //gd:Control.set_h_size_flags
@@ -3466,7 +3467,7 @@ func (self class) SetTheme(theme [1]gdclass.Theme) { //gd:Control.set_theme
 }
 func (self class) GetTheme() [1]gdclass.Theme { //gd:Control.get_theme
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Theme{gdclass.NewTheme(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Theme{gdclass.NewTheme(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetThemeTypeVariation(theme_type String.Name) { //gd:Control.set_theme_type_variation
@@ -3542,7 +3543,7 @@ func (self class) GetThemeIcon(name String.Name, theme_type String.Name) [1]gdcl
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
-	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetThemeStylebox(name String.Name, theme_type String.Name) [1]gdclass.StyleBox { //gd:Control.get_theme_stylebox
@@ -3550,7 +3551,7 @@ func (self class) GetThemeStylebox(name String.Name, theme_type String.Name) [1]
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
-	var ret = [1]gdclass.StyleBox{gdclass.NewStyleBox(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.StyleBox{gdclass.NewStyleBox(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetThemeFont(name String.Name, theme_type String.Name) [1]gdclass.Font { //gd:Control.get_theme_font
@@ -3558,7 +3559,7 @@ func (self class) GetThemeFont(name String.Name, theme_type String.Name) [1]gdcl
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
-	var ret = [1]gdclass.Font{gdclass.NewFont(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Font{gdclass.NewFont(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetThemeFontSize(name String.Name, theme_type String.Name) int64 { //gd:Control.get_theme_font_size
@@ -3670,7 +3671,7 @@ func (self class) GetThemeDefaultBaseScale() float64 { //gd:Control.get_theme_de
 }
 func (self class) GetThemeDefaultFont() [1]gdclass.Font { //gd:Control.get_theme_default_font
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme_default_font, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Font{gdclass.NewFont(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Font{gdclass.NewFont(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetThemeDefaultFontSize() int64 { //gd:Control.get_theme_default_font_size
@@ -3680,7 +3681,7 @@ func (self class) GetThemeDefaultFontSize() int64 { //gd:Control.get_theme_defau
 }
 func (self class) GetParentControl() [1]gdclass.Control { //gd:Control.get_parent_control
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_parent_control, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Control{gdclass.NewControl(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) SetHGrowDirection(direction GrowDirection) { //gd:Control.set_h_grow_direction
@@ -3893,7 +3894,7 @@ func (self class) SetShortcutContext(node [1]gdclass.Node) { //gd:Control.set_sh
 }
 func (self class) GetShortcutContext() [1]gdclass.Node { //gd:Control.get_shortcut_context
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shortcut_context, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Node{gdclass.NewNode(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) UpdateMinimumSize() { //gd:Control.update_minimum_size
@@ -3937,7 +3938,7 @@ func (self Instance) OnResized(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("resized"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("resized"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3955,7 +3956,7 @@ func (self Instance) OnGuiInput(cb func(event InputEvent.Instance), flags ...Sig
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("gui_input"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("gui_input"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3976,7 +3977,7 @@ func (self Instance) OnMouseEntered(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("mouse_entered"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("mouse_entered"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3999,7 +4000,7 @@ func (self Instance) OnMouseExited(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("mouse_exited"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("mouse_exited"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -4015,7 +4016,7 @@ func (self Instance) OnFocusEntered(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("focus_entered"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("focus_entered"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -4031,7 +4032,7 @@ func (self Instance) OnFocusExited(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("focus_exited"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("focus_exited"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -4050,7 +4051,7 @@ func (self Instance) OnSizeFlagsChanged(cb func(), flags ...Signal.Flags) Instan
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("size_flags_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("size_flags_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -4066,7 +4067,7 @@ func (self Instance) OnMinimumSizeChanged(cb func(), flags ...Signal.Flags) Inst
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("minimum_size_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("minimum_size_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -4082,7 +4083,7 @@ func (self Instance) OnThemeChanged(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("theme_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("theme_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 

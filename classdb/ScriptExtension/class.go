@@ -7,6 +7,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -224,7 +225,7 @@ func (Instance) _get_base_script(impl func(ptr gdclass.Receiver) Script.Instance
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gdclass.GetScript(ret[0])[0])
+		ptr, ok := gdreference.EndObject(gdclass.GetScript(ret[0])[0])
 
 		if !ok {
 			return
@@ -246,9 +247,9 @@ func (Instance) _get_global_name(impl func(ptr gdclass.Receiver) string) (cb gd.
 }
 func (Instance) _inherits_script(impl func(ptr gdclass.Receiver, script Script.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var script = [1]gdclass.Script{gdclass.NewScript(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var script = [1]gdclass.Script{gdclass.NewScript(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetScript(script[0])[0])
+		defer gdreference.EndObject(gdclass.GetScript(script[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, script)
 		gd.UnsafeSet(p_back, ret)
@@ -268,8 +269,8 @@ func (Instance) _get_instance_base_type(impl func(ptr gdclass.Receiver) string) 
 }
 func (Instance) _instance_create(impl func(ptr gdclass.Receiver, for_object Object.Instance) gdextension.Pointer) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var for_object = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
-		defer pointers.End(for_object[0])
+		var for_object = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(for_object[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, for_object)
 		gd.UnsafeSet(p_back, ret)
@@ -277,8 +278,8 @@ func (Instance) _instance_create(impl func(ptr gdclass.Receiver, for_object Obje
 }
 func (Instance) _placeholder_instance_create(impl func(ptr gdclass.Receiver, for_object Object.Instance) gdextension.Pointer) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var for_object = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
-		defer pointers.End(for_object[0])
+		var for_object = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(for_object[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, for_object)
 		gd.UnsafeSet(p_back, ret)
@@ -286,8 +287,8 @@ func (Instance) _placeholder_instance_create(impl func(ptr gdclass.Receiver, for
 }
 func (Instance) _instance_has(impl func(ptr gdclass.Receiver, obj Object.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
-		defer pointers.End(obj[0])
+		var obj = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(obj[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, obj)
 		gd.UnsafeSet(p_back, ret)
@@ -448,7 +449,7 @@ func (Instance) _get_language(impl func(ptr gdclass.Receiver) ScriptLanguage.Ins
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gdclass.GetScriptLanguage(ret[0])[0])
+		ptr, ok := gdreference.EndObject(gdclass.GetScriptLanguage(ret[0])[0])
 
 		if !ok {
 			return
@@ -589,14 +590,14 @@ type class [1]gdclass.ScriptExtension
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewScriptExtension(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewScriptExtension(obj[0])
 		return true
 	}
@@ -606,23 +607,23 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.ScriptExtension{gdclass.NewScriptExtension(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.ScriptExtension{gdclass.NewScriptExtension(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetScriptExtension(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetScriptExtension(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.ScriptExtension{gdclass.NewScriptExtension(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
+	casted := Instance([1]gdclass.ScriptExtension{gdclass.NewScriptExtension(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
 	casted.AsRefCounted()[0].InitRef()
-	casted.AsObject()[0].Notification(0, false)
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 func (class) _editor_can_reload_from_file(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -650,7 +651,7 @@ func (class) _get_base_script(impl func(ptr gdclass.Receiver) [1]gdclass.Script)
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gdclass.GetScript(ret[0])[0])
+		ptr, ok := gdreference.EndObject(gdclass.GetScript(ret[0])[0])
 
 		if !ok {
 			return
@@ -672,9 +673,9 @@ func (class) _get_global_name(impl func(ptr gdclass.Receiver) String.Name) (cb g
 }
 func (class) _inherits_script(impl func(ptr gdclass.Receiver, script [1]gdclass.Script) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var script = [1]gdclass.Script{gdclass.NewScript(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var script = [1]gdclass.Script{gdclass.NewScript(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetScript(script[0])[0])
+		defer gdreference.EndObject(gdclass.GetScript(script[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, script)
 		gd.UnsafeSet(p_back, ret)
@@ -694,8 +695,8 @@ func (class) _get_instance_base_type(impl func(ptr gdclass.Receiver) String.Name
 }
 func (class) _instance_create(impl func(ptr gdclass.Receiver, for_object [1]gd.Object) gdextension.Pointer) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var for_object = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
-		defer pointers.End(for_object[0])
+		var for_object = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(for_object[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, for_object)
 		gd.UnsafeSet(p_back, ret)
@@ -703,8 +704,8 @@ func (class) _instance_create(impl func(ptr gdclass.Receiver, for_object [1]gd.O
 }
 func (class) _placeholder_instance_create(impl func(ptr gdclass.Receiver, for_object [1]gd.Object) gdextension.Pointer) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var for_object = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
-		defer pointers.End(for_object[0])
+		var for_object = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(for_object[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, for_object)
 		gd.UnsafeSet(p_back, ret)
@@ -712,8 +713,8 @@ func (class) _placeholder_instance_create(impl func(ptr gdclass.Receiver, for_ob
 }
 func (class) _instance_has(impl func(ptr gdclass.Receiver, obj [1]gd.Object) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
-		defer pointers.End(obj[0])
+		var obj = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(obj[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, obj)
 		gd.UnsafeSet(p_back, ret)
@@ -866,7 +867,7 @@ func (class) _get_language(impl func(ptr gdclass.Receiver) [1]gdclass.ScriptLang
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gdclass.GetScriptLanguage(ret[0])[0])
+		ptr, ok := gdreference.EndObject(gdclass.GetScriptLanguage(ret[0])[0])
 
 		if !ok {
 			return

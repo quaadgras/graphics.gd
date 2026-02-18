@@ -13,6 +13,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -339,9 +340,9 @@ func (Instance) _set_handle(impl func(ptr gdclass.Receiver, id int, secondary bo
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
-		var camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))}))}
+		var camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 2), gd.Free))}
 
-		defer pointers.End(gdclass.GetCamera3D(camera[0])[0])
+		defer gdreference.EndObject(gdclass.GetCamera3D(camera[0])[0])
 		var point = gd.UnsafeGet[Vector2.XY](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, int(id), secondary, camera, point)
@@ -378,9 +379,9 @@ Override this method to allow selecting subgizmos using mouse clicks. Given a 'c
 */
 func (Instance) _subgizmos_intersect_ray(impl func(ptr gdclass.Receiver, camera Camera3D.Instance, point Vector2.XY) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetCamera3D(camera[0])[0])
+		defer gdreference.EndObject(gdclass.GetCamera3D(camera[0])[0])
 		var point = gd.UnsafeGet[Vector2.XY](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, camera, point)
@@ -397,9 +398,9 @@ Override this method to allow selecting subgizmos using mouse drag box selection
 */
 func (Instance) _subgizmos_intersect_frustum(impl func(ptr gdclass.Receiver, camera Camera3D.Instance, frustum []Plane.NormalD) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetCamera3D(camera[0])[0])
+		defer gdreference.EndObject(gdclass.GetCamera3D(camera[0])[0])
 		var frustum = Array.Through(gd.ArrayProxy[Plane.NormalD]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))
 		defer pointers.End(gd.InternalArray(frustum))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -628,14 +629,14 @@ type class [1]gdclass.EditorNode3DGizmo
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorNode3DGizmo(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorNode3DGizmo(obj[0])
 		return true
 	}
@@ -645,23 +646,23 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetEditorNode3DGizmo(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetEditorNode3DGizmo(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
+	casted := Instance([1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
 	casted.AsRefCounted()[0].InitRef()
-	casted.AsObject()[0].Notification(0, false)
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 func (class) _redraw(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -719,9 +720,9 @@ func (class) _set_handle(impl func(ptr gdclass.Receiver, id int64, secondary boo
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
-		var camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))}))}
+		var camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 2), gd.Free))}
 
-		defer pointers.End(gdclass.GetCamera3D(camera[0])[0])
+		defer gdreference.EndObject(gdclass.GetCamera3D(camera[0])[0])
 		var point = gd.UnsafeGet[Vector2.XY](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, id, secondary, camera, point)
@@ -740,9 +741,9 @@ func (class) _commit_handle(impl func(ptr gdclass.Receiver, id int64, secondary 
 }
 func (class) _subgizmos_intersect_ray(impl func(ptr gdclass.Receiver, camera [1]gdclass.Camera3D, point Vector2.XY) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetCamera3D(camera[0])[0])
+		defer gdreference.EndObject(gdclass.GetCamera3D(camera[0])[0])
 		var point = gd.UnsafeGet[Vector2.XY](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, camera, point)
@@ -751,9 +752,9 @@ func (class) _subgizmos_intersect_ray(impl func(ptr gdclass.Receiver, camera [1]
 }
 func (class) _subgizmos_intersect_frustum(impl func(ptr gdclass.Receiver, camera [1]gdclass.Camera3D, frustum Array.Contains[Plane.NormalD]) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetCamera3D(camera[0])[0])
+		defer gdreference.EndObject(gdclass.GetCamera3D(camera[0])[0])
 		var frustum = Array.Through(gd.ArrayProxy[Plane.NormalD]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))
 		defer pointers.End(gd.InternalArray(frustum))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -839,12 +840,12 @@ func (self class) SetNode3d(node [1]gdclass.Node) { //gd:EditorNode3DGizmo.set_n
 }
 func (self class) GetNode3d() [1]gdclass.Node3D { //gd:EditorNode3DGizmo.get_node_3d
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_node_3d, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Node3D{gdclass.NewNode3D(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
+	var ret = [1]gdclass.Node3D{gdclass.NewNode3D(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) GetPlugin() [1]gdclass.EditorNode3DGizmoPlugin { //gd:EditorNode3DGizmo.get_plugin
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_plugin, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.EditorNode3DGizmoPlugin{gdclass.NewEditorNode3DGizmoPlugin(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.EditorNode3DGizmoPlugin{gdclass.NewEditorNode3DGizmoPlugin(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) Clear() { //gd:EditorNode3DGizmo.clear

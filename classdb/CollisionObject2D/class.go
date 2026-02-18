@@ -17,6 +17,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -224,12 +225,12 @@ Note: [InputEvent] requires [InputPickable] to be true and at least one [Collisi
 */
 func (Instance) _input_event(impl func(ptr gdclass.Receiver, viewport Viewport.Instance, event InputEvent.Instance, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var viewport = [1]gdclass.Viewport{gdclass.NewViewport(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var viewport = [1]gdclass.Viewport{gdclass.NewViewport(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetViewport(viewport[0])[0])
-		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
+		defer gdreference.EndObject(gdclass.GetViewport(viewport[0])[0])
+		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 1), gd.Free))}
 
-		defer pointers.End(gdclass.GetInputEvent(event[0])[0])
+		defer gdreference.EndObject(gdclass.GetInputEvent(event[0])[0])
 		var shape_idx = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, viewport, event, int(shape_idx))
@@ -498,14 +499,14 @@ type class [1]gdclass.CollisionObject2D
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewCollisionObject2D(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewCollisionObject2D(obj[0])
 		return true
 	}
@@ -515,22 +516,22 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.CollisionObject2D{gdclass.NewCollisionObject2D(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.CollisionObject2D{gdclass.NewCollisionObject2D(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetCollisionObject2D(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetCollisionObject2D(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.CollisionObject2D{gdclass.NewCollisionObject2D(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.CollisionObject2D{gdclass.NewCollisionObject2D(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -614,12 +615,12 @@ func (self Instance) SetInputPickable(value bool) Instance { //gd:CollisionObjec
 }
 func (class) _input_event(impl func(ptr gdclass.Receiver, viewport [1]gdclass.Viewport, event [1]gdclass.InputEvent, shape_idx int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var viewport = [1]gdclass.Viewport{gdclass.NewViewport(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var viewport = [1]gdclass.Viewport{gdclass.NewViewport(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetViewport(viewport[0])[0])
-		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
+		defer gdreference.EndObject(gdclass.GetViewport(viewport[0])[0])
+		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 1), gd.Free))}
 
-		defer pointers.End(gdclass.GetInputEvent(event[0])[0])
+		defer gdreference.EndObject(gdclass.GetInputEvent(event[0])[0])
 		var shape_idx = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, viewport, event, shape_idx)
@@ -745,7 +746,7 @@ func (self class) ShapeOwnerGetTransform(owner_id int64) Transform2D.OriginXY { 
 }
 func (self class) ShapeOwnerGetOwner(owner_id int64) [1]gd.Object { //gd:CollisionObject2D.shape_owner_get_owner
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.shape_owner_get_owner, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})
-	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
+	var ret = [1]gd.Object{gdreference.LetObject(r_ret)}
 	return ret
 }
 func (self class) ShapeOwnerSetDisabled(owner_id int64, disabled bool) { //gd:CollisionObject2D.shape_owner_set_disabled
@@ -797,7 +798,7 @@ func (self class) ShapeOwnerGetShape(owner_id int64, shape_id int64) [1]gdclass.
 		owner_id int64
 		shape_id int64
 	}{owner_id, shape_id})
-	var ret = [1]gdclass.Shape2D{gdclass.NewShape2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Shape2D{gdclass.NewShape2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) ShapeOwnerGetShapeIndex(owner_id int64, shape_id int64) int64 { //gd:CollisionObject2D.shape_owner_get_shape_index
@@ -835,7 +836,7 @@ func (self Instance) OnInputEvent(cb func(viewport Node.Instance, event InputEve
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("input_event"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("input_event"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -857,7 +858,7 @@ func (self Instance) OnMouseEntered(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("mouse_entered"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("mouse_entered"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -879,7 +880,7 @@ func (self Instance) OnMouseExited(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("mouse_exited"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("mouse_exited"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -899,7 +900,7 @@ func (self Instance) OnMouseShapeEntered(cb func(shape_idx int), flags ...Signal
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("mouse_shape_entered"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("mouse_shape_entered"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -919,7 +920,7 @@ func (self Instance) OnMouseShapeExited(cb func(shape_idx int), flags ...Signal.
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("mouse_shape_exited"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("mouse_shape_exited"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 

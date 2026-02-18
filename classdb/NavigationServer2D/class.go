@@ -31,6 +31,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -273,7 +274,7 @@ var self [1]gdclass.NavigationServer2D
 var once sync.Once
 
 func singleton() {
-	self[0] = gdclass.NewNavigationServer2D(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
+	self[0] = gdclass.NewNavigationServer2D(gdreference.RawObject(gdextension.Host.Objects.Global(sname)))
 }
 
 /*
@@ -1328,14 +1329,14 @@ type class [1]gdclass.NavigationServer2D
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewNavigationServer2D(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewNavigationServer2D(obj[0])
 		return true
 	}
@@ -1346,97 +1347,97 @@ func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 
 func (self class) GetMaps() Array.Contains[RID.Any] { //gd:NavigationServer2D.get_maps
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Array](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_maps, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gdreference.GetObject(self.AsObject()[0]), methods.get_maps, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) MapCreate() RID.Any { //gd:NavigationServer2D.map_create
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_create, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gdreference.GetObject(self.AsObject()[0]), methods.map_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) MapSetActive(mapping RID.Any, active bool) { //gd:NavigationServer2D.map_set_active
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_set_active, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.map_set_active, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		mapping RID.Any
 		active  bool
 	}{mapping, active})
 }
 func (self class) MapIsActive(mapping RID.Any) bool { //gd:NavigationServer2D.map_is_active
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_is_active, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.map_is_active, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
 	var ret = r_ret
 	return ret
 }
 func (self class) MapSetCellSize(mapping RID.Any, cell_size float64) { //gd:NavigationServer2D.map_set_cell_size
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_set_cell_size, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.map_set_cell_size, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		mapping   RID.Any
 		cell_size float64
 	}{mapping, cell_size})
 }
 func (self class) MapGetCellSize(mapping RID.Any) float64 { //gd:NavigationServer2D.map_get_cell_size
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_get_cell_size, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.map_get_cell_size, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
 	var ret = r_ret
 	return ret
 }
 func (self class) MapSetMergeRasterizerCellScale(mapping RID.Any, scale float64) { //gd:NavigationServer2D.map_set_merge_rasterizer_cell_scale
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_set_merge_rasterizer_cell_scale, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.map_set_merge_rasterizer_cell_scale, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		mapping RID.Any
 		scale   float64
 	}{mapping, scale})
 }
 func (self class) MapGetMergeRasterizerCellScale(mapping RID.Any) float64 { //gd:NavigationServer2D.map_get_merge_rasterizer_cell_scale
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_get_merge_rasterizer_cell_scale, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.map_get_merge_rasterizer_cell_scale, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
 	var ret = r_ret
 	return ret
 }
 func (self class) MapSetUseEdgeConnections(mapping RID.Any, enabled bool) { //gd:NavigationServer2D.map_set_use_edge_connections
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_set_use_edge_connections, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.map_set_use_edge_connections, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		mapping RID.Any
 		enabled bool
 	}{mapping, enabled})
 }
 func (self class) MapGetUseEdgeConnections(mapping RID.Any) bool { //gd:NavigationServer2D.map_get_use_edge_connections
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_get_use_edge_connections, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.map_get_use_edge_connections, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
 	var ret = r_ret
 	return ret
 }
 func (self class) MapSetEdgeConnectionMargin(mapping RID.Any, margin float64) { //gd:NavigationServer2D.map_set_edge_connection_margin
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_set_edge_connection_margin, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.map_set_edge_connection_margin, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		mapping RID.Any
 		margin  float64
 	}{mapping, margin})
 }
 func (self class) MapGetEdgeConnectionMargin(mapping RID.Any) float64 { //gd:NavigationServer2D.map_get_edge_connection_margin
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_get_edge_connection_margin, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.map_get_edge_connection_margin, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
 	var ret = r_ret
 	return ret
 }
 func (self class) MapSetLinkConnectionRadius(mapping RID.Any, radius float64) { //gd:NavigationServer2D.map_set_link_connection_radius
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_set_link_connection_radius, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.map_set_link_connection_radius, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		mapping RID.Any
 		radius  float64
 	}{mapping, radius})
 }
 func (self class) MapGetLinkConnectionRadius(mapping RID.Any) float64 { //gd:NavigationServer2D.map_get_link_connection_radius
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_get_link_connection_radius, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.map_get_link_connection_radius, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
 	var ret = r_ret
 	return ret
 }
 func (self class) MapGetPath(mapping RID.Any, origin Vector2.XY, destination Vector2.XY, optimize bool, navigation_layers int64) Packed.Array[Vector2.XY] { //gd:NavigationServer2D.map_get_path
 	once.Do(singleton)
-	var r_ret = noescape.Call[gd.PackedPointers](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_get_path, gdextension.SizePackedArray|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20), &struct {
+	var r_ret = noescape.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.map_get_path, gdextension.SizePackedArray|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20), &struct {
 		mapping           RID.Any
 		origin            Vector2.XY
 		destination       Vector2.XY
@@ -1448,7 +1449,7 @@ func (self class) MapGetPath(mapping RID.Any, origin Vector2.XY, destination Vec
 }
 func (self class) MapGetClosestPoint(mapping RID.Any, to_point Vector2.XY) Vector2.XY { //gd:NavigationServer2D.map_get_closest_point
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_get_closest_point, gdextension.SizeVector2|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
+	var r_ret = noescape.Call[Vector2.XY](gdreference.GetObject(self.AsObject()[0]), methods.map_get_closest_point, gdextension.SizeVector2|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
 		mapping  RID.Any
 		to_point Vector2.XY
 	}{mapping, to_point})
@@ -1457,7 +1458,7 @@ func (self class) MapGetClosestPoint(mapping RID.Any, to_point Vector2.XY) Vecto
 }
 func (self class) MapGetClosestPointOwner(mapping RID.Any, to_point Vector2.XY) RID.Any { //gd:NavigationServer2D.map_get_closest_point_owner
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_get_closest_point_owner, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
+	var r_ret = noescape.Call[RID.Any](gdreference.GetObject(self.AsObject()[0]), methods.map_get_closest_point_owner, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
 		mapping  RID.Any
 		to_point Vector2.XY
 	}{mapping, to_point})
@@ -1466,54 +1467,54 @@ func (self class) MapGetClosestPointOwner(mapping RID.Any, to_point Vector2.XY) 
 }
 func (self class) MapGetLinks(mapping RID.Any) Array.Contains[RID.Any] { //gd:NavigationServer2D.map_get_links
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Array](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_get_links, gdextension.SizeArray|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
+	var r_ret = noescape.Call[gdextension.Array](gdreference.GetObject(self.AsObject()[0]), methods.map_get_links, gdextension.SizeArray|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) MapGetRegions(mapping RID.Any) Array.Contains[RID.Any] { //gd:NavigationServer2D.map_get_regions
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Array](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_get_regions, gdextension.SizeArray|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
+	var r_ret = noescape.Call[gdextension.Array](gdreference.GetObject(self.AsObject()[0]), methods.map_get_regions, gdextension.SizeArray|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) MapGetAgents(mapping RID.Any) Array.Contains[RID.Any] { //gd:NavigationServer2D.map_get_agents
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Array](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_get_agents, gdextension.SizeArray|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
+	var r_ret = noescape.Call[gdextension.Array](gdreference.GetObject(self.AsObject()[0]), methods.map_get_agents, gdextension.SizeArray|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) MapGetObstacles(mapping RID.Any) Array.Contains[RID.Any] { //gd:NavigationServer2D.map_get_obstacles
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Array](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_get_obstacles, gdextension.SizeArray|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
+	var r_ret = noescape.Call[gdextension.Array](gdreference.GetObject(self.AsObject()[0]), methods.map_get_obstacles, gdextension.SizeArray|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) MapForceUpdate(mapping RID.Any) { //gd:NavigationServer2D.map_force_update
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_force_update, 0|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.map_force_update, 0|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
 }
 func (self class) MapGetIterationId(mapping RID.Any) int64 { //gd:NavigationServer2D.map_get_iteration_id
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_get_iteration_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.map_get_iteration_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
 	var ret = r_ret
 	return ret
 }
 func (self class) MapSetUseAsyncIterations(mapping RID.Any, enabled bool) { //gd:NavigationServer2D.map_set_use_async_iterations
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_set_use_async_iterations, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.map_set_use_async_iterations, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		mapping RID.Any
 		enabled bool
 	}{mapping, enabled})
 }
 func (self class) MapGetUseAsyncIterations(mapping RID.Any) bool { //gd:NavigationServer2D.map_get_use_async_iterations
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_get_use_async_iterations, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.map_get_use_async_iterations, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
 	var ret = r_ret
 	return ret
 }
 func (self class) MapGetRandomPoint(mapping RID.Any, navigation_layers int64, uniformly bool) Vector2.XY { //gd:NavigationServer2D.map_get_random_point
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.map_get_random_point, gdextension.SizeVector2|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	var r_ret = noescape.Call[Vector2.XY](gdreference.GetObject(self.AsObject()[0]), methods.map_get_random_point, gdextension.SizeVector2|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		mapping           RID.Any
 		navigation_layers int64
 		uniformly         bool
@@ -1523,7 +1524,7 @@ func (self class) MapGetRandomPoint(mapping RID.Any, navigation_layers int64, un
 }
 func (self class) QueryPath(parameters [1]gdclass.NavigationPathQueryParameters2D, result [1]gdclass.NavigationPathQueryResult2D, callback Callable.Function) { //gd:NavigationServer2D.query_path
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.query_path, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeCallable<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.query_path, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeCallable<<12), &struct {
 		parameters gdextension.Object
 		result     gdextension.Object
 		callback   gdextension.Callable
@@ -1531,97 +1532,97 @@ func (self class) QueryPath(parameters [1]gdclass.NavigationPathQueryParameters2
 }
 func (self class) RegionCreate() RID.Any { //gd:NavigationServer2D.region_create
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_create, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gdreference.GetObject(self.AsObject()[0]), methods.region_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) RegionGetIterationId(region RID.Any) int64 { //gd:NavigationServer2D.region_get_iteration_id
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_get_iteration_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.region_get_iteration_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
 	var ret = r_ret
 	return ret
 }
 func (self class) RegionSetUseAsyncIterations(region RID.Any, enabled bool) { //gd:NavigationServer2D.region_set_use_async_iterations
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_set_use_async_iterations, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.region_set_use_async_iterations, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		region  RID.Any
 		enabled bool
 	}{region, enabled})
 }
 func (self class) RegionGetUseAsyncIterations(region RID.Any) bool { //gd:NavigationServer2D.region_get_use_async_iterations
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_get_use_async_iterations, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.region_get_use_async_iterations, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
 	var ret = r_ret
 	return ret
 }
 func (self class) RegionSetEnabled(region RID.Any, enabled bool) { //gd:NavigationServer2D.region_set_enabled
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_set_enabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.region_set_enabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		region  RID.Any
 		enabled bool
 	}{region, enabled})
 }
 func (self class) RegionGetEnabled(region RID.Any) bool { //gd:NavigationServer2D.region_get_enabled
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_get_enabled, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.region_get_enabled, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
 	var ret = r_ret
 	return ret
 }
 func (self class) RegionSetUseEdgeConnections(region RID.Any, enabled bool) { //gd:NavigationServer2D.region_set_use_edge_connections
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_set_use_edge_connections, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.region_set_use_edge_connections, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		region  RID.Any
 		enabled bool
 	}{region, enabled})
 }
 func (self class) RegionGetUseEdgeConnections(region RID.Any) bool { //gd:NavigationServer2D.region_get_use_edge_connections
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_get_use_edge_connections, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.region_get_use_edge_connections, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
 	var ret = r_ret
 	return ret
 }
 func (self class) RegionSetEnterCost(region RID.Any, enter_cost float64) { //gd:NavigationServer2D.region_set_enter_cost
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_set_enter_cost, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.region_set_enter_cost, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		region     RID.Any
 		enter_cost float64
 	}{region, enter_cost})
 }
 func (self class) RegionGetEnterCost(region RID.Any) float64 { //gd:NavigationServer2D.region_get_enter_cost
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_get_enter_cost, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.region_get_enter_cost, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
 	var ret = r_ret
 	return ret
 }
 func (self class) RegionSetTravelCost(region RID.Any, travel_cost float64) { //gd:NavigationServer2D.region_set_travel_cost
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_set_travel_cost, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.region_set_travel_cost, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		region      RID.Any
 		travel_cost float64
 	}{region, travel_cost})
 }
 func (self class) RegionGetTravelCost(region RID.Any) float64 { //gd:NavigationServer2D.region_get_travel_cost
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_get_travel_cost, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.region_get_travel_cost, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
 	var ret = r_ret
 	return ret
 }
 func (self class) RegionSetOwnerId(region RID.Any, owner_id int64) { //gd:NavigationServer2D.region_set_owner_id
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_set_owner_id, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.region_set_owner_id, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		region   RID.Any
 		owner_id int64
 	}{region, owner_id})
 }
 func (self class) RegionGetOwnerId(region RID.Any) int64 { //gd:NavigationServer2D.region_get_owner_id
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_get_owner_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.region_get_owner_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
 	var ret = r_ret
 	return ret
 }
 func (self class) RegionOwnsPoint(region RID.Any, point Vector2.XY) bool { //gd:NavigationServer2D.region_owns_point
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_owns_point, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.region_owns_point, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
 		region RID.Any
 		point  Vector2.XY
 	}{region, point})
@@ -1630,59 +1631,59 @@ func (self class) RegionOwnsPoint(region RID.Any, point Vector2.XY) bool { //gd:
 }
 func (self class) RegionSetMap(region RID.Any, mapping RID.Any) { //gd:NavigationServer2D.region_set_map
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_set_map, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.region_set_map, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		region  RID.Any
 		mapping RID.Any
 	}{region, mapping})
 }
 func (self class) RegionGetMap(region RID.Any) RID.Any { //gd:NavigationServer2D.region_get_map
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_get_map, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
+	var r_ret = noescape.Call[RID.Any](gdreference.GetObject(self.AsObject()[0]), methods.region_get_map, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
 	var ret = r_ret
 	return ret
 }
 func (self class) RegionSetNavigationLayers(region RID.Any, navigation_layers int64) { //gd:NavigationServer2D.region_set_navigation_layers
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_set_navigation_layers, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.region_set_navigation_layers, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		region            RID.Any
 		navigation_layers int64
 	}{region, navigation_layers})
 }
 func (self class) RegionGetNavigationLayers(region RID.Any) int64 { //gd:NavigationServer2D.region_get_navigation_layers
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_get_navigation_layers, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.region_get_navigation_layers, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
 	var ret = r_ret
 	return ret
 }
 func (self class) RegionSetTransform(region RID.Any, transform Transform2D.OriginXY) { //gd:NavigationServer2D.region_set_transform
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.region_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), &struct {
 		region    RID.Any
 		transform Transform2D.OriginXY
 	}{region, transform})
 }
 func (self class) RegionGetTransform(region RID.Any) Transform2D.OriginXY { //gd:NavigationServer2D.region_get_transform
 	once.Do(singleton)
-	var r_ret = noescape.Call[Transform2D.OriginXY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_get_transform, gdextension.SizeTransform2D|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
+	var r_ret = noescape.Call[Transform2D.OriginXY](gdreference.GetObject(self.AsObject()[0]), methods.region_get_transform, gdextension.SizeTransform2D|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
 	var ret = r_ret
 	return ret
 }
 func (self class) RegionSetNavigationPolygon(region RID.Any, navigation_polygon [1]gdclass.NavigationPolygon) { //gd:NavigationServer2D.region_set_navigation_polygon
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_set_navigation_polygon, 0|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.region_set_navigation_polygon, 0|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8), &struct {
 		region             RID.Any
 		navigation_polygon gdextension.Object
 	}{region, gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationPolygon(navigation_polygon[0])))})
 }
 func (self class) RegionGetConnectionsCount(region RID.Any) int64 { //gd:NavigationServer2D.region_get_connections_count
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_get_connections_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.region_get_connections_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
 	var ret = r_ret
 	return ret
 }
 func (self class) RegionGetConnectionPathwayStart(region RID.Any, connection int64) Vector2.XY { //gd:NavigationServer2D.region_get_connection_pathway_start
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_get_connection_pathway_start, gdextension.SizeVector2|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[Vector2.XY](gdreference.GetObject(self.AsObject()[0]), methods.region_get_connection_pathway_start, gdextension.SizeVector2|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		region     RID.Any
 		connection int64
 	}{region, connection})
@@ -1691,7 +1692,7 @@ func (self class) RegionGetConnectionPathwayStart(region RID.Any, connection int
 }
 func (self class) RegionGetConnectionPathwayEnd(region RID.Any, connection int64) Vector2.XY { //gd:NavigationServer2D.region_get_connection_pathway_end
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_get_connection_pathway_end, gdextension.SizeVector2|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[Vector2.XY](gdreference.GetObject(self.AsObject()[0]), methods.region_get_connection_pathway_end, gdextension.SizeVector2|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		region     RID.Any
 		connection int64
 	}{region, connection})
@@ -1700,7 +1701,7 @@ func (self class) RegionGetConnectionPathwayEnd(region RID.Any, connection int64
 }
 func (self class) RegionGetClosestPoint(region RID.Any, to_point Vector2.XY) Vector2.XY { //gd:NavigationServer2D.region_get_closest_point
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_get_closest_point, gdextension.SizeVector2|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
+	var r_ret = noescape.Call[Vector2.XY](gdreference.GetObject(self.AsObject()[0]), methods.region_get_closest_point, gdextension.SizeVector2|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
 		region   RID.Any
 		to_point Vector2.XY
 	}{region, to_point})
@@ -1709,7 +1710,7 @@ func (self class) RegionGetClosestPoint(region RID.Any, to_point Vector2.XY) Vec
 }
 func (self class) RegionGetRandomPoint(region RID.Any, navigation_layers int64, uniformly bool) Vector2.XY { //gd:NavigationServer2D.region_get_random_point
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_get_random_point, gdextension.SizeVector2|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	var r_ret = noescape.Call[Vector2.XY](gdreference.GetObject(self.AsObject()[0]), methods.region_get_random_point, gdextension.SizeVector2|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		region            RID.Any
 		navigation_layers int64
 		uniformly         bool
@@ -1719,466 +1720,466 @@ func (self class) RegionGetRandomPoint(region RID.Any, navigation_layers int64, 
 }
 func (self class) RegionGetBounds(region RID.Any) Rect2.PositionSize { //gd:NavigationServer2D.region_get_bounds
 	once.Do(singleton)
-	var r_ret = noescape.Call[Rect2.PositionSize](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.region_get_bounds, gdextension.SizeRect2|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
+	var r_ret = noescape.Call[Rect2.PositionSize](gdreference.GetObject(self.AsObject()[0]), methods.region_get_bounds, gdextension.SizeRect2|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
 	var ret = r_ret
 	return ret
 }
 func (self class) LinkCreate() RID.Any { //gd:NavigationServer2D.link_create
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.link_create, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gdreference.GetObject(self.AsObject()[0]), methods.link_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) LinkGetIterationId(link RID.Any) int64 { //gd:NavigationServer2D.link_get_iteration_id
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.link_get_iteration_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ link RID.Any }{link})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.link_get_iteration_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ link RID.Any }{link})
 	var ret = r_ret
 	return ret
 }
 func (self class) LinkSetMap(link RID.Any, mapping RID.Any) { //gd:NavigationServer2D.link_set_map
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.link_set_map, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.link_set_map, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		link    RID.Any
 		mapping RID.Any
 	}{link, mapping})
 }
 func (self class) LinkGetMap(link RID.Any) RID.Any { //gd:NavigationServer2D.link_get_map
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.link_get_map, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ link RID.Any }{link})
+	var r_ret = noescape.Call[RID.Any](gdreference.GetObject(self.AsObject()[0]), methods.link_get_map, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ link RID.Any }{link})
 	var ret = r_ret
 	return ret
 }
 func (self class) LinkSetEnabled(link RID.Any, enabled bool) { //gd:NavigationServer2D.link_set_enabled
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.link_set_enabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.link_set_enabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		link    RID.Any
 		enabled bool
 	}{link, enabled})
 }
 func (self class) LinkGetEnabled(link RID.Any) bool { //gd:NavigationServer2D.link_get_enabled
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.link_get_enabled, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ link RID.Any }{link})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.link_get_enabled, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ link RID.Any }{link})
 	var ret = r_ret
 	return ret
 }
 func (self class) LinkSetBidirectional(link RID.Any, bidirectional bool) { //gd:NavigationServer2D.link_set_bidirectional
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.link_set_bidirectional, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.link_set_bidirectional, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		link          RID.Any
 		bidirectional bool
 	}{link, bidirectional})
 }
 func (self class) LinkIsBidirectional(link RID.Any) bool { //gd:NavigationServer2D.link_is_bidirectional
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.link_is_bidirectional, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ link RID.Any }{link})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.link_is_bidirectional, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ link RID.Any }{link})
 	var ret = r_ret
 	return ret
 }
 func (self class) LinkSetNavigationLayers(link RID.Any, navigation_layers int64) { //gd:NavigationServer2D.link_set_navigation_layers
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.link_set_navigation_layers, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.link_set_navigation_layers, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		link              RID.Any
 		navigation_layers int64
 	}{link, navigation_layers})
 }
 func (self class) LinkGetNavigationLayers(link RID.Any) int64 { //gd:NavigationServer2D.link_get_navigation_layers
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.link_get_navigation_layers, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ link RID.Any }{link})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.link_get_navigation_layers, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ link RID.Any }{link})
 	var ret = r_ret
 	return ret
 }
 func (self class) LinkSetStartPosition(link RID.Any, position Vector2.XY) { //gd:NavigationServer2D.link_set_start_position
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.link_set_start_position, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.link_set_start_position, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
 		link     RID.Any
 		position Vector2.XY
 	}{link, position})
 }
 func (self class) LinkGetStartPosition(link RID.Any) Vector2.XY { //gd:NavigationServer2D.link_get_start_position
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.link_get_start_position, gdextension.SizeVector2|(gdextension.SizeRID<<4), &struct{ link RID.Any }{link})
+	var r_ret = noescape.Call[Vector2.XY](gdreference.GetObject(self.AsObject()[0]), methods.link_get_start_position, gdextension.SizeVector2|(gdextension.SizeRID<<4), &struct{ link RID.Any }{link})
 	var ret = r_ret
 	return ret
 }
 func (self class) LinkSetEndPosition(link RID.Any, position Vector2.XY) { //gd:NavigationServer2D.link_set_end_position
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.link_set_end_position, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.link_set_end_position, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
 		link     RID.Any
 		position Vector2.XY
 	}{link, position})
 }
 func (self class) LinkGetEndPosition(link RID.Any) Vector2.XY { //gd:NavigationServer2D.link_get_end_position
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.link_get_end_position, gdextension.SizeVector2|(gdextension.SizeRID<<4), &struct{ link RID.Any }{link})
+	var r_ret = noescape.Call[Vector2.XY](gdreference.GetObject(self.AsObject()[0]), methods.link_get_end_position, gdextension.SizeVector2|(gdextension.SizeRID<<4), &struct{ link RID.Any }{link})
 	var ret = r_ret
 	return ret
 }
 func (self class) LinkSetEnterCost(link RID.Any, enter_cost float64) { //gd:NavigationServer2D.link_set_enter_cost
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.link_set_enter_cost, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.link_set_enter_cost, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		link       RID.Any
 		enter_cost float64
 	}{link, enter_cost})
 }
 func (self class) LinkGetEnterCost(link RID.Any) float64 { //gd:NavigationServer2D.link_get_enter_cost
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.link_get_enter_cost, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ link RID.Any }{link})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.link_get_enter_cost, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ link RID.Any }{link})
 	var ret = r_ret
 	return ret
 }
 func (self class) LinkSetTravelCost(link RID.Any, travel_cost float64) { //gd:NavigationServer2D.link_set_travel_cost
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.link_set_travel_cost, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.link_set_travel_cost, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		link        RID.Any
 		travel_cost float64
 	}{link, travel_cost})
 }
 func (self class) LinkGetTravelCost(link RID.Any) float64 { //gd:NavigationServer2D.link_get_travel_cost
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.link_get_travel_cost, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ link RID.Any }{link})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.link_get_travel_cost, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ link RID.Any }{link})
 	var ret = r_ret
 	return ret
 }
 func (self class) LinkSetOwnerId(link RID.Any, owner_id int64) { //gd:NavigationServer2D.link_set_owner_id
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.link_set_owner_id, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.link_set_owner_id, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		link     RID.Any
 		owner_id int64
 	}{link, owner_id})
 }
 func (self class) LinkGetOwnerId(link RID.Any) int64 { //gd:NavigationServer2D.link_get_owner_id
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.link_get_owner_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ link RID.Any }{link})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.link_get_owner_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ link RID.Any }{link})
 	var ret = r_ret
 	return ret
 }
 func (self class) AgentCreate() RID.Any { //gd:NavigationServer2D.agent_create
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_create, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gdreference.GetObject(self.AsObject()[0]), methods.agent_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) AgentSetAvoidanceEnabled(agent RID.Any, enabled bool) { //gd:NavigationServer2D.agent_set_avoidance_enabled
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_set_avoidance_enabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.agent_set_avoidance_enabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		agent   RID.Any
 		enabled bool
 	}{agent, enabled})
 }
 func (self class) AgentGetAvoidanceEnabled(agent RID.Any) bool { //gd:NavigationServer2D.agent_get_avoidance_enabled
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_get_avoidance_enabled, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.agent_get_avoidance_enabled, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
 	var ret = r_ret
 	return ret
 }
 func (self class) AgentSetMap(agent RID.Any, mapping RID.Any) { //gd:NavigationServer2D.agent_set_map
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_set_map, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.agent_set_map, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		agent   RID.Any
 		mapping RID.Any
 	}{agent, mapping})
 }
 func (self class) AgentGetMap(agent RID.Any) RID.Any { //gd:NavigationServer2D.agent_get_map
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_get_map, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
+	var r_ret = noescape.Call[RID.Any](gdreference.GetObject(self.AsObject()[0]), methods.agent_get_map, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
 	var ret = r_ret
 	return ret
 }
 func (self class) AgentSetPaused(agent RID.Any, paused bool) { //gd:NavigationServer2D.agent_set_paused
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_set_paused, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.agent_set_paused, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		agent  RID.Any
 		paused bool
 	}{agent, paused})
 }
 func (self class) AgentGetPaused(agent RID.Any) bool { //gd:NavigationServer2D.agent_get_paused
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_get_paused, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.agent_get_paused, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
 	var ret = r_ret
 	return ret
 }
 func (self class) AgentSetNeighborDistance(agent RID.Any, distance float64) { //gd:NavigationServer2D.agent_set_neighbor_distance
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_set_neighbor_distance, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.agent_set_neighbor_distance, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		agent    RID.Any
 		distance float64
 	}{agent, distance})
 }
 func (self class) AgentGetNeighborDistance(agent RID.Any) float64 { //gd:NavigationServer2D.agent_get_neighbor_distance
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_get_neighbor_distance, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.agent_get_neighbor_distance, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
 	var ret = r_ret
 	return ret
 }
 func (self class) AgentSetMaxNeighbors(agent RID.Any, count int64) { //gd:NavigationServer2D.agent_set_max_neighbors
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_set_max_neighbors, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.agent_set_max_neighbors, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		agent RID.Any
 		count int64
 	}{agent, count})
 }
 func (self class) AgentGetMaxNeighbors(agent RID.Any) int64 { //gd:NavigationServer2D.agent_get_max_neighbors
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_get_max_neighbors, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.agent_get_max_neighbors, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
 	var ret = r_ret
 	return ret
 }
 func (self class) AgentSetTimeHorizonAgents(agent RID.Any, time_horizon float64) { //gd:NavigationServer2D.agent_set_time_horizon_agents
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_set_time_horizon_agents, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.agent_set_time_horizon_agents, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		agent        RID.Any
 		time_horizon float64
 	}{agent, time_horizon})
 }
 func (self class) AgentGetTimeHorizonAgents(agent RID.Any) float64 { //gd:NavigationServer2D.agent_get_time_horizon_agents
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_get_time_horizon_agents, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.agent_get_time_horizon_agents, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
 	var ret = r_ret
 	return ret
 }
 func (self class) AgentSetTimeHorizonObstacles(agent RID.Any, time_horizon float64) { //gd:NavigationServer2D.agent_set_time_horizon_obstacles
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_set_time_horizon_obstacles, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.agent_set_time_horizon_obstacles, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		agent        RID.Any
 		time_horizon float64
 	}{agent, time_horizon})
 }
 func (self class) AgentGetTimeHorizonObstacles(agent RID.Any) float64 { //gd:NavigationServer2D.agent_get_time_horizon_obstacles
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_get_time_horizon_obstacles, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.agent_get_time_horizon_obstacles, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
 	var ret = r_ret
 	return ret
 }
 func (self class) AgentSetRadius(agent RID.Any, radius float64) { //gd:NavigationServer2D.agent_set_radius
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_set_radius, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.agent_set_radius, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		agent  RID.Any
 		radius float64
 	}{agent, radius})
 }
 func (self class) AgentGetRadius(agent RID.Any) float64 { //gd:NavigationServer2D.agent_get_radius
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_get_radius, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.agent_get_radius, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
 	var ret = r_ret
 	return ret
 }
 func (self class) AgentSetMaxSpeed(agent RID.Any, max_speed float64) { //gd:NavigationServer2D.agent_set_max_speed
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_set_max_speed, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.agent_set_max_speed, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		agent     RID.Any
 		max_speed float64
 	}{agent, max_speed})
 }
 func (self class) AgentGetMaxSpeed(agent RID.Any) float64 { //gd:NavigationServer2D.agent_get_max_speed
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_get_max_speed, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.agent_get_max_speed, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
 	var ret = r_ret
 	return ret
 }
 func (self class) AgentSetVelocityForced(agent RID.Any, velocity Vector2.XY) { //gd:NavigationServer2D.agent_set_velocity_forced
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_set_velocity_forced, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.agent_set_velocity_forced, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
 		agent    RID.Any
 		velocity Vector2.XY
 	}{agent, velocity})
 }
 func (self class) AgentSetVelocity(agent RID.Any, velocity Vector2.XY) { //gd:NavigationServer2D.agent_set_velocity
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_set_velocity, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.agent_set_velocity, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
 		agent    RID.Any
 		velocity Vector2.XY
 	}{agent, velocity})
 }
 func (self class) AgentGetVelocity(agent RID.Any) Vector2.XY { //gd:NavigationServer2D.agent_get_velocity
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_get_velocity, gdextension.SizeVector2|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
+	var r_ret = noescape.Call[Vector2.XY](gdreference.GetObject(self.AsObject()[0]), methods.agent_get_velocity, gdextension.SizeVector2|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
 	var ret = r_ret
 	return ret
 }
 func (self class) AgentSetPosition(agent RID.Any, position Vector2.XY) { //gd:NavigationServer2D.agent_set_position
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_set_position, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.agent_set_position, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
 		agent    RID.Any
 		position Vector2.XY
 	}{agent, position})
 }
 func (self class) AgentGetPosition(agent RID.Any) Vector2.XY { //gd:NavigationServer2D.agent_get_position
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_get_position, gdextension.SizeVector2|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
+	var r_ret = noescape.Call[Vector2.XY](gdreference.GetObject(self.AsObject()[0]), methods.agent_get_position, gdextension.SizeVector2|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
 	var ret = r_ret
 	return ret
 }
 func (self class) AgentIsMapChanged(agent RID.Any) bool { //gd:NavigationServer2D.agent_is_map_changed
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_is_map_changed, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.agent_is_map_changed, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
 	var ret = r_ret
 	return ret
 }
 func (self class) AgentSetAvoidanceCallback(agent RID.Any, callback Callable.Function) { //gd:NavigationServer2D.agent_set_avoidance_callback
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_set_avoidance_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.agent_set_avoidance_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
 		agent    RID.Any
 		callback gdextension.Callable
 	}{agent, pointers.Get(gd.InternalCallable(callback))})
 }
 func (self class) AgentHasAvoidanceCallback(agent RID.Any) bool { //gd:NavigationServer2D.agent_has_avoidance_callback
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_has_avoidance_callback, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.agent_has_avoidance_callback, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
 	var ret = r_ret
 	return ret
 }
 func (self class) AgentSetAvoidanceLayers(agent RID.Any, layers int64) { //gd:NavigationServer2D.agent_set_avoidance_layers
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_set_avoidance_layers, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.agent_set_avoidance_layers, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		agent  RID.Any
 		layers int64
 	}{agent, layers})
 }
 func (self class) AgentGetAvoidanceLayers(agent RID.Any) int64 { //gd:NavigationServer2D.agent_get_avoidance_layers
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_get_avoidance_layers, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.agent_get_avoidance_layers, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
 	var ret = r_ret
 	return ret
 }
 func (self class) AgentSetAvoidanceMask(agent RID.Any, mask int64) { //gd:NavigationServer2D.agent_set_avoidance_mask
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_set_avoidance_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.agent_set_avoidance_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		agent RID.Any
 		mask  int64
 	}{agent, mask})
 }
 func (self class) AgentGetAvoidanceMask(agent RID.Any) int64 { //gd:NavigationServer2D.agent_get_avoidance_mask
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_get_avoidance_mask, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.agent_get_avoidance_mask, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
 	var ret = r_ret
 	return ret
 }
 func (self class) AgentSetAvoidancePriority(agent RID.Any, priority float64) { //gd:NavigationServer2D.agent_set_avoidance_priority
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_set_avoidance_priority, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.agent_set_avoidance_priority, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		agent    RID.Any
 		priority float64
 	}{agent, priority})
 }
 func (self class) AgentGetAvoidancePriority(agent RID.Any) float64 { //gd:NavigationServer2D.agent_get_avoidance_priority
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.agent_get_avoidance_priority, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.agent_get_avoidance_priority, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ agent RID.Any }{agent})
 	var ret = r_ret
 	return ret
 }
 func (self class) ObstacleCreate() RID.Any { //gd:NavigationServer2D.obstacle_create
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.obstacle_create, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gdreference.GetObject(self.AsObject()[0]), methods.obstacle_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) ObstacleSetAvoidanceEnabled(obstacle RID.Any, enabled bool) { //gd:NavigationServer2D.obstacle_set_avoidance_enabled
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.obstacle_set_avoidance_enabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.obstacle_set_avoidance_enabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		obstacle RID.Any
 		enabled  bool
 	}{obstacle, enabled})
 }
 func (self class) ObstacleGetAvoidanceEnabled(obstacle RID.Any) bool { //gd:NavigationServer2D.obstacle_get_avoidance_enabled
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.obstacle_get_avoidance_enabled, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ obstacle RID.Any }{obstacle})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.obstacle_get_avoidance_enabled, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ obstacle RID.Any }{obstacle})
 	var ret = r_ret
 	return ret
 }
 func (self class) ObstacleSetMap(obstacle RID.Any, mapping RID.Any) { //gd:NavigationServer2D.obstacle_set_map
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.obstacle_set_map, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.obstacle_set_map, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		obstacle RID.Any
 		mapping  RID.Any
 	}{obstacle, mapping})
 }
 func (self class) ObstacleGetMap(obstacle RID.Any) RID.Any { //gd:NavigationServer2D.obstacle_get_map
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.obstacle_get_map, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ obstacle RID.Any }{obstacle})
+	var r_ret = noescape.Call[RID.Any](gdreference.GetObject(self.AsObject()[0]), methods.obstacle_get_map, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ obstacle RID.Any }{obstacle})
 	var ret = r_ret
 	return ret
 }
 func (self class) ObstacleSetPaused(obstacle RID.Any, paused bool) { //gd:NavigationServer2D.obstacle_set_paused
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.obstacle_set_paused, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.obstacle_set_paused, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		obstacle RID.Any
 		paused   bool
 	}{obstacle, paused})
 }
 func (self class) ObstacleGetPaused(obstacle RID.Any) bool { //gd:NavigationServer2D.obstacle_get_paused
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.obstacle_get_paused, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ obstacle RID.Any }{obstacle})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.obstacle_get_paused, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ obstacle RID.Any }{obstacle})
 	var ret = r_ret
 	return ret
 }
 func (self class) ObstacleSetRadius(obstacle RID.Any, radius float64) { //gd:NavigationServer2D.obstacle_set_radius
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.obstacle_set_radius, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.obstacle_set_radius, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		obstacle RID.Any
 		radius   float64
 	}{obstacle, radius})
 }
 func (self class) ObstacleGetRadius(obstacle RID.Any) float64 { //gd:NavigationServer2D.obstacle_get_radius
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.obstacle_get_radius, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ obstacle RID.Any }{obstacle})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.obstacle_get_radius, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ obstacle RID.Any }{obstacle})
 	var ret = r_ret
 	return ret
 }
 func (self class) ObstacleSetVelocity(obstacle RID.Any, velocity Vector2.XY) { //gd:NavigationServer2D.obstacle_set_velocity
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.obstacle_set_velocity, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.obstacle_set_velocity, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
 		obstacle RID.Any
 		velocity Vector2.XY
 	}{obstacle, velocity})
 }
 func (self class) ObstacleGetVelocity(obstacle RID.Any) Vector2.XY { //gd:NavigationServer2D.obstacle_get_velocity
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.obstacle_get_velocity, gdextension.SizeVector2|(gdextension.SizeRID<<4), &struct{ obstacle RID.Any }{obstacle})
+	var r_ret = noescape.Call[Vector2.XY](gdreference.GetObject(self.AsObject()[0]), methods.obstacle_get_velocity, gdextension.SizeVector2|(gdextension.SizeRID<<4), &struct{ obstacle RID.Any }{obstacle})
 	var ret = r_ret
 	return ret
 }
 func (self class) ObstacleSetPosition(obstacle RID.Any, position Vector2.XY) { //gd:NavigationServer2D.obstacle_set_position
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.obstacle_set_position, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.obstacle_set_position, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
 		obstacle RID.Any
 		position Vector2.XY
 	}{obstacle, position})
 }
 func (self class) ObstacleGetPosition(obstacle RID.Any) Vector2.XY { //gd:NavigationServer2D.obstacle_get_position
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.obstacle_get_position, gdextension.SizeVector2|(gdextension.SizeRID<<4), &struct{ obstacle RID.Any }{obstacle})
+	var r_ret = noescape.Call[Vector2.XY](gdreference.GetObject(self.AsObject()[0]), methods.obstacle_get_position, gdextension.SizeVector2|(gdextension.SizeRID<<4), &struct{ obstacle RID.Any }{obstacle})
 	var ret = r_ret
 	return ret
 }
 func (self class) ObstacleSetVertices(obstacle RID.Any, vertices Packed.Array[Vector2.XY]) { //gd:NavigationServer2D.obstacle_set_vertices
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.obstacle_set_vertices, 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.obstacle_set_vertices, 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8), &struct {
 		obstacle RID.Any
 		vertices gdextension.PackedArray[Vector2.XY]
 	}{obstacle, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](vertices))})
 }
 func (self class) ObstacleGetVertices(obstacle RID.Any) Packed.Array[Vector2.XY] { //gd:NavigationServer2D.obstacle_get_vertices
 	once.Do(singleton)
-	var r_ret = noescape.Call[gd.PackedPointers](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.obstacle_get_vertices, gdextension.SizePackedArray|(gdextension.SizeRID<<4), &struct{ obstacle RID.Any }{obstacle})
+	var r_ret = noescape.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.obstacle_get_vertices, gdextension.SizePackedArray|(gdextension.SizeRID<<4), &struct{ obstacle RID.Any }{obstacle})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) ObstacleSetAvoidanceLayers(obstacle RID.Any, layers int64) { //gd:NavigationServer2D.obstacle_set_avoidance_layers
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.obstacle_set_avoidance_layers, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.obstacle_set_avoidance_layers, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		obstacle RID.Any
 		layers   int64
 	}{obstacle, layers})
 }
 func (self class) ObstacleGetAvoidanceLayers(obstacle RID.Any) int64 { //gd:NavigationServer2D.obstacle_get_avoidance_layers
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.obstacle_get_avoidance_layers, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ obstacle RID.Any }{obstacle})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.obstacle_get_avoidance_layers, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ obstacle RID.Any }{obstacle})
 	var ret = r_ret
 	return ret
 }
 func (self class) ParseSourceGeometryData(navigation_polygon [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData2D, root_node [1]gdclass.Node, callback Callable.Function) { //gd:NavigationServer2D.parse_source_geometry_data
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.parse_source_geometry_data, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeCallable<<16), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.parse_source_geometry_data, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeCallable<<16), &struct {
 		navigation_polygon   gdextension.Object
 		source_geometry_data gdextension.Object
 		root_node            gdextension.Object
@@ -2187,7 +2188,7 @@ func (self class) ParseSourceGeometryData(navigation_polygon [1]gdclass.Navigati
 }
 func (self class) BakeFromSourceGeometryData(navigation_polygon [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData2D, callback Callable.Function) { //gd:NavigationServer2D.bake_from_source_geometry_data
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.bake_from_source_geometry_data, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeCallable<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.bake_from_source_geometry_data, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeCallable<<12), &struct {
 		navigation_polygon   gdextension.Object
 		source_geometry_data gdextension.Object
 		callback             gdextension.Callable
@@ -2195,7 +2196,7 @@ func (self class) BakeFromSourceGeometryData(navigation_polygon [1]gdclass.Navig
 }
 func (self class) BakeFromSourceGeometryDataAsync(navigation_polygon [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData2D, callback Callable.Function) { //gd:NavigationServer2D.bake_from_source_geometry_data_async
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.bake_from_source_geometry_data_async, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeCallable<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.bake_from_source_geometry_data_async, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeCallable<<12), &struct {
 		navigation_polygon   gdextension.Object
 		source_geometry_data gdextension.Object
 		callback             gdextension.Callable
@@ -2203,26 +2204,26 @@ func (self class) BakeFromSourceGeometryDataAsync(navigation_polygon [1]gdclass.
 }
 func (self class) IsBakingNavigationPolygon(navigation_polygon [1]gdclass.NavigationPolygon) bool { //gd:NavigationServer2D.is_baking_navigation_polygon
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_baking_navigation_polygon, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ navigation_polygon gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationPolygon(navigation_polygon[0])))})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_baking_navigation_polygon, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ navigation_polygon gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationPolygon(navigation_polygon[0])))})
 	var ret = r_ret
 	return ret
 }
 func (self class) SourceGeometryParserCreate() RID.Any { //gd:NavigationServer2D.source_geometry_parser_create
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.source_geometry_parser_create, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gdreference.GetObject(self.AsObject()[0]), methods.source_geometry_parser_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SourceGeometryParserSetCallback(parser RID.Any, callback Callable.Function) { //gd:NavigationServer2D.source_geometry_parser_set_callback
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.source_geometry_parser_set_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.source_geometry_parser_set_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
 		parser   RID.Any
 		callback gdextension.Callable
 	}{parser, pointers.Get(gd.InternalCallable(callback))})
 }
 func (self class) SimplifyPath(path Packed.Array[Vector2.XY], epsilon float64) Packed.Array[Vector2.XY] { //gd:NavigationServer2D.simplify_path
 	once.Do(singleton)
-	var r_ret = noescape.Call[gd.PackedPointers](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.simplify_path, gdextension.SizePackedArray|(gdextension.SizePackedArray<<4)|(gdextension.SizeFloat<<8), &struct {
+	var r_ret = noescape.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.simplify_path, gdextension.SizePackedArray|(gdextension.SizePackedArray<<4)|(gdextension.SizeFloat<<8), &struct {
 		path    gdextension.PackedArray[Vector2.XY]
 		epsilon float64
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](path)), epsilon})
@@ -2231,25 +2232,25 @@ func (self class) SimplifyPath(path Packed.Array[Vector2.XY], epsilon float64) P
 }
 func (self class) FreeRid(rid RID.Any) { //gd:NavigationServer2D.free_rid
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.free_rid, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.free_rid, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 }
 func (self class) SetActive(active bool) { //gd:NavigationServer2D.set_active
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_active, 0|(gdextension.SizeBool<<4), &struct{ active bool }{active})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_active, 0|(gdextension.SizeBool<<4), &struct{ active bool }{active})
 }
 func (self class) SetDebugEnabled(enabled bool) { //gd:NavigationServer2D.set_debug_enabled
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_debug_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_debug_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) GetDebugEnabled() bool { //gd:NavigationServer2D.get_debug_enabled
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_debug_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.get_debug_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetProcessInfo(process_info ProcessInfo) int64 { //gd:NavigationServer2D.get_process_info
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_process_info, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ process_info ProcessInfo }{process_info})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_process_info, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ process_info ProcessInfo }{process_info})
 	var ret = r_ret
 	return ret
 }
@@ -2263,7 +2264,7 @@ func OnMapChanged(cb func(map_ RID.Any), flags ...Signal.Flags) {
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	gdclass.GetNavigationServer2D(self[0])[0].Connect(gd.NewStringName("map_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(gdclass.GetNavigationServer2D(self[0])[0], gd.NewStringName("map_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) MapChanged() Signal.Any {
@@ -2280,7 +2281,7 @@ func OnNavigationDebugChanged(cb func(), flags ...Signal.Flags) {
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	gdclass.GetNavigationServer2D(self[0])[0].Connect(gd.NewStringName("navigation_debug_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(gdclass.GetNavigationServer2D(self[0])[0], gd.NewStringName("navigation_debug_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) NavigationDebugChanged() Signal.Any {
@@ -2297,7 +2298,7 @@ func OnAvoidanceDebugChanged(cb func(), flags ...Signal.Flags) {
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	gdclass.GetNavigationServer2D(self[0])[0].Connect(gd.NewStringName("avoidance_debug_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(gdclass.GetNavigationServer2D(self[0])[0], gd.NewStringName("avoidance_debug_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) AvoidanceDebugChanged() Signal.Any {

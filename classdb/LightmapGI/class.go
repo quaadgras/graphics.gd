@@ -31,6 +31,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -189,14 +190,14 @@ type class [1]gdclass.LightmapGI
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewLightmapGI(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewLightmapGI(obj[0])
 		return true
 	}
@@ -206,22 +207,22 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.LightmapGI{gdclass.NewLightmapGI(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.LightmapGI{gdclass.NewLightmapGI(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetLightmapGI(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetLightmapGI(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.LightmapGI{gdclass.NewLightmapGI(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.LightmapGI{gdclass.NewLightmapGI(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -596,7 +597,7 @@ func (self class) SetLightData(data [1]gdclass.LightmapGIData) { //gd:LightmapGI
 }
 func (self class) GetLightData() [1]gdclass.LightmapGIData { //gd:LightmapGI.get_light_data
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_light_data, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.LightmapGIData{gdclass.NewLightmapGIData(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.LightmapGIData{gdclass.NewLightmapGIData(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetBakeQuality(bake_quality BakeQuality) { //gd:LightmapGI.set_bake_quality
@@ -652,7 +653,7 @@ func (self class) SetEnvironmentCustomSky(sky [1]gdclass.Sky) { //gd:LightmapGI.
 }
 func (self class) GetEnvironmentCustomSky() [1]gdclass.Sky { //gd:LightmapGI.get_environment_custom_sky
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_environment_custom_sky, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Sky{gdclass.NewSky(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Sky{gdclass.NewSky(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetEnvironmentCustomColor(color Color.RGBA) { //gd:LightmapGI.set_environment_custom_color
@@ -764,7 +765,7 @@ func (self class) SetCameraAttributes(camera_attributes [1]gdclass.CameraAttribu
 }
 func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes { //gd:LightmapGI.get_camera_attributes
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_camera_attributes, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.CameraAttributes{gdclass.NewCameraAttributes(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.CameraAttributes{gdclass.NewCameraAttributes(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (o class) AsLightmapGI() Advanced         { return Advanced(o) }

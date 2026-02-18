@@ -34,7 +34,7 @@ func TestRegister(t *testing.T) {
 		}
 
 		class := new(TestingSimpleClass)
-		class_name := class.AsObject()[0].GetClass()
+		class_name := gd.ObjectGetClass(class.AsObject()[0])
 		if name := class_name.String(); name != "TestingSimpleClass" {
 			t.Fatal(name)
 		}
@@ -107,7 +107,7 @@ func TestNested(t *testing.T) {
 		game := &NestedGame{
 			Health: &Health{Template: new(HealthResource)},
 		}
-		game.AsObject()[0].Notification(gd.Int(Node.NotificationReady), false)
+		gd.ObjectNotification(game.AsObject()[0], gd.Int(Node.NotificationReady), false)
 		game.Health.Ready()
 	})
 }
@@ -140,12 +140,12 @@ func TestExtensionInherits(t *testing.T) {
 		// "set_instance_binding" error because both parent and child tried to
 		// set the instance binding on the same object.
 		child := new(ChildExtension)
-		className := child.AsObject()[0].GetClass()
+		className := gd.ObjectGetClass(child.AsObject()[0])
 		if name := className.String(); name != "ChildExtension" {
 			t.Fatalf("expected ChildExtension, got %s", name)
 		}
 
 		// Verify the object can receive notifications without crashing
-		child.AsObject()[0].Notification(gd.Int(Object.NotificationPostInitialize), false)
+		gd.ObjectNotification(child.AsObject()[0], gd.Int(Object.NotificationPostInitialize), false)
 	})
 }

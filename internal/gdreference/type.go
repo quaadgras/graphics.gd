@@ -1,5 +1,9 @@
 package gdreference
 
+import (
+	"graphics.gd/internal/gdextension"
+)
+
 type Type int
 
 const (
@@ -10,3 +14,24 @@ const (
 	TypeBorrow             // Engine owns the pointer.
 	TypeStatic             // Allocated at init.
 )
+
+func GC(free func(gdextension.Object)) {
+	for chunk := range pool {
+		for i := range pool[chunk] {
+			obj := &pool[chunk][i]
+			if obj.objectID == 0 {
+				continue
+			}
+			if obj.inEngine == 0 {
+				if obj.objectID != 0 {
+					raw := gdextension.Host.Objects.Lookup(obj.objectID)
+					*obj = object{}
+					free(raw)
+				}
+				pool_free = append(pool_free, obj)
+			} else {
+				obj.inEngine = 0
+			}
+		}
+	}
+}

@@ -17,6 +17,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -396,7 +397,7 @@ var self [1]gdclass.DisplayServer
 var once sync.Once
 
 func singleton() {
-	self[0] = gdclass.NewDisplayServer(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
+	self[0] = gdclass.NewDisplayServer(gdreference.RawObject(gdextension.Host.Objects.Global(sname)))
 }
 
 /*
@@ -3349,14 +3350,14 @@ type class [1]gdclass.DisplayServer
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewDisplayServer(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewDisplayServer(obj[0])
 		return true
 	}
@@ -3367,26 +3368,26 @@ func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 
 func (self class) HasFeature(feature Feature) bool { //gd:DisplayServer.has_feature
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.has_feature, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ feature Feature }{feature})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.has_feature, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ feature Feature }{feature})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetName() String.Readable { //gd:DisplayServer.get_name
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_name, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) HelpSetSearchCallbacks(search_callback Callable.Function, action_callback Callable.Function) { //gd:DisplayServer.help_set_search_callbacks
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.help_set_search_callbacks, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeCallable<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.help_set_search_callbacks, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeCallable<<8), &struct {
 		search_callback gdextension.Callable
 		action_callback gdextension.Callable
 	}{pointers.Get(gd.InternalCallable(search_callback)), pointers.Get(gd.InternalCallable(action_callback))})
 }
 func (self class) GlobalMenuSetPopupCallbacks(menu_root String.Readable, open_callback Callable.Function, close_callback Callable.Function) { //gd:DisplayServer.global_menu_set_popup_callbacks
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_set_popup_callbacks, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeCallable<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_set_popup_callbacks, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeCallable<<12), &struct {
 		menu_root      gdextension.String
 		open_callback  gdextension.Callable
 		close_callback gdextension.Callable
@@ -3394,7 +3395,7 @@ func (self class) GlobalMenuSetPopupCallbacks(menu_root String.Readable, open_ca
 }
 func (self class) GlobalMenuAddSubmenuItem(menu_root String.Readable, label String.Readable, submenu String.Readable, index int64) int64 { //gd:DisplayServer.global_menu_add_submenu_item
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_add_submenu_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16), &struct {
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_add_submenu_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16), &struct {
 		menu_root gdextension.String
 		label     gdextension.String
 		submenu   gdextension.String
@@ -3405,7 +3406,7 @@ func (self class) GlobalMenuAddSubmenuItem(menu_root String.Readable, label Stri
 }
 func (self class) GlobalMenuAddItem(menu_root String.Readable, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_item
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_add_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_add_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
 		menu_root    gdextension.String
 		label        gdextension.String
 		callback     gdextension.Callable
@@ -3419,7 +3420,7 @@ func (self class) GlobalMenuAddItem(menu_root String.Readable, label String.Read
 }
 func (self class) GlobalMenuAddCheckItem(menu_root String.Readable, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_check_item
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_add_check_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_add_check_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
 		menu_root    gdextension.String
 		label        gdextension.String
 		callback     gdextension.Callable
@@ -3433,7 +3434,7 @@ func (self class) GlobalMenuAddCheckItem(menu_root String.Readable, label String
 }
 func (self class) GlobalMenuAddIconItem(menu_root String.Readable, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_icon_item
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_add_icon_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_add_icon_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
 		menu_root    gdextension.String
 		icon         gdextension.Object
 		label        gdextension.String
@@ -3448,7 +3449,7 @@ func (self class) GlobalMenuAddIconItem(menu_root String.Readable, icon [1]gdcla
 }
 func (self class) GlobalMenuAddIconCheckItem(menu_root String.Readable, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_icon_check_item
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_add_icon_check_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_add_icon_check_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
 		menu_root    gdextension.String
 		icon         gdextension.Object
 		label        gdextension.String
@@ -3463,7 +3464,7 @@ func (self class) GlobalMenuAddIconCheckItem(menu_root String.Readable, icon [1]
 }
 func (self class) GlobalMenuAddRadioCheckItem(menu_root String.Readable, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_radio_check_item
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_add_radio_check_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_add_radio_check_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
 		menu_root    gdextension.String
 		label        gdextension.String
 		callback     gdextension.Callable
@@ -3477,7 +3478,7 @@ func (self class) GlobalMenuAddRadioCheckItem(menu_root String.Readable, label S
 }
 func (self class) GlobalMenuAddIconRadioCheckItem(menu_root String.Readable, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_icon_radio_check_item
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_add_icon_radio_check_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_add_icon_radio_check_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
 		menu_root    gdextension.String
 		icon         gdextension.Object
 		label        gdextension.String
@@ -3492,7 +3493,7 @@ func (self class) GlobalMenuAddIconRadioCheckItem(menu_root String.Readable, ico
 }
 func (self class) GlobalMenuAddMultistateItem(menu_root String.Readable, label String.Readable, max_states int64, default_state int64, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_multistate_item
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_add_multistate_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeCallable<<24)|(gdextension.SizeVariant<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36), &struct {
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_add_multistate_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeCallable<<24)|(gdextension.SizeVariant<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36), &struct {
 		menu_root     gdextension.String
 		label         gdextension.String
 		max_states    int64
@@ -3508,7 +3509,7 @@ func (self class) GlobalMenuAddMultistateItem(menu_root String.Readable, label S
 }
 func (self class) GlobalMenuAddSeparator(menu_root String.Readable, index int64) int64 { //gd:DisplayServer.global_menu_add_separator
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_add_separator, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_add_separator, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		index     int64
 	}{pointers.Get(gd.InternalString(menu_root)), index})
@@ -3517,7 +3518,7 @@ func (self class) GlobalMenuAddSeparator(menu_root String.Readable, index int64)
 }
 func (self class) GlobalMenuGetItemIndexFromText(menu_root String.Readable, text String.Readable) int64 { //gd:DisplayServer.global_menu_get_item_index_from_text
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_get_item_index_from_text, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_get_item_index_from_text, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		menu_root gdextension.String
 		text      gdextension.String
 	}{pointers.Get(gd.InternalString(menu_root)), pointers.Get(gd.InternalString(text))})
@@ -3526,7 +3527,7 @@ func (self class) GlobalMenuGetItemIndexFromText(menu_root String.Readable, text
 }
 func (self class) GlobalMenuGetItemIndexFromTag(menu_root String.Readable, tag variant.Any) int64 { //gd:DisplayServer.global_menu_get_item_index_from_tag
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_get_item_index_from_tag, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), &struct {
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_get_item_index_from_tag, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), &struct {
 		menu_root gdextension.String
 		tag       gdextension.Variant
 	}{pointers.Get(gd.InternalString(menu_root)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag)))})
@@ -3535,7 +3536,7 @@ func (self class) GlobalMenuGetItemIndexFromTag(menu_root String.Readable, tag v
 }
 func (self class) GlobalMenuIsItemChecked(menu_root String.Readable, idx int64) bool { //gd:DisplayServer.global_menu_is_item_checked
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_is_item_checked, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_is_item_checked, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -3544,7 +3545,7 @@ func (self class) GlobalMenuIsItemChecked(menu_root String.Readable, idx int64) 
 }
 func (self class) GlobalMenuIsItemCheckable(menu_root String.Readable, idx int64) bool { //gd:DisplayServer.global_menu_is_item_checkable
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_is_item_checkable, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_is_item_checkable, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -3553,7 +3554,7 @@ func (self class) GlobalMenuIsItemCheckable(menu_root String.Readable, idx int64
 }
 func (self class) GlobalMenuIsItemRadioCheckable(menu_root String.Readable, idx int64) bool { //gd:DisplayServer.global_menu_is_item_radio_checkable
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_is_item_radio_checkable, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_is_item_radio_checkable, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -3562,7 +3563,7 @@ func (self class) GlobalMenuIsItemRadioCheckable(menu_root String.Readable, idx 
 }
 func (self class) GlobalMenuGetItemCallback(menu_root String.Readable, idx int64) Callable.Function { //gd:DisplayServer.global_menu_get_item_callback
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Callable](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_get_item_callback, gdextension.SizeCallable|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Callable](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_get_item_callback, gdextension.SizeCallable|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -3571,7 +3572,7 @@ func (self class) GlobalMenuGetItemCallback(menu_root String.Readable, idx int64
 }
 func (self class) GlobalMenuGetItemKeyCallback(menu_root String.Readable, idx int64) Callable.Function { //gd:DisplayServer.global_menu_get_item_key_callback
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Callable](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_get_item_key_callback, gdextension.SizeCallable|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Callable](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_get_item_key_callback, gdextension.SizeCallable|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -3580,7 +3581,7 @@ func (self class) GlobalMenuGetItemKeyCallback(menu_root String.Readable, idx in
 }
 func (self class) GlobalMenuGetItemTag(menu_root String.Readable, idx int64) variant.Any { //gd:DisplayServer.global_menu_get_item_tag
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Variant](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_get_item_tag, gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Variant](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_get_item_tag, gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -3589,7 +3590,7 @@ func (self class) GlobalMenuGetItemTag(menu_root String.Readable, idx int64) var
 }
 func (self class) GlobalMenuGetItemText(menu_root String.Readable, idx int64) String.Readable { //gd:DisplayServer.global_menu_get_item_text
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_get_item_text, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_get_item_text, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -3598,7 +3599,7 @@ func (self class) GlobalMenuGetItemText(menu_root String.Readable, idx int64) St
 }
 func (self class) GlobalMenuGetItemSubmenu(menu_root String.Readable, idx int64) String.Readable { //gd:DisplayServer.global_menu_get_item_submenu
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_get_item_submenu, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_get_item_submenu, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -3607,7 +3608,7 @@ func (self class) GlobalMenuGetItemSubmenu(menu_root String.Readable, idx int64)
 }
 func (self class) GlobalMenuGetItemAccelerator(menu_root String.Readable, idx int64) Input.Key { //gd:DisplayServer.global_menu_get_item_accelerator
 	once.Do(singleton)
-	var r_ret = noescape.Call[Input.Key](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_get_item_accelerator, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[Input.Key](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_get_item_accelerator, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -3616,7 +3617,7 @@ func (self class) GlobalMenuGetItemAccelerator(menu_root String.Readable, idx in
 }
 func (self class) GlobalMenuIsItemDisabled(menu_root String.Readable, idx int64) bool { //gd:DisplayServer.global_menu_is_item_disabled
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_is_item_disabled, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_is_item_disabled, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -3625,7 +3626,7 @@ func (self class) GlobalMenuIsItemDisabled(menu_root String.Readable, idx int64)
 }
 func (self class) GlobalMenuIsItemHidden(menu_root String.Readable, idx int64) bool { //gd:DisplayServer.global_menu_is_item_hidden
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_is_item_hidden, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_is_item_hidden, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -3634,7 +3635,7 @@ func (self class) GlobalMenuIsItemHidden(menu_root String.Readable, idx int64) b
 }
 func (self class) GlobalMenuGetItemTooltip(menu_root String.Readable, idx int64) String.Readable { //gd:DisplayServer.global_menu_get_item_tooltip
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_get_item_tooltip, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_get_item_tooltip, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -3643,7 +3644,7 @@ func (self class) GlobalMenuGetItemTooltip(menu_root String.Readable, idx int64)
 }
 func (self class) GlobalMenuGetItemState(menu_root String.Readable, idx int64) int64 { //gd:DisplayServer.global_menu_get_item_state
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_get_item_state, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_get_item_state, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -3652,7 +3653,7 @@ func (self class) GlobalMenuGetItemState(menu_root String.Readable, idx int64) i
 }
 func (self class) GlobalMenuGetItemMaxStates(menu_root String.Readable, idx int64) int64 { //gd:DisplayServer.global_menu_get_item_max_states
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_get_item_max_states, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_get_item_max_states, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -3661,16 +3662,16 @@ func (self class) GlobalMenuGetItemMaxStates(menu_root String.Readable, idx int6
 }
 func (self class) GlobalMenuGetItemIcon(menu_root String.Readable, idx int64) [1]gdclass.Texture2D { //gd:DisplayServer.global_menu_get_item_icon
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_get_item_icon, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_get_item_icon, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
-	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GlobalMenuGetItemIndentationLevel(menu_root String.Readable, idx int64) int64 { //gd:DisplayServer.global_menu_get_item_indentation_level
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_get_item_indentation_level, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_get_item_indentation_level, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -3679,7 +3680,7 @@ func (self class) GlobalMenuGetItemIndentationLevel(menu_root String.Readable, i
 }
 func (self class) GlobalMenuSetItemChecked(menu_root String.Readable, idx int64, checked bool) { //gd:DisplayServer.global_menu_set_item_checked
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_set_item_checked, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_set_item_checked, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		checked   bool
@@ -3687,7 +3688,7 @@ func (self class) GlobalMenuSetItemChecked(menu_root String.Readable, idx int64,
 }
 func (self class) GlobalMenuSetItemCheckable(menu_root String.Readable, idx int64, checkable bool) { //gd:DisplayServer.global_menu_set_item_checkable
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_set_item_checkable, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_set_item_checkable, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		checkable bool
@@ -3695,7 +3696,7 @@ func (self class) GlobalMenuSetItemCheckable(menu_root String.Readable, idx int6
 }
 func (self class) GlobalMenuSetItemRadioCheckable(menu_root String.Readable, idx int64, checkable bool) { //gd:DisplayServer.global_menu_set_item_radio_checkable
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_set_item_radio_checkable, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_set_item_radio_checkable, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		checkable bool
@@ -3703,7 +3704,7 @@ func (self class) GlobalMenuSetItemRadioCheckable(menu_root String.Readable, idx
 }
 func (self class) GlobalMenuSetItemCallback(menu_root String.Readable, idx int64, callback Callable.Function) { //gd:DisplayServer.global_menu_set_item_callback
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_set_item_callback, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_set_item_callback, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		callback  gdextension.Callable
@@ -3711,7 +3712,7 @@ func (self class) GlobalMenuSetItemCallback(menu_root String.Readable, idx int64
 }
 func (self class) GlobalMenuSetItemHoverCallbacks(menu_root String.Readable, idx int64, callback Callable.Function) { //gd:DisplayServer.global_menu_set_item_hover_callbacks
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_set_item_hover_callbacks, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_set_item_hover_callbacks, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		callback  gdextension.Callable
@@ -3719,7 +3720,7 @@ func (self class) GlobalMenuSetItemHoverCallbacks(menu_root String.Readable, idx
 }
 func (self class) GlobalMenuSetItemKeyCallback(menu_root String.Readable, idx int64, key_callback Callable.Function) { //gd:DisplayServer.global_menu_set_item_key_callback
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_set_item_key_callback, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_set_item_key_callback, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
 		menu_root    gdextension.String
 		idx          int64
 		key_callback gdextension.Callable
@@ -3727,7 +3728,7 @@ func (self class) GlobalMenuSetItemKeyCallback(menu_root String.Readable, idx in
 }
 func (self class) GlobalMenuSetItemTag(menu_root String.Readable, idx int64, tag variant.Any) { //gd:DisplayServer.global_menu_set_item_tag
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_set_item_tag, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_set_item_tag, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		tag       gdextension.Variant
@@ -3735,7 +3736,7 @@ func (self class) GlobalMenuSetItemTag(menu_root String.Readable, idx int64, tag
 }
 func (self class) GlobalMenuSetItemText(menu_root String.Readable, idx int64, text String.Readable) { //gd:DisplayServer.global_menu_set_item_text
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_set_item_text, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_set_item_text, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		text      gdextension.String
@@ -3743,7 +3744,7 @@ func (self class) GlobalMenuSetItemText(menu_root String.Readable, idx int64, te
 }
 func (self class) GlobalMenuSetItemSubmenu(menu_root String.Readable, idx int64, submenu String.Readable) { //gd:DisplayServer.global_menu_set_item_submenu
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_set_item_submenu, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_set_item_submenu, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		submenu   gdextension.String
@@ -3751,7 +3752,7 @@ func (self class) GlobalMenuSetItemSubmenu(menu_root String.Readable, idx int64,
 }
 func (self class) GlobalMenuSetItemAccelerator(menu_root String.Readable, idx int64, keycode Input.Key) { //gd:DisplayServer.global_menu_set_item_accelerator
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_set_item_accelerator, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_set_item_accelerator, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		keycode   Input.Key
@@ -3759,7 +3760,7 @@ func (self class) GlobalMenuSetItemAccelerator(menu_root String.Readable, idx in
 }
 func (self class) GlobalMenuSetItemDisabled(menu_root String.Readable, idx int64, disabled bool) { //gd:DisplayServer.global_menu_set_item_disabled
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_set_item_disabled, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_set_item_disabled, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		disabled  bool
@@ -3767,7 +3768,7 @@ func (self class) GlobalMenuSetItemDisabled(menu_root String.Readable, idx int64
 }
 func (self class) GlobalMenuSetItemHidden(menu_root String.Readable, idx int64, hidden bool) { //gd:DisplayServer.global_menu_set_item_hidden
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_set_item_hidden, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_set_item_hidden, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		hidden    bool
@@ -3775,7 +3776,7 @@ func (self class) GlobalMenuSetItemHidden(menu_root String.Readable, idx int64, 
 }
 func (self class) GlobalMenuSetItemTooltip(menu_root String.Readable, idx int64, tooltip String.Readable) { //gd:DisplayServer.global_menu_set_item_tooltip
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_set_item_tooltip, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_set_item_tooltip, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		tooltip   gdextension.String
@@ -3783,7 +3784,7 @@ func (self class) GlobalMenuSetItemTooltip(menu_root String.Readable, idx int64,
 }
 func (self class) GlobalMenuSetItemState(menu_root String.Readable, idx int64, state int64) { //gd:DisplayServer.global_menu_set_item_state
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_set_item_state, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_set_item_state, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		state     int64
@@ -3791,7 +3792,7 @@ func (self class) GlobalMenuSetItemState(menu_root String.Readable, idx int64, s
 }
 func (self class) GlobalMenuSetItemMaxStates(menu_root String.Readable, idx int64, max_states int64) { //gd:DisplayServer.global_menu_set_item_max_states
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_set_item_max_states, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_set_item_max_states, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		menu_root  gdextension.String
 		idx        int64
 		max_states int64
@@ -3799,7 +3800,7 @@ func (self class) GlobalMenuSetItemMaxStates(menu_root String.Readable, idx int6
 }
 func (self class) GlobalMenuSetItemIcon(menu_root String.Readable, idx int64, icon [1]gdclass.Texture2D) { //gd:DisplayServer.global_menu_set_item_icon
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_set_item_icon, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_set_item_icon, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		icon      gdextension.Object
@@ -3807,7 +3808,7 @@ func (self class) GlobalMenuSetItemIcon(menu_root String.Readable, idx int64, ic
 }
 func (self class) GlobalMenuSetItemIndentationLevel(menu_root String.Readable, idx int64, level int64) { //gd:DisplayServer.global_menu_set_item_indentation_level
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_set_item_indentation_level, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_set_item_indentation_level, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		level     int64
@@ -3815,54 +3816,54 @@ func (self class) GlobalMenuSetItemIndentationLevel(menu_root String.Readable, i
 }
 func (self class) GlobalMenuGetItemCount(menu_root String.Readable) int64 { //gd:DisplayServer.global_menu_get_item_count
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_get_item_count, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ menu_root gdextension.String }{pointers.Get(gd.InternalString(menu_root))})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_get_item_count, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ menu_root gdextension.String }{pointers.Get(gd.InternalString(menu_root))})
 	var ret = r_ret
 	return ret
 }
 func (self class) GlobalMenuRemoveItem(menu_root String.Readable, idx int64) { //gd:DisplayServer.global_menu_remove_item
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_remove_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_remove_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
 }
 func (self class) GlobalMenuClear(menu_root String.Readable) { //gd:DisplayServer.global_menu_clear
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_clear, 0|(gdextension.SizeString<<4), &struct{ menu_root gdextension.String }{pointers.Get(gd.InternalString(menu_root))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_clear, 0|(gdextension.SizeString<<4), &struct{ menu_root gdextension.String }{pointers.Get(gd.InternalString(menu_root))})
 }
 func (self class) GlobalMenuGetSystemMenuRoots() Dictionary.Any { //gd:DisplayServer.global_menu_get_system_menu_roots
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Dictionary](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.global_menu_get_system_menu_roots, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Dictionary](gdreference.GetObject(self.AsObject()[0]), methods.global_menu_get_system_menu_roots, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 func (self class) TtsIsSpeaking() bool { //gd:DisplayServer.tts_is_speaking
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.tts_is_speaking, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.tts_is_speaking, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) TtsIsPaused() bool { //gd:DisplayServer.tts_is_paused
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.tts_is_paused, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.tts_is_paused, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) TtsGetVoices() Array.Contains[Dictionary.Any] { //gd:DisplayServer.tts_get_voices
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Array](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.tts_get_voices, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gdreference.GetObject(self.AsObject()[0]), methods.tts_get_voices, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) TtsGetVoicesForLanguage(language String.Readable) Packed.Strings { //gd:DisplayServer.tts_get_voices_for_language
 	once.Do(singleton)
-	var r_ret = noescape.Call[gd.PackedPointers](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.tts_get_voices_for_language, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))})
+	var r_ret = noescape.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.tts_get_voices_for_language, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) TtsSpeak(text String.Readable, voice String.Readable, volume int64, pitch float64, rate float64, utterance_id int64, interrupt bool) { //gd:DisplayServer.tts_speak
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.tts_speak, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeBool<<28), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.tts_speak, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeBool<<28), &struct {
 		text         gdextension.String
 		voice        gdextension.String
 		volume       int64
@@ -3874,255 +3875,255 @@ func (self class) TtsSpeak(text String.Readable, voice String.Readable, volume i
 }
 func (self class) TtsPause() { //gd:DisplayServer.tts_pause
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.tts_pause, 0, &struct{}{})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.tts_pause, 0, &struct{}{})
 }
 func (self class) TtsResume() { //gd:DisplayServer.tts_resume
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.tts_resume, 0, &struct{}{})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.tts_resume, 0, &struct{}{})
 }
 func (self class) TtsStop() { //gd:DisplayServer.tts_stop
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.tts_stop, 0, &struct{}{})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.tts_stop, 0, &struct{}{})
 }
 func (self class) TtsSetUtteranceCallback(event TTSUtteranceEvent, callable Callable.Function) { //gd:DisplayServer.tts_set_utterance_callback
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.tts_set_utterance_callback, 0|(gdextension.SizeInt<<4)|(gdextension.SizeCallable<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.tts_set_utterance_callback, 0|(gdextension.SizeInt<<4)|(gdextension.SizeCallable<<8), &struct {
 		event    TTSUtteranceEvent
 		callable gdextension.Callable
 	}{event, pointers.Get(gd.InternalCallable(callable))})
 }
 func (self class) IsDarkModeSupported() bool { //gd:DisplayServer.is_dark_mode_supported
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_dark_mode_supported, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_dark_mode_supported, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsDarkMode() bool { //gd:DisplayServer.is_dark_mode
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_dark_mode, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_dark_mode, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetAccentColor() Color.RGBA { //gd:DisplayServer.get_accent_color
 	once.Do(singleton)
-	var r_ret = noescape.Call[Color.RGBA](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_accent_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = noescape.Call[Color.RGBA](gdreference.GetObject(self.AsObject()[0]), methods.get_accent_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetBaseColor() Color.RGBA { //gd:DisplayServer.get_base_color
 	once.Do(singleton)
-	var r_ret = noescape.Call[Color.RGBA](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_base_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = noescape.Call[Color.RGBA](gdreference.GetObject(self.AsObject()[0]), methods.get_base_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetSystemThemeChangeCallback(callable Callable.Function) { //gd:DisplayServer.set_system_theme_change_callback
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_system_theme_change_callback, 0|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_system_theme_change_callback, 0|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
 }
 func (self class) MouseSetMode(mouse_mode MouseModeValue) { //gd:DisplayServer.mouse_set_mode
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.mouse_set_mode, 0|(gdextension.SizeInt<<4), &struct{ mouse_mode MouseModeValue }{mouse_mode})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.mouse_set_mode, 0|(gdextension.SizeInt<<4), &struct{ mouse_mode MouseModeValue }{mouse_mode})
 }
 func (self class) MouseGetMode() MouseModeValue { //gd:DisplayServer.mouse_get_mode
 	once.Do(singleton)
-	var r_ret = noescape.Call[MouseModeValue](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.mouse_get_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[MouseModeValue](gdreference.GetObject(self.AsObject()[0]), methods.mouse_get_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) WarpMouse(position Vector2i.XY) { //gd:DisplayServer.warp_mouse
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.warp_mouse, 0|(gdextension.SizeVector2i<<4), &struct{ position Vector2i.XY }{position})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.warp_mouse, 0|(gdextension.SizeVector2i<<4), &struct{ position Vector2i.XY }{position})
 }
 func (self class) MouseGetPosition() Vector2i.XY { //gd:DisplayServer.mouse_get_position
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2i.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.mouse_get_position, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = noescape.Call[Vector2i.XY](gdreference.GetObject(self.AsObject()[0]), methods.mouse_get_position, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) MouseGetButtonState() Input.MouseButtonMask { //gd:DisplayServer.mouse_get_button_state
 	once.Do(singleton)
-	var r_ret = noescape.Call[Input.MouseButtonMask](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.mouse_get_button_state, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Input.MouseButtonMask](gdreference.GetObject(self.AsObject()[0]), methods.mouse_get_button_state, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) ClipboardSet(clipboard String.Readable) { //gd:DisplayServer.clipboard_set
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.clipboard_set, 0|(gdextension.SizeString<<4), &struct{ clipboard gdextension.String }{pointers.Get(gd.InternalString(clipboard))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.clipboard_set, 0|(gdextension.SizeString<<4), &struct{ clipboard gdextension.String }{pointers.Get(gd.InternalString(clipboard))})
 }
 func (self class) ClipboardGet() String.Readable { //gd:DisplayServer.clipboard_get
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.clipboard_get, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.clipboard_get, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) ClipboardGetImage() [1]gdclass.Image { //gd:DisplayServer.clipboard_get_image
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.clipboard_get_image, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var r_ret = noescape.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.clipboard_get_image, gdextension.SizeObject, &struct{}{})
+	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) ClipboardHas() bool { //gd:DisplayServer.clipboard_has
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.clipboard_has, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.clipboard_has, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) ClipboardHasImage() bool { //gd:DisplayServer.clipboard_has_image
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.clipboard_has_image, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.clipboard_has_image, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) ClipboardSetPrimary(clipboard_primary String.Readable) { //gd:DisplayServer.clipboard_set_primary
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.clipboard_set_primary, 0|(gdextension.SizeString<<4), &struct{ clipboard_primary gdextension.String }{pointers.Get(gd.InternalString(clipboard_primary))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.clipboard_set_primary, 0|(gdextension.SizeString<<4), &struct{ clipboard_primary gdextension.String }{pointers.Get(gd.InternalString(clipboard_primary))})
 }
 func (self class) ClipboardGetPrimary() String.Readable { //gd:DisplayServer.clipboard_get_primary
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.clipboard_get_primary, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.clipboard_get_primary, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetDisplayCutouts() Array.Contains[Rect2.PositionSize] { //gd:DisplayServer.get_display_cutouts
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Array](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_display_cutouts, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gdreference.GetObject(self.AsObject()[0]), methods.get_display_cutouts, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Rect2.PositionSize]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) GetDisplaySafeArea() Rect2i.PositionSize { //gd:DisplayServer.get_display_safe_area
 	once.Do(singleton)
-	var r_ret = noescape.Call[Rect2i.PositionSize](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_display_safe_area, gdextension.SizeRect2i, &struct{}{})
+	var r_ret = noescape.Call[Rect2i.PositionSize](gdreference.GetObject(self.AsObject()[0]), methods.get_display_safe_area, gdextension.SizeRect2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetScreenCount() int64 { //gd:DisplayServer.get_screen_count
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_screen_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_screen_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetPrimaryScreen() int64 { //gd:DisplayServer.get_primary_screen
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_primary_screen, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_primary_screen, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetKeyboardFocusScreen() int64 { //gd:DisplayServer.get_keyboard_focus_screen
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_keyboard_focus_screen, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_keyboard_focus_screen, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetScreenFromRect(rect Rect2.PositionSize) int64 { //gd:DisplayServer.get_screen_from_rect
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_screen_from_rect, gdextension.SizeInt|(gdextension.SizeRect2<<4), &struct{ rect Rect2.PositionSize }{rect})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_screen_from_rect, gdextension.SizeInt|(gdextension.SizeRect2<<4), &struct{ rect Rect2.PositionSize }{rect})
 	var ret = r_ret
 	return ret
 }
 func (self class) ScreenGetPosition(screen int64) Vector2i.XY { //gd:DisplayServer.screen_get_position
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2i.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.screen_get_position, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
+	var r_ret = noescape.Call[Vector2i.XY](gdreference.GetObject(self.AsObject()[0]), methods.screen_get_position, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
 func (self class) ScreenGetSize(screen int64) Vector2i.XY { //gd:DisplayServer.screen_get_size
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2i.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.screen_get_size, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
+	var r_ret = noescape.Call[Vector2i.XY](gdreference.GetObject(self.AsObject()[0]), methods.screen_get_size, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
 func (self class) ScreenGetUsableRect(screen int64) Rect2i.PositionSize { //gd:DisplayServer.screen_get_usable_rect
 	once.Do(singleton)
-	var r_ret = noescape.Call[Rect2i.PositionSize](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.screen_get_usable_rect, gdextension.SizeRect2i|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
+	var r_ret = noescape.Call[Rect2i.PositionSize](gdreference.GetObject(self.AsObject()[0]), methods.screen_get_usable_rect, gdextension.SizeRect2i|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
 func (self class) ScreenGetDpi(screen int64) int64 { //gd:DisplayServer.screen_get_dpi
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.screen_get_dpi, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.screen_get_dpi, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
 func (self class) ScreenGetScale(screen int64) float64 { //gd:DisplayServer.screen_get_scale
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.screen_get_scale, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.screen_get_scale, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsTouchscreenAvailable() bool { //gd:DisplayServer.is_touchscreen_available
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_touchscreen_available, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_touchscreen_available, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) ScreenGetMaxScale() float64 { //gd:DisplayServer.screen_get_max_scale
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.screen_get_max_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.screen_get_max_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) ScreenGetRefreshRate(screen int64) float64 { //gd:DisplayServer.screen_get_refresh_rate
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.screen_get_refresh_rate, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.screen_get_refresh_rate, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
 func (self class) ScreenGetPixel(position Vector2i.XY) Color.RGBA { //gd:DisplayServer.screen_get_pixel
 	once.Do(singleton)
-	var r_ret = noescape.Call[Color.RGBA](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.screen_get_pixel, gdextension.SizeColor|(gdextension.SizeVector2i<<4), &struct{ position Vector2i.XY }{position})
+	var r_ret = noescape.Call[Color.RGBA](gdreference.GetObject(self.AsObject()[0]), methods.screen_get_pixel, gdextension.SizeColor|(gdextension.SizeVector2i<<4), &struct{ position Vector2i.XY }{position})
 	var ret = r_ret
 	return ret
 }
 func (self class) ScreenGetImage(screen int64) [1]gdclass.Image { //gd:DisplayServer.screen_get_image
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.screen_get_image, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
-	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var r_ret = noescape.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.screen_get_image, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
+	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) ScreenGetImageRect(rect Rect2i.PositionSize) [1]gdclass.Image { //gd:DisplayServer.screen_get_image_rect
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.screen_get_image_rect, gdextension.SizeObject|(gdextension.SizeRect2i<<4), &struct{ rect Rect2i.PositionSize }{rect})
-	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var r_ret = noescape.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.screen_get_image_rect, gdextension.SizeObject|(gdextension.SizeRect2i<<4), &struct{ rect Rect2i.PositionSize }{rect})
+	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) ScreenSetOrientation(orientation ScreenOrientation, screen int64) { //gd:DisplayServer.screen_set_orientation
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.screen_set_orientation, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.screen_set_orientation, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		orientation ScreenOrientation
 		screen      int64
 	}{orientation, screen})
 }
 func (self class) ScreenGetOrientation(screen int64) ScreenOrientation { //gd:DisplayServer.screen_get_orientation
 	once.Do(singleton)
-	var r_ret = noescape.Call[ScreenOrientation](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.screen_get_orientation, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
+	var r_ret = noescape.Call[ScreenOrientation](gdreference.GetObject(self.AsObject()[0]), methods.screen_get_orientation, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
 func (self class) ScreenSetKeepOn(enable bool) { //gd:DisplayServer.screen_set_keep_on
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.screen_set_keep_on, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.screen_set_keep_on, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) ScreenIsKeptOn() bool { //gd:DisplayServer.screen_is_kept_on
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.screen_is_kept_on, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.screen_is_kept_on, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetWindowList() Packed.Array[int32] { //gd:DisplayServer.get_window_list
 	once.Do(singleton)
-	var r_ret = noescape.Call[gd.PackedPointers](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_window_list, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.get_window_list, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) GetWindowAtScreenPosition(position Vector2i.XY) int64 { //gd:DisplayServer.get_window_at_screen_position
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_window_at_screen_position, gdextension.SizeInt|(gdextension.SizeVector2i<<4), &struct{ position Vector2i.XY }{position})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_window_at_screen_position, gdextension.SizeInt|(gdextension.SizeVector2i<<4), &struct{ position Vector2i.XY }{position})
 	var ret = r_ret
 	return ret
 }
 func (self class) WindowGetNativeHandle(handle_type HandleType, window_id int64) int64 { //gd:DisplayServer.window_get_native_handle
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_get_native_handle, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.window_get_native_handle, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		handle_type HandleType
 		window_id   int64
 	}{handle_type, window_id})
@@ -4131,33 +4132,33 @@ func (self class) WindowGetNativeHandle(handle_type HandleType, window_id int64)
 }
 func (self class) WindowGetActivePopup() int64 { //gd:DisplayServer.window_get_active_popup
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_get_active_popup, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.window_get_active_popup, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) WindowSetPopupSafeRect(window int64, rect Rect2i.PositionSize) { //gd:DisplayServer.window_set_popup_safe_rect
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_set_popup_safe_rect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRect2i<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_popup_safe_rect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRect2i<<8), &struct {
 		window int64
 		rect   Rect2i.PositionSize
 	}{window, rect})
 }
 func (self class) WindowGetPopupSafeRect(window int64) Rect2i.PositionSize { //gd:DisplayServer.window_get_popup_safe_rect
 	once.Do(singleton)
-	var r_ret = noescape.Call[Rect2i.PositionSize](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_get_popup_safe_rect, gdextension.SizeRect2i|(gdextension.SizeInt<<4), &struct{ window int64 }{window})
+	var r_ret = noescape.Call[Rect2i.PositionSize](gdreference.GetObject(self.AsObject()[0]), methods.window_get_popup_safe_rect, gdextension.SizeRect2i|(gdextension.SizeInt<<4), &struct{ window int64 }{window})
 	var ret = r_ret
 	return ret
 }
 func (self class) WindowSetTitle(title String.Readable, window_id int64) { //gd:DisplayServer.window_set_title
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_set_title, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_title, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		title     gdextension.String
 		window_id int64
 	}{pointers.Get(gd.InternalString(title)), window_id})
 }
 func (self class) WindowGetTitleSize(title String.Readable, window_id int64) Vector2i.XY { //gd:DisplayServer.window_get_title_size
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2i.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_get_title_size, gdextension.SizeVector2i|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[Vector2i.XY](gdreference.GetObject(self.AsObject()[0]), methods.window_get_title_size, gdextension.SizeVector2i|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		title     gdextension.String
 		window_id int64
 	}{pointers.Get(gd.InternalString(title)), window_id})
@@ -4166,145 +4167,145 @@ func (self class) WindowGetTitleSize(title String.Readable, window_id int64) Vec
 }
 func (self class) WindowSetMousePassthrough(region Packed.Array[Vector2.XY], window_id int64) { //gd:DisplayServer.window_set_mouse_passthrough
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_set_mouse_passthrough, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_mouse_passthrough, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeInt<<8), &struct {
 		region    gdextension.PackedArray[Vector2.XY]
 		window_id int64
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](region)), window_id})
 }
 func (self class) WindowGetCurrentScreen(window_id int64) int64 { //gd:DisplayServer.window_get_current_screen
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_get_current_screen, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.window_get_current_screen, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
 func (self class) WindowSetCurrentScreen(screen int64, window_id int64) { //gd:DisplayServer.window_set_current_screen
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_set_current_screen, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_current_screen, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		screen    int64
 		window_id int64
 	}{screen, window_id})
 }
 func (self class) WindowGetPosition(window_id int64) Vector2i.XY { //gd:DisplayServer.window_get_position
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2i.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_get_position, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[Vector2i.XY](gdreference.GetObject(self.AsObject()[0]), methods.window_get_position, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
 func (self class) WindowGetPositionWithDecorations(window_id int64) Vector2i.XY { //gd:DisplayServer.window_get_position_with_decorations
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2i.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_get_position_with_decorations, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[Vector2i.XY](gdreference.GetObject(self.AsObject()[0]), methods.window_get_position_with_decorations, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
 func (self class) WindowSetPosition(position Vector2i.XY, window_id int64) { //gd:DisplayServer.window_set_position
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_set_position, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_position, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		position  Vector2i.XY
 		window_id int64
 	}{position, window_id})
 }
 func (self class) WindowGetSize(window_id int64) Vector2i.XY { //gd:DisplayServer.window_get_size
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2i.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_get_size, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[Vector2i.XY](gdreference.GetObject(self.AsObject()[0]), methods.window_get_size, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
 func (self class) WindowSetSize(size Vector2i.XY, window_id int64) { //gd:DisplayServer.window_set_size
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_set_size, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_size, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		size      Vector2i.XY
 		window_id int64
 	}{size, window_id})
 }
 func (self class) WindowSetRectChangedCallback(callback Callable.Function, window_id int64) { //gd:DisplayServer.window_set_rect_changed_callback
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_set_rect_changed_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_rect_changed_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
 		callback  gdextension.Callable
 		window_id int64
 	}{pointers.Get(gd.InternalCallable(callback)), window_id})
 }
 func (self class) WindowSetWindowEventCallback(callback Callable.Function, window_id int64) { //gd:DisplayServer.window_set_window_event_callback
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_set_window_event_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_window_event_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
 		callback  gdextension.Callable
 		window_id int64
 	}{pointers.Get(gd.InternalCallable(callback)), window_id})
 }
 func (self class) WindowSetInputEventCallback(callback Callable.Function, window_id int64) { //gd:DisplayServer.window_set_input_event_callback
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_set_input_event_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_input_event_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
 		callback  gdextension.Callable
 		window_id int64
 	}{pointers.Get(gd.InternalCallable(callback)), window_id})
 }
 func (self class) WindowSetInputTextCallback(callback Callable.Function, window_id int64) { //gd:DisplayServer.window_set_input_text_callback
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_set_input_text_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_input_text_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
 		callback  gdextension.Callable
 		window_id int64
 	}{pointers.Get(gd.InternalCallable(callback)), window_id})
 }
 func (self class) WindowSetDropFilesCallback(callback Callable.Function, window_id int64) { //gd:DisplayServer.window_set_drop_files_callback
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_set_drop_files_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_drop_files_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
 		callback  gdextension.Callable
 		window_id int64
 	}{pointers.Get(gd.InternalCallable(callback)), window_id})
 }
 func (self class) WindowGetAttachedInstanceId(window_id int64) int64 { //gd:DisplayServer.window_get_attached_instance_id
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_get_attached_instance_id, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.window_get_attached_instance_id, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
 func (self class) WindowGetMaxSize(window_id int64) Vector2i.XY { //gd:DisplayServer.window_get_max_size
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2i.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_get_max_size, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[Vector2i.XY](gdreference.GetObject(self.AsObject()[0]), methods.window_get_max_size, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
 func (self class) WindowSetMaxSize(max_size Vector2i.XY, window_id int64) { //gd:DisplayServer.window_set_max_size
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_set_max_size, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_max_size, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		max_size  Vector2i.XY
 		window_id int64
 	}{max_size, window_id})
 }
 func (self class) WindowGetMinSize(window_id int64) Vector2i.XY { //gd:DisplayServer.window_get_min_size
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2i.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_get_min_size, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[Vector2i.XY](gdreference.GetObject(self.AsObject()[0]), methods.window_get_min_size, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
 func (self class) WindowSetMinSize(min_size Vector2i.XY, window_id int64) { //gd:DisplayServer.window_set_min_size
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_set_min_size, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_min_size, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		min_size  Vector2i.XY
 		window_id int64
 	}{min_size, window_id})
 }
 func (self class) WindowGetSizeWithDecorations(window_id int64) Vector2i.XY { //gd:DisplayServer.window_get_size_with_decorations
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2i.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_get_size_with_decorations, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[Vector2i.XY](gdreference.GetObject(self.AsObject()[0]), methods.window_get_size_with_decorations, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
 func (self class) WindowGetMode(window_id int64) WindowMode { //gd:DisplayServer.window_get_mode
 	once.Do(singleton)
-	var r_ret = noescape.Call[WindowMode](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_get_mode, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[WindowMode](gdreference.GetObject(self.AsObject()[0]), methods.window_get_mode, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
 func (self class) WindowSetMode(mode WindowMode, window_id int64) { //gd:DisplayServer.window_set_mode
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_set_mode, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_mode, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		mode      WindowMode
 		window_id int64
 	}{mode, window_id})
 }
 func (self class) WindowSetFlag(flag WindowFlags, enabled bool, window_id int64) { //gd:DisplayServer.window_set_flag
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_set_flag, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_flag, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12), &struct {
 		flag      WindowFlags
 		enabled   bool
 		window_id int64
@@ -4312,7 +4313,7 @@ func (self class) WindowSetFlag(flag WindowFlags, enabled bool, window_id int64)
 }
 func (self class) WindowGetFlag(flag WindowFlags, window_id int64) bool { //gd:DisplayServer.window_get_flag
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_get_flag, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.window_get_flag, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		flag      WindowFlags
 		window_id int64
 	}{flag, window_id})
@@ -4321,138 +4322,138 @@ func (self class) WindowGetFlag(flag WindowFlags, window_id int64) bool { //gd:D
 }
 func (self class) WindowSetWindowButtonsOffset(offset Vector2i.XY, window_id int64) { //gd:DisplayServer.window_set_window_buttons_offset
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_set_window_buttons_offset, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_window_buttons_offset, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		offset    Vector2i.XY
 		window_id int64
 	}{offset, window_id})
 }
 func (self class) WindowGetSafeTitleMargins(window_id int64) Vector3i.XYZ { //gd:DisplayServer.window_get_safe_title_margins
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector3i.XYZ](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_get_safe_title_margins, gdextension.SizeVector3i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[Vector3i.XYZ](gdreference.GetObject(self.AsObject()[0]), methods.window_get_safe_title_margins, gdextension.SizeVector3i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
 func (self class) WindowRequestAttention(window_id int64) { //gd:DisplayServer.window_request_attention
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_request_attention, 0|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_request_attention, 0|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 }
 func (self class) WindowMoveToForeground(window_id int64) { //gd:DisplayServer.window_move_to_foreground
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_move_to_foreground, 0|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_move_to_foreground, 0|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 }
 func (self class) WindowIsFocused(window_id int64) bool { //gd:DisplayServer.window_is_focused
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_is_focused, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.window_is_focused, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
 func (self class) WindowCanDraw(window_id int64) bool { //gd:DisplayServer.window_can_draw
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_can_draw, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.window_can_draw, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
 func (self class) WindowSetTransient(window_id int64, parent_window_id int64) { //gd:DisplayServer.window_set_transient
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_set_transient, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_transient, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		window_id        int64
 		parent_window_id int64
 	}{window_id, parent_window_id})
 }
 func (self class) WindowSetExclusive(window_id int64, exclusive bool) { //gd:DisplayServer.window_set_exclusive
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_set_exclusive, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_exclusive, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		window_id int64
 		exclusive bool
 	}{window_id, exclusive})
 }
 func (self class) WindowSetImeActive(active bool, window_id int64) { //gd:DisplayServer.window_set_ime_active
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_set_ime_active, 0|(gdextension.SizeBool<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_ime_active, 0|(gdextension.SizeBool<<4)|(gdextension.SizeInt<<8), &struct {
 		active    bool
 		window_id int64
 	}{active, window_id})
 }
 func (self class) WindowSetImePosition(position Vector2i.XY, window_id int64) { //gd:DisplayServer.window_set_ime_position
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_set_ime_position, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_ime_position, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		position  Vector2i.XY
 		window_id int64
 	}{position, window_id})
 }
 func (self class) WindowSetVsyncMode(vsync_mode VSyncMode, window_id int64) { //gd:DisplayServer.window_set_vsync_mode
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_set_vsync_mode, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_vsync_mode, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		vsync_mode VSyncMode
 		window_id  int64
 	}{vsync_mode, window_id})
 }
 func (self class) WindowGetVsyncMode(window_id int64) VSyncMode { //gd:DisplayServer.window_get_vsync_mode
 	once.Do(singleton)
-	var r_ret = noescape.Call[VSyncMode](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_get_vsync_mode, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[VSyncMode](gdreference.GetObject(self.AsObject()[0]), methods.window_get_vsync_mode, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
 func (self class) WindowIsMaximizeAllowed(window_id int64) bool { //gd:DisplayServer.window_is_maximize_allowed
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_is_maximize_allowed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.window_is_maximize_allowed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
 func (self class) WindowMaximizeOnTitleDblClick() bool { //gd:DisplayServer.window_maximize_on_title_dbl_click
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_maximize_on_title_dbl_click, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.window_maximize_on_title_dbl_click, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) WindowMinimizeOnTitleDblClick() bool { //gd:DisplayServer.window_minimize_on_title_dbl_click
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_minimize_on_title_dbl_click, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.window_minimize_on_title_dbl_click, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) WindowStartDrag(window_id int64) { //gd:DisplayServer.window_start_drag
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_start_drag, 0|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_start_drag, 0|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 }
 func (self class) WindowStartResize(edge WindowResizeEdge, window_id int64) { //gd:DisplayServer.window_start_resize
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_start_resize, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_start_resize, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		edge      WindowResizeEdge
 		window_id int64
 	}{edge, window_id})
 }
 func (self class) WindowSetColor(color Color.RGBA) { //gd:DisplayServer.window_set_color
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.window_set_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) AccessibilityShouldIncreaseContrast() int64 { //gd:DisplayServer.accessibility_should_increase_contrast
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_should_increase_contrast, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_should_increase_contrast, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) AccessibilityShouldReduceAnimation() int64 { //gd:DisplayServer.accessibility_should_reduce_animation
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_should_reduce_animation, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_should_reduce_animation, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) AccessibilityShouldReduceTransparency() int64 { //gd:DisplayServer.accessibility_should_reduce_transparency
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_should_reduce_transparency, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_should_reduce_transparency, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) AccessibilityScreenReaderActive() int64 { //gd:DisplayServer.accessibility_screen_reader_active
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_screen_reader_active, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_screen_reader_active, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) AccessibilityCreateElement(window_id int64, role AccessibilityRole) RID.Any { //gd:DisplayServer.accessibility_create_element
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_create_element, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[RID.Any](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_create_element, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		window_id int64
 		role      AccessibilityRole
 	}{window_id, role})
@@ -4461,7 +4462,7 @@ func (self class) AccessibilityCreateElement(window_id int64, role Accessibility
 }
 func (self class) AccessibilityCreateSubElement(parent_rid RID.Any, role AccessibilityRole, insert_pos int64) RID.Any { //gd:DisplayServer.accessibility_create_sub_element
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_create_sub_element, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	var r_ret = noescape.Call[RID.Any](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_create_sub_element, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		parent_rid RID.Any
 		role       AccessibilityRole
 		insert_pos int64
@@ -4471,7 +4472,7 @@ func (self class) AccessibilityCreateSubElement(parent_rid RID.Any, role Accessi
 }
 func (self class) AccessibilityCreateSubTextEditElements(parent_rid RID.Any, shaped_text RID.Any, min_height float64, insert_pos int64, is_last_line bool) RID.Any { //gd:DisplayServer.accessibility_create_sub_text_edit_elements
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_create_sub_text_edit_elements, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20), &struct {
+	var r_ret = noescape.Call[RID.Any](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_create_sub_text_edit_elements, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20), &struct {
 		parent_rid   RID.Any
 		shaped_text  RID.Any
 		min_height   float64
@@ -4483,30 +4484,30 @@ func (self class) AccessibilityCreateSubTextEditElements(parent_rid RID.Any, sha
 }
 func (self class) AccessibilityHasElement(id RID.Any) bool { //gd:DisplayServer.accessibility_has_element
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_has_element, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_has_element, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
 	var ret = r_ret
 	return ret
 }
 func (self class) AccessibilityFreeElement(id RID.Any) { //gd:DisplayServer.accessibility_free_element
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_free_element, 0|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_free_element, 0|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
 }
 func (self class) AccessibilityElementSetMeta(id RID.Any, meta variant.Any) { //gd:DisplayServer.accessibility_element_set_meta
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_element_set_meta, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVariant<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_element_set_meta, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVariant<<8), &struct {
 		id   RID.Any
 		meta gdextension.Variant
 	}{id, gdextension.Variant(pointers.Get(gd.InternalVariant(meta)))})
 }
 func (self class) AccessibilityElementGetMeta(id RID.Any) variant.Any { //gd:DisplayServer.accessibility_element_get_meta
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Variant](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_element_get_meta, gdextension.SizeVariant|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
+	var r_ret = noescape.Call[gdextension.Variant](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_element_get_meta, gdextension.SizeVariant|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 func (self class) AccessibilitySetWindowRect(window_id int64, rect_out Rect2.PositionSize, rect_in Rect2.PositionSize) { //gd:DisplayServer.accessibility_set_window_rect
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_set_window_rect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_set_window_rect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2<<12), &struct {
 		window_id int64
 		rect_out  Rect2.PositionSize
 		rect_in   Rect2.PositionSize
@@ -4514,178 +4515,178 @@ func (self class) AccessibilitySetWindowRect(window_id int64, rect_out Rect2.Pos
 }
 func (self class) AccessibilitySetWindowFocused(window_id int64, focused bool) { //gd:DisplayServer.accessibility_set_window_focused
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_set_window_focused, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_set_window_focused, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		window_id int64
 		focused   bool
 	}{window_id, focused})
 }
 func (self class) AccessibilityUpdateSetFocus(id RID.Any) { //gd:DisplayServer.accessibility_update_set_focus
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_focus, 0|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_focus, 0|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
 }
 func (self class) AccessibilityGetWindowRoot(window_id int64) RID.Any { //gd:DisplayServer.accessibility_get_window_root
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_get_window_root, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[RID.Any](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_get_window_root, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
 func (self class) AccessibilityUpdateSetRole(id RID.Any, role AccessibilityRole) { //gd:DisplayServer.accessibility_update_set_role
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_role, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_role, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		id   RID.Any
 		role AccessibilityRole
 	}{id, role})
 }
 func (self class) AccessibilityUpdateSetName(id RID.Any, name String.Readable) { //gd:DisplayServer.accessibility_update_set_name
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_name, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_name, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id   RID.Any
 		name gdextension.String
 	}{id, pointers.Get(gd.InternalString(name))})
 }
 func (self class) AccessibilityUpdateSetExtraInfo(id RID.Any, name String.Readable) { //gd:DisplayServer.accessibility_update_set_extra_info
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_extra_info, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_extra_info, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id   RID.Any
 		name gdextension.String
 	}{id, pointers.Get(gd.InternalString(name))})
 }
 func (self class) AccessibilityUpdateSetDescription(id RID.Any, description String.Readable) { //gd:DisplayServer.accessibility_update_set_description
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_description, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_description, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id          RID.Any
 		description gdextension.String
 	}{id, pointers.Get(gd.InternalString(description))})
 }
 func (self class) AccessibilityUpdateSetValue(id RID.Any, value String.Readable) { //gd:DisplayServer.accessibility_update_set_value
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_value, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_value, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id    RID.Any
 		value gdextension.String
 	}{id, pointers.Get(gd.InternalString(value))})
 }
 func (self class) AccessibilityUpdateSetTooltip(id RID.Any, tooltip String.Readable) { //gd:DisplayServer.accessibility_update_set_tooltip
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_tooltip, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_tooltip, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id      RID.Any
 		tooltip gdextension.String
 	}{id, pointers.Get(gd.InternalString(tooltip))})
 }
 func (self class) AccessibilityUpdateSetBounds(id RID.Any, p_rect Rect2.PositionSize) { //gd:DisplayServer.accessibility_update_set_bounds
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_bounds, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_bounds, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8), &struct {
 		id     RID.Any
 		p_rect Rect2.PositionSize
 	}{id, p_rect})
 }
 func (self class) AccessibilityUpdateSetTransform(id RID.Any, transform Transform2D.OriginXY) { //gd:DisplayServer.accessibility_update_set_transform
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), &struct {
 		id        RID.Any
 		transform Transform2D.OriginXY
 	}{id, transform})
 }
 func (self class) AccessibilityUpdateAddChild(id RID.Any, child_id RID.Any) { //gd:DisplayServer.accessibility_update_add_child
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_add_child, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_add_child, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id       RID.Any
 		child_id RID.Any
 	}{id, child_id})
 }
 func (self class) AccessibilityUpdateAddRelatedControls(id RID.Any, related_id RID.Any) { //gd:DisplayServer.accessibility_update_add_related_controls
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_add_related_controls, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_add_related_controls, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id         RID.Any
 		related_id RID.Any
 	}{id, related_id})
 }
 func (self class) AccessibilityUpdateAddRelatedDetails(id RID.Any, related_id RID.Any) { //gd:DisplayServer.accessibility_update_add_related_details
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_add_related_details, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_add_related_details, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id         RID.Any
 		related_id RID.Any
 	}{id, related_id})
 }
 func (self class) AccessibilityUpdateAddRelatedDescribedBy(id RID.Any, related_id RID.Any) { //gd:DisplayServer.accessibility_update_add_related_described_by
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_add_related_described_by, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_add_related_described_by, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id         RID.Any
 		related_id RID.Any
 	}{id, related_id})
 }
 func (self class) AccessibilityUpdateAddRelatedFlowTo(id RID.Any, related_id RID.Any) { //gd:DisplayServer.accessibility_update_add_related_flow_to
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_add_related_flow_to, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_add_related_flow_to, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id         RID.Any
 		related_id RID.Any
 	}{id, related_id})
 }
 func (self class) AccessibilityUpdateAddRelatedLabeledBy(id RID.Any, related_id RID.Any) { //gd:DisplayServer.accessibility_update_add_related_labeled_by
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_add_related_labeled_by, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_add_related_labeled_by, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id         RID.Any
 		related_id RID.Any
 	}{id, related_id})
 }
 func (self class) AccessibilityUpdateAddRelatedRadioGroup(id RID.Any, related_id RID.Any) { //gd:DisplayServer.accessibility_update_add_related_radio_group
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_add_related_radio_group, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_add_related_radio_group, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id         RID.Any
 		related_id RID.Any
 	}{id, related_id})
 }
 func (self class) AccessibilityUpdateSetActiveDescendant(id RID.Any, other_id RID.Any) { //gd:DisplayServer.accessibility_update_set_active_descendant
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_active_descendant, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_active_descendant, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id       RID.Any
 		other_id RID.Any
 	}{id, other_id})
 }
 func (self class) AccessibilityUpdateSetNextOnLine(id RID.Any, other_id RID.Any) { //gd:DisplayServer.accessibility_update_set_next_on_line
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_next_on_line, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_next_on_line, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id       RID.Any
 		other_id RID.Any
 	}{id, other_id})
 }
 func (self class) AccessibilityUpdateSetPreviousOnLine(id RID.Any, other_id RID.Any) { //gd:DisplayServer.accessibility_update_set_previous_on_line
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_previous_on_line, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_previous_on_line, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id       RID.Any
 		other_id RID.Any
 	}{id, other_id})
 }
 func (self class) AccessibilityUpdateSetMemberOf(id RID.Any, group_id RID.Any) { //gd:DisplayServer.accessibility_update_set_member_of
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_member_of, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_member_of, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id       RID.Any
 		group_id RID.Any
 	}{id, group_id})
 }
 func (self class) AccessibilityUpdateSetInPageLinkTarget(id RID.Any, other_id RID.Any) { //gd:DisplayServer.accessibility_update_set_in_page_link_target
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_in_page_link_target, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_in_page_link_target, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id       RID.Any
 		other_id RID.Any
 	}{id, other_id})
 }
 func (self class) AccessibilityUpdateSetErrorMessage(id RID.Any, other_id RID.Any) { //gd:DisplayServer.accessibility_update_set_error_message
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_error_message, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_error_message, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id       RID.Any
 		other_id RID.Any
 	}{id, other_id})
 }
 func (self class) AccessibilityUpdateSetLive(id RID.Any, live AccessibilityLiveMode) { //gd:DisplayServer.accessibility_update_set_live
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_live, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_live, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		id   RID.Any
 		live AccessibilityLiveMode
 	}{id, live})
 }
 func (self class) AccessibilityUpdateAddAction(id RID.Any, action AccessibilityAction, callable Callable.Function) { //gd:DisplayServer.accessibility_update_add_action
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_add_action, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_add_action, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
 		id       RID.Any
 		action   AccessibilityAction
 		callable gdextension.Callable
@@ -4693,7 +4694,7 @@ func (self class) AccessibilityUpdateAddAction(id RID.Any, action AccessibilityA
 }
 func (self class) AccessibilityUpdateAddCustomAction(id RID.Any, action_id int64, action_description String.Readable) { //gd:DisplayServer.accessibility_update_add_custom_action
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_add_custom_action, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_add_custom_action, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		id                 RID.Any
 		action_id          int64
 		action_description gdextension.String
@@ -4701,35 +4702,35 @@ func (self class) AccessibilityUpdateAddCustomAction(id RID.Any, action_id int64
 }
 func (self class) AccessibilityUpdateSetTableRowCount(id RID.Any, count int64) { //gd:DisplayServer.accessibility_update_set_table_row_count
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_table_row_count, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_table_row_count, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		id    RID.Any
 		count int64
 	}{id, count})
 }
 func (self class) AccessibilityUpdateSetTableColumnCount(id RID.Any, count int64) { //gd:DisplayServer.accessibility_update_set_table_column_count
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_table_column_count, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_table_column_count, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		id    RID.Any
 		count int64
 	}{id, count})
 }
 func (self class) AccessibilityUpdateSetTableRowIndex(id RID.Any, index int64) { //gd:DisplayServer.accessibility_update_set_table_row_index
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_table_row_index, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_table_row_index, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		id    RID.Any
 		index int64
 	}{id, index})
 }
 func (self class) AccessibilityUpdateSetTableColumnIndex(id RID.Any, index int64) { //gd:DisplayServer.accessibility_update_set_table_column_index
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_table_column_index, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_table_column_index, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		id    RID.Any
 		index int64
 	}{id, index})
 }
 func (self class) AccessibilityUpdateSetTableCellPosition(id RID.Any, row_index int64, column_index int64) { //gd:DisplayServer.accessibility_update_set_table_cell_position
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_table_cell_position, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_table_cell_position, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		id           RID.Any
 		row_index    int64
 		column_index int64
@@ -4737,7 +4738,7 @@ func (self class) AccessibilityUpdateSetTableCellPosition(id RID.Any, row_index 
 }
 func (self class) AccessibilityUpdateSetTableCellSpan(id RID.Any, row_span int64, column_span int64) { //gd:DisplayServer.accessibility_update_set_table_cell_span
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_table_cell_span, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_table_cell_span, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		id          RID.Any
 		row_span    int64
 		column_span int64
@@ -4745,63 +4746,63 @@ func (self class) AccessibilityUpdateSetTableCellSpan(id RID.Any, row_span int64
 }
 func (self class) AccessibilityUpdateSetListItemCount(id RID.Any, size int64) { //gd:DisplayServer.accessibility_update_set_list_item_count
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_list_item_count, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_list_item_count, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		id   RID.Any
 		size int64
 	}{id, size})
 }
 func (self class) AccessibilityUpdateSetListItemIndex(id RID.Any, index int64) { //gd:DisplayServer.accessibility_update_set_list_item_index
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_list_item_index, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_list_item_index, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		id    RID.Any
 		index int64
 	}{id, index})
 }
 func (self class) AccessibilityUpdateSetListItemLevel(id RID.Any, level int64) { //gd:DisplayServer.accessibility_update_set_list_item_level
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_list_item_level, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_list_item_level, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		id    RID.Any
 		level int64
 	}{id, level})
 }
 func (self class) AccessibilityUpdateSetListItemSelected(id RID.Any, selected bool) { //gd:DisplayServer.accessibility_update_set_list_item_selected
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_list_item_selected, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_list_item_selected, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		id       RID.Any
 		selected bool
 	}{id, selected})
 }
 func (self class) AccessibilityUpdateSetListItemExpanded(id RID.Any, expanded bool) { //gd:DisplayServer.accessibility_update_set_list_item_expanded
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_list_item_expanded, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_list_item_expanded, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		id       RID.Any
 		expanded bool
 	}{id, expanded})
 }
 func (self class) AccessibilityUpdateSetPopupType(id RID.Any, popup AccessibilityPopupType) { //gd:DisplayServer.accessibility_update_set_popup_type
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_popup_type, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_popup_type, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		id    RID.Any
 		popup AccessibilityPopupType
 	}{id, popup})
 }
 func (self class) AccessibilityUpdateSetChecked(id RID.Any, checekd bool) { //gd:DisplayServer.accessibility_update_set_checked
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_checked, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_checked, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		id      RID.Any
 		checekd bool
 	}{id, checekd})
 }
 func (self class) AccessibilityUpdateSetNumValue(id RID.Any, position float64) { //gd:DisplayServer.accessibility_update_set_num_value
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_num_value, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_num_value, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		id       RID.Any
 		position float64
 	}{id, position})
 }
 func (self class) AccessibilityUpdateSetNumRange(id RID.Any, min float64, max float64) { //gd:DisplayServer.accessibility_update_set_num_range
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_num_range, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_num_range, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
 		id  RID.Any
 		min float64
 		max float64
@@ -4809,28 +4810,28 @@ func (self class) AccessibilityUpdateSetNumRange(id RID.Any, min float64, max fl
 }
 func (self class) AccessibilityUpdateSetNumStep(id RID.Any, step float64) { //gd:DisplayServer.accessibility_update_set_num_step
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_num_step, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_num_step, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		id   RID.Any
 		step float64
 	}{id, step})
 }
 func (self class) AccessibilityUpdateSetNumJump(id RID.Any, jump float64) { //gd:DisplayServer.accessibility_update_set_num_jump
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_num_jump, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_num_jump, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		id   RID.Any
 		jump float64
 	}{id, jump})
 }
 func (self class) AccessibilityUpdateSetScrollX(id RID.Any, position float64) { //gd:DisplayServer.accessibility_update_set_scroll_x
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_scroll_x, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_scroll_x, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		id       RID.Any
 		position float64
 	}{id, position})
 }
 func (self class) AccessibilityUpdateSetScrollXRange(id RID.Any, min float64, max float64) { //gd:DisplayServer.accessibility_update_set_scroll_x_range
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_scroll_x_range, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_scroll_x_range, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
 		id  RID.Any
 		min float64
 		max float64
@@ -4838,14 +4839,14 @@ func (self class) AccessibilityUpdateSetScrollXRange(id RID.Any, min float64, ma
 }
 func (self class) AccessibilityUpdateSetScrollY(id RID.Any, position float64) { //gd:DisplayServer.accessibility_update_set_scroll_y
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_scroll_y, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_scroll_y, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		id       RID.Any
 		position float64
 	}{id, position})
 }
 func (self class) AccessibilityUpdateSetScrollYRange(id RID.Any, min float64, max float64) { //gd:DisplayServer.accessibility_update_set_scroll_y_range
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_scroll_y_range, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_scroll_y_range, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
 		id  RID.Any
 		min float64
 		max float64
@@ -4853,7 +4854,7 @@ func (self class) AccessibilityUpdateSetScrollYRange(id RID.Any, min float64, ma
 }
 func (self class) AccessibilityUpdateSetTextDecorations(id RID.Any, underline bool, strikethrough bool, overline bool) { //gd:DisplayServer.accessibility_update_set_text_decorations
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_text_decorations, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_text_decorations, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
 		id            RID.Any
 		underline     bool
 		strikethrough bool
@@ -4862,14 +4863,14 @@ func (self class) AccessibilityUpdateSetTextDecorations(id RID.Any, underline bo
 }
 func (self class) AccessibilityUpdateSetTextAlign(id RID.Any, align GUI.HorizontalAlignment) { //gd:DisplayServer.accessibility_update_set_text_align
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_text_align, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_text_align, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		id    RID.Any
 		align GUI.HorizontalAlignment
 	}{id, align})
 }
 func (self class) AccessibilityUpdateSetTextSelection(id RID.Any, text_start_id RID.Any, start_char int64, text_end_id RID.Any, end_char int64) { //gd:DisplayServer.accessibility_update_set_text_selection
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_text_selection, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeInt<<20), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_text_selection, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeInt<<20), &struct {
 		id            RID.Any
 		text_start_id RID.Any
 		start_char    int64
@@ -4879,7 +4880,7 @@ func (self class) AccessibilityUpdateSetTextSelection(id RID.Any, text_start_id 
 }
 func (self class) AccessibilityUpdateSetFlag(id RID.Any, flag AccessibilityFlags, value bool) { //gd:DisplayServer.accessibility_update_set_flag
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_flag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_flag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		id    RID.Any
 		flag  AccessibilityFlags
 		value bool
@@ -4887,103 +4888,103 @@ func (self class) AccessibilityUpdateSetFlag(id RID.Any, flag AccessibilityFlags
 }
 func (self class) AccessibilityUpdateSetClassname(id RID.Any, classname String.Readable) { //gd:DisplayServer.accessibility_update_set_classname
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_classname, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_classname, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id        RID.Any
 		classname gdextension.String
 	}{id, pointers.Get(gd.InternalString(classname))})
 }
 func (self class) AccessibilityUpdateSetPlaceholder(id RID.Any, placeholder String.Readable) { //gd:DisplayServer.accessibility_update_set_placeholder
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_placeholder, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_placeholder, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id          RID.Any
 		placeholder gdextension.String
 	}{id, pointers.Get(gd.InternalString(placeholder))})
 }
 func (self class) AccessibilityUpdateSetLanguage(id RID.Any, language String.Readable) { //gd:DisplayServer.accessibility_update_set_language
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_language, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_language, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id       RID.Any
 		language gdextension.String
 	}{id, pointers.Get(gd.InternalString(language))})
 }
 func (self class) AccessibilityUpdateSetTextOrientation(id RID.Any, vertical bool) { //gd:DisplayServer.accessibility_update_set_text_orientation
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_text_orientation, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_text_orientation, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		id       RID.Any
 		vertical bool
 	}{id, vertical})
 }
 func (self class) AccessibilityUpdateSetListOrientation(id RID.Any, vertical bool) { //gd:DisplayServer.accessibility_update_set_list_orientation
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_list_orientation, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_list_orientation, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		id       RID.Any
 		vertical bool
 	}{id, vertical})
 }
 func (self class) AccessibilityUpdateSetShortcut(id RID.Any, shortcut String.Readable) { //gd:DisplayServer.accessibility_update_set_shortcut
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_shortcut, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_shortcut, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id       RID.Any
 		shortcut gdextension.String
 	}{id, pointers.Get(gd.InternalString(shortcut))})
 }
 func (self class) AccessibilityUpdateSetUrl(id RID.Any, url String.Readable) { //gd:DisplayServer.accessibility_update_set_url
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_url, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_url, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id  RID.Any
 		url gdextension.String
 	}{id, pointers.Get(gd.InternalString(url))})
 }
 func (self class) AccessibilityUpdateSetRoleDescription(id RID.Any, description String.Readable) { //gd:DisplayServer.accessibility_update_set_role_description
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_role_description, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_role_description, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id          RID.Any
 		description gdextension.String
 	}{id, pointers.Get(gd.InternalString(description))})
 }
 func (self class) AccessibilityUpdateSetStateDescription(id RID.Any, description String.Readable) { //gd:DisplayServer.accessibility_update_set_state_description
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_state_description, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_state_description, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id          RID.Any
 		description gdextension.String
 	}{id, pointers.Get(gd.InternalString(description))})
 }
 func (self class) AccessibilityUpdateSetColorValue(id RID.Any, color Color.RGBA) { //gd:DisplayServer.accessibility_update_set_color_value
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_color_value, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_color_value, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
 		id    RID.Any
 		color Color.RGBA
 	}{id, color})
 }
 func (self class) AccessibilityUpdateSetBackgroundColor(id RID.Any, color Color.RGBA) { //gd:DisplayServer.accessibility_update_set_background_color
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_background_color, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_background_color, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
 		id    RID.Any
 		color Color.RGBA
 	}{id, color})
 }
 func (self class) AccessibilityUpdateSetForegroundColor(id RID.Any, color Color.RGBA) { //gd:DisplayServer.accessibility_update_set_foreground_color
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.accessibility_update_set_foreground_color, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_foreground_color, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
 		id    RID.Any
 		color Color.RGBA
 	}{id, color})
 }
 func (self class) ImeGetSelection() Vector2i.XY { //gd:DisplayServer.ime_get_selection
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2i.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.ime_get_selection, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = noescape.Call[Vector2i.XY](gdreference.GetObject(self.AsObject()[0]), methods.ime_get_selection, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) ImeGetText() String.Readable { //gd:DisplayServer.ime_get_text
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.ime_get_text, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.ime_get_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) VirtualKeyboardShow(existing_text String.Readable, position Rect2.PositionSize, atype VirtualKeyboardType, max_length int64, cursor_start int64, cursor_end int64) { //gd:DisplayServer.virtual_keyboard_show
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.virtual_keyboard_show, 0|(gdextension.SizeString<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.virtual_keyboard_show, 0|(gdextension.SizeString<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), &struct {
 		existing_text gdextension.String
 		position      Rect2.PositionSize
 		atype         VirtualKeyboardType
@@ -4994,37 +4995,37 @@ func (self class) VirtualKeyboardShow(existing_text String.Readable, position Re
 }
 func (self class) VirtualKeyboardHide() { //gd:DisplayServer.virtual_keyboard_hide
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.virtual_keyboard_hide, 0, &struct{}{})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.virtual_keyboard_hide, 0, &struct{}{})
 }
 func (self class) VirtualKeyboardGetHeight() int64 { //gd:DisplayServer.virtual_keyboard_get_height
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.virtual_keyboard_get_height, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.virtual_keyboard_get_height, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) HasHardwareKeyboard() bool { //gd:DisplayServer.has_hardware_keyboard
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.has_hardware_keyboard, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.has_hardware_keyboard, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetHardwareKeyboardConnectionChangeCallback(callable Callable.Function) { //gd:DisplayServer.set_hardware_keyboard_connection_change_callback
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_hardware_keyboard_connection_change_callback, 0|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_hardware_keyboard_connection_change_callback, 0|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
 }
 func (self class) CursorSetShape(shape CursorShape) { //gd:DisplayServer.cursor_set_shape
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.cursor_set_shape, 0|(gdextension.SizeInt<<4), &struct{ shape CursorShape }{shape})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.cursor_set_shape, 0|(gdextension.SizeInt<<4), &struct{ shape CursorShape }{shape})
 }
 func (self class) CursorGetShape() CursorShape { //gd:DisplayServer.cursor_get_shape
 	once.Do(singleton)
-	var r_ret = noescape.Call[CursorShape](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.cursor_get_shape, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[CursorShape](gdreference.GetObject(self.AsObject()[0]), methods.cursor_get_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) CursorSetCustomImage(cursor [1]gdclass.Resource, shape CursorShape, hotspot Vector2.XY) { //gd:DisplayServer.cursor_set_custom_image
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.cursor_set_custom_image, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector2<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.cursor_set_custom_image, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector2<<12), &struct {
 		cursor  gdextension.Object
 		shape   CursorShape
 		hotspot Vector2.XY
@@ -5032,17 +5033,17 @@ func (self class) CursorSetCustomImage(cursor [1]gdclass.Resource, shape CursorS
 }
 func (self class) GetSwapCancelOk() bool { //gd:DisplayServer.get_swap_cancel_ok
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_swap_cancel_ok, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.get_swap_cancel_ok, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) EnableForStealingFocus(process_id int64) { //gd:DisplayServer.enable_for_stealing_focus
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.enable_for_stealing_focus, 0|(gdextension.SizeInt<<4), &struct{ process_id int64 }{process_id})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.enable_for_stealing_focus, 0|(gdextension.SizeInt<<4), &struct{ process_id int64 }{process_id})
 }
 func (self class) DialogShow(title String.Readable, description String.Readable, buttons Packed.Strings, callback Callable.Function) Error.Code { //gd:DisplayServer.dialog_show
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.dialog_show, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeCallable<<16), &struct {
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.dialog_show, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeCallable<<16), &struct {
 		title       gdextension.String
 		description gdextension.String
 		buttons     gdextension.PackedArray[gdextension.String]
@@ -5053,7 +5054,7 @@ func (self class) DialogShow(title String.Readable, description String.Readable,
 }
 func (self class) DialogInputText(title String.Readable, description String.Readable, existing_text String.Readable, callback Callable.Function) Error.Code { //gd:DisplayServer.dialog_input_text
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.dialog_input_text, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16), &struct {
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.dialog_input_text, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16), &struct {
 		title         gdextension.String
 		description   gdextension.String
 		existing_text gdextension.String
@@ -5064,7 +5065,7 @@ func (self class) DialogInputText(title String.Readable, description String.Read
 }
 func (self class) FileDialogShow(title String.Readable, current_directory String.Readable, filename String.Readable, show_hidden bool, mode FileDialogMode, filters Packed.Strings, callback Callable.Function, parent_window_id int64) Error.Code { //gd:DisplayServer.file_dialog_show
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.file_dialog_show, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20)|(gdextension.SizePackedArray<<24)|(gdextension.SizeCallable<<28)|(gdextension.SizeInt<<32), &struct {
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.file_dialog_show, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20)|(gdextension.SizePackedArray<<24)|(gdextension.SizeCallable<<28)|(gdextension.SizeInt<<32), &struct {
 		title             gdextension.String
 		current_directory gdextension.String
 		filename          gdextension.String
@@ -5079,7 +5080,7 @@ func (self class) FileDialogShow(title String.Readable, current_directory String
 }
 func (self class) FileDialogWithOptionsShow(title String.Readable, current_directory String.Readable, root String.Readable, filename String.Readable, show_hidden bool, mode FileDialogMode, filters Packed.Strings, options Array.Contains[Dictionary.Any], callback Callable.Function, parent_window_id int64) Error.Code { //gd:DisplayServer.file_dialog_with_options_show
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.file_dialog_with_options_show, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeInt<<24)|(gdextension.SizePackedArray<<28)|(gdextension.SizeArray<<32)|(gdextension.SizeCallable<<36)|(gdextension.SizeInt<<40), &struct {
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.file_dialog_with_options_show, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeInt<<24)|(gdextension.SizePackedArray<<28)|(gdextension.SizeArray<<32)|(gdextension.SizeCallable<<36)|(gdextension.SizeInt<<40), &struct {
 		title             gdextension.String
 		current_directory gdextension.String
 		root              gdextension.String
@@ -5096,77 +5097,77 @@ func (self class) FileDialogWithOptionsShow(title String.Readable, current_direc
 }
 func (self class) Beep() { //gd:DisplayServer.beep
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.beep, 0, &struct{}{})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.beep, 0, &struct{}{})
 }
 func (self class) KeyboardGetLayoutCount() int64 { //gd:DisplayServer.keyboard_get_layout_count
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.keyboard_get_layout_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.keyboard_get_layout_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) KeyboardGetCurrentLayout() int64 { //gd:DisplayServer.keyboard_get_current_layout
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.keyboard_get_current_layout, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.keyboard_get_current_layout, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) KeyboardSetCurrentLayout(index int64) { //gd:DisplayServer.keyboard_set_current_layout
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.keyboard_set_current_layout, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.keyboard_set_current_layout, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
 func (self class) KeyboardGetLayoutLanguage(index int64) String.Readable { //gd:DisplayServer.keyboard_get_layout_language
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.keyboard_get_layout_language, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.keyboard_get_layout_language, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) KeyboardGetLayoutName(index int64) String.Readable { //gd:DisplayServer.keyboard_get_layout_name
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.keyboard_get_layout_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.keyboard_get_layout_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) KeyboardGetKeycodeFromPhysical(keycode Input.Key) Input.Key { //gd:DisplayServer.keyboard_get_keycode_from_physical
 	once.Do(singleton)
-	var r_ret = noescape.Call[Input.Key](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.keyboard_get_keycode_from_physical, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ keycode Input.Key }{keycode})
+	var r_ret = noescape.Call[Input.Key](gdreference.GetObject(self.AsObject()[0]), methods.keyboard_get_keycode_from_physical, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ keycode Input.Key }{keycode})
 	var ret = r_ret
 	return ret
 }
 func (self class) KeyboardGetLabelFromPhysical(keycode Input.Key) Input.Key { //gd:DisplayServer.keyboard_get_label_from_physical
 	once.Do(singleton)
-	var r_ret = noescape.Call[Input.Key](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.keyboard_get_label_from_physical, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ keycode Input.Key }{keycode})
+	var r_ret = noescape.Call[Input.Key](gdreference.GetObject(self.AsObject()[0]), methods.keyboard_get_label_from_physical, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ keycode Input.Key }{keycode})
 	var ret = r_ret
 	return ret
 }
 func (self class) ShowEmojiAndSymbolPicker() { //gd:DisplayServer.show_emoji_and_symbol_picker
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.show_emoji_and_symbol_picker, 0, &struct{}{})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.show_emoji_and_symbol_picker, 0, &struct{}{})
 }
 func (self class) ColorPicker(callback Callable.Function) bool { //gd:DisplayServer.color_picker
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.color_picker, gdextension.SizeBool|(gdextension.SizeCallable<<4), &struct{ callback gdextension.Callable }{pointers.Get(gd.InternalCallable(callback))})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.color_picker, gdextension.SizeBool|(gdextension.SizeCallable<<4), &struct{ callback gdextension.Callable }{pointers.Get(gd.InternalCallable(callback))})
 	var ret = r_ret
 	return ret
 }
 func (self class) ProcessEvents() { //gd:DisplayServer.process_events
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.process_events, 0, &struct{}{})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.process_events, 0, &struct{}{})
 }
 func (self class) ForceProcessAndDropEvents() { //gd:DisplayServer.force_process_and_drop_events
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.force_process_and_drop_events, 0, &struct{}{})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.force_process_and_drop_events, 0, &struct{}{})
 }
 func (self class) SetNativeIcon(filename String.Readable) { //gd:DisplayServer.set_native_icon
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_native_icon, 0|(gdextension.SizeString<<4), &struct{ filename gdextension.String }{pointers.Get(gd.InternalString(filename))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_native_icon, 0|(gdextension.SizeString<<4), &struct{ filename gdextension.String }{pointers.Get(gd.InternalString(filename))})
 }
 func (self class) SetIcon(image [1]gdclass.Image) { //gd:DisplayServer.set_icon
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_icon, 0|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_icon, 0|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0])))})
 }
 func (self class) CreateStatusIndicator(icon [1]gdclass.Texture2D, tooltip String.Readable, callback Callable.Function) int64 { //gd:DisplayServer.create_status_indicator
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.create_status_indicator, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12), &struct {
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.create_status_indicator, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12), &struct {
 		icon     gdextension.Object
 		tooltip  gdextension.String
 		callback gdextension.Callable
@@ -5176,81 +5177,81 @@ func (self class) CreateStatusIndicator(icon [1]gdclass.Texture2D, tooltip Strin
 }
 func (self class) StatusIndicatorSetIcon(id int64, icon [1]gdclass.Texture2D) { //gd:DisplayServer.status_indicator_set_icon
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.status_indicator_set_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.status_indicator_set_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		id   int64
 		icon gdextension.Object
 	}{id, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
 }
 func (self class) StatusIndicatorSetTooltip(id int64, tooltip String.Readable) { //gd:DisplayServer.status_indicator_set_tooltip
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.status_indicator_set_tooltip, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.status_indicator_set_tooltip, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		id      int64
 		tooltip gdextension.String
 	}{id, pointers.Get(gd.InternalString(tooltip))})
 }
 func (self class) StatusIndicatorSetMenu(id int64, menu_rid RID.Any) { //gd:DisplayServer.status_indicator_set_menu
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.status_indicator_set_menu, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.status_indicator_set_menu, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8), &struct {
 		id       int64
 		menu_rid RID.Any
 	}{id, menu_rid})
 }
 func (self class) StatusIndicatorSetCallback(id int64, callback Callable.Function) { //gd:DisplayServer.status_indicator_set_callback
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.status_indicator_set_callback, 0|(gdextension.SizeInt<<4)|(gdextension.SizeCallable<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.status_indicator_set_callback, 0|(gdextension.SizeInt<<4)|(gdextension.SizeCallable<<8), &struct {
 		id       int64
 		callback gdextension.Callable
 	}{id, pointers.Get(gd.InternalCallable(callback))})
 }
 func (self class) StatusIndicatorGetRect(id int64) Rect2.PositionSize { //gd:DisplayServer.status_indicator_get_rect
 	once.Do(singleton)
-	var r_ret = noescape.Call[Rect2.PositionSize](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.status_indicator_get_rect, gdextension.SizeRect2|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	var r_ret = noescape.Call[Rect2.PositionSize](gdreference.GetObject(self.AsObject()[0]), methods.status_indicator_get_rect, gdextension.SizeRect2|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
 func (self class) DeleteStatusIndicator(id int64) { //gd:DisplayServer.delete_status_indicator
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.delete_status_indicator, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.delete_status_indicator, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 }
 func (self class) TabletGetDriverCount() int64 { //gd:DisplayServer.tablet_get_driver_count
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.tablet_get_driver_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.tablet_get_driver_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) TabletGetDriverName(idx int64) String.Readable { //gd:DisplayServer.tablet_get_driver_name
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.tablet_get_driver_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.tablet_get_driver_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) TabletGetCurrentDriver() String.Readable { //gd:DisplayServer.tablet_get_current_driver
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.tablet_get_current_driver, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.tablet_get_current_driver, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) TabletSetCurrentDriver(name String.Readable) { //gd:DisplayServer.tablet_set_current_driver
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.tablet_set_current_driver, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.tablet_set_current_driver, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 func (self class) IsWindowTransparencyAvailable() bool { //gd:DisplayServer.is_window_transparency_available
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_window_transparency_available, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_window_transparency_available, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) RegisterAdditionalOutput(obj [1]gd.Object) { //gd:DisplayServer.register_additional_output
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.register_additional_output, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0]))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.register_additional_output, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0]))})
 }
 func (self class) UnregisterAdditionalOutput(obj [1]gd.Object) { //gd:DisplayServer.unregister_additional_output
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.unregister_additional_output, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.unregister_additional_output, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0])))})
 }
 func (self class) HasAdditionalOutputs() bool { //gd:DisplayServer.has_additional_outputs
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.has_additional_outputs, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.has_additional_outputs, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

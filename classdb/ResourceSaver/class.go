@@ -15,6 +15,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -120,7 +121,7 @@ var self [1]gdclass.ResourceSaver
 var once sync.Once
 
 func singleton() {
-	self[0] = gdclass.NewResourceSaver(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
+	self[0] = gdclass.NewResourceSaver(gdreference.RawObject(gdextension.Host.Objects.Global(sname)))
 }
 
 /*
@@ -192,14 +193,14 @@ type class [1]gdclass.ResourceSaver
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewResourceSaver(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewResourceSaver(obj[0])
 		return true
 	}
@@ -210,7 +211,7 @@ func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 
 func (self class) Save(resource [1]gdclass.Resource, path String.Readable, flags SaverFlags) Error.Code { //gd:ResourceSaver.save
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.save, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), &struct {
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.save, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), &struct {
 		resource gdextension.Object
 		path     gdextension.String
 		flags    SaverFlags
@@ -220,7 +221,7 @@ func (self class) Save(resource [1]gdclass.Resource, path String.Readable, flags
 }
 func (self class) SetUid(resource String.Readable, uid int64) Error.Code { //gd:ResourceSaver.set_uid
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_uid, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.set_uid, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		resource gdextension.String
 		uid      int64
 	}{pointers.Get(gd.InternalString(resource)), uid})
@@ -229,24 +230,24 @@ func (self class) SetUid(resource String.Readable, uid int64) Error.Code { //gd:
 }
 func (self class) GetRecognizedExtensions(atype [1]gdclass.Resource) Packed.Strings { //gd:ResourceSaver.get_recognized_extensions
 	once.Do(singleton)
-	var r_ret = noescape.Call[gd.PackedPointers](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_recognized_extensions, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ atype gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetResource(atype[0])))})
+	var r_ret = noescape.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.get_recognized_extensions, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ atype gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetResource(atype[0])))})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) AddResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver, at_front bool) { //gd:ResourceSaver.add_resource_format_saver
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.add_resource_format_saver, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.add_resource_format_saver, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		format_saver gdextension.Object
 		at_front     bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetResourceFormatSaver(format_saver[0]))), at_front})
 }
 func (self class) RemoveResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver) { //gd:ResourceSaver.remove_resource_format_saver
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.remove_resource_format_saver, 0|(gdextension.SizeObject<<4), &struct{ format_saver gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetResourceFormatSaver(format_saver[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.remove_resource_format_saver, 0|(gdextension.SizeObject<<4), &struct{ format_saver gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetResourceFormatSaver(format_saver[0])))})
 }
 func (self class) GetResourceIdForPath(path String.Readable, generate bool) int64 { //gd:ResourceSaver.get_resource_id_for_path
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_resource_id_for_path, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_resource_id_for_path, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		path     gdextension.String
 		generate bool
 	}{pointers.Get(gd.InternalString(path)), generate})

@@ -29,6 +29,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -226,9 +227,9 @@ Called during physics processing, allowing you to read and safely modify the sim
 */
 func (Instance) _integrate_forces(impl func(ptr gdclass.Receiver, state PhysicsDirectBodyState2D.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.PhysicsDirectBodyState2D{gdclass.NewPhysicsDirectBodyState2D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var state = [1]gdclass.PhysicsDirectBodyState2D{gdclass.NewPhysicsDirectBodyState2D(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetPhysicsDirectBodyState2D(state[0])[0])
+		defer gdreference.EndObject(gdclass.GetPhysicsDirectBodyState2D(state[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, state)
 	}
@@ -413,14 +414,14 @@ type class [1]gdclass.RigidBody2D
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewRigidBody2D(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewRigidBody2D(obj[0])
 		return true
 	}
@@ -430,22 +431,22 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.RigidBody2D{gdclass.NewRigidBody2D(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.RigidBody2D{gdclass.NewRigidBody2D(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetRigidBody2D(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetRigidBody2D(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.RigidBody2D{gdclass.NewRigidBody2D(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.RigidBody2D{gdclass.NewRigidBody2D(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -830,9 +831,9 @@ func (self Instance) SetConstantTorque(value Float.X) Instance { //gd:RigidBody2
 }
 func (class) _integrate_forces(impl func(ptr gdclass.Receiver, state [1]gdclass.PhysicsDirectBodyState2D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.PhysicsDirectBodyState2D{gdclass.NewPhysicsDirectBodyState2D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var state = [1]gdclass.PhysicsDirectBodyState2D{gdclass.NewPhysicsDirectBodyState2D(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetPhysicsDirectBodyState2D(state[0])[0])
+		defer gdreference.EndObject(gdclass.GetPhysicsDirectBodyState2D(state[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, state)
 	}
@@ -875,7 +876,7 @@ func (self class) SetPhysicsMaterialOverride(physics_material_override [1]gdclas
 }
 func (self class) GetPhysicsMaterialOverride() [1]gdclass.PhysicsMaterial { //gd:RigidBody2D.get_physics_material_override
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_physics_material_override, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.PhysicsMaterial{gdclass.NewPhysicsMaterial(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.PhysicsMaterial{gdclass.NewPhysicsMaterial(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetGravityScale(gravity_scale float64) { //gd:RigidBody2D.set_gravity_scale
@@ -1100,7 +1101,7 @@ func (self Instance) OnBodyShapeEntered(cb func(body_rid RID.Any, body Node.Inst
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("body_shape_entered"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("body_shape_entered"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1136,7 +1137,7 @@ func (self Instance) OnBodyShapeExited(cb func(body_rid RID.Any, body Node.Insta
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("body_shape_exited"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("body_shape_exited"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1162,7 +1163,7 @@ func (self Instance) OnBodyEntered(cb func(body Node.Instance), flags ...Signal.
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("body_entered"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("body_entered"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1188,7 +1189,7 @@ func (self Instance) OnBodyExited(cb func(body Node.Instance), flags ...Signal.F
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("body_exited"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("body_exited"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1208,7 +1209,7 @@ func (self Instance) OnSleepingStateChanged(cb func(), flags ...Signal.Flags) In
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("sleeping_state_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("sleeping_state_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 

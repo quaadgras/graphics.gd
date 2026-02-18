@@ -119,6 +119,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -337,14 +338,14 @@ type class [1]gdclass.WebXRInterface
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewWebXRInterface(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewWebXRInterface(obj[0])
 		return true
 	}
@@ -354,23 +355,23 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.WebXRInterface{gdclass.NewWebXRInterface(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.WebXRInterface{gdclass.NewWebXRInterface(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetWebXRInterface(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetWebXRInterface(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.WebXRInterface{gdclass.NewWebXRInterface(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
+	casted := Instance([1]gdclass.WebXRInterface{gdclass.NewWebXRInterface(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
 	casted.AsRefCounted()[0].InitRef()
-	casted.AsObject()[0].Notification(0, false)
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -558,7 +559,7 @@ func (self class) IsInputSourceActive(input_source_id int64) bool { //gd:WebXRIn
 }
 func (self class) GetInputSourceTracker(input_source_id int64) [1]gdclass.XRControllerTracker { //gd:WebXRInterface.get_input_source_tracker
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_input_source_tracker, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ input_source_id int64 }{input_source_id})
-	var ret = [1]gdclass.XRControllerTracker{gdclass.NewXRControllerTracker(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.XRControllerTracker{gdclass.NewXRControllerTracker(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetInputSourceTargetRayMode(input_source_id int64) TargetRayMode { //gd:WebXRInterface.get_input_source_target_ray_mode
@@ -595,7 +596,7 @@ func (self Instance) OnSessionSupported(cb func(session_mode string, supported b
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("session_supported"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("session_supported"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -615,7 +616,7 @@ func (self Instance) OnSessionStarted(cb func(), flags ...Signal.Flags) Instance
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("session_started"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("session_started"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -633,7 +634,7 @@ func (self Instance) OnSessionEnded(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("session_ended"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("session_ended"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -653,7 +654,7 @@ func (self Instance) OnSessionFailed(cb func(message string), flags ...Signal.Fl
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("session_failed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("session_failed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -674,7 +675,7 @@ func (self Instance) OnSelectstart(cb func(input_source_id int), flags ...Signal
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("selectstart"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("selectstart"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -695,7 +696,7 @@ func (self Instance) OnSelect(cb func(input_source_id int), flags ...Signal.Flag
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("select"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("select"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -716,7 +717,7 @@ func (self Instance) OnSelectend(cb func(input_source_id int), flags ...Signal.F
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("selectend"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("selectend"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -737,7 +738,7 @@ func (self Instance) OnSqueezestart(cb func(input_source_id int), flags ...Signa
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("squeezestart"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("squeezestart"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -758,7 +759,7 @@ func (self Instance) OnSqueeze(cb func(input_source_id int), flags ...Signal.Fla
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("squeeze"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("squeeze"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -779,7 +780,7 @@ func (self Instance) OnSqueezeend(cb func(input_source_id int), flags ...Signal.
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("squeezeend"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("squeezeend"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -797,7 +798,7 @@ func (self Instance) OnVisibilityStateChanged(cb func(), flags ...Signal.Flags) 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("visibility_state_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("visibility_state_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -820,7 +821,7 @@ func (self Instance) OnReferenceSpaceReset(cb func(), flags ...Signal.Flags) Ins
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("reference_space_reset"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("reference_space_reset"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -836,7 +837,7 @@ func (self Instance) OnDisplayRefreshRateChanged(cb func(), flags ...Signal.Flag
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("display_refresh_rate_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("display_refresh_rate_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 

@@ -10,6 +10,7 @@ import (
 	"unsafe"
 
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
 	ArrayType "graphics.gd/variant/Array"
@@ -114,14 +115,14 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 		case Object:
 			if rtype.Name() == "ID" {
 				var id gdextension.ObjectID
-				gdextension.Host.Objects.ID.Get(gdextension.Object(pointers.Get(value)[0]), gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
+				gdextension.Host.Objects.ID.Get(gdreference.GetObject(value), gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
 				return reflect.ValueOf(id).Convert(rtype), nil
 			}
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 		case IsClass:
 			if rtype.Name() == "ID" {
 				var id gdextension.ObjectID
-				gdextension.Host.Objects.ID.Get(gdextension.Object(gdextension.Object(pointers.Get(value.AsObject()[0])[0])), gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
+				gdextension.Host.Objects.ID.Get(gdreference.GetObject(value.AsObject()[0]), gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
 				return reflect.ValueOf(id).Convert(rtype), nil
 			}
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
@@ -130,7 +131,7 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 			if rvalue.Kind() == reflect.Array && rvalue.Type().Implements(reflect.TypeFor[IsClass]()) {
 				if rtype.Name() == "ID" {
 					var id gdextension.ObjectID
-					gdextension.Host.Objects.ID.Get(gdextension.Object(gdextension.Object(pointers.Get(rvalue.Interface().(IsClass).AsObject()[0])[0])), gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
+					gdextension.Host.Objects.ID.Get(gdreference.GetObject(rvalue.Interface().(IsClass).AsObject()[0]), gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
 					return reflect.ValueOf(id).Convert(rtype), nil
 				}
 			}
@@ -176,12 +177,16 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 		case nil:
 			return reflect.Zero(rtype), nil
 		default:
-			if rtype.Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
-				object, ok := value.(IsClass)
+			if rtype.Implements(reflect.TypeFor[IsClass]()) {
+				var object gdreference.Object
+				if isclass, ok := value.(IsClass); ok {
+					object = isclass.AsObject()[0]
+				}
+				object, ok := value.(Object)
 				if !ok {
 					return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 				}
-				native := ExtensionInstanceLookup(gdextension.Object(pointers.Get(object.AsObject()[0])[0]))
+				native := ExtensionInstanceLookup(gdreference.GetObject(object))
 				if native != nil {
 					return reflect.ValueOf(native), nil
 				}
@@ -280,8 +285,7 @@ func convertToGoStruct(rtype reflect.Type, engineValue any) (reflect.Value, erro
 		}
 	}
 	switch value := engineValue.(type) {
-	case IsClass:
-		var object = value.AsObject()
+	case Object:
 		var structure = reflect.New(rtype).Elem()
 		for field, rvalue := range structure.Fields() {
 			if !field.IsExported() {
@@ -291,7 +295,7 @@ func convertToGoStruct(rtype reflect.Type, engineValue any) (reflect.Value, erro
 			if tag := field.Tag.Get("gd"); tag != "" {
 				name = tag
 			}
-			fieldValue, err := convertVariantToDesiredGoType(object[0].Get(NewStringName(name)), field.Type)
+			fieldValue, err := convertVariantToDesiredGoType(ObjectGet(value, NewStringName(name)), field.Type)
 			if err != nil {
 				return reflect.Value{}, xray.New(err)
 			}

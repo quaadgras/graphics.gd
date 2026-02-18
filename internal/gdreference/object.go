@@ -58,13 +58,13 @@ func LetObject(obj gdextension.Object) Object {
 }
 
 // OwnObject creates a Go-owned [Object] reference.
-func OwnObject(obj gdextension.Object) Object {
+func OwnObject(obj gdextension.Object, free func(gdextension.Object)) Object {
 	var id gdextension.ObjectID
 	gdextension.Host.Objects.ID.Get(obj, gdextension.CallReturns[gdextension.ObjectID](&id))
 	var sentinel *object
 	var revision uint64
 	if threadcheck.Main() {
-		if pool_free != nil {
+		if len(pool_free) > 0 {
 			sentinel = pool_free[len(pool_free)-1]
 			pool_free = pool_free[: len(pool_free)-1 : cap(pool_free)]
 		} else {
@@ -80,11 +80,11 @@ func OwnObject(obj gdextension.Object) Object {
 		revision = now
 	} else {
 		select {
-		case sentinel = <-free:
+		case sentinel = <-free_chan:
 		default:
 			sentinel = new(object)
 		}
-		cleanup := runtime.AddCleanup(sentinel, gdextension.Host.Objects.Unsafe.Free, obj)
+		cleanup := runtime.AddCleanup(sentinel, free, obj)
 		*sentinel = *(*object)(unsafe.Pointer(&cleanup))
 	}
 	return Object{
@@ -158,7 +158,7 @@ func AskObject(obj Object) (gdextension.Object, Type) {
 }
 
 // EndObject leaks the object, releasing ownership to the engine.
-func EndObject(obj Object) gdextension.Object {
+func EndObject(obj Object) (gdextension.Object, bool) {
 	raw, t := AskObject(obj)
 	switch t {
 	case TypePooled:
@@ -168,20 +168,36 @@ func EndObject(obj Object) gdextension.Object {
 		cleanup := (*runtime.Cleanup)(unsafe.Pointer(obj.sentinel))
 		cleanup.Stop()
 		select {
-		case free <- obj.sentinel:
+		case free_chan <- obj.sentinel:
 		default:
 		}
 	case TypeUnsafe:
 	case TypePinned, TypeBorrow, TypeStatic:
-		panic("cannot end a pinned/borrowed/static pointer")
+		return raw, false
 	}
-	return raw
+	return raw, true
 }
 
-func (obj Object) Free() {
-	if raw := EndObject(obj); raw != 0 {
-		gdextension.Host.Objects.Unsafe.Free(raw)
+// CutObject either ends the object (true) or gets it (false)
+func CutObject(obj Object, end bool) gdextension.Object {
+	if end {
+		raw, _ := EndObject(obj)
+		return raw
 	}
+	return GetObject(obj)
+}
+
+// UseObject marks the object as used, preventing it from being
+// freed for one frame.
+func UseObject(obj Object) {
+	if obj.sentinel != nil && obj.sentinel != &borrowSentinel && obj.assigned.objectID != 0 && obj.sentinel.objectID == obj.assigned.objectID {
+		obj.sentinel.inEngine = obj.assigned.inEngine
+	}
+}
+
+// BadObject returns true if the reference has been invalidated.
+func BadObject(obj Object) bool {
+	return obj == Object{} || GetObject(obj) == 0
 }
 
 type object struct {
@@ -192,4 +208,4 @@ type object struct {
 var tail int
 var pool = [][128]object{{}}
 var pool_free []*object
-var free = make(chan *object, 128)
+var free_chan = make(chan *object, 128)

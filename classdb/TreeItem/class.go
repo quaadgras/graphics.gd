@@ -21,6 +21,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -1391,14 +1392,14 @@ type class [1]gdclass.TreeItem
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewTreeItem(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewTreeItem(obj[0])
 		return true
 	}
@@ -1408,22 +1409,22 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.TreeItem{gdclass.NewTreeItem(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.TreeItem{gdclass.NewTreeItem(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetTreeItem(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetTreeItem(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.TreeItem{gdclass.NewTreeItem(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.TreeItem{gdclass.NewTreeItem(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -1651,7 +1652,7 @@ func (self class) SetIcon(column int64, texture [1]gdclass.Texture2D) { //gd:Tre
 }
 func (self class) GetIcon(column int64) [1]gdclass.Texture2D { //gd:TreeItem.get_icon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_icon, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
-	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetIconOverlay(column int64, texture [1]gdclass.Texture2D) { //gd:TreeItem.set_icon_overlay
@@ -1662,7 +1663,7 @@ func (self class) SetIconOverlay(column int64, texture [1]gdclass.Texture2D) { /
 }
 func (self class) GetIconOverlay(column int64) [1]gdclass.Texture2D { //gd:TreeItem.get_icon_overlay
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_icon_overlay, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
-	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetIconRegion(column int64, region Rect2.PositionSize) { //gd:TreeItem.set_icon_region
@@ -1760,7 +1761,7 @@ func (self class) SetCustomStylebox(column int64, stylebox [1]gdclass.StyleBox) 
 }
 func (self class) GetCustomStylebox(column int64) [1]gdclass.StyleBox { //gd:TreeItem.get_custom_stylebox
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_custom_stylebox, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
-	var ret = [1]gdclass.StyleBox{gdclass.NewStyleBox(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.StyleBox{gdclass.NewStyleBox(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetCollapsed(enable bool) { //gd:TreeItem.set_collapsed
@@ -1858,7 +1859,7 @@ func (self class) SetCustomFont(column int64, font [1]gdclass.Font) { //gd:TreeI
 }
 func (self class) GetCustomFont(column int64) [1]gdclass.Font { //gd:TreeItem.get_custom_font
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_custom_font, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
-	var ret = [1]gdclass.Font{gdclass.NewFont(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Font{gdclass.NewFont(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetCustomFontSize(column int64, font_size int64) { //gd:TreeItem.set_custom_font_size
@@ -1953,7 +1954,7 @@ func (self class) GetButton(column int64, button_index int64) [1]gdclass.Texture
 		column       int64
 		button_index int64
 	}{column, button_index})
-	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetButtonTooltipText(column int64, button_index int64, tooltip String.Readable) { //gd:TreeItem.set_button_tooltip_text
@@ -2048,7 +2049,7 @@ func (self class) IsFoldingDisabled() bool { //gd:TreeItem.is_folding_disabled
 }
 func (self class) CreateChild(index int64) [1]gdclass.TreeItem { //gd:TreeItem.create_child
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_child, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
-	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) AddChild(child [1]gdclass.TreeItem) { //gd:TreeItem.add_child
@@ -2059,52 +2060,52 @@ func (self class) RemoveChild(child [1]gdclass.TreeItem) { //gd:TreeItem.remove_
 }
 func (self class) GetTree() [1]gdclass.Tree { //gd:TreeItem.get_tree
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tree, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Tree{gdclass.NewTree(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Tree{gdclass.NewTree(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) GetNext() [1]gdclass.TreeItem { //gd:TreeItem.get_next
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_next, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) GetPrev() [1]gdclass.TreeItem { //gd:TreeItem.get_prev
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_prev, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) GetParent() [1]gdclass.TreeItem { //gd:TreeItem.get_parent
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_parent, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) GetFirstChild() [1]gdclass.TreeItem { //gd:TreeItem.get_first_child
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_first_child, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) GetNextInTree(wrap bool) [1]gdclass.TreeItem { //gd:TreeItem.get_next_in_tree
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_next_in_tree, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ wrap bool }{wrap})
-	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) GetPrevInTree(wrap bool) [1]gdclass.TreeItem { //gd:TreeItem.get_prev_in_tree
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_prev_in_tree, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ wrap bool }{wrap})
-	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) GetNextVisible(wrap bool) [1]gdclass.TreeItem { //gd:TreeItem.get_next_visible
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_next_visible, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ wrap bool }{wrap})
-	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) GetPrevVisible(wrap bool) [1]gdclass.TreeItem { //gd:TreeItem.get_prev_visible
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_prev_visible, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ wrap bool }{wrap})
-	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) GetChild(index int64) [1]gdclass.TreeItem { //gd:TreeItem.get_child
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_child, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
-	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) GetChildCount() int64 { //gd:TreeItem.get_child_count

@@ -16,6 +16,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -116,7 +117,7 @@ var self [1]gdclass.PhysicsServer2DManager
 var once sync.Once
 
 func singleton() {
-	self[0] = gdclass.NewPhysicsServer2DManager(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
+	self[0] = gdclass.NewPhysicsServer2DManager(gdreference.RawObject(gdextension.Host.Objects.Global(sname)))
 }
 
 /*
@@ -144,14 +145,14 @@ type class [1]gdclass.PhysicsServer2DManager
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewPhysicsServer2DManager(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewPhysicsServer2DManager(obj[0])
 		return true
 	}
@@ -162,14 +163,14 @@ func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 
 func (self class) RegisterServer(name String.Readable, create_callback Callable.Function) { //gd:PhysicsServer2DManager.register_server
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.register_server, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.register_server, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), &struct {
 		name            gdextension.String
 		create_callback gdextension.Callable
 	}{pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalCallable(create_callback))})
 }
 func (self class) SetDefaultServer(name String.Readable, priority int64) { //gd:PhysicsServer2DManager.set_default_server
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_default_server, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_default_server, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		name     gdextension.String
 		priority int64
 	}{pointers.Get(gd.InternalString(name)), priority})

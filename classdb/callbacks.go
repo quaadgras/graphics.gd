@@ -6,6 +6,7 @@ import (
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdmemory"
+	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Object"
 )
@@ -27,7 +28,7 @@ func init() {
 		if goOnly {
 			roots.Remove(key)
 		} else {
-			pointers.Pin(impl.Value.AsObject()[0])
+			gdreference.PinObject(impl.Value.AsObject()[0])
 			if keepalive := compile_keepalive(reflect.TypeOf(impl.Value)); keepalive != nil {
 				roots.Insert(key, keepalive)
 			}
@@ -174,7 +175,7 @@ func init() {
 		},
 		Class: gdextension.CallbacksForExtensionClass{
 			Create: func(class gdextension.ExtensionClassID, notify_postinitialize bool) gdextension.Object {
-				return gdextension.Object(pointers.Get(classes.Get(class).CreateInstance(notify_postinitialize)[0])[0])
+				return gdreference.GetObject(classes.Get(class).CreateInstance(notify_postinitialize)[0])
 			},
 			Method: func(class gdextension.ExtensionClassID, method gdextension.StringName, hash uint32) gdextension.FunctionID {
 				virtual := classes.Get(class).GetVirtual(pointers.Let[gd.StringName](method))

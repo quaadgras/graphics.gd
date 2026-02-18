@@ -101,6 +101,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -291,9 +292,9 @@ Called when the [MultiplayerAPI.MultiplayerPeer] is set.
 */
 func (Instance) _set_multiplayer_peer(impl func(ptr gdclass.Receiver, multiplayer_peer MultiplayerPeer.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var multiplayer_peer = [1]gdclass.MultiplayerPeer{gdclass.NewMultiplayerPeer(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var multiplayer_peer = [1]gdclass.MultiplayerPeer{gdclass.NewMultiplayerPeer(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetMultiplayerPeer(multiplayer_peer[0])[0])
+		defer gdreference.EndObject(gdclass.GetMultiplayerPeer(multiplayer_peer[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, multiplayer_peer)
 	}
@@ -308,7 +309,7 @@ func (Instance) _get_multiplayer_peer(impl func(ptr gdclass.Receiver) Multiplaye
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gdclass.GetMultiplayerPeer(ret[0])[0])
+		ptr, ok := gdreference.EndObject(gdclass.GetMultiplayerPeer(ret[0])[0])
 
 		if !ok {
 			return
@@ -356,8 +357,8 @@ Callback for [MultiplayerAPI.Rpc].
 func (Instance) _rpc(impl func(ptr gdclass.Receiver, peer int, obj Object.Instance, method string, args []any) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var peer = gd.UnsafeGet[int64](p_args, 0)
-		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
-		defer pointers.End(obj[0])
+		var obj = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 1), gd.Free)}
+		defer gdreference.EndObject(obj[0])
 		var method = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 2)))))
 		defer pointers.End(gd.InternalStringName(method))
 		var args = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 3))))
@@ -393,8 +394,8 @@ Callback for [MultiplayerAPI.ObjectConfigurationAdd].
 */
 func (Instance) _object_configuration_add(impl func(ptr gdclass.Receiver, obj Object.Instance, configuration any) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
-		defer pointers.End(obj[0])
+		var obj = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(obj[0])
 		var configuration = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(configuration))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -415,8 +416,8 @@ Callback for [MultiplayerAPI.ObjectConfigurationRemove].
 */
 func (Instance) _object_configuration_remove(impl func(ptr gdclass.Receiver, obj Object.Instance, configuration any) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
-		defer pointers.End(obj[0])
+		var obj = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(obj[0])
 		var configuration = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(configuration))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -436,14 +437,14 @@ type class [1]gdclass.MultiplayerAPIExtension
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewMultiplayerAPIExtension(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewMultiplayerAPIExtension(obj[0])
 		return true
 	}
@@ -453,23 +454,23 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.MultiplayerAPIExtension{gdclass.NewMultiplayerAPIExtension(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.MultiplayerAPIExtension{gdclass.NewMultiplayerAPIExtension(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetMultiplayerAPIExtension(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetMultiplayerAPIExtension(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.MultiplayerAPIExtension{gdclass.NewMultiplayerAPIExtension(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
+	casted := Instance([1]gdclass.MultiplayerAPIExtension{gdclass.NewMultiplayerAPIExtension(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
 	casted.AsRefCounted()[0].InitRef()
-	casted.AsObject()[0].Notification(0, false)
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 func (class) _poll(impl func(ptr gdclass.Receiver) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -486,9 +487,9 @@ func (class) _poll(impl func(ptr gdclass.Receiver) Error.Code) (cb gd.ExtensionC
 }
 func (class) _set_multiplayer_peer(impl func(ptr gdclass.Receiver, multiplayer_peer [1]gdclass.MultiplayerPeer)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var multiplayer_peer = [1]gdclass.MultiplayerPeer{gdclass.NewMultiplayerPeer(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var multiplayer_peer = [1]gdclass.MultiplayerPeer{gdclass.NewMultiplayerPeer(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetMultiplayerPeer(multiplayer_peer[0])[0])
+		defer gdreference.EndObject(gdclass.GetMultiplayerPeer(multiplayer_peer[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, multiplayer_peer)
 	}
@@ -497,7 +498,7 @@ func (class) _get_multiplayer_peer(impl func(ptr gdclass.Receiver) [1]gdclass.Mu
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gdclass.GetMultiplayerPeer(ret[0])[0])
+		ptr, ok := gdreference.EndObject(gdclass.GetMultiplayerPeer(ret[0])[0])
 
 		if !ok {
 			return
@@ -527,8 +528,8 @@ func (class) _get_peer_ids(impl func(ptr gdclass.Receiver) Packed.Array[int32]) 
 func (class) _rpc(impl func(ptr gdclass.Receiver, peer int64, obj [1]gd.Object, method String.Name, args Array.Any) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var peer = gd.UnsafeGet[int64](p_args, 0)
-		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
-		defer pointers.End(obj[0])
+		var obj = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 1), gd.Free)}
+		defer gdreference.EndObject(obj[0])
 		var method = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 2)))))
 		defer pointers.End(gd.InternalStringName(method))
 		var args = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 3))))
@@ -552,8 +553,8 @@ func (class) _get_remote_sender_id(impl func(ptr gdclass.Receiver) int64) (cb gd
 }
 func (class) _object_configuration_add(impl func(ptr gdclass.Receiver, obj [1]gd.Object, configuration variant.Any) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
-		defer pointers.End(obj[0])
+		var obj = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(obj[0])
 		var configuration = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(configuration))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -568,8 +569,8 @@ func (class) _object_configuration_add(impl func(ptr gdclass.Receiver, obj [1]gd
 }
 func (class) _object_configuration_remove(impl func(ptr gdclass.Receiver, obj [1]gd.Object, configuration variant.Any) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
-		defer pointers.End(obj[0])
+		var obj = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(obj[0])
 		var configuration = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(configuration))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())

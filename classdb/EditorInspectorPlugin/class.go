@@ -31,6 +31,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -182,8 +183,8 @@ Returns true if this object can be handled by this plugin.
 */
 func (Instance) _can_handle(impl func(ptr gdclass.Receiver, obj Object.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
-		defer pointers.End(obj[0])
+		var obj = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(obj[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, obj)
 		gd.UnsafeSet(p_back, ret)
@@ -195,8 +196,8 @@ Called to allow adding controls at the beginning of the property list for 'objec
 */
 func (Instance) _parse_begin(impl func(ptr gdclass.Receiver, obj Object.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
-		defer pointers.End(obj[0])
+		var obj = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(obj[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, obj)
 	}
@@ -207,8 +208,8 @@ Called to allow adding controls at the beginning of a category in the property l
 */
 func (Instance) _parse_category(impl func(ptr gdclass.Receiver, obj Object.Instance, category string)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
-		defer pointers.End(obj[0])
+		var obj = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(obj[0])
 		var category = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(category))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -221,8 +222,8 @@ Called to allow adding controls at the beginning of a group or a sub-group in th
 */
 func (Instance) _parse_group(impl func(ptr gdclass.Receiver, obj Object.Instance, group string)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
-		defer pointers.End(obj[0])
+		var obj = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(obj[0])
 		var group = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(group))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -237,8 +238,8 @@ Called to allow adding property-specific editors to the property list for 'objec
 */
 func (Instance) _parse_property(impl func(ptr gdclass.Receiver, obj Object.Instance, atype variant.Type, name string, hint_type ClassDB.PropertyHint, hint_string string, usage_flags ClassDB.PropertyUsageFlags, wide bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
-		defer pointers.End(obj[0])
+		var obj = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(obj[0])
 		var atype = gd.UnsafeGet[variant.Type](p_args, 1)
 		var name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
 		defer pointers.End(gd.InternalString(name))
@@ -258,8 +259,8 @@ Called to allow adding controls at the end of the property list for 'object'.
 */
 func (Instance) _parse_end(impl func(ptr gdclass.Receiver, obj Object.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
-		defer pointers.End(obj[0])
+		var obj = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(obj[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, obj)
 	}
@@ -317,14 +318,14 @@ type class [1]gdclass.EditorInspectorPlugin
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorInspectorPlugin(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorInspectorPlugin(obj[0])
 		return true
 	}
@@ -334,29 +335,29 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.EditorInspectorPlugin{gdclass.NewEditorInspectorPlugin(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.EditorInspectorPlugin{gdclass.NewEditorInspectorPlugin(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetEditorInspectorPlugin(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetEditorInspectorPlugin(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.EditorInspectorPlugin{gdclass.NewEditorInspectorPlugin(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
+	casted := Instance([1]gdclass.EditorInspectorPlugin{gdclass.NewEditorInspectorPlugin(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
 	casted.AsRefCounted()[0].InitRef()
-	casted.AsObject()[0].Notification(0, false)
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 func (class) _can_handle(impl func(ptr gdclass.Receiver, obj [1]gd.Object) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
-		defer pointers.End(obj[0])
+		var obj = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(obj[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, obj)
 		gd.UnsafeSet(p_back, ret)
@@ -364,16 +365,16 @@ func (class) _can_handle(impl func(ptr gdclass.Receiver, obj [1]gd.Object) bool)
 }
 func (class) _parse_begin(impl func(ptr gdclass.Receiver, obj [1]gd.Object)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
-		defer pointers.End(obj[0])
+		var obj = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(obj[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, obj)
 	}
 }
 func (class) _parse_category(impl func(ptr gdclass.Receiver, obj [1]gd.Object, category String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
-		defer pointers.End(obj[0])
+		var obj = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(obj[0])
 		var category = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(category))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -382,8 +383,8 @@ func (class) _parse_category(impl func(ptr gdclass.Receiver, obj [1]gd.Object, c
 }
 func (class) _parse_group(impl func(ptr gdclass.Receiver, obj [1]gd.Object, group String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
-		defer pointers.End(obj[0])
+		var obj = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(obj[0])
 		var group = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(group))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -392,8 +393,8 @@ func (class) _parse_group(impl func(ptr gdclass.Receiver, obj [1]gd.Object, grou
 }
 func (class) _parse_property(impl func(ptr gdclass.Receiver, obj [1]gd.Object, atype variant.Type, name String.Readable, hint_type ClassDB.PropertyHint, hint_string String.Readable, usage_flags ClassDB.PropertyUsageFlags, wide bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
-		defer pointers.End(obj[0])
+		var obj = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(obj[0])
 		var atype = gd.UnsafeGet[variant.Type](p_args, 1)
 		var name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
 		defer pointers.End(gd.InternalString(name))
@@ -409,8 +410,8 @@ func (class) _parse_property(impl func(ptr gdclass.Receiver, obj [1]gd.Object, a
 }
 func (class) _parse_end(impl func(ptr gdclass.Receiver, obj [1]gd.Object)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
-		defer pointers.End(obj[0])
+		var obj = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(obj[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, obj)
 	}

@@ -15,6 +15,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -204,12 +205,12 @@ Note: [InputEvent] requires [InputRayPickable] to be true and at least one [Coll
 */
 func (Instance) _input_event(impl func(ptr gdclass.Receiver, camera Camera3D.Instance, event InputEvent.Instance, event_position Vector3.XYZ, normal Vector3.XYZ, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetCamera3D(camera[0])[0])
-		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
+		defer gdreference.EndObject(gdclass.GetCamera3D(camera[0])[0])
+		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 1), gd.Free))}
 
-		defer pointers.End(gdclass.GetInputEvent(event[0])[0])
+		defer gdreference.EndObject(gdclass.GetInputEvent(event[0])[0])
 		var event_position = gd.UnsafeGet[Vector3.XYZ](p_args, 2)
 		var normal = gd.UnsafeGet[Vector3.XYZ](p_args, 3)
 		var shape_idx = gd.UnsafeGet[int64](p_args, 4)
@@ -418,14 +419,14 @@ type class [1]gdclass.CollisionObject3D
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewCollisionObject3D(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewCollisionObject3D(obj[0])
 		return true
 	}
@@ -435,22 +436,22 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.CollisionObject3D{gdclass.NewCollisionObject3D(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.CollisionObject3D{gdclass.NewCollisionObject3D(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetCollisionObject3D(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetCollisionObject3D(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.CollisionObject3D{gdclass.NewCollisionObject3D(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.CollisionObject3D{gdclass.NewCollisionObject3D(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -549,12 +550,12 @@ func (self Instance) SetInputCaptureOnDrag(value bool) Instance { //gd:Collision
 }
 func (class) _input_event(impl func(ptr gdclass.Receiver, camera [1]gdclass.Camera3D, event [1]gdclass.InputEvent, event_position Vector3.XYZ, normal Vector3.XYZ, shape_idx int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetCamera3D(camera[0])[0])
-		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
+		defer gdreference.EndObject(gdclass.GetCamera3D(camera[0])[0])
+		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 1), gd.Free))}
 
-		defer pointers.End(gdclass.GetInputEvent(event[0])[0])
+		defer gdreference.EndObject(gdclass.GetInputEvent(event[0])[0])
 		var event_position = gd.UnsafeGet[Vector3.XYZ](p_args, 2)
 		var normal = gd.UnsafeGet[Vector3.XYZ](p_args, 3)
 		var shape_idx = gd.UnsafeGet[int64](p_args, 4)
@@ -676,7 +677,7 @@ func (self class) ShapeOwnerGetTransform(owner_id int64) Transform3D.BasisOrigin
 }
 func (self class) ShapeOwnerGetOwner(owner_id int64) [1]gd.Object { //gd:CollisionObject3D.shape_owner_get_owner
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.shape_owner_get_owner, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})
-	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
+	var ret = [1]gd.Object{gdreference.LetObject(r_ret)}
 	return ret
 }
 func (self class) ShapeOwnerSetDisabled(owner_id int64, disabled bool) { //gd:CollisionObject3D.shape_owner_set_disabled
@@ -706,7 +707,7 @@ func (self class) ShapeOwnerGetShape(owner_id int64, shape_id int64) [1]gdclass.
 		owner_id int64
 		shape_id int64
 	}{owner_id, shape_id})
-	var ret = [1]gdclass.Shape3D{gdclass.NewShape3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Shape3D{gdclass.NewShape3D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) ShapeOwnerGetShapeIndex(owner_id int64, shape_id int64) int64 { //gd:CollisionObject3D.shape_owner_get_shape_index
@@ -742,7 +743,7 @@ func (self Instance) OnInputEvent(cb func(camera Node.Instance, event InputEvent
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("input_event"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("input_event"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -764,7 +765,7 @@ func (self Instance) OnMouseEntered(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("mouse_entered"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("mouse_entered"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -786,7 +787,7 @@ func (self Instance) OnMouseExited(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("mouse_exited"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("mouse_exited"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 

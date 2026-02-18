@@ -1,7 +1,10 @@
 package startup
 
 import (
+	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/gdreference"
+	"graphics.gd/internal/pointers"
 	"graphics.gd/internal/ring"
 	"graphics.gd/variant/Callable"
 
@@ -16,7 +19,8 @@ func init() {
 		Callable.Cycle()
 		ring.Main.Flush()
 		keep_reachable_instances_alive()
-		//pointers.Cycle()
+		gdreference.GC(gd.Free)
+		pointers.Cycle()
 	}
 	gdextension.On.MainLoop.FinalFrame = func() {
 

@@ -28,9 +28,9 @@ import (
 	"unsafe"
 
 	"graphics.gd/classdb/Startup"
-	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdclass"
-	"graphics.gd/internal/pointers"
+	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/gdreference"
 )
 
 func (engine *engineAsSharedLibrary) Start() {
@@ -52,7 +52,7 @@ func (engine *engineAsSharedLibrary) Start() {
 	if ptr == nil {
 		return
 	}
-	engine.Library = Startup.Instance([1]gdclass.Startup{gdclass.NewStartup(pointers.Raw[gd.Object]([3]uint64{uint64(uintptr(ptr))}))})
+	engine.Library = Startup.Instance([1]gdclass.Startup{gdclass.NewStartup(gdreference.RawObject(gdextension.Object(uintptr(ptr))))})
 	engine.destroy = func() {
 		C.call_libgodot_destroy_godot_instance(unsafe.Pointer(libgodot_destroy_godot_instance), ptr)
 	}

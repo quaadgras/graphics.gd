@@ -20,6 +20,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -345,14 +346,14 @@ type class [1]gdclass.WebRTCPeerConnection
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewWebRTCPeerConnection(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewWebRTCPeerConnection(obj[0])
 		return true
 	}
@@ -362,23 +363,23 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.WebRTCPeerConnection{gdclass.NewWebRTCPeerConnection(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.WebRTCPeerConnection{gdclass.NewWebRTCPeerConnection(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetWebRTCPeerConnection(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetWebRTCPeerConnection(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.WebRTCPeerConnection{gdclass.NewWebRTCPeerConnection(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
+	casted := Instance([1]gdclass.WebRTCPeerConnection{gdclass.NewWebRTCPeerConnection(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
 	casted.AsRefCounted()[0].InitRef()
-	casted.AsObject()[0].Notification(0, false)
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -395,7 +396,7 @@ func (self class) CreateDataChannel(label String.Readable, options Dictionary.An
 		label   gdextension.String
 		options gdextension.Dictionary
 	}{pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalDictionary(options))})
-	var ret = [1]gdclass.WebRTCDataChannel{gdclass.NewWebRTCDataChannel(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.WebRTCDataChannel{gdclass.NewWebRTCDataChannel(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) CreateOffer() Error.Code { //gd:WebRTCPeerConnection.create_offer
@@ -464,7 +465,7 @@ func (self Instance) OnSessionDescriptionCreated(cb func(atype string, sdp strin
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("session_description_created"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("session_description_created"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -480,7 +481,7 @@ func (self Instance) OnIceCandidateCreated(cb func(media string, index int, name
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("ice_candidate_created"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("ice_candidate_created"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -501,7 +502,7 @@ func (self Instance) OnDataChannelReceived(cb func(channel WebRTCDataChannel.Ins
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("data_channel_received"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("data_channel_received"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 

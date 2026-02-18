@@ -14,6 +14,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -426,14 +427,14 @@ type class [1]gdclass.TabContainer
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewTabContainer(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewTabContainer(obj[0])
 		return true
 	}
@@ -443,22 +444,22 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.TabContainer{gdclass.NewTabContainer(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.TabContainer{gdclass.NewTabContainer(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetTabContainer(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetTabContainer(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.TabContainer{gdclass.NewTabContainer(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.TabContainer{gdclass.NewTabContainer(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -665,17 +666,17 @@ func (self class) SelectNextAvailable() bool { //gd:TabContainer.select_next_ava
 }
 func (self class) GetCurrentTabControl() [1]gdclass.Control { //gd:TabContainer.get_current_tab_control
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_current_tab_control, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Control{gdclass.NewControl(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) GetTabBar() [1]gdclass.TabBar { //gd:TabContainer.get_tab_bar
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tab_bar, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.TabBar{gdclass.NewTabBar(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
+	var ret = [1]gdclass.TabBar{gdclass.NewTabBar(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) GetTabControl(tab_idx int64) [1]gdclass.Control { //gd:TabContainer.get_tab_control
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tab_control, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
-	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Control{gdclass.NewControl(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) SetTabAlignment(alignment TabBar.AlignmentMode) { //gd:TabContainer.set_tab_alignment
@@ -748,7 +749,7 @@ func (self class) SetTabIcon(tab_idx int64, icon [1]gdclass.Texture2D) { //gd:Ta
 }
 func (self class) GetTabIcon(tab_idx int64) [1]gdclass.Texture2D { //gd:TabContainer.get_tab_icon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tab_icon, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
-	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetTabIconMaxWidth(tab_idx int64, width int64) { //gd:TabContainer.set_tab_icon_max_width
@@ -803,7 +804,7 @@ func (self class) SetTabButtonIcon(tab_idx int64, icon [1]gdclass.Texture2D) { /
 }
 func (self class) GetTabButtonIcon(tab_idx int64) [1]gdclass.Texture2D { //gd:TabContainer.get_tab_button_icon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tab_button_icon, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
-	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetTabIdxAtPoint(point Vector2.XY) int64 { //gd:TabContainer.get_tab_idx_at_point
@@ -821,7 +822,7 @@ func (self class) SetPopup(popup [1]gdclass.Node) { //gd:TabContainer.set_popup
 }
 func (self class) GetPopup() [1]gdclass.Popup { //gd:TabContainer.get_popup
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_popup, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Popup{gdclass.NewPopup(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Popup{gdclass.NewPopup(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) SetSwitchOnDragHover(enabled bool) { //gd:TabContainer.set_switch_on_drag_hover
@@ -883,7 +884,7 @@ func (self Instance) OnActiveTabRearranged(cb func(idx_to int), flags ...Signal.
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("active_tab_rearranged"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("active_tab_rearranged"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -899,7 +900,7 @@ func (self Instance) OnTabChanged(cb func(tab int), flags ...Signal.Flags) Insta
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("tab_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("tab_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -915,7 +916,7 @@ func (self Instance) OnTabClicked(cb func(tab int), flags ...Signal.Flags) Insta
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("tab_clicked"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("tab_clicked"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -931,7 +932,7 @@ func (self Instance) OnTabHovered(cb func(tab int), flags ...Signal.Flags) Insta
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("tab_hovered"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("tab_hovered"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -947,7 +948,7 @@ func (self Instance) OnTabSelected(cb func(tab int), flags ...Signal.Flags) Inst
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("tab_selected"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("tab_selected"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -963,7 +964,7 @@ func (self Instance) OnTabButtonPressed(cb func(tab int), flags ...Signal.Flags)
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("tab_button_pressed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("tab_button_pressed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -983,7 +984,7 @@ func (self Instance) OnPrePopupPressed(cb func(), flags ...Signal.Flags) Instanc
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("pre_popup_pressed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("pre_popup_pressed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 

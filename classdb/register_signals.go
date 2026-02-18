@@ -7,6 +7,7 @@ import (
 
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Signal"
@@ -147,7 +148,7 @@ func manageSignals(instance Object.ID, signals []signalChan) {
 			if lookup == Object.Nil {
 				panic("manageSignals: object freed")
 			}
-			pointers.End(lookup[0])
+			gdreference.EndObject(lookup[0])
 			rtype := value.Type()
 			if rtype.Kind() == reflect.Struct && rtype.NumField() == 0 {
 				signal.signal.Emit()

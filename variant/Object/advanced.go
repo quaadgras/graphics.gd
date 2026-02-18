@@ -14,4 +14,4 @@ func (obj Advanced) AsObject() [1]gd.Object          { return obj }
 func (self *Advanced) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 
 // Virtual method lookup.
-func (obj Advanced) Virtual(name string) reflect.Value { return obj[0].Virtual(name) }
+func (obj Advanced) Virtual(name string) reflect.Value { return reflect.Value{} }

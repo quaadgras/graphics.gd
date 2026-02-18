@@ -16,6 +16,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -122,7 +123,7 @@ var self [1]gdclass.TextServerManager
 var once sync.Once
 
 func singleton() {
-	self[0] = gdclass.NewTextServerManager(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
+	self[0] = gdclass.NewTextServerManager(gdreference.RawObject(gdextension.Host.Objects.Global(sname)))
 }
 
 /*
@@ -194,14 +195,14 @@ type class [1]gdclass.TextServerManager
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewTextServerManager(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewTextServerManager(obj[0])
 		return true
 	}
@@ -212,44 +213,44 @@ func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 
 func (self class) AddInterface(intf [1]gdclass.TextServer) { //gd:TextServerManager.add_interface
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.add_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTextServer(intf[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.add_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTextServer(intf[0])))})
 }
 func (self class) GetInterfaceCount() int64 { //gd:TextServerManager.get_interface_count
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_interface_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_interface_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) RemoveInterface(intf [1]gdclass.TextServer) { //gd:TextServerManager.remove_interface
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.remove_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTextServer(intf[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.remove_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTextServer(intf[0])))})
 }
 func (self class) GetInterface(idx int64) [1]gdclass.TextServer { //gd:TextServerManager.get_interface
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_interface, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
-	var ret = [1]gdclass.TextServer{gdclass.NewTextServer(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var r_ret = noescape.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.get_interface, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var ret = [1]gdclass.TextServer{gdclass.NewTextServer(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetInterfaces() Array.Contains[Dictionary.Any] { //gd:TextServerManager.get_interfaces
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Array](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_interfaces, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gdreference.GetObject(self.AsObject()[0]), methods.get_interfaces, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) FindInterface(name String.Readable) [1]gdclass.TextServer { //gd:TextServerManager.find_interface
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.find_interface, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
-	var ret = [1]gdclass.TextServer{gdclass.NewTextServer(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var r_ret = noescape.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.find_interface, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	var ret = [1]gdclass.TextServer{gdclass.NewTextServer(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetPrimaryInterface(index [1]gdclass.TextServer) { //gd:TextServerManager.set_primary_interface
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_primary_interface, 0|(gdextension.SizeObject<<4), &struct{ index gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTextServer(index[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_primary_interface, 0|(gdextension.SizeObject<<4), &struct{ index gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTextServer(index[0])))})
 }
 func (self class) GetPrimaryInterface() [1]gdclass.TextServer { //gd:TextServerManager.get_primary_interface
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_primary_interface, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.TextServer{gdclass.NewTextServer(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var r_ret = noescape.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.get_primary_interface, gdextension.SizeObject, &struct{}{})
+	var ret = [1]gdclass.TextServer{gdclass.NewTextServer(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 
@@ -262,7 +263,7 @@ func OnInterfaceAdded(cb func(interface_name string), flags ...Signal.Flags) {
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	gdclass.GetTextServerManager(self[0])[0].Connect(gd.NewStringName("interface_added"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(gdclass.GetTextServerManager(self[0])[0], gd.NewStringName("interface_added"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) InterfaceAdded() Signal.Any {
@@ -279,7 +280,7 @@ func OnInterfaceRemoved(cb func(interface_name string), flags ...Signal.Flags) {
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	gdclass.GetTextServerManager(self[0])[0].Connect(gd.NewStringName("interface_removed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(gdclass.GetTextServerManager(self[0])[0], gd.NewStringName("interface_removed"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) InterfaceRemoved() Signal.Any {

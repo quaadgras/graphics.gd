@@ -48,6 +48,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -238,9 +239,9 @@ Implement this method to handle saving this dock's layout. It's equivalent to [E
 */
 func (Instance) _save_layout_to_config(impl func(ptr gdclass.Receiver, config ConfigFile.Instance, section string)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var config = [1]gdclass.ConfigFile{gdclass.NewConfigFile(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var config = [1]gdclass.ConfigFile{gdclass.NewConfigFile(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetConfigFile(config[0])[0])
+		defer gdreference.EndObject(gdclass.GetConfigFile(config[0])[0])
 		var section = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(section))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -256,9 +257,9 @@ Implement this method to handle loading this dock's layout. It's equivalent to [
 */
 func (Instance) _load_layout_from_config(impl func(ptr gdclass.Receiver, config ConfigFile.Instance, section string)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var config = [1]gdclass.ConfigFile{gdclass.NewConfigFile(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var config = [1]gdclass.ConfigFile{gdclass.NewConfigFile(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetConfigFile(config[0])[0])
+		defer gdreference.EndObject(gdclass.GetConfigFile(config[0])[0])
 		var section = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(section))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -297,14 +298,14 @@ type class [1]gdclass.EditorDock
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorDock(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorDock(obj[0])
 		return true
 	}
@@ -314,22 +315,22 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.EditorDock{gdclass.NewEditorDock(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.EditorDock{gdclass.NewEditorDock(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetEditorDock(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetEditorDock(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.EditorDock{gdclass.NewEditorDock(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.EditorDock{gdclass.NewEditorDock(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -517,9 +518,9 @@ func (class) _update_layout(impl func(ptr gdclass.Receiver, layout int64)) (cb g
 }
 func (class) _save_layout_to_config(impl func(ptr gdclass.Receiver, config [1]gdclass.ConfigFile, section String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var config = [1]gdclass.ConfigFile{gdclass.NewConfigFile(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var config = [1]gdclass.ConfigFile{gdclass.NewConfigFile(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetConfigFile(config[0])[0])
+		defer gdreference.EndObject(gdclass.GetConfigFile(config[0])[0])
 		var section = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(section))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -528,9 +529,9 @@ func (class) _save_layout_to_config(impl func(ptr gdclass.Receiver, config [1]gd
 }
 func (class) _load_layout_from_config(impl func(ptr gdclass.Receiver, config [1]gdclass.ConfigFile, section String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var config = [1]gdclass.ConfigFile{gdclass.NewConfigFile(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var config = [1]gdclass.ConfigFile{gdclass.NewConfigFile(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetConfigFile(config[0])[0])
+		defer gdreference.EndObject(gdclass.GetConfigFile(config[0])[0])
 		var section = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(section))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -600,7 +601,7 @@ func (self class) SetDockIcon(icon [1]gdclass.Texture2D) { //gd:EditorDock.set_d
 }
 func (self class) GetDockIcon() [1]gdclass.Texture2D { //gd:EditorDock.get_dock_icon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_dock_icon, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetForceShowIcon(force bool) { //gd:EditorDock.set_force_show_icon
@@ -624,7 +625,7 @@ func (self class) SetDockShortcut(shortcut [1]gdclass.Shortcut) { //gd:EditorDoc
 }
 func (self class) GetDockShortcut() [1]gdclass.Shortcut { //gd:EditorDock.get_dock_shortcut
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_dock_shortcut, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Shortcut{gdclass.NewShortcut(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Shortcut{gdclass.NewShortcut(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetDefaultSlot(slot DockSlot) { //gd:EditorDock.set_default_slot
@@ -654,7 +655,7 @@ func (self Instance) OnClosed(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("closed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("closed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 

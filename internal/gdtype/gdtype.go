@@ -205,7 +205,7 @@ func (name Name) LoadFromRawPointerValue(val string) string {
 	case "Dictionary.Any":
 		return fmt.Sprintf("Dictionary.Through(gd.DictionaryProxy[variant.Any,variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](%s)))", val)
 	case "[1]gd.Object":
-		return fmt.Sprintf("[1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(%s)})}", val)
+		return fmt.Sprintf("[1]gd.Object{gdreference.OwnObject(%s, gd.Free)}", val)
 	case "Callable.Function":
 		return fmt.Sprintf("Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](%s)))", val)
 	case "Path.ToNode":
@@ -235,12 +235,12 @@ func (name Name) LoadFromRawPointerValue(val string) string {
 	default:
 		_, argIsPtr := name.IsPointer()
 		if name == "Object" {
-			return fmt.Sprintf("[1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(%v)})}\n", val)
+			return fmt.Sprintf("[1]gd.Object{gdreference.OwnObject(%v, gd.Free)}\n", val)
 		}
 		class_name := strings.TrimPrefix(string(name), "[1]gdclass.")
 		_, ok := ClassDB[class_name]
 		if ok && argIsPtr {
-			return fmt.Sprintf("%s{gdclass.New%s(pointers.New[gd.Object]([3]uint64{uint64(%v)}))}\n", name, class_name, val)
+			return fmt.Sprintf("%s{gdclass.New%s(gdreference.OwnObject(%v, gd.Free))}\n", name, class_name, val)
 		}
 		if argIsPtr {
 			return fmt.Sprintf("pointers.New[%v](%v)", name, val)
@@ -288,11 +288,11 @@ func (name Name) EndPointer(val string) string {
 		name := strings.TrimPrefix(string(name), "classdb.")
 		name = strings.TrimPrefix(name, "[1]gdclass.")
 		if name == "[1]gd.Object" {
-			return fmt.Sprintf("pointers.End(%v[0])", val)
+			return fmt.Sprintf("gdreference.EndObject(%v[0])", val)
 		}
 		class, ok := ClassDB[strings.TrimPrefix(name, "[1]gdclass.")]
 		if ok {
-			return fmt.Sprintf("pointers.End(gdclass.Get%v(%v[0])[0])", class.Name, val)
+			return fmt.Sprintf("gdreference.EndObject(gdclass.Get%v(%v[0])[0])", class.Name, val)
 		}
 		return fmt.Sprintf("pointers.End(%v)", val)
 	}

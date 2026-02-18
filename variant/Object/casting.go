@@ -2,8 +2,7 @@ package Object
 
 import (
 	gd "graphics.gd/internal"
-	"graphics.gd/internal/gdextension"
-	"graphics.gd/internal/pointers"
+	"graphics.gd/internal/gdreference"
 )
 
 // To attempts to cast the given class to T, returning the
@@ -29,9 +28,9 @@ func As[T gd.IsClass](value gd.IsClass) (T, bool) {
 		var zero T
 		return zero, false
 	}
-	ext, ok := gd.ExtensionInstanceLookup(gdextension.Object(pointers.Get(value.AsObject()[0])[0])).(T)
+	ext, ok := gd.ExtensionInstanceLookup(gdreference.GetObject(value.AsObject()[0])).(T)
 	if ok {
-		pointers.Lay(value.AsObject()[0])
+		gdreference.EndObject(value.AsObject()[0])
 		return ext, true
 	}
 	var zero T

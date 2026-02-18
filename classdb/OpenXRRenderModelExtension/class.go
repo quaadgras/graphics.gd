@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -239,14 +240,14 @@ type class [1]gdclass.OpenXRRenderModelExtension
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewOpenXRRenderModelExtension(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewOpenXRRenderModelExtension(obj[0])
 		return true
 	}
@@ -256,22 +257,22 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.OpenXRRenderModelExtension{gdclass.NewOpenXRRenderModelExtension(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.OpenXRRenderModelExtension{gdclass.NewOpenXRRenderModelExtension(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetOpenXRRenderModelExtension(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetOpenXRRenderModelExtension(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.OpenXRRenderModelExtension{gdclass.NewOpenXRRenderModelExtension(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.OpenXRRenderModelExtension{gdclass.NewOpenXRRenderModelExtension(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -295,7 +296,7 @@ func (self class) RenderModelGetAll() Array.Contains[RID.Any] { //gd:OpenXRRende
 }
 func (self class) RenderModelNewSceneInstance(render_model RID.Any) [1]gdclass.Node3D { //gd:OpenXRRenderModelExtension.render_model_new_scene_instance
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.render_model_new_scene_instance, gdextension.SizeObject|(gdextension.SizeRID<<4), &struct{ render_model RID.Any }{render_model})
-	var ret = [1]gdclass.Node3D{gdclass.NewNode3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Node3D{gdclass.NewNode3D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) RenderModelGetSubactionPaths(render_model RID.Any) Packed.Strings { //gd:OpenXRRenderModelExtension.render_model_get_subaction_paths
@@ -356,7 +357,7 @@ func (self Instance) OnRenderModelAdded(cb func(render_model RID.Any), flags ...
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("render_model_added"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("render_model_added"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -372,7 +373,7 @@ func (self Instance) OnRenderModelRemoved(cb func(render_model RID.Any), flags .
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("render_model_removed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("render_model_removed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -388,7 +389,7 @@ func (self Instance) OnRenderModelTopLevelPathChanged(cb func(render_model RID.A
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("render_model_top_level_path_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("render_model_top_level_path_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 

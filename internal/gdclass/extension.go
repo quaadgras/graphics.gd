@@ -6,7 +6,7 @@ import (
 	"unsafe"
 
 	gd "graphics.gd/internal"
-	"graphics.gd/internal/pointers"
+	"graphics.gd/internal/gdreference"
 )
 
 type Receiver unsafe.Pointer
@@ -84,7 +84,7 @@ func (class *Extension[T, S]) AsObject() [1]gd.Object {
 			class.setObject(obj)
 		}
 	}
-	pointers.Bad(obj[0])
+	gdreference.UseObject(obj[0])
 	return obj
 }
 
@@ -129,6 +129,6 @@ func (class *ExtensionInherits[S, T]) AsObject() [1]gd.Object {
 			class.setObject(obj)
 		}
 	}
-	pointers.Bad(obj[0])
+	gdreference.UseObject(obj[0])
 	return obj
 }

@@ -19,6 +19,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -243,14 +244,14 @@ type class [1]gdclass.AcceptDialog
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewAcceptDialog(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewAcceptDialog(obj[0])
 		return true
 	}
@@ -260,22 +261,22 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.AcceptDialog{gdclass.NewAcceptDialog(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.AcceptDialog{gdclass.NewAcceptDialog(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetAcceptDialog(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetAcceptDialog(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.AcceptDialog{gdclass.NewAcceptDialog(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.AcceptDialog{gdclass.NewAcceptDialog(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -353,12 +354,12 @@ func (self Instance) SetDialogAutowrap(value bool) Instance { //gd:AcceptDialog.
 
 func (self class) GetOkButton() [1]gdclass.Button { //gd:AcceptDialog.get_ok_button
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_ok_button, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Button{gdclass.NewButton(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
+	var ret = [1]gdclass.Button{gdclass.NewButton(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) GetLabel() [1]gdclass.Label { //gd:AcceptDialog.get_label
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_label, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Label{gdclass.NewLabel(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
+	var ret = [1]gdclass.Label{gdclass.NewLabel(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) SetHideOnOk(enabled bool) { //gd:AcceptDialog.set_hide_on_ok
@@ -383,12 +384,12 @@ func (self class) AddButton(text String.Readable, right bool, action String.Read
 		right  bool
 		action gdextension.String
 	}{pointers.Get(gd.InternalString(text)), right, pointers.Get(gd.InternalString(action))})
-	var ret = [1]gdclass.Button{gdclass.NewButton(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
+	var ret = [1]gdclass.Button{gdclass.NewButton(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) AddCancelButton(name String.Readable) [1]gdclass.Button { //gd:AcceptDialog.add_cancel_button
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.add_cancel_button, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
-	var ret = [1]gdclass.Button{gdclass.NewButton(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
+	var ret = [1]gdclass.Button{gdclass.NewButton(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) RemoveButton(button [1]gdclass.Button) { //gd:AcceptDialog.remove_button
@@ -430,7 +431,7 @@ func (self Instance) OnConfirmed(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("confirmed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("confirmed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -448,7 +449,7 @@ func (self Instance) OnCanceled(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("canceled"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("canceled"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -466,7 +467,7 @@ func (self Instance) OnCustomAction(cb func(action string), flags ...Signal.Flag
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("custom_action"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("custom_action"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
