@@ -9,6 +9,7 @@ import (
 	"graphics.gd/classdb/Resource"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Array"
 	"graphics.gd/variant/Enum"
@@ -170,7 +171,7 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 	var converted reflect.Value
 	if value.Type() == gdextension.TypeObject && field.Kind() != reflect.Uint64 { // support setting Object.ID fields with Object
 		obj := gd.VariantAsObject(value)
-		ext := gd.ExtensionInstanceLookup(gdextension.Object(pointers.Get(obj)[0]))
+		ext := gd.ExtensionInstanceLookup(gdreference.GetObject(obj))
 		if ext != nil {
 			converted = reflect.ValueOf(ext)
 			isExtensionClass = true
@@ -189,26 +190,24 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 			// we need to unreference any existing pinned resources (pinned here means that the engine `set` them).
 			if ref, ok := field.Interface().(RefCounted.Any); ok {
 				ref := ref.AsRefCounted()[0]
-				raw, kind := pointers.Ask(gd.Object(ref))
-				if kind == pointers.Pinned {
+				raw, kind := gdreference.AskObject(gd.Object(ref))
+				if kind == gdreference.TypePinned {
 					if ref.Unreference() {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				}
 			}
 		}
-		obj, ok := converted.Interface().(interface {
-			AsObject() [1]gd.Object
-		})
+		obj, ok := converted.Interface().(gd.IsClass)
 		if !ok {
 			return false
 		}
 		if !isExtensionClass {
-			ref, ok := Object.As[gd.RefCounted](obj.AsObject()[0])
+			ref, ok := Object.As[gd.RefCounted](obj)
 			if ok {
 				ref.Reference()
 			}
-			pointers.Pin(obj.AsObject()[0])
+			gdreference.PinObject(obj.AsObject()[0])
 		}
 	}
 	field.Set(converted)

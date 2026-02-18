@@ -14,6 +14,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -126,7 +127,7 @@ var self [1]gdclass.InputMap
 var once sync.Once
 
 func singleton() {
-	self[0] = gdclass.NewInputMap(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
+	self[0] = gdclass.NewInputMap(gdreference.RawObject(gdextension.Host.Objects.Global(sname)))
 }
 
 /*
@@ -280,14 +281,14 @@ type class [1]gdclass.InputMap
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewInputMap(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewInputMap(obj[0])
 		return true
 	}
@@ -298,56 +299,56 @@ func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 
 func (self class) HasAction(action String.Name) bool { //gd:InputMap.has_action
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.has_action, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.has_action, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetActions() Array.Contains[String.Name] { //gd:InputMap.get_actions
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Array](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_actions, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gdreference.GetObject(self.AsObject()[0]), methods.get_actions, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) AddAction(action String.Name, deadzone float64) { //gd:InputMap.add_action
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.add_action, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.add_action, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), &struct {
 		action   gdextension.StringName
 		deadzone float64
 	}{pointers.Get(gd.InternalStringName(action)), deadzone})
 }
 func (self class) EraseAction(action String.Name) { //gd:InputMap.erase_action
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.erase_action, 0|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.erase_action, 0|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
 }
 func (self class) GetActionDescription(action String.Name) String.Readable { //gd:InputMap.get_action_description
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_action_description, gdextension.SizeString|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_action_description, gdextension.SizeString|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) ActionSetDeadzone(action String.Name, deadzone float64) { //gd:InputMap.action_set_deadzone
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.action_set_deadzone, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.action_set_deadzone, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), &struct {
 		action   gdextension.StringName
 		deadzone float64
 	}{pointers.Get(gd.InternalStringName(action)), deadzone})
 }
 func (self class) ActionGetDeadzone(action String.Name) float64 { //gd:InputMap.action_get_deadzone
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.action_get_deadzone, gdextension.SizeFloat|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.action_get_deadzone, gdextension.SizeFloat|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
 	var ret = r_ret
 	return ret
 }
 func (self class) ActionAddEvent(action String.Name, event [1]gdclass.InputEvent) { //gd:InputMap.action_add_event
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.action_add_event, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.action_add_event, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		action gdextension.StringName
 		event  gdextension.Object
 	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0])))})
 }
 func (self class) ActionHasEvent(action String.Name, event [1]gdclass.InputEvent) bool { //gd:InputMap.action_has_event
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.action_has_event, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.action_has_event, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		action gdextension.StringName
 		event  gdextension.Object
 	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0])))})
@@ -356,24 +357,24 @@ func (self class) ActionHasEvent(action String.Name, event [1]gdclass.InputEvent
 }
 func (self class) ActionEraseEvent(action String.Name, event [1]gdclass.InputEvent) { //gd:InputMap.action_erase_event
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.action_erase_event, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.action_erase_event, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		action gdextension.StringName
 		event  gdextension.Object
 	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0])))})
 }
 func (self class) ActionEraseEvents(action String.Name) { //gd:InputMap.action_erase_events
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.action_erase_events, 0|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.action_erase_events, 0|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
 }
 func (self class) ActionGetEvents(action String.Name) Array.Contains[[1]gdclass.InputEvent] { //gd:InputMap.action_get_events
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Array](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.action_get_events, gdextension.SizeArray|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
+	var r_ret = noescape.Call[gdextension.Array](gdreference.GetObject(self.AsObject()[0]), methods.action_get_events, gdextension.SizeArray|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.InputEvent]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) EventIsAction(event [1]gdclass.InputEvent, action String.Name, exact_match bool) bool { //gd:InputMap.event_is_action
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.event_is_action, gdextension.SizeBool|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeBool<<12), &struct {
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.event_is_action, gdextension.SizeBool|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeBool<<12), &struct {
 		event       gdextension.Object
 		action      gdextension.StringName
 		exact_match bool
@@ -383,7 +384,7 @@ func (self class) EventIsAction(event [1]gdclass.InputEvent, action String.Name,
 }
 func (self class) LoadFromProjectSettings() { //gd:InputMap.load_from_project_settings
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.load_from_project_settings, 0, &struct{}{})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.load_from_project_settings, 0, &struct{}{})
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

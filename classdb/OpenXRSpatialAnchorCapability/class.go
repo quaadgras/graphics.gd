@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -281,14 +282,14 @@ type class [1]gdclass.OpenXRSpatialAnchorCapability
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewOpenXRSpatialAnchorCapability(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewOpenXRSpatialAnchorCapability(obj[0])
 		return true
 	}
@@ -298,22 +299,22 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.OpenXRSpatialAnchorCapability{gdclass.NewOpenXRSpatialAnchorCapability(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.OpenXRSpatialAnchorCapability{gdclass.NewOpenXRSpatialAnchorCapability(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetOpenXRSpatialAnchorCapability(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetOpenXRSpatialAnchorCapability(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.OpenXRSpatialAnchorCapability{gdclass.NewOpenXRSpatialAnchorCapability(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.OpenXRSpatialAnchorCapability{gdclass.NewOpenXRSpatialAnchorCapability(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -337,7 +338,7 @@ func (self class) CreatePersistenceContext(scope PersistenceScope, user_callback
 		scope         PersistenceScope
 		user_callback gdextension.Callable
 	}{scope, pointers.Get(gd.InternalCallable(user_callback))})
-	var ret = [1]gdclass.OpenXRFutureResult{gdclass.NewOpenXRFutureResult(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.OpenXRFutureResult{gdclass.NewOpenXRFutureResult(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetPersistenceContextHandle(persistence_context RID.Any) int64 { //gd:OpenXRSpatialAnchorCapability.get_persistence_context_handle
@@ -353,7 +354,7 @@ func (self class) CreateNewAnchor(transform Transform3D.BasisOrigin, spatial_con
 		transform       Transform3D.BasisOrigin
 		spatial_context RID.Any
 	}{gd.Transposed(transform), spatial_context})
-	var ret = [1]gdclass.OpenXRAnchorTracker{gdclass.NewOpenXRAnchorTracker(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.OpenXRAnchorTracker{gdclass.NewOpenXRAnchorTracker(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) RemoveAnchor(anchor_tracker [1]gdclass.OpenXRAnchorTracker) { //gd:OpenXRSpatialAnchorCapability.remove_anchor
@@ -365,7 +366,7 @@ func (self class) PersistAnchor(anchor_tracker [1]gdclass.OpenXRAnchorTracker, p
 		persistence_context RID.Any
 		user_callback       gdextension.Callable
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRAnchorTracker(anchor_tracker[0]))), persistence_context, pointers.Get(gd.InternalCallable(user_callback))})
-	var ret = [1]gdclass.OpenXRFutureResult{gdclass.NewOpenXRFutureResult(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.OpenXRFutureResult{gdclass.NewOpenXRFutureResult(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) UnpersistAnchor(anchor_tracker [1]gdclass.OpenXRAnchorTracker, persistence_context RID.Any, user_callback Callable.Function) [1]gdclass.OpenXRFutureResult { //gd:OpenXRSpatialAnchorCapability.unpersist_anchor
@@ -374,7 +375,7 @@ func (self class) UnpersistAnchor(anchor_tracker [1]gdclass.OpenXRAnchorTracker,
 		persistence_context RID.Any
 		user_callback       gdextension.Callable
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRAnchorTracker(anchor_tracker[0]))), persistence_context, pointers.Get(gd.InternalCallable(user_callback))})
-	var ret = [1]gdclass.OpenXRFutureResult{gdclass.NewOpenXRFutureResult(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.OpenXRFutureResult{gdclass.NewOpenXRFutureResult(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (o class) AsOpenXRSpatialAnchorCapability() Advanced         { return Advanced(o) }

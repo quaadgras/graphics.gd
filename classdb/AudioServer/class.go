@@ -13,6 +13,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -172,7 +173,7 @@ var self [1]gdclass.AudioServer
 var once sync.Once
 
 func singleton() {
-	self[0] = gdclass.NewAudioServer(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
+	self[0] = gdclass.NewAudioServer(gdreference.RawObject(gdextension.Host.Objects.Global(sname)))
 }
 
 /*
@@ -593,14 +594,14 @@ type class [1]gdclass.AudioServer
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewAudioServer(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewAudioServer(obj[0])
 		return true
 	}
@@ -674,135 +675,135 @@ func SetPlaybackSpeedScale(value Float.X) { //gd:AudioServer.playback_speed_scal
 
 func (self class) SetBusCount(amount int64) { //gd:AudioServer.set_bus_count
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_bus_count, 0|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_bus_count, 0|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
 }
 func (self class) GetBusCount() int64 { //gd:AudioServer.get_bus_count
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_bus_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_bus_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) RemoveBus(index int64) { //gd:AudioServer.remove_bus
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.remove_bus, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.remove_bus, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
 func (self class) AddBus(at_position int64) { //gd:AudioServer.add_bus
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.add_bus, 0|(gdextension.SizeInt<<4), &struct{ at_position int64 }{at_position})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.add_bus, 0|(gdextension.SizeInt<<4), &struct{ at_position int64 }{at_position})
 }
 func (self class) MoveBus(index int64, to_index int64) { //gd:AudioServer.move_bus
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.move_bus, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.move_bus, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index    int64
 		to_index int64
 	}{index, to_index})
 }
 func (self class) SetBusName(bus_idx int64, name String.Readable) { //gd:AudioServer.set_bus_name
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_bus_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_bus_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		bus_idx int64
 		name    gdextension.String
 	}{bus_idx, pointers.Get(gd.InternalString(name))})
 }
 func (self class) GetBusName(bus_idx int64) String.Readable { //gd:AudioServer.get_bus_name
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_bus_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ bus_idx int64 }{bus_idx})
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_bus_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ bus_idx int64 }{bus_idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetBusIndex(bus_name String.Name) int64 { //gd:AudioServer.get_bus_index
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_bus_index, gdextension.SizeInt|(gdextension.SizeStringName<<4), &struct{ bus_name gdextension.StringName }{pointers.Get(gd.InternalStringName(bus_name))})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_bus_index, gdextension.SizeInt|(gdextension.SizeStringName<<4), &struct{ bus_name gdextension.StringName }{pointers.Get(gd.InternalStringName(bus_name))})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetBusChannels(bus_idx int64) int64 { //gd:AudioServer.get_bus_channels
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_bus_channels, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ bus_idx int64 }{bus_idx})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_bus_channels, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ bus_idx int64 }{bus_idx})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetBusVolumeDb(bus_idx int64, volume_db float64) { //gd:AudioServer.set_bus_volume_db
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_bus_volume_db, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_bus_volume_db, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		bus_idx   int64
 		volume_db float64
 	}{bus_idx, volume_db})
 }
 func (self class) GetBusVolumeDb(bus_idx int64) float64 { //gd:AudioServer.get_bus_volume_db
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_bus_volume_db, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ bus_idx int64 }{bus_idx})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.get_bus_volume_db, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ bus_idx int64 }{bus_idx})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetBusVolumeLinear(bus_idx int64, volume_linear float64) { //gd:AudioServer.set_bus_volume_linear
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_bus_volume_linear, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_bus_volume_linear, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		bus_idx       int64
 		volume_linear float64
 	}{bus_idx, volume_linear})
 }
 func (self class) GetBusVolumeLinear(bus_idx int64) float64 { //gd:AudioServer.get_bus_volume_linear
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_bus_volume_linear, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ bus_idx int64 }{bus_idx})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.get_bus_volume_linear, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ bus_idx int64 }{bus_idx})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetBusSend(bus_idx int64, send String.Name) { //gd:AudioServer.set_bus_send
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_bus_send, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_bus_send, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), &struct {
 		bus_idx int64
 		send    gdextension.StringName
 	}{bus_idx, pointers.Get(gd.InternalStringName(send))})
 }
 func (self class) GetBusSend(bus_idx int64) String.Name { //gd:AudioServer.get_bus_send
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.StringName](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_bus_send, gdextension.SizeStringName|(gdextension.SizeInt<<4), &struct{ bus_idx int64 }{bus_idx})
+	var r_ret = noescape.Call[gdextension.StringName](gdreference.GetObject(self.AsObject()[0]), methods.get_bus_send, gdextension.SizeStringName|(gdextension.SizeInt<<4), &struct{ bus_idx int64 }{bus_idx})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 func (self class) SetBusSolo(bus_idx int64, enable bool) { //gd:AudioServer.set_bus_solo
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_bus_solo, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_bus_solo, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		bus_idx int64
 		enable  bool
 	}{bus_idx, enable})
 }
 func (self class) IsBusSolo(bus_idx int64) bool { //gd:AudioServer.is_bus_solo
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_bus_solo, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ bus_idx int64 }{bus_idx})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_bus_solo, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ bus_idx int64 }{bus_idx})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetBusMute(bus_idx int64, enable bool) { //gd:AudioServer.set_bus_mute
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_bus_mute, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_bus_mute, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		bus_idx int64
 		enable  bool
 	}{bus_idx, enable})
 }
 func (self class) IsBusMute(bus_idx int64) bool { //gd:AudioServer.is_bus_mute
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_bus_mute, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ bus_idx int64 }{bus_idx})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_bus_mute, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ bus_idx int64 }{bus_idx})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetBusBypassEffects(bus_idx int64, enable bool) { //gd:AudioServer.set_bus_bypass_effects
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_bus_bypass_effects, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_bus_bypass_effects, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		bus_idx int64
 		enable  bool
 	}{bus_idx, enable})
 }
 func (self class) IsBusBypassingEffects(bus_idx int64) bool { //gd:AudioServer.is_bus_bypassing_effects
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_bus_bypassing_effects, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ bus_idx int64 }{bus_idx})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_bus_bypassing_effects, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ bus_idx int64 }{bus_idx})
 	var ret = r_ret
 	return ret
 }
 func (self class) AddBusEffect(bus_idx int64, effect [1]gdclass.AudioEffect, at_position int64) { //gd:AudioServer.add_bus_effect
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.add_bus_effect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.add_bus_effect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12), &struct {
 		bus_idx     int64
 		effect      gdextension.Object
 		at_position int64
@@ -810,39 +811,39 @@ func (self class) AddBusEffect(bus_idx int64, effect [1]gdclass.AudioEffect, at_
 }
 func (self class) RemoveBusEffect(bus_idx int64, effect_idx int64) { //gd:AudioServer.remove_bus_effect
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.remove_bus_effect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.remove_bus_effect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		bus_idx    int64
 		effect_idx int64
 	}{bus_idx, effect_idx})
 }
 func (self class) GetBusEffectCount(bus_idx int64) int64 { //gd:AudioServer.get_bus_effect_count
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_bus_effect_count, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ bus_idx int64 }{bus_idx})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_bus_effect_count, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ bus_idx int64 }{bus_idx})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetBusEffect(bus_idx int64, effect_idx int64) [1]gdclass.AudioEffect { //gd:AudioServer.get_bus_effect
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_bus_effect, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.get_bus_effect, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		bus_idx    int64
 		effect_idx int64
 	}{bus_idx, effect_idx})
-	var ret = [1]gdclass.AudioEffect{gdclass.NewAudioEffect(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.AudioEffect{gdclass.NewAudioEffect(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetBusEffectInstance(bus_idx int64, effect_idx int64, channel int64) [1]gdclass.AudioEffectInstance { //gd:AudioServer.get_bus_effect_instance
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_bus_effect_instance, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	var r_ret = noescape.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.get_bus_effect_instance, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		bus_idx    int64
 		effect_idx int64
 		channel    int64
 	}{bus_idx, effect_idx, channel})
-	var ret = [1]gdclass.AudioEffectInstance{gdclass.NewAudioEffectInstance(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.AudioEffectInstance{gdclass.NewAudioEffectInstance(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SwapBusEffects(bus_idx int64, effect_idx int64, by_effect_idx int64) { //gd:AudioServer.swap_bus_effects
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.swap_bus_effects, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.swap_bus_effects, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		bus_idx       int64
 		effect_idx    int64
 		by_effect_idx int64
@@ -850,7 +851,7 @@ func (self class) SwapBusEffects(bus_idx int64, effect_idx int64, by_effect_idx 
 }
 func (self class) SetBusEffectEnabled(bus_idx int64, effect_idx int64, enabled bool) { //gd:AudioServer.set_bus_effect_enabled
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_bus_effect_enabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_bus_effect_enabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		bus_idx    int64
 		effect_idx int64
 		enabled    bool
@@ -858,7 +859,7 @@ func (self class) SetBusEffectEnabled(bus_idx int64, effect_idx int64, enabled b
 }
 func (self class) IsBusEffectEnabled(bus_idx int64, effect_idx int64) bool { //gd:AudioServer.is_bus_effect_enabled
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_bus_effect_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_bus_effect_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		bus_idx    int64
 		effect_idx int64
 	}{bus_idx, effect_idx})
@@ -867,7 +868,7 @@ func (self class) IsBusEffectEnabled(bus_idx int64, effect_idx int64) bool { //g
 }
 func (self class) GetBusPeakVolumeLeftDb(bus_idx int64, channel int64) float64 { //gd:AudioServer.get_bus_peak_volume_left_db
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_bus_peak_volume_left_db, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.get_bus_peak_volume_left_db, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		bus_idx int64
 		channel int64
 	}{bus_idx, channel})
@@ -876,7 +877,7 @@ func (self class) GetBusPeakVolumeLeftDb(bus_idx int64, channel int64) float64 {
 }
 func (self class) GetBusPeakVolumeRightDb(bus_idx int64, channel int64) float64 { //gd:AudioServer.get_bus_peak_volume_right_db
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_bus_peak_volume_right_db, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.get_bus_peak_volume_right_db, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		bus_idx int64
 		channel int64
 	}{bus_idx, channel})
@@ -885,143 +886,143 @@ func (self class) GetBusPeakVolumeRightDb(bus_idx int64, channel int64) float64 
 }
 func (self class) SetPlaybackSpeedScale(scale float64) { //gd:AudioServer.set_playback_speed_scale
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_playback_speed_scale, 0|(gdextension.SizeFloat<<4), &struct{ scale float64 }{scale})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_playback_speed_scale, 0|(gdextension.SizeFloat<<4), &struct{ scale float64 }{scale})
 }
 func (self class) GetPlaybackSpeedScale() float64 { //gd:AudioServer.get_playback_speed_scale
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_playback_speed_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.get_playback_speed_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) Lock() { //gd:AudioServer.lock
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.lock, 0, &struct{}{})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.lock, 0, &struct{}{})
 }
 func (self class) Unlock() { //gd:AudioServer.unlock
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.unlock, 0, &struct{}{})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.unlock, 0, &struct{}{})
 }
 func (self class) GetSpeakerMode() SpeakerMode { //gd:AudioServer.get_speaker_mode
 	once.Do(singleton)
-	var r_ret = noescape.Call[SpeakerMode](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_speaker_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[SpeakerMode](gdreference.GetObject(self.AsObject()[0]), methods.get_speaker_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetMixRate() float64 { //gd:AudioServer.get_mix_rate
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_mix_rate, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.get_mix_rate, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetInputMixRate() float64 { //gd:AudioServer.get_input_mix_rate
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_input_mix_rate, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.get_input_mix_rate, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetDriverName() String.Readable { //gd:AudioServer.get_driver_name
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_driver_name, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_driver_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetOutputDeviceList() Packed.Strings { //gd:AudioServer.get_output_device_list
 	once.Do(singleton)
-	var r_ret = noescape.Call[gd.PackedPointers](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_output_device_list, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.get_output_device_list, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) GetOutputDevice() String.Readable { //gd:AudioServer.get_output_device
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_output_device, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_output_device, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) SetOutputDevice(name String.Readable) { //gd:AudioServer.set_output_device
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_output_device, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_output_device, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 func (self class) GetTimeToNextMix() float64 { //gd:AudioServer.get_time_to_next_mix
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_time_to_next_mix, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.get_time_to_next_mix, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetTimeSinceLastMix() float64 { //gd:AudioServer.get_time_since_last_mix
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_time_since_last_mix, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.get_time_since_last_mix, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetOutputLatency() float64 { //gd:AudioServer.get_output_latency
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_output_latency, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.get_output_latency, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetInputDeviceList() Packed.Strings { //gd:AudioServer.get_input_device_list
 	once.Do(singleton)
-	var r_ret = noescape.Call[gd.PackedPointers](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_input_device_list, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.get_input_device_list, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) GetInputDevice() String.Readable { //gd:AudioServer.get_input_device
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_input_device, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_input_device, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) SetInputDevice(name String.Readable) { //gd:AudioServer.set_input_device
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_input_device, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_input_device, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 func (self class) SetInputDeviceActive(active bool) Error.Code { //gd:AudioServer.set_input_device_active
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_input_device_active, gdextension.SizeInt|(gdextension.SizeBool<<4), &struct{ active bool }{active})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.set_input_device_active, gdextension.SizeInt|(gdextension.SizeBool<<4), &struct{ active bool }{active})
 	var ret = Error.Code(r_ret)
 	return ret
 }
 func (self class) GetInputFramesAvailable() int64 { //gd:AudioServer.get_input_frames_available
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_input_frames_available, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_input_frames_available, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetInputBufferLengthFrames() int64 { //gd:AudioServer.get_input_buffer_length_frames
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_input_buffer_length_frames, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_input_buffer_length_frames, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetInputFrames(frames int64) Packed.Array[Vector2.XY] { //gd:AudioServer.get_input_frames
 	once.Do(singleton)
-	var r_ret = noescape.Call[gd.PackedPointers](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_input_frames, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ frames int64 }{frames})
+	var r_ret = noescape.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.get_input_frames, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ frames int64 }{frames})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) SetBusLayout(bus_layout [1]gdclass.AudioBusLayout) { //gd:AudioServer.set_bus_layout
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_bus_layout, 0|(gdextension.SizeObject<<4), &struct{ bus_layout gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetAudioBusLayout(bus_layout[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_bus_layout, 0|(gdextension.SizeObject<<4), &struct{ bus_layout gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetAudioBusLayout(bus_layout[0])))})
 }
 func (self class) GenerateBusLayout() [1]gdclass.AudioBusLayout { //gd:AudioServer.generate_bus_layout
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.generate_bus_layout, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.AudioBusLayout{gdclass.NewAudioBusLayout(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var r_ret = noescape.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.generate_bus_layout, gdextension.SizeObject, &struct{}{})
+	var ret = [1]gdclass.AudioBusLayout{gdclass.NewAudioBusLayout(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetEnableTaggingUsedAudioStreams(enable bool) { //gd:AudioServer.set_enable_tagging_used_audio_streams
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_enable_tagging_used_audio_streams, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_enable_tagging_used_audio_streams, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsStreamRegisteredAsSample(stream [1]gdclass.AudioStream) bool { //gd:AudioServer.is_stream_registered_as_sample
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_stream_registered_as_sample, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetAudioStream(stream[0])))})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_stream_registered_as_sample, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetAudioStream(stream[0])))})
 	var ret = r_ret
 	return ret
 }
 func (self class) RegisterStreamAsSample(stream [1]gdclass.AudioStream) { //gd:AudioServer.register_stream_as_sample
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.register_stream_as_sample, 0|(gdextension.SizeObject<<4), &struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetAudioStream(stream[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.register_stream_as_sample, 0|(gdextension.SizeObject<<4), &struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetAudioStream(stream[0])))})
 }
 
 /*
@@ -1033,7 +1034,7 @@ func OnBusLayoutChanged(cb func(), flags ...Signal.Flags) {
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	gdclass.GetAudioServer(self[0])[0].Connect(gd.NewStringName("bus_layout_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(gdclass.GetAudioServer(self[0])[0], gd.NewStringName("bus_layout_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) BusLayoutChanged() Signal.Any {
@@ -1050,7 +1051,7 @@ func OnBusRenamed(cb func(bus_index Bus, old_name string, new_name string), flag
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	gdclass.GetAudioServer(self[0])[0].Connect(gd.NewStringName("bus_renamed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(gdclass.GetAudioServer(self[0])[0], gd.NewStringName("bus_renamed"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) BusRenamed() Signal.Any {

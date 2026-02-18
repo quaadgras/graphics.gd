@@ -14,6 +14,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -846,7 +847,7 @@ func (Instance) _space_get_direct_state(impl func(ptr gdclass.Receiver, space RI
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, RID.Space3D(space))
-		ptr, ok := pointers.End(gdclass.GetPhysicsDirectSpaceState3D(ret[0])[0])
+		ptr, ok := gdreference.EndObject(gdclass.GetPhysicsDirectSpaceState3D(ret[0])[0])
 
 		if !ok {
 			return
@@ -1632,7 +1633,7 @@ func (Instance) _body_get_direct_state(impl func(ptr gdclass.Receiver, body RID.
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, RID.Body3D(body))
-		ptr, ok := pointers.End(gdclass.GetPhysicsDirectBodyState3D(ret[0])[0])
+		ptr, ok := gdreference.EndObject(gdclass.GetPhysicsDirectBodyState3D(ret[0])[0])
 
 		if !ok {
 			return
@@ -1650,9 +1651,9 @@ func (Instance) _soft_body_create(impl func(ptr gdclass.Receiver) RID.SoftBody3D
 func (Instance) _soft_body_update_rendering_server(impl func(ptr gdclass.Receiver, body RID.SoftBody3D, rendering_server_handler PhysicsServer3DRenderingServerHandler.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
-		var rendering_server_handler = [1]gdclass.PhysicsServer3DRenderingServerHandler{gdclass.NewPhysicsServer3DRenderingServerHandler(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
+		var rendering_server_handler = [1]gdclass.PhysicsServer3DRenderingServerHandler{gdclass.NewPhysicsServer3DRenderingServerHandler(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 1), gd.Free))}
 
-		defer pointers.End(gdclass.GetPhysicsServer3DRenderingServerHandler(rendering_server_handler[0])[0])
+		defer gdreference.EndObject(gdclass.GetPhysicsServer3DRenderingServerHandler(rendering_server_handler[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, RID.SoftBody3D(body), rendering_server_handler)
 	}
@@ -2342,14 +2343,14 @@ type class [1]gdclass.PhysicsServer3DExtension
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewPhysicsServer3DExtension(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewPhysicsServer3DExtension(obj[0])
 		return true
 	}
@@ -2359,22 +2360,22 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.PhysicsServer3DExtension{gdclass.NewPhysicsServer3DExtension(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.PhysicsServer3DExtension{gdclass.NewPhysicsServer3DExtension(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetPhysicsServer3DExtension(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetPhysicsServer3DExtension(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.PhysicsServer3DExtension{gdclass.NewPhysicsServer3DExtension(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.PhysicsServer3DExtension{gdclass.NewPhysicsServer3DExtension(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 func (class) _world_boundary_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -2555,7 +2556,7 @@ func (class) _space_get_direct_state(impl func(ptr gdclass.Receiver, space RID.A
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, space)
-		ptr, ok := pointers.End(gdclass.GetPhysicsDirectSpaceState3D(ret[0])[0])
+		ptr, ok := gdreference.EndObject(gdclass.GetPhysicsDirectSpaceState3D(ret[0])[0])
 
 		if !ok {
 			return
@@ -3341,7 +3342,7 @@ func (class) _body_get_direct_state(impl func(ptr gdclass.Receiver, body RID.Any
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, body)
-		ptr, ok := pointers.End(gdclass.GetPhysicsDirectBodyState3D(ret[0])[0])
+		ptr, ok := gdreference.EndObject(gdclass.GetPhysicsDirectBodyState3D(ret[0])[0])
 
 		if !ok {
 			return
@@ -3359,9 +3360,9 @@ func (class) _soft_body_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.E
 func (class) _soft_body_update_rendering_server(impl func(ptr gdclass.Receiver, body RID.Any, rendering_server_handler [1]gdclass.PhysicsServer3DRenderingServerHandler)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
-		var rendering_server_handler = [1]gdclass.PhysicsServer3DRenderingServerHandler{gdclass.NewPhysicsServer3DRenderingServerHandler(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
+		var rendering_server_handler = [1]gdclass.PhysicsServer3DRenderingServerHandler{gdclass.NewPhysicsServer3DRenderingServerHandler(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 1), gd.Free))}
 
-		defer pointers.End(gdclass.GetPhysicsServer3DRenderingServerHandler(rendering_server_handler[0])[0])
+		defer gdreference.EndObject(gdclass.GetPhysicsServer3DRenderingServerHandler(rendering_server_handler[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, body, rendering_server_handler)
 	}

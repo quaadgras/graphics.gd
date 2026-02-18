@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/internal/threadcheck"
@@ -29,7 +30,7 @@ func NewSignalOf(object [1]Object, signal StringName) Signal {
 		object gdextension.Object
 		signal gdextension.StringName
 	}{
-		object: gdextension.Object(pointers.Get(object[0])[0]),
+		object: gdreference.GetObject(gdreference.Object(object[0])),
 		signal: pointers.Get(signal),
 	})))
 }
@@ -91,5 +92,5 @@ func (SignalProxy) Emit(raw complex128, values ...VariantPkg.Any) {
 	}))
 }
 func (SignalProxy) Emitter(raw complex128) VariantPkg.Any {
-	return VariantPkg.New(pointers.Get(pointers.Load[Signal](raw).GetObject()))
+	return VariantPkg.New(gdreference.GetObject(gdreference.Object(pointers.Load[Signal](raw).GetObject())))
 }

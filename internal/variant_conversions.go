@@ -9,6 +9,7 @@ import (
 	"unsafe"
 
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
@@ -62,10 +63,10 @@ func CutVariant(v any, cut bool) Variant {
 				return Variant{}
 			}
 			obj := result[0].Interface().(IsClass).AsObject()
-			if pointers.Get(obj[0]) == ([3]uint64{}) {
+			if gdreference.GetObject(gdreference.Object(obj[0])) == 0 {
 				return Variant{}
 			}
-			var arg = gdextension.Object(pointers.Cut(obj[0], cut)[0])
+			var arg = gdreference.CutObject(gdreference.Object(obj[0]), cut)
 			((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeObject, gdextension.SizeObject, unsafe.Pointer(&arg))
 		} else {
 			var arg = RID(value.Uint())
@@ -86,10 +87,10 @@ func CutVariant(v any, cut bool) Variant {
 		}
 		if rtype.Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
 			obj := value.Interface().(IsClass).AsObject()
-			if pointers.Get(obj[0]) == ([3]uint64{}) {
+			if gdreference.GetObject(obj[0]) == 0 {
 				return Variant{}
 			}
-			var arg = gdextension.Object(pointers.Get(obj[0])[0])
+			var arg = gdreference.GetObject(obj[0])
 			((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeObject, gdextension.SizeObject, unsafe.Pointer(&arg))
 		} else {
 			return NewVariant(value.Elem().Interface())
@@ -97,10 +98,10 @@ func CutVariant(v any, cut bool) Variant {
 	case reflect.Array:
 		if rtype.Implements(reflect.TypeFor[IsClass]()) {
 			obj := value.Interface().(IsClass).AsObject()
-			if pointers.Get(obj[0]) == ([3]uint64{}) {
+			if gdreference.GetObject(obj[0]) == 0 {
 				return Variant{}
 			}
-			var arg = gdextension.Object(pointers.Cut(obj[0], cut)[0])
+			var arg = gdreference.CutObject(obj[0], cut)
 			((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeObject, gdextension.SizeObject, unsafe.Pointer(&arg))
 		} else {
 			var arg = pointers.Cut(newArray(value), cut)
@@ -306,7 +307,7 @@ func CutVariant(v any, cut bool) Variant {
 			var arg = pointers.Cut(val, cut)
 			((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeNodePath, gdextension.SizeNodePath, unsafe.Pointer(&arg))
 		case Object:
-			var arg = pointers.Cut(val, cut)
+			var arg = gdreference.CutObject(val, cut)
 			((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeObject, gdextension.SizeObject, unsafe.Pointer(&arg))
 		case Callable:
 			if pointers.Get(val) == ([2]uint64{}) {
@@ -503,7 +504,7 @@ func (variant Variant) Interface() any {
 		return variantAsValueType[RID](variant, vtype)
 	case gdextension.TypeObject:
 		var obj = VariantAsObject(variant)
-		return ObjectAs(obj.GetClass().String(), obj)
+		return ObjectAs(ObjectGetClass(obj).String(), obj)
 	case gdextension.TypeCallable:
 		callable := variantAsPointerType[Callable](variant, vtype)
 		return CallableType.Through(CallableProxy{}, pointers.Pack(callable))
@@ -560,14 +561,7 @@ func variantAsPointerType[T pointers.Generic[T, Size], Size gdextension.AnyPoint
 }
 
 func VariantAsObject(variant Variant) Object {
-	raw, kind := pointers.Ask(variant)
-	obj := noescape.LoadNative[gdextension.Object](gdextension.TypeObject, raw)
-	switch kind {
-	case pointers.Letted:
-		return pointers.Let[Object]([3]uint64{uint64(obj)})
-	default:
-		return PointerMustAssertInstanceID[Object](obj)
-	}
+	return gdreference.LetObject(noescape.LoadNative[gdextension.Object](gdextension.TypeObject, pointers.Get(variant)))
 }
 
 func LetVariantAsPointerType[T pointers.Generic[T, Size], Size gdextension.AnyPointer](variant Variant, vtype gdextension.VariantType) T {

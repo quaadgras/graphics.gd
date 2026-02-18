@@ -8,9 +8,9 @@ import (
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdclass"
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
-	"graphics.gd/variant"
 	"graphics.gd/variant/Error"
 	"graphics.gd/variant/Signal"
 )
@@ -27,7 +27,7 @@ func (id ID) Instance() Instance { //gd:instance_from_id is_instance_id_valid
 	if instance == 0 {
 		return Nil
 	}
-	return Instance([1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](instance)})
+	return Instance([1]gd.Object{gdreference.LetObject(instance)})
 }
 
 type Notification int
@@ -84,7 +84,7 @@ func init() {
 }
 
 func (self *Instance) SetObject(obj [1]gdclass.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = *(*gdclass.Object)(unsafe.Pointer(&obj))
 		return true
 	}
@@ -120,68 +120,68 @@ type PropertyInfo struct {
 func New() Instance {
 	if !gd.Linked {
 		var placeholder Instance
-		*(*gd.Object)(unsafe.Pointer(&placeholder)) = pointers.Add[gd.Object]([3]uint64{})
+		*(*gd.Object)(unsafe.Pointer(&placeholder)) = gdreference.NewObject()
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(*(*gd.Object)(unsafe.Pointer(&placeholder)), raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(*(*gd.Object)(unsafe.Pointer(&placeholder)), raw)
 				gd.RegisterCleanup(func() {
-					gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					gdextension.Host.Objects.Unsafe.Free(raw)
 				})
 			}
 		})
 		return placeholder
 	}
-	return Instance([1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Object"))))})})
+	return Instance{gdreference.OwnObject(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Object"))), gd.Free)}
 }
 
 func (obj Instance) AsObject() [1]gd.Object          { return obj }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 
 // Virtual method lookup.
-func (obj Instance) Virtual(name string) reflect.Value { return obj[0].Virtual(name) }
+func (obj Instance) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 // ClassName returns the object's built-in class name, as a string.
 func (obj Instance) ClassName() string {
-	return obj[0].GetClass().String()
+	return gd.ObjectGetClass(obj[0]).String()
 }
 
 // CanTranslateMessages returns true if the object is allowed to translate messages with tr and tr_n.
 // See also [Instance.SetMessageTranslation].
 func (obj Instance) CanTranslateMessages() bool {
-	return bool(obj[0].CanTranslateMessages())
+	return bool(gd.ObjectCanTranslateMessages(obj[0]))
 }
 
 // ID returns the object's unique instance ID. This ID can be saved in EncodedObjectAsID, and can be used
 // to retrieve this object instance with [ID.Instance].
 func (obj Instance) ID() ID {
 	var id gdextension.ObjectID
-	gdextension.Host.Objects.ID.Get(gdextension.Object(pointers.Get(obj[0])[0]), gdextension.CallReturns[gdextension.ObjectID](&id))
+	gdextension.Host.Objects.ID.Get(gdreference.GetObject(obj[0]), gdextension.CallReturns[gdextension.ObjectID](&id))
 	return ID(id)
 }
 
 // SignalsBlocked returns true if the object is blocking its signals from being emitted.
 // See [Instance.SetSignalsBlocked].
 func (obj Instance) SignalsBlocked() bool {
-	return bool(obj[0].IsBlockingSignals())
+	return bool(gd.ObjectIsBlockingSignals(obj[0]))
 }
 
 // NotifyPropertyListChanged emits the property_list_changed signal. This is mainly used to
 // refresh the editor, so that the Inspector and editor plugins are properly updated.
 func (obj Instance) NotifyPropertyListChanged() {
-	obj[0].NotifyPropertyListChanged()
+	gd.ObjectNotifyPropertyListChanged(obj[0])
 }
 
 // SetBlockSignals if set to true, the object becomes unable to emit signals. Signal connections will
 // not work, until it is set to false.
 func (obj Instance) SetSignalsBlocked(enable bool) {
-	obj[0].SetBlockSignals(enable)
+	gd.ObjectSetBlockSignals(obj[0], enable)
 }
 
 // SetMessageTranslation if set to true, allows the object to translate messages with tr and tr_n.
 // Enabled by default. See also [Instance.CanTranslateMessages].
 func (obj Instance) SetMessageTranslation(enable bool) {
-	obj[0].SetMessageTranslation(enable)
+	gd.ObjectSetMessageTranslation(obj[0], enable)
 }
 
 // SetScript attaches script to the object, and instantiates it. As a result, the script's _init is called.
@@ -191,7 +191,7 @@ func (obj Instance) SetMessageTranslation(enable bool) {
 // property values are still kept.
 func (obj Instance) SetScript(script [1]gdclass.Script) {
 	gd.PointerWithOwnershipTransferredToGodot(gdclass.GetScript(script[0])[0])
-	obj[0].SetScript(gd.NewVariant(gdclass.GetScript(script[0])[0]))
+	gd.ObjectSetScript(obj[0], gd.NewVariant(gdclass.GetScript(script[0])[0]))
 }
 
 // String returns a String representing the object. Defaults to "<ClassName#RID>". Override _to_string to
@@ -200,7 +200,7 @@ func (obj Instance) String() string {
 	if obj == Nil {
 		return "<Nil>"
 	}
-	return obj[0].ToString().String()
+	return gd.ObjectToString(obj[0]).String()
 }
 
 // Translate translates a message, using the translation catalogs configured in the Project Settings.
@@ -210,7 +210,7 @@ func (obj Instance) String() string {
 // If [Instance.CanTranslateMessages] is false, or no translation is available, this method returns the
 // message without changes. See [Instance.SetMessageTranslation].
 func (obj Instance) Translate(message string) string {
-	return obj[0].Tr(gd.NewStringName(message), gd.NewStringName("")).String()
+	return gd.ObjectTr(obj[0], gd.NewStringName(message), gd.NewStringName("")).String()
 }
 
 // Translation translates a message or plural_message, using the translation catalogs configured in the Project Settings.
@@ -230,7 +230,7 @@ func (obj Instance) Translate(message string) string {
 // Note: This method can't be used without an Object instance, as it requires the [Instance.CanTranslateMessages] method.
 // To translate strings in a static context, use [TranslationServer.TranslatePlural].
 func (obj Instance) Translation(message string, plural_message string, n int, context string) string {
-	return obj[0].TrN(gd.NewStringName(message), gd.NewStringName(plural_message), gd.Int(n), gd.NewStringName(context)).String()
+	return gd.ObjectTrN(obj[0], gd.NewStringName(message), gd.NewStringName(plural_message), gd.Int(n), gd.NewStringName(context)).String()
 }
 
 // Connect connects a signal by name to a callable. Optional flags can be also added to configure the connection's behavior
@@ -246,7 +246,7 @@ func (obj Instance) Connect(signal string, callable any, flags ...Signal.Flags) 
 	for _, f := range flags {
 		all_flags |= f
 	}
-	err := Error.Code(obj[0].Connect(gd.NewStringName(signal), gd.NewCallable(callable), gd.Int(all_flags)))
+	err := Error.Code(gd.ObjectConnect(obj[0], gd.NewStringName(signal), gd.NewCallable(callable), gd.Int(all_flags)))
 	if err != 0 {
 		return err
 	}
@@ -255,11 +255,11 @@ func (obj Instance) Connect(signal string, callable any, flags ...Signal.Flags) 
 
 // IsConnected returns true if a connection exists between the given signal name and callable.
 func (obj Instance) IsConnected(signal string, callable any) bool {
-	return obj[0].IsConnected(gd.NewStringName(signal), gd.NewCallable(callable))
+	return gd.ObjectIsConnected(obj[0], gd.NewStringName(signal), gd.NewCallable(callable))
 }
 
 // Use keeps an object alive, preventing it from being garbage collected until the next frame.
-func Use(obj interface{ AsObject() [1]gdclass.Object }) { variant.Use(obj.AsObject()[0]) }
+func Use(obj interface{ AsObject() [1]gdclass.Object }) { gdreference.UseObject(obj.AsObject()[0]) }
 
 // Signal returns the signal with the given name, or a nil signal if it does not exist.
 func (obj Instance) Signal(name string) Signal.Any {
@@ -272,7 +272,7 @@ func (obj Instance) Signal(name string) Signal.Any {
 
 // HasMethod returns true if the object has a method with the given name.
 func (obj Instance) HasMethod(name string) bool {
-	return obj[0].HasMethod(gd.NewStringName(name))
+	return gd.ObjectHasMethod(obj[0], gd.NewStringName(name))
 }
 
 type MethodInfo struct {
@@ -296,7 +296,7 @@ type MethodInfo struct {
 // editor-only. Editor-only metadata is not displayed in the Inspector and should
 // not be edited, although it can still be found by this method.
 func (obj Instance) SetMeta(property string, value any) { //gd:Object.set_meta
-	obj.AsObject()[0].SetMeta(gd.NewStringName(property), gd.NewVariant(value))
+	gd.ObjectSetMeta(obj.AsObject()[0], gd.NewStringName(property), gd.NewVariant(value))
 }
 
 // Returns the object's metadata value for the given entry name. If the entry does
@@ -309,5 +309,5 @@ func (obj Instance) SetMeta(property string, value any) { //gd:Object.set_meta
 // editor-only. Editor-only metadata is not displayed in the Inspector and should
 // not be edited, although it can still be found by this method.
 func (obj Instance) GetMeta(property string) any { //gd:Object.get_meta
-	return obj.AsObject()[0].GetMeta(gd.NewStringName(property)).Interface()
+	return gd.ObjectGetMeta(obj.AsObject()[0], gd.NewStringName(property)).Interface()
 }

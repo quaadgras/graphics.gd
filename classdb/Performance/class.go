@@ -19,6 +19,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -124,7 +125,7 @@ var self [1]gdclass.Performance
 var once sync.Once
 
 func singleton() {
-	self[0] = gdclass.NewPerformance(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
+	self[0] = gdclass.NewPerformance(gdreference.RawObject(gdextension.Host.Objects.Global(sname)))
 }
 
 /*
@@ -217,14 +218,14 @@ type class [1]gdclass.Performance
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewPerformance(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewPerformance(obj[0])
 		return true
 	}
@@ -235,13 +236,13 @@ func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 
 func (self class) GetMonitor(monitor Monitor) float64 { //gd:Performance.get_monitor
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_monitor, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ monitor Monitor }{monitor})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.get_monitor, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ monitor Monitor }{monitor})
 	var ret = r_ret
 	return ret
 }
 func (self class) AddCustomMonitor(id String.Name, callable Callable.Function, arguments Array.Any, atype MonitorType) { //gd:Performance.add_custom_monitor
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.add_custom_monitor, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeArray<<12)|(gdextension.SizeInt<<16), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.add_custom_monitor, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeArray<<12)|(gdextension.SizeInt<<16), &struct {
 		id        gdextension.StringName
 		callable  gdextension.Callable
 		arguments gdextension.Array
@@ -250,35 +251,35 @@ func (self class) AddCustomMonitor(id String.Name, callable Callable.Function, a
 }
 func (self class) RemoveCustomMonitor(id String.Name) { //gd:Performance.remove_custom_monitor
 	once.Do(singleton)
-	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.remove_custom_monitor, 0|(gdextension.SizeStringName<<4), &struct{ id gdextension.StringName }{pointers.Get(gd.InternalStringName(id))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.remove_custom_monitor, 0|(gdextension.SizeStringName<<4), &struct{ id gdextension.StringName }{pointers.Get(gd.InternalStringName(id))})
 }
 func (self class) HasCustomMonitor(id String.Name) bool { //gd:Performance.has_custom_monitor
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.has_custom_monitor, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ id gdextension.StringName }{pointers.Get(gd.InternalStringName(id))})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.has_custom_monitor, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ id gdextension.StringName }{pointers.Get(gd.InternalStringName(id))})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetCustomMonitor(id String.Name) variant.Any { //gd:Performance.get_custom_monitor
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Variant](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_custom_monitor, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ id gdextension.StringName }{pointers.Get(gd.InternalStringName(id))})
+	var r_ret = noescape.Call[gdextension.Variant](gdreference.GetObject(self.AsObject()[0]), methods.get_custom_monitor, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ id gdextension.StringName }{pointers.Get(gd.InternalStringName(id))})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 func (self class) GetMonitorModificationTime() int64 { //gd:Performance.get_monitor_modification_time
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_monitor_modification_time, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_monitor_modification_time, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetCustomMonitorNames() Array.Contains[String.Name] { //gd:Performance.get_custom_monitor_names
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Array](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_custom_monitor_names, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gdreference.GetObject(self.AsObject()[0]), methods.get_custom_monitor_names, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) GetCustomMonitorTypes() Packed.Array[int32] { //gd:Performance.get_custom_monitor_types
 	once.Do(singleton)
-	var r_ret = noescape.Call[gd.PackedPointers](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_custom_monitor_types, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.get_custom_monitor_types, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }

@@ -16,6 +16,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -225,14 +226,14 @@ type class [1]gdclass.ParticleProcessMaterial
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewParticleProcessMaterial(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewParticleProcessMaterial(obj[0])
 		return true
 	}
@@ -242,23 +243,23 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.ParticleProcessMaterial{gdclass.NewParticleProcessMaterial(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.ParticleProcessMaterial{gdclass.NewParticleProcessMaterial(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetParticleProcessMaterial(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetParticleProcessMaterial(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.ParticleProcessMaterial{gdclass.NewParticleProcessMaterial(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
+	casted := Instance([1]gdclass.ParticleProcessMaterial{gdclass.NewParticleProcessMaterial(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
 	casted.AsRefCounted()[0].InitRef()
-	casted.AsObject()[0].Notification(0, false)
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -2042,7 +2043,7 @@ func (self class) SetParamTexture(param Parameter, texture [1]gdclass.Texture2D)
 }
 func (self class) GetParamTexture(param Parameter) [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_param_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_param_texture, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ param Parameter }{param})
-	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetColor(color Color.RGBA) { //gd:ParticleProcessMaterial.set_color
@@ -2058,7 +2059,7 @@ func (self class) SetColorRamp(ramp [1]gdclass.Texture2D) { //gd:ParticleProcess
 }
 func (self class) GetColorRamp() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_color_ramp
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_ramp, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetAlphaCurve(curve [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_alpha_curve
@@ -2066,7 +2067,7 @@ func (self class) SetAlphaCurve(curve [1]gdclass.Texture2D) { //gd:ParticleProce
 }
 func (self class) GetAlphaCurve() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_alpha_curve
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_alpha_curve, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetEmissionCurve(curve [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_emission_curve
@@ -2074,7 +2075,7 @@ func (self class) SetEmissionCurve(curve [1]gdclass.Texture2D) { //gd:ParticlePr
 }
 func (self class) GetEmissionCurve() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_emission_curve
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_emission_curve, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetColorInitialRamp(ramp [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_color_initial_ramp
@@ -2082,7 +2083,7 @@ func (self class) SetColorInitialRamp(ramp [1]gdclass.Texture2D) { //gd:Particle
 }
 func (self class) GetColorInitialRamp() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_color_initial_ramp
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_initial_ramp, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetVelocityLimitCurve(curve [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_velocity_limit_curve
@@ -2090,7 +2091,7 @@ func (self class) SetVelocityLimitCurve(curve [1]gdclass.Texture2D) { //gd:Parti
 }
 func (self class) GetVelocityLimitCurve() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_velocity_limit_curve
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_velocity_limit_curve, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetParticleFlag(particle_flag ParticleFlags, enable bool) { //gd:ParticleProcessMaterial.set_particle_flag
@@ -2141,7 +2142,7 @@ func (self class) SetEmissionPointTexture(texture [1]gdclass.Texture2D) { //gd:P
 }
 func (self class) GetEmissionPointTexture() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_emission_point_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_emission_point_texture, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetEmissionNormalTexture(texture [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_emission_normal_texture
@@ -2149,7 +2150,7 @@ func (self class) SetEmissionNormalTexture(texture [1]gdclass.Texture2D) { //gd:
 }
 func (self class) GetEmissionNormalTexture() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_emission_normal_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_emission_normal_texture, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetEmissionColorTexture(texture [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_emission_color_texture
@@ -2157,7 +2158,7 @@ func (self class) SetEmissionColorTexture(texture [1]gdclass.Texture2D) { //gd:P
 }
 func (self class) GetEmissionColorTexture() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_emission_color_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_emission_color_texture, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetEmissionPointCount(point_count int64) { //gd:ParticleProcessMaterial.set_emission_point_count
@@ -2383,7 +2384,7 @@ func (self Instance) OnEmissionShapeChanged(cb func(), flags ...Signal.Flags) In
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("emission_shape_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("emission_shape_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 

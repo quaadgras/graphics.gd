@@ -16,6 +16,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -170,8 +171,8 @@ Note: Implement [HandleMenuSelected] to handle these custom items.
 */
 func (Instance) _set_create_options(impl func(ptr gdclass.Receiver, menu_node Object.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var menu_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
-		defer pointers.End(menu_node[0])
+		var menu_node = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(menu_node[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, menu_node)
 	}
@@ -218,14 +219,14 @@ type class [1]gdclass.EditorResourcePicker
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorResourcePicker(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorResourcePicker(obj[0])
 		return true
 	}
@@ -235,22 +236,22 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.EditorResourcePicker{gdclass.NewEditorResourcePicker(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.EditorResourcePicker{gdclass.NewEditorResourcePicker(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetEditorResourcePicker(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetEditorResourcePicker(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.EditorResourcePicker{gdclass.NewEditorResourcePicker(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.EditorResourcePicker{gdclass.NewEditorResourcePicker(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -309,8 +310,8 @@ func (self Instance) SetToggleMode(value bool) Instance { //gd:EditorResourcePic
 }
 func (class) _set_create_options(impl func(ptr gdclass.Receiver, menu_node [1]gd.Object)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var menu_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
-		defer pointers.End(menu_node[0])
+		var menu_node = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(menu_node[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, menu_node)
 	}
@@ -342,7 +343,7 @@ func (self class) SetEditedResource(resource [1]gdclass.Resource) { //gd:EditorR
 }
 func (self class) GetEditedResource() [1]gdclass.Resource { //gd:EditorResourcePicker.get_edited_resource
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_resource, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Resource{gdclass.NewResource(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Resource{gdclass.NewResource(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetToggleMode(enable bool) { //gd:EditorResourcePicker.set_toggle_mode
@@ -373,7 +374,7 @@ func (self Instance) OnResourceSelected(cb func(resource Resource.Instance, insp
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("resource_selected"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("resource_selected"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -389,7 +390,7 @@ func (self Instance) OnResourceChanged(cb func(resource Resource.Instance), flag
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("resource_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("resource_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 

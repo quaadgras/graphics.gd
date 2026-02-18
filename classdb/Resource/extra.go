@@ -8,6 +8,7 @@ import (
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdclass"
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Callable"
@@ -56,7 +57,7 @@ func init() {
 		gd.RegisterCleanup(func() {
 			for _, resource := range preloaded_resources {
 				if resource.Unreference() {
-					gdextension.Host.Objects.Unsafe.Free(gdextension.Object(pointers.Get(resource.AsObject()[0])[0]))
+					gdextension.Host.Objects.Unsafe.Free(gdreference.GetObject(resource.AsObject()[0]))
 				}
 			}
 		})
@@ -70,17 +71,17 @@ func Load[T Any, P string | Path.ToResource](path_to_resource P) T {
 	path := Path.ToResource(String.New(path_to_resource))
 	if !gd.Linked {
 		var placeholder T
-		*(*gd.Object)(unsafe.Pointer(&placeholder)) = pointers.Add[gd.Object]([3]uint64{})
+		*(*gd.Object)(unsafe.Pointer(&placeholder)) = gdreference.NewObject()
 		preloaded_resources = append(preloaded_resources, *(*gd.RefCounted)(unsafe.Pointer(&placeholder)))
 		startup = append(startup, func() {
 			resource := Instance(load(String.Readable(path), String.New(""), 1))
 			result, ok := Object.As[T](resource)
 			if !ok {
-				panic("Resource \"" + path.String() + "\" is " + resource.AsObject()[0].GetClass().String() + " not " + reflect.TypeFor[T]().String())
+				panic("Resource \"" + path.String() + "\" is " + gd.ObjectGetClass(resource.AsObject()[0]).String() + " not " + reflect.TypeFor[T]().String())
 			}
-			raw, ok := pointers.End(result.AsObject()[0])
+			raw, ok := gdreference.EndObject(result.AsObject()[0])
 			if ok {
-				pointers.Set(*(*gd.Object)(unsafe.Pointer(&placeholder)), raw)
+				gdreference.SetObject(*(*gd.Object)(unsafe.Pointer(&placeholder)), raw)
 			}
 		})
 		return placeholder
@@ -91,7 +92,7 @@ func Load[T Any, P string | Path.ToResource](path_to_resource P) T {
 	}
 	result, ok := Object.As[T](resource)
 	if !ok {
-		panic("Resource \"" + path.String() + "\" is " + resource.AsObject()[0].GetClass().String() + " not " + reflect.TypeFor[T]().String())
+		panic("Resource \"" + path.String() + "\" is " + gd.ObjectGetClass(resource.AsObject()[0]).String() + " not " + reflect.TypeFor[T]().String())
 	}
 	return result
 }
@@ -115,7 +116,7 @@ var self [1]gdclass.ResourceLoader
 var once sync.Once
 
 func singleton() {
-	self[0] = gdclass.NewResourceLoader(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(loader_sname))}))
+	self[0] = gdclass.NewResourceLoader(gdreference.RawObject(gdextension.Host.Objects.Global(loader_sname)))
 }
 
 func load(path String.Readable, type_hint String.Readable, cache_mode int) [1]gdclass.Resource { //gd:ResourceLoader.load
@@ -125,7 +126,7 @@ func load(path String.Readable, type_hint String.Readable, cache_mode int) [1]gd
 		type_hint  gdextension.String
 		cache_mode int64
 	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalString(type_hint)), int64(cache_mode)}))
-	var ret = [1]gdclass.Resource{gdclass.NewResource(gd.PointerWithOwnershipTransferredToGo[gdclass.Object](r_ret))}
+	var ret = [1]gdclass.Resource{gdclass.NewResource(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 

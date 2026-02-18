@@ -40,6 +40,7 @@ import (
 	"graphics.gd/internal/docgen"
 	"graphics.gd/internal/gdclass"
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/internal/threadsafe"
 )
@@ -87,7 +88,7 @@ func init() {
 			case Node.Any:
 				continue
 			case Object.Any:
-				singleton.AsObject()[0].Free()
+				gd.ObjectFree(singleton.AsObject()[0])
 			}
 		}
 	})
@@ -316,12 +317,12 @@ func Register[T Class](exports ...any) {
 			construct := impl.Constructor()
 			singleton, _ := reflect.TypeAssert[Object.Any](construct)
 			singletons.Insert(classType, construct)
-			pointers.Pin(singleton.AsObject()[0])
+			gdreference.PinObject(singleton.AsObject()[0])
 			Engine.RegisterSingleton(strings.TrimPrefix(rename, "GoSingleton"), singleton.AsObject())
 			if node, ok := singleton.(Node.Any); ok {
 				Callable.Defer(Callable.New(func() {
-					ptrs := pointers.Get(node.AsNode().AsObject()[0])
-					SceneTree.Add(Node.Instance{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{ptrs[0]}))})
+					ptrs := gdreference.GetObject(node.AsNode().AsObject()[0])
+					SceneTree.Add(Node.Instance{gdclass.NewNode(gdreference.OwnObject(ptrs, gd.Free))})
 				}))
 			}
 		}
@@ -607,16 +608,16 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 	// Use EngineClass (the first built-in ancestor) for construction, not Super.
 	// This prevents the issue where extension classes inheriting from other extension
 	// classes would trigger multiple calls to set_instance_binding on the same object.
-	var super = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(class.EngineClass)))})}
+	var super = [1]gd.Object{gdreference.OwnObject(gdextension.Host.Objects.Make(pointers.Get(class.EngineClass)), gd.Free)}
 	if class.RefCounted {
 		gd.RefCounted(super[0]).InitRef()
 	}
 	if add_root {
-		super = [1]gd.Object{pointers.Pin(super[0])}
+		gdreference.PinObject(super[0])
 	}
 	instance := class.reloadInstance(value, super)
 	id := gdextension.ExtensionInstanceID(instances.New(instance))
-	gdextension.Host.Objects.Extension.Setup(gdextension.Object(pointers.Get(super[0])[0]), pointers.Get(class.Name), id)
+	gdextension.Host.Objects.Extension.Setup(gdreference.GetObject(super[0]), pointers.Get(class.Name), id)
 	if add_root {
 		if keepalive := compile_keepalive(reflect.PointerTo(class.Type)); keepalive != nil {
 			roots.Insert(value, keepalive)
@@ -628,7 +629,7 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 		}
 	}
 	if notify_postinitialize {
-		super[0].Notification(0, false)
+		gd.ObjectNotification(super[0], 0, false)
 	}
 	instance.OnCreate(value)
 	return super
@@ -678,10 +679,10 @@ func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd
 		}
 	}
 	if len(signals) > 0 {
-		go manageSignals(Object.Instance(super[0].AsObject()).ID(), chSignals)
+		go manageSignals(Object.Instance{super[0]}.ID(), chSignals)
 	}
 	return &instanceImplementation{
-		object:     pointers.Get(super[0])[0],
+		object:     gdreference.GetObject(super[0]),
 		Value:      value.Addr().Interface().(gdclass.Pointer),
 		signals:    signals,
 		isEditor:   !class.Tool && Engine.IsEditorHint(),
@@ -733,7 +734,7 @@ func (class classImplementation) GetVirtual(name gd.StringName) any {
 }
 
 type instanceImplementation struct {
-	object  uint64
+	object  gdextension.Object
 	Value   gdclass.Pointer
 	signals []signalChan
 
@@ -836,12 +837,12 @@ func (instance *instanceImplementation) Free() {
 		// we need to unreference any pinned resources (pinned here means that the engine `set` them).
 		if field.Type.Implements(reflect.TypeFor[RefCounted.Any]()) {
 			ref := rvalue.FieldByIndex(field.Index).Interface().(RefCounted.Any).AsRefCounted()[0]
-			if !pointers.Bad(gd.Object(ref)) {
-				raw, kind := pointers.Ask(gd.Object(ref))
-				if kind == pointers.Pinned {
+			if !gdreference.BadObject(gd.Object(ref)) {
+				raw, kind := gdreference.AskObject(gd.Object(ref))
+				if kind == gdreference.TypePinned {
 					if ref.Unreference() {
-						pointers.End(gd.Object(ref))
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+						gdreference.EndObject(gd.Object(ref))
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				}
 			}
@@ -1003,15 +1004,15 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 	path := Path.ToNode(String.New(name))
 	if !Node.Advanced(parent).HasNode(path) {
 		if not_initialised {
-			child := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName(nameOf(field.Type)))))})}
-			child[0].Notification(0, false)
-			defer pointers.End(child[0])
-			native := gd.ExtensionInstanceLookup(gdextension.Object(pointers.Get(child[0])[0]))
+			child := [1]gd.Object{gdreference.OwnObject(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName(nameOf(field.Type)))), gd.Free)}
+			gd.ObjectNotification(child[0], 0, false)
+			defer gdreference.EndObject(child[0])
+			native := gd.ExtensionInstanceLookup(gdreference.GetObject(child[0]))
 			if native != nil {
 				rvalue.Elem().Set(reflect.ValueOf(native))
 				class = native.(isNode)
 			} else {
-				class.(gd.IsClassCastable).SetObject([1]gd.Object{pointers.Raw[gd.Object](pointers.Get(child[0]))})
+				class.(gd.IsClassCastable).SetObject([1]gd.Object{gdreference.RawObject(gdreference.GetObject(child[0]))})
 			}
 		}
 		var mode Node.InternalMode = Node.InternalModeDisabled | internal
@@ -1026,14 +1027,14 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		return
 	}
 	var node = Node.Advanced(parent).GetNode(path)
-	native := gd.ExtensionInstanceLookup(gdextension.Object(pointers.Get(gdclass.GetNode(node[0])[0])[0]))
+	native := gd.ExtensionInstanceLookup(gdreference.GetObject(gdclass.GetNode(node[0])[0]))
 	if native != nil {
 		if reflect.ValueOf(native).Type() != rvalue.Elem().Type() {
 			fmt.Printf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name)
 			panic(fmt.Sprintf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name))
 		}
 		rvalue.Elem().Set(reflect.ValueOf(native))
-		pointers.End(gdclass.GetNode(node[0])[0])
+		gdreference.EndObject(gdclass.GetNode(node[0])[0])
 	} else {
 		castable, ok := class.(gd.IsClassCastable)
 		if !ok {
@@ -1045,10 +1046,10 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 				class,
 			))
 		}
-		if !castable.SetObject([1]gd.Object{pointers.Raw[gd.Object](pointers.Get(gdclass.GetNode(node[0])[0]))}) {
+		if !castable.SetObject([1]gd.Object{gdreference.RawObject(gdreference.GetObject(gdclass.GetNode(node[0])[0]))}) {
 			fmt.Printf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name)
 			panic(fmt.Sprintf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name))
 		}
-		pointers.End(gdclass.GetNode(node[0])[0])
+		gdreference.EndObject(gdclass.GetNode(node[0])[0])
 	}
 }

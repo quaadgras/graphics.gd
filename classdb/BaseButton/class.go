@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -226,14 +227,14 @@ type class [1]gdclass.BaseButton
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewBaseButton(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewBaseButton(obj[0])
 		return true
 	}
@@ -243,22 +244,22 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.BaseButton{gdclass.NewBaseButton(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.BaseButton{gdclass.NewBaseButton(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetBaseButton(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetBaseButton(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.BaseButton{gdclass.NewBaseButton(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.BaseButton{gdclass.NewBaseButton(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -497,7 +498,7 @@ func (self class) SetShortcut(shortcut [1]gdclass.Shortcut) { //gd:BaseButton.se
 }
 func (self class) GetShortcut() [1]gdclass.Shortcut { //gd:BaseButton.get_shortcut
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shortcut, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Shortcut{gdclass.NewShortcut(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Shortcut{gdclass.NewShortcut(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetButtonGroup(button_group [1]gdclass.ButtonGroup) { //gd:BaseButton.set_button_group
@@ -505,7 +506,7 @@ func (self class) SetButtonGroup(button_group [1]gdclass.ButtonGroup) { //gd:Bas
 }
 func (self class) GetButtonGroup() [1]gdclass.ButtonGroup { //gd:BaseButton.get_button_group
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_button_group, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.ButtonGroup{gdclass.NewButtonGroup(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.ButtonGroup{gdclass.NewButtonGroup(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 
@@ -525,7 +526,7 @@ func (self Instance) OnPressed(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("pressed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("pressed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -541,7 +542,7 @@ func (self Instance) OnButtonUp(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("button_up"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("button_up"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -557,7 +558,7 @@ func (self Instance) OnButtonDown(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("button_down"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("button_down"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -575,7 +576,7 @@ func (self Instance) OnToggled(cb func(toggled_on bool), flags ...Signal.Flags) 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("toggled"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("toggled"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 

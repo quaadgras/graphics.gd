@@ -14,6 +14,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -559,7 +560,7 @@ func (Instance) _get_contact_collider_object(impl func(ptr gdclass.Receiver, con
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(contact_idx))
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := gdreference.EndObject(ret[0])
 
 		if !ok {
 			return
@@ -600,7 +601,7 @@ func (Instance) _get_space_state(impl func(ptr gdclass.Receiver) PhysicsDirectSp
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gdclass.GetPhysicsDirectSpaceState3D(ret[0])[0])
+		ptr, ok := gdreference.EndObject(gdclass.GetPhysicsDirectSpaceState3D(ret[0])[0])
 
 		if !ok {
 			return
@@ -615,14 +616,14 @@ type class [1]gdclass.PhysicsDirectBodyState3DExtension
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewPhysicsDirectBodyState3DExtension(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewPhysicsDirectBodyState3DExtension(obj[0])
 		return true
 	}
@@ -632,22 +633,22 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.PhysicsDirectBodyState3DExtension{gdclass.NewPhysicsDirectBodyState3DExtension(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.PhysicsDirectBodyState3DExtension{gdclass.NewPhysicsDirectBodyState3DExtension(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetPhysicsDirectBodyState3DExtension(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetPhysicsDirectBodyState3DExtension(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.PhysicsDirectBodyState3DExtension{gdclass.NewPhysicsDirectBodyState3DExtension(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.PhysicsDirectBodyState3DExtension{gdclass.NewPhysicsDirectBodyState3DExtension(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 func (class) _get_total_gravity(impl func(ptr gdclass.Receiver) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -975,7 +976,7 @@ func (class) _get_contact_collider_object(impl func(ptr gdclass.Receiver, contac
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, contact_idx)
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := gdreference.EndObject(ret[0])
 
 		if !ok {
 			return
@@ -1016,7 +1017,7 @@ func (class) _get_space_state(impl func(ptr gdclass.Receiver) [1]gdclass.Physics
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gdclass.GetPhysicsDirectSpaceState3D(ret[0])[0])
+		ptr, ok := gdreference.EndObject(gdclass.GetPhysicsDirectSpaceState3D(ret[0])[0])
 
 		if !ok {
 			return

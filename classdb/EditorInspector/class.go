@@ -24,6 +24,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -176,14 +177,14 @@ type class [1]gdclass.EditorInspector
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorInspector(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorInspector(obj[0])
 		return true
 	}
@@ -193,22 +194,22 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.EditorInspector{gdclass.NewEditorInspector(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.EditorInspector{gdclass.NewEditorInspector(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetEditorInspector(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetEditorInspector(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.EditorInspector{gdclass.NewEditorInspector(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.EditorInspector{gdclass.NewEditorInspector(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -222,7 +223,7 @@ func (self class) GetSelectedPath() String.Readable { //gd:EditorInspector.get_s
 }
 func (self class) GetEditedObject() [1]gd.Object { //gd:EditorInspector.get_edited_object
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_object, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
+	var ret = [1]gd.Object{gdreference.LetObject(r_ret)}
 	return ret
 }
 func (self class) InstantiatePropertyEditor(obj [1]gd.Object, atype variant.Type, path String.Readable, hint ClassDB.PropertyHint, hint_text String.Readable, usage int64, wide bool) [1]gdclass.EditorProperty { //gd:EditorInspector.instantiate_property_editor
@@ -235,7 +236,7 @@ func (self class) InstantiatePropertyEditor(obj [1]gd.Object, atype variant.Type
 		usage     int64
 		wide      bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0]))), atype, pointers.Get(gd.InternalString(path)), hint, pointers.Get(gd.InternalString(hint_text)), usage, wide})
-	var ret = [1]gdclass.EditorProperty{gdclass.NewEditorProperty(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.EditorProperty{gdclass.NewEditorProperty(gdreference.LetObject(r_ret))}
 	return ret
 }
 
@@ -247,7 +248,7 @@ func (self Instance) OnPropertySelected(cb func(property string), flags ...Signa
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("property_selected"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("property_selected"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -263,7 +264,7 @@ func (self Instance) OnPropertyKeyed(cb func(property string, value any, advance
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("property_keyed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("property_keyed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -279,7 +280,7 @@ func (self Instance) OnPropertyDeleted(cb func(property string), flags ...Signal
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("property_deleted"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("property_deleted"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -295,7 +296,7 @@ func (self Instance) OnResourceSelected(cb func(resource Resource.Instance, path
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("resource_selected"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("resource_selected"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -313,7 +314,7 @@ func (self Instance) OnObjectIdSelected(cb func(id int), flags ...Signal.Flags) 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("object_id_selected"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("object_id_selected"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -329,7 +330,7 @@ func (self Instance) OnPropertyEdited(cb func(property string), flags ...Signal.
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("property_edited"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("property_edited"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -347,7 +348,7 @@ func (self Instance) OnPropertyToggled(cb func(property string, checked bool), f
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("property_toggled"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("property_toggled"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -363,7 +364,7 @@ func (self Instance) OnEditedObjectChanged(cb func(), flags ...Signal.Flags) Ins
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("edited_object_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("edited_object_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -379,7 +380,7 @@ func (self Instance) OnRestartRequested(cb func(), flags ...Signal.Flags) Instan
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("restart_requested"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("restart_requested"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 

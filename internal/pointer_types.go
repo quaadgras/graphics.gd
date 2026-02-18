@@ -2,6 +2,7 @@ package gd
 
 import (
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
 )
 
@@ -11,8 +12,8 @@ import (
 // is required for the pointers garbage collector to call the correct
 // Free method.
 
-type Object pointers.Trio[Object]     // pointer, objectID, reserved
-type RefCounted pointers.Trio[Object] // pointer, objectID, reserved
+type Object = gdreference.Object
+type RefCounted gdreference.Object
 
 type enginePointer = EnginePointer
 type packedPointers = PackedPointers

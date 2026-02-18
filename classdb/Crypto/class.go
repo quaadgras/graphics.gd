@@ -52,6 +52,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -273,14 +274,14 @@ type class [1]gdclass.Crypto
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewCrypto(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewCrypto(obj[0])
 		return true
 	}
@@ -290,23 +291,23 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.Crypto{gdclass.NewCrypto(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.Crypto{gdclass.NewCrypto(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetCrypto(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetCrypto(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.Crypto{gdclass.NewCrypto(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
+	casted := Instance([1]gdclass.Crypto{gdclass.NewCrypto(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
 	casted.AsRefCounted()[0].InitRef()
-	casted.AsObject()[0].Notification(0, false)
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -317,7 +318,7 @@ func (self class) GenerateRandomBytes(size int64) Packed.Bytes { //gd:Crypto.gen
 }
 func (self class) GenerateRsa(size int64) [1]gdclass.CryptoKey { //gd:Crypto.generate_rsa
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.generate_rsa, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
-	var ret = [1]gdclass.CryptoKey{gdclass.NewCryptoKey(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.CryptoKey{gdclass.NewCryptoKey(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey, issuer_name String.Readable, not_before String.Readable, not_after String.Readable) [1]gdclass.X509Certificate { //gd:Crypto.generate_self_signed_certificate
@@ -327,7 +328,7 @@ func (self class) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey, issuer
 		not_before  gdextension.String
 		not_after   gdextension.String
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetCryptoKey(key[0]))), pointers.Get(gd.InternalString(issuer_name)), pointers.Get(gd.InternalString(not_before)), pointers.Get(gd.InternalString(not_after))})
-	var ret = [1]gdclass.X509Certificate{gdclass.NewX509Certificate(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.X509Certificate{gdclass.NewX509Certificate(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) Sign(hash_type HashingContext.HashType, hash Packed.Bytes, key [1]gdclass.CryptoKey) Packed.Bytes { //gd:Crypto.sign

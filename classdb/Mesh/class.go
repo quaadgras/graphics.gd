@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -358,9 +359,9 @@ Virtual method to override the setting of a 'material' at the given 'index' for 
 func (Instance) _surface_set_material(impl func(ptr gdclass.Receiver, index int, material Material.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
-		var material = [1]gdclass.Material{gdclass.NewMaterial(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
+		var material = [1]gdclass.Material{gdclass.NewMaterial(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 1), gd.Free))}
 
-		defer pointers.End(gdclass.GetMaterial(material[0])[0])
+		defer gdreference.EndObject(gdclass.GetMaterial(material[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, int(index), material)
 	}
@@ -376,7 +377,7 @@ func (Instance) _surface_get_material(impl func(ptr gdclass.Receiver, index int)
 		var index = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(index))
-		ptr, ok := pointers.End(gdclass.GetMaterial(ret[0])[0])
+		ptr, ok := gdreference.EndObject(gdclass.GetMaterial(ret[0])[0])
 
 		if !ok {
 			return
@@ -588,14 +589,14 @@ type class [1]gdclass.Mesh
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewMesh(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewMesh(obj[0])
 		return true
 	}
@@ -605,23 +606,23 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.Mesh{gdclass.NewMesh(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.Mesh{gdclass.NewMesh(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetMesh(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetMesh(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.Mesh{gdclass.NewMesh(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
+	casted := Instance([1]gdclass.Mesh{gdclass.NewMesh(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
 	casted.AsRefCounted()[0].InitRef()
-	casted.AsObject()[0].Notification(0, false)
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -718,9 +719,9 @@ func (class) _surface_get_primitive_type(impl func(ptr gdclass.Receiver, index i
 func (class) _surface_set_material(impl func(ptr gdclass.Receiver, index int64, material [1]gdclass.Material)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
-		var material = [1]gdclass.Material{gdclass.NewMaterial(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
+		var material = [1]gdclass.Material{gdclass.NewMaterial(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 1), gd.Free))}
 
-		defer pointers.End(gdclass.GetMaterial(material[0])[0])
+		defer gdreference.EndObject(gdclass.GetMaterial(material[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, index, material)
 	}
@@ -730,7 +731,7 @@ func (class) _surface_get_material(impl func(ptr gdclass.Receiver, index int64) 
 		var index = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, index)
-		ptr, ok := pointers.End(gdclass.GetMaterial(ret[0])[0])
+		ptr, ok := gdreference.EndObject(gdclass.GetMaterial(ret[0])[0])
 
 		if !ok {
 			return
@@ -816,17 +817,17 @@ func (self class) SurfaceSetMaterial(surf_idx int64, material [1]gdclass.Materia
 }
 func (self class) SurfaceGetMaterial(surf_idx int64) [1]gdclass.Material { //gd:Mesh.surface_get_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.surface_get_material, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ surf_idx int64 }{surf_idx})
-	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:Mesh.create_placeholder
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_placeholder, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Resource{gdclass.NewResource(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Resource{gdclass.NewResource(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) CreateTrimeshShape() [1]gdclass.ConcavePolygonShape3D { //gd:Mesh.create_trimesh_shape
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_trimesh_shape, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.ConcavePolygonShape3D{gdclass.NewConcavePolygonShape3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.ConcavePolygonShape3D{gdclass.NewConcavePolygonShape3D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) CreateConvexShape(clean bool, simplify bool) [1]gdclass.ConvexPolygonShape3D { //gd:Mesh.create_convex_shape
@@ -834,17 +835,17 @@ func (self class) CreateConvexShape(clean bool, simplify bool) [1]gdclass.Convex
 		clean    bool
 		simplify bool
 	}{clean, simplify})
-	var ret = [1]gdclass.ConvexPolygonShape3D{gdclass.NewConvexPolygonShape3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.ConvexPolygonShape3D{gdclass.NewConvexPolygonShape3D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) CreateOutline(margin float64) [1]gdclass.Mesh { //gd:Mesh.create_outline
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_outline, gdextension.SizeObject|(gdextension.SizeFloat<<4), &struct{ margin float64 }{margin})
-	var ret = [1]gdclass.Mesh{gdclass.NewMesh(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Mesh{gdclass.NewMesh(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GenerateTriangleMesh() [1]gdclass.TriangleMesh { //gd:Mesh.generate_triangle_mesh
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.generate_triangle_mesh, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.TriangleMesh{gdclass.NewTriangleMesh(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.TriangleMesh{gdclass.NewTriangleMesh(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (o class) AsMesh() Advanced                      { return Advanced(o) }

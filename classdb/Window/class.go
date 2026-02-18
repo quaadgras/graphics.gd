@@ -16,6 +16,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -1357,14 +1358,14 @@ type class [1]gdclass.Window
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewWindow(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewWindow(obj[0])
 		return true
 	}
@@ -1374,22 +1375,22 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.Window{gdclass.NewWindow(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.Window{gdclass.NewWindow(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetWindow(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetWindow(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.Window{gdclass.NewWindow(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.Window{gdclass.NewWindow(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -2343,7 +2344,7 @@ func (self class) SetTheme(theme [1]gdclass.Theme) { //gd:Window.set_theme
 }
 func (self class) GetTheme() [1]gdclass.Theme { //gd:Window.get_theme
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Theme{gdclass.NewTheme(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Theme{gdclass.NewTheme(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetThemeTypeVariation(theme_type String.Name) { //gd:Window.set_theme_type_variation
@@ -2419,7 +2420,7 @@ func (self class) GetThemeIcon(name String.Name, theme_type String.Name) [1]gdcl
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
-	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetThemeStylebox(name String.Name, theme_type String.Name) [1]gdclass.StyleBox { //gd:Window.get_theme_stylebox
@@ -2427,7 +2428,7 @@ func (self class) GetThemeStylebox(name String.Name, theme_type String.Name) [1]
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
-	var ret = [1]gdclass.StyleBox{gdclass.NewStyleBox(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.StyleBox{gdclass.NewStyleBox(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetThemeFont(name String.Name, theme_type String.Name) [1]gdclass.Font { //gd:Window.get_theme_font
@@ -2435,7 +2436,7 @@ func (self class) GetThemeFont(name String.Name, theme_type String.Name) [1]gdcl
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
-	var ret = [1]gdclass.Font{gdclass.NewFont(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Font{gdclass.NewFont(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetThemeFontSize(name String.Name, theme_type String.Name) int64 { //gd:Window.get_theme_font_size
@@ -2547,7 +2548,7 @@ func (self class) GetThemeDefaultBaseScale() float64 { //gd:Window.get_theme_def
 }
 func (self class) GetThemeDefaultFont() [1]gdclass.Font { //gd:Window.get_theme_default_font
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme_default_font, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Font{gdclass.NewFont(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Font{gdclass.NewFont(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetThemeDefaultFontSize() int64 { //gd:Window.get_theme_default_font_size
@@ -2578,7 +2579,7 @@ func (self class) GetAccessibilityDescription() String.Readable { //gd:Window.ge
 }
 func (self class) GetFocusedWindow() [1]gdclass.Window { //gd:Window.get_focused_window
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.get_focused_window, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Window{gdclass.NewWindow(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Window{gdclass.NewWindow(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) SetLayoutDirection(direction LayoutDirection) { //gd:Window.set_layout_direction
@@ -2670,7 +2671,7 @@ func (self Instance) OnWindowInput(cb func(event InputEvent.Instance), flags ...
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("window_input"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("window_input"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2688,7 +2689,7 @@ func (self Instance) OnNonclientWindowInput(cb func(event InputEvent.Instance), 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("nonclient_window_input"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("nonclient_window_input"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2709,7 +2710,7 @@ func (self Instance) OnFilesDropped(cb func(files []string), flags ...Signal.Fla
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("files_dropped"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("files_dropped"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2729,7 +2730,7 @@ func (self Instance) OnMouseEntered(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("mouse_entered"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("mouse_entered"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2749,7 +2750,7 @@ func (self Instance) OnMouseExited(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("mouse_exited"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("mouse_exited"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2767,7 +2768,7 @@ func (self Instance) OnFocusEntered(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("focus_entered"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("focus_entered"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2785,7 +2786,7 @@ func (self Instance) OnFocusExited(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("focus_exited"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("focus_exited"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2807,7 +2808,7 @@ func (self Instance) OnCloseRequested(cb func(), flags ...Signal.Flags) Instance
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("close_requested"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("close_requested"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2823,7 +2824,7 @@ func (self Instance) OnGoBackRequested(cb func(), flags ...Signal.Flags) Instanc
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("go_back_requested"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("go_back_requested"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2841,7 +2842,7 @@ func (self Instance) OnVisibilityChanged(cb func(), flags ...Signal.Flags) Insta
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("visibility_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("visibility_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2860,7 +2861,7 @@ func (self Instance) OnAboutToPopup(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("about_to_popup"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("about_to_popup"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2876,7 +2877,7 @@ func (self Instance) OnThemeChanged(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("theme_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("theme_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2896,7 +2897,7 @@ func (self Instance) OnDpiChanged(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("dpi_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("dpi_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2912,7 +2913,7 @@ func (self Instance) OnTitlebarChanged(cb func(), flags ...Signal.Flags) Instanc
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("titlebar_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("titlebar_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2928,7 +2929,7 @@ func (self Instance) OnTitleChanged(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("title_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("title_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 

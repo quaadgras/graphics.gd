@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -200,15 +201,15 @@ Care must be taken because this function is always called from a thread (not the
 */
 func (Instance) _generate(impl func(ptr gdclass.Receiver, resource Resource.Instance, size Vector2i.XY, metadata map[string]interface{}) Texture2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var resource = [1]gdclass.Resource{gdclass.NewResource(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetResource(resource[0])[0])
+		defer gdreference.EndObject(gdclass.GetResource(resource[0])[0])
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var metadata = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(metadata))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, resource, size, gd.DictionaryAs[map[string]interface{}](metadata))
-		ptr, ok := pointers.End(gdclass.GetTexture2D(ret[0])[0])
+		ptr, ok := gdreference.EndObject(gdclass.GetTexture2D(ret[0])[0])
 
 		if !ok {
 			return
@@ -238,7 +239,7 @@ func (Instance) _generate_from_path(impl func(ptr gdclass.Receiver, path string,
 		defer pointers.End(gd.InternalDictionary(metadata))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, path.String(), size, gd.DictionaryAs[map[string]interface{}](metadata))
-		ptr, ok := pointers.End(gdclass.GetTexture2D(ret[0])[0])
+		ptr, ok := gdreference.EndObject(gdclass.GetTexture2D(ret[0])[0])
 
 		if !ok {
 			return
@@ -294,14 +295,14 @@ type class [1]gdclass.EditorResourcePreviewGenerator
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorResourcePreviewGenerator(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorResourcePreviewGenerator(obj[0])
 		return true
 	}
@@ -311,23 +312,23 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.EditorResourcePreviewGenerator{gdclass.NewEditorResourcePreviewGenerator(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.EditorResourcePreviewGenerator{gdclass.NewEditorResourcePreviewGenerator(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetEditorResourcePreviewGenerator(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetEditorResourcePreviewGenerator(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.EditorResourcePreviewGenerator{gdclass.NewEditorResourcePreviewGenerator(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
+	casted := Instance([1]gdclass.EditorResourcePreviewGenerator{gdclass.NewEditorResourcePreviewGenerator(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
 	casted.AsRefCounted()[0].InitRef()
-	casted.AsObject()[0].Notification(0, false)
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 func (class) _handles(impl func(ptr gdclass.Receiver, atype String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -341,15 +342,15 @@ func (class) _handles(impl func(ptr gdclass.Receiver, atype String.Readable) boo
 }
 func (class) _generate(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resource, size Vector2i.XY, metadata Dictionary.Any) [1]gdclass.Texture2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var resource = [1]gdclass.Resource{gdclass.NewResource(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetResource(resource[0])[0])
+		defer gdreference.EndObject(gdclass.GetResource(resource[0])[0])
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var metadata = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(metadata))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, resource, size, metadata)
-		ptr, ok := pointers.End(gdclass.GetTexture2D(ret[0])[0])
+		ptr, ok := gdreference.EndObject(gdclass.GetTexture2D(ret[0])[0])
 
 		if !ok {
 			return
@@ -366,7 +367,7 @@ func (class) _generate_from_path(impl func(ptr gdclass.Receiver, path String.Rea
 		defer pointers.End(gd.InternalDictionary(metadata))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, path, size, metadata)
-		ptr, ok := pointers.End(gdclass.GetTexture2D(ret[0])[0])
+		ptr, ok := gdreference.EndObject(gdclass.GetTexture2D(ret[0])[0])
 
 		if !ok {
 			return

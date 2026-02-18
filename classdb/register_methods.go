@@ -7,6 +7,7 @@ import (
 
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/internal/threadsafe"
 	"graphics.gd/variant/Array"
@@ -248,7 +249,7 @@ func slowCall(hasContext bool, method reflect.Value, p_args, p_ret gdextension.P
 				value = gd.UnsafeGet[gd.RID](p_args, i-offset)
 			case gdextension.TypeObject:
 				ptr := gd.UnsafeGet[gd.EnginePointer](p_args, i-offset)
-				val := [1]gd.Object{pointers.Let[gd.Object]([3]uint64{uint64(ptr)})}
+				val := [1]gd.Object{gdreference.LetObject(gdextension.Object(ptr))}
 				value = val
 			case gdextension.TypeCallable:
 				ptr := gd.UnsafeGet[[2]uint64](p_args, i-offset)

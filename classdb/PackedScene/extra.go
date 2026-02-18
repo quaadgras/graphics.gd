@@ -9,7 +9,7 @@ import (
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdclass"
 	"graphics.gd/internal/gdextension"
-	"graphics.gd/internal/pointers"
+	"graphics.gd/internal/gdreference"
 	"graphics.gd/variant/Object"
 )
 
@@ -30,7 +30,7 @@ func (self Is[T]) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
 func (self *Is[T]) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = *(*gdclass.PackedScene)(unsafe.Pointer(&obj))
 		return true
 	}

@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -416,14 +417,14 @@ type class [1]gdclass.OpenXRSpatialEntityExtension
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewOpenXRSpatialEntityExtension(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewOpenXRSpatialEntityExtension(obj[0])
 		return true
 	}
@@ -433,22 +434,22 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.OpenXRSpatialEntityExtension{gdclass.NewOpenXRSpatialEntityExtension(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.OpenXRSpatialEntityExtension{gdclass.NewOpenXRSpatialEntityExtension(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetOpenXRSpatialEntityExtension(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetOpenXRSpatialEntityExtension(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.OpenXRSpatialEntityExtension{gdclass.NewOpenXRSpatialEntityExtension(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.OpenXRSpatialEntityExtension{gdclass.NewOpenXRSpatialEntityExtension(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -471,7 +472,7 @@ func (self class) CreateSpatialContext(capability_configurations Array.Contains[
 		next                      gdextension.Object
 		user_callback             gdextension.Callable
 	}{pointers.Get(gd.InternalArray(capability_configurations)), gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRStructureBase(next[0]))), pointers.Get(gd.InternalCallable(user_callback))})
-	var ret = [1]gdclass.OpenXRFutureResult{gdclass.NewOpenXRFutureResult(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.OpenXRFutureResult{gdclass.NewOpenXRFutureResult(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetSpatialContextReady(spatial_context RID.Any) bool { //gd:OpenXRSpatialEntityExtension.get_spatial_context_ready
@@ -494,7 +495,7 @@ func (self class) DiscoverSpatialEntities(spatial_context RID.Any, component_typ
 		next            gdextension.Object
 		user_callback   gdextension.Callable
 	}{spatial_context, pointers.Get(gd.InternalPacked[gd.PackedInt64Array, int64](component_types)), gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRStructureBase(next[0]))), pointers.Get(gd.InternalCallable(user_callback))})
-	var ret = [1]gdclass.OpenXRFutureResult{gdclass.NewOpenXRFutureResult(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.OpenXRFutureResult{gdclass.NewOpenXRFutureResult(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) UpdateSpatialEntities(spatial_context RID.Any, entities Array.Contains[RID.Any], component_types Packed.Array[int64], next [1]gdclass.OpenXRStructureBase) RID.Any { //gd:OpenXRSpatialEntityExtension.update_spatial_entities
@@ -629,7 +630,7 @@ func (self Instance) OnSpatialDiscoveryRecommended(cb func(spatial_context RID.A
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("spatial_discovery_recommended"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("spatial_discovery_recommended"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 

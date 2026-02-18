@@ -16,6 +16,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -191,9 +192,9 @@ A virtual function for processing after getting a key during playback.
 */
 func (Instance) _post_process_key_value(impl func(ptr gdclass.Receiver, animation Animation.Instance, track int, value any, object_id int, object_sub_idx int) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var animation = [1]gdclass.Animation{gdclass.NewAnimation(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var animation = [1]gdclass.Animation{gdclass.NewAnimation(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetAnimation(animation[0])[0])
+		defer gdreference.EndObject(gdclass.GetAnimation(animation[0])[0])
 		var track = gd.UnsafeGet[int64](p_args, 1)
 		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(value))
@@ -526,14 +527,14 @@ type class [1]gdclass.AnimationMixer
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewAnimationMixer(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewAnimationMixer(obj[0])
 		return true
 	}
@@ -543,22 +544,22 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.AnimationMixer{gdclass.NewAnimationMixer(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.AnimationMixer{gdclass.NewAnimationMixer(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetAnimationMixer(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetAnimationMixer(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.AnimationMixer{gdclass.NewAnimationMixer(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.AnimationMixer{gdclass.NewAnimationMixer(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -734,9 +735,9 @@ func (self Instance) SetCallbackModeDiscrete(value AnimationCallbackModeDiscrete
 }
 func (class) _post_process_key_value(impl func(ptr gdclass.Receiver, animation [1]gdclass.Animation, track int64, value variant.Any, object_id int64, object_sub_idx int64) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var animation = [1]gdclass.Animation{gdclass.NewAnimation(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var animation = [1]gdclass.Animation{gdclass.NewAnimation(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetAnimation(animation[0])[0])
+		defer gdreference.EndObject(gdclass.GetAnimation(animation[0])[0])
 		var track = gd.UnsafeGet[int64](p_args, 1)
 		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(value))
@@ -777,7 +778,7 @@ func (self class) HasAnimationLibrary(name String.Name) bool { //gd:AnimationMix
 }
 func (self class) GetAnimationLibrary(name String.Name) [1]gdclass.AnimationLibrary { //gd:AnimationMixer.get_animation_library
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_animation_library, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
-	var ret = [1]gdclass.AnimationLibrary{gdclass.NewAnimationLibrary(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.AnimationLibrary{gdclass.NewAnimationLibrary(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetAnimationLibraryList() Array.Contains[String.Name] { //gd:AnimationMixer.get_animation_library_list
@@ -792,7 +793,7 @@ func (self class) HasAnimation(name String.Name) bool { //gd:AnimationMixer.has_
 }
 func (self class) GetAnimation(name String.Name) [1]gdclass.Animation { //gd:AnimationMixer.get_animation
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_animation, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
-	var ret = [1]gdclass.Animation{gdclass.NewAnimation(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Animation{gdclass.NewAnimation(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetAnimationList() Packed.Strings { //gd:AnimationMixer.get_animation_list
@@ -943,7 +944,7 @@ func (self Instance) OnAnimationListChanged(cb func(), flags ...Signal.Flags) In
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("animation_list_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("animation_list_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -959,7 +960,7 @@ func (self Instance) OnAnimationLibrariesUpdated(cb func(), flags ...Signal.Flag
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("animation_libraries_updated"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("animation_libraries_updated"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -977,7 +978,7 @@ func (self Instance) OnAnimationFinished(cb func(anim_name string), flags ...Sig
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("animation_finished"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("animation_finished"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -995,7 +996,7 @@ func (self Instance) OnAnimationStarted(cb func(anim_name string), flags ...Sign
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("animation_started"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("animation_started"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1013,7 +1014,7 @@ func (self Instance) OnCachesCleared(cb func(), flags ...Signal.Flags) Instance 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("caches_cleared"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("caches_cleared"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1029,7 +1030,7 @@ func (self Instance) OnMixerApplied(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("mixer_applied"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("mixer_applied"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1045,7 +1046,7 @@ func (self Instance) OnMixerUpdated(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("mixer_updated"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("mixer_updated"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 

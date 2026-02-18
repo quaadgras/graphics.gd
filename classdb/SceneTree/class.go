@@ -17,6 +17,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -593,14 +594,14 @@ type class [1]gdclass.SceneTree
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewSceneTree(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewSceneTree(obj[0])
 		return true
 	}
@@ -610,22 +611,22 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.SceneTree{gdclass.NewSceneTree(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.SceneTree{gdclass.NewSceneTree(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetSceneTree(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetSceneTree(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.SceneTree{gdclass.NewSceneTree(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.SceneTree{gdclass.NewSceneTree(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -830,7 +831,7 @@ func (self Instance) SetPhysicsInterpolation(value bool) Instance { //gd:SceneTr
 
 func (self class) GetRoot() [1]gdclass.Window { //gd:SceneTree.get_root
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_root, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Window{gdclass.NewWindow(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Window{gdclass.NewWindow(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) HasGroup(name String.Name) bool { //gd:SceneTree.has_group
@@ -893,7 +894,7 @@ func (self class) SetEditedSceneRoot(scene [1]gdclass.Node) { //gd:SceneTree.set
 }
 func (self class) GetEditedSceneRoot() [1]gdclass.Node { //gd:SceneTree.get_edited_scene_root
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_scene_root, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Node{gdclass.NewNode(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) SetPause(enable bool) { //gd:SceneTree.set_pause
@@ -911,12 +912,12 @@ func (self class) CreateTimer(time_sec float64, process_always bool, process_in_
 		process_in_physics bool
 		ignore_time_scale  bool
 	}{time_sec, process_always, process_in_physics, ignore_time_scale})
-	var ret = [1]gdclass.SceneTreeTimer{gdclass.NewSceneTreeTimer(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.SceneTreeTimer{gdclass.NewSceneTreeTimer(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) CreateTween() [1]gdclass.Tween { //gd:SceneTree.create_tween
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_tween, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetProcessedTweens() Array.Contains[[1]gdclass.Tween] { //gd:SceneTree.get_processed_tweens
@@ -1009,7 +1010,7 @@ func (self class) GetNodesInGroup(group String.Name) Array.Contains[[1]gdclass.N
 }
 func (self class) GetFirstNodeInGroup(group String.Name) [1]gdclass.Node { //gd:SceneTree.get_first_node_in_group
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_first_node_in_group, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ group gdextension.StringName }{pointers.Get(gd.InternalStringName(group))})
-	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Node{gdclass.NewNode(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) GetNodeCountInGroup(group String.Name) int64 { //gd:SceneTree.get_node_count_in_group
@@ -1022,7 +1023,7 @@ func (self class) SetCurrentScene(child_node [1]gdclass.Node) { //gd:SceneTree.s
 }
 func (self class) GetCurrentScene() [1]gdclass.Node { //gd:SceneTree.get_current_scene
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_current_scene, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Node{gdclass.NewNode(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) ChangeSceneToFile(path String.Readable) Error.Code { //gd:SceneTree.change_scene_to_file
@@ -1056,7 +1057,7 @@ func (self class) SetMultiplayer(multiplayer [1]gdclass.MultiplayerAPI, root_pat
 }
 func (self class) GetMultiplayer(for_path Path.ToNode) [1]gdclass.MultiplayerAPI { //gd:SceneTree.get_multiplayer
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_multiplayer, gdextension.SizeObject|(gdextension.SizeNodePath<<4), &struct{ for_path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(for_path))})
-	var ret = [1]gdclass.MultiplayerAPI{gdclass.NewMultiplayerAPI(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.MultiplayerAPI{gdclass.NewMultiplayerAPI(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetMultiplayerPollEnabled(enabled bool) { //gd:SceneTree.set_multiplayer_poll_enabled
@@ -1076,7 +1077,7 @@ func (self Instance) OnTreeChanged(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("tree_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("tree_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1094,7 +1095,7 @@ func (self Instance) OnSceneChanged(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("scene_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("scene_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1112,7 +1113,7 @@ func (self Instance) OnTreeProcessModeChanged(cb func(), flags ...Signal.Flags) 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("tree_process_mode_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("tree_process_mode_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1128,7 +1129,7 @@ func (self Instance) OnNodeAdded(cb func(node Node.Instance), flags ...Signal.Fl
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("node_added"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("node_added"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1144,7 +1145,7 @@ func (self Instance) OnNodeRemoved(cb func(node Node.Instance), flags ...Signal.
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("node_removed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("node_removed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1162,7 +1163,7 @@ func (self Instance) OnNodeRenamed(cb func(node Node.Instance), flags ...Signal.
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("node_renamed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("node_renamed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1180,7 +1181,7 @@ func (self Instance) OnNodeConfigurationWarningChanged(cb func(node Node.Instanc
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("node_configuration_warning_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("node_configuration_warning_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1198,7 +1199,7 @@ func (self Instance) OnProcessFrame(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("process_frame"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("process_frame"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1216,7 +1217,7 @@ func (self Instance) OnPhysicsFrame(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("physics_frame"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("physics_frame"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 

@@ -25,6 +25,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -2354,14 +2355,14 @@ type class [1]gdclass.TextEdit
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewTextEdit(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewTextEdit(obj[0])
 		return true
 	}
@@ -2371,22 +2372,22 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.TextEdit{gdclass.NewTextEdit(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.TextEdit{gdclass.NewTextEdit(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetTextEdit(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetTextEdit(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.TextEdit{gdclass.NewTextEdit(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.TextEdit{gdclass.NewTextEdit(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -3860,12 +3861,12 @@ func (self class) IsSmoothScrollEnabled() bool { //gd:TextEdit.is_smooth_scroll_
 }
 func (self class) GetVScrollBar() [1]gdclass.VScrollBar { //gd:TextEdit.get_v_scroll_bar
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_v_scroll_bar, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.VScrollBar{gdclass.NewVScrollBar(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
+	var ret = [1]gdclass.VScrollBar{gdclass.NewVScrollBar(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) GetHScrollBar() [1]gdclass.HScrollBar { //gd:TextEdit.get_h_scroll_bar
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_h_scroll_bar, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.HScrollBar{gdclass.NewHScrollBar(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
+	var ret = [1]gdclass.HScrollBar{gdclass.NewHScrollBar(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) SetVScroll(value float64) { //gd:TextEdit.set_v_scroll
@@ -4138,7 +4139,7 @@ func (self class) GetLineGutterIcon(line int64, gutter int64) [1]gdclass.Texture
 		line   int64
 		gutter int64
 	}{line, gutter})
-	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetLineGutterItemColor(line int64, gutter int64, color Color.RGBA) { //gd:TextEdit.set_line_gutter_item_color
@@ -4187,7 +4188,7 @@ func (self class) SetSyntaxHighlighter(syntax_highlighter [1]gdclass.SyntaxHighl
 }
 func (self class) GetSyntaxHighlighter() [1]gdclass.SyntaxHighlighter { //gd:TextEdit.get_syntax_highlighter
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_syntax_highlighter, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.SyntaxHighlighter{gdclass.NewSyntaxHighlighter(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.SyntaxHighlighter{gdclass.NewSyntaxHighlighter(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetHighlightCurrentLine(enabled bool) { //gd:TextEdit.set_highlight_current_line
@@ -4232,7 +4233,7 @@ func (self class) IsDrawingSpaces() bool { //gd:TextEdit.is_drawing_spaces
 }
 func (self class) GetMenu() [1]gdclass.PopupMenu { //gd:TextEdit.get_menu
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_menu, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.PopupMenu{gdclass.NewPopupMenu(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
+	var ret = [1]gdclass.PopupMenu{gdclass.NewPopupMenu(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) IsMenuVisible() bool { //gd:TextEdit.is_menu_visible
@@ -4279,7 +4280,7 @@ func (self Instance) OnTextSet(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("text_set"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("text_set"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -4295,7 +4296,7 @@ func (self Instance) OnTextChanged(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("text_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("text_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -4313,7 +4314,7 @@ func (self Instance) OnLinesEditedFrom(cb func(from_line int, to_line int), flag
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("lines_edited_from"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("lines_edited_from"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -4329,7 +4330,7 @@ func (self Instance) OnCaretChanged(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("caret_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("caret_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -4345,7 +4346,7 @@ func (self Instance) OnGutterClicked(cb func(line int, gutter int), flags ...Sig
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("gutter_clicked"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("gutter_clicked"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -4361,7 +4362,7 @@ func (self Instance) OnGutterAdded(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("gutter_added"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("gutter_added"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -4377,7 +4378,7 @@ func (self Instance) OnGutterRemoved(cb func(), flags ...Signal.Flags) Instance 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("gutter_removed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("gutter_removed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 

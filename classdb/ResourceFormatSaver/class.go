@@ -16,6 +16,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -159,9 +160,9 @@ Returns [Ok] on success, or an [Error] constant in case of failure.
 */
 func (Instance) _save(impl func(ptr gdclass.Receiver, resource Resource.Instance, path string, flags int) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var resource = [1]gdclass.Resource{gdclass.NewResource(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetResource(resource[0])[0])
+		defer gdreference.EndObject(gdclass.GetResource(resource[0])[0])
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[int64](p_args, 2)
@@ -200,9 +201,9 @@ Returns whether the given resource object can be saved by this saver.
 */
 func (Instance) _recognize(impl func(ptr gdclass.Receiver, resource Resource.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var resource = [1]gdclass.Resource{gdclass.NewResource(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetResource(resource[0])[0])
+		defer gdreference.EndObject(gdclass.GetResource(resource[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, resource)
 		gd.UnsafeSet(p_back, ret)
@@ -216,9 +217,9 @@ Returns the list of extensions available for saving the resource object, provide
 */
 func (Instance) _get_recognized_extensions(impl func(ptr gdclass.Receiver, resource Resource.Instance) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var resource = [1]gdclass.Resource{gdclass.NewResource(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetResource(resource[0])[0])
+		defer gdreference.EndObject(gdclass.GetResource(resource[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, resource)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
@@ -239,9 +240,9 @@ If this method is not implemented, the default behavior returns whether the path
 */
 func (Instance) _recognize_path(impl func(ptr gdclass.Receiver, resource Resource.Instance, path string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var resource = [1]gdclass.Resource{gdclass.NewResource(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetResource(resource[0])[0])
+		defer gdreference.EndObject(gdclass.GetResource(resource[0])[0])
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -256,14 +257,14 @@ type class [1]gdclass.ResourceFormatSaver
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewResourceFormatSaver(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewResourceFormatSaver(obj[0])
 		return true
 	}
@@ -273,30 +274,30 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.ResourceFormatSaver{gdclass.NewResourceFormatSaver(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.ResourceFormatSaver{gdclass.NewResourceFormatSaver(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetResourceFormatSaver(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetResourceFormatSaver(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.ResourceFormatSaver{gdclass.NewResourceFormatSaver(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
+	casted := Instance([1]gdclass.ResourceFormatSaver{gdclass.NewResourceFormatSaver(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
 	casted.AsRefCounted()[0].InitRef()
-	casted.AsObject()[0].Notification(0, false)
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 func (class) _save(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resource, path String.Readable, flags int64) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var resource = [1]gdclass.Resource{gdclass.NewResource(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetResource(resource[0])[0])
+		defer gdreference.EndObject(gdclass.GetResource(resource[0])[0])
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[int64](p_args, 2)
@@ -327,9 +328,9 @@ func (class) _set_uid(impl func(ptr gdclass.Receiver, path String.Readable, uid 
 }
 func (class) _recognize(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resource) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var resource = [1]gdclass.Resource{gdclass.NewResource(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetResource(resource[0])[0])
+		defer gdreference.EndObject(gdclass.GetResource(resource[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, resource)
 		gd.UnsafeSet(p_back, ret)
@@ -337,9 +338,9 @@ func (class) _recognize(impl func(ptr gdclass.Receiver, resource [1]gdclass.Reso
 }
 func (class) _get_recognized_extensions(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resource) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var resource = [1]gdclass.Resource{gdclass.NewResource(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetResource(resource[0])[0])
+		defer gdreference.EndObject(gdclass.GetResource(resource[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, resource)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
@@ -352,9 +353,9 @@ func (class) _get_recognized_extensions(impl func(ptr gdclass.Receiver, resource
 }
 func (class) _recognize_path(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resource, path String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var resource = [1]gdclass.Resource{gdclass.NewResource(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetResource(resource[0])[0])
+		defer gdreference.EndObject(gdclass.GetResource(resource[0])[0])
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())

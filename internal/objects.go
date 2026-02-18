@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
 )
 
@@ -18,40 +19,39 @@ var ExtensionInstanceGoOnly func(gdextension.Object, bool)
 
 type NotificationType int32
 
-func PointerWithOwnershipTransferredToGo[T pointers.Generic[T, [3]uint64]](ptr gdextension.Object) T {
+func PointerWithOwnershipTransferredToGo(ptr gdextension.Object) gdreference.Object {
 	if ptr == 0 {
-		return T{}
+		return gdreference.Object{}
 	}
 	ExtensionInstanceGoOnly(ptr, true)
-	return pointers.New[T]([3]uint64{uint64(ptr)})
+	return gdreference.OwnObject(ptr, Free)
 }
 
-func PointerBorrowedTemporarily[T pointers.Generic[T, [3]uint64]](ptr gdextension.Object) T {
+func PointerBorrowedTemporarily(ptr gdextension.Object) gdreference.Object {
 	if ptr == 0 {
-		return T{}
+		return gdreference.Object{}
 	}
-	return pointers.Let[T]([3]uint64{uint64(ptr)})
+	return gdreference.LetObject(ptr)
 }
 
-func PointerWithOwnershipTransferredToGodot[T pointers.Generic[T, [3]uint64]](ptr T) EnginePointer {
-	raw := pointers.Get(ptr)
-	var id gdextension.ObjectID
-	gdextension.Host.Objects.ID.Get(gdextension.Object(raw[0]), gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
-	ExtensionInstanceGoOnly(gdextension.Object(raw[0]), false)
-	pointers.Set(ptr, [3]uint64{raw[0], uint64(id)})
-	pointers.Lay(ptr)
-	if raw[1] != 0 {
+func PointerWithOwnershipTransferredToGodot(obj Object) EnginePointer {
+	raw, ok := gdreference.EndObject(obj)
+	if !ok {
 		panic("illegal transfer of ownership from Go -> Godot")
 	}
-	return EnginePointer(raw[0])
+	var id gdextension.ObjectID
+	gdextension.Host.Objects.ID.Get(raw, gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
+	ExtensionInstanceGoOnly(raw, false)
+	return EnginePointer(raw)
 }
 
-func PointerQueueFree[T pointers.Generic[T, [3]uint64]](ptr T) {
-	raw := pointers.Get(ptr)
+func PointerQueueFree(ptr gdreference.Object) {
+	raw, ok := gdreference.EndObject(ptr)
+	if !ok {
+		panic("cannot queue free an object that is not owned by Go")
+	}
 	var id gdextension.ObjectID
-	gdextension.Host.Objects.ID.Get(gdextension.Object(raw[0]), gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
-	pointers.Set(ptr, [3]uint64{raw[0], uint64(id)})
-	pointers.Lay(ptr)
+	gdextension.Host.Objects.ID.Get(raw, gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
 }
 
 func PointerMustAssertInstanceID[T pointers.Generic[T, [3]uint64]](ptr gdextension.Object) T {
@@ -63,11 +63,11 @@ func PointerMustAssertInstanceID[T pointers.Generic[T, [3]uint64]](ptr gdextensi
 	return pointers.Let[T]([3]uint64{uint64(ptr), uint64(id)})
 }
 
-func PointerLifetimeBoundTo[T pointers.Generic[T, [3]uint64]](obj [1]Object, ptr gdextension.Object) T {
+func PointerLifetimeBoundTo(obj [1]Object, ptr gdextension.Object) gdreference.Object {
 	if ptr == 0 {
-		return T{}
+		return gdreference.Object{}
 	}
-	return pointers.Let[T]([3]uint64{uint64(ptr), 0})
+	return gdreference.LetObject(ptr)
 }
 
 func CallerIncrements(obj [1]Object) gdextension.Object {
@@ -76,22 +76,7 @@ func CallerIncrements(obj [1]Object) gdextension.Object {
 }
 
 func ObjectChecked(obj [1]Object) gdextension.Object {
-	raw := pointers.Get(obj[0])
-	if !obj[0].IsAlive(raw) {
-		panic("use after free")
-	}
-	if raw == [3]uint64{} {
-		return 0
-	}
-	return gdextension.Object(raw[0])
-}
-
-func (self Object) AsObject() [1]Object {
-	return [1]Object{self}
-}
-
-func (class Object) Virtual(s string) reflect.Value {
-	return reflect.Value{}
+	return gdreference.GetObject(obj[0])
 }
 
 func (self RefCounted) AsObject() [1]Object {
@@ -103,13 +88,11 @@ func (class RefCounted) Virtual(s string) reflect.Value {
 }
 
 func (self RefCounted) Free() {
-	_, ok := pointers.End(Object(self))
-	if !ok {
-		return
-	}
+	ObjectFree(self.AsObject()[0])
 }
+
 func (self *RefCounted) SetObject(obj [1]Object) bool {
-	ref := gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), refCountedClassTag)
+	ref := gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), refCountedClassTag)
 	if ref != 0 {
 		*self = RefCounted(obj[0])
 		return true
@@ -117,28 +100,35 @@ func (self *RefCounted) SetObject(obj [1]Object) bool {
 	return false
 }
 
-func (self Object) IsAlive(raw [3]uint64) bool {
+func ObjectIsAlive(raw [3]uint64) bool {
 	return raw[1] == 0 || gdextension.Host.Objects.Lookup(gdextension.ObjectID(raw[1])) != 0
 }
 
-func (self Object) Free() {
-	raw, ok := pointers.End(self)
-	if !ok {
+func Free(raw gdextension.Object) {
+	if raw == 0 {
 		return
 	}
 	//fmt.Println(raw)
-	//fmt.Fprintln(os.Stderr, "FREE ", pointers.Trio[Object](self), pointers.Raw[Object](raw).GetClass().String())
+	//fmt.Fprintln(os.Stderr, "FREE ", ObjectGetClass(gdreference.RawObject(raw)).String())
 	//fmt.Println(runtime.Caller(2))
-	ref := gdextension.Host.Objects.Cast(gdextension.Object(raw[0]), refCountedClassTag)
+	ref := gdextension.Host.Objects.Cast(raw, refCountedClassTag)
 	if ref != 0 {
 		// Important that we don't destroy RefCounted objects, instead
 		// they should be unreferenced instead.
-		if last := RefCounted(pointers.Raw[Object]([3]uint64{uint64(ref)})).Unreference(); !last {
+		if last := RefCounted(gdreference.RawObject(ref)).Unreference(); !last {
 			//fmt.Println("not last reference, not freeing")
 			return
 		}
 	}
-	gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+	gdextension.Host.Objects.Unsafe.Free(raw)
+}
+
+func ObjectFree(self Object) {
+	raw, ok := gdreference.EndObject(self)
+	if !ok {
+		return
+	}
+	Free(raw)
 }
 
 type Class[T any, S IsClass] struct {

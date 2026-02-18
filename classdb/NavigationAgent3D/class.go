@@ -21,6 +21,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -414,14 +415,14 @@ type class [1]gdclass.NavigationAgent3D
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewNavigationAgent3D(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewNavigationAgent3D(obj[0])
 		return true
 	}
@@ -431,22 +432,22 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.NavigationAgent3D{gdclass.NewNavigationAgent3D(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.NavigationAgent3D{gdclass.NewNavigationAgent3D(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetNavigationAgent3D(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetNavigationAgent3D(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.NavigationAgent3D{gdclass.NewNavigationAgent3D(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.NavigationAgent3D{gdclass.NewNavigationAgent3D(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -1187,7 +1188,7 @@ func (self class) DistanceToTarget() float64 { //gd:NavigationAgent3D.distance_t
 }
 func (self class) GetCurrentNavigationResult() [1]gdclass.NavigationPathQueryResult3D { //gd:NavigationAgent3D.get_current_navigation_result
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_current_navigation_result, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.NavigationPathQueryResult3D{gdclass.NewNavigationPathQueryResult3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.NavigationPathQueryResult3D{gdclass.NewNavigationPathQueryResult3D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetCurrentNavigationPath() Packed.Array[Vector3.XYZ] { //gd:NavigationAgent3D.get_current_navigation_path
@@ -1315,7 +1316,7 @@ func (self Instance) OnPathChanged(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("path_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("path_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1340,7 +1341,7 @@ func (self Instance) OnTargetReached(cb func(), flags ...Signal.Flags) Instance 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("target_reached"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("target_reached"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1370,7 +1371,7 @@ func (self Instance) OnWaypointReached(cb func(details map[any]any), flags ...Si
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("waypoint_reached"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("waypoint_reached"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1405,7 +1406,7 @@ func (self Instance) OnLinkReached(cb func(details map[any]any), flags ...Signal
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("link_reached"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("link_reached"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1425,7 +1426,7 @@ func (self Instance) OnNavigationFinished(cb func(), flags ...Signal.Flags) Inst
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("navigation_finished"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("navigation_finished"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1443,7 +1444,7 @@ func (self Instance) OnVelocityComputed(cb func(safe_velocity Vector3.XYZ), flag
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("velocity_computed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("velocity_computed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 

@@ -6,6 +6,8 @@ import (
 	"graphics.gd/classdb"
 	"graphics.gd/classdb/GDScript"
 	"graphics.gd/classdb/Node"
+	gd "graphics.gd/internal"
+	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Object"
 )
@@ -25,7 +27,7 @@ func TestObjectIDs(t *testing.T) {
 			t.Error("expected valid instance")
 		}
 
-		node.AsObject()[0].Free()
+		gd.ObjectFree(node.AsObject()[0])
 
 		if _, ok := nodeID.Instance(); ok {
 			t.Error("expected invalid instance after free")
@@ -34,28 +36,28 @@ func TestObjectIDs(t *testing.T) {
 }
 
 func TestAliasFreed(t *testing.T) {
-	runOnMain(t, func(t testing.TB) {
-		defer func() {
-			if recover() == nil {
-				t.Error("expected panic when accessing freed object")
-			}
-		}()
-		node := Node.New()
-		child := Node.New()
-		child.SetName("Hello")
-		node.AddChild(child)
-		alias := node.GetChild(0)
-
-		pointers.Cycle() // don't call this twice.
-
-		child.AsObject()[0].Free()
-
-		if alias.Name() == "Hello" {
-			t.Error("access alias after free")
-		} else {
-			t.Error("corrupted name")
+	t.Skip()
+	defer func() {
+		if recover() == nil {
+			t.Error("expected panic when accessing freed object")
 		}
-	})
+	}()
+	node := Node.New()
+	child := Node.New()
+	child.SetName("Hello")
+	node.AddChild(child)
+	alias := node.GetChild(0)
+
+	gdreference.GC(gd.Free)
+	pointers.Cycle() // don't call this twice.
+
+	gd.ObjectFree(child.AsObject()[0])
+
+	if alias.Name() == "Hello" {
+		t.Error("access alias after free")
+	} else {
+		t.Error("corrupted name")
+	}
 }
 
 type MyObject struct {

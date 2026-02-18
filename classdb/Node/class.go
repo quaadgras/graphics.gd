@@ -55,6 +55,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -704,9 +705,9 @@ Note: This method is only called if the node is present in the scene tree (i.e. 
 */
 func (Instance) _input(impl func(ptr gdclass.Receiver, event InputEvent.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetInputEvent(event[0])[0])
+		defer gdreference.EndObject(gdclass.GetInputEvent(event[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, event)
 	}
@@ -735,9 +736,9 @@ Note: This method is only called if the node is present in the scene tree (i.e. 
 */
 func (Instance) _shortcut_input(impl func(ptr gdclass.Receiver, event InputEvent.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetInputEvent(event[0])[0])
+		defer gdreference.EndObject(gdclass.GetInputEvent(event[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, event)
 	}
@@ -764,9 +765,9 @@ Note: This method is only called if the node is present in the scene tree (i.e. 
 */
 func (Instance) _unhandled_input(impl func(ptr gdclass.Receiver, event InputEvent.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetInputEvent(event[0])[0])
+		defer gdreference.EndObject(gdclass.GetInputEvent(event[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, event)
 	}
@@ -796,9 +797,9 @@ Note: This method is only called if the node is present in the scene tree (i.e. 
 */
 func (Instance) _unhandled_key_input(impl func(ptr gdclass.Receiver, event InputEvent.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetInputEvent(event[0])[0])
+		defer gdreference.EndObject(gdclass.GetInputEvent(event[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, event)
 	}
@@ -2378,14 +2379,14 @@ type class [1]gdclass.Node
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewNode(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewNode(obj[0])
 		return true
 	}
@@ -2395,22 +2396,22 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.Node{gdclass.NewNode(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.Node{gdclass.NewNode(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetNode(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetNode(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.Node{gdclass.NewNode(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -2713,36 +2714,36 @@ func (class) _get_accessibility_configuration_warnings(impl func(ptr gdclass.Rec
 }
 func (class) _input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetInputEvent(event[0])[0])
+		defer gdreference.EndObject(gdclass.GetInputEvent(event[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, event)
 	}
 }
 func (class) _shortcut_input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetInputEvent(event[0])[0])
+		defer gdreference.EndObject(gdclass.GetInputEvent(event[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, event)
 	}
 }
 func (class) _unhandled_input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetInputEvent(event[0])[0])
+		defer gdreference.EndObject(gdclass.GetInputEvent(event[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, event)
 	}
 }
 func (class) _unhandled_key_input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
+		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
-		defer pointers.End(gdclass.GetInputEvent(event[0])[0])
+		defer gdreference.EndObject(gdclass.GetInputEvent(event[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, event)
 	}
@@ -2808,7 +2809,7 @@ func (self class) GetChild(idx int64, include_internal bool) [1]gdclass.Node { /
 		idx              int64
 		include_internal bool
 	}{idx, include_internal})
-	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Node{gdclass.NewNode(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) HasNode(path Path.ToNode) bool { //gd:Node.has_node
@@ -2818,17 +2819,17 @@ func (self class) HasNode(path Path.ToNode) bool { //gd:Node.has_node
 }
 func (self class) GetNode(path Path.ToNode) [1]gdclass.Node { //gd:Node.get_node
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_node, gdextension.SizeObject|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
-	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Node{gdclass.NewNode(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) GetNodeOrNull(path Path.ToNode) [1]gdclass.Node { //gd:Node.get_node_or_null
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_node_or_null, gdextension.SizeObject|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
-	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Node{gdclass.NewNode(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) GetParent() [1]gdclass.Node { //gd:Node.get_parent
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_parent, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Node{gdclass.NewNode(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) FindChild(pattern String.Readable, recursive bool, owned bool) [1]gdclass.Node { //gd:Node.find_child
@@ -2837,7 +2838,7 @@ func (self class) FindChild(pattern String.Readable, recursive bool, owned bool)
 		recursive bool
 		owned     bool
 	}{pointers.Get(gd.InternalString(pattern)), recursive, owned})
-	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Node{gdclass.NewNode(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) FindChildren(pattern String.Readable, atype String.Readable, recursive bool, owned bool) Array.Contains[[1]gdclass.Node] { //gd:Node.find_children
@@ -2852,7 +2853,7 @@ func (self class) FindChildren(pattern String.Readable, atype String.Readable, r
 }
 func (self class) FindParent(pattern String.Readable) [1]gdclass.Node { //gd:Node.find_parent
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_parent, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ pattern gdextension.String }{pointers.Get(gd.InternalString(pattern))})
-	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Node{gdclass.NewNode(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) HasNodeAndResource(path Path.ToNode) bool { //gd:Node.has_node_and_resource
@@ -2928,7 +2929,7 @@ func (self class) SetOwner(owner [1]gdclass.Node) { //gd:Node.set_owner
 }
 func (self class) GetOwner() [1]gdclass.Node { //gd:Node.get_owner
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_owner, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Node{gdclass.NewNode(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) GetIndex(include_internal bool) int64 { //gd:Node.get_index
@@ -3152,27 +3153,27 @@ func (self class) SetTranslationDomainInherited() { //gd:Node.set_translation_do
 }
 func (self class) GetWindow() [1]gdclass.Window { //gd:Node.get_window
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_window, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Window{gdclass.NewWindow(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Window{gdclass.NewWindow(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) GetLastExclusiveWindow() [1]gdclass.Window { //gd:Node.get_last_exclusive_window
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_last_exclusive_window, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Window{gdclass.NewWindow(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Window{gdclass.NewWindow(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) GetTree() [1]gdclass.SceneTree { //gd:Node.get_tree
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tree, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.SceneTree{gdclass.NewSceneTree(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.SceneTree{gdclass.NewSceneTree(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) CreateTween() [1]gdclass.Tween { //gd:Node.create_tween
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_tween, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) Duplicate(flags int64) [1]gdclass.Node { //gd:Node.duplicate
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.duplicate, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ flags int64 }{flags})
-	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) ReplaceBy(node [1]gdclass.Node, keep_groups bool) { //gd:Node.replace_by
@@ -3202,7 +3203,7 @@ func (self class) IsEditableInstance(node [1]gdclass.Node) bool { //gd:Node.is_e
 }
 func (self class) GetViewport() [1]gdclass.Viewport { //gd:Node.get_viewport
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_viewport, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Viewport{gdclass.NewViewport(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
+	var ret = [1]gdclass.Viewport{gdclass.NewViewport(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) QueueFree() { //gd:Node.queue_free
@@ -3235,7 +3236,7 @@ func (self class) IsMultiplayerAuthority() bool { //gd:Node.is_multiplayer_autho
 }
 func (self class) GetMultiplayer() [1]gdclass.MultiplayerAPI { //gd:Node.get_multiplayer
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_multiplayer, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.MultiplayerAPI{gdclass.NewMultiplayerAPI(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.MultiplayerAPI{gdclass.NewMultiplayerAPI(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) RpcConfig(method String.Name, config variant.Any) { //gd:Node.rpc_config
@@ -3367,7 +3368,7 @@ func (self Instance) OnReady(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("ready"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("ready"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3385,7 +3386,7 @@ func (self Instance) OnRenamed(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("renamed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("renamed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3403,7 +3404,7 @@ func (self Instance) OnTreeEntered(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("tree_entered"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("tree_entered"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3423,7 +3424,7 @@ func (self Instance) OnTreeExiting(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("tree_exiting"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("tree_exiting"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3441,7 +3442,7 @@ func (self Instance) OnTreeExited(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("tree_exited"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("tree_exited"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3463,7 +3464,7 @@ func (self Instance) OnChildEnteredTree(cb func(node Instance), flags ...Signal.
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("child_entered_tree"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("child_entered_tree"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3484,7 +3485,7 @@ func (self Instance) OnChildExitingTree(cb func(node Instance), flags ...Signal.
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("child_exiting_tree"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("child_exiting_tree"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3500,7 +3501,7 @@ func (self Instance) OnChildOrderChanged(cb func(), flags ...Signal.Flags) Insta
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("child_order_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("child_order_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3520,7 +3521,7 @@ func (self Instance) OnReplacingBy(cb func(node Instance), flags ...Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("replacing_by"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("replacing_by"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3536,7 +3537,7 @@ func (self Instance) OnEditorDescriptionChanged(cb func(node Instance), flags ..
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("editor_description_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("editor_description_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3552,7 +3553,7 @@ func (self Instance) OnEditorStateChanged(cb func(), flags ...Signal.Flags) Inst
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("editor_state_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("editor_state_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 

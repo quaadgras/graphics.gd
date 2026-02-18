@@ -29,6 +29,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -1261,14 +1262,14 @@ type class [1]gdclass.PopupMenu
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewPopupMenu(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewPopupMenu(obj[0])
 		return true
 	}
@@ -1278,22 +1279,22 @@ func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&
 func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.PopupMenu{gdclass.NewPopupMenu(pointers.Add[gd.Object]([3]uint64{}))})
+		var placeholder = Instance([1]gdclass.PopupMenu{gdclass.NewPopupMenu(gdreference.NewObject())})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
-				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(gdclass.GetPopupMenu(placeholder[0])[0], raw)
+				raw, _ := gdreference.EndObject(New().AsObject()[0])
+				gdreference.SetObject(gdclass.GetPopupMenu(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
-					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
-						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
+						gdextension.Host.Objects.Unsafe.Free(raw)
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.PopupMenu{gdclass.NewPopupMenu(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
-	casted.AsObject()[0].Notification(0, false)
+	casted := Instance([1]gdclass.PopupMenu{gdclass.NewPopupMenu(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
@@ -1753,7 +1754,7 @@ func (self class) GetItemAutoTranslateMode(index int64) Node.AutoTranslateMode {
 }
 func (self class) GetItemIcon(index int64) [1]gdclass.Texture2D { //gd:PopupMenu.get_item_icon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_item_icon, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
-	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetItemIconMaxWidth(index int64) int64 { //gd:PopupMenu.get_item_icon_max_width
@@ -1803,7 +1804,7 @@ func (self class) GetItemSubmenu(index int64) String.Readable { //gd:PopupMenu.g
 }
 func (self class) GetItemSubmenuNode(index int64) [1]gdclass.PopupMenu { //gd:PopupMenu.get_item_submenu_node
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_item_submenu_node, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
-	var ret = [1]gdclass.PopupMenu{gdclass.NewPopupMenu(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
+	var ret = [1]gdclass.PopupMenu{gdclass.NewPopupMenu(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) IsItemSeparator(index int64) bool { //gd:PopupMenu.is_item_separator
@@ -1833,7 +1834,7 @@ func (self class) GetItemTooltip(index int64) String.Readable { //gd:PopupMenu.g
 }
 func (self class) GetItemShortcut(index int64) [1]gdclass.Shortcut { //gd:PopupMenu.get_item_shortcut
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_item_shortcut, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
-	var ret = [1]gdclass.Shortcut{gdclass.NewShortcut(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var ret = [1]gdclass.Shortcut{gdclass.NewShortcut(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetItemIndent(index int64) int64 { //gd:PopupMenu.get_item_indent
@@ -1962,7 +1963,7 @@ func (self Instance) OnIdPressed(cb func(id int), flags ...Signal.Flags) Instanc
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("id_pressed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("id_pressed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1980,7 +1981,7 @@ func (self Instance) OnIdFocused(cb func(id int), flags ...Signal.Flags) Instanc
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("id_focused"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("id_focused"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1996,7 +1997,7 @@ func (self Instance) OnIndexPressed(cb func(index int), flags ...Signal.Flags) I
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("index_pressed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("index_pressed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2012,7 +2013,7 @@ func (self Instance) OnMenuChanged(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self.AsObject()[0].Connect(gd.NewStringName("menu_changed"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("menu_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 

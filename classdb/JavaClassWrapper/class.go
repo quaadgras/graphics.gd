@@ -35,6 +35,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -136,7 +137,7 @@ var self [1]gdclass.JavaClassWrapper
 var once sync.Once
 
 func singleton() {
-	self[0] = gdclass.NewJavaClassWrapper(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
+	self[0] = gdclass.NewJavaClassWrapper(gdreference.RawObject(gdextension.Host.Objects.Global(sname)))
 }
 
 /*
@@ -171,14 +172,14 @@ type class [1]gdclass.JavaClassWrapper
 
 func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewJavaClassWrapper(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
-	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewJavaClassWrapper(obj[0])
 		return true
 	}
@@ -189,14 +190,14 @@ func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 
 func (self class) Wrap(name String.Readable) [1]gdclass.JavaClass { //gd:JavaClassWrapper.wrap
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.wrap, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
-	var ret = [1]gdclass.JavaClass{gdclass.NewJavaClass(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var r_ret = noescape.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.wrap, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	var ret = [1]gdclass.JavaClass{gdclass.NewJavaClass(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetException() [1]gdclass.JavaObject { //gd:JavaClassWrapper.get_exception
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_exception, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.JavaObject{gdclass.NewJavaObject(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
+	var r_ret = noescape.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.get_exception, gdextension.SizeObject, &struct{}{})
+	var ret = [1]gdclass.JavaObject{gdclass.NewJavaObject(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) Virtual(name string) reflect.Value {
