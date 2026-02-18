@@ -17,6 +17,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -229,7 +230,7 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.IP
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetIP(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewIP(obj[0])
@@ -244,12 +245,12 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetIP(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 
 func (self class) ResolveHostname(host String.Readable, ip_type Type) String.Readable { //gd:IP.resolve_hostname
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.resolve_hostname, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.resolve_hostname, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		host    gdextension.String
 		ip_type Type
 	}{pointers.Get(gd.InternalString(host)), ip_type})
@@ -258,7 +259,7 @@ func (self class) ResolveHostname(host String.Readable, ip_type Type) String.Rea
 }
 func (self class) ResolveHostnameAddresses(host String.Readable, ip_type Type) Packed.Strings { //gd:IP.resolve_hostname_addresses
 	once.Do(singleton)
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.resolve_hostname_addresses, gdextension.SizePackedArray|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gd.PackedPointers](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.resolve_hostname_addresses, gdextension.SizePackedArray|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		host    gdextension.String
 		ip_type Type
 	}{pointers.Get(gd.InternalString(host)), ip_type})
@@ -267,7 +268,7 @@ func (self class) ResolveHostnameAddresses(host String.Readable, ip_type Type) P
 }
 func (self class) ResolveHostnameQueueItem(host String.Readable, ip_type Type) int64 { //gd:IP.resolve_hostname_queue_item
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.resolve_hostname_queue_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.resolve_hostname_queue_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		host    gdextension.String
 		ip_type Type
 	}{pointers.Get(gd.InternalString(host)), ip_type})
@@ -276,41 +277,41 @@ func (self class) ResolveHostnameQueueItem(host String.Readable, ip_type Type) i
 }
 func (self class) GetResolveItemStatus(id int64) ResolverStatus { //gd:IP.get_resolve_item_status
 	once.Do(singleton)
-	var r_ret = noescape.Call[ResolverStatus](gd.ObjectChecked(self.AsObject()), methods.get_resolve_item_status, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	var r_ret = noescape.Call[ResolverStatus](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_resolve_item_status, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetResolveItemAddress(id int64) String.Readable { //gd:IP.get_resolve_item_address
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_resolve_item_address, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_resolve_item_address, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetResolveItemAddresses(id int64) Array.Any { //gd:IP.get_resolve_item_addresses
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_resolve_item_addresses, gdextension.SizeArray|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	var r_ret = noescape.Call[gdextension.Array](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_resolve_item_addresses, gdextension.SizeArray|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) EraseResolveItem(id int64) { //gd:IP.erase_resolve_item
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.erase_resolve_item, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.erase_resolve_item, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 }
 func (self class) GetLocalAddresses() Packed.Strings { //gd:IP.get_local_addresses
 	once.Do(singleton)
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_local_addresses, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_local_addresses, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) GetLocalInterfaces() Array.Contains[Dictionary.Any] { //gd:IP.get_local_interfaces
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_local_interfaces, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_local_interfaces, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) ClearCache(hostname String.Readable) { //gd:IP.clear_cache
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_cache, 0|(gdextension.SizeString<<4), &struct{ hostname gdextension.String }{pointers.Get(gd.InternalString(hostname))})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.clear_cache, 0|(gdextension.SizeString<<4), &struct{ hostname gdextension.String }{pointers.Get(gd.InternalString(hostname))})
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

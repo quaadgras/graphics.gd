@@ -10,6 +10,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -928,7 +929,7 @@ func (Instance) _get_global_class_name(impl func(ptr gdclass.Receiver, path stri
 type Advanced = class
 type class [1]gdclass.ScriptLanguageExtension
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetScriptLanguageExtension(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewScriptLanguageExtension(obj[0])
@@ -943,8 +944,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetScriptLanguageExtension(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.ScriptLanguageExtension{gdclass.NewScriptLanguageExtension(pointers.Add[gd.Object]([3]uint64{}))})
@@ -1618,23 +1619,17 @@ func (class) _get_global_class_name(impl func(ptr gdclass.Receiver, path String.
 	}
 }
 
-func (self class) AsScriptLanguageExtension() Advanced {
-	return Advanced{gdclass.NewScriptLanguageExtension(self.AsObject()[0])}
+func (o class) AsScriptLanguageExtension() Advanced         { return Advanced(o) }
+func (o Instance) AsScriptLanguageExtension() Instance      { return o }
+func (o *Extension[T]) AsScriptLanguageExtension() Instance { return o.Super() }
+func (o class) AsScriptLanguage() ScriptLanguage.Advanced {
+	return *(*ScriptLanguage.Advanced)(ie.As(&o))
 }
-func (self Instance) AsScriptLanguageExtension() Instance {
-	return Instance{gdclass.NewScriptLanguageExtension(self.AsObject()[0])}
+func (o *Extension[T]) AsScriptLanguage() ScriptLanguage.Instance {
+	return o.Super().AsScriptLanguage()
 }
-func (self *Extension[T]) AsScriptLanguageExtension() Instance {
-	return self.Super().AsScriptLanguageExtension()
-}
-func (self class) AsScriptLanguage() ScriptLanguage.Advanced {
-	return ScriptLanguage.Advanced{gdclass.NewScriptLanguage(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsScriptLanguage() ScriptLanguage.Instance {
-	return self.Super().AsScriptLanguage()
-}
-func (self Instance) AsScriptLanguage() ScriptLanguage.Instance {
-	return ScriptLanguage.Instance{gdclass.NewScriptLanguage(self.AsObject()[0])}
+func (o Instance) AsScriptLanguage() ScriptLanguage.Instance {
+	return *(*ScriptLanguage.Instance)(ie.As(&o))
 }
 
 func (self class) Virtual(name string) reflect.Value {

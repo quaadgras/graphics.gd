@@ -19,6 +19,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -589,7 +590,7 @@ func GetFromWrapper(peer OpenXRExtensionWrapper.Instance) Instance { //gd:OpenXR
 type Advanced = class
 type class [1]gdclass.OpenXRAPIExtension
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetOpenXRAPIExtension(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewOpenXRAPIExtension(obj[0])
@@ -604,8 +605,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetOpenXRAPIExtension(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.OpenXRAPIExtension{gdclass.NewOpenXRAPIExtension(pointers.Add[gd.Object]([3]uint64{}))})
@@ -842,20 +843,12 @@ func (self class) IsEnvironmentBlendModeAlphaSupported() OpenXRAlphaBlendModeSup
 func (self class) UpdateMainSwapchainSize() { //gd:OpenXRAPIExtension.update_main_swapchain_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_main_swapchain_size, 0, &struct{}{})
 }
-func (self class) AsOpenXRAPIExtension() Advanced {
-	return Advanced{gdclass.NewOpenXRAPIExtension(self.AsObject()[0])}
-}
-func (self Instance) AsOpenXRAPIExtension() Instance {
-	return Instance{gdclass.NewOpenXRAPIExtension(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsOpenXRAPIExtension() Instance { return self.Super().AsOpenXRAPIExtension() }
-func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
-func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
+func (o class) AsOpenXRAPIExtension() Advanced         { return Advanced(o) }
+func (o Instance) AsOpenXRAPIExtension() Instance      { return o }
+func (o *Extension[T]) AsOpenXRAPIExtension() Instance { return o.Super() }
+func (o class) AsRefCounted() ie.RC                    { return *(*ie.RC)(ie.As(&o)) }
+func (o *Extension[T]) AsRefCounted() ie.RC            { return o.Super().AsRefCounted() }
+func (o Instance) AsRefCounted() ie.RC                 { return *(*ie.RC)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

@@ -15,6 +15,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -127,9 +128,7 @@ func (self Instance) GetEnabledComponents() []int64 { //gd:OpenXRSpatialCapabili
 type Advanced = class
 type class [1]gdclass.OpenXRSpatialCapabilityConfigurationAnchor
 
-func (self class) AsObject() [1]gd.Object {
-	return gdclass.GetOpenXRSpatialCapabilityConfigurationAnchor(self[0])
-}
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewOpenXRSpatialCapabilityConfigurationAnchor(obj[0])
@@ -144,10 +143,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object {
-	return gdclass.GetOpenXRSpatialCapabilityConfigurationAnchor(self[0])
-}
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.OpenXRSpatialCapabilityConfigurationAnchor{gdclass.NewOpenXRSpatialCapabilityConfigurationAnchor(pointers.Add[gd.Object]([3]uint64{}))})
@@ -175,31 +172,21 @@ func (self class) GetEnabledComponents() Packed.Array[int64] { //gd:OpenXRSpatia
 	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-func (self class) AsOpenXRSpatialCapabilityConfigurationAnchor() Advanced {
-	return Advanced{gdclass.NewOpenXRSpatialCapabilityConfigurationAnchor(self.AsObject()[0])}
+func (o class) AsOpenXRSpatialCapabilityConfigurationAnchor() Advanced         { return Advanced(o) }
+func (o Instance) AsOpenXRSpatialCapabilityConfigurationAnchor() Instance      { return o }
+func (o *Extension[T]) AsOpenXRSpatialCapabilityConfigurationAnchor() Instance { return o.Super() }
+func (o class) AsOpenXRSpatialCapabilityConfigurationBaseHeader() OpenXRSpatialCapabilityConfigurationBaseHeader.Advanced {
+	return *(*OpenXRSpatialCapabilityConfigurationBaseHeader.Advanced)(ie.As(&o))
 }
-func (self Instance) AsOpenXRSpatialCapabilityConfigurationAnchor() Instance {
-	return Instance{gdclass.NewOpenXRSpatialCapabilityConfigurationAnchor(self.AsObject()[0])}
+func (o *Extension[T]) AsOpenXRSpatialCapabilityConfigurationBaseHeader() OpenXRSpatialCapabilityConfigurationBaseHeader.Instance {
+	return o.Super().AsOpenXRSpatialCapabilityConfigurationBaseHeader()
 }
-func (self *Extension[T]) AsOpenXRSpatialCapabilityConfigurationAnchor() Instance {
-	return self.Super().AsOpenXRSpatialCapabilityConfigurationAnchor()
+func (o Instance) AsOpenXRSpatialCapabilityConfigurationBaseHeader() OpenXRSpatialCapabilityConfigurationBaseHeader.Instance {
+	return *(*OpenXRSpatialCapabilityConfigurationBaseHeader.Instance)(ie.As(&o))
 }
-func (self class) AsOpenXRSpatialCapabilityConfigurationBaseHeader() OpenXRSpatialCapabilityConfigurationBaseHeader.Advanced {
-	return OpenXRSpatialCapabilityConfigurationBaseHeader.Advanced{gdclass.NewOpenXRSpatialCapabilityConfigurationBaseHeader(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsOpenXRSpatialCapabilityConfigurationBaseHeader() OpenXRSpatialCapabilityConfigurationBaseHeader.Instance {
-	return self.Super().AsOpenXRSpatialCapabilityConfigurationBaseHeader()
-}
-func (self Instance) AsOpenXRSpatialCapabilityConfigurationBaseHeader() OpenXRSpatialCapabilityConfigurationBaseHeader.Instance {
-	return OpenXRSpatialCapabilityConfigurationBaseHeader.Instance{gdclass.NewOpenXRSpatialCapabilityConfigurationBaseHeader(self.AsObject()[0])}
-}
-func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
-func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
+func (o class) AsRefCounted() ie.RC         { return *(*ie.RC)(ie.As(&o)) }
+func (o *Extension[T]) AsRefCounted() ie.RC { return o.Super().AsRefCounted() }
+func (o Instance) AsRefCounted() ie.RC      { return *(*ie.RC)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

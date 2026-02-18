@@ -18,6 +18,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -235,7 +236,7 @@ func (self Instance) IsRelative(index int) bool { //gd:AimModifier3D.is_relative
 type Advanced = class
 type class [1]gdclass.AimModifier3D
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetAimModifier3D(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewAimModifier3D(obj[0])
@@ -250,8 +251,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetAimModifier3D(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.AimModifier3D{gdclass.NewAimModifier3D(pointers.Add[gd.Object]([3]uint64{}))})
@@ -328,43 +329,33 @@ func (self class) IsRelative(index int64) bool { //gd:AimModifier3D.is_relative
 	var ret = r_ret
 	return ret
 }
-func (self class) AsAimModifier3D() Advanced {
-	return Advanced{gdclass.NewAimModifier3D(self.AsObject()[0])}
+func (o class) AsAimModifier3D() Advanced         { return Advanced(o) }
+func (o Instance) AsAimModifier3D() Instance      { return o }
+func (o *Extension[T]) AsAimModifier3D() Instance { return o.Super() }
+func (o class) AsBoneConstraint3D() BoneConstraint3D.Advanced {
+	return *(*BoneConstraint3D.Advanced)(ie.As(&o))
 }
-func (self Instance) AsAimModifier3D() Instance {
-	return Instance{gdclass.NewAimModifier3D(self.AsObject()[0])}
+func (o *Extension[T]) AsBoneConstraint3D() BoneConstraint3D.Instance {
+	return o.Super().AsBoneConstraint3D()
 }
-func (self *Extension[T]) AsAimModifier3D() Instance { return self.Super().AsAimModifier3D() }
-func (self class) AsBoneConstraint3D() BoneConstraint3D.Advanced {
-	return BoneConstraint3D.Advanced{gdclass.NewBoneConstraint3D(self.AsObject()[0])}
+func (o Instance) AsBoneConstraint3D() BoneConstraint3D.Instance {
+	return *(*BoneConstraint3D.Instance)(ie.As(&o))
 }
-func (self *Extension[T]) AsBoneConstraint3D() BoneConstraint3D.Instance {
-	return self.Super().AsBoneConstraint3D()
+func (o class) AsSkeletonModifier3D() SkeletonModifier3D.Advanced {
+	return *(*SkeletonModifier3D.Advanced)(ie.As(&o))
 }
-func (self Instance) AsBoneConstraint3D() BoneConstraint3D.Instance {
-	return BoneConstraint3D.Instance{gdclass.NewBoneConstraint3D(self.AsObject()[0])}
+func (o *Extension[T]) AsSkeletonModifier3D() SkeletonModifier3D.Instance {
+	return o.Super().AsSkeletonModifier3D()
 }
-func (self class) AsSkeletonModifier3D() SkeletonModifier3D.Advanced {
-	return SkeletonModifier3D.Advanced{gdclass.NewSkeletonModifier3D(self.AsObject()[0])}
+func (o Instance) AsSkeletonModifier3D() SkeletonModifier3D.Instance {
+	return *(*SkeletonModifier3D.Instance)(ie.As(&o))
 }
-func (self *Extension[T]) AsSkeletonModifier3D() SkeletonModifier3D.Instance {
-	return self.Super().AsSkeletonModifier3D()
-}
-func (self Instance) AsSkeletonModifier3D() SkeletonModifier3D.Instance {
-	return SkeletonModifier3D.Instance{gdclass.NewSkeletonModifier3D(self.AsObject()[0])}
-}
-func (self class) AsNode3D() Node3D.Advanced {
-	return Node3D.Advanced{gdclass.NewNode3D(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
-func (self Instance) AsNode3D() Node3D.Instance {
-	return Node3D.Instance{gdclass.NewNode3D(self.AsObject()[0])}
-}
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
-func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
-func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
-}
+func (o class) AsNode3D() Node3D.Advanced         { return *(*Node3D.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsNode3D() Node3D.Instance { return o.Super().AsNode3D() }
+func (o Instance) AsNode3D() Node3D.Instance      { return *(*Node3D.Instance)(ie.As(&o)) }
+func (o class) AsNode() Node.Advanced             { return *(*Node.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsNode() Node.Instance     { return o.Super().AsNode() }
+func (o Instance) AsNode() Node.Instance          { return *(*Node.Instance)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

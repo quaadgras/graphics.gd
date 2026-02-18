@@ -19,6 +19,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -1354,7 +1355,7 @@ func GetLastExclusive(peer Node.Instance) Instance { //gd:Node.get_last_exclusiv
 type Advanced = class
 type class [1]gdclass.Window
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetWindow(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewWindow(obj[0])
@@ -1369,8 +1370,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetWindow(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.Window{gdclass.NewWindow(pointers.Add[gd.Object]([3]uint64{}))})
@@ -2935,21 +2936,15 @@ func (self class) TitleChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`title_changed`))))
 }
 
-func (self class) AsWindow() Advanced         { return Advanced{gdclass.NewWindow(self.AsObject()[0])} }
-func (self Instance) AsWindow() Instance      { return Instance{gdclass.NewWindow(self.AsObject()[0])} }
-func (self *Extension[T]) AsWindow() Instance { return self.Super().AsWindow() }
-func (self class) AsViewport() Viewport.Advanced {
-	return Viewport.Advanced{gdclass.NewViewport(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsViewport() Viewport.Instance { return self.Super().AsViewport() }
-func (self Instance) AsViewport() Viewport.Instance {
-	return Viewport.Instance{gdclass.NewViewport(self.AsObject()[0])}
-}
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
-func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
-func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
-}
+func (o class) AsWindow() Advanced                    { return Advanced(o) }
+func (o Instance) AsWindow() Instance                 { return o }
+func (o *Extension[T]) AsWindow() Instance            { return o.Super() }
+func (o class) AsViewport() Viewport.Advanced         { return *(*Viewport.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsViewport() Viewport.Instance { return o.Super().AsViewport() }
+func (o Instance) AsViewport() Viewport.Instance      { return *(*Viewport.Instance)(ie.As(&o)) }
+func (o class) AsNode() Node.Advanced                 { return *(*Node.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsNode() Node.Instance         { return o.Super().AsNode() }
+func (o Instance) AsNode() Node.Instance              { return *(*Node.Instance)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

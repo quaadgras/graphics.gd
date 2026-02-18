@@ -15,6 +15,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -238,7 +239,7 @@ func (self Instance) GetGlobalEndPosition() Vector2.XY { //gd:NavigationLink2D.g
 type Advanced = class
 type class [1]gdclass.NavigationLink2D
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetNavigationLink2D(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewNavigationLink2D(obj[0])
@@ -253,8 +254,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetNavigationLink2D(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.NavigationLink2D{gdclass.NewNavigationLink2D(pointers.Add[gd.Object]([3]uint64{}))})
@@ -486,32 +487,18 @@ func (self class) GetTravelCost() float64 { //gd:NavigationLink2D.get_travel_cos
 	var ret = r_ret
 	return ret
 }
-func (self class) AsNavigationLink2D() Advanced {
-	return Advanced{gdclass.NewNavigationLink2D(self.AsObject()[0])}
-}
-func (self Instance) AsNavigationLink2D() Instance {
-	return Instance{gdclass.NewNavigationLink2D(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsNavigationLink2D() Instance { return self.Super().AsNavigationLink2D() }
-func (self class) AsNode2D() Node2D.Advanced {
-	return Node2D.Advanced{gdclass.NewNode2D(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsNode2D() Node2D.Instance { return self.Super().AsNode2D() }
-func (self Instance) AsNode2D() Node2D.Instance {
-	return Node2D.Instance{gdclass.NewNode2D(self.AsObject()[0])}
-}
-func (self class) AsCanvasItem() CanvasItem.Advanced {
-	return CanvasItem.Advanced{gdclass.NewCanvasItem(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
-func (self Instance) AsCanvasItem() CanvasItem.Instance {
-	return CanvasItem.Instance{gdclass.NewCanvasItem(self.AsObject()[0])}
-}
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
-func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
-func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
-}
+func (o class) AsNavigationLink2D() Advanced              { return Advanced(o) }
+func (o Instance) AsNavigationLink2D() Instance           { return o }
+func (o *Extension[T]) AsNavigationLink2D() Instance      { return o.Super() }
+func (o class) AsNode2D() Node2D.Advanced                 { return *(*Node2D.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsNode2D() Node2D.Instance         { return o.Super().AsNode2D() }
+func (o Instance) AsNode2D() Node2D.Instance              { return *(*Node2D.Instance)(ie.As(&o)) }
+func (o class) AsCanvasItem() CanvasItem.Advanced         { return *(*CanvasItem.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsCanvasItem() CanvasItem.Instance { return o.Super().AsCanvasItem() }
+func (o Instance) AsCanvasItem() CanvasItem.Instance      { return *(*CanvasItem.Instance)(ie.As(&o)) }
+func (o class) AsNode() Node.Advanced                     { return *(*Node.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsNode() Node.Instance             { return o.Super().AsNode() }
+func (o Instance) AsNode() Node.Instance                  { return *(*Node.Instance)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

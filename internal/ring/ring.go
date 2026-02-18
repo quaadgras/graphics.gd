@@ -9,13 +9,13 @@ import (
 
 type Entry struct {
 	_      structs.HostLayout
-	Object uintptr   // gdextension.Object
-	Method uintptr   // gdextension.MethodForClass
-	Shape  uint64    // gdextension.Shape
-	Args   [256]byte // copied packed args
-	Result [64]byte  // result slot (for future phases)
+	Object uintptr    // gdextension.Object
+	Method uintptr    // gdextension.MethodForClass
+	Shape  uint64     // gdextension.Shape
+	Args   [256]byte  // copied packed args
+	Result [64]byte   // result slot (for future phases)
 	Refs   [16]uint16 // intra-buffer references (for future phases)
-	Owner  uintptr   // back-pointer for future result offloading
+	Owner  uintptr    // back-pointer for future result offloading
 }
 
 const Size = 256 // power of 2

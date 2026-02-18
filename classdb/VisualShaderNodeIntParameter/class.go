@@ -15,6 +15,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -133,7 +134,7 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.VisualShaderNodeIntParameter
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetVisualShaderNodeIntParameter(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewVisualShaderNodeIntParameter(obj[0])
@@ -148,8 +149,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetVisualShaderNodeIntParameter(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.VisualShaderNodeIntParameter{gdclass.NewVisualShaderNodeIntParameter(pointers.Add[gd.Object]([3]uint64{}))})
@@ -331,47 +332,33 @@ func (self class) GetDefaultValue() int64 { //gd:VisualShaderNodeIntParameter.ge
 	var ret = r_ret
 	return ret
 }
-func (self class) AsVisualShaderNodeIntParameter() Advanced {
-	return Advanced{gdclass.NewVisualShaderNodeIntParameter(self.AsObject()[0])}
+func (o class) AsVisualShaderNodeIntParameter() Advanced         { return Advanced(o) }
+func (o Instance) AsVisualShaderNodeIntParameter() Instance      { return o }
+func (o *Extension[T]) AsVisualShaderNodeIntParameter() Instance { return o.Super() }
+func (o class) AsVisualShaderNodeParameter() VisualShaderNodeParameter.Advanced {
+	return *(*VisualShaderNodeParameter.Advanced)(ie.As(&o))
 }
-func (self Instance) AsVisualShaderNodeIntParameter() Instance {
-	return Instance{gdclass.NewVisualShaderNodeIntParameter(self.AsObject()[0])}
+func (o *Extension[T]) AsVisualShaderNodeParameter() VisualShaderNodeParameter.Instance {
+	return o.Super().AsVisualShaderNodeParameter()
 }
-func (self *Extension[T]) AsVisualShaderNodeIntParameter() Instance {
-	return self.Super().AsVisualShaderNodeIntParameter()
+func (o Instance) AsVisualShaderNodeParameter() VisualShaderNodeParameter.Instance {
+	return *(*VisualShaderNodeParameter.Instance)(ie.As(&o))
 }
-func (self class) AsVisualShaderNodeParameter() VisualShaderNodeParameter.Advanced {
-	return VisualShaderNodeParameter.Advanced{gdclass.NewVisualShaderNodeParameter(self.AsObject()[0])}
+func (o class) AsVisualShaderNode() VisualShaderNode.Advanced {
+	return *(*VisualShaderNode.Advanced)(ie.As(&o))
 }
-func (self *Extension[T]) AsVisualShaderNodeParameter() VisualShaderNodeParameter.Instance {
-	return self.Super().AsVisualShaderNodeParameter()
+func (o *Extension[T]) AsVisualShaderNode() VisualShaderNode.Instance {
+	return o.Super().AsVisualShaderNode()
 }
-func (self Instance) AsVisualShaderNodeParameter() VisualShaderNodeParameter.Instance {
-	return VisualShaderNodeParameter.Instance{gdclass.NewVisualShaderNodeParameter(self.AsObject()[0])}
+func (o Instance) AsVisualShaderNode() VisualShaderNode.Instance {
+	return *(*VisualShaderNode.Instance)(ie.As(&o))
 }
-func (self class) AsVisualShaderNode() VisualShaderNode.Advanced {
-	return VisualShaderNode.Advanced{gdclass.NewVisualShaderNode(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsVisualShaderNode() VisualShaderNode.Instance {
-	return self.Super().AsVisualShaderNode()
-}
-func (self Instance) AsVisualShaderNode() VisualShaderNode.Instance {
-	return VisualShaderNode.Instance{gdclass.NewVisualShaderNode(self.AsObject()[0])}
-}
-func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
-func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
-}
-func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
-func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
+func (o class) AsResource() Resource.Advanced         { return *(*Resource.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsResource() Resource.Instance { return o.Super().AsResource() }
+func (o Instance) AsResource() Resource.Instance      { return *(*Resource.Instance)(ie.As(&o)) }
+func (o class) AsRefCounted() ie.RC                   { return *(*ie.RC)(ie.As(&o)) }
+func (o *Extension[T]) AsRefCounted() ie.RC           { return o.Super().AsRefCounted() }
+func (o Instance) AsRefCounted() ie.RC                { return *(*ie.RC)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

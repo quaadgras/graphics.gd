@@ -16,6 +16,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -160,7 +161,7 @@ func (self Instance) SetExpandMarginAll(size Float.X) Instance { //gd:StyleBoxTe
 type Advanced = class
 type class [1]gdclass.StyleBoxTexture
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetStyleBoxTexture(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewStyleBoxTexture(obj[0])
@@ -175,8 +176,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetStyleBoxTexture(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.StyleBoxTexture{gdclass.NewStyleBoxTexture(pointers.Add[gd.Object]([3]uint64{}))})
@@ -488,34 +489,18 @@ func (self class) GetVAxisStretchMode() AxisStretchMode { //gd:StyleBoxTexture.g
 	var ret = r_ret
 	return ret
 }
-func (self class) AsStyleBoxTexture() Advanced {
-	return Advanced{gdclass.NewStyleBoxTexture(self.AsObject()[0])}
-}
-func (self Instance) AsStyleBoxTexture() Instance {
-	return Instance{gdclass.NewStyleBoxTexture(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsStyleBoxTexture() Instance { return self.Super().AsStyleBoxTexture() }
-func (self class) AsStyleBox() StyleBox.Advanced {
-	return StyleBox.Advanced{gdclass.NewStyleBox(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsStyleBox() StyleBox.Instance { return self.Super().AsStyleBox() }
-func (self Instance) AsStyleBox() StyleBox.Instance {
-	return StyleBox.Instance{gdclass.NewStyleBox(self.AsObject()[0])}
-}
-func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
-func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
-}
-func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
-func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
+func (o class) AsStyleBoxTexture() Advanced           { return Advanced(o) }
+func (o Instance) AsStyleBoxTexture() Instance        { return o }
+func (o *Extension[T]) AsStyleBoxTexture() Instance   { return o.Super() }
+func (o class) AsStyleBox() StyleBox.Advanced         { return *(*StyleBox.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsStyleBox() StyleBox.Instance { return o.Super().AsStyleBox() }
+func (o Instance) AsStyleBox() StyleBox.Instance      { return *(*StyleBox.Instance)(ie.As(&o)) }
+func (o class) AsResource() Resource.Advanced         { return *(*Resource.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsResource() Resource.Instance { return o.Super().AsResource() }
+func (o Instance) AsResource() Resource.Instance      { return *(*Resource.Instance)(ie.As(&o)) }
+func (o class) AsRefCounted() ie.RC                   { return *(*ie.RC)(ie.As(&o)) }
+func (o *Extension[T]) AsRefCounted() ie.RC           { return o.Super().AsRefCounted() }
+func (o Instance) AsRefCounted() ie.RC                { return *(*ie.RC)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

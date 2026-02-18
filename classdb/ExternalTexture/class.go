@@ -20,6 +20,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -149,7 +150,7 @@ func (self Instance) SetExternalBufferId(external_buffer_id int) Instance { //gd
 type Advanced = class
 type class [1]gdclass.ExternalTexture
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetExternalTexture(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewExternalTexture(obj[0])
@@ -164,8 +165,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetExternalTexture(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.ExternalTexture{gdclass.NewExternalTexture(pointers.Add[gd.Object]([3]uint64{}))})
@@ -208,41 +209,21 @@ func (self class) GetExternalTextureId() int64 { //gd:ExternalTexture.get_extern
 func (self class) SetExternalBufferId(external_buffer_id int64) { //gd:ExternalTexture.set_external_buffer_id
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_external_buffer_id, 0|(gdextension.SizeInt<<4), &struct{ external_buffer_id int64 }{external_buffer_id})
 }
-func (self class) AsExternalTexture() Advanced {
-	return Advanced{gdclass.NewExternalTexture(self.AsObject()[0])}
-}
-func (self Instance) AsExternalTexture() Instance {
-	return Instance{gdclass.NewExternalTexture(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsExternalTexture() Instance { return self.Super().AsExternalTexture() }
-func (self class) AsTexture2D() Texture2D.Advanced {
-	return Texture2D.Advanced{gdclass.NewTexture2D(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsTexture2D() Texture2D.Instance { return self.Super().AsTexture2D() }
-func (self Instance) AsTexture2D() Texture2D.Instance {
-	return Texture2D.Instance{gdclass.NewTexture2D(self.AsObject()[0])}
-}
-func (self class) AsTexture() Texture.Advanced {
-	return Texture.Advanced{gdclass.NewTexture(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsTexture() Texture.Instance { return self.Super().AsTexture() }
-func (self Instance) AsTexture() Texture.Instance {
-	return Texture.Instance{gdclass.NewTexture(self.AsObject()[0])}
-}
-func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
-func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
-}
-func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
-func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
+func (o class) AsExternalTexture() Advanced             { return Advanced(o) }
+func (o Instance) AsExternalTexture() Instance          { return o }
+func (o *Extension[T]) AsExternalTexture() Instance     { return o.Super() }
+func (o class) AsTexture2D() Texture2D.Advanced         { return *(*Texture2D.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsTexture2D() Texture2D.Instance { return o.Super().AsTexture2D() }
+func (o Instance) AsTexture2D() Texture2D.Instance      { return *(*Texture2D.Instance)(ie.As(&o)) }
+func (o class) AsTexture() Texture.Advanced             { return *(*Texture.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsTexture() Texture.Instance     { return o.Super().AsTexture() }
+func (o Instance) AsTexture() Texture.Instance          { return *(*Texture.Instance)(ie.As(&o)) }
+func (o class) AsResource() Resource.Advanced           { return *(*Resource.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsResource() Resource.Instance   { return o.Super().AsResource() }
+func (o Instance) AsResource() Resource.Instance        { return *(*Resource.Instance)(ie.As(&o)) }
+func (o class) AsRefCounted() ie.RC                     { return *(*ie.RC)(ie.As(&o)) }
+func (o *Extension[T]) AsRefCounted() ie.RC             { return o.Super().AsRefCounted() }
+func (o Instance) AsRefCounted() ie.RC                  { return *(*ie.RC)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

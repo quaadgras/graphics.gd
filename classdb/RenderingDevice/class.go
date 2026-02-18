@@ -28,6 +28,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -1978,7 +1979,7 @@ func (self Instance) GetDeviceAllocsByObjectType(atype int) int { //gd:Rendering
 type Advanced = class
 type class [1]gdclass.RenderingDevice
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetRenderingDevice(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewRenderingDevice(obj[0])
@@ -1993,8 +1994,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetRenderingDevice(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.RenderingDevice{gdclass.NewRenderingDevice(pointers.Add[gd.Object]([3]uint64{}))})
@@ -2821,13 +2822,9 @@ func (self class) GetDeviceAllocsByObjectType(atype int64) int64 { //gd:Renderin
 	var ret = r_ret
 	return ret
 }
-func (self class) AsRenderingDevice() Advanced {
-	return Advanced{gdclass.NewRenderingDevice(self.AsObject()[0])}
-}
-func (self Instance) AsRenderingDevice() Instance {
-	return Instance{gdclass.NewRenderingDevice(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsRenderingDevice() Instance { return self.Super().AsRenderingDevice() }
+func (o class) AsRenderingDevice() Advanced         { return Advanced(o) }
+func (o Instance) AsRenderingDevice() Instance      { return o }
+func (o *Extension[T]) AsRenderingDevice() Instance { return o.Super() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

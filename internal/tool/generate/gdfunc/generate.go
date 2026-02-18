@@ -156,7 +156,7 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 	}
 	var self = " gd.ObjectChecked(self.AsObject()),"
 	if singleton {
-		self = " self.AsObject()" // singletons don't need to be checked.
+		self = " gdextension.Object(pointers.Get(self.AsObject()[0])[0])," // singletons don't need to be checked.
 	}
 	if method.IsStatic {
 		self = ""

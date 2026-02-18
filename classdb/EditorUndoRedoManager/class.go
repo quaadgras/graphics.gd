@@ -33,6 +33,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -348,7 +349,7 @@ func (self MoreArgs) ClearHistory(id int, increase_version bool) { //gd:EditorUn
 type Advanced = class
 type class [1]gdclass.EditorUndoRedoManager
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetEditorUndoRedoManager(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorUndoRedoManager(obj[0])
@@ -363,8 +364,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetEditorUndoRedoManager(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.EditorUndoRedoManager{gdclass.NewEditorUndoRedoManager(pointers.Add[gd.Object]([3]uint64{}))})
@@ -501,15 +502,9 @@ func (self class) VersionChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`version_changed`))))
 }
 
-func (self class) AsEditorUndoRedoManager() Advanced {
-	return Advanced{gdclass.NewEditorUndoRedoManager(self.AsObject()[0])}
-}
-func (self Instance) AsEditorUndoRedoManager() Instance {
-	return Instance{gdclass.NewEditorUndoRedoManager(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsEditorUndoRedoManager() Instance {
-	return self.Super().AsEditorUndoRedoManager()
-}
+func (o class) AsEditorUndoRedoManager() Advanced         { return Advanced(o) }
+func (o Instance) AsEditorUndoRedoManager() Instance      { return o }
+func (o *Extension[T]) AsEditorUndoRedoManager() Instance { return o.Super() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

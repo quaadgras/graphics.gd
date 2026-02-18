@@ -1,7 +1,7 @@
 // Package Error provides generic or codes for use as error return values that do not allocate.
 package Error
 
-import "strconv" 
+import "strconv"
 
 // Code is an error code.
 type Code uint8

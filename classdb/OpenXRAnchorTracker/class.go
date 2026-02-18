@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -127,7 +128,7 @@ func (self Instance) HasUuid() bool { //gd:OpenXRAnchorTracker.has_uuid
 type Advanced = class
 type class [1]gdclass.OpenXRAnchorTracker
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetOpenXRAnchorTracker(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewOpenXRAnchorTracker(obj[0])
@@ -142,8 +143,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetOpenXRAnchorTracker(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.OpenXRAnchorTracker{gdclass.NewOpenXRAnchorTracker(pointers.Add[gd.Object]([3]uint64{}))})
@@ -209,47 +210,33 @@ func (self class) UuidChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`uuid_changed`))))
 }
 
-func (self class) AsOpenXRAnchorTracker() Advanced {
-	return Advanced{gdclass.NewOpenXRAnchorTracker(self.AsObject()[0])}
+func (o class) AsOpenXRAnchorTracker() Advanced         { return Advanced(o) }
+func (o Instance) AsOpenXRAnchorTracker() Instance      { return o }
+func (o *Extension[T]) AsOpenXRAnchorTracker() Instance { return o.Super() }
+func (o class) AsOpenXRSpatialEntityTracker() OpenXRSpatialEntityTracker.Advanced {
+	return *(*OpenXRSpatialEntityTracker.Advanced)(ie.As(&o))
 }
-func (self Instance) AsOpenXRAnchorTracker() Instance {
-	return Instance{gdclass.NewOpenXRAnchorTracker(self.AsObject()[0])}
+func (o *Extension[T]) AsOpenXRSpatialEntityTracker() OpenXRSpatialEntityTracker.Instance {
+	return o.Super().AsOpenXRSpatialEntityTracker()
 }
-func (self *Extension[T]) AsOpenXRAnchorTracker() Instance {
-	return self.Super().AsOpenXRAnchorTracker()
+func (o Instance) AsOpenXRSpatialEntityTracker() OpenXRSpatialEntityTracker.Instance {
+	return *(*OpenXRSpatialEntityTracker.Instance)(ie.As(&o))
 }
-func (self class) AsOpenXRSpatialEntityTracker() OpenXRSpatialEntityTracker.Advanced {
-	return OpenXRSpatialEntityTracker.Advanced{gdclass.NewOpenXRSpatialEntityTracker(self.AsObject()[0])}
+func (o class) AsXRPositionalTracker() XRPositionalTracker.Advanced {
+	return *(*XRPositionalTracker.Advanced)(ie.As(&o))
 }
-func (self *Extension[T]) AsOpenXRSpatialEntityTracker() OpenXRSpatialEntityTracker.Instance {
-	return self.Super().AsOpenXRSpatialEntityTracker()
+func (o *Extension[T]) AsXRPositionalTracker() XRPositionalTracker.Instance {
+	return o.Super().AsXRPositionalTracker()
 }
-func (self Instance) AsOpenXRSpatialEntityTracker() OpenXRSpatialEntityTracker.Instance {
-	return OpenXRSpatialEntityTracker.Instance{gdclass.NewOpenXRSpatialEntityTracker(self.AsObject()[0])}
+func (o Instance) AsXRPositionalTracker() XRPositionalTracker.Instance {
+	return *(*XRPositionalTracker.Instance)(ie.As(&o))
 }
-func (self class) AsXRPositionalTracker() XRPositionalTracker.Advanced {
-	return XRPositionalTracker.Advanced{gdclass.NewXRPositionalTracker(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsXRPositionalTracker() XRPositionalTracker.Instance {
-	return self.Super().AsXRPositionalTracker()
-}
-func (self Instance) AsXRPositionalTracker() XRPositionalTracker.Instance {
-	return XRPositionalTracker.Instance{gdclass.NewXRPositionalTracker(self.AsObject()[0])}
-}
-func (self class) AsXRTracker() XRTracker.Advanced {
-	return XRTracker.Advanced{gdclass.NewXRTracker(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsXRTracker() XRTracker.Instance { return self.Super().AsXRTracker() }
-func (self Instance) AsXRTracker() XRTracker.Instance {
-	return XRTracker.Instance{gdclass.NewXRTracker(self.AsObject()[0])}
-}
-func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
-func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
+func (o class) AsXRTracker() XRTracker.Advanced         { return *(*XRTracker.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsXRTracker() XRTracker.Instance { return o.Super().AsXRTracker() }
+func (o Instance) AsXRTracker() XRTracker.Instance      { return *(*XRTracker.Instance)(ie.As(&o)) }
+func (o class) AsRefCounted() ie.RC                     { return *(*ie.RC)(ie.As(&o)) }
+func (o *Extension[T]) AsRefCounted() ie.RC             { return o.Super().AsRefCounted() }
+func (o Instance) AsRefCounted() ie.RC                  { return *(*ie.RC)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

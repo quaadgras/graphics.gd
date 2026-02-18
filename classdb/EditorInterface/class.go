@@ -31,6 +31,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -880,7 +881,7 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.EditorInterface
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetEditorInterface(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorInterface(obj[0])
@@ -895,8 +896,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetEditorInterface(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 
 /*
 If true, enables distraction-free mode which hides side docks to increase the space available for the main view.
@@ -930,59 +931,59 @@ func SetMovieMakerEnabled(value bool) { //gd:EditorInterface.movie_maker_enabled
 
 func (self class) RestartEditor(save bool) { //gd:EditorInterface.restart_editor
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.restart_editor, 0|(gdextension.SizeBool<<4), &struct{ save bool }{save})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.restart_editor, 0|(gdextension.SizeBool<<4), &struct{ save bool }{save})
 }
 func (self class) GetCommandPalette() [1]gdclass.EditorCommandPalette { //gd:EditorInterface.get_command_palette
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_command_palette, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_command_palette, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorCommandPalette{gdclass.NewEditorCommandPalette(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) GetResourceFilesystem() [1]gdclass.EditorFileSystem { //gd:EditorInterface.get_resource_filesystem
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_resource_filesystem, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_resource_filesystem, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorFileSystem{gdclass.NewEditorFileSystem(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) GetEditorPaths() [1]gdclass.EditorPaths { //gd:EditorInterface.get_editor_paths
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_paths, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_editor_paths, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorPaths{gdclass.NewEditorPaths(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) GetResourcePreviewer() [1]gdclass.EditorResourcePreview { //gd:EditorInterface.get_resource_previewer
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_resource_previewer, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_resource_previewer, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorResourcePreview{gdclass.NewEditorResourcePreview(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) GetSelection() [1]gdclass.EditorSelection { //gd:EditorInterface.get_selection
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_selection, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_selection, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorSelection{gdclass.NewEditorSelection(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) GetEditorSettings() [1]gdclass.EditorSettings { //gd:EditorInterface.get_editor_settings
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_settings, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_editor_settings, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorSettings{gdclass.NewEditorSettings(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 func (self class) GetEditorToaster() [1]gdclass.EditorToaster { //gd:EditorInterface.get_editor_toaster
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_toaster, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_editor_toaster, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorToaster{gdclass.NewEditorToaster(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) GetEditorUndoRedo() [1]gdclass.EditorUndoRedoManager { //gd:EditorInterface.get_editor_undo_redo
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_undo_redo, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_editor_undo_redo, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorUndoRedoManager{gdclass.NewEditorUndoRedoManager(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) MakeMeshPreviews(meshes Array.Contains[[1]gdclass.Mesh], preview_size int64) Array.Contains[[1]gdclass.Texture2D] { //gd:EditorInterface.make_mesh_previews
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.make_mesh_previews, gdextension.SizeArray|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Array](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.make_mesh_previews, gdextension.SizeArray|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8), &struct {
 		meshes       gdextension.Array
 		preview_size int64
 	}{pointers.Get(gd.InternalArray(meshes)), preview_size})
@@ -991,133 +992,133 @@ func (self class) MakeMeshPreviews(meshes Array.Contains[[1]gdclass.Mesh], previ
 }
 func (self class) SetPluginEnabled(plugin String.Readable, enabled bool) { //gd:EditorInterface.set_plugin_enabled
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_plugin_enabled, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_plugin_enabled, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		plugin  gdextension.String
 		enabled bool
 	}{pointers.Get(gd.InternalString(plugin)), enabled})
 }
 func (self class) IsPluginEnabled(plugin String.Readable) bool { //gd:EditorInterface.is_plugin_enabled
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_plugin_enabled, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ plugin gdextension.String }{pointers.Get(gd.InternalString(plugin))})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_plugin_enabled, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ plugin gdextension.String }{pointers.Get(gd.InternalString(plugin))})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetEditorTheme() [1]gdclass.Theme { //gd:EditorInterface.get_editor_theme
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_theme, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_editor_theme, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Theme{gdclass.NewTheme(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 func (self class) GetBaseControl() [1]gdclass.Control { //gd:EditorInterface.get_base_control
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_base_control, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_base_control, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) GetEditorMainScreen() [1]gdclass.VBoxContainer { //gd:EditorInterface.get_editor_main_screen
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_main_screen, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_editor_main_screen, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.VBoxContainer{gdclass.NewVBoxContainer(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) GetScriptEditor() [1]gdclass.ScriptEditor { //gd:EditorInterface.get_script_editor
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_script_editor, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_script_editor, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ScriptEditor{gdclass.NewScriptEditor(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) GetEditorViewport2d() [1]gdclass.SubViewport { //gd:EditorInterface.get_editor_viewport_2d
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_viewport_2d, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_editor_viewport_2d, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.SubViewport{gdclass.NewSubViewport(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) GetEditorViewport3d(idx int64) [1]gdclass.SubViewport { //gd:EditorInterface.get_editor_viewport_3d
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_viewport_3d, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_editor_viewport_3d, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = [1]gdclass.SubViewport{gdclass.NewSubViewport(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) SetMainScreenEditor(name String.Readable) { //gd:EditorInterface.set_main_screen_editor
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_main_screen_editor, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_main_screen_editor, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 func (self class) SetDistractionFreeMode(enter bool) { //gd:EditorInterface.set_distraction_free_mode
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_distraction_free_mode, 0|(gdextension.SizeBool<<4), &struct{ enter bool }{enter})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_distraction_free_mode, 0|(gdextension.SizeBool<<4), &struct{ enter bool }{enter})
 }
 func (self class) IsDistractionFreeModeEnabled() bool { //gd:EditorInterface.is_distraction_free_mode_enabled
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_distraction_free_mode_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_distraction_free_mode_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsMultiWindowEnabled() bool { //gd:EditorInterface.is_multi_window_enabled
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_multi_window_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_multi_window_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetEditorScale() float64 { //gd:EditorInterface.get_editor_scale
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_editor_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_editor_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetEditorLanguage() String.Readable { //gd:EditorInterface.get_editor_language
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_editor_language, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_editor_language, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) IsNode3dSnapEnabled() bool { //gd:EditorInterface.is_node_3d_snap_enabled
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_node_3d_snap_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_node_3d_snap_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetNode3dTranslateSnap() float64 { //gd:EditorInterface.get_node_3d_translate_snap
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_node_3d_translate_snap, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_node_3d_translate_snap, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetNode3dRotateSnap() float64 { //gd:EditorInterface.get_node_3d_rotate_snap
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_node_3d_rotate_snap, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_node_3d_rotate_snap, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetNode3dScaleSnap() float64 { //gd:EditorInterface.get_node_3d_scale_snap
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_node_3d_scale_snap, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_node_3d_scale_snap, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) PopupDialog(dialog [1]gdclass.Window, rect Rect2i.PositionSize) { //gd:EditorInterface.popup_dialog
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_dialog, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2i<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.popup_dialog, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2i<<8), &struct {
 		dialog gdextension.Object
 		rect   Rect2i.PositionSize
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetWindow(dialog[0]))), rect})
 }
 func (self class) PopupDialogCentered(dialog [1]gdclass.Window, minsize Vector2i.XY) { //gd:EditorInterface.popup_dialog_centered
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_dialog_centered, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2i<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.popup_dialog_centered, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2i<<8), &struct {
 		dialog  gdextension.Object
 		minsize Vector2i.XY
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetWindow(dialog[0]))), minsize})
 }
 func (self class) PopupDialogCenteredRatio(dialog [1]gdclass.Window, ratio float64) { //gd:EditorInterface.popup_dialog_centered_ratio
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_dialog_centered_ratio, 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.popup_dialog_centered_ratio, 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8), &struct {
 		dialog gdextension.Object
 		ratio  float64
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetWindow(dialog[0]))), ratio})
 }
 func (self class) PopupDialogCenteredClamped(dialog [1]gdclass.Window, minsize Vector2i.XY, fallback_ratio float64) { //gd:EditorInterface.popup_dialog_centered_clamped
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_dialog_centered_clamped, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeFloat<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.popup_dialog_centered_clamped, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeFloat<<12), &struct {
 		dialog         gdextension.Object
 		minsize        Vector2i.XY
 		fallback_ratio float64
@@ -1125,17 +1126,17 @@ func (self class) PopupDialogCenteredClamped(dialog [1]gdclass.Window, minsize V
 }
 func (self class) GetCurrentFeatureProfile() String.Readable { //gd:EditorInterface.get_current_feature_profile
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_feature_profile, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_current_feature_profile, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) SetCurrentFeatureProfile(profile_name String.Readable) { //gd:EditorInterface.set_current_feature_profile
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_feature_profile, 0|(gdextension.SizeString<<4), &struct{ profile_name gdextension.String }{pointers.Get(gd.InternalString(profile_name))})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_current_feature_profile, 0|(gdextension.SizeString<<4), &struct{ profile_name gdextension.String }{pointers.Get(gd.InternalString(profile_name))})
 }
 func (self class) PopupNodeSelector(callback Callable.Function, valid_types Array.Contains[String.Name], current_value [1]gdclass.Node) { //gd:EditorInterface.popup_node_selector
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_node_selector, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeObject<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.popup_node_selector, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeObject<<12), &struct {
 		callback      gdextension.Callable
 		valid_types   gdextension.Array
 		current_value gdextension.Object
@@ -1143,7 +1144,7 @@ func (self class) PopupNodeSelector(callback Callable.Function, valid_types Arra
 }
 func (self class) PopupPropertySelector(obj [1]gd.Object, callback Callable.Function, type_filter Packed.Array[int32], current_value String.Readable) { //gd:EditorInterface.popup_property_selector
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_property_selector, 0|(gdextension.SizeObject<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeString<<16), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.popup_property_selector, 0|(gdextension.SizeObject<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeString<<16), &struct {
 		obj           gdextension.Object
 		callback      gdextension.Callable
 		type_filter   gdextension.PackedArray[int32]
@@ -1152,7 +1153,7 @@ func (self class) PopupPropertySelector(obj [1]gd.Object, callback Callable.Func
 }
 func (self class) PopupMethodSelector(obj [1]gd.Object, callback Callable.Function, current_value String.Readable) { //gd:EditorInterface.popup_method_selector
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_method_selector, 0|(gdextension.SizeObject<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeString<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.popup_method_selector, 0|(gdextension.SizeObject<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeString<<12), &struct {
 		obj           gdextension.Object
 		callback      gdextension.Callable
 		current_value gdextension.String
@@ -1160,14 +1161,14 @@ func (self class) PopupMethodSelector(obj [1]gd.Object, callback Callable.Functi
 }
 func (self class) PopupQuickOpen(callback Callable.Function, base_types Array.Contains[String.Name]) { //gd:EditorInterface.popup_quick_open
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_quick_open, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeArray<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.popup_quick_open, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeArray<<8), &struct {
 		callback   gdextension.Callable
 		base_types gdextension.Array
 	}{pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalArray(base_types))})
 }
 func (self class) PopupCreateDialog(callback Callable.Function, base_type String.Name, current_type String.Readable, dialog_title String.Readable, type_blocklist Array.Contains[String.Name]) { //gd:EditorInterface.popup_create_dialog
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_create_dialog, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeArray<<20), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.popup_create_dialog, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeArray<<20), &struct {
 		callback       gdextension.Callable
 		base_type      gdextension.StringName
 		current_type   gdextension.String
@@ -1177,41 +1178,41 @@ func (self class) PopupCreateDialog(callback Callable.Function, base_type String
 }
 func (self class) GetFileSystemDock() [1]gdclass.FileSystemDock { //gd:EditorInterface.get_file_system_dock
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_file_system_dock, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_file_system_dock, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.FileSystemDock{gdclass.NewFileSystemDock(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) SelectFile(file String.Readable) { //gd:EditorInterface.select_file
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.select_file, 0|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.select_file, 0|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
 }
 func (self class) GetSelectedPaths() Packed.Strings { //gd:EditorInterface.get_selected_paths
 	once.Do(singleton)
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_selected_paths, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_selected_paths, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) GetCurrentPath() String.Readable { //gd:EditorInterface.get_current_path
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_path, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_current_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetCurrentDirectory() String.Readable { //gd:EditorInterface.get_current_directory
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_directory, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_current_directory, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetInspector() [1]gdclass.EditorInspector { //gd:EditorInterface.get_inspector
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_inspector, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_inspector, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorInspector{gdclass.NewEditorInspector(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) InspectObject(obj [1]gd.Object, for_property String.Readable, inspector_only bool) { //gd:EditorInterface.inspect_object
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.inspect_object, 0|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.inspect_object, 0|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12), &struct {
 		obj            gdextension.Object
 		for_property   gdextension.String
 		inspector_only bool
@@ -1219,15 +1220,15 @@ func (self class) InspectObject(obj [1]gd.Object, for_property String.Readable, 
 }
 func (self class) EditResource(resource [1]gdclass.Resource) { //gd:EditorInterface.edit_resource
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit_resource, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetResource(resource[0])))})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.edit_resource, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetResource(resource[0])))})
 }
 func (self class) EditNode(node [1]gdclass.Node) { //gd:EditorInterface.edit_node
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit_node, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.edit_node, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
 }
 func (self class) EditScript(script [1]gdclass.Script, line int64, column int64, grab_focus bool) { //gd:EditorInterface.edit_script
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit_script, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.edit_script, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), &struct {
 		script     gdextension.Object
 		line       int64
 		column     int64
@@ -1236,112 +1237,112 @@ func (self class) EditScript(script [1]gdclass.Script, line int64, column int64,
 }
 func (self class) OpenSceneFromPath(scene_filepath String.Readable, set_inherited bool) { //gd:EditorInterface.open_scene_from_path
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.open_scene_from_path, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.open_scene_from_path, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		scene_filepath gdextension.String
 		set_inherited  bool
 	}{pointers.Get(gd.InternalString(scene_filepath)), set_inherited})
 }
 func (self class) ReloadSceneFromPath(scene_filepath String.Readable) { //gd:EditorInterface.reload_scene_from_path
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reload_scene_from_path, 0|(gdextension.SizeString<<4), &struct{ scene_filepath gdextension.String }{pointers.Get(gd.InternalString(scene_filepath))})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.reload_scene_from_path, 0|(gdextension.SizeString<<4), &struct{ scene_filepath gdextension.String }{pointers.Get(gd.InternalString(scene_filepath))})
 }
 func (self class) SetObjectEdited(obj [1]gd.Object, edited bool) { //gd:EditorInterface.set_object_edited
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_object_edited, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_object_edited, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		obj    gdextension.Object
 		edited bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0]))), edited})
 }
 func (self class) IsObjectEdited(obj [1]gd.Object) bool { //gd:EditorInterface.is_object_edited
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_object_edited, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0])))})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_object_edited, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0])))})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetOpenScenes() Packed.Strings { //gd:EditorInterface.get_open_scenes
 	once.Do(singleton)
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_open_scenes, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_open_scenes, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) GetOpenSceneRoots() Array.Contains[[1]gdclass.Node] { //gd:EditorInterface.get_open_scene_roots
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_open_scene_roots, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_open_scene_roots, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) GetEditedSceneRoot() [1]gdclass.Node { //gd:EditorInterface.get_edited_scene_root
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_scene_root, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_edited_scene_root, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 func (self class) AddRootNode(node [1]gdclass.Node) { //gd:EditorInterface.add_root_node
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_root_node, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.add_root_node, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
 }
 func (self class) SaveScene() Error.Code { //gd:EditorInterface.save_scene
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save_scene, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.save_scene, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
 func (self class) SaveSceneAs(path String.Readable, with_preview bool) { //gd:EditorInterface.save_scene_as
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.save_scene_as, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.save_scene_as, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		path         gdextension.String
 		with_preview bool
 	}{pointers.Get(gd.InternalString(path)), with_preview})
 }
 func (self class) SaveAllScenes() { //gd:EditorInterface.save_all_scenes
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.save_all_scenes, 0, &struct{}{})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.save_all_scenes, 0, &struct{}{})
 }
 func (self class) CloseScene() Error.Code { //gd:EditorInterface.close_scene
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.close_scene, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.close_scene, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
 func (self class) MarkSceneAsUnsaved() { //gd:EditorInterface.mark_scene_as_unsaved
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.mark_scene_as_unsaved, 0, &struct{}{})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.mark_scene_as_unsaved, 0, &struct{}{})
 }
 func (self class) PlayMainScene() { //gd:EditorInterface.play_main_scene
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_main_scene, 0, &struct{}{})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.play_main_scene, 0, &struct{}{})
 }
 func (self class) PlayCurrentScene() { //gd:EditorInterface.play_current_scene
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_current_scene, 0, &struct{}{})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.play_current_scene, 0, &struct{}{})
 }
 func (self class) PlayCustomScene(scene_filepath String.Readable) { //gd:EditorInterface.play_custom_scene
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_custom_scene, 0|(gdextension.SizeString<<4), &struct{ scene_filepath gdextension.String }{pointers.Get(gd.InternalString(scene_filepath))})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.play_custom_scene, 0|(gdextension.SizeString<<4), &struct{ scene_filepath gdextension.String }{pointers.Get(gd.InternalString(scene_filepath))})
 }
 func (self class) StopPlayingScene() { //gd:EditorInterface.stop_playing_scene
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop_playing_scene, 0, &struct{}{})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.stop_playing_scene, 0, &struct{}{})
 }
 func (self class) IsPlayingScene() bool { //gd:EditorInterface.is_playing_scene
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_playing_scene, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_playing_scene, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetPlayingScene() String.Readable { //gd:EditorInterface.get_playing_scene
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_playing_scene, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_playing_scene, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) SetMovieMakerEnabled(enabled bool) { //gd:EditorInterface.set_movie_maker_enabled
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_movie_maker_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_movie_maker_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsMovieMakerEnabled() bool { //gd:EditorInterface.is_movie_maker_enabled
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_movie_maker_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_movie_maker_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

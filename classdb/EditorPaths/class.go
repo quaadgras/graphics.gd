@@ -20,6 +20,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -188,7 +189,7 @@ func (self Instance) GetProjectSettingsDir() string { //gd:EditorPaths.get_proje
 type Advanced = class
 type class [1]gdclass.EditorPaths
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetEditorPaths(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorPaths(obj[0])
@@ -203,8 +204,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetEditorPaths(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.EditorPaths{gdclass.NewEditorPaths(pointers.Add[gd.Object]([3]uint64{}))})
@@ -256,13 +257,9 @@ func (self class) GetProjectSettingsDir() String.Readable { //gd:EditorPaths.get
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-func (self class) AsEditorPaths() Advanced {
-	return Advanced{gdclass.NewEditorPaths(self.AsObject()[0])}
-}
-func (self Instance) AsEditorPaths() Instance {
-	return Instance{gdclass.NewEditorPaths(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsEditorPaths() Instance { return self.Super().AsEditorPaths() }
+func (o class) AsEditorPaths() Advanced         { return Advanced(o) }
+func (o Instance) AsEditorPaths() Instance      { return o }
+func (o *Extension[T]) AsEditorPaths() Instance { return o.Super() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

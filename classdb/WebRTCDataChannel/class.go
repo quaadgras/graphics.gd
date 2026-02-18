@@ -10,6 +10,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -218,7 +219,7 @@ func (self Instance) GetBufferedAmount() int { //gd:WebRTCDataChannel.get_buffer
 type Advanced = class
 type class [1]gdclass.WebRTCDataChannel
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetWebRTCDataChannel(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewWebRTCDataChannel(obj[0])
@@ -233,8 +234,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetWebRTCDataChannel(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.WebRTCDataChannel{gdclass.NewWebRTCDataChannel(pointers.Add[gd.Object]([3]uint64{}))})
@@ -336,27 +337,15 @@ func (self class) GetBufferedAmount() int64 { //gd:WebRTCDataChannel.get_buffere
 	var ret = r_ret
 	return ret
 }
-func (self class) AsWebRTCDataChannel() Advanced {
-	return Advanced{gdclass.NewWebRTCDataChannel(self.AsObject()[0])}
-}
-func (self Instance) AsWebRTCDataChannel() Instance {
-	return Instance{gdclass.NewWebRTCDataChannel(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsWebRTCDataChannel() Instance { return self.Super().AsWebRTCDataChannel() }
-func (self class) AsPacketPeer() PacketPeer.Advanced {
-	return PacketPeer.Advanced{gdclass.NewPacketPeer(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsPacketPeer() PacketPeer.Instance { return self.Super().AsPacketPeer() }
-func (self Instance) AsPacketPeer() PacketPeer.Instance {
-	return PacketPeer.Instance{gdclass.NewPacketPeer(self.AsObject()[0])}
-}
-func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
-func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
+func (o class) AsWebRTCDataChannel() Advanced             { return Advanced(o) }
+func (o Instance) AsWebRTCDataChannel() Instance          { return o }
+func (o *Extension[T]) AsWebRTCDataChannel() Instance     { return o.Super() }
+func (o class) AsPacketPeer() PacketPeer.Advanced         { return *(*PacketPeer.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsPacketPeer() PacketPeer.Instance { return o.Super().AsPacketPeer() }
+func (o Instance) AsPacketPeer() PacketPeer.Instance      { return *(*PacketPeer.Instance)(ie.As(&o)) }
+func (o class) AsRefCounted() ie.RC                       { return *(*ie.RC)(ie.As(&o)) }
+func (o *Extension[T]) AsRefCounted() ie.RC               { return o.Super().AsRefCounted() }
+func (o Instance) AsRefCounted() ie.RC                    { return *(*ie.RC)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

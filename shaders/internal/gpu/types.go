@@ -291,7 +291,7 @@ type Vec2 = struct {
 }
 
 func NewVec2[X, Y AnyFloat](x X, y Y) Vec2 { return Vec2{X: NewFloat(x), Y: NewFloat(y)} }
-func NewVec2Expression(e Expression) Vec2 { var r Vec2; Set(&r, e); return r }
+func NewVec2Expression(e Expression) Vec2  { var r Vec2; Set(&r, e); return r }
 
 type Vec3 = struct {
 	internalExpression

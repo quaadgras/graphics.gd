@@ -58,6 +58,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -1086,7 +1087,7 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.NativeMenu
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetNativeMenu(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewNativeMenu(obj[0])
@@ -1101,130 +1102,130 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetNativeMenu(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 
 func (self class) HasFeature(feature Feature) bool { //gd:NativeMenu.has_feature
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_feature, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ feature Feature }{feature})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.has_feature, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ feature Feature }{feature})
 	var ret = r_ret
 	return ret
 }
 func (self class) HasSystemMenu(menu_id SystemMenus) bool { //gd:NativeMenu.has_system_menu
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_system_menu, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ menu_id SystemMenus }{menu_id})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.has_system_menu, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ menu_id SystemMenus }{menu_id})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetSystemMenu(menu_id SystemMenus) RID.Any { //gd:NativeMenu.get_system_menu
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_system_menu, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ menu_id SystemMenus }{menu_id})
+	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_system_menu, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ menu_id SystemMenus }{menu_id})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetSystemMenuName(menu_id SystemMenus) String.Readable { //gd:NativeMenu.get_system_menu_name
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_system_menu_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ menu_id SystemMenus }{menu_id})
+	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_system_menu_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ menu_id SystemMenus }{menu_id})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetSystemMenuText(menu_id SystemMenus) String.Readable { //gd:NativeMenu.get_system_menu_text
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_system_menu_text, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ menu_id SystemMenus }{menu_id})
+	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_system_menu_text, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ menu_id SystemMenus }{menu_id})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) SetSystemMenuText(menu_id SystemMenus, name String.Readable) { //gd:NativeMenu.set_system_menu_text
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_system_menu_text, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_system_menu_text, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		menu_id SystemMenus
 		name    gdextension.String
 	}{menu_id, pointers.Get(gd.InternalString(name))})
 }
 func (self class) CreateMenu() RID.Any { //gd:NativeMenu.create_menu
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.create_menu, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.create_menu, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) HasMenu(rid RID.Any) bool { //gd:NativeMenu.has_menu
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_menu, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.has_menu, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
 }
 func (self class) FreeMenu(rid RID.Any) { //gd:NativeMenu.free_menu
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.free_menu, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.free_menu, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 }
 func (self class) GetSize(rid RID.Any) Vector2.XY { //gd:NativeMenu.get_size
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	var r_ret = noescape.Call[Vector2.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_size, gdextension.SizeVector2|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
 }
 func (self class) Popup(rid RID.Any, position Vector2i.XY) { //gd:NativeMenu.popup
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2i<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.popup, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2i<<8), &struct {
 		rid      RID.Any
 		position Vector2i.XY
 	}{rid, position})
 }
 func (self class) SetInterfaceDirection(rid RID.Any, is_rtl bool) { //gd:NativeMenu.set_interface_direction
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interface_direction, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_interface_direction, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		rid    RID.Any
 		is_rtl bool
 	}{rid, is_rtl})
 }
 func (self class) SetPopupOpenCallback(rid RID.Any, callback Callable.Function) { //gd:NativeMenu.set_popup_open_callback
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_popup_open_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_popup_open_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
 		rid      RID.Any
 		callback gdextension.Callable
 	}{rid, pointers.Get(gd.InternalCallable(callback))})
 }
 func (self class) GetPopupOpenCallback(rid RID.Any) Callable.Function { //gd:NativeMenu.get_popup_open_callback
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_popup_open_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	var r_ret = noescape.Call[gdextension.Callable](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_popup_open_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret)))
 	return ret
 }
 func (self class) SetPopupCloseCallback(rid RID.Any, callback Callable.Function) { //gd:NativeMenu.set_popup_close_callback
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_popup_close_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_popup_close_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
 		rid      RID.Any
 		callback gdextension.Callable
 	}{rid, pointers.Get(gd.InternalCallable(callback))})
 }
 func (self class) GetPopupCloseCallback(rid RID.Any) Callable.Function { //gd:NativeMenu.get_popup_close_callback
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_popup_close_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	var r_ret = noescape.Call[gdextension.Callable](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_popup_close_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret)))
 	return ret
 }
 func (self class) SetMinimumWidth(rid RID.Any, width float64) { //gd:NativeMenu.set_minimum_width
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_minimum_width, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_minimum_width, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		rid   RID.Any
 		width float64
 	}{rid, width})
 }
 func (self class) GetMinimumWidth(rid RID.Any) float64 { //gd:NativeMenu.get_minimum_width
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_minimum_width, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_minimum_width, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsOpened(rid RID.Any) bool { //gd:NativeMenu.is_opened
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_opened, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_opened, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
 }
 func (self class) AddSubmenuItem(rid RID.Any, label String.Readable, submenu_rid RID.Any, tag variant.Any, index int64) int64 { //gd:NativeMenu.add_submenu_item
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_submenu_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeVariant<<16)|(gdextension.SizeInt<<20), &struct {
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.add_submenu_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeVariant<<16)|(gdextension.SizeInt<<20), &struct {
 		rid         RID.Any
 		label       gdextension.String
 		submenu_rid RID.Any
@@ -1236,7 +1237,7 @@ func (self class) AddSubmenuItem(rid RID.Any, label String.Readable, submenu_rid
 }
 func (self class) AddItem(rid RID.Any, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_item
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.add_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
 		rid          RID.Any
 		label        gdextension.String
 		callback     gdextension.Callable
@@ -1250,7 +1251,7 @@ func (self class) AddItem(rid RID.Any, label String.Readable, callback Callable.
 }
 func (self class) AddCheckItem(rid RID.Any, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_check_item
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.add_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
 		rid          RID.Any
 		label        gdextension.String
 		callback     gdextension.Callable
@@ -1264,7 +1265,7 @@ func (self class) AddCheckItem(rid RID.Any, label String.Readable, callback Call
 }
 func (self class) AddIconItem(rid RID.Any, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_icon_item
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_icon_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.add_icon_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
 		rid          RID.Any
 		icon         gdextension.Object
 		label        gdextension.String
@@ -1279,7 +1280,7 @@ func (self class) AddIconItem(rid RID.Any, icon [1]gdclass.Texture2D, label Stri
 }
 func (self class) AddIconCheckItem(rid RID.Any, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_icon_check_item
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_icon_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.add_icon_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
 		rid          RID.Any
 		icon         gdextension.Object
 		label        gdextension.String
@@ -1294,7 +1295,7 @@ func (self class) AddIconCheckItem(rid RID.Any, icon [1]gdclass.Texture2D, label
 }
 func (self class) AddRadioCheckItem(rid RID.Any, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_radio_check_item
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_radio_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.add_radio_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
 		rid          RID.Any
 		label        gdextension.String
 		callback     gdextension.Callable
@@ -1308,7 +1309,7 @@ func (self class) AddRadioCheckItem(rid RID.Any, label String.Readable, callback
 }
 func (self class) AddIconRadioCheckItem(rid RID.Any, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_icon_radio_check_item
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_icon_radio_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.add_icon_radio_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
 		rid          RID.Any
 		icon         gdextension.Object
 		label        gdextension.String
@@ -1323,7 +1324,7 @@ func (self class) AddIconRadioCheckItem(rid RID.Any, icon [1]gdclass.Texture2D, 
 }
 func (self class) AddMultistateItem(rid RID.Any, label String.Readable, max_states int64, default_state int64, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_multistate_item
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_multistate_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeCallable<<24)|(gdextension.SizeVariant<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36), &struct {
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.add_multistate_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeCallable<<24)|(gdextension.SizeVariant<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36), &struct {
 		rid           RID.Any
 		label         gdextension.String
 		max_states    int64
@@ -1339,7 +1340,7 @@ func (self class) AddMultistateItem(rid RID.Any, label String.Readable, max_stat
 }
 func (self class) AddSeparator(rid RID.Any, index int64) int64 { //gd:NativeMenu.add_separator
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_separator, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.add_separator, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid   RID.Any
 		index int64
 	}{rid, index})
@@ -1348,7 +1349,7 @@ func (self class) AddSeparator(rid RID.Any, index int64) int64 { //gd:NativeMenu
 }
 func (self class) FindItemIndexWithText(rid RID.Any, text String.Readable) int64 { //gd:NativeMenu.find_item_index_with_text
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_item_index_with_text, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.find_item_index_with_text, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		rid  RID.Any
 		text gdextension.String
 	}{rid, pointers.Get(gd.InternalString(text))})
@@ -1357,7 +1358,7 @@ func (self class) FindItemIndexWithText(rid RID.Any, text String.Readable) int64
 }
 func (self class) FindItemIndexWithTag(rid RID.Any, tag variant.Any) int64 { //gd:NativeMenu.find_item_index_with_tag
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_item_index_with_tag, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeVariant<<8), &struct {
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.find_item_index_with_tag, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeVariant<<8), &struct {
 		rid RID.Any
 		tag gdextension.Variant
 	}{rid, gdextension.Variant(pointers.Get(gd.InternalVariant(tag)))})
@@ -1366,7 +1367,7 @@ func (self class) FindItemIndexWithTag(rid RID.Any, tag variant.Any) int64 { //g
 }
 func (self class) FindItemIndexWithSubmenu(rid RID.Any, submenu_rid RID.Any) int64 { //gd:NativeMenu.find_item_index_with_submenu
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_item_index_with_submenu, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.find_item_index_with_submenu, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		rid         RID.Any
 		submenu_rid RID.Any
 	}{rid, submenu_rid})
@@ -1375,7 +1376,7 @@ func (self class) FindItemIndexWithSubmenu(rid RID.Any, submenu_rid RID.Any) int
 }
 func (self class) IsItemChecked(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_checked
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_checked, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_item_checked, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1384,7 +1385,7 @@ func (self class) IsItemChecked(rid RID.Any, idx int64) bool { //gd:NativeMenu.i
 }
 func (self class) IsItemCheckable(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_checkable
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_checkable, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_item_checkable, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1393,7 +1394,7 @@ func (self class) IsItemCheckable(rid RID.Any, idx int64) bool { //gd:NativeMenu
 }
 func (self class) IsItemRadioCheckable(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_radio_checkable
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_radio_checkable, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_item_radio_checkable, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1402,7 +1403,7 @@ func (self class) IsItemRadioCheckable(rid RID.Any, idx int64) bool { //gd:Nativ
 }
 func (self class) GetItemCallback(rid RID.Any, idx int64) Callable.Function { //gd:NativeMenu.get_item_callback
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_item_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Callable](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_item_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1411,7 +1412,7 @@ func (self class) GetItemCallback(rid RID.Any, idx int64) Callable.Function { //
 }
 func (self class) GetItemKeyCallback(rid RID.Any, idx int64) Callable.Function { //gd:NativeMenu.get_item_key_callback
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_item_key_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Callable](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_item_key_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1420,7 +1421,7 @@ func (self class) GetItemKeyCallback(rid RID.Any, idx int64) Callable.Function {
 }
 func (self class) GetItemTag(rid RID.Any, idx int64) variant.Any { //gd:NativeMenu.get_item_tag
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_item_tag, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Variant](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_item_tag, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1429,7 +1430,7 @@ func (self class) GetItemTag(rid RID.Any, idx int64) variant.Any { //gd:NativeMe
 }
 func (self class) GetItemText(rid RID.Any, idx int64) String.Readable { //gd:NativeMenu.get_item_text
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_text, gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_item_text, gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1438,7 +1439,7 @@ func (self class) GetItemText(rid RID.Any, idx int64) String.Readable { //gd:Nat
 }
 func (self class) GetItemSubmenu(rid RID.Any, idx int64) RID.Any { //gd:NativeMenu.get_item_submenu
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_item_submenu, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[RID.Any](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_item_submenu, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1447,7 +1448,7 @@ func (self class) GetItemSubmenu(rid RID.Any, idx int64) RID.Any { //gd:NativeMe
 }
 func (self class) GetItemAccelerator(rid RID.Any, idx int64) Input.Key { //gd:NativeMenu.get_item_accelerator
 	once.Do(singleton)
-	var r_ret = noescape.Call[Input.Key](gd.ObjectChecked(self.AsObject()), methods.get_item_accelerator, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[Input.Key](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_item_accelerator, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1456,7 +1457,7 @@ func (self class) GetItemAccelerator(rid RID.Any, idx int64) Input.Key { //gd:Na
 }
 func (self class) IsItemDisabled(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_disabled
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_disabled, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_item_disabled, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1465,7 +1466,7 @@ func (self class) IsItemDisabled(rid RID.Any, idx int64) bool { //gd:NativeMenu.
 }
 func (self class) IsItemHidden(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_hidden
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_hidden, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_item_hidden, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1474,7 +1475,7 @@ func (self class) IsItemHidden(rid RID.Any, idx int64) bool { //gd:NativeMenu.is
 }
 func (self class) GetItemTooltip(rid RID.Any, idx int64) String.Readable { //gd:NativeMenu.get_item_tooltip
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_tooltip, gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_item_tooltip, gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1483,7 +1484,7 @@ func (self class) GetItemTooltip(rid RID.Any, idx int64) String.Readable { //gd:
 }
 func (self class) GetItemState(rid RID.Any, idx int64) int64 { //gd:NativeMenu.get_item_state
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_state, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_item_state, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1492,7 +1493,7 @@ func (self class) GetItemState(rid RID.Any, idx int64) int64 { //gd:NativeMenu.g
 }
 func (self class) GetItemMaxStates(rid RID.Any, idx int64) int64 { //gd:NativeMenu.get_item_max_states
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_max_states, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_item_max_states, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1501,7 +1502,7 @@ func (self class) GetItemMaxStates(rid RID.Any, idx int64) int64 { //gd:NativeMe
 }
 func (self class) GetItemIcon(rid RID.Any, idx int64) [1]gdclass.Texture2D { //gd:NativeMenu.get_item_icon
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_item_icon, gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_item_icon, gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1510,7 +1511,7 @@ func (self class) GetItemIcon(rid RID.Any, idx int64) [1]gdclass.Texture2D { //g
 }
 func (self class) GetItemIndentationLevel(rid RID.Any, idx int64) int64 { //gd:NativeMenu.get_item_indentation_level
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_indentation_level, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_item_indentation_level, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1519,7 +1520,7 @@ func (self class) GetItemIndentationLevel(rid RID.Any, idx int64) int64 { //gd:N
 }
 func (self class) SetItemChecked(rid RID.Any, idx int64, checked bool) { //gd:NativeMenu.set_item_checked
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_checked, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_item_checked, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		rid     RID.Any
 		idx     int64
 		checked bool
@@ -1527,7 +1528,7 @@ func (self class) SetItemChecked(rid RID.Any, idx int64, checked bool) { //gd:Na
 }
 func (self class) SetItemCheckable(rid RID.Any, idx int64, checkable bool) { //gd:NativeMenu.set_item_checkable
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_checkable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_item_checkable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		rid       RID.Any
 		idx       int64
 		checkable bool
@@ -1535,7 +1536,7 @@ func (self class) SetItemCheckable(rid RID.Any, idx int64, checkable bool) { //g
 }
 func (self class) SetItemRadioCheckable(rid RID.Any, idx int64, checkable bool) { //gd:NativeMenu.set_item_radio_checkable
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_radio_checkable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_item_radio_checkable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		rid       RID.Any
 		idx       int64
 		checkable bool
@@ -1543,7 +1544,7 @@ func (self class) SetItemRadioCheckable(rid RID.Any, idx int64, checkable bool) 
 }
 func (self class) SetItemCallback(rid RID.Any, idx int64, callback Callable.Function) { //gd:NativeMenu.set_item_callback
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_item_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
 		rid      RID.Any
 		idx      int64
 		callback gdextension.Callable
@@ -1551,7 +1552,7 @@ func (self class) SetItemCallback(rid RID.Any, idx int64, callback Callable.Func
 }
 func (self class) SetItemHoverCallbacks(rid RID.Any, idx int64, callback Callable.Function) { //gd:NativeMenu.set_item_hover_callbacks
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_hover_callbacks, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_item_hover_callbacks, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
 		rid      RID.Any
 		idx      int64
 		callback gdextension.Callable
@@ -1559,7 +1560,7 @@ func (self class) SetItemHoverCallbacks(rid RID.Any, idx int64, callback Callabl
 }
 func (self class) SetItemKeyCallback(rid RID.Any, idx int64, key_callback Callable.Function) { //gd:NativeMenu.set_item_key_callback
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_key_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_item_key_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
 		rid          RID.Any
 		idx          int64
 		key_callback gdextension.Callable
@@ -1567,7 +1568,7 @@ func (self class) SetItemKeyCallback(rid RID.Any, idx int64, key_callback Callab
 }
 func (self class) SetItemTag(rid RID.Any, idx int64, tag variant.Any) { //gd:NativeMenu.set_item_tag
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_tag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_item_tag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
 		rid RID.Any
 		idx int64
 		tag gdextension.Variant
@@ -1575,7 +1576,7 @@ func (self class) SetItemTag(rid RID.Any, idx int64, tag variant.Any) { //gd:Nat
 }
 func (self class) SetItemText(rid RID.Any, idx int64, text String.Readable) { //gd:NativeMenu.set_item_text
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_text, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_item_text, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		rid  RID.Any
 		idx  int64
 		text gdextension.String
@@ -1583,7 +1584,7 @@ func (self class) SetItemText(rid RID.Any, idx int64, text String.Readable) { //
 }
 func (self class) SetItemSubmenu(rid RID.Any, idx int64, submenu_rid RID.Any) { //gd:NativeMenu.set_item_submenu
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_submenu, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_item_submenu, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), &struct {
 		rid         RID.Any
 		idx         int64
 		submenu_rid RID.Any
@@ -1591,7 +1592,7 @@ func (self class) SetItemSubmenu(rid RID.Any, idx int64, submenu_rid RID.Any) { 
 }
 func (self class) SetItemAccelerator(rid RID.Any, idx int64, keycode Input.Key) { //gd:NativeMenu.set_item_accelerator
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_accelerator, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_item_accelerator, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		rid     RID.Any
 		idx     int64
 		keycode Input.Key
@@ -1599,7 +1600,7 @@ func (self class) SetItemAccelerator(rid RID.Any, idx int64, keycode Input.Key) 
 }
 func (self class) SetItemDisabled(rid RID.Any, idx int64, disabled bool) { //gd:NativeMenu.set_item_disabled
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_disabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_item_disabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		rid      RID.Any
 		idx      int64
 		disabled bool
@@ -1607,7 +1608,7 @@ func (self class) SetItemDisabled(rid RID.Any, idx int64, disabled bool) { //gd:
 }
 func (self class) SetItemHidden(rid RID.Any, idx int64, hidden bool) { //gd:NativeMenu.set_item_hidden
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_hidden, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_item_hidden, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		rid    RID.Any
 		idx    int64
 		hidden bool
@@ -1615,7 +1616,7 @@ func (self class) SetItemHidden(rid RID.Any, idx int64, hidden bool) { //gd:Nati
 }
 func (self class) SetItemTooltip(rid RID.Any, idx int64, tooltip String.Readable) { //gd:NativeMenu.set_item_tooltip
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_tooltip, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_item_tooltip, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		rid     RID.Any
 		idx     int64
 		tooltip gdextension.String
@@ -1623,7 +1624,7 @@ func (self class) SetItemTooltip(rid RID.Any, idx int64, tooltip String.Readable
 }
 func (self class) SetItemState(rid RID.Any, idx int64, state int64) { //gd:NativeMenu.set_item_state
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_state, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_item_state, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		rid   RID.Any
 		idx   int64
 		state int64
@@ -1631,7 +1632,7 @@ func (self class) SetItemState(rid RID.Any, idx int64, state int64) { //gd:Nativ
 }
 func (self class) SetItemMaxStates(rid RID.Any, idx int64, max_states int64) { //gd:NativeMenu.set_item_max_states
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_max_states, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_item_max_states, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		rid        RID.Any
 		idx        int64
 		max_states int64
@@ -1639,7 +1640,7 @@ func (self class) SetItemMaxStates(rid RID.Any, idx int64, max_states int64) { /
 }
 func (self class) SetItemIcon(rid RID.Any, idx int64, icon [1]gdclass.Texture2D) { //gd:NativeMenu.set_item_icon
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_icon, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_item_icon, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12), &struct {
 		rid  RID.Any
 		idx  int64
 		icon gdextension.Object
@@ -1647,7 +1648,7 @@ func (self class) SetItemIcon(rid RID.Any, idx int64, icon [1]gdclass.Texture2D)
 }
 func (self class) SetItemIndentationLevel(rid RID.Any, idx int64, level int64) { //gd:NativeMenu.set_item_indentation_level
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_indentation_level, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_item_indentation_level, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		rid   RID.Any
 		idx   int64
 		level int64
@@ -1655,26 +1656,26 @@ func (self class) SetItemIndentationLevel(rid RID.Any, idx int64, level int64) {
 }
 func (self class) GetItemCount(rid RID.Any) int64 { //gd:NativeMenu.get_item_count
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	var r_ret = noescape.Call[int64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_item_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsSystemMenu(rid RID.Any) bool { //gd:NativeMenu.is_system_menu
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_system_menu, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_system_menu, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
 }
 func (self class) RemoveItem(rid RID.Any, idx int64) { //gd:NativeMenu.remove_item
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_item, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.remove_item, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
 }
 func (self class) Clear(rid RID.Any) { //gd:NativeMenu.clear
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.clear, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

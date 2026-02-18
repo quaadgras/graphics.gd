@@ -31,6 +31,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -1035,7 +1036,7 @@ func (self Instance) RegisterExtensionWrapper() { //gd:OpenXRExtensionWrapper.re
 type Advanced = class
 type class [1]gdclass.OpenXRExtensionWrapper
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetOpenXRExtensionWrapper(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewOpenXRExtensionWrapper(obj[0])
@@ -1050,8 +1051,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetOpenXRExtensionWrapper(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.OpenXRExtensionWrapper{gdclass.NewOpenXRExtensionWrapper(pointers.Add[gd.Object]([3]uint64{}))})
@@ -1420,15 +1421,9 @@ func (self class) GetOpenxrApi() [1]gdclass.OpenXRAPIExtension { //gd:OpenXRExte
 func (self class) RegisterExtensionWrapper() { //gd:OpenXRExtensionWrapper.register_extension_wrapper
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_extension_wrapper, 0, &struct{}{})
 }
-func (self class) AsOpenXRExtensionWrapper() Advanced {
-	return Advanced{gdclass.NewOpenXRExtensionWrapper(self.AsObject()[0])}
-}
-func (self Instance) AsOpenXRExtensionWrapper() Instance {
-	return Instance{gdclass.NewOpenXRExtensionWrapper(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsOpenXRExtensionWrapper() Instance {
-	return self.Super().AsOpenXRExtensionWrapper()
-}
+func (o class) AsOpenXRExtensionWrapper() Advanced         { return Advanced(o) }
+func (o Instance) AsOpenXRExtensionWrapper() Instance      { return o }
+func (o *Extension[T]) AsOpenXRExtensionWrapper() Instance { return o.Super() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

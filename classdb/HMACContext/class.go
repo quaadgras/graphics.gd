@@ -52,6 +52,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -183,7 +184,7 @@ func (self Instance) Finish() []byte { //gd:HMACContext.finish
 type Advanced = class
 type class [1]gdclass.HMACContext
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetHMACContext(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewHMACContext(obj[0])
@@ -198,8 +199,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetHMACContext(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.HMACContext{gdclass.NewHMACContext(pointers.Add[gd.Object]([3]uint64{}))})
@@ -240,20 +241,12 @@ func (self class) Finish() Packed.Bytes { //gd:HMACContext.finish
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-func (self class) AsHMACContext() Advanced {
-	return Advanced{gdclass.NewHMACContext(self.AsObject()[0])}
-}
-func (self Instance) AsHMACContext() Instance {
-	return Instance{gdclass.NewHMACContext(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsHMACContext() Instance { return self.Super().AsHMACContext() }
-func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
-func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
+func (o class) AsHMACContext() Advanced         { return Advanced(o) }
+func (o Instance) AsHMACContext() Instance      { return o }
+func (o *Extension[T]) AsHMACContext() Instance { return o.Super() }
+func (o class) AsRefCounted() ie.RC             { return *(*ie.RC)(ie.As(&o)) }
+func (o *Extension[T]) AsRefCounted() ie.RC     { return o.Super().AsRefCounted() }
+func (o Instance) AsRefCounted() ie.RC          { return *(*ie.RC)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

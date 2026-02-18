@@ -18,6 +18,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -120,7 +121,7 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.LightmapperRD
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetLightmapperRD(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewLightmapperRD(obj[0])
@@ -135,8 +136,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetLightmapperRD(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.LightmapperRD{gdclass.NewLightmapperRD(pointers.Add[gd.Object]([3]uint64{}))})
@@ -159,27 +160,15 @@ func New() Instance {
 	return casted
 }
 
-func (self class) AsLightmapperRD() Advanced {
-	return Advanced{gdclass.NewLightmapperRD(self.AsObject()[0])}
-}
-func (self Instance) AsLightmapperRD() Instance {
-	return Instance{gdclass.NewLightmapperRD(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsLightmapperRD() Instance { return self.Super().AsLightmapperRD() }
-func (self class) AsLightmapper() Lightmapper.Advanced {
-	return Lightmapper.Advanced{gdclass.NewLightmapper(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsLightmapper() Lightmapper.Instance { return self.Super().AsLightmapper() }
-func (self Instance) AsLightmapper() Lightmapper.Instance {
-	return Lightmapper.Instance{gdclass.NewLightmapper(self.AsObject()[0])}
-}
-func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
-func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
+func (o class) AsLightmapperRD() Advanced                   { return Advanced(o) }
+func (o Instance) AsLightmapperRD() Instance                { return o }
+func (o *Extension[T]) AsLightmapperRD() Instance           { return o.Super() }
+func (o class) AsLightmapper() Lightmapper.Advanced         { return *(*Lightmapper.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsLightmapper() Lightmapper.Instance { return o.Super().AsLightmapper() }
+func (o Instance) AsLightmapper() Lightmapper.Instance      { return *(*Lightmapper.Instance)(ie.As(&o)) }
+func (o class) AsRefCounted() ie.RC                         { return *(*ie.RC)(ie.As(&o)) }
+func (o *Extension[T]) AsRefCounted() ie.RC                 { return o.Super().AsRefCounted() }
+func (o Instance) AsRefCounted() ie.RC                      { return *(*ie.RC)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

@@ -253,13 +253,7 @@ func malloc[T Generic[T, P], P Size](ptr P, free func(T)) T {
 			nxt = idx + offsetPointers + uint64(len(ptr))
 		}
 		if wat.CompareAndSwap(idx, nxt) && rev != revisionLocked && rev.isClosed() && arr[addr+offsetRevision].CompareAndSwap(uint64(rev), revisionLocked) {
-			var current struct {
-				_ [0]*T
-
-				sentinal uint64
-				revision revision
-				checksum P
-			}
+			var current Structure[T, P]
 			current.sentinal = idx
 			rev := (max(rev, 2) + 1).active().reset()
 			arr[addr+offsetRevision].Store(uint64(rev))
@@ -322,19 +316,21 @@ func Cut[T Generic[T, P], P Size](ptr T, end bool) P {
 		}
 		return raw
 	}
-	return Get[T, P](ptr)
+	return Get(ptr)
+}
+
+type Structure[T Generic[T, P], P Size] = struct {
+	_ [0]*T
+
+	sentinal uint64
+	revision revision
+	checksum P
 }
 
 // Get returns the underlying pointer value, or panics if the pointer
 // has been freed.
 func Get[T Generic[T, P], P Size](ptr T) P {
-	p := (struct {
-		_ [0]*T
-
-		sentinal uint64
-		revision revision
-		checksum P
-	})(ptr)
+	p := (*Structure[T, P])(unsafe.Pointer(&ptr))
 	if p.revision == 0 && p.sentinal == 0 {
 		return p.checksum
 	}
@@ -361,7 +357,7 @@ func Get[T Generic[T, P], P Size](ptr T) P {
 			panic(panicMessage)
 		}
 		if !rev.isActive() {
-			if live, ok := any(T(p)).(Liveness[P]); ok && !live.IsAlive(*(*P)(unsafe.Pointer(&ptrs))) {
+			if live, ok := any(T(*p)).(Liveness[P]); ok && !live.IsAlive(*(*P)(unsafe.Pointer(&ptrs))) {
 				panic(panicMessage)
 			}
 			arr[addr+offsetRevision].CompareAndSwap(uint64(rev), uint64(rev.active()))
@@ -372,13 +368,7 @@ func Get[T Generic[T, P], P Size](ptr T) P {
 
 // Bad returns true if the pointer is nil, or freed.
 func Bad[T Generic[T, P], P Size](ptr T) bool {
-	p := (struct {
-		_ [0]*T
-
-		sentinal uint64
-		revision revision
-		checksum P
-	})(ptr)
+	p := (Structure[T, P])(ptr)
 	if p.revision == 0 && p.sentinal == 0 {
 		return p.checksum != [1]P{}[0]
 	}
@@ -400,13 +390,7 @@ func Bad[T Generic[T, P], P Size](ptr T) bool {
 // Add allocates a new pointer that can be mutated with [Set].
 func Add[T Generic[T, P], P Size](val P) T {
 	addr := counts[len(val)].Add(uint64(len(val)))
-	var result struct {
-		_ [0]*T
-
-		sentinal uint64
-		revision revision
-		checksum P
-	}
+	var result Structure[T, P]
 	if len(static[len(val)]) <= int(addr/pageSize) {
 		static[len(val)] = append(static[len(val)], [pageSize]uint64{})
 	}
@@ -421,13 +405,7 @@ func Add[T Generic[T, P], P Size](val P) T {
 
 // Set overwrites the underlying added pointer value.
 func Set[T Generic[T, P], P Size](ptr T, val P) {
-	p := (struct {
-		_ [0]*T
-
-		sentinal uint64
-		revision revision
-		checksum P
-	})(ptr)
+	p := (Structure[T, P])(ptr)
 	if p.revision == 0 && p.sentinal == 0 {
 		return
 	}
@@ -502,13 +480,7 @@ func Raw[T Generic[T, P], P Size](ptr P) T {
 
 // Pin the pointer, preventing it from being freed until [Free] is called on it.
 func Pin[T Generic[T, P], P Size](ptr T) T {
-	p := (struct {
-		_ [0]*T
-
-		sentinal uint64
-		revision revision
-		checksum P
-	})(ptr)
+	p := (Structure[T, P])(ptr)
 	if (p.revision == 0 && p.sentinal == 0) || p.revision.isPinned() {
 		return ptr
 	}
@@ -527,13 +499,7 @@ func Pin[T Generic[T, P], P Size](ptr T) T {
 
 // Debug prints the current state of the pointer.
 func Debug[T Generic[T, P], P Size](ptr T) {
-	p := (struct {
-		_ [0]*T
-
-		sentinal uint64
-		revision revision
-		checksum P
-	})(ptr)
+	p := (Structure[T, P])(ptr)
 	if p.revision == 0 && p.sentinal == 0 {
 		fmt.Printf("pointer raw %d\n", p.sentinal)
 	}
@@ -549,13 +515,7 @@ func Debug[T Generic[T, P], P Size](ptr T) {
 
 // Lay the pointer, preventing the free operation from being called on it (it can still expire).
 func Lay[T Generic[T, P], P Size](ptr T) T {
-	p := (struct {
-		_ [0]*T
-
-		sentinal uint64
-		revision revision
-		checksum P
-	})(ptr)
+	p := (Structure[T, P])(ptr)
 	if p.revision == 0 {
 		return ptr // raw and static pointers get laid for free
 	}
@@ -575,24 +535,12 @@ func Lay[T Generic[T, P], P Size](ptr T) T {
 }
 
 func Pack[T Generic[T, P], P Size](ptr T) complex128 {
-	p := (struct {
-		_ [0]*T
-
-		sentinal uint64
-		revision revision
-		checksum P
-	})(ptr)
+	p := (Structure[T, P])(ptr)
 	return *(*complex128)(unsafe.Pointer(&p.sentinal))
 }
 
 func Load[T Generic[T, P], P Size](data complex128) T {
-	var result struct {
-		_ [0]*T
-
-		sentinal uint64
-		revision revision
-		checksum P
-	}
+	var result Structure[T, P]
 	*(*complex128)(unsafe.Pointer(&result.sentinal)) = data
 	result.checksum = Get[T](result)
 	return T(result)
@@ -623,13 +571,7 @@ type Liveness[S Size] interface {
 // End the lifetime of the pointer, returning the underlying pointer value
 // and ok=true if this is the first time the pointer has been freed.
 func End[T Generic[T, Raw], Raw Size](ptr T) (Raw, bool) {
-	p := (struct {
-		_ [0]*T
-
-		sentinal uint64
-		revision revision
-		checksum Raw
-	})(ptr)
+	p := (Structure[T, Raw])(ptr)
 	if p.checksum == [1]Raw{}[0] {
 		return [1]Raw{}[0], false
 	}
@@ -641,20 +583,8 @@ func End[T Generic[T, Raw], Raw Size](ptr T) (Raw, bool) {
 
 // AsA unsafely converts between different pointer types of the same size.
 func AsA[T Generic[T, P], U Generic[U, P], P Size](ptr U) T {
-	p := (struct {
-		_ [0]*U
-
-		sentinal uint64
-		revision revision
-		checksum P
-	})(ptr)
-	return T(struct {
-		_ [0]*T
-
-		sentinal uint64
-		revision revision
-		checksum P
-	}{
+	p := (Structure[U, P])(ptr)
+	return T(Structure[T, P]{
 		sentinal: p.sentinal,
 		revision: p.revision,
 		checksum: p.checksum,

@@ -20,6 +20,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -122,9 +123,7 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.EditorSceneFormatImporterFBX2GLTF
 
-func (self class) AsObject() [1]gd.Object {
-	return gdclass.GetEditorSceneFormatImporterFBX2GLTF(self[0])
-}
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorSceneFormatImporterFBX2GLTF(obj[0])
@@ -139,10 +138,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object {
-	return gdclass.GetEditorSceneFormatImporterFBX2GLTF(self[0])
-}
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.EditorSceneFormatImporterFBX2GLTF{gdclass.NewEditorSceneFormatImporterFBX2GLTF(pointers.Add[gd.Object]([3]uint64{}))})
@@ -165,31 +162,21 @@ func New() Instance {
 	return casted
 }
 
-func (self class) AsEditorSceneFormatImporterFBX2GLTF() Advanced {
-	return Advanced{gdclass.NewEditorSceneFormatImporterFBX2GLTF(self.AsObject()[0])}
+func (o class) AsEditorSceneFormatImporterFBX2GLTF() Advanced         { return Advanced(o) }
+func (o Instance) AsEditorSceneFormatImporterFBX2GLTF() Instance      { return o }
+func (o *Extension[T]) AsEditorSceneFormatImporterFBX2GLTF() Instance { return o.Super() }
+func (o class) AsEditorSceneFormatImporter() EditorSceneFormatImporter.Advanced {
+	return *(*EditorSceneFormatImporter.Advanced)(ie.As(&o))
 }
-func (self Instance) AsEditorSceneFormatImporterFBX2GLTF() Instance {
-	return Instance{gdclass.NewEditorSceneFormatImporterFBX2GLTF(self.AsObject()[0])}
+func (o *Extension[T]) AsEditorSceneFormatImporter() EditorSceneFormatImporter.Instance {
+	return o.Super().AsEditorSceneFormatImporter()
 }
-func (self *Extension[T]) AsEditorSceneFormatImporterFBX2GLTF() Instance {
-	return self.Super().AsEditorSceneFormatImporterFBX2GLTF()
+func (o Instance) AsEditorSceneFormatImporter() EditorSceneFormatImporter.Instance {
+	return *(*EditorSceneFormatImporter.Instance)(ie.As(&o))
 }
-func (self class) AsEditorSceneFormatImporter() EditorSceneFormatImporter.Advanced {
-	return EditorSceneFormatImporter.Advanced{gdclass.NewEditorSceneFormatImporter(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsEditorSceneFormatImporter() EditorSceneFormatImporter.Instance {
-	return self.Super().AsEditorSceneFormatImporter()
-}
-func (self Instance) AsEditorSceneFormatImporter() EditorSceneFormatImporter.Instance {
-	return EditorSceneFormatImporter.Instance{gdclass.NewEditorSceneFormatImporter(self.AsObject()[0])}
-}
-func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
-func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
+func (o class) AsRefCounted() ie.RC         { return *(*ie.RC)(ie.As(&o)) }
+func (o *Extension[T]) AsRefCounted() ie.RC { return o.Super().AsRefCounted() }
+func (o Instance) AsRefCounted() ie.RC      { return *(*ie.RC)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

@@ -28,6 +28,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -140,7 +141,7 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.VehicleBody3D
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetVehicleBody3D(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewVehicleBody3D(obj[0])
@@ -155,8 +156,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetVehicleBody3D(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.VehicleBody3D{gdclass.NewVehicleBody3D(pointers.Add[gd.Object]([3]uint64{}))})
@@ -254,50 +255,32 @@ func (self class) GetSteering() float64 { //gd:VehicleBody3D.get_steering
 	var ret = r_ret
 	return ret
 }
-func (self class) AsVehicleBody3D() Advanced {
-	return Advanced{gdclass.NewVehicleBody3D(self.AsObject()[0])}
+func (o class) AsVehicleBody3D() Advanced                       { return Advanced(o) }
+func (o Instance) AsVehicleBody3D() Instance                    { return o }
+func (o *Extension[T]) AsVehicleBody3D() Instance               { return o.Super() }
+func (o class) AsRigidBody3D() RigidBody3D.Advanced             { return *(*RigidBody3D.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsRigidBody3D() RigidBody3D.Instance     { return o.Super().AsRigidBody3D() }
+func (o Instance) AsRigidBody3D() RigidBody3D.Instance          { return *(*RigidBody3D.Instance)(ie.As(&o)) }
+func (o class) AsPhysicsBody3D() PhysicsBody3D.Advanced         { return *(*PhysicsBody3D.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsPhysicsBody3D() PhysicsBody3D.Instance { return o.Super().AsPhysicsBody3D() }
+func (o Instance) AsPhysicsBody3D() PhysicsBody3D.Instance {
+	return *(*PhysicsBody3D.Instance)(ie.As(&o))
 }
-func (self Instance) AsVehicleBody3D() Instance {
-	return Instance{gdclass.NewVehicleBody3D(self.AsObject()[0])}
+func (o class) AsCollisionObject3D() CollisionObject3D.Advanced {
+	return *(*CollisionObject3D.Advanced)(ie.As(&o))
 }
-func (self *Extension[T]) AsVehicleBody3D() Instance { return self.Super().AsVehicleBody3D() }
-func (self class) AsRigidBody3D() RigidBody3D.Advanced {
-	return RigidBody3D.Advanced{gdclass.NewRigidBody3D(self.AsObject()[0])}
+func (o *Extension[T]) AsCollisionObject3D() CollisionObject3D.Instance {
+	return o.Super().AsCollisionObject3D()
 }
-func (self *Extension[T]) AsRigidBody3D() RigidBody3D.Instance { return self.Super().AsRigidBody3D() }
-func (self Instance) AsRigidBody3D() RigidBody3D.Instance {
-	return RigidBody3D.Instance{gdclass.NewRigidBody3D(self.AsObject()[0])}
+func (o Instance) AsCollisionObject3D() CollisionObject3D.Instance {
+	return *(*CollisionObject3D.Instance)(ie.As(&o))
 }
-func (self class) AsPhysicsBody3D() PhysicsBody3D.Advanced {
-	return PhysicsBody3D.Advanced{gdclass.NewPhysicsBody3D(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsPhysicsBody3D() PhysicsBody3D.Instance {
-	return self.Super().AsPhysicsBody3D()
-}
-func (self Instance) AsPhysicsBody3D() PhysicsBody3D.Instance {
-	return PhysicsBody3D.Instance{gdclass.NewPhysicsBody3D(self.AsObject()[0])}
-}
-func (self class) AsCollisionObject3D() CollisionObject3D.Advanced {
-	return CollisionObject3D.Advanced{gdclass.NewCollisionObject3D(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsCollisionObject3D() CollisionObject3D.Instance {
-	return self.Super().AsCollisionObject3D()
-}
-func (self Instance) AsCollisionObject3D() CollisionObject3D.Instance {
-	return CollisionObject3D.Instance{gdclass.NewCollisionObject3D(self.AsObject()[0])}
-}
-func (self class) AsNode3D() Node3D.Advanced {
-	return Node3D.Advanced{gdclass.NewNode3D(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
-func (self Instance) AsNode3D() Node3D.Instance {
-	return Node3D.Instance{gdclass.NewNode3D(self.AsObject()[0])}
-}
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
-func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
-func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
-}
+func (o class) AsNode3D() Node3D.Advanced         { return *(*Node3D.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsNode3D() Node3D.Instance { return o.Super().AsNode3D() }
+func (o Instance) AsNode3D() Node3D.Instance      { return *(*Node3D.Instance)(ie.As(&o)) }
+func (o class) AsNode() Node.Advanced             { return *(*Node.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsNode() Node.Instance     { return o.Super().AsNode() }
+func (o Instance) AsNode() Node.Instance          { return *(*Node.Instance)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

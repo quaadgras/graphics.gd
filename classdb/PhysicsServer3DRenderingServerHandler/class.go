@@ -10,6 +10,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -233,9 +234,7 @@ func (self Instance) SetAabb(aabb AABB.PositionSize) Instance { //gd:PhysicsServ
 type Advanced = class
 type class [1]gdclass.PhysicsServer3DRenderingServerHandler
 
-func (self class) AsObject() [1]gd.Object {
-	return gdclass.GetPhysicsServer3DRenderingServerHandler(self[0])
-}
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewPhysicsServer3DRenderingServerHandler(obj[0])
@@ -250,10 +249,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object {
-	return gdclass.GetPhysicsServer3DRenderingServerHandler(self[0])
-}
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.PhysicsServer3DRenderingServerHandler{gdclass.NewPhysicsServer3DRenderingServerHandler(pointers.Add[gd.Object]([3]uint64{}))})
@@ -313,15 +310,9 @@ func (self class) SetNormal(vertex_id int64, normal Vector3.XYZ) { //gd:PhysicsS
 func (self class) SetAabb(aabb AABB.PositionSize) { //gd:PhysicsServer3DRenderingServerHandler.set_aabb
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_aabb, 0|(gdextension.SizeAABB<<4), &struct{ aabb AABB.PositionSize }{aabb})
 }
-func (self class) AsPhysicsServer3DRenderingServerHandler() Advanced {
-	return Advanced{gdclass.NewPhysicsServer3DRenderingServerHandler(self.AsObject()[0])}
-}
-func (self Instance) AsPhysicsServer3DRenderingServerHandler() Instance {
-	return Instance{gdclass.NewPhysicsServer3DRenderingServerHandler(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsPhysicsServer3DRenderingServerHandler() Instance {
-	return self.Super().AsPhysicsServer3DRenderingServerHandler()
-}
+func (o class) AsPhysicsServer3DRenderingServerHandler() Advanced         { return Advanced(o) }
+func (o Instance) AsPhysicsServer3DRenderingServerHandler() Instance      { return o }
+func (o *Extension[T]) AsPhysicsServer3DRenderingServerHandler() Instance { return o.Super() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

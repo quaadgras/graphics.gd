@@ -2,56 +2,6 @@
 
 package GUI
 
-import "reflect"
-import "slices"
-import "graphics.gd/internal/pointers"
-import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdextension"
-import "graphics.gd/internal/noescape"
-import gd "graphics.gd/internal"
-import "graphics.gd/internal/gdclass"
-import "graphics.gd/variant"
-import "graphics.gd/variant/Angle"
-import "graphics.gd/variant/Euler"
-import "graphics.gd/variant/Signal"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/Error"
-import "graphics.gd/variant/Float"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/String"
-
-var _ Object.ID
-
-type _ gdclass.Node
-
-var _ gd.Object
-var _ RefCounted.Instance
-var _ reflect.Type
-var _ callframe.Frame
-var _ = pointers.Cycle
-var _ = Array.Nil
-var _ variant.Any
-var _ Callable.Function
-var _ Dictionary.Any
-var _ RID.Any
-var _ noescape.Variant
-var _ String.Readable
-var _ Path.ToNode
-var _ Packed.Bytes
-var _ Error.Code
-var _ Float.X
-var _ Signal.Any
-var _ Angle.Radians
-var _ Euler.Radians
-var _ gdextension.Object
-var _ = slices.Delete[[]struct{}, struct{}]
-
 type HorizontalAlignment int //gd:HorizontalAlignment
 
 const (

@@ -31,6 +31,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -228,7 +229,7 @@ func (self MoreArgs) SendBytes(bytes []byte, id int, mode MultiplayerPeer.Transf
 type Advanced = class
 type class [1]gdclass.SceneMultiplayer
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetSceneMultiplayer(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewSceneMultiplayer(obj[0])
@@ -243,8 +244,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetSceneMultiplayer(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.SceneMultiplayer{gdclass.NewSceneMultiplayer(pointers.Add[gd.Object]([3]uint64{}))})
@@ -554,29 +555,21 @@ func (self class) PeerPacket() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`peer_packet`))))
 }
 
-func (self class) AsSceneMultiplayer() Advanced {
-	return Advanced{gdclass.NewSceneMultiplayer(self.AsObject()[0])}
+func (o class) AsSceneMultiplayer() Advanced         { return Advanced(o) }
+func (o Instance) AsSceneMultiplayer() Instance      { return o }
+func (o *Extension[T]) AsSceneMultiplayer() Instance { return o.Super() }
+func (o class) AsMultiplayerAPI() MultiplayerAPI.Advanced {
+	return *(*MultiplayerAPI.Advanced)(ie.As(&o))
 }
-func (self Instance) AsSceneMultiplayer() Instance {
-	return Instance{gdclass.NewSceneMultiplayer(self.AsObject()[0])}
+func (o *Extension[T]) AsMultiplayerAPI() MultiplayerAPI.Instance {
+	return o.Super().AsMultiplayerAPI()
 }
-func (self *Extension[T]) AsSceneMultiplayer() Instance { return self.Super().AsSceneMultiplayer() }
-func (self class) AsMultiplayerAPI() MultiplayerAPI.Advanced {
-	return MultiplayerAPI.Advanced{gdclass.NewMultiplayerAPI(self.AsObject()[0])}
+func (o Instance) AsMultiplayerAPI() MultiplayerAPI.Instance {
+	return *(*MultiplayerAPI.Instance)(ie.As(&o))
 }
-func (self *Extension[T]) AsMultiplayerAPI() MultiplayerAPI.Instance {
-	return self.Super().AsMultiplayerAPI()
-}
-func (self Instance) AsMultiplayerAPI() MultiplayerAPI.Instance {
-	return MultiplayerAPI.Instance{gdclass.NewMultiplayerAPI(self.AsObject()[0])}
-}
-func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
-func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
+func (o class) AsRefCounted() ie.RC         { return *(*ie.RC)(ie.As(&o)) }
+func (o *Extension[T]) AsRefCounted() ie.RC { return o.Super().AsRefCounted() }
+func (o Instance) AsRefCounted() ie.RC      { return *(*ie.RC)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

@@ -22,6 +22,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -132,7 +133,7 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.InputEventAction
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetInputEventAction(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewInputEventAction(obj[0])
@@ -147,8 +148,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetInputEventAction(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.InputEventAction{gdclass.NewInputEventAction(pointers.Add[gd.Object]([3]uint64{}))})
@@ -251,34 +252,18 @@ func (self class) GetEventIndex() int64 { //gd:InputEventAction.get_event_index
 	var ret = r_ret
 	return ret
 }
-func (self class) AsInputEventAction() Advanced {
-	return Advanced{gdclass.NewInputEventAction(self.AsObject()[0])}
-}
-func (self Instance) AsInputEventAction() Instance {
-	return Instance{gdclass.NewInputEventAction(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsInputEventAction() Instance { return self.Super().AsInputEventAction() }
-func (self class) AsInputEvent() InputEvent.Advanced {
-	return InputEvent.Advanced{gdclass.NewInputEvent(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsInputEvent() InputEvent.Instance { return self.Super().AsInputEvent() }
-func (self Instance) AsInputEvent() InputEvent.Instance {
-	return InputEvent.Instance{gdclass.NewInputEvent(self.AsObject()[0])}
-}
-func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
-func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
-}
-func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
-func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
-func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
-}
+func (o class) AsInputEventAction() Advanced              { return Advanced(o) }
+func (o Instance) AsInputEventAction() Instance           { return o }
+func (o *Extension[T]) AsInputEventAction() Instance      { return o.Super() }
+func (o class) AsInputEvent() InputEvent.Advanced         { return *(*InputEvent.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsInputEvent() InputEvent.Instance { return o.Super().AsInputEvent() }
+func (o Instance) AsInputEvent() InputEvent.Instance      { return *(*InputEvent.Instance)(ie.As(&o)) }
+func (o class) AsResource() Resource.Advanced             { return *(*Resource.Advanced)(ie.As(&o)) }
+func (o *Extension[T]) AsResource() Resource.Instance     { return o.Super().AsResource() }
+func (o Instance) AsResource() Resource.Instance          { return *(*Resource.Instance)(ie.As(&o)) }
+func (o class) AsRefCounted() ie.RC                       { return *(*ie.RC)(ie.As(&o)) }
+func (o *Extension[T]) AsRefCounted() ie.RC               { return o.Super().AsRefCounted() }
+func (o Instance) AsRefCounted() ie.RC                    { return *(*ie.RC)(ie.As(&o)) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

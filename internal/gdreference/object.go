@@ -2,39 +2,68 @@ package gdreference
 
 import (
 	"runtime"
+	"unsafe"
 
 	"graphics.gd/internal/gdextension"
-	"graphics.gd/internal/threadsafe"
+	"graphics.gd/internal/threadcheck"
 )
+
+var now uint64 = 1
+
+// Barrier needs to be called whenever Let references are
+// invalidated.
+func Barrier() {
+	if threadcheck.Main() {
+		now++
+	}
+}
+
+func init() {
+	if unsafe.Sizeof(runtime.Cleanup{}) != unsafe.Sizeof(object{}) {
+		panic("gdreference: size of runtime.Cleanup does not match size of object")
+	}
+}
 
 // Object reference that's safe to use from a single goroutine.
 type Object struct {
 	_ [0]*Object
 
-	// Cases
-	//
-	// sentinel == nil
-	// 	the object is an unsafe/raw reference
-	//
-	// assigned.objectID == 0 && sentinel.objectID == 0
-	// 	the object is owned by Go and there is a cleanup associated with it.
-	//
-	// assigned.objectID == 0 && sentinel.objectID != 0
-	// 	the values in the sentinel object override the values in the assigned object
-	//
-	// assigned.objectID != 0 && sentinel.objectID == 0
-	// 	the object is owned by the mainthread and has been used within the last frame.
-	//
-	// assigned.objectID != sentinel.objectID
-	// 	the object may have been invalidated, ignore the sentinel and only lookup the assigned objectID
-
 	assigned object
 	sentinel *object
+	revision uint64
 }
 
-func NewObject(obj gdextension.Object, id gdextension.ObjectID, on_main_thread bool) Object {
+// RawObject returns an unsafe [Object] reference from a raw
+// [gdextension.Object] pointer, no memory safety protections
+// will apply to the result.
+func RawObject(obj gdextension.Object) Object {
+	var id gdextension.ObjectID
+	gdextension.Host.Objects.ID.Get(obj, gdextension.CallReturns[gdextension.ObjectID](&id))
+	return Object{assigned: object{inEngine: obj, objectID: id}}
+}
+
+// LetObject creates an engine-owned [Object] reference.
+func LetObject(obj gdextension.Object) Object {
+	var id gdextension.ObjectID
+	gdextension.Host.Objects.ID.Get(obj, gdextension.CallReturns[gdextension.ObjectID](&id))
+	var revision uint64
+	if threadcheck.Main() {
+		revision = now
+	}
+	return Object{
+		assigned: object{objectID: id, inEngine: obj},
+		sentinel: &borrowSentinel,
+		revision: revision,
+	}
+}
+
+// OwnObject creates a Go-owned [Object] reference.
+func OwnObject(obj gdextension.Object) Object {
+	var id gdextension.ObjectID
+	gdextension.Host.Objects.ID.Get(obj, gdextension.CallReturns[gdextension.ObjectID](&id))
 	var sentinel *object
-	if on_main_thread {
+	var revision uint64
+	if threadcheck.Main() {
 		if pool_free != nil {
 			sentinel = pool_free[len(pool_free)-1]
 			pool_free = pool_free[: len(pool_free)-1 : cap(pool_free)]
@@ -44,76 +73,113 @@ func NewObject(obj gdextension.Object, id gdextension.ObjectID, on_main_thread b
 				pool = append(pool, [128]object{})
 			}
 			sentinel = &pool[bucket][i]
+			tail++
 		}
+		sentinel.inEngine = obj
+		sentinel.objectID = id
+		revision = now
 	} else {
 		select {
 		case sentinel = <-free:
 		default:
 			sentinel = new(object)
 		}
-		cleanups.Insert(id, runtime.AddCleanup(sentinel, func(id gdextension.ObjectID) {
-			if obj := gdextension.Host.Objects.Lookup(id); obj != 0 {
-				gdextension.Host.Objects.Unsafe.Free(obj)
-			}
-			cleanups.Remove(id)
-		}, id))
+		cleanup := runtime.AddCleanup(sentinel, gdextension.Host.Objects.Unsafe.Free, obj)
+		*sentinel = *(*object)(unsafe.Pointer(&cleanup))
 	}
-	sentinel.objectID = id
-	sentinel.inEngine = obj
 	return Object{
 		sentinel: sentinel,
 		assigned: object{
 			objectID: id,
 			inEngine: obj,
 		},
+		revision: revision,
 	}
 }
 
-func RawObject(obj gdextension.Object, id gdextension.ObjectID) Object {
-	return Object{assigned: object{objectID: id, inEngine: obj}}
+// NewObject returns a new static [Object] with a pointer value not known
+// in advance, can be set with [SetObject].
+func NewObject() Object {
+	return Object{
+		sentinel: new(object),
+	}
 }
 
-func (obj Object) lookup() gdextension.Object {
-	if obj.sentinel == nil {
+// GetObject returns the underlying engine pointer for an [Object].
+func GetObject(obj Object) gdextension.Object {
+	if obj.sentinel == nil || (threadcheck.Main() && obj.revision == now) {
 		return obj.assigned.inEngine
 	}
-	objectID := obj.sentinel.objectID
-	inEngine := obj.sentinel.inEngine
-	if objectID != obj.assigned.objectID && obj.assigned.objectID != 0 {
-		return gdextension.Host.Objects.Lookup(obj.assigned.objectID)
-	}
-	return inEngine
+	raw, _ := AskObject(obj)
+	return raw
 }
 
-func (obj Object) end() gdextension.Object {
+// SetObject sets the underlying engine pointer for a [TypeStatic]
+// [Object] created with [NewObject].
+func SetObject(obj Object, val gdextension.Object) {
+	if obj.assigned != (object{}) {
+		panic("SetObject can only be used with objects created by NewObject")
+	}
+	obj.sentinel.inEngine = val
+}
+
+// PinObject pins the object so that it cannot not be freed automatically.
+func PinObject(obj Object) {
 	if obj.sentinel == nil {
-		return obj.assigned.inEngine
+		return
 	}
-	objectID := obj.sentinel.objectID
-	inEngine := obj.sentinel.inEngine
-	if obj.assigned.objectID == 0 {
-		obj.sentinel.inEngine = 0
-		return inEngine
-	}
-	if objectID != obj.assigned.objectID {
-		return 0
-	}
-	obj.sentinel.inEngine = 0
-	if obj.assigned.objectID == 0 && objectID == 0 {
-		if cleanup, ok := cleanups.Lookup(objectID); ok {
-			cleanup.Stop()
-			cleanups.Remove(objectID)
-			select {
-			case free <- obj.sentinel:
-			default:
-			}
+	*obj.sentinel = (object{})
+}
+
+var borrowSentinel object
+
+// AskObject returns lifetime information for the object.
+func AskObject(obj Object) (gdextension.Object, Type) {
+	switch obj.sentinel {
+	case nil:
+		return obj.assigned.inEngine, TypeUnsafe
+	case &borrowSentinel:
+		if obj.revision == now {
+			return obj.assigned.inEngine, TypeBorrow
 		}
+		return gdextension.Host.Objects.Lookup(obj.assigned.objectID), TypeBorrow
 	}
-	return inEngine
+	if obj.assigned.objectID == 0 {
+		if obj.assigned.inEngine == 0 {
+			return obj.sentinel.inEngine, TypeStatic
+		}
+		return obj.assigned.inEngine, TypeThread
+	}
+	raw := obj.sentinel.inEngine
+	if raw == 0 {
+		return obj.assigned.inEngine, TypePinned
+	}
+	return raw, TypePooled
+}
+
+// EndObject leaks the object, releasing ownership to the engine.
+func EndObject(obj Object) gdextension.Object {
+	raw, t := AskObject(obj)
+	switch t {
+	case TypePooled:
+		*obj.sentinel = object{}
+		pool_free = append(pool_free, obj.sentinel)
+	case TypeThread:
+		cleanup := (*runtime.Cleanup)(unsafe.Pointer(obj.sentinel))
+		cleanup.Stop()
+		select {
+		case free <- obj.sentinel:
+		default:
+		}
+	case TypeUnsafe:
+	case TypePinned, TypeBorrow, TypeStatic:
+		panic("cannot end a pinned/borrowed/static pointer")
+	}
+	return raw
 }
 
 func (obj Object) Free() {
-	if raw := obj.end(); raw != 0 {
+	if raw := EndObject(obj); raw != 0 {
 		gdextension.Host.Objects.Unsafe.Free(raw)
 	}
 }
@@ -121,16 +187,9 @@ func (obj Object) Free() {
 type object struct {
 	objectID gdextension.ObjectID
 	inEngine gdextension.Object
-	lifetime *lifetime
-}
-
-type lifetime struct {
-	cleanup runtime.Cleanup
-	created uint64
 }
 
 var tail int
 var pool = [][128]object{{}}
 var pool_free []*object
 var free = make(chan *object, 128)
-var cleanups threadsafe.Map[gdextension.ObjectID, runtime.Cleanup]

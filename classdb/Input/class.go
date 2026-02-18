@@ -22,6 +22,7 @@ import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/internal/ie"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
@@ -808,7 +809,7 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.Input
 
-func (self class) AsObject() [1]gd.Object { return gdclass.GetInput(self[0]) }
+func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
 		self[0] = gdclass.NewInput(obj[0])
@@ -823,8 +824,8 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetInput(self[0]) }
-func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
+func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 
 /*
 Controls the mouse mode.
@@ -892,37 +893,37 @@ func SetEmulateTouchFromMouse(value bool) { //gd:Input.emulate_touch_from_mouse
 
 func (self class) IsAnythingPressed() bool { //gd:Input.is_anything_pressed
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_anything_pressed, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_anything_pressed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsKeyPressed(keycode Key) bool { //gd:Input.is_key_pressed
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_key_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ keycode int64 }{int64(keycode)})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_key_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ keycode int64 }{int64(keycode)})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsPhysicalKeyPressed(keycode Key) bool { //gd:Input.is_physical_key_pressed
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_physical_key_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ keycode int64 }{int64(keycode)})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_physical_key_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ keycode int64 }{int64(keycode)})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsKeyLabelPressed(keycode Key) bool { //gd:Input.is_key_label_pressed
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_key_label_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ keycode int64 }{int64(keycode)})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_key_label_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ keycode int64 }{int64(keycode)})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsMouseButtonPressed(button MouseButton) bool { //gd:Input.is_mouse_button_pressed
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_mouse_button_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ button int64 }{int64(button)})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_mouse_button_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ button int64 }{int64(button)})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsJoyButtonPressed(device int64, button JoyButton) bool { //gd:Input.is_joy_button_pressed
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_joy_button_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_joy_button_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		device int64
 		button int64
 	}{device, int64(button)})
@@ -931,7 +932,7 @@ func (self class) IsJoyButtonPressed(device int64, button JoyButton) bool { //gd
 }
 func (self class) IsActionPressed(action String.Name, exact_match bool) bool { //gd:Input.is_action_pressed
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_pressed, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_action_pressed, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		action      gdextension.StringName
 		exact_match bool
 	}{pointers.Get(gd.InternalStringName(action)), exact_match})
@@ -940,7 +941,7 @@ func (self class) IsActionPressed(action String.Name, exact_match bool) bool { /
 }
 func (self class) IsActionJustPressed(action String.Name, exact_match bool) bool { //gd:Input.is_action_just_pressed
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_just_pressed, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_action_just_pressed, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		action      gdextension.StringName
 		exact_match bool
 	}{pointers.Get(gd.InternalStringName(action)), exact_match})
@@ -949,7 +950,7 @@ func (self class) IsActionJustPressed(action String.Name, exact_match bool) bool
 }
 func (self class) IsActionJustReleased(action String.Name, exact_match bool) bool { //gd:Input.is_action_just_released
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_just_released, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_action_just_released, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		action      gdextension.StringName
 		exact_match bool
 	}{pointers.Get(gd.InternalStringName(action)), exact_match})
@@ -958,7 +959,7 @@ func (self class) IsActionJustReleased(action String.Name, exact_match bool) boo
 }
 func (self class) IsActionJustPressedByEvent(action String.Name, event [1]gdclass.InputEvent, exact_match bool) bool { //gd:Input.is_action_just_pressed_by_event
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_just_pressed_by_event, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12), &struct {
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_action_just_pressed_by_event, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12), &struct {
 		action      gdextension.StringName
 		event       gdextension.Object
 		exact_match bool
@@ -968,7 +969,7 @@ func (self class) IsActionJustPressedByEvent(action String.Name, event [1]gdclas
 }
 func (self class) IsActionJustReleasedByEvent(action String.Name, event [1]gdclass.InputEvent, exact_match bool) bool { //gd:Input.is_action_just_released_by_event
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_just_released_by_event, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12), &struct {
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_action_just_released_by_event, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12), &struct {
 		action      gdextension.StringName
 		event       gdextension.Object
 		exact_match bool
@@ -978,7 +979,7 @@ func (self class) IsActionJustReleasedByEvent(action String.Name, event [1]gdcla
 }
 func (self class) GetActionStrength(action String.Name, exact_match bool) float64 { //gd:Input.get_action_strength
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_action_strength, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_action_strength, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		action      gdextension.StringName
 		exact_match bool
 	}{pointers.Get(gd.InternalStringName(action)), exact_match})
@@ -987,7 +988,7 @@ func (self class) GetActionStrength(action String.Name, exact_match bool) float6
 }
 func (self class) GetActionRawStrength(action String.Name, exact_match bool) float64 { //gd:Input.get_action_raw_strength
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_action_raw_strength, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_action_raw_strength, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		action      gdextension.StringName
 		exact_match bool
 	}{pointers.Get(gd.InternalStringName(action)), exact_match})
@@ -996,7 +997,7 @@ func (self class) GetActionRawStrength(action String.Name, exact_match bool) flo
 }
 func (self class) GetAxis(negative_action String.Name, positive_action String.Name) float64 { //gd:Input.get_axis
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_axis, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_axis, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		negative_action gdextension.StringName
 		positive_action gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(negative_action)), pointers.Get(gd.InternalStringName(positive_action))})
@@ -1005,7 +1006,7 @@ func (self class) GetAxis(negative_action String.Name, positive_action String.Na
 }
 func (self class) GetVector(negative_x String.Name, positive_x String.Name, negative_y String.Name, positive_y String.Name, deadzone float64) Vector2.XY { //gd:Input.get_vector
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_vector, gdextension.SizeVector2|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeStringName<<16)|(gdextension.SizeFloat<<20), &struct {
+	var r_ret = noescape.Call[Vector2.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_vector, gdextension.SizeVector2|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeStringName<<16)|(gdextension.SizeFloat<<20), &struct {
 		negative_x gdextension.StringName
 		positive_x gdextension.StringName
 		negative_y gdextension.StringName
@@ -1017,24 +1018,24 @@ func (self class) GetVector(negative_x String.Name, positive_x String.Name, nega
 }
 func (self class) AddJoyMapping(mapping String.Readable, update_existing bool) { //gd:Input.add_joy_mapping
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_joy_mapping, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.add_joy_mapping, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		mapping         gdextension.String
 		update_existing bool
 	}{pointers.Get(gd.InternalString(mapping)), update_existing})
 }
 func (self class) RemoveJoyMapping(guid String.Readable) { //gd:Input.remove_joy_mapping
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_joy_mapping, 0|(gdextension.SizeString<<4), &struct{ guid gdextension.String }{pointers.Get(gd.InternalString(guid))})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.remove_joy_mapping, 0|(gdextension.SizeString<<4), &struct{ guid gdextension.String }{pointers.Get(gd.InternalString(guid))})
 }
 func (self class) IsJoyKnown(device int64) bool { //gd:Input.is_joy_known
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_joy_known, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_joy_known, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetJoyAxis(device int64, axis JoyAxis) float64 { //gd:Input.get_joy_axis
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_joy_axis, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_joy_axis, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		device int64
 		axis   int64
 	}{device, int64(axis)})
@@ -1043,25 +1044,25 @@ func (self class) GetJoyAxis(device int64, axis JoyAxis) float64 { //gd:Input.ge
 }
 func (self class) GetJoyName(device int64) String.Readable { //gd:Input.get_joy_name
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_joy_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
+	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_joy_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetJoyGuid(device int64) String.Readable { //gd:Input.get_joy_guid
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_joy_guid, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
+	var r_ret = noescape.Call[gdextension.String](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_joy_guid, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetJoyInfo(device int64) Dictionary.Any { //gd:Input.get_joy_info
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_joy_info, gdextension.SizeDictionary|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
+	var r_ret = noescape.Call[gdextension.Dictionary](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_joy_info, gdextension.SizeDictionary|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 func (self class) ShouldIgnoreDevice(vendor_id int64, product_id int64) bool { //gd:Input.should_ignore_device
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.should_ignore_device, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.should_ignore_device, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		vendor_id  int64
 		product_id int64
 	}{vendor_id, product_id})
@@ -1070,25 +1071,25 @@ func (self class) ShouldIgnoreDevice(vendor_id int64, product_id int64) bool { /
 }
 func (self class) GetConnectedJoypads() Array.Contains[int64] { //gd:Input.get_connected_joypads
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_connected_joypads, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_connected_joypads, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[int64]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) GetJoyVibrationStrength(device int64) Vector2.XY { //gd:Input.get_joy_vibration_strength
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_joy_vibration_strength, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
+	var r_ret = noescape.Call[Vector2.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_joy_vibration_strength, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetJoyVibrationDuration(device int64) float64 { //gd:Input.get_joy_vibration_duration
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_joy_vibration_duration, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
+	var r_ret = noescape.Call[float64](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_joy_vibration_duration, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 	var ret = r_ret
 	return ret
 }
 func (self class) StartJoyVibration(device int64, weak_magnitude float64, strong_magnitude float64, duration float64) { //gd:Input.start_joy_vibration
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.start_joy_vibration, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.start_joy_vibration, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), &struct {
 		device           int64
 		weak_magnitude   float64
 		strong_magnitude float64
@@ -1097,124 +1098,124 @@ func (self class) StartJoyVibration(device int64, weak_magnitude float64, strong
 }
 func (self class) StopJoyVibration(device int64) { //gd:Input.stop_joy_vibration
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop_joy_vibration, 0|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.stop_joy_vibration, 0|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 }
 func (self class) VibrateHandheld(duration_ms int64, amplitude float64) { //gd:Input.vibrate_handheld
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.vibrate_handheld, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.vibrate_handheld, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		duration_ms int64
 		amplitude   float64
 	}{duration_ms, amplitude})
 }
 func (self class) GetGravity() Vector3.XYZ { //gd:Input.get_gravity
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_gravity, gdextension.SizeVector3, &struct{}{})
+	var r_ret = noescape.Call[Vector3.XYZ](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_gravity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetAccelerometer() Vector3.XYZ { //gd:Input.get_accelerometer
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_accelerometer, gdextension.SizeVector3, &struct{}{})
+	var r_ret = noescape.Call[Vector3.XYZ](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_accelerometer, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetMagnetometer() Vector3.XYZ { //gd:Input.get_magnetometer
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_magnetometer, gdextension.SizeVector3, &struct{}{})
+	var r_ret = noescape.Call[Vector3.XYZ](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_magnetometer, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetGyroscope() Vector3.XYZ { //gd:Input.get_gyroscope
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_gyroscope, gdextension.SizeVector3, &struct{}{})
+	var r_ret = noescape.Call[Vector3.XYZ](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_gyroscope, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetGravity(value Vector3.XYZ) { //gd:Input.set_gravity
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity, 0|(gdextension.SizeVector3<<4), &struct{ value Vector3.XYZ }{value})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_gravity, 0|(gdextension.SizeVector3<<4), &struct{ value Vector3.XYZ }{value})
 }
 func (self class) SetAccelerometer(value Vector3.XYZ) { //gd:Input.set_accelerometer
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accelerometer, 0|(gdextension.SizeVector3<<4), &struct{ value Vector3.XYZ }{value})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_accelerometer, 0|(gdextension.SizeVector3<<4), &struct{ value Vector3.XYZ }{value})
 }
 func (self class) SetMagnetometer(value Vector3.XYZ) { //gd:Input.set_magnetometer
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_magnetometer, 0|(gdextension.SizeVector3<<4), &struct{ value Vector3.XYZ }{value})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_magnetometer, 0|(gdextension.SizeVector3<<4), &struct{ value Vector3.XYZ }{value})
 }
 func (self class) SetGyroscope(value Vector3.XYZ) { //gd:Input.set_gyroscope
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gyroscope, 0|(gdextension.SizeVector3<<4), &struct{ value Vector3.XYZ }{value})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_gyroscope, 0|(gdextension.SizeVector3<<4), &struct{ value Vector3.XYZ }{value})
 }
 func (self class) SetJoyLight(device int64, color Color.RGBA) { //gd:Input.set_joy_light
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joy_light, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_joy_light, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
 		device int64
 		color  Color.RGBA
 	}{device, color})
 }
 func (self class) HasJoyLight(device int64) bool { //gd:Input.has_joy_light
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_joy_light, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.has_joy_light, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetLastMouseVelocity() Vector2.XY { //gd:Input.get_last_mouse_velocity
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_last_mouse_velocity, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_last_mouse_velocity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetLastMouseScreenVelocity() Vector2.XY { //gd:Input.get_last_mouse_screen_velocity
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_last_mouse_screen_velocity, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_last_mouse_screen_velocity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetMouseButtonMask() MouseButtonMask { //gd:Input.get_mouse_button_mask
 	once.Do(singleton)
-	var r_ret = noescape.Call[MouseButtonMask](gd.ObjectChecked(self.AsObject()), methods.get_mouse_button_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[MouseButtonMask](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_mouse_button_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMouseMode(mode MouseModeValue) { //gd:Input.set_mouse_mode
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mouse_mode, 0|(gdextension.SizeInt<<4), &struct{ mode MouseModeValue }{mode})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_mouse_mode, 0|(gdextension.SizeInt<<4), &struct{ mode MouseModeValue }{mode})
 }
 func (self class) GetMouseMode() MouseModeValue { //gd:Input.get_mouse_mode
 	once.Do(singleton)
-	var r_ret = noescape.Call[MouseModeValue](gd.ObjectChecked(self.AsObject()), methods.get_mouse_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[MouseModeValue](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_mouse_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) WarpMouse(position Vector2.XY) { //gd:Input.warp_mouse
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.warp_mouse, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.warp_mouse, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 }
 func (self class) ActionPress(action String.Name, strength float64) { //gd:Input.action_press
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.action_press, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.action_press, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), &struct {
 		action   gdextension.StringName
 		strength float64
 	}{pointers.Get(gd.InternalStringName(action)), strength})
 }
 func (self class) ActionRelease(action String.Name) { //gd:Input.action_release
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.action_release, 0|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.action_release, 0|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
 }
 func (self class) SetDefaultCursorShape(shape CursorShape) { //gd:Input.set_default_cursor_shape
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_cursor_shape, 0|(gdextension.SizeInt<<4), &struct{ shape CursorShape }{shape})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_default_cursor_shape, 0|(gdextension.SizeInt<<4), &struct{ shape CursorShape }{shape})
 }
 func (self class) GetCurrentCursorShape() CursorShape { //gd:Input.get_current_cursor_shape
 	once.Do(singleton)
-	var r_ret = noescape.Call[CursorShape](gd.ObjectChecked(self.AsObject()), methods.get_current_cursor_shape, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[CursorShape](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.get_current_cursor_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetCustomMouseCursor(image [1]gdclass.Resource, shape CursorShape, hotspot Vector2.XY) { //gd:Input.set_custom_mouse_cursor
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_mouse_cursor, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector2<<12), &struct {
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_custom_mouse_cursor, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector2<<12), &struct {
 		image   gdextension.Object
 		shape   CursorShape
 		hotspot Vector2.XY
@@ -1222,39 +1223,39 @@ func (self class) SetCustomMouseCursor(image [1]gdclass.Resource, shape CursorSh
 }
 func (self class) ParseInputEvent(event [1]gdclass.InputEvent) { //gd:Input.parse_input_event
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.parse_input_event, 0|(gdextension.SizeObject<<4), &struct{ event gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0])))})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.parse_input_event, 0|(gdextension.SizeObject<<4), &struct{ event gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0])))})
 }
 func (self class) SetUseAccumulatedInput(enable bool) { //gd:Input.set_use_accumulated_input
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_accumulated_input, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_use_accumulated_input, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsUsingAccumulatedInput() bool { //gd:Input.is_using_accumulated_input
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_accumulated_input, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_using_accumulated_input, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) FlushBufferedEvents() { //gd:Input.flush_buffered_events
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.flush_buffered_events, 0, &struct{}{})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.flush_buffered_events, 0, &struct{}{})
 }
 func (self class) SetEmulateMouseFromTouch(enable bool) { //gd:Input.set_emulate_mouse_from_touch
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emulate_mouse_from_touch, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_emulate_mouse_from_touch, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsEmulatingMouseFromTouch() bool { //gd:Input.is_emulating_mouse_from_touch
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_emulating_mouse_from_touch, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_emulating_mouse_from_touch, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetEmulateTouchFromMouse(enable bool) { //gd:Input.set_emulate_touch_from_mouse
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emulate_touch_from_mouse, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.set_emulate_touch_from_mouse, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsEmulatingTouchFromMouse() bool { //gd:Input.is_emulating_touch_from_mouse
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_emulating_touch_from_mouse, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdextension.Object(pointers.Get(self.AsObject()[0])[0]), methods.is_emulating_touch_from_mouse, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
