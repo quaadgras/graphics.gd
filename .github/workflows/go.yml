@@ -40,5 +40,5 @@ jobs:
       - name: Test
         run: |
           cd ./internal
-          DEBUG_CMD=1 ../cmd/gd/gd.exe test
+          DEBUG_CMD=1 ../cmd/gd/gd.exe test -v
         shell: bash
