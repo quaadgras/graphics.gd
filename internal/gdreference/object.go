@@ -72,6 +72,7 @@ func OwnObject(obj gdextension.Object, free func(gdextension.Object)) Object {
 	gdextension.Host.Objects.ID.Get(obj, gdextension.CallReturns[gdextension.ObjectID](&id))
 	var sentinel *object
 	var revision uint64
+	var result Object
 	if threadcheck.Main() {
 		if len(pool_free) > 0 {
 			sentinel = pool_free[len(pool_free)-1]
@@ -87,6 +88,7 @@ func OwnObject(obj gdextension.Object, free func(gdextension.Object)) Object {
 		sentinel.inEngine = obj
 		sentinel.objectID = id
 		revision = now
+		result.assigned.objectID = id
 	} else {
 		select {
 		case sentinel = <-free_chan:
@@ -96,14 +98,10 @@ func OwnObject(obj gdextension.Object, free func(gdextension.Object)) Object {
 		cleanup := runtime.AddCleanup(sentinel, free, obj)
 		*sentinel = *(*object)(unsafe.Pointer(&cleanup))
 	}
-	return Object{
-		sentinel: sentinel,
-		assigned: object{
-			objectID: id,
-			inEngine: obj,
-		},
-		revision: revision,
-	}
+	result.assigned.inEngine = obj
+	result.sentinel = sentinel
+	result.revision = revision
+	return result
 }
 
 // NewObject returns a new static [Object] with a pointer value not known
