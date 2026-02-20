@@ -471,6 +471,9 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 		}
 		fmt.Fprintf(w, "\t\tgd.UnsafeSet(p_back, %s)\n", ret)
 	}
+	if gdjson.Flushables[class.Name+"."+method.Name] {
+		fmt.Fprintf(w, "\t\tgd.Flush()\n")
+	}
 	fmt.Fprintf(w, "\t}\n")
 	fmt.Fprintf(w, "}\n")
 }

@@ -48,7 +48,9 @@ func LoadingScene() {
 		startup = new(engineAsSharedLibrary)
 	}
 	loadingSceneWasCalled = true
-	classdb.Register[goSceneTree]()
+	if mainloop == nil {
+		classdb.Register[goSceneTree]()
+	}
 	startup.Start()
 }
 

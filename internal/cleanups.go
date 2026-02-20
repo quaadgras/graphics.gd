@@ -1,6 +1,10 @@
 package gd
 
-import "sync"
+import (
+	"sync"
+
+	"graphics.gd/internal/ring"
+)
 
 var cleanups []func()
 var mutex sync.Mutex
@@ -23,3 +27,8 @@ var StartupFunctions []func()
 var PostStartupFunctions []func()
 
 var EditorStartupFunctions []func()
+
+// Flush the ring buffer.
+func Flush() {
+	ring.Main.Flush()
+}
