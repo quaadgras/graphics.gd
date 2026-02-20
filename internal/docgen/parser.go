@@ -53,9 +53,9 @@ func documentMemberSignals(members *[]Member, signals *[]Signal, ttype *types.Na
 			for _, field := range st.Fields.List {
 				for _, name := range field.Names {
 					if field.Doc != nil {
-						comments[name.Name] = strings.TrimSpace(field.Doc.Text())
+						comments[name.Name] = strings.TrimPrefix(strings.TrimSpace(field.Doc.Text()), name.Name+" ")
 					} else if field.Comment != nil {
-						comments[name.Name] = strings.TrimSpace(field.Comment.Text())
+						comments[name.Name] = strings.TrimPrefix(strings.TrimSpace(field.Comment.Text()), name.Name+" ")
 					}
 				}
 			}
