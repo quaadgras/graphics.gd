@@ -16,6 +16,7 @@ import (
 	"os"
 	"runtime/debug"
 	"slices"
+	"testing"
 
 	"graphics.gd/classdb"
 	EngineClass "graphics.gd/classdb/Engine"
@@ -23,6 +24,7 @@ import (
 	internal "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/internal/threadcheck"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Float"
 )
@@ -49,8 +51,12 @@ func init() {
 					fn()
 				}
 				if _, ok := startup.(engineLoadingSharedGo); ok {
-					resume_main, stop_main = iter.Pull(call_main_in_steps())
-					resume_main()
+					if testing.Testing() {
+						go main()
+					} else {
+						resume_main, stop_main = iter.Pull(call_main_in_steps())
+						resume_main()
+					}
 				}
 				for _, fn := range internal.PostStartupFunctions {
 					fn()
@@ -80,7 +86,12 @@ func main()
 
 //export go_main
 func go_main() {
-	main()
+	if testing.Testing() {
+		go main()
+		Scene()
+	} else {
+		main()
+	}
 }
 
 // call_main_in_steps calls the main function on the main thread in steps,
@@ -140,6 +151,7 @@ func (engineLoadingSharedGo) Rendering() iter.Seq[Float.X] {
 
 func init() {
 	gdextension.On.MainLoop.FirstFrame = func() {
+		threadcheck.Init()
 		Callable.Cycle()
 		if EngineClass.IsEditorHint() {
 			editorSetup()
