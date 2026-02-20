@@ -53,6 +53,9 @@ func (r *Ring) Flush() {
 	if r.head == r.tail {
 		return
 	}
-	flush(unsafe.Pointer(&r.Entries[0]), r.tail, r.head)
-	r.tail = r.head
+	tail := r.tail
+	head := r.head
+	r.tail = head // advance tail before entering C, so re-entrant flushes
+	// (from Godot callbacks during ptrcall) only see newly-buffered entries.
+	flush(unsafe.Pointer(&r.Entries[0]), tail, head)
 }

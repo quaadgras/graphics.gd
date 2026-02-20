@@ -89,7 +89,6 @@ func TestSignalDisconnect(t *testing.T) {
 }
 
 func TestSignalString(t *testing.T) {
-	t.Skip()
 	runOnMain(t, func(t testing.TB) {
 		custom := new(CustomStringSignals)
 		signal := gd.NewSignalOf(custom.AsObject(), gd.NewStringName("on_string"))
@@ -110,7 +109,6 @@ func TestSignalString(t *testing.T) {
 		}))
 		Signal.Via(gd.SignalProxy{}, pointers.Pack(signal)).Emit(variant.New("Hello World"))
 		signal.Emit(gd.NewVariant("Hello World"))
-		Callable.Cycle()
 		if triggered != 4 {
 			t.Fatalf("Expected 4 triggers, got %d", triggered)
 		}

@@ -12,13 +12,12 @@ import (
 )
 
 func TestStrings(t *testing.T) {
-	t.Skip()
 	runOnMain(t, func(t testing.TB) {
 		var str = gd.NewString("Hello, World!")
 		if str.String() != "Hello, World!" {
 			t.Fail()
 		}
-		str = pointers.New[gd.String](gdextension.Host.Strings.Append.String(pointers.Get(str), pointers.Get(gd.NewString(" from Go!"))))
+		pointers.Set(str, gdextension.Host.Strings.Append.String(pointers.Get(str), pointers.Get(gd.NewString(" from Go!"))))
 		if str.String() != "Hello, World! from Go!" {
 			t.Fail()
 		}
