@@ -76,7 +76,11 @@ func CallerIncrements(obj [1]Object) gdextension.Object {
 }
 
 func ObjectChecked(obj [1]Object) gdextension.Object {
-	return gdreference.GetObject(obj[0])
+	raw := gdreference.GetObject(obj[0])
+	if raw == 0 {
+		panic("use of an invalid reference (please read https://the.graphics.gd/guide/memory)")
+	}
+	return raw
 }
 
 func (self RefCounted) AsObject() [1]Object {
