@@ -14,7 +14,8 @@ import (
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/internal/threadcheck"
-	"graphics.gd/startup"
+
+	_ "graphics.gd/startup"
 )
 
 func TestMain(m *testing.M) {
@@ -23,12 +24,7 @@ func TestMain(m *testing.M) {
 	classdb.Register[CustomStringSignals]()
 	classdb.Register[CustomSignal]()
 
-	startup.LoadingScene()
-	threadcheck.Init()
-	go func() {
-		os.Exit(m.Run())
-	}()
-	startup.Scene()
+	os.Exit(m.Run())
 }
 
 func TestThreadCheck(t *testing.T) {
