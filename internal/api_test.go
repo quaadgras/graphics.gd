@@ -3,7 +3,6 @@
 package gd_test
 
 import (
-	"os"
 	"testing"
 	"unsafe"
 
@@ -18,13 +17,11 @@ import (
 	_ "graphics.gd/startup"
 )
 
-func TestMain(m *testing.M) {
+func init() {
 	classdb.Register[Converter]()
 	classdb.Register[CustomConverterObject]()
 	classdb.Register[CustomStringSignals]()
 	classdb.Register[CustomSignal]()
-
-	os.Exit(m.Run())
 }
 
 func TestThreadCheck(t *testing.T) {
