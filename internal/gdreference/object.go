@@ -90,11 +90,7 @@ func OwnObject(obj gdextension.Object, free func(gdextension.Object)) Object {
 		revision = now
 		result.assigned.objectID = id
 	} else {
-		select {
-		case sentinel = <-free_chan:
-		default:
-			sentinel = new(object)
-		}
+		sentinel = new(object)
 		cleanup := runtime.AddCleanup(sentinel, free, obj)
 		*sentinel = *(*object)(unsafe.Pointer(&cleanup))
 	}
@@ -155,6 +151,9 @@ func AskObject(obj Object) (gdextension.Object, Type) {
 		if obj.assigned.inEngine == 0 {
 			return obj.sentinel.inEngine, TypeStatic
 		}
+		if *obj.sentinel == obj.assigned {
+			return 0, TypeThread
+		}
 		return obj.assigned.inEngine, TypeThread
 	}
 	raw := obj.sentinel.inEngine
@@ -174,10 +173,7 @@ func EndObject(obj Object) (gdextension.Object, bool) {
 	case TypeThread:
 		cleanup := (*runtime.Cleanup)(unsafe.Pointer(obj.sentinel))
 		cleanup.Stop()
-		select {
-		case free_chan <- obj.sentinel:
-		default:
-		}
+		*obj.sentinel = obj.assigned
 	case TypeUnsafe:
 	case TypePinned:
 		*obj.sentinel = object{}
@@ -217,4 +213,3 @@ type object struct {
 var tail int
 var pool = [][128]object{{}}
 var pool_free []*object
-var free_chan = make(chan *object, 128)
