@@ -42,6 +42,7 @@ import (
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/internal/ring"
 	"graphics.gd/internal/threadsafe"
 )
 
@@ -767,6 +768,18 @@ func (instance *instanceImplementation) Notification(what Object.Notification, r
 		instance.ready()
 	}
 	if instance.isMainLoop && what == MainLoop.NotificationCrash {
+		if idx := ring.CrashIndex; idx != 0xFFFFFFFF {
+			e := &ring.Main.Entries[idx]
+			if e.PC != 0 {
+				fn := runtime.FuncForPC(e.PC)
+				if fn != nil {
+					file, line := fn.FileLine(e.PC)
+					fmt.Fprintf(os.Stderr,
+						"crash in ring buffer flush at entry %d: %s (%s:%d)\n",
+						idx, fn.Name(), file, line)
+				}
+			}
+		}
 		debug.PrintStack()
 	}
 	if !instance.isEditor {

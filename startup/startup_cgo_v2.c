@@ -1139,12 +1139,14 @@ typedef struct {
     uint8_t   result[64];
     uint16_t  refs[16];
     uintptr_t owner;
+    uintptr_t pc;
 } ring_entry;
 
-void gd_ring_flush(void *entries, uint32_t tail, uint32_t head) {
+void gd_ring_flush(void *entries, uint32_t tail, uint32_t head, uint32_t *crash_index) {
     ring_entry *ring = (ring_entry *)entries;
     for (uint32_t i = tail; i != head; i++) {
         ring_entry *e = &ring[i & 0xFF];
+        *crash_index = i & 0xFF;
         void *points[16];
         prepare_callframe(1, &points[0], e->shape, e->args);
         gdextension_object_method_bind_ptrcall(
@@ -1154,6 +1156,7 @@ void gd_ring_flush(void *entries, uint32_t tail, uint32_t head) {
             (GDExtensionTypePtr)e->result
         );
     }
+    *crash_index = 0xFFFFFFFF;
 }
 
 uint64_t gd_object_unsafe_call_8(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args) {

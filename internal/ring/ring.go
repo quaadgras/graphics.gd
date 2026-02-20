@@ -16,6 +16,7 @@ type Entry struct {
 	Result [64]byte   // result slot (for future phases)
 	Refs   [16]uint16 // intra-buffer references (for future phases)
 	Owner  uintptr    // back-pointer for future result offloading
+	PC     uintptr    // Go caller PC, captured at enqueue time
 }
 
 const Size = 256 // power of 2
@@ -30,11 +31,13 @@ type Ring struct {
 
 var Main Ring
 
+var CrashIndex uint32 = 0xFFFFFFFF
+
 func (r *Ring) Pending() bool {
 	return r.head != r.tail
 }
 
-func (r *Ring) Buffer(object, method uintptr, shape uint64, args unsafe.Pointer) {
+func (r *Ring) Buffer(object, method uintptr, shape uint64, args unsafe.Pointer, pc uintptr) {
 	if r.head-r.tail >= Size {
 		r.Flush()
 	}
@@ -46,6 +49,7 @@ func (r *Ring) Buffer(object, method uintptr, shape uint64, args unsafe.Pointer)
 	if n > 0 && args != nil {
 		copy(e.Args[:n], unsafe.Slice((*byte)(args), n))
 	}
+	e.PC = pc
 	r.head++
 }
 

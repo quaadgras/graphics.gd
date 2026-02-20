@@ -24,6 +24,7 @@ import (
 	"reflect"
 	"unsafe"
 
+	"graphics.gd/internal/callerpc"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/ring"
 	"graphics.gd/internal/threadcheck"
@@ -37,7 +38,7 @@ func Call[T any](object gdextension.Object, method gdextension.MethodForClass, s
 	}
 	if unsafe.Sizeof(result) == 0 {
 		if threadcheck.Main() {
-			ring.Main.Buffer(uintptr(object), uintptr(method), uint64(shape), argptr)
+			ring.Main.Buffer(uintptr(object), uintptr(method), uint64(shape), argptr, callerpc.Callerpc())
 			return result
 		}
 		call_noescape(object, method, unsafe.Pointer(&result), shape, argptr)
