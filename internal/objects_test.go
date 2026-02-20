@@ -8,7 +8,6 @@ import (
 	"graphics.gd/classdb/Node"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdreference"
-	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Object"
 )
 
@@ -36,28 +35,27 @@ func TestObjectIDs(t *testing.T) {
 }
 
 func TestAliasFreed(t *testing.T) {
-	t.Skip()
-	defer func() {
-		if recover() == nil {
-			t.Error("expected panic when accessing freed object")
+	runOnMain(t, func(t testing.TB) {
+		defer func() {
+			if recover() == nil {
+				t.Error("expected panic when accessing freed object")
+			}
+		}()
+		node := Node.New()
+		child := Node.New()
+		child.SetName("Hello")
+		node.AddChild(child)
+		alias := node.GetChild(0)
+
+		gdreference.GC(gd.Free)
+		gdreference.GC(gd.Free)
+
+		if alias.Name() == "Hello" {
+			t.Error("access alias after free")
+		} else {
+			t.Error("corrupted name")
 		}
-	}()
-	node := Node.New()
-	child := Node.New()
-	child.SetName("Hello")
-	node.AddChild(child)
-	alias := node.GetChild(0)
-
-	gdreference.GC(gd.Free)
-	pointers.Cycle() // don't call this twice.
-
-	gd.ObjectFree(child.AsObject()[0])
-
-	if alias.Name() == "Hello" {
-		t.Error("access alias after free")
-	} else {
-		t.Error("corrupted name")
-	}
+	})
 }
 
 type MyObject struct {

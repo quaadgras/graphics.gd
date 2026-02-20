@@ -116,6 +116,7 @@ func init() {
 			},
 			Notification: func(instance gdextension.ExtensionInstanceID, what int32, reverse bool) {
 				instances.Get(instance).Notification(Object.Notification(what), reverse)
+				gdreference.Barrier()
 			},
 			CheckedCall: func(instance gdextension.ExtensionInstanceID, fn gdextension.FunctionID, result gdextension.Returns[any], args gdextension.Accepts[any]) {
 				//defer gd.Recover()
@@ -124,6 +125,7 @@ func init() {
 					receiver = instances.Get(instance)
 				}
 				methods.Get(fn).checked(receiver, gdextension.Pointer(args), gdextension.Pointer(result))
+				gdreference.Barrier()
 			},
 			VariantCall: func(instance gdextension.ExtensionInstanceID, fn gdextension.FunctionID, result gdextension.Returns[gdextension.Variant], args gdextension.Accepts[gdextension.Variant]) {
 				defer gd.Recover()
@@ -143,6 +145,7 @@ func init() {
 				} else {
 					gdmemory.Set(gdextension.Pointer(result), pointers.Get(v))
 				}
+				gdreference.Barrier()
 			},
 			DynamicCall: func(instance gdextension.ExtensionInstanceID, fn gdextension.FunctionID, result gdextension.Returns[gdextension.Variant], arg_count int, args gdextension.Accepts[gdextension.Variant], call_err gdextension.Returns[gdextension.CallError]) {
 				defer gd.Recover()
@@ -159,6 +162,7 @@ func init() {
 					gdmemory.Set(gdextension.Pointer(call_err), gdextension.CallError{
 						Type: gdextension.CallInvalidMethod,
 					})
+					gdreference.Barrier()
 					return
 				}
 				raw, ok := pointers.End(v)
@@ -167,6 +171,7 @@ func init() {
 				} else {
 					gdmemory.Set(gdextension.Pointer(result), pointers.Get(v))
 				}
+				gdreference.Barrier()
 			},
 			Free: func(instance gdextension.ExtensionInstanceID) {
 				instances.Get(instance).Free()
@@ -185,6 +190,7 @@ func init() {
 				return methods.New(&methodImplementation{
 					checked: func(instance any, args, ret gdextension.Pointer) {
 						instance.(*instanceImplementation).CallVirtual(virtual, args, ret)
+						gdreference.Barrier()
 					},
 				})
 			},

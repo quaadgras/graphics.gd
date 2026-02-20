@@ -16,6 +16,7 @@ const (
 )
 
 func GC(free func(gdextension.Object)) {
+	Barrier()
 	for chunk := range pool {
 		for i := range pool[chunk] {
 			obj := &pool[chunk][i]
