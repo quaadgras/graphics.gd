@@ -37,6 +37,9 @@ type Object struct {
 // [gdextension.Object] pointer, no memory safety protections
 // will apply to the result.
 func RawObject(obj gdextension.Object) Object {
+	if obj == 0 {
+		return Object{}
+	}
 	var id gdextension.ObjectID
 	gdextension.Host.Objects.ID.Get(obj, gdextension.CallReturns[gdextension.ObjectID](&id))
 	return Object{assigned: object{inEngine: obj, objectID: id}}
@@ -44,6 +47,9 @@ func RawObject(obj gdextension.Object) Object {
 
 // LetObject creates an engine-owned [Object] reference.
 func LetObject(obj gdextension.Object) Object {
+	if obj == 0 {
+		return Object{}
+	}
 	var id gdextension.ObjectID
 	gdextension.Host.Objects.ID.Get(obj, gdextension.CallReturns[gdextension.ObjectID](&id))
 	var revision uint64
@@ -59,6 +65,9 @@ func LetObject(obj gdextension.Object) Object {
 
 // OwnObject creates a Go-owned [Object] reference.
 func OwnObject(obj gdextension.Object, free func(gdextension.Object)) Object {
+	if obj == 0 {
+		return Object{}
+	}
 	var id gdextension.ObjectID
 	gdextension.Host.Objects.ID.Get(obj, gdextension.CallReturns[gdextension.ObjectID](&id))
 	var sentinel *object

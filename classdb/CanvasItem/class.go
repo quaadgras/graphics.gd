@@ -279,6 +279,7 @@ func (Instance) _draw(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCall
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
+		gd.Flush()
 	}
 }
 
