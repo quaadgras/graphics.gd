@@ -1275,7 +1275,7 @@ func (self class) AddIconItem(rid RID.Any, icon [1]gdclass.Texture2D, label Stri
 		tag          gdextension.Variant
 		accelerator  Input.Key
 		index        int64
-	}{rid, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0]))), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index})
+	}{rid, gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(icon[0])[0])), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index})
 	var ret = r_ret
 	return ret
 }
@@ -1290,7 +1290,7 @@ func (self class) AddIconCheckItem(rid RID.Any, icon [1]gdclass.Texture2D, label
 		tag          gdextension.Variant
 		accelerator  Input.Key
 		index        int64
-	}{rid, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0]))), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index})
+	}{rid, gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(icon[0])[0])), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index})
 	var ret = r_ret
 	return ret
 }
@@ -1319,7 +1319,7 @@ func (self class) AddIconRadioCheckItem(rid RID.Any, icon [1]gdclass.Texture2D, 
 		tag          gdextension.Variant
 		accelerator  Input.Key
 		index        int64
-	}{rid, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0]))), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index})
+	}{rid, gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(icon[0])[0])), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index})
 	var ret = r_ret
 	return ret
 }
@@ -1645,7 +1645,7 @@ func (self class) SetItemIcon(rid RID.Any, idx int64, icon [1]gdclass.Texture2D)
 		rid  RID.Any
 		idx  int64
 		icon gdextension.Object
-	}{rid, idx, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
+	}{rid, idx, gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(icon[0])[0]))})
 }
 func (self class) SetItemIndentationLevel(rid RID.Any, idx int64, level int64) { //gd:NativeMenu.set_item_indentation_level
 	once.Do(singleton)

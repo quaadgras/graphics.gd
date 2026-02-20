@@ -555,7 +555,7 @@ func (self class) CancelRequest() { //gd:HTTPRequest.cancel_request
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.cancel_request, 0, &struct{}{})
 }
 func (self class) SetTlsOptions(client_options [1]gdclass.TLSOptions) { //gd:HTTPRequest.set_tls_options
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tls_options, 0|(gdextension.SizeObject<<4), &struct{ client_options gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTLSOptions(client_options[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tls_options, 0|(gdextension.SizeObject<<4), &struct{ client_options gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTLSOptions(client_options[0])[0]))})
 }
 func (self class) GetHttpClientStatus() HTTPClient.Status { //gd:HTTPRequest.get_http_client_status
 	var r_ret = noescape.Call[HTTPClient.Status](gd.ObjectChecked(self.AsObject()), methods.get_http_client_status, gdextension.SizeInt, &struct{}{})

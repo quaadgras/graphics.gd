@@ -472,7 +472,7 @@ func (self Instance) SetSkeleton(value string) Instance { //gd:MeshInstance3D.sk
 }
 
 func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:MeshInstance3D.set_mesh
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMesh(mesh[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMesh(mesh[0])[0]))})
 }
 func (self class) GetMesh() [1]gdclass.Mesh { //gd:MeshInstance3D.get_mesh
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, &struct{}{})
@@ -488,7 +488,7 @@ func (self class) GetSkeletonPath() Path.ToNode { //gd:MeshInstance3D.get_skelet
 	return ret
 }
 func (self class) SetSkin(skin [1]gdclass.Skin) { //gd:MeshInstance3D.set_skin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin, 0|(gdextension.SizeObject<<4), &struct{ skin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetSkin(skin[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin, 0|(gdextension.SizeObject<<4), &struct{ skin gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetSkin(skin[0])[0]))})
 }
 func (self class) GetSkin() [1]gdclass.Skin { //gd:MeshInstance3D.get_skin
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skin, gdextension.SizeObject, &struct{}{})
@@ -509,7 +509,7 @@ func (self class) SetSurfaceOverrideMaterial(surface int64, material [1]gdclass.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_surface_override_material, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		surface  int64
 		material gdextension.Object
-	}{surface, gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
+	}{surface, gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(material[0])[0]))})
 }
 func (self class) GetSurfaceOverrideMaterial(surface int64) [1]gdclass.Material { //gd:MeshInstance3D.get_surface_override_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_surface_override_material, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ surface int64 }{surface})
@@ -531,7 +531,7 @@ func (self class) CreateConvexCollision(clean bool, simplify bool) { //gd:MeshIn
 	}{clean, simplify})
 }
 func (self class) CreateMultipleConvexCollisions(settings [1]gdclass.MeshConvexDecompositionSettings) { //gd:MeshInstance3D.create_multiple_convex_collisions
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_multiple_convex_collisions, 0|(gdextension.SizeObject<<4), &struct{ settings gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMeshConvexDecompositionSettings(settings[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_multiple_convex_collisions, 0|(gdextension.SizeObject<<4), &struct{ settings gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMeshConvexDecompositionSettings(settings[0])[0]))})
 }
 func (self class) GetBlendShapeCount() int64 { //gd:MeshInstance3D.get_blend_shape_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_blend_shape_count, gdextension.SizeInt, &struct{}{})
@@ -558,12 +558,12 @@ func (self class) CreateDebugTangents() { //gd:MeshInstance3D.create_debug_tange
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_debug_tangents, 0, &struct{}{})
 }
 func (self class) BakeMeshFromCurrentBlendShapeMix(existing [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh { //gd:MeshInstance3D.bake_mesh_from_current_blend_shape_mix
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bake_mesh_from_current_blend_shape_mix, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ existing gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetArrayMesh(existing[0])))})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bake_mesh_from_current_blend_shape_mix, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ existing gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetArrayMesh(existing[0])[0]))})
 	var ret = [1]gdclass.ArrayMesh{gdclass.NewArrayMesh(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) BakeMeshFromCurrentSkeletonPose(existing [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh { //gd:MeshInstance3D.bake_mesh_from_current_skeleton_pose
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bake_mesh_from_current_skeleton_pose, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ existing gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetArrayMesh(existing[0])))})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bake_mesh_from_current_skeleton_pose, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ existing gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetArrayMesh(existing[0])[0]))})
 	var ret = [1]gdclass.ArrayMesh{gdclass.NewArrayMesh(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

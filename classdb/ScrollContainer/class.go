@@ -484,7 +484,7 @@ func (self class) GetVScrollBar() [1]gdclass.VScrollBar { //gd:ScrollContainer.g
 	return ret
 }
 func (self class) EnsureControlVisible(control [1]gdclass.Control) { //gd:ScrollContainer.ensure_control_visible
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.ensure_control_visible, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.ensure_control_visible, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetControl(control[0])[0]))})
 }
 func (self class) SetDrawFocusBorder(draw bool) { //gd:ScrollContainer.set_draw_focus_border
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_focus_border, 0|(gdextension.SizeBool<<4), &struct{ draw bool }{draw})

@@ -332,7 +332,7 @@ func (self class) CreateSceneTile(packed_scene [1]gdclass.PackedScene, id_overri
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_scene_tile, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		packed_scene gdextension.Object
 		id_override  int64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetPackedScene(packed_scene[0]))), id_override})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetPackedScene(packed_scene[0])[0])), id_override})
 	var ret = r_ret
 	return ret
 }
@@ -346,7 +346,7 @@ func (self class) SetSceneTileScene(id int64, packed_scene [1]gdclass.PackedScen
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scene_tile_scene, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		id           int64
 		packed_scene gdextension.Object
-	}{id, gdextension.Object(gd.ObjectChecked(gdclass.GetPackedScene(packed_scene[0])))})
+	}{id, gdextension.Object(gdreference.GetObject(gdclass.GetPackedScene(packed_scene[0])[0]))})
 }
 func (self class) GetSceneTileScene(id int64) [1]gdclass.PackedScene { //gd:TileSetScenesCollectionSource.get_scene_tile_scene
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_scene_tile_scene, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ id int64 }{id})

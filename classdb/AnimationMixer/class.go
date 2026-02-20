@@ -758,7 +758,7 @@ func (self class) AddAnimationLibrary(name String.Name, library [1]gdclass.Anima
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_animation_library, gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name    gdextension.StringName
 		library gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetAnimationLibrary(library[0])))})
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gdreference.GetObject(gdclass.GetAnimationLibrary(library[0])[0]))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -926,12 +926,12 @@ func (self class) IsResetOnSaveEnabled() bool { //gd:AnimationMixer.is_reset_on_
 	return ret
 }
 func (self class) FindAnimation(animation [1]gdclass.Animation) String.Name { //gd:AnimationMixer.find_animation
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.find_animation, gdextension.SizeStringName|(gdextension.SizeObject<<4), &struct{ animation gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetAnimation(animation[0])))})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.find_animation, gdextension.SizeStringName|(gdextension.SizeObject<<4), &struct{ animation gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetAnimation(animation[0])[0]))})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 func (self class) FindAnimationLibrary(animation [1]gdclass.Animation) String.Name { //gd:AnimationMixer.find_animation_library
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.find_animation_library, gdextension.SizeStringName|(gdextension.SizeObject<<4), &struct{ animation gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetAnimation(animation[0])))})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.find_animation_library, gdextension.SizeStringName|(gdextension.SizeObject<<4), &struct{ animation gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetAnimation(animation[0])[0]))})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }

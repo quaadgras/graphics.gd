@@ -286,7 +286,7 @@ func (self class) GetModification(mod_idx int64) [1]gdclass.SkeletonModification
 	return ret
 }
 func (self class) AddModification(modification [1]gdclass.SkeletonModification2D) { //gd:SkeletonModificationStack2D.add_modification
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_modification, 0|(gdextension.SizeObject<<4), &struct{ modification gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetSkeletonModification2D(modification[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_modification, 0|(gdextension.SizeObject<<4), &struct{ modification gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetSkeletonModification2D(modification[0])[0]))})
 }
 func (self class) DeleteModification(mod_idx int64) { //gd:SkeletonModificationStack2D.delete_modification
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.delete_modification, 0|(gdextension.SizeInt<<4), &struct{ mod_idx int64 }{mod_idx})
@@ -295,7 +295,7 @@ func (self class) SetModification(mod_idx int64, modification [1]gdclass.Skeleto
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modification, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		mod_idx      int64
 		modification gdextension.Object
-	}{mod_idx, gdextension.Object(gd.ObjectChecked(gdclass.GetSkeletonModification2D(modification[0])))})
+	}{mod_idx, gdextension.Object(gdreference.GetObject(gdclass.GetSkeletonModification2D(modification[0])[0]))})
 }
 func (self class) SetModificationCount(count int64) { //gd:SkeletonModificationStack2D.set_modification_count
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modification_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})

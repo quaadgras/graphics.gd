@@ -355,7 +355,7 @@ func (self class) GetMultiplayerPeer() [1]gdclass.MultiplayerPeer { //gd:Multipl
 	return ret
 }
 func (self class) SetMultiplayerPeer(peer [1]gdclass.MultiplayerPeer) { //gd:MultiplayerAPI.set_multiplayer_peer
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_multiplayer_peer, 0|(gdextension.SizeObject<<4), &struct{ peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMultiplayerPeer(peer[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_multiplayer_peer, 0|(gdextension.SizeObject<<4), &struct{ peer gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMultiplayerPeer(peer[0])[0]))})
 }
 func (self class) GetUniqueId() int64 { //gd:MultiplayerAPI.get_unique_id
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_unique_id, gdextension.SizeInt, &struct{}{})
@@ -383,7 +383,7 @@ func (self class) Rpc(peer int64, obj [1]gd.Object, method String.Name, argument
 		obj       gdextension.Object
 		method    gdextension.StringName
 		arguments gdextension.Array
-	}{peer, gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0]))), pointers.Get(gd.InternalStringName(method)), pointers.Get(gd.InternalArray(arguments))})
+	}{peer, gdextension.Object(gdreference.GetObject(gdclass.GetObject(obj[0])[0])), pointers.Get(gd.InternalStringName(method)), pointers.Get(gd.InternalArray(arguments))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -399,7 +399,7 @@ func (self class) ObjectConfigurationRemove(obj [1]gd.Object, configuration vari
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.object_configuration_remove, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeVariant<<8), &struct {
 		obj           gdextension.Object
 		configuration gdextension.Variant
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0]))), gdextension.Variant(pointers.Get(gd.InternalVariant(configuration)))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetObject(obj[0])[0])), gdextension.Variant(pointers.Get(gd.InternalVariant(configuration)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }

@@ -222,7 +222,7 @@ func (self class) SetSyncStream(stream_index int64, audio_stream [1]gdclass.Audi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sync_stream, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		stream_index int64
 		audio_stream gdextension.Object
-	}{stream_index, gdextension.Object(gd.ObjectChecked(gdclass.GetAudioStream(audio_stream[0])))})
+	}{stream_index, gdextension.Object(gdreference.GetObject(gdclass.GetAudioStream(audio_stream[0])[0]))})
 }
 func (self class) GetSyncStream(stream_index int64) [1]gdclass.AudioStream { //gd:AudioStreamSynchronized.get_sync_stream
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_sync_stream, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ stream_index int64 }{stream_index})

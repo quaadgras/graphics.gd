@@ -440,7 +440,7 @@ func (self class) GetLanguage() String.Readable { //gd:Button.get_language
 	return ret
 }
 func (self class) SetButtonIcon(texture [1]gdclass.Texture2D) { //gd:Button.set_button_icon
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_button_icon, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_button_icon, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetButtonIcon() [1]gdclass.Texture2D { //gd:Button.get_button_icon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_button_icon, gdextension.SizeObject, &struct{}{})

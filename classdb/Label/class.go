@@ -605,7 +605,7 @@ func (self class) GetText() String.Readable { //gd:Label.get_text
 	return ret
 }
 func (self class) SetLabelSettings(settings [1]gdclass.LabelSettings) { //gd:Label.set_label_settings
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_label_settings, 0|(gdextension.SizeObject<<4), &struct{ settings gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetLabelSettings(settings[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_label_settings, 0|(gdextension.SizeObject<<4), &struct{ settings gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetLabelSettings(settings[0])[0]))})
 }
 func (self class) GetLabelSettings() [1]gdclass.LabelSettings { //gd:Label.get_label_settings
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_label_settings, gdextension.SizeObject, &struct{}{})

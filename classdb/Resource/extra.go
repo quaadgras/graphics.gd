@@ -75,6 +75,9 @@ func Load[T Any, P string | Path.ToResource](path_to_resource P) T {
 		preloaded_resources = append(preloaded_resources, *(*gd.RefCounted)(unsafe.Pointer(&placeholder)))
 		startup = append(startup, func() {
 			resource := Instance(load(String.Readable(path), String.New(""), 1))
+			if resource == (Instance{}) {
+				return
+			}
 			result, ok := Object.As[T](resource)
 			if !ok {
 				panic("Resource \"" + path.String() + "\" is " + gd.ObjectGetClass(resource.AsObject()[0]).String() + " not " + reflect.TypeFor[T]().String())

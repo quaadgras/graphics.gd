@@ -279,12 +279,12 @@ func (self class) Client(trusted_chain [1]gdclass.X509Certificate, common_name_o
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.client, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), &struct {
 		trusted_chain        gdextension.Object
 		common_name_override gdextension.String
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetX509Certificate(trusted_chain[0]))), pointers.Get(gd.InternalString(common_name_override))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetX509Certificate(trusted_chain[0])[0])), pointers.Get(gd.InternalString(common_name_override))})
 	var ret = [1]gdclass.TLSOptions{gdclass.NewTLSOptions(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) ClientUnsafe(trusted_chain [1]gdclass.X509Certificate) [1]gdclass.TLSOptions { //gd:TLSOptions.client_unsafe
-	var r_ret = noescape.CallStatic[gdextension.Object](methods.client_unsafe, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ trusted_chain gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetX509Certificate(trusted_chain[0])))})
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.client_unsafe, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ trusted_chain gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetX509Certificate(trusted_chain[0])[0]))})
 	var ret = [1]gdclass.TLSOptions{gdclass.NewTLSOptions(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -292,7 +292,7 @@ func (self class) Server(key [1]gdclass.CryptoKey, certificate [1]gdclass.X509Ce
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.server, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
 		key         gdextension.Object
 		certificate gdextension.Object
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetCryptoKey(key[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetX509Certificate(certificate[0])))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetCryptoKey(key[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetX509Certificate(certificate[0])[0]))})
 	var ret = [1]gdclass.TLSOptions{gdclass.NewTLSOptions(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

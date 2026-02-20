@@ -1243,7 +1243,7 @@ func (self class) SetRadiusDampingCurve(index int64, curve [1]gdclass.Curve) { /
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius_damping_curve, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		index int64
 		curve gdextension.Object
-	}{index, gdextension.Object(gd.ObjectChecked(gdclass.GetCurve(curve[0])))})
+	}{index, gdextension.Object(gdreference.GetObject(gdclass.GetCurve(curve[0])[0]))})
 }
 func (self class) GetRadiusDampingCurve(index int64) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_radius_damping_curve
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_radius_damping_curve, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
@@ -1265,7 +1265,7 @@ func (self class) SetStiffnessDampingCurve(index int64, curve [1]gdclass.Curve) 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stiffness_damping_curve, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		index int64
 		curve gdextension.Object
-	}{index, gdextension.Object(gd.ObjectChecked(gdclass.GetCurve(curve[0])))})
+	}{index, gdextension.Object(gdreference.GetObject(gdclass.GetCurve(curve[0])[0]))})
 }
 func (self class) GetStiffnessDampingCurve(index int64) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_stiffness_damping_curve
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_stiffness_damping_curve, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
@@ -1287,7 +1287,7 @@ func (self class) SetDragDampingCurve(index int64, curve [1]gdclass.Curve) { //g
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_damping_curve, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		index int64
 		curve gdextension.Object
-	}{index, gdextension.Object(gd.ObjectChecked(gdclass.GetCurve(curve[0])))})
+	}{index, gdextension.Object(gdreference.GetObject(gdclass.GetCurve(curve[0])[0]))})
 }
 func (self class) GetDragDampingCurve(index int64) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_drag_damping_curve
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_drag_damping_curve, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
@@ -1309,7 +1309,7 @@ func (self class) SetGravityDampingCurve(index int64, curve [1]gdclass.Curve) { 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity_damping_curve, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		index int64
 		curve gdextension.Object
-	}{index, gdextension.Object(gd.ObjectChecked(gdclass.GetCurve(curve[0])))})
+	}{index, gdextension.Object(gdreference.GetObject(gdclass.GetCurve(curve[0])[0]))})
 }
 func (self class) GetGravityDampingCurve(index int64) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_gravity_damping_curve
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_gravity_damping_curve, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})

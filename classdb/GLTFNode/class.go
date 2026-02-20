@@ -575,7 +575,7 @@ func (self class) GetSceneNodePath(gltf_state [1]gdclass.GLTFState, handle_skele
 	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_scene_node_path, gdextension.SizeNodePath|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		gltf_state       gdextension.Object
 		handle_skeletons bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFState(gltf_state[0]))), handle_skeletons})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetGLTFState(gltf_state[0])[0])), handle_skeletons})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

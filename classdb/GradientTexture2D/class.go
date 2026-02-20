@@ -290,7 +290,7 @@ func (self Instance) SetRepeat(value Repeat) Instance { //gd:GradientTexture2D.r
 }
 
 func (self class) SetGradient(gradient [1]gdclass.Gradient) { //gd:GradientTexture2D.set_gradient
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gradient, 0|(gdextension.SizeObject<<4), &struct{ gradient gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetGradient(gradient[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gradient, 0|(gdextension.SizeObject<<4), &struct{ gradient gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetGradient(gradient[0])[0]))})
 }
 func (self class) GetGradient() [1]gdclass.Gradient { //gd:GradientTexture2D.get_gradient
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_gradient, gdextension.SizeObject, &struct{}{})

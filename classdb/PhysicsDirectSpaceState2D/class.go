@@ -358,12 +358,12 @@ func (self class) IntersectPoint(parameters [1]gdclass.PhysicsPointQueryParamete
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.intersect_point, gdextension.SizeArray|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		parameters  gdextension.Object
 		max_results int64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsPointQueryParameters2D(parameters[0]))), max_results})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetPhysicsPointQueryParameters2D(parameters[0])[0])), max_results})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) IntersectRay(parameters [1]gdclass.PhysicsRayQueryParameters2D) Dictionary.Any { //gd:PhysicsDirectSpaceState2D.intersect_ray
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.intersect_ray, gdextension.SizeDictionary|(gdextension.SizeObject<<4), &struct{ parameters gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsRayQueryParameters2D(parameters[0])))})
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.intersect_ray, gdextension.SizeDictionary|(gdextension.SizeObject<<4), &struct{ parameters gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetPhysicsRayQueryParameters2D(parameters[0])[0]))})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -371,12 +371,12 @@ func (self class) IntersectShape(parameters [1]gdclass.PhysicsShapeQueryParamete
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.intersect_shape, gdextension.SizeArray|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		parameters  gdextension.Object
 		max_results int64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsShapeQueryParameters2D(parameters[0]))), max_results})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetPhysicsShapeQueryParameters2D(parameters[0])[0])), max_results})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) CastMotion(parameters [1]gdclass.PhysicsShapeQueryParameters2D) Packed.Array[float32] { //gd:PhysicsDirectSpaceState2D.cast_motion
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.cast_motion, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ parameters gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsShapeQueryParameters2D(parameters[0])))})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.cast_motion, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ parameters gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetPhysicsShapeQueryParameters2D(parameters[0])[0]))})
 	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -384,12 +384,12 @@ func (self class) CollideShape(parameters [1]gdclass.PhysicsShapeQueryParameters
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.collide_shape, gdextension.SizeArray|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		parameters  gdextension.Object
 		max_results int64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsShapeQueryParameters2D(parameters[0]))), max_results})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetPhysicsShapeQueryParameters2D(parameters[0])[0])), max_results})
 	var ret = Array.Through(gd.ArrayProxy[Vector2.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) GetRestInfo(parameters [1]gdclass.PhysicsShapeQueryParameters2D) Dictionary.Any { //gd:PhysicsDirectSpaceState2D.get_rest_info
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_rest_info, gdextension.SizeDictionary|(gdextension.SizeObject<<4), &struct{ parameters gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsShapeQueryParameters2D(parameters[0])))})
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_rest_info, gdextension.SizeDictionary|(gdextension.SizeObject<<4), &struct{ parameters gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetPhysicsShapeQueryParameters2D(parameters[0])[0]))})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }

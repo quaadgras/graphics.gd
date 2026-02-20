@@ -608,7 +608,7 @@ func (self Instance) SetUseTexturePadding(value bool) Instance { //gd:TileSetAtl
 }
 
 func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:TileSetAtlasSource.set_texture
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:TileSetAtlasSource.get_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
@@ -686,7 +686,7 @@ func (self class) GetTilesToBeRemovedOnChange(texture [1]gdclass.Texture2D, marg
 		margins             Vector2i.XY
 		separation          Vector2i.XY
 		texture_region_size Vector2i.XY
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), margins, separation, texture_region_size})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0])), margins, separation, texture_region_size})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }

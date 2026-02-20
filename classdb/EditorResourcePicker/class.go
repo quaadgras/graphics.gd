@@ -339,7 +339,7 @@ func (self class) GetAllowedTypes() Packed.Strings { //gd:EditorResourcePicker.g
 	return ret
 }
 func (self class) SetEditedResource(resource [1]gdclass.Resource) { //gd:EditorResourcePicker.set_edited_resource
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edited_resource, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetResource(resource[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edited_resource, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetResource(resource[0])[0]))})
 }
 func (self class) GetEditedResource() [1]gdclass.Resource { //gd:EditorResourcePicker.get_edited_resource
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_resource, gdextension.SizeObject, &struct{}{})

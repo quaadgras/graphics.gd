@@ -184,7 +184,7 @@ func (self Instance) SetMultimesh(value MultiMesh.Instance) Instance { //gd:Mult
 }
 
 func (self class) SetMultimesh(multimesh [1]gdclass.MultiMesh) { //gd:MultiMeshInstance3D.set_multimesh
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_multimesh, 0|(gdextension.SizeObject<<4), &struct{ multimesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMultiMesh(multimesh[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_multimesh, 0|(gdextension.SizeObject<<4), &struct{ multimesh gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMultiMesh(multimesh[0])[0]))})
 }
 func (self class) GetMultimesh() [1]gdclass.MultiMesh { //gd:MultiMeshInstance3D.get_multimesh
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_multimesh, gdextension.SizeObject, &struct{}{})

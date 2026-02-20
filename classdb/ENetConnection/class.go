@@ -482,7 +482,7 @@ func (self class) Compress(mode CompressionMode) { //gd:ENetConnection.compress
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.compress, 0|(gdextension.SizeInt<<4), &struct{ mode CompressionMode }{mode})
 }
 func (self class) DtlsServerSetup(server_options [1]gdclass.TLSOptions) Error.Code { //gd:ENetConnection.dtls_server_setup
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.dtls_server_setup, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ server_options gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTLSOptions(server_options[0])))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.dtls_server_setup, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ server_options gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTLSOptions(server_options[0])[0]))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -490,7 +490,7 @@ func (self class) DtlsClientSetup(hostname String.Readable, client_options [1]gd
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.dtls_client_setup, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
 		hostname       gdextension.String
 		client_options gdextension.Object
-	}{pointers.Get(gd.InternalString(hostname)), gdextension.Object(gd.ObjectChecked(gdclass.GetTLSOptions(client_options[0])))})
+	}{pointers.Get(gd.InternalString(hostname)), gdextension.Object(gdreference.GetObject(gdclass.GetTLSOptions(client_options[0])[0]))})
 	var ret = Error.Code(r_ret)
 	return ret
 }

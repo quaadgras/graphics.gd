@@ -303,7 +303,7 @@ func (self Instance) SetData(value VoxelGIData.Instance) Instance { //gd:VoxelGI
 }
 
 func (self class) SetProbeData(data [1]gdclass.VoxelGIData) { //gd:VoxelGI.set_probe_data
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_probe_data, 0|(gdextension.SizeObject<<4), &struct{ data gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetVoxelGIData(data[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_probe_data, 0|(gdextension.SizeObject<<4), &struct{ data gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetVoxelGIData(data[0])[0]))})
 }
 func (self class) GetProbeData() [1]gdclass.VoxelGIData { //gd:VoxelGI.get_probe_data
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_probe_data, gdextension.SizeObject, &struct{}{})
@@ -327,7 +327,7 @@ func (self class) GetSize() Vector3.XYZ { //gd:VoxelGI.get_size
 	return ret
 }
 func (self class) SetCameraAttributes(camera_attributes [1]gdclass.CameraAttributes) { //gd:VoxelGI.set_camera_attributes
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera_attributes, 0|(gdextension.SizeObject<<4), &struct{ camera_attributes gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCameraAttributes(camera_attributes[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera_attributes, 0|(gdextension.SizeObject<<4), &struct{ camera_attributes gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCameraAttributes(camera_attributes[0])[0]))})
 }
 func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes { //gd:VoxelGI.get_camera_attributes
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_camera_attributes, gdextension.SizeObject, &struct{}{})
@@ -338,7 +338,7 @@ func (self class) Bake(from_node [1]gdclass.Node, create_visual_debug bool) { //
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.bake, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		from_node           gdextension.Object
 		create_visual_debug bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(from_node[0]))), create_visual_debug})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetNode(from_node[0])[0])), create_visual_debug})
 }
 func (self class) DebugBake() { //gd:VoxelGI.debug_bake
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.debug_bake, 0, &struct{}{})

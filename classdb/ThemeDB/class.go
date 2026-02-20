@@ -296,7 +296,7 @@ func (self class) GetFallbackBaseScale() float64 { //gd:ThemeDB.get_fallback_bas
 }
 func (self class) SetFallbackFont(font [1]gdclass.Font) { //gd:ThemeDB.set_fallback_font
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_fallback_font, 0|(gdextension.SizeObject<<4), &struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_fallback_font, 0|(gdextension.SizeObject<<4), &struct{ font gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetFont(font[0])[0]))})
 }
 func (self class) GetFallbackFont() [1]gdclass.Font { //gd:ThemeDB.get_fallback_font
 	once.Do(singleton)
@@ -316,7 +316,7 @@ func (self class) GetFallbackFontSize() int64 { //gd:ThemeDB.get_fallback_font_s
 }
 func (self class) SetFallbackIcon(icon [1]gdclass.Texture2D) { //gd:ThemeDB.set_fallback_icon
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_fallback_icon, 0|(gdextension.SizeObject<<4), &struct{ icon gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_fallback_icon, 0|(gdextension.SizeObject<<4), &struct{ icon gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(icon[0])[0]))})
 }
 func (self class) GetFallbackIcon() [1]gdclass.Texture2D { //gd:ThemeDB.get_fallback_icon
 	once.Do(singleton)
@@ -326,7 +326,7 @@ func (self class) GetFallbackIcon() [1]gdclass.Texture2D { //gd:ThemeDB.get_fall
 }
 func (self class) SetFallbackStylebox(stylebox [1]gdclass.StyleBox) { //gd:ThemeDB.set_fallback_stylebox
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_fallback_stylebox, 0|(gdextension.SizeObject<<4), &struct{ stylebox gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetStyleBox(stylebox[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_fallback_stylebox, 0|(gdextension.SizeObject<<4), &struct{ stylebox gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetStyleBox(stylebox[0])[0]))})
 }
 func (self class) GetFallbackStylebox() [1]gdclass.StyleBox { //gd:ThemeDB.get_fallback_stylebox
 	once.Do(singleton)

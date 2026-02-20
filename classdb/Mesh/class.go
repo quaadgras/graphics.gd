@@ -813,7 +813,7 @@ func (self class) SurfaceSetMaterial(surf_idx int64, material [1]gdclass.Materia
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_material, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		surf_idx int64
 		material gdextension.Object
-	}{surf_idx, gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
+	}{surf_idx, gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(material[0])[0]))})
 }
 func (self class) SurfaceGetMaterial(surf_idx int64) [1]gdclass.Material { //gd:Mesh.surface_get_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.surface_get_material, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ surf_idx int64 }{surf_idx})

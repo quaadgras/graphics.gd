@@ -1528,7 +1528,7 @@ func (self class) QueryPath(parameters [1]gdclass.NavigationPathQueryParameters2
 		parameters gdextension.Object
 		result     gdextension.Object
 		callback   gdextension.Callable
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationPathQueryParameters2D(parameters[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationPathQueryResult2D(result[0]))), pointers.Get(gd.InternalCallable(callback))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetNavigationPathQueryParameters2D(parameters[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetNavigationPathQueryResult2D(result[0])[0])), pointers.Get(gd.InternalCallable(callback))})
 }
 func (self class) RegionCreate() RID.Any { //gd:NavigationServer2D.region_create
 	once.Do(singleton)
@@ -1673,7 +1673,7 @@ func (self class) RegionSetNavigationPolygon(region RID.Any, navigation_polygon 
 	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.region_set_navigation_polygon, 0|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8), &struct {
 		region             RID.Any
 		navigation_polygon gdextension.Object
-	}{region, gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationPolygon(navigation_polygon[0])))})
+	}{region, gdextension.Object(gdreference.GetObject(gdclass.GetNavigationPolygon(navigation_polygon[0])[0]))})
 }
 func (self class) RegionGetConnectionsCount(region RID.Any) int64 { //gd:NavigationServer2D.region_get_connections_count
 	once.Do(singleton)
@@ -2184,7 +2184,7 @@ func (self class) ParseSourceGeometryData(navigation_polygon [1]gdclass.Navigati
 		source_geometry_data gdextension.Object
 		root_node            gdextension.Object
 		callback             gdextension.Callable
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationPolygon(navigation_polygon[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationMeshSourceGeometryData2D(source_geometry_data[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetNode(root_node[0]))), pointers.Get(gd.InternalCallable(callback))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetNavigationPolygon(navigation_polygon[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetNavigationMeshSourceGeometryData2D(source_geometry_data[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetNode(root_node[0])[0])), pointers.Get(gd.InternalCallable(callback))})
 }
 func (self class) BakeFromSourceGeometryData(navigation_polygon [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData2D, callback Callable.Function) { //gd:NavigationServer2D.bake_from_source_geometry_data
 	once.Do(singleton)
@@ -2192,7 +2192,7 @@ func (self class) BakeFromSourceGeometryData(navigation_polygon [1]gdclass.Navig
 		navigation_polygon   gdextension.Object
 		source_geometry_data gdextension.Object
 		callback             gdextension.Callable
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationPolygon(navigation_polygon[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationMeshSourceGeometryData2D(source_geometry_data[0]))), pointers.Get(gd.InternalCallable(callback))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetNavigationPolygon(navigation_polygon[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetNavigationMeshSourceGeometryData2D(source_geometry_data[0])[0])), pointers.Get(gd.InternalCallable(callback))})
 }
 func (self class) BakeFromSourceGeometryDataAsync(navigation_polygon [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData2D, callback Callable.Function) { //gd:NavigationServer2D.bake_from_source_geometry_data_async
 	once.Do(singleton)
@@ -2200,11 +2200,11 @@ func (self class) BakeFromSourceGeometryDataAsync(navigation_polygon [1]gdclass.
 		navigation_polygon   gdextension.Object
 		source_geometry_data gdextension.Object
 		callback             gdextension.Callable
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationPolygon(navigation_polygon[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationMeshSourceGeometryData2D(source_geometry_data[0]))), pointers.Get(gd.InternalCallable(callback))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetNavigationPolygon(navigation_polygon[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetNavigationMeshSourceGeometryData2D(source_geometry_data[0])[0])), pointers.Get(gd.InternalCallable(callback))})
 }
 func (self class) IsBakingNavigationPolygon(navigation_polygon [1]gdclass.NavigationPolygon) bool { //gd:NavigationServer2D.is_baking_navigation_polygon
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_baking_navigation_polygon, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ navigation_polygon gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationPolygon(navigation_polygon[0])))})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_baking_navigation_polygon, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ navigation_polygon gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNavigationPolygon(navigation_polygon[0])[0]))})
 	var ret = r_ret
 	return ret
 }

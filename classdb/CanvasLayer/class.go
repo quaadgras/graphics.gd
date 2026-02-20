@@ -446,7 +446,7 @@ func (self class) GetFollowViewportScale() float64 { //gd:CanvasLayer.get_follow
 	return ret
 }
 func (self class) SetCustomViewport(viewport [1]gdclass.Node) { //gd:CanvasLayer.set_custom_viewport
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_viewport, 0|(gdextension.SizeObject<<4), &struct{ viewport gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(viewport[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_viewport, 0|(gdextension.SizeObject<<4), &struct{ viewport gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(viewport[0])[0]))})
 }
 func (self class) GetCustomViewport() [1]gdclass.Node { //gd:CanvasLayer.get_custom_viewport
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_custom_viewport, gdextension.SizeObject, &struct{}{})

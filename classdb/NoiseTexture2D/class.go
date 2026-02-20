@@ -397,7 +397,7 @@ func (self class) IsGeneratingMipmaps() bool { //gd:NoiseTexture2D.is_generating
 	return ret
 }
 func (self class) SetNoise(noise [1]gdclass.Noise) { //gd:NoiseTexture2D.set_noise
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_noise, 0|(gdextension.SizeObject<<4), &struct{ noise gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNoise(noise[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_noise, 0|(gdextension.SizeObject<<4), &struct{ noise gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNoise(noise[0])[0]))})
 }
 func (self class) GetNoise() [1]gdclass.Noise { //gd:NoiseTexture2D.get_noise
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_noise, gdextension.SizeObject, &struct{}{})
@@ -405,7 +405,7 @@ func (self class) GetNoise() [1]gdclass.Noise { //gd:NoiseTexture2D.get_noise
 	return ret
 }
 func (self class) SetColorRamp(gradient [1]gdclass.Gradient) { //gd:NoiseTexture2D.set_color_ramp
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_ramp, 0|(gdextension.SizeObject<<4), &struct{ gradient gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetGradient(gradient[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_ramp, 0|(gdextension.SizeObject<<4), &struct{ gradient gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetGradient(gradient[0])[0]))})
 }
 func (self class) GetColorRamp() [1]gdclass.Gradient { //gd:NoiseTexture2D.get_color_ramp
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_ramp, gdextension.SizeObject, &struct{}{})

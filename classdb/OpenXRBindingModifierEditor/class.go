@@ -188,7 +188,7 @@ func (self class) Setup(action_map [1]gdclass.OpenXRActionMap, binding_modifier 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.setup, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
 		action_map       gdextension.Object
 		binding_modifier gdextension.Object
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRActionMap(action_map[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRBindingModifier(binding_modifier[0])))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRActionMap(action_map[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRBindingModifier(binding_modifier[0])[0]))})
 }
 
 /*

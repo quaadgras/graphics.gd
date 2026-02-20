@@ -856,7 +856,7 @@ func (self class) RegisterScriptLanguage(language [1]gdclass.ScriptLanguage) Err
 }
 func (self class) UnregisterScriptLanguage(language [1]gdclass.ScriptLanguage) Error.Code { //gd:Engine.unregister_script_language
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.unregister_script_language, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ language gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetScriptLanguage(language[0])))})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.unregister_script_language, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ language gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetScriptLanguage(language[0])[0]))})
 	var ret = Error.Code(r_ret)
 	return ret
 }

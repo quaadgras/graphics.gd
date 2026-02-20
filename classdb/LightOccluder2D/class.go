@@ -208,7 +208,7 @@ func (self Instance) SetOccluderLightMask(value int) Instance { //gd:LightOcclud
 }
 
 func (self class) SetOccluderPolygon(polygon [1]gdclass.OccluderPolygon2D) { //gd:LightOccluder2D.set_occluder_polygon
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occluder_polygon, 0|(gdextension.SizeObject<<4), &struct{ polygon gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOccluderPolygon2D(polygon[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occluder_polygon, 0|(gdextension.SizeObject<<4), &struct{ polygon gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOccluderPolygon2D(polygon[0])[0]))})
 }
 func (self class) GetOccluderPolygon() [1]gdclass.OccluderPolygon2D { //gd:LightOccluder2D.get_occluder_polygon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_occluder_polygon, gdextension.SizeObject, &struct{}{})

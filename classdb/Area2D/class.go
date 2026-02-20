@@ -624,12 +624,12 @@ func (self class) HasOverlappingAreas() bool { //gd:Area2D.has_overlapping_areas
 	return ret
 }
 func (self class) OverlapsBody(body [1]gdclass.Node) bool { //gd:Area2D.overlaps_body
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.overlaps_body, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(body[0])))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.overlaps_body, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ body gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(body[0])[0]))})
 	var ret = r_ret
 	return ret
 }
 func (self class) OverlapsArea(area [1]gdclass.Node) bool { //gd:Area2D.overlaps_area
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.overlaps_area, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ area gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(area[0])))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.overlaps_area, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ area gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(area[0])[0]))})
 	var ret = r_ret
 	return ret
 }

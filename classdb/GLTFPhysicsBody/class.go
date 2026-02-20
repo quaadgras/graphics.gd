@@ -335,7 +335,7 @@ func (self Instance) SetInertiaTensor(value Basis.XYZ) Instance { //gd:GLTFPhysi
 }
 
 func (self class) FromNode(body_node [1]gdclass.CollisionObject3D) [1]gdclass.GLTFPhysicsBody { //gd:GLTFPhysicsBody.from_node
-	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ body_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCollisionObject3D(body_node[0])))})
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ body_node gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCollisionObject3D(body_node[0])[0]))})
 	var ret = [1]gdclass.GLTFPhysicsBody{gdclass.NewGLTFPhysicsBody(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

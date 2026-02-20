@@ -340,7 +340,7 @@ func (class) _can_use_render_priority(impl func(ptr gdclass.Receiver) bool) (cb 
 }
 
 func (self class) SetNextPass(next_pass [1]gdclass.Material) { //gd:Material.set_next_pass
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_next_pass, 0|(gdextension.SizeObject<<4), &struct{ next_pass gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(next_pass[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_next_pass, 0|(gdextension.SizeObject<<4), &struct{ next_pass gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(next_pass[0])[0]))})
 }
 func (self class) GetNextPass() [1]gdclass.Material { //gd:Material.get_next_pass
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_next_pass, gdextension.SizeObject, &struct{}{})

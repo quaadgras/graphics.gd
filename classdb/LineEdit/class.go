@@ -1474,7 +1474,7 @@ func (self class) IsDragAndDropSelectionEnabled() bool { //gd:LineEdit.is_drag_a
 	return ret
 }
 func (self class) SetRightIcon(icon [1]gdclass.Texture2D) { //gd:LineEdit.set_right_icon
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_right_icon, 0|(gdextension.SizeObject<<4), &struct{ icon gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_right_icon, 0|(gdextension.SizeObject<<4), &struct{ icon gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(icon[0])[0]))})
 }
 func (self class) GetRightIcon() [1]gdclass.Texture2D { //gd:LineEdit.get_right_icon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_right_icon, gdextension.SizeObject, &struct{}{})

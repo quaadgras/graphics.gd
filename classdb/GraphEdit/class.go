@@ -1486,7 +1486,7 @@ func (self class) ArrangeNodes() { //gd:GraphEdit.arrange_nodes
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.arrange_nodes, 0, &struct{}{})
 }
 func (self class) SetSelected(node [1]gdclass.Node) { //gd:GraphEdit.set_selected
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selected, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selected, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(node[0])[0]))})
 }
 
 /*

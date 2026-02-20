@@ -268,7 +268,7 @@ func (self class) HasValidEvent() bool { //gd:Shortcut.has_valid_event
 	return ret
 }
 func (self class) MatchesEvent(event [1]gdclass.InputEvent) bool { //gd:Shortcut.matches_event
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.matches_event, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ event gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0])))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.matches_event, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ event gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetInputEvent(event[0])[0]))})
 	var ret = r_ret
 	return ret
 }

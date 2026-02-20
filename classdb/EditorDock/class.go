@@ -597,7 +597,7 @@ func (self class) GetIconName() String.Name { //gd:EditorDock.get_icon_name
 	return ret
 }
 func (self class) SetDockIcon(icon [1]gdclass.Texture2D) { //gd:EditorDock.set_dock_icon
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dock_icon, 0|(gdextension.SizeObject<<4), &struct{ icon gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dock_icon, 0|(gdextension.SizeObject<<4), &struct{ icon gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(icon[0])[0]))})
 }
 func (self class) GetDockIcon() [1]gdclass.Texture2D { //gd:EditorDock.get_dock_icon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_dock_icon, gdextension.SizeObject, &struct{}{})
@@ -621,7 +621,7 @@ func (self class) GetTitleColor() Color.RGBA { //gd:EditorDock.get_title_color
 	return ret
 }
 func (self class) SetDockShortcut(shortcut [1]gdclass.Shortcut) { //gd:EditorDock.set_dock_shortcut
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dock_shortcut, 0|(gdextension.SizeObject<<4), &struct{ shortcut gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dock_shortcut, 0|(gdextension.SizeObject<<4), &struct{ shortcut gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetShortcut(shortcut[0])[0]))})
 }
 func (self class) GetDockShortcut() [1]gdclass.Shortcut { //gd:EditorDock.get_dock_shortcut
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_dock_shortcut, gdextension.SizeObject, &struct{}{})

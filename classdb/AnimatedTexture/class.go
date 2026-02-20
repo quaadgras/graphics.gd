@@ -348,7 +348,7 @@ func (self class) SetFrameTexture(frame_ int64, texture [1]gdclass.Texture2D) { 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame_texture, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		frame_  int64
 		texture gdextension.Object
-	}{frame_, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
+	}{frame_, gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetFrameTexture(frame_ int64) [1]gdclass.Texture2D { //gd:AnimatedTexture.get_frame_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_frame_texture, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ frame_ int64 }{frame_})

@@ -513,7 +513,7 @@ func (self class) SetTexture(group_idx int64, texture [1]gdclass.Texture2D) { //
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		group_idx int64
 		texture   gdextension.Object
-	}{group_idx, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
+	}{group_idx, gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) SetBoneSize(size int64) { //gd:SkeletonProfile.set_bone_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_size, 0|(gdextension.SizeInt<<4), &struct{ size int64 }{size})

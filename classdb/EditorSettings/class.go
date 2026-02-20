@@ -497,7 +497,7 @@ func (self class) AddShortcut(path String.Readable, shortcut [1]gdclass.Shortcut
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_shortcut, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
 		path     gdextension.String
 		shortcut gdextension.Object
-	}{pointers.Get(gd.InternalString(path)), gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0])))})
+	}{pointers.Get(gd.InternalString(path)), gdextension.Object(gdreference.GetObject(gdclass.GetShortcut(shortcut[0])[0]))})
 }
 func (self class) RemoveShortcut(path String.Readable) { //gd:EditorSettings.remove_shortcut
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_shortcut, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
@@ -506,7 +506,7 @@ func (self class) IsShortcut(path String.Readable, event [1]gdclass.InputEvent) 
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shortcut, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
 		path  gdextension.String
 		event gdextension.Object
-	}{pointers.Get(gd.InternalString(path)), gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0])))})
+	}{pointers.Get(gd.InternalString(path)), gdextension.Object(gdreference.GetObject(gdclass.GetInputEvent(event[0])[0]))})
 	var ret = r_ret
 	return ret
 }

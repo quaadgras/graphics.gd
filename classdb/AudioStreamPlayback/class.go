@@ -540,7 +540,7 @@ func (class) _get_parameter(impl func(ptr gdclass.Receiver, name String.Name) va
 }
 
 func (self class) SetSamplePlayback(playback_sample [1]gdclass.AudioSamplePlayback) { //gd:AudioStreamPlayback.set_sample_playback
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sample_playback, 0|(gdextension.SizeObject<<4), &struct{ playback_sample gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetAudioSamplePlayback(playback_sample[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sample_playback, 0|(gdextension.SizeObject<<4), &struct{ playback_sample gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetAudioSamplePlayback(playback_sample[0])[0]))})
 }
 func (self class) GetSamplePlayback() [1]gdclass.AudioSamplePlayback { //gd:AudioStreamPlayback.get_sample_playback
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_sample_playback, gdextension.SizeObject, &struct{}{})

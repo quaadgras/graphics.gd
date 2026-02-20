@@ -264,7 +264,7 @@ func (self class) GetScenario() RID.Any { //gd:World3D.get_scenario
 	return ret
 }
 func (self class) SetEnvironment(env [1]gdclass.Environment) { //gd:World3D.set_environment
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment, 0|(gdextension.SizeObject<<4), &struct{ env gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEnvironment(env[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment, 0|(gdextension.SizeObject<<4), &struct{ env gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEnvironment(env[0])[0]))})
 }
 func (self class) GetEnvironment() [1]gdclass.Environment { //gd:World3D.get_environment
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_environment, gdextension.SizeObject, &struct{}{})
@@ -272,7 +272,7 @@ func (self class) GetEnvironment() [1]gdclass.Environment { //gd:World3D.get_env
 	return ret
 }
 func (self class) SetFallbackEnvironment(env [1]gdclass.Environment) { //gd:World3D.set_fallback_environment
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_environment, 0|(gdextension.SizeObject<<4), &struct{ env gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEnvironment(env[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_environment, 0|(gdextension.SizeObject<<4), &struct{ env gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEnvironment(env[0])[0]))})
 }
 func (self class) GetFallbackEnvironment() [1]gdclass.Environment { //gd:World3D.get_fallback_environment
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_fallback_environment, gdextension.SizeObject, &struct{}{})
@@ -280,7 +280,7 @@ func (self class) GetFallbackEnvironment() [1]gdclass.Environment { //gd:World3D
 	return ret
 }
 func (self class) SetCameraAttributes(attributes [1]gdclass.CameraAttributes) { //gd:World3D.set_camera_attributes
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera_attributes, 0|(gdextension.SizeObject<<4), &struct{ attributes gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCameraAttributes(attributes[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera_attributes, 0|(gdextension.SizeObject<<4), &struct{ attributes gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCameraAttributes(attributes[0])[0]))})
 }
 func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes { //gd:World3D.get_camera_attributes
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_camera_attributes, gdextension.SizeObject, &struct{}{})

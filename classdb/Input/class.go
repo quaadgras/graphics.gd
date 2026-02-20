@@ -964,7 +964,7 @@ func (self class) IsActionJustPressedByEvent(action String.Name, event [1]gdclas
 		action      gdextension.StringName
 		event       gdextension.Object
 		exact_match bool
-	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0]))), exact_match})
+	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gdreference.GetObject(gdclass.GetInputEvent(event[0])[0])), exact_match})
 	var ret = r_ret
 	return ret
 }
@@ -974,7 +974,7 @@ func (self class) IsActionJustReleasedByEvent(action String.Name, event [1]gdcla
 		action      gdextension.StringName
 		event       gdextension.Object
 		exact_match bool
-	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0]))), exact_match})
+	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gdreference.GetObject(gdclass.GetInputEvent(event[0])[0])), exact_match})
 	var ret = r_ret
 	return ret
 }
@@ -1220,11 +1220,11 @@ func (self class) SetCustomMouseCursor(image [1]gdclass.Resource, shape CursorSh
 		image   gdextension.Object
 		shape   CursorShape
 		hotspot Vector2.XY
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetResource(image[0]))), shape, hotspot})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetResource(image[0])[0])), shape, hotspot})
 }
 func (self class) ParseInputEvent(event [1]gdclass.InputEvent) { //gd:Input.parse_input_event
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.parse_input_event, 0|(gdextension.SizeObject<<4), &struct{ event gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.parse_input_event, 0|(gdextension.SizeObject<<4), &struct{ event gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetInputEvent(event[0])[0]))})
 }
 func (self class) SetUseAccumulatedInput(enable bool) { //gd:Input.set_use_accumulated_input
 	once.Do(singleton)

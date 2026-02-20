@@ -341,7 +341,7 @@ func (self Instance) SetBaselineOffset(value Float.X) Instance { //gd:FontVariat
 }
 
 func (self class) SetBaseFont(font [1]gdclass.Font) { //gd:FontVariation.set_base_font
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_font, 0|(gdextension.SizeObject<<4), &struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_font, 0|(gdextension.SizeObject<<4), &struct{ font gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetFont(font[0])[0]))})
 }
 func (self class) GetBaseFont() [1]gdclass.Font { //gd:FontVariation.get_base_font
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_base_font, gdextension.SizeObject, &struct{}{})

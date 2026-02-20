@@ -333,7 +333,7 @@ func (self class) IsFolded() bool { //gd:FoldableContainer.is_folded
 	return ret
 }
 func (self class) SetFoldableGroup(button_group [1]gdclass.FoldableGroup) { //gd:FoldableContainer.set_foldable_group
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_foldable_group, 0|(gdextension.SizeObject<<4), &struct{ button_group gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetFoldableGroup(button_group[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_foldable_group, 0|(gdextension.SizeObject<<4), &struct{ button_group gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetFoldableGroup(button_group[0])[0]))})
 }
 func (self class) GetFoldableGroup() [1]gdclass.FoldableGroup { //gd:FoldableContainer.get_foldable_group
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_foldable_group, gdextension.SizeObject, &struct{}{})
@@ -392,7 +392,7 @@ func (self class) AddTitleBarControl(control [1]gdclass.Control) { //gd:Foldable
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_title_bar_control, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetControl(control[0])[0]))})
 }
 func (self class) RemoveTitleBarControl(control [1]gdclass.Control) { //gd:FoldableContainer.remove_title_bar_control
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_title_bar_control, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_title_bar_control, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetControl(control[0])[0]))})
 }
 
 /*

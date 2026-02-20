@@ -3463,7 +3463,7 @@ func (self class) GetVSizeFlags() SizeFlags { //gd:Control.get_v_size_flags
 	return ret
 }
 func (self class) SetTheme(theme [1]gdclass.Theme) { //gd:Control.set_theme
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_theme, 0|(gdextension.SizeObject<<4), &struct{ theme gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTheme(theme[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_theme, 0|(gdextension.SizeObject<<4), &struct{ theme gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTheme(theme[0])[0]))})
 }
 func (self class) GetTheme() [1]gdclass.Theme { //gd:Control.get_theme
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme, gdextension.SizeObject, &struct{}{})
@@ -3488,19 +3488,19 @@ func (self class) AddThemeIconOverride(name String.Name, texture [1]gdclass.Text
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_icon_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name    gdextension.StringName
 		texture gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) AddThemeStyleboxOverride(name String.Name, stylebox [1]gdclass.StyleBox) { //gd:Control.add_theme_stylebox_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_stylebox_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name     gdextension.StringName
 		stylebox gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetStyleBox(stylebox[0])))})
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gdreference.GetObject(gdclass.GetStyleBox(stylebox[0])[0]))})
 }
 func (self class) AddThemeFontOverride(name String.Name, font [1]gdclass.Font) { //gd:Control.add_theme_font_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_font_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name gdextension.StringName
 		font gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0])))})
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gdreference.GetObject(gdclass.GetFont(font[0])[0]))})
 }
 func (self class) AddThemeFontSizeOverride(name String.Name, font_size int64) { //gd:Control.add_theme_font_size_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_font_size_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), &struct {
@@ -3890,7 +3890,7 @@ func (self class) WarpMouse(position Vector2.XY) { //gd:Control.warp_mouse
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.warp_mouse, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 }
 func (self class) SetShortcutContext(node [1]gdclass.Node) { //gd:Control.set_shortcut_context
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut_context, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut_context, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(node[0])[0]))})
 }
 func (self class) GetShortcutContext() [1]gdclass.Node { //gd:Control.get_shortcut_context
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shortcut_context, gdextension.SizeObject, &struct{}{})

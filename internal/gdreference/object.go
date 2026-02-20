@@ -181,7 +181,9 @@ func EndObject(obj Object) (gdextension.Object, bool) {
 		default:
 		}
 	case TypeUnsafe:
-	case TypePinned, TypeBorrow, TypeStatic:
+	case TypePinned:
+		*obj.sentinel = object{}
+	case TypeBorrow, TypeStatic:
 		return raw, false
 	}
 	return raw, true

@@ -521,7 +521,7 @@ func (self class) AddSurface(primitive Mesh.PrimitiveType, arrays Array.Any, ble
 		material     gdextension.Object
 		name         gdextension.String
 		flags        int64
-	}{primitive, pointers.Get(gd.InternalArray(arrays)), pointers.Get(gd.InternalArray(blend_shapes)), pointers.Get(gd.InternalDictionary(lods)), gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0]))), pointers.Get(gd.InternalString(name)), flags})
+	}{primitive, pointers.Get(gd.InternalArray(arrays)), pointers.Get(gd.InternalArray(blend_shapes)), pointers.Get(gd.InternalDictionary(lods)), gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(material[0])[0])), pointers.Get(gd.InternalString(name)), flags})
 }
 func (self class) GetSurfaceCount() int64 { //gd:ImporterMesh.get_surface_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_surface_count, gdextension.SizeInt, &struct{}{})
@@ -592,7 +592,7 @@ func (self class) SetSurfaceMaterial(surface_idx int64, material [1]gdclass.Mate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_surface_material, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		surface_idx int64
 		material    gdextension.Object
-	}{surface_idx, gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
+	}{surface_idx, gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(material[0])[0]))})
 }
 func (self class) GenerateLods(normal_merge_angle float64, normal_split_angle float64, bone_transform_array Array.Any) { //gd:ImporterMesh.generate_lods
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.generate_lods, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeArray<<12), &struct {
@@ -602,12 +602,12 @@ func (self class) GenerateLods(normal_merge_angle float64, normal_split_angle fl
 	}{normal_merge_angle, normal_split_angle, pointers.Get(gd.InternalArray(bone_transform_array))})
 }
 func (self class) GetMesh(base_mesh [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh { //gd:ImporterMesh.get_mesh
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ base_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetArrayMesh(base_mesh[0])))})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ base_mesh gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetArrayMesh(base_mesh[0])[0]))})
 	var ret = [1]gdclass.ArrayMesh{gdclass.NewArrayMesh(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) FromMesh(mesh [1]gdclass.Mesh) [1]gdclass.ImporterMesh { //gd:ImporterMesh.from_mesh
-	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_mesh, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMesh(mesh[0])))})
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_mesh, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMesh(mesh[0])[0]))})
 	var ret = [1]gdclass.ImporterMesh{gdclass.NewImporterMesh(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

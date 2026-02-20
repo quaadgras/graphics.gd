@@ -258,10 +258,10 @@ func (self class) GetActions() Array.Any { //gd:OpenXRActionSet.get_actions
 	return ret
 }
 func (self class) AddAction(action [1]gdclass.OpenXRAction) { //gd:OpenXRActionSet.add_action
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_action, 0|(gdextension.SizeObject<<4), &struct{ action gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRAction(action[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_action, 0|(gdextension.SizeObject<<4), &struct{ action gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRAction(action[0])[0]))})
 }
 func (self class) RemoveAction(action [1]gdclass.OpenXRAction) { //gd:OpenXRActionSet.remove_action
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_action, 0|(gdextension.SizeObject<<4), &struct{ action gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRAction(action[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_action, 0|(gdextension.SizeObject<<4), &struct{ action gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRAction(action[0])[0]))})
 }
 func (o class) AsOpenXRActionSet() Advanced           { return Advanced(o) }
 func (o Instance) AsOpenXRActionSet() Instance        { return o }

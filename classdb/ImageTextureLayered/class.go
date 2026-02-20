@@ -237,7 +237,7 @@ func (self class) UpdateLayer(image [1]gdclass.Image, layer int64) { //gd:ImageT
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_layer, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		image gdextension.Object
 		layer int64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0]))), layer})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetImage(image[0])[0])), layer})
 }
 func (o class) AsImageTextureLayered() Advanced         { return Advanced(o) }
 func (o Instance) AsImageTextureLayered() Instance      { return o }

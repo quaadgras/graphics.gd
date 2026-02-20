@@ -888,7 +888,7 @@ func (self class) ClearPolygons() { //gd:NavigationMesh.clear_polygons
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_polygons, 0, &struct{}{})
 }
 func (self class) CreateFromMesh(mesh [1]gdclass.Mesh) { //gd:NavigationMesh.create_from_mesh
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_from_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMesh(mesh[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_from_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMesh(mesh[0])[0]))})
 }
 func (self class) Clear() { //gd:NavigationMesh.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})

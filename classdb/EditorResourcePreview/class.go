@@ -223,13 +223,13 @@ func (self class) QueueEditedResourcePreview(resource [1]gdclass.Resource, recei
 		receiver      gdextension.Object
 		receiver_func gdextension.StringName
 		userdata      gdextension.Variant
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetResource(resource[0]))), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(receiver[0])[0])), pointers.Get(gd.InternalStringName(receiver_func)), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetResource(resource[0])[0])), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(receiver[0])[0])), pointers.Get(gd.InternalStringName(receiver_func)), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))})
 }
 func (self class) AddPreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) { //gd:EditorResourcePreview.add_preview_generator
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_preview_generator, 0|(gdextension.SizeObject<<4), &struct{ generator gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorResourcePreviewGenerator(generator[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_preview_generator, 0|(gdextension.SizeObject<<4), &struct{ generator gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorResourcePreviewGenerator(generator[0])[0]))})
 }
 func (self class) RemovePreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) { //gd:EditorResourcePreview.remove_preview_generator
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_preview_generator, 0|(gdextension.SizeObject<<4), &struct{ generator gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorResourcePreviewGenerator(generator[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_preview_generator, 0|(gdextension.SizeObject<<4), &struct{ generator gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorResourcePreviewGenerator(generator[0])[0]))})
 }
 func (self class) CheckForInvalidation(path String.Readable) { //gd:EditorResourcePreview.check_for_invalidation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.check_for_invalidation, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})

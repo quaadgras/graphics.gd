@@ -1008,7 +1008,7 @@ func (self class) AddItem(text String.Readable, icon [1]gdclass.Texture2D, selec
 		text       gdextension.String
 		icon       gdextension.Object
 		selectable bool
-	}{pointers.Get(gd.InternalString(text)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0]))), selectable})
+	}{pointers.Get(gd.InternalString(text)), gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(icon[0])[0])), selectable})
 	var ret = r_ret
 	return ret
 }
@@ -1016,7 +1016,7 @@ func (self class) AddIconItem(icon [1]gdclass.Texture2D, selectable bool) int64 
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_icon_item, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		icon       gdextension.Object
 		selectable bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0]))), selectable})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(icon[0])[0])), selectable})
 	var ret = r_ret
 	return ret
 }
@@ -1035,7 +1035,7 @@ func (self class) SetItemIcon(idx int64, icon [1]gdclass.Texture2D) { //gd:ItemL
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		idx  int64
 		icon gdextension.Object
-	}{idx, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
+	}{idx, gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(icon[0])[0]))})
 }
 func (self class) GetItemIcon(idx int64) [1]gdclass.Texture2D { //gd:ItemList.get_item_icon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_item_icon, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})

@@ -288,7 +288,7 @@ func (self class) CreateFromImage(image [1]gdclass.Image, compression_mode Compr
 		compression_mode CompressionMode
 		normal_map       bool
 		lossy_quality    float64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0]))), compression_mode, normal_map, lossy_quality})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetImage(image[0])[0])), compression_mode, normal_map, lossy_quality})
 }
 func (self class) GetFormat() Image.Format { //gd:PortableCompressedTexture2D.get_format
 	var r_ret = noescape.Call[Image.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})

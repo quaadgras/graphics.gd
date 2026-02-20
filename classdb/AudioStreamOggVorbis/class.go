@@ -296,7 +296,7 @@ func (self class) LoadFromFile(path String.Readable) [1]gdclass.AudioStreamOggVo
 	return ret
 }
 func (self class) SetPacketSequence(packet_sequence [1]gdclass.OggPacketSequence) { //gd:AudioStreamOggVorbis.set_packet_sequence
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_packet_sequence, 0|(gdextension.SizeObject<<4), &struct{ packet_sequence gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOggPacketSequence(packet_sequence[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_packet_sequence, 0|(gdextension.SizeObject<<4), &struct{ packet_sequence gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOggPacketSequence(packet_sequence[0])[0]))})
 }
 func (self class) GetPacketSequence() [1]gdclass.OggPacketSequence { //gd:AudioStreamOggVorbis.get_packet_sequence
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_packet_sequence, gdextension.SizeObject, &struct{}{})

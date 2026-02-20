@@ -175,7 +175,7 @@ func (self Instance) SetTexture(value CurveTexture.Instance) Instance { //gd:Vis
 }
 
 func (self class) SetTexture(texture [1]gdclass.CurveTexture) { //gd:VisualShaderNodeCurveTexture.set_texture
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCurveTexture(texture[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCurveTexture(texture[0])[0]))})
 }
 func (self class) GetTexture() [1]gdclass.CurveTexture { //gd:VisualShaderNodeCurveTexture.get_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})

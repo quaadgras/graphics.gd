@@ -434,7 +434,7 @@ func (self class) GetSkyEnergyMultiplier() float64 { //gd:ProceduralSkyMaterial.
 	return ret
 }
 func (self class) SetSkyCover(sky_cover [1]gdclass.Texture2D) { //gd:ProceduralSkyMaterial.set_sky_cover
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sky_cover, 0|(gdextension.SizeObject<<4), &struct{ sky_cover gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(sky_cover[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sky_cover, 0|(gdextension.SizeObject<<4), &struct{ sky_cover gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(sky_cover[0])[0]))})
 }
 func (self class) GetSkyCover() [1]gdclass.Texture2D { //gd:ProceduralSkyMaterial.get_sky_cover
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_sky_cover, gdextension.SizeObject, &struct{}{})

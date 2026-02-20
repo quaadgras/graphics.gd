@@ -1629,7 +1629,7 @@ func (self Instance) SetOversamplingOverride(value Float.X) Instance { //gd:View
 }
 
 func (self class) SetWorld2d(world_2d [1]gdclass.World2D) { //gd:Viewport.set_world_2d
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_world_2d, 0|(gdextension.SizeObject<<4), &struct{ world_2d gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetWorld2D(world_2d[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_world_2d, 0|(gdextension.SizeObject<<4), &struct{ world_2d gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetWorld2D(world_2d[0])[0]))})
 }
 func (self class) GetWorld2d() [1]gdclass.World2D { //gd:Viewport.get_world_2d
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_world_2d, gdextension.SizeObject, &struct{}{})
@@ -1819,13 +1819,13 @@ func (self class) PushInput(event [1]gdclass.InputEvent, in_local_coords bool) {
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_input, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		event           gdextension.Object
 		in_local_coords bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0]))), in_local_coords})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetInputEvent(event[0])[0])), in_local_coords})
 }
 func (self class) PushUnhandledInput(event [1]gdclass.InputEvent, in_local_coords bool) { //gd:Viewport.push_unhandled_input
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_unhandled_input, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		event           gdextension.Object
 		in_local_coords bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0]))), in_local_coords})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetInputEvent(event[0])[0])), in_local_coords})
 }
 func (self class) NotifyMouseEntered() { //gd:Viewport.notify_mouse_entered
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.notify_mouse_entered, 0, &struct{}{})
@@ -2061,7 +2061,7 @@ func (self class) GetCamera2d() [1]gdclass.Camera2D { //gd:Viewport.get_camera_2
 	return ret
 }
 func (self class) SetWorld3d(world_3d [1]gdclass.World3D) { //gd:Viewport.set_world_3d
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_world_3d, 0|(gdextension.SizeObject<<4), &struct{ world_3d gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetWorld3D(world_3d[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_world_3d, 0|(gdextension.SizeObject<<4), &struct{ world_3d gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetWorld3D(world_3d[0])[0]))})
 }
 func (self class) GetWorld3d() [1]gdclass.World3D { //gd:Viewport.get_world_3d
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_world_3d, gdextension.SizeObject, &struct{}{})
@@ -2172,7 +2172,7 @@ func (self class) GetVrsUpdateMode() VRSUpdateMode { //gd:Viewport.get_vrs_updat
 	return ret
 }
 func (self class) SetVrsTexture(texture [1]gdclass.Texture2D) { //gd:Viewport.set_vrs_texture
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetVrsTexture() [1]gdclass.Texture2D { //gd:Viewport.get_vrs_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_vrs_texture, gdextension.SizeObject, &struct{}{})

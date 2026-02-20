@@ -243,7 +243,7 @@ func (self class) CreateInstance(replace bool, custom_scene [1]gdclass.PackedSce
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_instance, gdextension.SizeObject|(gdextension.SizeBool<<4)|(gdextension.SizeObject<<8), &struct {
 		replace      bool
 		custom_scene gdextension.Object
-	}{replace, gdextension.Object(gd.ObjectChecked(gdclass.GetPackedScene(custom_scene[0])))})
+	}{replace, gdextension.Object(gdreference.GetObject(gdclass.GetPackedScene(custom_scene[0])[0]))})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

@@ -1824,7 +1824,7 @@ func (self class) GetBackground() BGMode { //gd:Environment.get_background
 	return ret
 }
 func (self class) SetSky(sky [1]gdclass.Sky) { //gd:Environment.set_sky
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sky, 0|(gdextension.SizeObject<<4), &struct{ sky gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetSky(sky[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sky, 0|(gdextension.SizeObject<<4), &struct{ sky gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetSky(sky[0])[0]))})
 }
 func (self class) GetSky() [1]gdclass.Sky { //gd:Environment.get_sky
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_sky, gdextension.SizeObject, &struct{}{})
@@ -2315,7 +2315,7 @@ func (self class) GetGlowMapStrength() float64 { //gd:Environment.get_glow_map_s
 	return ret
 }
 func (self class) SetGlowMap(mode [1]gdclass.Texture) { //gd:Environment.set_glow_map
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_glow_map, 0|(gdextension.SizeObject<<4), &struct{ mode gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture(mode[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_glow_map, 0|(gdextension.SizeObject<<4), &struct{ mode gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture(mode[0])[0]))})
 }
 func (self class) GetGlowMap() [1]gdclass.Texture { //gd:Environment.get_glow_map
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_glow_map, gdextension.SizeObject, &struct{}{})
@@ -2563,7 +2563,7 @@ func (self class) GetAdjustmentSaturation() float64 { //gd:Environment.get_adjus
 	return ret
 }
 func (self class) SetAdjustmentColorCorrection(color_correction [1]gdclass.Texture) { //gd:Environment.set_adjustment_color_correction
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_adjustment_color_correction, 0|(gdextension.SizeObject<<4), &struct{ color_correction gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture(color_correction[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_adjustment_color_correction, 0|(gdextension.SizeObject<<4), &struct{ color_correction gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture(color_correction[0])[0]))})
 }
 func (self class) GetAdjustmentColorCorrection() [1]gdclass.Texture { //gd:Environment.get_adjustment_color_correction
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_adjustment_color_correction, gdextension.SizeObject, &struct{}{})

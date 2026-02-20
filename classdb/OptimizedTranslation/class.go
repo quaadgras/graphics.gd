@@ -177,7 +177,7 @@ func New() Instance {
 }
 
 func (self class) Generate(from [1]gdclass.Translation) { //gd:OptimizedTranslation.generate
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.generate, 0|(gdextension.SizeObject<<4), &struct{ from gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTranslation(from[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.generate, 0|(gdextension.SizeObject<<4), &struct{ from gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTranslation(from[0])[0]))})
 }
 func (o class) AsOptimizedTranslation() Advanced            { return Advanced(o) }
 func (o Instance) AsOptimizedTranslation() Instance         { return o }

@@ -531,7 +531,7 @@ func (self class) GetWidth() float64 { //gd:Line2D.get_width
 	return ret
 }
 func (self class) SetCurve(curve [1]gdclass.Curve) { //gd:Line2D.set_curve
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCurve(curve[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCurve(curve[0])[0]))})
 }
 func (self class) GetCurve() [1]gdclass.Curve { //gd:Line2D.get_curve
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve, gdextension.SizeObject, &struct{}{})
@@ -547,7 +547,7 @@ func (self class) GetDefaultColor() Color.RGBA { //gd:Line2D.get_default_color
 	return ret
 }
 func (self class) SetGradient(color [1]gdclass.Gradient) { //gd:Line2D.set_gradient
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gradient, 0|(gdextension.SizeObject<<4), &struct{ color gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetGradient(color[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gradient, 0|(gdextension.SizeObject<<4), &struct{ color gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetGradient(color[0])[0]))})
 }
 func (self class) GetGradient() [1]gdclass.Gradient { //gd:Line2D.get_gradient
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_gradient, gdextension.SizeObject, &struct{}{})
@@ -555,7 +555,7 @@ func (self class) GetGradient() [1]gdclass.Gradient { //gd:Line2D.get_gradient
 	return ret
 }
 func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:Line2D.set_texture
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:Line2D.get_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})

@@ -703,7 +703,7 @@ func (self class) GetTranspose() bool { //gd:TileData.get_transpose
 	return ret
 }
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:TileData.set_material
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(material[0])[0]))})
 }
 func (self class) GetMaterial() [1]gdclass.Material { //gd:TileData.get_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
@@ -767,7 +767,7 @@ func (self class) SetOccluderPolygon(layer_id int64, polygon_index int64, polygo
 		layer_id      int64
 		polygon_index int64
 		polygon       gdextension.Object
-	}{layer_id, polygon_index, gdextension.Object(gd.ObjectChecked(gdclass.GetOccluderPolygon2D(polygon[0])))})
+	}{layer_id, polygon_index, gdextension.Object(gdreference.GetObject(gdclass.GetOccluderPolygon2D(polygon[0])[0]))})
 }
 func (self class) GetOccluderPolygon(layer_id int64, polygon_index int64, flip_h bool, flip_v bool, transpose bool) [1]gdclass.OccluderPolygon2D { //gd:TileData.get_occluder_polygon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_occluder_polygon, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), &struct {
@@ -784,7 +784,7 @@ func (self class) SetOccluder(layer_id int64, occluder_polygon [1]gdclass.Occlud
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occluder, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		layer_id         int64
 		occluder_polygon gdextension.Object
-	}{layer_id, gdextension.Object(gd.ObjectChecked(gdclass.GetOccluderPolygon2D(occluder_polygon[0])))})
+	}{layer_id, gdextension.Object(gdreference.GetObject(gdclass.GetOccluderPolygon2D(occluder_polygon[0])[0]))})
 }
 func (self class) GetOccluder(layer_id int64, flip_h bool, flip_v bool, transpose bool) [1]gdclass.OccluderPolygon2D { //gd:TileData.get_occluder
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_occluder, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
@@ -919,7 +919,7 @@ func (self class) SetNavigationPolygon(layer_id int64, navigation_polygon [1]gdc
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_polygon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		layer_id           int64
 		navigation_polygon gdextension.Object
-	}{layer_id, gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationPolygon(navigation_polygon[0])))})
+	}{layer_id, gdextension.Object(gdreference.GetObject(gdclass.GetNavigationPolygon(navigation_polygon[0])[0]))})
 }
 func (self class) GetNavigationPolygon(layer_id int64, flip_h bool, flip_v bool, transpose bool) [1]gdclass.NavigationPolygon { //gd:TileData.get_navigation_polygon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_navigation_polygon, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {

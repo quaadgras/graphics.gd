@@ -5468,7 +5468,7 @@ func SetRenderLoopEnabled(value bool) { //gd:RenderingServer.render_loop_enabled
 
 func (self class) Texture2dCreate(image [1]gdclass.Image) RID.Any { //gd:RenderingServer.texture_2d_create
 	once.Do(singleton)
-	var r_ret = noescape.Call[RID.Any](gdreference.GetObject(self.AsObject()[0]), methods.texture_2d_create, gdextension.SizeRID|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0])))})
+	var r_ret = noescape.Call[RID.Any](gdreference.GetObject(self.AsObject()[0]), methods.texture_2d_create, gdextension.SizeRID|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetImage(image[0])[0]))})
 	var ret = r_ret
 	return ret
 }
@@ -5521,7 +5521,7 @@ func (self class) Texture2dUpdate(texture RID.Any, image [1]gdclass.Image, layer
 		texture RID.Any
 		image   gdextension.Object
 		layer   int64
-	}{texture, gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0]))), layer})
+	}{texture, gdextension.Object(gdreference.GetObject(gdclass.GetImage(image[0])[0])), layer})
 }
 func (self class) Texture3dUpdate(texture RID.Any, data Array.Contains[[1]gdclass.Image]) { //gd:RenderingServer.texture_3d_update
 	once.Do(singleton)
@@ -9209,7 +9209,7 @@ func (self class) SetBootImageWithStretch(image [1]gdclass.Image, color Color.RG
 		color        Color.RGBA
 		stretch_mode SplashStretchMode
 		use_filter   bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0]))), color, stretch_mode, use_filter})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetImage(image[0])[0])), color, stretch_mode, use_filter})
 }
 func (self class) SetBootImage(image [1]gdclass.Image, color Color.RGBA, scale bool, use_filter bool) { //gd:RenderingServer.set_boot_image
 	once.Do(singleton)
@@ -9218,7 +9218,7 @@ func (self class) SetBootImage(image [1]gdclass.Image, color Color.RGBA, scale b
 		color      Color.RGBA
 		scale      bool
 		use_filter bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0]))), color, scale, use_filter})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetImage(image[0])[0])), color, scale, use_filter})
 }
 func (self class) GetDefaultClearColor() Color.RGBA { //gd:RenderingServer.get_default_clear_color
 	once.Do(singleton)

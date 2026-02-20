@@ -695,7 +695,7 @@ func (self class) SetSlot(slot_index int64, enable_left_port bool, type_left int
 		custom_icon_left  gdextension.Object
 		custom_icon_right gdextension.Object
 		draw_stylebox     bool
-	}{slot_index, enable_left_port, type_left, color_left, enable_right_port, type_right, color_right, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(custom_icon_left[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(custom_icon_right[0]))), draw_stylebox})
+	}{slot_index, enable_left_port, type_left, color_left, enable_right_port, type_right, color_right, gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(custom_icon_left[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(custom_icon_right[0])[0])), draw_stylebox})
 }
 func (self class) ClearSlot(slot_index int64) { //gd:GraphNode.clear_slot
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_slot, 0|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
@@ -740,7 +740,7 @@ func (self class) SetSlotCustomIconLeft(slot_index int64, custom_icon [1]gdclass
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_custom_icon_left, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		slot_index  int64
 		custom_icon gdextension.Object
-	}{slot_index, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(custom_icon[0])))})
+	}{slot_index, gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(custom_icon[0])[0]))})
 }
 func (self class) GetSlotCustomIconLeft(slot_index int64) [1]gdclass.Texture2D { //gd:GraphNode.get_slot_custom_icon_left
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_slot_custom_icon_left, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
@@ -795,7 +795,7 @@ func (self class) SetSlotCustomIconRight(slot_index int64, custom_icon [1]gdclas
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_custom_icon_right, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		slot_index  int64
 		custom_icon gdextension.Object
-	}{slot_index, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(custom_icon[0])))})
+	}{slot_index, gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(custom_icon[0])[0]))})
 }
 func (self class) GetSlotCustomIconRight(slot_index int64) [1]gdclass.Texture2D { //gd:GraphNode.get_slot_custom_icon_right
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_slot_custom_icon_right, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})

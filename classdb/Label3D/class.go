@@ -794,7 +794,7 @@ func (self class) GetOutlineRenderPriority() int64 { //gd:Label3D.get_outline_re
 	return ret
 }
 func (self class) SetFont(font [1]gdclass.Font) { //gd:Label3D.set_font
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_font, 0|(gdextension.SizeObject<<4), &struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_font, 0|(gdextension.SizeObject<<4), &struct{ font gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetFont(font[0])[0]))})
 }
 func (self class) GetFont() [1]gdclass.Font { //gd:Label3D.get_font
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_font, gdextension.SizeObject, &struct{}{})

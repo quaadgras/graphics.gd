@@ -700,7 +700,7 @@ func (self class) GetCollisionPriority() float64 { //gd:GridMap.get_collision_pr
 	return ret
 }
 func (self class) SetPhysicsMaterial(material [1]gdclass.PhysicsMaterial) { //gd:GridMap.set_physics_material
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsMaterial(material[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetPhysicsMaterial(material[0])[0]))})
 }
 func (self class) GetPhysicsMaterial() [1]gdclass.PhysicsMaterial { //gd:GridMap.get_physics_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_physics_material, gdextension.SizeObject, &struct{}{})
@@ -724,7 +724,7 @@ func (self class) GetNavigationMap() RID.Any { //gd:GridMap.get_navigation_map
 	return ret
 }
 func (self class) SetMeshLibrary(mesh_library [1]gdclass.MeshLibrary) { //gd:GridMap.set_mesh_library
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh_library, 0|(gdextension.SizeObject<<4), &struct{ mesh_library gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMeshLibrary(mesh_library[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh_library, 0|(gdextension.SizeObject<<4), &struct{ mesh_library gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMeshLibrary(mesh_library[0])[0]))})
 }
 func (self class) GetMeshLibrary() [1]gdclass.MeshLibrary { //gd:GridMap.get_mesh_library
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh_library, gdextension.SizeObject, &struct{}{})
@@ -798,7 +798,7 @@ func (self class) MapToLocal(map_position Vector3i.XYZ) Vector3.XYZ { //gd:GridM
 	return ret
 }
 func (self class) ResourceChanged(resource [1]gdclass.Resource) { //gd:GridMap.resource_changed
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resource_changed, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetResource(resource[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resource_changed, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetResource(resource[0])[0]))})
 }
 func (self class) SetCenterX(enable bool) { //gd:GridMap.set_center_x
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_center_x, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})

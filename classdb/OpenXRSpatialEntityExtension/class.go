@@ -471,7 +471,7 @@ func (self class) CreateSpatialContext(capability_configurations Array.Contains[
 		capability_configurations gdextension.Array
 		next                      gdextension.Object
 		user_callback             gdextension.Callable
-	}{pointers.Get(gd.InternalArray(capability_configurations)), gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRStructureBase(next[0]))), pointers.Get(gd.InternalCallable(user_callback))})
+	}{pointers.Get(gd.InternalArray(capability_configurations)), gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRStructureBase(next[0])[0])), pointers.Get(gd.InternalCallable(user_callback))})
 	var ret = [1]gdclass.OpenXRFutureResult{gdclass.NewOpenXRFutureResult(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -494,7 +494,7 @@ func (self class) DiscoverSpatialEntities(spatial_context RID.Any, component_typ
 		component_types gdextension.PackedArray[int64]
 		next            gdextension.Object
 		user_callback   gdextension.Callable
-	}{spatial_context, pointers.Get(gd.InternalPacked[gd.PackedInt64Array, int64](component_types)), gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRStructureBase(next[0]))), pointers.Get(gd.InternalCallable(user_callback))})
+	}{spatial_context, pointers.Get(gd.InternalPacked[gd.PackedInt64Array, int64](component_types)), gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRStructureBase(next[0])[0])), pointers.Get(gd.InternalCallable(user_callback))})
 	var ret = [1]gdclass.OpenXRFutureResult{gdclass.NewOpenXRFutureResult(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -504,7 +504,7 @@ func (self class) UpdateSpatialEntities(spatial_context RID.Any, entities Array.
 		entities        gdextension.Array
 		component_types gdextension.PackedArray[int64]
 		next            gdextension.Object
-	}{spatial_context, pointers.Get(gd.InternalArray(entities)), pointers.Get(gd.InternalPacked[gd.PackedInt64Array, int64](component_types)), gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRStructureBase(next[0])))})
+	}{spatial_context, pointers.Get(gd.InternalArray(entities)), pointers.Get(gd.InternalPacked[gd.PackedInt64Array, int64](component_types)), gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRStructureBase(next[0])[0]))})
 	var ret = r_ret
 	return ret
 }
@@ -526,7 +526,7 @@ func (self class) QuerySnapshot(spatial_snapshot RID.Any, component_data Array.C
 		spatial_snapshot RID.Any
 		component_data   gdextension.Array
 		next             gdextension.Object
-	}{spatial_snapshot, pointers.Get(gd.InternalArray(component_data)), gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRStructureBase(next[0])))})
+	}{spatial_snapshot, pointers.Get(gd.InternalArray(component_data)), gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRStructureBase(next[0])[0]))})
 	var ret = r_ret
 	return ret
 }

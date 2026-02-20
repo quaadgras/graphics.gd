@@ -264,7 +264,7 @@ func (self class) FitChildInRect(child [1]gdclass.Control, rect Rect2.PositionSi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.fit_child_in_rect, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2<<8), &struct {
 		child gdextension.Object
 		rect  Rect2.PositionSize
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(child[0]))), rect})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetControl(child[0])[0])), rect})
 }
 
 /*

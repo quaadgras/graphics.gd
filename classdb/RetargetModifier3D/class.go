@@ -292,7 +292,7 @@ func (self Instance) SetEnable(value TransformFlag) Instance { //gd:RetargetModi
 }
 
 func (self class) SetProfile(profile [1]gdclass.SkeletonProfile) { //gd:RetargetModifier3D.set_profile
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_profile, 0|(gdextension.SizeObject<<4), &struct{ profile gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetSkeletonProfile(profile[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_profile, 0|(gdextension.SizeObject<<4), &struct{ profile gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetSkeletonProfile(profile[0])[0]))})
 }
 func (self class) GetProfile() [1]gdclass.SkeletonProfile { //gd:RetargetModifier3D.get_profile
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_profile, gdextension.SizeObject, &struct{}{})

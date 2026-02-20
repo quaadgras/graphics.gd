@@ -302,7 +302,7 @@ func (self class) ClearUsers() { //gd:LightmapGIData.clear_users
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_users, 0, &struct{}{})
 }
 func (self class) SetLightTexture(light_texture [1]gdclass.TextureLayered) { //gd:LightmapGIData.set_light_texture
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_light_texture, 0|(gdextension.SizeObject<<4), &struct{ light_texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTextureLayered(light_texture[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_light_texture, 0|(gdextension.SizeObject<<4), &struct{ light_texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTextureLayered(light_texture[0])[0]))})
 }
 func (self class) GetLightTexture() [1]gdclass.TextureLayered { //gd:LightmapGIData.get_light_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_light_texture, gdextension.SizeObject, &struct{}{})

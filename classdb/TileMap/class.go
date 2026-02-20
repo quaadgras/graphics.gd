@@ -1199,7 +1199,7 @@ func (self class) ForceUpdate(layer int64) { //gd:TileMap.force_update
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_update, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 }
 func (self class) SetTileset(tileset [1]gdclass.TileSet) { //gd:TileMap.set_tileset
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tileset, 0|(gdextension.SizeObject<<4), &struct{ tileset gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTileSet(tileset[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tileset, 0|(gdextension.SizeObject<<4), &struct{ tileset gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTileSet(tileset[0])[0]))})
 }
 func (self class) GetTileset() [1]gdclass.TileSet { //gd:TileMap.get_tileset
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tileset, gdextension.SizeObject, &struct{}{})
@@ -1444,7 +1444,7 @@ func (self class) MapPattern(position_in_tilemap Vector2i.XY, coords_in_pattern 
 		position_in_tilemap Vector2i.XY
 		coords_in_pattern   Vector2i.XY
 		pattern             gdextension.Object
-	}{position_in_tilemap, coords_in_pattern, gdextension.Object(gd.ObjectChecked(gdclass.GetTileMapPattern(pattern[0])))})
+	}{position_in_tilemap, coords_in_pattern, gdextension.Object(gdreference.GetObject(gdclass.GetTileMapPattern(pattern[0])[0]))})
 	var ret = r_ret
 	return ret
 }
@@ -1453,7 +1453,7 @@ func (self class) SetPattern(layer int64, position Vector2i.XY, pattern [1]gdcla
 		layer    int64
 		position Vector2i.XY
 		pattern  gdextension.Object
-	}{layer, position, gdextension.Object(gd.ObjectChecked(gdclass.GetTileMapPattern(pattern[0])))})
+	}{layer, position, gdextension.Object(gdreference.GetObject(gdclass.GetTileMapPattern(pattern[0])[0]))})
 }
 func (self class) SetCellsTerrainConnect(layer int64, cells Array.Contains[Vector2i.XY], terrain_set int64, terrain int64, ignore_empty_terrains bool) { //gd:TileMap.set_cells_terrain_connect
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cells_terrain_connect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20), &struct {

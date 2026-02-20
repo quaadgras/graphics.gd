@@ -422,11 +422,11 @@ func (self class) AddResourceFormatLoader(format_loader [1]gdclass.ResourceForma
 	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.add_resource_format_loader, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		format_loader gdextension.Object
 		at_front      bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetResourceFormatLoader(format_loader[0]))), at_front})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetResourceFormatLoader(format_loader[0])[0])), at_front})
 }
 func (self class) RemoveResourceFormatLoader(format_loader [1]gdclass.ResourceFormatLoader) { //gd:ResourceLoader.remove_resource_format_loader
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.remove_resource_format_loader, 0|(gdextension.SizeObject<<4), &struct{ format_loader gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetResourceFormatLoader(format_loader[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.remove_resource_format_loader, 0|(gdextension.SizeObject<<4), &struct{ format_loader gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetResourceFormatLoader(format_loader[0])[0]))})
 }
 func (self class) SetAbortOnMissingResources(abort bool) { //gd:ResourceLoader.set_abort_on_missing_resources
 	once.Do(singleton)

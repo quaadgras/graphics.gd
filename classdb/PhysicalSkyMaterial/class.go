@@ -427,7 +427,7 @@ func (self class) GetUseDebanding() bool { //gd:PhysicalSkyMaterial.get_use_deba
 	return ret
 }
 func (self class) SetNightSky(night_sky [1]gdclass.Texture2D) { //gd:PhysicalSkyMaterial.set_night_sky
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_night_sky, 0|(gdextension.SizeObject<<4), &struct{ night_sky gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(night_sky[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_night_sky, 0|(gdextension.SizeObject<<4), &struct{ night_sky gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(night_sky[0])[0]))})
 }
 func (self class) GetNightSky() [1]gdclass.Texture2D { //gd:PhysicalSkyMaterial.get_night_sky
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_night_sky, gdextension.SizeObject, &struct{}{})

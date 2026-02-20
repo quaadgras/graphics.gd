@@ -278,7 +278,7 @@ func (self class) GetSkeleton() RID.Any { //gd:Skeleton2D.get_skeleton
 	return ret
 }
 func (self class) SetModificationStack(modification_stack [1]gdclass.SkeletonModificationStack2D) { //gd:Skeleton2D.set_modification_stack
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modification_stack, 0|(gdextension.SizeObject<<4), &struct{ modification_stack gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetSkeletonModificationStack2D(modification_stack[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modification_stack, 0|(gdextension.SizeObject<<4), &struct{ modification_stack gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetSkeletonModificationStack2D(modification_stack[0])[0]))})
 }
 func (self class) GetModificationStack() [1]gdclass.SkeletonModificationStack2D { //gd:Skeleton2D.get_modification_stack
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_modification_stack, gdextension.SizeObject, &struct{}{})

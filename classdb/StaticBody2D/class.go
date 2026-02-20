@@ -237,7 +237,7 @@ func (self class) GetConstantAngularVelocity() float64 { //gd:StaticBody2D.get_c
 	return ret
 }
 func (self class) SetPhysicsMaterialOverride(physics_material_override [1]gdclass.PhysicsMaterial) { //gd:StaticBody2D.set_physics_material_override
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_material_override, 0|(gdextension.SizeObject<<4), &struct{ physics_material_override gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsMaterial(physics_material_override[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_material_override, 0|(gdextension.SizeObject<<4), &struct{ physics_material_override gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetPhysicsMaterial(physics_material_override[0])[0]))})
 }
 func (self class) GetPhysicsMaterialOverride() [1]gdclass.PhysicsMaterial { //gd:StaticBody2D.get_physics_material_override
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_physics_material_override, gdextension.SizeObject, &struct{}{})

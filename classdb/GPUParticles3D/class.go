@@ -809,7 +809,7 @@ func (self class) SetInterpolate(enable bool) { //gd:GPUParticles3D.set_interpol
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interpolate, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) SetProcessMaterial(material [1]gdclass.Material) { //gd:GPUParticles3D.set_process_material
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(material[0])[0]))})
 }
 func (self class) SetSpeedScale(scale float64) { //gd:GPUParticles3D.set_speed_scale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, 0|(gdextension.SizeFloat<<4), &struct{ scale float64 }{scale})
@@ -931,7 +931,7 @@ func (self class) SetDrawPassMesh(pass int64, mesh [1]gdclass.Mesh) { //gd:GPUPa
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_pass_mesh, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		pass int64
 		mesh gdextension.Object
-	}{pass, gdextension.Object(gd.ObjectChecked(gdclass.GetMesh(mesh[0])))})
+	}{pass, gdextension.Object(gdreference.GetObject(gdclass.GetMesh(mesh[0])[0]))})
 }
 func (self class) GetDrawPasses() int64 { //gd:GPUParticles3D.get_draw_passes
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_draw_passes, gdextension.SizeInt, &struct{}{})
@@ -944,7 +944,7 @@ func (self class) GetDrawPassMesh(pass int64) [1]gdclass.Mesh { //gd:GPUParticle
 	return ret
 }
 func (self class) SetSkin(skin [1]gdclass.Skin) { //gd:GPUParticles3D.set_skin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin, 0|(gdextension.SizeObject<<4), &struct{ skin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetSkin(skin[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin, 0|(gdextension.SizeObject<<4), &struct{ skin gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetSkin(skin[0])[0]))})
 }
 func (self class) GetSkin() [1]gdclass.Skin { //gd:GPUParticles3D.get_skin
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skin, gdextension.SizeObject, &struct{}{})
@@ -1001,7 +1001,7 @@ func (self class) GetTransformAlign() TransformAlign { //gd:GPUParticles3D.get_t
 	return ret
 }
 func (self class) ConvertFromParticles(particles [1]gdclass.Node) { //gd:GPUParticles3D.convert_from_particles
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.convert_from_particles, 0|(gdextension.SizeObject<<4), &struct{ particles gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(particles[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.convert_from_particles, 0|(gdextension.SizeObject<<4), &struct{ particles gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(particles[0])[0]))})
 }
 func (self class) SetAmountRatio(ratio float64) { //gd:GPUParticles3D.set_amount_ratio
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_amount_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})

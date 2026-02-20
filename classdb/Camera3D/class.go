@@ -821,7 +821,7 @@ func (self class) GetCullMask() int64 { //gd:Camera3D.get_cull_mask
 	return ret
 }
 func (self class) SetEnvironment(env [1]gdclass.Environment) { //gd:Camera3D.set_environment
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment, 0|(gdextension.SizeObject<<4), &struct{ env gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEnvironment(env[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment, 0|(gdextension.SizeObject<<4), &struct{ env gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEnvironment(env[0])[0]))})
 }
 func (self class) GetEnvironment() [1]gdclass.Environment { //gd:Camera3D.get_environment
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_environment, gdextension.SizeObject, &struct{}{})
@@ -829,7 +829,7 @@ func (self class) GetEnvironment() [1]gdclass.Environment { //gd:Camera3D.get_en
 	return ret
 }
 func (self class) SetAttributes(env [1]gdclass.CameraAttributes) { //gd:Camera3D.set_attributes
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_attributes, 0|(gdextension.SizeObject<<4), &struct{ env gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCameraAttributes(env[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_attributes, 0|(gdextension.SizeObject<<4), &struct{ env gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCameraAttributes(env[0])[0]))})
 }
 func (self class) GetAttributes() [1]gdclass.CameraAttributes { //gd:Camera3D.get_attributes
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_attributes, gdextension.SizeObject, &struct{}{})
@@ -837,7 +837,7 @@ func (self class) GetAttributes() [1]gdclass.CameraAttributes { //gd:Camera3D.ge
 	return ret
 }
 func (self class) SetCompositor(compositor [1]gdclass.Compositor) { //gd:Camera3D.set_compositor
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_compositor, 0|(gdextension.SizeObject<<4), &struct{ compositor gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCompositor(compositor[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_compositor, 0|(gdextension.SizeObject<<4), &struct{ compositor gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCompositor(compositor[0])[0]))})
 }
 func (self class) GetCompositor() [1]gdclass.Compositor { //gd:Camera3D.get_compositor
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_compositor, gdextension.SizeObject, &struct{}{})

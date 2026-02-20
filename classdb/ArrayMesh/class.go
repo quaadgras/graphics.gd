@@ -598,7 +598,7 @@ func (self class) GetCustomAabb() AABB.PositionSize { //gd:ArrayMesh.get_custom_
 	return ret
 }
 func (self class) SetShadowMesh(mesh [1]gdclass.ArrayMesh) { //gd:ArrayMesh.set_shadow_mesh
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetArrayMesh(mesh[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetArrayMesh(mesh[0])[0]))})
 }
 func (self class) GetShadowMesh() [1]gdclass.ArrayMesh { //gd:ArrayMesh.get_shadow_mesh
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shadow_mesh, gdextension.SizeObject, &struct{}{})

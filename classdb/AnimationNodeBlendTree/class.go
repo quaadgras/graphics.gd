@@ -290,7 +290,7 @@ func (self class) AddNode(name String.Name, node [1]gdclass.AnimationNode, posit
 		name     gdextension.StringName
 		node     gdextension.Object
 		position Vector2.XY
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetAnimationNode(node[0]))), position})
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gdreference.GetObject(gdclass.GetAnimationNode(node[0])[0])), position})
 }
 func (self class) GetNode(name String.Name) [1]gdclass.AnimationNode { //gd:AnimationNodeBlendTree.get_node
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_node, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})

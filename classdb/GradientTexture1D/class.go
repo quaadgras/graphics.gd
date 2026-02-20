@@ -211,7 +211,7 @@ func (self Instance) SetUseHdr(value bool) Instance { //gd:GradientTexture1D.use
 }
 
 func (self class) SetGradient(gradient [1]gdclass.Gradient) { //gd:GradientTexture1D.set_gradient
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gradient, 0|(gdextension.SizeObject<<4), &struct{ gradient gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetGradient(gradient[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gradient, 0|(gdextension.SizeObject<<4), &struct{ gradient gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetGradient(gradient[0])[0]))})
 }
 func (self class) GetGradient() [1]gdclass.Gradient { //gd:GradientTexture1D.get_gradient
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_gradient, gdextension.SizeObject, &struct{}{})

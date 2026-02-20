@@ -659,7 +659,7 @@ func (self class) TweenProperty(obj [1]gd.Object, property Path.ToNode, final_va
 		property  gdextension.NodePath
 		final_val gdextension.Variant
 		duration  float64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0]))), pointers.Get(gd.InternalNodePath(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(final_val))), duration})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetObject(obj[0])[0])), pointers.Get(gd.InternalNodePath(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(final_val))), duration})
 	var ret = [1]gdclass.PropertyTweener{gdclass.NewPropertyTweener(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -684,7 +684,7 @@ func (self class) TweenMethod(method Callable.Function, from variant.Any, to var
 	return ret
 }
 func (self class) TweenSubtween(subtween [1]gdclass.Tween) [1]gdclass.SubtweenTweener { //gd:Tween.tween_subtween
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.tween_subtween, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ subtween gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTween(subtween[0])))})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.tween_subtween, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ subtween gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTween(subtween[0])[0]))})
 	var ret = [1]gdclass.SubtweenTweener{gdclass.NewSubtweenTweener(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -721,7 +721,7 @@ func (self class) IsValid() bool { //gd:Tween.is_valid
 	return ret
 }
 func (self class) BindNode(node [1]gdclass.Node) [1]gdclass.Tween { //gd:Tween.bind_node
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bind_node, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bind_node, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(node[0])[0]))})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

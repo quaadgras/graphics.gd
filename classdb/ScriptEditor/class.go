@@ -324,10 +324,10 @@ func (self class) GetBreakpoints() Packed.Strings { //gd:ScriptEditor.get_breakp
 	return ret
 }
 func (self class) RegisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditor.register_syntax_highlighter
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_syntax_highlighter, 0|(gdextension.SizeObject<<4), &struct{ syntax_highlighter gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorSyntaxHighlighter(syntax_highlighter[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_syntax_highlighter, 0|(gdextension.SizeObject<<4), &struct{ syntax_highlighter gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorSyntaxHighlighter(syntax_highlighter[0])[0]))})
 }
 func (self class) UnregisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditor.unregister_syntax_highlighter
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_syntax_highlighter, 0|(gdextension.SizeObject<<4), &struct{ syntax_highlighter gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorSyntaxHighlighter(syntax_highlighter[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_syntax_highlighter, 0|(gdextension.SizeObject<<4), &struct{ syntax_highlighter gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorSyntaxHighlighter(syntax_highlighter[0])[0]))})
 }
 func (self class) GotoLine(line_number int64) { //gd:ScriptEditor.goto_line
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.goto_line, 0|(gdextension.SizeInt<<4), &struct{ line_number int64 }{line_number})
@@ -352,10 +352,10 @@ func (self class) GotoHelp(topic String.Readable) { //gd:ScriptEditor.goto_help
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.goto_help, 0|(gdextension.SizeString<<4), &struct{ topic gdextension.String }{pointers.Get(gd.InternalString(topic))})
 }
 func (self class) UpdateDocsFromScript(script [1]gdclass.Script) { //gd:ScriptEditor.update_docs_from_script
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_docs_from_script, 0|(gdextension.SizeObject<<4), &struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetScript(script[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_docs_from_script, 0|(gdextension.SizeObject<<4), &struct{ script gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetScript(script[0])[0]))})
 }
 func (self class) ClearDocsFromScript(script [1]gdclass.Script) { //gd:ScriptEditor.clear_docs_from_script
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_docs_from_script, 0|(gdextension.SizeObject<<4), &struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetScript(script[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_docs_from_script, 0|(gdextension.SizeObject<<4), &struct{ script gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetScript(script[0])[0]))})
 }
 
 /*

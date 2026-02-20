@@ -465,12 +465,12 @@ func (self class) ConnectToHost(host String.Readable, port int64, tls_options [1
 		host        gdextension.String
 		port        int64
 		tls_options gdextension.Object
-	}{pointers.Get(gd.InternalString(host)), port, gdextension.Object(gd.ObjectChecked(gdclass.GetTLSOptions(tls_options[0])))})
+	}{pointers.Get(gd.InternalString(host)), port, gdextension.Object(gdreference.GetObject(gdclass.GetTLSOptions(tls_options[0])[0]))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
 func (self class) SetConnection(connection [1]gdclass.StreamPeer) { //gd:HTTPClient.set_connection
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_connection, 0|(gdextension.SizeObject<<4), &struct{ connection gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetStreamPeer(connection[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_connection, 0|(gdextension.SizeObject<<4), &struct{ connection gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetStreamPeer(connection[0])[0]))})
 }
 func (self class) GetConnection() [1]gdclass.StreamPeer { //gd:HTTPClient.get_connection
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_connection, gdextension.SizeObject, &struct{}{})

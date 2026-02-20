@@ -319,7 +319,7 @@ func (self class) CreateFromImageAlpha(image [1]gdclass.Image, threshold float64
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_from_image_alpha, 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8), &struct {
 		image     gdextension.Object
 		threshold float64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0]))), threshold})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetImage(image[0])[0])), threshold})
 }
 func (self class) SetBitv(position Vector2i.XY, bit bool) { //gd:BitMap.set_bitv
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bitv, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeBool<<8), &struct {

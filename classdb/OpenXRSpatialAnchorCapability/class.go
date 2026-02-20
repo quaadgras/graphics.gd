@@ -358,14 +358,14 @@ func (self class) CreateNewAnchor(transform Transform3D.BasisOrigin, spatial_con
 	return ret
 }
 func (self class) RemoveAnchor(anchor_tracker [1]gdclass.OpenXRAnchorTracker) { //gd:OpenXRSpatialAnchorCapability.remove_anchor
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_anchor, 0|(gdextension.SizeObject<<4), &struct{ anchor_tracker gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRAnchorTracker(anchor_tracker[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_anchor, 0|(gdextension.SizeObject<<4), &struct{ anchor_tracker gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRAnchorTracker(anchor_tracker[0])[0]))})
 }
 func (self class) PersistAnchor(anchor_tracker [1]gdclass.OpenXRAnchorTracker, persistence_context RID.Any, user_callback Callable.Function) [1]gdclass.OpenXRFutureResult { //gd:OpenXRSpatialAnchorCapability.persist_anchor
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.persist_anchor, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeCallable<<12), &struct {
 		anchor_tracker      gdextension.Object
 		persistence_context RID.Any
 		user_callback       gdextension.Callable
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRAnchorTracker(anchor_tracker[0]))), persistence_context, pointers.Get(gd.InternalCallable(user_callback))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRAnchorTracker(anchor_tracker[0])[0])), persistence_context, pointers.Get(gd.InternalCallable(user_callback))})
 	var ret = [1]gdclass.OpenXRFutureResult{gdclass.NewOpenXRFutureResult(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -374,7 +374,7 @@ func (self class) UnpersistAnchor(anchor_tracker [1]gdclass.OpenXRAnchorTracker,
 		anchor_tracker      gdextension.Object
 		persistence_context RID.Any
 		user_callback       gdextension.Callable
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRAnchorTracker(anchor_tracker[0]))), persistence_context, pointers.Get(gd.InternalCallable(user_callback))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRAnchorTracker(anchor_tracker[0])[0])), persistence_context, pointers.Get(gd.InternalCallable(user_callback))})
 	var ret = [1]gdclass.OpenXRFutureResult{gdclass.NewOpenXRFutureResult(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

@@ -546,11 +546,11 @@ func (self class) TranslatePlural(message String.Name, plural_message String.Nam
 }
 func (self class) AddTranslation(translation [1]gdclass.Translation) { //gd:TranslationServer.add_translation
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.add_translation, 0|(gdextension.SizeObject<<4), &struct{ translation gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTranslation(translation[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.add_translation, 0|(gdextension.SizeObject<<4), &struct{ translation gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTranslation(translation[0])[0]))})
 }
 func (self class) RemoveTranslation(translation [1]gdclass.Translation) { //gd:TranslationServer.remove_translation
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.remove_translation, 0|(gdextension.SizeObject<<4), &struct{ translation gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTranslation(translation[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.remove_translation, 0|(gdextension.SizeObject<<4), &struct{ translation gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTranslation(translation[0])[0]))})
 }
 func (self class) GetTranslationObject(locale String.Readable) [1]gdclass.Translation { //gd:TranslationServer.get_translation_object
 	once.Do(singleton)
@@ -584,7 +584,7 @@ func (self class) HasTranslationForLocale(locale String.Readable, exact bool) bo
 }
 func (self class) HasTranslation(translation [1]gdclass.Translation) bool { //gd:TranslationServer.has_translation
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.has_translation, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ translation gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTranslation(translation[0])))})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.has_translation, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ translation gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTranslation(translation[0])[0]))})
 	var ret = r_ret
 	return ret
 }

@@ -357,7 +357,7 @@ func (self class) RegisterProfiler(name String.Name, profiler [1]gdclass.EngineP
 	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.register_profiler, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name     gdextension.StringName
 		profiler gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetEngineProfiler(profiler[0])))})
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gdreference.GetObject(gdclass.GetEngineProfiler(profiler[0])[0]))})
 }
 func (self class) UnregisterProfiler(name String.Name) { //gd:EngineDebugger.unregister_profiler
 	once.Do(singleton)
@@ -431,7 +431,7 @@ func (self class) ScriptDebug(language [1]gdclass.ScriptLanguage, can_continue b
 		language            gdextension.Object
 		can_continue        bool
 		is_error_breakpoint bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetScriptLanguage(language[0]))), can_continue, is_error_breakpoint})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetScriptLanguage(language[0])[0])), can_continue, is_error_breakpoint})
 }
 func (self class) SetLinesLeft(lines int64) { //gd:EngineDebugger.set_lines_left
 	once.Do(singleton)

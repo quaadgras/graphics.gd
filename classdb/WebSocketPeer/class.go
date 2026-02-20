@@ -536,12 +536,12 @@ func (self class) ConnectToUrl(url String.Readable, tls_client_options [1]gdclas
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.connect_to_url, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
 		url                gdextension.String
 		tls_client_options gdextension.Object
-	}{pointers.Get(gd.InternalString(url)), gdextension.Object(gd.ObjectChecked(gdclass.GetTLSOptions(tls_client_options[0])))})
+	}{pointers.Get(gd.InternalString(url)), gdextension.Object(gdreference.GetObject(gdclass.GetTLSOptions(tls_client_options[0])[0]))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
 func (self class) AcceptStream(stream [1]gdclass.StreamPeer) Error.Code { //gd:WebSocketPeer.accept_stream
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.accept_stream, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetStreamPeer(stream[0])))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.accept_stream, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ stream gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetStreamPeer(stream[0])[0]))})
 	var ret = Error.Code(r_ret)
 	return ret
 }

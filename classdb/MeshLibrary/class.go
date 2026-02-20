@@ -418,7 +418,7 @@ func (self class) SetItemMesh(id int64, mesh [1]gdclass.Mesh) { //gd:MeshLibrary
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_mesh, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		id   int64
 		mesh gdextension.Object
-	}{id, gdextension.Object(gd.ObjectChecked(gdclass.GetMesh(mesh[0])))})
+	}{id, gdextension.Object(gdreference.GetObject(gdclass.GetMesh(mesh[0])[0]))})
 }
 func (self class) SetItemMeshTransform(id int64, mesh_transform Transform3D.BasisOrigin) { //gd:MeshLibrary.set_item_mesh_transform
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_mesh_transform, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), &struct {
@@ -436,7 +436,7 @@ func (self class) SetItemNavigationMesh(id int64, navigation_mesh [1]gdclass.Nav
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_navigation_mesh, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		id              int64
 		navigation_mesh gdextension.Object
-	}{id, gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationMesh(navigation_mesh[0])))})
+	}{id, gdextension.Object(gdreference.GetObject(gdclass.GetNavigationMesh(navigation_mesh[0])[0]))})
 }
 func (self class) SetItemNavigationMeshTransform(id int64, navigation_mesh Transform3D.BasisOrigin) { //gd:MeshLibrary.set_item_navigation_mesh_transform
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_navigation_mesh_transform, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), &struct {
@@ -460,7 +460,7 @@ func (self class) SetItemPreview(id int64, texture [1]gdclass.Texture2D) { //gd:
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_preview, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		id      int64
 		texture gdextension.Object
-	}{id, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
+	}{id, gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetItemName(id int64) String.Readable { //gd:MeshLibrary.get_item_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ id int64 }{id})

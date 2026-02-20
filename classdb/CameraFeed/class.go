@@ -414,16 +414,16 @@ func (self class) SetTransform(transform Transform2D.OriginXY) { //gd:CameraFeed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transform, 0|(gdextension.SizeTransform2D<<4), &struct{ transform Transform2D.OriginXY }{transform})
 }
 func (self class) SetRgbImage(rgb_image [1]gdclass.Image) { //gd:CameraFeed.set_rgb_image
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rgb_image, 0|(gdextension.SizeObject<<4), &struct{ rgb_image gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(rgb_image[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rgb_image, 0|(gdextension.SizeObject<<4), &struct{ rgb_image gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetImage(rgb_image[0])[0]))})
 }
 func (self class) SetYcbcrImage(ycbcr_image [1]gdclass.Image) { //gd:CameraFeed.set_ycbcr_image
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ycbcr_image, 0|(gdextension.SizeObject<<4), &struct{ ycbcr_image gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(ycbcr_image[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ycbcr_image, 0|(gdextension.SizeObject<<4), &struct{ ycbcr_image gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetImage(ycbcr_image[0])[0]))})
 }
 func (self class) SetYcbcrImages(y_image [1]gdclass.Image, cbcr_image [1]gdclass.Image) { //gd:CameraFeed.set_ycbcr_images
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ycbcr_images, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
 		y_image    gdextension.Object
 		cbcr_image gdextension.Object
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(y_image[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetImage(cbcr_image[0])))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetImage(y_image[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetImage(cbcr_image[0])[0]))})
 }
 func (self class) SetExternal(width int64, height int64) { //gd:CameraFeed.set_external
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_external, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {

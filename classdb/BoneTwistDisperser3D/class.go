@@ -665,7 +665,7 @@ func (self class) SetDampingCurve(index int64, curve [1]gdclass.Curve) { //gd:Bo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_damping_curve, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		index int64
 		curve gdextension.Object
-	}{index, gdextension.Object(gd.ObjectChecked(gdclass.GetCurve(curve[0])))})
+	}{index, gdextension.Object(gdreference.GetObject(gdclass.GetCurve(curve[0])[0]))})
 }
 func (self class) GetDampingCurve(index int64) [1]gdclass.Curve { //gd:BoneTwistDisperser3D.get_damping_curve
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_damping_curve, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})

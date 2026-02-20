@@ -459,7 +459,7 @@ func (self Instance) SetTintProgress(value Color.RGBA) Instance { //gd:TexturePr
 }
 
 func (self class) SetUnderTexture(tex [1]gdclass.Texture2D) { //gd:TextureProgressBar.set_under_texture
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_under_texture, 0|(gdextension.SizeObject<<4), &struct{ tex gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(tex[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_under_texture, 0|(gdextension.SizeObject<<4), &struct{ tex gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(tex[0])[0]))})
 }
 func (self class) GetUnderTexture() [1]gdclass.Texture2D { //gd:TextureProgressBar.get_under_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_under_texture, gdextension.SizeObject, &struct{}{})
@@ -467,7 +467,7 @@ func (self class) GetUnderTexture() [1]gdclass.Texture2D { //gd:TextureProgressB
 	return ret
 }
 func (self class) SetProgressTexture(tex [1]gdclass.Texture2D) { //gd:TextureProgressBar.set_progress_texture
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_progress_texture, 0|(gdextension.SizeObject<<4), &struct{ tex gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(tex[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_progress_texture, 0|(gdextension.SizeObject<<4), &struct{ tex gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(tex[0])[0]))})
 }
 func (self class) GetProgressTexture() [1]gdclass.Texture2D { //gd:TextureProgressBar.get_progress_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_progress_texture, gdextension.SizeObject, &struct{}{})
@@ -475,7 +475,7 @@ func (self class) GetProgressTexture() [1]gdclass.Texture2D { //gd:TextureProgre
 	return ret
 }
 func (self class) SetOverTexture(tex [1]gdclass.Texture2D) { //gd:TextureProgressBar.set_over_texture
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_over_texture, 0|(gdextension.SizeObject<<4), &struct{ tex gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(tex[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_over_texture, 0|(gdextension.SizeObject<<4), &struct{ tex gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(tex[0])[0]))})
 }
 func (self class) GetOverTexture() [1]gdclass.Texture2D { //gd:TextureProgressBar.get_over_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_over_texture, gdextension.SizeObject, &struct{}{})

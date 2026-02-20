@@ -313,7 +313,7 @@ func (self Instance) SetOuterConeAngle(value Angle.Radians) Instance { //gd:GLTF
 }
 
 func (self class) FromNode(light_node [1]gdclass.Light3D) [1]gdclass.GLTFLight { //gd:GLTFLight.from_node
-	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ light_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetLight3D(light_node[0])))})
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ light_node gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetLight3D(light_node[0])[0]))})
 	var ret = [1]gdclass.GLTFLight{gdclass.NewGLTFLight(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

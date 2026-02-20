@@ -483,7 +483,7 @@ func (self class) SetJointLimitation(index int64, joint int64, limitation [1]gdc
 		index      int64
 		joint      int64
 		limitation gdextension.Object
-	}{index, joint, gdextension.Object(gd.ObjectChecked(gdclass.GetJointLimitation3D(limitation[0])))})
+	}{index, joint, gdextension.Object(gdreference.GetObject(gdclass.GetJointLimitation3D(limitation[0])[0]))})
 }
 func (self class) GetJointLimitation(index int64, joint int64) [1]gdclass.JointLimitation3D { //gd:IterateIK3D.get_joint_limitation
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_joint_limitation, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {

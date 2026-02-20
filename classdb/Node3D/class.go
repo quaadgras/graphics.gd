@@ -1189,7 +1189,7 @@ func (self class) UpdateGizmos() { //gd:Node3D.update_gizmos
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_gizmos, 0, &struct{}{})
 }
 func (self class) AddGizmo(gizmo [1]gdclass.Node3DGizmo) { //gd:Node3D.add_gizmo
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_gizmo, 0|(gdextension.SizeObject<<4), &struct{ gizmo gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode3DGizmo(gizmo[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_gizmo, 0|(gdextension.SizeObject<<4), &struct{ gizmo gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode3DGizmo(gizmo[0])[0]))})
 }
 func (self class) GetGizmos() Array.Contains[[1]gdclass.Node3DGizmo] { //gd:Node3D.get_gizmos
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_gizmos, gdextension.SizeArray, &struct{}{})
@@ -1204,7 +1204,7 @@ func (self class) SetSubgizmoSelection(gizmo [1]gdclass.Node3DGizmo, id int64, t
 		gizmo     gdextension.Object
 		id        int64
 		transform Transform3D.BasisOrigin
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNode3DGizmo(gizmo[0]))), id, gd.Transposed(transform)})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetNode3DGizmo(gizmo[0])[0])), id, gd.Transposed(transform)})
 }
 func (self class) ClearSubgizmoSelection() { //gd:Node3D.clear_subgizmo_selection
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_subgizmo_selection, 0, &struct{}{})

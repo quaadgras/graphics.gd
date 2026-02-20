@@ -572,7 +572,7 @@ func (self class) AddString(text String.Readable, font [1]gdclass.Font, font_siz
 		font_size int64
 		language  gdextension.String
 		meta      gdextension.Variant
-	}{pointers.Get(gd.InternalString(text)), gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0]))), font_size, pointers.Get(gd.InternalString(language)), gdextension.Variant(pointers.Get(gd.InternalVariant(meta)))})
+	}{pointers.Get(gd.InternalString(text)), gdextension.Object(gdreference.GetObject(gdclass.GetFont(font[0])[0])), font_size, pointers.Get(gd.InternalString(language)), gdextension.Variant(pointers.Get(gd.InternalVariant(meta)))})
 	var ret = r_ret
 	return ret
 }

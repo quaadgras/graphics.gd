@@ -1082,7 +1082,7 @@ func (self class) AddSource(source [1]gdclass.TileSetSource, atlas_source_id_ove
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_source, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		source                   gdextension.Object
 		atlas_source_id_override int64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTileSetSource(source[0]))), atlas_source_id_override})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetTileSetSource(source[0])[0])), atlas_source_id_override})
 	var ret = r_ret
 	return ret
 }
@@ -1248,7 +1248,7 @@ func (self class) SetPhysicsLayerPhysicsMaterial(layer_index int64, physics_mate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_layer_physics_material, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		layer_index      int64
 		physics_material gdextension.Object
-	}{layer_index, gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsMaterial(physics_material[0])))})
+	}{layer_index, gdextension.Object(gdreference.GetObject(gdclass.GetPhysicsMaterial(physics_material[0])[0]))})
 }
 func (self class) GetPhysicsLayerPhysicsMaterial(layer_index int64) [1]gdclass.PhysicsMaterial { //gd:TileSet.get_physics_layer_physics_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_physics_layer_physics_material, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ layer_index int64 }{layer_index})
@@ -1532,7 +1532,7 @@ func (self class) AddPattern(pattern [1]gdclass.TileMapPattern, index int64) int
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_pattern, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		pattern gdextension.Object
 		index   int64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTileMapPattern(pattern[0]))), index})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetTileMapPattern(pattern[0])[0])), index})
 	var ret = r_ret
 	return ret
 }

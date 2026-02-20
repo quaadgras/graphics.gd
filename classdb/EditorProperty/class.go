@@ -648,10 +648,10 @@ func (self class) SetObjectAndProperty(obj [1]gd.Object, property String.Name) {
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_object_and_property, 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8), &struct {
 		obj      gdextension.Object
 		property gdextension.StringName
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0]))), pointers.Get(gd.InternalStringName(property))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetObject(obj[0])[0])), pointers.Get(gd.InternalStringName(property))})
 }
 func (self class) SetLabelReference(control [1]gdclass.Control) { //gd:EditorProperty.set_label_reference
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_label_reference, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_label_reference, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetControl(control[0])[0]))})
 }
 func (self class) EmitChanged(property String.Name, value variant.Any, field String.Name, changing bool) { //gd:EditorProperty.emit_changed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.emit_changed, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeBool<<16), &struct {
