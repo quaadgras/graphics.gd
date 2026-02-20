@@ -267,7 +267,7 @@ func (self class) Collide(local_xform Transform2D.OriginXY, with_shape [1]gdclas
 		local_xform Transform2D.OriginXY
 		with_shape  gdextension.Object
 		shape_xform Transform2D.OriginXY
-	}{local_xform, gdextension.Object(gd.ObjectChecked(gdclass.GetShape2D(with_shape[0]))), shape_xform})
+	}{local_xform, gdextension.Object(gdreference.GetObject(gdclass.GetShape2D(with_shape[0])[0])), shape_xform})
 	var ret = r_ret
 	return ret
 }
@@ -278,7 +278,7 @@ func (self class) CollideWithMotion(local_xform Transform2D.OriginXY, local_moti
 		with_shape   gdextension.Object
 		shape_xform  Transform2D.OriginXY
 		shape_motion Vector2.XY
-	}{local_xform, local_motion, gdextension.Object(gd.ObjectChecked(gdclass.GetShape2D(with_shape[0]))), shape_xform, shape_motion})
+	}{local_xform, local_motion, gdextension.Object(gdreference.GetObject(gdclass.GetShape2D(with_shape[0])[0])), shape_xform, shape_motion})
 	var ret = r_ret
 	return ret
 }
@@ -287,7 +287,7 @@ func (self class) CollideAndGetContacts(local_xform Transform2D.OriginXY, with_s
 		local_xform Transform2D.OriginXY
 		with_shape  gdextension.Object
 		shape_xform Transform2D.OriginXY
-	}{local_xform, gdextension.Object(gd.ObjectChecked(gdclass.GetShape2D(with_shape[0]))), shape_xform})
+	}{local_xform, gdextension.Object(gdreference.GetObject(gdclass.GetShape2D(with_shape[0])[0])), shape_xform})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -298,7 +298,7 @@ func (self class) CollideWithMotionAndGetContacts(local_xform Transform2D.Origin
 		with_shape   gdextension.Object
 		shape_xform  Transform2D.OriginXY
 		shape_motion Vector2.XY
-	}{local_xform, local_motion, gdextension.Object(gd.ObjectChecked(gdclass.GetShape2D(with_shape[0]))), shape_xform, shape_motion})
+	}{local_xform, local_motion, gdextension.Object(gdreference.GetObject(gdclass.GetShape2D(with_shape[0])[0])), shape_xform, shape_motion})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }

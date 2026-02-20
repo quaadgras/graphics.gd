@@ -244,7 +244,7 @@ func (self class) AcceptStream(stream [1]gdclass.StreamPeer, server_options [1]g
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.accept_stream, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
 		stream         gdextension.Object
 		server_options gdextension.Object
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetStreamPeer(stream[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetTLSOptions(server_options[0])))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetStreamPeer(stream[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetTLSOptions(server_options[0])[0]))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -253,7 +253,7 @@ func (self class) ConnectToStream(stream [1]gdclass.StreamPeer, common_name Stri
 		stream         gdextension.Object
 		common_name    gdextension.String
 		client_options gdextension.Object
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetStreamPeer(stream[0]))), pointers.Get(gd.InternalString(common_name)), gdextension.Object(gd.ObjectChecked(gdclass.GetTLSOptions(client_options[0])))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetStreamPeer(stream[0])[0])), pointers.Get(gd.InternalString(common_name)), gdextension.Object(gdreference.GetObject(gdclass.GetTLSOptions(client_options[0])[0]))})
 	var ret = Error.Code(r_ret)
 	return ret
 }

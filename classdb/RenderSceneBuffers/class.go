@@ -169,7 +169,7 @@ func New() Instance {
 }
 
 func (self class) Configure(config [1]gdclass.RenderSceneBuffersConfiguration) { //gd:RenderSceneBuffers.configure
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.configure, 0|(gdextension.SizeObject<<4), &struct{ config gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetRenderSceneBuffersConfiguration(config[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.configure, 0|(gdextension.SizeObject<<4), &struct{ config gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetRenderSceneBuffersConfiguration(config[0])[0]))})
 }
 func (o class) AsRenderSceneBuffers() Advanced         { return Advanced(o) }
 func (o Instance) AsRenderSceneBuffers() Instance      { return o }

@@ -482,7 +482,7 @@ func (self Instance) SetVisibilityRangeFadeMode(value VisibilityRangeFadeMode) I
 }
 
 func (self class) SetMaterialOverride(material [1]gdclass.Material) { //gd:GeometryInstance3D.set_material_override
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material_override, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material_override, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(material[0])[0]))})
 }
 func (self class) GetMaterialOverride() [1]gdclass.Material { //gd:GeometryInstance3D.get_material_override
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material_override, gdextension.SizeObject, &struct{}{})
@@ -490,7 +490,7 @@ func (self class) GetMaterialOverride() [1]gdclass.Material { //gd:GeometryInsta
 	return ret
 }
 func (self class) SetMaterialOverlay(material [1]gdclass.Material) { //gd:GeometryInstance3D.set_material_overlay
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material_overlay, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material_overlay, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(material[0])[0]))})
 }
 func (self class) GetMaterialOverlay() [1]gdclass.Material { //gd:GeometryInstance3D.get_material_overlay
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material_overlay, gdextension.SizeObject, &struct{}{})

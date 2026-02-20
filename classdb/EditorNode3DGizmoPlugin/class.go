@@ -1010,26 +1010,26 @@ func (self class) CreateIconMaterial(name String.Readable, texture [1]gdclass.Te
 		texture gdextension.Object
 		on_top  bool
 		color   Color.RGBA
-	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), on_top, color})
+	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0])), on_top, color})
 }
 func (self class) CreateHandleMaterial(name String.Readable, billboard bool, texture [1]gdclass.Texture2D) { //gd:EditorNode3DGizmoPlugin.create_handle_material
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_handle_material, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeObject<<12), &struct {
 		name      gdextension.String
 		billboard bool
 		texture   gdextension.Object
-	}{pointers.Get(gd.InternalString(name)), billboard, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
+	}{pointers.Get(gd.InternalString(name)), billboard, gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) AddMaterial(name String.Readable, material [1]gdclass.StandardMaterial3D) { //gd:EditorNode3DGizmoPlugin.add_material
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_material, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
 		name     gdextension.String
 		material gdextension.Object
-	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetStandardMaterial3D(material[0])))})
+	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gdreference.GetObject(gdclass.GetStandardMaterial3D(material[0])[0]))})
 }
 func (self class) GetMaterial(name String.Readable, gizmo [1]gdclass.EditorNode3DGizmo) [1]gdclass.StandardMaterial3D { //gd:EditorNode3DGizmoPlugin.get_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
 		name  gdextension.String
 		gizmo gdextension.Object
-	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetEditorNode3DGizmo(gizmo[0])))})
+	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gdreference.GetObject(gdclass.GetEditorNode3DGizmo(gizmo[0])[0]))})
 	var ret = [1]gdclass.StandardMaterial3D{gdclass.NewStandardMaterial3D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

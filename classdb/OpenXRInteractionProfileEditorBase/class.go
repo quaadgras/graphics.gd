@@ -174,7 +174,7 @@ func (self class) Setup(action_map [1]gdclass.OpenXRActionMap, interaction_profi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.setup, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
 		action_map          gdextension.Object
 		interaction_profile gdextension.Object
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRActionMap(action_map[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRInteractionProfile(interaction_profile[0])))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRActionMap(action_map[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRInteractionProfile(interaction_profile[0])[0]))})
 }
 func (o class) AsOpenXRInteractionProfileEditorBase() Advanced         { return Advanced(o) }
 func (o Instance) AsOpenXRInteractionProfileEditorBase() Instance      { return o }

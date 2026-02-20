@@ -231,7 +231,7 @@ func (self class) AddAnimation(name String.Name, animation [1]gdclass.Animation)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_animation, gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name      gdextension.StringName
 		animation gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetAnimation(animation[0])))})
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gdreference.GetObject(gdclass.GetAnimation(animation[0])[0]))})
 	var ret = Error.Code(r_ret)
 	return ret
 }

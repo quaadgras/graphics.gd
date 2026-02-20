@@ -255,7 +255,7 @@ func New() Instance {
 }
 
 func (self class) Pack(path [1]gdclass.Node) Error.Code { //gd:PackedScene.pack
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.pack, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ path gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(path[0])))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.pack, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ path gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(path[0])[0]))})
 	var ret = Error.Code(r_ret)
 	return ret
 }

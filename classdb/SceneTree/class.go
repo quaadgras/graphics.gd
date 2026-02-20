@@ -1032,12 +1032,12 @@ func (self class) ChangeSceneToFile(path String.Readable) Error.Code { //gd:Scen
 	return ret
 }
 func (self class) ChangeSceneToPacked(packed_scene [1]gdclass.PackedScene) Error.Code { //gd:SceneTree.change_scene_to_packed
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.change_scene_to_packed, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ packed_scene gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetPackedScene(packed_scene[0])))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.change_scene_to_packed, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ packed_scene gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetPackedScene(packed_scene[0])[0]))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
 func (self class) ChangeSceneToNode(node [1]gdclass.Node) Error.Code { //gd:SceneTree.change_scene_to_node
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.change_scene_to_node, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.change_scene_to_node, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(node[0])[0]))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -1053,7 +1053,7 @@ func (self class) SetMultiplayer(multiplayer [1]gdclass.MultiplayerAPI, root_pat
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_multiplayer, 0|(gdextension.SizeObject<<4)|(gdextension.SizeNodePath<<8), &struct {
 		multiplayer gdextension.Object
 		root_path   gdextension.NodePath
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetMultiplayerAPI(multiplayer[0]))), pointers.Get(gd.InternalNodePath(root_path))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetMultiplayerAPI(multiplayer[0])[0])), pointers.Get(gd.InternalNodePath(root_path))})
 }
 func (self class) GetMultiplayer(for_path Path.ToNode) [1]gdclass.MultiplayerAPI { //gd:SceneTree.get_multiplayer
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_multiplayer, gdextension.SizeObject|(gdextension.SizeNodePath<<4), &struct{ for_path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(for_path))})

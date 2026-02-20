@@ -532,7 +532,7 @@ func (self class) IsMatch(event [1]gdclass.InputEvent, exact_match bool) bool { 
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_match, gdextension.SizeBool|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		event       gdextension.Object
 		exact_match bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0]))), exact_match})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetInputEvent(event[0])[0])), exact_match})
 	var ret = r_ret
 	return ret
 }
@@ -542,7 +542,7 @@ func (self class) IsActionType() bool { //gd:InputEvent.is_action_type
 	return ret
 }
 func (self class) Accumulate(with_event [1]gdclass.InputEvent) bool { //gd:InputEvent.accumulate
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.accumulate, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ with_event gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(with_event[0])))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.accumulate, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ with_event gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetInputEvent(with_event[0])[0]))})
 	var ret = r_ret
 	return ret
 }

@@ -561,7 +561,7 @@ func (self class) AddIconItem(texture [1]gdclass.Texture2D, label String.Readabl
 		texture gdextension.Object
 		label   gdextension.String
 		id      int64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), pointers.Get(gd.InternalString(label)), id})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0])), pointers.Get(gd.InternalString(label)), id})
 }
 func (self class) SetItemText(idx int64, text String.Readable) { //gd:OptionButton.set_item_text
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_text, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
@@ -573,7 +573,7 @@ func (self class) SetItemIcon(idx int64, texture [1]gdclass.Texture2D) { //gd:Op
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		idx     int64
 		texture gdextension.Object
-	}{idx, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
+	}{idx, gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) SetItemDisabled(idx int64, disabled bool) { //gd:OptionButton.set_item_disabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_disabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {

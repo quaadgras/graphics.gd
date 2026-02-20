@@ -278,7 +278,7 @@ func (self Instance) SetPaths(value []string) Instance { //gd:OpenXRIPBinding.pa
 }
 
 func (self class) SetAction(action [1]gdclass.OpenXRAction) { //gd:OpenXRIPBinding.set_action
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action, 0|(gdextension.SizeObject<<4), &struct{ action gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRAction(action[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action, 0|(gdextension.SizeObject<<4), &struct{ action gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRAction(action[0])[0]))})
 }
 func (self class) GetAction() [1]gdclass.OpenXRAction { //gd:OpenXRIPBinding.get_action
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_action, gdextension.SizeObject, &struct{}{})

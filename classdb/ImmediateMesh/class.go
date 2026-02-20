@@ -291,7 +291,7 @@ func (self class) SurfaceBegin(primitive Mesh.PrimitiveType, material [1]gdclass
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_begin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		primitive Mesh.PrimitiveType
 		material  gdextension.Object
-	}{primitive, gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
+	}{primitive, gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(material[0])[0]))})
 }
 func (self class) SurfaceSetColor(color Color.RGBA) { //gd:ImmediateMesh.surface_set_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})

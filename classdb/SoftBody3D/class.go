@@ -606,10 +606,10 @@ func (self class) GetCollisionExceptions() Array.Contains[[1]gdclass.PhysicsBody
 	return ret
 }
 func (self class) AddCollisionExceptionWith(body [1]gdclass.Node) { //gd:SoftBody3D.add_collision_exception_with
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_collision_exception_with, 0|(gdextension.SizeObject<<4), &struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(body[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_collision_exception_with, 0|(gdextension.SizeObject<<4), &struct{ body gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(body[0])[0]))})
 }
 func (self class) RemoveCollisionExceptionWith(body [1]gdclass.Node) { //gd:SoftBody3D.remove_collision_exception_with
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_collision_exception_with, 0|(gdextension.SizeObject<<4), &struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(body[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_collision_exception_with, 0|(gdextension.SizeObject<<4), &struct{ body gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(body[0])[0]))})
 }
 func (self class) SetSimulationPrecision(simulation_precision int64) { //gd:SoftBody3D.set_simulation_precision
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_simulation_precision, 0|(gdextension.SizeInt<<4), &struct{ simulation_precision int64 }{simulation_precision})

@@ -393,10 +393,10 @@ func (self class) AddCancelButton(name String.Readable) [1]gdclass.Button { //gd
 	return ret
 }
 func (self class) RemoveButton(button [1]gdclass.Button) { //gd:AcceptDialog.remove_button
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_button, 0|(gdextension.SizeObject<<4), &struct{ button gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetButton(button[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_button, 0|(gdextension.SizeObject<<4), &struct{ button gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetButton(button[0])[0]))})
 }
 func (self class) RegisterTextEnter(line_edit [1]gdclass.LineEdit) { //gd:AcceptDialog.register_text_enter
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_text_enter, 0|(gdextension.SizeObject<<4), &struct{ line_edit gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetLineEdit(line_edit[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_text_enter, 0|(gdextension.SizeObject<<4), &struct{ line_edit gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetLineEdit(line_edit[0])[0]))})
 }
 func (self class) SetText(text String.Readable) { //gd:AcceptDialog.set_text
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})

@@ -1455,7 +1455,7 @@ func (self class) ActivateItemByEvent(event [1]gdclass.InputEvent, for_global_on
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.activate_item_by_event, gdextension.SizeBool|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		event           gdextension.Object
 		for_global_only bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0]))), for_global_only})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetInputEvent(event[0])[0])), for_global_only})
 	var ret = r_ret
 	return ret
 }
@@ -1485,7 +1485,7 @@ func (self class) AddIconItem(texture [1]gdclass.Texture2D, label String.Readabl
 		label   gdextension.String
 		id      int64
 		accel   Input.Key
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), pointers.Get(gd.InternalString(label)), id, accel})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0])), pointers.Get(gd.InternalString(label)), id, accel})
 }
 func (self class) AddCheckItem(label String.Readable, id int64, accel Input.Key) { //gd:PopupMenu.add_check_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_check_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
@@ -1500,7 +1500,7 @@ func (self class) AddIconCheckItem(texture [1]gdclass.Texture2D, label String.Re
 		label   gdextension.String
 		id      int64
 		accel   Input.Key
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), pointers.Get(gd.InternalString(label)), id, accel})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0])), pointers.Get(gd.InternalString(label)), id, accel})
 }
 func (self class) AddRadioCheckItem(label String.Readable, id int64, accel Input.Key) { //gd:PopupMenu.add_radio_check_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_radio_check_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
@@ -1515,7 +1515,7 @@ func (self class) AddIconRadioCheckItem(texture [1]gdclass.Texture2D, label Stri
 		label   gdextension.String
 		id      int64
 		accel   Input.Key
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), pointers.Get(gd.InternalString(label)), id, accel})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0])), pointers.Get(gd.InternalString(label)), id, accel})
 }
 func (self class) AddMultistateItem(label String.Readable, max_states int64, default_state int64, id int64, accel Input.Key) { //gd:PopupMenu.add_multistate_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_multistate_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), &struct {
@@ -1532,7 +1532,7 @@ func (self class) AddShortcut(shortcut [1]gdclass.Shortcut, id int64, global boo
 		id         int64
 		global     bool
 		allow_echo bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), id, global, allow_echo})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetShortcut(shortcut[0])[0])), id, global, allow_echo})
 }
 func (self class) AddIconShortcut(texture [1]gdclass.Texture2D, shortcut [1]gdclass.Shortcut, id int64, global bool, allow_echo bool) { //gd:PopupMenu.add_icon_shortcut
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_icon_shortcut, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), &struct {
@@ -1541,14 +1541,14 @@ func (self class) AddIconShortcut(texture [1]gdclass.Texture2D, shortcut [1]gdcl
 		id         int64
 		global     bool
 		allow_echo bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), id, global, allow_echo})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetShortcut(shortcut[0])[0])), id, global, allow_echo})
 }
 func (self class) AddCheckShortcut(shortcut [1]gdclass.Shortcut, id int64, global bool) { //gd:PopupMenu.add_check_shortcut
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_check_shortcut, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		shortcut gdextension.Object
 		id       int64
 		global   bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), id, global})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetShortcut(shortcut[0])[0])), id, global})
 }
 func (self class) AddIconCheckShortcut(texture [1]gdclass.Texture2D, shortcut [1]gdclass.Shortcut, id int64, global bool) { //gd:PopupMenu.add_icon_check_shortcut
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_icon_check_shortcut, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), &struct {
@@ -1556,14 +1556,14 @@ func (self class) AddIconCheckShortcut(texture [1]gdclass.Texture2D, shortcut [1
 		shortcut gdextension.Object
 		id       int64
 		global   bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), id, global})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetShortcut(shortcut[0])[0])), id, global})
 }
 func (self class) AddRadioCheckShortcut(shortcut [1]gdclass.Shortcut, id int64, global bool) { //gd:PopupMenu.add_radio_check_shortcut
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_radio_check_shortcut, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		shortcut gdextension.Object
 		id       int64
 		global   bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), id, global})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetShortcut(shortcut[0])[0])), id, global})
 }
 func (self class) AddIconRadioCheckShortcut(texture [1]gdclass.Texture2D, shortcut [1]gdclass.Shortcut, id int64, global bool) { //gd:PopupMenu.add_icon_radio_check_shortcut
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_icon_radio_check_shortcut, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), &struct {
@@ -1571,7 +1571,7 @@ func (self class) AddIconRadioCheckShortcut(texture [1]gdclass.Texture2D, shortc
 		shortcut gdextension.Object
 		id       int64
 		global   bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), id, global})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetShortcut(shortcut[0])[0])), id, global})
 }
 func (self class) AddSubmenuItem(label String.Readable, submenu String.Readable, id int64) { //gd:PopupMenu.add_submenu_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_submenu_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), &struct {
@@ -1615,7 +1615,7 @@ func (self class) SetItemIcon(index int64, icon [1]gdclass.Texture2D) { //gd:Pop
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		index int64
 		icon  gdextension.Object
-	}{index, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
+	}{index, gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(icon[0])[0]))})
 }
 func (self class) SetItemIconMaxWidth(index int64, width int64) { //gd:PopupMenu.set_item_icon_max_width
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_icon_max_width, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
@@ -1700,7 +1700,7 @@ func (self class) SetItemShortcut(index int64, shortcut [1]gdclass.Shortcut, glo
 		index    int64
 		shortcut gdextension.Object
 		global   bool
-	}{index, gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), global})
+	}{index, gdextension.Object(gdreference.GetObject(gdclass.GetShortcut(shortcut[0])[0])), global})
 }
 func (self class) SetItemIndent(index int64, indent int64) { //gd:PopupMenu.set_item_indent
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_indent, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {

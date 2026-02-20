@@ -286,7 +286,7 @@ func New() Instance {
 }
 
 func (self class) CreateFromImage(image [1]gdclass.Image) [1]gdclass.ImageTexture { //gd:ImageTexture.create_from_image
-	var r_ret = noescape.CallStatic[gdextension.Object](methods.create_from_image, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0])))})
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.create_from_image, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetImage(image[0])[0]))})
 	var ret = [1]gdclass.ImageTexture{gdclass.NewImageTexture(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -296,10 +296,10 @@ func (self class) GetFormat() Image.Format { //gd:ImageTexture.get_format
 	return ret
 }
 func (self class) SetImage(image [1]gdclass.Image) { //gd:ImageTexture.set_image
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_image, 0|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_image, 0|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetImage(image[0])[0]))})
 }
 func (self class) Update(image [1]gdclass.Image) { //gd:ImageTexture.update
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update, 0|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update, 0|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetImage(image[0])[0]))})
 }
 func (self class) SetSizeOverride(size Vector2i.XY) { //gd:ImageTexture.set_size_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size_override, 0|(gdextension.SizeVector2i<<4), &struct{ size Vector2i.XY }{size})

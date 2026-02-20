@@ -2235,7 +2235,7 @@ func (self class) AddDock(dock [1]gdclass.EditorDock) { //gd:EditorPlugin.add_do
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_dock, 0|(gdextension.SizeObject<<4), &struct{ dock gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetEditorDock(dock[0])[0]))})
 }
 func (self class) RemoveDock(dock [1]gdclass.EditorDock) { //gd:EditorPlugin.remove_dock
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_dock, 0|(gdextension.SizeObject<<4), &struct{ dock gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorDock(dock[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_dock, 0|(gdextension.SizeObject<<4), &struct{ dock gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorDock(dock[0])[0]))})
 }
 func (self class) AddControlToContainer(container CustomControlContainer, control [1]gdclass.Control) { //gd:EditorPlugin.add_control_to_container
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_control_to_container, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
@@ -2247,7 +2247,7 @@ func (self class) RemoveControlFromContainer(container CustomControlContainer, c
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_control_from_container, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		container CustomControlContainer
 		control   gdextension.Object
-	}{container, gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0])))})
+	}{container, gdextension.Object(gdreference.GetObject(gdclass.GetControl(control[0])[0]))})
 }
 func (self class) AddToolMenuItem(name String.Readable, callable Callable.Function) { //gd:EditorPlugin.add_tool_menu_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_tool_menu_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), &struct {
@@ -2275,7 +2275,7 @@ func (self class) AddCustomType(atype String.Readable, base String.Readable, scr
 		base   gdextension.String
 		script gdextension.Object
 		icon   gdextension.Object
-	}{pointers.Get(gd.InternalString(atype)), pointers.Get(gd.InternalString(base)), gdextension.Object(gd.ObjectChecked(gdclass.GetScript(script[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
+	}{pointers.Get(gd.InternalString(atype)), pointers.Get(gd.InternalString(base)), gdextension.Object(gdreference.GetObject(gdclass.GetScript(script[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(icon[0])[0]))})
 }
 func (self class) RemoveCustomType(atype String.Readable) { //gd:EditorPlugin.remove_custom_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_custom_type, 0|(gdextension.SizeString<<4), &struct{ atype gdextension.String }{pointers.Get(gd.InternalString(atype))})
@@ -2285,28 +2285,28 @@ func (self class) AddControlToDock(slot DockSlot, control [1]gdclass.Control, sh
 		slot     DockSlot
 		control  gdextension.Object
 		shortcut gdextension.Object
-	}{slot, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetControl(control[0])[0])), gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0])))})
+	}{slot, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetControl(control[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetShortcut(shortcut[0])[0]))})
 }
 func (self class) RemoveControlFromDocks(control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_docks
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_control_from_docks, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_control_from_docks, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetControl(control[0])[0]))})
 }
 func (self class) SetDockTabIcon(control [1]gdclass.Control, icon [1]gdclass.Texture2D) { //gd:EditorPlugin.set_dock_tab_icon
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dock_tab_icon, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
 		control gdextension.Object
 		icon    gdextension.Object
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetControl(control[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(icon[0])[0]))})
 }
 func (self class) AddControlToBottomPanel(control [1]gdclass.Control, title String.Readable, shortcut [1]gdclass.Shortcut) [1]gdclass.Button { //gd:EditorPlugin.add_control_to_bottom_panel
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.add_control_to_bottom_panel, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeObject<<12), &struct {
 		control  gdextension.Object
 		title    gdextension.String
 		shortcut gdextension.Object
-	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetControl(control[0])[0])), pointers.Get(gd.InternalString(title)), gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0])))})
+	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetControl(control[0])[0])), pointers.Get(gd.InternalString(title)), gdextension.Object(gdreference.GetObject(gdclass.GetShortcut(shortcut[0])[0]))})
 	var ret = [1]gdclass.Button{gdclass.NewButton(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) RemoveControlFromBottomPanel(control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_bottom_panel
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_control_from_bottom_panel, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_control_from_bottom_panel, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetControl(control[0])[0]))})
 }
 func (self class) AddAutoloadSingleton(name String.Readable, path String.Readable) { //gd:EditorPlugin.add_autoload_singleton
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_autoload_singleton, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
@@ -2323,7 +2323,7 @@ func (self class) UpdateOverlays() int64 { //gd:EditorPlugin.update_overlays
 	return ret
 }
 func (self class) MakeBottomPanelItemVisible(item [1]gdclass.Control) { //gd:EditorPlugin.make_bottom_panel_item_visible
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.make_bottom_panel_item_visible, 0|(gdextension.SizeObject<<4), &struct{ item gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(item[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.make_bottom_panel_item_visible, 0|(gdextension.SizeObject<<4), &struct{ item gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetControl(item[0])[0]))})
 }
 func (self class) HideBottomPanel() { //gd:EditorPlugin.hide_bottom_panel
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.hide_bottom_panel, 0, &struct{}{})
@@ -2343,67 +2343,67 @@ func (self class) QueueSaveLayout() { //gd:EditorPlugin.queue_save_layout
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_save_layout, 0, &struct{}{})
 }
 func (self class) AddTranslationParserPlugin(parser [1]gdclass.EditorTranslationParserPlugin) { //gd:EditorPlugin.add_translation_parser_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_translation_parser_plugin, 0|(gdextension.SizeObject<<4), &struct{ parser gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorTranslationParserPlugin(parser[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_translation_parser_plugin, 0|(gdextension.SizeObject<<4), &struct{ parser gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorTranslationParserPlugin(parser[0])[0]))})
 }
 func (self class) RemoveTranslationParserPlugin(parser [1]gdclass.EditorTranslationParserPlugin) { //gd:EditorPlugin.remove_translation_parser_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_translation_parser_plugin, 0|(gdextension.SizeObject<<4), &struct{ parser gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorTranslationParserPlugin(parser[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_translation_parser_plugin, 0|(gdextension.SizeObject<<4), &struct{ parser gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorTranslationParserPlugin(parser[0])[0]))})
 }
 func (self class) AddImportPlugin(importer [1]gdclass.EditorImportPlugin, first_priority bool) { //gd:EditorPlugin.add_import_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_import_plugin, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		importer       gdextension.Object
 		first_priority bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorImportPlugin(importer[0]))), first_priority})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetEditorImportPlugin(importer[0])[0])), first_priority})
 }
 func (self class) RemoveImportPlugin(importer [1]gdclass.EditorImportPlugin) { //gd:EditorPlugin.remove_import_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_import_plugin, 0|(gdextension.SizeObject<<4), &struct{ importer gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorImportPlugin(importer[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_import_plugin, 0|(gdextension.SizeObject<<4), &struct{ importer gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorImportPlugin(importer[0])[0]))})
 }
 func (self class) AddSceneFormatImporterPlugin(scene_format_importer [1]gdclass.EditorSceneFormatImporter, first_priority bool) { //gd:EditorPlugin.add_scene_format_importer_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_scene_format_importer_plugin, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		scene_format_importer gdextension.Object
 		first_priority        bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorSceneFormatImporter(scene_format_importer[0]))), first_priority})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetEditorSceneFormatImporter(scene_format_importer[0])[0])), first_priority})
 }
 func (self class) RemoveSceneFormatImporterPlugin(scene_format_importer [1]gdclass.EditorSceneFormatImporter) { //gd:EditorPlugin.remove_scene_format_importer_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_scene_format_importer_plugin, 0|(gdextension.SizeObject<<4), &struct{ scene_format_importer gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorSceneFormatImporter(scene_format_importer[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_scene_format_importer_plugin, 0|(gdextension.SizeObject<<4), &struct{ scene_format_importer gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorSceneFormatImporter(scene_format_importer[0])[0]))})
 }
 func (self class) AddScenePostImportPlugin(scene_import_plugin [1]gdclass.EditorScenePostImportPlugin, first_priority bool) { //gd:EditorPlugin.add_scene_post_import_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_scene_post_import_plugin, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		scene_import_plugin gdextension.Object
 		first_priority      bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorScenePostImportPlugin(scene_import_plugin[0]))), first_priority})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetEditorScenePostImportPlugin(scene_import_plugin[0])[0])), first_priority})
 }
 func (self class) RemoveScenePostImportPlugin(scene_import_plugin [1]gdclass.EditorScenePostImportPlugin) { //gd:EditorPlugin.remove_scene_post_import_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_scene_post_import_plugin, 0|(gdextension.SizeObject<<4), &struct{ scene_import_plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorScenePostImportPlugin(scene_import_plugin[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_scene_post_import_plugin, 0|(gdextension.SizeObject<<4), &struct{ scene_import_plugin gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorScenePostImportPlugin(scene_import_plugin[0])[0]))})
 }
 func (self class) AddExportPlugin(plugin [1]gdclass.EditorExportPlugin) { //gd:EditorPlugin.add_export_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_export_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorExportPlugin(plugin[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_export_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorExportPlugin(plugin[0])[0]))})
 }
 func (self class) RemoveExportPlugin(plugin [1]gdclass.EditorExportPlugin) { //gd:EditorPlugin.remove_export_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_export_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorExportPlugin(plugin[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_export_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorExportPlugin(plugin[0])[0]))})
 }
 func (self class) AddExportPlatform(platform [1]gdclass.EditorExportPlatform) { //gd:EditorPlugin.add_export_platform
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_export_platform, 0|(gdextension.SizeObject<<4), &struct{ platform gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorExportPlatform(platform[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_export_platform, 0|(gdextension.SizeObject<<4), &struct{ platform gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorExportPlatform(platform[0])[0]))})
 }
 func (self class) RemoveExportPlatform(platform [1]gdclass.EditorExportPlatform) { //gd:EditorPlugin.remove_export_platform
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_export_platform, 0|(gdextension.SizeObject<<4), &struct{ platform gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorExportPlatform(platform[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_export_platform, 0|(gdextension.SizeObject<<4), &struct{ platform gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorExportPlatform(platform[0])[0]))})
 }
 func (self class) AddNode3dGizmoPlugin(plugin [1]gdclass.EditorNode3DGizmoPlugin) { //gd:EditorPlugin.add_node_3d_gizmo_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_node_3d_gizmo_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorNode3DGizmoPlugin(plugin[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_node_3d_gizmo_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorNode3DGizmoPlugin(plugin[0])[0]))})
 }
 func (self class) RemoveNode3dGizmoPlugin(plugin [1]gdclass.EditorNode3DGizmoPlugin) { //gd:EditorPlugin.remove_node_3d_gizmo_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_node_3d_gizmo_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorNode3DGizmoPlugin(plugin[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_node_3d_gizmo_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorNode3DGizmoPlugin(plugin[0])[0]))})
 }
 func (self class) AddInspectorPlugin(plugin [1]gdclass.EditorInspectorPlugin) { //gd:EditorPlugin.add_inspector_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_inspector_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorInspectorPlugin(plugin[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_inspector_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorInspectorPlugin(plugin[0])[0]))})
 }
 func (self class) RemoveInspectorPlugin(plugin [1]gdclass.EditorInspectorPlugin) { //gd:EditorPlugin.remove_inspector_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_inspector_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorInspectorPlugin(plugin[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_inspector_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorInspectorPlugin(plugin[0])[0]))})
 }
 func (self class) AddResourceConversionPlugin(plugin [1]gdclass.EditorResourceConversionPlugin) { //gd:EditorPlugin.add_resource_conversion_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_resource_conversion_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorResourceConversionPlugin(plugin[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_resource_conversion_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorResourceConversionPlugin(plugin[0])[0]))})
 }
 func (self class) RemoveResourceConversionPlugin(plugin [1]gdclass.EditorResourceConversionPlugin) { //gd:EditorPlugin.remove_resource_conversion_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_conversion_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorResourceConversionPlugin(plugin[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_conversion_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorResourceConversionPlugin(plugin[0])[0]))})
 }
 func (self class) SetInputEventForwardingAlwaysEnabled() { //gd:EditorPlugin.set_input_event_forwarding_always_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_event_forwarding_always_enabled, 0, &struct{}{})
@@ -2415,10 +2415,10 @@ func (self class) AddContextMenuPlugin(slot EditorContextMenuPlugin.ContextMenuS
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_context_menu_plugin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		slot   EditorContextMenuPlugin.ContextMenuSlot
 		plugin gdextension.Object
-	}{slot, gdextension.Object(gd.ObjectChecked(gdclass.GetEditorContextMenuPlugin(plugin[0])))})
+	}{slot, gdextension.Object(gdreference.GetObject(gdclass.GetEditorContextMenuPlugin(plugin[0])[0]))})
 }
 func (self class) RemoveContextMenuPlugin(plugin [1]gdclass.EditorContextMenuPlugin) { //gd:EditorPlugin.remove_context_menu_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_context_menu_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorContextMenuPlugin(plugin[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_context_menu_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorContextMenuPlugin(plugin[0])[0]))})
 }
 func (self class) GetEditorInterface() [1]gdclass.EditorInterface { //gd:EditorPlugin.get_editor_interface
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_interface, gdextension.SizeObject, &struct{}{})
@@ -2431,10 +2431,10 @@ func (self class) GetScriptCreateDialog() [1]gdclass.ScriptCreateDialog { //gd:E
 	return ret
 }
 func (self class) AddDebuggerPlugin(script [1]gdclass.EditorDebuggerPlugin) { //gd:EditorPlugin.add_debugger_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_debugger_plugin, 0|(gdextension.SizeObject<<4), &struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorDebuggerPlugin(script[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_debugger_plugin, 0|(gdextension.SizeObject<<4), &struct{ script gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorDebuggerPlugin(script[0])[0]))})
 }
 func (self class) RemoveDebuggerPlugin(script [1]gdclass.EditorDebuggerPlugin) { //gd:EditorPlugin.remove_debugger_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_debugger_plugin, 0|(gdextension.SizeObject<<4), &struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorDebuggerPlugin(script[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_debugger_plugin, 0|(gdextension.SizeObject<<4), &struct{ script gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorDebuggerPlugin(script[0])[0]))})
 }
 func (self class) GetPluginVersion() String.Readable { //gd:EditorPlugin.get_plugin_version
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_plugin_version, gdextension.SizeString, &struct{}{})

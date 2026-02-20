@@ -228,7 +228,7 @@ func (self class) ConnectToPeer(packet_peer [1]gdclass.PacketPeerUDP, hostname S
 		packet_peer    gdextension.Object
 		hostname       gdextension.String
 		client_options gdextension.Object
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetPacketPeerUDP(packet_peer[0]))), pointers.Get(gd.InternalString(hostname)), gdextension.Object(gd.ObjectChecked(gdclass.GetTLSOptions(client_options[0])))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetPacketPeerUDP(packet_peer[0])[0])), pointers.Get(gd.InternalString(hostname)), gdextension.Object(gdreference.GetObject(gdclass.GetTLSOptions(client_options[0])[0]))})
 	var ret = Error.Code(r_ret)
 	return ret
 }

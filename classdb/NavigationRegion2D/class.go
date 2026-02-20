@@ -400,7 +400,7 @@ func (self class) GetRid() RID.Any { //gd:NavigationRegion2D.get_rid
 	return ret
 }
 func (self class) SetNavigationPolygon(navigation_polygon [1]gdclass.NavigationPolygon) { //gd:NavigationRegion2D.set_navigation_polygon
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_polygon, 0|(gdextension.SizeObject<<4), &struct{ navigation_polygon gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationPolygon(navigation_polygon[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_polygon, 0|(gdextension.SizeObject<<4), &struct{ navigation_polygon gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNavigationPolygon(navigation_polygon[0])[0]))})
 }
 func (self class) GetNavigationPolygon() [1]gdclass.NavigationPolygon { //gd:NavigationRegion2D.get_navigation_polygon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_navigation_polygon, gdextension.SizeObject, &struct{}{})

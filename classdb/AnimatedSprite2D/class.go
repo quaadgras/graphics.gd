@@ -452,7 +452,7 @@ func (self Instance) SetFlipV(value bool) Instance { //gd:AnimatedSprite2D.flip_
 }
 
 func (self class) SetSpriteFrames(sprite_frames [1]gdclass.SpriteFrames) { //gd:AnimatedSprite2D.set_sprite_frames
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sprite_frames, 0|(gdextension.SizeObject<<4), &struct{ sprite_frames gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetSpriteFrames(sprite_frames[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sprite_frames, 0|(gdextension.SizeObject<<4), &struct{ sprite_frames gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetSpriteFrames(sprite_frames[0])[0]))})
 }
 func (self class) GetSpriteFrames() [1]gdclass.SpriteFrames { //gd:AnimatedSprite2D.get_sprite_frames
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_sprite_frames, gdextension.SizeObject, &struct{}{})

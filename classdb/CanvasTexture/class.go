@@ -297,7 +297,7 @@ func (self Instance) SetTextureRepeat(value CanvasItem.TextureRepeat) Instance {
 }
 
 func (self class) SetDiffuseTexture(texture [1]gdclass.Texture2D) { //gd:CanvasTexture.set_diffuse_texture
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_diffuse_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_diffuse_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetDiffuseTexture() [1]gdclass.Texture2D { //gd:CanvasTexture.get_diffuse_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_diffuse_texture, gdextension.SizeObject, &struct{}{})
@@ -305,7 +305,7 @@ func (self class) GetDiffuseTexture() [1]gdclass.Texture2D { //gd:CanvasTexture.
 	return ret
 }
 func (self class) SetNormalTexture(texture [1]gdclass.Texture2D) { //gd:CanvasTexture.set_normal_texture
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normal_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normal_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetNormalTexture() [1]gdclass.Texture2D { //gd:CanvasTexture.get_normal_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_normal_texture, gdextension.SizeObject, &struct{}{})
@@ -313,7 +313,7 @@ func (self class) GetNormalTexture() [1]gdclass.Texture2D { //gd:CanvasTexture.g
 	return ret
 }
 func (self class) SetSpecularTexture(texture [1]gdclass.Texture2D) { //gd:CanvasTexture.set_specular_texture
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_specular_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_specular_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetSpecularTexture() [1]gdclass.Texture2D { //gd:CanvasTexture.get_specular_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_specular_texture, gdextension.SizeObject, &struct{}{})

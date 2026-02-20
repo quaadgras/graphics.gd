@@ -497,7 +497,7 @@ func (self class) IsLesserAllowed() bool { //gd:Range.is_lesser_allowed
 	return ret
 }
 func (self class) Share(with [1]gdclass.Node) { //gd:Range.share
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.share, 0|(gdextension.SizeObject<<4), &struct{ with gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(with[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.share, 0|(gdextension.SizeObject<<4), &struct{ with gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(with[0])[0]))})
 }
 func (self class) Unshare() { //gd:Range.unshare
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unshare, 0, &struct{}{})

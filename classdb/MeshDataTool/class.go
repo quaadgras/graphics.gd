@@ -603,7 +603,7 @@ func (self class) CreateFromSurface(mesh [1]gdclass.ArrayMesh, surface int64) Er
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_from_surface, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		mesh    gdextension.Object
 		surface int64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetArrayMesh(mesh[0]))), surface})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetArrayMesh(mesh[0])[0])), surface})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -611,7 +611,7 @@ func (self class) CommitToSurface(mesh [1]gdclass.ArrayMesh, compression_flags i
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.commit_to_surface, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		mesh              gdextension.Object
 		compression_flags int64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetArrayMesh(mesh[0]))), compression_flags})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetArrayMesh(mesh[0])[0])), compression_flags})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -801,7 +801,7 @@ func (self class) GetFaceNormal(idx int64) Vector3.XYZ { //gd:MeshDataTool.get_f
 	return ret
 }
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:MeshDataTool.set_material
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(material[0])[0]))})
 }
 func (self class) GetMaterial() [1]gdclass.Material { //gd:MeshDataTool.get_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})

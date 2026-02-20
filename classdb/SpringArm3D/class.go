@@ -289,7 +289,7 @@ func (self class) GetLength() float64 { //gd:SpringArm3D.get_length
 	return ret
 }
 func (self class) SetShape(shape [1]gdclass.Shape3D) { //gd:SpringArm3D.set_shape
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape, 0|(gdextension.SizeObject<<4), &struct{ shape gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetShape3D(shape[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape, 0|(gdextension.SizeObject<<4), &struct{ shape gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetShape3D(shape[0])[0]))})
 }
 func (self class) GetShape() [1]gdclass.Shape3D { //gd:SpringArm3D.get_shape
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shape, gdextension.SizeObject, &struct{}{})

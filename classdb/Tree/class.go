@@ -917,7 +917,7 @@ func (self class) CreateItem(parent [1]gdclass.TreeItem, index int64) [1]gdclass
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_item, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		parent gdextension.Object
 		index  int64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTreeItem(parent[0]))), index})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetTreeItem(parent[0])[0])), index})
 	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gdreference.LetObject(r_ret))}
 	return ret
 }
@@ -979,7 +979,7 @@ func (self class) IsRootHidden() bool { //gd:Tree.is_root_hidden
 	return ret
 }
 func (self class) GetNextSelected(from [1]gdclass.TreeItem) [1]gdclass.TreeItem { //gd:Tree.get_next_selected
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_next_selected, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ from gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTreeItem(from[0])))})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_next_selected, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ from gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTreeItem(from[0])[0]))})
 	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gdreference.LetObject(r_ret))}
 	return ret
 }
@@ -992,7 +992,7 @@ func (self class) SetSelected(item [1]gdclass.TreeItem, column int64) { //gd:Tre
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selected, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		item   gdextension.Object
 		column int64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTreeItem(item[0]))), column})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetTreeItem(item[0])[0])), column})
 }
 func (self class) GetSelectedColumn() int64 { //gd:Tree.get_selected_column
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selected_column, gdextension.SizeInt, &struct{}{})
@@ -1048,7 +1048,7 @@ func (self class) GetItemAreaRect(item [1]gdclass.TreeItem, column int64, button
 		item         gdextension.Object
 		column       int64
 		button_index int64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTreeItem(item[0]))), column, button_index})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetTreeItem(item[0])[0])), column, button_index})
 	var ret = r_ret
 	return ret
 }
@@ -1147,7 +1147,7 @@ func (self class) ScrollToItem(item [1]gdclass.TreeItem, center_on_item bool) { 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.scroll_to_item, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		item           gdextension.Object
 		center_on_item bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTreeItem(item[0]))), center_on_item})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetTreeItem(item[0])[0])), center_on_item})
 }
 func (self class) SetHScrollEnabled(h_scroll bool) { //gd:Tree.set_h_scroll_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_scroll_enabled, 0|(gdextension.SizeBool<<4), &struct{ h_scroll bool }{h_scroll})

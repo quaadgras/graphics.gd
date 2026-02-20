@@ -399,7 +399,7 @@ func (self class) GetRid() RID.Any { //gd:NavigationRegion3D.get_rid
 	return ret
 }
 func (self class) SetNavigationMesh(navigation_mesh [1]gdclass.NavigationMesh) { //gd:NavigationRegion3D.set_navigation_mesh
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_mesh, 0|(gdextension.SizeObject<<4), &struct{ navigation_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationMesh(navigation_mesh[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_mesh, 0|(gdextension.SizeObject<<4), &struct{ navigation_mesh gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNavigationMesh(navigation_mesh[0])[0]))})
 }
 func (self class) GetNavigationMesh() [1]gdclass.NavigationMesh { //gd:NavigationRegion3D.get_navigation_mesh
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_navigation_mesh, gdextension.SizeObject, &struct{}{})

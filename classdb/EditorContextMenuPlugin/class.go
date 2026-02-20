@@ -308,28 +308,28 @@ func (self class) AddMenuShortcut(shortcut [1]gdclass.Shortcut, callback Callabl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_menu_shortcut, 0|(gdextension.SizeObject<<4)|(gdextension.SizeCallable<<8), &struct {
 		shortcut gdextension.Object
 		callback gdextension.Callable
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), pointers.Get(gd.InternalCallable(callback))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetShortcut(shortcut[0])[0])), pointers.Get(gd.InternalCallable(callback))})
 }
 func (self class) AddContextMenuItem(name String.Readable, callback Callable.Function, icon [1]gdclass.Texture2D) { //gd:EditorContextMenuPlugin.add_context_menu_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_context_menu_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeObject<<12), &struct {
 		name     gdextension.String
 		callback gdextension.Callable
 		icon     gdextension.Object
-	}{pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalCallable(callback)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
+	}{pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalCallable(callback)), gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(icon[0])[0]))})
 }
 func (self class) AddContextMenuItemFromShortcut(name String.Readable, shortcut [1]gdclass.Shortcut, icon [1]gdclass.Texture2D) { //gd:EditorContextMenuPlugin.add_context_menu_item_from_shortcut
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_context_menu_item_from_shortcut, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), &struct {
 		name     gdextension.String
 		shortcut gdextension.Object
 		icon     gdextension.Object
-	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
+	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gdreference.GetObject(gdclass.GetShortcut(shortcut[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(icon[0])[0]))})
 }
 func (self class) AddContextSubmenuItem(name String.Readable, menu [1]gdclass.PopupMenu, icon [1]gdclass.Texture2D) { //gd:EditorContextMenuPlugin.add_context_submenu_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_context_submenu_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), &struct {
 		name gdextension.String
 		menu gdextension.Object
 		icon gdextension.Object
-	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetPopupMenu(menu[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
+	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gdreference.GetObject(gdclass.GetPopupMenu(menu[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(icon[0])[0]))})
 }
 func (o class) AsEditorContextMenuPlugin() Advanced         { return Advanced(o) }
 func (o Instance) AsEditorContextMenuPlugin() Instance      { return o }

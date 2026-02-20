@@ -453,7 +453,7 @@ func (self class) SetClipStream(clip_index int64, stream [1]gdclass.AudioStream)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clip_stream, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		clip_index int64
 		stream     gdextension.Object
-	}{clip_index, gdextension.Object(gd.ObjectChecked(gdclass.GetAudioStream(stream[0])))})
+	}{clip_index, gdextension.Object(gdreference.GetObject(gdclass.GetAudioStream(stream[0])[0]))})
 }
 func (self class) GetClipStream(clip_index int64) [1]gdclass.AudioStream { //gd:AudioStreamInteractive.get_clip_stream
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_clip_stream, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ clip_index int64 }{clip_index})

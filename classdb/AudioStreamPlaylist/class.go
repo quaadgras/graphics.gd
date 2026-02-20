@@ -881,7 +881,7 @@ func (self class) SetListStream(stream_index int64, audio_stream [1]gdclass.Audi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_list_stream, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		stream_index int64
 		audio_stream gdextension.Object
-	}{stream_index, gdextension.Object(gd.ObjectChecked(gdclass.GetAudioStream(audio_stream[0])))})
+	}{stream_index, gdextension.Object(gdreference.GetObject(gdclass.GetAudioStream(audio_stream[0])[0]))})
 }
 func (self class) GetListStream(stream_index int64) [1]gdclass.AudioStream { //gd:AudioStreamPlaylist.get_list_stream
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_list_stream, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ stream_index int64 }{stream_index})

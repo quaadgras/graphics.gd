@@ -320,7 +320,7 @@ func (self Instance) SetVisibilityMode(value VisibilityMode) Instance { //gd:Tou
 }
 
 func (self class) SetTextureNormal(texture [1]gdclass.Texture2D) { //gd:TouchScreenButton.set_texture_normal
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_normal, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_normal, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetTextureNormal() [1]gdclass.Texture2D { //gd:TouchScreenButton.get_texture_normal
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_normal, gdextension.SizeObject, &struct{}{})
@@ -328,7 +328,7 @@ func (self class) GetTextureNormal() [1]gdclass.Texture2D { //gd:TouchScreenButt
 	return ret
 }
 func (self class) SetTexturePressed(texture [1]gdclass.Texture2D) { //gd:TouchScreenButton.set_texture_pressed
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_pressed, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_pressed, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetTexturePressed() [1]gdclass.Texture2D { //gd:TouchScreenButton.get_texture_pressed
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_pressed, gdextension.SizeObject, &struct{}{})
@@ -336,7 +336,7 @@ func (self class) GetTexturePressed() [1]gdclass.Texture2D { //gd:TouchScreenBut
 	return ret
 }
 func (self class) SetBitmask(bitmask [1]gdclass.BitMap) { //gd:TouchScreenButton.set_bitmask
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bitmask, 0|(gdextension.SizeObject<<4), &struct{ bitmask gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetBitMap(bitmask[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bitmask, 0|(gdextension.SizeObject<<4), &struct{ bitmask gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetBitMap(bitmask[0])[0]))})
 }
 func (self class) GetBitmask() [1]gdclass.BitMap { //gd:TouchScreenButton.get_bitmask
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_bitmask, gdextension.SizeObject, &struct{}{})
@@ -344,7 +344,7 @@ func (self class) GetBitmask() [1]gdclass.BitMap { //gd:TouchScreenButton.get_bi
 	return ret
 }
 func (self class) SetShape(shape [1]gdclass.Shape2D) { //gd:TouchScreenButton.set_shape
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape, 0|(gdextension.SizeObject<<4), &struct{ shape gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetShape2D(shape[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape, 0|(gdextension.SizeObject<<4), &struct{ shape gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetShape2D(shape[0])[0]))})
 }
 func (self class) GetShape() [1]gdclass.Shape2D { //gd:TouchScreenButton.get_shape
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shape, gdextension.SizeObject, &struct{}{})

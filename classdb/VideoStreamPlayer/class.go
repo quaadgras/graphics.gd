@@ -404,7 +404,7 @@ func (self Instance) SetBus(value string) Instance { //gd:VideoStreamPlayer.bus
 }
 
 func (self class) SetStream(stream [1]gdclass.VideoStream) { //gd:VideoStreamPlayer.set_stream
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream, 0|(gdextension.SizeObject<<4), &struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetVideoStream(stream[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream, 0|(gdextension.SizeObject<<4), &struct{ stream gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetVideoStream(stream[0])[0]))})
 }
 func (self class) GetStream() [1]gdclass.VideoStream { //gd:VideoStreamPlayer.get_stream
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_stream, gdextension.SizeObject, &struct{}{})

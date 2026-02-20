@@ -1007,7 +1007,7 @@ func (self class) SetIcon(name String.Name, theme_type String.Name, texture [1]g
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 		texture    gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetIcon(name String.Name, theme_type String.Name) [1]gdclass.Texture2D { //gd:Theme.get_icon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_icon, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
@@ -1053,7 +1053,7 @@ func (self class) SetStylebox(name String.Name, theme_type String.Name, texture 
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 		texture    gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), gdextension.Object(gd.ObjectChecked(gdclass.GetStyleBox(texture[0])))})
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), gdextension.Object(gdreference.GetObject(gdclass.GetStyleBox(texture[0])[0]))})
 }
 func (self class) GetStylebox(name String.Name, theme_type String.Name) [1]gdclass.StyleBox { //gd:Theme.get_stylebox
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_stylebox, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
@@ -1099,7 +1099,7 @@ func (self class) SetFont(name String.Name, theme_type String.Name, font [1]gdcl
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 		font       gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0])))})
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), gdextension.Object(gdreference.GetObject(gdclass.GetFont(font[0])[0]))})
 }
 func (self class) GetFont(name String.Name, theme_type String.Name) [1]gdclass.Font { //gd:Theme.get_font
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_font, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
@@ -1292,7 +1292,7 @@ func (self class) HasDefaultBaseScale() bool { //gd:Theme.has_default_base_scale
 	return ret
 }
 func (self class) SetDefaultFont(font [1]gdclass.Font) { //gd:Theme.set_default_font
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_font, 0|(gdextension.SizeObject<<4), &struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_font, 0|(gdextension.SizeObject<<4), &struct{ font gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetFont(font[0])[0]))})
 }
 func (self class) GetDefaultFont() [1]gdclass.Font { //gd:Theme.get_default_font
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_default_font, gdextension.SizeObject, &struct{}{})
@@ -1416,7 +1416,7 @@ func (self class) GetTypeList() Packed.Strings { //gd:Theme.get_type_list
 	return ret
 }
 func (self class) MergeWith(other [1]gdclass.Theme) { //gd:Theme.merge_with
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.merge_with, 0|(gdextension.SizeObject<<4), &struct{ other gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTheme(other[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.merge_with, 0|(gdextension.SizeObject<<4), &struct{ other gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTheme(other[0])[0]))})
 }
 func (self class) Clear() { //gd:Theme.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})

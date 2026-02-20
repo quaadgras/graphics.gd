@@ -763,7 +763,7 @@ func (self class) GetBakeMode() BakeMode { //gd:Light3D.get_bake_mode
 	return ret
 }
 func (self class) SetProjector(projector [1]gdclass.Texture2D) { //gd:Light3D.set_projector
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_projector, 0|(gdextension.SizeObject<<4), &struct{ projector gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(projector[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_projector, 0|(gdextension.SizeObject<<4), &struct{ projector gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(projector[0])[0]))})
 }
 func (self class) GetProjector() [1]gdclass.Texture2D { //gd:Light3D.get_projector
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_projector, gdextension.SizeObject, &struct{}{})

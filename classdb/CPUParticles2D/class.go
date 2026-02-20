@@ -1407,7 +1407,7 @@ func (self class) GetDrawOrder() DrawOrder { //gd:CPUParticles2D.get_draw_order
 	return ret
 }
 func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:CPUParticles2D.set_texture
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:CPUParticles2D.get_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
@@ -1459,7 +1459,7 @@ func (self class) SetParamCurve(param Parameter, curve [1]gdclass.Curve) { //gd:
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param_curve, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		param Parameter
 		curve gdextension.Object
-	}{param, gdextension.Object(gd.ObjectChecked(gdclass.GetCurve(curve[0])))})
+	}{param, gdextension.Object(gdreference.GetObject(gdclass.GetCurve(curve[0])[0]))})
 }
 func (self class) GetParamCurve(param Parameter) [1]gdclass.Curve { //gd:CPUParticles2D.get_param_curve
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_param_curve, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ param Parameter }{param})
@@ -1475,7 +1475,7 @@ func (self class) GetColor() Color.RGBA { //gd:CPUParticles2D.get_color
 	return ret
 }
 func (self class) SetColorRamp(ramp [1]gdclass.Gradient) { //gd:CPUParticles2D.set_color_ramp
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_ramp, 0|(gdextension.SizeObject<<4), &struct{ ramp gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetGradient(ramp[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_ramp, 0|(gdextension.SizeObject<<4), &struct{ ramp gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetGradient(ramp[0])[0]))})
 }
 func (self class) GetColorRamp() [1]gdclass.Gradient { //gd:CPUParticles2D.get_color_ramp
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_ramp, gdextension.SizeObject, &struct{}{})
@@ -1483,7 +1483,7 @@ func (self class) GetColorRamp() [1]gdclass.Gradient { //gd:CPUParticles2D.get_c
 	return ret
 }
 func (self class) SetColorInitialRamp(ramp [1]gdclass.Gradient) { //gd:CPUParticles2D.set_color_initial_ramp
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_initial_ramp, 0|(gdextension.SizeObject<<4), &struct{ ramp gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetGradient(ramp[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_initial_ramp, 0|(gdextension.SizeObject<<4), &struct{ ramp gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetGradient(ramp[0])[0]))})
 }
 func (self class) GetColorInitialRamp() [1]gdclass.Gradient { //gd:CPUParticles2D.get_color_initial_ramp
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_initial_ramp, gdextension.SizeObject, &struct{}{})
@@ -1593,7 +1593,7 @@ func (self class) GetScaleCurveX() [1]gdclass.Curve { //gd:CPUParticles2D.get_sc
 	return ret
 }
 func (self class) SetScaleCurveX(scale_curve [1]gdclass.Curve) { //gd:CPUParticles2D.set_scale_curve_x
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_curve_x, 0|(gdextension.SizeObject<<4), &struct{ scale_curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCurve(scale_curve[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_curve_x, 0|(gdextension.SizeObject<<4), &struct{ scale_curve gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCurve(scale_curve[0])[0]))})
 }
 func (self class) GetScaleCurveY() [1]gdclass.Curve { //gd:CPUParticles2D.get_scale_curve_y
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_scale_curve_y, gdextension.SizeObject, &struct{}{})
@@ -1601,10 +1601,10 @@ func (self class) GetScaleCurveY() [1]gdclass.Curve { //gd:CPUParticles2D.get_sc
 	return ret
 }
 func (self class) SetScaleCurveY(scale_curve [1]gdclass.Curve) { //gd:CPUParticles2D.set_scale_curve_y
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_curve_y, 0|(gdextension.SizeObject<<4), &struct{ scale_curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCurve(scale_curve[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_curve_y, 0|(gdextension.SizeObject<<4), &struct{ scale_curve gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCurve(scale_curve[0])[0]))})
 }
 func (self class) ConvertFromParticles(particles [1]gdclass.Node) { //gd:CPUParticles2D.convert_from_particles
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.convert_from_particles, 0|(gdextension.SizeObject<<4), &struct{ particles gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(particles[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.convert_from_particles, 0|(gdextension.SizeObject<<4), &struct{ particles gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(particles[0])[0]))})
 }
 
 /*

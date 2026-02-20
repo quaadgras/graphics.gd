@@ -399,7 +399,7 @@ func (self class) TestMove(from Transform3D.BasisOrigin, motion Vector3.XYZ, col
 		safe_margin           float64
 		recovery_as_collision bool
 		max_collisions        int64
-	}{gd.Transposed(from), motion, gdextension.Object(gd.ObjectChecked(gdclass.GetKinematicCollision3D(collision[0]))), safe_margin, recovery_as_collision, max_collisions})
+	}{gd.Transposed(from), motion, gdextension.Object(gdreference.GetObject(gdclass.GetKinematicCollision3D(collision[0])[0])), safe_margin, recovery_as_collision, max_collisions})
 	var ret = r_ret
 	return ret
 }
@@ -425,10 +425,10 @@ func (self class) GetCollisionExceptions() Array.Contains[[1]gdclass.PhysicsBody
 	return ret
 }
 func (self class) AddCollisionExceptionWith(body [1]gdclass.Node) { //gd:PhysicsBody3D.add_collision_exception_with
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_collision_exception_with, 0|(gdextension.SizeObject<<4), &struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(body[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_collision_exception_with, 0|(gdextension.SizeObject<<4), &struct{ body gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(body[0])[0]))})
 }
 func (self class) RemoveCollisionExceptionWith(body [1]gdclass.Node) { //gd:PhysicsBody3D.remove_collision_exception_with
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_collision_exception_with, 0|(gdextension.SizeObject<<4), &struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(body[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_collision_exception_with, 0|(gdextension.SizeObject<<4), &struct{ body gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(body[0])[0]))})
 }
 func (o class) AsPhysicsBody3D() Advanced         { return Advanced(o) }
 func (o Instance) AsPhysicsBody3D() Instance      { return o }

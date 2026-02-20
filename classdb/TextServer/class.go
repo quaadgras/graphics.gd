@@ -3018,7 +3018,7 @@ func (self class) FontSetTextureImage(font_rid RID.Any, size Vector2i.XY, textur
 		size          Vector2i.XY
 		texture_index int64
 		image         gdextension.Object
-	}{font_rid, size, texture_index, gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0])))})
+	}{font_rid, size, texture_index, gdextension.Object(gdreference.GetObject(gdclass.GetImage(image[0])[0]))})
 }
 func (self class) FontGetTextureImage(font_rid RID.Any, size Vector2i.XY, texture_index int64) [1]gdclass.Image { //gd:TextServer.font_get_texture_image
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.font_get_texture_image, gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), &struct {

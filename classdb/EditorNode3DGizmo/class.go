@@ -801,7 +801,7 @@ func (self class) AddLines(lines Packed.Array[Vector3.XYZ], material [1]gdclass.
 		material  gdextension.Object
 		billboard bool
 		modulate  Color.RGBA
-	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](lines)), gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0]))), billboard, modulate})
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](lines)), gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(material[0])[0])), billboard, modulate})
 }
 func (self class) AddMesh(mesh [1]gdclass.Mesh, material [1]gdclass.Material, transform Transform3D.BasisOrigin, skeleton [1]gdclass.SkinReference) { //gd:EditorNode3DGizmo.add_mesh
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_mesh, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeObject<<16), &struct {
@@ -809,7 +809,7 @@ func (self class) AddMesh(mesh [1]gdclass.Mesh, material [1]gdclass.Material, tr
 		material  gdextension.Object
 		transform Transform3D.BasisOrigin
 		skeleton  gdextension.Object
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetMesh(mesh[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0]))), gd.Transposed(transform), gdextension.Object(gd.ObjectChecked(gdclass.GetSkinReference(skeleton[0])))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetMesh(mesh[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(material[0])[0])), gd.Transposed(transform), gdextension.Object(gdreference.GetObject(gdclass.GetSkinReference(skeleton[0])[0]))})
 }
 func (self class) AddCollisionSegments(segments Packed.Array[Vector3.XYZ]) { //gd:EditorNode3DGizmo.add_collision_segments
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_collision_segments, 0|(gdextension.SizePackedArray<<4), &struct {
@@ -817,14 +817,14 @@ func (self class) AddCollisionSegments(segments Packed.Array[Vector3.XYZ]) { //g
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](segments))})
 }
 func (self class) AddCollisionTriangles(triangles [1]gdclass.TriangleMesh) { //gd:EditorNode3DGizmo.add_collision_triangles
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_collision_triangles, 0|(gdextension.SizeObject<<4), &struct{ triangles gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTriangleMesh(triangles[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_collision_triangles, 0|(gdextension.SizeObject<<4), &struct{ triangles gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTriangleMesh(triangles[0])[0]))})
 }
 func (self class) AddUnscaledBillboard(material [1]gdclass.Material, default_scale float64, modulate Color.RGBA) { //gd:EditorNode3DGizmo.add_unscaled_billboard
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_unscaled_billboard, 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeColor<<12), &struct {
 		material      gdextension.Object
 		default_scale float64
 		modulate      Color.RGBA
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0]))), default_scale, modulate})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(material[0])[0])), default_scale, modulate})
 }
 func (self class) AddHandles(handles Packed.Array[Vector3.XYZ], material [1]gdclass.Material, ids Packed.Array[int32], billboard bool, secondary bool) { //gd:EditorNode3DGizmo.add_handles
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_handles, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeObject<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), &struct {
@@ -833,7 +833,7 @@ func (self class) AddHandles(handles Packed.Array[Vector3.XYZ], material [1]gdcl
 		ids       gdextension.PackedArray[int32]
 		billboard bool
 		secondary bool
-	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](handles)), gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0]))), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](ids)), billboard, secondary})
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](handles)), gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(material[0])[0])), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](ids)), billboard, secondary})
 }
 func (self class) SetNode3d(node [1]gdclass.Node) { //gd:EditorNode3DGizmo.set_node_3d
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_node_3d, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetNode(node[0])[0]))})

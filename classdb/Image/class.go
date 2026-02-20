@@ -1364,7 +1364,7 @@ func (self class) ComputeImageMetrics(compared_image [1]gdclass.Image, use_luma 
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.compute_image_metrics, gdextension.SizeDictionary|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		compared_image gdextension.Object
 		use_luma       bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(compared_image[0]))), use_luma})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetImage(compared_image[0])[0])), use_luma})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -1373,7 +1373,7 @@ func (self class) BlitRect(src [1]gdclass.Image, src_rect Rect2i.PositionSize, d
 		src      gdextension.Object
 		src_rect Rect2i.PositionSize
 		dst      Vector2i.XY
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(src[0]))), src_rect, dst})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetImage(src[0])[0])), src_rect, dst})
 }
 func (self class) BlitRectMask(src [1]gdclass.Image, mask [1]gdclass.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blit_rect_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.blit_rect_mask, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeRect2i<<12)|(gdextension.SizeVector2i<<16), &struct {
@@ -1381,14 +1381,14 @@ func (self class) BlitRectMask(src [1]gdclass.Image, mask [1]gdclass.Image, src_
 		mask     gdextension.Object
 		src_rect Rect2i.PositionSize
 		dst      Vector2i.XY
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(src[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetImage(mask[0]))), src_rect, dst})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetImage(src[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetImage(mask[0])[0])), src_rect, dst})
 }
 func (self class) BlendRect(src [1]gdclass.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blend_rect
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.blend_rect, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2i<<8)|(gdextension.SizeVector2i<<12), &struct {
 		src      gdextension.Object
 		src_rect Rect2i.PositionSize
 		dst      Vector2i.XY
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(src[0]))), src_rect, dst})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetImage(src[0])[0])), src_rect, dst})
 }
 func (self class) BlendRectMask(src [1]gdclass.Image, mask [1]gdclass.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blend_rect_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.blend_rect_mask, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeRect2i<<12)|(gdextension.SizeVector2i<<16), &struct {
@@ -1396,7 +1396,7 @@ func (self class) BlendRectMask(src [1]gdclass.Image, mask [1]gdclass.Image, src
 		mask     gdextension.Object
 		src_rect Rect2i.PositionSize
 		dst      Vector2i.XY
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(src[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetImage(mask[0]))), src_rect, dst})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetImage(src[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetImage(mask[0])[0])), src_rect, dst})
 }
 func (self class) Fill(color Color.RGBA) { //gd:Image.fill
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.fill, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
@@ -1418,7 +1418,7 @@ func (self class) GetRegion(region Rect2i.PositionSize) [1]gdclass.Image { //gd:
 	return ret
 }
 func (self class) CopyFrom(src [1]gdclass.Image) { //gd:Image.copy_from
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.copy_from, 0|(gdextension.SizeObject<<4), &struct{ src gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(src[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.copy_from, 0|(gdextension.SizeObject<<4), &struct{ src gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetImage(src[0])[0]))})
 }
 func (self class) GetPixelv(point Vector2i.XY) Color.RGBA { //gd:Image.get_pixelv
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_pixelv, gdextension.SizeColor|(gdextension.SizeVector2i<<4), &struct{ point Vector2i.XY }{point})

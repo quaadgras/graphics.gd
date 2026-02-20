@@ -455,7 +455,7 @@ func (self class) AddUndoReference(obj [1]gd.Object) { //gd:EditorUndoRedoManage
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_undo_reference, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0]))})
 }
 func (self class) GetObjectHistoryId(obj [1]gd.Object) int64 { //gd:EditorUndoRedoManager.get_object_history_id
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_object_history_id, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0])))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_object_history_id, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetObject(obj[0])[0]))})
 	var ret = r_ret
 	return ret
 }

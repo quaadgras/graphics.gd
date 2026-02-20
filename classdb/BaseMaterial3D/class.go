@@ -2612,7 +2612,7 @@ func (self class) SetTexture(param TextureParam, texture [1]gdclass.Texture2D) {
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		param   TextureParam
 		texture gdextension.Object
-	}{param, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
+	}{param, gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetTexture(param TextureParam) [1]gdclass.Texture2D { //gd:BaseMaterial3D.get_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ param TextureParam }{param})

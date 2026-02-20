@@ -318,7 +318,7 @@ func (self class) GetEdgeFade() float64 { //gd:FogMaterial.get_edge_fade
 	return ret
 }
 func (self class) SetDensityTexture(density_texture [1]gdclass.Texture3D) { //gd:FogMaterial.set_density_texture
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_density_texture, 0|(gdextension.SizeObject<<4), &struct{ density_texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture3D(density_texture[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_density_texture, 0|(gdextension.SizeObject<<4), &struct{ density_texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture3D(density_texture[0])[0]))})
 }
 func (self class) GetDensityTexture() [1]gdclass.Texture3D { //gd:FogMaterial.get_density_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_density_texture, gdextension.SizeObject, &struct{}{})

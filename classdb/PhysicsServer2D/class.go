@@ -1999,7 +1999,7 @@ func (self class) BodyTestMotion(body RID.Any, parameters [1]gdclass.PhysicsTest
 		body       RID.Any
 		parameters gdextension.Object
 		result     gdextension.Object
-	}{body, gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsTestMotionParameters2D(parameters[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsTestMotionResult2D(result[0])))})
+	}{body, gdextension.Object(gdreference.GetObject(gdclass.GetPhysicsTestMotionParameters2D(parameters[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetPhysicsTestMotionResult2D(result[0])[0]))})
 	var ret = r_ret
 	return ret
 }

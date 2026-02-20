@@ -526,7 +526,7 @@ func (self Instance) SetDebugShapeCustomColor(value Color.RGBA) Instance { //gd:
 }
 
 func (self class) ResourceChanged(resource [1]gdclass.Resource) { //gd:ShapeCast3D.resource_changed
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resource_changed, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetResource(resource[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resource_changed, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetResource(resource[0])[0]))})
 }
 func (self class) SetEnabled(enabled bool) { //gd:ShapeCast3D.set_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
@@ -537,7 +537,7 @@ func (self class) IsEnabled() bool { //gd:ShapeCast3D.is_enabled
 	return ret
 }
 func (self class) SetShape(shape [1]gdclass.Shape3D) { //gd:ShapeCast3D.set_shape
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape, 0|(gdextension.SizeObject<<4), &struct{ shape gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetShape3D(shape[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape, 0|(gdextension.SizeObject<<4), &struct{ shape gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetShape3D(shape[0])[0]))})
 }
 func (self class) GetShape() [1]gdclass.Shape3D { //gd:ShapeCast3D.get_shape
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shape, gdextension.SizeObject, &struct{}{})
@@ -626,7 +626,7 @@ func (self class) RemoveExceptionRid(rid RID.Any) { //gd:ShapeCast3D.remove_exce
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_exception_rid, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 }
 func (self class) RemoveException(node [1]gdclass.CollisionObject3D) { //gd:ShapeCast3D.remove_exception
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_exception, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCollisionObject3D(node[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_exception, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCollisionObject3D(node[0])[0]))})
 }
 func (self class) ClearExceptions() { //gd:ShapeCast3D.clear_exceptions
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_exceptions, 0, &struct{}{})

@@ -1065,7 +1065,7 @@ func (self class) SetPattern(position Vector2i.XY, pattern [1]gdclass.TileMapPat
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pattern, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeObject<<8), &struct {
 		position Vector2i.XY
 		pattern  gdextension.Object
-	}{position, gdextension.Object(gd.ObjectChecked(gdclass.GetTileMapPattern(pattern[0])))})
+	}{position, gdextension.Object(gdreference.GetObject(gdclass.GetTileMapPattern(pattern[0])[0]))})
 }
 func (self class) SetCellsTerrainConnect(cells Array.Contains[Vector2i.XY], terrain_set int64, terrain int64, ignore_empty_terrains bool) { //gd:TileMapLayer.set_cells_terrain_connect
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cells_terrain_connect, 0|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), &struct {
@@ -1104,7 +1104,7 @@ func (self class) MapPattern(position_in_tilemap Vector2i.XY, coords_in_pattern 
 		position_in_tilemap Vector2i.XY
 		coords_in_pattern   Vector2i.XY
 		pattern             gdextension.Object
-	}{position_in_tilemap, coords_in_pattern, gdextension.Object(gd.ObjectChecked(gdclass.GetTileMapPattern(pattern[0])))})
+	}{position_in_tilemap, coords_in_pattern, gdextension.Object(gdreference.GetObject(gdclass.GetTileMapPattern(pattern[0])[0]))})
 	var ret = r_ret
 	return ret
 }
@@ -1148,7 +1148,7 @@ func (self class) IsEnabled() bool { //gd:TileMapLayer.is_enabled
 	return ret
 }
 func (self class) SetTileSet(tile_set [1]gdclass.TileSet) { //gd:TileMapLayer.set_tile_set
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_set, 0|(gdextension.SizeObject<<4), &struct{ tile_set gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTileSet(tile_set[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_set, 0|(gdextension.SizeObject<<4), &struct{ tile_set gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTileSet(tile_set[0])[0]))})
 }
 func (self class) GetTileSet() [1]gdclass.TileSet { //gd:TileMapLayer.get_tile_set
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tile_set, gdextension.SizeObject, &struct{}{})

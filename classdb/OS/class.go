@@ -1938,11 +1938,11 @@ func (self class) RevokeGrantedPermissions() { //gd:OS.revoke_granted_permission
 }
 func (self class) AddLogger(logger [1]gdclass.Logger) { //gd:OS.add_logger
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.add_logger, 0|(gdextension.SizeObject<<4), &struct{ logger gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetLogger(logger[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.add_logger, 0|(gdextension.SizeObject<<4), &struct{ logger gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetLogger(logger[0])[0]))})
 }
 func (self class) RemoveLogger(logger [1]gdclass.Logger) { //gd:OS.remove_logger
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.remove_logger, 0|(gdextension.SizeObject<<4), &struct{ logger gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetLogger(logger[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.remove_logger, 0|(gdextension.SizeObject<<4), &struct{ logger gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetLogger(logger[0])[0]))})
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

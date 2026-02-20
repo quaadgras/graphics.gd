@@ -744,7 +744,7 @@ func (self class) AppendGltfNode(gltf_node [1]gdclass.GLTFNode, godot_scene_node
 		gltf_node         gdextension.Object
 		godot_scene_node  gdextension.Object
 		parent_node_index int64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFNode(gltf_node[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetNode(godot_scene_node[0]))), parent_node_index})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetGLTFNode(gltf_node[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetNode(godot_scene_node[0])[0])), parent_node_index})
 	var ret = r_ret
 	return ret
 }
@@ -990,7 +990,7 @@ func (self class) GetSceneNode(gltf_node_index int64) [1]gdclass.Node { //gd:GLT
 	return ret
 }
 func (self class) GetNodeIndex(scene_node [1]gdclass.Node) int64 { //gd:GLTFState.get_node_index
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_node_index, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ scene_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(scene_node[0])))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_node_index, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ scene_node gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(scene_node[0])[0]))})
 	var ret = r_ret
 	return ret
 }

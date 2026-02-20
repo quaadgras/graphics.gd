@@ -323,7 +323,7 @@ func (self class) AddMesh(mesh [1]gdclass.Mesh, xform Transform3D.BasisOrigin) {
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_mesh, 0|(gdextension.SizeObject<<4)|(gdextension.SizeTransform3D<<8), &struct {
 		mesh  gdextension.Object
 		xform Transform3D.BasisOrigin
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetMesh(mesh[0]))), gd.Transposed(xform)})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetMesh(mesh[0])[0])), gd.Transposed(xform)})
 }
 func (self class) AddMeshArray(mesh_array Array.Any, xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_mesh_array
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_mesh_array, 0|(gdextension.SizeArray<<4)|(gdextension.SizeTransform3D<<8), &struct {
@@ -338,7 +338,7 @@ func (self class) AddFaces(faces Packed.Array[Vector3.XYZ], xform Transform3D.Ba
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](faces)), gd.Transposed(xform)})
 }
 func (self class) Merge(other_geometry [1]gdclass.NavigationMeshSourceGeometryData3D) { //gd:NavigationMeshSourceGeometryData3D.merge
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.merge, 0|(gdextension.SizeObject<<4), &struct{ other_geometry gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationMeshSourceGeometryData3D(other_geometry[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.merge, 0|(gdextension.SizeObject<<4), &struct{ other_geometry gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNavigationMeshSourceGeometryData3D(other_geometry[0])[0]))})
 }
 func (self class) AddProjectedObstruction(vertices Packed.Array[Vector3.XYZ], elevation float64, height float64, carve bool) { //gd:NavigationMeshSourceGeometryData3D.add_projected_obstruction
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_projected_obstruction, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), &struct {

@@ -237,7 +237,7 @@ func (self Instance) SetAnimPlayer(value string) Instance { //gd:AnimationTree.a
 }
 
 func (self class) SetTreeRoot(animation_node [1]gdclass.AnimationRootNode) { //gd:AnimationTree.set_tree_root
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tree_root, 0|(gdextension.SizeObject<<4), &struct{ animation_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetAnimationRootNode(animation_node[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tree_root, 0|(gdextension.SizeObject<<4), &struct{ animation_node gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetAnimationRootNode(animation_node[0])[0]))})
 }
 func (self class) GetTreeRoot() [1]gdclass.AnimationRootNode { //gd:AnimationTree.get_tree_root
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tree_root, gdextension.SizeObject, &struct{}{})

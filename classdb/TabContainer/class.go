@@ -745,7 +745,7 @@ func (self class) SetTabIcon(tab_idx int64, icon [1]gdclass.Texture2D) { //gd:Ta
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		tab_idx int64
 		icon    gdextension.Object
-	}{tab_idx, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
+	}{tab_idx, gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(icon[0])[0]))})
 }
 func (self class) GetTabIcon(tab_idx int64) [1]gdclass.Texture2D { //gd:TabContainer.get_tab_icon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tab_icon, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
@@ -800,7 +800,7 @@ func (self class) SetTabButtonIcon(tab_idx int64, icon [1]gdclass.Texture2D) { /
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_button_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		tab_idx int64
 		icon    gdextension.Object
-	}{tab_idx, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
+	}{tab_idx, gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(icon[0])[0]))})
 }
 func (self class) GetTabButtonIcon(tab_idx int64) [1]gdclass.Texture2D { //gd:TabContainer.get_tab_button_icon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tab_button_icon, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
@@ -813,7 +813,7 @@ func (self class) GetTabIdxAtPoint(point Vector2.XY) int64 { //gd:TabContainer.g
 	return ret
 }
 func (self class) GetTabIdxFromControl(control [1]gdclass.Control) int64 { //gd:TabContainer.get_tab_idx_from_control
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tab_idx_from_control, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0])))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tab_idx_from_control, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetControl(control[0])[0]))})
 	var ret = r_ret
 	return ret
 }

@@ -748,7 +748,7 @@ func (self class) GenerateLod(nd_threshold float64, target_index_count int64) Pa
 	return ret
 }
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:SurfaceTool.set_material
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(material[0])[0]))})
 }
 func (self class) GetPrimitiveType() Mesh.PrimitiveType { //gd:SurfaceTool.get_primitive_type
 	var r_ret = noescape.Call[Mesh.PrimitiveType](gd.ObjectChecked(self.AsObject()), methods.get_primitive_type, gdextension.SizeInt, &struct{}{})
@@ -762,7 +762,7 @@ func (self class) CreateFrom(existing [1]gdclass.Mesh, surface int64) { //gd:Sur
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_from, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		existing gdextension.Object
 		surface  int64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetMesh(existing[0]))), surface})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetMesh(existing[0])[0])), surface})
 }
 func (self class) CreateFromArrays(arrays Array.Any, primitive_type Mesh.PrimitiveType) { //gd:SurfaceTool.create_from_arrays
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_from_arrays, 0|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8), &struct {
@@ -775,20 +775,20 @@ func (self class) CreateFromBlendShape(existing [1]gdclass.Mesh, surface int64, 
 		existing    gdextension.Object
 		surface     int64
 		blend_shape gdextension.String
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetMesh(existing[0]))), surface, pointers.Get(gd.InternalString(blend_shape))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetMesh(existing[0])[0])), surface, pointers.Get(gd.InternalString(blend_shape))})
 }
 func (self class) AppendFrom(existing [1]gdclass.Mesh, surface int64, transform Transform3D.BasisOrigin) { //gd:SurfaceTool.append_from
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.append_from, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform3D<<12), &struct {
 		existing  gdextension.Object
 		surface   int64
 		transform Transform3D.BasisOrigin
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetMesh(existing[0]))), surface, gd.Transposed(transform)})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetMesh(existing[0])[0])), surface, gd.Transposed(transform)})
 }
 func (self class) Commit(existing [1]gdclass.ArrayMesh, flags int64) [1]gdclass.ArrayMesh { //gd:SurfaceTool.commit
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.commit, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		existing gdextension.Object
 		flags    int64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetArrayMesh(existing[0]))), flags})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetArrayMesh(existing[0])[0])), flags})
 	var ret = [1]gdclass.ArrayMesh{gdclass.NewArrayMesh(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

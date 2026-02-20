@@ -213,7 +213,7 @@ func (self Instance) SetShader(value Shader.Instance) Instance { //gd:ShaderMate
 }
 
 func (self class) SetShader(shader [1]gdclass.Shader) { //gd:ShaderMaterial.set_shader
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shader, 0|(gdextension.SizeObject<<4), &struct{ shader gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetShader(shader[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shader, 0|(gdextension.SizeObject<<4), &struct{ shader gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetShader(shader[0])[0]))})
 }
 func (self class) GetShader() [1]gdclass.Shader { //gd:ShaderMaterial.get_shader
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shader, gdextension.SizeObject, &struct{}{})

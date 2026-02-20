@@ -394,7 +394,7 @@ func (self class) IsCameraLockedToOrigin() bool { //gd:XRServer.is_camera_locked
 }
 func (self class) AddInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.add_interface
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.add_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetXRInterface(intf[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.add_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetXRInterface(intf[0])[0]))})
 }
 func (self class) GetInterfaceCount() int64 { //gd:XRServer.get_interface_count
 	once.Do(singleton)
@@ -404,7 +404,7 @@ func (self class) GetInterfaceCount() int64 { //gd:XRServer.get_interface_count
 }
 func (self class) RemoveInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.remove_interface
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.remove_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetXRInterface(intf[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.remove_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetXRInterface(intf[0])[0]))})
 }
 func (self class) GetInterface(idx int64) [1]gdclass.XRInterface { //gd:XRServer.get_interface
 	once.Do(singleton)
@@ -426,11 +426,11 @@ func (self class) FindInterface(name String.Readable) [1]gdclass.XRInterface { /
 }
 func (self class) AddTracker(tracker [1]gdclass.XRTracker) { //gd:XRServer.add_tracker
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.add_tracker, 0|(gdextension.SizeObject<<4), &struct{ tracker gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetXRTracker(tracker[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.add_tracker, 0|(gdextension.SizeObject<<4), &struct{ tracker gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetXRTracker(tracker[0])[0]))})
 }
 func (self class) RemoveTracker(tracker [1]gdclass.XRTracker) { //gd:XRServer.remove_tracker
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.remove_tracker, 0|(gdextension.SizeObject<<4), &struct{ tracker gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetXRTracker(tracker[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.remove_tracker, 0|(gdextension.SizeObject<<4), &struct{ tracker gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetXRTracker(tracker[0])[0]))})
 }
 func (self class) GetTrackers(tracker_types int64) Dictionary.Any { //gd:XRServer.get_trackers
 	once.Do(singleton)
@@ -452,7 +452,7 @@ func (self class) GetPrimaryInterface() [1]gdclass.XRInterface { //gd:XRServer.g
 }
 func (self class) SetPrimaryInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.set_primary_interface
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_primary_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetXRInterface(intf[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_primary_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetXRInterface(intf[0])[0]))})
 }
 
 /*

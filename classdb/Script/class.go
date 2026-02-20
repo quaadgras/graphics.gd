@@ -349,7 +349,7 @@ func (self class) CanInstantiate() bool { //gd:Script.can_instantiate
 	return ret
 }
 func (self class) InstanceHas(base_object [1]gd.Object) bool { //gd:Script.instance_has
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.instance_has, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ base_object gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(base_object[0])))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.instance_has, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ base_object gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetObject(base_object[0])[0]))})
 	var ret = r_ret
 	return ret
 }

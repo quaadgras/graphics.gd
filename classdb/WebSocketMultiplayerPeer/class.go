@@ -344,7 +344,7 @@ func (self class) CreateClient(url String.Readable, tls_client_options [1]gdclas
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_client, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
 		url                gdextension.String
 		tls_client_options gdextension.Object
-	}{pointers.Get(gd.InternalString(url)), gdextension.Object(gd.ObjectChecked(gdclass.GetTLSOptions(tls_client_options[0])))})
+	}{pointers.Get(gd.InternalString(url)), gdextension.Object(gdreference.GetObject(gdclass.GetTLSOptions(tls_client_options[0])[0]))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -353,7 +353,7 @@ func (self class) CreateServer(port int64, bind_address String.Readable, tls_ser
 		port               int64
 		bind_address       gdextension.String
 		tls_server_options gdextension.Object
-	}{port, pointers.Get(gd.InternalString(bind_address)), gdextension.Object(gd.ObjectChecked(gdclass.GetTLSOptions(tls_server_options[0])))})
+	}{port, pointers.Get(gd.InternalString(bind_address)), gdextension.Object(gdreference.GetObject(gdclass.GetTLSOptions(tls_server_options[0])[0]))})
 	var ret = Error.Code(r_ret)
 	return ret
 }

@@ -1397,7 +1397,7 @@ func (self class) AudioTrackInsertKey(track_idx int64, time float64, stream [1]g
 		stream       gdextension.Object
 		start_offset float64
 		end_offset   float64
-	}{track_idx, time, gdextension.Object(gd.ObjectChecked(gdclass.GetResource(stream[0]))), start_offset, end_offset})
+	}{track_idx, time, gdextension.Object(gdreference.GetObject(gdclass.GetResource(stream[0])[0])), start_offset, end_offset})
 	var ret = r_ret
 	return ret
 }
@@ -1406,7 +1406,7 @@ func (self class) AudioTrackSetKeyStream(track_idx int64, key_idx int64, stream 
 		track_idx int64
 		key_idx   int64
 		stream    gdextension.Object
-	}{track_idx, key_idx, gdextension.Object(gd.ObjectChecked(gdclass.GetResource(stream[0])))})
+	}{track_idx, key_idx, gdextension.Object(gdreference.GetObject(gdclass.GetResource(stream[0])[0]))})
 }
 func (self class) AudioTrackSetKeyStartOffset(track_idx int64, key_idx int64, offset float64) { //gd:Animation.audio_track_set_key_start_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.audio_track_set_key_start_offset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
@@ -1562,7 +1562,7 @@ func (self class) CopyTrack(track_idx int64, to_animation [1]gdclass.Animation) 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.copy_track, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		track_idx    int64
 		to_animation gdextension.Object
-	}{track_idx, gdextension.Object(gd.ObjectChecked(gdclass.GetAnimation(to_animation[0])))})
+	}{track_idx, gdextension.Object(gdreference.GetObject(gdclass.GetAnimation(to_animation[0])[0]))})
 }
 func (self class) Optimize(allowed_velocity_err float64, allowed_angular_err float64, precision int64) { //gd:Animation.optimize
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.optimize, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12), &struct {

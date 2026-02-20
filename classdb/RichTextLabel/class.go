@@ -1750,7 +1750,7 @@ func (self class) AddImage(image [1]gdclass.Texture2D, width int64, height int64
 		width_in_percent  bool
 		height_in_percent bool
 		alt_text          gdextension.String
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(image[0]))), width, height, color, inline_align, region, gdextension.Variant(pointers.Get(gd.InternalVariant(key))), pad, pointers.Get(gd.InternalString(tooltip)), width_in_percent, height_in_percent, pointers.Get(gd.InternalString(alt_text))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(image[0])[0])), width, height, color, inline_align, region, gdextension.Variant(pointers.Get(gd.InternalVariant(key))), pad, pointers.Get(gd.InternalString(tooltip)), width_in_percent, height_in_percent, pointers.Get(gd.InternalString(alt_text))})
 }
 func (self class) UpdateImage(key variant.Any, mask ImageUpdateMask, image [1]gdclass.Texture2D, width int64, height int64, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, pad bool, tooltip String.Readable, width_in_percent bool, height_in_percent bool) { //gd:RichTextLabel.update_image
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_image, 0|(gdextension.SizeVariant<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeColor<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeRect2<<32)|(gdextension.SizeBool<<36)|(gdextension.SizeString<<40)|(gdextension.SizeBool<<44)|(gdextension.SizeBool<<48), &struct {
@@ -1766,7 +1766,7 @@ func (self class) UpdateImage(key variant.Any, mask ImageUpdateMask, image [1]gd
 		tooltip           gdextension.String
 		width_in_percent  bool
 		height_in_percent bool
-	}{gdextension.Variant(pointers.Get(gd.InternalVariant(key))), mask, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(image[0]))), width, height, color, inline_align, region, pad, pointers.Get(gd.InternalString(tooltip)), width_in_percent, height_in_percent})
+	}{gdextension.Variant(pointers.Get(gd.InternalVariant(key))), mask, gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(image[0])[0])), width, height, color, inline_align, region, pad, pointers.Get(gd.InternalString(tooltip)), width_in_percent, height_in_percent})
 }
 func (self class) Newline() { //gd:RichTextLabel.newline
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.newline, 0, &struct{}{})
@@ -1788,7 +1788,7 @@ func (self class) PushFont(font [1]gdclass.Font, font_size int64) { //gd:RichTex
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_font, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		font      gdextension.Object
 		font_size int64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0]))), font_size})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetFont(font[0])[0])), font_size})
 }
 func (self class) PushFontSize(font_size int64) { //gd:RichTextLabel.push_font_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_font_size, 0|(gdextension.SizeInt<<4), &struct{ font_size int64 }{font_size})
@@ -1874,7 +1874,7 @@ func (self class) PushDropcap(s String.Readable, font [1]gdclass.Font, size int6
 		color           Color.RGBA
 		outline_size    int64
 		outline_color   Color.RGBA
-	}{pointers.Get(gd.InternalString(s)), gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0]))), size, dropcap_margins, color, outline_size, outline_color})
+	}{pointers.Get(gd.InternalString(s)), gdextension.Object(gdreference.GetObject(gdclass.GetFont(font[0])[0])), size, dropcap_margins, color, outline_size, outline_color})
 }
 func (self class) SetTableColumnExpand(column int64, expand bool, ratio int64, shrink bool) { //gd:RichTextLabel.set_table_column_expand
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_table_column_expand, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), &struct {
@@ -1921,7 +1921,7 @@ func (self class) PushCustomfx(effect [1]gdclass.RichTextEffect, env Dictionary.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_customfx, 0|(gdextension.SizeObject<<4)|(gdextension.SizeDictionary<<8), &struct {
 		effect gdextension.Object
 		env    gdextension.Dictionary
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetRichTextEffect(effect[0]))), pointers.Get(gd.InternalDictionary(env))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetRichTextEffect(effect[0])[0])), pointers.Get(gd.InternalDictionary(env))})
 }
 func (self class) PushContext() { //gd:RichTextLabel.push_context
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_context, 0, &struct{}{})

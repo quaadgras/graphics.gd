@@ -4132,7 +4132,7 @@ func (self class) SetLineGutterIcon(line int64, gutter int64, icon [1]gdclass.Te
 		line   int64
 		gutter int64
 		icon   gdextension.Object
-	}{line, gutter, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
+	}{line, gutter, gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(icon[0])[0]))})
 }
 func (self class) GetLineGutterIcon(line int64, gutter int64) [1]gdclass.Texture2D { //gd:TextEdit.get_line_gutter_icon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_line_gutter_icon, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
@@ -4184,7 +4184,7 @@ func (self class) GetLineBackgroundColor(line int64) Color.RGBA { //gd:TextEdit.
 	return ret
 }
 func (self class) SetSyntaxHighlighter(syntax_highlighter [1]gdclass.SyntaxHighlighter) { //gd:TextEdit.set_syntax_highlighter
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_syntax_highlighter, 0|(gdextension.SizeObject<<4), &struct{ syntax_highlighter gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetSyntaxHighlighter(syntax_highlighter[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_syntax_highlighter, 0|(gdextension.SizeObject<<4), &struct{ syntax_highlighter gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetSyntaxHighlighter(syntax_highlighter[0])[0]))})
 }
 func (self class) GetSyntaxHighlighter() [1]gdclass.SyntaxHighlighter { //gd:TextEdit.get_syntax_highlighter
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_syntax_highlighter, gdextension.SizeObject, &struct{}{})

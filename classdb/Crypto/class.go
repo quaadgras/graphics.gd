@@ -327,7 +327,7 @@ func (self class) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey, issuer
 		issuer_name gdextension.String
 		not_before  gdextension.String
 		not_after   gdextension.String
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetCryptoKey(key[0]))), pointers.Get(gd.InternalString(issuer_name)), pointers.Get(gd.InternalString(not_before)), pointers.Get(gd.InternalString(not_after))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetCryptoKey(key[0])[0])), pointers.Get(gd.InternalString(issuer_name)), pointers.Get(gd.InternalString(not_before)), pointers.Get(gd.InternalString(not_after))})
 	var ret = [1]gdclass.X509Certificate{gdclass.NewX509Certificate(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -336,7 +336,7 @@ func (self class) Sign(hash_type HashingContext.HashType, hash Packed.Bytes, key
 		hash_type HashingContext.HashType
 		hash      gdextension.PackedArray[byte]
 		key       gdextension.Object
-	}{hash_type, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](hash.Array))), gdextension.Object(gd.ObjectChecked(gdclass.GetCryptoKey(key[0])))})
+	}{hash_type, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](hash.Array))), gdextension.Object(gdreference.GetObject(gdclass.GetCryptoKey(key[0])[0]))})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
@@ -346,7 +346,7 @@ func (self class) Verify(hash_type HashingContext.HashType, hash Packed.Bytes, s
 		hash      gdextension.PackedArray[byte]
 		signature gdextension.PackedArray[byte]
 		key       gdextension.Object
-	}{hash_type, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](hash.Array))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](signature.Array))), gdextension.Object(gd.ObjectChecked(gdclass.GetCryptoKey(key[0])))})
+	}{hash_type, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](hash.Array))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](signature.Array))), gdextension.Object(gdreference.GetObject(gdclass.GetCryptoKey(key[0])[0]))})
 	var ret = r_ret
 	return ret
 }
@@ -354,7 +354,7 @@ func (self class) Encrypt(key [1]gdclass.CryptoKey, plaintext Packed.Bytes) Pack
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.encrypt, gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizePackedArray<<8), &struct {
 		key       gdextension.Object
 		plaintext gdextension.PackedArray[byte]
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetCryptoKey(key[0]))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](plaintext.Array)))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetCryptoKey(key[0])[0])), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](plaintext.Array)))})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
@@ -362,7 +362,7 @@ func (self class) Decrypt(key [1]gdclass.CryptoKey, ciphertext Packed.Bytes) Pac
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.decrypt, gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizePackedArray<<8), &struct {
 		key        gdextension.Object
 		ciphertext gdextension.PackedArray[byte]
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetCryptoKey(key[0]))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ciphertext.Array)))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetCryptoKey(key[0])[0])), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ciphertext.Array)))})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }

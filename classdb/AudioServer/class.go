@@ -807,7 +807,7 @@ func (self class) AddBusEffect(bus_idx int64, effect [1]gdclass.AudioEffect, at_
 		bus_idx     int64
 		effect      gdextension.Object
 		at_position int64
-	}{bus_idx, gdextension.Object(gd.ObjectChecked(gdclass.GetAudioEffect(effect[0]))), at_position})
+	}{bus_idx, gdextension.Object(gdreference.GetObject(gdclass.GetAudioEffect(effect[0])[0])), at_position})
 }
 func (self class) RemoveBusEffect(bus_idx int64, effect_idx int64) { //gd:AudioServer.remove_bus_effect
 	once.Do(singleton)
@@ -1002,7 +1002,7 @@ func (self class) GetInputFrames(frames int64) Packed.Array[Vector2.XY] { //gd:A
 }
 func (self class) SetBusLayout(bus_layout [1]gdclass.AudioBusLayout) { //gd:AudioServer.set_bus_layout
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_bus_layout, 0|(gdextension.SizeObject<<4), &struct{ bus_layout gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetAudioBusLayout(bus_layout[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_bus_layout, 0|(gdextension.SizeObject<<4), &struct{ bus_layout gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetAudioBusLayout(bus_layout[0])[0]))})
 }
 func (self class) GenerateBusLayout() [1]gdclass.AudioBusLayout { //gd:AudioServer.generate_bus_layout
 	once.Do(singleton)
@@ -1016,13 +1016,13 @@ func (self class) SetEnableTaggingUsedAudioStreams(enable bool) { //gd:AudioServ
 }
 func (self class) IsStreamRegisteredAsSample(stream [1]gdclass.AudioStream) bool { //gd:AudioServer.is_stream_registered_as_sample
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_stream_registered_as_sample, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetAudioStream(stream[0])))})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_stream_registered_as_sample, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ stream gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetAudioStream(stream[0])[0]))})
 	var ret = r_ret
 	return ret
 }
 func (self class) RegisterStreamAsSample(stream [1]gdclass.AudioStream) { //gd:AudioServer.register_stream_as_sample
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.register_stream_as_sample, 0|(gdextension.SizeObject<<4), &struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetAudioStream(stream[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.register_stream_as_sample, 0|(gdextension.SizeObject<<4), &struct{ stream gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetAudioStream(stream[0])[0]))})
 }
 
 /*

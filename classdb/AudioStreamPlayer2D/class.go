@@ -472,7 +472,7 @@ func (self Instance) SetPlaybackType(value AudioServer.PlaybackType) Instance { 
 }
 
 func (self class) SetStream(stream [1]gdclass.AudioStream) { //gd:AudioStreamPlayer2D.set_stream
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream, 0|(gdextension.SizeObject<<4), &struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetAudioStream(stream[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream, 0|(gdextension.SizeObject<<4), &struct{ stream gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetAudioStream(stream[0])[0]))})
 }
 func (self class) GetStream() [1]gdclass.AudioStream { //gd:AudioStreamPlayer2D.get_stream
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_stream, gdextension.SizeObject, &struct{}{})

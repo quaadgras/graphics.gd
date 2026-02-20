@@ -219,7 +219,7 @@ func (self class) GetProfile() [1]gdclass.SkeletonProfile { //gd:BoneMap.get_pro
 	return ret
 }
 func (self class) SetProfile(profile [1]gdclass.SkeletonProfile) { //gd:BoneMap.set_profile
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_profile, 0|(gdextension.SizeObject<<4), &struct{ profile gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetSkeletonProfile(profile[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_profile, 0|(gdextension.SizeObject<<4), &struct{ profile gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetSkeletonProfile(profile[0])[0]))})
 }
 func (self class) GetSkeletonBoneName(profile_bone_name String.Name) String.Name { //gd:BoneMap.get_skeleton_bone_name
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_skeleton_bone_name, gdextension.SizeStringName|(gdextension.SizeStringName<<4), &struct{ profile_bone_name gdextension.StringName }{pointers.Get(gd.InternalStringName(profile_bone_name))})

@@ -240,11 +240,11 @@ func (self class) Feeds() Array.Contains[[1]gdclass.CameraFeed] { //gd:CameraSer
 }
 func (self class) AddFeed(feed [1]gdclass.CameraFeed) { //gd:CameraServer.add_feed
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.add_feed, 0|(gdextension.SizeObject<<4), &struct{ feed gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCameraFeed(feed[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.add_feed, 0|(gdextension.SizeObject<<4), &struct{ feed gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCameraFeed(feed[0])[0]))})
 }
 func (self class) RemoveFeed(feed [1]gdclass.CameraFeed) { //gd:CameraServer.remove_feed
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.remove_feed, 0|(gdextension.SizeObject<<4), &struct{ feed gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCameraFeed(feed[0])))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.remove_feed, 0|(gdextension.SizeObject<<4), &struct{ feed gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCameraFeed(feed[0])[0]))})
 }
 
 /*

@@ -214,7 +214,7 @@ func New() Instance {
 }
 
 func (self class) Edit(obj [1]gd.Object) { //gd:EditorInspector.edit
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetObject(obj[0])[0]))})
 }
 func (self class) GetSelectedPath() String.Readable { //gd:EditorInspector.get_selected_path
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_selected_path, gdextension.SizeString, &struct{}{})
@@ -235,7 +235,7 @@ func (self class) InstantiatePropertyEditor(obj [1]gd.Object, atype variant.Type
 		hint_text gdextension.String
 		usage     int64
 		wide      bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0]))), atype, pointers.Get(gd.InternalString(path)), hint, pointers.Get(gd.InternalString(hint_text)), usage, wide})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetObject(obj[0])[0])), atype, pointers.Get(gd.InternalString(path)), hint, pointers.Get(gd.InternalString(hint_text)), usage, wide})
 	var ret = [1]gdclass.EditorProperty{gdclass.NewEditorProperty(gdreference.LetObject(r_ret))}
 	return ret
 }

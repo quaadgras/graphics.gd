@@ -317,7 +317,7 @@ func (self class) AddObstructionOutline(shape_outline Packed.Array[Vector2.XY]) 
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](shape_outline))})
 }
 func (self class) Merge(other_geometry [1]gdclass.NavigationMeshSourceGeometryData2D) { //gd:NavigationMeshSourceGeometryData2D.merge
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.merge, 0|(gdextension.SizeObject<<4), &struct{ other_geometry gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationMeshSourceGeometryData2D(other_geometry[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.merge, 0|(gdextension.SizeObject<<4), &struct{ other_geometry gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNavigationMeshSourceGeometryData2D(other_geometry[0])[0]))})
 }
 func (self class) AddProjectedObstruction(vertices Packed.Array[Vector2.XY], carve bool) { //gd:NavigationMeshSourceGeometryData2D.add_projected_obstruction
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_projected_obstruction, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeBool<<8), &struct {

@@ -328,7 +328,7 @@ func (self class) UpdateMapDataFromImage(image [1]gdclass.Image, height_min floa
 		image      gdextension.Object
 		height_min float64
 		height_max float64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0]))), height_min, height_max})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetImage(image[0])[0])), height_min, height_max})
 }
 func (o class) AsHeightMapShape3D() Advanced          { return Advanced(o) }
 func (o Instance) AsHeightMapShape3D() Instance       { return o }

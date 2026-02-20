@@ -1787,7 +1787,7 @@ func (self class) AddCodeCompletionOption(atype CodeCompletionKind, display_text
 		icon         gdextension.Object
 		value        gdextension.Variant
 		location     int64
-	}{atype, pointers.Get(gd.InternalString(display_text)), pointers.Get(gd.InternalString(insert_text)), text_color, gdextension.Object(gd.ObjectChecked(gdclass.GetResource(icon[0]))), gdextension.Variant(pointers.Get(gd.InternalVariant(value))), location})
+	}{atype, pointers.Get(gd.InternalString(display_text)), pointers.Get(gd.InternalString(insert_text)), text_color, gdextension.Object(gdreference.GetObject(gdclass.GetResource(icon[0])[0])), gdextension.Variant(pointers.Get(gd.InternalVariant(value))), location})
 }
 func (self class) UpdateCodeCompletionOptions(force bool) { //gd:CodeEdit.update_code_completion_options
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_code_completion_options, 0|(gdextension.SizeBool<<4), &struct{ force bool }{force})

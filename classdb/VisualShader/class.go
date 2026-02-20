@@ -353,7 +353,7 @@ func (self class) AddNode(atype Type, node [1]gdclass.VisualShaderNode, position
 		node     gdextension.Object
 		position Vector2.XY
 		id       int64
-	}{atype, gdextension.Object(gd.ObjectChecked(gdclass.GetVisualShaderNode(node[0]))), position, id})
+	}{atype, gdextension.Object(gdreference.GetObject(gdclass.GetVisualShaderNode(node[0])[0])), position, id})
 }
 func (self class) GetNode(atype Type, id int64) [1]gdclass.VisualShaderNode { //gd:VisualShader.get_node
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_node, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {

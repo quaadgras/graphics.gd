@@ -2039,7 +2039,7 @@ func (self class) SetParamTexture(param Parameter, texture [1]gdclass.Texture2D)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param_texture, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		param   Parameter
 		texture gdextension.Object
-	}{param, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
+	}{param, gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetParamTexture(param Parameter) [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_param_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_param_texture, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ param Parameter }{param})
@@ -2055,7 +2055,7 @@ func (self class) GetColor() Color.RGBA { //gd:ParticleProcessMaterial.get_color
 	return ret
 }
 func (self class) SetColorRamp(ramp [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_color_ramp
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_ramp, 0|(gdextension.SizeObject<<4), &struct{ ramp gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(ramp[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_ramp, 0|(gdextension.SizeObject<<4), &struct{ ramp gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(ramp[0])[0]))})
 }
 func (self class) GetColorRamp() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_color_ramp
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_ramp, gdextension.SizeObject, &struct{}{})
@@ -2063,7 +2063,7 @@ func (self class) GetColorRamp() [1]gdclass.Texture2D { //gd:ParticleProcessMate
 	return ret
 }
 func (self class) SetAlphaCurve(curve [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_alpha_curve
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(curve[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(curve[0])[0]))})
 }
 func (self class) GetAlphaCurve() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_alpha_curve
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_alpha_curve, gdextension.SizeObject, &struct{}{})
@@ -2071,7 +2071,7 @@ func (self class) GetAlphaCurve() [1]gdclass.Texture2D { //gd:ParticleProcessMat
 	return ret
 }
 func (self class) SetEmissionCurve(curve [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_emission_curve
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(curve[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(curve[0])[0]))})
 }
 func (self class) GetEmissionCurve() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_emission_curve
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_emission_curve, gdextension.SizeObject, &struct{}{})
@@ -2079,7 +2079,7 @@ func (self class) GetEmissionCurve() [1]gdclass.Texture2D { //gd:ParticleProcess
 	return ret
 }
 func (self class) SetColorInitialRamp(ramp [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_color_initial_ramp
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_initial_ramp, 0|(gdextension.SizeObject<<4), &struct{ ramp gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(ramp[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_initial_ramp, 0|(gdextension.SizeObject<<4), &struct{ ramp gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(ramp[0])[0]))})
 }
 func (self class) GetColorInitialRamp() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_color_initial_ramp
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_initial_ramp, gdextension.SizeObject, &struct{}{})
@@ -2087,7 +2087,7 @@ func (self class) GetColorInitialRamp() [1]gdclass.Texture2D { //gd:ParticleProc
 	return ret
 }
 func (self class) SetVelocityLimitCurve(curve [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_velocity_limit_curve
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_velocity_limit_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(curve[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_velocity_limit_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(curve[0])[0]))})
 }
 func (self class) GetVelocityLimitCurve() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_velocity_limit_curve
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_velocity_limit_curve, gdextension.SizeObject, &struct{}{})
@@ -2138,7 +2138,7 @@ func (self class) GetEmissionBoxExtents() Vector3.XYZ { //gd:ParticleProcessMate
 	return ret
 }
 func (self class) SetEmissionPointTexture(texture [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_emission_point_texture
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_point_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_point_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetEmissionPointTexture() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_emission_point_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_emission_point_texture, gdextension.SizeObject, &struct{}{})
@@ -2146,7 +2146,7 @@ func (self class) GetEmissionPointTexture() [1]gdclass.Texture2D { //gd:Particle
 	return ret
 }
 func (self class) SetEmissionNormalTexture(texture [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_emission_normal_texture
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_normal_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_normal_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetEmissionNormalTexture() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_emission_normal_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_emission_normal_texture, gdextension.SizeObject, &struct{}{})
@@ -2154,7 +2154,7 @@ func (self class) GetEmissionNormalTexture() [1]gdclass.Texture2D { //gd:Particl
 	return ret
 }
 func (self class) SetEmissionColorTexture(texture [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_emission_color_texture
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_color_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_color_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetEmissionColorTexture() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_emission_color_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_emission_color_texture, gdextension.SizeObject, &struct{}{})

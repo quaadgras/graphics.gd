@@ -361,7 +361,7 @@ func (self class) GetGodotSkin() [1]gdclass.Skin { //gd:GLTFSkin.get_godot_skin
 	return ret
 }
 func (self class) SetGodotSkin(godot_skin [1]gdclass.Skin) { //gd:GLTFSkin.set_godot_skin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_godot_skin, 0|(gdextension.SizeObject<<4), &struct{ godot_skin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetSkin(godot_skin[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_godot_skin, 0|(gdextension.SizeObject<<4), &struct{ godot_skin gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetSkin(godot_skin[0])[0]))})
 }
 func (o class) AsGLTFSkin() Advanced                  { return Advanced(o) }
 func (o Instance) AsGLTFSkin() Instance               { return o }

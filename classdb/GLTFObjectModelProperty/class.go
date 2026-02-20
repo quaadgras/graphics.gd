@@ -362,7 +362,7 @@ func (self class) GetGltfToGodotExpression() [1]gdclass.Expression { //gd:GLTFOb
 	return ret
 }
 func (self class) SetGltfToGodotExpression(gltf_to_godot_expr [1]gdclass.Expression) { //gd:GLTFObjectModelProperty.set_gltf_to_godot_expression
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gltf_to_godot_expression, 0|(gdextension.SizeObject<<4), &struct{ gltf_to_godot_expr gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetExpression(gltf_to_godot_expr[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gltf_to_godot_expression, 0|(gdextension.SizeObject<<4), &struct{ gltf_to_godot_expr gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetExpression(gltf_to_godot_expr[0])[0]))})
 }
 func (self class) GetGodotToGltfExpression() [1]gdclass.Expression { //gd:GLTFObjectModelProperty.get_godot_to_gltf_expression
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_godot_to_gltf_expression, gdextension.SizeObject, &struct{}{})
@@ -370,7 +370,7 @@ func (self class) GetGodotToGltfExpression() [1]gdclass.Expression { //gd:GLTFOb
 	return ret
 }
 func (self class) SetGodotToGltfExpression(godot_to_gltf_expr [1]gdclass.Expression) { //gd:GLTFObjectModelProperty.set_godot_to_gltf_expression
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_godot_to_gltf_expression, 0|(gdextension.SizeObject<<4), &struct{ godot_to_gltf_expr gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetExpression(godot_to_gltf_expr[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_godot_to_gltf_expression, 0|(gdextension.SizeObject<<4), &struct{ godot_to_gltf_expr gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetExpression(godot_to_gltf_expr[0])[0]))})
 }
 func (self class) GetNodePaths() Array.Contains[Path.ToNode] { //gd:GLTFObjectModelProperty.get_node_paths
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_node_paths, gdextension.SizeArray, &struct{}{})

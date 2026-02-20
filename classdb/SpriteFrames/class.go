@@ -408,7 +408,7 @@ func (self class) AddFrame(anim String.Name, texture [1]gdclass.Texture2D, durat
 		texture     gdextension.Object
 		duration    float64
 		at_position int64
-	}{pointers.Get(gd.InternalStringName(anim)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), duration, at_position})
+	}{pointers.Get(gd.InternalStringName(anim)), gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0])), duration, at_position})
 }
 func (self class) SetFrame(anim String.Name, idx int64, texture [1]gdclass.Texture2D, duration float64) { //gd:SpriteFrames.set_frame
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeFloat<<16), &struct {
@@ -416,7 +416,7 @@ func (self class) SetFrame(anim String.Name, idx int64, texture [1]gdclass.Textu
 		idx      int64
 		texture  gdextension.Object
 		duration float64
-	}{pointers.Get(gd.InternalStringName(anim)), idx, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), duration})
+	}{pointers.Get(gd.InternalStringName(anim)), idx, gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0])), duration})
 }
 func (self class) RemoveFrame(anim String.Name, idx int64) { //gd:SpriteFrames.remove_frame
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_frame, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), &struct {

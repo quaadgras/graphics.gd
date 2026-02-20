@@ -236,7 +236,7 @@ func (self class) SetBytecode(bytecode [1]gdclass.RDShaderSPIRV, version String.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bytecode, 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8), &struct {
 		bytecode gdextension.Object
 		version  gdextension.StringName
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetRDShaderSPIRV(bytecode[0]))), pointers.Get(gd.InternalStringName(version))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetRDShaderSPIRV(bytecode[0])[0])), pointers.Get(gd.InternalStringName(version))})
 }
 func (self class) GetSpirv(version String.Name) [1]gdclass.RDShaderSPIRV { //gd:RDShaderFile.get_spirv
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_spirv, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ version gdextension.StringName }{pointers.Get(gd.InternalStringName(version))})

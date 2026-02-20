@@ -245,7 +245,7 @@ func (self Instance) SetFilterClip(value bool) Instance { //gd:AtlasTexture.filt
 }
 
 func (self class) SetAtlas(atlas [1]gdclass.Texture2D) { //gd:AtlasTexture.set_atlas
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_atlas, 0|(gdextension.SizeObject<<4), &struct{ atlas gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(atlas[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_atlas, 0|(gdextension.SizeObject<<4), &struct{ atlas gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(atlas[0])[0]))})
 }
 func (self class) GetAtlas() [1]gdclass.Texture2D { //gd:AtlasTexture.get_atlas
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_atlas, gdextension.SizeObject, &struct{}{})

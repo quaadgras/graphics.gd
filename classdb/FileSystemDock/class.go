@@ -200,10 +200,10 @@ func (self class) NavigateToPath(path String.Readable) { //gd:FileSystemDock.nav
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.navigate_to_path, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
 func (self class) AddResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) { //gd:FileSystemDock.add_resource_tooltip_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_resource_tooltip_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorResourceTooltipPlugin(plugin[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_resource_tooltip_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorResourceTooltipPlugin(plugin[0])[0]))})
 }
 func (self class) RemoveResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) { //gd:FileSystemDock.remove_resource_tooltip_plugin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_tooltip_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorResourceTooltipPlugin(plugin[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_tooltip_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorResourceTooltipPlugin(plugin[0])[0]))})
 }
 
 /*

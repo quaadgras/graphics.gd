@@ -292,7 +292,7 @@ func (self class) AddSessionTab(control [1]gdclass.Control) { //gd:EditorDebugge
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_session_tab, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetControl(control[0])[0]))})
 }
 func (self class) RemoveSessionTab(control [1]gdclass.Control) { //gd:EditorDebuggerSession.remove_session_tab
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_session_tab, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_session_tab, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetControl(control[0])[0]))})
 }
 func (self class) SetBreakpoint(path String.Readable, line int64, enabled bool) { //gd:EditorDebuggerSession.set_breakpoint
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_breakpoint, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {

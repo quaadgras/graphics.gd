@@ -239,7 +239,7 @@ func (self class) GetDiffuseImg() [1]gdclass.Image { //gd:GLTFSpecGloss.get_diff
 	return ret
 }
 func (self class) SetDiffuseImg(diffuse_img [1]gdclass.Image) { //gd:GLTFSpecGloss.set_diffuse_img
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_diffuse_img, 0|(gdextension.SizeObject<<4), &struct{ diffuse_img gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(diffuse_img[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_diffuse_img, 0|(gdextension.SizeObject<<4), &struct{ diffuse_img gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetImage(diffuse_img[0])[0]))})
 }
 func (self class) GetDiffuseFactor() Color.RGBA { //gd:GLTFSpecGloss.get_diffuse_factor
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_diffuse_factor, gdextension.SizeColor, &struct{}{})
@@ -271,7 +271,7 @@ func (self class) GetSpecGlossImg() [1]gdclass.Image { //gd:GLTFSpecGloss.get_sp
 	return ret
 }
 func (self class) SetSpecGlossImg(spec_gloss_img [1]gdclass.Image) { //gd:GLTFSpecGloss.set_spec_gloss_img
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spec_gloss_img, 0|(gdextension.SizeObject<<4), &struct{ spec_gloss_img gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(spec_gloss_img[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spec_gloss_img, 0|(gdextension.SizeObject<<4), &struct{ spec_gloss_img gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetImage(spec_gloss_img[0])[0]))})
 }
 func (o class) AsGLTFSpecGloss() Advanced             { return Advanced(o) }
 func (o Instance) AsGLTFSpecGloss() Instance          { return o }

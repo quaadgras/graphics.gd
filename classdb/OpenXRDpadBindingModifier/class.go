@@ -306,7 +306,7 @@ func (self Instance) SetOffHaptic(value OpenXRHapticBase.Instance) Instance { //
 }
 
 func (self class) SetActionSet(action_set [1]gdclass.OpenXRActionSet) { //gd:OpenXRDpadBindingModifier.set_action_set
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action_set, 0|(gdextension.SizeObject<<4), &struct{ action_set gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRActionSet(action_set[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action_set, 0|(gdextension.SizeObject<<4), &struct{ action_set gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRActionSet(action_set[0])[0]))})
 }
 func (self class) GetActionSet() [1]gdclass.OpenXRActionSet { //gd:OpenXRDpadBindingModifier.get_action_set
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_action_set, gdextension.SizeObject, &struct{}{})
@@ -362,7 +362,7 @@ func (self class) GetIsSticky() bool { //gd:OpenXRDpadBindingModifier.get_is_sti
 	return ret
 }
 func (self class) SetOnHaptic(haptic [1]gdclass.OpenXRHapticBase) { //gd:OpenXRDpadBindingModifier.set_on_haptic
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_on_haptic, 0|(gdextension.SizeObject<<4), &struct{ haptic gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRHapticBase(haptic[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_on_haptic, 0|(gdextension.SizeObject<<4), &struct{ haptic gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRHapticBase(haptic[0])[0]))})
 }
 func (self class) GetOnHaptic() [1]gdclass.OpenXRHapticBase { //gd:OpenXRDpadBindingModifier.get_on_haptic
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_on_haptic, gdextension.SizeObject, &struct{}{})
@@ -370,7 +370,7 @@ func (self class) GetOnHaptic() [1]gdclass.OpenXRHapticBase { //gd:OpenXRDpadBin
 	return ret
 }
 func (self class) SetOffHaptic(haptic [1]gdclass.OpenXRHapticBase) { //gd:OpenXRDpadBindingModifier.set_off_haptic
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_off_haptic, 0|(gdextension.SizeObject<<4), &struct{ haptic gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRHapticBase(haptic[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_off_haptic, 0|(gdextension.SizeObject<<4), &struct{ haptic gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRHapticBase(haptic[0])[0]))})
 }
 func (self class) GetOffHaptic() [1]gdclass.OpenXRHapticBase { //gd:OpenXRDpadBindingModifier.get_off_haptic
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_off_haptic, gdextension.SizeObject, &struct{}{})

@@ -177,7 +177,7 @@ func (self Instance) SetTextureArray(value TextureLayered.Instance) Instance { /
 }
 
 func (self class) SetTextureArray(value [1]gdclass.TextureLayered) { //gd:VisualShaderNodeTexture2DArray.set_texture_array
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_array, 0|(gdextension.SizeObject<<4), &struct{ value gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTextureLayered(value[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_array, 0|(gdextension.SizeObject<<4), &struct{ value gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTextureLayered(value[0])[0]))})
 }
 func (self class) GetTextureArray() [1]gdclass.TextureLayered { //gd:VisualShaderNodeTexture2DArray.get_texture_array
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_array, gdextension.SizeObject, &struct{}{})

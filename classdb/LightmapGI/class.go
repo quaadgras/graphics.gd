@@ -593,7 +593,7 @@ func (self Instance) SetLightData(value LightmapGIData.Instance) Instance { //gd
 }
 
 func (self class) SetLightData(data [1]gdclass.LightmapGIData) { //gd:LightmapGI.set_light_data
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_light_data, 0|(gdextension.SizeObject<<4), &struct{ data gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetLightmapGIData(data[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_light_data, 0|(gdextension.SizeObject<<4), &struct{ data gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetLightmapGIData(data[0])[0]))})
 }
 func (self class) GetLightData() [1]gdclass.LightmapGIData { //gd:LightmapGI.get_light_data
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_light_data, gdextension.SizeObject, &struct{}{})
@@ -649,7 +649,7 @@ func (self class) GetEnvironmentMode() EnvironmentMode { //gd:LightmapGI.get_env
 	return ret
 }
 func (self class) SetEnvironmentCustomSky(sky [1]gdclass.Sky) { //gd:LightmapGI.set_environment_custom_sky
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment_custom_sky, 0|(gdextension.SizeObject<<4), &struct{ sky gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetSky(sky[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment_custom_sky, 0|(gdextension.SizeObject<<4), &struct{ sky gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetSky(sky[0])[0]))})
 }
 func (self class) GetEnvironmentCustomSky() [1]gdclass.Sky { //gd:LightmapGI.get_environment_custom_sky
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_environment_custom_sky, gdextension.SizeObject, &struct{}{})
@@ -761,7 +761,7 @@ func (self class) IsUsingTextureForBounces() bool { //gd:LightmapGI.is_using_tex
 	return ret
 }
 func (self class) SetCameraAttributes(camera_attributes [1]gdclass.CameraAttributes) { //gd:LightmapGI.set_camera_attributes
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera_attributes, 0|(gdextension.SizeObject<<4), &struct{ camera_attributes gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCameraAttributes(camera_attributes[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera_attributes, 0|(gdextension.SizeObject<<4), &struct{ camera_attributes gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCameraAttributes(camera_attributes[0])[0]))})
 }
 func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes { //gd:LightmapGI.get_camera_attributes
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_camera_attributes, gdextension.SizeObject, &struct{}{})

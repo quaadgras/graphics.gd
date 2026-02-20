@@ -481,7 +481,7 @@ func (self class) SetTexture(atype DecalTexture, texture [1]gdclass.Texture2D) {
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		atype   DecalTexture
 		texture gdextension.Object
-	}{atype, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
+	}{atype, gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetTexture(atype DecalTexture) [1]gdclass.Texture2D { //gd:Decal.get_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ atype DecalTexture }{atype})

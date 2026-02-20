@@ -2786,13 +2786,13 @@ func (self class) AddChild(node [1]gdclass.Node, force_readable_name bool, inter
 	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetNode(node[0])[0])), force_readable_name, internal_})
 }
 func (self class) RemoveChild(node [1]gdclass.Node) { //gd:Node.remove_child
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_child, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_child, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(node[0])[0]))})
 }
 func (self class) Reparent(new_parent [1]gdclass.Node, keep_global_transform bool) { //gd:Node.reparent
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reparent, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		new_parent            gdextension.Object
 		keep_global_transform bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(new_parent[0]))), keep_global_transform})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetNode(new_parent[0])[0])), keep_global_transform})
 }
 func (self class) GetChildCount(include_internal bool) int64 { //gd:Node.get_child_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_child_count, gdextension.SizeInt|(gdextension.SizeBool<<4), &struct{ include_internal bool }{include_internal})
@@ -2877,12 +2877,12 @@ func (self class) IsPartOfEditedScene() bool { //gd:Node.is_part_of_edited_scene
 	return ret
 }
 func (self class) IsAncestorOf(node [1]gdclass.Node) bool { //gd:Node.is_ancestor_of
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ancestor_of, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ancestor_of, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(node[0])[0]))})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsGreaterThan(node [1]gdclass.Node) bool { //gd:Node.is_greater_than
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_greater_than, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_greater_than, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(node[0])[0]))})
 	var ret = r_ret
 	return ret
 }
@@ -2895,7 +2895,7 @@ func (self class) GetPathTo(node [1]gdclass.Node, use_unique_path bool) Path.ToN
 	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_path_to, gdextension.SizeNodePath|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		node            gdextension.Object
 		use_unique_path bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0]))), use_unique_path})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetNode(node[0])[0])), use_unique_path})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -2917,7 +2917,7 @@ func (self class) MoveChild(child_node [1]gdclass.Node, to_index int64) { //gd:N
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_child, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		child_node gdextension.Object
 		to_index   int64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(child_node[0]))), to_index})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetNode(child_node[0])[0])), to_index})
 }
 func (self class) GetGroups() Array.Contains[String.Name] { //gd:Node.get_groups
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_groups, gdextension.SizeArray, &struct{}{})
@@ -2925,7 +2925,7 @@ func (self class) GetGroups() Array.Contains[String.Name] { //gd:Node.get_groups
 	return ret
 }
 func (self class) SetOwner(owner [1]gdclass.Node) { //gd:Node.set_owner
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_owner, 0|(gdextension.SizeObject<<4), &struct{ owner gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(owner[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_owner, 0|(gdextension.SizeObject<<4), &struct{ owner gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(owner[0])[0]))})
 }
 func (self class) GetOwner() [1]gdclass.Node { //gd:Node.get_owner
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_owner, gdextension.SizeObject, &struct{}{})
@@ -3194,10 +3194,10 @@ func (self class) SetEditableInstance(node [1]gdclass.Node, is_editable bool) { 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editable_instance, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		node        gdextension.Object
 		is_editable bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0]))), is_editable})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetNode(node[0])[0])), is_editable})
 }
 func (self class) IsEditableInstance(node [1]gdclass.Node) bool { //gd:Node.is_editable_instance
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editable_instance, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editable_instance, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(node[0])[0]))})
 	var ret = r_ret
 	return ret
 }

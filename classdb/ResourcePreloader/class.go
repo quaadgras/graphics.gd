@@ -213,7 +213,7 @@ func (self class) AddResource(name String.Name, resource [1]gdclass.Resource) { 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_resource, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name     gdextension.StringName
 		resource gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetResource(resource[0])))})
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gdreference.GetObject(gdclass.GetResource(resource[0])[0]))})
 }
 func (self class) RemoveResource(name String.Name) { //gd:ResourcePreloader.remove_resource
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})

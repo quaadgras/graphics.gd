@@ -215,7 +215,7 @@ func (self class) GetSource() Source { //gd:VisualShaderNodeCubemap.get_source
 	return ret
 }
 func (self class) SetCubeMap(value [1]gdclass.TextureLayered) { //gd:VisualShaderNodeCubemap.set_cube_map
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cube_map, 0|(gdextension.SizeObject<<4), &struct{ value gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTextureLayered(value[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cube_map, 0|(gdextension.SizeObject<<4), &struct{ value gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTextureLayered(value[0])[0]))})
 }
 func (self class) GetCubeMap() [1]gdclass.TextureLayered { //gd:VisualShaderNodeCubemap.get_cube_map
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_cube_map, gdextension.SizeObject, &struct{}{})

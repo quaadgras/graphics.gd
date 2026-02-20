@@ -486,10 +486,10 @@ func (self class) GetTranslationObject(locale String.Readable) [1]gdclass.Transl
 	return ret
 }
 func (self class) AddTranslation(translation [1]gdclass.Translation) { //gd:TranslationDomain.add_translation
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_translation, 0|(gdextension.SizeObject<<4), &struct{ translation gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTranslation(translation[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_translation, 0|(gdextension.SizeObject<<4), &struct{ translation gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTranslation(translation[0])[0]))})
 }
 func (self class) RemoveTranslation(translation [1]gdclass.Translation) { //gd:TranslationDomain.remove_translation
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_translation, 0|(gdextension.SizeObject<<4), &struct{ translation gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTranslation(translation[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_translation, 0|(gdextension.SizeObject<<4), &struct{ translation gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTranslation(translation[0])[0]))})
 }
 func (self class) Clear() { //gd:TranslationDomain.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
@@ -508,7 +508,7 @@ func (self class) HasTranslationForLocale(locale String.Readable, exact bool) bo
 	return ret
 }
 func (self class) HasTranslation(translation [1]gdclass.Translation) bool { //gd:TranslationDomain.has_translation
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_translation, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ translation gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTranslation(translation[0])))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_translation, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ translation gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTranslation(translation[0])[0]))})
 	var ret = r_ret
 	return ret
 }

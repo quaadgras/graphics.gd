@@ -357,7 +357,7 @@ func (self Instance) SetImporterMesh(value ImporterMesh.Instance) Instance { //g
 }
 
 func (self class) FromNode(shape_node [1]gdclass.CollisionShape3D) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_node
-	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ shape_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCollisionShape3D(shape_node[0])))})
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ shape_node gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCollisionShape3D(shape_node[0])[0]))})
 	var ret = [1]gdclass.GLTFPhysicsShape{gdclass.NewGLTFPhysicsShape(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -367,7 +367,7 @@ func (self class) ToNode(cache_shapes bool) [1]gdclass.CollisionShape3D { //gd:G
 	return ret
 }
 func (self class) FromResource(shape_resource [1]gdclass.Shape3D) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_resource
-	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_resource, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ shape_resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetShape3D(shape_resource[0])))})
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_resource, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ shape_resource gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetShape3D(shape_resource[0])[0]))})
 	var ret = [1]gdclass.GLTFPhysicsShape{gdclass.NewGLTFPhysicsShape(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -440,7 +440,7 @@ func (self class) GetImporterMesh() [1]gdclass.ImporterMesh { //gd:GLTFPhysicsSh
 	return ret
 }
 func (self class) SetImporterMesh(importer_mesh [1]gdclass.ImporterMesh) { //gd:GLTFPhysicsShape.set_importer_mesh
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_importer_mesh, 0|(gdextension.SizeObject<<4), &struct{ importer_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImporterMesh(importer_mesh[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_importer_mesh, 0|(gdextension.SizeObject<<4), &struct{ importer_mesh gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetImporterMesh(importer_mesh[0])[0]))})
 }
 func (o class) AsGLTFPhysicsShape() Advanced          { return Advanced(o) }
 func (o Instance) AsGLTFPhysicsShape() Instance       { return o }

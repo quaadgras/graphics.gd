@@ -350,7 +350,7 @@ func (self class) AddBlendPoint(node [1]gdclass.AnimationRootNode, pos float64, 
 		node     gdextension.Object
 		pos      float64
 		at_index int64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetAnimationRootNode(node[0]))), pos, at_index})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetAnimationRootNode(node[0])[0])), pos, at_index})
 }
 func (self class) SetBlendPointPosition(point int64, pos float64) { //gd:AnimationNodeBlendSpace1D.set_blend_point_position
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_point_position, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
@@ -367,7 +367,7 @@ func (self class) SetBlendPointNode(point int64, node [1]gdclass.AnimationRootNo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_point_node, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		point int64
 		node  gdextension.Object
-	}{point, gdextension.Object(gd.ObjectChecked(gdclass.GetAnimationRootNode(node[0])))})
+	}{point, gdextension.Object(gdreference.GetObject(gdclass.GetAnimationRootNode(node[0])[0]))})
 }
 func (self class) GetBlendPointNode(point int64) [1]gdclass.AnimationRootNode { //gd:AnimationNodeBlendSpace1D.get_blend_point_node
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_blend_point_node, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ point int64 }{point})

@@ -721,7 +721,7 @@ func (self class) IsPickable() bool { //gd:CollisionObject2D.is_pickable
 	return ret
 }
 func (self class) CreateShapeOwner(owner [1]gd.Object) int64 { //gd:CollisionObject2D.create_shape_owner
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_shape_owner, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ owner gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(owner[0])))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_shape_owner, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ owner gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetObject(owner[0])[0]))})
 	var ret = r_ret
 	return ret
 }
@@ -786,7 +786,7 @@ func (self class) ShapeOwnerAddShape(owner_id int64, shape [1]gdclass.Shape2D) {
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_add_shape, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		owner_id int64
 		shape    gdextension.Object
-	}{owner_id, gdextension.Object(gd.ObjectChecked(gdclass.GetShape2D(shape[0])))})
+	}{owner_id, gdextension.Object(gdreference.GetObject(gdclass.GetShape2D(shape[0])[0]))})
 }
 func (self class) ShapeOwnerGetShapeCount(owner_id int64) int64 { //gd:CollisionObject2D.shape_owner_get_shape_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.shape_owner_get_shape_count, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})

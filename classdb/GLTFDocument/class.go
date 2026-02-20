@@ -508,7 +508,7 @@ func (self class) AppendFromFile(path String.Readable, state [1]gdclass.GLTFStat
 		state     gdextension.Object
 		flags     int64
 		base_path gdextension.String
-	}{pointers.Get(gd.InternalString(path)), gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFState(state[0]))), flags, pointers.Get(gd.InternalString(base_path))})
+	}{pointers.Get(gd.InternalString(path)), gdextension.Object(gdreference.GetObject(gdclass.GetGLTFState(state[0])[0])), flags, pointers.Get(gd.InternalString(base_path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -518,7 +518,7 @@ func (self class) AppendFromBuffer(bytes Packed.Bytes, base_path String.Readable
 		base_path gdextension.String
 		state     gdextension.Object
 		flags     int64
-	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](bytes.Array))), pointers.Get(gd.InternalString(base_path)), gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFState(state[0]))), flags})
+	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](bytes.Array))), pointers.Get(gd.InternalString(base_path)), gdextension.Object(gdreference.GetObject(gdclass.GetGLTFState(state[0])[0])), flags})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -527,7 +527,7 @@ func (self class) AppendFromScene(node [1]gdclass.Node, state [1]gdclass.GLTFSta
 		node  gdextension.Object
 		state gdextension.Object
 		flags int64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFState(state[0]))), flags})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetNode(node[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetGLTFState(state[0])[0])), flags})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -537,12 +537,12 @@ func (self class) GenerateScene(state [1]gdclass.GLTFState, bake_fps float64, tr
 		bake_fps                float64
 		trimming                bool
 		remove_immutable_tracks bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFState(state[0]))), bake_fps, trimming, remove_immutable_tracks})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetGLTFState(state[0])[0])), bake_fps, trimming, remove_immutable_tracks})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GenerateBuffer(state [1]gdclass.GLTFState) Packed.Bytes { //gd:GLTFDocument.generate_buffer
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.generate_buffer, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ state gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFState(state[0])))})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.generate_buffer, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ state gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetGLTFState(state[0])[0]))})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
@@ -550,7 +550,7 @@ func (self class) WriteToFilesystem(state [1]gdclass.GLTFState, path String.Read
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.write_to_filesystem, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), &struct {
 		state gdextension.Object
 		path  gdextension.String
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFState(state[0]))), pointers.Get(gd.InternalString(path))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetGLTFState(state[0])[0])), pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -558,7 +558,7 @@ func (self class) ImportObjectModelProperty(state [1]gdclass.GLTFState, json_poi
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.import_object_model_property, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), &struct {
 		state        gdextension.Object
 		json_pointer gdextension.String
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFState(state[0]))), pointers.Get(gd.InternalString(json_pointer))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetGLTFState(state[0])[0])), pointers.Get(gd.InternalString(json_pointer))})
 	var ret = [1]gdclass.GLTFObjectModelProperty{gdclass.NewGLTFObjectModelProperty(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -568,7 +568,7 @@ func (self class) ExportObjectModelProperty(state [1]gdclass.GLTFState, node_pat
 		node_path       gdextension.NodePath
 		godot_node      gdextension.Object
 		gltf_node_index int64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFState(state[0]))), pointers.Get(gd.InternalNodePath(node_path)), gdextension.Object(gd.ObjectChecked(gdclass.GetNode(godot_node[0]))), gltf_node_index})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetGLTFState(state[0])[0])), pointers.Get(gd.InternalNodePath(node_path)), gdextension.Object(gdreference.GetObject(gdclass.GetNode(godot_node[0])[0])), gltf_node_index})
 	var ret = [1]gdclass.GLTFObjectModelProperty{gdclass.NewGLTFObjectModelProperty(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -576,10 +576,10 @@ func (self class) RegisterGltfDocumentExtension(extension [1]gdclass.GLTFDocumen
 	noescape.CallStatic[struct{}](methods.register_gltf_document_extension, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		extension      gdextension.Object
 		first_priority bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFDocumentExtension(extension[0]))), first_priority})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetGLTFDocumentExtension(extension[0])[0])), first_priority})
 }
 func (self class) UnregisterGltfDocumentExtension(extension [1]gdclass.GLTFDocumentExtension) { //gd:GLTFDocument.unregister_gltf_document_extension
-	noescape.CallStatic[struct{}](methods.unregister_gltf_document_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFDocumentExtension(extension[0])))})
+	noescape.CallStatic[struct{}](methods.unregister_gltf_document_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetGLTFDocumentExtension(extension[0])[0]))})
 }
 func (self class) GetSupportedGltfExtensions() Packed.Strings { //gd:GLTFDocument.get_supported_gltf_extensions
 	var r_ret = noescape.CallStatic[gd.PackedPointers](methods.get_supported_gltf_extensions, gdextension.SizePackedArray, &struct{}{})

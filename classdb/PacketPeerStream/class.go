@@ -201,7 +201,7 @@ func (self Instance) SetStreamPeer(value StreamPeer.Instance) Instance { //gd:Pa
 }
 
 func (self class) SetStreamPeer(peer [1]gdclass.StreamPeer) { //gd:PacketPeerStream.set_stream_peer
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream_peer, 0|(gdextension.SizeObject<<4), &struct{ peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetStreamPeer(peer[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream_peer, 0|(gdextension.SizeObject<<4), &struct{ peer gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetStreamPeer(peer[0])[0]))})
 }
 func (self class) GetStreamPeer() [1]gdclass.StreamPeer { //gd:PacketPeerStream.get_stream_peer
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_stream_peer, gdextension.SizeObject, &struct{}{})

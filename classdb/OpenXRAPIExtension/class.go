@@ -755,19 +755,19 @@ func (self class) RegisterCompositionLayerProvider(extension [1]gdclass.OpenXREx
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_composition_layer_provider, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetOpenXRExtensionWrapper(extension[0])[0]))})
 }
 func (self class) UnregisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.unregister_composition_layer_provider
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_composition_layer_provider, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRExtensionWrapper(extension[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_composition_layer_provider, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRExtensionWrapper(extension[0])[0]))})
 }
 func (self class) RegisterProjectionViewsExtension(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.register_projection_views_extension
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_projection_views_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetOpenXRExtensionWrapper(extension[0])[0]))})
 }
 func (self class) UnregisterProjectionViewsExtension(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.unregister_projection_views_extension
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_projection_views_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRExtensionWrapper(extension[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_projection_views_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRExtensionWrapper(extension[0])[0]))})
 }
 func (self class) RegisterFrameInfoExtension(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.register_frame_info_extension
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_frame_info_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetOpenXRExtensionWrapper(extension[0])[0]))})
 }
 func (self class) UnregisterFrameInfoExtension(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.unregister_frame_info_extension
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_frame_info_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRExtensionWrapper(extension[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_frame_info_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRExtensionWrapper(extension[0])[0]))})
 }
 func (self class) GetRenderStateZNear() float64 { //gd:OpenXRAPIExtension.get_render_state_z_near
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_render_state_z_near, gdextension.SizeFloat, &struct{}{})

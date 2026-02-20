@@ -318,7 +318,7 @@ func (self class) RequestThumbnail(path String.Readable, control [1]gdclass.Text
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_thumbnail, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
 		path    gdextension.String
 		control gdextension.Object
-	}{pointers.Get(gd.InternalString(path)), gdextension.Object(gd.ObjectChecked(gdclass.GetTextureRect(control[0])))})
+	}{pointers.Get(gd.InternalString(path)), gdextension.Object(gdreference.GetObject(gdclass.GetTextureRect(control[0])[0]))})
 }
 func (o class) AsEditorResourceTooltipPlugin() Advanced         { return Advanced(o) }
 func (o Instance) AsEditorResourceTooltipPlugin() Instance      { return o }

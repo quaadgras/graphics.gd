@@ -303,7 +303,7 @@ func (self class) AddMeshPeer(peer_id int64, host [1]gdclass.ENetConnection) Err
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_mesh_peer, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		peer_id int64
 		host    gdextension.Object
-	}{peer_id, gdextension.Object(gd.ObjectChecked(gdclass.GetENetConnection(host[0])))})
+	}{peer_id, gdextension.Object(gdreference.GetObject(gdclass.GetENetConnection(host[0])[0]))})
 	var ret = Error.Code(r_ret)
 	return ret
 }

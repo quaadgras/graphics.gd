@@ -304,7 +304,7 @@ func (self class) SetDefaultTextureParameter(name String.Name, texture [1]gdclas
 		name    gdextension.StringName
 		texture gdextension.Object
 		index   int64
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture(texture[0]))), index})
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gdreference.GetObject(gdclass.GetTexture(texture[0])[0])), index})
 }
 func (self class) GetDefaultTextureParameter(name String.Name, index int64) [1]gdclass.Texture { //gd:Shader.get_default_texture_parameter
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_default_texture_parameter, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), &struct {

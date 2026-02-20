@@ -481,13 +481,13 @@ func (self class) GetDevice(index int64) [1]gdclass.UPNPDevice { //gd:UPNP.get_d
 	return ret
 }
 func (self class) AddDevice(device [1]gdclass.UPNPDevice) { //gd:UPNP.add_device
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_device, 0|(gdextension.SizeObject<<4), &struct{ device gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetUPNPDevice(device[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_device, 0|(gdextension.SizeObject<<4), &struct{ device gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetUPNPDevice(device[0])[0]))})
 }
 func (self class) SetDevice(index int64, device [1]gdclass.UPNPDevice) { //gd:UPNP.set_device
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_device, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		index  int64
 		device gdextension.Object
-	}{index, gdextension.Object(gd.ObjectChecked(gdclass.GetUPNPDevice(device[0])))})
+	}{index, gdextension.Object(gdreference.GetObject(gdclass.GetUPNPDevice(device[0])[0]))})
 }
 func (self class) RemoveDevice(index int64) { //gd:UPNP.remove_device
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_device, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})

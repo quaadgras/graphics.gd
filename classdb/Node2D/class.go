@@ -635,7 +635,7 @@ func (self class) ToGlobal(local_point Vector2.XY) Vector2.XY { //gd:Node2D.to_g
 	return ret
 }
 func (self class) GetRelativeTransformToParent(parent [1]gdclass.Node) Transform2D.OriginXY { //gd:Node2D.get_relative_transform_to_parent
-	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_relative_transform_to_parent, gdextension.SizeTransform2D|(gdextension.SizeObject<<4), &struct{ parent gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(parent[0])))})
+	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_relative_transform_to_parent, gdextension.SizeTransform2D|(gdextension.SizeObject<<4), &struct{ parent gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(parent[0])[0]))})
 	var ret = r_ret
 	return ret
 }

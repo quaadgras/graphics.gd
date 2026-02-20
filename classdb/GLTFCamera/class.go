@@ -277,7 +277,7 @@ func (self Instance) SetDepthNear(value Float.X) Instance { //gd:GLTFCamera.dept
 }
 
 func (self class) FromNode(camera_node [1]gdclass.Camera3D) [1]gdclass.GLTFCamera { //gd:GLTFCamera.from_node
-	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ camera_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCamera3D(camera_node[0])))})
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ camera_node gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCamera3D(camera_node[0])[0]))})
 	var ret = [1]gdclass.GLTFCamera{gdclass.NewGLTFCamera(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

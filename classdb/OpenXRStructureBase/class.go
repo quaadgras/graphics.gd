@@ -213,7 +213,7 @@ func (self class) GetStructureType() int64 { //gd:OpenXRStructureBase.get_struct
 	return ret
 }
 func (self class) SetNext(entity [1]gdclass.OpenXRStructureBase) { //gd:OpenXRStructureBase.set_next
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_next, 0|(gdextension.SizeObject<<4), &struct{ entity gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRStructureBase(entity[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_next, 0|(gdextension.SizeObject<<4), &struct{ entity gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRStructureBase(entity[0])[0]))})
 }
 func (self class) GetNext() [1]gdclass.OpenXRStructureBase { //gd:OpenXRStructureBase.get_next
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_next, gdextension.SizeObject, &struct{}{})

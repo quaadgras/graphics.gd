@@ -2340,7 +2340,7 @@ func (self class) ChildControlsChanged() { //gd:Window.child_controls_changed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.child_controls_changed, 0, &struct{}{})
 }
 func (self class) SetTheme(theme [1]gdclass.Theme) { //gd:Window.set_theme
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_theme, 0|(gdextension.SizeObject<<4), &struct{ theme gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTheme(theme[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_theme, 0|(gdextension.SizeObject<<4), &struct{ theme gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTheme(theme[0])[0]))})
 }
 func (self class) GetTheme() [1]gdclass.Theme { //gd:Window.get_theme
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme, gdextension.SizeObject, &struct{}{})
@@ -2365,19 +2365,19 @@ func (self class) AddThemeIconOverride(name String.Name, texture [1]gdclass.Text
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_icon_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name    gdextension.StringName
 		texture gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) AddThemeStyleboxOverride(name String.Name, stylebox [1]gdclass.StyleBox) { //gd:Window.add_theme_stylebox_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_stylebox_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name     gdextension.StringName
 		stylebox gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetStyleBox(stylebox[0])))})
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gdreference.GetObject(gdclass.GetStyleBox(stylebox[0])[0]))})
 }
 func (self class) AddThemeFontOverride(name String.Name, font [1]gdclass.Font) { //gd:Window.add_theme_font_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_font_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name gdextension.StringName
 		font gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0])))})
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gdreference.GetObject(gdclass.GetFont(font[0])[0]))})
 }
 func (self class) AddThemeFontSizeOverride(name String.Name, font_size int64) { //gd:Window.add_theme_font_size_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_font_size_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), &struct {
@@ -2633,32 +2633,32 @@ func (self class) PopupExclusive(from_node [1]gdclass.Node, rect Rect2i.Position
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_exclusive, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2i<<8), &struct {
 		from_node gdextension.Object
 		rect      Rect2i.PositionSize
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(from_node[0]))), rect})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetNode(from_node[0])[0])), rect})
 }
 func (self class) PopupExclusiveOnParent(from_node [1]gdclass.Node, parent_rect Rect2i.PositionSize) { //gd:Window.popup_exclusive_on_parent
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_exclusive_on_parent, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2i<<8), &struct {
 		from_node   gdextension.Object
 		parent_rect Rect2i.PositionSize
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(from_node[0]))), parent_rect})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetNode(from_node[0])[0])), parent_rect})
 }
 func (self class) PopupExclusiveCentered(from_node [1]gdclass.Node, minsize Vector2i.XY) { //gd:Window.popup_exclusive_centered
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_exclusive_centered, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2i<<8), &struct {
 		from_node gdextension.Object
 		minsize   Vector2i.XY
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(from_node[0]))), minsize})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetNode(from_node[0])[0])), minsize})
 }
 func (self class) PopupExclusiveCenteredRatio(from_node [1]gdclass.Node, ratio float64) { //gd:Window.popup_exclusive_centered_ratio
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_exclusive_centered_ratio, 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8), &struct {
 		from_node gdextension.Object
 		ratio     float64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(from_node[0]))), ratio})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetNode(from_node[0])[0])), ratio})
 }
 func (self class) PopupExclusiveCenteredClamped(from_node [1]gdclass.Node, minsize Vector2i.XY, fallback_ratio float64) { //gd:Window.popup_exclusive_centered_clamped
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_exclusive_centered_clamped, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeFloat<<12), &struct {
 		from_node      gdextension.Object
 		minsize        Vector2i.XY
 		fallback_ratio float64
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(from_node[0]))), minsize, fallback_ratio})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetNode(from_node[0])[0])), minsize, fallback_ratio})
 }
 
 /*

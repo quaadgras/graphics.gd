@@ -362,7 +362,7 @@ func (self class) GetDeltaInterval() float64 { //gd:MultiplayerSynchronizer.get_
 	return ret
 }
 func (self class) SetReplicationConfig(config [1]gdclass.SceneReplicationConfig) { //gd:MultiplayerSynchronizer.set_replication_config
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_replication_config, 0|(gdextension.SizeObject<<4), &struct{ config gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetSceneReplicationConfig(config[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_replication_config, 0|(gdextension.SizeObject<<4), &struct{ config gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetSceneReplicationConfig(config[0])[0]))})
 }
 func (self class) GetReplicationConfig() [1]gdclass.SceneReplicationConfig { //gd:MultiplayerSynchronizer.get_replication_config
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_replication_config, gdextension.SizeObject, &struct{}{})

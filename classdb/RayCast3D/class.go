@@ -574,7 +574,7 @@ func (self class) RemoveExceptionRid(rid RID.Any) { //gd:RayCast3D.remove_except
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_exception_rid, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 }
 func (self class) RemoveException(node [1]gdclass.CollisionObject3D) { //gd:RayCast3D.remove_exception
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_exception, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCollisionObject3D(node[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_exception, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCollisionObject3D(node[0])[0]))})
 }
 func (self class) ClearExceptions() { //gd:RayCast3D.clear_exceptions
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_exceptions, 0, &struct{}{})

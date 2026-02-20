@@ -494,7 +494,7 @@ func (self class) IsShortcutFeedback() bool { //gd:BaseButton.is_shortcut_feedba
 	return ret
 }
 func (self class) SetShortcut(shortcut [1]gdclass.Shortcut) { //gd:BaseButton.set_shortcut
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut, 0|(gdextension.SizeObject<<4), &struct{ shortcut gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut, 0|(gdextension.SizeObject<<4), &struct{ shortcut gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetShortcut(shortcut[0])[0]))})
 }
 func (self class) GetShortcut() [1]gdclass.Shortcut { //gd:BaseButton.get_shortcut
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shortcut, gdextension.SizeObject, &struct{}{})
@@ -502,7 +502,7 @@ func (self class) GetShortcut() [1]gdclass.Shortcut { //gd:BaseButton.get_shortc
 	return ret
 }
 func (self class) SetButtonGroup(button_group [1]gdclass.ButtonGroup) { //gd:BaseButton.set_button_group
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_button_group, 0|(gdextension.SizeObject<<4), &struct{ button_group gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetButtonGroup(button_group[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_button_group, 0|(gdextension.SizeObject<<4), &struct{ button_group gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetButtonGroup(button_group[0])[0]))})
 }
 func (self class) GetButtonGroup() [1]gdclass.ButtonGroup { //gd:BaseButton.get_button_group
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_button_group, gdextension.SizeObject, &struct{}{})

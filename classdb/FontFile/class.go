@@ -1507,7 +1507,7 @@ func (self class) SetTextureImage(cache_index int64, size Vector2i.XY, texture_i
 		size          Vector2i.XY
 		texture_index int64
 		image         gdextension.Object
-	}{cache_index, size, texture_index, gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0])))})
+	}{cache_index, size, texture_index, gdextension.Object(gdreference.GetObject(gdclass.GetImage(image[0])[0]))})
 }
 func (self class) GetTextureImage(cache_index int64, size Vector2i.XY, texture_index int64) [1]gdclass.Image { //gd:FontFile.get_texture_image
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_image, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), &struct {

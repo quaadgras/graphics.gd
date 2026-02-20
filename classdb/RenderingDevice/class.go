@@ -2023,7 +2023,7 @@ func (self class) TextureCreate(format [1]gdclass.RDTextureFormat, view [1]gdcla
 		format gdextension.Object
 		view   gdextension.Object
 		data   gdextension.Array
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetRDTextureFormat(format[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetRDTextureView(view[0]))), pointers.Get(gd.InternalArray(data))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetRDTextureFormat(format[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetRDTextureView(view[0])[0])), pointers.Get(gd.InternalArray(data))})
 	var ret = r_ret
 	return ret
 }
@@ -2031,7 +2031,7 @@ func (self class) TextureCreateShared(view [1]gdclass.RDTextureView, with_textur
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_create_shared, gdextension.SizeRID|(gdextension.SizeObject<<4)|(gdextension.SizeRID<<8), &struct {
 		view         gdextension.Object
 		with_texture RID.Any
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetRDTextureView(view[0]))), with_texture})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetRDTextureView(view[0])[0])), with_texture})
 	var ret = r_ret
 	return ret
 }
@@ -2043,7 +2043,7 @@ func (self class) TextureCreateSharedFromSlice(view [1]gdclass.RDTextureView, wi
 		mipmap       int64
 		mipmaps      int64
 		slice_type   Rendering.TextureSliceType
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetRDTextureView(view[0]))), with_texture, layer, mipmap, mipmaps, slice_type})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetRDTextureView(view[0])[0])), with_texture, layer, mipmap, mipmaps, slice_type})
 	var ret = r_ret
 	return ret
 }
@@ -2232,7 +2232,7 @@ func (self class) FramebufferIsValid(framebuffer RID.Any) bool { //gd:RenderingD
 	return ret
 }
 func (self class) SamplerCreate(state [1]gdclass.RDSamplerState) RID.Any { //gd:RenderingDevice.sampler_create
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.sampler_create, gdextension.SizeRID|(gdextension.SizeObject<<4), &struct{ state gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetRDSamplerState(state[0])))})
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.sampler_create, gdextension.SizeRID|(gdextension.SizeObject<<4), &struct{ state gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetRDSamplerState(state[0])[0]))})
 	var ret = r_ret
 	return ret
 }
@@ -2292,7 +2292,7 @@ func (self class) ShaderCompileSpirvFromSource(shader_source [1]gdclass.RDShader
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.shader_compile_spirv_from_source, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		shader_source gdextension.Object
 		allow_cache   bool
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetRDShaderSource(shader_source[0]))), allow_cache})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetRDShaderSource(shader_source[0])[0])), allow_cache})
 	var ret = [1]gdclass.RDShaderSPIRV{gdclass.NewRDShaderSPIRV(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -2300,7 +2300,7 @@ func (self class) ShaderCompileBinaryFromSpirv(spirv_data [1]gdclass.RDShaderSPI
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.shader_compile_binary_from_spirv, gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), &struct {
 		spirv_data gdextension.Object
 		name       gdextension.String
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetRDShaderSPIRV(spirv_data[0]))), pointers.Get(gd.InternalString(name))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetRDShaderSPIRV(spirv_data[0])[0])), pointers.Get(gd.InternalString(name))})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
@@ -2308,7 +2308,7 @@ func (self class) ShaderCreateFromSpirv(spirv_data [1]gdclass.RDShaderSPIRV, nam
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.shader_create_from_spirv, gdextension.SizeRID|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), &struct {
 		spirv_data gdextension.Object
 		name       gdextension.String
-	}{gdextension.Object(gd.ObjectChecked(gdclass.GetRDShaderSPIRV(spirv_data[0]))), pointers.Get(gd.InternalString(name))})
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetRDShaderSPIRV(spirv_data[0])[0])), pointers.Get(gd.InternalString(name))})
 	var ret = r_ret
 	return ret
 }
@@ -2439,7 +2439,7 @@ func (self class) RenderPipelineCreate(shader RID.Any, framebuffer_format int64,
 		dynamic_state_flags      Rendering.PipelineDynamicStateFlags
 		for_render_pass          int64
 		specialization_constants gdextension.Array
-	}{shader, framebuffer_format, vertex_format, primitive, gdextension.Object(gd.ObjectChecked(gdclass.GetRDPipelineRasterizationState(rasterization_state[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetRDPipelineMultisampleState(multisample_state[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetRDPipelineDepthStencilState(stencil_state[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetRDPipelineColorBlendState(color_blend_state[0]))), dynamic_state_flags, for_render_pass, pointers.Get(gd.InternalArray(specialization_constants))})
+	}{shader, framebuffer_format, vertex_format, primitive, gdextension.Object(gdreference.GetObject(gdclass.GetRDPipelineRasterizationState(rasterization_state[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetRDPipelineMultisampleState(multisample_state[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetRDPipelineDepthStencilState(stencil_state[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetRDPipelineColorBlendState(color_blend_state[0])[0])), dynamic_state_flags, for_render_pass, pointers.Get(gd.InternalArray(specialization_constants))})
 	var ret = r_ret
 	return ret
 }

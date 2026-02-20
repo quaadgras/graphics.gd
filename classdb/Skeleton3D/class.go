@@ -867,7 +867,7 @@ func (self class) CreateSkinFromRestTransforms() [1]gdclass.Skin { //gd:Skeleton
 	return ret
 }
 func (self class) RegisterSkin(skin [1]gdclass.Skin) [1]gdclass.SkinReference { //gd:Skeleton3D.register_skin
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.register_skin, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ skin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetSkin(skin[0])))})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.register_skin, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ skin gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetSkin(skin[0])[0]))})
 	var ret = [1]gdclass.SkinReference{gdclass.NewSkinReference(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

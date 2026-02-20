@@ -216,7 +216,7 @@ func (self class) GetSource() Source { //gd:VisualShaderNodeTexture.get_source
 	return ret
 }
 func (self class) SetTexture(value [1]gdclass.Texture2D) { //gd:VisualShaderNodeTexture.set_texture
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ value gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(value[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ value gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(value[0])[0]))})
 }
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:VisualShaderNodeTexture.get_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})

@@ -190,7 +190,7 @@ func (self class) GetBaseEditor() [1]gdclass.Control { //gd:ScriptEditorBase.get
 	return ret
 }
 func (self class) AddSyntaxHighlighter(highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditorBase.add_syntax_highlighter
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_syntax_highlighter, 0|(gdextension.SizeObject<<4), &struct{ highlighter gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorSyntaxHighlighter(highlighter[0])))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_syntax_highlighter, 0|(gdextension.SizeObject<<4), &struct{ highlighter gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorSyntaxHighlighter(highlighter[0])[0]))})
 }
 
 /*
