@@ -50,9 +50,13 @@ func init() {
 				for _, fn := range internal.StartupFunctions {
 					fn()
 				}
-				if _, ok := startup.(engineLoadingSharedGo); ok && !testing.Testing() {
-					resume_main, stop_main = iter.Pull(call_main_in_steps())
-					resume_main()
+				if _, ok := startup.(engineLoadingSharedGo); ok {
+					if testing.Testing() {
+						classdb.Register[goSceneTree]()
+					} else {
+						resume_main, stop_main = iter.Pull(call_main_in_steps())
+						resume_main()
+					}
 				}
 				for _, fn := range internal.PostStartupFunctions {
 					fn()
