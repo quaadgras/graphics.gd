@@ -98,7 +98,6 @@ func (g *NestedGame) Ready() {
 }
 
 func TestNested(t *testing.T) {
-	t.Skip()
 	runOnMain(t, func(t testing.TB) {
 		classdb.Register[HealthResource]()
 		classdb.Register[Health]()

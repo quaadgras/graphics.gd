@@ -9,6 +9,7 @@ import (
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/internal/threadcheck"
 	"graphics.gd/variant/Path"
 	StringType "graphics.gd/variant/String"
 )
@@ -111,7 +112,7 @@ func InternalString(s StringType.Readable) String {
 func StringCacheCheck(_ StringProxy, raw complex128) bool { return true }
 
 func NewStringProxy() (StringProxy, complex128) {
-	if !gdextension.Host.Threads.Main() {
+	if !threadcheck.Main() {
 		ptr := pointers.Pin(NewString(""))
 		runtime.AddCleanup(&ptr, func(raw String) {
 			raw.Free()
