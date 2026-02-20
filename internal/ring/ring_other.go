@@ -11,6 +11,7 @@ import (
 func flush(entries unsafe.Pointer, tail, head uint32) {
 	ring := (*[Size]Entry)(entries)
 	for i := tail; i != head; i++ {
+		CrashIndex = i & Mask
 		e := &ring[i&Mask]
 		gdextension.Host.Objects.Unsafe.Call(
 			gdextension.Object(e.Object),
@@ -20,4 +21,5 @@ func flush(entries unsafe.Pointer, tail, head uint32) {
 			gdextension.CallAccepts[any](unsafe.Pointer(&e.Args[0])),
 		)
 	}
+	CrashIndex = 0xFFFFFFFF
 }
