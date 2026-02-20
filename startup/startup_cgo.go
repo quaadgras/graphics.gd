@@ -50,13 +50,9 @@ func init() {
 				for _, fn := range internal.StartupFunctions {
 					fn()
 				}
-				if _, ok := startup.(engineLoadingSharedGo); ok {
-					if testing.Testing() {
-						go main()
-					} else {
-						resume_main, stop_main = iter.Pull(call_main_in_steps())
-						resume_main()
-					}
+				if _, ok := startup.(engineLoadingSharedGo); ok && !testing.Testing() {
+					resume_main, stop_main = iter.Pull(call_main_in_steps())
+					resume_main()
 				}
 				for _, fn := range internal.PostStartupFunctions {
 					fn()
@@ -87,7 +83,6 @@ func main()
 //export go_main
 func go_main() {
 	if testing.Testing() {
-		go main()
 		Scene()
 	} else {
 		main()
@@ -152,6 +147,9 @@ func (engineLoadingSharedGo) Rendering() iter.Seq[Float.X] {
 func init() {
 	gdextension.On.MainLoop.FirstFrame = func() {
 		threadcheck.Init()
+		if testing.Testing() {
+			go main()
+		}
 		Callable.Cycle()
 		if EngineClass.IsEditorHint() {
 			editorSetup()
