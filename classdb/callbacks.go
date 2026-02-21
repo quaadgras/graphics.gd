@@ -141,8 +141,8 @@ func init() {
 				methods.Get(fn).checked(receiver, gdextension.Pointer(args), gdextension.Pointer(result))
 				gdreference.Barrier()
 			},
-			Called: func(instance gdextension.ExtensionInstanceID, callData uintptr, result gdextension.Returns[any], args gdextension.Accepts[any]) {
-				pv := (*pinnedVirtualFunc)(unsafe.Pointer(callData))
+			Called: func(instance gdextension.ExtensionInstanceID, callData gdextension.Pointer, result gdextension.Returns[any], args gdextension.Accepts[any]) {
+				pv := (*pinnedVirtualFunc)(unsafe.Pointer(uintptr(callData)))
 				receiver := instances.Get(instance)
 				pv.fn(receiver.Value, gdextension.Pointer(args), gdextension.Pointer(result))
 				gdreference.Barrier()
