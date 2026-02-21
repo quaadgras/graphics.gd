@@ -6,6 +6,7 @@ import (
 
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/threadcheck"
+	"graphics.gd/variant/Callable"
 )
 
 var now uint64 = 1
@@ -91,7 +92,11 @@ func OwnObject(obj gdextension.Object, free func(gdextension.Object)) Object {
 		result.assigned.objectID = id
 	} else {
 		sentinel = new(object)
-		cleanup := runtime.AddCleanup(sentinel, free, obj)
+		cleanup := runtime.AddCleanup(sentinel, func(obj gdextension.Object) {
+			Callable.Defer(Callable.New(func() {
+				free(obj)
+			}))
+		}, obj)
 		*sentinel = *(*object)(unsafe.Pointer(&cleanup))
 	}
 	result.assigned.inEngine = obj
@@ -128,7 +133,7 @@ func SetObject(obj Object, val gdextension.Object) {
 
 // PinObject pins the object so that it cannot not be freed automatically.
 func PinObject(obj Object) {
-	if obj.sentinel == nil {
+	if obj.sentinel == nil || obj.assigned.objectID == 0 {
 		return
 	}
 	*obj.sentinel = (object{})
@@ -173,6 +178,7 @@ func EndObject(obj Object) (gdextension.Object, bool) {
 	case TypeThread:
 		cleanup := (*runtime.Cleanup)(unsafe.Pointer(obj.sentinel))
 		cleanup.Stop()
+		//fmt.Println("Stopped cleanup for thread", raw, cleanup)
 		*obj.sentinel = obj.assigned
 	case TypeUnsafe:
 	case TypePinned:
