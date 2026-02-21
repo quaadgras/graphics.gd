@@ -140,7 +140,8 @@ var last_allocs int64
 // objects, only pointers allocated in the current or last cycle will
 // be preserved.
 func Cycle() {
-	if allocs.Load() <= last_allocs {
+	mallocs := allocs.Load()
+	if mallocs <= last_allocs {
 		return
 	}
 	for s := range shapesMax {
@@ -227,6 +228,7 @@ func Cycle() {
 			}
 		}
 	}
+	last_allocs = mallocs
 }
 
 // New manages the given pointer value discretely.

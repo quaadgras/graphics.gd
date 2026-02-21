@@ -58,6 +58,9 @@ uintptr_t go_on_extension_class_create(uintptr_t p0, bool p1) {
 uintptr_t go_on_extension_class_method(uintptr_t p0, uintptr_t p1, uint32_t p2) {
 	return Go.call<uintptr_t>("on_extension_class_method",p0,p1,p2);
 }
+uintptr_t go_on_extension_class_caller(uintptr_t p0, uintptr_t p1, uint32_t p2) {
+	return Go.call<uintptr_t>("on_extension_class_caller",p0,p1,p2);
+}
 bool go_on_extension_instance_set(uintptr_t p0, uintptr_t p1, uint32_t p2, uint32_t p3, uint32_t p4, uint32_t p5, uint32_t p6, uint32_t p7) {
 	return Go.call<bool>("on_extension_instance_set",p0,p1,p2,p3,p4,p5,p6,p7);
 }
@@ -90,6 +93,9 @@ void go_on_extension_instance_rid(uintptr_t p0, void* p1) {
 }
 void go_on_extension_instance_checked_call(uintptr_t p0, uintptr_t p1, void* p2, void* p3) {
 	Go.call<void>("on_extension_instance_checked_call",p0,p1, uintptr_t(p2), uintptr_t(p3));
+}
+void go_on_extension_instance_called(uintptr_t p0, uintptr_t p1, void* p2, void* p3) {
+	Go.call<void>("on_extension_instance_called",p0,p1, uintptr_t(p2), uintptr_t(p3));
 }
 void go_on_extension_instance_variant_call(uintptr_t p0, uintptr_t p1, void* p2, void* p3) {
 	Go.call<void>("on_extension_instance_variant_call",p0,p1, uintptr_t(p2), uintptr_t(p3));

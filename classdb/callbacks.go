@@ -2,6 +2,8 @@ package classdb
 
 import (
 	"reflect"
+	"runtime"
+	"unsafe"
 
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
@@ -9,6 +11,15 @@ import (
 	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Object"
+)
+
+type pinnedVirtualFunc struct {
+	fn gd.ExtensionClassCallVirtualFunc
+}
+
+var (
+	virtualPinner  runtime.Pinner
+	pinnedVirtuals []*pinnedVirtualFunc
 )
 
 func init() {
@@ -40,6 +51,9 @@ func init() {
 				instance.Free()
 			}
 		}
+		virtualPinner.Unpin()
+		virtualPinner = runtime.Pinner{}
+		pinnedVirtuals = nil
 	})
 
 	gdextension.On.Extension = gdextension.CallbacksForExtension{
@@ -127,6 +141,12 @@ func init() {
 				methods.Get(fn).checked(receiver, gdextension.Pointer(args), gdextension.Pointer(result))
 				gdreference.Barrier()
 			},
+			Called: func(instance gdextension.ExtensionInstanceID, callData uintptr, result gdextension.Returns[any], args gdextension.Accepts[any]) {
+				pv := (*pinnedVirtualFunc)(unsafe.Pointer(callData))
+				receiver := instances.Get(instance)
+				pv.fn(receiver.Value, gdextension.Pointer(args), gdextension.Pointer(result))
+				gdreference.Barrier()
+			},
 			VariantCall: func(instance gdextension.ExtensionInstanceID, fn gdextension.FunctionID, result gdextension.Returns[gdextension.Variant], args gdextension.Accepts[gdextension.Variant]) {
 				defer gd.Recover()
 				var receiver *instanceImplementation
@@ -183,16 +203,25 @@ func init() {
 				return gdreference.GetObject(classes.Get(class).CreateInstance(notify_postinitialize)[0])
 			},
 			Method: func(class gdextension.ExtensionClassID, method gdextension.StringName, hash uint32) gdextension.FunctionID {
-				virtual := classes.Get(class).GetVirtual(pointers.Let[gd.StringName](method))
-				if virtual == nil {
+				virtual, ok := classes.Get(class).GetVirtual(pointers.Let[gd.StringName](method)).(gd.ExtensionClassCallVirtualFunc)
+				if !ok || virtual == nil {
 					return 0
 				}
 				return methods.New(&methodImplementation{
-					checked: func(instance any, args, ret gdextension.Pointer) {
-						instance.(*instanceImplementation).CallVirtual(virtual, args, ret)
-						gdreference.Barrier()
+					checked: func(instance *instanceImplementation, args, ret gdextension.Pointer) {
+						virtual(instance.Value, args, ret)
 					},
 				})
+			},
+			Caller: func(class gdextension.ExtensionClassID, method gdextension.StringName, hash uint32) uintptr {
+				virtual, ok := classes.Get(class).GetVirtual(pointers.Let[gd.StringName](method)).(gd.ExtensionClassCallVirtualFunc)
+				if !ok || virtual == nil {
+					return 0
+				}
+				pv := &pinnedVirtualFunc{fn: virtual}
+				virtualPinner.Pin(pv)
+				pinnedVirtuals = append(pinnedVirtuals, pv)
+				return uintptr(unsafe.Pointer(pv))
 			},
 		},
 	}

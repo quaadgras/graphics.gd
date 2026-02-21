@@ -2,38 +2,53 @@ package threadsafe
 
 import (
 	"iter"
-	"sync"
+	"sync/atomic"
 )
 
 type Slice[T any] struct {
-	mutex sync.RWMutex
-	slice []T
+	data atomic.Pointer[[]T]
 }
 
-func (slice *Slice[T]) Append(value T) int {
-	slice.mutex.Lock()
-	defer slice.mutex.Unlock()
-	slice.slice = append(slice.slice, value)
-	return len(slice.slice) - 1
+func (s *Slice[T]) Append(value T) int {
+	for {
+		oldp := s.data.Load()
+		var old []T
+		if oldp != nil {
+			old = *oldp
+		}
+		next := make([]T, len(old)+1)
+		copy(next, old)
+		next[len(old)] = value
+		if s.data.CompareAndSwap(oldp, &next) {
+			return len(next) - 1
+		}
+	}
 }
 
-func (slice *Slice[T]) Index(index int) T {
-	slice.mutex.RLock()
-	defer slice.mutex.RUnlock()
-	return slice.slice[index]
+func (s *Slice[T]) Index(index int) T {
+	return (*s.data.Load())[index]
 }
 
-func (slice *Slice[T]) SetIndex(index int, value T) {
-	slice.mutex.Lock()
-	defer slice.mutex.Unlock()
-	slice.slice[index] = value
+func (s *Slice[T]) SetIndex(index int, value T) {
+	for {
+		oldp := s.data.Load()
+		old := *oldp
+		next := make([]T, len(old))
+		copy(next, old)
+		next[index] = value
+		if s.data.CompareAndSwap(oldp, &next) {
+			return
+		}
+	}
 }
 
-func (slice *Slice[T]) Values() iter.Seq2[int, T] {
+func (s *Slice[T]) Values() iter.Seq2[int, T] {
 	return func(yield func(int, T) bool) {
-		slice.mutex.RLock()
-		defer slice.mutex.RUnlock()
-		for i, v := range slice.slice {
+		p := s.data.Load()
+		if p == nil {
+			return
+		}
+		for i, v := range *p {
 			if !yield(i, v) {
 				return
 			}

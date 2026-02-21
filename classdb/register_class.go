@@ -211,6 +211,7 @@ func Register[T Class](exports ...any) {
 			Tool:           tool,
 			RefCounted:     refCounted,
 			isMainLoop:     isMainLoop,
+			InEditor:       Engine.IsEditorHint(),
 			VirtualMethods: reference.Virtual,
 			Constructor: func() reflect.Value {
 				return reflect.New(classType)
@@ -560,6 +561,8 @@ type classImplementation struct {
 	RefCounted bool
 	isMainLoop bool
 
+	InEditor bool
+
 	Type reflect.Type
 
 	VirtualMethods func(string) reflect.Value
@@ -692,7 +695,7 @@ func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd
 }
 
 func (class classImplementation) GetVirtual(name gd.StringName) any {
-	if !class.Tool && Engine.IsEditorHint() {
+	if !class.Tool && class.InEditor {
 		return nil
 	}
 	var virtual = class.VirtualMethods(name.String())
@@ -814,10 +817,6 @@ func (instance *instanceImplementation) Reference() {
 }
 func (instance *instanceImplementation) Unreference() bool {
 	return false
-}
-
-func (instance *instanceImplementation) CallVirtual(virtual any, args, back gdextension.Pointer) {
-	virtual.(gd.ExtensionClassCallVirtualFunc)(instance.Value, args, back)
 }
 
 func (instance *instanceImplementation) GetRID() gd.RID {
