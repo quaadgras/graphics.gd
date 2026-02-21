@@ -48,6 +48,7 @@ type CallbacksForExtensionInstance struct {
 	Reference          func(instance ExtensionInstanceID, increment bool) bool                                                                                  `gd:"on_extension_instance_reference"`
 	RID                func(instance ExtensionInstanceID, rid Returns[uint64])                                                                                  `gd:"on_extension_instance_rid"`
 	CheckedCall        func(instance ExtensionInstanceID, fn FunctionID, result Returns[any], args Accepts[any])                                                `gd:"on_extension_instance_checked_call"`
+	Called             func(instance ExtensionInstanceID, callData uintptr, result Returns[any], args Accepts[any])                                             `gd:"on_extension_instance_called"`
 	VariantCall        func(instance ExtensionInstanceID, fn FunctionID, result Returns[Variant], args Accepts[Variant])                                        `gd:"on_extension_instance_variant_call"`
 	DynamicCall        func(instance ExtensionInstanceID, fn FunctionID, result Returns[Variant], arg_count int, args Accepts[Variant], err Returns[CallError]) `gd:"on_extension_instance_dynamic_call"`
 	Free               func(instance ExtensionInstanceID)                                                                                                       `gd:"on_extension_instance_free"`
@@ -56,6 +57,7 @@ type CallbacksForExtensionInstance struct {
 type CallbacksForExtensionClass struct {
 	Create func(class ExtensionClassID, notify_postinitialize bool) Object         `gd:"on_extension_class_create"`
 	Method func(class ExtensionClassID, method StringName, hash uint32) FunctionID `gd:"on_extension_class_method"`
+	Caller func(class ExtensionClassID, method StringName, hash uint32) uintptr    `gd:"on_extension_class_caller"`
 }
 
 type CallbacksForExtensionScript struct {

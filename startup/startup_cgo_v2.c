@@ -818,12 +818,15 @@ GDExtensionObjectPtr cgo_class_create_instance_func(void *user_data, GDExtension
     return (GDExtensionObjectPtr)go_on_extension_class_create((uintptr_t)user_data, notify_postinitialize);
 }
 
+extern uintptr_t go_on_extension_class_caller(uintptr_t, uintptr_t, uint32_t);
+extern void go_on_extension_instance_called(uintptr_t, uintptr_t, void*, void*);
+
 void *cgo_class_get_virtual_call_data_func(void *user_data, GDExtensionConstStringNamePtr name, uint32_t hash) {
-    return (void*)go_on_extension_class_method((uintptr_t)user_data, *(uintptr_t*)name, hash);
+    return (void*)go_on_extension_class_caller((uintptr_t)user_data, *(uintptr_t*)name, hash);
 }
 
 void cgo_class_call_virtual_with_data_func(GDExtensionClassInstancePtr p_instance, GDExtensionConstStringNamePtr p_name, void *p_virtual_call_userdata, const GDExtensionConstTypePtr *p_args, GDExtensionTypePtr r_ret) {
-    go_on_extension_instance_checked_call((uintptr_t)p_instance, (uintptr_t)p_virtual_call_userdata, r_ret, (void *)p_args);
+    go_on_extension_instance_called((uintptr_t)p_instance, (uintptr_t)p_virtual_call_userdata, r_ret, (void *)p_args);
 }
 
 void cgo_class_free_instance_func(void *p_class_userdata, GDExtensionClassInstancePtr p_instance) {
