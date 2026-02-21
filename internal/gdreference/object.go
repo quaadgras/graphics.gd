@@ -128,7 +128,10 @@ func SetObject(obj Object, val gdextension.Object) {
 	if obj.assigned != (object{}) {
 		panic("SetObject can only be used with objects created by NewObject")
 	}
+	var id gdextension.ObjectID
+	gdextension.Host.Objects.ID.Get(val, gdextension.CallReturns[gdextension.ObjectID](&id))
 	obj.sentinel.inEngine = val
+	obj.sentinel.objectID = id
 }
 
 // PinObject pins the object so that it cannot not be freed automatically.
@@ -154,6 +157,9 @@ func AskObject(obj Object) (gdextension.Object, Type) {
 	}
 	if obj.assigned.objectID == 0 {
 		if obj.assigned.inEngine == 0 {
+			if obj.sentinel.inEngine == 0 {
+				return gdextension.Host.Objects.Lookup(obj.sentinel.objectID), TypeStatic
+			}
 			return obj.sentinel.inEngine, TypeStatic
 		}
 		if *obj.sentinel == obj.assigned {
@@ -183,7 +189,9 @@ func EndObject(obj Object) (gdextension.Object, bool) {
 	case TypeUnsafe:
 	case TypePinned:
 		*obj.sentinel = object{}
-	case TypeBorrow, TypeStatic:
+	case TypeStatic:
+		obj.sentinel.inEngine = 0
+	case TypeBorrow:
 		return raw, false
 	}
 	return raw, true

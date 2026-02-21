@@ -829,7 +829,6 @@ func (instance *instanceImplementation) Free() {
 		return
 	}
 	gdreference.EndObject(instance.Value.AsObject()[0])
-
 	roots.Remove(reflect.ValueOf(instance.Value))
 	for _, signal := range instance.signals {
 		if signal.rvalue.IsValid() {
