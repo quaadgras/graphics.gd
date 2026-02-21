@@ -46,12 +46,7 @@ func PointerWithOwnershipTransferredToGodot(obj Object) EnginePointer {
 }
 
 func PointerQueueFree(ptr gdreference.Object) {
-	raw, ok := gdreference.EndObject(ptr)
-	if !ok {
-		panic("cannot queue free an object that is not owned by Go")
-	}
-	var id gdextension.ObjectID
-	gdextension.Host.Objects.ID.Get(raw, gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
+	gdreference.EndObject(ptr)
 }
 
 func PointerMustAssertInstanceID[T pointers.Generic[T, [3]uint64]](ptr gdextension.Object) T {
