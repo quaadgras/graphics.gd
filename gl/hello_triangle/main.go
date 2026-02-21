@@ -46,8 +46,6 @@ func main() {
 	frames := startup.Rendering()
 
 	viewport = RenderingServer.ViewportCreate()
-	defer RenderingServer.FreeRid(RID.Any(viewport))
-
 	DisplayServer.WindowSetWindowEventCallback(onWindowInputEvent, 0)
 	DisplayServer.WindowSetRectChangedCallback(onResize, 0)
 	DisplayServer.WindowSetTitle("Hello Triangle", 0)
@@ -61,8 +59,6 @@ func main() {
 
 	canvas = RenderingServer.CanvasCreate()
 	triangle = RenderingServer.CanvasItemCreate()
-	defer RenderingServer.FreeRid(RID.Any(canvas))
-	defer RenderingServer.FreeRid(RID.Any(triangle))
 
 	RenderingServer.CanvasItemSetParent(triangle, RID.CanvasItem(canvas))
 	RenderingServer.ViewportAttachCanvas(viewport, canvas)
@@ -74,6 +70,9 @@ func main() {
 		RenderingServer.ViewportSetSize(viewport, int(size.X), int(size.Y))
 		RenderingServer.Advanced().ViewportAttachToScreen(RID.Any(viewport), Rect2.New(0, 0, size.X, size.Y), 0)
 		if closing {
+			RenderingServer.FreeRid(RID.Any(viewport))
+			RenderingServer.FreeRid(RID.Any(canvas))
+			RenderingServer.FreeRid(RID.Any(triangle))
 			break
 		}
 	}

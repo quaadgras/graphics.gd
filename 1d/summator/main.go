@@ -18,5 +18,5 @@ func (s *Summator) GetTotal() int { return s.count }
 
 func main() {
 	classdb.Register[Summator]()
-	startup.Scene()
+	startup.AsExtension()
 }

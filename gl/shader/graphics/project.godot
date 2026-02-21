@@ -9,9 +9,12 @@
 config_version=5
 
 [application]
+
 config/name="shader"
 run/main_scene="res://main.tscn"
 run/main_loop_type="GoMainLoop"
+config/features=PackedStringArray("4.5")
 
 [rendering]
+
 textures/vram_compression/import_etc2_astc=true

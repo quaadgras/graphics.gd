@@ -16,8 +16,8 @@ noise_type = 3
 fractal_type = 0
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jhgfj"]
-seamless = true
 noise = SubResource("FastNoiseLite_dkxv0")
+seamless = true
 
 [resource]
 render_priority = 0

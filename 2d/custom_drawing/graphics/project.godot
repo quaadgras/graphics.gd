@@ -9,9 +9,11 @@
 config_version=5
 
 [application]
+
 config/name="custom_drawing"
 run/main_scene="res://main.tscn"
 run/main_loop_type="GoMainLoop"
+config/features=PackedStringArray("4.6")
 
 [display]
 
@@ -19,4 +21,5 @@ window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
 [rendering]
+
 textures/vram_compression/import_etc2_astc=true

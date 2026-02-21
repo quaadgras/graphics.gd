@@ -1,10 +1,10 @@
 module grow.graphics/eg
 
-go 1.25.0
+go 1.26.0
 
 require (
 	github.com/hajimehoshi/ebiten/v2 v2.8.6
-	graphics.gd v0.0.0-20260130205534-84c588b52be3
+	graphics.gd v0.0.0-20260221041443-94cfab3dcfba
 	runtime.link v0.0.0-20250814043127-466c6970c4a5
 )
 

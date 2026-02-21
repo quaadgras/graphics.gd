@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://ccjru1onq2k2c"]
+[gd_scene load_steps=26 format=3 uid="uid://ccjru1onq2k2c"]
 
 [ext_resource type="PackedScene" uid="uid://mb58xbunfaep" path="res://icons/weapon_ui.tscn" id="1_3u7h6"]
 [ext_resource type="Sky" uid="uid://jonn5eom7asv" path="res://Environment/sky/blue_sky.tres" id="2_4bjxn"]
@@ -40,8 +40,8 @@ volumetric_fog_emission = Color(1, 1, 1, 1)
 fractal_type = 0
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_71o0d"]
-seamless = true
 noise = SubResource("FastNoiseLite_le7wx")
+seamless = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ylhgr"]
 render_priority = -1

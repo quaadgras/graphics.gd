@@ -8,6 +8,10 @@
 
 config_version=5
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="Hierarchical Finite State Machine"
@@ -16,7 +20,7 @@ pattern in GDscript, including Hierarchical States, and a
 pushdown automaton."
 config/tags=PackedStringArray("2d", "ai", "demo", "official")
 run/main_scene="res://main.tscn"
-config/features=PackedStringArray("4.4")
+config/features=PackedStringArray("4.6")
 config/icon="res://icon.webp"
 
 [debug]
@@ -103,3 +107,4 @@ common/physics_ticks_per_second=120
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true
