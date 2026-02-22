@@ -38,8 +38,10 @@ func init() {
 		key := reflect.ValueOf(impl.Value)
 		if goOnly {
 			roots.Remove(key)
+			local.Insert(key, struct{}{})
 		} else {
-			gdreference.PinObject(impl.Value.AsObject()[0])
+			gdreference.PinObject((*gdreference.Object)(reflect.ValueOf(impl.Value).UnsafePointer()), obj)
+			local.Remove(key)
 			if keepalive := compile_keepalive(reflect.TypeOf(impl.Value)); keepalive != nil {
 				roots.Insert(key, keepalive)
 			}

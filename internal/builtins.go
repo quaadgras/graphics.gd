@@ -681,7 +681,11 @@ func (rc RefCounted) Reference() {
 	noescape.Call[struct{}](ObjectChecked(rc.AsObject()), refcounted_methods.reference, 0, nil)
 }
 func (rc RefCounted) Unreference() bool {
-	return noescape.Call[bool](ObjectChecked(rc.AsObject()), refcounted_methods.unreference, gdextension.SizeBool, nil)
+	raw := ObjectChecked(rc.AsObject())
+	if raw == 0 {
+		return false
+	}
+	return noescape.Call[bool](raw, refcounted_methods.unreference, gdextension.SizeBool, nil)
 }
 func (rc RefCounted) InitRef() bool {
 	return noescape.Call[bool](ObjectChecked(rc.AsObject()), refcounted_methods.init_ref, gdextension.SizeBool, nil)
