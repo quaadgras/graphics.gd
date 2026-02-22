@@ -30,7 +30,6 @@ func As[T gd.IsClass](value gd.IsClass) (T, bool) {
 	}
 	ext, ok := gd.ExtensionInstanceLookup(gdreference.GetObject(value.AsObject()[0])).(T)
 	if ok {
-		gdreference.EndObject(value.AsObject()[0])
 		return ext, true
 	}
 	var zero T
