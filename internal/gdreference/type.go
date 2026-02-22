@@ -30,7 +30,7 @@ func GC(free func(gdextension.Object)) {
 					free(raw)
 				}
 				pool_free = append(pool_free, obj)
-			} else {
+			} else if obj.objectID != 0 {
 				obj.inEngine = 0
 			}
 		}
