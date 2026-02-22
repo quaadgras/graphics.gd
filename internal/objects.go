@@ -15,7 +15,7 @@ import (
 type ExtensionClassCallVirtualFunc func(any, gdextension.Pointer, gdextension.Pointer)
 
 var ExtensionInstanceLookup func(gdextension.Object) any
-var ExtensionInstanceGoOnly func(gdextension.Object, bool)
+var ExtensionInstanceGoOnly func(gdextension.Object, bool) (gdreference.Object, bool)
 
 type NotificationType int32
 
@@ -23,7 +23,9 @@ func PointerWithOwnershipTransferredToGo(ptr gdextension.Object) gdreference.Obj
 	if ptr == 0 {
 		return gdreference.Object{}
 	}
-	ExtensionInstanceGoOnly(ptr, true)
+	if obj, ok := ExtensionInstanceGoOnly(ptr, true); ok {
+		return obj
+	}
 	return gdreference.OwnObject(ptr, Free)
 }
 

@@ -30,10 +30,10 @@ func init() {
 		}
 		return val.Value
 	}
-	gd.ExtensionInstanceGoOnly = func(obj gdextension.Object, goOnly bool) {
+	gd.ExtensionInstanceGoOnly = func(obj gdextension.Object, goOnly bool) (gdreference.Object, bool) {
 		impl := instances.Get(gdextension.Host.Objects.Extension.Fetch(obj))
 		if impl == nil {
-			return
+			return gdreference.Object{}, false
 		}
 		key := reflect.ValueOf(impl.Value)
 		if goOnly {
@@ -46,6 +46,7 @@ func init() {
 				roots.Insert(key, keepalive)
 			}
 		}
+		return impl.Value.AsObject()[0], true
 	}
 	gd.RegisterCleanup(func() {
 		for instance := range instances.All {

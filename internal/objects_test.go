@@ -7,6 +7,7 @@ import (
 	"graphics.gd/classdb/GDScript"
 	"graphics.gd/classdb/Node"
 	gd "graphics.gd/internal"
+	"graphics.gd/internal/gdclass"
 	"graphics.gd/internal/gdreference"
 	"graphics.gd/variant/Object"
 )
@@ -125,5 +126,26 @@ func TestObjectAsGoTool(t *testing.T) {
 		if ptr != object {
 			t.Error("Expected to get the same pointer back")
 		}
+	})
+}
+
+type MyNode struct {
+	Node.Extension[MyNode]
+}
+
+func init() {
+	classdb.Register[MyNode]()
+}
+
+func TestExtensionClassAliasCastThenAddedToScene(t *testing.T) {
+	runOnMain(t, func(t testing.TB) {
+		var m = new(MyNode)
+
+		var another_ref_from_the_engine = gdreference.OwnObject(gdreference.GetObject(m.AsObject()[0]), gd.Free)
+		var obj = Node.Instance{gdclass.NewNode(another_ref_from_the_engine)}
+
+		m = Object.To[*MyNode](obj)
+		var node = Node.New()
+		node.AddChild(obj)
 	})
 }
