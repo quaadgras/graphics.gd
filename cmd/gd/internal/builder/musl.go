@@ -198,7 +198,9 @@ func (musl Musl) Test(args ...string) error {
 		built_musl = true
 	}()
 	os.Remove(filepath.Join(project.GraphicsDirectory, "library.gdextension"))
+	goos := os.Getenv("GOOS")
 	os.Setenv("GOOS", "linux")
+	defer os.Setenv("GOOS", goos)
 	var GOARCH = runtime.GOARCH
 	if goarch := os.Getenv("GOARCH"); goarch != "" {
 		GOARCH = goarch

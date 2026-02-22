@@ -26,6 +26,9 @@ import (
 func init() {
 	var cargs []*C.char
 	for _, arg := range os.Args {
+		if arg == "--export-release" {
+			toolUsed = true
+		}
 		cargs = append(cargs, C.CString(arg))
 	}
 	ptr := C.libgodot_create_godot_instance(C.int(len(os.Args)), &cargs[0], (C.GDExtensionInitializationFunction)(C.cgo_extension_init))

@@ -316,7 +316,11 @@ func args_flat(rtype reflect.Type, x32 bool) iter.Seq2[int, reflect.Type] {
 		for i := range rtype.NumIn() {
 			arg := rtype.In(i)
 			if arg.Kind() == reflect.Array {
-				for j := 0; j < arg.Len(); j++ {
+				length := arg.Len()
+				if x32 && strings.HasPrefix(arg.Name(), "PackedArray[") {
+					length = 1
+				}
+				for j := 0; j < length; j++ {
 					if x32 && (arg.Elem().Kind() == reflect.Uint64 || arg.Elem().Kind() == reflect.Int64) {
 						if !yield(n, reflect.TypeOf(uint32(0))) {
 							return
@@ -449,6 +453,7 @@ func main() {
 		generate_startup_js(),
 		generate_startup_cgo(),
 		generate_gdextension_web_cgo_callbacks(),
+		generate_startup_wasm_exports(),
 		generate_startup_wasip1(),
 		generate_reloads_go(),
 	); err != nil {

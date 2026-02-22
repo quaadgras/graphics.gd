@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/ring"
 )
 
 func Call[T any](object gdextension.Object, method gdextension.MethodForClass, shape gdextension.Shape, args any) T {
@@ -14,6 +15,13 @@ func Call[T any](object gdextension.Object, method gdextension.MethodForClass, s
 	var result T
 	if args != nil {
 		argptr = reflect.ValueOf(args).UnsafePointer()
+	}
+	if unsafe.Sizeof(result) == 0 {
+		ring.Main.Buffer(uintptr(object), uintptr(method), uint64(shape), argptr, 0)
+		return result
+	}
+	if ring.Main.Pending() {
+		ring.Main.Flush()
 	}
 	call_noescape(object, method, unsafe.Pointer(&result), shape, argptr)
 	return result

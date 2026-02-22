@@ -123,6 +123,7 @@ func gd(args ...string) error {
 		if strings.HasPrefix(version, "musl") {
 			if len(args) > 0 && args[0] == "test" {
 				build_godot = func() error {
+					musl_args := args
 					current, err := os.Getwd()
 					if err != nil {
 						return xray.New(err)
@@ -130,10 +131,13 @@ func gd(args ...string) error {
 					os.Chdir(project.Directory)
 					defer os.Chdir(current)
 					var faster_compile = []string{"-gcflags=graphics.gd/classdb/...=-N -l"}
-					if slices.Contains(args, "-bench") {
+					if slices.Contains(musl_args, "-bench") {
 						faster_compile = nil
 					}
-					return builder.Musl{}.Test(append(faster_compile, testArgs(args[1:]...)...)...)
+					if GOOS != "musl" && GOOS != "" {
+						musl_args = []string{"test", "-test.skip", "."}
+					}
+					return builder.Musl{}.Test(append(faster_compile, testArgs(musl_args[1:]...)...)...)
 				}
 			} else {
 				build_godot = func() error {

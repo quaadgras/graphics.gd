@@ -3,13 +3,17 @@
 package gd_test
 
 import (
+	"sync"
 	"testing"
 
+	"graphics.gd/classdb"
+	"graphics.gd/classdb/Control"
 	"graphics.gd/classdb/Engine"
 	"graphics.gd/classdb/GDScript"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/threadcheck"
 	"graphics.gd/variant/Object"
+	"graphics.gd/variant/Vector2"
 )
 
 func BenchmarkBuiltinPointerCall(B *testing.B) {
@@ -68,6 +72,32 @@ func bench():
 		B.ResetTimer()
 		gd.ObjectCall(obj[0], bench)
 		gd.ObjectFree(obj[0])
+	})
+}
+
+// BenchVirtualControl is used by BenchmarkVirtualCall to measure the
+// Godot→Go checked_call path. Calling GetMinimumSize() on this from Go
+// triggers: Go→Godot ptrcall → C++ GDVIRTUAL_CALL(_get_minimum_size) →
+// cgo_class_call_virtual_with_data_func → go_on_extension_instance_checked_call → Go.
+type BenchVirtualControl struct {
+	Control.Extension[BenchVirtualControl] `gd:"BenchVirtualControl"`
+}
+
+func (b *BenchVirtualControl) GetMinimumSize() Vector2.XY { return Vector2.XY{} }
+
+var registerBenchVirtualOnce sync.Once
+
+func BenchmarkVirtualCallback(B *testing.B) {
+	benchOnMain(B, func(B *channelB) {
+		B.ReportAllocs()
+		registerBenchVirtualOnce.Do(func() {
+			classdb.Register[BenchVirtualControl]()
+		})
+		ctrl := new(BenchVirtualControl)
+		instance := ctrl.AsControl()
+		for B.Loop() {
+			instance.GetMinimumSize()
+		}
 	})
 }
 
