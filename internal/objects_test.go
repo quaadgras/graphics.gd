@@ -141,6 +141,7 @@ func TestExtensionClassAliasCastThenAddedToScene(t *testing.T) {
 	runOnMain(t, func(t testing.TB) {
 		var m = new(MyNode)
 
+		// simulate the scenario where the engine returns MyNode as an 'owned' Object, ie. PackedScene.Instantiate
 		var another_ref_from_the_engine = gdreference.OwnObject(gdreference.GetObject(m.AsObject()[0]), gd.Free)
 		var obj = Node.Instance{gdclass.NewNode(another_ref_from_the_engine)}
 
