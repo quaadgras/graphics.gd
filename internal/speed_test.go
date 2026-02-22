@@ -30,7 +30,7 @@ func BenchmarkBuiltinPointerCall(B *testing.B) {
 	})
 }
 
-func BenchmarkMethodBindCall(B *testing.B) {
+func BenchmarkMethodBindCallWithReturnValue(B *testing.B) {
 	benchOnMain(B, func(B *channelB) {
 		B.ReportAllocs()
 		for B.Loop() {
@@ -39,7 +39,7 @@ func BenchmarkMethodBindCall(B *testing.B) {
 	})
 }
 
-func BenchmarkMethodBindCallWithArgument(B *testing.B) {
+func BenchmarkMethodBindCallThatReturnsVoid(B *testing.B) {
 	benchOnMain(B, func(B *channelB) {
 		if !threadcheck.Main() {
 			B.Fatal("not main!")
@@ -51,7 +51,7 @@ func BenchmarkMethodBindCallWithArgument(B *testing.B) {
 	})
 }
 
-func BenchmarkScriptCall(B *testing.B) {
+func BenchmarkGDScriptCall(B *testing.B) {
 	benchOnMain(B, func(B *channelB) {
 		B.ReportAllocs()
 		var script = GDScript.New().AsScript()
