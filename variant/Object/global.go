@@ -91,8 +91,8 @@ func Aliases(a, b Any) bool {
 	return gdreference.GetObject(a.AsObject()[0]) == gdreference.GetObject(b.AsObject()[0])
 }
 
-// Leak prevents an engine reference from being invalidated until [Free] is
-// called on it.
+// Leak prevents an engine reference from being automatically invalidated until [Free]
+// is called on it.
 //
 // The typical use is to replicate GDScript leak-by-default semantics by
 // immediately wrapping a newly created object with this function.
@@ -102,9 +102,9 @@ func Leak[T Any](obj T) T {
 	_, kind := gdreference.AskObject(obj.AsObject()[0])
 	switch kind {
 	case gdreference.TypePooled:
-		gdreference.PinObject(obj.AsObject()[0])
+		gdreference.EndObject(obj.AsObject()[0])
 		fallthrough
-	case gdreference.TypePinned, gdreference.TypeStatic, gdreference.TypeUnsafe:
+	case gdreference.TypeStatic, gdreference.TypeUnsafe, gdreference.TypePinned, gdreference.TypeThread:
 		return obj
 	default:
 		panic("Object.Leak called on a pointer owned by the engine")
@@ -125,13 +125,8 @@ func Free(obj Any) {
 	if gdreference.BadObject(ptr) {
 		return
 	}
-	raw, kind := gdreference.AskObject(ptr)
-	switch kind {
-	case gdreference.TypePooled:
+	_, kind := gdreference.AskObject(ptr)
+	if kind != gdreference.TypeBorrow {
 		gd.ObjectFree(ptr)
-	case gdreference.TypePinned:
-		if gd.ExtensionInstanceLookup(raw) == nil {
-			gd.ObjectFree(ptr)
-		}
 	}
 }

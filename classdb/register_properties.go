@@ -190,11 +190,8 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 			// we need to unreference any existing pinned resources (pinned here means that the engine `set` them).
 			if ref, ok := field.Interface().(RefCounted.Any); ok {
 				ref := ref.AsRefCounted()[0]
-				raw, kind := gdreference.AskObject(gd.Object(ref))
-				if kind == gdreference.TypePinned {
-					if ref.Unreference() {
-						gdextension.Host.Objects.Unsafe.Free(raw)
-					}
+				if ref.Unreference() {
+					gdextension.Host.Objects.Unsafe.Free(gdreference.GetObject(gdreference.Object(ref)))
 				}
 			}
 		}
@@ -207,7 +204,6 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 			if ok {
 				ref.Reference()
 			}
-			gdreference.PinObject(obj.AsObject()[0])
 		}
 	}
 	field.Set(converted)

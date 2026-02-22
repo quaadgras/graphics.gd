@@ -9,7 +9,7 @@ type Type int
 const (
 	TypeUnsafe Type = iota // Raw pointer.
 	TypePooled             // main thread owns the pointer.
-	TypePinned             // main thread owns the pointer, Kept alive.
+	TypePinned             // Go controls the lifetime of the pointer.
 	TypeThread             // off-thread owns the pointer.
 	TypeBorrow             // Engine owns the pointer.
 	TypeStatic             // Allocated at init.

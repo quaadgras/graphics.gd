@@ -9,7 +9,7 @@ import (
 	"graphics.gd/variant/Callable"
 )
 
-var now uint64 = 1
+var now uint64 = 2
 
 // Barrier needs to be called whenever Let references are
 // invalidated.
@@ -61,6 +61,31 @@ func LetObject(obj gdextension.Object) Object {
 		assigned: object{objectID: id, inEngine: obj},
 		sentinel: &borrowSentinel,
 		revision: revision,
+	}
+}
+
+// PinObject writes a [gdextension.Object] into an existing [Object] pointer on the heap.
+// Useful for extension classes, object is not automatically freed.
+func PinObject(obj *Object, raw gdextension.Object) {
+	if obj.assigned.inEngine == raw {
+		obj.revision = 0
+		return
+	}
+	var id gdextension.ObjectID
+	gdextension.Host.Objects.ID.Get(raw, gdextension.CallReturns[gdextension.ObjectID](&id))
+	obj.sentinel = &obj.assigned
+	obj.assigned = object{objectID: id, inEngine: raw}
+}
+
+// AgeObject ages a pinned object marking it for collection if it isn't pinned again
+// before the next call to AgeObject.
+func AgeObject(obj *Object, free func(gdextension.Object)) {
+	switch obj.revision {
+	case 0:
+		obj.revision++
+	case 1:
+		free(obj.assigned.inEngine)
+		*obj = Object{}
 	}
 }
 
@@ -134,14 +159,6 @@ func SetObject(obj Object, val gdextension.Object) {
 	obj.sentinel.objectID = id
 }
 
-// PinObject pins the object so that it cannot not be freed automatically.
-func PinObject(obj Object) {
-	if obj.sentinel == nil || obj.assigned.objectID == 0 {
-		return
-	}
-	*obj.sentinel = (object{})
-}
-
 var borrowSentinel object
 
 // AskObject returns lifetime information for the object.
@@ -167,17 +184,13 @@ func AskObject(obj Object) (gdextension.Object, Type) {
 		}
 		return obj.assigned.inEngine, TypeThread
 	}
-	raw := obj.sentinel.inEngine
 	if obj.sentinel.objectID == obj.assigned.objectID {
-		if raw == 0 {
+		if obj.revision <= 1 {
 			return obj.assigned.inEngine, TypePinned
 		}
-		return raw, TypePooled
+		return obj.assigned.inEngine, TypePooled
 	}
-	if obj.sentinel.objectID == 0 && raw == obj.assigned.inEngine {
-		return raw, TypePinned
-	}
-	return gdextension.Host.Objects.Lookup(obj.assigned.objectID), TypePooled
+	return gdextension.Host.Objects.Lookup(obj.assigned.objectID), TypeBorrow
 }
 
 // EndObject leaks the object, releasing ownership to the engine.
@@ -192,9 +205,7 @@ func EndObject(obj Object) (gdextension.Object, bool) {
 		cleanup.Stop()
 		//fmt.Println("Stopped cleanup for thread", raw, cleanup)
 		*obj.sentinel = obj.assigned
-	case TypeUnsafe:
-	case TypePinned:
-		obj.sentinel.objectID = 0
+	case TypeUnsafe, TypePinned:
 	case TypeStatic:
 		obj.sentinel.inEngine = 0
 	case TypeBorrow:

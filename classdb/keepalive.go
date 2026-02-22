@@ -5,12 +5,19 @@ import (
 	"unsafe"
 
 	"graphics.gd/classdb/Node"
+	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdclass"
+	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/threadsafe"
 	"graphics.gd/variant/Object"
 )
 
+// roots passed to the engine.
 var roots threadsafe.Map[reflect.Value, func(reflect.Value)]
+
+// local references owned by Go.
+var local threadsafe.Map[reflect.Value, struct{}]
+
 var skips = make(map[reflect.Value]struct{}) // only accessed from [keep_reachable_instances_alive]
 
 //go:linkname keep_reachable_instances_alive
@@ -20,6 +27,9 @@ func keep_reachable_instances_alive() {
 		if keepalive != nil {
 			keepalive(ptr)
 		}
+	}
+	for ptr := range local.Iter() {
+		gdreference.AgeObject((*gdreference.Object)(ptr.UnsafePointer()), gd.Free)
 	}
 }
 

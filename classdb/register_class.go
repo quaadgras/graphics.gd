@@ -319,7 +319,6 @@ func Register[T Class](exports ...any) {
 			construct := impl.Constructor()
 			singleton, _ := reflect.TypeAssert[Object.Any](construct)
 			singletons.Insert(classType, construct)
-			gdreference.PinObject(singleton.AsObject()[0])
 			Engine.RegisterSingleton(strings.TrimPrefix(rename, "GoSingleton"), singleton.AsObject())
 			if node, ok := singleton.(Node.Any); ok {
 				Callable.Defer(Callable.New(func() {
@@ -612,14 +611,12 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 	// Use EngineClass (the first built-in ancestor) for construction, not Super.
 	// This prevents the issue where extension classes inheriting from other extension
 	// classes would trigger multiple calls to set_instance_binding on the same object.
-	var super = [1]gd.Object{gdreference.OwnObject(gdextension.Host.Objects.Make(pointers.Get(class.EngineClass)), gd.Free)}
+	var super *[1]gdreference.Object = (*[1]gdreference.Object)(value.UnsafePointer())
+	gdreference.PinObject(&super[0], gdextension.Host.Objects.Make(pointers.Get(class.EngineClass)))
 	if class.RefCounted {
 		gd.RefCounted(super[0]).InitRef()
 	}
-	if add_root {
-		gdreference.PinObject(super[0])
-	}
-	instance := class.reloadInstance(value, super)
+	instance := class.reloadInstance(value, *super)
 	id := gdextension.ExtensionInstanceID(instances.New(instance))
 	gdextension.Host.Objects.Extension.Setup(gdreference.GetObject(super[0]), pointers.Get(class.Name), id)
 	if add_root {
@@ -636,13 +633,10 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 		gd.ObjectNotification(super[0], 0, false)
 	}
 	instance.OnCreate(value)
-	return super
+	return *super
 }
 
 func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd.Object) *instanceImplementation {
-	extensionClass := value.Interface().(gdclass.Pointer)
-	gdclass.SetObject(extensionClass, super)
-
 	value = value.Elem()
 
 	// TODO cache this check
@@ -767,6 +761,7 @@ func (instance *instanceImplementation) OnCreate(value reflect.Value) {
 }
 
 func (instance *instanceImplementation) Notification(what Object.Notification, reversed bool) {
+	gdreference.PinObject((*gdreference.Object)(reflect.ValueOf(instance.Value).UnsafePointer()), instance.object)
 	if what == Node.NotificationReady {
 		instance.ready()
 	}
@@ -819,6 +814,11 @@ func (instance *instanceImplementation) Unreference() bool {
 	return false
 }
 
+func (instance *instanceImplementation) CallVirtual(virtual gd.ExtensionClassCallVirtualFunc, args, back gdextension.Pointer) {
+	gdreference.PinObject((*gdreference.Object)(reflect.ValueOf(instance.Value).UnsafePointer()), instance.object)
+	virtual(instance.Value, args, back)
+}
+
 func (instance *instanceImplementation) GetRID() gd.RID {
 	return 0
 }
@@ -829,6 +829,7 @@ func (instance *instanceImplementation) Free() {
 	}
 	gdreference.EndObject(instance.Value.AsObject()[0])
 	roots.Remove(reflect.ValueOf(instance.Value))
+	local.Remove(reflect.ValueOf(instance.Value))
 	for _, signal := range instance.signals {
 		if signal.rvalue.IsValid() {
 			signal.rvalue.Close()
@@ -850,14 +851,9 @@ func (instance *instanceImplementation) Free() {
 		// we need to unreference any pinned resources (pinned here means that the engine `set` them).
 		if field.Type.Implements(reflect.TypeFor[RefCounted.Any]()) {
 			ref := rvalue.FieldByIndex(field.Index).Interface().(RefCounted.Any).AsRefCounted()[0]
-			if !gdreference.BadObject(gd.Object(ref)) {
-				raw, kind := gdreference.AskObject(gd.Object(ref))
-				if kind == gdreference.TypePinned {
-					if ref.Unreference() {
-						gdreference.EndObject(gd.Object(ref))
-						gdextension.Host.Objects.Unsafe.Free(raw)
-					}
-				}
+			if ref.Unreference() {
+				gdreference.EndObject(gd.Object(ref))
+				gdextension.Host.Objects.Unsafe.Free(gdreference.GetObject(gdreference.Object(ref)))
 			}
 		}
 	}
