@@ -52,7 +52,7 @@ func Call(object Any, method string, args ...any) any { //gd:Object.call
 // InstanceIsValid returns true if the given object instance is valid (the reference has not been
 // invalidated and the object has not been freed).
 func InstanceIsValid(obj Any) bool { //gd:is_instance_valid
-	if !gdreference.BadObject(obj.AsObject()[0]) {
+	if gdreference.BadObject(obj.AsObject()[0]) {
 		return false
 	}
 	return Instance(obj.AsObject()).ID().Instance() != Nil
