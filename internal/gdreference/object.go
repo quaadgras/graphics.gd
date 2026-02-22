@@ -174,6 +174,9 @@ func AskObject(obj Object) (gdextension.Object, Type) {
 		}
 		return raw, TypePooled
 	}
+	if obj.sentinel.objectID == 0 && raw == obj.assigned.inEngine {
+		return raw, TypePinned
+	}
 	return gdextension.Host.Objects.Lookup(obj.assigned.objectID), TypePooled
 }
 
@@ -191,7 +194,7 @@ func EndObject(obj Object) (gdextension.Object, bool) {
 		*obj.sentinel = obj.assigned
 	case TypeUnsafe:
 	case TypePinned:
-		*obj.sentinel = object{}
+		obj.sentinel.objectID = 0
 	case TypeStatic:
 		obj.sentinel.inEngine = 0
 	case TypeBorrow:
