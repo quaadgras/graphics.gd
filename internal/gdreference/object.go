@@ -168,10 +168,13 @@ func AskObject(obj Object) (gdextension.Object, Type) {
 		return obj.assigned.inEngine, TypeThread
 	}
 	raw := obj.sentinel.inEngine
-	if raw == 0 {
-		return obj.assigned.inEngine, TypePinned
+	if obj.sentinel.objectID == obj.assigned.objectID {
+		if raw == 0 {
+			return obj.assigned.inEngine, TypePinned
+		}
+		return raw, TypePooled
 	}
-	return raw, TypePooled
+	return gdextension.Host.Objects.Lookup(obj.assigned.objectID), TypePooled
 }
 
 // EndObject leaks the object, releasing ownership to the engine.
