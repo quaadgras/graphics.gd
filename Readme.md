@@ -5,6 +5,7 @@ gdextensions, multimedia applications, games and more.
 
 _Why use graphics.gd?_
 
+* [Faster](https://github.com/quaadgras/graphics.gd/discussions/277) than GDScript.
 * [Write shaders in Go!](./shaders/Readme.md)
 * Full compatibility with the [Godot Engine](https://godotengine.org/) editor and ecosystem.
 * Unlike C++/C#/GDScript/Rust/Swift, RIDs, Callables and Dictionary arguments are strongly typed.
@@ -12,10 +13,11 @@ _Why use graphics.gd?_
 * Pure-Go ported `variant` packages, for vector math and more, reuse them in any Go project.
 * After an initial build, recompile quickly, with an experience similar to scripting languages.
 * Easily cross-compile for windows/macos/android/linux/ios/web on any host platform.
-* Neither Java, nor an Android SDK/NDK is needed to build Android apps.
-* Neither Xcode nor macOS is needed to build macOS/iOS apps.
+* Neither Java, nor an Android SDK/NDK is needed to build Android apps [Read More](https://github.com/quaadgras/graphics.gd/discussions/177).
+* Neither Xcode nor macOS is needed to build macOS/iOS apps [Read More](https://github.com/quaadgras/graphics.gd/discussions/184).
 * Drop in `gd` command, a cross-platform build tool compatible with `.gd` script projects.
 * Export static `GOOS=musl` binaries that will run on any linux system (no more libc issues).
+* Designed for readablity by humans (but your LLM will manage too).
 
 Not just a 1:1 wrapper for gdextension! `graphics.gd` has been designed from the ground up to
 provide a cohesive and curated experience for using [Go](https://go.dev/) on top of
