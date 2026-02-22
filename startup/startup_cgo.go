@@ -31,6 +31,7 @@ import (
 
 var initDone = false
 var exitDone = false
+var toolUsed = false
 
 func init() {
 	gdextension.On.Engine = gdextension.CallbacksForEngine{
@@ -151,7 +152,7 @@ func (engineLoadingSharedGo) Rendering() iter.Seq[Float.X] {
 func init() {
 	gdextension.On.MainLoop.FirstFrame = func() {
 		threadcheck.Init()
-		if testing.Testing() {
+		if testing.Testing() && !toolUsed {
 			go main()
 		}
 		Callable.Cycle()

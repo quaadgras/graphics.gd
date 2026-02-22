@@ -3,6 +3,7 @@ package startup
 import (
 	"iter"
 	"slices"
+	"testing"
 
 	"graphics.gd/classdb"
 	EngineClass "graphics.gd/classdb/Engine"
@@ -54,6 +55,9 @@ func init() {
 			if level == 2 {
 				for _, fn := range gd.StartupFunctions {
 					fn()
+				}
+				if testing.Testing() {
+					classdb.Register[goSceneTree]()
 				}
 				close(intialized)
 				for _, fn := range gd.PostStartupFunctions {
