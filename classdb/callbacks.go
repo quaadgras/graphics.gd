@@ -1,8 +1,11 @@
 package classdb
 
 import (
+	"fmt"
+	"os"
 	"reflect"
 	"runtime"
+	"strings"
 	"unsafe"
 
 	gd "graphics.gd/internal"
@@ -22,6 +25,8 @@ var (
 	pinnedVirtuals []*pinnedVirtualFunc
 )
 
+var debugOwnership = strings.Contains(os.Getenv("GDDEBUG"), "ownership")
+
 func init() {
 	gd.ExtensionInstanceLookup = func(obj gdextension.Object) any {
 		val := instances.Get(gdextension.Host.Objects.Extension.Fetch(obj))
@@ -35,16 +40,19 @@ func init() {
 		if impl == nil {
 			return gdreference.Object{}, false
 		}
+		if debugOwnership {
+			var owner string = "Engine"
+			if goOnly {
+				owner = "Go"
+			}
+			fmt.Fprintf(os.Stderr, "Changed Ownership of %s, now owned by %s", gd.ObjectGetClass(gdreference.RawObject(obj)).String(), owner)
+		}
 		key := reflect.ValueOf(impl.Value)
 		if goOnly {
-			roots.Remove(key)
 			local.Insert(key, struct{}{})
 		} else {
 			gdreference.PinObject((*gdreference.Object)(reflect.ValueOf(impl.Value).UnsafePointer()), obj)
 			local.Remove(key)
-			if keepalive := compile_keepalive(reflect.TypeOf(impl.Value)); keepalive != nil {
-				roots.Insert(key, keepalive)
-			}
 		}
 		return impl.Value.AsObject()[0], true
 	}
