@@ -43,6 +43,7 @@ import (
 	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/internal/ring"
+	"graphics.gd/internal/threadcheck"
 	"graphics.gd/internal/threadsafe"
 )
 
@@ -619,10 +620,11 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 	instance := class.reloadInstance(value, *super)
 	id := gdextension.ExtensionInstanceID(instances.New(instance))
 	gdextension.Host.Objects.Extension.Setup(gdreference.GetObject(super[0]), pointers.Get(class.Name), id)
-	if add_root {
-		if keepalive := compile_keepalive(reflect.PointerTo(class.Type)); keepalive != nil {
-			roots.Insert(value, keepalive)
-		}
+	if !add_root && threadcheck.Main() {
+		local.Insert(value, struct{}{})
+	}
+	if keepalive := compile_keepalive(reflect.PointerTo(class.Type)); keepalive != nil {
+		roots.Insert(value, keepalive)
 	}
 	for _, field := range class.Singletons {
 		if singleton, ok := singletons.Lookup(field.Type.Elem()); ok {
