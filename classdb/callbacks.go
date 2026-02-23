@@ -154,7 +154,7 @@ func init() {
 				gdreference.Barrier()
 			},
 			Called: func(instance gdextension.ExtensionInstanceID, callData gdextension.Pointer, result gdextension.Returns[any], args gdextension.Accepts[any]) {
-				pv := (*pinnedVirtualFunc)(unsafe.Pointer(uintptr(callData)))
+				pv := (*pinnedVirtualFunc)(*(*unsafe.Pointer)(unsafe.Pointer(&callData))) // runtime.Pinned, so this is ok.
 				receiver := instances.Get(instance)
 				pv.fn(receiver.Value, gdextension.Pointer(args), gdextension.Pointer(result))
 				gdreference.Barrier()
