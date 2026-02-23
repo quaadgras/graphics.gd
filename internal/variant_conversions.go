@@ -91,6 +91,9 @@ func CutVariant(v any, cut bool) Variant {
 				return Variant{}
 			}
 			var arg = gdreference.GetObject(obj[0])
+			if cut {
+				ExtensionInstanceGoOnly(arg, false)
+			}
 			((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeObject, gdextension.SizeObject, unsafe.Pointer(&arg))
 		} else {
 			return NewVariant(value.Elem().Interface())
