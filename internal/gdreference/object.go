@@ -85,7 +85,7 @@ func AgeObject(obj *Object, free func(gdextension.Object)) {
 		obj.revision++
 	case 1:
 		free(obj.assigned.inEngine)
-		*obj = Object{}
+		*obj = Object{revision: 1}
 	}
 }
 
