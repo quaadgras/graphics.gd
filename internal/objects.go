@@ -3,7 +3,10 @@
 package gd
 
 import (
+	"fmt"
+	"os"
 	"reflect"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -105,13 +108,17 @@ func ObjectIsAlive(raw [3]uint64) bool {
 	return raw[1] == 0 || gdextension.Host.Objects.Lookup(gdextension.ObjectID(raw[1])) != 0
 }
 
+var debugFree = strings.Contains(os.Getenv("GDDEBUG"), "free")
+
 func Free(raw gdextension.Object) {
 	if raw == 0 {
 		return
 	}
-	//fmt.Println(raw)
-	//fmt.Fprintln(os.Stderr, "FREE ", ObjectGetClass(gdreference.RawObject(raw)).String())
-	//fmt.Println(runtime.Caller(2))
+	if debugFree {
+		fmt.Println(raw)
+		fmt.Fprintln(os.Stderr, "FREE ", ObjectGetClass(gdreference.RawObject(raw)).String())
+		fmt.Println(runtime.Caller(2))
+	}
 	ref := gdextension.Host.Objects.Cast(raw, refCountedClassTag)
 	if ref != 0 {
 		// Important that we don't destroy RefCounted objects, instead
