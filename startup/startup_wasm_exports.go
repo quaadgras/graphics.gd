@@ -56,7 +56,7 @@ func go_on_callable_get_argument_count(p0 uint32, p1 uint32) int32 {
 
 //go:wasmexport go_on_editor_class_in_use_detection
 func go_on_editor_class_in_use_detection(p0 uint32, p1 uint32, p2 uint32) {
-	gdextension.On.Editor.ClassInUseDetection(gdextension.PackedArray[gdextension.String]{uint64(uint64(uint64(p0)<<32)|uint64(p1))}, gdextension.Returns[gdextension.PackedArray[gdextension.String]](p2))
+	gdextension.On.Editor.ClassInUseDetection(gdextension.PackedArray[gdextension.String]{uint64(uint64(uint64(p0)<<32) | uint64(p1))}, gdextension.Returns[gdextension.PackedArray[gdextension.String]](p2))
 }
 
 //go:wasmexport go_on_engine_init
@@ -104,7 +104,7 @@ func go_on_extension_class_caller(p0 uint32, p1 uint32, p2 uint32) uint32 {
 
 //go:wasmexport go_on_extension_instance_set
 func go_on_extension_instance_set(p0 uint32, p1 uint32, p2 uint32, p3 uint32, p4 uint32, p5 uint32, p6 uint32, p7 uint32) uint32 {
-	if gdextension.On.Extension.Instance.Set(gdextension.ExtensionInstanceID(p0), gdextension.StringName{gdextension.Pointer(p1)}, gdextension.Variant{uint64(uint64(uint64(p2)<<32)|uint64(p3)), uint64(uint64(uint64(p4)<<32)|uint64(p5)), uint64(uint64(uint64(p6)<<32)|uint64(p7))}) {
+	if gdextension.On.Extension.Instance.Set(gdextension.ExtensionInstanceID(p0), gdextension.StringName{gdextension.Pointer(p1)}, gdextension.Variant{uint64(uint64(uint64(p2)<<32) | uint64(p3)), uint64(uint64(uint64(p4)<<32) | uint64(p5)), uint64(uint64(uint64(p6)<<32) | uint64(p7))}) {
 		return 1
 	}
 	return 0
@@ -172,12 +172,12 @@ func go_on_extension_instance_rid(p0 uint32, p1 uint32) {
 
 //go:wasmexport go_on_extension_instance_checked_call
 func go_on_extension_instance_checked_call(p0 uint32, p1 uint32, p2 uint32, p3 uint32) {
-	gdextension.On.Extension.Instance.CheckedCall(gdextension.ExtensionInstanceID(p0), gdextension.FunctionID(p1), gdextension.Returns[interface {}](p2), gdextension.Accepts[interface {}](p3))
+	gdextension.On.Extension.Instance.CheckedCall(gdextension.ExtensionInstanceID(p0), gdextension.FunctionID(p1), gdextension.Returns[interface{}](p2), gdextension.Accepts[interface{}](p3))
 }
 
 //go:wasmexport go_on_extension_instance_called
 func go_on_extension_instance_called(p0 uint32, p1 uint32, p2 uint32, p3 uint32) {
-	gdextension.On.Extension.Instance.Called(gdextension.ExtensionInstanceID(p0), gdextension.Pointer(p1), gdextension.Returns[interface {}](p2), gdextension.Accepts[interface {}](p3))
+	gdextension.On.Extension.Instance.Called(gdextension.ExtensionInstanceID(p0), gdextension.Pointer(p1), gdextension.Returns[interface{}](p2), gdextension.Accepts[interface{}](p3))
 }
 
 //go:wasmexport go_on_extension_instance_variant_call
@@ -278,4 +278,3 @@ func go_on_worker_thread_pool_task(p0 uint32) {
 func go_on_worker_thread_pool_group_task(p0 uint32, p1 uint32) {
 	gdextension.On.Threading.RunInGroup(gdextension.TaskID(p0), uint32(p1))
 }
-
