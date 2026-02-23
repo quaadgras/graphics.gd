@@ -41,8 +41,10 @@ func init() {
 				// little hack to enable `gd test` to work, we strip away the headless flag
 				// so that 'go test' doesn't complain on startup.
 				for i := 0; i < len(os.Args); i++ {
-					if os.Args[i] == "--headless" {
+					switch os.Args[i] {
+					case "--headless", "-race":
 						os.Args = append(os.Args[:i], os.Args[i+1:]...)
+						i--
 					}
 				}
 			}
