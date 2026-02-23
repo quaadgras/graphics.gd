@@ -114,19 +114,18 @@ func Free(raw gdextension.Object) {
 	if raw == 0 {
 		return
 	}
-	if debugFree {
-		fmt.Println(raw)
-		fmt.Fprintln(os.Stderr, "FREE ", ObjectGetClass(gdreference.RawObject(raw)).String())
-		fmt.Println(runtime.Caller(2))
-	}
 	ref := gdextension.Host.Objects.Cast(raw, refCountedClassTag)
 	if ref != 0 {
 		// Important that we don't destroy RefCounted objects, instead
 		// they should be unreferenced instead.
 		if last := RefCounted(gdreference.RawObject(ref)).Unreference(); !last {
-			//fmt.Println("not last reference, not freeing")
 			return
 		}
+	}
+	if debugFree {
+		fmt.Println(raw)
+		fmt.Fprintln(os.Stderr, "FREE ", ObjectGetClass(gdreference.RawObject(raw)).String())
+		fmt.Println(runtime.Caller(2))
 	}
 	gdextension.Host.Objects.Unsafe.Free(raw)
 }
