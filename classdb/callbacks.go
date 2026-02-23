@@ -45,7 +45,8 @@ func init() {
 			if goOnly {
 				owner = "Go"
 			}
-			fmt.Fprintf(os.Stderr, "Changed Ownership of %s, now owned by %s", gd.ObjectGetClass(gdreference.RawObject(obj)).String(), owner)
+			_, file, line, _ := runtime.Caller(2)
+			fmt.Fprintf(os.Stderr, "%s now owned by %s (%s:%d)\n", gd.ObjectGetClass(gdreference.RawObject(obj)).String(), owner, file, line)
 		}
 		key := reflect.ValueOf(impl.Value)
 		if goOnly {
