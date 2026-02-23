@@ -21,6 +21,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -58,6 +59,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -219,7 +221,7 @@ func (self class) SetPanorama(texture [1]gdclass.Texture2D) { //gd:PanoramaSkyMa
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_panorama, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetPanorama() [1]gdclass.Texture2D { //gd:PanoramaSkyMaterial.get_panorama
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_panorama, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_panorama, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -227,7 +229,7 @@ func (self class) SetFilteringEnabled(enabled bool) { //gd:PanoramaSkyMaterial.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_filtering_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsFilteringEnabled() bool { //gd:PanoramaSkyMaterial.is_filtering_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_filtering_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_filtering_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -235,7 +237,7 @@ func (self class) SetEnergyMultiplier(multiplier float64) { //gd:PanoramaSkyMate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_energy_multiplier, 0|(gdextension.SizeFloat<<4), &struct{ multiplier float64 }{multiplier})
 }
 func (self class) GetEnergyMultiplier() float64 { //gd:PanoramaSkyMaterial.get_energy_multiplier
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_energy_multiplier, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_energy_multiplier, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

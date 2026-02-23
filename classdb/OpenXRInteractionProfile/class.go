@@ -16,6 +16,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -53,6 +54,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -245,7 +247,7 @@ func (self class) SetInteractionProfilePath(interaction_profile_path String.Read
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interaction_profile_path, 0|(gdextension.SizeString<<4), &struct{ interaction_profile_path gdextension.String }{pointers.Get(gd.InternalString(interaction_profile_path))})
 }
 func (self class) GetInteractionProfilePath() String.Readable { //gd:OpenXRInteractionProfile.get_interaction_profile_path
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_interaction_profile_path, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_interaction_profile_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -263,7 +265,7 @@ func (self class) SetBindings(bindings Array.Any) { //gd:OpenXRInteractionProfil
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bindings, 0|(gdextension.SizeArray<<4), &struct{ bindings gdextension.Array }{pointers.Get(gd.InternalArray(bindings))})
 }
 func (self class) GetBindings() Array.Any { //gd:OpenXRInteractionProfile.get_bindings
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_bindings, gdextension.SizeArray, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_bindings, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

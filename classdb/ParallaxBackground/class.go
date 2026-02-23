@@ -22,6 +22,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -59,6 +60,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -273,7 +275,7 @@ func (self class) SetScrollOffset(offset Vector2.XY) { //gd:ParallaxBackground.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
 func (self class) GetScrollOffset() Vector2.XY { //gd:ParallaxBackground.get_scroll_offset
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_scroll_offset, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_scroll_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -281,7 +283,7 @@ func (self class) SetScrollBaseOffset(offset Vector2.XY) { //gd:ParallaxBackgrou
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_base_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
 func (self class) GetScrollBaseOffset() Vector2.XY { //gd:ParallaxBackground.get_scroll_base_offset
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_scroll_base_offset, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_scroll_base_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -289,7 +291,7 @@ func (self class) SetScrollBaseScale(scale Vector2.XY) { //gd:ParallaxBackground
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_base_scale, 0|(gdextension.SizeVector2<<4), &struct{ scale Vector2.XY }{scale})
 }
 func (self class) GetScrollBaseScale() Vector2.XY { //gd:ParallaxBackground.get_scroll_base_scale
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_scroll_base_scale, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_scroll_base_scale, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -297,7 +299,7 @@ func (self class) SetLimitBegin(offset Vector2.XY) { //gd:ParallaxBackground.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_limit_begin, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
 func (self class) GetLimitBegin() Vector2.XY { //gd:ParallaxBackground.get_limit_begin
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_limit_begin, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_limit_begin, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -305,15 +307,15 @@ func (self class) SetLimitEnd(offset Vector2.XY) { //gd:ParallaxBackground.set_l
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_limit_end, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
 func (self class) GetLimitEnd() Vector2.XY { //gd:ParallaxBackground.get_limit_end
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_limit_end, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_limit_end, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetIgnoreCameraZoom(ignore bool) { //gd:ParallaxBackground.set_ignore_camera_zoom
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ignore_camera_zoom, 0|(gdextension.SizeBool<<4), &struct{ ignore bool }{ignore})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ignore_camera_zoom, 0|(gdextension.SizeBool<<4), &struct{ ignore bool }{ignore})
 }
 func (self class) IsIgnoreCameraZoom() bool { //gd:ParallaxBackground.is_ignore_camera_zoom
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ignore_camera_zoom, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ignore_camera_zoom, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

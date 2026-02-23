@@ -16,6 +16,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -60,6 +61,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -1404,37 +1406,37 @@ func (self class) SetLifetime(secs float64) { //gd:CPUParticles3D.set_lifetime
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lifetime, 0|(gdextension.SizeFloat<<4), &struct{ secs float64 }{secs})
 }
 func (self class) SetOneShot(enable bool) { //gd:CPUParticles3D.set_one_shot
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_one_shot, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_one_shot, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) SetPreProcessTime(secs float64) { //gd:CPUParticles3D.set_pre_process_time
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pre_process_time, 0|(gdextension.SizeFloat<<4), &struct{ secs float64 }{secs})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pre_process_time, 0|(gdextension.SizeFloat<<4), &struct{ secs float64 }{secs})
 }
 func (self class) SetExplosivenessRatio(ratio float64) { //gd:CPUParticles3D.set_explosiveness_ratio
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_explosiveness_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_explosiveness_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
 }
 func (self class) SetRandomnessRatio(ratio float64) { //gd:CPUParticles3D.set_randomness_ratio
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_randomness_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_randomness_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
 }
 func (self class) SetVisibilityAabb(aabb AABB.PositionSize) { //gd:CPUParticles3D.set_visibility_aabb
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_aabb, 0|(gdextension.SizeAABB<<4), &struct{ aabb AABB.PositionSize }{aabb})
 }
 func (self class) SetLifetimeRandomness(random float64) { //gd:CPUParticles3D.set_lifetime_randomness
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lifetime_randomness, 0|(gdextension.SizeFloat<<4), &struct{ random float64 }{random})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lifetime_randomness, 0|(gdextension.SizeFloat<<4), &struct{ random float64 }{random})
 }
 func (self class) SetUseLocalCoordinates(enable bool) { //gd:CPUParticles3D.set_use_local_coordinates
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_local_coordinates, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_local_coordinates, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) SetFixedFps(fps int64) { //gd:CPUParticles3D.set_fixed_fps
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fixed_fps, 0|(gdextension.SizeInt<<4), &struct{ fps int64 }{fps})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fixed_fps, 0|(gdextension.SizeInt<<4), &struct{ fps int64 }{fps})
 }
 func (self class) SetFractionalDelta(enable bool) { //gd:CPUParticles3D.set_fractional_delta
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fractional_delta, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fractional_delta, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) SetSpeedScale(scale float64) { //gd:CPUParticles3D.set_speed_scale
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, 0|(gdextension.SizeFloat<<4), &struct{ scale float64 }{scale})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, 0|(gdextension.SizeFloat<<4), &struct{ scale float64 }{scale})
 }
 func (self class) IsEmitting() bool { //gd:CPUParticles3D.is_emitting
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_emitting, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_emitting, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1444,57 +1446,57 @@ func (self class) GetAmount() int64 { //gd:CPUParticles3D.get_amount
 	return ret
 }
 func (self class) GetLifetime() float64 { //gd:CPUParticles3D.get_lifetime
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lifetime, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lifetime, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetOneShot() bool { //gd:CPUParticles3D.get_one_shot
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_one_shot, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_one_shot, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetPreProcessTime() float64 { //gd:CPUParticles3D.get_pre_process_time
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pre_process_time, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pre_process_time, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetExplosivenessRatio() float64 { //gd:CPUParticles3D.get_explosiveness_ratio
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_explosiveness_ratio, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_explosiveness_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetRandomnessRatio() float64 { //gd:CPUParticles3D.get_randomness_ratio
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_randomness_ratio, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_randomness_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetVisibilityAabb() AABB.PositionSize { //gd:CPUParticles3D.get_visibility_aabb
-	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_visibility_aabb, gdextension.SizeAABB, &struct{}{})
+	var r_ret = jumponly.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_visibility_aabb, gdextension.SizeAABB, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetLifetimeRandomness() float64 { //gd:CPUParticles3D.get_lifetime_randomness
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lifetime_randomness, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lifetime_randomness, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetUseLocalCoordinates() bool { //gd:CPUParticles3D.get_use_local_coordinates
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_local_coordinates, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_local_coordinates, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetFixedFps() int64 { //gd:CPUParticles3D.get_fixed_fps
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fixed_fps, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fixed_fps, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetFractionalDelta() bool { //gd:CPUParticles3D.get_fractional_delta
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_fractional_delta, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_fractional_delta, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetSpeedScale() float64 { //gd:CPUParticles3D.get_speed_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_speed_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_speed_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1502,7 +1504,7 @@ func (self class) SetDrawOrder(order DrawOrder) { //gd:CPUParticles3D.set_draw_o
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_order, 0|(gdextension.SizeInt<<4), &struct{ order DrawOrder }{order})
 }
 func (self class) GetDrawOrder() DrawOrder { //gd:CPUParticles3D.get_draw_order
-	var r_ret = noescape.Call[DrawOrder](gd.ObjectChecked(self.AsObject()), methods.get_draw_order, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DrawOrder](gd.ObjectChecked(self.AsObject()), methods.get_draw_order, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1510,7 +1512,7 @@ func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:CPUParticles3D.set_mesh
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMesh(mesh[0])[0]))})
 }
 func (self class) GetMesh() [1]gdclass.Mesh { //gd:CPUParticles3D.get_mesh
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Mesh{gdclass.NewMesh(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -1518,15 +1520,15 @@ func (self class) SetUseFixedSeed(use_fixed_seed bool) { //gd:CPUParticles3D.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_fixed_seed, 0|(gdextension.SizeBool<<4), &struct{ use_fixed_seed bool }{use_fixed_seed})
 }
 func (self class) GetUseFixedSeed() bool { //gd:CPUParticles3D.get_use_fixed_seed
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_fixed_seed, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_fixed_seed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetSeed(seed int64) { //gd:CPUParticles3D.set_seed
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_seed, 0|(gdextension.SizeInt<<4), &struct{ seed int64 }{seed})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_seed, 0|(gdextension.SizeInt<<4), &struct{ seed int64 }{seed})
 }
 func (self class) GetSeed() int64 { //gd:CPUParticles3D.get_seed
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_seed, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_seed, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1534,7 +1536,7 @@ func (self class) Restart(keep_seed bool) { //gd:CPUParticles3D.restart
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.restart, 0|(gdextension.SizeBool<<4), &struct{ keep_seed bool }{keep_seed})
 }
 func (self class) RequestParticlesProcess(process_time float64) { //gd:CPUParticles3D.request_particles_process
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_particles_process, 0|(gdextension.SizeFloat<<4), &struct{ process_time float64 }{process_time})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_particles_process, 0|(gdextension.SizeFloat<<4), &struct{ process_time float64 }{process_time})
 }
 func (self class) CaptureAabb() AABB.PositionSize { //gd:CPUParticles3D.capture_aabb
 	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.capture_aabb, gdextension.SizeAABB, &struct{}{})
@@ -1545,23 +1547,23 @@ func (self class) SetDirection(direction Vector3.XYZ) { //gd:CPUParticles3D.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_direction, 0|(gdextension.SizeVector3<<4), &struct{ direction Vector3.XYZ }{direction})
 }
 func (self class) GetDirection() Vector3.XYZ { //gd:CPUParticles3D.get_direction
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_direction, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_direction, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetSpread(degrees float64) { //gd:CPUParticles3D.set_spread
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spread, 0|(gdextension.SizeFloat<<4), &struct{ degrees float64 }{degrees})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spread, 0|(gdextension.SizeFloat<<4), &struct{ degrees float64 }{degrees})
 }
 func (self class) GetSpread() float64 { //gd:CPUParticles3D.get_spread
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_spread, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_spread, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetFlatness(amount float64) { //gd:CPUParticles3D.set_flatness
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flatness, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flatness, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 func (self class) GetFlatness() float64 { //gd:CPUParticles3D.get_flatness
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_flatness, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_flatness, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1602,7 +1604,7 @@ func (self class) SetColor(color Color.RGBA) { //gd:CPUParticles3D.set_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetColor() Color.RGBA { //gd:CPUParticles3D.get_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1610,7 +1612,7 @@ func (self class) SetColorRamp(ramp [1]gdclass.Gradient) { //gd:CPUParticles3D.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_ramp, 0|(gdextension.SizeObject<<4), &struct{ ramp gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetGradient(ramp[0])[0]))})
 }
 func (self class) GetColorRamp() [1]gdclass.Gradient { //gd:CPUParticles3D.get_color_ramp
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_ramp, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_ramp, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Gradient{gdclass.NewGradient(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -1618,7 +1620,7 @@ func (self class) SetColorInitialRamp(ramp [1]gdclass.Gradient) { //gd:CPUPartic
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_initial_ramp, 0|(gdextension.SizeObject<<4), &struct{ ramp gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetGradient(ramp[0])[0]))})
 }
 func (self class) GetColorInitialRamp() [1]gdclass.Gradient { //gd:CPUParticles3D.get_color_initial_ramp
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_initial_ramp, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_initial_ramp, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Gradient{gdclass.NewGradient(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -1637,7 +1639,7 @@ func (self class) SetEmissionShape(shape EmissionShape) { //gd:CPUParticles3D.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_shape, 0|(gdextension.SizeInt<<4), &struct{ shape EmissionShape }{shape})
 }
 func (self class) GetEmissionShape() EmissionShape { //gd:CPUParticles3D.get_emission_shape
-	var r_ret = noescape.Call[EmissionShape](gd.ObjectChecked(self.AsObject()), methods.get_emission_shape, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[EmissionShape](gd.ObjectChecked(self.AsObject()), methods.get_emission_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1645,7 +1647,7 @@ func (self class) SetEmissionSphereRadius(radius float64) { //gd:CPUParticles3D.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_sphere_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 func (self class) GetEmissionSphereRadius() float64 { //gd:CPUParticles3D.get_emission_sphere_radius
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_sphere_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_sphere_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1653,7 +1655,7 @@ func (self class) SetEmissionBoxExtents(extents Vector3.XYZ) { //gd:CPUParticles
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_box_extents, 0|(gdextension.SizeVector3<<4), &struct{ extents Vector3.XYZ }{extents})
 }
 func (self class) GetEmissionBoxExtents() Vector3.XYZ { //gd:CPUParticles3D.get_emission_box_extents
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_emission_box_extents, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_emission_box_extents, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1663,7 +1665,7 @@ func (self class) SetEmissionPoints(array Packed.Array[Vector3.XYZ]) { //gd:CPUP
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](array))})
 }
 func (self class) GetEmissionPoints() Packed.Array[Vector3.XYZ] { //gd:CPUParticles3D.get_emission_points
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_emission_points, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_emission_points, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -1673,7 +1675,7 @@ func (self class) SetEmissionNormals(array Packed.Array[Vector3.XYZ]) { //gd:CPU
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](array))})
 }
 func (self class) GetEmissionNormals() Packed.Array[Vector3.XYZ] { //gd:CPUParticles3D.get_emission_normals
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_emission_normals, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_emission_normals, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -1683,7 +1685,7 @@ func (self class) SetEmissionColors(array Packed.Array[Color.RGBA]) { //gd:CPUPa
 	}{pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](array))})
 }
 func (self class) GetEmissionColors() Packed.Array[Color.RGBA] { //gd:CPUParticles3D.get_emission_colors
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_emission_colors, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_emission_colors, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -1691,7 +1693,7 @@ func (self class) SetEmissionRingAxis(axis Vector3.XYZ) { //gd:CPUParticles3D.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_ring_axis, 0|(gdextension.SizeVector3<<4), &struct{ axis Vector3.XYZ }{axis})
 }
 func (self class) GetEmissionRingAxis() Vector3.XYZ { //gd:CPUParticles3D.get_emission_ring_axis
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_emission_ring_axis, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_emission_ring_axis, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1699,7 +1701,7 @@ func (self class) SetEmissionRingHeight(height float64) { //gd:CPUParticles3D.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_ring_height, 0|(gdextension.SizeFloat<<4), &struct{ height float64 }{height})
 }
 func (self class) GetEmissionRingHeight() float64 { //gd:CPUParticles3D.get_emission_ring_height
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_ring_height, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_ring_height, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1707,7 +1709,7 @@ func (self class) SetEmissionRingRadius(radius float64) { //gd:CPUParticles3D.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_ring_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 func (self class) GetEmissionRingRadius() float64 { //gd:CPUParticles3D.get_emission_ring_radius
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_ring_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_ring_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1715,7 +1717,7 @@ func (self class) SetEmissionRingInnerRadius(inner_radius float64) { //gd:CPUPar
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_ring_inner_radius, 0|(gdextension.SizeFloat<<4), &struct{ inner_radius float64 }{inner_radius})
 }
 func (self class) GetEmissionRingInnerRadius() float64 { //gd:CPUParticles3D.get_emission_ring_inner_radius
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_ring_inner_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_ring_inner_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1723,12 +1725,12 @@ func (self class) SetEmissionRingConeAngle(cone_angle float64) { //gd:CPUParticl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_ring_cone_angle, 0|(gdextension.SizeFloat<<4), &struct{ cone_angle float64 }{cone_angle})
 }
 func (self class) GetEmissionRingConeAngle() float64 { //gd:CPUParticles3D.get_emission_ring_cone_angle
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_ring_cone_angle, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_ring_cone_angle, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetGravity() Vector3.XYZ { //gd:CPUParticles3D.get_gravity
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_gravity, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_gravity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1736,7 +1738,7 @@ func (self class) SetGravity(accel_vec Vector3.XYZ) { //gd:CPUParticles3D.set_gr
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity, 0|(gdextension.SizeVector3<<4), &struct{ accel_vec Vector3.XYZ }{accel_vec})
 }
 func (self class) GetSplitScale() bool { //gd:CPUParticles3D.get_split_scale
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_split_scale, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_split_scale, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1744,7 +1746,7 @@ func (self class) SetSplitScale(split_scale bool) { //gd:CPUParticles3D.set_spli
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_split_scale, 0|(gdextension.SizeBool<<4), &struct{ split_scale bool }{split_scale})
 }
 func (self class) GetScaleCurveX() [1]gdclass.Curve { //gd:CPUParticles3D.get_scale_curve_x
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_scale_curve_x, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_scale_curve_x, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Curve{gdclass.NewCurve(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -1752,7 +1754,7 @@ func (self class) SetScaleCurveX(scale_curve [1]gdclass.Curve) { //gd:CPUParticl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_curve_x, 0|(gdextension.SizeObject<<4), &struct{ scale_curve gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCurve(scale_curve[0])[0]))})
 }
 func (self class) GetScaleCurveY() [1]gdclass.Curve { //gd:CPUParticles3D.get_scale_curve_y
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_scale_curve_y, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_scale_curve_y, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Curve{gdclass.NewCurve(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -1760,7 +1762,7 @@ func (self class) SetScaleCurveY(scale_curve [1]gdclass.Curve) { //gd:CPUParticl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_curve_y, 0|(gdextension.SizeObject<<4), &struct{ scale_curve gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCurve(scale_curve[0])[0]))})
 }
 func (self class) GetScaleCurveZ() [1]gdclass.Curve { //gd:CPUParticles3D.get_scale_curve_z
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_scale_curve_z, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_scale_curve_z, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Curve{gdclass.NewCurve(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

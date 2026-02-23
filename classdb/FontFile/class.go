@@ -50,6 +50,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -92,6 +93,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -1192,7 +1194,7 @@ func (self class) SetAntialiasing(antialiasing TextServer.FontAntialiasing) { //
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_antialiasing, 0|(gdextension.SizeInt<<4), &struct{ antialiasing TextServer.FontAntialiasing }{antialiasing})
 }
 func (self class) GetAntialiasing() TextServer.FontAntialiasing { //gd:FontFile.get_antialiasing
-	var r_ret = noescape.Call[TextServer.FontAntialiasing](gd.ObjectChecked(self.AsObject()), methods.get_antialiasing, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextServer.FontAntialiasing](gd.ObjectChecked(self.AsObject()), methods.get_antialiasing, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1200,7 +1202,7 @@ func (self class) SetDisableEmbeddedBitmaps(disable_embedded_bitmaps bool) { //g
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_embedded_bitmaps, 0|(gdextension.SizeBool<<4), &struct{ disable_embedded_bitmaps bool }{disable_embedded_bitmaps})
 }
 func (self class) GetDisableEmbeddedBitmaps() bool { //gd:FontFile.get_disable_embedded_bitmaps
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_disable_embedded_bitmaps, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_disable_embedded_bitmaps, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1208,7 +1210,7 @@ func (self class) SetGenerateMipmaps(generate_mipmaps bool) { //gd:FontFile.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_generate_mipmaps, 0|(gdextension.SizeBool<<4), &struct{ generate_mipmaps bool }{generate_mipmaps})
 }
 func (self class) GetGenerateMipmaps() bool { //gd:FontFile.get_generate_mipmaps
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_generate_mipmaps, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_generate_mipmaps, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1216,7 +1218,7 @@ func (self class) SetMultichannelSignedDistanceField(msdf bool) { //gd:FontFile.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_multichannel_signed_distance_field, 0|(gdextension.SizeBool<<4), &struct{ msdf bool }{msdf})
 }
 func (self class) IsMultichannelSignedDistanceField() bool { //gd:FontFile.is_multichannel_signed_distance_field
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_multichannel_signed_distance_field, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_multichannel_signed_distance_field, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1224,7 +1226,7 @@ func (self class) SetMsdfPixelRange(msdf_pixel_range int64) { //gd:FontFile.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_msdf_pixel_range, 0|(gdextension.SizeInt<<4), &struct{ msdf_pixel_range int64 }{msdf_pixel_range})
 }
 func (self class) GetMsdfPixelRange() int64 { //gd:FontFile.get_msdf_pixel_range
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_msdf_pixel_range, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_msdf_pixel_range, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1232,7 +1234,7 @@ func (self class) SetMsdfSize(msdf_size int64) { //gd:FontFile.set_msdf_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_msdf_size, 0|(gdextension.SizeInt<<4), &struct{ msdf_size int64 }{msdf_size})
 }
 func (self class) GetMsdfSize() int64 { //gd:FontFile.get_msdf_size
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_msdf_size, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_msdf_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1240,7 +1242,7 @@ func (self class) SetFixedSize(fixed_size int64) { //gd:FontFile.set_fixed_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fixed_size, 0|(gdextension.SizeInt<<4), &struct{ fixed_size int64 }{fixed_size})
 }
 func (self class) GetFixedSize() int64 { //gd:FontFile.get_fixed_size
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fixed_size, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fixed_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1248,7 +1250,7 @@ func (self class) SetFixedSizeScaleMode(fixed_size_scale_mode TextServer.FixedSi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fixed_size_scale_mode, 0|(gdextension.SizeInt<<4), &struct{ fixed_size_scale_mode TextServer.FixedSizeScaleMode }{fixed_size_scale_mode})
 }
 func (self class) GetFixedSizeScaleMode() TextServer.FixedSizeScaleMode { //gd:FontFile.get_fixed_size_scale_mode
-	var r_ret = noescape.Call[TextServer.FixedSizeScaleMode](gd.ObjectChecked(self.AsObject()), methods.get_fixed_size_scale_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextServer.FixedSizeScaleMode](gd.ObjectChecked(self.AsObject()), methods.get_fixed_size_scale_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1256,7 +1258,7 @@ func (self class) SetAllowSystemFallback(allow_system_fallback bool) { //gd:Font
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_system_fallback, 0|(gdextension.SizeBool<<4), &struct{ allow_system_fallback bool }{allow_system_fallback})
 }
 func (self class) IsAllowSystemFallback() bool { //gd:FontFile.is_allow_system_fallback
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_allow_system_fallback, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_allow_system_fallback, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1264,7 +1266,7 @@ func (self class) SetForceAutohinter(force_autohinter bool) { //gd:FontFile.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_force_autohinter, 0|(gdextension.SizeBool<<4), &struct{ force_autohinter bool }{force_autohinter})
 }
 func (self class) IsForceAutohinter() bool { //gd:FontFile.is_force_autohinter
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_force_autohinter, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_force_autohinter, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1272,7 +1274,7 @@ func (self class) SetModulateColorGlyphs(modulate bool) { //gd:FontFile.set_modu
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modulate_color_glyphs, 0|(gdextension.SizeBool<<4), &struct{ modulate bool }{modulate})
 }
 func (self class) IsModulateColorGlyphs() bool { //gd:FontFile.is_modulate_color_glyphs
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_modulate_color_glyphs, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_modulate_color_glyphs, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1280,7 +1282,7 @@ func (self class) SetHinting(hinting TextServer.Hinting) { //gd:FontFile.set_hin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hinting, 0|(gdextension.SizeInt<<4), &struct{ hinting TextServer.Hinting }{hinting})
 }
 func (self class) GetHinting() TextServer.Hinting { //gd:FontFile.get_hinting
-	var r_ret = noescape.Call[TextServer.Hinting](gd.ObjectChecked(self.AsObject()), methods.get_hinting, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextServer.Hinting](gd.ObjectChecked(self.AsObject()), methods.get_hinting, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1290,7 +1292,7 @@ func (self class) SetSubpixelPositioning(subpixel_positioning TextServer.Subpixe
 	}{subpixel_positioning})
 }
 func (self class) GetSubpixelPositioning() TextServer.SubpixelPositioning { //gd:FontFile.get_subpixel_positioning
-	var r_ret = noescape.Call[TextServer.SubpixelPositioning](gd.ObjectChecked(self.AsObject()), methods.get_subpixel_positioning, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextServer.SubpixelPositioning](gd.ObjectChecked(self.AsObject()), methods.get_subpixel_positioning, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1298,7 +1300,7 @@ func (self class) SetKeepRoundingRemainders(keep_rounding_remainders bool) { //g
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keep_rounding_remainders, 0|(gdextension.SizeBool<<4), &struct{ keep_rounding_remainders bool }{keep_rounding_remainders})
 }
 func (self class) GetKeepRoundingRemainders() bool { //gd:FontFile.get_keep_rounding_remainders
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_keep_rounding_remainders, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_keep_rounding_remainders, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1306,7 +1308,7 @@ func (self class) SetOversampling(oversampling float64) { //gd:FontFile.set_over
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_oversampling, 0|(gdextension.SizeFloat<<4), &struct{ oversampling float64 }{oversampling})
 }
 func (self class) GetOversampling() float64 { //gd:FontFile.get_oversampling
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_oversampling, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_oversampling, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1736,7 +1738,7 @@ func (self class) SetOpentypeFeatureOverrides(overrides Dictionary.Any) { //gd:F
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_opentype_feature_overrides, 0|(gdextension.SizeDictionary<<4), &struct{ overrides gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(overrides))})
 }
 func (self class) GetOpentypeFeatureOverrides() Dictionary.Any { //gd:FontFile.get_opentype_feature_overrides
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_opentype_feature_overrides, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_opentype_feature_overrides, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }

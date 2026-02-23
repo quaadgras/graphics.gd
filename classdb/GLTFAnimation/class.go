@@ -9,6 +9,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -44,6 +45,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -210,7 +212,7 @@ func (self Instance) SetLoop(value bool) Instance { //gd:GLTFAnimation.loop
 }
 
 func (self class) GetOriginalName() String.Readable { //gd:GLTFAnimation.get_original_name
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_name, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -218,12 +220,12 @@ func (self class) SetOriginalName(original_name String.Readable) { //gd:GLTFAnim
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_original_name, 0|(gdextension.SizeString<<4), &struct{ original_name gdextension.String }{pointers.Get(gd.InternalString(original_name))})
 }
 func (self class) GetLoop() bool { //gd:GLTFAnimation.get_loop
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_loop, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_loop, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetLoop(loop bool) { //gd:GLTFAnimation.set_loop
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), &struct{ loop bool }{loop})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), &struct{ loop bool }{loop})
 }
 func (self class) GetAdditionalData(extension_name String.Name) variant.Any { //gd:GLTFAnimation.get_additional_data
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_additional_data, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ extension_name gdextension.StringName }{pointers.Get(gd.InternalStringName(extension_name))})

@@ -18,6 +18,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -64,6 +65,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -2194,7 +2196,7 @@ func (self class) SetTransient(transient bool) { //gd:Window.set_transient
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transient, 0|(gdextension.SizeBool<<4), &struct{ transient bool }{transient})
 }
 func (self class) IsTransient() bool { //gd:Window.is_transient
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_transient, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_transient, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2215,7 +2217,7 @@ func (self class) IsExclusive() bool { //gd:Window.is_exclusive
 	return ret
 }
 func (self class) SetUnparentWhenInvisible(unparent bool) { //gd:Window.set_unparent_when_invisible
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_unparent_when_invisible, 0|(gdextension.SizeBool<<4), &struct{ unparent bool }{unparent})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_unparent_when_invisible, 0|(gdextension.SizeBool<<4), &struct{ unparent bool }{unparent})
 }
 func (self class) CanDraw() bool { //gd:Window.can_draw
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_draw, gdextension.SizeBool, &struct{}{})
@@ -2258,7 +2260,7 @@ func (self class) SetForceNative(force_native bool) { //gd:Window.set_force_nati
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_force_native, 0|(gdextension.SizeBool<<4), &struct{ force_native bool }{force_native})
 }
 func (self class) GetForceNative() bool { //gd:Window.get_force_native
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_force_native, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_force_native, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2290,7 +2292,7 @@ func (self class) SetContentScaleStretch(stretch ContentScaleStretch) { //gd:Win
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_content_scale_stretch, 0|(gdextension.SizeInt<<4), &struct{ stretch ContentScaleStretch }{stretch})
 }
 func (self class) GetContentScaleStretch() ContentScaleStretch { //gd:Window.get_content_scale_stretch
-	var r_ret = noescape.Call[ContentScaleStretch](gd.ObjectChecked(self.AsObject()), methods.get_content_scale_stretch, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[ContentScaleStretch](gd.ObjectChecked(self.AsObject()), methods.get_content_scale_stretch, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2298,7 +2300,7 @@ func (self class) SetNonclientArea(area Rect2i.PositionSize) { //gd:Window.set_n
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_nonclient_area, 0|(gdextension.SizeRect2i<<4), &struct{ area Rect2i.PositionSize }{area})
 }
 func (self class) GetNonclientArea() Rect2i.PositionSize { //gd:Window.get_nonclient_area
-	var r_ret = noescape.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_nonclient_area, gdextension.SizeRect2i, &struct{}{})
+	var r_ret = jumponly.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_nonclient_area, gdextension.SizeRect2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2306,7 +2308,7 @@ func (self class) SetKeepTitleVisible(title_visible bool) { //gd:Window.set_keep
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keep_title_visible, 0|(gdextension.SizeBool<<4), &struct{ title_visible bool }{title_visible})
 }
 func (self class) GetKeepTitleVisible() bool { //gd:Window.get_keep_title_visible
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_keep_title_visible, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_keep_title_visible, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2324,7 +2326,7 @@ func (self class) SetMousePassthroughPolygon(polygon Packed.Array[Vector2.XY]) {
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))})
 }
 func (self class) GetMousePassthroughPolygon() Packed.Array[Vector2.XY] { //gd:Window.get_mouse_passthrough_polygon
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_mouse_passthrough_polygon, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_mouse_passthrough_polygon, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -2578,7 +2580,7 @@ func (self class) GetAccessibilityDescription() String.Readable { //gd:Window.ge
 	return ret
 }
 func (self class) GetFocusedWindow() [1]gdclass.Window { //gd:Window.get_focused_window
-	var r_ret = noescape.CallStatic[gdextension.Object](methods.get_focused_window, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.CallStatic[gdextension.Object](methods.get_focused_window, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Window{gdclass.NewWindow(gdreference.LetObject(r_ret))}
 	return ret
 }

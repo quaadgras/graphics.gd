@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -49,6 +50,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -251,50 +253,50 @@ func (self Instance) SetFrequency(value Rendering.VertexFrequency) Instance { //
 }
 
 func (self class) SetBinding(p_member int64) { //gd:RDVertexAttribute.set_binding
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_binding, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_binding, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
 }
 func (self class) GetBinding() int64 { //gd:RDVertexAttribute.get_binding
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_binding, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_binding, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetLocation(p_member int64) { //gd:RDVertexAttribute.set_location
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_location, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_location, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
 }
 func (self class) GetLocation() int64 { //gd:RDVertexAttribute.get_location
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_location, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_location, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetOffset(p_member int64) { //gd:RDVertexAttribute.set_offset
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
 }
 func (self class) GetOffset() int64 { //gd:RDVertexAttribute.get_offset
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetFormat(p_member Rendering.DataFormat) { //gd:RDVertexAttribute.set_format
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.DataFormat }{p_member})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.DataFormat }{p_member})
 }
 func (self class) GetFormat() Rendering.DataFormat { //gd:RDVertexAttribute.get_format
-	var r_ret = noescape.Call[Rendering.DataFormat](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Rendering.DataFormat](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetStride(p_member int64) { //gd:RDVertexAttribute.set_stride
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stride, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stride, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
 }
 func (self class) GetStride() int64 { //gd:RDVertexAttribute.get_stride
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stride, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stride, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetFrequency(p_member Rendering.VertexFrequency) { //gd:RDVertexAttribute.set_frequency
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frequency, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.VertexFrequency }{p_member})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frequency, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.VertexFrequency }{p_member})
 }
 func (self class) GetFrequency() Rendering.VertexFrequency { //gd:RDVertexAttribute.get_frequency
-	var r_ret = noescape.Call[Rendering.VertexFrequency](gd.ObjectChecked(self.AsObject()), methods.get_frequency, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Rendering.VertexFrequency](gd.ObjectChecked(self.AsObject()), methods.get_frequency, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

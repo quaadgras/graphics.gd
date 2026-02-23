@@ -57,6 +57,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -95,6 +96,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -2774,7 +2776,7 @@ func (self class) SetName(name String.Name) { //gd:Node.set_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_name, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 func (self class) GetName() String.Name { //gd:Node.get_name
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeStringName, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -2828,7 +2830,7 @@ func (self class) GetNodeOrNull(path Path.ToNode) [1]gdclass.Node { //gd:Node.ge
 	return ret
 }
 func (self class) GetParent() [1]gdclass.Node { //gd:Node.get_parent
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_parent, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_parent, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gdreference.LetObject(r_ret))}
 	return ret
 }
@@ -2867,7 +2869,7 @@ func (self class) GetNodeAndResource(path Path.ToNode) Array.Any { //gd:Node.get
 	return ret
 }
 func (self class) IsInsideTree() bool { //gd:Node.is_inside_tree
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_inside_tree, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_inside_tree, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2928,7 +2930,7 @@ func (self class) SetOwner(owner [1]gdclass.Node) { //gd:Node.set_owner
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_owner, 0|(gdextension.SizeObject<<4), &struct{ owner gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(owner[0])[0]))})
 }
 func (self class) GetOwner() [1]gdclass.Node { //gd:Node.get_owner
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_owner, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_owner, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gdreference.LetObject(r_ret))}
 	return ret
 }
@@ -2957,7 +2959,7 @@ func (self class) SetSceneFilePath(scene_file_path String.Readable) { //gd:Node.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scene_file_path, 0|(gdextension.SizeString<<4), &struct{ scene_file_path gdextension.String }{pointers.Get(gd.InternalString(scene_file_path))})
 }
 func (self class) GetSceneFilePath() String.Readable { //gd:Node.get_scene_file_path
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_scene_file_path, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_scene_file_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2980,7 +2982,7 @@ func (self class) GetPhysicsProcessDeltaTime() float64 { //gd:Node.get_physics_p
 	return ret
 }
 func (self class) IsPhysicsProcessing() bool { //gd:Node.is_physics_processing
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_physics_processing, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_physics_processing, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2996,7 +2998,7 @@ func (self class) SetProcessPriority(priority int64) { //gd:Node.set_process_pri
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_priority, 0|(gdextension.SizeInt<<4), &struct{ priority int64 }{priority})
 }
 func (self class) GetProcessPriority() int64 { //gd:Node.get_process_priority
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_process_priority, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_process_priority, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3004,12 +3006,12 @@ func (self class) SetPhysicsProcessPriority(priority int64) { //gd:Node.set_phys
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_process_priority, 0|(gdextension.SizeInt<<4), &struct{ priority int64 }{priority})
 }
 func (self class) GetPhysicsProcessPriority() int64 { //gd:Node.get_physics_process_priority
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_physics_process_priority, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_physics_process_priority, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsProcessing() bool { //gd:Node.is_processing
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_processing, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_processing, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3017,7 +3019,7 @@ func (self class) SetProcessInput(enable bool) { //gd:Node.set_process_input
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_input, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsProcessingInput() bool { //gd:Node.is_processing_input
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_processing_input, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_processing_input, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3025,7 +3027,7 @@ func (self class) SetProcessShortcutInput(enable bool) { //gd:Node.set_process_s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_shortcut_input, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsProcessingShortcutInput() bool { //gd:Node.is_processing_shortcut_input
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_processing_shortcut_input, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_processing_shortcut_input, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3033,7 +3035,7 @@ func (self class) SetProcessUnhandledInput(enable bool) { //gd:Node.set_process_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_unhandled_input, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsProcessingUnhandledInput() bool { //gd:Node.is_processing_unhandled_input
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_processing_unhandled_input, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_processing_unhandled_input, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3041,7 +3043,7 @@ func (self class) SetProcessUnhandledKeyInput(enable bool) { //gd:Node.set_proce
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_unhandled_key_input, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsProcessingUnhandledKeyInput() bool { //gd:Node.is_processing_unhandled_key_input
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_processing_unhandled_key_input, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_processing_unhandled_key_input, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3049,7 +3051,7 @@ func (self class) SetProcessMode(mode ProcessMode) { //gd:Node.set_process_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_mode, 0|(gdextension.SizeInt<<4), &struct{ mode ProcessMode }{mode})
 }
 func (self class) GetProcessMode() ProcessMode { //gd:Node.get_process_mode
-	var r_ret = noescape.Call[ProcessMode](gd.ObjectChecked(self.AsObject()), methods.get_process_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[ProcessMode](gd.ObjectChecked(self.AsObject()), methods.get_process_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3062,7 +3064,7 @@ func (self class) SetProcessThreadGroup(mode ProcessThreadGroup) { //gd:Node.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_thread_group, 0|(gdextension.SizeInt<<4), &struct{ mode ProcessThreadGroup }{mode})
 }
 func (self class) GetProcessThreadGroup() ProcessThreadGroup { //gd:Node.get_process_thread_group
-	var r_ret = noescape.Call[ProcessThreadGroup](gd.ObjectChecked(self.AsObject()), methods.get_process_thread_group, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[ProcessThreadGroup](gd.ObjectChecked(self.AsObject()), methods.get_process_thread_group, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3070,7 +3072,7 @@ func (self class) SetProcessThreadMessages(flags ProcessThreadMessages) { //gd:N
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_thread_messages, 0|(gdextension.SizeInt<<4), &struct{ flags ProcessThreadMessages }{flags})
 }
 func (self class) GetProcessThreadMessages() ProcessThreadMessages { //gd:Node.get_process_thread_messages
-	var r_ret = noescape.Call[ProcessThreadMessages](gd.ObjectChecked(self.AsObject()), methods.get_process_thread_messages, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[ProcessThreadMessages](gd.ObjectChecked(self.AsObject()), methods.get_process_thread_messages, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3078,7 +3080,7 @@ func (self class) SetProcessThreadGroupOrder(order int64) { //gd:Node.set_proces
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_thread_group_order, 0|(gdextension.SizeInt<<4), &struct{ order int64 }{order})
 }
 func (self class) GetProcessThreadGroupOrder() int64 { //gd:Node.get_process_thread_group_order
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_process_thread_group_order, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_process_thread_group_order, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3094,7 +3096,7 @@ func (self class) SetDisplayFolded(fold bool) { //gd:Node.set_display_folded
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_display_folded, 0|(gdextension.SizeBool<<4), &struct{ fold bool }{fold})
 }
 func (self class) IsDisplayedFolded() bool { //gd:Node.is_displayed_folded
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_displayed_folded, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_displayed_folded, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3102,7 +3104,7 @@ func (self class) SetProcessInternal(enable bool) { //gd:Node.set_process_intern
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_internal, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsProcessingInternal() bool { //gd:Node.is_processing_internal
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_processing_internal, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_processing_internal, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3110,7 +3112,7 @@ func (self class) SetPhysicsProcessInternal(enable bool) { //gd:Node.set_physics
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_process_internal, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsPhysicsProcessingInternal() bool { //gd:Node.is_physics_processing_internal
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_physics_processing_internal, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_physics_processing_internal, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3118,12 +3120,12 @@ func (self class) SetPhysicsInterpolationMode(mode PhysicsInterpolationMode) { /
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_interpolation_mode, 0|(gdextension.SizeInt<<4), &struct{ mode PhysicsInterpolationMode }{mode})
 }
 func (self class) GetPhysicsInterpolationMode() PhysicsInterpolationMode { //gd:Node.get_physics_interpolation_mode
-	var r_ret = noescape.Call[PhysicsInterpolationMode](gd.ObjectChecked(self.AsObject()), methods.get_physics_interpolation_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[PhysicsInterpolationMode](gd.ObjectChecked(self.AsObject()), methods.get_physics_interpolation_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsPhysicsInterpolated() bool { //gd:Node.is_physics_interpolated
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_physics_interpolated, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_physics_interpolated, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3139,7 +3141,7 @@ func (self class) SetAutoTranslateMode(mode AutoTranslateMode) { //gd:Node.set_a
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_translate_mode, 0|(gdextension.SizeInt<<4), &struct{ mode AutoTranslateMode }{mode})
 }
 func (self class) GetAutoTranslateMode() AutoTranslateMode { //gd:Node.get_auto_translate_mode
-	var r_ret = noescape.Call[AutoTranslateMode](gd.ObjectChecked(self.AsObject()), methods.get_auto_translate_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[AutoTranslateMode](gd.ObjectChecked(self.AsObject()), methods.get_auto_translate_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3183,10 +3185,10 @@ func (self class) ReplaceBy(node [1]gdclass.Node, keep_groups bool) { //gd:Node.
 	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetNode(node[0])[0])), keep_groups})
 }
 func (self class) SetSceneInstanceLoadPlaceholder(load_placeholder bool) { //gd:Node.set_scene_instance_load_placeholder
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scene_instance_load_placeholder, 0|(gdextension.SizeBool<<4), &struct{ load_placeholder bool }{load_placeholder})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scene_instance_load_placeholder, 0|(gdextension.SizeBool<<4), &struct{ load_placeholder bool }{load_placeholder})
 }
 func (self class) GetSceneInstanceLoadPlaceholder() bool { //gd:Node.get_scene_instance_load_placeholder
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_scene_instance_load_placeholder, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_scene_instance_load_placeholder, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3202,7 +3204,7 @@ func (self class) IsEditableInstance(node [1]gdclass.Node) bool { //gd:Node.is_e
 	return ret
 }
 func (self class) GetViewport() [1]gdclass.Viewport { //gd:Node.get_viewport
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_viewport, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_viewport, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Viewport{gdclass.NewViewport(gdreference.LetObject(r_ret))}
 	return ret
 }
@@ -3225,7 +3227,7 @@ func (self class) SetMultiplayerAuthority(id int64, recursive bool) { //gd:Node.
 	}{id, recursive})
 }
 func (self class) GetMultiplayerAuthority() int64 { //gd:Node.get_multiplayer_authority
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_multiplayer_authority, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_multiplayer_authority, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3246,7 +3248,7 @@ func (self class) RpcConfig(method String.Name, config variant.Any) { //gd:Node.
 	}{pointers.Get(gd.InternalStringName(method)), gdextension.Variant(pointers.Get(gd.InternalVariant(config)))})
 }
 func (self class) GetNodeRpcConfig() variant.Any { //gd:Node.get_node_rpc_config
-	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_node_rpc_config, gdextension.SizeVariant, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_node_rpc_config, gdextension.SizeVariant, &struct{}{})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -3254,7 +3256,7 @@ func (self class) SetEditorDescription(editor_description String.Readable) { //g
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editor_description, 0|(gdextension.SizeString<<4), &struct{ editor_description gdextension.String }{pointers.Get(gd.InternalString(editor_description))})
 }
 func (self class) GetEditorDescription() String.Readable { //gd:Node.get_editor_description
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_editor_description, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_editor_description, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -3262,7 +3264,7 @@ func (self class) SetUniqueNameInOwner(enable bool) { //gd:Node.set_unique_name_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_unique_name_in_owner, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsUniqueNameInOwner() bool { //gd:Node.is_unique_name_in_owner
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_unique_name_in_owner, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_unique_name_in_owner, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

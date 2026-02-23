@@ -20,6 +20,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -61,6 +62,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -574,7 +576,7 @@ func (self class) SetJointOffset(offset Transform3D.BasisOrigin) { //gd:Physical
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joint_offset, 0|(gdextension.SizeTransform3D<<4), &struct{ offset Transform3D.BasisOrigin }{gd.Transposed(offset)})
 }
 func (self class) GetJointOffset() Transform3D.BasisOrigin { //gd:PhysicalBone3D.get_joint_offset
-	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_joint_offset, gdextension.SizeTransform3D, &struct{}{})
+	var r_ret = jumponly.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_joint_offset, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -590,22 +592,22 @@ func (self class) SetBodyOffset(offset Transform3D.BasisOrigin) { //gd:PhysicalB
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_body_offset, 0|(gdextension.SizeTransform3D<<4), &struct{ offset Transform3D.BasisOrigin }{gd.Transposed(offset)})
 }
 func (self class) GetBodyOffset() Transform3D.BasisOrigin { //gd:PhysicalBone3D.get_body_offset
-	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_body_offset, gdextension.SizeTransform3D, &struct{}{})
+	var r_ret = jumponly.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_body_offset, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
 func (self class) GetSimulatePhysics() bool { //gd:PhysicalBone3D.get_simulate_physics
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_simulate_physics, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_simulate_physics, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsSimulatingPhysics() bool { //gd:PhysicalBone3D.is_simulating_physics
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_simulating_physics, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_simulating_physics, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetBoneId() int64 { //gd:PhysicalBone3D.get_bone_id
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone_id, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -613,7 +615,7 @@ func (self class) SetMass(mass float64) { //gd:PhysicalBone3D.set_mass
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mass, 0|(gdextension.SizeFloat<<4), &struct{ mass float64 }{mass})
 }
 func (self class) GetMass() float64 { //gd:PhysicalBone3D.get_mass
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mass, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mass, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -621,7 +623,7 @@ func (self class) SetFriction(friction float64) { //gd:PhysicalBone3D.set_fricti
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_friction, 0|(gdextension.SizeFloat<<4), &struct{ friction float64 }{friction})
 }
 func (self class) GetFriction() float64 { //gd:PhysicalBone3D.get_friction
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_friction, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_friction, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -629,7 +631,7 @@ func (self class) SetBounce(bounce float64) { //gd:PhysicalBone3D.set_bounce
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bounce, 0|(gdextension.SizeFloat<<4), &struct{ bounce float64 }{bounce})
 }
 func (self class) GetBounce() float64 { //gd:PhysicalBone3D.get_bounce
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bounce, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bounce, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -637,7 +639,7 @@ func (self class) SetGravityScale(gravity_scale float64) { //gd:PhysicalBone3D.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity_scale, 0|(gdextension.SizeFloat<<4), &struct{ gravity_scale float64 }{gravity_scale})
 }
 func (self class) GetGravityScale() float64 { //gd:PhysicalBone3D.get_gravity_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gravity_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gravity_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -645,7 +647,7 @@ func (self class) SetLinearDampMode(linear_damp_mode DampMode) { //gd:PhysicalBo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_damp_mode, 0|(gdextension.SizeInt<<4), &struct{ linear_damp_mode DampMode }{linear_damp_mode})
 }
 func (self class) GetLinearDampMode() DampMode { //gd:PhysicalBone3D.get_linear_damp_mode
-	var r_ret = noescape.Call[DampMode](gd.ObjectChecked(self.AsObject()), methods.get_linear_damp_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DampMode](gd.ObjectChecked(self.AsObject()), methods.get_linear_damp_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -653,7 +655,7 @@ func (self class) SetAngularDampMode(angular_damp_mode DampMode) { //gd:Physical
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_damp_mode, 0|(gdextension.SizeInt<<4), &struct{ angular_damp_mode DampMode }{angular_damp_mode})
 }
 func (self class) GetAngularDampMode() DampMode { //gd:PhysicalBone3D.get_angular_damp_mode
-	var r_ret = noescape.Call[DampMode](gd.ObjectChecked(self.AsObject()), methods.get_angular_damp_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DampMode](gd.ObjectChecked(self.AsObject()), methods.get_angular_damp_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -661,7 +663,7 @@ func (self class) SetLinearDamp(linear_damp float64) { //gd:PhysicalBone3D.set_l
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_damp, 0|(gdextension.SizeFloat<<4), &struct{ linear_damp float64 }{linear_damp})
 }
 func (self class) GetLinearDamp() float64 { //gd:PhysicalBone3D.get_linear_damp
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_linear_damp, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_linear_damp, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -669,7 +671,7 @@ func (self class) SetAngularDamp(angular_damp float64) { //gd:PhysicalBone3D.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_damp, 0|(gdextension.SizeFloat<<4), &struct{ angular_damp float64 }{angular_damp})
 }
 func (self class) GetAngularDamp() float64 { //gd:PhysicalBone3D.get_angular_damp
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_damp, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_damp, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -677,7 +679,7 @@ func (self class) SetLinearVelocity(linear_velocity Vector3.XYZ) { //gd:Physical
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_velocity, 0|(gdextension.SizeVector3<<4), &struct{ linear_velocity Vector3.XYZ }{linear_velocity})
 }
 func (self class) GetLinearVelocity() Vector3.XYZ { //gd:PhysicalBone3D.get_linear_velocity
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_linear_velocity, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_linear_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -685,7 +687,7 @@ func (self class) SetAngularVelocity(angular_velocity Vector3.XYZ) { //gd:Physic
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_velocity, 0|(gdextension.SizeVector3<<4), &struct{ angular_velocity Vector3.XYZ }{angular_velocity})
 }
 func (self class) GetAngularVelocity() Vector3.XYZ { //gd:PhysicalBone3D.get_angular_velocity
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_angular_velocity, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_angular_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -693,7 +695,7 @@ func (self class) SetUseCustomIntegrator(enable bool) { //gd:PhysicalBone3D.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_custom_integrator, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsUsingCustomIntegrator() bool { //gd:PhysicalBone3D.is_using_custom_integrator
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_custom_integrator, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_custom_integrator, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -701,7 +703,7 @@ func (self class) SetCanSleep(able_to_sleep bool) { //gd:PhysicalBone3D.set_can_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_can_sleep, 0|(gdextension.SizeBool<<4), &struct{ able_to_sleep bool }{able_to_sleep})
 }
 func (self class) IsAbleToSleep() bool { //gd:PhysicalBone3D.is_able_to_sleep
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_able_to_sleep, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_able_to_sleep, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

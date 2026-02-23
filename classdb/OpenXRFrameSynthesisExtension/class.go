@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -49,6 +50,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -204,12 +206,12 @@ func (self Instance) SetRelaxFrameInterval(value bool) Instance { //gd:OpenXRFra
 }
 
 func (self class) IsAvailable() bool { //gd:OpenXRFrameSynthesisExtension.is_available
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_available, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_available, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsEnabled() bool { //gd:OpenXRFrameSynthesisExtension.is_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -217,7 +219,7 @@ func (self class) SetEnabled(enable bool) { //gd:OpenXRFrameSynthesisExtension.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) GetRelaxFrameInterval() bool { //gd:OpenXRFrameSynthesisExtension.get_relax_frame_interval
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_relax_frame_interval, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_relax_frame_interval, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

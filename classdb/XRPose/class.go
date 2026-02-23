@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -50,6 +51,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -271,10 +273,10 @@ func (self Instance) SetTrackingConfidence(value TrackingConfidence) Instance { 
 }
 
 func (self class) SetHasTrackingData(has_tracking_data bool) { //gd:XRPose.set_has_tracking_data
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_has_tracking_data, 0|(gdextension.SizeBool<<4), &struct{ has_tracking_data bool }{has_tracking_data})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_has_tracking_data, 0|(gdextension.SizeBool<<4), &struct{ has_tracking_data bool }{has_tracking_data})
 }
 func (self class) GetHasTrackingData() bool { //gd:XRPose.get_has_tracking_data
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_has_tracking_data, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_has_tracking_data, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -282,7 +284,7 @@ func (self class) SetName(name String.Name) { //gd:XRPose.set_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_name, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 func (self class) GetName() String.Name { //gd:XRPose.get_name
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeStringName, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -290,7 +292,7 @@ func (self class) SetTransform(transform Transform3D.BasisOrigin) { //gd:XRPose.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transform, 0|(gdextension.SizeTransform3D<<4), &struct{ transform Transform3D.BasisOrigin }{gd.Transposed(transform)})
 }
 func (self class) GetTransform() Transform3D.BasisOrigin { //gd:XRPose.get_transform
-	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_transform, gdextension.SizeTransform3D, &struct{}{})
+	var r_ret = jumponly.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_transform, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -303,7 +305,7 @@ func (self class) SetLinearVelocity(velocity Vector3.XYZ) { //gd:XRPose.set_line
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_velocity, 0|(gdextension.SizeVector3<<4), &struct{ velocity Vector3.XYZ }{velocity})
 }
 func (self class) GetLinearVelocity() Vector3.XYZ { //gd:XRPose.get_linear_velocity
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_linear_velocity, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_linear_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -311,15 +313,15 @@ func (self class) SetAngularVelocity(velocity Vector3.XYZ) { //gd:XRPose.set_ang
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_velocity, 0|(gdextension.SizeVector3<<4), &struct{ velocity Vector3.XYZ }{velocity})
 }
 func (self class) GetAngularVelocity() Vector3.XYZ { //gd:XRPose.get_angular_velocity
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_angular_velocity, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_angular_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetTrackingConfidence(tracking_confidence TrackingConfidence) { //gd:XRPose.set_tracking_confidence
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracking_confidence, 0|(gdextension.SizeInt<<4), &struct{ tracking_confidence TrackingConfidence }{tracking_confidence})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracking_confidence, 0|(gdextension.SizeInt<<4), &struct{ tracking_confidence TrackingConfidence }{tracking_confidence})
 }
 func (self class) GetTrackingConfidence() TrackingConfidence { //gd:XRPose.get_tracking_confidence
-	var r_ret = noescape.Call[TrackingConfidence](gd.ObjectChecked(self.AsObject()), methods.get_tracking_confidence, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TrackingConfidence](gd.ObjectChecked(self.AsObject()), methods.get_tracking_confidence, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

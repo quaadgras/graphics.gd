@@ -16,6 +16,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -58,6 +59,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -519,7 +521,7 @@ func (self class) SetLayerViewport(viewport [1]gdclass.SubViewport) { //gd:OpenX
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_viewport, 0|(gdextension.SizeObject<<4), &struct{ viewport gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetSubViewport(viewport[0])[0]))})
 }
 func (self class) GetLayerViewport() [1]gdclass.SubViewport { //gd:OpenXRCompositionLayer.get_layer_viewport
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_layer_viewport, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_layer_viewport, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.SubViewport{gdclass.NewSubViewport(gdreference.LetObject(r_ret))}
 	return ret
 }
@@ -527,7 +529,7 @@ func (self class) SetUseAndroidSurface(enable bool) { //gd:OpenXRCompositionLaye
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_android_surface, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) GetUseAndroidSurface() bool { //gd:OpenXRCompositionLayer.get_use_android_surface
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_android_surface, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_android_surface, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -535,7 +537,7 @@ func (self class) SetAndroidSurfaceSize(size Vector2i.XY) { //gd:OpenXRCompositi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_android_surface_size, 0|(gdextension.SizeVector2i<<4), &struct{ size Vector2i.XY }{size})
 }
 func (self class) GetAndroidSurfaceSize() Vector2i.XY { //gd:OpenXRCompositionLayer.get_android_surface_size
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_android_surface_size, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = jumponly.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_android_surface_size, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -543,7 +545,7 @@ func (self class) SetEnableHolePunch(enable bool) { //gd:OpenXRCompositionLayer.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_hole_punch, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) GetEnableHolePunch() bool { //gd:OpenXRCompositionLayer.get_enable_hole_punch
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enable_hole_punch, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enable_hole_punch, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -551,7 +553,7 @@ func (self class) SetSortOrder(order int64) { //gd:OpenXRCompositionLayer.set_so
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sort_order, 0|(gdextension.SizeInt<<4), &struct{ order int64 }{order})
 }
 func (self class) GetSortOrder() int64 { //gd:OpenXRCompositionLayer.get_sort_order
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sort_order, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sort_order, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -559,7 +561,7 @@ func (self class) SetAlphaBlend(enabled bool) { //gd:OpenXRCompositionLayer.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_blend, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) GetAlphaBlend() bool { //gd:OpenXRCompositionLayer.get_alpha_blend
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_alpha_blend, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_alpha_blend, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -574,7 +576,7 @@ func (self class) IsNativelySupported() bool { //gd:OpenXRCompositionLayer.is_na
 	return ret
 }
 func (self class) IsProtectedContent() bool { //gd:OpenXRCompositionLayer.is_protected_content
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_protected_content, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_protected_content, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -585,7 +587,7 @@ func (self class) SetMinFilter(mode Filter) { //gd:OpenXRCompositionLayer.set_mi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_filter, 0|(gdextension.SizeInt<<4), &struct{ mode Filter }{mode})
 }
 func (self class) GetMinFilter() Filter { //gd:OpenXRCompositionLayer.get_min_filter
-	var r_ret = noescape.Call[Filter](gd.ObjectChecked(self.AsObject()), methods.get_min_filter, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Filter](gd.ObjectChecked(self.AsObject()), methods.get_min_filter, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -593,7 +595,7 @@ func (self class) SetMagFilter(mode Filter) { //gd:OpenXRCompositionLayer.set_ma
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mag_filter, 0|(gdextension.SizeInt<<4), &struct{ mode Filter }{mode})
 }
 func (self class) GetMagFilter() Filter { //gd:OpenXRCompositionLayer.get_mag_filter
-	var r_ret = noescape.Call[Filter](gd.ObjectChecked(self.AsObject()), methods.get_mag_filter, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Filter](gd.ObjectChecked(self.AsObject()), methods.get_mag_filter, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -601,7 +603,7 @@ func (self class) SetMipmapMode(mode MipmapMode) { //gd:OpenXRCompositionLayer.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mipmap_mode, 0|(gdextension.SizeInt<<4), &struct{ mode MipmapMode }{mode})
 }
 func (self class) GetMipmapMode() MipmapMode { //gd:OpenXRCompositionLayer.get_mipmap_mode
-	var r_ret = noescape.Call[MipmapMode](gd.ObjectChecked(self.AsObject()), methods.get_mipmap_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[MipmapMode](gd.ObjectChecked(self.AsObject()), methods.get_mipmap_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -609,7 +611,7 @@ func (self class) SetHorizontalWrap(mode Wrap) { //gd:OpenXRCompositionLayer.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_horizontal_wrap, 0|(gdextension.SizeInt<<4), &struct{ mode Wrap }{mode})
 }
 func (self class) GetHorizontalWrap() Wrap { //gd:OpenXRCompositionLayer.get_horizontal_wrap
-	var r_ret = noescape.Call[Wrap](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_wrap, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Wrap](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_wrap, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -617,7 +619,7 @@ func (self class) SetVerticalWrap(mode Wrap) { //gd:OpenXRCompositionLayer.set_v
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical_wrap, 0|(gdextension.SizeInt<<4), &struct{ mode Wrap }{mode})
 }
 func (self class) GetVerticalWrap() Wrap { //gd:OpenXRCompositionLayer.get_vertical_wrap
-	var r_ret = noescape.Call[Wrap](gd.ObjectChecked(self.AsObject()), methods.get_vertical_wrap, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Wrap](gd.ObjectChecked(self.AsObject()), methods.get_vertical_wrap, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -625,7 +627,7 @@ func (self class) SetRedSwizzle(mode Swizzle) { //gd:OpenXRCompositionLayer.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_red_swizzle, 0|(gdextension.SizeInt<<4), &struct{ mode Swizzle }{mode})
 }
 func (self class) GetRedSwizzle() Swizzle { //gd:OpenXRCompositionLayer.get_red_swizzle
-	var r_ret = noescape.Call[Swizzle](gd.ObjectChecked(self.AsObject()), methods.get_red_swizzle, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Swizzle](gd.ObjectChecked(self.AsObject()), methods.get_red_swizzle, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -633,7 +635,7 @@ func (self class) SetGreenSwizzle(mode Swizzle) { //gd:OpenXRCompositionLayer.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_green_swizzle, 0|(gdextension.SizeInt<<4), &struct{ mode Swizzle }{mode})
 }
 func (self class) GetGreenSwizzle() Swizzle { //gd:OpenXRCompositionLayer.get_green_swizzle
-	var r_ret = noescape.Call[Swizzle](gd.ObjectChecked(self.AsObject()), methods.get_green_swizzle, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Swizzle](gd.ObjectChecked(self.AsObject()), methods.get_green_swizzle, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -641,7 +643,7 @@ func (self class) SetBlueSwizzle(mode Swizzle) { //gd:OpenXRCompositionLayer.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blue_swizzle, 0|(gdextension.SizeInt<<4), &struct{ mode Swizzle }{mode})
 }
 func (self class) GetBlueSwizzle() Swizzle { //gd:OpenXRCompositionLayer.get_blue_swizzle
-	var r_ret = noescape.Call[Swizzle](gd.ObjectChecked(self.AsObject()), methods.get_blue_swizzle, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Swizzle](gd.ObjectChecked(self.AsObject()), methods.get_blue_swizzle, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -649,7 +651,7 @@ func (self class) SetAlphaSwizzle(mode Swizzle) { //gd:OpenXRCompositionLayer.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_swizzle, 0|(gdextension.SizeInt<<4), &struct{ mode Swizzle }{mode})
 }
 func (self class) GetAlphaSwizzle() Swizzle { //gd:OpenXRCompositionLayer.get_alpha_swizzle
-	var r_ret = noescape.Call[Swizzle](gd.ObjectChecked(self.AsObject()), methods.get_alpha_swizzle, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Swizzle](gd.ObjectChecked(self.AsObject()), methods.get_alpha_swizzle, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -657,7 +659,7 @@ func (self class) SetMaxAnisotropy(value float64) { //gd:OpenXRCompositionLayer.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_anisotropy, 0|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
 }
 func (self class) GetMaxAnisotropy() float64 { //gd:OpenXRCompositionLayer.get_max_anisotropy
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_anisotropy, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_anisotropy, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -665,12 +667,12 @@ func (self class) SetBorderColor(color Color.RGBA) { //gd:OpenXRCompositionLayer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_border_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetBorderColor() Color.RGBA { //gd:OpenXRCompositionLayer.get_border_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_border_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_border_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) IntersectsRay(origin Vector3.XYZ, direction Vector3.XYZ) Vector2.XY { //gd:OpenXRCompositionLayer.intersects_ray
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.intersects_ray, gdextension.SizeVector2|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8), &struct {
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.intersects_ray, gdextension.SizeVector2|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8), &struct {
 		origin    Vector3.XYZ
 		direction Vector3.XYZ
 	}{origin, direction})

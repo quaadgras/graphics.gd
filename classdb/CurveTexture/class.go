@@ -19,6 +19,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -57,6 +58,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -217,7 +219,7 @@ func (self class) SetCurve(curve [1]gdclass.Curve) { //gd:CurveTexture.set_curve
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCurve(curve[0])[0]))})
 }
 func (self class) GetCurve() [1]gdclass.Curve { //gd:CurveTexture.get_curve
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Curve{gdclass.NewCurve(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -225,7 +227,7 @@ func (self class) SetTextureMode(texture_mode TextureMode) { //gd:CurveTexture.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_mode, 0|(gdextension.SizeInt<<4), &struct{ texture_mode TextureMode }{texture_mode})
 }
 func (self class) GetTextureMode() TextureMode { //gd:CurveTexture.get_texture_mode
-	var r_ret = noescape.Call[TextureMode](gd.ObjectChecked(self.AsObject()), methods.get_texture_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextureMode](gd.ObjectChecked(self.AsObject()), methods.get_texture_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

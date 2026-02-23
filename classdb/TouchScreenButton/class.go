@@ -21,6 +21,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -61,6 +62,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -323,7 +325,7 @@ func (self class) SetTextureNormal(texture [1]gdclass.Texture2D) { //gd:TouchScr
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_normal, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetTextureNormal() [1]gdclass.Texture2D { //gd:TouchScreenButton.get_texture_normal
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_normal, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_normal, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -331,7 +333,7 @@ func (self class) SetTexturePressed(texture [1]gdclass.Texture2D) { //gd:TouchSc
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_pressed, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetTexturePressed() [1]gdclass.Texture2D { //gd:TouchScreenButton.get_texture_pressed
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_pressed, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_pressed, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -339,7 +341,7 @@ func (self class) SetBitmask(bitmask [1]gdclass.BitMap) { //gd:TouchScreenButton
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bitmask, 0|(gdextension.SizeObject<<4), &struct{ bitmask gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetBitMap(bitmask[0])[0]))})
 }
 func (self class) GetBitmask() [1]gdclass.BitMap { //gd:TouchScreenButton.get_bitmask
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_bitmask, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_bitmask, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.BitMap{gdclass.NewBitMap(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -347,7 +349,7 @@ func (self class) SetShape(shape [1]gdclass.Shape2D) { //gd:TouchScreenButton.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape, 0|(gdextension.SizeObject<<4), &struct{ shape gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetShape2D(shape[0])[0]))})
 }
 func (self class) GetShape() [1]gdclass.Shape2D { //gd:TouchScreenButton.get_shape
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shape, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shape, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Shape2D{gdclass.NewShape2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -355,7 +357,7 @@ func (self class) SetShapeCentered(b bool) { //gd:TouchScreenButton.set_shape_ce
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape_centered, 0|(gdextension.SizeBool<<4), &struct{ b bool }{b})
 }
 func (self class) IsShapeCentered() bool { //gd:TouchScreenButton.is_shape_centered
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shape_centered, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shape_centered, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -363,7 +365,7 @@ func (self class) SetShapeVisible(b bool) { //gd:TouchScreenButton.set_shape_vis
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape_visible, 0|(gdextension.SizeBool<<4), &struct{ b bool }{b})
 }
 func (self class) IsShapeVisible() bool { //gd:TouchScreenButton.is_shape_visible
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shape_visible, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shape_visible, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -379,20 +381,20 @@ func (self class) SetVisibilityMode(mode VisibilityMode) { //gd:TouchScreenButto
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_mode, 0|(gdextension.SizeInt<<4), &struct{ mode VisibilityMode }{mode})
 }
 func (self class) GetVisibilityMode() VisibilityMode { //gd:TouchScreenButton.get_visibility_mode
-	var r_ret = noescape.Call[VisibilityMode](gd.ObjectChecked(self.AsObject()), methods.get_visibility_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[VisibilityMode](gd.ObjectChecked(self.AsObject()), methods.get_visibility_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPassbyPress(enabled bool) { //gd:TouchScreenButton.set_passby_press
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_passby_press, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_passby_press, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsPassbyPressEnabled() bool { //gd:TouchScreenButton.is_passby_press_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_passby_press_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_passby_press_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsPressed() bool { //gd:TouchScreenButton.is_pressed
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pressed, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pressed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

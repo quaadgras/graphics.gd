@@ -26,6 +26,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -65,6 +66,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -296,7 +298,7 @@ func (self class) SetSize(size Vector3.XYZ) { //gd:GPUParticlesCollisionHeightFi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), &struct{ size Vector3.XYZ }{size})
 }
 func (self class) GetSize() Vector3.XYZ { //gd:GPUParticlesCollisionHeightField3D.get_size
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -304,7 +306,7 @@ func (self class) SetResolution(resolution Resolution) { //gd:GPUParticlesCollis
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_resolution, 0|(gdextension.SizeInt<<4), &struct{ resolution Resolution }{resolution})
 }
 func (self class) GetResolution() Resolution { //gd:GPUParticlesCollisionHeightField3D.get_resolution
-	var r_ret = noescape.Call[Resolution](gd.ObjectChecked(self.AsObject()), methods.get_resolution, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Resolution](gd.ObjectChecked(self.AsObject()), methods.get_resolution, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -312,7 +314,7 @@ func (self class) SetUpdateMode(update_mode UpdateMode) { //gd:GPUParticlesColli
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_update_mode, 0|(gdextension.SizeInt<<4), &struct{ update_mode UpdateMode }{update_mode})
 }
 func (self class) GetUpdateMode() UpdateMode { //gd:GPUParticlesCollisionHeightField3D.get_update_mode
-	var r_ret = noescape.Call[UpdateMode](gd.ObjectChecked(self.AsObject()), methods.get_update_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[UpdateMode](gd.ObjectChecked(self.AsObject()), methods.get_update_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -320,7 +322,7 @@ func (self class) SetHeightfieldMask(heightfield_mask int64) { //gd:GPUParticles
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_heightfield_mask, 0|(gdextension.SizeInt<<4), &struct{ heightfield_mask int64 }{heightfield_mask})
 }
 func (self class) GetHeightfieldMask() int64 { //gd:GPUParticlesCollisionHeightField3D.get_heightfield_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_heightfield_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_heightfield_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -339,7 +341,7 @@ func (self class) SetFollowCameraEnabled(enabled bool) { //gd:GPUParticlesCollis
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_follow_camera_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsFollowCameraEnabled() bool { //gd:GPUParticlesCollisionHeightField3D.is_follow_camera_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_follow_camera_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_follow_camera_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -15,6 +15,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -49,6 +50,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -424,7 +426,7 @@ func (self class) GetPresetName() String.Readable { //gd:EditorExportPreset.get_
 	return ret
 }
 func (self class) IsRunnable() bool { //gd:EditorExportPreset.is_runnable
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_runnable, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_runnable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -434,37 +436,37 @@ func (self class) AreAdvancedOptionsEnabled() bool { //gd:EditorExportPreset.are
 	return ret
 }
 func (self class) IsDedicatedServer() bool { //gd:EditorExportPreset.is_dedicated_server
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dedicated_server, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dedicated_server, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetExportFilter() ExportFilter { //gd:EditorExportPreset.get_export_filter
-	var r_ret = noescape.Call[ExportFilter](gd.ObjectChecked(self.AsObject()), methods.get_export_filter, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[ExportFilter](gd.ObjectChecked(self.AsObject()), methods.get_export_filter, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetIncludeFilter() String.Readable { //gd:EditorExportPreset.get_include_filter
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_include_filter, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_include_filter, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetExcludeFilter() String.Readable { //gd:EditorExportPreset.get_exclude_filter
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_exclude_filter, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_exclude_filter, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetCustomFeatures() String.Readable { //gd:EditorExportPreset.get_custom_features
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_custom_features, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_custom_features, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetPatches() Packed.Strings { //gd:EditorExportPreset.get_patches
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_patches, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_patches, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) GetExportPath() String.Readable { //gd:EditorExportPreset.get_export_path
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_export_path, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_export_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -494,7 +496,7 @@ func (self class) GetEncryptionKey() String.Readable { //gd:EditorExportPreset.g
 	return ret
 }
 func (self class) GetScriptExportMode() ScriptExportMode { //gd:EditorExportPreset.get_script_export_mode
-	var r_ret = noescape.Call[ScriptExportMode](gd.ObjectChecked(self.AsObject()), methods.get_script_export_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[ScriptExportMode](gd.ObjectChecked(self.AsObject()), methods.get_script_export_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

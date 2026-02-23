@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -49,6 +50,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -211,7 +213,7 @@ func (self class) SetSource(value Source) { //gd:VisualShaderNodeTexture.set_sou
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_source, 0|(gdextension.SizeInt<<4), &struct{ value Source }{value})
 }
 func (self class) GetSource() Source { //gd:VisualShaderNodeTexture.get_source
-	var r_ret = noescape.Call[Source](gd.ObjectChecked(self.AsObject()), methods.get_source, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Source](gd.ObjectChecked(self.AsObject()), methods.get_source, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -219,7 +221,7 @@ func (self class) SetTexture(value [1]gdclass.Texture2D) { //gd:VisualShaderNode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ value gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(value[0])[0]))})
 }
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:VisualShaderNodeTexture.get_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -227,7 +229,7 @@ func (self class) SetTextureType(value TextureType) { //gd:VisualShaderNodeTextu
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_type, 0|(gdextension.SizeInt<<4), &struct{ value TextureType }{value})
 }
 func (self class) GetTextureType() TextureType { //gd:VisualShaderNodeTexture.get_texture_type
-	var r_ret = noescape.Call[TextureType](gd.ObjectChecked(self.AsObject()), methods.get_texture_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextureType](gd.ObjectChecked(self.AsObject()), methods.get_texture_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

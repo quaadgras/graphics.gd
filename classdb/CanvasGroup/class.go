@@ -55,6 +55,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -92,6 +93,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -258,7 +260,7 @@ func (self class) SetFitMargin(fit_margin float64) { //gd:CanvasGroup.set_fit_ma
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fit_margin, 0|(gdextension.SizeFloat<<4), &struct{ fit_margin float64 }{fit_margin})
 }
 func (self class) GetFitMargin() float64 { //gd:CanvasGroup.get_fit_margin
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fit_margin, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fit_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -266,7 +268,7 @@ func (self class) SetClearMargin(clear_margin float64) { //gd:CanvasGroup.set_cl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clear_margin, 0|(gdextension.SizeFloat<<4), &struct{ clear_margin float64 }{clear_margin})
 }
 func (self class) GetClearMargin() float64 { //gd:CanvasGroup.get_clear_margin
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_clear_margin, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_clear_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -274,7 +276,7 @@ func (self class) SetUseMipmaps(use_mipmaps bool) { //gd:CanvasGroup.set_use_mip
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_mipmaps, 0|(gdextension.SizeBool<<4), &struct{ use_mipmaps bool }{use_mipmaps})
 }
 func (self class) IsUsingMipmaps() bool { //gd:CanvasGroup.is_using_mipmaps
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_mipmaps, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_mipmaps, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

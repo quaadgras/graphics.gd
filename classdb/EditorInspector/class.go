@@ -26,6 +26,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -68,6 +69,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -222,7 +224,7 @@ func (self class) GetSelectedPath() String.Readable { //gd:EditorInspector.get_s
 	return ret
 }
 func (self class) GetEditedObject() [1]gd.Object { //gd:EditorInspector.get_edited_object
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_object, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_object, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gd.Object{gdreference.LetObject(r_ret)}
 	return ret
 }

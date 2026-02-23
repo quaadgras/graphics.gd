@@ -17,6 +17,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -55,6 +56,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -346,7 +348,7 @@ func (self class) SetSource(source String.Readable) { //gd:DPITexture.set_source
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_source, 0|(gdextension.SizeString<<4), &struct{ source gdextension.String }{pointers.Get(gd.InternalString(source))})
 }
 func (self class) GetSource() String.Readable { //gd:DPITexture.get_source
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_source, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_source, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -354,7 +356,7 @@ func (self class) SetBaseScale(base_scale float64) { //gd:DPITexture.set_base_sc
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_scale, 0|(gdextension.SizeFloat<<4), &struct{ base_scale float64 }{base_scale})
 }
 func (self class) GetBaseScale() float64 { //gd:DPITexture.get_base_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_base_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_base_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -362,7 +364,7 @@ func (self class) SetSaturation(saturation float64) { //gd:DPITexture.set_satura
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_saturation, 0|(gdextension.SizeFloat<<4), &struct{ saturation float64 }{saturation})
 }
 func (self class) GetSaturation() float64 { //gd:DPITexture.get_saturation
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_saturation, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_saturation, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -370,7 +372,7 @@ func (self class) SetColorMap(color_map Dictionary.Any) { //gd:DPITexture.set_co
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_map, 0|(gdextension.SizeDictionary<<4), &struct{ color_map gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(color_map))})
 }
 func (self class) GetColorMap() Dictionary.Any { //gd:DPITexture.get_color_map
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_color_map, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_color_map, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }

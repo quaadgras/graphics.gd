@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -51,6 +52,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -243,7 +245,7 @@ func (self class) SetColor(color Color.RGBA) { //gd:StyleBoxLine.set_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetColor() Color.RGBA { //gd:StyleBoxLine.get_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -251,7 +253,7 @@ func (self class) SetThickness(thickness int64) { //gd:StyleBoxLine.set_thicknes
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_thickness, 0|(gdextension.SizeInt<<4), &struct{ thickness int64 }{thickness})
 }
 func (self class) GetThickness() int64 { //gd:StyleBoxLine.get_thickness
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_thickness, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_thickness, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -259,7 +261,7 @@ func (self class) SetGrowBegin(offset float64) { //gd:StyleBoxLine.set_grow_begi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_grow_begin, 0|(gdextension.SizeFloat<<4), &struct{ offset float64 }{offset})
 }
 func (self class) GetGrowBegin() float64 { //gd:StyleBoxLine.get_grow_begin
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_grow_begin, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_grow_begin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -267,7 +269,7 @@ func (self class) SetGrowEnd(offset float64) { //gd:StyleBoxLine.set_grow_end
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_grow_end, 0|(gdextension.SizeFloat<<4), &struct{ offset float64 }{offset})
 }
 func (self class) GetGrowEnd() float64 { //gd:StyleBoxLine.get_grow_end
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_grow_end, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_grow_end, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -275,7 +277,7 @@ func (self class) SetVertical(vertical bool) { //gd:StyleBoxLine.set_vertical
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical, 0|(gdextension.SizeBool<<4), &struct{ vertical bool }{vertical})
 }
 func (self class) IsVertical() bool { //gd:StyleBoxLine.is_vertical
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_vertical, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_vertical, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -15,6 +15,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -59,6 +60,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -789,7 +791,7 @@ func (self class) SetNear(near float64) { //gd:Camera3D.set_near
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_near, 0|(gdextension.SizeFloat<<4), &struct{ near float64 }{near})
 }
 func (self class) GetProjection() ProjectionType { //gd:Camera3D.get_projection
-	var r_ret = noescape.Call[ProjectionType](gd.ObjectChecked(self.AsObject()), methods.get_projection, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[ProjectionType](gd.ObjectChecked(self.AsObject()), methods.get_projection, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -800,7 +802,7 @@ func (self class) SetHOffset(offset float64) { //gd:Camera3D.set_h_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_offset, 0|(gdextension.SizeFloat<<4), &struct{ offset float64 }{offset})
 }
 func (self class) GetHOffset() float64 { //gd:Camera3D.get_h_offset
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_h_offset, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_h_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -808,7 +810,7 @@ func (self class) SetVOffset(offset float64) { //gd:Camera3D.set_v_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_offset, 0|(gdextension.SizeFloat<<4), &struct{ offset float64 }{offset})
 }
 func (self class) GetVOffset() float64 { //gd:Camera3D.get_v_offset
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_v_offset, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_v_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -816,7 +818,7 @@ func (self class) SetCullMask(mask int64) { //gd:Camera3D.set_cull_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cull_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
 func (self class) GetCullMask() int64 { //gd:Camera3D.get_cull_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cull_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cull_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -824,7 +826,7 @@ func (self class) SetEnvironment(env [1]gdclass.Environment) { //gd:Camera3D.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment, 0|(gdextension.SizeObject<<4), &struct{ env gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEnvironment(env[0])[0]))})
 }
 func (self class) GetEnvironment() [1]gdclass.Environment { //gd:Camera3D.get_environment
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_environment, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_environment, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Environment{gdclass.NewEnvironment(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -832,7 +834,7 @@ func (self class) SetAttributes(env [1]gdclass.CameraAttributes) { //gd:Camera3D
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_attributes, 0|(gdextension.SizeObject<<4), &struct{ env gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCameraAttributes(env[0])[0]))})
 }
 func (self class) GetAttributes() [1]gdclass.CameraAttributes { //gd:Camera3D.get_attributes
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_attributes, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_attributes, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.CameraAttributes{gdclass.NewCameraAttributes(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -840,7 +842,7 @@ func (self class) SetCompositor(compositor [1]gdclass.Compositor) { //gd:Camera3
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_compositor, 0|(gdextension.SizeObject<<4), &struct{ compositor gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCompositor(compositor[0])[0]))})
 }
 func (self class) GetCompositor() [1]gdclass.Compositor { //gd:Camera3D.get_compositor
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_compositor, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_compositor, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Compositor{gdclass.NewCompositor(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -848,7 +850,7 @@ func (self class) SetKeepAspectMode(mode KeepAspect) { //gd:Camera3D.set_keep_as
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keep_aspect_mode, 0|(gdextension.SizeInt<<4), &struct{ mode KeepAspect }{mode})
 }
 func (self class) GetKeepAspectMode() KeepAspect { //gd:Camera3D.get_keep_aspect_mode
-	var r_ret = noescape.Call[KeepAspect](gd.ObjectChecked(self.AsObject()), methods.get_keep_aspect_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[KeepAspect](gd.ObjectChecked(self.AsObject()), methods.get_keep_aspect_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -856,7 +858,7 @@ func (self class) SetDopplerTracking(mode DopplerTracking) { //gd:Camera3D.set_d
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_doppler_tracking, 0|(gdextension.SizeInt<<4), &struct{ mode DopplerTracking }{mode})
 }
 func (self class) GetDopplerTracking() DopplerTracking { //gd:Camera3D.get_doppler_tracking
-	var r_ret = noescape.Call[DopplerTracking](gd.ObjectChecked(self.AsObject()), methods.get_doppler_tracking, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DopplerTracking](gd.ObjectChecked(self.AsObject()), methods.get_doppler_tracking, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

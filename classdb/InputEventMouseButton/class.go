@@ -17,6 +17,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -57,6 +58,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -232,10 +234,10 @@ func (self Instance) SetDoubleClick(value bool) Instance { //gd:InputEventMouseB
 }
 
 func (self class) SetFactor(factor float64) { //gd:InputEventMouseButton.set_factor
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_factor, 0|(gdextension.SizeFloat<<4), &struct{ factor float64 }{factor})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_factor, 0|(gdextension.SizeFloat<<4), &struct{ factor float64 }{factor})
 }
 func (self class) GetFactor() float64 { //gd:InputEventMouseButton.get_factor
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_factor, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_factor, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -243,21 +245,21 @@ func (self class) SetButtonIndex(button_index Input.MouseButton) { //gd:InputEve
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_button_index, 0|(gdextension.SizeInt<<4), &struct{ button_index Input.MouseButton }{button_index})
 }
 func (self class) GetButtonIndex() Input.MouseButton { //gd:InputEventMouseButton.get_button_index
-	var r_ret = noescape.Call[Input.MouseButton](gd.ObjectChecked(self.AsObject()), methods.get_button_index, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Input.MouseButton](gd.ObjectChecked(self.AsObject()), methods.get_button_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPressed(pressed bool) { //gd:InputEventMouseButton.set_pressed
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
 }
 func (self class) SetCanceled(canceled bool) { //gd:InputEventMouseButton.set_canceled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_canceled, 0|(gdextension.SizeBool<<4), &struct{ canceled bool }{canceled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_canceled, 0|(gdextension.SizeBool<<4), &struct{ canceled bool }{canceled})
 }
 func (self class) SetDoubleClick(double_click bool) { //gd:InputEventMouseButton.set_double_click
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_double_click, 0|(gdextension.SizeBool<<4), &struct{ double_click bool }{double_click})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_double_click, 0|(gdextension.SizeBool<<4), &struct{ double_click bool }{double_click})
 }
 func (self class) IsDoubleClick() bool { //gd:InputEventMouseButton.is_double_click
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_double_click, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_double_click, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -31,6 +31,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -73,6 +74,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -839,7 +841,7 @@ func (self class) SetMass(mass float64) { //gd:RigidBody3D.set_mass
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mass, 0|(gdextension.SizeFloat<<4), &struct{ mass float64 }{mass})
 }
 func (self class) GetMass() float64 { //gd:RigidBody3D.get_mass
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mass, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mass, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -847,7 +849,7 @@ func (self class) SetInertia(inertia Vector3.XYZ) { //gd:RigidBody3D.set_inertia
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inertia, 0|(gdextension.SizeVector3<<4), &struct{ inertia Vector3.XYZ }{inertia})
 }
 func (self class) GetInertia() Vector3.XYZ { //gd:RigidBody3D.get_inertia
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_inertia, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_inertia, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -855,7 +857,7 @@ func (self class) SetCenterOfMassMode(mode CenterOfMassMode) { //gd:RigidBody3D.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_center_of_mass_mode, 0|(gdextension.SizeInt<<4), &struct{ mode CenterOfMassMode }{mode})
 }
 func (self class) GetCenterOfMassMode() CenterOfMassMode { //gd:RigidBody3D.get_center_of_mass_mode
-	var r_ret = noescape.Call[CenterOfMassMode](gd.ObjectChecked(self.AsObject()), methods.get_center_of_mass_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[CenterOfMassMode](gd.ObjectChecked(self.AsObject()), methods.get_center_of_mass_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -863,7 +865,7 @@ func (self class) SetCenterOfMass(center_of_mass Vector3.XYZ) { //gd:RigidBody3D
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_center_of_mass, 0|(gdextension.SizeVector3<<4), &struct{ center_of_mass Vector3.XYZ }{center_of_mass})
 }
 func (self class) GetCenterOfMass() Vector3.XYZ { //gd:RigidBody3D.get_center_of_mass
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_center_of_mass, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_center_of_mass, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -871,7 +873,7 @@ func (self class) SetPhysicsMaterialOverride(physics_material_override [1]gdclas
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_material_override, 0|(gdextension.SizeObject<<4), &struct{ physics_material_override gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetPhysicsMaterial(physics_material_override[0])[0]))})
 }
 func (self class) GetPhysicsMaterialOverride() [1]gdclass.PhysicsMaterial { //gd:RigidBody3D.get_physics_material_override
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_physics_material_override, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_physics_material_override, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PhysicsMaterial{gdclass.NewPhysicsMaterial(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -879,7 +881,7 @@ func (self class) SetLinearVelocity(linear_velocity Vector3.XYZ) { //gd:RigidBod
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_velocity, 0|(gdextension.SizeVector3<<4), &struct{ linear_velocity Vector3.XYZ }{linear_velocity})
 }
 func (self class) GetLinearVelocity() Vector3.XYZ { //gd:RigidBody3D.get_linear_velocity
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_linear_velocity, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_linear_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -887,12 +889,12 @@ func (self class) SetAngularVelocity(angular_velocity Vector3.XYZ) { //gd:RigidB
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_velocity, 0|(gdextension.SizeVector3<<4), &struct{ angular_velocity Vector3.XYZ }{angular_velocity})
 }
 func (self class) GetAngularVelocity() Vector3.XYZ { //gd:RigidBody3D.get_angular_velocity
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_angular_velocity, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_angular_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetInverseInertiaTensor() Basis.XYZ { //gd:RigidBody3D.get_inverse_inertia_tensor
-	var r_ret = noescape.Call[Basis.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_inverse_inertia_tensor, gdextension.SizeBasis, &struct{}{})
+	var r_ret = jumponly.Call[Basis.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_inverse_inertia_tensor, gdextension.SizeBasis, &struct{}{})
 	var ret = Basis.Transposed(r_ret)
 	return ret
 }
@@ -900,7 +902,7 @@ func (self class) SetGravityScale(gravity_scale float64) { //gd:RigidBody3D.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity_scale, 0|(gdextension.SizeFloat<<4), &struct{ gravity_scale float64 }{gravity_scale})
 }
 func (self class) GetGravityScale() float64 { //gd:RigidBody3D.get_gravity_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gravity_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gravity_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -908,7 +910,7 @@ func (self class) SetLinearDampMode(linear_damp_mode DampMode) { //gd:RigidBody3
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_damp_mode, 0|(gdextension.SizeInt<<4), &struct{ linear_damp_mode DampMode }{linear_damp_mode})
 }
 func (self class) GetLinearDampMode() DampMode { //gd:RigidBody3D.get_linear_damp_mode
-	var r_ret = noescape.Call[DampMode](gd.ObjectChecked(self.AsObject()), methods.get_linear_damp_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DampMode](gd.ObjectChecked(self.AsObject()), methods.get_linear_damp_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -916,7 +918,7 @@ func (self class) SetAngularDampMode(angular_damp_mode DampMode) { //gd:RigidBod
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_damp_mode, 0|(gdextension.SizeInt<<4), &struct{ angular_damp_mode DampMode }{angular_damp_mode})
 }
 func (self class) GetAngularDampMode() DampMode { //gd:RigidBody3D.get_angular_damp_mode
-	var r_ret = noescape.Call[DampMode](gd.ObjectChecked(self.AsObject()), methods.get_angular_damp_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DampMode](gd.ObjectChecked(self.AsObject()), methods.get_angular_damp_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -924,7 +926,7 @@ func (self class) SetLinearDamp(linear_damp float64) { //gd:RigidBody3D.set_line
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_damp, 0|(gdextension.SizeFloat<<4), &struct{ linear_damp float64 }{linear_damp})
 }
 func (self class) GetLinearDamp() float64 { //gd:RigidBody3D.get_linear_damp
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_linear_damp, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_linear_damp, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -932,7 +934,7 @@ func (self class) SetAngularDamp(angular_damp float64) { //gd:RigidBody3D.set_an
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_damp, 0|(gdextension.SizeFloat<<4), &struct{ angular_damp float64 }{angular_damp})
 }
 func (self class) GetAngularDamp() float64 { //gd:RigidBody3D.get_angular_damp
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_damp, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_damp, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -940,12 +942,12 @@ func (self class) SetMaxContactsReported(amount int64) { //gd:RigidBody3D.set_ma
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_contacts_reported, 0|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
 }
 func (self class) GetMaxContactsReported() int64 { //gd:RigidBody3D.get_max_contacts_reported
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_contacts_reported, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_contacts_reported, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetContactCount() int64 { //gd:RigidBody3D.get_contact_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_contact_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_contact_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -953,7 +955,7 @@ func (self class) SetUseCustomIntegrator(enable bool) { //gd:RigidBody3D.set_use
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_custom_integrator, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsUsingCustomIntegrator() bool { //gd:RigidBody3D.is_using_custom_integrator
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_custom_integrator, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_custom_integrator, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -961,7 +963,7 @@ func (self class) SetContactMonitor(enabled bool) { //gd:RigidBody3D.set_contact
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_contact_monitor, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsContactMonitorEnabled() bool { //gd:RigidBody3D.is_contact_monitor_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_contact_monitor_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_contact_monitor_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -969,7 +971,7 @@ func (self class) SetUseContinuousCollisionDetection(enable bool) { //gd:RigidBo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_continuous_collision_detection, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsUsingContinuousCollisionDetection() bool { //gd:RigidBody3D.is_using_continuous_collision_detection
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_continuous_collision_detection, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_continuous_collision_detection, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1032,7 +1034,7 @@ func (self class) SetSleeping(sleeping bool) { //gd:RigidBody3D.set_sleeping
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sleeping, 0|(gdextension.SizeBool<<4), &struct{ sleeping bool }{sleeping})
 }
 func (self class) IsSleeping() bool { //gd:RigidBody3D.is_sleeping
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_sleeping, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_sleeping, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1040,7 +1042,7 @@ func (self class) SetCanSleep(able_to_sleep bool) { //gd:RigidBody3D.set_can_sle
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_can_sleep, 0|(gdextension.SizeBool<<4), &struct{ able_to_sleep bool }{able_to_sleep})
 }
 func (self class) IsAbleToSleep() bool { //gd:RigidBody3D.is_able_to_sleep
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_able_to_sleep, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_able_to_sleep, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1048,7 +1050,7 @@ func (self class) SetLockRotationEnabled(lock_rotation bool) { //gd:RigidBody3D.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lock_rotation_enabled, 0|(gdextension.SizeBool<<4), &struct{ lock_rotation bool }{lock_rotation})
 }
 func (self class) IsLockRotationEnabled() bool { //gd:RigidBody3D.is_lock_rotation_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_lock_rotation_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_lock_rotation_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1056,7 +1058,7 @@ func (self class) SetFreezeEnabled(freeze_mode bool) { //gd:RigidBody3D.set_free
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_freeze_enabled, 0|(gdextension.SizeBool<<4), &struct{ freeze_mode bool }{freeze_mode})
 }
 func (self class) IsFreezeEnabled() bool { //gd:RigidBody3D.is_freeze_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_freeze_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_freeze_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1064,7 +1066,7 @@ func (self class) SetFreezeMode(freeze_mode FreezeMode) { //gd:RigidBody3D.set_f
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_freeze_mode, 0|(gdextension.SizeInt<<4), &struct{ freeze_mode FreezeMode }{freeze_mode})
 }
 func (self class) GetFreezeMode() FreezeMode { //gd:RigidBody3D.get_freeze_mode
-	var r_ret = noescape.Call[FreezeMode](gd.ObjectChecked(self.AsObject()), methods.get_freeze_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[FreezeMode](gd.ObjectChecked(self.AsObject()), methods.get_freeze_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

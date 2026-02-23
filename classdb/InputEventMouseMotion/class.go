@@ -20,6 +20,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -60,6 +61,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -308,23 +310,23 @@ func (self class) SetTilt(tilt Vector2.XY) { //gd:InputEventMouseMotion.set_tilt
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tilt, 0|(gdextension.SizeVector2<<4), &struct{ tilt Vector2.XY }{tilt})
 }
 func (self class) GetTilt() Vector2.XY { //gd:InputEventMouseMotion.get_tilt
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_tilt, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_tilt, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPressure(pressure float64) { //gd:InputEventMouseMotion.set_pressure
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressure, 0|(gdextension.SizeFloat<<4), &struct{ pressure float64 }{pressure})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressure, 0|(gdextension.SizeFloat<<4), &struct{ pressure float64 }{pressure})
 }
 func (self class) GetPressure() float64 { //gd:InputEventMouseMotion.get_pressure
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pressure, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pressure, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPenInverted(pen_inverted bool) { //gd:InputEventMouseMotion.set_pen_inverted
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pen_inverted, 0|(gdextension.SizeBool<<4), &struct{ pen_inverted bool }{pen_inverted})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pen_inverted, 0|(gdextension.SizeBool<<4), &struct{ pen_inverted bool }{pen_inverted})
 }
 func (self class) GetPenInverted() bool { //gd:InputEventMouseMotion.get_pen_inverted
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_pen_inverted, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_pen_inverted, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -332,7 +334,7 @@ func (self class) SetRelative(relative Vector2.XY) { //gd:InputEventMouseMotion.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_relative, 0|(gdextension.SizeVector2<<4), &struct{ relative Vector2.XY }{relative})
 }
 func (self class) GetRelative() Vector2.XY { //gd:InputEventMouseMotion.get_relative
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_relative, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_relative, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -348,7 +350,7 @@ func (self class) SetVelocity(velocity Vector2.XY) { //gd:InputEventMouseMotion.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_velocity, 0|(gdextension.SizeVector2<<4), &struct{ velocity Vector2.XY }{velocity})
 }
 func (self class) GetVelocity() Vector2.XY { //gd:InputEventMouseMotion.get_velocity
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_velocity, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_velocity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -356,7 +358,7 @@ func (self class) SetScreenVelocity(velocity Vector2.XY) { //gd:InputEventMouseM
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_screen_velocity, 0|(gdextension.SizeVector2<<4), &struct{ velocity Vector2.XY }{velocity})
 }
 func (self class) GetScreenVelocity() Vector2.XY { //gd:InputEventMouseMotion.get_screen_velocity
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_screen_velocity, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_screen_velocity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

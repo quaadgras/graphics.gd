@@ -29,6 +29,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -69,6 +70,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -473,7 +475,7 @@ func (self class) SetSize(size Vector3.XYZ) { //gd:Decal.set_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), &struct{ size Vector3.XYZ }{size})
 }
 func (self class) GetSize() Vector3.XYZ { //gd:Decal.get_size
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -492,7 +494,7 @@ func (self class) SetEmissionEnergy(energy float64) { //gd:Decal.set_emission_en
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_energy, 0|(gdextension.SizeFloat<<4), &struct{ energy float64 }{energy})
 }
 func (self class) GetEmissionEnergy() float64 { //gd:Decal.get_emission_energy
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_energy, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_energy, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -500,7 +502,7 @@ func (self class) SetAlbedoMix(energy float64) { //gd:Decal.set_albedo_mix
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_albedo_mix, 0|(gdextension.SizeFloat<<4), &struct{ energy float64 }{energy})
 }
 func (self class) GetAlbedoMix() float64 { //gd:Decal.get_albedo_mix
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_albedo_mix, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_albedo_mix, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -508,7 +510,7 @@ func (self class) SetModulate(color Color.RGBA) { //gd:Decal.set_modulate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modulate, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetModulate() Color.RGBA { //gd:Decal.get_modulate
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_modulate, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_modulate, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -516,7 +518,7 @@ func (self class) SetUpperFade(fade float64) { //gd:Decal.set_upper_fade
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_upper_fade, 0|(gdextension.SizeFloat<<4), &struct{ fade float64 }{fade})
 }
 func (self class) GetUpperFade() float64 { //gd:Decal.get_upper_fade
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_upper_fade, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_upper_fade, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -524,7 +526,7 @@ func (self class) SetLowerFade(fade float64) { //gd:Decal.set_lower_fade
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lower_fade, 0|(gdextension.SizeFloat<<4), &struct{ fade float64 }{fade})
 }
 func (self class) GetLowerFade() float64 { //gd:Decal.get_lower_fade
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lower_fade, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lower_fade, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -532,7 +534,7 @@ func (self class) SetNormalFade(fade float64) { //gd:Decal.set_normal_fade
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normal_fade, 0|(gdextension.SizeFloat<<4), &struct{ fade float64 }{fade})
 }
 func (self class) GetNormalFade() float64 { //gd:Decal.get_normal_fade
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_normal_fade, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_normal_fade, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -540,7 +542,7 @@ func (self class) SetEnableDistanceFade(enable bool) { //gd:Decal.set_enable_dis
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_distance_fade, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsDistanceFadeEnabled() bool { //gd:Decal.is_distance_fade_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_distance_fade_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_distance_fade_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -548,7 +550,7 @@ func (self class) SetDistanceFadeBegin(distance float64) { //gd:Decal.set_distan
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_distance_fade_begin, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 func (self class) GetDistanceFadeBegin() float64 { //gd:Decal.get_distance_fade_begin
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_distance_fade_begin, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_distance_fade_begin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -556,7 +558,7 @@ func (self class) SetDistanceFadeLength(distance float64) { //gd:Decal.set_dista
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_distance_fade_length, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 func (self class) GetDistanceFadeLength() float64 { //gd:Decal.get_distance_fade_length
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_distance_fade_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_distance_fade_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -564,7 +566,7 @@ func (self class) SetCullMask(mask int64) { //gd:Decal.set_cull_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cull_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
 func (self class) GetCullMask() int64 { //gd:Decal.get_cull_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cull_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cull_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

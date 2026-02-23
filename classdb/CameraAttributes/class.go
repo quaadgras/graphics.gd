@@ -27,6 +27,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -62,6 +63,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -257,7 +259,7 @@ func (self class) SetExposureMultiplier(multiplier float64) { //gd:CameraAttribu
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exposure_multiplier, 0|(gdextension.SizeFloat<<4), &struct{ multiplier float64 }{multiplier})
 }
 func (self class) GetExposureMultiplier() float64 { //gd:CameraAttributes.get_exposure_multiplier
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_exposure_multiplier, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_exposure_multiplier, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -265,7 +267,7 @@ func (self class) SetExposureSensitivity(sensitivity float64) { //gd:CameraAttri
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exposure_sensitivity, 0|(gdextension.SizeFloat<<4), &struct{ sensitivity float64 }{sensitivity})
 }
 func (self class) GetExposureSensitivity() float64 { //gd:CameraAttributes.get_exposure_sensitivity
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_exposure_sensitivity, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_exposure_sensitivity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -273,7 +275,7 @@ func (self class) SetAutoExposureEnabled(enabled bool) { //gd:CameraAttributes.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsAutoExposureEnabled() bool { //gd:CameraAttributes.is_auto_exposure_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_exposure_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_exposure_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -281,7 +283,7 @@ func (self class) SetAutoExposureSpeed(exposure_speed float64) { //gd:CameraAttr
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_speed, 0|(gdextension.SizeFloat<<4), &struct{ exposure_speed float64 }{exposure_speed})
 }
 func (self class) GetAutoExposureSpeed() float64 { //gd:CameraAttributes.get_auto_exposure_speed
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_speed, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_speed, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -289,7 +291,7 @@ func (self class) SetAutoExposureScale(exposure_grey float64) { //gd:CameraAttri
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_scale, 0|(gdextension.SizeFloat<<4), &struct{ exposure_grey float64 }{exposure_grey})
 }
 func (self class) GetAutoExposureScale() float64 { //gd:CameraAttributes.get_auto_exposure_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

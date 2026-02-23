@@ -16,6 +16,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -52,6 +53,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -280,7 +282,7 @@ func (self class) SetBlendMode(blend_mode BlendMode) { //gd:CanvasItemMaterial.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_mode, 0|(gdextension.SizeInt<<4), &struct{ blend_mode BlendMode }{blend_mode})
 }
 func (self class) GetBlendMode() BlendMode { //gd:CanvasItemMaterial.get_blend_mode
-	var r_ret = noescape.Call[BlendMode](gd.ObjectChecked(self.AsObject()), methods.get_blend_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[BlendMode](gd.ObjectChecked(self.AsObject()), methods.get_blend_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -288,7 +290,7 @@ func (self class) SetLightMode(light_mode LightMode) { //gd:CanvasItemMaterial.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_light_mode, 0|(gdextension.SizeInt<<4), &struct{ light_mode LightMode }{light_mode})
 }
 func (self class) GetLightMode() LightMode { //gd:CanvasItemMaterial.get_light_mode
-	var r_ret = noescape.Call[LightMode](gd.ObjectChecked(self.AsObject()), methods.get_light_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[LightMode](gd.ObjectChecked(self.AsObject()), methods.get_light_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -296,7 +298,7 @@ func (self class) SetParticlesAnimation(particles_anim bool) { //gd:CanvasItemMa
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_particles_animation, 0|(gdextension.SizeBool<<4), &struct{ particles_anim bool }{particles_anim})
 }
 func (self class) GetParticlesAnimation() bool { //gd:CanvasItemMaterial.get_particles_animation
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_particles_animation, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_particles_animation, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -304,7 +306,7 @@ func (self class) SetParticlesAnimHFrames(frames int64) { //gd:CanvasItemMateria
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_particles_anim_h_frames, 0|(gdextension.SizeInt<<4), &struct{ frames int64 }{frames})
 }
 func (self class) GetParticlesAnimHFrames() int64 { //gd:CanvasItemMaterial.get_particles_anim_h_frames
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_particles_anim_h_frames, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_particles_anim_h_frames, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -312,7 +314,7 @@ func (self class) SetParticlesAnimVFrames(frames int64) { //gd:CanvasItemMateria
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_particles_anim_v_frames, 0|(gdextension.SizeInt<<4), &struct{ frames int64 }{frames})
 }
 func (self class) GetParticlesAnimVFrames() int64 { //gd:CanvasItemMaterial.get_particles_anim_v_frames
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_particles_anim_v_frames, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_particles_anim_v_frames, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -320,7 +322,7 @@ func (self class) SetParticlesAnimLoop(loop bool) { //gd:CanvasItemMaterial.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_particles_anim_loop, 0|(gdextension.SizeBool<<4), &struct{ loop bool }{loop})
 }
 func (self class) GetParticlesAnimLoop() bool { //gd:CanvasItemMaterial.get_particles_anim_loop
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_particles_anim_loop, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_particles_anim_loop, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

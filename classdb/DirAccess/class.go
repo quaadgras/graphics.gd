@@ -59,6 +59,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -93,6 +94,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -727,7 +729,7 @@ func (self class) Open(path String.Readable) [1]gdclass.DirAccess { //gd:DirAcce
 	return ret
 }
 func (self class) GetOpenError() Error.Code { //gd:DirAccess.get_open_error
-	var r_ret = noescape.CallStatic[int64](methods.get_open_error, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.CallStatic[int64](methods.get_open_error, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -905,23 +907,23 @@ func (self class) CreateLink(source String.Readable, target String.Readable) Err
 	return ret
 }
 func (self class) IsBundle(path String.Readable) bool { //gd:DirAccess.is_bundle
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_bundle, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_bundle, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetIncludeNavigational(enable bool) { //gd:DirAccess.set_include_navigational
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_include_navigational, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_include_navigational, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) GetIncludeNavigational() bool { //gd:DirAccess.get_include_navigational
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_include_navigational, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_include_navigational, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetIncludeHidden(enable bool) { //gd:DirAccess.set_include_hidden
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_include_hidden, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_include_hidden, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) GetIncludeHidden() bool { //gd:DirAccess.get_include_hidden
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_include_hidden, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_include_hidden, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -931,7 +933,7 @@ func (self class) GetFilesystemType() String.Readable { //gd:DirAccess.get_files
 	return ret
 }
 func (self class) IsCaseSensitive(path String.Readable) bool { //gd:DirAccess.is_case_sensitive
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_case_sensitive, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_case_sensitive, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = r_ret
 	return ret
 }

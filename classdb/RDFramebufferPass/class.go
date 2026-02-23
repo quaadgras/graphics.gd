@@ -18,6 +18,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -52,6 +53,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -244,7 +246,7 @@ func (self class) SetColorAttachments(p_member Packed.Array[int32]) { //gd:RDFra
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](p_member))})
 }
 func (self class) GetColorAttachments() Packed.Array[int32] { //gd:RDFramebufferPass.get_color_attachments
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_color_attachments, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_color_attachments, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -254,7 +256,7 @@ func (self class) SetInputAttachments(p_member Packed.Array[int32]) { //gd:RDFra
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](p_member))})
 }
 func (self class) GetInputAttachments() Packed.Array[int32] { //gd:RDFramebufferPass.get_input_attachments
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_input_attachments, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_input_attachments, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -264,7 +266,7 @@ func (self class) SetResolveAttachments(p_member Packed.Array[int32]) { //gd:RDF
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](p_member))})
 }
 func (self class) GetResolveAttachments() Packed.Array[int32] { //gd:RDFramebufferPass.get_resolve_attachments
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_resolve_attachments, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_resolve_attachments, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -274,15 +276,15 @@ func (self class) SetPreserveAttachments(p_member Packed.Array[int32]) { //gd:RD
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](p_member))})
 }
 func (self class) GetPreserveAttachments() Packed.Array[int32] { //gd:RDFramebufferPass.get_preserve_attachments
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_preserve_attachments, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_preserve_attachments, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) SetDepthAttachment(p_member int64) { //gd:RDFramebufferPass.set_depth_attachment
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth_attachment, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth_attachment, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
 }
 func (self class) GetDepthAttachment() int64 { //gd:RDFramebufferPass.get_depth_attachment
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_depth_attachment, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_depth_attachment, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

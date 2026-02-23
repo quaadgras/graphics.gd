@@ -9,6 +9,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -44,6 +45,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -186,20 +188,20 @@ func (self Instance) SetSampler(value int) Instance { //gd:GLTFTexture.sampler
 }
 
 func (self class) GetSrcImage() int64 { //gd:GLTFTexture.get_src_image
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_src_image, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_src_image, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetSrcImage(src_image int64) { //gd:GLTFTexture.set_src_image
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_src_image, 0|(gdextension.SizeInt<<4), &struct{ src_image int64 }{src_image})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_src_image, 0|(gdextension.SizeInt<<4), &struct{ src_image int64 }{src_image})
 }
 func (self class) GetSampler() int64 { //gd:GLTFTexture.get_sampler
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sampler, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sampler, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetSampler(sampler int64) { //gd:GLTFTexture.set_sampler
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sampler, 0|(gdextension.SizeInt<<4), &struct{ sampler int64 }{sampler})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sampler, 0|(gdextension.SizeInt<<4), &struct{ sampler int64 }{sampler})
 }
 func (o class) AsGLTFTexture() Advanced               { return Advanced(o) }
 func (o Instance) AsGLTFTexture() Instance            { return o }

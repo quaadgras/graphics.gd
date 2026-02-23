@@ -34,6 +34,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -73,6 +74,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -340,7 +342,7 @@ func (self class) SetNoise(noise [1]gdclass.Noise) { //gd:NoiseTexture3D.set_noi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_noise, 0|(gdextension.SizeObject<<4), &struct{ noise gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNoise(noise[0])[0]))})
 }
 func (self class) GetNoise() [1]gdclass.Noise { //gd:NoiseTexture3D.get_noise
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_noise, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_noise, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Noise{gdclass.NewNoise(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -348,7 +350,7 @@ func (self class) SetColorRamp(gradient [1]gdclass.Gradient) { //gd:NoiseTexture
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_ramp, 0|(gdextension.SizeObject<<4), &struct{ gradient gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetGradient(gradient[0])[0]))})
 }
 func (self class) GetColorRamp() [1]gdclass.Gradient { //gd:NoiseTexture3D.get_color_ramp
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_ramp, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_ramp, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Gradient{gdclass.NewGradient(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -356,7 +358,7 @@ func (self class) SetSeamless(seamless bool) { //gd:NoiseTexture3D.set_seamless
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_seamless, 0|(gdextension.SizeBool<<4), &struct{ seamless bool }{seamless})
 }
 func (self class) GetSeamless() bool { //gd:NoiseTexture3D.get_seamless
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_seamless, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_seamless, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -364,7 +366,7 @@ func (self class) SetInvert(invert bool) { //gd:NoiseTexture3D.set_invert
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_invert, 0|(gdextension.SizeBool<<4), &struct{ invert bool }{invert})
 }
 func (self class) GetInvert() bool { //gd:NoiseTexture3D.get_invert
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_invert, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_invert, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -372,7 +374,7 @@ func (self class) SetNormalize(normalize bool) { //gd:NoiseTexture3D.set_normali
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normalize, 0|(gdextension.SizeBool<<4), &struct{ normalize bool }{normalize})
 }
 func (self class) IsNormalized() bool { //gd:NoiseTexture3D.is_normalized
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_normalized, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_normalized, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -380,7 +382,7 @@ func (self class) SetSeamlessBlendSkirt(seamless_blend_skirt float64) { //gd:Noi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_seamless_blend_skirt, 0|(gdextension.SizeFloat<<4), &struct{ seamless_blend_skirt float64 }{seamless_blend_skirt})
 }
 func (self class) GetSeamlessBlendSkirt() float64 { //gd:NoiseTexture3D.get_seamless_blend_skirt
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_seamless_blend_skirt, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_seamless_blend_skirt, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

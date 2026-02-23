@@ -23,6 +23,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -62,6 +63,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -1282,12 +1284,12 @@ func (self class) SetDefaultBaseScale(base_scale float64) { //gd:Theme.set_defau
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_base_scale, 0|(gdextension.SizeFloat<<4), &struct{ base_scale float64 }{base_scale})
 }
 func (self class) GetDefaultBaseScale() float64 { //gd:Theme.get_default_base_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_default_base_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_default_base_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) HasDefaultBaseScale() bool { //gd:Theme.has_default_base_scale
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_default_base_scale, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_default_base_scale, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1295,7 +1297,7 @@ func (self class) SetDefaultFont(font [1]gdclass.Font) { //gd:Theme.set_default_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_font, 0|(gdextension.SizeObject<<4), &struct{ font gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetFont(font[0])[0]))})
 }
 func (self class) GetDefaultFont() [1]gdclass.Font { //gd:Theme.get_default_font
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_default_font, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_default_font, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Font{gdclass.NewFont(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -1308,12 +1310,12 @@ func (self class) SetDefaultFontSize(font_size int64) { //gd:Theme.set_default_f
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_font_size, 0|(gdextension.SizeInt<<4), &struct{ font_size int64 }{font_size})
 }
 func (self class) GetDefaultFontSize() int64 { //gd:Theme.get_default_font_size
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_default_font_size, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_default_font_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) HasDefaultFontSize() bool { //gd:Theme.has_default_font_size
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_default_font_size, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_default_font_size, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

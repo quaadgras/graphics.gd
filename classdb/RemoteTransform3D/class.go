@@ -17,6 +17,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -53,6 +54,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -251,7 +253,7 @@ func (self class) SetRemoteNode(path Path.ToNode) { //gd:RemoteTransform3D.set_r
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_remote_node, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
 func (self class) GetRemoteNode() Path.ToNode { //gd:RemoteTransform3D.get_remote_node
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_remote_node, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_remote_node, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -262,7 +264,7 @@ func (self class) SetUseGlobalCoordinates(use_global_coordinates bool) { //gd:Re
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_global_coordinates, 0|(gdextension.SizeBool<<4), &struct{ use_global_coordinates bool }{use_global_coordinates})
 }
 func (self class) GetUseGlobalCoordinates() bool { //gd:RemoteTransform3D.get_use_global_coordinates
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_global_coordinates, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_global_coordinates, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -270,7 +272,7 @@ func (self class) SetUpdatePosition(update_remote_position bool) { //gd:RemoteTr
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_update_position, 0|(gdextension.SizeBool<<4), &struct{ update_remote_position bool }{update_remote_position})
 }
 func (self class) GetUpdatePosition() bool { //gd:RemoteTransform3D.get_update_position
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_update_position, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_update_position, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -278,7 +280,7 @@ func (self class) SetUpdateRotation(update_remote_rotation bool) { //gd:RemoteTr
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_update_rotation, 0|(gdextension.SizeBool<<4), &struct{ update_remote_rotation bool }{update_remote_rotation})
 }
 func (self class) GetUpdateRotation() bool { //gd:RemoteTransform3D.get_update_rotation
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_update_rotation, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_update_rotation, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -286,7 +288,7 @@ func (self class) SetUpdateScale(update_remote_scale bool) { //gd:RemoteTransfor
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_update_scale, 0|(gdextension.SizeBool<<4), &struct{ update_remote_scale bool }{update_remote_scale})
 }
 func (self class) GetUpdateScale() bool { //gd:RemoteTransform3D.get_update_scale
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_update_scale, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_update_scale, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

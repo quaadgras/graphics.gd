@@ -33,6 +33,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -72,6 +73,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -1535,7 +1537,7 @@ func (self class) SetLength(time_sec float64) { //gd:Animation.set_length
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_length, 0|(gdextension.SizeFloat<<4), &struct{ time_sec float64 }{time_sec})
 }
 func (self class) GetLength() float64 { //gd:Animation.get_length
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1543,7 +1545,7 @@ func (self class) SetLoopMode(loop_mode LoopMode) { //gd:Animation.set_loop_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop_mode, 0|(gdextension.SizeInt<<4), &struct{ loop_mode LoopMode }{loop_mode})
 }
 func (self class) GetLoopMode() LoopMode { //gd:Animation.get_loop_mode
-	var r_ret = noescape.Call[LoopMode](gd.ObjectChecked(self.AsObject()), methods.get_loop_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[LoopMode](gd.ObjectChecked(self.AsObject()), methods.get_loop_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1551,7 +1553,7 @@ func (self class) SetStep(size_sec float64) { //gd:Animation.set_step
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_step, 0|(gdextension.SizeFloat<<4), &struct{ size_sec float64 }{size_sec})
 }
 func (self class) GetStep() float64 { //gd:Animation.get_step
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_step, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_step, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1579,7 +1581,7 @@ func (self class) Compress(page_size int64, fps int64, split_tolerance float64) 
 	}{page_size, fps, split_tolerance})
 }
 func (self class) IsCaptureIncluded() bool { //gd:Animation.is_capture_included
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_capture_included, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_capture_included, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

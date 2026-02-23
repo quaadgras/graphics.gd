@@ -23,6 +23,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -64,6 +65,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -542,7 +544,7 @@ func (self Instance) SetDisableMode(value DisableMode) Instance { //gd:SoftBody3
 }
 
 func (self class) GetPhysicsRid() RID.Any { //gd:SoftBody3D.get_physics_rid
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_physics_rid, gdextension.SizeRID, &struct{}{})
+	var r_ret = jumponly.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_physics_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -550,7 +552,7 @@ func (self class) SetCollisionMask(collision_mask int64) { //gd:SoftBody3D.set_c
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ collision_mask int64 }{collision_mask})
 }
 func (self class) GetCollisionMask() int64 { //gd:SoftBody3D.get_collision_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -558,7 +560,7 @@ func (self class) SetCollisionLayer(collision_layer int64) { //gd:SoftBody3D.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer, 0|(gdextension.SizeInt<<4), &struct{ collision_layer int64 }{collision_layer})
 }
 func (self class) GetCollisionLayer() int64 { //gd:SoftBody3D.get_collision_layer
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -588,7 +590,7 @@ func (self class) SetParentCollisionIgnore(parent_collision_ignore Path.ToNode) 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_parent_collision_ignore, 0|(gdextension.SizeNodePath<<4), &struct{ parent_collision_ignore gdextension.NodePath }{pointers.Get(gd.InternalNodePath(parent_collision_ignore))})
 }
 func (self class) GetParentCollisionIgnore() Path.ToNode { //gd:SoftBody3D.get_parent_collision_ignore
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_parent_collision_ignore, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_parent_collision_ignore, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -596,7 +598,7 @@ func (self class) SetDisableMode(mode DisableMode) { //gd:SoftBody3D.set_disable
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_mode, 0|(gdextension.SizeInt<<4), &struct{ mode DisableMode }{mode})
 }
 func (self class) GetDisableMode() DisableMode { //gd:SoftBody3D.get_disable_mode
-	var r_ret = noescape.Call[DisableMode](gd.ObjectChecked(self.AsObject()), methods.get_disable_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DisableMode](gd.ObjectChecked(self.AsObject()), methods.get_disable_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -707,7 +709,7 @@ func (self class) SetRayPickable(ray_pickable bool) { //gd:SoftBody3D.set_ray_pi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ray_pickable, 0|(gdextension.SizeBool<<4), &struct{ ray_pickable bool }{ray_pickable})
 }
 func (self class) IsRayPickable() bool { //gd:SoftBody3D.is_ray_pickable
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ray_pickable, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ray_pickable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

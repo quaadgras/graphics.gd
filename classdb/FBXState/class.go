@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -48,6 +49,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -173,12 +175,12 @@ func (self Instance) SetAllowGeometryHelperNodes(value bool) Instance { //gd:FBX
 }
 
 func (self class) GetAllowGeometryHelperNodes() bool { //gd:FBXState.get_allow_geometry_helper_nodes
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_geometry_helper_nodes, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_geometry_helper_nodes, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetAllowGeometryHelperNodes(allow bool) { //gd:FBXState.set_allow_geometry_helper_nodes
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_geometry_helper_nodes, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_geometry_helper_nodes, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
 }
 func (o class) AsFBXState() Advanced                    { return Advanced(o) }
 func (o Instance) AsFBXState() Instance                 { return o }

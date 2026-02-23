@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -48,6 +49,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -356,7 +358,7 @@ func (self class) SetMaxConcavity(max_concavity float64) { //gd:MeshConvexDecomp
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_concavity, 0|(gdextension.SizeFloat<<4), &struct{ max_concavity float64 }{max_concavity})
 }
 func (self class) GetMaxConcavity() float64 { //gd:MeshConvexDecompositionSettings.get_max_concavity
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_concavity, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_concavity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -364,7 +366,7 @@ func (self class) SetSymmetryPlanesClippingBias(symmetry_planes_clipping_bias fl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_symmetry_planes_clipping_bias, 0|(gdextension.SizeFloat<<4), &struct{ symmetry_planes_clipping_bias float64 }{symmetry_planes_clipping_bias})
 }
 func (self class) GetSymmetryPlanesClippingBias() float64 { //gd:MeshConvexDecompositionSettings.get_symmetry_planes_clipping_bias
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_symmetry_planes_clipping_bias, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_symmetry_planes_clipping_bias, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -372,7 +374,7 @@ func (self class) SetRevolutionAxesClippingBias(revolution_axes_clipping_bias fl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_revolution_axes_clipping_bias, 0|(gdextension.SizeFloat<<4), &struct{ revolution_axes_clipping_bias float64 }{revolution_axes_clipping_bias})
 }
 func (self class) GetRevolutionAxesClippingBias() float64 { //gd:MeshConvexDecompositionSettings.get_revolution_axes_clipping_bias
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_revolution_axes_clipping_bias, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_revolution_axes_clipping_bias, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -380,79 +382,79 @@ func (self class) SetMinVolumePerConvexHull(min_volume_per_convex_hull float64) 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_volume_per_convex_hull, 0|(gdextension.SizeFloat<<4), &struct{ min_volume_per_convex_hull float64 }{min_volume_per_convex_hull})
 }
 func (self class) GetMinVolumePerConvexHull() float64 { //gd:MeshConvexDecompositionSettings.get_min_volume_per_convex_hull
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min_volume_per_convex_hull, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min_volume_per_convex_hull, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetResolution(min_volume_per_convex_hull int64) { //gd:MeshConvexDecompositionSettings.set_resolution
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_resolution, 0|(gdextension.SizeInt<<4), &struct{ min_volume_per_convex_hull int64 }{min_volume_per_convex_hull})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_resolution, 0|(gdextension.SizeInt<<4), &struct{ min_volume_per_convex_hull int64 }{min_volume_per_convex_hull})
 }
 func (self class) GetResolution() int64 { //gd:MeshConvexDecompositionSettings.get_resolution
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_resolution, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_resolution, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMaxNumVerticesPerConvexHull(max_num_vertices_per_convex_hull int64) { //gd:MeshConvexDecompositionSettings.set_max_num_vertices_per_convex_hull
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_num_vertices_per_convex_hull, 0|(gdextension.SizeInt<<4), &struct{ max_num_vertices_per_convex_hull int64 }{max_num_vertices_per_convex_hull})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_num_vertices_per_convex_hull, 0|(gdextension.SizeInt<<4), &struct{ max_num_vertices_per_convex_hull int64 }{max_num_vertices_per_convex_hull})
 }
 func (self class) GetMaxNumVerticesPerConvexHull() int64 { //gd:MeshConvexDecompositionSettings.get_max_num_vertices_per_convex_hull
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_num_vertices_per_convex_hull, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_num_vertices_per_convex_hull, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPlaneDownsampling(plane_downsampling int64) { //gd:MeshConvexDecompositionSettings.set_plane_downsampling
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_plane_downsampling, 0|(gdextension.SizeInt<<4), &struct{ plane_downsampling int64 }{plane_downsampling})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_plane_downsampling, 0|(gdextension.SizeInt<<4), &struct{ plane_downsampling int64 }{plane_downsampling})
 }
 func (self class) GetPlaneDownsampling() int64 { //gd:MeshConvexDecompositionSettings.get_plane_downsampling
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_plane_downsampling, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_plane_downsampling, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetConvexHullDownsampling(convex_hull_downsampling int64) { //gd:MeshConvexDecompositionSettings.set_convex_hull_downsampling
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_convex_hull_downsampling, 0|(gdextension.SizeInt<<4), &struct{ convex_hull_downsampling int64 }{convex_hull_downsampling})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_convex_hull_downsampling, 0|(gdextension.SizeInt<<4), &struct{ convex_hull_downsampling int64 }{convex_hull_downsampling})
 }
 func (self class) GetConvexHullDownsampling() int64 { //gd:MeshConvexDecompositionSettings.get_convex_hull_downsampling
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_convex_hull_downsampling, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_convex_hull_downsampling, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetNormalizeMesh(normalize_mesh bool) { //gd:MeshConvexDecompositionSettings.set_normalize_mesh
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normalize_mesh, 0|(gdextension.SizeBool<<4), &struct{ normalize_mesh bool }{normalize_mesh})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normalize_mesh, 0|(gdextension.SizeBool<<4), &struct{ normalize_mesh bool }{normalize_mesh})
 }
 func (self class) GetNormalizeMesh() bool { //gd:MeshConvexDecompositionSettings.get_normalize_mesh
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_normalize_mesh, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_normalize_mesh, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMode(mode Mode) { //gd:MeshConvexDecompositionSettings.set_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mode, 0|(gdextension.SizeInt<<4), &struct{ mode Mode }{mode})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mode, 0|(gdextension.SizeInt<<4), &struct{ mode Mode }{mode})
 }
 func (self class) GetMode() Mode { //gd:MeshConvexDecompositionSettings.get_mode
-	var r_ret = noescape.Call[Mode](gd.ObjectChecked(self.AsObject()), methods.get_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Mode](gd.ObjectChecked(self.AsObject()), methods.get_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetConvexHullApproximation(convex_hull_approximation bool) { //gd:MeshConvexDecompositionSettings.set_convex_hull_approximation
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_convex_hull_approximation, 0|(gdextension.SizeBool<<4), &struct{ convex_hull_approximation bool }{convex_hull_approximation})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_convex_hull_approximation, 0|(gdextension.SizeBool<<4), &struct{ convex_hull_approximation bool }{convex_hull_approximation})
 }
 func (self class) GetConvexHullApproximation() bool { //gd:MeshConvexDecompositionSettings.get_convex_hull_approximation
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_convex_hull_approximation, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_convex_hull_approximation, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMaxConvexHulls(max_convex_hulls int64) { //gd:MeshConvexDecompositionSettings.set_max_convex_hulls
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_convex_hulls, 0|(gdextension.SizeInt<<4), &struct{ max_convex_hulls int64 }{max_convex_hulls})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_convex_hulls, 0|(gdextension.SizeInt<<4), &struct{ max_convex_hulls int64 }{max_convex_hulls})
 }
 func (self class) GetMaxConvexHulls() int64 { //gd:MeshConvexDecompositionSettings.get_max_convex_hulls
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_convex_hulls, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_convex_hulls, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetProjectHullVertices(project_hull_vertices bool) { //gd:MeshConvexDecompositionSettings.set_project_hull_vertices
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_project_hull_vertices, 0|(gdextension.SizeBool<<4), &struct{ project_hull_vertices bool }{project_hull_vertices})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_project_hull_vertices, 0|(gdextension.SizeBool<<4), &struct{ project_hull_vertices bool }{project_hull_vertices})
 }
 func (self class) GetProjectHullVertices() bool { //gd:MeshConvexDecompositionSettings.get_project_hull_vertices
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_project_hull_vertices, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_project_hull_vertices, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

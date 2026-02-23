@@ -26,6 +26,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -70,6 +71,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -674,12 +676,12 @@ func (self class) SetTitle(title String.Readable) { //gd:GraphNode.set_title
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_title, 0|(gdextension.SizeString<<4), &struct{ title gdextension.String }{pointers.Get(gd.InternalString(title))})
 }
 func (self class) GetTitle() String.Readable { //gd:GraphNode.get_title
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_title, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_title, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetTitlebarHbox() [1]gdclass.HBoxContainer { //gd:GraphNode.get_titlebar_hbox
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_titlebar_hbox, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_titlebar_hbox, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.HBoxContainer{gdclass.NewHBoxContainer(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
@@ -825,10 +827,10 @@ func (self class) SetSlotDrawStylebox(slot_index int64, enable bool) { //gd:Grap
 	}{slot_index, enable})
 }
 func (self class) SetIgnoreInvalidConnectionType(ignore bool) { //gd:GraphNode.set_ignore_invalid_connection_type
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ignore_invalid_connection_type, 0|(gdextension.SizeBool<<4), &struct{ ignore bool }{ignore})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ignore_invalid_connection_type, 0|(gdextension.SizeBool<<4), &struct{ ignore bool }{ignore})
 }
 func (self class) IsIgnoringValidConnectionType() bool { //gd:GraphNode.is_ignoring_valid_connection_type
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ignoring_valid_connection_type, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ignoring_valid_connection_type, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -836,7 +838,7 @@ func (self class) SetSlotsFocusMode(focus_mode Control.FocusMode) { //gd:GraphNo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slots_focus_mode, 0|(gdextension.SizeInt<<4), &struct{ focus_mode Control.FocusMode }{focus_mode})
 }
 func (self class) GetSlotsFocusMode() Control.FocusMode { //gd:GraphNode.get_slots_focus_mode
-	var r_ret = noescape.Call[Control.FocusMode](gd.ObjectChecked(self.AsObject()), methods.get_slots_focus_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Control.FocusMode](gd.ObjectChecked(self.AsObject()), methods.get_slots_focus_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

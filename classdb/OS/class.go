@@ -20,6 +20,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -56,6 +57,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -1439,7 +1441,7 @@ func (self class) GetEntropy(size int64) Packed.Bytes { //gd:OS.get_entropy
 }
 func (self class) GetSystemCaCertificates() String.Readable { //gd:OS.get_system_ca_certificates
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_system_ca_certificates, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_system_ca_certificates, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1470,31 +1472,31 @@ func (self class) Crash(message String.Readable) { //gd:OS.crash
 }
 func (self class) SetLowProcessorUsageMode(enable bool) { //gd:OS.set_low_processor_usage_mode
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_low_processor_usage_mode, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_low_processor_usage_mode, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsInLowProcessorUsageMode() bool { //gd:OS.is_in_low_processor_usage_mode
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_in_low_processor_usage_mode, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_in_low_processor_usage_mode, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetLowProcessorUsageModeSleepUsec(usec int64) { //gd:OS.set_low_processor_usage_mode_sleep_usec
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_low_processor_usage_mode_sleep_usec, 0|(gdextension.SizeInt<<4), &struct{ usec int64 }{usec})
+	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_low_processor_usage_mode_sleep_usec, 0|(gdextension.SizeInt<<4), &struct{ usec int64 }{usec})
 }
 func (self class) GetLowProcessorUsageModeSleepUsec() int64 { //gd:OS.get_low_processor_usage_mode_sleep_usec
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_low_processor_usage_mode_sleep_usec, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_low_processor_usage_mode_sleep_usec, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetDeltaSmoothing(delta_smoothing_enabled bool) { //gd:OS.set_delta_smoothing
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_delta_smoothing, 0|(gdextension.SizeBool<<4), &struct{ delta_smoothing_enabled bool }{delta_smoothing_enabled})
+	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_delta_smoothing, 0|(gdextension.SizeBool<<4), &struct{ delta_smoothing_enabled bool }{delta_smoothing_enabled})
 }
 func (self class) IsDeltaSmoothingEnabled() bool { //gd:OS.is_delta_smoothing_enabled
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_delta_smoothing_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_delta_smoothing_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1506,19 +1508,19 @@ func (self class) GetProcessorCount() int64 { //gd:OS.get_processor_count
 }
 func (self class) GetProcessorName() String.Readable { //gd:OS.get_processor_name
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_processor_name, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_processor_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetSystemFonts() Packed.Strings { //gd:OS.get_system_fonts
 	once.Do(singleton)
-	var r_ret = noescape.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.get_system_fonts, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.get_system_fonts, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) GetSystemFontPath(font_name String.Readable, weight int64, stretch int64, italic bool) String.Readable { //gd:OS.get_system_font_path
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_system_font_path, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), &struct {
+	var r_ret = jumponly.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_system_font_path, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), &struct {
 		font_name gdextension.String
 		weight    int64
 		stretch   int64
@@ -1529,7 +1531,7 @@ func (self class) GetSystemFontPath(font_name String.Readable, weight int64, str
 }
 func (self class) GetSystemFontPathForText(font_name String.Readable, text String.Readable, locale String.Readable, script String.Readable, weight int64, stretch int64, italic bool) Packed.Strings { //gd:OS.get_system_font_path_for_text
 	once.Do(singleton)
-	var r_ret = noescape.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.get_system_font_path_for_text, gdextension.SizePackedArray|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeBool<<28), &struct {
+	var r_ret = jumponly.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.get_system_font_path_for_text, gdextension.SizePackedArray|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeBool<<28), &struct {
 		font_name gdextension.String
 		text      gdextension.String
 		locale    gdextension.String
@@ -1543,7 +1545,7 @@ func (self class) GetSystemFontPathForText(font_name String.Readable, text Strin
 }
 func (self class) GetExecutablePath() String.Readable { //gd:OS.get_executable_path
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_executable_path, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_executable_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1561,19 +1563,19 @@ func (self class) ReadBufferFromStdin(buffer_size int64) Packed.Bytes { //gd:OS.
 }
 func (self class) GetStdinType() StdHandleType { //gd:OS.get_stdin_type
 	once.Do(singleton)
-	var r_ret = noescape.Call[StdHandleType](gdreference.GetObject(self.AsObject()[0]), methods.get_stdin_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[StdHandleType](gdreference.GetObject(self.AsObject()[0]), methods.get_stdin_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetStdoutType() StdHandleType { //gd:OS.get_stdout_type
 	once.Do(singleton)
-	var r_ret = noescape.Call[StdHandleType](gdreference.GetObject(self.AsObject()[0]), methods.get_stdout_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[StdHandleType](gdreference.GetObject(self.AsObject()[0]), methods.get_stdout_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetStderrType() StdHandleType { //gd:OS.get_stderr_type
 	once.Do(singleton)
-	var r_ret = noescape.Call[StdHandleType](gdreference.GetObject(self.AsObject()[0]), methods.get_stderr_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[StdHandleType](gdreference.GetObject(self.AsObject()[0]), methods.get_stderr_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1591,7 +1593,7 @@ func (self class) Execute(path String.Readable, arguments Packed.Strings, output
 }
 func (self class) ExecuteWithPipe(path String.Readable, arguments Packed.Strings, blocking bool) Dictionary.Any { //gd:OS.execute_with_pipe
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Dictionary](gdreference.GetObject(self.AsObject()[0]), methods.execute_with_pipe, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeBool<<12), &struct {
+	var r_ret = jumponly.Call[gdextension.Dictionary](gdreference.GetObject(self.AsObject()[0]), methods.execute_with_pipe, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeBool<<12), &struct {
 		path      gdextension.String
 		arguments gdextension.PackedArray[gdextension.String]
 		blocking  bool
@@ -1634,7 +1636,7 @@ func (self class) Kill(pid int64) Error.Code { //gd:OS.kill
 }
 func (self class) ShellOpen(uri String.Readable) Error.Code { //gd:OS.shell_open
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.shell_open, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ uri gdextension.String }{pointers.Get(gd.InternalString(uri))})
+	var r_ret = jumponly.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.shell_open, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ uri gdextension.String }{pointers.Get(gd.InternalString(uri))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -1661,7 +1663,7 @@ func (self class) GetProcessExitCode(pid int64) int64 { //gd:OS.get_process_exit
 }
 func (self class) GetProcessId() int64 { //gd:OS.get_process_id
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_process_id, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_process_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1714,13 +1716,13 @@ func (self class) GetVersionAlias() String.Readable { //gd:OS.get_version_alias
 }
 func (self class) GetCmdlineArgs() Packed.Strings { //gd:OS.get_cmdline_args
 	once.Do(singleton)
-	var r_ret = noescape.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.get_cmdline_args, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.get_cmdline_args, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) GetCmdlineUserArgs() Packed.Strings { //gd:OS.get_cmdline_user_args
 	once.Do(singleton)
-	var r_ret = noescape.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.get_cmdline_user_args, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.get_cmdline_user_args, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -1739,13 +1741,13 @@ func (self class) SetRestartOnExit(restart bool, arguments Packed.Strings) { //g
 }
 func (self class) IsRestartOnExitSet() bool { //gd:OS.is_restart_on_exit_set
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_restart_on_exit_set, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_restart_on_exit_set, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetRestartOnExitArguments() Packed.Strings { //gd:OS.get_restart_on_exit_arguments
 	once.Do(singleton)
-	var r_ret = noescape.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.get_restart_on_exit_arguments, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.get_restart_on_exit_arguments, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -1759,7 +1761,7 @@ func (self class) DelayMsec(msec int64) { //gd:OS.delay_msec
 }
 func (self class) GetLocale() String.Readable { //gd:OS.get_locale
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_locale, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_locale, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1771,25 +1773,25 @@ func (self class) GetLocaleLanguage() String.Readable { //gd:OS.get_locale_langu
 }
 func (self class) GetModelName() String.Readable { //gd:OS.get_model_name
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_model_name, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_model_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) IsUserfsPersistent() bool { //gd:OS.is_userfs_persistent
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_userfs_persistent, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_userfs_persistent, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsStdoutVerbose() bool { //gd:OS.is_stdout_verbose
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_stdout_verbose, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_stdout_verbose, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsDebugBuild() bool { //gd:OS.is_debug_build
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_debug_build, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_debug_build, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1813,19 +1815,19 @@ func (self class) GetMemoryInfo() Dictionary.Any { //gd:OS.get_memory_info
 }
 func (self class) MoveToTrash(path String.Readable) Error.Code { //gd:OS.move_to_trash
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.move_to_trash, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var r_ret = jumponly.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.move_to_trash, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
 func (self class) GetUserDataDir() String.Readable { //gd:OS.get_user_data_dir
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_user_data_dir, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_user_data_dir, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetSystemDir(dir SystemDir, shared_storage bool) String.Readable { //gd:OS.get_system_dir
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_system_dir, gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = jumponly.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_system_dir, gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		dir            SystemDir
 		shared_storage bool
 	}{dir, shared_storage})
@@ -1858,7 +1860,7 @@ func (self class) GetTempDir() String.Readable { //gd:OS.get_temp_dir
 }
 func (self class) GetUniqueId() String.Readable { //gd:OS.get_unique_id
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_unique_id, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_unique_id, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1910,31 +1912,31 @@ func (self class) HasFeature(tag_name String.Readable) bool { //gd:OS.has_featur
 }
 func (self class) IsSandboxed() bool { //gd:OS.is_sandboxed
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_sandboxed, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_sandboxed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) RequestPermission(name String.Readable) bool { //gd:OS.request_permission
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.request_permission, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.request_permission, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = r_ret
 	return ret
 }
 func (self class) RequestPermissions() bool { //gd:OS.request_permissions
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.request_permissions, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.request_permissions, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetGrantedPermissions() Packed.Strings { //gd:OS.get_granted_permissions
 	once.Do(singleton)
-	var r_ret = noescape.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.get_granted_permissions, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.get_granted_permissions, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) RevokeGrantedPermissions() { //gd:OS.revoke_granted_permissions
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.revoke_granted_permissions, 0, &struct{}{})
+	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.revoke_granted_permissions, 0, &struct{}{})
 }
 func (self class) AddLogger(logger [1]gdclass.Logger) { //gd:OS.add_logger
 	once.Do(singleton)

@@ -145,6 +145,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -182,6 +183,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -711,12 +713,12 @@ func (self class) GetTotalElapsedTime() float64 { //gd:Tween.get_total_elapsed_t
 	return ret
 }
 func (self class) IsRunning() bool { //gd:Tween.is_running
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_running, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_running, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsValid() bool { //gd:Tween.is_valid
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_valid, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_valid, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -726,57 +728,57 @@ func (self class) BindNode(node [1]gdclass.Node) [1]gdclass.Tween { //gd:Tween.b
 	return ret
 }
 func (self class) SetProcessMode(mode TweenProcessMode) [1]gdclass.Tween { //gd:Tween.set_process_mode
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_process_mode, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ mode TweenProcessMode }{mode})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_process_mode, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ mode TweenProcessMode }{mode})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetPauseMode(mode TweenPauseMode) [1]gdclass.Tween { //gd:Tween.set_pause_mode
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_pause_mode, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ mode TweenPauseMode }{mode})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_pause_mode, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ mode TweenPauseMode }{mode})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetIgnoreTimeScale(ignore bool) [1]gdclass.Tween { //gd:Tween.set_ignore_time_scale
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_ignore_time_scale, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ ignore bool }{ignore})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_ignore_time_scale, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ ignore bool }{ignore})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetParallel(parallel bool) [1]gdclass.Tween { //gd:Tween.set_parallel
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_parallel, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ parallel bool }{parallel})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_parallel, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ parallel bool }{parallel})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetLoops(loops int64) [1]gdclass.Tween { //gd:Tween.set_loops
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_loops, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ loops int64 }{loops})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_loops, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ loops int64 }{loops})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetLoopsLeft() int64 { //gd:Tween.get_loops_left
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_loops_left, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_loops_left, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetSpeedScale(speed float64) [1]gdclass.Tween { //gd:Tween.set_speed_scale
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, gdextension.SizeObject|(gdextension.SizeFloat<<4), &struct{ speed float64 }{speed})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, gdextension.SizeObject|(gdextension.SizeFloat<<4), &struct{ speed float64 }{speed})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetTrans(trans TransitionType) [1]gdclass.Tween { //gd:Tween.set_trans
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_trans, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ trans TransitionType }{trans})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_trans, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ trans TransitionType }{trans})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetEase(ease EaseType) [1]gdclass.Tween { //gd:Tween.set_ease
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_ease, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ ease EaseType }{ease})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_ease, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ ease EaseType }{ease})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) Parallel() [1]gdclass.Tween { //gd:Tween.parallel
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.parallel, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.parallel, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) Chain() [1]gdclass.Tween { //gd:Tween.chain
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.chain, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.chain, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

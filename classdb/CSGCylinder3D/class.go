@@ -17,6 +17,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -58,6 +59,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -262,7 +264,7 @@ func (self class) SetRadius(radius float64) { //gd:CSGCylinder3D.set_radius
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 func (self class) GetRadius() float64 { //gd:CSGCylinder3D.get_radius
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -270,7 +272,7 @@ func (self class) SetHeight(height float64) { //gd:CSGCylinder3D.set_height
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeFloat<<4), &struct{ height float64 }{height})
 }
 func (self class) GetHeight() float64 { //gd:CSGCylinder3D.get_height
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -278,7 +280,7 @@ func (self class) SetSides(sides int64) { //gd:CSGCylinder3D.set_sides
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sides, 0|(gdextension.SizeInt<<4), &struct{ sides int64 }{sides})
 }
 func (self class) GetSides() int64 { //gd:CSGCylinder3D.get_sides
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sides, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sides, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -286,7 +288,7 @@ func (self class) SetCone(cone bool) { //gd:CSGCylinder3D.set_cone
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cone, 0|(gdextension.SizeBool<<4), &struct{ cone bool }{cone})
 }
 func (self class) IsCone() bool { //gd:CSGCylinder3D.is_cone
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cone, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cone, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -294,7 +296,7 @@ func (self class) SetMaterial(material [1]gdclass.Material) { //gd:CSGCylinder3D
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(material[0])[0]))})
 }
 func (self class) GetMaterial() [1]gdclass.Material { //gd:CSGCylinder3D.get_material
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -302,7 +304,7 @@ func (self class) SetSmoothFaces(smooth_faces bool) { //gd:CSGCylinder3D.set_smo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_smooth_faces, 0|(gdextension.SizeBool<<4), &struct{ smooth_faces bool }{smooth_faces})
 }
 func (self class) GetSmoothFaces() bool { //gd:CSGCylinder3D.get_smooth_faces
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_smooth_faces, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_smooth_faces, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

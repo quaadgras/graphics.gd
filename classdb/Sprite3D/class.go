@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -56,6 +57,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -291,7 +293,7 @@ func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:Sprite3D.set_t
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:Sprite3D.get_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -299,7 +301,7 @@ func (self class) SetRegionEnabled(enabled bool) { //gd:Sprite3D.set_region_enab
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_region_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsRegionEnabled() bool { //gd:Sprite3D.is_region_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_region_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_region_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -307,7 +309,7 @@ func (self class) SetRegionRect(rect Rect2.PositionSize) { //gd:Sprite3D.set_reg
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_region_rect, 0|(gdextension.SizeRect2<<4), &struct{ rect Rect2.PositionSize }{rect})
 }
 func (self class) GetRegionRect() Rect2.PositionSize { //gd:Sprite3D.get_region_rect
-	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_region_rect, gdextension.SizeRect2, &struct{}{})
+	var r_ret = jumponly.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_region_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -315,7 +317,7 @@ func (self class) SetFrame(frame_ int64) { //gd:Sprite3D.set_frame
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame, 0|(gdextension.SizeInt<<4), &struct{ frame_ int64 }{frame_})
 }
 func (self class) GetFrame() int64 { //gd:Sprite3D.get_frame
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -323,7 +325,7 @@ func (self class) SetFrameCoords(coords Vector2i.XY) { //gd:Sprite3D.set_frame_c
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame_coords, 0|(gdextension.SizeVector2i<<4), &struct{ coords Vector2i.XY }{coords})
 }
 func (self class) GetFrameCoords() Vector2i.XY { //gd:Sprite3D.get_frame_coords
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_frame_coords, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = jumponly.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_frame_coords, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -331,7 +333,7 @@ func (self class) SetVframes(vframes int64) { //gd:Sprite3D.set_vframes
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vframes, 0|(gdextension.SizeInt<<4), &struct{ vframes int64 }{vframes})
 }
 func (self class) GetVframes() int64 { //gd:Sprite3D.get_vframes
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_vframes, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_vframes, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -339,7 +341,7 @@ func (self class) SetHframes(hframes int64) { //gd:Sprite3D.set_hframes
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hframes, 0|(gdextension.SizeInt<<4), &struct{ hframes int64 }{hframes})
 }
 func (self class) GetHframes() int64 { //gd:Sprite3D.get_hframes
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_hframes, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_hframes, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

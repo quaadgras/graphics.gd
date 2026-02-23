@@ -17,6 +17,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -52,6 +53,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -270,7 +272,7 @@ func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
 
 func (self class) Eval(code String.Readable, use_global_execution_context bool) variant.Any { //gd:JavaScriptBridge.eval
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Variant](gdreference.GetObject(self.AsObject()[0]), methods.eval, gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = jumponly.Call[gdextension.Variant](gdreference.GetObject(self.AsObject()[0]), methods.eval, gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		code                         gdextension.String
 		use_global_execution_context bool
 	}{pointers.Get(gd.InternalString(code)), use_global_execution_context})
@@ -279,25 +281,25 @@ func (self class) Eval(code String.Readable, use_global_execution_context bool) 
 }
 func (self class) GetInterface(intf String.Readable) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.get_interface
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.get_interface, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ intf gdextension.String }{pointers.Get(gd.InternalString(intf))})
+	var r_ret = jumponly.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.get_interface, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ intf gdextension.String }{pointers.Get(gd.InternalString(intf))})
 	var ret = [1]gdclass.JavaScriptObject{gdclass.NewJavaScriptObject(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) CreateCallback(callable Callable.Function) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.create_callback
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.create_callback, gdextension.SizeObject|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
+	var r_ret = jumponly.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.create_callback, gdextension.SizeObject|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
 	var ret = [1]gdclass.JavaScriptObject{gdclass.NewJavaScriptObject(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) IsJsBuffer(javascript_object [1]gdclass.JavaScriptObject) bool { //gd:JavaScriptBridge.is_js_buffer
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_js_buffer, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ javascript_object gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetJavaScriptObject(javascript_object[0])[0]))})
+	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_js_buffer, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ javascript_object gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetJavaScriptObject(javascript_object[0])[0]))})
 	var ret = r_ret
 	return ret
 }
 func (self class) JsBufferToPackedByteArray(javascript_buffer [1]gdclass.JavaScriptObject) Packed.Bytes { //gd:JavaScriptBridge.js_buffer_to_packed_byte_array
 	once.Do(singleton)
-	var r_ret = noescape.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.js_buffer_to_packed_byte_array, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ javascript_buffer gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetJavaScriptObject(javascript_buffer[0])[0]))})
+	var r_ret = jumponly.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.js_buffer_to_packed_byte_array, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ javascript_buffer gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetJavaScriptObject(javascript_buffer[0])[0]))})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
@@ -317,7 +319,7 @@ func (self class) CreateObject(obj String.Readable, args ...gd.Variant) variant.
 
 func (self class) DownloadBuffer(buffer Packed.Bytes, name String.Readable, mime String.Readable) { //gd:JavaScriptBridge.download_buffer
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.download_buffer, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12), &struct {
+	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.download_buffer, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12), &struct {
 		buffer gdextension.PackedArray[byte]
 		name   gdextension.String
 		mime   gdextension.String
@@ -325,19 +327,19 @@ func (self class) DownloadBuffer(buffer Packed.Bytes, name String.Readable, mime
 }
 func (self class) PwaNeedsUpdate() bool { //gd:JavaScriptBridge.pwa_needs_update
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.pwa_needs_update, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.pwa_needs_update, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) PwaUpdate() Error.Code { //gd:JavaScriptBridge.pwa_update
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.pwa_update, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.pwa_update, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
 func (self class) ForceFsSync() { //gd:JavaScriptBridge.force_fs_sync
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.force_fs_sync, 0, &struct{}{})
+	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.force_fs_sync, 0, &struct{}{})
 }
 
 /*

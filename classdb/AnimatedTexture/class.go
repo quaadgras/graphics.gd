@@ -30,6 +30,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -67,6 +68,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -308,7 +310,7 @@ func (self class) SetFrames(frames int64) { //gd:AnimatedTexture.set_frames
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frames, 0|(gdextension.SizeInt<<4), &struct{ frames int64 }{frames})
 }
 func (self class) GetFrames() int64 { //gd:AnimatedTexture.get_frames
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frames, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frames, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -316,23 +318,23 @@ func (self class) SetCurrentFrame(frame_ int64) { //gd:AnimatedTexture.set_curre
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_frame, 0|(gdextension.SizeInt<<4), &struct{ frame_ int64 }{frame_})
 }
 func (self class) GetCurrentFrame() int64 { //gd:AnimatedTexture.get_current_frame
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_current_frame, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_current_frame, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPause(pause bool) { //gd:AnimatedTexture.set_pause
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pause, 0|(gdextension.SizeBool<<4), &struct{ pause bool }{pause})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pause, 0|(gdextension.SizeBool<<4), &struct{ pause bool }{pause})
 }
 func (self class) GetPause() bool { //gd:AnimatedTexture.get_pause
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_pause, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_pause, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetOneShot(one_shot bool) { //gd:AnimatedTexture.set_one_shot
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_one_shot, 0|(gdextension.SizeBool<<4), &struct{ one_shot bool }{one_shot})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_one_shot, 0|(gdextension.SizeBool<<4), &struct{ one_shot bool }{one_shot})
 }
 func (self class) GetOneShot() bool { //gd:AnimatedTexture.get_one_shot
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_one_shot, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_one_shot, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -340,7 +342,7 @@ func (self class) SetSpeedScale(scale float64) { //gd:AnimatedTexture.set_speed_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, 0|(gdextension.SizeFloat<<4), &struct{ scale float64 }{scale})
 }
 func (self class) GetSpeedScale() float64 { //gd:AnimatedTexture.get_speed_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_speed_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_speed_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

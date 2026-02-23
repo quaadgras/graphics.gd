@@ -19,6 +19,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -57,6 +58,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -297,7 +299,7 @@ func (self class) SetRadius(radius float64) { //gd:TubeTrailMesh.set_radius
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 func (self class) GetRadius() float64 { //gd:TubeTrailMesh.get_radius
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -305,7 +307,7 @@ func (self class) SetRadialSteps(radial_steps int64) { //gd:TubeTrailMesh.set_ra
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radial_steps, 0|(gdextension.SizeInt<<4), &struct{ radial_steps int64 }{radial_steps})
 }
 func (self class) GetRadialSteps() int64 { //gd:TubeTrailMesh.get_radial_steps
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_radial_steps, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_radial_steps, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -313,7 +315,7 @@ func (self class) SetSections(sections int64) { //gd:TubeTrailMesh.set_sections
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sections, 0|(gdextension.SizeInt<<4), &struct{ sections int64 }{sections})
 }
 func (self class) GetSections() int64 { //gd:TubeTrailMesh.get_sections
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sections, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sections, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -321,7 +323,7 @@ func (self class) SetSectionLength(section_length float64) { //gd:TubeTrailMesh.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_section_length, 0|(gdextension.SizeFloat<<4), &struct{ section_length float64 }{section_length})
 }
 func (self class) GetSectionLength() float64 { //gd:TubeTrailMesh.get_section_length
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_section_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_section_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -329,7 +331,7 @@ func (self class) SetSectionRings(section_rings int64) { //gd:TubeTrailMesh.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_section_rings, 0|(gdextension.SizeInt<<4), &struct{ section_rings int64 }{section_rings})
 }
 func (self class) GetSectionRings() int64 { //gd:TubeTrailMesh.get_section_rings
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_section_rings, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_section_rings, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -337,7 +339,7 @@ func (self class) SetCapTop(cap_top bool) { //gd:TubeTrailMesh.set_cap_top
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cap_top, 0|(gdextension.SizeBool<<4), &struct{ cap_top bool }{cap_top})
 }
 func (self class) IsCapTop() bool { //gd:TubeTrailMesh.is_cap_top
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cap_top, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cap_top, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -345,7 +347,7 @@ func (self class) SetCapBottom(cap_bottom bool) { //gd:TubeTrailMesh.set_cap_bot
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cap_bottom, 0|(gdextension.SizeBool<<4), &struct{ cap_bottom bool }{cap_bottom})
 }
 func (self class) IsCapBottom() bool { //gd:TubeTrailMesh.is_cap_bottom
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cap_bottom, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cap_bottom, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -353,7 +355,7 @@ func (self class) SetCurve(curve [1]gdclass.Curve) { //gd:TubeTrailMesh.set_curv
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCurve(curve[0])[0]))})
 }
 func (self class) GetCurve() [1]gdclass.Curve { //gd:TubeTrailMesh.get_curve
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Curve{gdclass.NewCurve(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

@@ -9,6 +9,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -45,6 +46,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -868,7 +870,7 @@ func (self class) SetStreamCount(stream_count int64) { //gd:AudioStreamPlaylist.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream_count, 0|(gdextension.SizeInt<<4), &struct{ stream_count int64 }{stream_count})
 }
 func (self class) GetStreamCount() int64 { //gd:AudioStreamPlaylist.get_stream_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stream_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stream_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -889,26 +891,26 @@ func (self class) GetListStream(stream_index int64) [1]gdclass.AudioStream { //g
 	return ret
 }
 func (self class) SetShuffle(shuffle bool) { //gd:AudioStreamPlaylist.set_shuffle
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shuffle, 0|(gdextension.SizeBool<<4), &struct{ shuffle bool }{shuffle})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shuffle, 0|(gdextension.SizeBool<<4), &struct{ shuffle bool }{shuffle})
 }
 func (self class) GetShuffle() bool { //gd:AudioStreamPlaylist.get_shuffle
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_shuffle, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_shuffle, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetFadeTime(dec float64) { //gd:AudioStreamPlaylist.set_fade_time
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fade_time, 0|(gdextension.SizeFloat<<4), &struct{ dec float64 }{dec})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fade_time, 0|(gdextension.SizeFloat<<4), &struct{ dec float64 }{dec})
 }
 func (self class) GetFadeTime() float64 { //gd:AudioStreamPlaylist.get_fade_time
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fade_time, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fade_time, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetLoop(loop bool) { //gd:AudioStreamPlaylist.set_loop
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), &struct{ loop bool }{loop})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), &struct{ loop bool }{loop})
 }
 func (self class) HasLoop() bool { //gd:AudioStreamPlaylist.has_loop
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -21,6 +21,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -60,6 +61,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -1110,25 +1112,25 @@ func (self class) VibrateHandheld(duration_ms int64, amplitude float64) { //gd:I
 }
 func (self class) GetGravity() Vector3.XYZ { //gd:Input.get_gravity
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector3.XYZ](gdreference.GetObject(self.AsObject()[0]), methods.get_gravity, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gdreference.GetObject(self.AsObject()[0]), methods.get_gravity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetAccelerometer() Vector3.XYZ { //gd:Input.get_accelerometer
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector3.XYZ](gdreference.GetObject(self.AsObject()[0]), methods.get_accelerometer, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gdreference.GetObject(self.AsObject()[0]), methods.get_accelerometer, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetMagnetometer() Vector3.XYZ { //gd:Input.get_magnetometer
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector3.XYZ](gdreference.GetObject(self.AsObject()[0]), methods.get_magnetometer, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gdreference.GetObject(self.AsObject()[0]), methods.get_magnetometer, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetGyroscope() Vector3.XYZ { //gd:Input.get_gyroscope
 	once.Do(singleton)
-	var r_ret = noescape.Call[Vector3.XYZ](gdreference.GetObject(self.AsObject()[0]), methods.get_gyroscope, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gdreference.GetObject(self.AsObject()[0]), methods.get_gyroscope, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1175,7 +1177,7 @@ func (self class) GetLastMouseScreenVelocity() Vector2.XY { //gd:Input.get_last_
 }
 func (self class) GetMouseButtonMask() MouseButtonMask { //gd:Input.get_mouse_button_mask
 	once.Do(singleton)
-	var r_ret = noescape.Call[MouseButtonMask](gdreference.GetObject(self.AsObject()[0]), methods.get_mouse_button_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[MouseButtonMask](gdreference.GetObject(self.AsObject()[0]), methods.get_mouse_button_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1228,11 +1230,11 @@ func (self class) ParseInputEvent(event [1]gdclass.InputEvent) { //gd:Input.pars
 }
 func (self class) SetUseAccumulatedInput(enable bool) { //gd:Input.set_use_accumulated_input
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_use_accumulated_input, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_use_accumulated_input, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsUsingAccumulatedInput() bool { //gd:Input.is_using_accumulated_input
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_using_accumulated_input, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_using_accumulated_input, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1242,21 +1244,21 @@ func (self class) FlushBufferedEvents() { //gd:Input.flush_buffered_events
 }
 func (self class) SetEmulateMouseFromTouch(enable bool) { //gd:Input.set_emulate_mouse_from_touch
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_emulate_mouse_from_touch, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_emulate_mouse_from_touch, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsEmulatingMouseFromTouch() bool { //gd:Input.is_emulating_mouse_from_touch
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_emulating_mouse_from_touch, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_emulating_mouse_from_touch, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetEmulateTouchFromMouse(enable bool) { //gd:Input.set_emulate_touch_from_mouse
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_emulate_touch_from_mouse, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_emulate_touch_from_mouse, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsEmulatingTouchFromMouse() bool { //gd:Input.is_emulating_touch_from_mouse
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_emulating_touch_from_mouse, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_emulating_touch_from_mouse, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

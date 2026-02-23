@@ -15,6 +15,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -54,6 +55,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -522,7 +524,7 @@ func (self class) SetLabel(text String.Readable) { //gd:EditorProperty.set_label
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_label, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
 func (self class) GetLabel() String.Readable { //gd:EditorProperty.get_label
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_label, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_label, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -530,7 +532,7 @@ func (self class) SetReadOnly(read_only bool) { //gd:EditorProperty.set_read_onl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_read_only, 0|(gdextension.SizeBool<<4), &struct{ read_only bool }{read_only})
 }
 func (self class) IsReadOnly() bool { //gd:EditorProperty.is_read_only
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_read_only, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_read_only, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -538,7 +540,7 @@ func (self class) SetDrawLabel(draw_label bool) { //gd:EditorProperty.set_draw_l
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_label, 0|(gdextension.SizeBool<<4), &struct{ draw_label bool }{draw_label})
 }
 func (self class) IsDrawLabel() bool { //gd:EditorProperty.is_draw_label
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draw_label, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draw_label, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -546,7 +548,7 @@ func (self class) SetDrawBackground(draw_background bool) { //gd:EditorProperty.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_background, 0|(gdextension.SizeBool<<4), &struct{ draw_background bool }{draw_background})
 }
 func (self class) IsDrawBackground() bool { //gd:EditorProperty.is_draw_background
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draw_background, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draw_background, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -554,7 +556,7 @@ func (self class) SetCheckable(checkable bool) { //gd:EditorProperty.set_checkab
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_checkable, 0|(gdextension.SizeBool<<4), &struct{ checkable bool }{checkable})
 }
 func (self class) IsCheckable() bool { //gd:EditorProperty.is_checkable
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_checkable, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_checkable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -562,7 +564,7 @@ func (self class) SetChecked(checked bool) { //gd:EditorProperty.set_checked
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_checked, 0|(gdextension.SizeBool<<4), &struct{ checked bool }{checked})
 }
 func (self class) IsChecked() bool { //gd:EditorProperty.is_checked
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_checked, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_checked, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -570,7 +572,7 @@ func (self class) SetDrawWarning(draw_warning bool) { //gd:EditorProperty.set_dr
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_warning, 0|(gdextension.SizeBool<<4), &struct{ draw_warning bool }{draw_warning})
 }
 func (self class) IsDrawWarning() bool { //gd:EditorProperty.is_draw_warning
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draw_warning, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draw_warning, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -578,7 +580,7 @@ func (self class) SetKeying(keying bool) { //gd:EditorProperty.set_keying
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keying, 0|(gdextension.SizeBool<<4), &struct{ keying bool }{keying})
 }
 func (self class) IsKeying() bool { //gd:EditorProperty.is_keying
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_keying, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_keying, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -586,17 +588,17 @@ func (self class) SetDeletable(deletable bool) { //gd:EditorProperty.set_deletab
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_deletable, 0|(gdextension.SizeBool<<4), &struct{ deletable bool }{deletable})
 }
 func (self class) IsDeletable() bool { //gd:EditorProperty.is_deletable
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_deletable, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_deletable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetEditedProperty() String.Name { //gd:EditorProperty.get_edited_property
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_edited_property, gdextension.SizeStringName, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_edited_property, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 func (self class) GetEditedObject() [1]gd.Object { //gd:EditorProperty.get_edited_object
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_object, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_object, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gd.Object{gdreference.LetObject(r_ret)}
 	return ret
 }
@@ -610,26 +612,26 @@ func (self class) SetBottomEditor(editor [1]gdclass.Control) { //gd:EditorProper
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bottom_editor, 0|(gdextension.SizeObject<<4), &struct{ editor gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetControl(editor[0])[0]))})
 }
 func (self class) SetSelectable(selectable bool) { //gd:EditorProperty.set_selectable
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selectable, 0|(gdextension.SizeBool<<4), &struct{ selectable bool }{selectable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selectable, 0|(gdextension.SizeBool<<4), &struct{ selectable bool }{selectable})
 }
 func (self class) IsSelectable() bool { //gd:EditorProperty.is_selectable
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_selectable, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_selectable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetUseFolding(use_folding bool) { //gd:EditorProperty.set_use_folding
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_folding, 0|(gdextension.SizeBool<<4), &struct{ use_folding bool }{use_folding})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_folding, 0|(gdextension.SizeBool<<4), &struct{ use_folding bool }{use_folding})
 }
 func (self class) IsUsingFolding() bool { //gd:EditorProperty.is_using_folding
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_folding, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_folding, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetNameSplitRatio(ratio float64) { //gd:EditorProperty.set_name_split_ratio
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_name_split_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_name_split_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
 }
 func (self class) GetNameSplitRatio() float64 { //gd:EditorProperty.get_name_split_ratio
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_name_split_ratio, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_name_split_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -637,7 +639,7 @@ func (self class) Deselect() { //gd:EditorProperty.deselect
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.deselect, 0, &struct{}{})
 }
 func (self class) IsSelected() bool { //gd:EditorProperty.is_selected
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_selected, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_selected, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -651,7 +653,7 @@ func (self class) SetObjectAndProperty(obj [1]gd.Object, property String.Name) {
 	}{gdextension.Object(gdreference.GetObject(gdclass.GetObject(obj[0])[0])), pointers.Get(gd.InternalStringName(property))})
 }
 func (self class) SetLabelReference(control [1]gdclass.Control) { //gd:EditorProperty.set_label_reference
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_label_reference, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetControl(control[0])[0]))})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_label_reference, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetControl(control[0])[0]))})
 }
 func (self class) EmitChanged(property String.Name, value variant.Any, field String.Name, changing bool) { //gd:EditorProperty.emit_changed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.emit_changed, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeBool<<16), &struct {

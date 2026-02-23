@@ -20,6 +20,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -59,6 +60,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -291,12 +293,12 @@ func (self class) CreateFromImage(image [1]gdclass.Image, compression_mode Compr
 	}{gdextension.Object(gdreference.GetObject(gdclass.GetImage(image[0])[0])), compression_mode, normal_map, lossy_quality})
 }
 func (self class) GetFormat() Image.Format { //gd:PortableCompressedTexture2D.get_format
-	var r_ret = noescape.Call[Image.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Image.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetCompressionMode() CompressionMode { //gd:PortableCompressedTexture2D.get_compression_mode
-	var r_ret = noescape.Call[CompressionMode](gd.ObjectChecked(self.AsObject()), methods.get_compression_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[CompressionMode](gd.ObjectChecked(self.AsObject()), methods.get_compression_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -304,7 +306,7 @@ func (self class) SetSizeOverride(size Vector2.XY) { //gd:PortableCompressedText
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size_override, 0|(gdextension.SizeVector2<<4), &struct{ size Vector2.XY }{size})
 }
 func (self class) GetSizeOverride() Vector2.XY { //gd:PortableCompressedTexture2D.get_size_override
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_size_override, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_size_override, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -312,21 +314,21 @@ func (self class) SetKeepCompressedBuffer(keep bool) { //gd:PortableCompressedTe
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keep_compressed_buffer, 0|(gdextension.SizeBool<<4), &struct{ keep bool }{keep})
 }
 func (self class) IsKeepingCompressedBuffer() bool { //gd:PortableCompressedTexture2D.is_keeping_compressed_buffer
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_keeping_compressed_buffer, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_keeping_compressed_buffer, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetBasisuCompressorParams(uastc_level int64, rdo_quality_loss float64) { //gd:PortableCompressedTexture2D.set_basisu_compressor_params
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_basisu_compressor_params, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_basisu_compressor_params, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		uastc_level      int64
 		rdo_quality_loss float64
 	}{uastc_level, rdo_quality_loss})
 }
 func (self class) SetKeepAllCompressedBuffers(keep bool) { //gd:PortableCompressedTexture2D.set_keep_all_compressed_buffers
-	noescape.CallStatic[struct{}](methods.set_keep_all_compressed_buffers, 0|(gdextension.SizeBool<<4), &struct{ keep bool }{keep})
+	jumponly.CallStatic[struct{}](methods.set_keep_all_compressed_buffers, 0|(gdextension.SizeBool<<4), &struct{ keep bool }{keep})
 }
 func (self class) IsKeepingAllCompressedBuffers() bool { //gd:PortableCompressedTexture2D.is_keeping_all_compressed_buffers
-	var r_ret = noescape.CallStatic[bool](methods.is_keeping_all_compressed_buffers, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.CallStatic[bool](methods.is_keeping_all_compressed_buffers, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

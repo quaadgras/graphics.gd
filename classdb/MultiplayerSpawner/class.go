@@ -23,6 +23,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -58,6 +59,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -309,7 +311,7 @@ func (self class) Spawn(data variant.Any) [1]gdclass.Node { //gd:MultiplayerSpaw
 	return ret
 }
 func (self class) GetSpawnPath() Path.ToNode { //gd:MultiplayerSpawner.get_spawn_path
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_spawn_path, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_spawn_path, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -317,15 +319,15 @@ func (self class) SetSpawnPath(path Path.ToNode) { //gd:MultiplayerSpawner.set_s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spawn_path, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
 func (self class) GetSpawnLimit() int64 { //gd:MultiplayerSpawner.get_spawn_limit
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_spawn_limit, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_spawn_limit, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetSpawnLimit(limit int64) { //gd:MultiplayerSpawner.set_spawn_limit
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spawn_limit, 0|(gdextension.SizeInt<<4), &struct{ limit int64 }{limit})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spawn_limit, 0|(gdextension.SizeInt<<4), &struct{ limit int64 }{limit})
 }
 func (self class) GetSpawnFunction() Callable.Function { //gd:MultiplayerSpawner.get_spawn_function
-	var r_ret = noescape.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_spawn_function, gdextension.SizeCallable, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_spawn_function, gdextension.SizeCallable, &struct{}{})
 	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret)))
 	return ret
 }

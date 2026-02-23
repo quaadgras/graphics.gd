@@ -21,6 +21,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -59,6 +60,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -341,7 +343,7 @@ func (self Instance) SetAvoidanceLayers(value int) Instance { //gd:NavigationObs
 }
 
 func (self class) GetRid() RID.Any { //gd:NavigationObstacle2D.get_rid
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
+	var r_ret = jumponly.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -349,7 +351,7 @@ func (self class) SetAvoidanceEnabled(enabled bool) { //gd:NavigationObstacle2D.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_avoidance_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) GetAvoidanceEnabled() bool { //gd:NavigationObstacle2D.get_avoidance_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_avoidance_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_avoidance_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -365,7 +367,7 @@ func (self class) SetRadius(radius float64) { //gd:NavigationObstacle2D.set_radi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 func (self class) GetRadius() float64 { //gd:NavigationObstacle2D.get_radius
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -373,7 +375,7 @@ func (self class) SetVelocity(velocity Vector2.XY) { //gd:NavigationObstacle2D.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_velocity, 0|(gdextension.SizeVector2<<4), &struct{ velocity Vector2.XY }{velocity})
 }
 func (self class) GetVelocity() Vector2.XY { //gd:NavigationObstacle2D.get_velocity
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_velocity, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_velocity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -383,7 +385,7 @@ func (self class) SetVertices(vertices Packed.Array[Vector2.XY]) { //gd:Navigati
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](vertices))})
 }
 func (self class) GetVertices() Packed.Array[Vector2.XY] { //gd:NavigationObstacle2D.get_vertices
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_vertices, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_vertices, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -391,7 +393,7 @@ func (self class) SetAvoidanceLayers(layers int64) { //gd:NavigationObstacle2D.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_avoidance_layers, 0|(gdextension.SizeInt<<4), &struct{ layers int64 }{layers})
 }
 func (self class) GetAvoidanceLayers() int64 { //gd:NavigationObstacle2D.get_avoidance_layers
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_avoidance_layers, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_avoidance_layers, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -407,18 +409,18 @@ func (self class) GetAvoidanceLayerValue(layer_number int64) bool { //gd:Navigat
 	return ret
 }
 func (self class) SetAffectNavigationMesh(enabled bool) { //gd:NavigationObstacle2D.set_affect_navigation_mesh
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_affect_navigation_mesh, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_affect_navigation_mesh, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) GetAffectNavigationMesh() bool { //gd:NavigationObstacle2D.get_affect_navigation_mesh
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_affect_navigation_mesh, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_affect_navigation_mesh, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetCarveNavigationMesh(enabled bool) { //gd:NavigationObstacle2D.set_carve_navigation_mesh
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_carve_navigation_mesh, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_carve_navigation_mesh, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) GetCarveNavigationMesh() bool { //gd:NavigationObstacle2D.get_carve_navigation_mesh
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_carve_navigation_mesh, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_carve_navigation_mesh, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

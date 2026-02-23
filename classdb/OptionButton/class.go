@@ -23,6 +23,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -64,6 +65,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -660,7 +662,7 @@ func (self class) Select(idx int64) { //gd:OptionButton.select_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.select_, 0|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 }
 func (self class) GetSelected() int64 { //gd:OptionButton.get_selected
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selected, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selected, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -678,7 +680,7 @@ func (self class) RemoveItem(idx int64) { //gd:OptionButton.remove_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_item, 0|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 }
 func (self class) GetPopup() [1]gdclass.PopupMenu { //gd:OptionButton.get_popup
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_popup, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_popup, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PopupMenu{gdclass.NewPopupMenu(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
@@ -707,20 +709,20 @@ func (self class) SetFitToLongestItem(fit bool) { //gd:OptionButton.set_fit_to_l
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fit_to_longest_item, 0|(gdextension.SizeBool<<4), &struct{ fit bool }{fit})
 }
 func (self class) IsFitToLongestItem() bool { //gd:OptionButton.is_fit_to_longest_item
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_fit_to_longest_item, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_fit_to_longest_item, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetAllowReselect(allow bool) { //gd:OptionButton.set_allow_reselect
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_reselect, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_reselect, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
 }
 func (self class) GetAllowReselect() bool { //gd:OptionButton.get_allow_reselect
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_reselect, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_reselect, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetDisableShortcuts(disabled bool) { //gd:OptionButton.set_disable_shortcuts
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_shortcuts, 0|(gdextension.SizeBool<<4), &struct{ disabled bool }{disabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_shortcuts, 0|(gdextension.SizeBool<<4), &struct{ disabled bool }{disabled})
 }
 
 /*

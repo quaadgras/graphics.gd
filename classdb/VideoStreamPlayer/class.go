@@ -20,6 +20,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -59,6 +60,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -407,7 +409,7 @@ func (self class) SetStream(stream [1]gdclass.VideoStream) { //gd:VideoStreamPla
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream, 0|(gdextension.SizeObject<<4), &struct{ stream gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetVideoStream(stream[0])[0]))})
 }
 func (self class) GetStream() [1]gdclass.VideoStream { //gd:VideoStreamPlayer.get_stream
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_stream, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_stream, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.VideoStream{gdclass.NewVideoStream(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -426,23 +428,23 @@ func (self class) SetPaused(paused bool) { //gd:VideoStreamPlayer.set_paused
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_paused, 0|(gdextension.SizeBool<<4), &struct{ paused bool }{paused})
 }
 func (self class) IsPaused() bool { //gd:VideoStreamPlayer.is_paused
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_paused, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_paused, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetLoop(loop bool) { //gd:VideoStreamPlayer.set_loop
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), &struct{ loop bool }{loop})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), &struct{ loop bool }{loop})
 }
 func (self class) HasLoop() bool { //gd:VideoStreamPlayer.has_loop
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetVolume(volume float64) { //gd:VideoStreamPlayer.set_volume
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_volume, 0|(gdextension.SizeFloat<<4), &struct{ volume float64 }{volume})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_volume, 0|(gdextension.SizeFloat<<4), &struct{ volume float64 }{volume})
 }
 func (self class) GetVolume() float64 { //gd:VideoStreamPlayer.get_volume
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_volume, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_volume, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -458,7 +460,7 @@ func (self class) SetSpeedScale(speed_scale float64) { //gd:VideoStreamPlayer.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, 0|(gdextension.SizeFloat<<4), &struct{ speed_scale float64 }{speed_scale})
 }
 func (self class) GetSpeedScale() float64 { //gd:VideoStreamPlayer.get_speed_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_speed_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_speed_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -466,7 +468,7 @@ func (self class) SetAudioTrack(track int64) { //gd:VideoStreamPlayer.set_audio_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_audio_track, 0|(gdextension.SizeInt<<4), &struct{ track int64 }{track})
 }
 func (self class) GetAudioTrack() int64 { //gd:VideoStreamPlayer.get_audio_track
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_audio_track, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_audio_track, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -489,10 +491,10 @@ func (self class) GetStreamPosition() float64 { //gd:VideoStreamPlayer.get_strea
 	return ret
 }
 func (self class) SetAutoplay(enabled bool) { //gd:VideoStreamPlayer.set_autoplay
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoplay, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoplay, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) HasAutoplay() bool { //gd:VideoStreamPlayer.has_autoplay
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_autoplay, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_autoplay, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -500,15 +502,15 @@ func (self class) SetExpand(enable bool) { //gd:VideoStreamPlayer.set_expand
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_expand, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) HasExpand() bool { //gd:VideoStreamPlayer.has_expand
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_expand, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_expand, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetBufferingMsec(msec int64) { //gd:VideoStreamPlayer.set_buffering_msec
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffering_msec, 0|(gdextension.SizeInt<<4), &struct{ msec int64 }{msec})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffering_msec, 0|(gdextension.SizeInt<<4), &struct{ msec int64 }{msec})
 }
 func (self class) GetBufferingMsec() int64 { //gd:VideoStreamPlayer.get_buffering_msec
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_buffering_msec, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_buffering_msec, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

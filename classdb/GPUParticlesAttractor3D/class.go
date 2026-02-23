@@ -22,6 +22,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -59,6 +60,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -248,7 +250,7 @@ func (self class) SetCullMask(mask int64) { //gd:GPUParticlesAttractor3D.set_cul
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cull_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
 func (self class) GetCullMask() int64 { //gd:GPUParticlesAttractor3D.get_cull_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cull_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cull_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -256,7 +258,7 @@ func (self class) SetStrength(strength float64) { //gd:GPUParticlesAttractor3D.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_strength, 0|(gdextension.SizeFloat<<4), &struct{ strength float64 }{strength})
 }
 func (self class) GetStrength() float64 { //gd:GPUParticlesAttractor3D.get_strength
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_strength, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_strength, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -264,7 +266,7 @@ func (self class) SetAttenuation(attenuation float64) { //gd:GPUParticlesAttract
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_attenuation, 0|(gdextension.SizeFloat<<4), &struct{ attenuation float64 }{attenuation})
 }
 func (self class) GetAttenuation() float64 { //gd:GPUParticlesAttractor3D.get_attenuation
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_attenuation, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_attenuation, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -272,7 +274,7 @@ func (self class) SetDirectionality(amount float64) { //gd:GPUParticlesAttractor
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_directionality, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 func (self class) GetDirectionality() float64 { //gd:GPUParticlesAttractor3D.get_directionality
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_directionality, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_directionality, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

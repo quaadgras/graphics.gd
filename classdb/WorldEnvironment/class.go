@@ -20,6 +20,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -58,6 +59,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -224,7 +226,7 @@ func (self class) SetEnvironment(env [1]gdclass.Environment) { //gd:WorldEnviron
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment, 0|(gdextension.SizeObject<<4), &struct{ env gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEnvironment(env[0])[0]))})
 }
 func (self class) GetEnvironment() [1]gdclass.Environment { //gd:WorldEnvironment.get_environment
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_environment, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_environment, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Environment{gdclass.NewEnvironment(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -232,7 +234,7 @@ func (self class) SetCameraAttributes(camera_attributes [1]gdclass.CameraAttribu
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera_attributes, 0|(gdextension.SizeObject<<4), &struct{ camera_attributes gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCameraAttributes(camera_attributes[0])[0]))})
 }
 func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes { //gd:WorldEnvironment.get_camera_attributes
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_camera_attributes, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_camera_attributes, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.CameraAttributes{gdclass.NewCameraAttributes(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -240,7 +242,7 @@ func (self class) SetCompositor(compositor [1]gdclass.Compositor) { //gd:WorldEn
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_compositor, 0|(gdextension.SizeObject<<4), &struct{ compositor gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCompositor(compositor[0])[0]))})
 }
 func (self class) GetCompositor() [1]gdclass.Compositor { //gd:WorldEnvironment.get_compositor
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_compositor, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_compositor, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Compositor{gdclass.NewCompositor(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

@@ -16,6 +16,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -54,6 +55,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -383,21 +385,21 @@ func (self Instance) SetLanguage(value string) Instance { //gd:MenuBar.language
 }
 
 func (self class) SetSwitchOnHover(enable bool) { //gd:MenuBar.set_switch_on_hover
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_switch_on_hover, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_switch_on_hover, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsSwitchOnHover() bool { //gd:MenuBar.is_switch_on_hover
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_switch_on_hover, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_switch_on_hover, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetDisableShortcuts(disabled bool) { //gd:MenuBar.set_disable_shortcuts
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_shortcuts, 0|(gdextension.SizeBool<<4), &struct{ disabled bool }{disabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_shortcuts, 0|(gdextension.SizeBool<<4), &struct{ disabled bool }{disabled})
 }
 func (self class) SetPreferGlobalMenu(enabled bool) { //gd:MenuBar.set_prefer_global_menu
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_prefer_global_menu, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsPreferGlobalMenu() bool { //gd:MenuBar.is_prefer_global_menu
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_prefer_global_menu, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_prefer_global_menu, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -415,7 +417,7 @@ func (self class) SetTextDirection(direction Control.TextDirection) { //gd:MenuB
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_direction, 0|(gdextension.SizeInt<<4), &struct{ direction Control.TextDirection }{direction})
 }
 func (self class) GetTextDirection() Control.TextDirection { //gd:MenuBar.get_text_direction
-	var r_ret = noescape.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), methods.get_text_direction, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), methods.get_text_direction, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -423,7 +425,7 @@ func (self class) SetLanguage(language String.Readable) { //gd:MenuBar.set_langu
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_language, 0|(gdextension.SizeString<<4), &struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))})
 }
 func (self class) GetLanguage() String.Readable { //gd:MenuBar.get_language
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -431,7 +433,7 @@ func (self class) SetFlat(enabled bool) { //gd:MenuBar.set_flat
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flat, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsFlat() bool { //gd:MenuBar.is_flat
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flat, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flat, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -439,7 +441,7 @@ func (self class) SetStartIndex(enabled int64) { //gd:MenuBar.set_start_index
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_start_index, 0|(gdextension.SizeInt<<4), &struct{ enabled int64 }{enabled})
 }
 func (self class) GetStartIndex() int64 { //gd:MenuBar.get_start_index
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_start_index, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_start_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -21,6 +21,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -61,6 +62,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -353,28 +355,28 @@ func (self Instance) SetDialogAutowrap(value bool) Instance { //gd:AcceptDialog.
 }
 
 func (self class) GetOkButton() [1]gdclass.Button { //gd:AcceptDialog.get_ok_button
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_ok_button, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_ok_button, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Button{gdclass.NewButton(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) GetLabel() [1]gdclass.Label { //gd:AcceptDialog.get_label
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_label, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_label, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Label{gdclass.NewLabel(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) SetHideOnOk(enabled bool) { //gd:AcceptDialog.set_hide_on_ok
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hide_on_ok, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hide_on_ok, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) GetHideOnOk() bool { //gd:AcceptDialog.get_hide_on_ok
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_hide_on_ok, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_hide_on_ok, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetCloseOnEscape(enabled bool) { //gd:AcceptDialog.set_close_on_escape
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_close_on_escape, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_close_on_escape, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) GetCloseOnEscape() bool { //gd:AcceptDialog.get_close_on_escape
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_close_on_escape, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_close_on_escape, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -418,7 +420,7 @@ func (self class) SetOkButtonText(text String.Readable) { //gd:AcceptDialog.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ok_button_text, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
 func (self class) GetOkButtonText() String.Readable { //gd:AcceptDialog.get_ok_button_text
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_ok_button_text, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_ok_button_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

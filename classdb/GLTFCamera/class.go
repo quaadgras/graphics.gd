@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -48,6 +49,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -297,44 +299,44 @@ func (self class) ToDictionary() Dictionary.Any { //gd:GLTFCamera.to_dictionary
 	return ret
 }
 func (self class) GetPerspective() bool { //gd:GLTFCamera.get_perspective
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_perspective, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_perspective, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPerspective(perspective bool) { //gd:GLTFCamera.set_perspective
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_perspective, 0|(gdextension.SizeBool<<4), &struct{ perspective bool }{perspective})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_perspective, 0|(gdextension.SizeBool<<4), &struct{ perspective bool }{perspective})
 }
 func (self class) GetFov() float64 { //gd:GLTFCamera.get_fov
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fov, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fov, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetFov(fov float64) { //gd:GLTFCamera.set_fov
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fov, 0|(gdextension.SizeFloat<<4), &struct{ fov float64 }{fov})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fov, 0|(gdextension.SizeFloat<<4), &struct{ fov float64 }{fov})
 }
 func (self class) GetSizeMag() float64 { //gd:GLTFCamera.get_size_mag
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_size_mag, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_size_mag, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetSizeMag(size_mag float64) { //gd:GLTFCamera.set_size_mag
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size_mag, 0|(gdextension.SizeFloat<<4), &struct{ size_mag float64 }{size_mag})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size_mag, 0|(gdextension.SizeFloat<<4), &struct{ size_mag float64 }{size_mag})
 }
 func (self class) GetDepthFar() float64 { //gd:GLTFCamera.get_depth_far
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth_far, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth_far, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetDepthFar(zdepth_far float64) { //gd:GLTFCamera.set_depth_far
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth_far, 0|(gdextension.SizeFloat<<4), &struct{ zdepth_far float64 }{zdepth_far})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth_far, 0|(gdextension.SizeFloat<<4), &struct{ zdepth_far float64 }{zdepth_far})
 }
 func (self class) GetDepthNear() float64 { //gd:GLTFCamera.get_depth_near
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth_near, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth_near, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetDepthNear(zdepth_near float64) { //gd:GLTFCamera.set_depth_near
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth_near, 0|(gdextension.SizeFloat<<4), &struct{ zdepth_near float64 }{zdepth_near})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth_near, 0|(gdextension.SizeFloat<<4), &struct{ zdepth_near float64 }{zdepth_near})
 }
 func (o class) AsGLTFCamera() Advanced                { return Advanced(o) }
 func (o Instance) AsGLTFCamera() Instance             { return o }

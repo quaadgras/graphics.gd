@@ -43,6 +43,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -84,6 +85,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -395,7 +397,7 @@ func (self class) SetText(text String.Readable) { //gd:Button.set_text
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
 func (self class) GetText() String.Readable { //gd:Button.get_text
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_text, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -403,7 +405,7 @@ func (self class) SetTextOverrunBehavior(overrun_behavior TextServer.OverrunBeha
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_overrun_behavior, 0|(gdextension.SizeInt<<4), &struct{ overrun_behavior TextServer.OverrunBehavior }{overrun_behavior})
 }
 func (self class) GetTextOverrunBehavior() TextServer.OverrunBehavior { //gd:Button.get_text_overrun_behavior
-	var r_ret = noescape.Call[TextServer.OverrunBehavior](gd.ObjectChecked(self.AsObject()), methods.get_text_overrun_behavior, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextServer.OverrunBehavior](gd.ObjectChecked(self.AsObject()), methods.get_text_overrun_behavior, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -411,7 +413,7 @@ func (self class) SetAutowrapMode(autowrap_mode TextServer.AutowrapMode) { //gd:
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autowrap_mode, 0|(gdextension.SizeInt<<4), &struct{ autowrap_mode TextServer.AutowrapMode }{autowrap_mode})
 }
 func (self class) GetAutowrapMode() TextServer.AutowrapMode { //gd:Button.get_autowrap_mode
-	var r_ret = noescape.Call[TextServer.AutowrapMode](gd.ObjectChecked(self.AsObject()), methods.get_autowrap_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextServer.AutowrapMode](gd.ObjectChecked(self.AsObject()), methods.get_autowrap_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -419,7 +421,7 @@ func (self class) SetAutowrapTrimFlags(autowrap_trim_flags TextServer.LineBreakF
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autowrap_trim_flags, 0|(gdextension.SizeInt<<4), &struct{ autowrap_trim_flags TextServer.LineBreakFlag }{autowrap_trim_flags})
 }
 func (self class) GetAutowrapTrimFlags() TextServer.LineBreakFlag { //gd:Button.get_autowrap_trim_flags
-	var r_ret = noescape.Call[TextServer.LineBreakFlag](gd.ObjectChecked(self.AsObject()), methods.get_autowrap_trim_flags, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextServer.LineBreakFlag](gd.ObjectChecked(self.AsObject()), methods.get_autowrap_trim_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -427,7 +429,7 @@ func (self class) SetTextDirection(direction Control.TextDirection) { //gd:Butto
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_direction, 0|(gdextension.SizeInt<<4), &struct{ direction Control.TextDirection }{direction})
 }
 func (self class) GetTextDirection() Control.TextDirection { //gd:Button.get_text_direction
-	var r_ret = noescape.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), methods.get_text_direction, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), methods.get_text_direction, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -435,7 +437,7 @@ func (self class) SetLanguage(language String.Readable) { //gd:Button.set_langua
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_language, 0|(gdextension.SizeString<<4), &struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))})
 }
 func (self class) GetLanguage() String.Readable { //gd:Button.get_language
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -443,7 +445,7 @@ func (self class) SetButtonIcon(texture [1]gdclass.Texture2D) { //gd:Button.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_button_icon, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetButtonIcon() [1]gdclass.Texture2D { //gd:Button.get_button_icon
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_button_icon, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_button_icon, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -451,7 +453,7 @@ func (self class) SetFlat(enabled bool) { //gd:Button.set_flat
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flat, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsFlat() bool { //gd:Button.is_flat
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flat, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flat, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -459,7 +461,7 @@ func (self class) SetClipText(enabled bool) { //gd:Button.set_clip_text
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clip_text, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) GetClipText() bool { //gd:Button.get_clip_text
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_clip_text, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_clip_text, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -467,7 +469,7 @@ func (self class) SetTextAlignment(alignment GUI.HorizontalAlignment) { //gd:But
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_alignment, 0|(gdextension.SizeInt<<4), &struct{ alignment GUI.HorizontalAlignment }{alignment})
 }
 func (self class) GetTextAlignment() GUI.HorizontalAlignment { //gd:Button.get_text_alignment
-	var r_ret = noescape.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_text_alignment, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_text_alignment, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -475,7 +477,7 @@ func (self class) SetIconAlignment(icon_alignment GUI.HorizontalAlignment) { //g
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon_alignment, 0|(gdextension.SizeInt<<4), &struct{ icon_alignment GUI.HorizontalAlignment }{icon_alignment})
 }
 func (self class) GetIconAlignment() GUI.HorizontalAlignment { //gd:Button.get_icon_alignment
-	var r_ret = noescape.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_icon_alignment, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_icon_alignment, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -483,7 +485,7 @@ func (self class) SetVerticalIconAlignment(vertical_icon_alignment GUI.VerticalA
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical_icon_alignment, 0|(gdextension.SizeInt<<4), &struct{ vertical_icon_alignment GUI.VerticalAlignment }{vertical_icon_alignment})
 }
 func (self class) GetVerticalIconAlignment() GUI.VerticalAlignment { //gd:Button.get_vertical_icon_alignment
-	var r_ret = noescape.Call[GUI.VerticalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_vertical_icon_alignment, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[GUI.VerticalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_vertical_icon_alignment, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -491,7 +493,7 @@ func (self class) SetExpandIcon(enabled bool) { //gd:Button.set_expand_icon
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_expand_icon, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsExpandIcon() bool { //gd:Button.is_expand_icon
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_expand_icon, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_expand_icon, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

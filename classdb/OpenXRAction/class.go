@@ -20,6 +20,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -55,6 +56,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -213,7 +215,7 @@ func (self class) SetLocalizedName(localized_name String.Readable) { //gd:OpenXR
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_localized_name, 0|(gdextension.SizeString<<4), &struct{ localized_name gdextension.String }{pointers.Get(gd.InternalString(localized_name))})
 }
 func (self class) GetLocalizedName() String.Readable { //gd:OpenXRAction.get_localized_name
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_localized_name, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_localized_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -221,7 +223,7 @@ func (self class) SetActionType(action_type ActionType) { //gd:OpenXRAction.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action_type, 0|(gdextension.SizeInt<<4), &struct{ action_type ActionType }{action_type})
 }
 func (self class) GetActionType() ActionType { //gd:OpenXRAction.get_action_type
-	var r_ret = noescape.Call[ActionType](gd.ObjectChecked(self.AsObject()), methods.get_action_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[ActionType](gd.ObjectChecked(self.AsObject()), methods.get_action_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -231,7 +233,7 @@ func (self class) SetToplevelPaths(toplevel_paths Packed.Strings) { //gd:OpenXRA
 	}{pointers.Get(gd.InternalPackedStrings(toplevel_paths))})
 }
 func (self class) GetToplevelPaths() Packed.Strings { //gd:OpenXRAction.get_toplevel_paths
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_toplevel_paths, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_toplevel_paths, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }

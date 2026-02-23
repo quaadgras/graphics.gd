@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -50,6 +51,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -224,7 +226,7 @@ func (self class) SetLength(length float64) { //gd:DampedSpringJoint2D.set_lengt
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
 func (self class) GetLength() float64 { //gd:DampedSpringJoint2D.get_length
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -232,7 +234,7 @@ func (self class) SetRestLength(rest_length float64) { //gd:DampedSpringJoint2D.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rest_length, 0|(gdextension.SizeFloat<<4), &struct{ rest_length float64 }{rest_length})
 }
 func (self class) GetRestLength() float64 { //gd:DampedSpringJoint2D.get_rest_length
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rest_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rest_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -240,7 +242,7 @@ func (self class) SetStiffness(stiffness float64) { //gd:DampedSpringJoint2D.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stiffness, 0|(gdextension.SizeFloat<<4), &struct{ stiffness float64 }{stiffness})
 }
 func (self class) GetStiffness() float64 { //gd:DampedSpringJoint2D.get_stiffness
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_stiffness, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_stiffness, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -248,7 +250,7 @@ func (self class) SetDamping(damping float64) { //gd:DampedSpringJoint2D.set_dam
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_damping, 0|(gdextension.SizeFloat<<4), &struct{ damping float64 }{damping})
 }
 func (self class) GetDamping() float64 { //gd:DampedSpringJoint2D.get_damping
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_damping, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_damping, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

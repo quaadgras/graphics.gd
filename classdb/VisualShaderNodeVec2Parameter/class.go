@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -50,6 +51,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -195,7 +197,7 @@ func (self class) SetDefaultValueEnabled(enabled bool) { //gd:VisualShaderNodeVe
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_value_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsDefaultValueEnabled() bool { //gd:VisualShaderNodeVec2Parameter.is_default_value_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_default_value_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_default_value_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -203,7 +205,7 @@ func (self class) SetDefaultValue(value Vector2.XY) { //gd:VisualShaderNodeVec2P
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_value, 0|(gdextension.SizeVector2<<4), &struct{ value Vector2.XY }{value})
 }
 func (self class) GetDefaultValue() Vector2.XY { //gd:VisualShaderNodeVec2Parameter.get_default_value
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_default_value, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_default_value, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

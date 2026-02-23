@@ -18,6 +18,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -56,6 +57,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -281,7 +283,7 @@ func (self class) SetDensity(density float64) { //gd:FogMaterial.set_density
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_density, 0|(gdextension.SizeFloat<<4), &struct{ density float64 }{density})
 }
 func (self class) GetDensity() float64 { //gd:FogMaterial.get_density
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_density, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_density, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -289,7 +291,7 @@ func (self class) SetAlbedo(albedo Color.RGBA) { //gd:FogMaterial.set_albedo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_albedo, 0|(gdextension.SizeColor<<4), &struct{ albedo Color.RGBA }{albedo})
 }
 func (self class) GetAlbedo() Color.RGBA { //gd:FogMaterial.get_albedo
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_albedo, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_albedo, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -297,7 +299,7 @@ func (self class) SetEmission(emission Color.RGBA) { //gd:FogMaterial.set_emissi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission, 0|(gdextension.SizeColor<<4), &struct{ emission Color.RGBA }{emission})
 }
 func (self class) GetEmission() Color.RGBA { //gd:FogMaterial.get_emission
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_emission, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_emission, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -305,7 +307,7 @@ func (self class) SetHeightFalloff(height_falloff float64) { //gd:FogMaterial.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height_falloff, 0|(gdextension.SizeFloat<<4), &struct{ height_falloff float64 }{height_falloff})
 }
 func (self class) GetHeightFalloff() float64 { //gd:FogMaterial.get_height_falloff
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height_falloff, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height_falloff, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -313,7 +315,7 @@ func (self class) SetEdgeFade(edge_fade float64) { //gd:FogMaterial.set_edge_fad
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edge_fade, 0|(gdextension.SizeFloat<<4), &struct{ edge_fade float64 }{edge_fade})
 }
 func (self class) GetEdgeFade() float64 { //gd:FogMaterial.get_edge_fade
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_edge_fade, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_edge_fade, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -321,7 +323,7 @@ func (self class) SetDensityTexture(density_texture [1]gdclass.Texture3D) { //gd
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_density_texture, 0|(gdextension.SizeObject<<4), &struct{ density_texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture3D(density_texture[0])[0]))})
 }
 func (self class) GetDensityTexture() [1]gdclass.Texture3D { //gd:FogMaterial.get_density_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_density_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_density_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture3D{gdclass.NewTexture3D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

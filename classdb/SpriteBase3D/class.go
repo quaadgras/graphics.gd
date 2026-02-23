@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -58,6 +59,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -516,7 +518,7 @@ func (self class) SetCentered(centered bool) { //gd:SpriteBase3D.set_centered
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_centered, 0|(gdextension.SizeBool<<4), &struct{ centered bool }{centered})
 }
 func (self class) IsCentered() bool { //gd:SpriteBase3D.is_centered
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_centered, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_centered, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -524,7 +526,7 @@ func (self class) SetOffset(offset Vector2.XY) { //gd:SpriteBase3D.set_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
 func (self class) GetOffset() Vector2.XY { //gd:SpriteBase3D.get_offset
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -532,7 +534,7 @@ func (self class) SetFlipH(flip_h bool) { //gd:SpriteBase3D.set_flip_h
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flip_h, 0|(gdextension.SizeBool<<4), &struct{ flip_h bool }{flip_h})
 }
 func (self class) IsFlippedH() bool { //gd:SpriteBase3D.is_flipped_h
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flipped_h, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flipped_h, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -540,7 +542,7 @@ func (self class) SetFlipV(flip_v bool) { //gd:SpriteBase3D.set_flip_v
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flip_v, 0|(gdextension.SizeBool<<4), &struct{ flip_v bool }{flip_v})
 }
 func (self class) IsFlippedV() bool { //gd:SpriteBase3D.is_flipped_v
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flipped_v, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flipped_v, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -548,7 +550,7 @@ func (self class) SetModulate(modulate Color.RGBA) { //gd:SpriteBase3D.set_modul
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modulate, 0|(gdextension.SizeColor<<4), &struct{ modulate Color.RGBA }{modulate})
 }
 func (self class) GetModulate() Color.RGBA { //gd:SpriteBase3D.get_modulate
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_modulate, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_modulate, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -556,7 +558,7 @@ func (self class) SetRenderPriority(priority int64) { //gd:SpriteBase3D.set_rend
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_render_priority, 0|(gdextension.SizeInt<<4), &struct{ priority int64 }{priority})
 }
 func (self class) GetRenderPriority() int64 { //gd:SpriteBase3D.get_render_priority
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_render_priority, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_render_priority, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -564,7 +566,7 @@ func (self class) SetPixelSize(pixel_size float64) { //gd:SpriteBase3D.set_pixel
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pixel_size, 0|(gdextension.SizeFloat<<4), &struct{ pixel_size float64 }{pixel_size})
 }
 func (self class) GetPixelSize() float64 { //gd:SpriteBase3D.get_pixel_size
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pixel_size, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pixel_size, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -572,7 +574,7 @@ func (self class) SetAxis(axis Vector3.Axis) { //gd:SpriteBase3D.set_axis
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis, 0|(gdextension.SizeInt<<4), &struct{ axis Vector3.Axis }{axis})
 }
 func (self class) GetAxis() Vector3.Axis { //gd:SpriteBase3D.get_axis
-	var r_ret = noescape.Call[Vector3.Axis](gd.ObjectChecked(self.AsObject()), methods.get_axis, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.Axis](gd.ObjectChecked(self.AsObject()), methods.get_axis, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -591,7 +593,7 @@ func (self class) SetAlphaCutMode(mode AlphaCutMode) { //gd:SpriteBase3D.set_alp
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_cut_mode, 0|(gdextension.SizeInt<<4), &struct{ mode AlphaCutMode }{mode})
 }
 func (self class) GetAlphaCutMode() AlphaCutMode { //gd:SpriteBase3D.get_alpha_cut_mode
-	var r_ret = noescape.Call[AlphaCutMode](gd.ObjectChecked(self.AsObject()), methods.get_alpha_cut_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[AlphaCutMode](gd.ObjectChecked(self.AsObject()), methods.get_alpha_cut_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -599,7 +601,7 @@ func (self class) SetAlphaScissorThreshold(threshold float64) { //gd:SpriteBase3
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_scissor_threshold, 0|(gdextension.SizeFloat<<4), &struct{ threshold float64 }{threshold})
 }
 func (self class) GetAlphaScissorThreshold() float64 { //gd:SpriteBase3D.get_alpha_scissor_threshold
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_alpha_scissor_threshold, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_alpha_scissor_threshold, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -607,7 +609,7 @@ func (self class) SetAlphaHashScale(threshold float64) { //gd:SpriteBase3D.set_a
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_hash_scale, 0|(gdextension.SizeFloat<<4), &struct{ threshold float64 }{threshold})
 }
 func (self class) GetAlphaHashScale() float64 { //gd:SpriteBase3D.get_alpha_hash_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_alpha_hash_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_alpha_hash_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -617,7 +619,7 @@ func (self class) SetAlphaAntialiasing(alpha_aa BaseMaterial3D.AlphaAntiAliasing
 	}{alpha_aa})
 }
 func (self class) GetAlphaAntialiasing() BaseMaterial3D.AlphaAntiAliasing { //gd:SpriteBase3D.get_alpha_antialiasing
-	var r_ret = noescape.Call[BaseMaterial3D.AlphaAntiAliasing](gd.ObjectChecked(self.AsObject()), methods.get_alpha_antialiasing, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[BaseMaterial3D.AlphaAntiAliasing](gd.ObjectChecked(self.AsObject()), methods.get_alpha_antialiasing, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -625,7 +627,7 @@ func (self class) SetAlphaAntialiasingEdge(edge float64) { //gd:SpriteBase3D.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_antialiasing_edge, 0|(gdextension.SizeFloat<<4), &struct{ edge float64 }{edge})
 }
 func (self class) GetAlphaAntialiasingEdge() float64 { //gd:SpriteBase3D.get_alpha_antialiasing_edge
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_alpha_antialiasing_edge, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_alpha_antialiasing_edge, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -633,7 +635,7 @@ func (self class) SetBillboardMode(mode BaseMaterial3D.BillboardMode) { //gd:Spr
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_billboard_mode, 0|(gdextension.SizeInt<<4), &struct{ mode BaseMaterial3D.BillboardMode }{mode})
 }
 func (self class) GetBillboardMode() BaseMaterial3D.BillboardMode { //gd:SpriteBase3D.get_billboard_mode
-	var r_ret = noescape.Call[BaseMaterial3D.BillboardMode](gd.ObjectChecked(self.AsObject()), methods.get_billboard_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[BaseMaterial3D.BillboardMode](gd.ObjectChecked(self.AsObject()), methods.get_billboard_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -641,7 +643,7 @@ func (self class) SetTextureFilter(mode BaseMaterial3D.TextureFilter) { //gd:Spr
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_filter, 0|(gdextension.SizeInt<<4), &struct{ mode BaseMaterial3D.TextureFilter }{mode})
 }
 func (self class) GetTextureFilter() BaseMaterial3D.TextureFilter { //gd:SpriteBase3D.get_texture_filter
-	var r_ret = noescape.Call[BaseMaterial3D.TextureFilter](gd.ObjectChecked(self.AsObject()), methods.get_texture_filter, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[BaseMaterial3D.TextureFilter](gd.ObjectChecked(self.AsObject()), methods.get_texture_filter, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

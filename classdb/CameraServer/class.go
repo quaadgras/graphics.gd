@@ -21,6 +21,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -56,6 +57,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -212,11 +214,11 @@ func SetMonitoringFeeds(value bool) { //gd:CameraServer.monitoring_feeds
 
 func (self class) SetMonitoringFeeds(is_monitoring_feeds bool) { //gd:CameraServer.set_monitoring_feeds
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_monitoring_feeds, 0|(gdextension.SizeBool<<4), &struct{ is_monitoring_feeds bool }{is_monitoring_feeds})
+	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_monitoring_feeds, 0|(gdextension.SizeBool<<4), &struct{ is_monitoring_feeds bool }{is_monitoring_feeds})
 }
 func (self class) IsMonitoringFeeds() bool { //gd:CameraServer.is_monitoring_feeds
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_monitoring_feeds, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_monitoring_feeds, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

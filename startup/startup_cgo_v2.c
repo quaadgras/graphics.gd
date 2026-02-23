@@ -1190,6 +1190,10 @@ result_64 gd_object_unsafe_call_64(uintptr_t obj, uintptr_t method, UINT64(shape
     return result;
 };
 
+uintptr_t gd_ptrcall_fn_addr() {
+    return (uintptr_t)gdextension_object_method_bind_ptrcall;
+}
+
 GDExtensionBool cgo_class_get_category_func(GDExtensionScriptInstanceDataPtr instance, GDExtensionPropertyInfo *info) {
     property_list list = { .info = info };
     return go_on_extension_script_categorization((uintptr_t)instance, (uintptr_t)&list);

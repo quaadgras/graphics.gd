@@ -19,6 +19,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -54,6 +55,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -306,15 +308,15 @@ func (self class) GetModificationCount() int64 { //gd:SkeletonModificationStack2
 	return ret
 }
 func (self class) GetIsSetup() bool { //gd:SkeletonModificationStack2D.get_is_setup
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_setup, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_setup, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetEnabled(enabled bool) { //gd:SkeletonModificationStack2D.set_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) GetEnabled() bool { //gd:SkeletonModificationStack2D.get_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -322,12 +324,12 @@ func (self class) SetStrength(strength float64) { //gd:SkeletonModificationStack
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_strength, 0|(gdextension.SizeFloat<<4), &struct{ strength float64 }{strength})
 }
 func (self class) GetStrength() float64 { //gd:SkeletonModificationStack2D.get_strength
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_strength, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_strength, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetSkeleton() [1]gdclass.Skeleton2D { //gd:SkeletonModificationStack2D.get_skeleton
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Skeleton2D{gdclass.NewSkeleton2D(gdreference.LetObject(r_ret))}
 	return ret
 }

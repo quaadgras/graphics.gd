@@ -21,6 +21,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -59,6 +60,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -203,7 +205,7 @@ func (self class) SetEnableMode(mode EnableMode) { //gd:VisibleOnScreenEnabler3D
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_mode, 0|(gdextension.SizeInt<<4), &struct{ mode EnableMode }{mode})
 }
 func (self class) GetEnableMode() EnableMode { //gd:VisibleOnScreenEnabler3D.get_enable_mode
-	var r_ret = noescape.Call[EnableMode](gd.ObjectChecked(self.AsObject()), methods.get_enable_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[EnableMode](gd.ObjectChecked(self.AsObject()), methods.get_enable_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -211,7 +213,7 @@ func (self class) SetEnableNodePath(path Path.ToNode) { //gd:VisibleOnScreenEnab
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_node_path, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
 func (self class) GetEnableNodePath() Path.ToNode { //gd:VisibleOnScreenEnabler3D.get_enable_node_path
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_enable_node_path, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_enable_node_path, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

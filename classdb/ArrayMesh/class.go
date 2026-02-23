@@ -55,6 +55,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -94,6 +95,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -502,7 +504,7 @@ func (self class) SetBlendShapeMode(mode Mesh.BlendShapeMode) { //gd:ArrayMesh.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_shape_mode, 0|(gdextension.SizeInt<<4), &struct{ mode Mesh.BlendShapeMode }{mode})
 }
 func (self class) GetBlendShapeMode() Mesh.BlendShapeMode { //gd:ArrayMesh.get_blend_shape_mode
-	var r_ret = noescape.Call[Mesh.BlendShapeMode](gd.ObjectChecked(self.AsObject()), methods.get_blend_shape_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Mesh.BlendShapeMode](gd.ObjectChecked(self.AsObject()), methods.get_blend_shape_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -593,7 +595,7 @@ func (self class) SetCustomAabb(aabb AABB.PositionSize) { //gd:ArrayMesh.set_cus
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_aabb, 0|(gdextension.SizeAABB<<4), &struct{ aabb AABB.PositionSize }{aabb})
 }
 func (self class) GetCustomAabb() AABB.PositionSize { //gd:ArrayMesh.get_custom_aabb
-	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_custom_aabb, gdextension.SizeAABB, &struct{}{})
+	var r_ret = jumponly.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_custom_aabb, gdextension.SizeAABB, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -601,7 +603,7 @@ func (self class) SetShadowMesh(mesh [1]gdclass.ArrayMesh) { //gd:ArrayMesh.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetArrayMesh(mesh[0])[0]))})
 }
 func (self class) GetShadowMesh() [1]gdclass.ArrayMesh { //gd:ArrayMesh.get_shadow_mesh
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shadow_mesh, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shadow_mesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ArrayMesh{gdclass.NewArrayMesh(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

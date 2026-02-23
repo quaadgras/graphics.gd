@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -49,6 +50,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -250,7 +252,7 @@ func (self Instance) SetInstanceMaterials(value []Material.Instance) Instance { 
 }
 
 func (self class) GetOriginalName() String.Readable { //gd:GLTFMesh.get_original_name
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_name, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -258,7 +260,7 @@ func (self class) SetOriginalName(original_name String.Readable) { //gd:GLTFMesh
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_original_name, 0|(gdextension.SizeString<<4), &struct{ original_name gdextension.String }{pointers.Get(gd.InternalString(original_name))})
 }
 func (self class) GetMesh() [1]gdclass.ImporterMesh { //gd:GLTFMesh.get_mesh
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ImporterMesh{gdclass.NewImporterMesh(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -266,7 +268,7 @@ func (self class) SetMesh(mesh [1]gdclass.ImporterMesh) { //gd:GLTFMesh.set_mesh
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetImporterMesh(mesh[0])[0]))})
 }
 func (self class) GetBlendWeights() Packed.Array[float32] { //gd:GLTFMesh.get_blend_weights
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_blend_weights, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_blend_weights, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -276,7 +278,7 @@ func (self class) SetBlendWeights(blend_weights Packed.Array[float32]) { //gd:GL
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](blend_weights))})
 }
 func (self class) GetInstanceMaterials() Array.Contains[[1]gdclass.Material] { //gd:GLTFMesh.get_instance_materials
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_instance_materials, gdextension.SizeArray, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_instance_materials, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Material]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

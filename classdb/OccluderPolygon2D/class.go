@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -50,6 +51,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -210,7 +212,7 @@ func (self class) SetClosed(closed bool) { //gd:OccluderPolygon2D.set_closed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_closed, 0|(gdextension.SizeBool<<4), &struct{ closed bool }{closed})
 }
 func (self class) IsClosed() bool { //gd:OccluderPolygon2D.is_closed
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_closed, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_closed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -218,7 +220,7 @@ func (self class) SetCullMode(cull_mode CullMode) { //gd:OccluderPolygon2D.set_c
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cull_mode, 0|(gdextension.SizeInt<<4), &struct{ cull_mode CullMode }{cull_mode})
 }
 func (self class) GetCullMode() CullMode { //gd:OccluderPolygon2D.get_cull_mode
-	var r_ret = noescape.Call[CullMode](gd.ObjectChecked(self.AsObject()), methods.get_cull_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[CullMode](gd.ObjectChecked(self.AsObject()), methods.get_cull_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -228,7 +230,7 @@ func (self class) SetPolygon(polygon Packed.Array[Vector2.XY]) { //gd:OccluderPo
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))})
 }
 func (self class) GetPolygon() Packed.Array[Vector2.XY] { //gd:OccluderPolygon2D.get_polygon
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_polygon, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_polygon, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }

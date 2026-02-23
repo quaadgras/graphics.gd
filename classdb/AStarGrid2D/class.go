@@ -43,6 +43,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -80,6 +81,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -668,7 +670,7 @@ func (self class) SetRegion(region Rect2i.PositionSize) { //gd:AStarGrid2D.set_r
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_region, 0|(gdextension.SizeRect2i<<4), &struct{ region Rect2i.PositionSize }{region})
 }
 func (self class) GetRegion() Rect2i.PositionSize { //gd:AStarGrid2D.get_region
-	var r_ret = noescape.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_region, gdextension.SizeRect2i, &struct{}{})
+	var r_ret = jumponly.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_region, gdextension.SizeRect2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -676,7 +678,7 @@ func (self class) SetSize(size Vector2i.XY) { //gd:AStarGrid2D.set_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector2i<<4), &struct{ size Vector2i.XY }{size})
 }
 func (self class) GetSize() Vector2i.XY { //gd:AStarGrid2D.get_size
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = jumponly.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -684,7 +686,7 @@ func (self class) SetOffset(offset Vector2.XY) { //gd:AStarGrid2D.set_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
 func (self class) GetOffset() Vector2.XY { //gd:AStarGrid2D.get_offset
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -692,7 +694,7 @@ func (self class) SetCellSize(cell_size Vector2.XY) { //gd:AStarGrid2D.set_cell_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cell_size, 0|(gdextension.SizeVector2<<4), &struct{ cell_size Vector2.XY }{cell_size})
 }
 func (self class) GetCellSize() Vector2.XY { //gd:AStarGrid2D.get_cell_size
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_cell_size, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_cell_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -700,7 +702,7 @@ func (self class) SetCellShape(cell_shape CellShape) { //gd:AStarGrid2D.set_cell
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cell_shape, 0|(gdextension.SizeInt<<4), &struct{ cell_shape CellShape }{cell_shape})
 }
 func (self class) GetCellShape() CellShape { //gd:AStarGrid2D.get_cell_shape
-	var r_ret = noescape.Call[CellShape](gd.ObjectChecked(self.AsObject()), methods.get_cell_shape, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[CellShape](gd.ObjectChecked(self.AsObject()), methods.get_cell_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -718,7 +720,7 @@ func (self class) IsInBoundsv(id Vector2i.XY) bool { //gd:AStarGrid2D.is_in_boun
 	return ret
 }
 func (self class) IsDirty() bool { //gd:AStarGrid2D.is_dirty
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dirty, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dirty, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -726,10 +728,10 @@ func (self class) Update() { //gd:AStarGrid2D.update
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update, 0, &struct{}{})
 }
 func (self class) SetJumpingEnabled(enabled bool) { //gd:AStarGrid2D.set_jumping_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_jumping_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_jumping_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsJumpingEnabled() bool { //gd:AStarGrid2D.is_jumping_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_jumping_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_jumping_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -737,7 +739,7 @@ func (self class) SetDiagonalMode(mode DiagonalMode) { //gd:AStarGrid2D.set_diag
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_diagonal_mode, 0|(gdextension.SizeInt<<4), &struct{ mode DiagonalMode }{mode})
 }
 func (self class) GetDiagonalMode() DiagonalMode { //gd:AStarGrid2D.get_diagonal_mode
-	var r_ret = noescape.Call[DiagonalMode](gd.ObjectChecked(self.AsObject()), methods.get_diagonal_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DiagonalMode](gd.ObjectChecked(self.AsObject()), methods.get_diagonal_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -745,7 +747,7 @@ func (self class) SetDefaultComputeHeuristic(heuristic Heuristic) { //gd:AStarGr
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_compute_heuristic, 0|(gdextension.SizeInt<<4), &struct{ heuristic Heuristic }{heuristic})
 }
 func (self class) GetDefaultComputeHeuristic() Heuristic { //gd:AStarGrid2D.get_default_compute_heuristic
-	var r_ret = noescape.Call[Heuristic](gd.ObjectChecked(self.AsObject()), methods.get_default_compute_heuristic, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Heuristic](gd.ObjectChecked(self.AsObject()), methods.get_default_compute_heuristic, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -753,7 +755,7 @@ func (self class) SetDefaultEstimateHeuristic(heuristic Heuristic) { //gd:AStarG
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_estimate_heuristic, 0|(gdextension.SizeInt<<4), &struct{ heuristic Heuristic }{heuristic})
 }
 func (self class) GetDefaultEstimateHeuristic() Heuristic { //gd:AStarGrid2D.get_default_estimate_heuristic
-	var r_ret = noescape.Call[Heuristic](gd.ObjectChecked(self.AsObject()), methods.get_default_estimate_heuristic, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Heuristic](gd.ObjectChecked(self.AsObject()), methods.get_default_estimate_heuristic, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

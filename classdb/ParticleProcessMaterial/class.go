@@ -18,6 +18,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -58,6 +59,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -1974,7 +1976,7 @@ func (self class) SetDirection(degrees Vector3.XYZ) { //gd:ParticleProcessMateri
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_direction, 0|(gdextension.SizeVector3<<4), &struct{ degrees Vector3.XYZ }{degrees})
 }
 func (self class) GetDirection() Vector3.XYZ { //gd:ParticleProcessMaterial.get_direction
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_direction, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_direction, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1982,7 +1984,7 @@ func (self class) SetInheritVelocityRatio(ratio float64) { //gd:ParticleProcessM
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inherit_velocity_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
 }
 func (self class) GetInheritVelocityRatio() float64 { //gd:ParticleProcessMaterial.get_inherit_velocity_ratio
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_inherit_velocity_ratio, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_inherit_velocity_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1990,7 +1992,7 @@ func (self class) SetSpread(degrees float64) { //gd:ParticleProcessMaterial.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spread, 0|(gdextension.SizeFloat<<4), &struct{ degrees float64 }{degrees})
 }
 func (self class) GetSpread() float64 { //gd:ParticleProcessMaterial.get_spread
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_spread, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_spread, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1998,7 +2000,7 @@ func (self class) SetFlatness(amount float64) { //gd:ParticleProcessMaterial.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flatness, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 func (self class) GetFlatness() float64 { //gd:ParticleProcessMaterial.get_flatness
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_flatness, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_flatness, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2050,7 +2052,7 @@ func (self class) SetColor(color Color.RGBA) { //gd:ParticleProcessMaterial.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetColor() Color.RGBA { //gd:ParticleProcessMaterial.get_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2058,7 +2060,7 @@ func (self class) SetColorRamp(ramp [1]gdclass.Texture2D) { //gd:ParticleProcess
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_ramp, 0|(gdextension.SizeObject<<4), &struct{ ramp gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(ramp[0])[0]))})
 }
 func (self class) GetColorRamp() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_color_ramp
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_ramp, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_ramp, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -2066,7 +2068,7 @@ func (self class) SetAlphaCurve(curve [1]gdclass.Texture2D) { //gd:ParticleProce
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(curve[0])[0]))})
 }
 func (self class) GetAlphaCurve() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_alpha_curve
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_alpha_curve, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_alpha_curve, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -2074,7 +2076,7 @@ func (self class) SetEmissionCurve(curve [1]gdclass.Texture2D) { //gd:ParticlePr
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(curve[0])[0]))})
 }
 func (self class) GetEmissionCurve() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_emission_curve
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_emission_curve, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_emission_curve, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -2082,7 +2084,7 @@ func (self class) SetColorInitialRamp(ramp [1]gdclass.Texture2D) { //gd:Particle
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_initial_ramp, 0|(gdextension.SizeObject<<4), &struct{ ramp gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(ramp[0])[0]))})
 }
 func (self class) GetColorInitialRamp() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_color_initial_ramp
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_initial_ramp, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_initial_ramp, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -2090,7 +2092,7 @@ func (self class) SetVelocityLimitCurve(curve [1]gdclass.Texture2D) { //gd:Parti
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_velocity_limit_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(curve[0])[0]))})
 }
 func (self class) GetVelocityLimitCurve() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_velocity_limit_curve
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_velocity_limit_curve, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_velocity_limit_curve, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -2109,7 +2111,7 @@ func (self class) SetVelocityPivot(pivot Vector3.XYZ) { //gd:ParticleProcessMate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_velocity_pivot, 0|(gdextension.SizeVector3<<4), &struct{ pivot Vector3.XYZ }{pivot})
 }
 func (self class) GetVelocityPivot() Vector3.XYZ { //gd:ParticleProcessMaterial.get_velocity_pivot
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_velocity_pivot, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_velocity_pivot, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2117,7 +2119,7 @@ func (self class) SetEmissionShape(shape EmissionShape) { //gd:ParticleProcessMa
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_shape, 0|(gdextension.SizeInt<<4), &struct{ shape EmissionShape }{shape})
 }
 func (self class) GetEmissionShape() EmissionShape { //gd:ParticleProcessMaterial.get_emission_shape
-	var r_ret = noescape.Call[EmissionShape](gd.ObjectChecked(self.AsObject()), methods.get_emission_shape, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[EmissionShape](gd.ObjectChecked(self.AsObject()), methods.get_emission_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2125,7 +2127,7 @@ func (self class) SetEmissionSphereRadius(radius float64) { //gd:ParticleProcess
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_sphere_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 func (self class) GetEmissionSphereRadius() float64 { //gd:ParticleProcessMaterial.get_emission_sphere_radius
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_sphere_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_sphere_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2133,7 +2135,7 @@ func (self class) SetEmissionBoxExtents(extents Vector3.XYZ) { //gd:ParticleProc
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_box_extents, 0|(gdextension.SizeVector3<<4), &struct{ extents Vector3.XYZ }{extents})
 }
 func (self class) GetEmissionBoxExtents() Vector3.XYZ { //gd:ParticleProcessMaterial.get_emission_box_extents
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_emission_box_extents, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_emission_box_extents, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2141,7 +2143,7 @@ func (self class) SetEmissionPointTexture(texture [1]gdclass.Texture2D) { //gd:P
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_point_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetEmissionPointTexture() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_emission_point_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_emission_point_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_emission_point_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -2149,7 +2151,7 @@ func (self class) SetEmissionNormalTexture(texture [1]gdclass.Texture2D) { //gd:
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_normal_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetEmissionNormalTexture() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_emission_normal_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_emission_normal_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_emission_normal_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -2157,7 +2159,7 @@ func (self class) SetEmissionColorTexture(texture [1]gdclass.Texture2D) { //gd:P
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_color_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetEmissionColorTexture() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_emission_color_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_emission_color_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_emission_color_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -2165,7 +2167,7 @@ func (self class) SetEmissionPointCount(point_count int64) { //gd:ParticleProces
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_point_count, 0|(gdextension.SizeInt<<4), &struct{ point_count int64 }{point_count})
 }
 func (self class) GetEmissionPointCount() int64 { //gd:ParticleProcessMaterial.get_emission_point_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_emission_point_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_emission_point_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2173,7 +2175,7 @@ func (self class) SetEmissionRingAxis(axis Vector3.XYZ) { //gd:ParticleProcessMa
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_ring_axis, 0|(gdextension.SizeVector3<<4), &struct{ axis Vector3.XYZ }{axis})
 }
 func (self class) GetEmissionRingAxis() Vector3.XYZ { //gd:ParticleProcessMaterial.get_emission_ring_axis
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_emission_ring_axis, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_emission_ring_axis, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2181,7 +2183,7 @@ func (self class) SetEmissionRingHeight(height float64) { //gd:ParticleProcessMa
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_ring_height, 0|(gdextension.SizeFloat<<4), &struct{ height float64 }{height})
 }
 func (self class) GetEmissionRingHeight() float64 { //gd:ParticleProcessMaterial.get_emission_ring_height
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_ring_height, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_ring_height, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2189,7 +2191,7 @@ func (self class) SetEmissionRingRadius(radius float64) { //gd:ParticleProcessMa
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_ring_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 func (self class) GetEmissionRingRadius() float64 { //gd:ParticleProcessMaterial.get_emission_ring_radius
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_ring_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_ring_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2197,7 +2199,7 @@ func (self class) SetEmissionRingInnerRadius(inner_radius float64) { //gd:Partic
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_ring_inner_radius, 0|(gdextension.SizeFloat<<4), &struct{ inner_radius float64 }{inner_radius})
 }
 func (self class) GetEmissionRingInnerRadius() float64 { //gd:ParticleProcessMaterial.get_emission_ring_inner_radius
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_ring_inner_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_ring_inner_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2205,7 +2207,7 @@ func (self class) SetEmissionRingConeAngle(cone_angle float64) { //gd:ParticlePr
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_ring_cone_angle, 0|(gdextension.SizeFloat<<4), &struct{ cone_angle float64 }{cone_angle})
 }
 func (self class) GetEmissionRingConeAngle() float64 { //gd:ParticleProcessMaterial.get_emission_ring_cone_angle
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_ring_cone_angle, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_ring_cone_angle, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2213,7 +2215,7 @@ func (self class) SetEmissionShapeOffset(emission_shape_offset Vector3.XYZ) { //
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_shape_offset, 0|(gdextension.SizeVector3<<4), &struct{ emission_shape_offset Vector3.XYZ }{emission_shape_offset})
 }
 func (self class) GetEmissionShapeOffset() Vector3.XYZ { //gd:ParticleProcessMaterial.get_emission_shape_offset
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_emission_shape_offset, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_emission_shape_offset, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2221,12 +2223,12 @@ func (self class) SetEmissionShapeScale(emission_shape_scale Vector3.XYZ) { //gd
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_shape_scale, 0|(gdextension.SizeVector3<<4), &struct{ emission_shape_scale Vector3.XYZ }{emission_shape_scale})
 }
 func (self class) GetEmissionShapeScale() Vector3.XYZ { //gd:ParticleProcessMaterial.get_emission_shape_scale
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_emission_shape_scale, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_emission_shape_scale, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetTurbulenceEnabled() bool { //gd:ParticleProcessMaterial.get_turbulence_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_turbulence_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_turbulence_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2234,7 +2236,7 @@ func (self class) SetTurbulenceEnabled(turbulence_enabled bool) { //gd:ParticleP
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_turbulence_enabled, 0|(gdextension.SizeBool<<4), &struct{ turbulence_enabled bool }{turbulence_enabled})
 }
 func (self class) GetTurbulenceNoiseStrength() float64 { //gd:ParticleProcessMaterial.get_turbulence_noise_strength
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_turbulence_noise_strength, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_turbulence_noise_strength, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2242,7 +2244,7 @@ func (self class) SetTurbulenceNoiseStrength(turbulence_noise_strength float64) 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_turbulence_noise_strength, 0|(gdextension.SizeFloat<<4), &struct{ turbulence_noise_strength float64 }{turbulence_noise_strength})
 }
 func (self class) GetTurbulenceNoiseScale() float64 { //gd:ParticleProcessMaterial.get_turbulence_noise_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_turbulence_noise_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_turbulence_noise_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2250,7 +2252,7 @@ func (self class) SetTurbulenceNoiseScale(turbulence_noise_scale float64) { //gd
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_turbulence_noise_scale, 0|(gdextension.SizeFloat<<4), &struct{ turbulence_noise_scale float64 }{turbulence_noise_scale})
 }
 func (self class) GetTurbulenceNoiseSpeedRandom() float64 { //gd:ParticleProcessMaterial.get_turbulence_noise_speed_random
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_turbulence_noise_speed_random, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_turbulence_noise_speed_random, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2258,7 +2260,7 @@ func (self class) SetTurbulenceNoiseSpeedRandom(turbulence_noise_speed_random fl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_turbulence_noise_speed_random, 0|(gdextension.SizeFloat<<4), &struct{ turbulence_noise_speed_random float64 }{turbulence_noise_speed_random})
 }
 func (self class) GetTurbulenceNoiseSpeed() Vector3.XYZ { //gd:ParticleProcessMaterial.get_turbulence_noise_speed
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_turbulence_noise_speed, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_turbulence_noise_speed, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2266,7 +2268,7 @@ func (self class) SetTurbulenceNoiseSpeed(turbulence_noise_speed Vector3.XYZ) { 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_turbulence_noise_speed, 0|(gdextension.SizeVector3<<4), &struct{ turbulence_noise_speed Vector3.XYZ }{turbulence_noise_speed})
 }
 func (self class) GetGravity() Vector3.XYZ { //gd:ParticleProcessMaterial.get_gravity
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_gravity, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_gravity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2277,12 +2279,12 @@ func (self class) SetLifetimeRandomness(randomness float64) { //gd:ParticleProce
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lifetime_randomness, 0|(gdextension.SizeFloat<<4), &struct{ randomness float64 }{randomness})
 }
 func (self class) GetLifetimeRandomness() float64 { //gd:ParticleProcessMaterial.get_lifetime_randomness
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lifetime_randomness, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lifetime_randomness, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetSubEmitterMode() SubEmitterMode { //gd:ParticleProcessMaterial.get_sub_emitter_mode
-	var r_ret = noescape.Call[SubEmitterMode](gd.ObjectChecked(self.AsObject()), methods.get_sub_emitter_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[SubEmitterMode](gd.ObjectChecked(self.AsObject()), methods.get_sub_emitter_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2290,7 +2292,7 @@ func (self class) SetSubEmitterMode(mode SubEmitterMode) { //gd:ParticleProcessM
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sub_emitter_mode, 0|(gdextension.SizeInt<<4), &struct{ mode SubEmitterMode }{mode})
 }
 func (self class) GetSubEmitterFrequency() float64 { //gd:ParticleProcessMaterial.get_sub_emitter_frequency
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sub_emitter_frequency, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sub_emitter_frequency, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2298,7 +2300,7 @@ func (self class) SetSubEmitterFrequency(hz float64) { //gd:ParticleProcessMater
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sub_emitter_frequency, 0|(gdextension.SizeFloat<<4), &struct{ hz float64 }{hz})
 }
 func (self class) GetSubEmitterAmountAtEnd() int64 { //gd:ParticleProcessMaterial.get_sub_emitter_amount_at_end
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sub_emitter_amount_at_end, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sub_emitter_amount_at_end, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2306,7 +2308,7 @@ func (self class) SetSubEmitterAmountAtEnd(amount int64) { //gd:ParticleProcessM
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sub_emitter_amount_at_end, 0|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
 }
 func (self class) GetSubEmitterAmountAtCollision() int64 { //gd:ParticleProcessMaterial.get_sub_emitter_amount_at_collision
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sub_emitter_amount_at_collision, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sub_emitter_amount_at_collision, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2314,7 +2316,7 @@ func (self class) SetSubEmitterAmountAtCollision(amount int64) { //gd:ParticlePr
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sub_emitter_amount_at_collision, 0|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
 }
 func (self class) GetSubEmitterAmountAtStart() int64 { //gd:ParticleProcessMaterial.get_sub_emitter_amount_at_start
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sub_emitter_amount_at_start, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sub_emitter_amount_at_start, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2322,7 +2324,7 @@ func (self class) SetSubEmitterAmountAtStart(amount int64) { //gd:ParticleProces
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sub_emitter_amount_at_start, 0|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
 }
 func (self class) GetSubEmitterKeepVelocity() bool { //gd:ParticleProcessMaterial.get_sub_emitter_keep_velocity
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_sub_emitter_keep_velocity, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_sub_emitter_keep_velocity, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2333,7 +2335,7 @@ func (self class) SetAttractorInteractionEnabled(enabled bool) { //gd:ParticlePr
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_attractor_interaction_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsAttractorInteractionEnabled() bool { //gd:ParticleProcessMaterial.is_attractor_interaction_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_attractor_interaction_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_attractor_interaction_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2341,7 +2343,7 @@ func (self class) SetCollisionMode(mode CollisionMode) { //gd:ParticleProcessMat
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mode, 0|(gdextension.SizeInt<<4), &struct{ mode CollisionMode }{mode})
 }
 func (self class) GetCollisionMode() CollisionMode { //gd:ParticleProcessMaterial.get_collision_mode
-	var r_ret = noescape.Call[CollisionMode](gd.ObjectChecked(self.AsObject()), methods.get_collision_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[CollisionMode](gd.ObjectChecked(self.AsObject()), methods.get_collision_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2349,7 +2351,7 @@ func (self class) SetCollisionUseScale(radius bool) { //gd:ParticleProcessMateri
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_use_scale, 0|(gdextension.SizeBool<<4), &struct{ radius bool }{radius})
 }
 func (self class) IsCollisionUsingScale() bool { //gd:ParticleProcessMaterial.is_collision_using_scale
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collision_using_scale, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collision_using_scale, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2357,7 +2359,7 @@ func (self class) SetCollisionFriction(friction float64) { //gd:ParticleProcessM
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_friction, 0|(gdextension.SizeFloat<<4), &struct{ friction float64 }{friction})
 }
 func (self class) GetCollisionFriction() float64 { //gd:ParticleProcessMaterial.get_collision_friction
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_friction, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_friction, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2365,7 +2367,7 @@ func (self class) SetCollisionBounce(bounce float64) { //gd:ParticleProcessMater
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_bounce, 0|(gdextension.SizeFloat<<4), &struct{ bounce float64 }{bounce})
 }
 func (self class) GetCollisionBounce() float64 { //gd:ParticleProcessMaterial.get_collision_bounce
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_bounce, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_bounce, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

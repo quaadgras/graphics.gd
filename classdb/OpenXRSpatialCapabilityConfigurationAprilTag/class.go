@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -49,6 +50,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -186,15 +188,15 @@ func (self Instance) SetAprilDict(value AprilTagDict) Instance { //gd:OpenXRSpat
 }
 
 func (self class) GetEnabledComponents() Packed.Array[int64] { //gd:OpenXRSpatialCapabilityConfigurationAprilTag.get_enabled_components
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_enabled_components, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_enabled_components, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) SetAprilDict(april_dict AprilTagDict) { //gd:OpenXRSpatialCapabilityConfigurationAprilTag.set_april_dict
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_april_dict, 0|(gdextension.SizeInt<<4), &struct{ april_dict AprilTagDict }{april_dict})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_april_dict, 0|(gdextension.SizeInt<<4), &struct{ april_dict AprilTagDict }{april_dict})
 }
 func (self class) GetAprilDict() AprilTagDict { //gd:OpenXRSpatialCapabilityConfigurationAprilTag.get_april_dict
-	var r_ret = noescape.Call[AprilTagDict](gd.ObjectChecked(self.AsObject()), methods.get_april_dict, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[AprilTagDict](gd.ObjectChecked(self.AsObject()), methods.get_april_dict, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -54,6 +55,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -279,17 +281,17 @@ func (self class) SetBoundsSize(bounds_size Vector2.XY) { //gd:OpenXRPlaneTracke
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bounds_size, 0|(gdextension.SizeVector2<<4), &struct{ bounds_size Vector2.XY }{bounds_size})
 }
 func (self class) GetBoundsSize() Vector2.XY { //gd:OpenXRPlaneTracker.get_bounds_size
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_bounds_size, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_bounds_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPlaneAlignment(plane_alignment OpenXRSpatialComponentPlaneAlignmentList.PlaneAlignment) { //gd:OpenXRPlaneTracker.set_plane_alignment
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_plane_alignment, 0|(gdextension.SizeInt<<4), &struct {
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_plane_alignment, 0|(gdextension.SizeInt<<4), &struct {
 		plane_alignment OpenXRSpatialComponentPlaneAlignmentList.PlaneAlignment
 	}{plane_alignment})
 }
 func (self class) GetPlaneAlignment() OpenXRSpatialComponentPlaneAlignmentList.PlaneAlignment { //gd:OpenXRPlaneTracker.get_plane_alignment
-	var r_ret = noescape.Call[OpenXRSpatialComponentPlaneAlignmentList.PlaneAlignment](gd.ObjectChecked(self.AsObject()), methods.get_plane_alignment, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[OpenXRSpatialComponentPlaneAlignmentList.PlaneAlignment](gd.ObjectChecked(self.AsObject()), methods.get_plane_alignment, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -297,7 +299,7 @@ func (self class) SetPlaneLabel(plane_label String.Readable) { //gd:OpenXRPlaneT
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_plane_label, 0|(gdextension.SizeString<<4), &struct{ plane_label gdextension.String }{pointers.Get(gd.InternalString(plane_label))})
 }
 func (self class) GetPlaneLabel() String.Readable { //gd:OpenXRPlaneTracker.get_plane_label
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_plane_label, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_plane_label, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

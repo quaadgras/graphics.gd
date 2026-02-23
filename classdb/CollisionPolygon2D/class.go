@@ -20,6 +20,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -58,6 +59,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -258,7 +260,7 @@ func (self class) SetPolygon(polygon Packed.Array[Vector2.XY]) { //gd:CollisionP
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))})
 }
 func (self class) GetPolygon() Packed.Array[Vector2.XY] { //gd:CollisionPolygon2D.get_polygon
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_polygon, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_polygon, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -266,7 +268,7 @@ func (self class) SetBuildMode(build_mode BuildMode) { //gd:CollisionPolygon2D.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_build_mode, 0|(gdextension.SizeInt<<4), &struct{ build_mode BuildMode }{build_mode})
 }
 func (self class) GetBuildMode() BuildMode { //gd:CollisionPolygon2D.get_build_mode
-	var r_ret = noescape.Call[BuildMode](gd.ObjectChecked(self.AsObject()), methods.get_build_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[BuildMode](gd.ObjectChecked(self.AsObject()), methods.get_build_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -274,7 +276,7 @@ func (self class) SetDisabled(disabled bool) { //gd:CollisionPolygon2D.set_disab
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disabled, 0|(gdextension.SizeBool<<4), &struct{ disabled bool }{disabled})
 }
 func (self class) IsDisabled() bool { //gd:CollisionPolygon2D.is_disabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_disabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_disabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -282,7 +284,7 @@ func (self class) SetOneWayCollision(enabled bool) { //gd:CollisionPolygon2D.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_one_way_collision, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsOneWayCollisionEnabled() bool { //gd:CollisionPolygon2D.is_one_way_collision_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_one_way_collision_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_one_way_collision_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -290,7 +292,7 @@ func (self class) SetOneWayCollisionMargin(margin float64) { //gd:CollisionPolyg
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_one_way_collision_margin, 0|(gdextension.SizeFloat<<4), &struct{ margin float64 }{margin})
 }
 func (self class) GetOneWayCollisionMargin() float64 { //gd:CollisionPolygon2D.get_one_way_collision_margin
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_one_way_collision_margin, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_one_way_collision_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

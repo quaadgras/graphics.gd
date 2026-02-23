@@ -52,6 +52,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -95,6 +96,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -651,7 +653,7 @@ func (self class) SetSkinWeightCount(count SkinWeightCount) { //gd:SurfaceTool.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin_weight_count, 0|(gdextension.SizeInt<<4), &struct{ count SkinWeightCount }{count})
 }
 func (self class) GetSkinWeightCount() SkinWeightCount { //gd:SurfaceTool.get_skin_weight_count
-	var r_ret = noescape.Call[SkinWeightCount](gd.ObjectChecked(self.AsObject()), methods.get_skin_weight_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[SkinWeightCount](gd.ObjectChecked(self.AsObject()), methods.get_skin_weight_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -704,7 +706,7 @@ func (self class) SetCustom(channel_index int64, custom_color Color.RGBA) { //gd
 	}{channel_index, custom_color})
 }
 func (self class) SetSmoothGroup(index int64) { //gd:SurfaceTool.set_smooth_group
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_smooth_group, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_smooth_group, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
 func (self class) AddTriangleFan(vertices Packed.Array[Vector3.XYZ], uvs Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uv2s Packed.Array[Vector2.XY], normals Packed.Array[Vector3.XYZ], tangents Array.Contains[Plane.NormalD]) { //gd:SurfaceTool.add_triangle_fan
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_triangle_fan, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizePackedArray<<20)|(gdextension.SizeArray<<24), &struct {
@@ -751,7 +753,7 @@ func (self class) SetMaterial(material [1]gdclass.Material) { //gd:SurfaceTool.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(material[0])[0]))})
 }
 func (self class) GetPrimitiveType() Mesh.PrimitiveType { //gd:SurfaceTool.get_primitive_type
-	var r_ret = noescape.Call[Mesh.PrimitiveType](gd.ObjectChecked(self.AsObject()), methods.get_primitive_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Mesh.PrimitiveType](gd.ObjectChecked(self.AsObject()), methods.get_primitive_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

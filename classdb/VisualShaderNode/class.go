@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -47,6 +48,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -259,15 +261,15 @@ func (self Instance) SetLinkedParentGraphFrame(value int) Instance { //gd:Visual
 }
 
 func (self class) GetDefaultInputPort(atype PortType) int64 { //gd:VisualShaderNode.get_default_input_port
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_default_input_port, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ atype PortType }{atype})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_default_input_port, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ atype PortType }{atype})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetOutputPortForPreview(port int64) { //gd:VisualShaderNode.set_output_port_for_preview
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_output_port_for_preview, 0|(gdextension.SizeInt<<4), &struct{ port int64 }{port})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_output_port_for_preview, 0|(gdextension.SizeInt<<4), &struct{ port int64 }{port})
 }
 func (self class) GetOutputPortForPreview() int64 { //gd:VisualShaderNode.get_output_port_for_preview
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_output_port_for_preview, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_output_port_for_preview, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -298,10 +300,10 @@ func (self class) GetDefaultInputValues() Array.Any { //gd:VisualShaderNode.get_
 	return ret
 }
 func (self class) SetFrame(frame_ int64) { //gd:VisualShaderNode.set_frame
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame, 0|(gdextension.SizeInt<<4), &struct{ frame_ int64 }{frame_})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame, 0|(gdextension.SizeInt<<4), &struct{ frame_ int64 }{frame_})
 }
 func (self class) GetFrame() int64 { //gd:VisualShaderNode.get_frame
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

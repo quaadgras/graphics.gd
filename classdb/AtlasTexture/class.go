@@ -25,6 +25,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -63,6 +64,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -248,7 +250,7 @@ func (self class) SetAtlas(atlas [1]gdclass.Texture2D) { //gd:AtlasTexture.set_a
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_atlas, 0|(gdextension.SizeObject<<4), &struct{ atlas gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(atlas[0])[0]))})
 }
 func (self class) GetAtlas() [1]gdclass.Texture2D { //gd:AtlasTexture.get_atlas
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_atlas, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_atlas, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -256,7 +258,7 @@ func (self class) SetRegion(region Rect2.PositionSize) { //gd:AtlasTexture.set_r
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_region, 0|(gdextension.SizeRect2<<4), &struct{ region Rect2.PositionSize }{region})
 }
 func (self class) GetRegion() Rect2.PositionSize { //gd:AtlasTexture.get_region
-	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_region, gdextension.SizeRect2, &struct{}{})
+	var r_ret = jumponly.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_region, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -264,7 +266,7 @@ func (self class) SetMargin(margin Rect2.PositionSize) { //gd:AtlasTexture.set_m
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_margin, 0|(gdextension.SizeRect2<<4), &struct{ margin Rect2.PositionSize }{margin})
 }
 func (self class) GetMargin() Rect2.PositionSize { //gd:AtlasTexture.get_margin
-	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_margin, gdextension.SizeRect2, &struct{}{})
+	var r_ret = jumponly.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_margin, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -272,7 +274,7 @@ func (self class) SetFilterClip(enable bool) { //gd:AtlasTexture.set_filter_clip
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_filter_clip, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) HasFilterClip() bool { //gd:AtlasTexture.has_filter_clip
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_filter_clip, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_filter_clip, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

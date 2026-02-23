@@ -18,6 +18,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -55,6 +56,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -473,7 +475,7 @@ func (self class) SetTargetNode(target_nodepath Path.ToNode) { //gd:SkeletonModi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_node, 0|(gdextension.SizeNodePath<<4), &struct{ target_nodepath gdextension.NodePath }{pointers.Get(gd.InternalNodePath(target_nodepath))})
 }
 func (self class) GetTargetNode() Path.ToNode { //gd:SkeletonModification2DJiggle.get_target_node
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_target_node, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_target_node, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -489,7 +491,7 @@ func (self class) SetStiffness(stiffness float64) { //gd:SkeletonModification2DJ
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stiffness, 0|(gdextension.SizeFloat<<4), &struct{ stiffness float64 }{stiffness})
 }
 func (self class) GetStiffness() float64 { //gd:SkeletonModification2DJiggle.get_stiffness
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_stiffness, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_stiffness, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -497,7 +499,7 @@ func (self class) SetMass(mass float64) { //gd:SkeletonModification2DJiggle.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mass, 0|(gdextension.SizeFloat<<4), &struct{ mass float64 }{mass})
 }
 func (self class) GetMass() float64 { //gd:SkeletonModification2DJiggle.get_mass
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mass, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mass, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -505,7 +507,7 @@ func (self class) SetDamping(damping float64) { //gd:SkeletonModification2DJiggl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_damping, 0|(gdextension.SizeFloat<<4), &struct{ damping float64 }{damping})
 }
 func (self class) GetDamping() float64 { //gd:SkeletonModification2DJiggle.get_damping
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_damping, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_damping, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -513,7 +515,7 @@ func (self class) SetUseGravity(use_gravity bool) { //gd:SkeletonModification2DJ
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_gravity, 0|(gdextension.SizeBool<<4), &struct{ use_gravity bool }{use_gravity})
 }
 func (self class) GetUseGravity() bool { //gd:SkeletonModification2DJiggle.get_use_gravity
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_gravity, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_gravity, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -521,7 +523,7 @@ func (self class) SetGravity(gravity Vector2.XY) { //gd:SkeletonModification2DJi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity, 0|(gdextension.SizeVector2<<4), &struct{ gravity Vector2.XY }{gravity})
 }
 func (self class) GetGravity() Vector2.XY { //gd:SkeletonModification2DJiggle.get_gravity
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_gravity, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_gravity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -529,15 +531,15 @@ func (self class) SetUseColliders(use_colliders bool) { //gd:SkeletonModificatio
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_colliders, 0|(gdextension.SizeBool<<4), &struct{ use_colliders bool }{use_colliders})
 }
 func (self class) GetUseColliders() bool { //gd:SkeletonModification2DJiggle.get_use_colliders
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_colliders, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_colliders, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetCollisionMask(collision_mask int64) { //gd:SkeletonModification2DJiggle.set_collision_mask
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ collision_mask int64 }{collision_mask})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ collision_mask int64 }{collision_mask})
 }
 func (self class) GetCollisionMask() int64 { //gd:SkeletonModification2DJiggle.get_collision_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

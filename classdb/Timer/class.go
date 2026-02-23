@@ -38,6 +38,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -73,6 +74,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -358,23 +360,23 @@ func (self class) SetWaitTime(time_sec float64) { //gd:Timer.set_wait_time
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wait_time, 0|(gdextension.SizeFloat<<4), &struct{ time_sec float64 }{time_sec})
 }
 func (self class) GetWaitTime() float64 { //gd:Timer.get_wait_time
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_wait_time, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_wait_time, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetOneShot(enable bool) { //gd:Timer.set_one_shot
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_one_shot, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_one_shot, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsOneShot() bool { //gd:Timer.is_one_shot
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_one_shot, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_one_shot, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetAutostart(enable bool) { //gd:Timer.set_autostart
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autostart, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autostart, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) HasAutostart() bool { //gd:Timer.has_autostart
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_autostart, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_autostart, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -388,15 +390,15 @@ func (self class) SetPaused(paused bool) { //gd:Timer.set_paused
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_paused, 0|(gdextension.SizeBool<<4), &struct{ paused bool }{paused})
 }
 func (self class) IsPaused() bool { //gd:Timer.is_paused
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_paused, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_paused, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetIgnoreTimeScale(ignore bool) { //gd:Timer.set_ignore_time_scale
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ignore_time_scale, 0|(gdextension.SizeBool<<4), &struct{ ignore bool }{ignore})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ignore_time_scale, 0|(gdextension.SizeBool<<4), &struct{ ignore bool }{ignore})
 }
 func (self class) IsIgnoringTimeScale() bool { //gd:Timer.is_ignoring_time_scale
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ignoring_time_scale, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ignoring_time_scale, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -406,7 +408,7 @@ func (self class) IsStopped() bool { //gd:Timer.is_stopped
 	return ret
 }
 func (self class) GetTimeLeft() float64 { //gd:Timer.get_time_left
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_time_left, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_time_left, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -414,7 +416,7 @@ func (self class) SetTimerProcessCallback(callback TimerProcessCallback) { //gd:
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_timer_process_callback, 0|(gdextension.SizeInt<<4), &struct{ callback TimerProcessCallback }{callback})
 }
 func (self class) GetTimerProcessCallback() TimerProcessCallback { //gd:Timer.get_timer_process_callback
-	var r_ret = noescape.Call[TimerProcessCallback](gd.ObjectChecked(self.AsObject()), methods.get_timer_process_callback, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TimerProcessCallback](gd.ObjectChecked(self.AsObject()), methods.get_timer_process_callback, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

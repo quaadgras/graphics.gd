@@ -31,6 +31,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -67,6 +68,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -297,32 +299,32 @@ func (self class) Server(key [1]gdclass.CryptoKey, certificate [1]gdclass.X509Ce
 	return ret
 }
 func (self class) IsServer() bool { //gd:TLSOptions.is_server
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_server, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_server, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsUnsafeClient() bool { //gd:TLSOptions.is_unsafe_client
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_unsafe_client, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_unsafe_client, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetCommonNameOverride() String.Readable { //gd:TLSOptions.get_common_name_override
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_common_name_override, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_common_name_override, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetTrustedCaChain() [1]gdclass.X509Certificate { //gd:TLSOptions.get_trusted_ca_chain
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_trusted_ca_chain, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_trusted_ca_chain, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.X509Certificate{gdclass.NewX509Certificate(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetPrivateKey() [1]gdclass.CryptoKey { //gd:TLSOptions.get_private_key
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_private_key, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_private_key, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.CryptoKey{gdclass.NewCryptoKey(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetOwnCertificate() [1]gdclass.X509Certificate { //gd:TLSOptions.get_own_certificate
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_own_certificate, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_own_certificate, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.X509Certificate{gdclass.NewX509Certificate(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

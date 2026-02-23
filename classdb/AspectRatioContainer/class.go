@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -50,6 +51,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -224,7 +226,7 @@ func (self class) SetRatio(ratio float64) { //gd:AspectRatioContainer.set_ratio
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
 }
 func (self class) GetRatio() float64 { //gd:AspectRatioContainer.get_ratio
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ratio, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -232,7 +234,7 @@ func (self class) SetStretchMode(stretch_mode StretchMode) { //gd:AspectRatioCon
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stretch_mode, 0|(gdextension.SizeInt<<4), &struct{ stretch_mode StretchMode }{stretch_mode})
 }
 func (self class) GetStretchMode() StretchMode { //gd:AspectRatioContainer.get_stretch_mode
-	var r_ret = noescape.Call[StretchMode](gd.ObjectChecked(self.AsObject()), methods.get_stretch_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[StretchMode](gd.ObjectChecked(self.AsObject()), methods.get_stretch_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -240,7 +242,7 @@ func (self class) SetAlignmentHorizontal(alignment_horizontal AlignmentMode) { /
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alignment_horizontal, 0|(gdextension.SizeInt<<4), &struct{ alignment_horizontal AlignmentMode }{alignment_horizontal})
 }
 func (self class) GetAlignmentHorizontal() AlignmentMode { //gd:AspectRatioContainer.get_alignment_horizontal
-	var r_ret = noescape.Call[AlignmentMode](gd.ObjectChecked(self.AsObject()), methods.get_alignment_horizontal, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[AlignmentMode](gd.ObjectChecked(self.AsObject()), methods.get_alignment_horizontal, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -248,7 +250,7 @@ func (self class) SetAlignmentVertical(alignment_vertical AlignmentMode) { //gd:
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alignment_vertical, 0|(gdextension.SizeInt<<4), &struct{ alignment_vertical AlignmentMode }{alignment_vertical})
 }
 func (self class) GetAlignmentVertical() AlignmentMode { //gd:AspectRatioContainer.get_alignment_vertical
-	var r_ret = noescape.Call[AlignmentMode](gd.ObjectChecked(self.AsObject()), methods.get_alignment_vertical, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[AlignmentMode](gd.ObjectChecked(self.AsObject()), methods.get_alignment_vertical, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

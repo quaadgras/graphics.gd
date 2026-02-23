@@ -21,6 +21,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -57,6 +58,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -352,12 +354,12 @@ func (self class) AppendPathToProperty(node_path Path.ToNode, prop_name String.N
 	}{pointers.Get(gd.InternalNodePath(node_path)), pointers.Get(gd.InternalStringName(prop_name))})
 }
 func (self class) GetAccessorType() GLTFAccessor.GLTFAccessorType { //gd:GLTFObjectModelProperty.get_accessor_type
-	var r_ret = noescape.Call[GLTFAccessor.GLTFAccessorType](gd.ObjectChecked(self.AsObject()), methods.get_accessor_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[GLTFAccessor.GLTFAccessorType](gd.ObjectChecked(self.AsObject()), methods.get_accessor_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetGltfToGodotExpression() [1]gdclass.Expression { //gd:GLTFObjectModelProperty.get_gltf_to_godot_expression
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_gltf_to_godot_expression, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_gltf_to_godot_expression, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Expression{gdclass.NewExpression(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -365,7 +367,7 @@ func (self class) SetGltfToGodotExpression(gltf_to_godot_expr [1]gdclass.Express
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gltf_to_godot_expression, 0|(gdextension.SizeObject<<4), &struct{ gltf_to_godot_expr gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetExpression(gltf_to_godot_expr[0])[0]))})
 }
 func (self class) GetGodotToGltfExpression() [1]gdclass.Expression { //gd:GLTFObjectModelProperty.get_godot_to_gltf_expression
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_godot_to_gltf_expression, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_godot_to_gltf_expression, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Expression{gdclass.NewExpression(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -373,7 +375,7 @@ func (self class) SetGodotToGltfExpression(godot_to_gltf_expr [1]gdclass.Express
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_godot_to_gltf_expression, 0|(gdextension.SizeObject<<4), &struct{ godot_to_gltf_expr gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetExpression(godot_to_gltf_expr[0])[0]))})
 }
 func (self class) GetNodePaths() Array.Contains[Path.ToNode] { //gd:GLTFObjectModelProperty.get_node_paths
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_node_paths, gdextension.SizeArray, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_node_paths, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -386,15 +388,15 @@ func (self class) SetNodePaths(node_paths Array.Contains[Path.ToNode]) { //gd:GL
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_node_paths, 0|(gdextension.SizeArray<<4), &struct{ node_paths gdextension.Array }{pointers.Get(gd.InternalArray(node_paths))})
 }
 func (self class) GetObjectModelType() GLTFObjectModelType { //gd:GLTFObjectModelProperty.get_object_model_type
-	var r_ret = noescape.Call[GLTFObjectModelType](gd.ObjectChecked(self.AsObject()), methods.get_object_model_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[GLTFObjectModelType](gd.ObjectChecked(self.AsObject()), methods.get_object_model_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetObjectModelType(atype GLTFObjectModelType) { //gd:GLTFObjectModelProperty.set_object_model_type
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_object_model_type, 0|(gdextension.SizeInt<<4), &struct{ atype GLTFObjectModelType }{atype})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_object_model_type, 0|(gdextension.SizeInt<<4), &struct{ atype GLTFObjectModelType }{atype})
 }
 func (self class) GetJsonPointers() Array.Contains[Packed.Strings] { //gd:GLTFObjectModelProperty.get_json_pointers
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_json_pointers, gdextension.SizeArray, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_json_pointers, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Packed.Strings]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -407,15 +409,15 @@ func (self class) SetJsonPointers(json_pointers Array.Contains[Packed.Strings]) 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_json_pointers, 0|(gdextension.SizeArray<<4), &struct{ json_pointers gdextension.Array }{pointers.Get(gd.InternalArray(json_pointers))})
 }
 func (self class) GetVariantType() variant.Type { //gd:GLTFObjectModelProperty.get_variant_type
-	var r_ret = noescape.Call[variant.Type](gd.ObjectChecked(self.AsObject()), methods.get_variant_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[variant.Type](gd.ObjectChecked(self.AsObject()), methods.get_variant_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetVariantType(variant_type variant.Type) { //gd:GLTFObjectModelProperty.set_variant_type
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_variant_type, 0|(gdextension.SizeInt<<4), &struct{ variant_type variant.Type }{variant_type})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_variant_type, 0|(gdextension.SizeInt<<4), &struct{ variant_type variant.Type }{variant_type})
 }
 func (self class) SetTypes(variant_type variant.Type, obj_model_type GLTFObjectModelType) { //gd:GLTFObjectModelProperty.set_types
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_types, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_types, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		variant_type   variant.Type
 		obj_model_type GLTFObjectModelType
 	}{variant_type, obj_model_type})

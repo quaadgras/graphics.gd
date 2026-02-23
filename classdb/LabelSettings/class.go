@@ -16,6 +16,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -54,6 +55,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -515,7 +517,7 @@ func (self class) SetLineSpacing(spacing float64) { //gd:LabelSettings.set_line_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_line_spacing, 0|(gdextension.SizeFloat<<4), &struct{ spacing float64 }{spacing})
 }
 func (self class) GetLineSpacing() float64 { //gd:LabelSettings.get_line_spacing
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_line_spacing, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_line_spacing, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -523,7 +525,7 @@ func (self class) SetParagraphSpacing(spacing float64) { //gd:LabelSettings.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_paragraph_spacing, 0|(gdextension.SizeFloat<<4), &struct{ spacing float64 }{spacing})
 }
 func (self class) GetParagraphSpacing() float64 { //gd:LabelSettings.get_paragraph_spacing
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_paragraph_spacing, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_paragraph_spacing, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -531,7 +533,7 @@ func (self class) SetFont(font [1]gdclass.Font) { //gd:LabelSettings.set_font
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_font, 0|(gdextension.SizeObject<<4), &struct{ font gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetFont(font[0])[0]))})
 }
 func (self class) GetFont() [1]gdclass.Font { //gd:LabelSettings.get_font
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_font, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_font, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Font{gdclass.NewFont(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -539,7 +541,7 @@ func (self class) SetFontSize(size int64) { //gd:LabelSettings.set_font_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_font_size, 0|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 }
 func (self class) GetFontSize() int64 { //gd:LabelSettings.get_font_size
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_font_size, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_font_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -547,7 +549,7 @@ func (self class) SetFontColor(color Color.RGBA) { //gd:LabelSettings.set_font_c
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_font_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetFontColor() Color.RGBA { //gd:LabelSettings.get_font_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_font_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_font_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -555,7 +557,7 @@ func (self class) SetOutlineSize(size int64) { //gd:LabelSettings.set_outline_si
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_outline_size, 0|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 }
 func (self class) GetOutlineSize() int64 { //gd:LabelSettings.get_outline_size
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_outline_size, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_outline_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -563,7 +565,7 @@ func (self class) SetOutlineColor(color Color.RGBA) { //gd:LabelSettings.set_out
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_outline_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetOutlineColor() Color.RGBA { //gd:LabelSettings.get_outline_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_outline_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_outline_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -571,7 +573,7 @@ func (self class) SetShadowSize(size int64) { //gd:LabelSettings.set_shadow_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_size, 0|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 }
 func (self class) GetShadowSize() int64 { //gd:LabelSettings.get_shadow_size
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_shadow_size, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_shadow_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -579,7 +581,7 @@ func (self class) SetShadowColor(color Color.RGBA) { //gd:LabelSettings.set_shad
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetShadowColor() Color.RGBA { //gd:LabelSettings.get_shadow_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_shadow_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_shadow_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -587,7 +589,7 @@ func (self class) SetShadowOffset(offset Vector2.XY) { //gd:LabelSettings.set_sh
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
 func (self class) GetShadowOffset() Vector2.XY { //gd:LabelSettings.get_shadow_offset
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_shadow_offset, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_shadow_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

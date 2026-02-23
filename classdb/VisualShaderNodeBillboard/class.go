@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -50,6 +51,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -193,7 +195,7 @@ func (self class) SetBillboardType(billboard_type BillboardType) { //gd:VisualSh
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_billboard_type, 0|(gdextension.SizeInt<<4), &struct{ billboard_type BillboardType }{billboard_type})
 }
 func (self class) GetBillboardType() BillboardType { //gd:VisualShaderNodeBillboard.get_billboard_type
-	var r_ret = noescape.Call[BillboardType](gd.ObjectChecked(self.AsObject()), methods.get_billboard_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[BillboardType](gd.ObjectChecked(self.AsObject()), methods.get_billboard_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -201,7 +203,7 @@ func (self class) SetKeepScaleEnabled(enabled bool) { //gd:VisualShaderNodeBillb
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keep_scale_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsKeepScaleEnabled() bool { //gd:VisualShaderNodeBillboard.is_keep_scale_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_keep_scale_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_keep_scale_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

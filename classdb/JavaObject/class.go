@@ -20,6 +20,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -55,6 +56,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -183,12 +185,12 @@ func New() Instance {
 }
 
 func (self class) GetJavaClass() [1]gdclass.JavaClass { //gd:JavaObject.get_java_class
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_java_class, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_java_class, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.JavaClass{gdclass.NewJavaClass(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) HasJavaMethod(method String.Name) bool { //gd:JavaObject.has_java_method
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_java_method, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ method gdextension.StringName }{pointers.Get(gd.InternalStringName(method))})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_java_method, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ method gdextension.StringName }{pointers.Get(gd.InternalStringName(method))})
 	var ret = r_ret
 	return ret
 }

@@ -55,6 +55,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -90,6 +91,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -403,7 +405,7 @@ func (self class) ConnectToHost(host String.Readable, port int64) Error.Code { /
 	return ret
 }
 func (self class) IsSocketConnected() bool { //gd:PacketPeerUDP.is_socket_connected
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_socket_connected, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_socket_connected, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -413,7 +415,7 @@ func (self class) GetPacketIp() String.Readable { //gd:PacketPeerUDP.get_packet_
 	return ret
 }
 func (self class) GetPacketPort() int64 { //gd:PacketPeerUDP.get_packet_port
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_packet_port, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_packet_port, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

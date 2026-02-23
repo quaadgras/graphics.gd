@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -46,6 +47,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -201,12 +203,12 @@ func New() Instance {
 }
 
 func (self class) GetStatus() ResultStatus { //gd:OpenXRFutureResult.get_status
-	var r_ret = noescape.Call[ResultStatus](gd.ObjectChecked(self.AsObject()), methods.get_status, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[ResultStatus](gd.ObjectChecked(self.AsObject()), methods.get_status, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetFuture() int64 { //gd:OpenXRFutureResult.get_future
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_future, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_future, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -217,7 +219,7 @@ func (self class) SetResultValue(result_value variant.Any) { //gd:OpenXRFutureRe
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_result_value, 0|(gdextension.SizeVariant<<4), &struct{ result_value gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(result_value)))})
 }
 func (self class) GetResultValue() variant.Any { //gd:OpenXRFutureResult.get_result_value
-	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_result_value, gdextension.SizeVariant, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_result_value, gdextension.SizeVariant, &struct{}{})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }

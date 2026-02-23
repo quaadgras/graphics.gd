@@ -51,6 +51,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -85,6 +86,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -1093,7 +1095,7 @@ func (self class) OpenCompressed(path String.Readable, mode_flags ModeFlags, com
 	return ret
 }
 func (self class) GetOpenError() Error.Code { //gd:FileAccess.get_open_error
-	var r_ret = noescape.CallStatic[int64](methods.get_open_error, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.CallStatic[int64](methods.get_open_error, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -1126,12 +1128,12 @@ func (self class) Flush() { //gd:FileAccess.flush
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.flush, 0, &struct{}{})
 }
 func (self class) GetPath() String.Readable { //gd:FileAccess.get_path
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_path, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetPathAbsolute() String.Readable { //gd:FileAccess.get_path_absolute
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_path_absolute, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_path_absolute, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1232,12 +1234,12 @@ func (self class) GetSha256(path String.Readable) String.Readable { //gd:FileAcc
 	return ret
 }
 func (self class) IsBigEndian() bool { //gd:FileAccess.is_big_endian
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_big_endian, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_big_endian, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetBigEndian(big_endian bool) { //gd:FileAccess.set_big_endian
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_big_endian, 0|(gdextension.SizeBool<<4), &struct{ big_endian bool }{big_endian})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_big_endian, 0|(gdextension.SizeBool<<4), &struct{ big_endian bool }{big_endian})
 }
 func (self class) GetError() Error.Code { //gd:FileAccess.get_error
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_error, gdextension.SizeInt, &struct{}{})

@@ -23,6 +23,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -66,6 +67,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -775,82 +777,82 @@ func (self class) RequestParticlesProcess(process_time float64) { //gd:GPUPartic
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_particles_process, 0|(gdextension.SizeFloat<<4), &struct{ process_time float64 }{process_time})
 }
 func (self class) IsEmitting() bool { //gd:GPUParticles2D.is_emitting
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_emitting, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_emitting, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetAmount() int64 { //gd:GPUParticles2D.get_amount
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_amount, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_amount, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetLifetime() float64 { //gd:GPUParticles2D.get_lifetime
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lifetime, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lifetime, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetOneShot() bool { //gd:GPUParticles2D.get_one_shot
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_one_shot, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_one_shot, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetPreProcessTime() float64 { //gd:GPUParticles2D.get_pre_process_time
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pre_process_time, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pre_process_time, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetExplosivenessRatio() float64 { //gd:GPUParticles2D.get_explosiveness_ratio
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_explosiveness_ratio, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_explosiveness_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetRandomnessRatio() float64 { //gd:GPUParticles2D.get_randomness_ratio
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_randomness_ratio, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_randomness_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetVisibilityRect() Rect2.PositionSize { //gd:GPUParticles2D.get_visibility_rect
-	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_visibility_rect, gdextension.SizeRect2, &struct{}{})
+	var r_ret = jumponly.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_visibility_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetUseLocalCoordinates() bool { //gd:GPUParticles2D.get_use_local_coordinates
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_local_coordinates, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_local_coordinates, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetFixedFps() int64 { //gd:GPUParticles2D.get_fixed_fps
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fixed_fps, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fixed_fps, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetFractionalDelta() bool { //gd:GPUParticles2D.get_fractional_delta
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_fractional_delta, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_fractional_delta, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetInterpolate() bool { //gd:GPUParticles2D.get_interpolate
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_interpolate, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_interpolate, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetProcessMaterial() [1]gdclass.Material { //gd:GPUParticles2D.get_process_material
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_process_material, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_process_material, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetSpeedScale() float64 { //gd:GPUParticles2D.get_speed_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_speed_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_speed_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetCollisionBaseSize() float64 { //gd:GPUParticles2D.get_collision_base_size
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_base_size, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_base_size, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetInterpToEnd() float64 { //gd:GPUParticles2D.get_interp_to_end
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_interp_to_end, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_interp_to_end, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -858,7 +860,7 @@ func (self class) SetDrawOrder(order DrawOrder) { //gd:GPUParticles2D.set_draw_o
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_order, 0|(gdextension.SizeInt<<4), &struct{ order DrawOrder }{order})
 }
 func (self class) GetDrawOrder() DrawOrder { //gd:GPUParticles2D.get_draw_order
-	var r_ret = noescape.Call[DrawOrder](gd.ObjectChecked(self.AsObject()), methods.get_draw_order, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DrawOrder](gd.ObjectChecked(self.AsObject()), methods.get_draw_order, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -866,7 +868,7 @@ func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:GPUParticles2D
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:GPUParticles2D.get_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -882,7 +884,7 @@ func (self class) SetSubEmitter(path Path.ToNode) { //gd:GPUParticles2D.set_sub_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sub_emitter, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
 func (self class) GetSubEmitter() Path.ToNode { //gd:GPUParticles2D.get_sub_emitter
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_sub_emitter, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_sub_emitter, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -902,12 +904,12 @@ func (self class) SetTrailLifetime(secs float64) { //gd:GPUParticles2D.set_trail
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_trail_lifetime, 0|(gdextension.SizeFloat<<4), &struct{ secs float64 }{secs})
 }
 func (self class) IsTrailEnabled() bool { //gd:GPUParticles2D.is_trail_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_trail_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_trail_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetTrailLifetime() float64 { //gd:GPUParticles2D.get_trail_lifetime
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_trail_lifetime, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_trail_lifetime, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -915,7 +917,7 @@ func (self class) SetTrailSections(sections int64) { //gd:GPUParticles2D.set_tra
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_trail_sections, 0|(gdextension.SizeInt<<4), &struct{ sections int64 }{sections})
 }
 func (self class) GetTrailSections() int64 { //gd:GPUParticles2D.get_trail_sections
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_trail_sections, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_trail_sections, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -923,7 +925,7 @@ func (self class) SetTrailSectionSubdivisions(subdivisions int64) { //gd:GPUPart
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_trail_section_subdivisions, 0|(gdextension.SizeInt<<4), &struct{ subdivisions int64 }{subdivisions})
 }
 func (self class) GetTrailSectionSubdivisions() int64 { //gd:GPUParticles2D.get_trail_section_subdivisions
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_trail_section_subdivisions, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_trail_section_subdivisions, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -934,7 +936,7 @@ func (self class) SetAmountRatio(ratio float64) { //gd:GPUParticles2D.set_amount
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_amount_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
 }
 func (self class) GetAmountRatio() float64 { //gd:GPUParticles2D.get_amount_ratio
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_amount_ratio, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_amount_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -942,7 +944,7 @@ func (self class) SetUseFixedSeed(use_fixed_seed bool) { //gd:GPUParticles2D.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_fixed_seed, 0|(gdextension.SizeBool<<4), &struct{ use_fixed_seed bool }{use_fixed_seed})
 }
 func (self class) GetUseFixedSeed() bool { //gd:GPUParticles2D.get_use_fixed_seed
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_fixed_seed, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_fixed_seed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -950,7 +952,7 @@ func (self class) SetSeed(seed int64) { //gd:GPUParticles2D.set_seed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_seed, 0|(gdextension.SizeInt<<4), &struct{ seed int64 }{seed})
 }
 func (self class) GetSeed() int64 { //gd:GPUParticles2D.get_seed
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_seed, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_seed, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

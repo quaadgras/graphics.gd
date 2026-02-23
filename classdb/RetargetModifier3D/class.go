@@ -19,6 +19,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -57,6 +58,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -295,7 +297,7 @@ func (self class) SetProfile(profile [1]gdclass.SkeletonProfile) { //gd:Retarget
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_profile, 0|(gdextension.SizeObject<<4), &struct{ profile gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetSkeletonProfile(profile[0])[0]))})
 }
 func (self class) GetProfile() [1]gdclass.SkeletonProfile { //gd:RetargetModifier3D.get_profile
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_profile, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_profile, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.SkeletonProfile{gdclass.NewSkeletonProfile(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -303,7 +305,7 @@ func (self class) SetUseGlobalPose(use_global_pose bool) { //gd:RetargetModifier
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_global_pose, 0|(gdextension.SizeBool<<4), &struct{ use_global_pose bool }{use_global_pose})
 }
 func (self class) IsUsingGlobalPose() bool { //gd:RetargetModifier3D.is_using_global_pose
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_global_pose, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_global_pose, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -311,7 +313,7 @@ func (self class) SetEnableFlags(enable_flags TransformFlag) { //gd:RetargetModi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_flags, 0|(gdextension.SizeInt<<4), &struct{ enable_flags TransformFlag }{enable_flags})
 }
 func (self class) GetEnableFlags() TransformFlag { //gd:RetargetModifier3D.get_enable_flags
-	var r_ret = noescape.Call[TransformFlag](gd.ObjectChecked(self.AsObject()), methods.get_enable_flags, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TransformFlag](gd.ObjectChecked(self.AsObject()), methods.get_enable_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

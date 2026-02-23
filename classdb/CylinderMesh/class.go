@@ -16,6 +16,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -53,6 +54,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -287,7 +289,7 @@ func (self class) SetTopRadius(radius float64) { //gd:CylinderMesh.set_top_radiu
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_top_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 func (self class) GetTopRadius() float64 { //gd:CylinderMesh.get_top_radius
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_top_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_top_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -295,7 +297,7 @@ func (self class) SetBottomRadius(radius float64) { //gd:CylinderMesh.set_bottom
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bottom_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 func (self class) GetBottomRadius() float64 { //gd:CylinderMesh.get_bottom_radius
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bottom_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bottom_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -303,7 +305,7 @@ func (self class) SetHeight(height float64) { //gd:CylinderMesh.set_height
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeFloat<<4), &struct{ height float64 }{height})
 }
 func (self class) GetHeight() float64 { //gd:CylinderMesh.get_height
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -311,7 +313,7 @@ func (self class) SetRadialSegments(segments int64) { //gd:CylinderMesh.set_radi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radial_segments, 0|(gdextension.SizeInt<<4), &struct{ segments int64 }{segments})
 }
 func (self class) GetRadialSegments() int64 { //gd:CylinderMesh.get_radial_segments
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_radial_segments, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_radial_segments, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -319,7 +321,7 @@ func (self class) SetRings(rings int64) { //gd:CylinderMesh.set_rings
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rings, 0|(gdextension.SizeInt<<4), &struct{ rings int64 }{rings})
 }
 func (self class) GetRings() int64 { //gd:CylinderMesh.get_rings
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_rings, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_rings, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -327,7 +329,7 @@ func (self class) SetCapTop(cap_top bool) { //gd:CylinderMesh.set_cap_top
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cap_top, 0|(gdextension.SizeBool<<4), &struct{ cap_top bool }{cap_top})
 }
 func (self class) IsCapTop() bool { //gd:CylinderMesh.is_cap_top
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cap_top, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cap_top, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -335,7 +337,7 @@ func (self class) SetCapBottom(cap_bottom bool) { //gd:CylinderMesh.set_cap_bott
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cap_bottom, 0|(gdextension.SizeBool<<4), &struct{ cap_bottom bool }{cap_bottom})
 }
 func (self class) IsCapBottom() bool { //gd:CylinderMesh.is_cap_bottom
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cap_bottom, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cap_bottom, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

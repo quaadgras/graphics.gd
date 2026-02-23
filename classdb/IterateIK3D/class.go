@@ -16,6 +16,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -58,6 +59,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -406,34 +408,34 @@ func (self Instance) SetDeterministic(value bool) Instance { //gd:IterateIK3D.de
 }
 
 func (self class) SetMaxIterations(max_iterations int64) { //gd:IterateIK3D.set_max_iterations
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_iterations, 0|(gdextension.SizeInt<<4), &struct{ max_iterations int64 }{max_iterations})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_iterations, 0|(gdextension.SizeInt<<4), &struct{ max_iterations int64 }{max_iterations})
 }
 func (self class) GetMaxIterations() int64 { //gd:IterateIK3D.get_max_iterations
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_iterations, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_iterations, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMinDistance(min_distance float64) { //gd:IterateIK3D.set_min_distance
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_distance, 0|(gdextension.SizeFloat<<4), &struct{ min_distance float64 }{min_distance})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_distance, 0|(gdextension.SizeFloat<<4), &struct{ min_distance float64 }{min_distance})
 }
 func (self class) GetMinDistance() float64 { //gd:IterateIK3D.get_min_distance
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min_distance, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetAngularDeltaLimit(angular_delta_limit float64) { //gd:IterateIK3D.set_angular_delta_limit
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_delta_limit, 0|(gdextension.SizeFloat<<4), &struct{ angular_delta_limit float64 }{angular_delta_limit})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_delta_limit, 0|(gdextension.SizeFloat<<4), &struct{ angular_delta_limit float64 }{angular_delta_limit})
 }
 func (self class) GetAngularDeltaLimit() float64 { //gd:IterateIK3D.get_angular_delta_limit
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_delta_limit, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_delta_limit, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetDeterministic(deterministic bool) { //gd:IterateIK3D.set_deterministic
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_deterministic, 0|(gdextension.SizeBool<<4), &struct{ deterministic bool }{deterministic})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_deterministic, 0|(gdextension.SizeBool<<4), &struct{ deterministic bool }{deterministic})
 }
 func (self class) IsDeterministic() bool { //gd:IterateIK3D.is_deterministic
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_deterministic, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_deterministic, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

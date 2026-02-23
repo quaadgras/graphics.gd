@@ -37,6 +37,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -75,6 +76,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -344,7 +346,7 @@ func (self class) SetBaseFont(font [1]gdclass.Font) { //gd:FontVariation.set_bas
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_font, 0|(gdextension.SizeObject<<4), &struct{ font gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetFont(font[0])[0]))})
 }
 func (self class) GetBaseFont() [1]gdclass.Font { //gd:FontVariation.get_base_font
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_base_font, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_base_font, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Font{gdclass.NewFont(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -360,7 +362,7 @@ func (self class) SetVariationEmbolden(strength float64) { //gd:FontVariation.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_variation_embolden, 0|(gdextension.SizeFloat<<4), &struct{ strength float64 }{strength})
 }
 func (self class) GetVariationEmbolden() float64 { //gd:FontVariation.get_variation_embolden
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_variation_embolden, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_variation_embolden, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -368,7 +370,7 @@ func (self class) SetVariationFaceIndex(face_index int64) { //gd:FontVariation.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_variation_face_index, 0|(gdextension.SizeInt<<4), &struct{ face_index int64 }{face_index})
 }
 func (self class) GetVariationFaceIndex() int64 { //gd:FontVariation.get_variation_face_index
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_variation_face_index, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_variation_face_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -376,7 +378,7 @@ func (self class) SetVariationTransform(transform Transform2D.OriginXY) { //gd:F
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_variation_transform, 0|(gdextension.SizeTransform2D<<4), &struct{ transform Transform2D.OriginXY }{transform})
 }
 func (self class) GetVariationTransform() Transform2D.OriginXY { //gd:FontVariation.get_variation_transform
-	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_variation_transform, gdextension.SizeTransform2D, &struct{}{})
+	var r_ret = jumponly.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_variation_transform, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -393,7 +395,7 @@ func (self class) SetBaselineOffset(baseline_offset float64) { //gd:FontVariatio
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_baseline_offset, 0|(gdextension.SizeFloat<<4), &struct{ baseline_offset float64 }{baseline_offset})
 }
 func (self class) GetBaselineOffset() float64 { //gd:FontVariation.get_baseline_offset
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_baseline_offset, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_baseline_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

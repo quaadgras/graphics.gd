@@ -16,6 +16,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -54,6 +55,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -229,7 +231,7 @@ func (self class) SetOnThreshold(on_threshold float64) { //gd:OpenXRAnalogThresh
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_on_threshold, 0|(gdextension.SizeFloat<<4), &struct{ on_threshold float64 }{on_threshold})
 }
 func (self class) GetOnThreshold() float64 { //gd:OpenXRAnalogThresholdModifier.get_on_threshold
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_on_threshold, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_on_threshold, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -237,7 +239,7 @@ func (self class) SetOffThreshold(off_threshold float64) { //gd:OpenXRAnalogThre
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_off_threshold, 0|(gdextension.SizeFloat<<4), &struct{ off_threshold float64 }{off_threshold})
 }
 func (self class) GetOffThreshold() float64 { //gd:OpenXRAnalogThresholdModifier.get_off_threshold
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_off_threshold, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_off_threshold, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -245,7 +247,7 @@ func (self class) SetOnHaptic(haptic [1]gdclass.OpenXRHapticBase) { //gd:OpenXRA
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_on_haptic, 0|(gdextension.SizeObject<<4), &struct{ haptic gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRHapticBase(haptic[0])[0]))})
 }
 func (self class) GetOnHaptic() [1]gdclass.OpenXRHapticBase { //gd:OpenXRAnalogThresholdModifier.get_on_haptic
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_on_haptic, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_on_haptic, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.OpenXRHapticBase{gdclass.NewOpenXRHapticBase(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -253,7 +255,7 @@ func (self class) SetOffHaptic(haptic [1]gdclass.OpenXRHapticBase) { //gd:OpenXR
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_off_haptic, 0|(gdextension.SizeObject<<4), &struct{ haptic gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRHapticBase(haptic[0])[0]))})
 }
 func (self class) GetOffHaptic() [1]gdclass.OpenXRHapticBase { //gd:OpenXRAnalogThresholdModifier.get_off_haptic
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_off_haptic, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_off_haptic, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.OpenXRHapticBase{gdclass.NewOpenXRHapticBase(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

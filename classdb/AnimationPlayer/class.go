@@ -22,6 +22,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -59,6 +60,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -907,10 +909,10 @@ func (self class) GetBlendTime(animation_from String.Name, animation_to String.N
 	return ret
 }
 func (self class) SetDefaultBlendTime(sec float64) { //gd:AnimationPlayer.set_default_blend_time
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_blend_time, 0|(gdextension.SizeFloat<<4), &struct{ sec float64 }{sec})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_blend_time, 0|(gdextension.SizeFloat<<4), &struct{ sec float64 }{sec})
 }
 func (self class) GetDefaultBlendTime() float64 { //gd:AnimationPlayer.get_default_blend_time
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_default_blend_time, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_default_blend_time, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -918,31 +920,31 @@ func (self class) SetAutoCapture(auto_capture bool) { //gd:AnimationPlayer.set_a
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_capture, 0|(gdextension.SizeBool<<4), &struct{ auto_capture bool }{auto_capture})
 }
 func (self class) IsAutoCapture() bool { //gd:AnimationPlayer.is_auto_capture
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_capture, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_capture, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetAutoCaptureDuration(auto_capture_duration float64) { //gd:AnimationPlayer.set_auto_capture_duration
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_capture_duration, 0|(gdextension.SizeFloat<<4), &struct{ auto_capture_duration float64 }{auto_capture_duration})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_capture_duration, 0|(gdextension.SizeFloat<<4), &struct{ auto_capture_duration float64 }{auto_capture_duration})
 }
 func (self class) GetAutoCaptureDuration() float64 { //gd:AnimationPlayer.get_auto_capture_duration
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_capture_duration, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_capture_duration, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetAutoCaptureTransitionType(auto_capture_transition_type Tween.TransitionType) { //gd:AnimationPlayer.set_auto_capture_transition_type
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_capture_transition_type, 0|(gdextension.SizeInt<<4), &struct{ auto_capture_transition_type Tween.TransitionType }{auto_capture_transition_type})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_capture_transition_type, 0|(gdextension.SizeInt<<4), &struct{ auto_capture_transition_type Tween.TransitionType }{auto_capture_transition_type})
 }
 func (self class) GetAutoCaptureTransitionType() Tween.TransitionType { //gd:AnimationPlayer.get_auto_capture_transition_type
-	var r_ret = noescape.Call[Tween.TransitionType](gd.ObjectChecked(self.AsObject()), methods.get_auto_capture_transition_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Tween.TransitionType](gd.ObjectChecked(self.AsObject()), methods.get_auto_capture_transition_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetAutoCaptureEaseType(auto_capture_ease_type Tween.EaseType) { //gd:AnimationPlayer.set_auto_capture_ease_type
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_capture_ease_type, 0|(gdextension.SizeInt<<4), &struct{ auto_capture_ease_type Tween.EaseType }{auto_capture_ease_type})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_capture_ease_type, 0|(gdextension.SizeInt<<4), &struct{ auto_capture_ease_type Tween.EaseType }{auto_capture_ease_type})
 }
 func (self class) GetAutoCaptureEaseType() Tween.EaseType { //gd:AnimationPlayer.get_auto_capture_ease_type
-	var r_ret = noescape.Call[Tween.EaseType](gd.ObjectChecked(self.AsObject()), methods.get_auto_capture_ease_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Tween.EaseType](gd.ObjectChecked(self.AsObject()), methods.get_auto_capture_ease_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1014,7 +1016,7 @@ func (self class) Stop(keep_state bool) { //gd:AnimationPlayer.stop
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0|(gdextension.SizeBool<<4), &struct{ keep_state bool }{keep_state})
 }
 func (self class) IsPlaying() bool { //gd:AnimationPlayer.is_playing
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_playing, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_playing, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1035,7 +1037,7 @@ func (self class) SetAssignedAnimation(animation String.Name) { //gd:AnimationPl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_assigned_animation, 0|(gdextension.SizeStringName<<4), &struct{ animation gdextension.StringName }{pointers.Get(gd.InternalStringName(animation))})
 }
 func (self class) GetAssignedAnimation() String.Name { //gd:AnimationPlayer.get_assigned_animation
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_assigned_animation, gdextension.SizeStringName, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_assigned_animation, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -1051,15 +1053,15 @@ func (self class) ClearQueue() { //gd:AnimationPlayer.clear_queue
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_queue, 0, &struct{}{})
 }
 func (self class) SetSpeedScale(speed float64) { //gd:AnimationPlayer.set_speed_scale
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, 0|(gdextension.SizeFloat<<4), &struct{ speed float64 }{speed})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, 0|(gdextension.SizeFloat<<4), &struct{ speed float64 }{speed})
 }
 func (self class) GetSpeedScale() float64 { //gd:AnimationPlayer.get_speed_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_speed_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_speed_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetPlayingSpeed() float64 { //gd:AnimationPlayer.get_playing_speed
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_playing_speed, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_playing_speed, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1067,15 +1069,15 @@ func (self class) SetAutoplay(name String.Name) { //gd:AnimationPlayer.set_autop
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoplay, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 func (self class) GetAutoplay() String.Name { //gd:AnimationPlayer.get_autoplay
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_autoplay, gdextension.SizeStringName, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_autoplay, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 func (self class) SetMovieQuitOnFinishEnabled(enabled bool) { //gd:AnimationPlayer.set_movie_quit_on_finish_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_movie_quit_on_finish_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_movie_quit_on_finish_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsMovieQuitOnFinishEnabled() bool { //gd:AnimationPlayer.is_movie_quit_on_finish_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_movie_quit_on_finish_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_movie_quit_on_finish_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1102,7 +1104,7 @@ func (self class) SetSection(start_time float64, end_time float64) { //gd:Animat
 	}{start_time, end_time})
 }
 func (self class) ResetSection() { //gd:AnimationPlayer.reset_section
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_section, 0, &struct{}{})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_section, 0, &struct{}{})
 }
 func (self class) GetSectionStartTime() float64 { //gd:AnimationPlayer.get_section_start_time
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_section_start_time, gdextension.SizeFloat, &struct{}{})

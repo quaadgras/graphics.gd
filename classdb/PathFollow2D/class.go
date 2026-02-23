@@ -17,6 +17,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -54,6 +55,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -284,7 +286,7 @@ func (self class) SetProgress(progress float64) { //gd:PathFollow2D.set_progress
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_progress, 0|(gdextension.SizeFloat<<4), &struct{ progress float64 }{progress})
 }
 func (self class) GetProgress() float64 { //gd:PathFollow2D.get_progress
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_progress, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_progress, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -292,7 +294,7 @@ func (self class) SetHOffset(h_offset float64) { //gd:PathFollow2D.set_h_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_offset, 0|(gdextension.SizeFloat<<4), &struct{ h_offset float64 }{h_offset})
 }
 func (self class) GetHOffset() float64 { //gd:PathFollow2D.get_h_offset
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_h_offset, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_h_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -300,7 +302,7 @@ func (self class) SetVOffset(v_offset float64) { //gd:PathFollow2D.set_v_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_offset, 0|(gdextension.SizeFloat<<4), &struct{ v_offset float64 }{v_offset})
 }
 func (self class) GetVOffset() float64 { //gd:PathFollow2D.get_v_offset
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_v_offset, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_v_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -329,10 +331,10 @@ func (self class) GetCubicInterpolation() bool { //gd:PathFollow2D.get_cubic_int
 	return ret
 }
 func (self class) SetLoop(loop bool) { //gd:PathFollow2D.set_loop
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), &struct{ loop bool }{loop})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), &struct{ loop bool }{loop})
 }
 func (self class) HasLoop() bool { //gd:PathFollow2D.has_loop
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

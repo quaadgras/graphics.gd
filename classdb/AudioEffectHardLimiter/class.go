@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -48,6 +49,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -205,26 +207,26 @@ func (self Instance) SetRelease(value Float.X) Instance { //gd:AudioEffectHardLi
 }
 
 func (self class) SetCeilingDb(ceiling float64) { //gd:AudioEffectHardLimiter.set_ceiling_db
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ceiling_db, 0|(gdextension.SizeFloat<<4), &struct{ ceiling float64 }{ceiling})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ceiling_db, 0|(gdextension.SizeFloat<<4), &struct{ ceiling float64 }{ceiling})
 }
 func (self class) GetCeilingDb() float64 { //gd:AudioEffectHardLimiter.get_ceiling_db
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ceiling_db, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ceiling_db, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPreGainDb(p_pre_gain float64) { //gd:AudioEffectHardLimiter.set_pre_gain_db
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pre_gain_db, 0|(gdextension.SizeFloat<<4), &struct{ p_pre_gain float64 }{p_pre_gain})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pre_gain_db, 0|(gdextension.SizeFloat<<4), &struct{ p_pre_gain float64 }{p_pre_gain})
 }
 func (self class) GetPreGainDb() float64 { //gd:AudioEffectHardLimiter.get_pre_gain_db
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pre_gain_db, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pre_gain_db, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetRelease(p_release float64) { //gd:AudioEffectHardLimiter.set_release
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_release, 0|(gdextension.SizeFloat<<4), &struct{ p_release float64 }{p_release})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_release, 0|(gdextension.SizeFloat<<4), &struct{ p_release float64 }{p_release})
 }
 func (self class) GetRelease() float64 { //gd:AudioEffectHardLimiter.get_release
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_release, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_release, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

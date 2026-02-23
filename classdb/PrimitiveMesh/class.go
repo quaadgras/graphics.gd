@@ -20,6 +20,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -58,6 +59,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -326,7 +328,7 @@ func (self class) SetMaterial(material [1]gdclass.Material) { //gd:PrimitiveMesh
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(material[0])[0]))})
 }
 func (self class) GetMaterial() [1]gdclass.Material { //gd:PrimitiveMesh.get_material
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -339,7 +341,7 @@ func (self class) SetCustomAabb(aabb AABB.PositionSize) { //gd:PrimitiveMesh.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_aabb, 0|(gdextension.SizeAABB<<4), &struct{ aabb AABB.PositionSize }{aabb})
 }
 func (self class) GetCustomAabb() AABB.PositionSize { //gd:PrimitiveMesh.get_custom_aabb
-	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_custom_aabb, gdextension.SizeAABB, &struct{}{})
+	var r_ret = jumponly.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_custom_aabb, gdextension.SizeAABB, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -347,7 +349,7 @@ func (self class) SetFlipFaces(flip_faces bool) { //gd:PrimitiveMesh.set_flip_fa
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flip_faces, 0|(gdextension.SizeBool<<4), &struct{ flip_faces bool }{flip_faces})
 }
 func (self class) GetFlipFaces() bool { //gd:PrimitiveMesh.get_flip_faces
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flip_faces, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flip_faces, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -355,7 +357,7 @@ func (self class) SetAddUv2(add_uv2 bool) { //gd:PrimitiveMesh.set_add_uv2
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_add_uv2, 0|(gdextension.SizeBool<<4), &struct{ add_uv2 bool }{add_uv2})
 }
 func (self class) GetAddUv2() bool { //gd:PrimitiveMesh.get_add_uv2
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_add_uv2, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_add_uv2, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -363,7 +365,7 @@ func (self class) SetUv2Padding(uv2_padding float64) { //gd:PrimitiveMesh.set_uv
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uv2_padding, 0|(gdextension.SizeFloat<<4), &struct{ uv2_padding float64 }{uv2_padding})
 }
 func (self class) GetUv2Padding() float64 { //gd:PrimitiveMesh.get_uv2_padding
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_uv2_padding, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_uv2_padding, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

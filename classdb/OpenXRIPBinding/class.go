@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -51,6 +52,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -281,7 +283,7 @@ func (self class) SetAction(action [1]gdclass.OpenXRAction) { //gd:OpenXRIPBindi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action, 0|(gdextension.SizeObject<<4), &struct{ action gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRAction(action[0])[0]))})
 }
 func (self class) GetAction() [1]gdclass.OpenXRAction { //gd:OpenXRIPBinding.get_action
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_action, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_action, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.OpenXRAction{gdclass.NewOpenXRAction(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -289,7 +291,7 @@ func (self class) SetBindingPath(binding_path String.Readable) { //gd:OpenXRIPBi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_binding_path, 0|(gdextension.SizeString<<4), &struct{ binding_path gdextension.String }{pointers.Get(gd.InternalString(binding_path))})
 }
 func (self class) GetBindingPath() String.Readable { //gd:OpenXRIPBinding.get_binding_path
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_binding_path, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_binding_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

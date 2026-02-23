@@ -16,6 +16,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -58,6 +59,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -670,7 +672,7 @@ func (self class) GetCurrentTabControl() [1]gdclass.Control { //gd:TabContainer.
 	return ret
 }
 func (self class) GetTabBar() [1]gdclass.TabBar { //gd:TabContainer.get_tab_bar
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tab_bar, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tab_bar, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.TabBar{gdclass.NewTabBar(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
@@ -691,7 +693,7 @@ func (self class) SetTabsPosition(tabs_position TabPosition) { //gd:TabContainer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tabs_position, 0|(gdextension.SizeInt<<4), &struct{ tabs_position TabPosition }{tabs_position})
 }
 func (self class) GetTabsPosition() TabPosition { //gd:TabContainer.get_tabs_position
-	var r_ret = noescape.Call[TabPosition](gd.ObjectChecked(self.AsObject()), methods.get_tabs_position, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TabPosition](gd.ObjectChecked(self.AsObject()), methods.get_tabs_position, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -707,7 +709,7 @@ func (self class) SetTabsVisible(visible bool) { //gd:TabContainer.set_tabs_visi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tabs_visible, 0|(gdextension.SizeBool<<4), &struct{ visible bool }{visible})
 }
 func (self class) AreTabsVisible() bool { //gd:TabContainer.are_tabs_visible
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.are_tabs_visible, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.are_tabs_visible, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -715,7 +717,7 @@ func (self class) SetAllTabsInFront(is_front bool) { //gd:TabContainer.set_all_t
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_all_tabs_in_front, 0|(gdextension.SizeBool<<4), &struct{ is_front bool }{is_front})
 }
 func (self class) IsAllTabsInFront() bool { //gd:TabContainer.is_all_tabs_in_front
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_all_tabs_in_front, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_all_tabs_in_front, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -834,10 +836,10 @@ func (self class) GetSwitchOnDragHover() bool { //gd:TabContainer.get_switch_on_
 	return ret
 }
 func (self class) SetDragToRearrangeEnabled(enabled bool) { //gd:TabContainer.set_drag_to_rearrange_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_to_rearrange_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_to_rearrange_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) GetDragToRearrangeEnabled() bool { //gd:TabContainer.get_drag_to_rearrange_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_drag_to_rearrange_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_drag_to_rearrange_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -853,7 +855,7 @@ func (self class) SetUseHiddenTabsForMinSize(enabled bool) { //gd:TabContainer.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_hidden_tabs_for_min_size, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) GetUseHiddenTabsForMinSize() bool { //gd:TabContainer.get_use_hidden_tabs_for_min_size
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_hidden_tabs_for_min_size, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_hidden_tabs_for_min_size, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

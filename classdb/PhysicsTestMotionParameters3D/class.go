@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -50,6 +51,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -294,7 +296,7 @@ func (self Instance) SetRecoveryAsCollision(value bool) Instance { //gd:PhysicsT
 }
 
 func (self class) GetFrom() Transform3D.BasisOrigin { //gd:PhysicsTestMotionParameters3D.get_from
-	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_from, gdextension.SizeTransform3D, &struct{}{})
+	var r_ret = jumponly.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_from, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -302,7 +304,7 @@ func (self class) SetFrom(from Transform3D.BasisOrigin) { //gd:PhysicsTestMotion
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_from, 0|(gdextension.SizeTransform3D<<4), &struct{ from Transform3D.BasisOrigin }{gd.Transposed(from)})
 }
 func (self class) GetMotion() Vector3.XYZ { //gd:PhysicsTestMotionParameters3D.get_motion
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_motion, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_motion, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -310,28 +312,28 @@ func (self class) SetMotion(motion Vector3.XYZ) { //gd:PhysicsTestMotionParamete
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_motion, 0|(gdextension.SizeVector3<<4), &struct{ motion Vector3.XYZ }{motion})
 }
 func (self class) GetMargin() float64 { //gd:PhysicsTestMotionParameters3D.get_margin
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_margin, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMargin(margin float64) { //gd:PhysicsTestMotionParameters3D.set_margin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_margin, 0|(gdextension.SizeFloat<<4), &struct{ margin float64 }{margin})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_margin, 0|(gdextension.SizeFloat<<4), &struct{ margin float64 }{margin})
 }
 func (self class) GetMaxCollisions() int64 { //gd:PhysicsTestMotionParameters3D.get_max_collisions
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_collisions, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_collisions, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMaxCollisions(max_collisions int64) { //gd:PhysicsTestMotionParameters3D.set_max_collisions
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_collisions, 0|(gdextension.SizeInt<<4), &struct{ max_collisions int64 }{max_collisions})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_collisions, 0|(gdextension.SizeInt<<4), &struct{ max_collisions int64 }{max_collisions})
 }
 func (self class) IsCollideSeparationRayEnabled() bool { //gd:PhysicsTestMotionParameters3D.is_collide_separation_ray_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_separation_ray_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_separation_ray_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetCollideSeparationRayEnabled(enabled bool) { //gd:PhysicsTestMotionParameters3D.set_collide_separation_ray_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_separation_ray_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_separation_ray_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) GetExcludeBodies() Array.Contains[RID.Any] { //gd:PhysicsTestMotionParameters3D.get_exclude_bodies
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_exclude_bodies, gdextension.SizeArray, &struct{}{})
@@ -350,12 +352,12 @@ func (self class) SetExcludeObjects(exclude_list Array.Contains[int64]) { //gd:P
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exclude_objects, 0|(gdextension.SizeArray<<4), &struct{ exclude_list gdextension.Array }{pointers.Get(gd.InternalArray(exclude_list))})
 }
 func (self class) IsRecoveryAsCollisionEnabled() bool { //gd:PhysicsTestMotionParameters3D.is_recovery_as_collision_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_recovery_as_collision_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_recovery_as_collision_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetRecoveryAsCollisionEnabled(enabled bool) { //gd:PhysicsTestMotionParameters3D.set_recovery_as_collision_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_recovery_as_collision_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_recovery_as_collision_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (o class) AsPhysicsTestMotionParameters3D() Advanced         { return Advanced(o) }
 func (o Instance) AsPhysicsTestMotionParameters3D() Instance      { return o }

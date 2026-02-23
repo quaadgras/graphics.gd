@@ -47,6 +47,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -87,6 +88,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -381,7 +383,7 @@ func (self class) SetSuffix(suffix String.Readable) { //gd:SpinBox.set_suffix
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_suffix, 0|(gdextension.SizeString<<4), &struct{ suffix gdextension.String }{pointers.Get(gd.InternalString(suffix))})
 }
 func (self class) GetSuffix() String.Readable { //gd:SpinBox.get_suffix
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_suffix, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_suffix, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -389,7 +391,7 @@ func (self class) SetPrefix(prefix String.Readable) { //gd:SpinBox.set_prefix
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_prefix, 0|(gdextension.SizeString<<4), &struct{ prefix gdextension.String }{pointers.Get(gd.InternalString(prefix))})
 }
 func (self class) GetPrefix() String.Readable { //gd:SpinBox.get_prefix
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_prefix, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_prefix, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -397,18 +399,18 @@ func (self class) SetEditable(enabled bool) { //gd:SpinBox.set_editable
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editable, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) SetCustomArrowStep(arrow_step float64) { //gd:SpinBox.set_custom_arrow_step
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_arrow_step, 0|(gdextension.SizeFloat<<4), &struct{ arrow_step float64 }{arrow_step})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_arrow_step, 0|(gdextension.SizeFloat<<4), &struct{ arrow_step float64 }{arrow_step})
 }
 func (self class) GetCustomArrowStep() float64 { //gd:SpinBox.get_custom_arrow_step
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_custom_arrow_step, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_custom_arrow_step, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetCustomArrowRound(round bool) { //gd:SpinBox.set_custom_arrow_round
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_arrow_round, 0|(gdextension.SizeBool<<4), &struct{ round bool }{round})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_arrow_round, 0|(gdextension.SizeBool<<4), &struct{ round bool }{round})
 }
 func (self class) IsCustomArrowRounding() bool { //gd:SpinBox.is_custom_arrow_rounding
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_custom_arrow_rounding, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_custom_arrow_rounding, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -421,7 +423,7 @@ func (self class) SetUpdateOnTextChanged(enabled bool) { //gd:SpinBox.set_update
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_update_on_text_changed, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) GetUpdateOnTextChanged() bool { //gd:SpinBox.get_update_on_text_changed
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_update_on_text_changed, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_update_on_text_changed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -437,7 +439,7 @@ func (self class) Apply() { //gd:SpinBox.apply
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply, 0, &struct{}{})
 }
 func (self class) GetLineEdit() [1]gdclass.LineEdit { //gd:SpinBox.get_line_edit
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_line_edit, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_line_edit, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.LineEdit{gdclass.NewLineEdit(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }

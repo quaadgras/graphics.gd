@@ -23,6 +23,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -60,6 +61,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -220,10 +222,10 @@ func (self class) IsRecordingActive() bool { //gd:AudioEffectRecord.is_recording
 	return ret
 }
 func (self class) SetFormat(format AudioStreamWAV.Format) { //gd:AudioEffectRecord.set_format
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format, 0|(gdextension.SizeInt<<4), &struct{ format AudioStreamWAV.Format }{format})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format, 0|(gdextension.SizeInt<<4), &struct{ format AudioStreamWAV.Format }{format})
 }
 func (self class) GetFormat() AudioStreamWAV.Format { //gd:AudioEffectRecord.get_format
-	var r_ret = noescape.Call[AudioStreamWAV.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[AudioStreamWAV.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

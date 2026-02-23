@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -51,6 +52,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -232,25 +234,25 @@ func (self class) SetBoundsSize(bounds_size Vector2.XY) { //gd:OpenXRMarkerTrack
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bounds_size, 0|(gdextension.SizeVector2<<4), &struct{ bounds_size Vector2.XY }{bounds_size})
 }
 func (self class) GetBoundsSize() Vector2.XY { //gd:OpenXRMarkerTracker.get_bounds_size
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_bounds_size, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_bounds_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMarkerType(marker_type OpenXRSpatialComponentMarkerList.MarkerType) { //gd:OpenXRMarkerTracker.set_marker_type
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_marker_type, 0|(gdextension.SizeInt<<4), &struct {
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_marker_type, 0|(gdextension.SizeInt<<4), &struct {
 		marker_type OpenXRSpatialComponentMarkerList.MarkerType
 	}{marker_type})
 }
 func (self class) GetMarkerType() OpenXRSpatialComponentMarkerList.MarkerType { //gd:OpenXRMarkerTracker.get_marker_type
-	var r_ret = noescape.Call[OpenXRSpatialComponentMarkerList.MarkerType](gd.ObjectChecked(self.AsObject()), methods.get_marker_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[OpenXRSpatialComponentMarkerList.MarkerType](gd.ObjectChecked(self.AsObject()), methods.get_marker_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMarkerId(marker_id int64) { //gd:OpenXRMarkerTracker.set_marker_id
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_marker_id, 0|(gdextension.SizeInt<<4), &struct{ marker_id int64 }{marker_id})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_marker_id, 0|(gdextension.SizeInt<<4), &struct{ marker_id int64 }{marker_id})
 }
 func (self class) GetMarkerId() int64 { //gd:OpenXRMarkerTracker.get_marker_id
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_marker_id, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_marker_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -258,7 +260,7 @@ func (self class) SetMarkerData(marker_data variant.Any) { //gd:OpenXRMarkerTrac
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_marker_data, 0|(gdextension.SizeVariant<<4), &struct{ marker_data gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(marker_data)))})
 }
 func (self class) GetMarkerData() variant.Any { //gd:OpenXRMarkerTracker.get_marker_data
-	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_marker_data, gdextension.SizeVariant, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_marker_data, gdextension.SizeVariant, &struct{}{})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }

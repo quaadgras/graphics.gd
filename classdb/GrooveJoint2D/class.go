@@ -15,6 +15,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -53,6 +54,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -199,7 +201,7 @@ func (self class) SetLength(length float64) { //gd:GrooveJoint2D.set_length
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
 func (self class) GetLength() float64 { //gd:GrooveJoint2D.get_length
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -207,7 +209,7 @@ func (self class) SetInitialOffset(offset float64) { //gd:GrooveJoint2D.set_init
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_initial_offset, 0|(gdextension.SizeFloat<<4), &struct{ offset float64 }{offset})
 }
 func (self class) GetInitialOffset() float64 { //gd:GrooveJoint2D.get_initial_offset
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_initial_offset, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_initial_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

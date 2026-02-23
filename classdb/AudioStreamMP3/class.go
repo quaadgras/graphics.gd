@@ -16,6 +16,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -52,6 +53,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -280,23 +282,23 @@ func (self class) SetData(data Packed.Bytes) { //gd:AudioStreamMP3.set_data
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_data, 0|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 }
 func (self class) GetData() Packed.Bytes { //gd:AudioStreamMP3.get_data
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_data, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_data, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 func (self class) SetLoop(enable bool) { //gd:AudioStreamMP3.set_loop
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) HasLoop() bool { //gd:AudioStreamMP3.has_loop
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetLoopOffset(seconds float64) { //gd:AudioStreamMP3.set_loop_offset
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop_offset, 0|(gdextension.SizeFloat<<4), &struct{ seconds float64 }{seconds})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop_offset, 0|(gdextension.SizeFloat<<4), &struct{ seconds float64 }{seconds})
 }
 func (self class) GetLoopOffset() float64 { //gd:AudioStreamMP3.get_loop_offset
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_loop_offset, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_loop_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -304,7 +306,7 @@ func (self class) SetBpm(bpm float64) { //gd:AudioStreamMP3.set_bpm
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bpm, 0|(gdextension.SizeFloat<<4), &struct{ bpm float64 }{bpm})
 }
 func (self class) GetBpm() float64 { //gd:AudioStreamMP3.get_bpm
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bpm, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bpm, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -312,7 +314,7 @@ func (self class) SetBeatCount(count int64) { //gd:AudioStreamMP3.set_beat_count
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_beat_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
 func (self class) GetBeatCount() int64 { //gd:AudioStreamMP3.get_beat_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_beat_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_beat_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -320,7 +322,7 @@ func (self class) SetBarBeats(count int64) { //gd:AudioStreamMP3.set_bar_beats
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bar_beats, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
 func (self class) GetBarBeats() int64 { //gd:AudioStreamMP3.get_bar_beats
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bar_beats, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bar_beats, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -24,6 +24,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -65,6 +66,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -288,12 +290,12 @@ func (self Instance) SetFollowBoneWhenSimulating(value bool) Instance { //gd:Phy
 }
 
 func (self class) GetJoint() [1]gdclass.Joint2D { //gd:PhysicalBone2D.get_joint
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_joint, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_joint, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Joint2D{gdclass.NewJoint2D(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) GetAutoConfigureJoint() bool { //gd:PhysicalBone2D.get_auto_configure_joint
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_auto_configure_joint, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_auto_configure_joint, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -304,12 +306,12 @@ func (self class) SetSimulatePhysics(simulate_physics bool) { //gd:PhysicalBone2
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_simulate_physics, 0|(gdextension.SizeBool<<4), &struct{ simulate_physics bool }{simulate_physics})
 }
 func (self class) GetSimulatePhysics() bool { //gd:PhysicalBone2D.get_simulate_physics
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_simulate_physics, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_simulate_physics, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsSimulatingPhysics() bool { //gd:PhysicalBone2D.is_simulating_physics
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_simulating_physics, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_simulating_physics, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -317,7 +319,7 @@ func (self class) SetBone2dNodepath(nodepath Path.ToNode) { //gd:PhysicalBone2D.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone2d_nodepath, 0|(gdextension.SizeNodePath<<4), &struct{ nodepath gdextension.NodePath }{pointers.Get(gd.InternalNodePath(nodepath))})
 }
 func (self class) GetBone2dNodepath() Path.ToNode { //gd:PhysicalBone2D.get_bone2d_nodepath
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_bone2d_nodepath, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_bone2d_nodepath, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -325,7 +327,7 @@ func (self class) SetBone2dIndex(bone_index int64) { //gd:PhysicalBone2D.set_bon
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone2d_index, 0|(gdextension.SizeInt<<4), &struct{ bone_index int64 }{bone_index})
 }
 func (self class) GetBone2dIndex() int64 { //gd:PhysicalBone2D.get_bone2d_index
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone2d_index, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone2d_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -333,7 +335,7 @@ func (self class) SetFollowBoneWhenSimulating(follow_bone bool) { //gd:PhysicalB
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_follow_bone_when_simulating, 0|(gdextension.SizeBool<<4), &struct{ follow_bone bool }{follow_bone})
 }
 func (self class) GetFollowBoneWhenSimulating() bool { //gd:PhysicalBone2D.get_follow_bone_when_simulating
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_follow_bone_when_simulating, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_follow_bone_when_simulating, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

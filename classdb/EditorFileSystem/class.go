@@ -16,6 +16,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -52,6 +53,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -247,17 +249,17 @@ func New() Instance {
 }
 
 func (self class) GetFilesystem() [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystem.get_filesystem
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_filesystem, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_filesystem, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorFileSystemDirectory{gdclass.NewEditorFileSystemDirectory(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) IsScanning() bool { //gd:EditorFileSystem.is_scanning
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scanning, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scanning, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetScanningProgress() float64 { //gd:EditorFileSystem.get_scanning_progress
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_scanning_progress, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_scanning_progress, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

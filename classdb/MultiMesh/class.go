@@ -24,6 +24,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -64,6 +65,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -477,7 +479,7 @@ func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:MultiMesh.set_mesh
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMesh(mesh[0])[0]))})
 }
 func (self class) GetMesh() [1]gdclass.Mesh { //gd:MultiMesh.get_mesh
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Mesh{gdclass.NewMesh(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -485,7 +487,7 @@ func (self class) SetUseColors(enable bool) { //gd:MultiMesh.set_use_colors
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_colors, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsUsingColors() bool { //gd:MultiMesh.is_using_colors
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_colors, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_colors, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -493,7 +495,7 @@ func (self class) SetUseCustomData(enable bool) { //gd:MultiMesh.set_use_custom_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_custom_data, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsUsingCustomData() bool { //gd:MultiMesh.is_using_custom_data
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_custom_data, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_custom_data, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -501,7 +503,7 @@ func (self class) SetTransformFormat(format TransformFormat) { //gd:MultiMesh.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transform_format, 0|(gdextension.SizeInt<<4), &struct{ format TransformFormat }{format})
 }
 func (self class) GetTransformFormat() TransformFormat { //gd:MultiMesh.get_transform_format
-	var r_ret = noescape.Call[TransformFormat](gd.ObjectChecked(self.AsObject()), methods.get_transform_format, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TransformFormat](gd.ObjectChecked(self.AsObject()), methods.get_transform_format, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -509,7 +511,7 @@ func (self class) SetInstanceCount(count int64) { //gd:MultiMesh.set_instance_co
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_instance_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
 func (self class) GetInstanceCount() int64 { //gd:MultiMesh.get_instance_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_instance_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_instance_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -517,7 +519,7 @@ func (self class) SetVisibleInstanceCount(count int64) { //gd:MultiMesh.set_visi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visible_instance_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
 func (self class) GetVisibleInstanceCount() int64 { //gd:MultiMesh.get_visible_instance_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_visible_instance_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_visible_instance_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -525,7 +527,7 @@ func (self class) SetPhysicsInterpolationQuality(quality PhysicsInterpolationQua
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_interpolation_quality, 0|(gdextension.SizeInt<<4), &struct{ quality PhysicsInterpolationQuality }{quality})
 }
 func (self class) GetPhysicsInterpolationQuality() PhysicsInterpolationQuality { //gd:MultiMesh.get_physics_interpolation_quality
-	var r_ret = noescape.Call[PhysicsInterpolationQuality](gd.ObjectChecked(self.AsObject()), methods.get_physics_interpolation_quality, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[PhysicsInterpolationQuality](gd.ObjectChecked(self.AsObject()), methods.get_physics_interpolation_quality, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -583,7 +585,7 @@ func (self class) SetCustomAabb(aabb AABB.PositionSize) { //gd:MultiMesh.set_cus
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_aabb, 0|(gdextension.SizeAABB<<4), &struct{ aabb AABB.PositionSize }{aabb})
 }
 func (self class) GetCustomAabb() AABB.PositionSize { //gd:MultiMesh.get_custom_aabb
-	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_custom_aabb, gdextension.SizeAABB, &struct{}{})
+	var r_ret = jumponly.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_custom_aabb, gdextension.SizeAABB, &struct{}{})
 	var ret = r_ret
 	return ret
 }

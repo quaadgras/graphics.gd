@@ -15,6 +15,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -53,6 +54,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -262,7 +264,7 @@ func (self class) SetSoftness(softness float64) { //gd:PinJoint2D.set_softness
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_softness, 0|(gdextension.SizeFloat<<4), &struct{ softness float64 }{softness})
 }
 func (self class) GetSoftness() float64 { //gd:PinJoint2D.get_softness
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_softness, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_softness, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -270,7 +272,7 @@ func (self class) SetAngularLimitLower(angular_limit_lower float64) { //gd:PinJo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_limit_lower, 0|(gdextension.SizeFloat<<4), &struct{ angular_limit_lower float64 }{angular_limit_lower})
 }
 func (self class) GetAngularLimitLower() float64 { //gd:PinJoint2D.get_angular_limit_lower
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_limit_lower, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_limit_lower, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -278,7 +280,7 @@ func (self class) SetAngularLimitUpper(angular_limit_upper float64) { //gd:PinJo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_limit_upper, 0|(gdextension.SizeFloat<<4), &struct{ angular_limit_upper float64 }{angular_limit_upper})
 }
 func (self class) GetAngularLimitUpper() float64 { //gd:PinJoint2D.get_angular_limit_upper
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_limit_upper, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_limit_upper, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -286,7 +288,7 @@ func (self class) SetMotorTargetVelocity(motor_target_velocity float64) { //gd:P
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_motor_target_velocity, 0|(gdextension.SizeFloat<<4), &struct{ motor_target_velocity float64 }{motor_target_velocity})
 }
 func (self class) GetMotorTargetVelocity() float64 { //gd:PinJoint2D.get_motor_target_velocity
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_motor_target_velocity, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_motor_target_velocity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -294,7 +296,7 @@ func (self class) SetMotorEnabled(enabled bool) { //gd:PinJoint2D.set_motor_enab
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_motor_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsMotorEnabled() bool { //gd:PinJoint2D.is_motor_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_motor_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_motor_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -302,7 +304,7 @@ func (self class) SetAngularLimitEnabled(enabled bool) { //gd:PinJoint2D.set_ang
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_limit_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsAngularLimitEnabled() bool { //gd:PinJoint2D.is_angular_limit_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_angular_limit_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_angular_limit_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -16,6 +16,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -55,6 +56,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -306,7 +308,7 @@ func (self class) SetText(text String.Readable) { //gd:LinkButton.set_text
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
 func (self class) GetText() String.Readable { //gd:LinkButton.get_text
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_text, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -314,7 +316,7 @@ func (self class) SetTextOverrunBehavior(overrun_behavior TextServer.OverrunBeha
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_overrun_behavior, 0|(gdextension.SizeInt<<4), &struct{ overrun_behavior TextServer.OverrunBehavior }{overrun_behavior})
 }
 func (self class) GetTextOverrunBehavior() TextServer.OverrunBehavior { //gd:LinkButton.get_text_overrun_behavior
-	var r_ret = noescape.Call[TextServer.OverrunBehavior](gd.ObjectChecked(self.AsObject()), methods.get_text_overrun_behavior, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextServer.OverrunBehavior](gd.ObjectChecked(self.AsObject()), methods.get_text_overrun_behavior, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -322,7 +324,7 @@ func (self class) SetEllipsisChar(char String.Readable) { //gd:LinkButton.set_el
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ellipsis_char, 0|(gdextension.SizeString<<4), &struct{ char gdextension.String }{pointers.Get(gd.InternalString(char))})
 }
 func (self class) GetEllipsisChar() String.Readable { //gd:LinkButton.get_ellipsis_char
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_ellipsis_char, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_ellipsis_char, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -330,7 +332,7 @@ func (self class) SetTextDirection(direction Control.TextDirection) { //gd:LinkB
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_direction, 0|(gdextension.SizeInt<<4), &struct{ direction Control.TextDirection }{direction})
 }
 func (self class) GetTextDirection() Control.TextDirection { //gd:LinkButton.get_text_direction
-	var r_ret = noescape.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), methods.get_text_direction, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), methods.get_text_direction, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -338,7 +340,7 @@ func (self class) SetLanguage(language String.Readable) { //gd:LinkButton.set_la
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_language, 0|(gdextension.SizeString<<4), &struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))})
 }
 func (self class) GetLanguage() String.Readable { //gd:LinkButton.get_language
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -346,7 +348,7 @@ func (self class) SetUri(uri String.Readable) { //gd:LinkButton.set_uri
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uri, 0|(gdextension.SizeString<<4), &struct{ uri gdextension.String }{pointers.Get(gd.InternalString(uri))})
 }
 func (self class) GetUri() String.Readable { //gd:LinkButton.get_uri
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_uri, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_uri, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -354,7 +356,7 @@ func (self class) SetUnderlineMode(underline_mode UnderlineMode) { //gd:LinkButt
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_underline_mode, 0|(gdextension.SizeInt<<4), &struct{ underline_mode UnderlineMode }{underline_mode})
 }
 func (self class) GetUnderlineMode() UnderlineMode { //gd:LinkButton.get_underline_mode
-	var r_ret = noescape.Call[UnderlineMode](gd.ObjectChecked(self.AsObject()), methods.get_underline_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[UnderlineMode](gd.ObjectChecked(self.AsObject()), methods.get_underline_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -364,7 +366,7 @@ func (self class) SetStructuredTextBidiOverride(parser TextServer.StructuredText
 	}{parser})
 }
 func (self class) GetStructuredTextBidiOverride() TextServer.StructuredTextParser { //gd:LinkButton.get_structured_text_bidi_override
-	var r_ret = noescape.Call[TextServer.StructuredTextParser](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextServer.StructuredTextParser](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -372,7 +374,7 @@ func (self class) SetStructuredTextBidiOverrideOptions(args Array.Any) { //gd:Li
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_structured_text_bidi_override_options, 0|(gdextension.SizeArray<<4), &struct{ args gdextension.Array }{pointers.Get(gd.InternalArray(args))})
 }
 func (self class) GetStructuredTextBidiOverrideOptions() Array.Any { //gd:LinkButton.get_structured_text_bidi_override_options
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override_options, gdextension.SizeArray, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override_options, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

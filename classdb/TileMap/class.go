@@ -23,6 +23,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -67,6 +68,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -1202,7 +1204,7 @@ func (self class) SetTileset(tileset [1]gdclass.TileSet) { //gd:TileMap.set_tile
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tileset, 0|(gdextension.SizeObject<<4), &struct{ tileset gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTileSet(tileset[0])[0]))})
 }
 func (self class) GetTileset() [1]gdclass.TileSet { //gd:TileMap.get_tileset
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tileset, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tileset, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.TileSet{gdclass.NewTileSet(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -1210,7 +1212,7 @@ func (self class) SetRenderingQuadrantSize(size int64) { //gd:TileMap.set_render
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rendering_quadrant_size, 0|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 }
 func (self class) GetRenderingQuadrantSize() int64 { //gd:TileMap.get_rendering_quadrant_size
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_rendering_quadrant_size, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_rendering_quadrant_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1323,7 +1325,7 @@ func (self class) SetCollisionAnimatable(enabled bool) { //gd:TileMap.set_collis
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_animatable, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsCollisionAnimatable() bool { //gd:TileMap.is_collision_animatable
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collision_animatable, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collision_animatable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1331,7 +1333,7 @@ func (self class) SetCollisionVisibilityMode(collision_visibility_mode Visibilit
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_visibility_mode, 0|(gdextension.SizeInt<<4), &struct{ collision_visibility_mode VisibilityMode }{collision_visibility_mode})
 }
 func (self class) GetCollisionVisibilityMode() VisibilityMode { //gd:TileMap.get_collision_visibility_mode
-	var r_ret = noescape.Call[VisibilityMode](gd.ObjectChecked(self.AsObject()), methods.get_collision_visibility_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[VisibilityMode](gd.ObjectChecked(self.AsObject()), methods.get_collision_visibility_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1339,7 +1341,7 @@ func (self class) SetNavigationVisibilityMode(navigation_visibility_mode Visibil
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_visibility_mode, 0|(gdextension.SizeInt<<4), &struct{ navigation_visibility_mode VisibilityMode }{navigation_visibility_mode})
 }
 func (self class) GetNavigationVisibilityMode() VisibilityMode { //gd:TileMap.get_navigation_visibility_mode
-	var r_ret = noescape.Call[VisibilityMode](gd.ObjectChecked(self.AsObject()), methods.get_navigation_visibility_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[VisibilityMode](gd.ObjectChecked(self.AsObject()), methods.get_navigation_visibility_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

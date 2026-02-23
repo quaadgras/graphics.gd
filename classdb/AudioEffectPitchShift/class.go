@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -48,6 +49,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -210,7 +212,7 @@ func (self class) SetPitchScale(rate float64) { //gd:AudioEffectPitchShift.set_p
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pitch_scale, 0|(gdextension.SizeFloat<<4), &struct{ rate float64 }{rate})
 }
 func (self class) GetPitchScale() float64 { //gd:AudioEffectPitchShift.get_pitch_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pitch_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pitch_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -218,7 +220,7 @@ func (self class) SetOversampling(amount int64) { //gd:AudioEffectPitchShift.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_oversampling, 0|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
 }
 func (self class) GetOversampling() int64 { //gd:AudioEffectPitchShift.get_oversampling
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_oversampling, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_oversampling, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -226,7 +228,7 @@ func (self class) SetFftSize(size FFTSize) { //gd:AudioEffectPitchShift.set_fft_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fft_size, 0|(gdextension.SizeInt<<4), &struct{ size FFTSize }{size})
 }
 func (self class) GetFftSize() FFTSize { //gd:AudioEffectPitchShift.get_fft_size
-	var r_ret = noescape.Call[FFTSize](gd.ObjectChecked(self.AsObject()), methods.get_fft_size, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[FFTSize](gd.ObjectChecked(self.AsObject()), methods.get_fft_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

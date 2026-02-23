@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -54,6 +55,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -603,18 +605,18 @@ func (self class) HasObject(key variant.Any) bool { //gd:TextLine.has_object
 	return ret
 }
 func (self class) SetWidth(width float64) { //gd:TextLine.set_width
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_width, 0|(gdextension.SizeFloat<<4), &struct{ width float64 }{width})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_width, 0|(gdextension.SizeFloat<<4), &struct{ width float64 }{width})
 }
 func (self class) GetWidth() float64 { //gd:TextLine.get_width
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_width, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_width, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetHorizontalAlignment(alignment GUI.HorizontalAlignment) { //gd:TextLine.set_horizontal_alignment
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_horizontal_alignment, 0|(gdextension.SizeInt<<4), &struct{ alignment GUI.HorizontalAlignment }{alignment})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_horizontal_alignment, 0|(gdextension.SizeInt<<4), &struct{ alignment GUI.HorizontalAlignment }{alignment})
 }
 func (self class) GetHorizontalAlignment() GUI.HorizontalAlignment { //gd:TextLine.get_horizontal_alignment
-	var r_ret = noescape.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_alignment, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_alignment, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -627,15 +629,15 @@ func (self class) SetFlags(flags TextServer.JustificationFlag) { //gd:TextLine.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flags, 0|(gdextension.SizeInt<<4), &struct{ flags TextServer.JustificationFlag }{flags})
 }
 func (self class) GetFlags() TextServer.JustificationFlag { //gd:TextLine.get_flags
-	var r_ret = noescape.Call[TextServer.JustificationFlag](gd.ObjectChecked(self.AsObject()), methods.get_flags, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextServer.JustificationFlag](gd.ObjectChecked(self.AsObject()), methods.get_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetTextOverrunBehavior(overrun_behavior TextServer.OverrunBehavior) { //gd:TextLine.set_text_overrun_behavior
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_overrun_behavior, 0|(gdextension.SizeInt<<4), &struct{ overrun_behavior TextServer.OverrunBehavior }{overrun_behavior})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_overrun_behavior, 0|(gdextension.SizeInt<<4), &struct{ overrun_behavior TextServer.OverrunBehavior }{overrun_behavior})
 }
 func (self class) GetTextOverrunBehavior() TextServer.OverrunBehavior { //gd:TextLine.get_text_overrun_behavior
-	var r_ret = noescape.Call[TextServer.OverrunBehavior](gd.ObjectChecked(self.AsObject()), methods.get_text_overrun_behavior, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextServer.OverrunBehavior](gd.ObjectChecked(self.AsObject()), methods.get_text_overrun_behavior, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -643,7 +645,7 @@ func (self class) SetEllipsisChar(char String.Readable) { //gd:TextLine.set_elli
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ellipsis_char, 0|(gdextension.SizeString<<4), &struct{ char gdextension.String }{pointers.Get(gd.InternalString(char))})
 }
 func (self class) GetEllipsisChar() String.Readable { //gd:TextLine.get_ellipsis_char
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_ellipsis_char, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_ellipsis_char, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -663,7 +665,7 @@ func (self class) GetSize() Vector2.XY { //gd:TextLine.get_size
 	return ret
 }
 func (self class) GetRid() RID.Any { //gd:TextLine.get_rid
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
+	var r_ret = jumponly.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }

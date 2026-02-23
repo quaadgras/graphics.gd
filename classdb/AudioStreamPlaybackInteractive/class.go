@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -50,6 +51,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -195,10 +197,10 @@ func (self class) SwitchToClipByName(clip_name String.Name) { //gd:AudioStreamPl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.switch_to_clip_by_name, 0|(gdextension.SizeStringName<<4), &struct{ clip_name gdextension.StringName }{pointers.Get(gd.InternalStringName(clip_name))})
 }
 func (self class) SwitchToClip(clip_index int64) { //gd:AudioStreamPlaybackInteractive.switch_to_clip
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.switch_to_clip, 0|(gdextension.SizeInt<<4), &struct{ clip_index int64 }{clip_index})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.switch_to_clip, 0|(gdextension.SizeInt<<4), &struct{ clip_index int64 }{clip_index})
 }
 func (self class) GetCurrentClipIndex() int64 { //gd:AudioStreamPlaybackInteractive.get_current_clip_index
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_current_clip_index, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_current_clip_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

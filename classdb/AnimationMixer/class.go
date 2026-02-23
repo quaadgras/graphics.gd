@@ -18,6 +18,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -58,6 +59,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -805,7 +807,7 @@ func (self class) SetActive(active bool) { //gd:AnimationMixer.set_active
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_active, 0|(gdextension.SizeBool<<4), &struct{ active bool }{active})
 }
 func (self class) IsActive() bool { //gd:AnimationMixer.is_active
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_active, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_active, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -813,7 +815,7 @@ func (self class) SetDeterministic(deterministic bool) { //gd:AnimationMixer.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_deterministic, 0|(gdextension.SizeBool<<4), &struct{ deterministic bool }{deterministic})
 }
 func (self class) IsDeterministic() bool { //gd:AnimationMixer.is_deterministic
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_deterministic, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_deterministic, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -821,7 +823,7 @@ func (self class) SetRootNode(path Path.ToNode) { //gd:AnimationMixer.set_root_n
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_node, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
 func (self class) GetRootNode() Path.ToNode { //gd:AnimationMixer.get_root_node
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root_node, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root_node, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -829,7 +831,7 @@ func (self class) SetCallbackModeProcess(mode AnimationCallbackModeProcess) { //
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_callback_mode_process, 0|(gdextension.SizeInt<<4), &struct{ mode AnimationCallbackModeProcess }{mode})
 }
 func (self class) GetCallbackModeProcess() AnimationCallbackModeProcess { //gd:AnimationMixer.get_callback_mode_process
-	var r_ret = noescape.Call[AnimationCallbackModeProcess](gd.ObjectChecked(self.AsObject()), methods.get_callback_mode_process, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[AnimationCallbackModeProcess](gd.ObjectChecked(self.AsObject()), methods.get_callback_mode_process, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -837,7 +839,7 @@ func (self class) SetCallbackModeMethod(mode AnimationCallbackModeMethod) { //gd
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_callback_mode_method, 0|(gdextension.SizeInt<<4), &struct{ mode AnimationCallbackModeMethod }{mode})
 }
 func (self class) GetCallbackModeMethod() AnimationCallbackModeMethod { //gd:AnimationMixer.get_callback_mode_method
-	var r_ret = noescape.Call[AnimationCallbackModeMethod](gd.ObjectChecked(self.AsObject()), methods.get_callback_mode_method, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[AnimationCallbackModeMethod](gd.ObjectChecked(self.AsObject()), methods.get_callback_mode_method, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -845,7 +847,7 @@ func (self class) SetCallbackModeDiscrete(mode AnimationCallbackModeDiscrete) { 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_callback_mode_discrete, 0|(gdextension.SizeInt<<4), &struct{ mode AnimationCallbackModeDiscrete }{mode})
 }
 func (self class) GetCallbackModeDiscrete() AnimationCallbackModeDiscrete { //gd:AnimationMixer.get_callback_mode_discrete
-	var r_ret = noescape.Call[AnimationCallbackModeDiscrete](gd.ObjectChecked(self.AsObject()), methods.get_callback_mode_discrete, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[AnimationCallbackModeDiscrete](gd.ObjectChecked(self.AsObject()), methods.get_callback_mode_discrete, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -853,7 +855,7 @@ func (self class) SetAudioMaxPolyphony(max_polyphony int64) { //gd:AnimationMixe
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_audio_max_polyphony, 0|(gdextension.SizeInt<<4), &struct{ max_polyphony int64 }{max_polyphony})
 }
 func (self class) GetAudioMaxPolyphony() int64 { //gd:AnimationMixer.get_audio_max_polyphony
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_audio_max_polyphony, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_audio_max_polyphony, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -861,45 +863,45 @@ func (self class) SetRootMotionTrack(path Path.ToNode) { //gd:AnimationMixer.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_motion_track, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
 func (self class) GetRootMotionTrack() Path.ToNode { //gd:AnimationMixer.get_root_motion_track
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_track, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_track, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 func (self class) SetRootMotionLocal(enabled bool) { //gd:AnimationMixer.set_root_motion_local
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_motion_local, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_motion_local, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsRootMotionLocal() bool { //gd:AnimationMixer.is_root_motion_local
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_root_motion_local, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_root_motion_local, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetRootMotionPosition() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_position
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_position, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_position, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetRootMotionRotation() Quaternion.IJKX { //gd:AnimationMixer.get_root_motion_rotation
-	var r_ret = noescape.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_rotation, gdextension.SizeQuaternion, &struct{}{})
+	var r_ret = jumponly.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_rotation, gdextension.SizeQuaternion, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetRootMotionScale() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_scale
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_scale, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_scale, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetRootMotionPositionAccumulator() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_position_accumulator
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_position_accumulator, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_position_accumulator, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetRootMotionRotationAccumulator() Quaternion.IJKX { //gd:AnimationMixer.get_root_motion_rotation_accumulator
-	var r_ret = noescape.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_rotation_accumulator, gdextension.SizeQuaternion, &struct{}{})
+	var r_ret = jumponly.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_rotation_accumulator, gdextension.SizeQuaternion, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetRootMotionScaleAccumulator() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_scale_accumulator
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_scale_accumulator, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_scale_accumulator, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -918,10 +920,10 @@ func (self class) Capture(name String.Name, duration float64, trans_type Tween.T
 	}{pointers.Get(gd.InternalStringName(name)), duration, trans_type, ease_type})
 }
 func (self class) SetResetOnSaveEnabled(enabled bool) { //gd:AnimationMixer.set_reset_on_save_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reset_on_save_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reset_on_save_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsResetOnSaveEnabled() bool { //gd:AnimationMixer.is_reset_on_save_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_reset_on_save_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_reset_on_save_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

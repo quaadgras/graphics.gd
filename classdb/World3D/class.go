@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -50,6 +51,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -259,7 +261,7 @@ func (self class) GetNavigationMap() RID.Any { //gd:World3D.get_navigation_map
 	return ret
 }
 func (self class) GetScenario() RID.Any { //gd:World3D.get_scenario
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_scenario, gdextension.SizeRID, &struct{}{})
+	var r_ret = jumponly.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_scenario, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -267,7 +269,7 @@ func (self class) SetEnvironment(env [1]gdclass.Environment) { //gd:World3D.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment, 0|(gdextension.SizeObject<<4), &struct{ env gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEnvironment(env[0])[0]))})
 }
 func (self class) GetEnvironment() [1]gdclass.Environment { //gd:World3D.get_environment
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_environment, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_environment, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Environment{gdclass.NewEnvironment(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -275,7 +277,7 @@ func (self class) SetFallbackEnvironment(env [1]gdclass.Environment) { //gd:Worl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_environment, 0|(gdextension.SizeObject<<4), &struct{ env gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEnvironment(env[0])[0]))})
 }
 func (self class) GetFallbackEnvironment() [1]gdclass.Environment { //gd:World3D.get_fallback_environment
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_fallback_environment, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_fallback_environment, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Environment{gdclass.NewEnvironment(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -283,7 +285,7 @@ func (self class) SetCameraAttributes(attributes [1]gdclass.CameraAttributes) { 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera_attributes, 0|(gdextension.SizeObject<<4), &struct{ attributes gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCameraAttributes(attributes[0])[0]))})
 }
 func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes { //gd:World3D.get_camera_attributes
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_camera_attributes, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_camera_attributes, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.CameraAttributes{gdclass.NewCameraAttributes(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

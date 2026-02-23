@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -48,6 +49,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -207,26 +209,26 @@ func (self Instance) SetSurround(value Float.X) Instance { //gd:AudioEffectStere
 }
 
 func (self class) SetPanPullout(amount float64) { //gd:AudioEffectStereoEnhance.set_pan_pullout
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pan_pullout, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pan_pullout, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 func (self class) GetPanPullout() float64 { //gd:AudioEffectStereoEnhance.get_pan_pullout
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pan_pullout, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pan_pullout, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetTimePullout(amount float64) { //gd:AudioEffectStereoEnhance.set_time_pullout
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_time_pullout, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_time_pullout, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 func (self class) GetTimePullout() float64 { //gd:AudioEffectStereoEnhance.get_time_pullout
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_time_pullout, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_time_pullout, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetSurround(amount float64) { //gd:AudioEffectStereoEnhance.set_surround
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_surround, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_surround, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 func (self class) GetSurround() float64 { //gd:AudioEffectStereoEnhance.get_surround
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_surround, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_surround, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

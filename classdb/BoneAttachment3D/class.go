@@ -15,6 +15,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -52,6 +53,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -276,7 +278,7 @@ func (self class) SetBoneName(bone_name String.Readable) { //gd:BoneAttachment3D
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_name, 0|(gdextension.SizeString<<4), &struct{ bone_name gdextension.String }{pointers.Get(gd.InternalString(bone_name))})
 }
 func (self class) GetBoneName() String.Readable { //gd:BoneAttachment3D.get_bone_name
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_bone_name, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_bone_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -284,7 +286,7 @@ func (self class) SetBoneIdx(bone_idx int64) { //gd:BoneAttachment3D.set_bone_id
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_idx, 0|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
 }
 func (self class) GetBoneIdx() int64 { //gd:BoneAttachment3D.get_bone_idx
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone_idx, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone_idx, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -295,7 +297,7 @@ func (self class) SetOverridePose(override_pose bool) { //gd:BoneAttachment3D.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_override_pose, 0|(gdextension.SizeBool<<4), &struct{ override_pose bool }{override_pose})
 }
 func (self class) GetOverridePose() bool { //gd:BoneAttachment3D.get_override_pose
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_override_pose, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_override_pose, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -303,7 +305,7 @@ func (self class) SetUseExternalSkeleton(use_external_skeleton bool) { //gd:Bone
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_external_skeleton, 0|(gdextension.SizeBool<<4), &struct{ use_external_skeleton bool }{use_external_skeleton})
 }
 func (self class) GetUseExternalSkeleton() bool { //gd:BoneAttachment3D.get_use_external_skeleton
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_external_skeleton, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_external_skeleton, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -311,7 +313,7 @@ func (self class) SetExternalSkeleton(external_skeleton Path.ToNode) { //gd:Bone
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_external_skeleton, 0|(gdextension.SizeNodePath<<4), &struct{ external_skeleton gdextension.NodePath }{pointers.Get(gd.InternalNodePath(external_skeleton))})
 }
 func (self class) GetExternalSkeleton() Path.ToNode { //gd:BoneAttachment3D.get_external_skeleton
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_external_skeleton, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_external_skeleton, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -51,6 +52,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -276,7 +278,7 @@ func (self Instance) SetMargin(value Float.X) Instance { //gd:SpringArm3D.margin
 }
 
 func (self class) GetHitLength() float64 { //gd:SpringArm3D.get_hit_length
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_hit_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_hit_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -284,7 +286,7 @@ func (self class) SetLength(length float64) { //gd:SpringArm3D.set_length
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
 func (self class) GetLength() float64 { //gd:SpringArm3D.get_length
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -292,7 +294,7 @@ func (self class) SetShape(shape [1]gdclass.Shape3D) { //gd:SpringArm3D.set_shap
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape, 0|(gdextension.SizeObject<<4), &struct{ shape gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetShape3D(shape[0])[0]))})
 }
 func (self class) GetShape() [1]gdclass.Shape3D { //gd:SpringArm3D.get_shape
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shape, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shape, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Shape3D{gdclass.NewShape3D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -316,10 +318,10 @@ func (self class) GetCollisionMask() int64 { //gd:SpringArm3D.get_collision_mask
 	return ret
 }
 func (self class) SetMargin(margin float64) { //gd:SpringArm3D.set_margin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_margin, 0|(gdextension.SizeFloat<<4), &struct{ margin float64 }{margin})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_margin, 0|(gdextension.SizeFloat<<4), &struct{ margin float64 }{margin})
 }
 func (self class) GetMargin() float64 { //gd:SpringArm3D.get_margin
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_margin, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

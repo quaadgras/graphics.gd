@@ -28,6 +28,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -66,6 +67,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -271,7 +273,7 @@ func (self class) SetBakeMask(mask int64) { //gd:OccluderInstance3D.set_bake_mas
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
 func (self class) GetBakeMask() int64 { //gd:OccluderInstance3D.get_bake_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bake_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bake_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -290,7 +292,7 @@ func (self class) SetBakeSimplificationDistance(simplification_distance float64)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_simplification_distance, 0|(gdextension.SizeFloat<<4), &struct{ simplification_distance float64 }{simplification_distance})
 }
 func (self class) GetBakeSimplificationDistance() float64 { //gd:OccluderInstance3D.get_bake_simplification_distance
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bake_simplification_distance, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bake_simplification_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -298,7 +300,7 @@ func (self class) SetOccluder(occluder [1]gdclass.Occluder3D) { //gd:OccluderIns
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occluder, 0|(gdextension.SizeObject<<4), &struct{ occluder gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOccluder3D(occluder[0])[0]))})
 }
 func (self class) GetOccluder() [1]gdclass.Occluder3D { //gd:OccluderInstance3D.get_occluder
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_occluder, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_occluder, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Occluder3D{gdclass.NewOccluder3D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

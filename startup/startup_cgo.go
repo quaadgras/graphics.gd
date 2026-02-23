@@ -49,6 +49,9 @@ func init() {
 				}
 			}
 			internal.Init(level)
+			if level == 0 {
+				initJumponly()
+			}
 			if level == 2 && !initDone {
 				for _, fn := range internal.StartupFunctions {
 					fn()

@@ -16,6 +16,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -53,6 +54,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -358,23 +360,23 @@ func (self class) ClearChains() { //gd:LimitAngularVelocityModifier3D.clear_chai
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_chains, 0, &struct{}{})
 }
 func (self class) SetMaxAngularVelocity(angular_velocity float64) { //gd:LimitAngularVelocityModifier3D.set_max_angular_velocity
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_angular_velocity, 0|(gdextension.SizeFloat<<4), &struct{ angular_velocity float64 }{angular_velocity})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_angular_velocity, 0|(gdextension.SizeFloat<<4), &struct{ angular_velocity float64 }{angular_velocity})
 }
 func (self class) GetMaxAngularVelocity() float64 { //gd:LimitAngularVelocityModifier3D.get_max_angular_velocity
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_angular_velocity, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_angular_velocity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetExclude(exclude bool) { //gd:LimitAngularVelocityModifier3D.set_exclude
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exclude, 0|(gdextension.SizeBool<<4), &struct{ exclude bool }{exclude})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exclude, 0|(gdextension.SizeBool<<4), &struct{ exclude bool }{exclude})
 }
 func (self class) IsExclude() bool { //gd:LimitAngularVelocityModifier3D.is_exclude
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_exclude, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_exclude, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) Reset() { //gd:LimitAngularVelocityModifier3D.reset
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset, 0, &struct{}{})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset, 0, &struct{}{})
 }
 func (o class) AsLimitAngularVelocityModifier3D() Advanced         { return Advanced(o) }
 func (o Instance) AsLimitAngularVelocityModifier3D() Instance      { return o }

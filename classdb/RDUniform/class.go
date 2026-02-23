@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -49,6 +50,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -213,18 +215,18 @@ func (self Instance) SetBinding(value int) Instance { //gd:RDUniform.binding
 }
 
 func (self class) SetUniformType(p_member Rendering.UniformType) { //gd:RDUniform.set_uniform_type
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uniform_type, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.UniformType }{p_member})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uniform_type, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.UniformType }{p_member})
 }
 func (self class) GetUniformType() Rendering.UniformType { //gd:RDUniform.get_uniform_type
-	var r_ret = noescape.Call[Rendering.UniformType](gd.ObjectChecked(self.AsObject()), methods.get_uniform_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Rendering.UniformType](gd.ObjectChecked(self.AsObject()), methods.get_uniform_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetBinding(p_member int64) { //gd:RDUniform.set_binding
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_binding, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_binding, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
 }
 func (self class) GetBinding() int64 { //gd:RDUniform.get_binding
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_binding, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_binding, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

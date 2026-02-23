@@ -23,6 +23,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -65,6 +66,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -396,7 +398,7 @@ func (self Instance) SetCollisionPriority(value Float.X) Instance { //gd:CSGShap
 }
 
 func (self class) IsRootShape() bool { //gd:CSGShape3D.is_root_shape
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_root_shape, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_root_shape, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -404,7 +406,7 @@ func (self class) SetOperation(operation Operation) { //gd:CSGShape3D.set_operat
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_operation, 0|(gdextension.SizeInt<<4), &struct{ operation Operation }{operation})
 }
 func (self class) GetOperation() Operation { //gd:CSGShape3D.get_operation
-	var r_ret = noescape.Call[Operation](gd.ObjectChecked(self.AsObject()), methods.get_operation, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Operation](gd.ObjectChecked(self.AsObject()), methods.get_operation, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -412,7 +414,7 @@ func (self class) SetSnap(snap float64) { //gd:CSGShape3D.set_snap
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_snap, 0|(gdextension.SizeFloat<<4), &struct{ snap float64 }{snap})
 }
 func (self class) GetSnap() float64 { //gd:CSGShape3D.get_snap
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_snap, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_snap, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -420,7 +422,7 @@ func (self class) SetUseCollision(operation bool) { //gd:CSGShape3D.set_use_coll
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_collision, 0|(gdextension.SizeBool<<4), &struct{ operation bool }{operation})
 }
 func (self class) IsUsingCollision() bool { //gd:CSGShape3D.is_using_collision
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_collision, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_collision, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -428,7 +430,7 @@ func (self class) SetCollisionLayer(layer int64) { //gd:CSGShape3D.set_collision
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 }
 func (self class) GetCollisionLayer() int64 { //gd:CSGShape3D.get_collision_layer
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -436,7 +438,7 @@ func (self class) SetCollisionMask(mask int64) { //gd:CSGShape3D.set_collision_m
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
 func (self class) GetCollisionMask() int64 { //gd:CSGShape3D.get_collision_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -466,7 +468,7 @@ func (self class) SetCollisionPriority(priority float64) { //gd:CSGShape3D.set_c
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_priority, 0|(gdextension.SizeFloat<<4), &struct{ priority float64 }{priority})
 }
 func (self class) GetCollisionPriority() float64 { //gd:CSGShape3D.get_collision_priority
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_priority, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_priority, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -479,7 +481,7 @@ func (self class) SetCalculateTangents(enabled bool) { //gd:CSGShape3D.set_calcu
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_calculate_tangents, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsCalculatingTangents() bool { //gd:CSGShape3D.is_calculating_tangents
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_calculating_tangents, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_calculating_tangents, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

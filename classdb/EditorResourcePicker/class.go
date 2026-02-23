@@ -18,6 +18,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -59,6 +60,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -329,7 +331,7 @@ func (self class) SetBaseType(base_type String.Readable) { //gd:EditorResourcePi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_type, 0|(gdextension.SizeString<<4), &struct{ base_type gdextension.String }{pointers.Get(gd.InternalString(base_type))})
 }
 func (self class) GetBaseType() String.Readable { //gd:EditorResourcePicker.get_base_type
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_base_type, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_base_type, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -342,7 +344,7 @@ func (self class) SetEditedResource(resource [1]gdclass.Resource) { //gd:EditorR
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edited_resource, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetResource(resource[0])[0]))})
 }
 func (self class) GetEditedResource() [1]gdclass.Resource { //gd:EditorResourcePicker.get_edited_resource
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_resource, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_resource, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Resource{gdclass.NewResource(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -361,7 +363,7 @@ func (self class) SetEditable(enable bool) { //gd:EditorResourcePicker.set_edita
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editable, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsEditable() bool { //gd:EditorResourcePicker.is_editable
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editable, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

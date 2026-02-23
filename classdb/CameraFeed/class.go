@@ -20,6 +20,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -56,6 +57,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -377,12 +379,12 @@ func (class) _deactivate_feed(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionC
 }
 
 func (self class) GetId() int64 { //gd:CameraFeed.get_id
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_id, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsActive() bool { //gd:CameraFeed.is_active
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_active, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_active, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -390,7 +392,7 @@ func (self class) SetActive(active bool) { //gd:CameraFeed.set_active
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_active, 0|(gdextension.SizeBool<<4), &struct{ active bool }{active})
 }
 func (self class) GetName() String.Readable { //gd:CameraFeed.get_name
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -398,15 +400,15 @@ func (self class) SetName(name String.Readable) { //gd:CameraFeed.set_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_name, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 func (self class) GetPosition() FeedPosition { //gd:CameraFeed.get_position
-	var r_ret = noescape.Call[FeedPosition](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[FeedPosition](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPosition(position FeedPosition) { //gd:CameraFeed.set_position
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position, 0|(gdextension.SizeInt<<4), &struct{ position FeedPosition }{position})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position, 0|(gdextension.SizeInt<<4), &struct{ position FeedPosition }{position})
 }
 func (self class) GetTransform() Transform2D.OriginXY { //gd:CameraFeed.get_transform
-	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_transform, gdextension.SizeTransform2D, &struct{}{})
+	var r_ret = jumponly.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_transform, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -437,17 +439,17 @@ func (self class) GetTextureTexId(feed_image_type ImageType) int64 { //gd:Camera
 	return ret
 }
 func (self class) GetDatatype() FeedDataType { //gd:CameraFeed.get_datatype
-	var r_ret = noescape.Call[FeedDataType](gd.ObjectChecked(self.AsObject()), methods.get_datatype, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[FeedDataType](gd.ObjectChecked(self.AsObject()), methods.get_datatype, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetFormats() Array.Any { //gd:CameraFeed.get_formats
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_formats, gdextension.SizeArray, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_formats, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) SetFormat(index int64, parameters Dictionary.Any) bool { //gd:CameraFeed.set_format
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.set_format, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeDictionary<<8), &struct {
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.set_format, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeDictionary<<8), &struct {
 		index      int64
 		parameters gdextension.Dictionary
 	}{index, pointers.Get(gd.InternalDictionary(parameters))})

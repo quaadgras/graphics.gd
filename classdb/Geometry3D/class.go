@@ -13,6 +13,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -49,6 +50,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -307,7 +309,7 @@ func (self class) ComputeConvexMeshPoints(planes Array.Contains[Plane.NormalD]) 
 }
 func (self class) BuildBoxPlanes(extents Vector3.XYZ) Array.Contains[Plane.NormalD] { //gd:Geometry3D.build_box_planes
 	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Array](gdreference.GetObject(self.AsObject()[0]), methods.build_box_planes, gdextension.SizeArray|(gdextension.SizeVector3<<4), &struct{ extents Vector3.XYZ }{extents})
+	var r_ret = jumponly.Call[gdextension.Array](gdreference.GetObject(self.AsObject()[0]), methods.build_box_planes, gdextension.SizeArray|(gdextension.SizeVector3<<4), &struct{ extents Vector3.XYZ }{extents})
 	var ret = Array.Through(gd.ArrayProxy[Plane.NormalD]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

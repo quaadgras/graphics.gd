@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -51,6 +52,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -485,7 +487,7 @@ func (self class) SetNoiseType(atype NoiseType) { //gd:FastNoiseLite.set_noise_t
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_noise_type, 0|(gdextension.SizeInt<<4), &struct{ atype NoiseType }{atype})
 }
 func (self class) GetNoiseType() NoiseType { //gd:FastNoiseLite.get_noise_type
-	var r_ret = noescape.Call[NoiseType](gd.ObjectChecked(self.AsObject()), methods.get_noise_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[NoiseType](gd.ObjectChecked(self.AsObject()), methods.get_noise_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -493,7 +495,7 @@ func (self class) SetSeed(seed int64) { //gd:FastNoiseLite.set_seed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_seed, 0|(gdextension.SizeInt<<4), &struct{ seed int64 }{seed})
 }
 func (self class) GetSeed() int64 { //gd:FastNoiseLite.get_seed
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_seed, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_seed, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -501,7 +503,7 @@ func (self class) SetFrequency(freq float64) { //gd:FastNoiseLite.set_frequency
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frequency, 0|(gdextension.SizeFloat<<4), &struct{ freq float64 }{freq})
 }
 func (self class) GetFrequency() float64 { //gd:FastNoiseLite.get_frequency
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_frequency, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_frequency, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -509,7 +511,7 @@ func (self class) SetOffset(offset Vector3.XYZ) { //gd:FastNoiseLite.set_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeVector3<<4), &struct{ offset Vector3.XYZ }{offset})
 }
 func (self class) GetOffset() Vector3.XYZ { //gd:FastNoiseLite.get_offset
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -517,7 +519,7 @@ func (self class) SetFractalType(atype FractalType) { //gd:FastNoiseLite.set_fra
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fractal_type, 0|(gdextension.SizeInt<<4), &struct{ atype FractalType }{atype})
 }
 func (self class) GetFractalType() FractalType { //gd:FastNoiseLite.get_fractal_type
-	var r_ret = noescape.Call[FractalType](gd.ObjectChecked(self.AsObject()), methods.get_fractal_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[FractalType](gd.ObjectChecked(self.AsObject()), methods.get_fractal_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -525,7 +527,7 @@ func (self class) SetFractalOctaves(octave_count int64) { //gd:FastNoiseLite.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fractal_octaves, 0|(gdextension.SizeInt<<4), &struct{ octave_count int64 }{octave_count})
 }
 func (self class) GetFractalOctaves() int64 { //gd:FastNoiseLite.get_fractal_octaves
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fractal_octaves, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fractal_octaves, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -533,7 +535,7 @@ func (self class) SetFractalLacunarity(lacunarity float64) { //gd:FastNoiseLite.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fractal_lacunarity, 0|(gdextension.SizeFloat<<4), &struct{ lacunarity float64 }{lacunarity})
 }
 func (self class) GetFractalLacunarity() float64 { //gd:FastNoiseLite.get_fractal_lacunarity
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fractal_lacunarity, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fractal_lacunarity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -541,7 +543,7 @@ func (self class) SetFractalGain(gain float64) { //gd:FastNoiseLite.set_fractal_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fractal_gain, 0|(gdextension.SizeFloat<<4), &struct{ gain float64 }{gain})
 }
 func (self class) GetFractalGain() float64 { //gd:FastNoiseLite.get_fractal_gain
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fractal_gain, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fractal_gain, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -549,7 +551,7 @@ func (self class) SetFractalWeightedStrength(weighted_strength float64) { //gd:F
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fractal_weighted_strength, 0|(gdextension.SizeFloat<<4), &struct{ weighted_strength float64 }{weighted_strength})
 }
 func (self class) GetFractalWeightedStrength() float64 { //gd:FastNoiseLite.get_fractal_weighted_strength
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fractal_weighted_strength, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fractal_weighted_strength, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -557,7 +559,7 @@ func (self class) SetFractalPingPongStrength(ping_pong_strength float64) { //gd:
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fractal_ping_pong_strength, 0|(gdextension.SizeFloat<<4), &struct{ ping_pong_strength float64 }{ping_pong_strength})
 }
 func (self class) GetFractalPingPongStrength() float64 { //gd:FastNoiseLite.get_fractal_ping_pong_strength
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fractal_ping_pong_strength, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fractal_ping_pong_strength, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -565,7 +567,7 @@ func (self class) SetCellularDistanceFunction(fn CellularDistanceFunction) { //g
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cellular_distance_function, 0|(gdextension.SizeInt<<4), &struct{ fn CellularDistanceFunction }{fn})
 }
 func (self class) GetCellularDistanceFunction() CellularDistanceFunction { //gd:FastNoiseLite.get_cellular_distance_function
-	var r_ret = noescape.Call[CellularDistanceFunction](gd.ObjectChecked(self.AsObject()), methods.get_cellular_distance_function, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[CellularDistanceFunction](gd.ObjectChecked(self.AsObject()), methods.get_cellular_distance_function, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -573,7 +575,7 @@ func (self class) SetCellularJitter(jitter float64) { //gd:FastNoiseLite.set_cel
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cellular_jitter, 0|(gdextension.SizeFloat<<4), &struct{ jitter float64 }{jitter})
 }
 func (self class) GetCellularJitter() float64 { //gd:FastNoiseLite.get_cellular_jitter
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_cellular_jitter, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_cellular_jitter, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -581,7 +583,7 @@ func (self class) SetCellularReturnType(ret CellularReturnType) { //gd:FastNoise
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cellular_return_type, 0|(gdextension.SizeInt<<4), &struct{ ret CellularReturnType }{ret})
 }
 func (self class) GetCellularReturnType() CellularReturnType { //gd:FastNoiseLite.get_cellular_return_type
-	var r_ret = noescape.Call[CellularReturnType](gd.ObjectChecked(self.AsObject()), methods.get_cellular_return_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[CellularReturnType](gd.ObjectChecked(self.AsObject()), methods.get_cellular_return_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -589,7 +591,7 @@ func (self class) SetDomainWarpEnabled(domain_warp_enabled bool) { //gd:FastNois
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_domain_warp_enabled, 0|(gdextension.SizeBool<<4), &struct{ domain_warp_enabled bool }{domain_warp_enabled})
 }
 func (self class) IsDomainWarpEnabled() bool { //gd:FastNoiseLite.is_domain_warp_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_domain_warp_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_domain_warp_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -597,7 +599,7 @@ func (self class) SetDomainWarpType(domain_warp_type DomainWarpType) { //gd:Fast
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_domain_warp_type, 0|(gdextension.SizeInt<<4), &struct{ domain_warp_type DomainWarpType }{domain_warp_type})
 }
 func (self class) GetDomainWarpType() DomainWarpType { //gd:FastNoiseLite.get_domain_warp_type
-	var r_ret = noescape.Call[DomainWarpType](gd.ObjectChecked(self.AsObject()), methods.get_domain_warp_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DomainWarpType](gd.ObjectChecked(self.AsObject()), methods.get_domain_warp_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -605,7 +607,7 @@ func (self class) SetDomainWarpAmplitude(domain_warp_amplitude float64) { //gd:F
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_domain_warp_amplitude, 0|(gdextension.SizeFloat<<4), &struct{ domain_warp_amplitude float64 }{domain_warp_amplitude})
 }
 func (self class) GetDomainWarpAmplitude() float64 { //gd:FastNoiseLite.get_domain_warp_amplitude
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_domain_warp_amplitude, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_domain_warp_amplitude, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -613,7 +615,7 @@ func (self class) SetDomainWarpFrequency(domain_warp_frequency float64) { //gd:F
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_domain_warp_frequency, 0|(gdextension.SizeFloat<<4), &struct{ domain_warp_frequency float64 }{domain_warp_frequency})
 }
 func (self class) GetDomainWarpFrequency() float64 { //gd:FastNoiseLite.get_domain_warp_frequency
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_domain_warp_frequency, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_domain_warp_frequency, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -621,7 +623,7 @@ func (self class) SetDomainWarpFractalType(domain_warp_fractal_type DomainWarpFr
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_domain_warp_fractal_type, 0|(gdextension.SizeInt<<4), &struct{ domain_warp_fractal_type DomainWarpFractalType }{domain_warp_fractal_type})
 }
 func (self class) GetDomainWarpFractalType() DomainWarpFractalType { //gd:FastNoiseLite.get_domain_warp_fractal_type
-	var r_ret = noescape.Call[DomainWarpFractalType](gd.ObjectChecked(self.AsObject()), methods.get_domain_warp_fractal_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DomainWarpFractalType](gd.ObjectChecked(self.AsObject()), methods.get_domain_warp_fractal_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -629,7 +631,7 @@ func (self class) SetDomainWarpFractalOctaves(domain_warp_octave_count int64) { 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_domain_warp_fractal_octaves, 0|(gdextension.SizeInt<<4), &struct{ domain_warp_octave_count int64 }{domain_warp_octave_count})
 }
 func (self class) GetDomainWarpFractalOctaves() int64 { //gd:FastNoiseLite.get_domain_warp_fractal_octaves
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_domain_warp_fractal_octaves, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_domain_warp_fractal_octaves, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -637,7 +639,7 @@ func (self class) SetDomainWarpFractalLacunarity(domain_warp_lacunarity float64)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_domain_warp_fractal_lacunarity, 0|(gdextension.SizeFloat<<4), &struct{ domain_warp_lacunarity float64 }{domain_warp_lacunarity})
 }
 func (self class) GetDomainWarpFractalLacunarity() float64 { //gd:FastNoiseLite.get_domain_warp_fractal_lacunarity
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_domain_warp_fractal_lacunarity, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_domain_warp_fractal_lacunarity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -645,7 +647,7 @@ func (self class) SetDomainWarpFractalGain(domain_warp_gain float64) { //gd:Fast
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_domain_warp_fractal_gain, 0|(gdextension.SizeFloat<<4), &struct{ domain_warp_gain float64 }{domain_warp_gain})
 }
 func (self class) GetDomainWarpFractalGain() float64 { //gd:FastNoiseLite.get_domain_warp_fractal_gain
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_domain_warp_fractal_gain, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_domain_warp_fractal_gain, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

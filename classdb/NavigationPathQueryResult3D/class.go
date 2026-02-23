@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -49,6 +50,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -253,7 +255,7 @@ func (self class) SetPath(path Packed.Array[Vector3.XYZ]) { //gd:NavigationPathQ
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](path))})
 }
 func (self class) GetPath() Packed.Array[Vector3.XYZ] { //gd:NavigationPathQueryResult3D.get_path
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_path, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_path, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -263,7 +265,7 @@ func (self class) SetPathTypes(path_types Packed.Array[int32]) { //gd:Navigation
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](path_types))})
 }
 func (self class) GetPathTypes() Packed.Array[int32] { //gd:NavigationPathQueryResult3D.get_path_types
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_path_types, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_path_types, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -271,7 +273,7 @@ func (self class) SetPathRids(path_rids Array.Contains[RID.Any]) { //gd:Navigati
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_rids, 0|(gdextension.SizeArray<<4), &struct{ path_rids gdextension.Array }{pointers.Get(gd.InternalArray(path_rids))})
 }
 func (self class) GetPathRids() Array.Contains[RID.Any] { //gd:NavigationPathQueryResult3D.get_path_rids
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_path_rids, gdextension.SizeArray, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_path_rids, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -281,15 +283,15 @@ func (self class) SetPathOwnerIds(path_owner_ids Packed.Array[int64]) { //gd:Nav
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt64Array, int64](path_owner_ids))})
 }
 func (self class) GetPathOwnerIds() Packed.Array[int64] { //gd:NavigationPathQueryResult3D.get_path_owner_ids
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_path_owner_ids, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_path_owner_ids, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) SetPathLength(length float64) { //gd:NavigationPathQueryResult3D.set_path_length
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
 func (self class) GetPathLength() float64 { //gd:NavigationPathQueryResult3D.get_path_length
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

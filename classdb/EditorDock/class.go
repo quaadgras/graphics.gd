@@ -50,6 +50,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -93,6 +94,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -552,7 +554,7 @@ func (self class) SetTitle(title String.Readable) { //gd:EditorDock.set_title
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_title, 0|(gdextension.SizeString<<4), &struct{ title gdextension.String }{pointers.Get(gd.InternalString(title))})
 }
 func (self class) GetTitle() String.Readable { //gd:EditorDock.get_title
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_title, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_title, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -560,7 +562,7 @@ func (self class) SetLayoutKey(layout_key String.Readable) { //gd:EditorDock.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layout_key, 0|(gdextension.SizeString<<4), &struct{ layout_key gdextension.String }{pointers.Get(gd.InternalString(layout_key))})
 }
 func (self class) GetLayoutKey() String.Readable { //gd:EditorDock.get_layout_key
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_layout_key, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_layout_key, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -568,23 +570,23 @@ func (self class) SetGlobal(global bool) { //gd:EditorDock.set_global
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_global, 0|(gdextension.SizeBool<<4), &struct{ global bool }{global})
 }
 func (self class) IsGlobal() bool { //gd:EditorDock.is_global
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_global, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_global, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetTransient(transient bool) { //gd:EditorDock.set_transient
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transient, 0|(gdextension.SizeBool<<4), &struct{ transient bool }{transient})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transient, 0|(gdextension.SizeBool<<4), &struct{ transient bool }{transient})
 }
 func (self class) IsTransient() bool { //gd:EditorDock.is_transient
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_transient, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_transient, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetClosable(closable bool) { //gd:EditorDock.set_closable
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_closable, 0|(gdextension.SizeBool<<4), &struct{ closable bool }{closable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_closable, 0|(gdextension.SizeBool<<4), &struct{ closable bool }{closable})
 }
 func (self class) IsClosable() bool { //gd:EditorDock.is_closable
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_closable, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_closable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -592,7 +594,7 @@ func (self class) SetIconName(icon_name String.Name) { //gd:EditorDock.set_icon_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon_name, 0|(gdextension.SizeStringName<<4), &struct{ icon_name gdextension.StringName }{pointers.Get(gd.InternalStringName(icon_name))})
 }
 func (self class) GetIconName() String.Name { //gd:EditorDock.get_icon_name
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_icon_name, gdextension.SizeStringName, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_icon_name, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -600,7 +602,7 @@ func (self class) SetDockIcon(icon [1]gdclass.Texture2D) { //gd:EditorDock.set_d
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dock_icon, 0|(gdextension.SizeObject<<4), &struct{ icon gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(icon[0])[0]))})
 }
 func (self class) GetDockIcon() [1]gdclass.Texture2D { //gd:EditorDock.get_dock_icon
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_dock_icon, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_dock_icon, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -608,7 +610,7 @@ func (self class) SetForceShowIcon(force bool) { //gd:EditorDock.set_force_show_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_force_show_icon, 0|(gdextension.SizeBool<<4), &struct{ force bool }{force})
 }
 func (self class) GetForceShowIcon() bool { //gd:EditorDock.get_force_show_icon
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_force_show_icon, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_force_show_icon, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -616,7 +618,7 @@ func (self class) SetTitleColor(color Color.RGBA) { //gd:EditorDock.set_title_co
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_title_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetTitleColor() Color.RGBA { //gd:EditorDock.get_title_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_title_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_title_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -624,7 +626,7 @@ func (self class) SetDockShortcut(shortcut [1]gdclass.Shortcut) { //gd:EditorDoc
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dock_shortcut, 0|(gdextension.SizeObject<<4), &struct{ shortcut gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetShortcut(shortcut[0])[0]))})
 }
 func (self class) GetDockShortcut() [1]gdclass.Shortcut { //gd:EditorDock.get_dock_shortcut
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_dock_shortcut, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_dock_shortcut, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Shortcut{gdclass.NewShortcut(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -632,7 +634,7 @@ func (self class) SetDefaultSlot(slot DockSlot) { //gd:EditorDock.set_default_sl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_slot, 0|(gdextension.SizeInt<<4), &struct{ slot DockSlot }{slot})
 }
 func (self class) GetDefaultSlot() DockSlot { //gd:EditorDock.get_default_slot
-	var r_ret = noescape.Call[DockSlot](gd.ObjectChecked(self.AsObject()), methods.get_default_slot, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DockSlot](gd.ObjectChecked(self.AsObject()), methods.get_default_slot, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -640,7 +642,7 @@ func (self class) SetAvailableLayouts(layouts DockLayout) { //gd:EditorDock.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_available_layouts, 0|(gdextension.SizeInt<<4), &struct{ layouts DockLayout }{layouts})
 }
 func (self class) GetAvailableLayouts() DockLayout { //gd:EditorDock.get_available_layouts
-	var r_ret = noescape.Call[DockLayout](gd.ObjectChecked(self.AsObject()), methods.get_available_layouts, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DockLayout](gd.ObjectChecked(self.AsObject()), methods.get_available_layouts, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

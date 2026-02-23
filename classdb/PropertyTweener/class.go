@@ -19,6 +19,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -55,6 +56,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -290,22 +292,22 @@ func (self class) From(value variant.Any) [1]gdclass.PropertyTweener { //gd:Prop
 	return ret
 }
 func (self class) FromCurrent() [1]gdclass.PropertyTweener { //gd:PropertyTweener.from_current
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.from_current, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.from_current, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PropertyTweener{gdclass.NewPropertyTweener(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) AsRelative() [1]gdclass.PropertyTweener { //gd:PropertyTweener.as_relative
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.as_relative, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.as_relative, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PropertyTweener{gdclass.NewPropertyTweener(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetTrans(trans Tween.TransitionType) [1]gdclass.PropertyTweener { //gd:PropertyTweener.set_trans
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_trans, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ trans Tween.TransitionType }{trans})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_trans, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ trans Tween.TransitionType }{trans})
 	var ret = [1]gdclass.PropertyTweener{gdclass.NewPropertyTweener(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetEase(ease Tween.EaseType) [1]gdclass.PropertyTweener { //gd:PropertyTweener.set_ease
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_ease, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ ease Tween.EaseType }{ease})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_ease, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ ease Tween.EaseType }{ease})
 	var ret = [1]gdclass.PropertyTweener{gdclass.NewPropertyTweener(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -315,7 +317,7 @@ func (self class) SetCustomInterpolator(interpolator_method Callable.Function) [
 	return ret
 }
 func (self class) SetDelay(delay float64) [1]gdclass.PropertyTweener { //gd:PropertyTweener.set_delay
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_delay, gdextension.SizeObject|(gdextension.SizeFloat<<4), &struct{ delay float64 }{delay})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_delay, gdextension.SizeObject|(gdextension.SizeFloat<<4), &struct{ delay float64 }{delay})
 	var ret = [1]gdclass.PropertyTweener{gdclass.NewPropertyTweener(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

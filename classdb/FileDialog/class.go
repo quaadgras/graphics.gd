@@ -20,6 +20,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -62,6 +63,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -845,7 +847,7 @@ func (self class) SetFilters(filters Packed.Strings) { //gd:FileDialog.set_filte
 	}{pointers.Get(gd.InternalPackedStrings(filters))})
 }
 func (self class) GetFilters() Packed.Strings { //gd:FileDialog.get_filters
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_filters, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_filters, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -856,7 +858,7 @@ func (self class) SetFilenameFilter(filter String.Readable) { //gd:FileDialog.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_filename_filter, 0|(gdextension.SizeString<<4), &struct{ filter gdextension.String }{pointers.Get(gd.InternalString(filter))})
 }
 func (self class) GetFilenameFilter() String.Readable { //gd:FileDialog.get_filename_filter
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_filename_filter, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_filename_filter, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -909,12 +911,12 @@ func (self class) AddOption(name String.Readable, values Packed.Strings, default
 	}{pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalPackedStrings(values)), default_value_index})
 }
 func (self class) GetSelectedOptions() Dictionary.Any { //gd:FileDialog.get_selected_options
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_selected_options, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_selected_options, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 func (self class) GetCurrentDir() String.Readable { //gd:FileDialog.get_current_dir
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_dir, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_dir, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -938,10 +940,10 @@ func (self class) SetCurrentPath(path String.Readable) { //gd:FileDialog.set_cur
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_path, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
 func (self class) SetModeOverridesTitle(override bool) { //gd:FileDialog.set_mode_overrides_title
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mode_overrides_title, 0|(gdextension.SizeBool<<4), &struct{ override bool }{override})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mode_overrides_title, 0|(gdextension.SizeBool<<4), &struct{ override bool }{override})
 }
 func (self class) IsModeOverridingTitle() bool { //gd:FileDialog.is_mode_overriding_title
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_mode_overriding_title, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_mode_overriding_title, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -949,7 +951,7 @@ func (self class) SetFileMode(mode FileMode) { //gd:FileDialog.set_file_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_file_mode, 0|(gdextension.SizeInt<<4), &struct{ mode FileMode }{mode})
 }
 func (self class) GetFileMode() FileMode { //gd:FileDialog.get_file_mode
-	var r_ret = noescape.Call[FileMode](gd.ObjectChecked(self.AsObject()), methods.get_file_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[FileMode](gd.ObjectChecked(self.AsObject()), methods.get_file_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -957,17 +959,17 @@ func (self class) SetDisplayMode(mode DisplayMode) { //gd:FileDialog.set_display
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_display_mode, 0|(gdextension.SizeInt<<4), &struct{ mode DisplayMode }{mode})
 }
 func (self class) GetDisplayMode() DisplayMode { //gd:FileDialog.get_display_mode
-	var r_ret = noescape.Call[DisplayMode](gd.ObjectChecked(self.AsObject()), methods.get_display_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DisplayMode](gd.ObjectChecked(self.AsObject()), methods.get_display_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetVbox() [1]gdclass.VBoxContainer { //gd:FileDialog.get_vbox
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_vbox, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_vbox, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.VBoxContainer{gdclass.NewVBoxContainer(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) GetLineEdit() [1]gdclass.LineEdit { //gd:FileDialog.get_line_edit
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_line_edit, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_line_edit, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.LineEdit{gdclass.NewLineEdit(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
@@ -975,7 +977,7 @@ func (self class) SetAccess(access Access) { //gd:FileDialog.set_access
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_access, 0|(gdextension.SizeInt<<4), &struct{ access Access }{access})
 }
 func (self class) GetAccess() Access { //gd:FileDialog.get_access
-	var r_ret = noescape.Call[Access](gd.ObjectChecked(self.AsObject()), methods.get_access, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Access](gd.ObjectChecked(self.AsObject()), methods.get_access, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -983,7 +985,7 @@ func (self class) SetRootSubfolder(dir String.Readable) { //gd:FileDialog.set_ro
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_subfolder, 0|(gdextension.SizeString<<4), &struct{ dir gdextension.String }{pointers.Get(gd.InternalString(dir))})
 }
 func (self class) GetRootSubfolder() String.Readable { //gd:FileDialog.get_root_subfolder
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_root_subfolder, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_root_subfolder, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -991,7 +993,7 @@ func (self class) SetShowHiddenFiles(show bool) { //gd:FileDialog.set_show_hidde
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_show_hidden_files, 0|(gdextension.SizeBool<<4), &struct{ show bool }{show})
 }
 func (self class) IsShowingHiddenFiles() bool { //gd:FileDialog.is_showing_hidden_files
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_showing_hidden_files, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_showing_hidden_files, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -999,7 +1001,7 @@ func (self class) SetUseNativeDialog(native bool) { //gd:FileDialog.set_use_nati
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_native_dialog, 0|(gdextension.SizeBool<<4), &struct{ native bool }{native})
 }
 func (self class) GetUseNativeDialog() bool { //gd:FileDialog.get_use_native_dialog
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_native_dialog, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_native_dialog, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

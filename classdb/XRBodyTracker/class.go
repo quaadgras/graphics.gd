@@ -18,6 +18,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -55,6 +56,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -233,10 +235,10 @@ func (self Instance) SetBodyFlags(value BodyFlags) Instance { //gd:XRBodyTracker
 }
 
 func (self class) SetHasTrackingData(has_data bool) { //gd:XRBodyTracker.set_has_tracking_data
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_has_tracking_data, 0|(gdextension.SizeBool<<4), &struct{ has_data bool }{has_data})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_has_tracking_data, 0|(gdextension.SizeBool<<4), &struct{ has_data bool }{has_data})
 }
 func (self class) GetHasTrackingData() bool { //gd:XRBodyTracker.get_has_tracking_data
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_has_tracking_data, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_has_tracking_data, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -244,7 +246,7 @@ func (self class) SetBodyFlags(flags BodyFlags) { //gd:XRBodyTracker.set_body_fl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_body_flags, 0|(gdextension.SizeInt<<4), &struct{ flags BodyFlags }{flags})
 }
 func (self class) GetBodyFlags() BodyFlags { //gd:XRBodyTracker.get_body_flags
-	var r_ret = noescape.Call[BodyFlags](gd.ObjectChecked(self.AsObject()), methods.get_body_flags, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[BodyFlags](gd.ObjectChecked(self.AsObject()), methods.get_body_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

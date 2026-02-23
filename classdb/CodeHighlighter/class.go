@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -51,6 +52,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -447,7 +449,7 @@ func (self class) ClearKeywordColors() { //gd:CodeHighlighter.clear_keyword_colo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_keyword_colors, 0, &struct{}{})
 }
 func (self class) GetKeywordColors() Dictionary.Any { //gd:CodeHighlighter.get_keyword_colors
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_keyword_colors, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_keyword_colors, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -477,7 +479,7 @@ func (self class) ClearMemberKeywordColors() { //gd:CodeHighlighter.clear_member
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_member_keyword_colors, 0, &struct{}{})
 }
 func (self class) GetMemberKeywordColors() Dictionary.Any { //gd:CodeHighlighter.get_member_keyword_colors
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_member_keyword_colors, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_member_keyword_colors, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -512,7 +514,7 @@ func (self class) SetFunctionColor(color Color.RGBA) { //gd:CodeHighlighter.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_function_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetFunctionColor() Color.RGBA { //gd:CodeHighlighter.get_function_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_function_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_function_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -520,7 +522,7 @@ func (self class) SetNumberColor(color Color.RGBA) { //gd:CodeHighlighter.set_nu
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_number_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetNumberColor() Color.RGBA { //gd:CodeHighlighter.get_number_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_number_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_number_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -528,7 +530,7 @@ func (self class) SetSymbolColor(color Color.RGBA) { //gd:CodeHighlighter.set_sy
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_symbol_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetSymbolColor() Color.RGBA { //gd:CodeHighlighter.get_symbol_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_symbol_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_symbol_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -536,7 +538,7 @@ func (self class) SetMemberVariableColor(color Color.RGBA) { //gd:CodeHighlighte
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_member_variable_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetMemberVariableColor() Color.RGBA { //gd:CodeHighlighter.get_member_variable_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_member_variable_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_member_variable_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }

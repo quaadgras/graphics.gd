@@ -15,6 +15,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -54,6 +55,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -890,7 +892,7 @@ func (self class) SetPlaybackSpeedScale(scale float64) { //gd:AudioServer.set_pl
 }
 func (self class) GetPlaybackSpeedScale() float64 { //gd:AudioServer.get_playback_speed_scale
 	once.Do(singleton)
-	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.get_playback_speed_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.get_playback_speed_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1012,7 +1014,7 @@ func (self class) GenerateBusLayout() [1]gdclass.AudioBusLayout { //gd:AudioServ
 }
 func (self class) SetEnableTaggingUsedAudioStreams(enable bool) { //gd:AudioServer.set_enable_tagging_used_audio_streams
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_enable_tagging_used_audio_streams, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_enable_tagging_used_audio_streams, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsStreamRegisteredAsSample(stream [1]gdclass.AudioStream) bool { //gd:AudioServer.is_stream_registered_as_sample
 	once.Do(singleton)

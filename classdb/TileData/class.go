@@ -16,6 +16,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -57,6 +58,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -682,7 +684,7 @@ func (self class) SetFlipH(flip_h bool) { //gd:TileData.set_flip_h
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flip_h, 0|(gdextension.SizeBool<<4), &struct{ flip_h bool }{flip_h})
 }
 func (self class) GetFlipH() bool { //gd:TileData.get_flip_h
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flip_h, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flip_h, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -690,7 +692,7 @@ func (self class) SetFlipV(flip_v bool) { //gd:TileData.set_flip_v
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flip_v, 0|(gdextension.SizeBool<<4), &struct{ flip_v bool }{flip_v})
 }
 func (self class) GetFlipV() bool { //gd:TileData.get_flip_v
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flip_v, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flip_v, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -698,7 +700,7 @@ func (self class) SetTranspose(transpose bool) { //gd:TileData.set_transpose
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transpose, 0|(gdextension.SizeBool<<4), &struct{ transpose bool }{transpose})
 }
 func (self class) GetTranspose() bool { //gd:TileData.get_transpose
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_transpose, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_transpose, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -706,7 +708,7 @@ func (self class) SetMaterial(material [1]gdclass.Material) { //gd:TileData.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(material[0])[0]))})
 }
 func (self class) GetMaterial() [1]gdclass.Material { //gd:TileData.get_material
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -714,7 +716,7 @@ func (self class) SetTextureOrigin(texture_origin Vector2i.XY) { //gd:TileData.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_origin, 0|(gdextension.SizeVector2i<<4), &struct{ texture_origin Vector2i.XY }{texture_origin})
 }
 func (self class) GetTextureOrigin() Vector2i.XY { //gd:TileData.get_texture_origin
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_texture_origin, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = jumponly.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_texture_origin, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -722,7 +724,7 @@ func (self class) SetModulate(modulate Color.RGBA) { //gd:TileData.set_modulate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modulate, 0|(gdextension.SizeColor<<4), &struct{ modulate Color.RGBA }{modulate})
 }
 func (self class) GetModulate() Color.RGBA { //gd:TileData.get_modulate
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_modulate, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_modulate, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -730,7 +732,7 @@ func (self class) SetZIndex(z_index int64) { //gd:TileData.set_z_index
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_z_index, 0|(gdextension.SizeInt<<4), &struct{ z_index int64 }{z_index})
 }
 func (self class) GetZIndex() int64 { //gd:TileData.get_z_index
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_z_index, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_z_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -738,7 +740,7 @@ func (self class) SetYSortOrigin(y_sort_origin int64) { //gd:TileData.set_y_sort
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_y_sort_origin, 0|(gdextension.SizeInt<<4), &struct{ y_sort_origin int64 }{y_sort_origin})
 }
 func (self class) GetYSortOrigin() int64 { //gd:TileData.get_y_sort_origin
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_y_sort_origin, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_y_sort_origin, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -887,7 +889,7 @@ func (self class) SetTerrainSet(terrain_set int64) { //gd:TileData.set_terrain_s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_terrain_set, 0|(gdextension.SizeInt<<4), &struct{ terrain_set int64 }{terrain_set})
 }
 func (self class) GetTerrainSet() int64 { //gd:TileData.get_terrain_set
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_terrain_set, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_terrain_set, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -895,7 +897,7 @@ func (self class) SetTerrain(terrain int64) { //gd:TileData.set_terrain
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_terrain, 0|(gdextension.SizeInt<<4), &struct{ terrain int64 }{terrain})
 }
 func (self class) GetTerrain() int64 { //gd:TileData.get_terrain
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_terrain, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_terrain, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -935,7 +937,7 @@ func (self class) SetProbability(probability float64) { //gd:TileData.set_probab
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_probability, 0|(gdextension.SizeFloat<<4), &struct{ probability float64 }{probability})
 }
 func (self class) GetProbability() float64 { //gd:TileData.get_probability
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_probability, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_probability, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -19,6 +19,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -57,6 +58,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -202,7 +204,7 @@ func (self class) SetRect(rect Rect2.PositionSize) { //gd:BackBufferCopy.set_rec
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rect, 0|(gdextension.SizeRect2<<4), &struct{ rect Rect2.PositionSize }{rect})
 }
 func (self class) GetRect() Rect2.PositionSize { //gd:BackBufferCopy.get_rect
-	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_rect, gdextension.SizeRect2, &struct{}{})
+	var r_ret = jumponly.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -210,7 +212,7 @@ func (self class) SetCopyMode(copy_mode CopyMode) { //gd:BackBufferCopy.set_copy
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_copy_mode, 0|(gdextension.SizeInt<<4), &struct{ copy_mode CopyMode }{copy_mode})
 }
 func (self class) GetCopyMode() CopyMode { //gd:BackBufferCopy.get_copy_mode
-	var r_ret = noescape.Call[CopyMode](gd.ObjectChecked(self.AsObject()), methods.get_copy_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[CopyMode](gd.ObjectChecked(self.AsObject()), methods.get_copy_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -15,6 +15,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -57,6 +58,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -462,7 +464,7 @@ func (self class) SetUnderTexture(tex [1]gdclass.Texture2D) { //gd:TextureProgre
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_under_texture, 0|(gdextension.SizeObject<<4), &struct{ tex gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(tex[0])[0]))})
 }
 func (self class) GetUnderTexture() [1]gdclass.Texture2D { //gd:TextureProgressBar.get_under_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_under_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_under_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -470,7 +472,7 @@ func (self class) SetProgressTexture(tex [1]gdclass.Texture2D) { //gd:TexturePro
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_progress_texture, 0|(gdextension.SizeObject<<4), &struct{ tex gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(tex[0])[0]))})
 }
 func (self class) GetProgressTexture() [1]gdclass.Texture2D { //gd:TextureProgressBar.get_progress_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_progress_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_progress_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -478,7 +480,7 @@ func (self class) SetOverTexture(tex [1]gdclass.Texture2D) { //gd:TextureProgres
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_over_texture, 0|(gdextension.SizeObject<<4), &struct{ tex gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(tex[0])[0]))})
 }
 func (self class) GetOverTexture() [1]gdclass.Texture2D { //gd:TextureProgressBar.get_over_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_over_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_over_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -486,7 +488,7 @@ func (self class) SetFillMode(mode int64) { //gd:TextureProgressBar.set_fill_mod
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fill_mode, 0|(gdextension.SizeInt<<4), &struct{ mode int64 }{mode})
 }
 func (self class) GetFillMode() int64 { //gd:TextureProgressBar.get_fill_mode
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fill_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fill_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -494,7 +496,7 @@ func (self class) SetTintUnder(tint Color.RGBA) { //gd:TextureProgressBar.set_ti
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tint_under, 0|(gdextension.SizeColor<<4), &struct{ tint Color.RGBA }{tint})
 }
 func (self class) GetTintUnder() Color.RGBA { //gd:TextureProgressBar.get_tint_under
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_tint_under, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_tint_under, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -502,7 +504,7 @@ func (self class) SetTintProgress(tint Color.RGBA) { //gd:TextureProgressBar.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tint_progress, 0|(gdextension.SizeColor<<4), &struct{ tint Color.RGBA }{tint})
 }
 func (self class) GetTintProgress() Color.RGBA { //gd:TextureProgressBar.get_tint_progress
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_tint_progress, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_tint_progress, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -510,7 +512,7 @@ func (self class) SetTintOver(tint Color.RGBA) { //gd:TextureProgressBar.set_tin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tint_over, 0|(gdextension.SizeColor<<4), &struct{ tint Color.RGBA }{tint})
 }
 func (self class) GetTintOver() Color.RGBA { //gd:TextureProgressBar.get_tint_over
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_tint_over, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_tint_over, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -526,7 +528,7 @@ func (self class) SetRadialInitialAngle(mode float64) { //gd:TextureProgressBar.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radial_initial_angle, 0|(gdextension.SizeFloat<<4), &struct{ mode float64 }{mode})
 }
 func (self class) GetRadialInitialAngle() float64 { //gd:TextureProgressBar.get_radial_initial_angle
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radial_initial_angle, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radial_initial_angle, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -534,7 +536,7 @@ func (self class) SetRadialCenterOffset(mode Vector2.XY) { //gd:TextureProgressB
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radial_center_offset, 0|(gdextension.SizeVector2<<4), &struct{ mode Vector2.XY }{mode})
 }
 func (self class) GetRadialCenterOffset() Vector2.XY { //gd:TextureProgressBar.get_radial_center_offset
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_radial_center_offset, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_radial_center_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -542,7 +544,7 @@ func (self class) SetFillDegrees(mode float64) { //gd:TextureProgressBar.set_fil
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fill_degrees, 0|(gdextension.SizeFloat<<4), &struct{ mode float64 }{mode})
 }
 func (self class) GetFillDegrees() float64 { //gd:TextureProgressBar.get_fill_degrees
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fill_degrees, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fill_degrees, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -561,7 +563,7 @@ func (self class) SetNinePatchStretch(stretch bool) { //gd:TextureProgressBar.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_nine_patch_stretch, 0|(gdextension.SizeBool<<4), &struct{ stretch bool }{stretch})
 }
 func (self class) GetNinePatchStretch() bool { //gd:TextureProgressBar.get_nine_patch_stretch
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_nine_patch_stretch, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_nine_patch_stretch, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

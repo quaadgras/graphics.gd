@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -50,6 +51,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -313,7 +315,7 @@ func (self class) SetBone2dNode(bone2d_nodepath Path.ToNode) { //gd:SkeletonModi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone2d_node, 0|(gdextension.SizeNodePath<<4), &struct{ bone2d_nodepath gdextension.NodePath }{pointers.Get(gd.InternalNodePath(bone2d_nodepath))})
 }
 func (self class) GetBone2dNode() Path.ToNode { //gd:SkeletonModification2DLookAt.get_bone2d_node
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_bone2d_node, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_bone2d_node, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -321,7 +323,7 @@ func (self class) SetBoneIndex(bone_idx int64) { //gd:SkeletonModification2DLook
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_index, 0|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
 }
 func (self class) GetBoneIndex() int64 { //gd:SkeletonModification2DLookAt.get_bone_index
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone_index, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -329,15 +331,15 @@ func (self class) SetTargetNode(target_nodepath Path.ToNode) { //gd:SkeletonModi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_node, 0|(gdextension.SizeNodePath<<4), &struct{ target_nodepath gdextension.NodePath }{pointers.Get(gd.InternalNodePath(target_nodepath))})
 }
 func (self class) GetTargetNode() Path.ToNode { //gd:SkeletonModification2DLookAt.get_target_node
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_target_node, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_target_node, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 func (self class) SetAdditionalRotation(rotation float64) { //gd:SkeletonModification2DLookAt.set_additional_rotation
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_additional_rotation, 0|(gdextension.SizeFloat<<4), &struct{ rotation float64 }{rotation})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_additional_rotation, 0|(gdextension.SizeFloat<<4), &struct{ rotation float64 }{rotation})
 }
 func (self class) GetAdditionalRotation() float64 { //gd:SkeletonModification2DLookAt.get_additional_rotation
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_additional_rotation, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_additional_rotation, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -345,7 +347,7 @@ func (self class) SetEnableConstraint(enable_constraint bool) { //gd:SkeletonMod
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_constraint, 0|(gdextension.SizeBool<<4), &struct{ enable_constraint bool }{enable_constraint})
 }
 func (self class) GetEnableConstraint() bool { //gd:SkeletonModification2DLookAt.get_enable_constraint
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enable_constraint, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enable_constraint, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -353,7 +355,7 @@ func (self class) SetConstraintAngleMin(angle_min float64) { //gd:SkeletonModifi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constraint_angle_min, 0|(gdextension.SizeFloat<<4), &struct{ angle_min float64 }{angle_min})
 }
 func (self class) GetConstraintAngleMin() float64 { //gd:SkeletonModification2DLookAt.get_constraint_angle_min
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_constraint_angle_min, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_constraint_angle_min, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -361,7 +363,7 @@ func (self class) SetConstraintAngleMax(angle_max float64) { //gd:SkeletonModifi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constraint_angle_max, 0|(gdextension.SizeFloat<<4), &struct{ angle_max float64 }{angle_max})
 }
 func (self class) GetConstraintAngleMax() float64 { //gd:SkeletonModification2DLookAt.get_constraint_angle_max
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_constraint_angle_max, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_constraint_angle_max, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -369,7 +371,7 @@ func (self class) SetConstraintAngleInvert(invert bool) { //gd:SkeletonModificat
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constraint_angle_invert, 0|(gdextension.SizeBool<<4), &struct{ invert bool }{invert})
 }
 func (self class) GetConstraintAngleInvert() bool { //gd:SkeletonModification2DLookAt.get_constraint_angle_invert
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_constraint_angle_invert, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_constraint_angle_invert, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
