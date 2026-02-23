@@ -9,6 +9,7 @@ import (
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdclass"
 	"graphics.gd/internal/gdreference"
+	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Object"
 )
 
@@ -148,5 +149,39 @@ func TestExtensionClassAliasCastThenAddedToScene(t *testing.T) {
 		m = Object.To[*MyNode](obj)
 		var node = Node.New()
 		node.AddChild(obj)
+	})
+}
+
+var call_callable string = `extends Object
+
+var obj: MyObject
+
+func test_basis(get_obj: Callable):
+	obj = get_obj.call()
+`
+
+func TestExtensionClassReturnedToTheEngineFromCallable(t *testing.T) {
+	runOnMain(t, func(t testing.TB) {
+		var script = GDScript.New().AsScript()
+		script.SetSourceCode(call_callable)
+		script.Reload()
+
+		var myobj = new(MyObject)
+		myobj.Field1 = "Hello from callable"
+		myobj.Field2 = 123
+		myobj.AsObject()
+
+		var runner = Object.New()
+		runner.SetScript(script)
+		Object.Call(runner, "test_basis", Callable.New(func() *MyObject {
+			return myobj
+		}))
+
+		gdreference.GC(gd.Free)
+		gdreference.GC(gd.Free)
+
+		if !Object.InstanceIsValid(Object.Instance(myobj.AsObject())) {
+			t.Error("Expected MyObject to still be valid after GC")
+		}
 	})
 }
