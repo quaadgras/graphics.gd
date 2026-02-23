@@ -1,4 +1,4 @@
-//go:build !precision_double && amd64
+//go:build !precision_double && (amd64 || arm64)
 
 package Angle
 
