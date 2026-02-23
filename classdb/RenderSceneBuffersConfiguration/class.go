@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -50,6 +51,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -313,7 +315,7 @@ func (self Instance) SetAnisotropicFilteringLevel(value RenderingServer.Viewport
 }
 
 func (self class) GetRenderTarget() RID.Any { //gd:RenderSceneBuffersConfiguration.get_render_target
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_render_target, gdextension.SizeRID, &struct{}{})
+	var r_ret = jumponly.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_render_target, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -321,7 +323,7 @@ func (self class) SetRenderTarget(render_target RID.Any) { //gd:RenderSceneBuffe
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_render_target, 0|(gdextension.SizeRID<<4), &struct{ render_target RID.Any }{render_target})
 }
 func (self class) GetInternalSize() Vector2i.XY { //gd:RenderSceneBuffersConfiguration.get_internal_size
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_internal_size, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = jumponly.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_internal_size, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -329,7 +331,7 @@ func (self class) SetInternalSize(internal_size Vector2i.XY) { //gd:RenderSceneB
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_internal_size, 0|(gdextension.SizeVector2i<<4), &struct{ internal_size Vector2i.XY }{internal_size})
 }
 func (self class) GetTargetSize() Vector2i.XY { //gd:RenderSceneBuffersConfiguration.get_target_size
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_target_size, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = jumponly.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_target_size, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -337,64 +339,64 @@ func (self class) SetTargetSize(target_size Vector2i.XY) { //gd:RenderSceneBuffe
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_size, 0|(gdextension.SizeVector2i<<4), &struct{ target_size Vector2i.XY }{target_size})
 }
 func (self class) GetViewCount() int64 { //gd:RenderSceneBuffersConfiguration.get_view_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_view_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_view_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetViewCount(view_count int64) { //gd:RenderSceneBuffersConfiguration.set_view_count
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_view_count, 0|(gdextension.SizeInt<<4), &struct{ view_count int64 }{view_count})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_view_count, 0|(gdextension.SizeInt<<4), &struct{ view_count int64 }{view_count})
 }
 func (self class) GetScaling3dMode() RenderingServer.ViewportScaling3DMode { //gd:RenderSceneBuffersConfiguration.get_scaling_3d_mode
-	var r_ret = noescape.Call[RenderingServer.ViewportScaling3DMode](gd.ObjectChecked(self.AsObject()), methods.get_scaling_3d_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[RenderingServer.ViewportScaling3DMode](gd.ObjectChecked(self.AsObject()), methods.get_scaling_3d_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetScaling3dMode(scaling_3d_mode RenderingServer.ViewportScaling3DMode) { //gd:RenderSceneBuffersConfiguration.set_scaling_3d_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scaling_3d_mode, 0|(gdextension.SizeInt<<4), &struct {
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scaling_3d_mode, 0|(gdextension.SizeInt<<4), &struct {
 		scaling_3d_mode RenderingServer.ViewportScaling3DMode
 	}{scaling_3d_mode})
 }
 func (self class) GetMsaa3d() RenderingServer.ViewportMSAA { //gd:RenderSceneBuffersConfiguration.get_msaa_3d
-	var r_ret = noescape.Call[RenderingServer.ViewportMSAA](gd.ObjectChecked(self.AsObject()), methods.get_msaa_3d, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[RenderingServer.ViewportMSAA](gd.ObjectChecked(self.AsObject()), methods.get_msaa_3d, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMsaa3d(msaa_3d RenderingServer.ViewportMSAA) { //gd:RenderSceneBuffersConfiguration.set_msaa_3d
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_msaa_3d, 0|(gdextension.SizeInt<<4), &struct{ msaa_3d RenderingServer.ViewportMSAA }{msaa_3d})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_msaa_3d, 0|(gdextension.SizeInt<<4), &struct{ msaa_3d RenderingServer.ViewportMSAA }{msaa_3d})
 }
 func (self class) GetScreenSpaceAa() RenderingServer.ViewportScreenSpaceAA { //gd:RenderSceneBuffersConfiguration.get_screen_space_aa
-	var r_ret = noescape.Call[RenderingServer.ViewportScreenSpaceAA](gd.ObjectChecked(self.AsObject()), methods.get_screen_space_aa, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[RenderingServer.ViewportScreenSpaceAA](gd.ObjectChecked(self.AsObject()), methods.get_screen_space_aa, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetScreenSpaceAa(screen_space_aa RenderingServer.ViewportScreenSpaceAA) { //gd:RenderSceneBuffersConfiguration.set_screen_space_aa
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_screen_space_aa, 0|(gdextension.SizeInt<<4), &struct {
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_screen_space_aa, 0|(gdextension.SizeInt<<4), &struct {
 		screen_space_aa RenderingServer.ViewportScreenSpaceAA
 	}{screen_space_aa})
 }
 func (self class) GetFsrSharpness() float64 { //gd:RenderSceneBuffersConfiguration.get_fsr_sharpness
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fsr_sharpness, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fsr_sharpness, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetFsrSharpness(fsr_sharpness float64) { //gd:RenderSceneBuffersConfiguration.set_fsr_sharpness
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fsr_sharpness, 0|(gdextension.SizeFloat<<4), &struct{ fsr_sharpness float64 }{fsr_sharpness})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fsr_sharpness, 0|(gdextension.SizeFloat<<4), &struct{ fsr_sharpness float64 }{fsr_sharpness})
 }
 func (self class) GetTextureMipmapBias() float64 { //gd:RenderSceneBuffersConfiguration.get_texture_mipmap_bias
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_texture_mipmap_bias, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_texture_mipmap_bias, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetTextureMipmapBias(texture_mipmap_bias float64) { //gd:RenderSceneBuffersConfiguration.set_texture_mipmap_bias
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_mipmap_bias, 0|(gdextension.SizeFloat<<4), &struct{ texture_mipmap_bias float64 }{texture_mipmap_bias})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_mipmap_bias, 0|(gdextension.SizeFloat<<4), &struct{ texture_mipmap_bias float64 }{texture_mipmap_bias})
 }
 func (self class) GetAnisotropicFilteringLevel() RenderingServer.ViewportAnisotropicFiltering { //gd:RenderSceneBuffersConfiguration.get_anisotropic_filtering_level
-	var r_ret = noescape.Call[RenderingServer.ViewportAnisotropicFiltering](gd.ObjectChecked(self.AsObject()), methods.get_anisotropic_filtering_level, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[RenderingServer.ViewportAnisotropicFiltering](gd.ObjectChecked(self.AsObject()), methods.get_anisotropic_filtering_level, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetAnisotropicFilteringLevel(anisotropic_filtering_level RenderingServer.ViewportAnisotropicFiltering) { //gd:RenderSceneBuffersConfiguration.set_anisotropic_filtering_level
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anisotropic_filtering_level, 0|(gdextension.SizeInt<<4), &struct {
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anisotropic_filtering_level, 0|(gdextension.SizeInt<<4), &struct {
 		anisotropic_filtering_level RenderingServer.ViewportAnisotropicFiltering
 	}{anisotropic_filtering_level})
 }

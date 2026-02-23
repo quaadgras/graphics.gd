@@ -22,6 +22,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -70,6 +71,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -1658,7 +1660,7 @@ func (self class) GetGlobalCanvasTransform() Transform2D.OriginXY { //gd:Viewpor
 	return ret
 }
 func (self class) GetStretchTransform() Transform2D.OriginXY { //gd:Viewport.get_stretch_transform
-	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_stretch_transform, gdextension.SizeTransform2D, &struct{}{})
+	var r_ret = jumponly.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_stretch_transform, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1766,7 +1768,7 @@ func (self class) GetOversamplingOverride() float64 { //gd:Viewport.get_oversamp
 	return ret
 }
 func (self class) GetOversampling() float64 { //gd:Viewport.get_oversampling
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_oversampling, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_oversampling, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1800,10 +1802,10 @@ func (self class) GetPhysicsObjectPickingSort() bool { //gd:Viewport.get_physics
 	return ret
 }
 func (self class) SetPhysicsObjectPickingFirstOnly(enable bool) { //gd:Viewport.set_physics_object_picking_first_only
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_object_picking_first_only, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_object_picking_first_only, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) GetPhysicsObjectPickingFirstOnly() bool { //gd:Viewport.get_physics_object_picking_first_only
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_physics_object_picking_first_only, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_physics_object_picking_first_only, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

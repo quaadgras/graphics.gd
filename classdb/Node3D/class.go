@@ -23,6 +23,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -64,6 +65,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -1151,7 +1153,7 @@ func (self class) GetParentNode3d() [1]gdclass.Node3D { //gd:Node3D.get_parent_n
 	return ret
 }
 func (self class) SetIgnoreTransformNotification(enabled bool) { //gd:Node3D.set_ignore_transform_notification
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ignore_transform_notification, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ignore_transform_notification, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) SetAsTopLevel(enable bool) { //gd:Node3D.set_as_top_level
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_as_top_level, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})

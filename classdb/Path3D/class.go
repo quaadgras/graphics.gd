@@ -17,6 +17,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -55,6 +56,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -201,7 +203,7 @@ func (self class) SetCurve(curve [1]gdclass.Curve3D) { //gd:Path3D.set_curve
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCurve3D(curve[0])[0]))})
 }
 func (self class) GetCurve() [1]gdclass.Curve3D { //gd:Path3D.get_curve
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Curve3D{gdclass.NewCurve3D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -209,7 +211,7 @@ func (self class) SetDebugCustomColor(debug_custom_color Color.RGBA) { //gd:Path
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_custom_color, 0|(gdextension.SizeColor<<4), &struct{ debug_custom_color Color.RGBA }{debug_custom_color})
 }
 func (self class) GetDebugCustomColor() Color.RGBA { //gd:Path3D.get_debug_custom_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_debug_custom_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_debug_custom_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }

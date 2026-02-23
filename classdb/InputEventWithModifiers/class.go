@@ -17,6 +17,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -55,6 +56,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -264,7 +266,7 @@ func (self class) SetCommandOrControlAutoremap(enable bool) { //gd:InputEventWit
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_command_or_control_autoremap, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsCommandOrControlAutoremap() bool { //gd:InputEventWithModifiers.is_command_or_control_autoremap
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_command_or_control_autoremap, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_command_or_control_autoremap, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -277,7 +279,7 @@ func (self class) SetAltPressed(pressed bool) { //gd:InputEventWithModifiers.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alt_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
 }
 func (self class) IsAltPressed() bool { //gd:InputEventWithModifiers.is_alt_pressed
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_alt_pressed, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_alt_pressed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -285,7 +287,7 @@ func (self class) SetShiftPressed(pressed bool) { //gd:InputEventWithModifiers.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shift_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
 }
 func (self class) IsShiftPressed() bool { //gd:InputEventWithModifiers.is_shift_pressed
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shift_pressed, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shift_pressed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -293,7 +295,7 @@ func (self class) SetCtrlPressed(pressed bool) { //gd:InputEventWithModifiers.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ctrl_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
 }
 func (self class) IsCtrlPressed() bool { //gd:InputEventWithModifiers.is_ctrl_pressed
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ctrl_pressed, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ctrl_pressed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -301,7 +303,7 @@ func (self class) SetMetaPressed(pressed bool) { //gd:InputEventWithModifiers.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_meta_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
 }
 func (self class) IsMetaPressed() bool { //gd:InputEventWithModifiers.is_meta_pressed
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_meta_pressed, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_meta_pressed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

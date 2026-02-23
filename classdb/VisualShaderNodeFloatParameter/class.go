@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -49,6 +50,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -260,7 +262,7 @@ func (self class) SetHint(hint Hint) { //gd:VisualShaderNodeFloatParameter.set_h
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hint, 0|(gdextension.SizeInt<<4), &struct{ hint Hint }{hint})
 }
 func (self class) GetHint() Hint { //gd:VisualShaderNodeFloatParameter.get_hint
-	var r_ret = noescape.Call[Hint](gd.ObjectChecked(self.AsObject()), methods.get_hint, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Hint](gd.ObjectChecked(self.AsObject()), methods.get_hint, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -268,7 +270,7 @@ func (self class) SetMin(value float64) { //gd:VisualShaderNodeFloatParameter.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min, 0|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
 }
 func (self class) GetMin() float64 { //gd:VisualShaderNodeFloatParameter.get_min
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -276,7 +278,7 @@ func (self class) SetMax(value float64) { //gd:VisualShaderNodeFloatParameter.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max, 0|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
 }
 func (self class) GetMax() float64 { //gd:VisualShaderNodeFloatParameter.get_max
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -284,7 +286,7 @@ func (self class) SetStep(value float64) { //gd:VisualShaderNodeFloatParameter.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_step, 0|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
 }
 func (self class) GetStep() float64 { //gd:VisualShaderNodeFloatParameter.get_step
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_step, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_step, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -292,7 +294,7 @@ func (self class) SetDefaultValueEnabled(enabled bool) { //gd:VisualShaderNodeFl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_value_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsDefaultValueEnabled() bool { //gd:VisualShaderNodeFloatParameter.is_default_value_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_default_value_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_default_value_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -300,7 +302,7 @@ func (self class) SetDefaultValue(value float64) { //gd:VisualShaderNodeFloatPar
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_value, 0|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
 }
 func (self class) GetDefaultValue() float64 { //gd:VisualShaderNodeFloatParameter.get_default_value
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_default_value, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_default_value, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -17,6 +17,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -53,6 +54,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -370,28 +372,28 @@ func (self class) SetEnabled(enabled bool) { //gd:SkeletonModification2D.set_ena
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) GetEnabled() bool { //gd:SkeletonModification2D.get_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetModificationStack() [1]gdclass.SkeletonModificationStack2D { //gd:SkeletonModification2D.get_modification_stack
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_modification_stack, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_modification_stack, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.SkeletonModificationStack2D{gdclass.NewSkeletonModificationStack2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetIsSetup(is_setup bool) { //gd:SkeletonModification2D.set_is_setup
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_is_setup, 0|(gdextension.SizeBool<<4), &struct{ is_setup bool }{is_setup})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_is_setup, 0|(gdextension.SizeBool<<4), &struct{ is_setup bool }{is_setup})
 }
 func (self class) GetIsSetup() bool { //gd:SkeletonModification2D.get_is_setup
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_setup, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_setup, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetExecutionMode(execution_mode int64) { //gd:SkeletonModification2D.set_execution_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_execution_mode, 0|(gdextension.SizeInt<<4), &struct{ execution_mode int64 }{execution_mode})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_execution_mode, 0|(gdextension.SizeInt<<4), &struct{ execution_mode int64 }{execution_mode})
 }
 func (self class) GetExecutionMode() int64 { //gd:SkeletonModification2D.get_execution_mode
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_execution_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_execution_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -409,7 +411,7 @@ func (self class) SetEditorDrawGizmo(draw_gizmo bool) { //gd:SkeletonModificatio
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editor_draw_gizmo, 0|(gdextension.SizeBool<<4), &struct{ draw_gizmo bool }{draw_gizmo})
 }
 func (self class) GetEditorDrawGizmo() bool { //gd:SkeletonModification2D.get_editor_draw_gizmo
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_editor_draw_gizmo, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_editor_draw_gizmo, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

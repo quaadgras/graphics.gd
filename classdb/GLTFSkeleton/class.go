@@ -9,6 +9,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -46,6 +47,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -217,7 +219,7 @@ func (self Instance) SetGodotBoneNode(value map[int]int) Instance { //gd:GLTFSke
 }
 
 func (self class) GetJoints() Packed.Array[int32] { //gd:GLTFSkeleton.get_joints
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_joints, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_joints, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -227,7 +229,7 @@ func (self class) SetJoints(joints Packed.Array[int32]) { //gd:GLTFSkeleton.set_
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](joints))})
 }
 func (self class) GetRoots() Packed.Array[int32] { //gd:GLTFSkeleton.get_roots
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_roots, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_roots, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -237,7 +239,7 @@ func (self class) SetRoots(roots Packed.Array[int32]) { //gd:GLTFSkeleton.set_ro
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](roots))})
 }
 func (self class) GetGodotSkeleton() [1]gdclass.Skeleton3D { //gd:GLTFSkeleton.get_godot_skeleton
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_godot_skeleton, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_godot_skeleton, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Skeleton3D{gdclass.NewSkeleton3D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

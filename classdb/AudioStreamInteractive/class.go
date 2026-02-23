@@ -19,6 +19,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -55,6 +56,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -426,7 +428,7 @@ func (self class) SetClipCount(clip_count int64) { //gd:AudioStreamInteractive.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clip_count, 0|(gdextension.SizeInt<<4), &struct{ clip_count int64 }{clip_count})
 }
 func (self class) GetClipCount() int64 { //gd:AudioStreamInteractive.get_clip_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_clip_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_clip_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -434,7 +436,7 @@ func (self class) SetInitialClip(clip_index int64) { //gd:AudioStreamInteractive
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_initial_clip, 0|(gdextension.SizeInt<<4), &struct{ clip_index int64 }{clip_index})
 }
 func (self class) GetInitialClip() int64 { //gd:AudioStreamInteractive.get_initial_clip
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_initial_clip, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_initial_clip, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

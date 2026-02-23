@@ -16,6 +16,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -52,6 +53,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -386,7 +388,7 @@ func (self class) SetInterpolationMode(interpolation_mode InterpolationMode) { /
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interpolation_mode, 0|(gdextension.SizeInt<<4), &struct{ interpolation_mode InterpolationMode }{interpolation_mode})
 }
 func (self class) GetInterpolationMode() InterpolationMode { //gd:Gradient.get_interpolation_mode
-	var r_ret = noescape.Call[InterpolationMode](gd.ObjectChecked(self.AsObject()), methods.get_interpolation_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[InterpolationMode](gd.ObjectChecked(self.AsObject()), methods.get_interpolation_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -394,7 +396,7 @@ func (self class) SetInterpolationColorSpace(interpolation_color_space ColorSpac
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interpolation_color_space, 0|(gdextension.SizeInt<<4), &struct{ interpolation_color_space ColorSpace }{interpolation_color_space})
 }
 func (self class) GetInterpolationColorSpace() ColorSpace { //gd:Gradient.get_interpolation_color_space
-	var r_ret = noescape.Call[ColorSpace](gd.ObjectChecked(self.AsObject()), methods.get_interpolation_color_space, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[ColorSpace](gd.ObjectChecked(self.AsObject()), methods.get_interpolation_color_space, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

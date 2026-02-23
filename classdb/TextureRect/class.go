@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -52,6 +53,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -241,7 +243,7 @@ func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:TextureRect.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:TextureRect.get_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -249,7 +251,7 @@ func (self class) SetExpandMode(expand_mode ExpandMode) { //gd:TextureRect.set_e
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_expand_mode, 0|(gdextension.SizeInt<<4), &struct{ expand_mode ExpandMode }{expand_mode})
 }
 func (self class) GetExpandMode() ExpandMode { //gd:TextureRect.get_expand_mode
-	var r_ret = noescape.Call[ExpandMode](gd.ObjectChecked(self.AsObject()), methods.get_expand_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[ExpandMode](gd.ObjectChecked(self.AsObject()), methods.get_expand_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -257,7 +259,7 @@ func (self class) SetFlipH(enable bool) { //gd:TextureRect.set_flip_h
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flip_h, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsFlippedH() bool { //gd:TextureRect.is_flipped_h
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flipped_h, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flipped_h, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -265,7 +267,7 @@ func (self class) SetFlipV(enable bool) { //gd:TextureRect.set_flip_v
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flip_v, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsFlippedV() bool { //gd:TextureRect.is_flipped_v
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flipped_v, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flipped_v, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -273,7 +275,7 @@ func (self class) SetStretchMode(stretch_mode StretchMode) { //gd:TextureRect.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stretch_mode, 0|(gdextension.SizeInt<<4), &struct{ stretch_mode StretchMode }{stretch_mode})
 }
 func (self class) GetStretchMode() StretchMode { //gd:TextureRect.get_stretch_mode
-	var r_ret = noescape.Call[StretchMode](gd.ObjectChecked(self.AsObject()), methods.get_stretch_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[StretchMode](gd.ObjectChecked(self.AsObject()), methods.get_stretch_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

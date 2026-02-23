@@ -9,6 +9,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -45,6 +46,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -207,7 +209,7 @@ func (self class) SetBindCount(bind_count int64) { //gd:Skin.set_bind_count
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bind_count, 0|(gdextension.SizeInt<<4), &struct{ bind_count int64 }{bind_count})
 }
 func (self class) GetBindCount() int64 { //gd:Skin.get_bind_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bind_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bind_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

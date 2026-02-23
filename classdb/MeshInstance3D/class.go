@@ -16,6 +16,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -60,6 +61,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -475,7 +477,7 @@ func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:MeshInstance3D.set_mesh
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMesh(mesh[0])[0]))})
 }
 func (self class) GetMesh() [1]gdclass.Mesh { //gd:MeshInstance3D.get_mesh
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Mesh{gdclass.NewMesh(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -483,7 +485,7 @@ func (self class) SetSkeletonPath(skeleton_path Path.ToNode) { //gd:MeshInstance
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skeleton_path, 0|(gdextension.SizeNodePath<<4), &struct{ skeleton_path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(skeleton_path))})
 }
 func (self class) GetSkeletonPath() Path.ToNode { //gd:MeshInstance3D.get_skeleton_path
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_skeleton_path, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_skeleton_path, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -491,12 +493,12 @@ func (self class) SetSkin(skin [1]gdclass.Skin) { //gd:MeshInstance3D.set_skin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin, 0|(gdextension.SizeObject<<4), &struct{ skin gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetSkin(skin[0])[0]))})
 }
 func (self class) GetSkin() [1]gdclass.Skin { //gd:MeshInstance3D.get_skin
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skin, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skin, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Skin{gdclass.NewSkin(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetSkinReference() [1]gdclass.SkinReference { //gd:MeshInstance3D.get_skin_reference
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skin_reference, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skin_reference, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.SkinReference{gdclass.NewSkinReference(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

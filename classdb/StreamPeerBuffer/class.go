@@ -17,6 +17,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -52,6 +53,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -244,7 +246,7 @@ func (self class) GetSize() int64 { //gd:StreamPeerBuffer.get_size
 	return ret
 }
 func (self class) GetPosition() int64 { //gd:StreamPeerBuffer.get_position
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -255,7 +257,7 @@ func (self class) SetDataArray(data Packed.Bytes) { //gd:StreamPeerBuffer.set_da
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_data_array, 0|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 }
 func (self class) GetDataArray() Packed.Bytes { //gd:StreamPeerBuffer.get_data_array
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_data_array, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_data_array, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }

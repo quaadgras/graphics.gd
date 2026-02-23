@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -54,6 +55,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -429,7 +431,7 @@ func (self class) SetHorizontalScrollMode(enable ScrollMode) { //gd:ScrollContai
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_horizontal_scroll_mode, 0|(gdextension.SizeInt<<4), &struct{ enable ScrollMode }{enable})
 }
 func (self class) GetHorizontalScrollMode() ScrollMode { //gd:ScrollContainer.get_horizontal_scroll_mode
-	var r_ret = noescape.Call[ScrollMode](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_scroll_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[ScrollMode](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_scroll_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -437,15 +439,15 @@ func (self class) SetVerticalScrollMode(enable ScrollMode) { //gd:ScrollContaine
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical_scroll_mode, 0|(gdextension.SizeInt<<4), &struct{ enable ScrollMode }{enable})
 }
 func (self class) GetVerticalScrollMode() ScrollMode { //gd:ScrollContainer.get_vertical_scroll_mode
-	var r_ret = noescape.Call[ScrollMode](gd.ObjectChecked(self.AsObject()), methods.get_vertical_scroll_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[ScrollMode](gd.ObjectChecked(self.AsObject()), methods.get_vertical_scroll_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetDeadzone(deadzone int64) { //gd:ScrollContainer.set_deadzone
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_deadzone, 0|(gdextension.SizeInt<<4), &struct{ deadzone int64 }{deadzone})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_deadzone, 0|(gdextension.SizeInt<<4), &struct{ deadzone int64 }{deadzone})
 }
 func (self class) GetDeadzone() int64 { //gd:ScrollContainer.get_deadzone
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_deadzone, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_deadzone, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -453,7 +455,7 @@ func (self class) SetScrollHintMode(scroll_hint_mode ScrollHintMode) { //gd:Scro
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_hint_mode, 0|(gdextension.SizeInt<<4), &struct{ scroll_hint_mode ScrollHintMode }{scroll_hint_mode})
 }
 func (self class) GetScrollHintMode() ScrollHintMode { //gd:ScrollContainer.get_scroll_hint_mode
-	var r_ret = noescape.Call[ScrollHintMode](gd.ObjectChecked(self.AsObject()), methods.get_scroll_hint_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[ScrollHintMode](gd.ObjectChecked(self.AsObject()), methods.get_scroll_hint_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -461,25 +463,25 @@ func (self class) SetTileScrollHint(tile_scroll_hint bool) { //gd:ScrollContaine
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_scroll_hint, 0|(gdextension.SizeBool<<4), &struct{ tile_scroll_hint bool }{tile_scroll_hint})
 }
 func (self class) IsScrollHintTiled() bool { //gd:ScrollContainer.is_scroll_hint_tiled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scroll_hint_tiled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scroll_hint_tiled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetFollowFocus(enabled bool) { //gd:ScrollContainer.set_follow_focus
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_follow_focus, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_follow_focus, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsFollowingFocus() bool { //gd:ScrollContainer.is_following_focus
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_following_focus, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_following_focus, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetHScrollBar() [1]gdclass.HScrollBar { //gd:ScrollContainer.get_h_scroll_bar
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_h_scroll_bar, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_h_scroll_bar, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.HScrollBar{gdclass.NewHScrollBar(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) GetVScrollBar() [1]gdclass.VScrollBar { //gd:ScrollContainer.get_v_scroll_bar
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_v_scroll_bar, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_v_scroll_bar, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.VScrollBar{gdclass.NewVScrollBar(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
@@ -490,7 +492,7 @@ func (self class) SetDrawFocusBorder(draw bool) { //gd:ScrollContainer.set_draw_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_focus_border, 0|(gdextension.SizeBool<<4), &struct{ draw bool }{draw})
 }
 func (self class) GetDrawFocusBorder() bool { //gd:ScrollContainer.get_draw_focus_border
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_draw_focus_border, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_draw_focus_border, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -16,6 +16,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -54,6 +55,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -266,15 +268,15 @@ func (self class) SetTitle(title String.Readable) { //gd:VisualShaderNodeFrame.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_title, 0|(gdextension.SizeString<<4), &struct{ title gdextension.String }{pointers.Get(gd.InternalString(title))})
 }
 func (self class) GetTitle() String.Readable { //gd:VisualShaderNodeFrame.get_title
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_title, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_title, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) SetTintColorEnabled(enable bool) { //gd:VisualShaderNodeFrame.set_tint_color_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tint_color_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tint_color_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsTintColorEnabled() bool { //gd:VisualShaderNodeFrame.is_tint_color_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_tint_color_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_tint_color_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -282,15 +284,15 @@ func (self class) SetTintColor(color Color.RGBA) { //gd:VisualShaderNodeFrame.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tint_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetTintColor() Color.RGBA { //gd:VisualShaderNodeFrame.get_tint_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_tint_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_tint_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetAutoshrinkEnabled(enable bool) { //gd:VisualShaderNodeFrame.set_autoshrink_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoshrink_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoshrink_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsAutoshrinkEnabled() bool { //gd:VisualShaderNodeFrame.is_autoshrink_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_autoshrink_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_autoshrink_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

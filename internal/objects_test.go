@@ -214,3 +214,17 @@ func TestExtensionClassReturnedToTheEngineFromCallable(t *testing.T) {
 		}
 	})
 }
+
+func TestJumpOnlyCall(t *testing.T) {
+	runOnMain(t, func(t testing.TB) {
+		var node = Node.New()
+		node.SetProcessInput(true)
+		if !node.IsProcessingInput() {
+			t.Error("Expected node to be processing input")
+		}
+		node.SetProcessInput(false)
+		if node.IsProcessingInput() {
+			t.Error("Expected node to not be processing input")
+		}
+	})
+}

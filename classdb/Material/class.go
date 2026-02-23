@@ -17,6 +17,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -53,6 +54,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -343,7 +345,7 @@ func (self class) SetNextPass(next_pass [1]gdclass.Material) { //gd:Material.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_next_pass, 0|(gdextension.SizeObject<<4), &struct{ next_pass gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(next_pass[0])[0]))})
 }
 func (self class) GetNextPass() [1]gdclass.Material { //gd:Material.get_next_pass
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_next_pass, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_next_pass, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -351,7 +353,7 @@ func (self class) SetRenderPriority(priority int64) { //gd:Material.set_render_p
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_render_priority, 0|(gdextension.SizeInt<<4), &struct{ priority int64 }{priority})
 }
 func (self class) GetRenderPriority() int64 { //gd:Material.get_render_priority
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_render_priority, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_render_priority, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

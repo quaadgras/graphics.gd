@@ -40,6 +40,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -80,6 +81,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -415,7 +417,7 @@ func (self class) SetRootBone(root_bone String.Name) { //gd:SkeletonIK3D.set_roo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_bone, 0|(gdextension.SizeStringName<<4), &struct{ root_bone gdextension.StringName }{pointers.Get(gd.InternalStringName(root_bone))})
 }
 func (self class) GetRootBone() String.Name { //gd:SkeletonIK3D.get_root_bone
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_root_bone, gdextension.SizeStringName, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_root_bone, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -423,7 +425,7 @@ func (self class) SetTipBone(tip_bone String.Name) { //gd:SkeletonIK3D.set_tip_b
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tip_bone, 0|(gdextension.SizeStringName<<4), &struct{ tip_bone gdextension.StringName }{pointers.Get(gd.InternalStringName(tip_bone))})
 }
 func (self class) GetTipBone() String.Name { //gd:SkeletonIK3D.get_tip_bone
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_tip_bone, gdextension.SizeStringName, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_tip_bone, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -431,7 +433,7 @@ func (self class) SetTargetTransform(target Transform3D.BasisOrigin) { //gd:Skel
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_transform, 0|(gdextension.SizeTransform3D<<4), &struct{ target Transform3D.BasisOrigin }{gd.Transposed(target)})
 }
 func (self class) GetTargetTransform() Transform3D.BasisOrigin { //gd:SkeletonIK3D.get_target_transform
-	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_target_transform, gdextension.SizeTransform3D, &struct{}{})
+	var r_ret = jumponly.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_target_transform, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -439,23 +441,23 @@ func (self class) SetTargetNode(node Path.ToNode) { //gd:SkeletonIK3D.set_target
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_node, 0|(gdextension.SizeNodePath<<4), &struct{ node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(node))})
 }
 func (self class) GetTargetNode() Path.ToNode { //gd:SkeletonIK3D.get_target_node
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_target_node, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_target_node, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 func (self class) SetOverrideTipBasis(override bool) { //gd:SkeletonIK3D.set_override_tip_basis
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_override_tip_basis, 0|(gdextension.SizeBool<<4), &struct{ override bool }{override})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_override_tip_basis, 0|(gdextension.SizeBool<<4), &struct{ override bool }{override})
 }
 func (self class) IsOverrideTipBasis() bool { //gd:SkeletonIK3D.is_override_tip_basis
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_override_tip_basis, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_override_tip_basis, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetUseMagnet(use bool) { //gd:SkeletonIK3D.set_use_magnet
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_magnet, 0|(gdextension.SizeBool<<4), &struct{ use bool }{use})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_magnet, 0|(gdextension.SizeBool<<4), &struct{ use bool }{use})
 }
 func (self class) IsUsingMagnet() bool { //gd:SkeletonIK3D.is_using_magnet
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_magnet, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_magnet, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -463,7 +465,7 @@ func (self class) SetMagnetPosition(local_position Vector3.XYZ) { //gd:SkeletonI
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_magnet_position, 0|(gdextension.SizeVector3<<4), &struct{ local_position Vector3.XYZ }{local_position})
 }
 func (self class) GetMagnetPosition() Vector3.XYZ { //gd:SkeletonIK3D.get_magnet_position
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_magnet_position, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_magnet_position, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -473,23 +475,23 @@ func (self class) GetParentSkeleton() [1]gdclass.Skeleton3D { //gd:SkeletonIK3D.
 	return ret
 }
 func (self class) IsRunning() bool { //gd:SkeletonIK3D.is_running
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_running, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_running, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMinDistance(min_distance float64) { //gd:SkeletonIK3D.set_min_distance
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_distance, 0|(gdextension.SizeFloat<<4), &struct{ min_distance float64 }{min_distance})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_distance, 0|(gdextension.SizeFloat<<4), &struct{ min_distance float64 }{min_distance})
 }
 func (self class) GetMinDistance() float64 { //gd:SkeletonIK3D.get_min_distance
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min_distance, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMaxIterations(iterations int64) { //gd:SkeletonIK3D.set_max_iterations
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_iterations, 0|(gdextension.SizeInt<<4), &struct{ iterations int64 }{iterations})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_iterations, 0|(gdextension.SizeInt<<4), &struct{ iterations int64 }{iterations})
 }
 func (self class) GetMaxIterations() int64 { //gd:SkeletonIK3D.get_max_iterations
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_iterations, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_iterations, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -497,7 +499,7 @@ func (self class) Start(one_time bool) { //gd:SkeletonIK3D.start
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.start, 0|(gdextension.SizeBool<<4), &struct{ one_time bool }{one_time})
 }
 func (self class) Stop() { //gd:SkeletonIK3D.stop
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, &struct{}{})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, &struct{}{})
 }
 func (self class) SetInterpolation(interpolation float64) { //gd:SkeletonIK3D.set_interpolation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interpolation, 0|(gdextension.SizeFloat<<4), &struct{ interpolation float64 }{interpolation})

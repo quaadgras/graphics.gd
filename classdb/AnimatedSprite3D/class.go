@@ -16,6 +16,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -56,6 +57,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -392,7 +394,7 @@ func (self class) SetSpriteFrames(sprite_frames [1]gdclass.SpriteFrames) { //gd:
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sprite_frames, 0|(gdextension.SizeObject<<4), &struct{ sprite_frames gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetSpriteFrames(sprite_frames[0])[0]))})
 }
 func (self class) GetSpriteFrames() [1]gdclass.SpriteFrames { //gd:AnimatedSprite3D.get_sprite_frames
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_sprite_frames, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_sprite_frames, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.SpriteFrames{gdclass.NewSpriteFrames(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -400,7 +402,7 @@ func (self class) SetAnimation(name String.Name) { //gd:AnimatedSprite3D.set_ani
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_animation, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 func (self class) GetAnimation() String.Name { //gd:AnimatedSprite3D.get_animation
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_animation, gdextension.SizeStringName, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_animation, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -408,12 +410,12 @@ func (self class) SetAutoplay(name String.Readable) { //gd:AnimatedSprite3D.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoplay, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 func (self class) GetAutoplay() String.Readable { //gd:AnimatedSprite3D.get_autoplay
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_autoplay, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_autoplay, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) IsPlaying() bool { //gd:AnimatedSprite3D.is_playing
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_playing, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_playing, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -437,15 +439,15 @@ func (self class) SetFrame(frame_ int64) { //gd:AnimatedSprite3D.set_frame
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame, 0|(gdextension.SizeInt<<4), &struct{ frame_ int64 }{frame_})
 }
 func (self class) GetFrame() int64 { //gd:AnimatedSprite3D.get_frame
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetFrameProgress(progress float64) { //gd:AnimatedSprite3D.set_frame_progress
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame_progress, 0|(gdextension.SizeFloat<<4), &struct{ progress float64 }{progress})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame_progress, 0|(gdextension.SizeFloat<<4), &struct{ progress float64 }{progress})
 }
 func (self class) GetFrameProgress() float64 { //gd:AnimatedSprite3D.get_frame_progress
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_frame_progress, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_frame_progress, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -456,15 +458,15 @@ func (self class) SetFrameAndProgress(frame_ int64, progress float64) { //gd:Ani
 	}{frame_, progress})
 }
 func (self class) SetSpeedScale(speed_scale float64) { //gd:AnimatedSprite3D.set_speed_scale
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, 0|(gdextension.SizeFloat<<4), &struct{ speed_scale float64 }{speed_scale})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, 0|(gdextension.SizeFloat<<4), &struct{ speed_scale float64 }{speed_scale})
 }
 func (self class) GetSpeedScale() float64 { //gd:AnimatedSprite3D.get_speed_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_speed_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_speed_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetPlayingSpeed() float64 { //gd:AnimatedSprite3D.get_playing_speed
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_playing_speed, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_playing_speed, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -53,6 +53,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -91,6 +92,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -542,7 +544,7 @@ func (self class) SetVertices(vertices Packed.Array[Vector2.XY]) { //gd:Navigati
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](vertices))})
 }
 func (self class) GetVertices() Packed.Array[Vector2.XY] { //gd:NavigationPolygon.get_vertices
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_vertices, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_vertices, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -609,7 +611,7 @@ func (self class) SetCellSize(cell_size float64) { //gd:NavigationPolygon.set_ce
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cell_size, 0|(gdextension.SizeFloat<<4), &struct{ cell_size float64 }{cell_size})
 }
 func (self class) GetCellSize() float64 { //gd:NavigationPolygon.get_cell_size
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_cell_size, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_cell_size, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -617,7 +619,7 @@ func (self class) SetBorderSize(border_size float64) { //gd:NavigationPolygon.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_border_size, 0|(gdextension.SizeFloat<<4), &struct{ border_size float64 }{border_size})
 }
 func (self class) GetBorderSize() float64 { //gd:NavigationPolygon.get_border_size
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_border_size, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_border_size, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -625,7 +627,7 @@ func (self class) SetSamplePartitionType(sample_partition_type SamplePartitionTy
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sample_partition_type, 0|(gdextension.SizeInt<<4), &struct{ sample_partition_type SamplePartitionType }{sample_partition_type})
 }
 func (self class) GetSamplePartitionType() SamplePartitionType { //gd:NavigationPolygon.get_sample_partition_type
-	var r_ret = noescape.Call[SamplePartitionType](gd.ObjectChecked(self.AsObject()), methods.get_sample_partition_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[SamplePartitionType](gd.ObjectChecked(self.AsObject()), methods.get_sample_partition_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -633,15 +635,15 @@ func (self class) SetParsedGeometryType(geometry_type ParsedGeometryType) { //gd
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_parsed_geometry_type, 0|(gdextension.SizeInt<<4), &struct{ geometry_type ParsedGeometryType }{geometry_type})
 }
 func (self class) GetParsedGeometryType() ParsedGeometryType { //gd:NavigationPolygon.get_parsed_geometry_type
-	var r_ret = noescape.Call[ParsedGeometryType](gd.ObjectChecked(self.AsObject()), methods.get_parsed_geometry_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[ParsedGeometryType](gd.ObjectChecked(self.AsObject()), methods.get_parsed_geometry_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetParsedCollisionMask(mask int64) { //gd:NavigationPolygon.set_parsed_collision_mask
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_parsed_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_parsed_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
 func (self class) GetParsedCollisionMask() int64 { //gd:NavigationPolygon.get_parsed_collision_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_parsed_collision_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_parsed_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -660,7 +662,7 @@ func (self class) SetSourceGeometryMode(geometry_mode SourceGeometryMode) { //gd
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_source_geometry_mode, 0|(gdextension.SizeInt<<4), &struct{ geometry_mode SourceGeometryMode }{geometry_mode})
 }
 func (self class) GetSourceGeometryMode() SourceGeometryMode { //gd:NavigationPolygon.get_source_geometry_mode
-	var r_ret = noescape.Call[SourceGeometryMode](gd.ObjectChecked(self.AsObject()), methods.get_source_geometry_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[SourceGeometryMode](gd.ObjectChecked(self.AsObject()), methods.get_source_geometry_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -668,7 +670,7 @@ func (self class) SetSourceGeometryGroupName(group_name String.Name) { //gd:Navi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_source_geometry_group_name, 0|(gdextension.SizeStringName<<4), &struct{ group_name gdextension.StringName }{pointers.Get(gd.InternalStringName(group_name))})
 }
 func (self class) GetSourceGeometryGroupName() String.Name { //gd:NavigationPolygon.get_source_geometry_group_name
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_source_geometry_group_name, gdextension.SizeStringName, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_source_geometry_group_name, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -676,7 +678,7 @@ func (self class) SetAgentRadius(agent_radius float64) { //gd:NavigationPolygon.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_agent_radius, 0|(gdextension.SizeFloat<<4), &struct{ agent_radius float64 }{agent_radius})
 }
 func (self class) GetAgentRadius() float64 { //gd:NavigationPolygon.get_agent_radius
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_agent_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_agent_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -684,7 +686,7 @@ func (self class) SetBakingRect(rect Rect2.PositionSize) { //gd:NavigationPolygo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_baking_rect, 0|(gdextension.SizeRect2<<4), &struct{ rect Rect2.PositionSize }{rect})
 }
 func (self class) GetBakingRect() Rect2.PositionSize { //gd:NavigationPolygon.get_baking_rect
-	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_baking_rect, gdextension.SizeRect2, &struct{}{})
+	var r_ret = jumponly.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_baking_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -692,7 +694,7 @@ func (self class) SetBakingRectOffset(rect_offset Vector2.XY) { //gd:NavigationP
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_baking_rect_offset, 0|(gdextension.SizeVector2<<4), &struct{ rect_offset Vector2.XY }{rect_offset})
 }
 func (self class) GetBakingRectOffset() Vector2.XY { //gd:NavigationPolygon.get_baking_rect_offset
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_baking_rect_offset, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_baking_rect_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

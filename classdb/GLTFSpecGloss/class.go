@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -49,6 +50,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -234,7 +236,7 @@ func (self Instance) SetSpecGlossImg(value Image.Instance) Instance { //gd:GLTFS
 }
 
 func (self class) GetDiffuseImg() [1]gdclass.Image { //gd:GLTFSpecGloss.get_diffuse_img
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_diffuse_img, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_diffuse_img, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -242,7 +244,7 @@ func (self class) SetDiffuseImg(diffuse_img [1]gdclass.Image) { //gd:GLTFSpecGlo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_diffuse_img, 0|(gdextension.SizeObject<<4), &struct{ diffuse_img gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetImage(diffuse_img[0])[0]))})
 }
 func (self class) GetDiffuseFactor() Color.RGBA { //gd:GLTFSpecGloss.get_diffuse_factor
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_diffuse_factor, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_diffuse_factor, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -250,15 +252,15 @@ func (self class) SetDiffuseFactor(diffuse_factor Color.RGBA) { //gd:GLTFSpecGlo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_diffuse_factor, 0|(gdextension.SizeColor<<4), &struct{ diffuse_factor Color.RGBA }{diffuse_factor})
 }
 func (self class) GetGlossFactor() float64 { //gd:GLTFSpecGloss.get_gloss_factor
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gloss_factor, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gloss_factor, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetGlossFactor(gloss_factor float64) { //gd:GLTFSpecGloss.set_gloss_factor
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gloss_factor, 0|(gdextension.SizeFloat<<4), &struct{ gloss_factor float64 }{gloss_factor})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gloss_factor, 0|(gdextension.SizeFloat<<4), &struct{ gloss_factor float64 }{gloss_factor})
 }
 func (self class) GetSpecularFactor() Color.RGBA { //gd:GLTFSpecGloss.get_specular_factor
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_specular_factor, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_specular_factor, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -266,7 +268,7 @@ func (self class) SetSpecularFactor(specular_factor Color.RGBA) { //gd:GLTFSpecG
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_specular_factor, 0|(gdextension.SizeColor<<4), &struct{ specular_factor Color.RGBA }{specular_factor})
 }
 func (self class) GetSpecGlossImg() [1]gdclass.Image { //gd:GLTFSpecGloss.get_spec_gloss_img
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_spec_gloss_img, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_spec_gloss_img, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

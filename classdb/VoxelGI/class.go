@@ -27,6 +27,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -67,6 +68,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -306,7 +308,7 @@ func (self class) SetProbeData(data [1]gdclass.VoxelGIData) { //gd:VoxelGI.set_p
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_probe_data, 0|(gdextension.SizeObject<<4), &struct{ data gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetVoxelGIData(data[0])[0]))})
 }
 func (self class) GetProbeData() [1]gdclass.VoxelGIData { //gd:VoxelGI.get_probe_data
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_probe_data, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_probe_data, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.VoxelGIData{gdclass.NewVoxelGIData(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -314,7 +316,7 @@ func (self class) SetSubdiv(subdiv Subdiv) { //gd:VoxelGI.set_subdiv
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_subdiv, 0|(gdextension.SizeInt<<4), &struct{ subdiv Subdiv }{subdiv})
 }
 func (self class) GetSubdiv() Subdiv { //gd:VoxelGI.get_subdiv
-	var r_ret = noescape.Call[Subdiv](gd.ObjectChecked(self.AsObject()), methods.get_subdiv, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Subdiv](gd.ObjectChecked(self.AsObject()), methods.get_subdiv, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -322,7 +324,7 @@ func (self class) SetSize(size Vector3.XYZ) { //gd:VoxelGI.set_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), &struct{ size Vector3.XYZ }{size})
 }
 func (self class) GetSize() Vector3.XYZ { //gd:VoxelGI.get_size
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -330,7 +332,7 @@ func (self class) SetCameraAttributes(camera_attributes [1]gdclass.CameraAttribu
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera_attributes, 0|(gdextension.SizeObject<<4), &struct{ camera_attributes gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCameraAttributes(camera_attributes[0])[0]))})
 }
 func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes { //gd:VoxelGI.get_camera_attributes
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_camera_attributes, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_camera_attributes, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.CameraAttributes{gdclass.NewCameraAttributes(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

@@ -27,3 +27,6 @@ releases/
 testing
 graphics
 /startup/internal/dlopen_old
+/internal/tool/trivial-methods/trivial_methods
+/results.jsonl
+/trivial_methods.json

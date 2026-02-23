@@ -17,6 +17,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -55,6 +56,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -343,17 +345,17 @@ func (self class) Allocate(to_cell_xform Transform3D.BasisOrigin, aabb AABB.Posi
 	}{gd.Transposed(to_cell_xform), aabb, octree_size, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](octree_cells.Array))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data_cells.Array))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](distance_field.Array))), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](level_counts))})
 }
 func (self class) GetBounds() AABB.PositionSize { //gd:VoxelGIData.get_bounds
-	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_bounds, gdextension.SizeAABB, &struct{}{})
+	var r_ret = jumponly.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_bounds, gdextension.SizeAABB, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetOctreeSize() Vector3.XYZ { //gd:VoxelGIData.get_octree_size
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_octree_size, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_octree_size, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetToCellXform() Transform3D.BasisOrigin { //gd:VoxelGIData.get_to_cell_xform
-	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_to_cell_xform, gdextension.SizeTransform3D, &struct{}{})
+	var r_ret = jumponly.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_to_cell_xform, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -376,7 +378,7 @@ func (self class) SetDynamicRange(dynamic_range float64) { //gd:VoxelGIData.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dynamic_range, 0|(gdextension.SizeFloat<<4), &struct{ dynamic_range float64 }{dynamic_range})
 }
 func (self class) GetDynamicRange() float64 { //gd:VoxelGIData.get_dynamic_range
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dynamic_range, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dynamic_range, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -384,7 +386,7 @@ func (self class) SetEnergy(energy float64) { //gd:VoxelGIData.set_energy
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_energy, 0|(gdextension.SizeFloat<<4), &struct{ energy float64 }{energy})
 }
 func (self class) GetEnergy() float64 { //gd:VoxelGIData.get_energy
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_energy, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_energy, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -392,7 +394,7 @@ func (self class) SetBias(bias float64) { //gd:VoxelGIData.set_bias
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bias, 0|(gdextension.SizeFloat<<4), &struct{ bias float64 }{bias})
 }
 func (self class) GetBias() float64 { //gd:VoxelGIData.get_bias
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bias, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bias, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -400,7 +402,7 @@ func (self class) SetNormalBias(bias float64) { //gd:VoxelGIData.set_normal_bias
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normal_bias, 0|(gdextension.SizeFloat<<4), &struct{ bias float64 }{bias})
 }
 func (self class) GetNormalBias() float64 { //gd:VoxelGIData.get_normal_bias
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_normal_bias, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_normal_bias, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -408,7 +410,7 @@ func (self class) SetPropagation(propagation float64) { //gd:VoxelGIData.set_pro
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_propagation, 0|(gdextension.SizeFloat<<4), &struct{ propagation float64 }{propagation})
 }
 func (self class) GetPropagation() float64 { //gd:VoxelGIData.get_propagation
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_propagation, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_propagation, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -416,7 +418,7 @@ func (self class) SetInterior(interior bool) { //gd:VoxelGIData.set_interior
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interior, 0|(gdextension.SizeBool<<4), &struct{ interior bool }{interior})
 }
 func (self class) IsInterior() bool { //gd:VoxelGIData.is_interior
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_interior, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_interior, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -424,7 +426,7 @@ func (self class) SetUseTwoBounces(enable bool) { //gd:VoxelGIData.set_use_two_b
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_two_bounces, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsUsingTwoBounces() bool { //gd:VoxelGIData.is_using_two_bounces
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_two_bounces, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_two_bounces, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

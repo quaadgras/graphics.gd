@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -51,6 +52,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -485,7 +487,7 @@ func (self class) SetMaterialOverride(material [1]gdclass.Material) { //gd:Geome
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material_override, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(material[0])[0]))})
 }
 func (self class) GetMaterialOverride() [1]gdclass.Material { //gd:GeometryInstance3D.get_material_override
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material_override, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material_override, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -493,7 +495,7 @@ func (self class) SetMaterialOverlay(material [1]gdclass.Material) { //gd:Geomet
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material_overlay, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(material[0])[0]))})
 }
 func (self class) GetMaterialOverlay() [1]gdclass.Material { //gd:GeometryInstance3D.get_material_overlay
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material_overlay, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material_overlay, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -501,7 +503,7 @@ func (self class) SetCastShadowsSetting(shadow_casting_setting ShadowCastingSett
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cast_shadows_setting, 0|(gdextension.SizeInt<<4), &struct{ shadow_casting_setting ShadowCastingSetting }{shadow_casting_setting})
 }
 func (self class) GetCastShadowsSetting() ShadowCastingSetting { //gd:GeometryInstance3D.get_cast_shadows_setting
-	var r_ret = noescape.Call[ShadowCastingSetting](gd.ObjectChecked(self.AsObject()), methods.get_cast_shadows_setting, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[ShadowCastingSetting](gd.ObjectChecked(self.AsObject()), methods.get_cast_shadows_setting, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -509,7 +511,7 @@ func (self class) SetLodBias(bias float64) { //gd:GeometryInstance3D.set_lod_bia
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lod_bias, 0|(gdextension.SizeFloat<<4), &struct{ bias float64 }{bias})
 }
 func (self class) GetLodBias() float64 { //gd:GeometryInstance3D.get_lod_bias
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lod_bias, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lod_bias, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -517,7 +519,7 @@ func (self class) SetTransparency(transparency float64) { //gd:GeometryInstance3
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transparency, 0|(gdextension.SizeFloat<<4), &struct{ transparency float64 }{transparency})
 }
 func (self class) GetTransparency() float64 { //gd:GeometryInstance3D.get_transparency
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_transparency, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_transparency, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -525,7 +527,7 @@ func (self class) SetVisibilityRangeEndMargin(distance float64) { //gd:GeometryI
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_range_end_margin, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 func (self class) GetVisibilityRangeEndMargin() float64 { //gd:GeometryInstance3D.get_visibility_range_end_margin
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_visibility_range_end_margin, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_visibility_range_end_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -533,7 +535,7 @@ func (self class) SetVisibilityRangeEnd(distance float64) { //gd:GeometryInstanc
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_range_end, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 func (self class) GetVisibilityRangeEnd() float64 { //gd:GeometryInstance3D.get_visibility_range_end
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_visibility_range_end, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_visibility_range_end, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -541,7 +543,7 @@ func (self class) SetVisibilityRangeBeginMargin(distance float64) { //gd:Geometr
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_range_begin_margin, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 func (self class) GetVisibilityRangeBeginMargin() float64 { //gd:GeometryInstance3D.get_visibility_range_begin_margin
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_visibility_range_begin_margin, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_visibility_range_begin_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -549,7 +551,7 @@ func (self class) SetVisibilityRangeBegin(distance float64) { //gd:GeometryInsta
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_range_begin, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 func (self class) GetVisibilityRangeBegin() float64 { //gd:GeometryInstance3D.get_visibility_range_begin
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_visibility_range_begin, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_visibility_range_begin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -557,7 +559,7 @@ func (self class) SetVisibilityRangeFadeMode(mode VisibilityRangeFadeMode) { //g
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_range_fade_mode, 0|(gdextension.SizeInt<<4), &struct{ mode VisibilityRangeFadeMode }{mode})
 }
 func (self class) GetVisibilityRangeFadeMode() VisibilityRangeFadeMode { //gd:GeometryInstance3D.get_visibility_range_fade_mode
-	var r_ret = noescape.Call[VisibilityRangeFadeMode](gd.ObjectChecked(self.AsObject()), methods.get_visibility_range_fade_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[VisibilityRangeFadeMode](gd.ObjectChecked(self.AsObject()), methods.get_visibility_range_fade_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -576,15 +578,15 @@ func (self class) SetExtraCullMargin(margin float64) { //gd:GeometryInstance3D.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_extra_cull_margin, 0|(gdextension.SizeFloat<<4), &struct{ margin float64 }{margin})
 }
 func (self class) GetExtraCullMargin() float64 { //gd:GeometryInstance3D.get_extra_cull_margin
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_extra_cull_margin, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_extra_cull_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetLightmapTexelScale(scale float64) { //gd:GeometryInstance3D.set_lightmap_texel_scale
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lightmap_texel_scale, 0|(gdextension.SizeFloat<<4), &struct{ scale float64 }{scale})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lightmap_texel_scale, 0|(gdextension.SizeFloat<<4), &struct{ scale float64 }{scale})
 }
 func (self class) GetLightmapTexelScale() float64 { //gd:GeometryInstance3D.get_lightmap_texel_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lightmap_texel_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lightmap_texel_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -592,7 +594,7 @@ func (self class) SetLightmapScale(scale LightmapScale) { //gd:GeometryInstance3
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lightmap_scale, 0|(gdextension.SizeInt<<4), &struct{ scale LightmapScale }{scale})
 }
 func (self class) GetLightmapScale() LightmapScale { //gd:GeometryInstance3D.get_lightmap_scale
-	var r_ret = noescape.Call[LightmapScale](gd.ObjectChecked(self.AsObject()), methods.get_lightmap_scale, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[LightmapScale](gd.ObjectChecked(self.AsObject()), methods.get_lightmap_scale, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -600,7 +602,7 @@ func (self class) SetGiMode(mode GIMode) { //gd:GeometryInstance3D.set_gi_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gi_mode, 0|(gdextension.SizeInt<<4), &struct{ mode GIMode }{mode})
 }
 func (self class) GetGiMode() GIMode { //gd:GeometryInstance3D.get_gi_mode
-	var r_ret = noescape.Call[GIMode](gd.ObjectChecked(self.AsObject()), methods.get_gi_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[GIMode](gd.ObjectChecked(self.AsObject()), methods.get_gi_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -608,7 +610,7 @@ func (self class) SetIgnoreOcclusionCulling(ignore_culling bool) { //gd:Geometry
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ignore_occlusion_culling, 0|(gdextension.SizeBool<<4), &struct{ ignore_culling bool }{ignore_culling})
 }
 func (self class) IsIgnoringOcclusionCulling() bool { //gd:GeometryInstance3D.is_ignoring_occlusion_culling
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ignoring_occlusion_culling, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ignoring_occlusion_culling, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -616,7 +618,7 @@ func (self class) SetCustomAabb(aabb AABB.PositionSize) { //gd:GeometryInstance3
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_aabb, 0|(gdextension.SizeAABB<<4), &struct{ aabb AABB.PositionSize }{aabb})
 }
 func (self class) GetCustomAabb() AABB.PositionSize { //gd:GeometryInstance3D.get_custom_aabb
-	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_custom_aabb, gdextension.SizeAABB, &struct{}{})
+	var r_ret = jumponly.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_custom_aabb, gdextension.SizeAABB, &struct{}{})
 	var ret = r_ret
 	return ret
 }

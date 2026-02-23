@@ -15,6 +15,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -52,6 +53,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -337,12 +339,12 @@ func (self class) SetBase(base RID.Any) { //gd:VisualInstance3D.set_base
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base, 0|(gdextension.SizeRID<<4), &struct{ base RID.Any }{base})
 }
 func (self class) GetBase() RID.Any { //gd:VisualInstance3D.get_base
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_base, gdextension.SizeRID, &struct{}{})
+	var r_ret = jumponly.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_base, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetInstance() RID.Any { //gd:VisualInstance3D.get_instance
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_instance, gdextension.SizeRID, &struct{}{})
+	var r_ret = jumponly.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_instance, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -350,7 +352,7 @@ func (self class) SetLayerMask(mask int64) { //gd:VisualInstance3D.set_layer_mas
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
 func (self class) GetLayerMask() int64 { //gd:VisualInstance3D.get_layer_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layer_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layer_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -369,7 +371,7 @@ func (self class) SetSortingOffset(offset float64) { //gd:VisualInstance3D.set_s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sorting_offset, 0|(gdextension.SizeFloat<<4), &struct{ offset float64 }{offset})
 }
 func (self class) GetSortingOffset() float64 { //gd:VisualInstance3D.get_sorting_offset
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sorting_offset, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sorting_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -377,7 +379,7 @@ func (self class) SetSortingUseAabbCenter(enabled bool) { //gd:VisualInstance3D.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sorting_use_aabb_center, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsSortingUseAabbCenter() bool { //gd:VisualInstance3D.is_sorting_use_aabb_center
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_sorting_use_aabb_center, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_sorting_use_aabb_center, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

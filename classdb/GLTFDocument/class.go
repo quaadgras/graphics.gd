@@ -19,6 +19,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -58,6 +59,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -458,15 +460,15 @@ func (self class) SetImageFormat(image_format String.Readable) { //gd:GLTFDocume
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_image_format, 0|(gdextension.SizeString<<4), &struct{ image_format gdextension.String }{pointers.Get(gd.InternalString(image_format))})
 }
 func (self class) GetImageFormat() String.Readable { //gd:GLTFDocument.get_image_format
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_image_format, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_image_format, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) SetLossyQuality(lossy_quality float64) { //gd:GLTFDocument.set_lossy_quality
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lossy_quality, 0|(gdextension.SizeFloat<<4), &struct{ lossy_quality float64 }{lossy_quality})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lossy_quality, 0|(gdextension.SizeFloat<<4), &struct{ lossy_quality float64 }{lossy_quality})
 }
 func (self class) GetLossyQuality() float64 { //gd:GLTFDocument.get_lossy_quality
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lossy_quality, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lossy_quality, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -474,31 +476,31 @@ func (self class) SetFallbackImageFormat(fallback_image_format String.Readable) 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_image_format, 0|(gdextension.SizeString<<4), &struct{ fallback_image_format gdextension.String }{pointers.Get(gd.InternalString(fallback_image_format))})
 }
 func (self class) GetFallbackImageFormat() String.Readable { //gd:GLTFDocument.get_fallback_image_format
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_fallback_image_format, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_fallback_image_format, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) SetFallbackImageQuality(fallback_image_quality float64) { //gd:GLTFDocument.set_fallback_image_quality
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_image_quality, 0|(gdextension.SizeFloat<<4), &struct{ fallback_image_quality float64 }{fallback_image_quality})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_image_quality, 0|(gdextension.SizeFloat<<4), &struct{ fallback_image_quality float64 }{fallback_image_quality})
 }
 func (self class) GetFallbackImageQuality() float64 { //gd:GLTFDocument.get_fallback_image_quality
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fallback_image_quality, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fallback_image_quality, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetRootNodeMode(root_node_mode RootNodeMode) { //gd:GLTFDocument.set_root_node_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_node_mode, 0|(gdextension.SizeInt<<4), &struct{ root_node_mode RootNodeMode }{root_node_mode})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_node_mode, 0|(gdextension.SizeInt<<4), &struct{ root_node_mode RootNodeMode }{root_node_mode})
 }
 func (self class) GetRootNodeMode() RootNodeMode { //gd:GLTFDocument.get_root_node_mode
-	var r_ret = noescape.Call[RootNodeMode](gd.ObjectChecked(self.AsObject()), methods.get_root_node_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[RootNodeMode](gd.ObjectChecked(self.AsObject()), methods.get_root_node_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetVisibilityMode(visibility_mode VisibilityMode) { //gd:GLTFDocument.set_visibility_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_mode, 0|(gdextension.SizeInt<<4), &struct{ visibility_mode VisibilityMode }{visibility_mode})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_mode, 0|(gdextension.SizeInt<<4), &struct{ visibility_mode VisibilityMode }{visibility_mode})
 }
 func (self class) GetVisibilityMode() VisibilityMode { //gd:GLTFDocument.get_visibility_mode
-	var r_ret = noescape.Call[VisibilityMode](gd.ObjectChecked(self.AsObject()), methods.get_visibility_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[VisibilityMode](gd.ObjectChecked(self.AsObject()), methods.get_visibility_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -24,6 +24,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -65,6 +66,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -227,12 +229,12 @@ func (self class) SetConstantAngularVelocity(vel float64) { //gd:StaticBody2D.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_angular_velocity, 0|(gdextension.SizeFloat<<4), &struct{ vel float64 }{vel})
 }
 func (self class) GetConstantLinearVelocity() Vector2.XY { //gd:StaticBody2D.get_constant_linear_velocity
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_constant_linear_velocity, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_constant_linear_velocity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetConstantAngularVelocity() float64 { //gd:StaticBody2D.get_constant_angular_velocity
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_constant_angular_velocity, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_constant_angular_velocity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -240,7 +242,7 @@ func (self class) SetPhysicsMaterialOverride(physics_material_override [1]gdclas
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_material_override, 0|(gdextension.SizeObject<<4), &struct{ physics_material_override gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetPhysicsMaterial(physics_material_override[0])[0]))})
 }
 func (self class) GetPhysicsMaterialOverride() [1]gdclass.PhysicsMaterial { //gd:StaticBody2D.get_physics_material_override
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_physics_material_override, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_physics_material_override, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PhysicsMaterial{gdclass.NewPhysicsMaterial(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

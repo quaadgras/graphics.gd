@@ -19,6 +19,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -60,6 +61,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -654,7 +656,7 @@ func (class) _mouse_shape_exit(impl func(ptr gdclass.Receiver, shape_idx int64))
 }
 
 func (self class) GetRid() RID.Any { //gd:CollisionObject2D.get_rid
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
+	var r_ret = jumponly.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -662,7 +664,7 @@ func (self class) SetCollisionLayer(layer int64) { //gd:CollisionObject2D.set_co
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 }
 func (self class) GetCollisionLayer() int64 { //gd:CollisionObject2D.get_collision_layer
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -670,7 +672,7 @@ func (self class) SetCollisionMask(mask int64) { //gd:CollisionObject2D.set_coll
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
 func (self class) GetCollisionMask() int64 { //gd:CollisionObject2D.get_collision_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -700,7 +702,7 @@ func (self class) SetCollisionPriority(priority float64) { //gd:CollisionObject2
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_priority, 0|(gdextension.SizeFloat<<4), &struct{ priority float64 }{priority})
 }
 func (self class) GetCollisionPriority() float64 { //gd:CollisionObject2D.get_collision_priority
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_priority, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_priority, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -708,7 +710,7 @@ func (self class) SetDisableMode(mode DisableMode) { //gd:CollisionObject2D.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_mode, 0|(gdextension.SizeInt<<4), &struct{ mode DisableMode }{mode})
 }
 func (self class) GetDisableMode() DisableMode { //gd:CollisionObject2D.get_disable_mode
-	var r_ret = noescape.Call[DisableMode](gd.ObjectChecked(self.AsObject()), methods.get_disable_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DisableMode](gd.ObjectChecked(self.AsObject()), methods.get_disable_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -716,7 +718,7 @@ func (self class) SetPickable(enabled bool) { //gd:CollisionObject2D.set_pickabl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pickable, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsPickable() bool { //gd:CollisionObject2D.is_pickable
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pickable, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pickable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

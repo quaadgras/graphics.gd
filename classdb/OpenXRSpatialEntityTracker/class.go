@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -48,6 +49,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -191,7 +193,7 @@ func (self class) SetEntity(entity RID.Any) { //gd:OpenXRSpatialEntityTracker.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_entity, 0|(gdextension.SizeRID<<4), &struct{ entity RID.Any }{entity})
 }
 func (self class) GetEntity() RID.Any { //gd:OpenXRSpatialEntityTracker.get_entity
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_entity, gdextension.SizeRID, &struct{}{})
+	var r_ret = jumponly.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_entity, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -199,7 +201,7 @@ func (self class) SetSpatialTrackingState(spatial_tracking_state EntityTrackingS
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spatial_tracking_state, 0|(gdextension.SizeInt<<4), &struct{ spatial_tracking_state EntityTrackingState }{spatial_tracking_state})
 }
 func (self class) GetSpatialTrackingState() EntityTrackingState { //gd:OpenXRSpatialEntityTracker.get_spatial_tracking_state
-	var r_ret = noescape.Call[EntityTrackingState](gd.ObjectChecked(self.AsObject()), methods.get_spatial_tracking_state, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[EntityTrackingState](gd.ObjectChecked(self.AsObject()), methods.get_spatial_tracking_state, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

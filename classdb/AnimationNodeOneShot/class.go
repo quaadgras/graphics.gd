@@ -41,6 +41,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -79,6 +80,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -390,18 +392,18 @@ func (self class) GetFadeoutCurve() [1]gdclass.Curve { //gd:AnimationNodeOneShot
 	return ret
 }
 func (self class) SetBreakLoopAtEnd(enable bool) { //gd:AnimationNodeOneShot.set_break_loop_at_end
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_break_loop_at_end, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_break_loop_at_end, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsLoopBrokenAtEnd() bool { //gd:AnimationNodeOneShot.is_loop_broken_at_end
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_loop_broken_at_end, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_loop_broken_at_end, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetAbortOnReset(enable bool) { //gd:AnimationNodeOneShot.set_abort_on_reset
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_abort_on_reset, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_abort_on_reset, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsAbortedOnReset() bool { //gd:AnimationNodeOneShot.is_aborted_on_reset
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_aborted_on_reset, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_aborted_on_reset, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -430,10 +432,10 @@ func (self class) GetAutorestartRandomDelay() float64 { //gd:AnimationNodeOneSho
 	return ret
 }
 func (self class) SetMixMode(mode MixMode) { //gd:AnimationNodeOneShot.set_mix_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mix_mode, 0|(gdextension.SizeInt<<4), &struct{ mode MixMode }{mode})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mix_mode, 0|(gdextension.SizeInt<<4), &struct{ mode MixMode }{mode})
 }
 func (self class) GetMixMode() MixMode { //gd:AnimationNodeOneShot.get_mix_mode
-	var r_ret = noescape.Call[MixMode](gd.ObjectChecked(self.AsObject()), methods.get_mix_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[MixMode](gd.ObjectChecked(self.AsObject()), methods.get_mix_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

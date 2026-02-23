@@ -29,6 +29,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -68,6 +69,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -740,7 +742,7 @@ func (self class) SetOffset(offset Vector2.XY) { //gd:Camera2D.set_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
 func (self class) GetOffset() Vector2.XY { //gd:Camera2D.get_offset
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -748,7 +750,7 @@ func (self class) SetAnchorMode(anchor_mode AnchorMode) { //gd:Camera2D.set_anch
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anchor_mode, 0|(gdextension.SizeInt<<4), &struct{ anchor_mode AnchorMode }{anchor_mode})
 }
 func (self class) GetAnchorMode() AnchorMode { //gd:Camera2D.get_anchor_mode
-	var r_ret = noescape.Call[AnchorMode](gd.ObjectChecked(self.AsObject()), methods.get_anchor_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[AnchorMode](gd.ObjectChecked(self.AsObject()), methods.get_anchor_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -756,7 +758,7 @@ func (self class) SetIgnoreRotation(ignore bool) { //gd:Camera2D.set_ignore_rota
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ignore_rotation, 0|(gdextension.SizeBool<<4), &struct{ ignore bool }{ignore})
 }
 func (self class) IsIgnoringRotation() bool { //gd:Camera2D.is_ignoring_rotation
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ignoring_rotation, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ignoring_rotation, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -764,7 +766,7 @@ func (self class) SetProcessCallback(mode Camera2DProcessCallback) { //gd:Camera
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_callback, 0|(gdextension.SizeInt<<4), &struct{ mode Camera2DProcessCallback }{mode})
 }
 func (self class) GetProcessCallback() Camera2DProcessCallback { //gd:Camera2D.get_process_callback
-	var r_ret = noescape.Call[Camera2DProcessCallback](gd.ObjectChecked(self.AsObject()), methods.get_process_callback, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Camera2DProcessCallback](gd.ObjectChecked(self.AsObject()), methods.get_process_callback, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -772,7 +774,7 @@ func (self class) SetEnabled(enabled bool) { //gd:Camera2D.set_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsEnabled() bool { //gd:Camera2D.is_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -788,7 +790,7 @@ func (self class) SetLimitEnabled(limit_enabled bool) { //gd:Camera2D.set_limit_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_limit_enabled, 0|(gdextension.SizeBool<<4), &struct{ limit_enabled bool }{limit_enabled})
 }
 func (self class) IsLimitEnabled() bool { //gd:Camera2D.is_limit_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_limit_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_limit_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -807,23 +809,23 @@ func (self class) SetLimitSmoothingEnabled(limit_smoothing_enabled bool) { //gd:
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_limit_smoothing_enabled, 0|(gdextension.SizeBool<<4), &struct{ limit_smoothing_enabled bool }{limit_smoothing_enabled})
 }
 func (self class) IsLimitSmoothingEnabled() bool { //gd:Camera2D.is_limit_smoothing_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_limit_smoothing_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_limit_smoothing_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetDragVerticalEnabled(enabled bool) { //gd:Camera2D.set_drag_vertical_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_vertical_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_vertical_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsDragVerticalEnabled() bool { //gd:Camera2D.is_drag_vertical_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drag_vertical_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drag_vertical_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetDragHorizontalEnabled(enabled bool) { //gd:Camera2D.set_drag_horizontal_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_horizontal_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_horizontal_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsDragHorizontalEnabled() bool { //gd:Camera2D.is_drag_horizontal_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drag_horizontal_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drag_horizontal_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -831,7 +833,7 @@ func (self class) SetDragVerticalOffset(offset float64) { //gd:Camera2D.set_drag
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_vertical_offset, 0|(gdextension.SizeFloat<<4), &struct{ offset float64 }{offset})
 }
 func (self class) GetDragVerticalOffset() float64 { //gd:Camera2D.get_drag_vertical_offset
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_drag_vertical_offset, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_drag_vertical_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -839,7 +841,7 @@ func (self class) SetDragHorizontalOffset(offset float64) { //gd:Camera2D.set_dr
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_horizontal_offset, 0|(gdextension.SizeFloat<<4), &struct{ offset float64 }{offset})
 }
 func (self class) GetDragHorizontalOffset() float64 { //gd:Camera2D.get_drag_horizontal_offset
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_drag_horizontal_offset, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_drag_horizontal_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -865,7 +867,7 @@ func (self class) GetScreenCenterPosition() Vector2.XY { //gd:Camera2D.get_scree
 	return ret
 }
 func (self class) GetScreenRotation() float64 { //gd:Camera2D.get_screen_rotation
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_screen_rotation, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_screen_rotation, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -873,7 +875,7 @@ func (self class) SetZoom(zoom Vector2.XY) { //gd:Camera2D.set_zoom
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_zoom, 0|(gdextension.SizeVector2<<4), &struct{ zoom Vector2.XY }{zoom})
 }
 func (self class) GetZoom() Vector2.XY { //gd:Camera2D.get_zoom
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_zoom, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_zoom, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -881,7 +883,7 @@ func (self class) SetCustomViewport(viewport [1]gdclass.Node) { //gd:Camera2D.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_viewport, 0|(gdextension.SizeObject<<4), &struct{ viewport gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(viewport[0])[0]))})
 }
 func (self class) GetCustomViewport() [1]gdclass.Node { //gd:Camera2D.get_custom_viewport
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_custom_viewport, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_custom_viewport, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gdreference.LetObject(r_ret))}
 	return ret
 }
@@ -889,23 +891,23 @@ func (self class) SetPositionSmoothingSpeed(position_smoothing_speed float64) { 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position_smoothing_speed, 0|(gdextension.SizeFloat<<4), &struct{ position_smoothing_speed float64 }{position_smoothing_speed})
 }
 func (self class) GetPositionSmoothingSpeed() float64 { //gd:Camera2D.get_position_smoothing_speed
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_position_smoothing_speed, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_position_smoothing_speed, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPositionSmoothingEnabled(enabled bool) { //gd:Camera2D.set_position_smoothing_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position_smoothing_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position_smoothing_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsPositionSmoothingEnabled() bool { //gd:Camera2D.is_position_smoothing_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_position_smoothing_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_position_smoothing_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetRotationSmoothingEnabled(enabled bool) { //gd:Camera2D.set_rotation_smoothing_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_smoothing_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_smoothing_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsRotationSmoothingEnabled() bool { //gd:Camera2D.is_rotation_smoothing_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_rotation_smoothing_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_rotation_smoothing_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -913,7 +915,7 @@ func (self class) SetRotationSmoothingSpeed(speed float64) { //gd:Camera2D.set_r
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_smoothing_speed, 0|(gdextension.SizeFloat<<4), &struct{ speed float64 }{speed})
 }
 func (self class) GetRotationSmoothingSpeed() float64 { //gd:Camera2D.get_rotation_smoothing_speed
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rotation_smoothing_speed, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rotation_smoothing_speed, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -930,7 +932,7 @@ func (self class) SetScreenDrawingEnabled(screen_drawing_enabled bool) { //gd:Ca
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_screen_drawing_enabled, 0|(gdextension.SizeBool<<4), &struct{ screen_drawing_enabled bool }{screen_drawing_enabled})
 }
 func (self class) IsScreenDrawingEnabled() bool { //gd:Camera2D.is_screen_drawing_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_screen_drawing_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_screen_drawing_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -938,7 +940,7 @@ func (self class) SetLimitDrawingEnabled(limit_drawing_enabled bool) { //gd:Came
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_limit_drawing_enabled, 0|(gdextension.SizeBool<<4), &struct{ limit_drawing_enabled bool }{limit_drawing_enabled})
 }
 func (self class) IsLimitDrawingEnabled() bool { //gd:Camera2D.is_limit_drawing_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_limit_drawing_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_limit_drawing_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -946,7 +948,7 @@ func (self class) SetMarginDrawingEnabled(margin_drawing_enabled bool) { //gd:Ca
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_margin_drawing_enabled, 0|(gdextension.SizeBool<<4), &struct{ margin_drawing_enabled bool }{margin_drawing_enabled})
 }
 func (self class) IsMarginDrawingEnabled() bool { //gd:Camera2D.is_margin_drawing_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_margin_drawing_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_margin_drawing_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

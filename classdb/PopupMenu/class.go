@@ -31,6 +31,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -76,6 +77,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -1463,7 +1465,7 @@ func (self class) SetPreferNativeMenu(enabled bool) { //gd:PopupMenu.set_prefer_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_prefer_native_menu, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsPreferNativeMenu() bool { //gd:PopupMenu.is_prefer_native_menu
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_prefer_native_menu, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_prefer_native_menu, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1856,7 +1858,7 @@ func (self class) SetFocusedItem(index int64) { //gd:PopupMenu.set_focused_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focused_item, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
 func (self class) GetFocusedItem() int64 { //gd:PopupMenu.get_focused_item
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_focused_item, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_focused_item, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1884,18 +1886,18 @@ func (self class) Clear(free_submenus bool) { //gd:PopupMenu.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0|(gdextension.SizeBool<<4), &struct{ free_submenus bool }{free_submenus})
 }
 func (self class) SetHideOnItemSelection(enable bool) { //gd:PopupMenu.set_hide_on_item_selection
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hide_on_item_selection, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hide_on_item_selection, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsHideOnItemSelection() bool { //gd:PopupMenu.is_hide_on_item_selection
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hide_on_item_selection, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hide_on_item_selection, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetHideOnCheckableItemSelection(enable bool) { //gd:PopupMenu.set_hide_on_checkable_item_selection
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hide_on_checkable_item_selection, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hide_on_checkable_item_selection, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsHideOnCheckableItemSelection() bool { //gd:PopupMenu.is_hide_on_checkable_item_selection
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hide_on_checkable_item_selection, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hide_on_checkable_item_selection, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1916,10 +1918,10 @@ func (self class) GetSubmenuPopupDelay() float64 { //gd:PopupMenu.get_submenu_po
 	return ret
 }
 func (self class) SetAllowSearch(allow bool) { //gd:PopupMenu.set_allow_search
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_search, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_search, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
 }
 func (self class) GetAllowSearch() bool { //gd:PopupMenu.get_allow_search
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_search, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_search, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1932,23 +1934,23 @@ func (self class) SetSystemMenu(system_menu_id NativeMenu.SystemMenus) { //gd:Po
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_system_menu, 0|(gdextension.SizeInt<<4), &struct{ system_menu_id NativeMenu.SystemMenus }{system_menu_id})
 }
 func (self class) GetSystemMenu() NativeMenu.SystemMenus { //gd:PopupMenu.get_system_menu
-	var r_ret = noescape.Call[NativeMenu.SystemMenus](gd.ObjectChecked(self.AsObject()), methods.get_system_menu, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[NativeMenu.SystemMenus](gd.ObjectChecked(self.AsObject()), methods.get_system_menu, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetShrinkHeight(shrink bool) { //gd:PopupMenu.set_shrink_height
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shrink_height, 0|(gdextension.SizeBool<<4), &struct{ shrink bool }{shrink})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shrink_height, 0|(gdextension.SizeBool<<4), &struct{ shrink bool }{shrink})
 }
 func (self class) GetShrinkHeight() bool { //gd:PopupMenu.get_shrink_height
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_shrink_height, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_shrink_height, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetShrinkWidth(shrink bool) { //gd:PopupMenu.set_shrink_width
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shrink_width, 0|(gdextension.SizeBool<<4), &struct{ shrink bool }{shrink})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shrink_width, 0|(gdextension.SizeBool<<4), &struct{ shrink bool }{shrink})
 }
 func (self class) GetShrinkWidth() bool { //gd:PopupMenu.get_shrink_width
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_shrink_width, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_shrink_width, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

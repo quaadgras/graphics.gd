@@ -19,6 +19,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -58,6 +59,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -206,7 +208,7 @@ func (self class) SetMultimesh(multimesh [1]gdclass.MultiMesh) { //gd:MultiMeshI
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_multimesh, 0|(gdextension.SizeObject<<4), &struct{ multimesh gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMultiMesh(multimesh[0])[0]))})
 }
 func (self class) GetMultimesh() [1]gdclass.MultiMesh { //gd:MultiMeshInstance2D.get_multimesh
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_multimesh, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_multimesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.MultiMesh{gdclass.NewMultiMesh(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -214,7 +216,7 @@ func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:MultiMeshInsta
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:MultiMeshInstance2D.get_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

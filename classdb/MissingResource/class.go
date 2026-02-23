@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -49,6 +50,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -196,15 +198,15 @@ func (self class) SetOriginalClass(name String.Readable) { //gd:MissingResource.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_original_class, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 func (self class) GetOriginalClass() String.Readable { //gd:MissingResource.get_original_class
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_class, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_class, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) SetRecordingProperties(enable bool) { //gd:MissingResource.set_recording_properties
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_recording_properties, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_recording_properties, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsRecordingProperties() bool { //gd:MissingResource.is_recording_properties
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_recording_properties, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_recording_properties, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

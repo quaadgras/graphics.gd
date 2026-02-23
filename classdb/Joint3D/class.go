@@ -16,6 +16,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -52,6 +53,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -247,7 +249,7 @@ func (self class) SetNodeA(node Path.ToNode) { //gd:Joint3D.set_node_a
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_node_a, 0|(gdextension.SizeNodePath<<4), &struct{ node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(node))})
 }
 func (self class) GetNodeA() Path.ToNode { //gd:Joint3D.get_node_a
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_node_a, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_node_a, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -255,7 +257,7 @@ func (self class) SetNodeB(node Path.ToNode) { //gd:Joint3D.set_node_b
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_node_b, 0|(gdextension.SizeNodePath<<4), &struct{ node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(node))})
 }
 func (self class) GetNodeB() Path.ToNode { //gd:Joint3D.get_node_b
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_node_b, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_node_b, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -263,7 +265,7 @@ func (self class) SetSolverPriority(priority int64) { //gd:Joint3D.set_solver_pr
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_solver_priority, 0|(gdextension.SizeInt<<4), &struct{ priority int64 }{priority})
 }
 func (self class) GetSolverPriority() int64 { //gd:Joint3D.get_solver_priority
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_solver_priority, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_solver_priority, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -271,12 +273,12 @@ func (self class) SetExcludeNodesFromCollision(enable bool) { //gd:Joint3D.set_e
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exclude_nodes_from_collision, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) GetExcludeNodesFromCollision() bool { //gd:Joint3D.get_exclude_nodes_from_collision
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_exclude_nodes_from_collision, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_exclude_nodes_from_collision, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetRid() RID.Any { //gd:Joint3D.get_rid
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
+	var r_ret = jumponly.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }

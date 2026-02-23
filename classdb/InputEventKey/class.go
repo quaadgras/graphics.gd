@@ -22,6 +22,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -61,6 +62,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -375,7 +377,7 @@ func (self class) SetKeycode(keycode Input.Key) { //gd:InputEventKey.set_keycode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keycode, 0|(gdextension.SizeInt<<4), &struct{ keycode Input.Key }{keycode})
 }
 func (self class) GetKeycode() Input.Key { //gd:InputEventKey.get_keycode
-	var r_ret = noescape.Call[Input.Key](gd.ObjectChecked(self.AsObject()), methods.get_keycode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Input.Key](gd.ObjectChecked(self.AsObject()), methods.get_keycode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -383,7 +385,7 @@ func (self class) SetPhysicalKeycode(physical_keycode Input.Key) { //gd:InputEve
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physical_keycode, 0|(gdextension.SizeInt<<4), &struct{ physical_keycode Input.Key }{physical_keycode})
 }
 func (self class) GetPhysicalKeycode() Input.Key { //gd:InputEventKey.get_physical_keycode
-	var r_ret = noescape.Call[Input.Key](gd.ObjectChecked(self.AsObject()), methods.get_physical_keycode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Input.Key](gd.ObjectChecked(self.AsObject()), methods.get_physical_keycode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -391,7 +393,7 @@ func (self class) SetKeyLabel(key_label Input.Key) { //gd:InputEventKey.set_key_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_key_label, 0|(gdextension.SizeInt<<4), &struct{ key_label Input.Key }{key_label})
 }
 func (self class) GetKeyLabel() Input.Key { //gd:InputEventKey.get_key_label
-	var r_ret = noescape.Call[Input.Key](gd.ObjectChecked(self.AsObject()), methods.get_key_label, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Input.Key](gd.ObjectChecked(self.AsObject()), methods.get_key_label, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -399,7 +401,7 @@ func (self class) SetUnicode(unicode int64) { //gd:InputEventKey.set_unicode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_unicode, 0|(gdextension.SizeInt<<4), &struct{ unicode int64 }{unicode})
 }
 func (self class) GetUnicode() int64 { //gd:InputEventKey.get_unicode
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_unicode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_unicode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -407,7 +409,7 @@ func (self class) SetLocation(location Input.KeyLocation) { //gd:InputEventKey.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_location, 0|(gdextension.SizeInt<<4), &struct{ location Input.KeyLocation }{location})
 }
 func (self class) GetLocation() Input.KeyLocation { //gd:InputEventKey.get_location
-	var r_ret = noescape.Call[Input.KeyLocation](gd.ObjectChecked(self.AsObject()), methods.get_location, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Input.KeyLocation](gd.ObjectChecked(self.AsObject()), methods.get_location, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

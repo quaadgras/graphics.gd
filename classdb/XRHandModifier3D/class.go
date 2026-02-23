@@ -20,6 +20,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -57,6 +58,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -202,7 +204,7 @@ func (self class) SetHandTracker(tracker_name String.Name) { //gd:XRHandModifier
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hand_tracker, 0|(gdextension.SizeStringName<<4), &struct{ tracker_name gdextension.StringName }{pointers.Get(gd.InternalStringName(tracker_name))})
 }
 func (self class) GetHandTracker() String.Name { //gd:XRHandModifier3D.get_hand_tracker
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_hand_tracker, gdextension.SizeStringName, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_hand_tracker, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -210,7 +212,7 @@ func (self class) SetBoneUpdate(bone_update BoneUpdate) { //gd:XRHandModifier3D.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_update, 0|(gdextension.SizeInt<<4), &struct{ bone_update BoneUpdate }{bone_update})
 }
 func (self class) GetBoneUpdate() BoneUpdate { //gd:XRHandModifier3D.get_bone_update
-	var r_ret = noescape.Call[BoneUpdate](gd.ObjectChecked(self.AsObject()), methods.get_bone_update, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[BoneUpdate](gd.ObjectChecked(self.AsObject()), methods.get_bone_update, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

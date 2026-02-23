@@ -20,6 +20,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -62,6 +63,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -249,7 +251,7 @@ func (self class) SetPickColor(color Color.RGBA) { //gd:ColorPickerButton.set_pi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pick_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetPickColor() Color.RGBA { //gd:ColorPickerButton.get_pick_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_pick_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_pick_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -267,7 +269,7 @@ func (self class) SetEditAlpha(show bool) { //gd:ColorPickerButton.set_edit_alph
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edit_alpha, 0|(gdextension.SizeBool<<4), &struct{ show bool }{show})
 }
 func (self class) IsEditingAlpha() bool { //gd:ColorPickerButton.is_editing_alpha
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_alpha, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_alpha, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -275,7 +277,7 @@ func (self class) SetEditIntensity(show bool) { //gd:ColorPickerButton.set_edit_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edit_intensity, 0|(gdextension.SizeBool<<4), &struct{ show bool }{show})
 }
 func (self class) IsEditingIntensity() bool { //gd:ColorPickerButton.is_editing_intensity
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_intensity, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_intensity, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

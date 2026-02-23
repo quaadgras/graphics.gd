@@ -28,6 +28,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -66,6 +67,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -626,7 +628,7 @@ func (self class) SetGravitySpaceOverrideMode(space_override_mode SpaceOverride)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity_space_override_mode, 0|(gdextension.SizeInt<<4), &struct{ space_override_mode SpaceOverride }{space_override_mode})
 }
 func (self class) GetGravitySpaceOverrideMode() SpaceOverride { //gd:Area3D.get_gravity_space_override_mode
-	var r_ret = noescape.Call[SpaceOverride](gd.ObjectChecked(self.AsObject()), methods.get_gravity_space_override_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[SpaceOverride](gd.ObjectChecked(self.AsObject()), methods.get_gravity_space_override_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -634,7 +636,7 @@ func (self class) SetGravityIsPoint(enable bool) { //gd:Area3D.set_gravity_is_po
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity_is_point, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsGravityAPoint() bool { //gd:Area3D.is_gravity_a_point
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_gravity_a_point, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_gravity_a_point, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -642,7 +644,7 @@ func (self class) SetGravityPointUnitDistance(distance_scale float64) { //gd:Are
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity_point_unit_distance, 0|(gdextension.SizeFloat<<4), &struct{ distance_scale float64 }{distance_scale})
 }
 func (self class) GetGravityPointUnitDistance() float64 { //gd:Area3D.get_gravity_point_unit_distance
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gravity_point_unit_distance, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gravity_point_unit_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -650,7 +652,7 @@ func (self class) SetGravityPointCenter(center Vector3.XYZ) { //gd:Area3D.set_gr
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity_point_center, 0|(gdextension.SizeVector3<<4), &struct{ center Vector3.XYZ }{center})
 }
 func (self class) GetGravityPointCenter() Vector3.XYZ { //gd:Area3D.get_gravity_point_center
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_gravity_point_center, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_gravity_point_center, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -658,7 +660,7 @@ func (self class) SetGravityDirection(direction Vector3.XYZ) { //gd:Area3D.set_g
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity_direction, 0|(gdextension.SizeVector3<<4), &struct{ direction Vector3.XYZ }{direction})
 }
 func (self class) GetGravityDirection() Vector3.XYZ { //gd:Area3D.get_gravity_direction
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_gravity_direction, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_gravity_direction, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -666,7 +668,7 @@ func (self class) SetGravity(gravity float64) { //gd:Area3D.set_gravity
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity, 0|(gdextension.SizeFloat<<4), &struct{ gravity float64 }{gravity})
 }
 func (self class) GetGravity() float64 { //gd:Area3D.get_gravity
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gravity, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gravity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -674,7 +676,7 @@ func (self class) SetLinearDampSpaceOverrideMode(space_override_mode SpaceOverri
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_damp_space_override_mode, 0|(gdextension.SizeInt<<4), &struct{ space_override_mode SpaceOverride }{space_override_mode})
 }
 func (self class) GetLinearDampSpaceOverrideMode() SpaceOverride { //gd:Area3D.get_linear_damp_space_override_mode
-	var r_ret = noescape.Call[SpaceOverride](gd.ObjectChecked(self.AsObject()), methods.get_linear_damp_space_override_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[SpaceOverride](gd.ObjectChecked(self.AsObject()), methods.get_linear_damp_space_override_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -682,7 +684,7 @@ func (self class) SetAngularDampSpaceOverrideMode(space_override_mode SpaceOverr
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_damp_space_override_mode, 0|(gdextension.SizeInt<<4), &struct{ space_override_mode SpaceOverride }{space_override_mode})
 }
 func (self class) GetAngularDampSpaceOverrideMode() SpaceOverride { //gd:Area3D.get_angular_damp_space_override_mode
-	var r_ret = noescape.Call[SpaceOverride](gd.ObjectChecked(self.AsObject()), methods.get_angular_damp_space_override_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[SpaceOverride](gd.ObjectChecked(self.AsObject()), methods.get_angular_damp_space_override_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -690,7 +692,7 @@ func (self class) SetAngularDamp(angular_damp float64) { //gd:Area3D.set_angular
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_damp, 0|(gdextension.SizeFloat<<4), &struct{ angular_damp float64 }{angular_damp})
 }
 func (self class) GetAngularDamp() float64 { //gd:Area3D.get_angular_damp
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_damp, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_damp, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -698,7 +700,7 @@ func (self class) SetLinearDamp(linear_damp float64) { //gd:Area3D.set_linear_da
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_damp, 0|(gdextension.SizeFloat<<4), &struct{ linear_damp float64 }{linear_damp})
 }
 func (self class) GetLinearDamp() float64 { //gd:Area3D.get_linear_damp
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_linear_damp, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_linear_damp, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -706,7 +708,7 @@ func (self class) SetPriority(priority int64) { //gd:Area3D.set_priority
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_priority, 0|(gdextension.SizeInt<<4), &struct{ priority int64 }{priority})
 }
 func (self class) GetPriority() int64 { //gd:Area3D.get_priority
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_priority, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_priority, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -714,7 +716,7 @@ func (self class) SetWindForceMagnitude(wind_force_magnitude float64) { //gd:Are
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wind_force_magnitude, 0|(gdextension.SizeFloat<<4), &struct{ wind_force_magnitude float64 }{wind_force_magnitude})
 }
 func (self class) GetWindForceMagnitude() float64 { //gd:Area3D.get_wind_force_magnitude
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_wind_force_magnitude, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_wind_force_magnitude, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -722,7 +724,7 @@ func (self class) SetWindAttenuationFactor(wind_attenuation_factor float64) { //
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wind_attenuation_factor, 0|(gdextension.SizeFloat<<4), &struct{ wind_attenuation_factor float64 }{wind_attenuation_factor})
 }
 func (self class) GetWindAttenuationFactor() float64 { //gd:Area3D.get_wind_attenuation_factor
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_wind_attenuation_factor, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_wind_attenuation_factor, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -730,7 +732,7 @@ func (self class) SetWindSourcePath(wind_source_path Path.ToNode) { //gd:Area3D.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wind_source_path, 0|(gdextension.SizeNodePath<<4), &struct{ wind_source_path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(wind_source_path))})
 }
 func (self class) GetWindSourcePath() Path.ToNode { //gd:Area3D.get_wind_source_path
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_wind_source_path, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_wind_source_path, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -738,7 +740,7 @@ func (self class) SetMonitorable(enable bool) { //gd:Area3D.set_monitorable
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_monitorable, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsMonitorable() bool { //gd:Area3D.is_monitorable
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_monitorable, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_monitorable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -746,7 +748,7 @@ func (self class) SetMonitoring(enable bool) { //gd:Area3D.set_monitoring
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_monitoring, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsMonitoring() bool { //gd:Area3D.is_monitoring
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_monitoring, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_monitoring, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -781,10 +783,10 @@ func (self class) OverlapsArea(area [1]gdclass.Node) bool { //gd:Area3D.overlaps
 	return ret
 }
 func (self class) SetAudioBusOverride(enable bool) { //gd:Area3D.set_audio_bus_override
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_audio_bus_override, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_audio_bus_override, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsOverridingAudioBus() bool { //gd:Area3D.is_overriding_audio_bus
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_overriding_audio_bus, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_overriding_audio_bus, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -797,10 +799,10 @@ func (self class) GetAudioBusName() String.Name { //gd:Area3D.get_audio_bus_name
 	return ret
 }
 func (self class) SetUseReverbBus(enable bool) { //gd:Area3D.set_use_reverb_bus
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_reverb_bus, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_reverb_bus, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsUsingReverbBus() bool { //gd:Area3D.is_using_reverb_bus
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_reverb_bus, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_reverb_bus, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -813,18 +815,18 @@ func (self class) GetReverbBusName() String.Name { //gd:Area3D.get_reverb_bus_na
 	return ret
 }
 func (self class) SetReverbAmount(amount float64) { //gd:Area3D.set_reverb_amount
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reverb_amount, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reverb_amount, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 func (self class) GetReverbAmount() float64 { //gd:Area3D.get_reverb_amount
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_reverb_amount, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_reverb_amount, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetReverbUniformity(amount float64) { //gd:Area3D.set_reverb_uniformity
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reverb_uniformity, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reverb_uniformity, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 func (self class) GetReverbUniformity() float64 { //gd:Area3D.get_reverb_uniformity
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_reverb_uniformity, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_reverb_uniformity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

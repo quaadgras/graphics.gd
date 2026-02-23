@@ -21,6 +21,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -58,6 +59,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -188,7 +190,7 @@ func (self class) SetTextureRdRid(texture_rd_rid RID.Any) { //gd:TextureLayeredR
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_rd_rid, 0|(gdextension.SizeRID<<4), &struct{ texture_rd_rid RID.Any }{texture_rd_rid})
 }
 func (self class) GetTextureRdRid() RID.Any { //gd:TextureLayeredRD.get_texture_rd_rid
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_texture_rd_rid, gdextension.SizeRID, &struct{}{})
+	var r_ret = jumponly.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_texture_rd_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }

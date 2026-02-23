@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -50,6 +51,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -430,7 +432,7 @@ func (self class) SetEnabled(enabled bool) { //gd:Light2D.set_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsEnabled() bool { //gd:Light2D.is_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -438,7 +440,7 @@ func (self class) SetEditorOnly(editor_only bool) { //gd:Light2D.set_editor_only
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editor_only, 0|(gdextension.SizeBool<<4), &struct{ editor_only bool }{editor_only})
 }
 func (self class) IsEditorOnly() bool { //gd:Light2D.is_editor_only
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editor_only, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editor_only, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -446,7 +448,7 @@ func (self class) SetColor(color Color.RGBA) { //gd:Light2D.set_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetColor() Color.RGBA { //gd:Light2D.get_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -454,7 +456,7 @@ func (self class) SetEnergy(energy float64) { //gd:Light2D.set_energy
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_energy, 0|(gdextension.SizeFloat<<4), &struct{ energy float64 }{energy})
 }
 func (self class) GetEnergy() float64 { //gd:Light2D.get_energy
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_energy, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_energy, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -462,7 +464,7 @@ func (self class) SetZRangeMin(z int64) { //gd:Light2D.set_z_range_min
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_z_range_min, 0|(gdextension.SizeInt<<4), &struct{ z int64 }{z})
 }
 func (self class) GetZRangeMin() int64 { //gd:Light2D.get_z_range_min
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_z_range_min, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_z_range_min, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -470,7 +472,7 @@ func (self class) SetZRangeMax(z int64) { //gd:Light2D.set_z_range_max
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_z_range_max, 0|(gdextension.SizeInt<<4), &struct{ z int64 }{z})
 }
 func (self class) GetZRangeMax() int64 { //gd:Light2D.get_z_range_max
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_z_range_max, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_z_range_max, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -478,7 +480,7 @@ func (self class) SetLayerRangeMin(layer int64) { //gd:Light2D.set_layer_range_m
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_range_min, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 }
 func (self class) GetLayerRangeMin() int64 { //gd:Light2D.get_layer_range_min
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layer_range_min, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layer_range_min, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -486,7 +488,7 @@ func (self class) SetLayerRangeMax(layer int64) { //gd:Light2D.set_layer_range_m
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_range_max, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 }
 func (self class) GetLayerRangeMax() int64 { //gd:Light2D.get_layer_range_max
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layer_range_max, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layer_range_max, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -494,7 +496,7 @@ func (self class) SetItemCullMask(item_cull_mask int64) { //gd:Light2D.set_item_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_cull_mask, 0|(gdextension.SizeInt<<4), &struct{ item_cull_mask int64 }{item_cull_mask})
 }
 func (self class) GetItemCullMask() int64 { //gd:Light2D.get_item_cull_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_cull_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_cull_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -502,7 +504,7 @@ func (self class) SetItemShadowCullMask(item_shadow_cull_mask int64) { //gd:Ligh
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_shadow_cull_mask, 0|(gdextension.SizeInt<<4), &struct{ item_shadow_cull_mask int64 }{item_shadow_cull_mask})
 }
 func (self class) GetItemShadowCullMask() int64 { //gd:Light2D.get_item_shadow_cull_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_shadow_cull_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_shadow_cull_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -510,7 +512,7 @@ func (self class) SetShadowEnabled(enabled bool) { //gd:Light2D.set_shadow_enabl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsShadowEnabled() bool { //gd:Light2D.is_shadow_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shadow_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shadow_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -518,7 +520,7 @@ func (self class) SetShadowSmooth(smooth float64) { //gd:Light2D.set_shadow_smoo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_smooth, 0|(gdextension.SizeFloat<<4), &struct{ smooth float64 }{smooth})
 }
 func (self class) GetShadowSmooth() float64 { //gd:Light2D.get_shadow_smooth
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_shadow_smooth, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_shadow_smooth, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -526,7 +528,7 @@ func (self class) SetShadowFilter(filter ShadowFilter) { //gd:Light2D.set_shadow
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_filter, 0|(gdextension.SizeInt<<4), &struct{ filter ShadowFilter }{filter})
 }
 func (self class) GetShadowFilter() ShadowFilter { //gd:Light2D.get_shadow_filter
-	var r_ret = noescape.Call[ShadowFilter](gd.ObjectChecked(self.AsObject()), methods.get_shadow_filter, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[ShadowFilter](gd.ObjectChecked(self.AsObject()), methods.get_shadow_filter, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -534,7 +536,7 @@ func (self class) SetShadowColor(shadow_color Color.RGBA) { //gd:Light2D.set_sha
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_color, 0|(gdextension.SizeColor<<4), &struct{ shadow_color Color.RGBA }{shadow_color})
 }
 func (self class) GetShadowColor() Color.RGBA { //gd:Light2D.get_shadow_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_shadow_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_shadow_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -542,7 +544,7 @@ func (self class) SetBlendMode(mode BlendMode) { //gd:Light2D.set_blend_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_mode, 0|(gdextension.SizeInt<<4), &struct{ mode BlendMode }{mode})
 }
 func (self class) GetBlendMode() BlendMode { //gd:Light2D.get_blend_mode
-	var r_ret = noescape.Call[BlendMode](gd.ObjectChecked(self.AsObject()), methods.get_blend_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[BlendMode](gd.ObjectChecked(self.AsObject()), methods.get_blend_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -550,7 +552,7 @@ func (self class) SetHeight(height float64) { //gd:Light2D.set_height
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeFloat<<4), &struct{ height float64 }{height})
 }
 func (self class) GetHeight() float64 { //gd:Light2D.get_height
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

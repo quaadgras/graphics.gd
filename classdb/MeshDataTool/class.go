@@ -59,6 +59,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -99,6 +100,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -616,7 +618,7 @@ func (self class) CommitToSurface(mesh [1]gdclass.ArrayMesh, compression_flags i
 	return ret
 }
 func (self class) GetFormat() int64 { //gd:MeshDataTool.get_format
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -804,7 +806,7 @@ func (self class) SetMaterial(material [1]gdclass.Material) { //gd:MeshDataTool.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(material[0])[0]))})
 }
 func (self class) GetMaterial() [1]gdclass.Material { //gd:MeshDataTool.get_material
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

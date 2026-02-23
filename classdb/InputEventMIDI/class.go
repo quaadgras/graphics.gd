@@ -60,6 +60,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -96,6 +97,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -350,66 +352,66 @@ func (self Instance) SetControllerValue(value int) Instance { //gd:InputEventMID
 }
 
 func (self class) SetChannel(channel int64) { //gd:InputEventMIDI.set_channel
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_channel, 0|(gdextension.SizeInt<<4), &struct{ channel int64 }{channel})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_channel, 0|(gdextension.SizeInt<<4), &struct{ channel int64 }{channel})
 }
 func (self class) GetChannel() int64 { //gd:InputEventMIDI.get_channel
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_channel, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_channel, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMessage(message Message) { //gd:InputEventMIDI.set_message
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_message, 0|(gdextension.SizeInt<<4), &struct{ message Message }{message})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_message, 0|(gdextension.SizeInt<<4), &struct{ message Message }{message})
 }
 func (self class) GetMessage() Message { //gd:InputEventMIDI.get_message
-	var r_ret = noescape.Call[Message](gd.ObjectChecked(self.AsObject()), methods.get_message, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Message](gd.ObjectChecked(self.AsObject()), methods.get_message, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPitch(pitch int64) { //gd:InputEventMIDI.set_pitch
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pitch, 0|(gdextension.SizeInt<<4), &struct{ pitch int64 }{pitch})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pitch, 0|(gdextension.SizeInt<<4), &struct{ pitch int64 }{pitch})
 }
 func (self class) GetPitch() int64 { //gd:InputEventMIDI.get_pitch
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_pitch, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_pitch, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetVelocity(velocity int64) { //gd:InputEventMIDI.set_velocity
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_velocity, 0|(gdextension.SizeInt<<4), &struct{ velocity int64 }{velocity})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_velocity, 0|(gdextension.SizeInt<<4), &struct{ velocity int64 }{velocity})
 }
 func (self class) GetVelocity() int64 { //gd:InputEventMIDI.get_velocity
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_velocity, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_velocity, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetInstrument(instrument int64) { //gd:InputEventMIDI.set_instrument
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_instrument, 0|(gdextension.SizeInt<<4), &struct{ instrument int64 }{instrument})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_instrument, 0|(gdextension.SizeInt<<4), &struct{ instrument int64 }{instrument})
 }
 func (self class) GetInstrument() int64 { //gd:InputEventMIDI.get_instrument
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_instrument, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_instrument, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPressure(pressure int64) { //gd:InputEventMIDI.set_pressure
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressure, 0|(gdextension.SizeInt<<4), &struct{ pressure int64 }{pressure})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressure, 0|(gdextension.SizeInt<<4), &struct{ pressure int64 }{pressure})
 }
 func (self class) GetPressure() int64 { //gd:InputEventMIDI.get_pressure
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_pressure, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_pressure, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetControllerNumber(controller_number int64) { //gd:InputEventMIDI.set_controller_number
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_controller_number, 0|(gdextension.SizeInt<<4), &struct{ controller_number int64 }{controller_number})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_controller_number, 0|(gdextension.SizeInt<<4), &struct{ controller_number int64 }{controller_number})
 }
 func (self class) GetControllerNumber() int64 { //gd:InputEventMIDI.get_controller_number
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_controller_number, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_controller_number, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetControllerValue(controller_value int64) { //gd:InputEventMIDI.set_controller_value
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_controller_value, 0|(gdextension.SizeInt<<4), &struct{ controller_value int64 }{controller_value})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_controller_value, 0|(gdextension.SizeInt<<4), &struct{ controller_value int64 }{controller_value})
 }
 func (self class) GetControllerValue() int64 { //gd:InputEventMIDI.get_controller_value
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_controller_value, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_controller_value, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

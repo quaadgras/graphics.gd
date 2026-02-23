@@ -37,6 +37,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -74,6 +75,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -473,7 +475,7 @@ func (self class) SetFavorites(dirs Packed.Strings) { //gd:EditorSettings.set_fa
 	}{pointers.Get(gd.InternalPackedStrings(dirs))})
 }
 func (self class) GetFavorites() Packed.Strings { //gd:EditorSettings.get_favorites
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_favorites, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_favorites, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -483,7 +485,7 @@ func (self class) SetRecentDirs(dirs Packed.Strings) { //gd:EditorSettings.set_r
 	}{pointers.Get(gd.InternalPackedStrings(dirs))})
 }
 func (self class) GetRecentDirs() Packed.Strings { //gd:EditorSettings.get_recent_dirs
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_recent_dirs, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_recent_dirs, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }

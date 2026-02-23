@@ -16,6 +16,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -55,6 +56,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -588,7 +590,7 @@ func (self class) SetBgColor(color Color.RGBA) { //gd:StyleBoxFlat.set_bg_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bg_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetBgColor() Color.RGBA { //gd:StyleBoxFlat.get_bg_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_bg_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_bg_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -596,7 +598,7 @@ func (self class) SetBorderColor(color Color.RGBA) { //gd:StyleBoxFlat.set_borde
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_border_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetBorderColor() Color.RGBA { //gd:StyleBoxFlat.get_border_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_border_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_border_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -623,7 +625,7 @@ func (self class) SetBorderBlend(blend bool) { //gd:StyleBoxFlat.set_border_blen
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_border_blend, 0|(gdextension.SizeBool<<4), &struct{ blend bool }{blend})
 }
 func (self class) GetBorderBlend() bool { //gd:StyleBoxFlat.get_border_blend
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_border_blend, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_border_blend, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -659,7 +661,7 @@ func (self class) SetDrawCenter(draw_center bool) { //gd:StyleBoxFlat.set_draw_c
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_center, 0|(gdextension.SizeBool<<4), &struct{ draw_center bool }{draw_center})
 }
 func (self class) IsDrawCenterEnabled() bool { //gd:StyleBoxFlat.is_draw_center_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draw_center_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draw_center_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -667,7 +669,7 @@ func (self class) SetSkew(skew Vector2.XY) { //gd:StyleBoxFlat.set_skew
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skew, 0|(gdextension.SizeVector2<<4), &struct{ skew Vector2.XY }{skew})
 }
 func (self class) GetSkew() Vector2.XY { //gd:StyleBoxFlat.get_skew
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_skew, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_skew, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -675,7 +677,7 @@ func (self class) SetShadowColor(color Color.RGBA) { //gd:StyleBoxFlat.set_shado
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetShadowColor() Color.RGBA { //gd:StyleBoxFlat.get_shadow_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_shadow_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_shadow_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -683,7 +685,7 @@ func (self class) SetShadowSize(size int64) { //gd:StyleBoxFlat.set_shadow_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_size, 0|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 }
 func (self class) GetShadowSize() int64 { //gd:StyleBoxFlat.get_shadow_size
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_shadow_size, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_shadow_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -691,7 +693,7 @@ func (self class) SetShadowOffset(offset Vector2.XY) { //gd:StyleBoxFlat.set_sha
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
 func (self class) GetShadowOffset() Vector2.XY { //gd:StyleBoxFlat.get_shadow_offset
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_shadow_offset, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_shadow_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -699,7 +701,7 @@ func (self class) SetAntiAliased(anti_aliased bool) { //gd:StyleBoxFlat.set_anti
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anti_aliased, 0|(gdextension.SizeBool<<4), &struct{ anti_aliased bool }{anti_aliased})
 }
 func (self class) IsAntiAliased() bool { //gd:StyleBoxFlat.is_anti_aliased
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_anti_aliased, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_anti_aliased, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -707,7 +709,7 @@ func (self class) SetAaSize(size float64) { //gd:StyleBoxFlat.set_aa_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_aa_size, 0|(gdextension.SizeFloat<<4), &struct{ size float64 }{size})
 }
 func (self class) GetAaSize() float64 { //gd:StyleBoxFlat.get_aa_size
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_aa_size, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_aa_size, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -715,7 +717,7 @@ func (self class) SetCornerDetail(detail int64) { //gd:StyleBoxFlat.set_corner_d
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_corner_detail, 0|(gdextension.SizeInt<<4), &struct{ detail int64 }{detail})
 }
 func (self class) GetCornerDetail() int64 { //gd:StyleBoxFlat.get_corner_detail
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_corner_detail, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_corner_detail, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

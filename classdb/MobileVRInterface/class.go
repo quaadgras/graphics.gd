@@ -37,6 +37,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -73,6 +74,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -343,34 +345,34 @@ func (self Instance) SetVrsStrength(value Float.X) Instance { //gd:MobileVRInter
 }
 
 func (self class) SetEyeHeight(eye_height float64) { //gd:MobileVRInterface.set_eye_height
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_eye_height, 0|(gdextension.SizeFloat<<4), &struct{ eye_height float64 }{eye_height})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_eye_height, 0|(gdextension.SizeFloat<<4), &struct{ eye_height float64 }{eye_height})
 }
 func (self class) GetEyeHeight() float64 { //gd:MobileVRInterface.get_eye_height
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_eye_height, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_eye_height, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetIod(iod float64) { //gd:MobileVRInterface.set_iod
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_iod, 0|(gdextension.SizeFloat<<4), &struct{ iod float64 }{iod})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_iod, 0|(gdextension.SizeFloat<<4), &struct{ iod float64 }{iod})
 }
 func (self class) GetIod() float64 { //gd:MobileVRInterface.get_iod
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_iod, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_iod, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetDisplayWidth(display_width float64) { //gd:MobileVRInterface.set_display_width
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_display_width, 0|(gdextension.SizeFloat<<4), &struct{ display_width float64 }{display_width})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_display_width, 0|(gdextension.SizeFloat<<4), &struct{ display_width float64 }{display_width})
 }
 func (self class) GetDisplayWidth() float64 { //gd:MobileVRInterface.get_display_width
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_display_width, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_display_width, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetDisplayToLens(display_to_lens float64) { //gd:MobileVRInterface.set_display_to_lens
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_display_to_lens, 0|(gdextension.SizeFloat<<4), &struct{ display_to_lens float64 }{display_to_lens})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_display_to_lens, 0|(gdextension.SizeFloat<<4), &struct{ display_to_lens float64 }{display_to_lens})
 }
 func (self class) GetDisplayToLens() float64 { //gd:MobileVRInterface.get_display_to_lens
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_display_to_lens, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_display_to_lens, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -378,31 +380,31 @@ func (self class) SetOffsetRect(offset_rect Rect2.PositionSize) { //gd:MobileVRI
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset_rect, 0|(gdextension.SizeRect2<<4), &struct{ offset_rect Rect2.PositionSize }{offset_rect})
 }
 func (self class) GetOffsetRect() Rect2.PositionSize { //gd:MobileVRInterface.get_offset_rect
-	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_offset_rect, gdextension.SizeRect2, &struct{}{})
+	var r_ret = jumponly.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_offset_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetOversample(oversample float64) { //gd:MobileVRInterface.set_oversample
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_oversample, 0|(gdextension.SizeFloat<<4), &struct{ oversample float64 }{oversample})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_oversample, 0|(gdextension.SizeFloat<<4), &struct{ oversample float64 }{oversample})
 }
 func (self class) GetOversample() float64 { //gd:MobileVRInterface.get_oversample
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_oversample, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_oversample, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetK1(k float64) { //gd:MobileVRInterface.set_k1
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_k1, 0|(gdextension.SizeFloat<<4), &struct{ k float64 }{k})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_k1, 0|(gdextension.SizeFloat<<4), &struct{ k float64 }{k})
 }
 func (self class) GetK1() float64 { //gd:MobileVRInterface.get_k1
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_k1, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_k1, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetK2(k float64) { //gd:MobileVRInterface.set_k2
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_k2, 0|(gdextension.SizeFloat<<4), &struct{ k float64 }{k})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_k2, 0|(gdextension.SizeFloat<<4), &struct{ k float64 }{k})
 }
 func (self class) GetK2() float64 { //gd:MobileVRInterface.get_k2
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_k2, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_k2, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

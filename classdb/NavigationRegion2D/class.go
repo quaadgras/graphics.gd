@@ -32,6 +32,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -71,6 +72,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -395,7 +397,7 @@ func (self Instance) SetTravelCost(value Float.X) Instance { //gd:NavigationRegi
 }
 
 func (self class) GetRid() RID.Any { //gd:NavigationRegion2D.get_rid
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
+	var r_ret = jumponly.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -403,7 +405,7 @@ func (self class) SetNavigationPolygon(navigation_polygon [1]gdclass.NavigationP
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_polygon, 0|(gdextension.SizeObject<<4), &struct{ navigation_polygon gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNavigationPolygon(navigation_polygon[0])[0]))})
 }
 func (self class) GetNavigationPolygon() [1]gdclass.NavigationPolygon { //gd:NavigationRegion2D.get_navigation_polygon
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_navigation_polygon, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_navigation_polygon, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.NavigationPolygon{gdclass.NewNavigationPolygon(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -411,7 +413,7 @@ func (self class) SetEnabled(enabled bool) { //gd:NavigationRegion2D.set_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsEnabled() bool { //gd:NavigationRegion2D.is_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -427,7 +429,7 @@ func (self class) SetUseEdgeConnections(enabled bool) { //gd:NavigationRegion2D.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_edge_connections, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) GetUseEdgeConnections() bool { //gd:NavigationRegion2D.get_use_edge_connections
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_edge_connections, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_edge_connections, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -435,7 +437,7 @@ func (self class) SetNavigationLayers(navigation_layers int64) { //gd:Navigation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_layers, 0|(gdextension.SizeInt<<4), &struct{ navigation_layers int64 }{navigation_layers})
 }
 func (self class) GetNavigationLayers() int64 { //gd:NavigationRegion2D.get_navigation_layers
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_navigation_layers, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_navigation_layers, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -459,7 +461,7 @@ func (self class) SetEnterCost(enter_cost float64) { //gd:NavigationRegion2D.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enter_cost, 0|(gdextension.SizeFloat<<4), &struct{ enter_cost float64 }{enter_cost})
 }
 func (self class) GetEnterCost() float64 { //gd:NavigationRegion2D.get_enter_cost
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_enter_cost, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_enter_cost, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -467,7 +469,7 @@ func (self class) SetTravelCost(travel_cost float64) { //gd:NavigationRegion2D.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_travel_cost, 0|(gdextension.SizeFloat<<4), &struct{ travel_cost float64 }{travel_cost})
 }
 func (self class) GetTravelCost() float64 { //gd:NavigationRegion2D.get_travel_cost
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_travel_cost, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_travel_cost, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -480,7 +482,7 @@ func (self class) IsBaking() bool { //gd:NavigationRegion2D.is_baking
 	return ret
 }
 func (self class) GetBounds() Rect2.PositionSize { //gd:NavigationRegion2D.get_bounds
-	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_bounds, gdextension.SizeRect2, &struct{}{})
+	var r_ret = jumponly.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_bounds, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

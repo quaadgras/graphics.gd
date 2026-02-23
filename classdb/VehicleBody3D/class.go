@@ -27,6 +27,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -66,6 +67,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -236,7 +238,7 @@ func (self class) SetEngineForce(engine_force float64) { //gd:VehicleBody3D.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_engine_force, 0|(gdextension.SizeFloat<<4), &struct{ engine_force float64 }{engine_force})
 }
 func (self class) GetEngineForce() float64 { //gd:VehicleBody3D.get_engine_force
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_engine_force, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_engine_force, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -244,7 +246,7 @@ func (self class) SetBrake(brake float64) { //gd:VehicleBody3D.set_brake
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_brake, 0|(gdextension.SizeFloat<<4), &struct{ brake float64 }{brake})
 }
 func (self class) GetBrake() float64 { //gd:VehicleBody3D.get_brake
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_brake, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_brake, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -252,7 +254,7 @@ func (self class) SetSteering(steering float64) { //gd:VehicleBody3D.set_steerin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_steering, 0|(gdextension.SizeFloat<<4), &struct{ steering float64 }{steering})
 }
 func (self class) GetSteering() float64 { //gd:VehicleBody3D.get_steering
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_steering, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_steering, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

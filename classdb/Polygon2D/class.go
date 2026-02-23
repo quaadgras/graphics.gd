@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -52,6 +53,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -487,7 +489,7 @@ func (self class) SetPolygon(polygon Packed.Array[Vector2.XY]) { //gd:Polygon2D.
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))})
 }
 func (self class) GetPolygon() Packed.Array[Vector2.XY] { //gd:Polygon2D.get_polygon
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_polygon, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_polygon, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -497,7 +499,7 @@ func (self class) SetUv(uv Packed.Array[Vector2.XY]) { //gd:Polygon2D.set_uv
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uv))})
 }
 func (self class) GetUv() Packed.Array[Vector2.XY] { //gd:Polygon2D.get_uv
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_uv, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_uv, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -505,7 +507,7 @@ func (self class) SetColor(color Color.RGBA) { //gd:Polygon2D.set_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetColor() Color.RGBA { //gd:Polygon2D.get_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -513,7 +515,7 @@ func (self class) SetPolygons(polygons Array.Any) { //gd:Polygon2D.set_polygons
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_polygons, 0|(gdextension.SizeArray<<4), &struct{ polygons gdextension.Array }{pointers.Get(gd.InternalArray(polygons))})
 }
 func (self class) GetPolygons() Array.Any { //gd:Polygon2D.get_polygons
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_polygons, gdextension.SizeArray, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_polygons, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -523,7 +525,7 @@ func (self class) SetVertexColors(vertex_colors Packed.Array[Color.RGBA]) { //gd
 	}{pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](vertex_colors))})
 }
 func (self class) GetVertexColors() Packed.Array[Color.RGBA] { //gd:Polygon2D.get_vertex_colors
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_vertex_colors, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_vertex_colors, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -531,7 +533,7 @@ func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:Polygon2D.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:Polygon2D.get_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -539,7 +541,7 @@ func (self class) SetTextureOffset(texture_offset Vector2.XY) { //gd:Polygon2D.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_offset, 0|(gdextension.SizeVector2<<4), &struct{ texture_offset Vector2.XY }{texture_offset})
 }
 func (self class) GetTextureOffset() Vector2.XY { //gd:Polygon2D.get_texture_offset
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_texture_offset, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_texture_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -547,7 +549,7 @@ func (self class) SetTextureRotation(texture_rotation float64) { //gd:Polygon2D.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_rotation, 0|(gdextension.SizeFloat<<4), &struct{ texture_rotation float64 }{texture_rotation})
 }
 func (self class) GetTextureRotation() float64 { //gd:Polygon2D.get_texture_rotation
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_texture_rotation, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_texture_rotation, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -555,7 +557,7 @@ func (self class) SetTextureScale(texture_scale Vector2.XY) { //gd:Polygon2D.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_scale, 0|(gdextension.SizeVector2<<4), &struct{ texture_scale Vector2.XY }{texture_scale})
 }
 func (self class) GetTextureScale() Vector2.XY { //gd:Polygon2D.get_texture_scale
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_texture_scale, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_texture_scale, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -571,7 +573,7 @@ func (self class) SetAntialiased(antialiased bool) { //gd:Polygon2D.set_antialia
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_antialiased, 0|(gdextension.SizeBool<<4), &struct{ antialiased bool }{antialiased})
 }
 func (self class) GetAntialiased() bool { //gd:Polygon2D.get_antialiased
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_antialiased, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_antialiased, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -579,7 +581,7 @@ func (self class) SetInvertBorder(invert_border float64) { //gd:Polygon2D.set_in
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_invert_border, 0|(gdextension.SizeFloat<<4), &struct{ invert_border float64 }{invert_border})
 }
 func (self class) GetInvertBorder() float64 { //gd:Polygon2D.get_invert_border
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_invert_border, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_invert_border, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -587,7 +589,7 @@ func (self class) SetOffset(offset Vector2.XY) { //gd:Polygon2D.set_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
 func (self class) GetOffset() Vector2.XY { //gd:Polygon2D.get_offset
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -634,15 +636,15 @@ func (self class) SetSkeleton(skeleton Path.ToNode) { //gd:Polygon2D.set_skeleto
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skeleton, 0|(gdextension.SizeNodePath<<4), &struct{ skeleton gdextension.NodePath }{pointers.Get(gd.InternalNodePath(skeleton))})
 }
 func (self class) GetSkeleton() Path.ToNode { //gd:Polygon2D.get_skeleton
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 func (self class) SetInternalVertexCount(internal_vertex_count int64) { //gd:Polygon2D.set_internal_vertex_count
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_internal_vertex_count, 0|(gdextension.SizeInt<<4), &struct{ internal_vertex_count int64 }{internal_vertex_count})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_internal_vertex_count, 0|(gdextension.SizeInt<<4), &struct{ internal_vertex_count int64 }{internal_vertex_count})
 }
 func (self class) GetInternalVertexCount() int64 { //gd:Polygon2D.get_internal_vertex_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_internal_vertex_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_internal_vertex_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

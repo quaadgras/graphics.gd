@@ -9,6 +9,11 @@ import (
 	"graphics.gd/internal/gdtype"
 )
 
+// TrivialMethods maps class name → set of method names that are trivial
+// (zero function calls in C++ body). When set, Generate emits jumponly.Call
+// for these methods instead of noescape.Call.
+var TrivialMethods map[string]map[string]bool
+
 type Type int
 
 const (
@@ -195,7 +200,11 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 	} else {
 		callResult = "struct{}"
 	}
-	fmt.Fprintf(w, "noescape.Call%s[%s](%s methods.%v, %v, &struct{", static, callResult, self, method.Name, shapeOf(class, method))
+	callPkg := "noescape"
+	if TrivialMethods != nil && TrivialMethods[class.Name][method.Name] {
+		callPkg = "jumponly"
+	}
+	fmt.Fprintf(w, "%s.Call%s[%s](%s methods.%v, %v, &struct{", callPkg, static, callResult, self, method.Name, shapeOf(class, method))
 	for i, arg := range method.Arguments {
 		if i > 0 {
 			fmt.Fprint(w, "; ")

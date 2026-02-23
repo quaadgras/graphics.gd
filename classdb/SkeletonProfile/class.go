@@ -21,6 +21,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -59,6 +60,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -473,7 +475,7 @@ func (self class) SetRootBone(bone_name String.Name) { //gd:SkeletonProfile.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_bone, 0|(gdextension.SizeStringName<<4), &struct{ bone_name gdextension.StringName }{pointers.Get(gd.InternalStringName(bone_name))})
 }
 func (self class) GetRootBone() String.Name { //gd:SkeletonProfile.get_root_bone
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_root_bone, gdextension.SizeStringName, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_root_bone, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -481,7 +483,7 @@ func (self class) SetScaleBaseBone(bone_name String.Name) { //gd:SkeletonProfile
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_base_bone, 0|(gdextension.SizeStringName<<4), &struct{ bone_name gdextension.StringName }{pointers.Get(gd.InternalStringName(bone_name))})
 }
 func (self class) GetScaleBaseBone() String.Name { //gd:SkeletonProfile.get_scale_base_bone
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_scale_base_bone, gdextension.SizeStringName, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_scale_base_bone, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }

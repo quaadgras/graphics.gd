@@ -19,6 +19,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -60,6 +61,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -828,7 +830,7 @@ func (self class) GetBoneCount() int64 { //gd:Skeleton3D.get_bone_count
 	return ret
 }
 func (self class) GetVersion() int64 { //gd:Skeleton3D.get_version
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_version, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_version, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -967,7 +969,7 @@ func (self class) SetShowRestOnly(enabled bool) { //gd:Skeleton3D.set_show_rest_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_show_rest_only, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsShowRestOnly() bool { //gd:Skeleton3D.is_show_rest_only
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_show_rest_only, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_show_rest_only, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -975,7 +977,7 @@ func (self class) SetModifierCallbackModeProcess(mode ModifierCallbackModeProces
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modifier_callback_mode_process, 0|(gdextension.SizeInt<<4), &struct{ mode ModifierCallbackModeProcess }{mode})
 }
 func (self class) GetModifierCallbackModeProcess() ModifierCallbackModeProcess { //gd:Skeleton3D.get_modifier_callback_mode_process
-	var r_ret = noescape.Call[ModifierCallbackModeProcess](gd.ObjectChecked(self.AsObject()), methods.get_modifier_callback_mode_process, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[ModifierCallbackModeProcess](gd.ObjectChecked(self.AsObject()), methods.get_modifier_callback_mode_process, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1007,7 +1009,7 @@ func (self class) SetAnimatePhysicalBones(enabled bool) { //gd:Skeleton3D.set_an
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_animate_physical_bones, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) GetAnimatePhysicalBones() bool { //gd:Skeleton3D.get_animate_physical_bones
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_animate_physical_bones, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_animate_physical_bones, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -26,6 +26,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -65,6 +66,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -259,7 +261,7 @@ func (self class) SetBoneName(bone_name String.Readable) { //gd:SpringBoneCollis
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_name, 0|(gdextension.SizeString<<4), &struct{ bone_name gdextension.String }{pointers.Get(gd.InternalString(bone_name))})
 }
 func (self class) GetBoneName() String.Readable { //gd:SpringBoneCollision3D.get_bone_name
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_bone_name, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_bone_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -267,7 +269,7 @@ func (self class) SetBone(bone int64) { //gd:SpringBoneCollision3D.set_bone
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone, 0|(gdextension.SizeInt<<4), &struct{ bone int64 }{bone})
 }
 func (self class) GetBone() int64 { //gd:SpringBoneCollision3D.get_bone
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -275,7 +277,7 @@ func (self class) SetPositionOffset(offset Vector3.XYZ) { //gd:SpringBoneCollisi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position_offset, 0|(gdextension.SizeVector3<<4), &struct{ offset Vector3.XYZ }{offset})
 }
 func (self class) GetPositionOffset() Vector3.XYZ { //gd:SpringBoneCollision3D.get_position_offset
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_position_offset, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_position_offset, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -283,7 +285,7 @@ func (self class) SetRotationOffset(offset Quaternion.IJKX) { //gd:SpringBoneCol
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_offset, 0|(gdextension.SizeQuaternion<<4), &struct{ offset Quaternion.IJKX }{offset})
 }
 func (self class) GetRotationOffset() Quaternion.IJKX { //gd:SpringBoneCollision3D.get_rotation_offset
-	var r_ret = noescape.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_rotation_offset, gdextension.SizeQuaternion, &struct{}{})
+	var r_ret = jumponly.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_rotation_offset, gdextension.SizeQuaternion, &struct{}{})
 	var ret = r_ret
 	return ret
 }

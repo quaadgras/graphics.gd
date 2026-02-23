@@ -33,6 +33,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -73,6 +74,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -295,7 +297,7 @@ func (self class) SetSize(size Vector3.XYZ) { //gd:GPUParticlesCollisionSDF3D.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), &struct{ size Vector3.XYZ }{size})
 }
 func (self class) GetSize() Vector3.XYZ { //gd:GPUParticlesCollisionSDF3D.get_size
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -303,7 +305,7 @@ func (self class) SetResolution(resolution Resolution) { //gd:GPUParticlesCollis
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_resolution, 0|(gdextension.SizeInt<<4), &struct{ resolution Resolution }{resolution})
 }
 func (self class) GetResolution() Resolution { //gd:GPUParticlesCollisionSDF3D.get_resolution
-	var r_ret = noescape.Call[Resolution](gd.ObjectChecked(self.AsObject()), methods.get_resolution, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Resolution](gd.ObjectChecked(self.AsObject()), methods.get_resolution, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -311,15 +313,15 @@ func (self class) SetTexture(texture [1]gdclass.Texture3D) { //gd:GPUParticlesCo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture3D(texture[0])[0]))})
 }
 func (self class) GetTexture() [1]gdclass.Texture3D { //gd:GPUParticlesCollisionSDF3D.get_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture3D{gdclass.NewTexture3D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetThickness(thickness float64) { //gd:GPUParticlesCollisionSDF3D.set_thickness
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_thickness, 0|(gdextension.SizeFloat<<4), &struct{ thickness float64 }{thickness})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_thickness, 0|(gdextension.SizeFloat<<4), &struct{ thickness float64 }{thickness})
 }
 func (self class) GetThickness() float64 { //gd:GPUParticlesCollisionSDF3D.get_thickness
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_thickness, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_thickness, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -327,7 +329,7 @@ func (self class) SetBakeMask(mask int64) { //gd:GPUParticlesCollisionSDF3D.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
 func (self class) GetBakeMask() int64 { //gd:GPUParticlesCollisionSDF3D.get_bake_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bake_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bake_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

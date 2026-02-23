@@ -15,6 +15,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -53,6 +54,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -215,7 +217,7 @@ func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:VisualShaderNodeParticleM
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMesh(mesh[0])[0]))})
 }
 func (self class) GetMesh() [1]gdclass.Mesh { //gd:VisualShaderNodeParticleMeshEmitter.get_mesh
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Mesh{gdclass.NewMesh(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -223,7 +225,7 @@ func (self class) SetUseAllSurfaces(enabled bool) { //gd:VisualShaderNodeParticl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_all_surfaces, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsUseAllSurfaces() bool { //gd:VisualShaderNodeParticleMeshEmitter.is_use_all_surfaces
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_use_all_surfaces, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_use_all_surfaces, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -231,7 +233,7 @@ func (self class) SetSurfaceIndex(surface_index int64) { //gd:VisualShaderNodePa
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_surface_index, 0|(gdextension.SizeInt<<4), &struct{ surface_index int64 }{surface_index})
 }
 func (self class) GetSurfaceIndex() int64 { //gd:VisualShaderNodeParticleMeshEmitter.get_surface_index
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_surface_index, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_surface_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -19,6 +19,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -60,6 +61,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -830,7 +832,7 @@ func (self Instance) SetPhysicsInterpolation(value bool) Instance { //gd:SceneTr
 }
 
 func (self class) GetRoot() [1]gdclass.Window { //gd:SceneTree.get_root
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_root, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_root, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Window{gdclass.NewWindow(gdreference.LetObject(r_ret))}
 	return ret
 }
@@ -850,50 +852,50 @@ func (self class) IsAccessibilitySupported() bool { //gd:SceneTree.is_accessibil
 	return ret
 }
 func (self class) IsAutoAcceptQuit() bool { //gd:SceneTree.is_auto_accept_quit
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_accept_quit, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_accept_quit, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetAutoAcceptQuit(enabled bool) { //gd:SceneTree.set_auto_accept_quit
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_accept_quit, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_accept_quit, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsQuitOnGoBack() bool { //gd:SceneTree.is_quit_on_go_back
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_quit_on_go_back, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_quit_on_go_back, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetQuitOnGoBack(enabled bool) { //gd:SceneTree.set_quit_on_go_back
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_quit_on_go_back, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_quit_on_go_back, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) SetDebugCollisionsHint(enable bool) { //gd:SceneTree.set_debug_collisions_hint
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_collisions_hint, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_collisions_hint, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsDebuggingCollisionsHint() bool { //gd:SceneTree.is_debugging_collisions_hint
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_debugging_collisions_hint, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_debugging_collisions_hint, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetDebugPathsHint(enable bool) { //gd:SceneTree.set_debug_paths_hint
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_paths_hint, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_paths_hint, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsDebuggingPathsHint() bool { //gd:SceneTree.is_debugging_paths_hint
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_debugging_paths_hint, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_debugging_paths_hint, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetDebugNavigationHint(enable bool) { //gd:SceneTree.set_debug_navigation_hint
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_navigation_hint, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_navigation_hint, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsDebuggingNavigationHint() bool { //gd:SceneTree.is_debugging_navigation_hint
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_debugging_navigation_hint, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_debugging_navigation_hint, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetEditedSceneRoot(scene [1]gdclass.Node) { //gd:SceneTree.set_edited_scene_root
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edited_scene_root, 0|(gdextension.SizeObject<<4), &struct{ scene gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetNode(scene[0])[0]))})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edited_scene_root, 0|(gdextension.SizeObject<<4), &struct{ scene gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetNode(scene[0])[0]))})
 }
 func (self class) GetEditedSceneRoot() [1]gdclass.Node { //gd:SceneTree.get_edited_scene_root
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_scene_root, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_scene_root, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gdreference.LetObject(r_ret))}
 	return ret
 }
@@ -901,7 +903,7 @@ func (self class) SetPause(enable bool) { //gd:SceneTree.set_pause
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pause, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsPaused() bool { //gd:SceneTree.is_paused
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_paused, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_paused, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -926,12 +928,12 @@ func (self class) GetProcessedTweens() Array.Contains[[1]gdclass.Tween] { //gd:S
 	return ret
 }
 func (self class) GetNodeCount() int64 { //gd:SceneTree.get_node_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_node_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_node_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetFrame() int64 { //gd:SceneTree.get_frame
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -942,7 +944,7 @@ func (self class) SetPhysicsInterpolationEnabled(enabled bool) { //gd:SceneTree.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_interpolation_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsPhysicsInterpolationEnabled() bool { //gd:SceneTree.is_physics_interpolation_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_physics_interpolation_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_physics_interpolation_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1022,7 +1024,7 @@ func (self class) SetCurrentScene(child_node [1]gdclass.Node) { //gd:SceneTree.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_scene, 0|(gdextension.SizeObject<<4), &struct{ child_node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetNode(child_node[0])[0]))})
 }
 func (self class) GetCurrentScene() [1]gdclass.Node { //gd:SceneTree.get_current_scene
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_current_scene, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_current_scene, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gdreference.LetObject(r_ret))}
 	return ret
 }
@@ -1064,7 +1066,7 @@ func (self class) SetMultiplayerPollEnabled(enabled bool) { //gd:SceneTree.set_m
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_multiplayer_poll_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsMultiplayerPollEnabled() bool { //gd:SceneTree.is_multiplayer_poll_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_multiplayer_poll_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_multiplayer_poll_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

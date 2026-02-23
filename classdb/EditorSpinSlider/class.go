@@ -20,6 +20,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -58,6 +59,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -280,7 +282,7 @@ func (self class) SetLabel(label String.Readable) { //gd:EditorSpinSlider.set_la
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_label, 0|(gdextension.SizeString<<4), &struct{ label gdextension.String }{pointers.Get(gd.InternalString(label))})
 }
 func (self class) GetLabel() String.Readable { //gd:EditorSpinSlider.get_label
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_label, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_label, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -288,7 +290,7 @@ func (self class) SetSuffix(suffix String.Readable) { //gd:EditorSpinSlider.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_suffix, 0|(gdextension.SizeString<<4), &struct{ suffix gdextension.String }{pointers.Get(gd.InternalString(suffix))})
 }
 func (self class) GetSuffix() String.Readable { //gd:EditorSpinSlider.get_suffix
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_suffix, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_suffix, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -296,7 +298,7 @@ func (self class) SetReadOnly(read_only bool) { //gd:EditorSpinSlider.set_read_o
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_read_only, 0|(gdextension.SizeBool<<4), &struct{ read_only bool }{read_only})
 }
 func (self class) IsReadOnly() bool { //gd:EditorSpinSlider.is_read_only
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_read_only, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_read_only, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -304,7 +306,7 @@ func (self class) SetFlat(flat bool) { //gd:EditorSpinSlider.set_flat
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flat, 0|(gdextension.SizeBool<<4), &struct{ flat bool }{flat})
 }
 func (self class) IsFlat() bool { //gd:EditorSpinSlider.is_flat
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flat, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flat, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -312,7 +314,7 @@ func (self class) SetControlState(state ControlState) { //gd:EditorSpinSlider.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_control_state, 0|(gdextension.SizeInt<<4), &struct{ state ControlState }{state})
 }
 func (self class) GetControlState() ControlState { //gd:EditorSpinSlider.get_control_state
-	var r_ret = noescape.Call[ControlState](gd.ObjectChecked(self.AsObject()), methods.get_control_state, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[ControlState](gd.ObjectChecked(self.AsObject()), methods.get_control_state, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -320,7 +322,7 @@ func (self class) SetHideSlider(hide_slider bool) { //gd:EditorSpinSlider.set_hi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hide_slider, 0|(gdextension.SizeBool<<4), &struct{ hide_slider bool }{hide_slider})
 }
 func (self class) IsHidingSlider() bool { //gd:EditorSpinSlider.is_hiding_slider
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hiding_slider, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hiding_slider, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -328,7 +330,7 @@ func (self class) SetEditingInteger(editing_integer bool) { //gd:EditorSpinSlide
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editing_integer, 0|(gdextension.SizeBool<<4), &struct{ editing_integer bool }{editing_integer})
 }
 func (self class) IsEditingInteger() bool { //gd:EditorSpinSlider.is_editing_integer
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_integer, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_integer, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

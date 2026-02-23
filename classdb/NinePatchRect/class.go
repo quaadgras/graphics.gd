@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -53,6 +54,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -294,7 +296,7 @@ func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:NinePatchRect.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:NinePatchRect.get_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -313,7 +315,7 @@ func (self class) SetRegionRect(rect Rect2.PositionSize) { //gd:NinePatchRect.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_region_rect, 0|(gdextension.SizeRect2<<4), &struct{ rect Rect2.PositionSize }{rect})
 }
 func (self class) GetRegionRect() Rect2.PositionSize { //gd:NinePatchRect.get_region_rect
-	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_region_rect, gdextension.SizeRect2, &struct{}{})
+	var r_ret = jumponly.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_region_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -321,7 +323,7 @@ func (self class) SetDrawCenter(draw_center bool) { //gd:NinePatchRect.set_draw_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_center, 0|(gdextension.SizeBool<<4), &struct{ draw_center bool }{draw_center})
 }
 func (self class) IsDrawCenterEnabled() bool { //gd:NinePatchRect.is_draw_center_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draw_center_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draw_center_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -329,7 +331,7 @@ func (self class) SetHAxisStretchMode(mode AxisStretchMode) { //gd:NinePatchRect
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_axis_stretch_mode, 0|(gdextension.SizeInt<<4), &struct{ mode AxisStretchMode }{mode})
 }
 func (self class) GetHAxisStretchMode() AxisStretchMode { //gd:NinePatchRect.get_h_axis_stretch_mode
-	var r_ret = noescape.Call[AxisStretchMode](gd.ObjectChecked(self.AsObject()), methods.get_h_axis_stretch_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[AxisStretchMode](gd.ObjectChecked(self.AsObject()), methods.get_h_axis_stretch_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -337,7 +339,7 @@ func (self class) SetVAxisStretchMode(mode AxisStretchMode) { //gd:NinePatchRect
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_axis_stretch_mode, 0|(gdextension.SizeInt<<4), &struct{ mode AxisStretchMode }{mode})
 }
 func (self class) GetVAxisStretchMode() AxisStretchMode { //gd:NinePatchRect.get_v_axis_stretch_mode
-	var r_ret = noescape.Call[AxisStretchMode](gd.ObjectChecked(self.AsObject()), methods.get_v_axis_stretch_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[AxisStretchMode](gd.ObjectChecked(self.AsObject()), methods.get_v_axis_stretch_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

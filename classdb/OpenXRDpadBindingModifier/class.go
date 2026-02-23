@@ -18,6 +18,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -57,6 +58,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -309,7 +311,7 @@ func (self class) SetActionSet(action_set [1]gdclass.OpenXRActionSet) { //gd:Ope
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action_set, 0|(gdextension.SizeObject<<4), &struct{ action_set gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRActionSet(action_set[0])[0]))})
 }
 func (self class) GetActionSet() [1]gdclass.OpenXRActionSet { //gd:OpenXRDpadBindingModifier.get_action_set
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_action_set, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_action_set, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.OpenXRActionSet{gdclass.NewOpenXRActionSet(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -317,7 +319,7 @@ func (self class) SetInputPath(input_path String.Readable) { //gd:OpenXRDpadBind
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_path, 0|(gdextension.SizeString<<4), &struct{ input_path gdextension.String }{pointers.Get(gd.InternalString(input_path))})
 }
 func (self class) GetInputPath() String.Readable { //gd:OpenXRDpadBindingModifier.get_input_path
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_input_path, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_input_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -365,7 +367,7 @@ func (self class) SetOnHaptic(haptic [1]gdclass.OpenXRHapticBase) { //gd:OpenXRD
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_on_haptic, 0|(gdextension.SizeObject<<4), &struct{ haptic gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRHapticBase(haptic[0])[0]))})
 }
 func (self class) GetOnHaptic() [1]gdclass.OpenXRHapticBase { //gd:OpenXRDpadBindingModifier.get_on_haptic
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_on_haptic, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_on_haptic, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.OpenXRHapticBase{gdclass.NewOpenXRHapticBase(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -373,7 +375,7 @@ func (self class) SetOffHaptic(haptic [1]gdclass.OpenXRHapticBase) { //gd:OpenXR
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_off_haptic, 0|(gdextension.SizeObject<<4), &struct{ haptic gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRHapticBase(haptic[0])[0]))})
 }
 func (self class) GetOffHaptic() [1]gdclass.OpenXRHapticBase { //gd:OpenXRDpadBindingModifier.get_off_haptic
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_off_haptic, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_off_haptic, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.OpenXRHapticBase{gdclass.NewOpenXRHapticBase(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

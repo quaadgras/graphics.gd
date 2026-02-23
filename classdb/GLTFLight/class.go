@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -49,6 +50,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -333,7 +335,7 @@ func (self class) ToDictionary() Dictionary.Any { //gd:GLTFLight.to_dictionary
 	return ret
 }
 func (self class) GetColor() Color.RGBA { //gd:GLTFLight.get_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -341,15 +343,15 @@ func (self class) SetColor(color Color.RGBA) { //gd:GLTFLight.set_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetIntensity() float64 { //gd:GLTFLight.get_intensity
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_intensity, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_intensity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetIntensity(intensity float64) { //gd:GLTFLight.set_intensity
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_intensity, 0|(gdextension.SizeFloat<<4), &struct{ intensity float64 }{intensity})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_intensity, 0|(gdextension.SizeFloat<<4), &struct{ intensity float64 }{intensity})
 }
 func (self class) GetLightType() String.Readable { //gd:GLTFLight.get_light_type
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_light_type, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_light_type, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -357,28 +359,28 @@ func (self class) SetLightType(light_type String.Readable) { //gd:GLTFLight.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_light_type, 0|(gdextension.SizeString<<4), &struct{ light_type gdextension.String }{pointers.Get(gd.InternalString(light_type))})
 }
 func (self class) GetRange() float64 { //gd:GLTFLight.get_range
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_range, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_range, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetRange(arange float64) { //gd:GLTFLight.set_range
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_range, 0|(gdextension.SizeFloat<<4), &struct{ arange float64 }{arange})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_range, 0|(gdextension.SizeFloat<<4), &struct{ arange float64 }{arange})
 }
 func (self class) GetInnerConeAngle() float64 { //gd:GLTFLight.get_inner_cone_angle
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_inner_cone_angle, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_inner_cone_angle, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetInnerConeAngle(inner_cone_angle float64) { //gd:GLTFLight.set_inner_cone_angle
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inner_cone_angle, 0|(gdextension.SizeFloat<<4), &struct{ inner_cone_angle float64 }{inner_cone_angle})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inner_cone_angle, 0|(gdextension.SizeFloat<<4), &struct{ inner_cone_angle float64 }{inner_cone_angle})
 }
 func (self class) GetOuterConeAngle() float64 { //gd:GLTFLight.get_outer_cone_angle
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_outer_cone_angle, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_outer_cone_angle, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetOuterConeAngle(outer_cone_angle float64) { //gd:GLTFLight.set_outer_cone_angle
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_outer_cone_angle, 0|(gdextension.SizeFloat<<4), &struct{ outer_cone_angle float64 }{outer_cone_angle})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_outer_cone_angle, 0|(gdextension.SizeFloat<<4), &struct{ outer_cone_angle float64 }{outer_cone_angle})
 }
 func (self class) GetAdditionalData(extension_name String.Name) variant.Any { //gd:GLTFLight.get_additional_data
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_additional_data, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ extension_name gdextension.StringName }{pointers.Get(gd.InternalStringName(extension_name))})

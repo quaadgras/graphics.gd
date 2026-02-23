@@ -114,6 +114,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -151,6 +152,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -571,10 +573,10 @@ func (self class) IsUsingThreads() bool { //gd:HTTPRequest.is_using_threads
 	return ret
 }
 func (self class) SetAcceptGzip(enable bool) { //gd:HTTPRequest.set_accept_gzip
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accept_gzip, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accept_gzip, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsAcceptingGzip() bool { //gd:HTTPRequest.is_accepting_gzip
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_accepting_gzip, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_accepting_gzip, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -582,15 +584,15 @@ func (self class) SetBodySizeLimit(bytes int64) { //gd:HTTPRequest.set_body_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_body_size_limit, 0|(gdextension.SizeInt<<4), &struct{ bytes int64 }{bytes})
 }
 func (self class) GetBodySizeLimit() int64 { //gd:HTTPRequest.get_body_size_limit
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_body_size_limit, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_body_size_limit, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMaxRedirects(amount int64) { //gd:HTTPRequest.set_max_redirects
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_redirects, 0|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_redirects, 0|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
 }
 func (self class) GetMaxRedirects() int64 { //gd:HTTPRequest.get_max_redirects
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_redirects, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_redirects, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -598,7 +600,7 @@ func (self class) SetDownloadFile(path String.Readable) { //gd:HTTPRequest.set_d
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_download_file, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
 func (self class) GetDownloadFile() String.Readable { //gd:HTTPRequest.get_download_file
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_download_file, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_download_file, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -608,7 +610,7 @@ func (self class) GetDownloadedBytes() int64 { //gd:HTTPRequest.get_downloaded_b
 	return ret
 }
 func (self class) GetBodySize() int64 { //gd:HTTPRequest.get_body_size
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_body_size, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_body_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -616,7 +618,7 @@ func (self class) SetTimeout(timeout float64) { //gd:HTTPRequest.set_timeout
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_timeout, 0|(gdextension.SizeFloat<<4), &struct{ timeout float64 }{timeout})
 }
 func (self class) GetTimeout() float64 { //gd:HTTPRequest.get_timeout
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_timeout, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_timeout, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -19,6 +19,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -55,6 +56,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -397,34 +399,34 @@ func (self class) GetData() Packed.Bytes { //gd:AudioStreamWAV.get_data
 	return ret
 }
 func (self class) SetFormat(format Format) { //gd:AudioStreamWAV.set_format
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format, 0|(gdextension.SizeInt<<4), &struct{ format Format }{format})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format, 0|(gdextension.SizeInt<<4), &struct{ format Format }{format})
 }
 func (self class) GetFormat() Format { //gd:AudioStreamWAV.get_format
-	var r_ret = noescape.Call[Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetLoopMode(loop_mode LoopMode) { //gd:AudioStreamWAV.set_loop_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop_mode, 0|(gdextension.SizeInt<<4), &struct{ loop_mode LoopMode }{loop_mode})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop_mode, 0|(gdextension.SizeInt<<4), &struct{ loop_mode LoopMode }{loop_mode})
 }
 func (self class) GetLoopMode() LoopMode { //gd:AudioStreamWAV.get_loop_mode
-	var r_ret = noescape.Call[LoopMode](gd.ObjectChecked(self.AsObject()), methods.get_loop_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[LoopMode](gd.ObjectChecked(self.AsObject()), methods.get_loop_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetLoopBegin(loop_begin int64) { //gd:AudioStreamWAV.set_loop_begin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop_begin, 0|(gdextension.SizeInt<<4), &struct{ loop_begin int64 }{loop_begin})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop_begin, 0|(gdextension.SizeInt<<4), &struct{ loop_begin int64 }{loop_begin})
 }
 func (self class) GetLoopBegin() int64 { //gd:AudioStreamWAV.get_loop_begin
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_loop_begin, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_loop_begin, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetLoopEnd(loop_end int64) { //gd:AudioStreamWAV.set_loop_end
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop_end, 0|(gdextension.SizeInt<<4), &struct{ loop_end int64 }{loop_end})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop_end, 0|(gdextension.SizeInt<<4), &struct{ loop_end int64 }{loop_end})
 }
 func (self class) GetLoopEnd() int64 { //gd:AudioStreamWAV.get_loop_end
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_loop_end, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_loop_end, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -432,15 +434,15 @@ func (self class) SetMixRate(mix_rate int64) { //gd:AudioStreamWAV.set_mix_rate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mix_rate, 0|(gdextension.SizeInt<<4), &struct{ mix_rate int64 }{mix_rate})
 }
 func (self class) GetMixRate() int64 { //gd:AudioStreamWAV.get_mix_rate
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_mix_rate, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_mix_rate, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetStereo(stereo bool) { //gd:AudioStreamWAV.set_stereo
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stereo, 0|(gdextension.SizeBool<<4), &struct{ stereo bool }{stereo})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stereo, 0|(gdextension.SizeBool<<4), &struct{ stereo bool }{stereo})
 }
 func (self class) IsStereo() bool { //gd:AudioStreamWAV.is_stereo
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_stereo, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_stereo, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -448,7 +450,7 @@ func (self class) SetTags(tags Dictionary.Any) { //gd:AudioStreamWAV.set_tags
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tags, 0|(gdextension.SizeDictionary<<4), &struct{ tags gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(tags))})
 }
 func (self class) GetTags() Dictionary.Any { //gd:AudioStreamWAV.get_tags
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_tags, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_tags, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }

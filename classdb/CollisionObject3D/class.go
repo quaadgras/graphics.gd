@@ -17,6 +17,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -58,6 +59,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -580,7 +582,7 @@ func (self class) SetCollisionLayer(layer int64) { //gd:CollisionObject3D.set_co
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 }
 func (self class) GetCollisionLayer() int64 { //gd:CollisionObject3D.get_collision_layer
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -588,7 +590,7 @@ func (self class) SetCollisionMask(mask int64) { //gd:CollisionObject3D.set_coll
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
 func (self class) GetCollisionMask() int64 { //gd:CollisionObject3D.get_collision_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -618,7 +620,7 @@ func (self class) SetCollisionPriority(priority float64) { //gd:CollisionObject3
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_priority, 0|(gdextension.SizeFloat<<4), &struct{ priority float64 }{priority})
 }
 func (self class) GetCollisionPriority() float64 { //gd:CollisionObject3D.get_collision_priority
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_priority, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_priority, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -626,7 +628,7 @@ func (self class) SetDisableMode(mode DisableMode) { //gd:CollisionObject3D.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_mode, 0|(gdextension.SizeInt<<4), &struct{ mode DisableMode }{mode})
 }
 func (self class) GetDisableMode() DisableMode { //gd:CollisionObject3D.get_disable_mode
-	var r_ret = noescape.Call[DisableMode](gd.ObjectChecked(self.AsObject()), methods.get_disable_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DisableMode](gd.ObjectChecked(self.AsObject()), methods.get_disable_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -634,20 +636,20 @@ func (self class) SetRayPickable(ray_pickable bool) { //gd:CollisionObject3D.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ray_pickable, 0|(gdextension.SizeBool<<4), &struct{ ray_pickable bool }{ray_pickable})
 }
 func (self class) IsRayPickable() bool { //gd:CollisionObject3D.is_ray_pickable
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ray_pickable, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ray_pickable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetCaptureInputOnDrag(enable bool) { //gd:CollisionObject3D.set_capture_input_on_drag
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_capture_input_on_drag, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_capture_input_on_drag, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) GetCaptureInputOnDrag() bool { //gd:CollisionObject3D.get_capture_input_on_drag
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_capture_input_on_drag, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_capture_input_on_drag, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetRid() RID.Any { //gd:CollisionObject3D.get_rid
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
+	var r_ret = jumponly.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }

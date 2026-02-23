@@ -27,6 +27,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -74,6 +75,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -3088,7 +3090,7 @@ func (self class) SetEditable(enabled bool) { //gd:TextEdit.set_editable
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editable, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsEditable() bool { //gd:TextEdit.is_editable
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editable, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3096,7 +3098,7 @@ func (self class) SetTextDirection(direction Control.TextDirection) { //gd:TextE
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_direction, 0|(gdextension.SizeInt<<4), &struct{ direction Control.TextDirection }{direction})
 }
 func (self class) GetTextDirection() Control.TextDirection { //gd:TextEdit.get_text_direction
-	var r_ret = noescape.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), methods.get_text_direction, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), methods.get_text_direction, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3104,7 +3106,7 @@ func (self class) SetLanguage(language String.Readable) { //gd:TextEdit.set_lang
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_language, 0|(gdextension.SizeString<<4), &struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))})
 }
 func (self class) GetLanguage() String.Readable { //gd:TextEdit.get_language
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -3114,7 +3116,7 @@ func (self class) SetStructuredTextBidiOverride(parser TextServer.StructuredText
 	}{parser})
 }
 func (self class) GetStructuredTextBidiOverride() TextServer.StructuredTextParser { //gd:TextEdit.get_structured_text_bidi_override
-	var r_ret = noescape.Call[TextServer.StructuredTextParser](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextServer.StructuredTextParser](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3122,7 +3124,7 @@ func (self class) SetStructuredTextBidiOverrideOptions(args Array.Any) { //gd:Te
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_structured_text_bidi_override_options, 0|(gdextension.SizeArray<<4), &struct{ args gdextension.Array }{pointers.Get(gd.InternalArray(args))})
 }
 func (self class) GetStructuredTextBidiOverrideOptions() Array.Any { //gd:TextEdit.get_structured_text_bidi_override_options
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override_options, gdextension.SizeArray, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override_options, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -3143,10 +3145,10 @@ func (self class) IsIndentWrappedLines() bool { //gd:TextEdit.is_indent_wrapped_
 	return ret
 }
 func (self class) SetTabInputMode(enabled bool) { //gd:TextEdit.set_tab_input_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_input_mode, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_input_mode, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) GetTabInputMode() bool { //gd:TextEdit.get_tab_input_mode
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_tab_input_mode, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_tab_input_mode, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3154,71 +3156,71 @@ func (self class) SetOvertypeModeEnabled(enabled bool) { //gd:TextEdit.set_overt
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_overtype_mode_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsOvertypeModeEnabled() bool { //gd:TextEdit.is_overtype_mode_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_overtype_mode_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_overtype_mode_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetContextMenuEnabled(enabled bool) { //gd:TextEdit.set_context_menu_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_context_menu_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_context_menu_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsContextMenuEnabled() bool { //gd:TextEdit.is_context_menu_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_context_menu_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_context_menu_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetEmojiMenuEnabled(enable bool) { //gd:TextEdit.set_emoji_menu_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emoji_menu_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emoji_menu_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsEmojiMenuEnabled() bool { //gd:TextEdit.is_emoji_menu_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_emoji_menu_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_emoji_menu_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetBackspaceDeletesCompositeCharacterEnabled(enable bool) { //gd:TextEdit.set_backspace_deletes_composite_character_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_backspace_deletes_composite_character_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_backspace_deletes_composite_character_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsBackspaceDeletesCompositeCharacterEnabled() bool { //gd:TextEdit.is_backspace_deletes_composite_character_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_backspace_deletes_composite_character_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_backspace_deletes_composite_character_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetShortcutKeysEnabled(enabled bool) { //gd:TextEdit.set_shortcut_keys_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut_keys_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut_keys_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsShortcutKeysEnabled() bool { //gd:TextEdit.is_shortcut_keys_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shortcut_keys_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shortcut_keys_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetVirtualKeyboardEnabled(enabled bool) { //gd:TextEdit.set_virtual_keyboard_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_virtual_keyboard_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_virtual_keyboard_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsVirtualKeyboardEnabled() bool { //gd:TextEdit.is_virtual_keyboard_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_virtual_keyboard_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_virtual_keyboard_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetVirtualKeyboardShowOnFocus(show_on_focus bool) { //gd:TextEdit.set_virtual_keyboard_show_on_focus
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_virtual_keyboard_show_on_focus, 0|(gdextension.SizeBool<<4), &struct{ show_on_focus bool }{show_on_focus})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_virtual_keyboard_show_on_focus, 0|(gdextension.SizeBool<<4), &struct{ show_on_focus bool }{show_on_focus})
 }
 func (self class) GetVirtualKeyboardShowOnFocus() bool { //gd:TextEdit.get_virtual_keyboard_show_on_focus
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_virtual_keyboard_show_on_focus, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_virtual_keyboard_show_on_focus, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMiddleMousePasteEnabled(enabled bool) { //gd:TextEdit.set_middle_mouse_paste_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_middle_mouse_paste_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_middle_mouse_paste_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsMiddleMousePasteEnabled() bool { //gd:TextEdit.is_middle_mouse_paste_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_middle_mouse_paste_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_middle_mouse_paste_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetEmptySelectionClipboardEnabled(enabled bool) { //gd:TextEdit.set_empty_selection_clipboard_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_empty_selection_clipboard_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_empty_selection_clipboard_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsEmptySelectionClipboardEnabled() bool { //gd:TextEdit.is_empty_selection_clipboard_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_empty_selection_clipboard_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_empty_selection_clipboard_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3242,7 +3244,7 @@ func (self class) SetPlaceholder(text String.Readable) { //gd:TextEdit.set_place
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_placeholder, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
 func (self class) GetPlaceholder() String.Readable { //gd:TextEdit.get_placeholder
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_placeholder, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_placeholder, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -3381,7 +3383,7 @@ func (self class) HasUndo() bool { //gd:TextEdit.has_undo
 	return ret
 }
 func (self class) HasRedo() bool { //gd:TextEdit.has_redo
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_redo, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_redo, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3398,12 +3400,12 @@ func (self class) TagSavedVersion() { //gd:TextEdit.tag_saved_version
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.tag_saved_version, 0, &struct{}{})
 }
 func (self class) GetVersion() int64 { //gd:TextEdit.get_version
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_version, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_version, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetSavedVersion() int64 { //gd:TextEdit.get_saved_version
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_saved_version, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_saved_version, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3411,7 +3413,7 @@ func (self class) SetSearchText(search_text String.Readable) { //gd:TextEdit.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_search_text, 0|(gdextension.SizeString<<4), &struct{ search_text gdextension.String }{pointers.Get(gd.InternalString(search_text))})
 }
 func (self class) SetSearchFlags(flags int64) { //gd:TextEdit.set_search_flags
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_search_flags, 0|(gdextension.SizeInt<<4), &struct{ flags int64 }{flags})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_search_flags, 0|(gdextension.SizeInt<<4), &struct{ flags int64 }{flags})
 }
 func (self class) Search(text String.Readable, flags int64, from_line int64, from_column int64) Vector2i.XY { //gd:TextEdit.search
 	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.search, gdextension.SizeVector2i|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
@@ -3467,7 +3469,7 @@ func (self class) GetMinimapLineAtPos(position Vector2i.XY) int64 { //gd:TextEdi
 	return ret
 }
 func (self class) IsDraggingCursor() bool { //gd:TextEdit.is_dragging_cursor
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dragging_cursor, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dragging_cursor, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3483,7 +3485,7 @@ func (self class) SetCaretType(atype CaretType) { //gd:TextEdit.set_caret_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_caret_type, 0|(gdextension.SizeInt<<4), &struct{ atype CaretType }{atype})
 }
 func (self class) GetCaretType() CaretType { //gd:TextEdit.get_caret_type
-	var r_ret = noescape.Call[CaretType](gd.ObjectChecked(self.AsObject()), methods.get_caret_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[CaretType](gd.ObjectChecked(self.AsObject()), methods.get_caret_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3491,7 +3493,7 @@ func (self class) SetCaretBlinkEnabled(enable bool) { //gd:TextEdit.set_caret_bl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_caret_blink_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsCaretBlinkEnabled() bool { //gd:TextEdit.is_caret_blink_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_caret_blink_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_caret_blink_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3507,23 +3509,23 @@ func (self class) SetDrawCaretWhenEditableDisabled(enable bool) { //gd:TextEdit.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_caret_when_editable_disabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsDrawingCaretWhenEditableDisabled() bool { //gd:TextEdit.is_drawing_caret_when_editable_disabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drawing_caret_when_editable_disabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drawing_caret_when_editable_disabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMoveCaretOnRightClickEnabled(enable bool) { //gd:TextEdit.set_move_caret_on_right_click_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_move_caret_on_right_click_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_move_caret_on_right_click_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsMoveCaretOnRightClickEnabled() bool { //gd:TextEdit.is_move_caret_on_right_click_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_move_caret_on_right_click_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_move_caret_on_right_click_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetCaretMidGraphemeEnabled(enabled bool) { //gd:TextEdit.set_caret_mid_grapheme_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_caret_mid_grapheme_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_caret_mid_grapheme_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsCaretMidGraphemeEnabled() bool { //gd:TextEdit.is_caret_mid_grapheme_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_caret_mid_grapheme_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_caret_mid_grapheme_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3531,7 +3533,7 @@ func (self class) SetMultipleCaretsEnabled(enabled bool) { //gd:TextEdit.set_mul
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_multiple_carets_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsMultipleCaretsEnabled() bool { //gd:TextEdit.is_multiple_carets_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_multiple_carets_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_multiple_carets_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3575,13 +3577,13 @@ func (self class) MergeOverlappingCarets() { //gd:TextEdit.merge_overlapping_car
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.merge_overlapping_carets, 0, &struct{}{})
 }
 func (self class) BeginMulticaretEdit() { //gd:TextEdit.begin_multicaret_edit
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.begin_multicaret_edit, 0, &struct{}{})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.begin_multicaret_edit, 0, &struct{}{})
 }
 func (self class) EndMulticaretEdit() { //gd:TextEdit.end_multicaret_edit
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.end_multicaret_edit, 0, &struct{}{})
 }
 func (self class) IsInMulitcaretEdit() bool { //gd:TextEdit.is_in_mulitcaret_edit
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_in_mulitcaret_edit, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_in_mulitcaret_edit, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3680,7 +3682,7 @@ func (self class) SetSelectingEnabled(enable bool) { //gd:TextEdit.set_selecting
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selecting_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsSelectingEnabled() bool { //gd:TextEdit.is_selecting_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_selecting_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_selecting_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3688,23 +3690,23 @@ func (self class) SetDeselectOnFocusLossEnabled(enable bool) { //gd:TextEdit.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_deselect_on_focus_loss_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsDeselectOnFocusLossEnabled() bool { //gd:TextEdit.is_deselect_on_focus_loss_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_deselect_on_focus_loss_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_deselect_on_focus_loss_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetDragAndDropSelectionEnabled(enable bool) { //gd:TextEdit.set_drag_and_drop_selection_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_and_drop_selection_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_and_drop_selection_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsDragAndDropSelectionEnabled() bool { //gd:TextEdit.is_drag_and_drop_selection_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drag_and_drop_selection_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drag_and_drop_selection_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetSelectionMode(mode SelectionMode) { //gd:TextEdit.set_selection_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selection_mode, 0|(gdextension.SizeInt<<4), &struct{ mode SelectionMode }{mode})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selection_mode, 0|(gdextension.SizeInt<<4), &struct{ mode SelectionMode }{mode})
 }
 func (self class) GetSelectionMode() SelectionMode { //gd:TextEdit.get_selection_mode
-	var r_ret = noescape.Call[SelectionMode](gd.ObjectChecked(self.AsObject()), methods.get_selection_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[SelectionMode](gd.ObjectChecked(self.AsObject()), methods.get_selection_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3816,7 +3818,7 @@ func (self class) SetLineWrappingMode(mode LineWrappingMode) { //gd:TextEdit.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_line_wrapping_mode, 0|(gdextension.SizeInt<<4), &struct{ mode LineWrappingMode }{mode})
 }
 func (self class) GetLineWrappingMode() LineWrappingMode { //gd:TextEdit.get_line_wrapping_mode
-	var r_ret = noescape.Call[LineWrappingMode](gd.ObjectChecked(self.AsObject()), methods.get_line_wrapping_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[LineWrappingMode](gd.ObjectChecked(self.AsObject()), methods.get_line_wrapping_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3824,7 +3826,7 @@ func (self class) SetAutowrapMode(autowrap_mode TextServer.AutowrapMode) { //gd:
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autowrap_mode, 0|(gdextension.SizeInt<<4), &struct{ autowrap_mode TextServer.AutowrapMode }{autowrap_mode})
 }
 func (self class) GetAutowrapMode() TextServer.AutowrapMode { //gd:TextEdit.get_autowrap_mode
-	var r_ret = noescape.Call[TextServer.AutowrapMode](gd.ObjectChecked(self.AsObject()), methods.get_autowrap_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextServer.AutowrapMode](gd.ObjectChecked(self.AsObject()), methods.get_autowrap_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3855,17 +3857,17 @@ func (self class) SetSmoothScrollEnabled(enable bool) { //gd:TextEdit.set_smooth
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_smooth_scroll_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsSmoothScrollEnabled() bool { //gd:TextEdit.is_smooth_scroll_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_smooth_scroll_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_smooth_scroll_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetVScrollBar() [1]gdclass.VScrollBar { //gd:TextEdit.get_v_scroll_bar
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_v_scroll_bar, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_v_scroll_bar, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.VScrollBar{gdclass.NewVScrollBar(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) GetHScrollBar() [1]gdclass.HScrollBar { //gd:TextEdit.get_h_scroll_bar
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_h_scroll_bar, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_h_scroll_bar, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.HScrollBar{gdclass.NewHScrollBar(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
@@ -3889,7 +3891,7 @@ func (self class) SetScrollPastEndOfFileEnabled(enable bool) { //gd:TextEdit.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_past_end_of_file_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsScrollPastEndOfFileEnabled() bool { //gd:TextEdit.is_scroll_past_end_of_file_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scroll_past_end_of_file_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scroll_past_end_of_file_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3897,7 +3899,7 @@ func (self class) SetVScrollSpeed(speed float64) { //gd:TextEdit.set_v_scroll_sp
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_scroll_speed, 0|(gdextension.SizeFloat<<4), &struct{ speed float64 }{speed})
 }
 func (self class) GetVScrollSpeed() float64 { //gd:TextEdit.get_v_scroll_speed
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_v_scroll_speed, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_v_scroll_speed, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3905,7 +3907,7 @@ func (self class) SetFitContentHeightEnabled(enabled bool) { //gd:TextEdit.set_f
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fit_content_height_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsFitContentHeightEnabled() bool { //gd:TextEdit.is_fit_content_height_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_fit_content_height_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_fit_content_height_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3913,7 +3915,7 @@ func (self class) SetFitContentWidthEnabled(enabled bool) { //gd:TextEdit.set_fi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fit_content_width_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsFitContentWidthEnabled() bool { //gd:TextEdit.is_fit_content_width_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_fit_content_width_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_fit_content_width_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3986,7 +3988,7 @@ func (self class) SetDrawMinimap(enabled bool) { //gd:TextEdit.set_draw_minimap
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_minimap, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsDrawingMinimap() bool { //gd:TextEdit.is_drawing_minimap
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drawing_minimap, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drawing_minimap, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3994,7 +3996,7 @@ func (self class) SetMinimapWidth(width int64) { //gd:TextEdit.set_minimap_width
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_minimap_width, 0|(gdextension.SizeInt<<4), &struct{ width int64 }{width})
 }
 func (self class) GetMinimapWidth() int64 { //gd:TextEdit.get_minimap_width
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_minimap_width, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_minimap_width, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4093,7 +4095,7 @@ func (self class) SetGutterCustomDraw(column int64, draw_callback Callable.Funct
 	}{column, pointers.Get(gd.InternalCallable(draw_callback))})
 }
 func (self class) GetTotalGutterWidth() int64 { //gd:TextEdit.get_total_gutter_width
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_total_gutter_width, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_total_gutter_width, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4187,7 +4189,7 @@ func (self class) SetSyntaxHighlighter(syntax_highlighter [1]gdclass.SyntaxHighl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_syntax_highlighter, 0|(gdextension.SizeObject<<4), &struct{ syntax_highlighter gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetSyntaxHighlighter(syntax_highlighter[0])[0]))})
 }
 func (self class) GetSyntaxHighlighter() [1]gdclass.SyntaxHighlighter { //gd:TextEdit.get_syntax_highlighter
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_syntax_highlighter, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_syntax_highlighter, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.SyntaxHighlighter{gdclass.NewSyntaxHighlighter(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -4195,7 +4197,7 @@ func (self class) SetHighlightCurrentLine(enabled bool) { //gd:TextEdit.set_high
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_highlight_current_line, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsHighlightCurrentLineEnabled() bool { //gd:TextEdit.is_highlight_current_line_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_highlight_current_line_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_highlight_current_line_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4203,12 +4205,12 @@ func (self class) SetHighlightAllOccurrences(enabled bool) { //gd:TextEdit.set_h
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_highlight_all_occurrences, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsHighlightAllOccurrencesEnabled() bool { //gd:TextEdit.is_highlight_all_occurrences_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_highlight_all_occurrences_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_highlight_all_occurrences_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetDrawControlChars() bool { //gd:TextEdit.get_draw_control_chars
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_draw_control_chars, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_draw_control_chars, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4219,7 +4221,7 @@ func (self class) SetDrawTabs(enabled bool) { //gd:TextEdit.set_draw_tabs
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_tabs, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsDrawingTabs() bool { //gd:TextEdit.is_drawing_tabs
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drawing_tabs, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drawing_tabs, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4227,7 +4229,7 @@ func (self class) SetDrawSpaces(enabled bool) { //gd:TextEdit.set_draw_spaces
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_spaces, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsDrawingSpaces() bool { //gd:TextEdit.is_drawing_spaces
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drawing_spaces, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drawing_spaces, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4245,7 +4247,7 @@ func (self class) MenuOption(option int64) { //gd:TextEdit.menu_option
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.menu_option, 0|(gdextension.SizeInt<<4), &struct{ option int64 }{option})
 }
 func (self class) AdjustCaretsAfterEdit(caret int64, from_line int64, from_col int64, to_line int64, to_col int64) { //gd:TextEdit.adjust_carets_after_edit
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.adjust_carets_after_edit, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), &struct {
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.adjust_carets_after_edit, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), &struct {
 		caret     int64
 		from_line int64
 		from_col  int64

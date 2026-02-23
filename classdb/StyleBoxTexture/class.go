@@ -15,6 +15,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -54,6 +55,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -418,7 +420,7 @@ func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:StyleBoxTextur
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:StyleBoxTexture.get_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -454,7 +456,7 @@ func (self class) SetRegionRect(region Rect2.PositionSize) { //gd:StyleBoxTextur
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_region_rect, 0|(gdextension.SizeRect2<<4), &struct{ region Rect2.PositionSize }{region})
 }
 func (self class) GetRegionRect() Rect2.PositionSize { //gd:StyleBoxTexture.get_region_rect
-	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_region_rect, gdextension.SizeRect2, &struct{}{})
+	var r_ret = jumponly.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_region_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -462,7 +464,7 @@ func (self class) SetDrawCenter(enable bool) { //gd:StyleBoxTexture.set_draw_cen
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_center, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsDrawCenterEnabled() bool { //gd:StyleBoxTexture.is_draw_center_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draw_center_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draw_center_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -470,7 +472,7 @@ func (self class) SetModulate(color Color.RGBA) { //gd:StyleBoxTexture.set_modul
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modulate, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetModulate() Color.RGBA { //gd:StyleBoxTexture.get_modulate
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_modulate, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_modulate, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -478,7 +480,7 @@ func (self class) SetHAxisStretchMode(mode AxisStretchMode) { //gd:StyleBoxTextu
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_axis_stretch_mode, 0|(gdextension.SizeInt<<4), &struct{ mode AxisStretchMode }{mode})
 }
 func (self class) GetHAxisStretchMode() AxisStretchMode { //gd:StyleBoxTexture.get_h_axis_stretch_mode
-	var r_ret = noescape.Call[AxisStretchMode](gd.ObjectChecked(self.AsObject()), methods.get_h_axis_stretch_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[AxisStretchMode](gd.ObjectChecked(self.AsObject()), methods.get_h_axis_stretch_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -486,7 +488,7 @@ func (self class) SetVAxisStretchMode(mode AxisStretchMode) { //gd:StyleBoxTextu
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_axis_stretch_mode, 0|(gdextension.SizeInt<<4), &struct{ mode AxisStretchMode }{mode})
 }
 func (self class) GetVAxisStretchMode() AxisStretchMode { //gd:StyleBoxTexture.get_v_axis_stretch_mode
-	var r_ret = noescape.Call[AxisStretchMode](gd.ObjectChecked(self.AsObject()), methods.get_v_axis_stretch_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[AxisStretchMode](gd.ObjectChecked(self.AsObject()), methods.get_v_axis_stretch_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

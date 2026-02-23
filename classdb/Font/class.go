@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -52,6 +53,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -711,12 +713,12 @@ func (self class) SetFallbacks(fallbacks Array.Contains[[1]gdclass.Font]) { //gd
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallbacks, 0|(gdextension.SizeArray<<4), &struct{ fallbacks gdextension.Array }{pointers.Get(gd.InternalArray(fallbacks))})
 }
 func (self class) GetFallbacks() Array.Contains[[1]gdclass.Font] { //gd:Font.get_fallbacks
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_fallbacks, gdextension.SizeArray, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_fallbacks, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Font]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) FindVariation(variation_coordinates Dictionary.Any, face_index int64, strength float64, transform Transform2D.OriginXY, spacing_top int64, spacing_bottom int64, spacing_space int64, spacing_glyph int64, baseline_offset float64) RID.Any { //gd:Font.find_variation
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.find_variation, gdextension.SizeRID|(gdextension.SizeDictionary<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeTransform2D<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeFloat<<36), &struct {
+	var r_ret = jumponly.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.find_variation, gdextension.SizeRID|(gdextension.SizeDictionary<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeTransform2D<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeFloat<<36), &struct {
 		variation_coordinates gdextension.Dictionary
 		face_index            int64
 		strength              float64
@@ -791,12 +793,12 @@ func (self class) GetFontStretch() int64 { //gd:Font.get_font_stretch
 	return ret
 }
 func (self class) GetSpacing(spacing TextServer.SpacingType) int64 { //gd:Font.get_spacing
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_spacing, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ spacing TextServer.SpacingType }{spacing})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_spacing, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ spacing TextServer.SpacingType }{spacing})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetOpentypeFeatures() Dictionary.Any { //gd:Font.get_opentype_features
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_opentype_features, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_opentype_features, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }

@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -51,6 +52,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -392,7 +394,7 @@ func (self Instance) SetTravelCost(value Float.X) Instance { //gd:NavigationLink
 }
 
 func (self class) GetRid() RID.Any { //gd:NavigationLink3D.get_rid
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
+	var r_ret = jumponly.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -400,7 +402,7 @@ func (self class) SetEnabled(enabled bool) { //gd:NavigationLink3D.set_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsEnabled() bool { //gd:NavigationLink3D.is_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -416,7 +418,7 @@ func (self class) SetBidirectional(bidirectional bool) { //gd:NavigationLink3D.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bidirectional, 0|(gdextension.SizeBool<<4), &struct{ bidirectional bool }{bidirectional})
 }
 func (self class) IsBidirectional() bool { //gd:NavigationLink3D.is_bidirectional
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_bidirectional, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_bidirectional, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -424,7 +426,7 @@ func (self class) SetNavigationLayers(navigation_layers int64) { //gd:Navigation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_layers, 0|(gdextension.SizeInt<<4), &struct{ navigation_layers int64 }{navigation_layers})
 }
 func (self class) GetNavigationLayers() int64 { //gd:NavigationLink3D.get_navigation_layers
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_navigation_layers, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_navigation_layers, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -443,7 +445,7 @@ func (self class) SetStartPosition(position Vector3.XYZ) { //gd:NavigationLink3D
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_start_position, 0|(gdextension.SizeVector3<<4), &struct{ position Vector3.XYZ }{position})
 }
 func (self class) GetStartPosition() Vector3.XYZ { //gd:NavigationLink3D.get_start_position
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_start_position, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_start_position, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -451,7 +453,7 @@ func (self class) SetEndPosition(position Vector3.XYZ) { //gd:NavigationLink3D.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_end_position, 0|(gdextension.SizeVector3<<4), &struct{ position Vector3.XYZ }{position})
 }
 func (self class) GetEndPosition() Vector3.XYZ { //gd:NavigationLink3D.get_end_position
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_end_position, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_end_position, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -475,7 +477,7 @@ func (self class) SetEnterCost(enter_cost float64) { //gd:NavigationLink3D.set_e
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enter_cost, 0|(gdextension.SizeFloat<<4), &struct{ enter_cost float64 }{enter_cost})
 }
 func (self class) GetEnterCost() float64 { //gd:NavigationLink3D.get_enter_cost
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_enter_cost, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_enter_cost, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -483,7 +485,7 @@ func (self class) SetTravelCost(travel_cost float64) { //gd:NavigationLink3D.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_travel_cost, 0|(gdextension.SizeFloat<<4), &struct{ travel_cost float64 }{travel_cost})
 }
 func (self class) GetTravelCost() float64 { //gd:NavigationLink3D.get_travel_cost
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_travel_cost, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_travel_cost, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

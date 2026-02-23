@@ -31,6 +31,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -70,6 +71,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -457,7 +459,7 @@ func (self class) SetIntensity(intensity float64) { //gd:ReflectionProbe.set_int
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_intensity, 0|(gdextension.SizeFloat<<4), &struct{ intensity float64 }{intensity})
 }
 func (self class) GetIntensity() float64 { //gd:ReflectionProbe.get_intensity
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_intensity, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_intensity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -465,7 +467,7 @@ func (self class) SetBlendDistance(blend_distance float64) { //gd:ReflectionProb
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_distance, 0|(gdextension.SizeFloat<<4), &struct{ blend_distance float64 }{blend_distance})
 }
 func (self class) GetBlendDistance() float64 { //gd:ReflectionProbe.get_blend_distance
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_blend_distance, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_blend_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -473,7 +475,7 @@ func (self class) SetAmbientMode(ambient AmbientMode) { //gd:ReflectionProbe.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ambient_mode, 0|(gdextension.SizeInt<<4), &struct{ ambient AmbientMode }{ambient})
 }
 func (self class) GetAmbientMode() AmbientMode { //gd:ReflectionProbe.get_ambient_mode
-	var r_ret = noescape.Call[AmbientMode](gd.ObjectChecked(self.AsObject()), methods.get_ambient_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[AmbientMode](gd.ObjectChecked(self.AsObject()), methods.get_ambient_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -481,7 +483,7 @@ func (self class) SetAmbientColor(ambient Color.RGBA) { //gd:ReflectionProbe.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ambient_color, 0|(gdextension.SizeColor<<4), &struct{ ambient Color.RGBA }{ambient})
 }
 func (self class) GetAmbientColor() Color.RGBA { //gd:ReflectionProbe.get_ambient_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_ambient_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_ambient_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -489,7 +491,7 @@ func (self class) SetAmbientColorEnergy(ambient_energy float64) { //gd:Reflectio
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ambient_color_energy, 0|(gdextension.SizeFloat<<4), &struct{ ambient_energy float64 }{ambient_energy})
 }
 func (self class) GetAmbientColorEnergy() float64 { //gd:ReflectionProbe.get_ambient_color_energy
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ambient_color_energy, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ambient_color_energy, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -497,7 +499,7 @@ func (self class) SetMaxDistance(max_distance float64) { //gd:ReflectionProbe.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_distance, 0|(gdextension.SizeFloat<<4), &struct{ max_distance float64 }{max_distance})
 }
 func (self class) GetMaxDistance() float64 { //gd:ReflectionProbe.get_max_distance
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_distance, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -505,7 +507,7 @@ func (self class) SetMeshLodThreshold(ratio float64) { //gd:ReflectionProbe.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh_lod_threshold, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
 }
 func (self class) GetMeshLodThreshold() float64 { //gd:ReflectionProbe.get_mesh_lod_threshold
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mesh_lod_threshold, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mesh_lod_threshold, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -513,7 +515,7 @@ func (self class) SetSize(size Vector3.XYZ) { //gd:ReflectionProbe.set_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), &struct{ size Vector3.XYZ }{size})
 }
 func (self class) GetSize() Vector3.XYZ { //gd:ReflectionProbe.get_size
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -521,7 +523,7 @@ func (self class) SetOriginOffset(origin_offset Vector3.XYZ) { //gd:ReflectionPr
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_origin_offset, 0|(gdextension.SizeVector3<<4), &struct{ origin_offset Vector3.XYZ }{origin_offset})
 }
 func (self class) GetOriginOffset() Vector3.XYZ { //gd:ReflectionProbe.get_origin_offset
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_origin_offset, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_origin_offset, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -529,7 +531,7 @@ func (self class) SetAsInterior(enable bool) { //gd:ReflectionProbe.set_as_inter
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_as_interior, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsSetAsInterior() bool { //gd:ReflectionProbe.is_set_as_interior
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_set_as_interior, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_set_as_interior, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -537,7 +539,7 @@ func (self class) SetEnableBoxProjection(enable bool) { //gd:ReflectionProbe.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_box_projection, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsBoxProjectionEnabled() bool { //gd:ReflectionProbe.is_box_projection_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_box_projection_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_box_projection_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -545,7 +547,7 @@ func (self class) SetEnableShadows(enable bool) { //gd:ReflectionProbe.set_enabl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_shadows, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) AreShadowsEnabled() bool { //gd:ReflectionProbe.are_shadows_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.are_shadows_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.are_shadows_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -553,7 +555,7 @@ func (self class) SetCullMask(layers int64) { //gd:ReflectionProbe.set_cull_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cull_mask, 0|(gdextension.SizeInt<<4), &struct{ layers int64 }{layers})
 }
 func (self class) GetCullMask() int64 { //gd:ReflectionProbe.get_cull_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cull_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cull_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -561,7 +563,7 @@ func (self class) SetReflectionMask(layers int64) { //gd:ReflectionProbe.set_ref
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reflection_mask, 0|(gdextension.SizeInt<<4), &struct{ layers int64 }{layers})
 }
 func (self class) GetReflectionMask() int64 { //gd:ReflectionProbe.get_reflection_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_reflection_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_reflection_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -569,7 +571,7 @@ func (self class) SetUpdateMode(mode UpdateMode) { //gd:ReflectionProbe.set_upda
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_update_mode, 0|(gdextension.SizeInt<<4), &struct{ mode UpdateMode }{mode})
 }
 func (self class) GetUpdateMode() UpdateMode { //gd:ReflectionProbe.get_update_mode
-	var r_ret = noescape.Call[UpdateMode](gd.ObjectChecked(self.AsObject()), methods.get_update_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[UpdateMode](gd.ObjectChecked(self.AsObject()), methods.get_update_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -32,6 +32,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -68,6 +69,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -193,10 +195,10 @@ func (self Instance) SetExplicitElapse(value bool) Instance { //gd:AnimationNode
 }
 
 func (self class) SetExplicitElapse(enable bool) { //gd:AnimationNodeTimeSeek.set_explicit_elapse
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_explicit_elapse, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_explicit_elapse, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsExplicitElapse() bool { //gd:AnimationNodeTimeSeek.is_explicit_elapse
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_explicit_elapse, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_explicit_elapse, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

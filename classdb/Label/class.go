@@ -16,6 +16,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -57,6 +58,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -584,7 +586,7 @@ func (self class) SetHorizontalAlignment(alignment GUI.HorizontalAlignment) { //
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_horizontal_alignment, 0|(gdextension.SizeInt<<4), &struct{ alignment GUI.HorizontalAlignment }{alignment})
 }
 func (self class) GetHorizontalAlignment() GUI.HorizontalAlignment { //gd:Label.get_horizontal_alignment
-	var r_ret = noescape.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_alignment, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_alignment, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -592,7 +594,7 @@ func (self class) SetVerticalAlignment(alignment GUI.VerticalAlignment) { //gd:L
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical_alignment, 0|(gdextension.SizeInt<<4), &struct{ alignment GUI.VerticalAlignment }{alignment})
 }
 func (self class) GetVerticalAlignment() GUI.VerticalAlignment { //gd:Label.get_vertical_alignment
-	var r_ret = noescape.Call[GUI.VerticalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_vertical_alignment, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[GUI.VerticalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_vertical_alignment, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -600,7 +602,7 @@ func (self class) SetText(text String.Readable) { //gd:Label.set_text
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
 func (self class) GetText() String.Readable { //gd:Label.get_text
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_text, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -608,7 +610,7 @@ func (self class) SetLabelSettings(settings [1]gdclass.LabelSettings) { //gd:Lab
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_label_settings, 0|(gdextension.SizeObject<<4), &struct{ settings gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetLabelSettings(settings[0])[0]))})
 }
 func (self class) GetLabelSettings() [1]gdclass.LabelSettings { //gd:Label.get_label_settings
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_label_settings, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_label_settings, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.LabelSettings{gdclass.NewLabelSettings(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -616,7 +618,7 @@ func (self class) SetTextDirection(direction Control.TextDirection) { //gd:Label
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_direction, 0|(gdextension.SizeInt<<4), &struct{ direction Control.TextDirection }{direction})
 }
 func (self class) GetTextDirection() Control.TextDirection { //gd:Label.get_text_direction
-	var r_ret = noescape.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), methods.get_text_direction, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), methods.get_text_direction, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -624,7 +626,7 @@ func (self class) SetLanguage(language String.Readable) { //gd:Label.set_languag
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_language, 0|(gdextension.SizeString<<4), &struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))})
 }
 func (self class) GetLanguage() String.Readable { //gd:Label.get_language
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -632,7 +634,7 @@ func (self class) SetParagraphSeparator(paragraph_separator String.Readable) { /
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_paragraph_separator, 0|(gdextension.SizeString<<4), &struct{ paragraph_separator gdextension.String }{pointers.Get(gd.InternalString(paragraph_separator))})
 }
 func (self class) GetParagraphSeparator() String.Readable { //gd:Label.get_paragraph_separator
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_paragraph_separator, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_paragraph_separator, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -640,7 +642,7 @@ func (self class) SetAutowrapMode(autowrap_mode TextServer.AutowrapMode) { //gd:
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autowrap_mode, 0|(gdextension.SizeInt<<4), &struct{ autowrap_mode TextServer.AutowrapMode }{autowrap_mode})
 }
 func (self class) GetAutowrapMode() TextServer.AutowrapMode { //gd:Label.get_autowrap_mode
-	var r_ret = noescape.Call[TextServer.AutowrapMode](gd.ObjectChecked(self.AsObject()), methods.get_autowrap_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextServer.AutowrapMode](gd.ObjectChecked(self.AsObject()), methods.get_autowrap_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -648,7 +650,7 @@ func (self class) SetAutowrapTrimFlags(autowrap_trim_flags TextServer.LineBreakF
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autowrap_trim_flags, 0|(gdextension.SizeInt<<4), &struct{ autowrap_trim_flags TextServer.LineBreakFlag }{autowrap_trim_flags})
 }
 func (self class) GetAutowrapTrimFlags() TextServer.LineBreakFlag { //gd:Label.get_autowrap_trim_flags
-	var r_ret = noescape.Call[TextServer.LineBreakFlag](gd.ObjectChecked(self.AsObject()), methods.get_autowrap_trim_flags, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextServer.LineBreakFlag](gd.ObjectChecked(self.AsObject()), methods.get_autowrap_trim_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -656,7 +658,7 @@ func (self class) SetJustificationFlags(justification_flags TextServer.Justifica
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_justification_flags, 0|(gdextension.SizeInt<<4), &struct{ justification_flags TextServer.JustificationFlag }{justification_flags})
 }
 func (self class) GetJustificationFlags() TextServer.JustificationFlag { //gd:Label.get_justification_flags
-	var r_ret = noescape.Call[TextServer.JustificationFlag](gd.ObjectChecked(self.AsObject()), methods.get_justification_flags, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextServer.JustificationFlag](gd.ObjectChecked(self.AsObject()), methods.get_justification_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -664,7 +666,7 @@ func (self class) SetClipText(enable bool) { //gd:Label.set_clip_text
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clip_text, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsClippingText() bool { //gd:Label.is_clipping_text
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_clipping_text, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_clipping_text, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -674,7 +676,7 @@ func (self class) SetTabStops(tab_stops Packed.Array[float32]) { //gd:Label.set_
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops))})
 }
 func (self class) GetTabStops() Packed.Array[float32] { //gd:Label.get_tab_stops
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_tab_stops, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_tab_stops, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -682,7 +684,7 @@ func (self class) SetTextOverrunBehavior(overrun_behavior TextServer.OverrunBeha
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_overrun_behavior, 0|(gdextension.SizeInt<<4), &struct{ overrun_behavior TextServer.OverrunBehavior }{overrun_behavior})
 }
 func (self class) GetTextOverrunBehavior() TextServer.OverrunBehavior { //gd:Label.get_text_overrun_behavior
-	var r_ret = noescape.Call[TextServer.OverrunBehavior](gd.ObjectChecked(self.AsObject()), methods.get_text_overrun_behavior, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextServer.OverrunBehavior](gd.ObjectChecked(self.AsObject()), methods.get_text_overrun_behavior, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -690,7 +692,7 @@ func (self class) SetEllipsisChar(char String.Readable) { //gd:Label.set_ellipsi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ellipsis_char, 0|(gdextension.SizeString<<4), &struct{ char gdextension.String }{pointers.Get(gd.InternalString(char))})
 }
 func (self class) GetEllipsisChar() String.Readable { //gd:Label.get_ellipsis_char
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_ellipsis_char, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_ellipsis_char, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -698,7 +700,7 @@ func (self class) SetUppercase(enable bool) { //gd:Label.set_uppercase
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uppercase, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsUppercase() bool { //gd:Label.is_uppercase
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_uppercase, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_uppercase, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -726,12 +728,12 @@ func (self class) SetVisibleCharacters(amount int64) { //gd:Label.set_visible_ch
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visible_characters, 0|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
 }
 func (self class) GetVisibleCharacters() int64 { //gd:Label.get_visible_characters
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_visible_characters, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_visible_characters, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetVisibleCharactersBehavior() TextServer.VisibleCharactersBehavior { //gd:Label.get_visible_characters_behavior
-	var r_ret = noescape.Call[TextServer.VisibleCharactersBehavior](gd.ObjectChecked(self.AsObject()), methods.get_visible_characters_behavior, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextServer.VisibleCharactersBehavior](gd.ObjectChecked(self.AsObject()), methods.get_visible_characters_behavior, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -744,7 +746,7 @@ func (self class) SetVisibleRatio(ratio float64) { //gd:Label.set_visible_ratio
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visible_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
 }
 func (self class) GetVisibleRatio() float64 { //gd:Label.get_visible_ratio
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_visible_ratio, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_visible_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -752,7 +754,7 @@ func (self class) SetLinesSkipped(lines_skipped int64) { //gd:Label.set_lines_sk
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lines_skipped, 0|(gdextension.SizeInt<<4), &struct{ lines_skipped int64 }{lines_skipped})
 }
 func (self class) GetLinesSkipped() int64 { //gd:Label.get_lines_skipped
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_lines_skipped, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_lines_skipped, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -760,7 +762,7 @@ func (self class) SetMaxLinesVisible(lines_visible int64) { //gd:Label.set_max_l
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_lines_visible, 0|(gdextension.SizeInt<<4), &struct{ lines_visible int64 }{lines_visible})
 }
 func (self class) GetMaxLinesVisible() int64 { //gd:Label.get_max_lines_visible
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_lines_visible, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_lines_visible, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -770,7 +772,7 @@ func (self class) SetStructuredTextBidiOverride(parser TextServer.StructuredText
 	}{parser})
 }
 func (self class) GetStructuredTextBidiOverride() TextServer.StructuredTextParser { //gd:Label.get_structured_text_bidi_override
-	var r_ret = noescape.Call[TextServer.StructuredTextParser](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextServer.StructuredTextParser](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -778,7 +780,7 @@ func (self class) SetStructuredTextBidiOverrideOptions(args Array.Any) { //gd:La
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_structured_text_bidi_override_options, 0|(gdextension.SizeArray<<4), &struct{ args gdextension.Array }{pointers.Get(gd.InternalArray(args))})
 }
 func (self class) GetStructuredTextBidiOverrideOptions() Array.Any { //gd:Label.get_structured_text_bidi_override_options
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override_options, gdextension.SizeArray, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override_options, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

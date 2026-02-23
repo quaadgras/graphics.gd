@@ -25,6 +25,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -63,6 +64,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -299,7 +301,7 @@ func (self class) SetRest(rest Transform2D.OriginXY) { //gd:Bone2D.set_rest
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rest, 0|(gdextension.SizeTransform2D<<4), &struct{ rest Transform2D.OriginXY }{rest})
 }
 func (self class) GetRest() Transform2D.OriginXY { //gd:Bone2D.get_rest
-	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_rest, gdextension.SizeTransform2D, &struct{}{})
+	var r_ret = jumponly.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_rest, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -320,7 +322,7 @@ func (self class) SetAutocalculateLengthAndAngle(auto_calculate bool) { //gd:Bon
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autocalculate_length_and_angle, 0|(gdextension.SizeBool<<4), &struct{ auto_calculate bool }{auto_calculate})
 }
 func (self class) GetAutocalculateLengthAndAngle() bool { //gd:Bone2D.get_autocalculate_length_and_angle
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_autocalculate_length_and_angle, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_autocalculate_length_and_angle, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -328,7 +330,7 @@ func (self class) SetLength(length float64) { //gd:Bone2D.set_length
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
 func (self class) GetLength() float64 { //gd:Bone2D.get_length
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -336,7 +338,7 @@ func (self class) SetBoneAngle(angle float64) { //gd:Bone2D.set_bone_angle
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_angle, 0|(gdextension.SizeFloat<<4), &struct{ angle float64 }{angle})
 }
 func (self class) GetBoneAngle() float64 { //gd:Bone2D.get_bone_angle
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bone_angle, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bone_angle, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

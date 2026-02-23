@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -50,6 +51,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -220,34 +222,34 @@ func (self Instance) SetDb(value FilterDB) Instance { //gd:AudioEffectFilter.db
 }
 
 func (self class) SetCutoff(freq float64) { //gd:AudioEffectFilter.set_cutoff
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cutoff, 0|(gdextension.SizeFloat<<4), &struct{ freq float64 }{freq})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cutoff, 0|(gdextension.SizeFloat<<4), &struct{ freq float64 }{freq})
 }
 func (self class) GetCutoff() float64 { //gd:AudioEffectFilter.get_cutoff
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_cutoff, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_cutoff, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetResonance(amount float64) { //gd:AudioEffectFilter.set_resonance
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_resonance, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_resonance, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 func (self class) GetResonance() float64 { //gd:AudioEffectFilter.get_resonance
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_resonance, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_resonance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetGain(amount float64) { //gd:AudioEffectFilter.set_gain
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gain, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gain, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 func (self class) GetGain() float64 { //gd:AudioEffectFilter.get_gain
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gain, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gain, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetDb(amount FilterDB) { //gd:AudioEffectFilter.set_db
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_db, 0|(gdextension.SizeInt<<4), &struct{ amount FilterDB }{amount})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_db, 0|(gdextension.SizeInt<<4), &struct{ amount FilterDB }{amount})
 }
 func (self class) GetDb() FilterDB { //gd:AudioEffectFilter.get_db
-	var r_ret = noescape.Call[FilterDB](gd.ObjectChecked(self.AsObject()), methods.get_db, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[FilterDB](gd.ObjectChecked(self.AsObject()), methods.get_db, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

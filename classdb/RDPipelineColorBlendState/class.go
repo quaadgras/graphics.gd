@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -51,6 +52,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -227,18 +229,18 @@ func (self Instance) SetAttachments(value []RDPipelineColorBlendStateAttachment.
 }
 
 func (self class) SetEnableLogicOp(p_member bool) { //gd:RDPipelineColorBlendState.set_enable_logic_op
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_logic_op, 0|(gdextension.SizeBool<<4), &struct{ p_member bool }{p_member})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_logic_op, 0|(gdextension.SizeBool<<4), &struct{ p_member bool }{p_member})
 }
 func (self class) GetEnableLogicOp() bool { //gd:RDPipelineColorBlendState.get_enable_logic_op
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enable_logic_op, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enable_logic_op, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetLogicOp(p_member Rendering.LogicOperation) { //gd:RDPipelineColorBlendState.set_logic_op
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_logic_op, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.LogicOperation }{p_member})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_logic_op, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.LogicOperation }{p_member})
 }
 func (self class) GetLogicOp() Rendering.LogicOperation { //gd:RDPipelineColorBlendState.get_logic_op
-	var r_ret = noescape.Call[Rendering.LogicOperation](gd.ObjectChecked(self.AsObject()), methods.get_logic_op, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Rendering.LogicOperation](gd.ObjectChecked(self.AsObject()), methods.get_logic_op, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -246,7 +248,7 @@ func (self class) SetBlendConstant(p_member Color.RGBA) { //gd:RDPipelineColorBl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_constant, 0|(gdextension.SizeColor<<4), &struct{ p_member Color.RGBA }{p_member})
 }
 func (self class) GetBlendConstant() Color.RGBA { //gd:RDPipelineColorBlendState.get_blend_constant
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_blend_constant, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_blend_constant, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -254,7 +256,7 @@ func (self class) SetAttachments(attachments Array.Contains[[1]gdclass.RDPipelin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_attachments, 0|(gdextension.SizeArray<<4), &struct{ attachments gdextension.Array }{pointers.Get(gd.InternalArray(attachments))})
 }
 func (self class) GetAttachments() Array.Contains[[1]gdclass.RDPipelineColorBlendStateAttachment] { //gd:RDPipelineColorBlendState.get_attachments
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_attachments, gdextension.SizeArray, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_attachments, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.RDPipelineColorBlendStateAttachment]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

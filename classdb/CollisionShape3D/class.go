@@ -21,6 +21,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -60,6 +61,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -253,13 +255,13 @@ func (self Instance) SetDebugFill(value bool) Instance { //gd:CollisionShape3D.d
 }
 
 func (self class) ResourceChanged(resource [1]gdclass.Resource) { //gd:CollisionShape3D.resource_changed
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resource_changed, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetResource(resource[0])[0]))})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resource_changed, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetResource(resource[0])[0]))})
 }
 func (self class) SetShape(shape [1]gdclass.Shape3D) { //gd:CollisionShape3D.set_shape
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape, 0|(gdextension.SizeObject<<4), &struct{ shape gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetShape3D(shape[0])[0]))})
 }
 func (self class) GetShape() [1]gdclass.Shape3D { //gd:CollisionShape3D.get_shape
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shape, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shape, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Shape3D{gdclass.NewShape3D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -267,7 +269,7 @@ func (self class) SetDisabled(enable bool) { //gd:CollisionShape3D.set_disabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsDisabled() bool { //gd:CollisionShape3D.is_disabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_disabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_disabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -278,7 +280,7 @@ func (self class) SetDebugColor(color Color.RGBA) { //gd:CollisionShape3D.set_de
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetDebugColor() Color.RGBA { //gd:CollisionShape3D.get_debug_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_debug_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_debug_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }

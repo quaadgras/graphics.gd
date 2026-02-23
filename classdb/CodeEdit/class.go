@@ -17,6 +17,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -58,6 +59,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -1399,7 +1401,7 @@ func (self class) SetIndentSize(size int64) { //gd:CodeEdit.set_indent_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_indent_size, 0|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 }
 func (self class) GetIndentSize() int64 { //gd:CodeEdit.get_indent_size
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_indent_size, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_indent_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1407,15 +1409,15 @@ func (self class) SetIndentUsingSpaces(use_spaces bool) { //gd:CodeEdit.set_inde
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_indent_using_spaces, 0|(gdextension.SizeBool<<4), &struct{ use_spaces bool }{use_spaces})
 }
 func (self class) IsIndentUsingSpaces() bool { //gd:CodeEdit.is_indent_using_spaces
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_indent_using_spaces, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_indent_using_spaces, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetAutoIndentEnabled(enable bool) { //gd:CodeEdit.set_auto_indent_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_indent_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_indent_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsAutoIndentEnabled() bool { //gd:CodeEdit.is_auto_indent_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_indent_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_indent_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1443,10 +1445,10 @@ func (self class) ConvertIndent(from_line int64, to_line int64) { //gd:CodeEdit.
 	}{from_line, to_line})
 }
 func (self class) SetAutoBraceCompletionEnabled(enable bool) { //gd:CodeEdit.set_auto_brace_completion_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_brace_completion_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_brace_completion_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsAutoBraceCompletionEnabled() bool { //gd:CodeEdit.is_auto_brace_completion_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_brace_completion_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_brace_completion_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1454,7 +1456,7 @@ func (self class) SetHighlightMatchingBracesEnabled(enable bool) { //gd:CodeEdit
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_highlight_matching_braces_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsHighlightMatchingBracesEnabled() bool { //gd:CodeEdit.is_highlight_matching_braces_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_highlight_matching_braces_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_highlight_matching_braces_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1491,7 +1493,7 @@ func (self class) SetDrawBreakpointsGutter(enable bool) { //gd:CodeEdit.set_draw
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_breakpoints_gutter, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsDrawingBreakpointsGutter() bool { //gd:CodeEdit.is_drawing_breakpoints_gutter
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drawing_breakpoints_gutter, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drawing_breakpoints_gutter, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1499,7 +1501,7 @@ func (self class) SetDrawBookmarksGutter(enable bool) { //gd:CodeEdit.set_draw_b
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_bookmarks_gutter, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsDrawingBookmarksGutter() bool { //gd:CodeEdit.is_drawing_bookmarks_gutter
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drawing_bookmarks_gutter, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drawing_bookmarks_gutter, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1507,7 +1509,7 @@ func (self class) SetDrawExecutingLinesGutter(enable bool) { //gd:CodeEdit.set_d
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_executing_lines_gutter, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsDrawingExecutingLinesGutter() bool { //gd:CodeEdit.is_drawing_executing_lines_gutter
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drawing_executing_lines_gutter, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drawing_executing_lines_gutter, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1588,7 +1590,7 @@ func (self class) SetLineNumbersMinDigits(count int64) { //gd:CodeEdit.set_line_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_line_numbers_min_digits, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
 func (self class) GetLineNumbersMinDigits() int64 { //gd:CodeEdit.get_line_numbers_min_digits
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_line_numbers_min_digits, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_line_numbers_min_digits, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1604,7 +1606,7 @@ func (self class) SetLineFoldingEnabled(enabled bool) { //gd:CodeEdit.set_line_f
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_line_folding_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsLineFoldingEnabled() bool { //gd:CodeEdit.is_line_folding_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_line_folding_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_line_folding_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1645,12 +1647,12 @@ func (self class) CreateCodeRegion() { //gd:CodeEdit.create_code_region
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_code_region, 0, &struct{}{})
 }
 func (self class) GetCodeRegionStartTag() String.Readable { //gd:CodeEdit.get_code_region_start_tag
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_code_region_start_tag, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_code_region_start_tag, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetCodeRegionEndTag() String.Readable { //gd:CodeEdit.get_code_region_end_tag
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_code_region_end_tag, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_code_region_end_tag, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1803,7 +1805,7 @@ func (self class) GetCodeCompletionOption(index int64) Dictionary.Any { //gd:Cod
 	return ret
 }
 func (self class) GetCodeCompletionSelectedIndex() int64 { //gd:CodeEdit.get_code_completion_selected_index
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_code_completion_selected_index, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_code_completion_selected_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1817,10 +1819,10 @@ func (self class) CancelCodeCompletion() { //gd:CodeEdit.cancel_code_completion
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.cancel_code_completion, 0, &struct{}{})
 }
 func (self class) SetCodeCompletionEnabled(enable bool) { //gd:CodeEdit.set_code_completion_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_code_completion_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_code_completion_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsCodeCompletionEnabled() bool { //gd:CodeEdit.is_code_completion_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_code_completion_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_code_completion_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1836,7 +1838,7 @@ func (self class) SetLineLengthGuidelines(guideline_columns Array.Contains[int64
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_line_length_guidelines, 0|(gdextension.SizeArray<<4), &struct{ guideline_columns gdextension.Array }{pointers.Get(gd.InternalArray(guideline_columns))})
 }
 func (self class) GetLineLengthGuidelines() Array.Contains[int64] { //gd:CodeEdit.get_line_length_guidelines
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_line_length_guidelines, gdextension.SizeArray, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_line_length_guidelines, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[int64]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1844,7 +1846,7 @@ func (self class) SetSymbolLookupOnClickEnabled(enable bool) { //gd:CodeEdit.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_symbol_lookup_on_click_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsSymbolLookupOnClickEnabled() bool { //gd:CodeEdit.is_symbol_lookup_on_click_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_symbol_lookup_on_click_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_symbol_lookup_on_click_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1868,7 +1870,7 @@ func (self class) SetSymbolTooltipOnHoverEnabled(enable bool) { //gd:CodeEdit.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_symbol_tooltip_on_hover_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsSymbolTooltipOnHoverEnabled() bool { //gd:CodeEdit.is_symbol_tooltip_on_hover_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_symbol_tooltip_on_hover_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_symbol_tooltip_on_hover_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -27,6 +27,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -67,6 +68,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -1074,7 +1076,7 @@ func (self Instance) SetUvClipping(value bool) Instance { //gd:TileSet.uv_clippi
 }
 
 func (self class) GetNextSourceId() int64 { //gd:TileSet.get_next_source_id
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_next_source_id, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_next_source_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1119,7 +1121,7 @@ func (self class) SetTileShape(shape TileShape) { //gd:TileSet.set_tile_shape
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_shape, 0|(gdextension.SizeInt<<4), &struct{ shape TileShape }{shape})
 }
 func (self class) GetTileShape() TileShape { //gd:TileSet.get_tile_shape
-	var r_ret = noescape.Call[TileShape](gd.ObjectChecked(self.AsObject()), methods.get_tile_shape, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TileShape](gd.ObjectChecked(self.AsObject()), methods.get_tile_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1127,7 +1129,7 @@ func (self class) SetTileLayout(layout TileLayout) { //gd:TileSet.set_tile_layou
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_layout, 0|(gdextension.SizeInt<<4), &struct{ layout TileLayout }{layout})
 }
 func (self class) GetTileLayout() TileLayout { //gd:TileSet.get_tile_layout
-	var r_ret = noescape.Call[TileLayout](gd.ObjectChecked(self.AsObject()), methods.get_tile_layout, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TileLayout](gd.ObjectChecked(self.AsObject()), methods.get_tile_layout, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1135,7 +1137,7 @@ func (self class) SetTileOffsetAxis(alignment TileOffsetAxis) { //gd:TileSet.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_offset_axis, 0|(gdextension.SizeInt<<4), &struct{ alignment TileOffsetAxis }{alignment})
 }
 func (self class) GetTileOffsetAxis() TileOffsetAxis { //gd:TileSet.get_tile_offset_axis
-	var r_ret = noescape.Call[TileOffsetAxis](gd.ObjectChecked(self.AsObject()), methods.get_tile_offset_axis, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TileOffsetAxis](gd.ObjectChecked(self.AsObject()), methods.get_tile_offset_axis, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1143,7 +1145,7 @@ func (self class) SetTileSize(size Vector2i.XY) { //gd:TileSet.set_tile_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_size, 0|(gdextension.SizeVector2i<<4), &struct{ size Vector2i.XY }{size})
 }
 func (self class) GetTileSize() Vector2i.XY { //gd:TileSet.get_tile_size
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_tile_size, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = jumponly.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_tile_size, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1151,7 +1153,7 @@ func (self class) SetUvClipping(uv_clipping bool) { //gd:TileSet.set_uv_clipping
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uv_clipping, 0|(gdextension.SizeBool<<4), &struct{ uv_clipping bool }{uv_clipping})
 }
 func (self class) IsUvClipping() bool { //gd:TileSet.is_uv_clipping
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_uv_clipping, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_uv_clipping, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

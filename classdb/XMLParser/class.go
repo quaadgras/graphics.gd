@@ -41,6 +41,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -75,6 +76,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -330,7 +332,7 @@ func (self class) Read() Error.Code { //gd:XMLParser.read
 	return ret
 }
 func (self class) GetNodeType() NodeType { //gd:XMLParser.get_node_type
-	var r_ret = noescape.Call[NodeType](gd.ObjectChecked(self.AsObject()), methods.get_node_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[NodeType](gd.ObjectChecked(self.AsObject()), methods.get_node_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -345,7 +347,7 @@ func (self class) GetNodeData() String.Readable { //gd:XMLParser.get_node_data
 	return ret
 }
 func (self class) GetNodeOffset() int64 { //gd:XMLParser.get_node_offset
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_node_offset, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_node_offset, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -380,12 +382,12 @@ func (self class) GetNamedAttributeValueSafe(name String.Readable) String.Readab
 	return ret
 }
 func (self class) IsEmpty() bool { //gd:XMLParser.is_empty
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_empty, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_empty, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetCurrentLine() int64 { //gd:XMLParser.get_current_line
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_current_line, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_current_line, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

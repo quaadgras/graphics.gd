@@ -18,6 +18,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -56,6 +57,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -291,18 +293,18 @@ func (self Instance) SetHandTrackingSource(value HandTrackingSource) Instance { 
 }
 
 func (self class) SetHasTrackingData(has_data bool) { //gd:XRHandTracker.set_has_tracking_data
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_has_tracking_data, 0|(gdextension.SizeBool<<4), &struct{ has_data bool }{has_data})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_has_tracking_data, 0|(gdextension.SizeBool<<4), &struct{ has_data bool }{has_data})
 }
 func (self class) GetHasTrackingData() bool { //gd:XRHandTracker.get_has_tracking_data
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_has_tracking_data, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_has_tracking_data, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetHandTrackingSource(source HandTrackingSource) { //gd:XRHandTracker.set_hand_tracking_source
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hand_tracking_source, 0|(gdextension.SizeInt<<4), &struct{ source HandTrackingSource }{source})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hand_tracking_source, 0|(gdextension.SizeInt<<4), &struct{ source HandTrackingSource }{source})
 }
 func (self class) GetHandTrackingSource() HandTrackingSource { //gd:XRHandTracker.get_hand_tracking_source
-	var r_ret = noescape.Call[HandTrackingSource](gd.ObjectChecked(self.AsObject()), methods.get_hand_tracking_source, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[HandTrackingSource](gd.ObjectChecked(self.AsObject()), methods.get_hand_tracking_source, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

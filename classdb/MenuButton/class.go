@@ -17,6 +17,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -57,6 +58,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -234,7 +236,7 @@ func (self Instance) SetItemCount(value int) Instance { //gd:MenuButton.item_cou
 }
 
 func (self class) GetPopup() [1]gdclass.PopupMenu { //gd:MenuButton.get_popup
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_popup, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_popup, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PopupMenu{gdclass.NewPopupMenu(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
@@ -242,15 +244,15 @@ func (self class) ShowPopup() { //gd:MenuButton.show_popup
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.show_popup, 0, &struct{}{})
 }
 func (self class) SetSwitchOnHover(enable bool) { //gd:MenuButton.set_switch_on_hover
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_switch_on_hover, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_switch_on_hover, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsSwitchOnHover() bool { //gd:MenuButton.is_switch_on_hover
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_switch_on_hover, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_switch_on_hover, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetDisableShortcuts(disabled bool) { //gd:MenuButton.set_disable_shortcuts
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_shortcuts, 0|(gdextension.SizeBool<<4), &struct{ disabled bool }{disabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_shortcuts, 0|(gdextension.SizeBool<<4), &struct{ disabled bool }{disabled})
 }
 func (self class) SetItemCount(count int64) { //gd:MenuButton.set_item_count
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})

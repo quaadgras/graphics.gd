@@ -33,6 +33,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -74,6 +75,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -596,15 +598,15 @@ func (self class) SetLightData(data [1]gdclass.LightmapGIData) { //gd:LightmapGI
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_light_data, 0|(gdextension.SizeObject<<4), &struct{ data gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetLightmapGIData(data[0])[0]))})
 }
 func (self class) GetLightData() [1]gdclass.LightmapGIData { //gd:LightmapGI.get_light_data
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_light_data, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_light_data, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.LightmapGIData{gdclass.NewLightmapGIData(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetBakeQuality(bake_quality BakeQuality) { //gd:LightmapGI.set_bake_quality
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_quality, 0|(gdextension.SizeInt<<4), &struct{ bake_quality BakeQuality }{bake_quality})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_quality, 0|(gdextension.SizeInt<<4), &struct{ bake_quality BakeQuality }{bake_quality})
 }
 func (self class) GetBakeQuality() BakeQuality { //gd:LightmapGI.get_bake_quality
-	var r_ret = noescape.Call[BakeQuality](gd.ObjectChecked(self.AsObject()), methods.get_bake_quality, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[BakeQuality](gd.ObjectChecked(self.AsObject()), methods.get_bake_quality, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -612,7 +614,7 @@ func (self class) SetBounces(bounces int64) { //gd:LightmapGI.set_bounces
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bounces, 0|(gdextension.SizeInt<<4), &struct{ bounces int64 }{bounces})
 }
 func (self class) GetBounces() int64 { //gd:LightmapGI.get_bounces
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bounces, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bounces, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -620,15 +622,15 @@ func (self class) SetBounceIndirectEnergy(bounce_indirect_energy float64) { //gd
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bounce_indirect_energy, 0|(gdextension.SizeFloat<<4), &struct{ bounce_indirect_energy float64 }{bounce_indirect_energy})
 }
 func (self class) GetBounceIndirectEnergy() float64 { //gd:LightmapGI.get_bounce_indirect_energy
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bounce_indirect_energy, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bounce_indirect_energy, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetGenerateProbes(subdivision GenerateProbes) { //gd:LightmapGI.set_generate_probes
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_generate_probes, 0|(gdextension.SizeInt<<4), &struct{ subdivision GenerateProbes }{subdivision})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_generate_probes, 0|(gdextension.SizeInt<<4), &struct{ subdivision GenerateProbes }{subdivision})
 }
 func (self class) GetGenerateProbes() GenerateProbes { //gd:LightmapGI.get_generate_probes
-	var r_ret = noescape.Call[GenerateProbes](gd.ObjectChecked(self.AsObject()), methods.get_generate_probes, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[GenerateProbes](gd.ObjectChecked(self.AsObject()), methods.get_generate_probes, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -636,7 +638,7 @@ func (self class) SetBias(bias float64) { //gd:LightmapGI.set_bias
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bias, 0|(gdextension.SizeFloat<<4), &struct{ bias float64 }{bias})
 }
 func (self class) GetBias() float64 { //gd:LightmapGI.get_bias
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bias, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bias, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -644,7 +646,7 @@ func (self class) SetEnvironmentMode(mode EnvironmentMode) { //gd:LightmapGI.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment_mode, 0|(gdextension.SizeInt<<4), &struct{ mode EnvironmentMode }{mode})
 }
 func (self class) GetEnvironmentMode() EnvironmentMode { //gd:LightmapGI.get_environment_mode
-	var r_ret = noescape.Call[EnvironmentMode](gd.ObjectChecked(self.AsObject()), methods.get_environment_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[EnvironmentMode](gd.ObjectChecked(self.AsObject()), methods.get_environment_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -652,7 +654,7 @@ func (self class) SetEnvironmentCustomSky(sky [1]gdclass.Sky) { //gd:LightmapGI.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment_custom_sky, 0|(gdextension.SizeObject<<4), &struct{ sky gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetSky(sky[0])[0]))})
 }
 func (self class) GetEnvironmentCustomSky() [1]gdclass.Sky { //gd:LightmapGI.get_environment_custom_sky
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_environment_custom_sky, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_environment_custom_sky, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Sky{gdclass.NewSky(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -660,15 +662,15 @@ func (self class) SetEnvironmentCustomColor(color Color.RGBA) { //gd:LightmapGI.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment_custom_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetEnvironmentCustomColor() Color.RGBA { //gd:LightmapGI.get_environment_custom_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_environment_custom_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_environment_custom_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetEnvironmentCustomEnergy(energy float64) { //gd:LightmapGI.set_environment_custom_energy
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment_custom_energy, 0|(gdextension.SizeFloat<<4), &struct{ energy float64 }{energy})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment_custom_energy, 0|(gdextension.SizeFloat<<4), &struct{ energy float64 }{energy})
 }
 func (self class) GetEnvironmentCustomEnergy() float64 { //gd:LightmapGI.get_environment_custom_energy
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_environment_custom_energy, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_environment_custom_energy, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -676,7 +678,7 @@ func (self class) SetTexelScale(texel_scale float64) { //gd:LightmapGI.set_texel
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texel_scale, 0|(gdextension.SizeFloat<<4), &struct{ texel_scale float64 }{texel_scale})
 }
 func (self class) GetTexelScale() float64 { //gd:LightmapGI.get_texel_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_texel_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_texel_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -684,7 +686,7 @@ func (self class) SetMaxTextureSize(max_texture_size int64) { //gd:LightmapGI.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_texture_size, 0|(gdextension.SizeInt<<4), &struct{ max_texture_size int64 }{max_texture_size})
 }
 func (self class) GetMaxTextureSize() int64 { //gd:LightmapGI.get_max_texture_size
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_texture_size, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_texture_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -692,7 +694,7 @@ func (self class) SetSupersamplingEnabled(enable bool) { //gd:LightmapGI.set_sup
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_supersampling_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsSupersamplingEnabled() bool { //gd:LightmapGI.is_supersampling_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_supersampling_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_supersampling_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -700,7 +702,7 @@ func (self class) SetSupersamplingFactor(factor float64) { //gd:LightmapGI.set_s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_supersampling_factor, 0|(gdextension.SizeFloat<<4), &struct{ factor float64 }{factor})
 }
 func (self class) GetSupersamplingFactor() float64 { //gd:LightmapGI.get_supersampling_factor
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_supersampling_factor, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_supersampling_factor, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -708,39 +710,39 @@ func (self class) SetUseDenoiser(use_denoiser bool) { //gd:LightmapGI.set_use_de
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_denoiser, 0|(gdextension.SizeBool<<4), &struct{ use_denoiser bool }{use_denoiser})
 }
 func (self class) IsUsingDenoiser() bool { //gd:LightmapGI.is_using_denoiser
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_denoiser, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_denoiser, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetDenoiserStrength(denoiser_strength float64) { //gd:LightmapGI.set_denoiser_strength
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_denoiser_strength, 0|(gdextension.SizeFloat<<4), &struct{ denoiser_strength float64 }{denoiser_strength})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_denoiser_strength, 0|(gdextension.SizeFloat<<4), &struct{ denoiser_strength float64 }{denoiser_strength})
 }
 func (self class) GetDenoiserStrength() float64 { //gd:LightmapGI.get_denoiser_strength
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_denoiser_strength, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_denoiser_strength, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetDenoiserRange(denoiser_range int64) { //gd:LightmapGI.set_denoiser_range
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_denoiser_range, 0|(gdextension.SizeInt<<4), &struct{ denoiser_range int64 }{denoiser_range})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_denoiser_range, 0|(gdextension.SizeInt<<4), &struct{ denoiser_range int64 }{denoiser_range})
 }
 func (self class) GetDenoiserRange() int64 { //gd:LightmapGI.get_denoiser_range
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_denoiser_range, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_denoiser_range, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetInterior(enable bool) { //gd:LightmapGI.set_interior
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interior, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interior, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsInterior() bool { //gd:LightmapGI.is_interior
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_interior, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_interior, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetDirectional(directional bool) { //gd:LightmapGI.set_directional
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_directional, 0|(gdextension.SizeBool<<4), &struct{ directional bool }{directional})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_directional, 0|(gdextension.SizeBool<<4), &struct{ directional bool }{directional})
 }
 func (self class) IsDirectional() bool { //gd:LightmapGI.is_directional
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_directional, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_directional, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -748,15 +750,15 @@ func (self class) SetShadowmaskMode(mode LightmapGIData.ShadowmaskMode) { //gd:L
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadowmask_mode, 0|(gdextension.SizeInt<<4), &struct{ mode LightmapGIData.ShadowmaskMode }{mode})
 }
 func (self class) GetShadowmaskMode() LightmapGIData.ShadowmaskMode { //gd:LightmapGI.get_shadowmask_mode
-	var r_ret = noescape.Call[LightmapGIData.ShadowmaskMode](gd.ObjectChecked(self.AsObject()), methods.get_shadowmask_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[LightmapGIData.ShadowmaskMode](gd.ObjectChecked(self.AsObject()), methods.get_shadowmask_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetUseTextureForBounces(use_texture_for_bounces bool) { //gd:LightmapGI.set_use_texture_for_bounces
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_texture_for_bounces, 0|(gdextension.SizeBool<<4), &struct{ use_texture_for_bounces bool }{use_texture_for_bounces})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_texture_for_bounces, 0|(gdextension.SizeBool<<4), &struct{ use_texture_for_bounces bool }{use_texture_for_bounces})
 }
 func (self class) IsUsingTextureForBounces() bool { //gd:LightmapGI.is_using_texture_for_bounces
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_texture_for_bounces, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_texture_for_bounces, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -764,7 +766,7 @@ func (self class) SetCameraAttributes(camera_attributes [1]gdclass.CameraAttribu
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera_attributes, 0|(gdextension.SizeObject<<4), &struct{ camera_attributes gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCameraAttributes(camera_attributes[0])[0]))})
 }
 func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes { //gd:LightmapGI.get_camera_attributes
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_camera_attributes, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_camera_attributes, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.CameraAttributes{gdclass.NewCameraAttributes(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

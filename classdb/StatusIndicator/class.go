@@ -9,6 +9,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -47,6 +48,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -234,7 +236,7 @@ func (self class) SetTooltip(tooltip String.Readable) { //gd:StatusIndicator.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tooltip, 0|(gdextension.SizeString<<4), &struct{ tooltip gdextension.String }{pointers.Get(gd.InternalString(tooltip))})
 }
 func (self class) GetTooltip() String.Readable { //gd:StatusIndicator.get_tooltip
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tooltip, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tooltip, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -242,7 +244,7 @@ func (self class) SetIcon(texture [1]gdclass.Texture2D) { //gd:StatusIndicator.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetIcon() [1]gdclass.Texture2D { //gd:StatusIndicator.get_icon
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_icon, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_icon, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -250,7 +252,7 @@ func (self class) SetVisible(visible bool) { //gd:StatusIndicator.set_visible
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visible, 0|(gdextension.SizeBool<<4), &struct{ visible bool }{visible})
 }
 func (self class) IsVisible() bool { //gd:StatusIndicator.is_visible
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_visible, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_visible, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -258,7 +260,7 @@ func (self class) SetMenu(menu Path.ToNode) { //gd:StatusIndicator.set_menu
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_menu, 0|(gdextension.SizeNodePath<<4), &struct{ menu gdextension.NodePath }{pointers.Get(gd.InternalNodePath(menu))})
 }
 func (self class) GetMenu() Path.ToNode { //gd:StatusIndicator.get_menu
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_menu, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_menu, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

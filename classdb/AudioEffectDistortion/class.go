@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -50,6 +51,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -235,42 +237,42 @@ func (self Instance) SetPostGain(value Float.X) Instance { //gd:AudioEffectDisto
 }
 
 func (self class) SetMode(mode Mode) { //gd:AudioEffectDistortion.set_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mode, 0|(gdextension.SizeInt<<4), &struct{ mode Mode }{mode})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mode, 0|(gdextension.SizeInt<<4), &struct{ mode Mode }{mode})
 }
 func (self class) GetMode() Mode { //gd:AudioEffectDistortion.get_mode
-	var r_ret = noescape.Call[Mode](gd.ObjectChecked(self.AsObject()), methods.get_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Mode](gd.ObjectChecked(self.AsObject()), methods.get_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPreGain(pre_gain float64) { //gd:AudioEffectDistortion.set_pre_gain
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pre_gain, 0|(gdextension.SizeFloat<<4), &struct{ pre_gain float64 }{pre_gain})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pre_gain, 0|(gdextension.SizeFloat<<4), &struct{ pre_gain float64 }{pre_gain})
 }
 func (self class) GetPreGain() float64 { //gd:AudioEffectDistortion.get_pre_gain
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pre_gain, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pre_gain, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetKeepHfHz(keep_hf_hz float64) { //gd:AudioEffectDistortion.set_keep_hf_hz
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keep_hf_hz, 0|(gdextension.SizeFloat<<4), &struct{ keep_hf_hz float64 }{keep_hf_hz})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keep_hf_hz, 0|(gdextension.SizeFloat<<4), &struct{ keep_hf_hz float64 }{keep_hf_hz})
 }
 func (self class) GetKeepHfHz() float64 { //gd:AudioEffectDistortion.get_keep_hf_hz
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_keep_hf_hz, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_keep_hf_hz, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetDrive(drive float64) { //gd:AudioEffectDistortion.set_drive
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drive, 0|(gdextension.SizeFloat<<4), &struct{ drive float64 }{drive})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drive, 0|(gdextension.SizeFloat<<4), &struct{ drive float64 }{drive})
 }
 func (self class) GetDrive() float64 { //gd:AudioEffectDistortion.get_drive
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_drive, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_drive, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPostGain(post_gain float64) { //gd:AudioEffectDistortion.set_post_gain
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_post_gain, 0|(gdextension.SizeFloat<<4), &struct{ post_gain float64 }{post_gain})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_post_gain, 0|(gdextension.SizeFloat<<4), &struct{ post_gain float64 }{post_gain})
 }
 func (self class) GetPostGain() float64 { //gd:AudioEffectDistortion.get_post_gain
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_post_gain, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_post_gain, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

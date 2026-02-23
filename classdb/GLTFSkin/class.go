@@ -9,6 +9,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -46,6 +47,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -276,15 +278,15 @@ func (self Instance) SetGodotSkin(value Skin.Instance) Instance { //gd:GLTFSkin.
 }
 
 func (self class) GetSkinRoot() int64 { //gd:GLTFSkin.get_skin_root
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_skin_root, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_skin_root, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetSkinRoot(skin_root int64) { //gd:GLTFSkin.set_skin_root
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin_root, 0|(gdextension.SizeInt<<4), &struct{ skin_root int64 }{skin_root})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin_root, 0|(gdextension.SizeInt<<4), &struct{ skin_root int64 }{skin_root})
 }
 func (self class) GetJointsOriginal() Packed.Array[int32] { //gd:GLTFSkin.get_joints_original
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_joints_original, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_joints_original, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -302,7 +304,7 @@ func (self class) SetInverseBinds(inverse_binds Array.Contains[Transform3D.Basis
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inverse_binds, 0|(gdextension.SizeArray<<4), &struct{ inverse_binds gdextension.Array }{pointers.Get(gd.InternalArray(inverse_binds))})
 }
 func (self class) GetJoints() Packed.Array[int32] { //gd:GLTFSkin.get_joints
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_joints, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_joints, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -312,7 +314,7 @@ func (self class) SetJoints(joints Packed.Array[int32]) { //gd:GLTFSkin.set_join
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](joints))})
 }
 func (self class) GetNonJoints() Packed.Array[int32] { //gd:GLTFSkin.get_non_joints
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_non_joints, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_non_joints, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -322,7 +324,7 @@ func (self class) SetNonJoints(non_joints Packed.Array[int32]) { //gd:GLTFSkin.s
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](non_joints))})
 }
 func (self class) GetRoots() Packed.Array[int32] { //gd:GLTFSkin.get_roots
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_roots, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_roots, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -332,12 +334,12 @@ func (self class) SetRoots(roots Packed.Array[int32]) { //gd:GLTFSkin.set_roots
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](roots))})
 }
 func (self class) GetSkeleton() int64 { //gd:GLTFSkin.get_skeleton
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetSkeleton(skeleton int64) { //gd:GLTFSkin.set_skeleton
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skeleton, 0|(gdextension.SizeInt<<4), &struct{ skeleton int64 }{skeleton})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skeleton, 0|(gdextension.SizeInt<<4), &struct{ skeleton int64 }{skeleton})
 }
 func (self class) GetJointIToBoneI() Dictionary.Any { //gd:GLTFSkin.get_joint_i_to_bone_i
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_joint_i_to_bone_i, gdextension.SizeDictionary, &struct{}{})
@@ -356,7 +358,7 @@ func (self class) SetJointIToName(joint_i_to_name Dictionary.Any) { //gd:GLTFSki
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joint_i_to_name, 0|(gdextension.SizeDictionary<<4), &struct{ joint_i_to_name gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(joint_i_to_name))})
 }
 func (self class) GetGodotSkin() [1]gdclass.Skin { //gd:GLTFSkin.get_godot_skin
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_godot_skin, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_godot_skin, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Skin{gdclass.NewSkin(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

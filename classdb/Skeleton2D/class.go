@@ -19,6 +19,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -59,6 +60,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -273,7 +275,7 @@ func (self class) GetBone(idx int64) [1]gdclass.Bone2D { //gd:Skeleton2D.get_bon
 	return ret
 }
 func (self class) GetSkeleton() RID.Any { //gd:Skeleton2D.get_skeleton
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeRID, &struct{}{})
+	var r_ret = jumponly.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -281,7 +283,7 @@ func (self class) SetModificationStack(modification_stack [1]gdclass.SkeletonMod
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modification_stack, 0|(gdextension.SizeObject<<4), &struct{ modification_stack gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetSkeletonModificationStack2D(modification_stack[0])[0]))})
 }
 func (self class) GetModificationStack() [1]gdclass.SkeletonModificationStack2D { //gd:Skeleton2D.get_modification_stack
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_modification_stack, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_modification_stack, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.SkeletonModificationStack2D{gdclass.NewSkeletonModificationStack2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

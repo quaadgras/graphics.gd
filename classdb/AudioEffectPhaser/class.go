@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -48,6 +49,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -233,42 +235,42 @@ func (self Instance) SetDepth(value Float.X) Instance { //gd:AudioEffectPhaser.d
 }
 
 func (self class) SetRangeMinHz(hz float64) { //gd:AudioEffectPhaser.set_range_min_hz
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_range_min_hz, 0|(gdextension.SizeFloat<<4), &struct{ hz float64 }{hz})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_range_min_hz, 0|(gdextension.SizeFloat<<4), &struct{ hz float64 }{hz})
 }
 func (self class) GetRangeMinHz() float64 { //gd:AudioEffectPhaser.get_range_min_hz
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_range_min_hz, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_range_min_hz, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetRangeMaxHz(hz float64) { //gd:AudioEffectPhaser.set_range_max_hz
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_range_max_hz, 0|(gdextension.SizeFloat<<4), &struct{ hz float64 }{hz})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_range_max_hz, 0|(gdextension.SizeFloat<<4), &struct{ hz float64 }{hz})
 }
 func (self class) GetRangeMaxHz() float64 { //gd:AudioEffectPhaser.get_range_max_hz
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_range_max_hz, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_range_max_hz, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetRateHz(hz float64) { //gd:AudioEffectPhaser.set_rate_hz
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rate_hz, 0|(gdextension.SizeFloat<<4), &struct{ hz float64 }{hz})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rate_hz, 0|(gdextension.SizeFloat<<4), &struct{ hz float64 }{hz})
 }
 func (self class) GetRateHz() float64 { //gd:AudioEffectPhaser.get_rate_hz
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rate_hz, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rate_hz, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetFeedback(fbk float64) { //gd:AudioEffectPhaser.set_feedback
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_feedback, 0|(gdextension.SizeFloat<<4), &struct{ fbk float64 }{fbk})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_feedback, 0|(gdextension.SizeFloat<<4), &struct{ fbk float64 }{fbk})
 }
 func (self class) GetFeedback() float64 { //gd:AudioEffectPhaser.get_feedback
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_feedback, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_feedback, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetDepth(depth float64) { //gd:AudioEffectPhaser.set_depth
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth, 0|(gdextension.SizeFloat<<4), &struct{ depth float64 }{depth})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth, 0|(gdextension.SizeFloat<<4), &struct{ depth float64 }{depth})
 }
 func (self class) GetDepth() float64 { //gd:AudioEffectPhaser.get_depth
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

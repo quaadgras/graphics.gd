@@ -29,6 +29,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -68,6 +69,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -509,7 +511,7 @@ func (self class) SetGraphOffset(offset Vector2.XY) { //gd:AnimationNodeStateMac
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_graph_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
 func (self class) GetGraphOffset() Vector2.XY { //gd:AnimationNodeStateMachine.get_graph_offset
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_graph_offset, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_graph_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -517,23 +519,23 @@ func (self class) SetStateMachineType(state_machine_type StateMachineType) { //g
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_state_machine_type, 0|(gdextension.SizeInt<<4), &struct{ state_machine_type StateMachineType }{state_machine_type})
 }
 func (self class) GetStateMachineType() StateMachineType { //gd:AnimationNodeStateMachine.get_state_machine_type
-	var r_ret = noescape.Call[StateMachineType](gd.ObjectChecked(self.AsObject()), methods.get_state_machine_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[StateMachineType](gd.ObjectChecked(self.AsObject()), methods.get_state_machine_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetAllowTransitionToSelf(enable bool) { //gd:AnimationNodeStateMachine.set_allow_transition_to_self
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_transition_to_self, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_transition_to_self, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsAllowTransitionToSelf() bool { //gd:AnimationNodeStateMachine.is_allow_transition_to_self
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_allow_transition_to_self, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_allow_transition_to_self, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetResetEnds(enable bool) { //gd:AnimationNodeStateMachine.set_reset_ends
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reset_ends, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reset_ends, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) AreEndsReset() bool { //gd:AnimationNodeStateMachine.are_ends_reset
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.are_ends_reset, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.are_ends_reset, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

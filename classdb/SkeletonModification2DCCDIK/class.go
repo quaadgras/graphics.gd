@@ -21,6 +21,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -57,6 +58,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -360,7 +362,7 @@ func (self class) SetTargetNode(target_nodepath Path.ToNode) { //gd:SkeletonModi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_node, 0|(gdextension.SizeNodePath<<4), &struct{ target_nodepath gdextension.NodePath }{pointers.Get(gd.InternalNodePath(target_nodepath))})
 }
 func (self class) GetTargetNode() Path.ToNode { //gd:SkeletonModification2DCCDIK.get_target_node
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_target_node, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_target_node, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -368,7 +370,7 @@ func (self class) SetTipNode(tip_nodepath Path.ToNode) { //gd:SkeletonModificati
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tip_node, 0|(gdextension.SizeNodePath<<4), &struct{ tip_nodepath gdextension.NodePath }{pointers.Get(gd.InternalNodePath(tip_nodepath))})
 }
 func (self class) GetTipNode() Path.ToNode { //gd:SkeletonModification2DCCDIK.get_tip_node
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_tip_node, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_tip_node, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

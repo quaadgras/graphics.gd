@@ -17,6 +17,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -54,6 +55,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -325,7 +327,7 @@ func (self class) SetProgress(progress float64) { //gd:PathFollow3D.set_progress
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_progress, 0|(gdextension.SizeFloat<<4), &struct{ progress float64 }{progress})
 }
 func (self class) GetProgress() float64 { //gd:PathFollow3D.get_progress
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_progress, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_progress, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -333,7 +335,7 @@ func (self class) SetHOffset(h_offset float64) { //gd:PathFollow3D.set_h_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_offset, 0|(gdextension.SizeFloat<<4), &struct{ h_offset float64 }{h_offset})
 }
 func (self class) GetHOffset() float64 { //gd:PathFollow3D.get_h_offset
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_h_offset, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_h_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -341,7 +343,7 @@ func (self class) SetVOffset(v_offset float64) { //gd:PathFollow3D.set_v_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_offset, 0|(gdextension.SizeFloat<<4), &struct{ v_offset float64 }{v_offset})
 }
 func (self class) GetVOffset() float64 { //gd:PathFollow3D.get_v_offset
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_v_offset, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_v_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -357,7 +359,7 @@ func (self class) SetRotationMode(rotation_mode RotationMode) { //gd:PathFollow3
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_mode, 0|(gdextension.SizeInt<<4), &struct{ rotation_mode RotationMode }{rotation_mode})
 }
 func (self class) GetRotationMode() RotationMode { //gd:PathFollow3D.get_rotation_mode
-	var r_ret = noescape.Call[RotationMode](gd.ObjectChecked(self.AsObject()), methods.get_rotation_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[RotationMode](gd.ObjectChecked(self.AsObject()), methods.get_rotation_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -373,7 +375,7 @@ func (self class) SetUseModelFront(enabled bool) { //gd:PathFollow3D.set_use_mod
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_model_front, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsUsingModelFront() bool { //gd:PathFollow3D.is_using_model_front
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_model_front, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_model_front, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -381,7 +383,7 @@ func (self class) SetLoop(loop bool) { //gd:PathFollow3D.set_loop
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), &struct{ loop bool }{loop})
 }
 func (self class) HasLoop() bool { //gd:PathFollow3D.has_loop
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -389,7 +391,7 @@ func (self class) SetTiltEnabled(enabled bool) { //gd:PathFollow3D.set_tilt_enab
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tilt_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsTiltEnabled() bool { //gd:PathFollow3D.is_tilt_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_tilt_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_tilt_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

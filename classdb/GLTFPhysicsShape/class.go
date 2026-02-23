@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -51,6 +52,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -387,7 +389,7 @@ func (self class) ToDictionary() Dictionary.Any { //gd:GLTFPhysicsShape.to_dicti
 	return ret
 }
 func (self class) GetShapeType() String.Readable { //gd:GLTFPhysicsShape.get_shape_type
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_shape_type, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_shape_type, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -395,7 +397,7 @@ func (self class) SetShapeType(shape_type String.Readable) { //gd:GLTFPhysicsSha
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape_type, 0|(gdextension.SizeString<<4), &struct{ shape_type gdextension.String }{pointers.Get(gd.InternalString(shape_type))})
 }
 func (self class) GetSize() Vector3.XYZ { //gd:GLTFPhysicsShape.get_size
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -403,39 +405,39 @@ func (self class) SetSize(size Vector3.XYZ) { //gd:GLTFPhysicsShape.set_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), &struct{ size Vector3.XYZ }{size})
 }
 func (self class) GetRadius() float64 { //gd:GLTFPhysicsShape.get_radius
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetRadius(radius float64) { //gd:GLTFPhysicsShape.set_radius
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 func (self class) GetHeight() float64 { //gd:GLTFPhysicsShape.get_height
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetHeight(height float64) { //gd:GLTFPhysicsShape.set_height
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeFloat<<4), &struct{ height float64 }{height})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeFloat<<4), &struct{ height float64 }{height})
 }
 func (self class) GetIsTrigger() bool { //gd:GLTFPhysicsShape.get_is_trigger
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_trigger, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_trigger, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetIsTrigger(is_trigger bool) { //gd:GLTFPhysicsShape.set_is_trigger
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_is_trigger, 0|(gdextension.SizeBool<<4), &struct{ is_trigger bool }{is_trigger})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_is_trigger, 0|(gdextension.SizeBool<<4), &struct{ is_trigger bool }{is_trigger})
 }
 func (self class) GetMeshIndex() int64 { //gd:GLTFPhysicsShape.get_mesh_index
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_mesh_index, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_mesh_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMeshIndex(mesh_index int64) { //gd:GLTFPhysicsShape.set_mesh_index
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh_index, 0|(gdextension.SizeInt<<4), &struct{ mesh_index int64 }{mesh_index})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh_index, 0|(gdextension.SizeInt<<4), &struct{ mesh_index int64 }{mesh_index})
 }
 func (self class) GetImporterMesh() [1]gdclass.ImporterMesh { //gd:GLTFPhysicsShape.get_importer_mesh
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_importer_mesh, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_importer_mesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ImporterMesh{gdclass.NewImporterMesh(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

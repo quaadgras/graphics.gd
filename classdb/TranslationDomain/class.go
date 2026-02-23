@@ -18,6 +18,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -53,6 +54,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -495,7 +497,7 @@ func (self class) Clear() { //gd:TranslationDomain.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
 func (self class) GetTranslations() Array.Contains[[1]gdclass.Translation] { //gd:TranslationDomain.get_translations
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_translations, gdextension.SizeArray, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_translations, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Translation]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -539,7 +541,7 @@ func (self class) TranslatePlural(message String.Name, message_plural String.Nam
 	return ret
 }
 func (self class) GetLocaleOverride() String.Readable { //gd:TranslationDomain.get_locale_override
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_locale_override, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_locale_override, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -547,71 +549,71 @@ func (self class) SetLocaleOverride(locale String.Readable) { //gd:TranslationDo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_locale_override, 0|(gdextension.SizeString<<4), &struct{ locale gdextension.String }{pointers.Get(gd.InternalString(locale))})
 }
 func (self class) IsEnabled() bool { //gd:TranslationDomain.is_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetEnabled(enabled bool) { //gd:TranslationDomain.set_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsPseudolocalizationEnabled() bool { //gd:TranslationDomain.is_pseudolocalization_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pseudolocalization_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pseudolocalization_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPseudolocalizationEnabled(enabled bool) { //gd:TranslationDomain.set_pseudolocalization_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsPseudolocalizationAccentsEnabled() bool { //gd:TranslationDomain.is_pseudolocalization_accents_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pseudolocalization_accents_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pseudolocalization_accents_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPseudolocalizationAccentsEnabled(enabled bool) { //gd:TranslationDomain.set_pseudolocalization_accents_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_accents_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_accents_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsPseudolocalizationDoubleVowelsEnabled() bool { //gd:TranslationDomain.is_pseudolocalization_double_vowels_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pseudolocalization_double_vowels_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pseudolocalization_double_vowels_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPseudolocalizationDoubleVowelsEnabled(enabled bool) { //gd:TranslationDomain.set_pseudolocalization_double_vowels_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_double_vowels_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_double_vowels_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsPseudolocalizationFakeBidiEnabled() bool { //gd:TranslationDomain.is_pseudolocalization_fake_bidi_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pseudolocalization_fake_bidi_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pseudolocalization_fake_bidi_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPseudolocalizationFakeBidiEnabled(enabled bool) { //gd:TranslationDomain.set_pseudolocalization_fake_bidi_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_fake_bidi_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_fake_bidi_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsPseudolocalizationOverrideEnabled() bool { //gd:TranslationDomain.is_pseudolocalization_override_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pseudolocalization_override_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pseudolocalization_override_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPseudolocalizationOverrideEnabled(enabled bool) { //gd:TranslationDomain.set_pseudolocalization_override_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_override_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_override_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsPseudolocalizationSkipPlaceholdersEnabled() bool { //gd:TranslationDomain.is_pseudolocalization_skip_placeholders_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pseudolocalization_skip_placeholders_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pseudolocalization_skip_placeholders_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPseudolocalizationSkipPlaceholdersEnabled(enabled bool) { //gd:TranslationDomain.set_pseudolocalization_skip_placeholders_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_skip_placeholders_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_skip_placeholders_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) GetPseudolocalizationExpansionRatio() float64 { //gd:TranslationDomain.get_pseudolocalization_expansion_ratio
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pseudolocalization_expansion_ratio, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pseudolocalization_expansion_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPseudolocalizationExpansionRatio(ratio float64) { //gd:TranslationDomain.set_pseudolocalization_expansion_ratio
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_expansion_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_expansion_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
 }
 func (self class) GetPseudolocalizationPrefix() String.Readable { //gd:TranslationDomain.get_pseudolocalization_prefix
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_pseudolocalization_prefix, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_pseudolocalization_prefix, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -619,7 +621,7 @@ func (self class) SetPseudolocalizationPrefix(prefix String.Readable) { //gd:Tra
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_prefix, 0|(gdextension.SizeString<<4), &struct{ prefix gdextension.String }{pointers.Get(gd.InternalString(prefix))})
 }
 func (self class) GetPseudolocalizationSuffix() String.Readable { //gd:TranslationDomain.get_pseudolocalization_suffix
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_pseudolocalization_suffix, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_pseudolocalization_suffix, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

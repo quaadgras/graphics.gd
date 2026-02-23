@@ -24,6 +24,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -66,6 +67,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -657,7 +659,7 @@ func (self class) SetCollisionLayer(layer int64) { //gd:GridMap.set_collision_la
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 }
 func (self class) GetCollisionLayer() int64 { //gd:GridMap.get_collision_layer
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -665,7 +667,7 @@ func (self class) SetCollisionMask(mask int64) { //gd:GridMap.set_collision_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
 func (self class) GetCollisionMask() int64 { //gd:GridMap.get_collision_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -695,7 +697,7 @@ func (self class) SetCollisionPriority(priority float64) { //gd:GridMap.set_coll
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_priority, 0|(gdextension.SizeFloat<<4), &struct{ priority float64 }{priority})
 }
 func (self class) GetCollisionPriority() float64 { //gd:GridMap.get_collision_priority
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_priority, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_priority, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -703,7 +705,7 @@ func (self class) SetPhysicsMaterial(material [1]gdclass.PhysicsMaterial) { //gd
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetPhysicsMaterial(material[0])[0]))})
 }
 func (self class) GetPhysicsMaterial() [1]gdclass.PhysicsMaterial { //gd:GridMap.get_physics_material
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_physics_material, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_physics_material, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PhysicsMaterial{gdclass.NewPhysicsMaterial(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -711,7 +713,7 @@ func (self class) SetBakeNavigation(bake_navigation bool) { //gd:GridMap.set_bak
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_navigation, 0|(gdextension.SizeBool<<4), &struct{ bake_navigation bool }{bake_navigation})
 }
 func (self class) IsBakingNavigation() bool { //gd:GridMap.is_baking_navigation
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_baking_navigation, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_baking_navigation, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -727,7 +729,7 @@ func (self class) SetMeshLibrary(mesh_library [1]gdclass.MeshLibrary) { //gd:Gri
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh_library, 0|(gdextension.SizeObject<<4), &struct{ mesh_library gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMeshLibrary(mesh_library[0])[0]))})
 }
 func (self class) GetMeshLibrary() [1]gdclass.MeshLibrary { //gd:GridMap.get_mesh_library
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh_library, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh_library, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.MeshLibrary{gdclass.NewMeshLibrary(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -735,7 +737,7 @@ func (self class) SetCellSize(size Vector3.XYZ) { //gd:GridMap.set_cell_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cell_size, 0|(gdextension.SizeVector3<<4), &struct{ size Vector3.XYZ }{size})
 }
 func (self class) GetCellSize() Vector3.XYZ { //gd:GridMap.get_cell_size
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_cell_size, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_cell_size, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -743,7 +745,7 @@ func (self class) SetCellScale(scale float64) { //gd:GridMap.set_cell_scale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cell_scale, 0|(gdextension.SizeFloat<<4), &struct{ scale float64 }{scale})
 }
 func (self class) GetCellScale() float64 { //gd:GridMap.get_cell_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_cell_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_cell_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -751,7 +753,7 @@ func (self class) SetOctantSize(size int64) { //gd:GridMap.set_octant_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_octant_size, 0|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 }
 func (self class) GetOctantSize() int64 { //gd:GridMap.get_octant_size
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_octant_size, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_octant_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -798,13 +800,13 @@ func (self class) MapToLocal(map_position Vector3i.XYZ) Vector3.XYZ { //gd:GridM
 	return ret
 }
 func (self class) ResourceChanged(resource [1]gdclass.Resource) { //gd:GridMap.resource_changed
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resource_changed, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetResource(resource[0])[0]))})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resource_changed, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetResource(resource[0])[0]))})
 }
 func (self class) SetCenterX(enable bool) { //gd:GridMap.set_center_x
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_center_x, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) GetCenterX() bool { //gd:GridMap.get_center_x
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_center_x, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_center_x, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -812,7 +814,7 @@ func (self class) SetCenterY(enable bool) { //gd:GridMap.set_center_y
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_center_y, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) GetCenterY() bool { //gd:GridMap.get_center_y
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_center_y, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_center_y, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -820,7 +822,7 @@ func (self class) SetCenterZ(enable bool) { //gd:GridMap.set_center_z
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_center_z, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) GetCenterZ() bool { //gd:GridMap.get_center_z
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_center_z, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_center_z, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

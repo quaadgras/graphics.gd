@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -50,6 +51,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -232,7 +234,7 @@ func (self class) SetLocalizedName(localized_name String.Readable) { //gd:OpenXR
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_localized_name, 0|(gdextension.SizeString<<4), &struct{ localized_name gdextension.String }{pointers.Get(gd.InternalString(localized_name))})
 }
 func (self class) GetLocalizedName() String.Readable { //gd:OpenXRActionSet.get_localized_name
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_localized_name, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_localized_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -240,7 +242,7 @@ func (self class) SetPriority(priority int64) { //gd:OpenXRActionSet.set_priorit
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_priority, 0|(gdextension.SizeInt<<4), &struct{ priority int64 }{priority})
 }
 func (self class) GetPriority() int64 { //gd:OpenXRActionSet.get_priority
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_priority, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_priority, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -253,7 +255,7 @@ func (self class) SetActions(actions Array.Any) { //gd:OpenXRActionSet.set_actio
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_actions, 0|(gdextension.SizeArray<<4), &struct{ actions gdextension.Array }{pointers.Get(gd.InternalArray(actions))})
 }
 func (self class) GetActions() Array.Any { //gd:OpenXRActionSet.get_actions
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_actions, gdextension.SizeArray, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_actions, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

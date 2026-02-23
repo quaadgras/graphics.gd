@@ -18,6 +18,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -56,6 +57,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -444,7 +446,7 @@ func (self Instance) SetVisible(value bool) Instance { //gd:GLTFNode.visible
 }
 
 func (self class) GetOriginalName() String.Readable { //gd:GLTFNode.get_original_name
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_name, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -452,23 +454,23 @@ func (self class) SetOriginalName(original_name String.Readable) { //gd:GLTFNode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_original_name, 0|(gdextension.SizeString<<4), &struct{ original_name gdextension.String }{pointers.Get(gd.InternalString(original_name))})
 }
 func (self class) GetParent() int64 { //gd:GLTFNode.get_parent
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_parent, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_parent, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetParent(parent int64) { //gd:GLTFNode.set_parent
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_parent, 0|(gdextension.SizeInt<<4), &struct{ parent int64 }{parent})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_parent, 0|(gdextension.SizeInt<<4), &struct{ parent int64 }{parent})
 }
 func (self class) GetHeight() int64 { //gd:GLTFNode.get_height
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetHeight(height int64) { //gd:GLTFNode.set_height
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeInt<<4), &struct{ height int64 }{height})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeInt<<4), &struct{ height int64 }{height})
 }
 func (self class) GetXform() Transform3D.BasisOrigin { //gd:GLTFNode.get_xform
-	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_xform, gdextension.SizeTransform3D, &struct{}{})
+	var r_ret = jumponly.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_xform, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -476,39 +478,39 @@ func (self class) SetXform(xform Transform3D.BasisOrigin) { //gd:GLTFNode.set_xf
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_xform, 0|(gdextension.SizeTransform3D<<4), &struct{ xform Transform3D.BasisOrigin }{gd.Transposed(xform)})
 }
 func (self class) GetMesh() int64 { //gd:GLTFNode.get_mesh
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMesh(mesh int64) { //gd:GLTFNode.set_mesh
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeInt<<4), &struct{ mesh int64 }{mesh})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeInt<<4), &struct{ mesh int64 }{mesh})
 }
 func (self class) GetCamera() int64 { //gd:GLTFNode.get_camera
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_camera, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_camera, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetCamera(camera int64) { //gd:GLTFNode.set_camera
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera, 0|(gdextension.SizeInt<<4), &struct{ camera int64 }{camera})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera, 0|(gdextension.SizeInt<<4), &struct{ camera int64 }{camera})
 }
 func (self class) GetSkin() int64 { //gd:GLTFNode.get_skin
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_skin, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_skin, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetSkin(skin int64) { //gd:GLTFNode.set_skin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin, 0|(gdextension.SizeInt<<4), &struct{ skin int64 }{skin})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin, 0|(gdextension.SizeInt<<4), &struct{ skin int64 }{skin})
 }
 func (self class) GetSkeleton() int64 { //gd:GLTFNode.get_skeleton
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetSkeleton(skeleton int64) { //gd:GLTFNode.set_skeleton
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skeleton, 0|(gdextension.SizeInt<<4), &struct{ skeleton int64 }{skeleton})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skeleton, 0|(gdextension.SizeInt<<4), &struct{ skeleton int64 }{skeleton})
 }
 func (self class) GetPosition() Vector3.XYZ { //gd:GLTFNode.get_position
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -532,7 +534,7 @@ func (self class) SetScale(scale Vector3.XYZ) { //gd:GLTFNode.set_scale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale, 0|(gdextension.SizeVector3<<4), &struct{ scale Vector3.XYZ }{scale})
 }
 func (self class) GetChildren() Packed.Array[int32] { //gd:GLTFNode.get_children
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_children, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_children, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -545,20 +547,20 @@ func (self class) AppendChildIndex(child_index int64) { //gd:GLTFNode.append_chi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.append_child_index, 0|(gdextension.SizeInt<<4), &struct{ child_index int64 }{child_index})
 }
 func (self class) GetLight() int64 { //gd:GLTFNode.get_light
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_light, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_light, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetLight(light int64) { //gd:GLTFNode.set_light
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_light, 0|(gdextension.SizeInt<<4), &struct{ light int64 }{light})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_light, 0|(gdextension.SizeInt<<4), &struct{ light int64 }{light})
 }
 func (self class) GetVisible() bool { //gd:GLTFNode.get_visible
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_visible, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_visible, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetVisible(visible bool) { //gd:GLTFNode.set_visible
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visible, 0|(gdextension.SizeBool<<4), &struct{ visible bool }{visible})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visible, 0|(gdextension.SizeBool<<4), &struct{ visible bool }{visible})
 }
 func (self class) GetAdditionalData(extension_name String.Name) variant.Any { //gd:GLTFNode.get_additional_data
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_additional_data, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ extension_name gdextension.StringName }{pointers.Get(gd.InternalStringName(extension_name))})

@@ -28,6 +28,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -63,6 +64,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -346,12 +348,12 @@ func (self class) Stop() { //gd:AnimationNodeStateMachinePlayback.stop
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, &struct{}{})
 }
 func (self class) IsPlaying() bool { //gd:AnimationNodeStateMachinePlayback.is_playing
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_playing, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_playing, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetCurrentNode() String.Name { //gd:AnimationNodeStateMachinePlayback.get_current_node
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_current_node, gdextension.SizeStringName, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_current_node, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -361,12 +363,12 @@ func (self class) GetCurrentPlayPosition() float64 { //gd:AnimationNodeStateMach
 	return ret
 }
 func (self class) GetCurrentLength() float64 { //gd:AnimationNodeStateMachinePlayback.get_current_length
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_current_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_current_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetFadingFromNode() String.Name { //gd:AnimationNodeStateMachinePlayback.get_fading_from_node
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_fading_from_node, gdextension.SizeStringName, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_fading_from_node, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -376,7 +378,7 @@ func (self class) GetFadingFromPlayPosition() float64 { //gd:AnimationNodeStateM
 	return ret
 }
 func (self class) GetFadingFromLength() float64 { //gd:AnimationNodeStateMachinePlayback.get_fading_from_length
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fading_from_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fading_from_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -391,7 +393,7 @@ func (self class) GetFadingLength() float64 { //gd:AnimationNodeStateMachinePlay
 	return ret
 }
 func (self class) GetTravelPath() Array.Contains[String.Name] { //gd:AnimationNodeStateMachinePlayback.get_travel_path
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_travel_path, gdextension.SizeArray, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_travel_path, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

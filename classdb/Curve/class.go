@@ -17,6 +17,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -53,6 +54,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -546,7 +548,7 @@ func (self class) SetPointRightMode(index int64, mode TangentMode) { //gd:Curve.
 	}{index, mode})
 }
 func (self class) GetMinValue() float64 { //gd:Curve.get_min_value
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min_value, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min_value, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -554,7 +556,7 @@ func (self class) SetMinValue(min float64) { //gd:Curve.set_min_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_value, 0|(gdextension.SizeFloat<<4), &struct{ min float64 }{min})
 }
 func (self class) GetMaxValue() float64 { //gd:Curve.get_max_value
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_value, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_value, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -562,12 +564,12 @@ func (self class) SetMaxValue(max float64) { //gd:Curve.set_max_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_value, 0|(gdextension.SizeFloat<<4), &struct{ max float64 }{max})
 }
 func (self class) GetValueRange() float64 { //gd:Curve.get_value_range
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_value_range, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_value_range, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetMinDomain() float64 { //gd:Curve.get_min_domain
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min_domain, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min_domain, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -575,7 +577,7 @@ func (self class) SetMinDomain(min float64) { //gd:Curve.set_min_domain
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_domain, 0|(gdextension.SizeFloat<<4), &struct{ min float64 }{min})
 }
 func (self class) GetMaxDomain() float64 { //gd:Curve.get_max_domain
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_domain, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_domain, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -583,7 +585,7 @@ func (self class) SetMaxDomain(max float64) { //gd:Curve.set_max_domain
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_domain, 0|(gdextension.SizeFloat<<4), &struct{ max float64 }{max})
 }
 func (self class) GetDomainRange() float64 { //gd:Curve.get_domain_range
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_domain_range, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_domain_range, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -594,7 +596,7 @@ func (self class) Bake() { //gd:Curve.bake
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.bake, 0, &struct{}{})
 }
 func (self class) GetBakeResolution() int64 { //gd:Curve.get_bake_resolution
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bake_resolution, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bake_resolution, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

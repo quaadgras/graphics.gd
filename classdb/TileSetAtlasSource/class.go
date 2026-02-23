@@ -25,6 +25,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -66,6 +67,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -611,7 +613,7 @@ func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:TileSetAtlasSo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:TileSetAtlasSource.get_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -619,7 +621,7 @@ func (self class) SetMargins(margins Vector2i.XY) { //gd:TileSetAtlasSource.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_margins, 0|(gdextension.SizeVector2i<<4), &struct{ margins Vector2i.XY }{margins})
 }
 func (self class) GetMargins() Vector2i.XY { //gd:TileSetAtlasSource.get_margins
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_margins, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = jumponly.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_margins, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -627,7 +629,7 @@ func (self class) SetSeparation(separation Vector2i.XY) { //gd:TileSetAtlasSourc
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_separation, 0|(gdextension.SizeVector2i<<4), &struct{ separation Vector2i.XY }{separation})
 }
 func (self class) GetSeparation() Vector2i.XY { //gd:TileSetAtlasSource.get_separation
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_separation, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = jumponly.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_separation, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -635,7 +637,7 @@ func (self class) SetTextureRegionSize(texture_region_size Vector2i.XY) { //gd:T
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_region_size, 0|(gdextension.SizeVector2i<<4), &struct{ texture_region_size Vector2i.XY }{texture_region_size})
 }
 func (self class) GetTextureRegionSize() Vector2i.XY { //gd:TileSetAtlasSource.get_texture_region_size
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_texture_region_size, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = jumponly.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_texture_region_size, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -643,7 +645,7 @@ func (self class) SetUseTexturePadding(use_texture_padding bool) { //gd:TileSetA
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_texture_padding, 0|(gdextension.SizeBool<<4), &struct{ use_texture_padding bool }{use_texture_padding})
 }
 func (self class) GetUseTexturePadding() bool { //gd:TileSetAtlasSource.get_use_texture_padding
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_texture_padding, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_texture_padding, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -826,7 +828,7 @@ func (self class) GetTileTextureRegion(atlas_coords Vector2i.XY, frame_ int64) R
 	return ret
 }
 func (self class) GetRuntimeTexture() [1]gdclass.Texture2D { //gd:TileSetAtlasSource.get_runtime_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_runtime_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_runtime_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

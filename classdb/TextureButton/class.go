@@ -24,6 +24,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -64,6 +65,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -369,7 +371,7 @@ func (self class) SetFlipH(enable bool) { //gd:TextureButton.set_flip_h
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flip_h, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsFlippedH() bool { //gd:TextureButton.is_flipped_h
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flipped_h, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flipped_h, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -377,47 +379,47 @@ func (self class) SetFlipV(enable bool) { //gd:TextureButton.set_flip_v
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flip_v, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsFlippedV() bool { //gd:TextureButton.is_flipped_v
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flipped_v, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flipped_v, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetTextureNormal() [1]gdclass.Texture2D { //gd:TextureButton.get_texture_normal
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_normal, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_normal, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetTexturePressed() [1]gdclass.Texture2D { //gd:TextureButton.get_texture_pressed
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_pressed, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_pressed, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetTextureHover() [1]gdclass.Texture2D { //gd:TextureButton.get_texture_hover
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_hover, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_hover, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetTextureDisabled() [1]gdclass.Texture2D { //gd:TextureButton.get_texture_disabled
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_disabled, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_disabled, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetTextureFocused() [1]gdclass.Texture2D { //gd:TextureButton.get_texture_focused
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_focused, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_focused, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetClickMask() [1]gdclass.BitMap { //gd:TextureButton.get_click_mask
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_click_mask, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_click_mask, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.BitMap{gdclass.NewBitMap(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) GetIgnoreTextureSize() bool { //gd:TextureButton.get_ignore_texture_size
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_ignore_texture_size, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_ignore_texture_size, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetStretchMode() StretchMode { //gd:TextureButton.get_stretch_mode
-	var r_ret = noescape.Call[StretchMode](gd.ObjectChecked(self.AsObject()), methods.get_stretch_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[StretchMode](gd.ObjectChecked(self.AsObject()), methods.get_stretch_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -30,6 +30,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -66,6 +67,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -399,7 +401,7 @@ func (self class) SetRootPath(path Path.ToNode) { //gd:SceneMultiplayer.set_root
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_path, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
 func (self class) GetRootPath() Path.ToNode { //gd:SceneMultiplayer.get_root_path
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root_path, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root_path, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -431,7 +433,7 @@ func (self class) SetAuthCallback(callback Callable.Function) { //gd:SceneMultip
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auth_callback, 0|(gdextension.SizeCallable<<4), &struct{ callback gdextension.Callable }{pointers.Get(gd.InternalCallable(callback))})
 }
 func (self class) GetAuthCallback() Callable.Function { //gd:SceneMultiplayer.get_auth_callback
-	var r_ret = noescape.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_auth_callback, gdextension.SizeCallable, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_auth_callback, gdextension.SizeCallable, &struct{}{})
 	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret)))
 	return ret
 }
@@ -439,7 +441,7 @@ func (self class) SetAuthTimeout(timeout float64) { //gd:SceneMultiplayer.set_au
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auth_timeout, 0|(gdextension.SizeFloat<<4), &struct{ timeout float64 }{timeout})
 }
 func (self class) GetAuthTimeout() float64 { //gd:SceneMultiplayer.get_auth_timeout
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auth_timeout, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auth_timeout, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -452,18 +454,18 @@ func (self class) IsRefusingNewConnections() bool { //gd:SceneMultiplayer.is_ref
 	return ret
 }
 func (self class) SetAllowObjectDecoding(enable bool) { //gd:SceneMultiplayer.set_allow_object_decoding
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_object_decoding, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_object_decoding, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsObjectDecodingAllowed() bool { //gd:SceneMultiplayer.is_object_decoding_allowed
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_object_decoding_allowed, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_object_decoding_allowed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetServerRelayEnabled(enabled bool) { //gd:SceneMultiplayer.set_server_relay_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_server_relay_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_server_relay_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsServerRelayEnabled() bool { //gd:SceneMultiplayer.is_server_relay_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_server_relay_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_server_relay_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

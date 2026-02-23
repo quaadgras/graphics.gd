@@ -19,6 +19,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -54,6 +55,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -257,10 +259,10 @@ func (self class) GetStageSource(stage Rendering.ShaderStage) String.Readable { 
 	return ret
 }
 func (self class) SetLanguage(language Rendering.ShaderLanguage) { //gd:RDShaderSource.set_language
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_language, 0|(gdextension.SizeInt<<4), &struct{ language Rendering.ShaderLanguage }{language})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_language, 0|(gdextension.SizeInt<<4), &struct{ language Rendering.ShaderLanguage }{language})
 }
 func (self class) GetLanguage() Rendering.ShaderLanguage { //gd:RDShaderSource.get_language
-	var r_ret = noescape.Call[Rendering.ShaderLanguage](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Rendering.ShaderLanguage](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

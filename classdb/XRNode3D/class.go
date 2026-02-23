@@ -17,6 +17,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -54,6 +55,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -269,7 +271,7 @@ func (self class) SetTracker(tracker_name String.Name) { //gd:XRNode3D.set_track
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker, 0|(gdextension.SizeStringName<<4), &struct{ tracker_name gdextension.StringName }{pointers.Get(gd.InternalStringName(tracker_name))})
 }
 func (self class) GetTracker() String.Name { //gd:XRNode3D.get_tracker
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_tracker, gdextension.SizeStringName, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_tracker, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -277,7 +279,7 @@ func (self class) SetPoseName(pose String.Name) { //gd:XRNode3D.set_pose_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pose_name, 0|(gdextension.SizeStringName<<4), &struct{ pose gdextension.StringName }{pointers.Get(gd.InternalStringName(pose))})
 }
 func (self class) GetPoseName() String.Name { //gd:XRNode3D.get_pose_name
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_pose_name, gdextension.SizeStringName, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_pose_name, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -285,7 +287,7 @@ func (self class) SetShowWhenTracked(show bool) { //gd:XRNode3D.set_show_when_tr
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_show_when_tracked, 0|(gdextension.SizeBool<<4), &struct{ show bool }{show})
 }
 func (self class) GetShowWhenTracked() bool { //gd:XRNode3D.get_show_when_tracked
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_show_when_tracked, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_show_when_tracked, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -295,7 +297,7 @@ func (self class) GetIsActive() bool { //gd:XRNode3D.get_is_active
 	return ret
 }
 func (self class) GetHasTrackingData() bool { //gd:XRNode3D.get_has_tracking_data
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_has_tracking_data, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_has_tracking_data, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

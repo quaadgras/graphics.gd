@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -51,6 +52,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -242,7 +244,7 @@ func (self class) SetRadius(radius float64) { //gd:OpenXRCompositionLayerEquirec
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 func (self class) GetRadius() float64 { //gd:OpenXRCompositionLayerEquirect.get_radius
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -250,7 +252,7 @@ func (self class) SetCentralHorizontalAngle(angle float64) { //gd:OpenXRComposit
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_central_horizontal_angle, 0|(gdextension.SizeFloat<<4), &struct{ angle float64 }{angle})
 }
 func (self class) GetCentralHorizontalAngle() float64 { //gd:OpenXRCompositionLayerEquirect.get_central_horizontal_angle
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_central_horizontal_angle, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_central_horizontal_angle, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -258,7 +260,7 @@ func (self class) SetUpperVerticalAngle(angle float64) { //gd:OpenXRCompositionL
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_upper_vertical_angle, 0|(gdextension.SizeFloat<<4), &struct{ angle float64 }{angle})
 }
 func (self class) GetUpperVerticalAngle() float64 { //gd:OpenXRCompositionLayerEquirect.get_upper_vertical_angle
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_upper_vertical_angle, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_upper_vertical_angle, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -266,7 +268,7 @@ func (self class) SetLowerVerticalAngle(angle float64) { //gd:OpenXRCompositionL
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lower_vertical_angle, 0|(gdextension.SizeFloat<<4), &struct{ angle float64 }{angle})
 }
 func (self class) GetLowerVerticalAngle() float64 { //gd:OpenXRCompositionLayerEquirect.get_lower_vertical_angle
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lower_vertical_angle, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lower_vertical_angle, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -274,7 +276,7 @@ func (self class) SetFallbackSegments(segments int64) { //gd:OpenXRCompositionLa
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_segments, 0|(gdextension.SizeInt<<4), &struct{ segments int64 }{segments})
 }
 func (self class) GetFallbackSegments() int64 { //gd:OpenXRCompositionLayerEquirect.get_fallback_segments
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fallback_segments, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fallback_segments, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -48,6 +49,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -206,7 +208,7 @@ func (self class) SetOpType(atype OpType) { //gd:VisualShaderNodeDerivativeFunc.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_op_type, 0|(gdextension.SizeInt<<4), &struct{ atype OpType }{atype})
 }
 func (self class) GetOpType() OpType { //gd:VisualShaderNodeDerivativeFunc.get_op_type
-	var r_ret = noescape.Call[OpType](gd.ObjectChecked(self.AsObject()), methods.get_op_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[OpType](gd.ObjectChecked(self.AsObject()), methods.get_op_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -214,7 +216,7 @@ func (self class) SetFunction(fn Function) { //gd:VisualShaderNodeDerivativeFunc
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_function, 0|(gdextension.SizeInt<<4), &struct{ fn Function }{fn})
 }
 func (self class) GetFunction() Function { //gd:VisualShaderNodeDerivativeFunc.get_function
-	var r_ret = noescape.Call[Function](gd.ObjectChecked(self.AsObject()), methods.get_function, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Function](gd.ObjectChecked(self.AsObject()), methods.get_function, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -222,7 +224,7 @@ func (self class) SetPrecision(precision Precision) { //gd:VisualShaderNodeDeriv
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_precision, 0|(gdextension.SizeInt<<4), &struct{ precision Precision }{precision})
 }
 func (self class) GetPrecision() Precision { //gd:VisualShaderNodeDerivativeFunc.get_precision
-	var r_ret = noescape.Call[Precision](gd.ObjectChecked(self.AsObject()), methods.get_precision, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Precision](gd.ObjectChecked(self.AsObject()), methods.get_precision, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

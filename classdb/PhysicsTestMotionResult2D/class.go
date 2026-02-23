@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -49,6 +50,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -273,37 +275,37 @@ func New() Instance {
 }
 
 func (self class) GetTravel() Vector2.XY { //gd:PhysicsTestMotionResult2D.get_travel
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_travel, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_travel, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetRemainder() Vector2.XY { //gd:PhysicsTestMotionResult2D.get_remainder
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_remainder, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_remainder, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetCollisionPoint() Vector2.XY { //gd:PhysicsTestMotionResult2D.get_collision_point
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_collision_point, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_collision_point, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetCollisionNormal() Vector2.XY { //gd:PhysicsTestMotionResult2D.get_collision_normal
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_collision_normal, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_collision_normal, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetColliderVelocity() Vector2.XY { //gd:PhysicsTestMotionResult2D.get_collider_velocity
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_collider_velocity, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_collider_velocity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetColliderId() int64 { //gd:PhysicsTestMotionResult2D.get_collider_id
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collider_id, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collider_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetColliderRid() RID.Any { //gd:PhysicsTestMotionResult2D.get_collider_rid
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_collider_rid, gdextension.SizeRID, &struct{}{})
+	var r_ret = jumponly.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_collider_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -313,27 +315,27 @@ func (self class) GetCollider() [1]gd.Object { //gd:PhysicsTestMotionResult2D.ge
 	return ret
 }
 func (self class) GetColliderShape() int64 { //gd:PhysicsTestMotionResult2D.get_collider_shape
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collider_shape, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collider_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetCollisionLocalShape() int64 { //gd:PhysicsTestMotionResult2D.get_collision_local_shape
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_local_shape, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_local_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetCollisionDepth() float64 { //gd:PhysicsTestMotionResult2D.get_collision_depth
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_depth, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_depth, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetCollisionSafeFraction() float64 { //gd:PhysicsTestMotionResult2D.get_collision_safe_fraction
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_safe_fraction, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_safe_fraction, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetCollisionUnsafeFraction() float64 { //gd:PhysicsTestMotionResult2D.get_collision_unsafe_fraction
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_unsafe_fraction, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_unsafe_fraction, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

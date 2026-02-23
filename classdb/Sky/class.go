@@ -15,6 +15,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -51,6 +52,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -219,7 +221,7 @@ func (self class) SetRadianceSize(size RadianceSize) { //gd:Sky.set_radiance_siz
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radiance_size, 0|(gdextension.SizeInt<<4), &struct{ size RadianceSize }{size})
 }
 func (self class) GetRadianceSize() RadianceSize { //gd:Sky.get_radiance_size
-	var r_ret = noescape.Call[RadianceSize](gd.ObjectChecked(self.AsObject()), methods.get_radiance_size, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[RadianceSize](gd.ObjectChecked(self.AsObject()), methods.get_radiance_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -227,7 +229,7 @@ func (self class) SetProcessMode(mode ProcessMode) { //gd:Sky.set_process_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_mode, 0|(gdextension.SizeInt<<4), &struct{ mode ProcessMode }{mode})
 }
 func (self class) GetProcessMode() ProcessMode { //gd:Sky.get_process_mode
-	var r_ret = noescape.Call[ProcessMode](gd.ObjectChecked(self.AsObject()), methods.get_process_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[ProcessMode](gd.ObjectChecked(self.AsObject()), methods.get_process_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -235,7 +237,7 @@ func (self class) SetMaterial(material [1]gdclass.Material) { //gd:Sky.set_mater
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(material[0])[0]))})
 }
 func (self class) GetMaterial() [1]gdclass.Material { //gd:Sky.get_material
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

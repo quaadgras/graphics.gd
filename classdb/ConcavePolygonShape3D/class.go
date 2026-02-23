@@ -27,6 +27,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -64,6 +65,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -206,7 +208,7 @@ func (self class) SetFaces(faces Packed.Array[Vector3.XYZ]) { //gd:ConcavePolygo
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](faces))})
 }
 func (self class) GetFaces() Packed.Array[Vector3.XYZ] { //gd:ConcavePolygonShape3D.get_faces
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_faces, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_faces, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -214,7 +216,7 @@ func (self class) SetBackfaceCollisionEnabled(enabled bool) { //gd:ConcavePolygo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_backface_collision_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsBackfaceCollisionEnabled() bool { //gd:ConcavePolygonShape3D.is_backface_collision_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_backface_collision_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_backface_collision_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

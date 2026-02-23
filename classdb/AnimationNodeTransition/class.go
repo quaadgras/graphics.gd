@@ -36,6 +36,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -74,6 +75,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -341,10 +343,10 @@ func (self class) IsInputReset(input int64) bool { //gd:AnimationNodeTransition.
 	return ret
 }
 func (self class) SetXfadeTime(time float64) { //gd:AnimationNodeTransition.set_xfade_time
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_xfade_time, 0|(gdextension.SizeFloat<<4), &struct{ time float64 }{time})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_xfade_time, 0|(gdextension.SizeFloat<<4), &struct{ time float64 }{time})
 }
 func (self class) GetXfadeTime() float64 { //gd:AnimationNodeTransition.get_xfade_time
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_xfade_time, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_xfade_time, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -352,15 +354,15 @@ func (self class) SetXfadeCurve(curve [1]gdclass.Curve) { //gd:AnimationNodeTran
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_xfade_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCurve(curve[0])[0]))})
 }
 func (self class) GetXfadeCurve() [1]gdclass.Curve { //gd:AnimationNodeTransition.get_xfade_curve
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_xfade_curve, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_xfade_curve, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Curve{gdclass.NewCurve(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetAllowTransitionToSelf(enable bool) { //gd:AnimationNodeTransition.set_allow_transition_to_self
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_transition_to_self, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_transition_to_self, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsAllowTransitionToSelf() bool { //gd:AnimationNodeTransition.is_allow_transition_to_self
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_allow_transition_to_self, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_allow_transition_to_self, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

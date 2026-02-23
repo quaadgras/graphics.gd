@@ -22,6 +22,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -61,6 +62,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -300,7 +302,7 @@ func (self class) SetDiffuseTexture(texture [1]gdclass.Texture2D) { //gd:CanvasT
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_diffuse_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetDiffuseTexture() [1]gdclass.Texture2D { //gd:CanvasTexture.get_diffuse_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_diffuse_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_diffuse_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -308,7 +310,7 @@ func (self class) SetNormalTexture(texture [1]gdclass.Texture2D) { //gd:CanvasTe
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normal_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetNormalTexture() [1]gdclass.Texture2D { //gd:CanvasTexture.get_normal_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_normal_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_normal_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -316,7 +318,7 @@ func (self class) SetSpecularTexture(texture [1]gdclass.Texture2D) { //gd:Canvas
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_specular_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetSpecularTexture() [1]gdclass.Texture2D { //gd:CanvasTexture.get_specular_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_specular_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_specular_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -324,7 +326,7 @@ func (self class) SetSpecularColor(color Color.RGBA) { //gd:CanvasTexture.set_sp
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_specular_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetSpecularColor() Color.RGBA { //gd:CanvasTexture.get_specular_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_specular_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_specular_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -332,7 +334,7 @@ func (self class) SetSpecularShininess(shininess float64) { //gd:CanvasTexture.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_specular_shininess, 0|(gdextension.SizeFloat<<4), &struct{ shininess float64 }{shininess})
 }
 func (self class) GetSpecularShininess() float64 { //gd:CanvasTexture.get_specular_shininess
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_specular_shininess, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_specular_shininess, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -340,7 +342,7 @@ func (self class) SetTextureFilter(filter CanvasItem.TextureFilter) { //gd:Canva
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_filter, 0|(gdextension.SizeInt<<4), &struct{ filter CanvasItem.TextureFilter }{filter})
 }
 func (self class) GetTextureFilter() CanvasItem.TextureFilter { //gd:CanvasTexture.get_texture_filter
-	var r_ret = noescape.Call[CanvasItem.TextureFilter](gd.ObjectChecked(self.AsObject()), methods.get_texture_filter, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[CanvasItem.TextureFilter](gd.ObjectChecked(self.AsObject()), methods.get_texture_filter, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -348,7 +350,7 @@ func (self class) SetTextureRepeat(repeat CanvasItem.TextureRepeat) { //gd:Canva
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_repeat, 0|(gdextension.SizeInt<<4), &struct{ repeat CanvasItem.TextureRepeat }{repeat})
 }
 func (self class) GetTextureRepeat() CanvasItem.TextureRepeat { //gd:CanvasTexture.get_texture_repeat
-	var r_ret = noescape.Call[CanvasItem.TextureRepeat](gd.ObjectChecked(self.AsObject()), methods.get_texture_repeat, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[CanvasItem.TextureRepeat](gd.ObjectChecked(self.AsObject()), methods.get_texture_repeat, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

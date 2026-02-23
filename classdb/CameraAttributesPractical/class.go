@@ -20,6 +20,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -56,6 +57,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -334,7 +336,7 @@ func (self class) SetDofBlurFarEnabled(enabled bool) { //gd:CameraAttributesPrac
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_far_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsDofBlurFarEnabled() bool { //gd:CameraAttributesPractical.is_dof_blur_far_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dof_blur_far_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dof_blur_far_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -342,7 +344,7 @@ func (self class) SetDofBlurFarDistance(distance float64) { //gd:CameraAttribute
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_far_distance, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 func (self class) GetDofBlurFarDistance() float64 { //gd:CameraAttributesPractical.get_dof_blur_far_distance
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_far_distance, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_far_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -350,7 +352,7 @@ func (self class) SetDofBlurFarTransition(distance float64) { //gd:CameraAttribu
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_far_transition, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 func (self class) GetDofBlurFarTransition() float64 { //gd:CameraAttributesPractical.get_dof_blur_far_transition
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_far_transition, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_far_transition, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -358,7 +360,7 @@ func (self class) SetDofBlurNearEnabled(enabled bool) { //gd:CameraAttributesPra
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_near_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsDofBlurNearEnabled() bool { //gd:CameraAttributesPractical.is_dof_blur_near_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dof_blur_near_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dof_blur_near_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -366,7 +368,7 @@ func (self class) SetDofBlurNearDistance(distance float64) { //gd:CameraAttribut
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_near_distance, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 func (self class) GetDofBlurNearDistance() float64 { //gd:CameraAttributesPractical.get_dof_blur_near_distance
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_near_distance, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_near_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -374,7 +376,7 @@ func (self class) SetDofBlurNearTransition(distance float64) { //gd:CameraAttrib
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_near_transition, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 func (self class) GetDofBlurNearTransition() float64 { //gd:CameraAttributesPractical.get_dof_blur_near_transition
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_near_transition, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_near_transition, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -382,7 +384,7 @@ func (self class) SetDofBlurAmount(amount float64) { //gd:CameraAttributesPracti
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_amount, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 func (self class) GetDofBlurAmount() float64 { //gd:CameraAttributesPractical.get_dof_blur_amount
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_amount, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_amount, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -390,7 +392,7 @@ func (self class) SetAutoExposureMaxSensitivity(max_sensitivity float64) { //gd:
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_max_sensitivity, 0|(gdextension.SizeFloat<<4), &struct{ max_sensitivity float64 }{max_sensitivity})
 }
 func (self class) GetAutoExposureMaxSensitivity() float64 { //gd:CameraAttributesPractical.get_auto_exposure_max_sensitivity
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_max_sensitivity, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_max_sensitivity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -398,7 +400,7 @@ func (self class) SetAutoExposureMinSensitivity(min_sensitivity float64) { //gd:
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_min_sensitivity, 0|(gdextension.SizeFloat<<4), &struct{ min_sensitivity float64 }{min_sensitivity})
 }
 func (self class) GetAutoExposureMinSensitivity() float64 { //gd:CameraAttributesPractical.get_auto_exposure_min_sensitivity
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_min_sensitivity, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_min_sensitivity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

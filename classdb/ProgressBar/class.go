@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -52,6 +53,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -226,7 +228,7 @@ func (self class) SetFillMode(mode int64) { //gd:ProgressBar.set_fill_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fill_mode, 0|(gdextension.SizeInt<<4), &struct{ mode int64 }{mode})
 }
 func (self class) GetFillMode() int64 { //gd:ProgressBar.get_fill_mode
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fill_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fill_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -234,7 +236,7 @@ func (self class) SetShowPercentage(visible bool) { //gd:ProgressBar.set_show_pe
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_show_percentage, 0|(gdextension.SizeBool<<4), &struct{ visible bool }{visible})
 }
 func (self class) IsPercentageShown() bool { //gd:ProgressBar.is_percentage_shown
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_percentage_shown, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_percentage_shown, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -242,7 +244,7 @@ func (self class) SetIndeterminate(indeterminate bool) { //gd:ProgressBar.set_in
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_indeterminate, 0|(gdextension.SizeBool<<4), &struct{ indeterminate bool }{indeterminate})
 }
 func (self class) IsIndeterminate() bool { //gd:ProgressBar.is_indeterminate
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_indeterminate, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_indeterminate, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -250,7 +252,7 @@ func (self class) SetEditorPreviewIndeterminate(preview_indeterminate bool) { //
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editor_preview_indeterminate, 0|(gdextension.SizeBool<<4), &struct{ preview_indeterminate bool }{preview_indeterminate})
 }
 func (self class) IsEditorPreviewIndeterminateEnabled() bool { //gd:ProgressBar.is_editor_preview_indeterminate_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editor_preview_indeterminate_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editor_preview_indeterminate_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

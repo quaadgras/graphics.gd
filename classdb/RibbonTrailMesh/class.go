@@ -19,6 +19,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -57,6 +58,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -267,7 +269,7 @@ func (self class) SetSize(size float64) { //gd:RibbonTrailMesh.set_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeFloat<<4), &struct{ size float64 }{size})
 }
 func (self class) GetSize() float64 { //gd:RibbonTrailMesh.get_size
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -275,7 +277,7 @@ func (self class) SetSections(sections int64) { //gd:RibbonTrailMesh.set_section
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sections, 0|(gdextension.SizeInt<<4), &struct{ sections int64 }{sections})
 }
 func (self class) GetSections() int64 { //gd:RibbonTrailMesh.get_sections
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sections, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sections, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -283,7 +285,7 @@ func (self class) SetSectionLength(section_length float64) { //gd:RibbonTrailMes
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_section_length, 0|(gdextension.SizeFloat<<4), &struct{ section_length float64 }{section_length})
 }
 func (self class) GetSectionLength() float64 { //gd:RibbonTrailMesh.get_section_length
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_section_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_section_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -291,7 +293,7 @@ func (self class) SetSectionSegments(section_segments int64) { //gd:RibbonTrailM
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_section_segments, 0|(gdextension.SizeInt<<4), &struct{ section_segments int64 }{section_segments})
 }
 func (self class) GetSectionSegments() int64 { //gd:RibbonTrailMesh.get_section_segments
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_section_segments, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_section_segments, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -299,7 +301,7 @@ func (self class) SetCurve(curve [1]gdclass.Curve) { //gd:RibbonTrailMesh.set_cu
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCurve(curve[0])[0]))})
 }
 func (self class) GetCurve() [1]gdclass.Curve { //gd:RibbonTrailMesh.get_curve
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Curve{gdclass.NewCurve(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -307,7 +309,7 @@ func (self class) SetShape(shape Shape) { //gd:RibbonTrailMesh.set_shape
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape, 0|(gdextension.SizeInt<<4), &struct{ shape Shape }{shape})
 }
 func (self class) GetShape() Shape { //gd:RibbonTrailMesh.get_shape
-	var r_ret = noescape.Call[Shape](gd.ObjectChecked(self.AsObject()), methods.get_shape, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Shape](gd.ObjectChecked(self.AsObject()), methods.get_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

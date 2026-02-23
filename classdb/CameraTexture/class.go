@@ -16,6 +16,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -54,6 +55,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -218,7 +220,7 @@ func (self class) SetCameraFeedId(feed_id int64) { //gd:CameraTexture.set_camera
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera_feed_id, 0|(gdextension.SizeInt<<4), &struct{ feed_id int64 }{feed_id})
 }
 func (self class) GetCameraFeedId() int64 { //gd:CameraTexture.get_camera_feed_id
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_camera_feed_id, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_camera_feed_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -226,7 +228,7 @@ func (self class) SetWhichFeed(which_feed CameraFeed.ImageType) { //gd:CameraTex
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_which_feed, 0|(gdextension.SizeInt<<4), &struct{ which_feed CameraFeed.ImageType }{which_feed})
 }
 func (self class) GetWhichFeed() CameraFeed.ImageType { //gd:CameraTexture.get_which_feed
-	var r_ret = noescape.Call[CameraFeed.ImageType](gd.ObjectChecked(self.AsObject()), methods.get_which_feed, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[CameraFeed.ImageType](gd.ObjectChecked(self.AsObject()), methods.get_which_feed, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

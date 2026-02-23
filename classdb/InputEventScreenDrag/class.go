@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -52,6 +53,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -313,10 +315,10 @@ func (self Instance) SetScreenVelocity(value Vector2.XY) Instance { //gd:InputEv
 }
 
 func (self class) SetIndex(index int64) { //gd:InputEventScreenDrag.set_index
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_index, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_index, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
 func (self class) GetIndex() int64 { //gd:InputEventScreenDrag.get_index
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_index, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -324,23 +326,23 @@ func (self class) SetTilt(tilt Vector2.XY) { //gd:InputEventScreenDrag.set_tilt
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tilt, 0|(gdextension.SizeVector2<<4), &struct{ tilt Vector2.XY }{tilt})
 }
 func (self class) GetTilt() Vector2.XY { //gd:InputEventScreenDrag.get_tilt
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_tilt, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_tilt, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPressure(pressure float64) { //gd:InputEventScreenDrag.set_pressure
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressure, 0|(gdextension.SizeFloat<<4), &struct{ pressure float64 }{pressure})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressure, 0|(gdextension.SizeFloat<<4), &struct{ pressure float64 }{pressure})
 }
 func (self class) GetPressure() float64 { //gd:InputEventScreenDrag.get_pressure
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pressure, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pressure, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPenInverted(pen_inverted bool) { //gd:InputEventScreenDrag.set_pen_inverted
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pen_inverted, 0|(gdextension.SizeBool<<4), &struct{ pen_inverted bool }{pen_inverted})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pen_inverted, 0|(gdextension.SizeBool<<4), &struct{ pen_inverted bool }{pen_inverted})
 }
 func (self class) GetPenInverted() bool { //gd:InputEventScreenDrag.get_pen_inverted
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_pen_inverted, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_pen_inverted, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -348,7 +350,7 @@ func (self class) SetPosition(position Vector2.XY) { //gd:InputEventScreenDrag.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 }
 func (self class) GetPosition() Vector2.XY { //gd:InputEventScreenDrag.get_position
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -356,7 +358,7 @@ func (self class) SetRelative(relative Vector2.XY) { //gd:InputEventScreenDrag.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_relative, 0|(gdextension.SizeVector2<<4), &struct{ relative Vector2.XY }{relative})
 }
 func (self class) GetRelative() Vector2.XY { //gd:InputEventScreenDrag.get_relative
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_relative, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_relative, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -372,7 +374,7 @@ func (self class) SetVelocity(velocity Vector2.XY) { //gd:InputEventScreenDrag.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_velocity, 0|(gdextension.SizeVector2<<4), &struct{ velocity Vector2.XY }{velocity})
 }
 func (self class) GetVelocity() Vector2.XY { //gd:InputEventScreenDrag.get_velocity
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_velocity, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_velocity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -380,7 +382,7 @@ func (self class) SetScreenVelocity(velocity Vector2.XY) { //gd:InputEventScreen
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_screen_velocity, 0|(gdextension.SizeVector2<<4), &struct{ velocity Vector2.XY }{velocity})
 }
 func (self class) GetScreenVelocity() Vector2.XY { //gd:InputEventScreenDrag.get_screen_velocity
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_screen_velocity, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_screen_velocity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

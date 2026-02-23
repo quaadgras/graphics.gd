@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -49,6 +50,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -331,7 +333,7 @@ func (self class) SetFrom(from Vector3.XYZ) { //gd:PhysicsRayQueryParameters3D.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_from, 0|(gdextension.SizeVector3<<4), &struct{ from Vector3.XYZ }{from})
 }
 func (self class) GetFrom() Vector3.XYZ { //gd:PhysicsRayQueryParameters3D.get_from
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_from, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_from, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -339,15 +341,15 @@ func (self class) SetTo(to Vector3.XYZ) { //gd:PhysicsRayQueryParameters3D.set_t
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_to, 0|(gdextension.SizeVector3<<4), &struct{ to Vector3.XYZ }{to})
 }
 func (self class) GetTo() Vector3.XYZ { //gd:PhysicsRayQueryParameters3D.get_to
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_to, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_to, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetCollisionMask(collision_mask int64) { //gd:PhysicsRayQueryParameters3D.set_collision_mask
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ collision_mask int64 }{collision_mask})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ collision_mask int64 }{collision_mask})
 }
 func (self class) GetCollisionMask() int64 { //gd:PhysicsRayQueryParameters3D.get_collision_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -360,34 +362,34 @@ func (self class) GetExclude() Array.Contains[RID.Any] { //gd:PhysicsRayQueryPar
 	return ret
 }
 func (self class) SetCollideWithBodies(enable bool) { //gd:PhysicsRayQueryParameters3D.set_collide_with_bodies
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_bodies, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_bodies, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsCollideWithBodiesEnabled() bool { //gd:PhysicsRayQueryParameters3D.is_collide_with_bodies_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_bodies_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_bodies_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetCollideWithAreas(enable bool) { //gd:PhysicsRayQueryParameters3D.set_collide_with_areas
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_areas, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_areas, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsCollideWithAreasEnabled() bool { //gd:PhysicsRayQueryParameters3D.is_collide_with_areas_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_areas_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_areas_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetHitFromInside(enable bool) { //gd:PhysicsRayQueryParameters3D.set_hit_from_inside
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hit_from_inside, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hit_from_inside, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsHitFromInsideEnabled() bool { //gd:PhysicsRayQueryParameters3D.is_hit_from_inside_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hit_from_inside_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hit_from_inside_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetHitBackFaces(enable bool) { //gd:PhysicsRayQueryParameters3D.set_hit_back_faces
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hit_back_faces, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hit_back_faces, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsHitBackFacesEnabled() bool { //gd:PhysicsRayQueryParameters3D.is_hit_back_faces_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hit_back_faces_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hit_back_faces_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

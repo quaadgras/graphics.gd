@@ -25,6 +25,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -62,6 +63,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -374,7 +376,7 @@ func (self class) SetLayer(layer int64) { //gd:CanvasLayer.set_layer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 }
 func (self class) GetLayer() int64 { //gd:CanvasLayer.get_layer
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layer, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layer, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -382,7 +384,7 @@ func (self class) SetVisible(visible bool) { //gd:CanvasLayer.set_visible
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visible, 0|(gdextension.SizeBool<<4), &struct{ visible bool }{visible})
 }
 func (self class) IsVisible() bool { //gd:CanvasLayer.is_visible
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_visible, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_visible, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -396,7 +398,7 @@ func (self class) SetTransform(transform Transform2D.OriginXY) { //gd:CanvasLaye
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transform, 0|(gdextension.SizeTransform2D<<4), &struct{ transform Transform2D.OriginXY }{transform})
 }
 func (self class) GetTransform() Transform2D.OriginXY { //gd:CanvasLayer.get_transform
-	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_transform, gdextension.SizeTransform2D, &struct{}{})
+	var r_ret = jumponly.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_transform, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -433,7 +435,7 @@ func (self class) SetFollowViewport(enable bool) { //gd:CanvasLayer.set_follow_v
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_follow_viewport, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsFollowingViewport() bool { //gd:CanvasLayer.is_following_viewport
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_following_viewport, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_following_viewport, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -441,7 +443,7 @@ func (self class) SetFollowViewportScale(scale float64) { //gd:CanvasLayer.set_f
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_follow_viewport_scale, 0|(gdextension.SizeFloat<<4), &struct{ scale float64 }{scale})
 }
 func (self class) GetFollowViewportScale() float64 { //gd:CanvasLayer.get_follow_viewport_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_follow_viewport_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_follow_viewport_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -449,12 +451,12 @@ func (self class) SetCustomViewport(viewport [1]gdclass.Node) { //gd:CanvasLayer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_viewport, 0|(gdextension.SizeObject<<4), &struct{ viewport gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(viewport[0])[0]))})
 }
 func (self class) GetCustomViewport() [1]gdclass.Node { //gd:CanvasLayer.get_custom_viewport
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_custom_viewport, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_custom_viewport, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) GetCanvas() RID.Any { //gd:CanvasLayer.get_canvas
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_canvas, gdextension.SizeRID, &struct{}{})
+	var r_ret = jumponly.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_canvas, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }

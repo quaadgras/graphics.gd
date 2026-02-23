@@ -55,6 +55,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -101,6 +102,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -3795,7 +3797,7 @@ func (self class) SetAccessibilityLive(mode DisplayServer.AccessibilityLiveMode)
 	}{mode})
 }
 func (self class) GetAccessibilityLive() DisplayServer.AccessibilityLiveMode { //gd:Control.get_accessibility_live
-	var r_ret = noescape.Call[DisplayServer.AccessibilityLiveMode](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_live, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DisplayServer.AccessibilityLiveMode](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_live, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3803,7 +3805,7 @@ func (self class) SetAccessibilityControlsNodes(node_path Array.Contains[Path.To
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_controls_nodes, 0|(gdextension.SizeArray<<4), &struct{ node_path gdextension.Array }{pointers.Get(gd.InternalArray(node_path))})
 }
 func (self class) GetAccessibilityControlsNodes() Array.Contains[Path.ToNode] { //gd:Control.get_accessibility_controls_nodes
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_controls_nodes, gdextension.SizeArray, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_controls_nodes, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -3811,7 +3813,7 @@ func (self class) SetAccessibilityDescribedByNodes(node_path Array.Contains[Path
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_described_by_nodes, 0|(gdextension.SizeArray<<4), &struct{ node_path gdextension.Array }{pointers.Get(gd.InternalArray(node_path))})
 }
 func (self class) GetAccessibilityDescribedByNodes() Array.Contains[Path.ToNode] { //gd:Control.get_accessibility_described_by_nodes
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_described_by_nodes, gdextension.SizeArray, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_described_by_nodes, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -3819,7 +3821,7 @@ func (self class) SetAccessibilityLabeledByNodes(node_path Array.Contains[Path.T
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_labeled_by_nodes, 0|(gdextension.SizeArray<<4), &struct{ node_path gdextension.Array }{pointers.Get(gd.InternalArray(node_path))})
 }
 func (self class) GetAccessibilityLabeledByNodes() Array.Contains[Path.ToNode] { //gd:Control.get_accessibility_labeled_by_nodes
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_labeled_by_nodes, gdextension.SizeArray, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_labeled_by_nodes, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -3827,7 +3829,7 @@ func (self class) SetAccessibilityFlowToNodes(node_path Array.Contains[Path.ToNo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_flow_to_nodes, 0|(gdextension.SizeArray<<4), &struct{ node_path gdextension.Array }{pointers.Get(gd.InternalArray(node_path))})
 }
 func (self class) GetAccessibilityFlowToNodes() Array.Contains[Path.ToNode] { //gd:Control.get_accessibility_flow_to_nodes
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_flow_to_nodes, gdextension.SizeArray, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_flow_to_nodes, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

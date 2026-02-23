@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -51,6 +52,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -2326,7 +2328,7 @@ func (self class) SetAlbedo(albedo Color.RGBA) { //gd:BaseMaterial3D.set_albedo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_albedo, 0|(gdextension.SizeColor<<4), &struct{ albedo Color.RGBA }{albedo})
 }
 func (self class) GetAlbedo() Color.RGBA { //gd:BaseMaterial3D.get_albedo
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_albedo, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_albedo, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2334,7 +2336,7 @@ func (self class) SetTransparency(transparency Transparency) { //gd:BaseMaterial
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transparency, 0|(gdextension.SizeInt<<4), &struct{ transparency Transparency }{transparency})
 }
 func (self class) GetTransparency() Transparency { //gd:BaseMaterial3D.get_transparency
-	var r_ret = noescape.Call[Transparency](gd.ObjectChecked(self.AsObject()), methods.get_transparency, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Transparency](gd.ObjectChecked(self.AsObject()), methods.get_transparency, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2342,7 +2344,7 @@ func (self class) SetAlphaAntialiasing(alpha_aa AlphaAntiAliasing) { //gd:BaseMa
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_antialiasing, 0|(gdextension.SizeInt<<4), &struct{ alpha_aa AlphaAntiAliasing }{alpha_aa})
 }
 func (self class) GetAlphaAntialiasing() AlphaAntiAliasing { //gd:BaseMaterial3D.get_alpha_antialiasing
-	var r_ret = noescape.Call[AlphaAntiAliasing](gd.ObjectChecked(self.AsObject()), methods.get_alpha_antialiasing, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[AlphaAntiAliasing](gd.ObjectChecked(self.AsObject()), methods.get_alpha_antialiasing, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2350,7 +2352,7 @@ func (self class) SetAlphaAntialiasingEdge(edge float64) { //gd:BaseMaterial3D.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_antialiasing_edge, 0|(gdextension.SizeFloat<<4), &struct{ edge float64 }{edge})
 }
 func (self class) GetAlphaAntialiasingEdge() float64 { //gd:BaseMaterial3D.get_alpha_antialiasing_edge
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_alpha_antialiasing_edge, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_alpha_antialiasing_edge, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2358,7 +2360,7 @@ func (self class) SetShadingMode(shading_mode ShadingMode) { //gd:BaseMaterial3D
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shading_mode, 0|(gdextension.SizeInt<<4), &struct{ shading_mode ShadingMode }{shading_mode})
 }
 func (self class) GetShadingMode() ShadingMode { //gd:BaseMaterial3D.get_shading_mode
-	var r_ret = noescape.Call[ShadingMode](gd.ObjectChecked(self.AsObject()), methods.get_shading_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[ShadingMode](gd.ObjectChecked(self.AsObject()), methods.get_shading_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2366,7 +2368,7 @@ func (self class) SetSpecular(specular float64) { //gd:BaseMaterial3D.set_specul
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_specular, 0|(gdextension.SizeFloat<<4), &struct{ specular float64 }{specular})
 }
 func (self class) GetSpecular() float64 { //gd:BaseMaterial3D.get_specular
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_specular, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_specular, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2374,7 +2376,7 @@ func (self class) SetMetallic(metallic float64) { //gd:BaseMaterial3D.set_metall
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_metallic, 0|(gdextension.SizeFloat<<4), &struct{ metallic float64 }{metallic})
 }
 func (self class) GetMetallic() float64 { //gd:BaseMaterial3D.get_metallic
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_metallic, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_metallic, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2382,7 +2384,7 @@ func (self class) SetRoughness(roughness float64) { //gd:BaseMaterial3D.set_roug
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_roughness, 0|(gdextension.SizeFloat<<4), &struct{ roughness float64 }{roughness})
 }
 func (self class) GetRoughness() float64 { //gd:BaseMaterial3D.get_roughness
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_roughness, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_roughness, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2390,7 +2392,7 @@ func (self class) SetEmission(emission Color.RGBA) { //gd:BaseMaterial3D.set_emi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission, 0|(gdextension.SizeColor<<4), &struct{ emission Color.RGBA }{emission})
 }
 func (self class) GetEmission() Color.RGBA { //gd:BaseMaterial3D.get_emission
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_emission, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_emission, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2398,7 +2400,7 @@ func (self class) SetEmissionEnergyMultiplier(emission_energy_multiplier float64
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_energy_multiplier, 0|(gdextension.SizeFloat<<4), &struct{ emission_energy_multiplier float64 }{emission_energy_multiplier})
 }
 func (self class) GetEmissionEnergyMultiplier() float64 { //gd:BaseMaterial3D.get_emission_energy_multiplier
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_energy_multiplier, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_energy_multiplier, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2406,7 +2408,7 @@ func (self class) SetEmissionIntensity(emission_energy_multiplier float64) { //g
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_intensity, 0|(gdextension.SizeFloat<<4), &struct{ emission_energy_multiplier float64 }{emission_energy_multiplier})
 }
 func (self class) GetEmissionIntensity() float64 { //gd:BaseMaterial3D.get_emission_intensity
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_intensity, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_intensity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2414,7 +2416,7 @@ func (self class) SetNormalScale(normal_scale float64) { //gd:BaseMaterial3D.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normal_scale, 0|(gdextension.SizeFloat<<4), &struct{ normal_scale float64 }{normal_scale})
 }
 func (self class) GetNormalScale() float64 { //gd:BaseMaterial3D.get_normal_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_normal_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_normal_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2422,7 +2424,7 @@ func (self class) SetRim(rim float64) { //gd:BaseMaterial3D.set_rim
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rim, 0|(gdextension.SizeFloat<<4), &struct{ rim float64 }{rim})
 }
 func (self class) GetRim() float64 { //gd:BaseMaterial3D.get_rim
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rim, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rim, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2430,7 +2432,7 @@ func (self class) SetRimTint(rim_tint float64) { //gd:BaseMaterial3D.set_rim_tin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rim_tint, 0|(gdextension.SizeFloat<<4), &struct{ rim_tint float64 }{rim_tint})
 }
 func (self class) GetRimTint() float64 { //gd:BaseMaterial3D.get_rim_tint
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rim_tint, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rim_tint, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2438,7 +2440,7 @@ func (self class) SetClearcoat(clearcoat float64) { //gd:BaseMaterial3D.set_clea
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clearcoat, 0|(gdextension.SizeFloat<<4), &struct{ clearcoat float64 }{clearcoat})
 }
 func (self class) GetClearcoat() float64 { //gd:BaseMaterial3D.get_clearcoat
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_clearcoat, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_clearcoat, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2446,7 +2448,7 @@ func (self class) SetClearcoatRoughness(clearcoat_roughness float64) { //gd:Base
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clearcoat_roughness, 0|(gdextension.SizeFloat<<4), &struct{ clearcoat_roughness float64 }{clearcoat_roughness})
 }
 func (self class) GetClearcoatRoughness() float64 { //gd:BaseMaterial3D.get_clearcoat_roughness
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_clearcoat_roughness, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_clearcoat_roughness, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2454,7 +2456,7 @@ func (self class) SetAnisotropy(anisotropy float64) { //gd:BaseMaterial3D.set_an
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anisotropy, 0|(gdextension.SizeFloat<<4), &struct{ anisotropy float64 }{anisotropy})
 }
 func (self class) GetAnisotropy() float64 { //gd:BaseMaterial3D.get_anisotropy
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_anisotropy, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_anisotropy, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2462,7 +2464,7 @@ func (self class) SetHeightmapScale(heightmap_scale float64) { //gd:BaseMaterial
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_heightmap_scale, 0|(gdextension.SizeFloat<<4), &struct{ heightmap_scale float64 }{heightmap_scale})
 }
 func (self class) GetHeightmapScale() float64 { //gd:BaseMaterial3D.get_heightmap_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_heightmap_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_heightmap_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2470,7 +2472,7 @@ func (self class) SetSubsurfaceScatteringStrength(strength float64) { //gd:BaseM
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_subsurface_scattering_strength, 0|(gdextension.SizeFloat<<4), &struct{ strength float64 }{strength})
 }
 func (self class) GetSubsurfaceScatteringStrength() float64 { //gd:BaseMaterial3D.get_subsurface_scattering_strength
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_subsurface_scattering_strength, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_subsurface_scattering_strength, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2478,7 +2480,7 @@ func (self class) SetTransmittanceColor(color Color.RGBA) { //gd:BaseMaterial3D.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transmittance_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetTransmittanceColor() Color.RGBA { //gd:BaseMaterial3D.get_transmittance_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_transmittance_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_transmittance_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2486,7 +2488,7 @@ func (self class) SetTransmittanceDepth(depth float64) { //gd:BaseMaterial3D.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transmittance_depth, 0|(gdextension.SizeFloat<<4), &struct{ depth float64 }{depth})
 }
 func (self class) GetTransmittanceDepth() float64 { //gd:BaseMaterial3D.get_transmittance_depth
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_transmittance_depth, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_transmittance_depth, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2494,7 +2496,7 @@ func (self class) SetTransmittanceBoost(boost float64) { //gd:BaseMaterial3D.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transmittance_boost, 0|(gdextension.SizeFloat<<4), &struct{ boost float64 }{boost})
 }
 func (self class) GetTransmittanceBoost() float64 { //gd:BaseMaterial3D.get_transmittance_boost
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_transmittance_boost, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_transmittance_boost, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2502,7 +2504,7 @@ func (self class) SetBacklight(backlight Color.RGBA) { //gd:BaseMaterial3D.set_b
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_backlight, 0|(gdextension.SizeColor<<4), &struct{ backlight Color.RGBA }{backlight})
 }
 func (self class) GetBacklight() Color.RGBA { //gd:BaseMaterial3D.get_backlight
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_backlight, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_backlight, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2510,7 +2512,7 @@ func (self class) SetRefraction(refraction float64) { //gd:BaseMaterial3D.set_re
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_refraction, 0|(gdextension.SizeFloat<<4), &struct{ refraction float64 }{refraction})
 }
 func (self class) GetRefraction() float64 { //gd:BaseMaterial3D.get_refraction
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_refraction, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_refraction, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2518,7 +2520,7 @@ func (self class) SetPointSize(point_size float64) { //gd:BaseMaterial3D.set_poi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_size, 0|(gdextension.SizeFloat<<4), &struct{ point_size float64 }{point_size})
 }
 func (self class) GetPointSize() float64 { //gd:BaseMaterial3D.get_point_size
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_point_size, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_point_size, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2526,7 +2528,7 @@ func (self class) SetDetailUv(detail_uv DetailUV) { //gd:BaseMaterial3D.set_deta
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_detail_uv, 0|(gdextension.SizeInt<<4), &struct{ detail_uv DetailUV }{detail_uv})
 }
 func (self class) GetDetailUv() DetailUV { //gd:BaseMaterial3D.get_detail_uv
-	var r_ret = noescape.Call[DetailUV](gd.ObjectChecked(self.AsObject()), methods.get_detail_uv, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DetailUV](gd.ObjectChecked(self.AsObject()), methods.get_detail_uv, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2534,7 +2536,7 @@ func (self class) SetBlendMode(blend_mode BlendMode) { //gd:BaseMaterial3D.set_b
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_mode, 0|(gdextension.SizeInt<<4), &struct{ blend_mode BlendMode }{blend_mode})
 }
 func (self class) GetBlendMode() BlendMode { //gd:BaseMaterial3D.get_blend_mode
-	var r_ret = noescape.Call[BlendMode](gd.ObjectChecked(self.AsObject()), methods.get_blend_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[BlendMode](gd.ObjectChecked(self.AsObject()), methods.get_blend_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2542,7 +2544,7 @@ func (self class) SetDepthDrawMode(depth_draw_mode DepthDrawMode) { //gd:BaseMat
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth_draw_mode, 0|(gdextension.SizeInt<<4), &struct{ depth_draw_mode DepthDrawMode }{depth_draw_mode})
 }
 func (self class) GetDepthDrawMode() DepthDrawMode { //gd:BaseMaterial3D.get_depth_draw_mode
-	var r_ret = noescape.Call[DepthDrawMode](gd.ObjectChecked(self.AsObject()), methods.get_depth_draw_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DepthDrawMode](gd.ObjectChecked(self.AsObject()), methods.get_depth_draw_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2550,7 +2552,7 @@ func (self class) SetDepthTest(depth_test DepthTest) { //gd:BaseMaterial3D.set_d
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth_test, 0|(gdextension.SizeInt<<4), &struct{ depth_test DepthTest }{depth_test})
 }
 func (self class) GetDepthTest() DepthTest { //gd:BaseMaterial3D.get_depth_test
-	var r_ret = noescape.Call[DepthTest](gd.ObjectChecked(self.AsObject()), methods.get_depth_test, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DepthTest](gd.ObjectChecked(self.AsObject()), methods.get_depth_test, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2558,7 +2560,7 @@ func (self class) SetCullMode(cull_mode CullMode) { //gd:BaseMaterial3D.set_cull
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cull_mode, 0|(gdextension.SizeInt<<4), &struct{ cull_mode CullMode }{cull_mode})
 }
 func (self class) GetCullMode() CullMode { //gd:BaseMaterial3D.get_cull_mode
-	var r_ret = noescape.Call[CullMode](gd.ObjectChecked(self.AsObject()), methods.get_cull_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[CullMode](gd.ObjectChecked(self.AsObject()), methods.get_cull_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2566,7 +2568,7 @@ func (self class) SetDiffuseMode(diffuse_mode DiffuseMode) { //gd:BaseMaterial3D
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_diffuse_mode, 0|(gdextension.SizeInt<<4), &struct{ diffuse_mode DiffuseMode }{diffuse_mode})
 }
 func (self class) GetDiffuseMode() DiffuseMode { //gd:BaseMaterial3D.get_diffuse_mode
-	var r_ret = noescape.Call[DiffuseMode](gd.ObjectChecked(self.AsObject()), methods.get_diffuse_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DiffuseMode](gd.ObjectChecked(self.AsObject()), methods.get_diffuse_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2574,7 +2576,7 @@ func (self class) SetSpecularMode(specular_mode SpecularMode) { //gd:BaseMateria
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_specular_mode, 0|(gdextension.SizeInt<<4), &struct{ specular_mode SpecularMode }{specular_mode})
 }
 func (self class) GetSpecularMode() SpecularMode { //gd:BaseMaterial3D.get_specular_mode
-	var r_ret = noescape.Call[SpecularMode](gd.ObjectChecked(self.AsObject()), methods.get_specular_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[SpecularMode](gd.ObjectChecked(self.AsObject()), methods.get_specular_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2593,7 +2595,7 @@ func (self class) SetTextureFilter(mode TextureFilter) { //gd:BaseMaterial3D.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_filter, 0|(gdextension.SizeInt<<4), &struct{ mode TextureFilter }{mode})
 }
 func (self class) GetTextureFilter() TextureFilter { //gd:BaseMaterial3D.get_texture_filter
-	var r_ret = noescape.Call[TextureFilter](gd.ObjectChecked(self.AsObject()), methods.get_texture_filter, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextureFilter](gd.ObjectChecked(self.AsObject()), methods.get_texture_filter, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2623,7 +2625,7 @@ func (self class) SetDetailBlendMode(detail_blend_mode BlendMode) { //gd:BaseMat
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_detail_blend_mode, 0|(gdextension.SizeInt<<4), &struct{ detail_blend_mode BlendMode }{detail_blend_mode})
 }
 func (self class) GetDetailBlendMode() BlendMode { //gd:BaseMaterial3D.get_detail_blend_mode
-	var r_ret = noescape.Call[BlendMode](gd.ObjectChecked(self.AsObject()), methods.get_detail_blend_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[BlendMode](gd.ObjectChecked(self.AsObject()), methods.get_detail_blend_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2631,7 +2633,7 @@ func (self class) SetUv1Scale(scale Vector3.XYZ) { //gd:BaseMaterial3D.set_uv1_s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uv1_scale, 0|(gdextension.SizeVector3<<4), &struct{ scale Vector3.XYZ }{scale})
 }
 func (self class) GetUv1Scale() Vector3.XYZ { //gd:BaseMaterial3D.get_uv1_scale
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_uv1_scale, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_uv1_scale, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2639,7 +2641,7 @@ func (self class) SetUv1Offset(offset Vector3.XYZ) { //gd:BaseMaterial3D.set_uv1
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uv1_offset, 0|(gdextension.SizeVector3<<4), &struct{ offset Vector3.XYZ }{offset})
 }
 func (self class) GetUv1Offset() Vector3.XYZ { //gd:BaseMaterial3D.get_uv1_offset
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_uv1_offset, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_uv1_offset, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2647,7 +2649,7 @@ func (self class) SetUv1TriplanarBlendSharpness(sharpness float64) { //gd:BaseMa
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uv1_triplanar_blend_sharpness, 0|(gdextension.SizeFloat<<4), &struct{ sharpness float64 }{sharpness})
 }
 func (self class) GetUv1TriplanarBlendSharpness() float64 { //gd:BaseMaterial3D.get_uv1_triplanar_blend_sharpness
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_uv1_triplanar_blend_sharpness, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_uv1_triplanar_blend_sharpness, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2655,7 +2657,7 @@ func (self class) SetUv2Scale(scale Vector3.XYZ) { //gd:BaseMaterial3D.set_uv2_s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uv2_scale, 0|(gdextension.SizeVector3<<4), &struct{ scale Vector3.XYZ }{scale})
 }
 func (self class) GetUv2Scale() Vector3.XYZ { //gd:BaseMaterial3D.get_uv2_scale
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_uv2_scale, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_uv2_scale, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2663,7 +2665,7 @@ func (self class) SetUv2Offset(offset Vector3.XYZ) { //gd:BaseMaterial3D.set_uv2
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uv2_offset, 0|(gdextension.SizeVector3<<4), &struct{ offset Vector3.XYZ }{offset})
 }
 func (self class) GetUv2Offset() Vector3.XYZ { //gd:BaseMaterial3D.get_uv2_offset
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_uv2_offset, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_uv2_offset, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2671,7 +2673,7 @@ func (self class) SetUv2TriplanarBlendSharpness(sharpness float64) { //gd:BaseMa
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uv2_triplanar_blend_sharpness, 0|(gdextension.SizeFloat<<4), &struct{ sharpness float64 }{sharpness})
 }
 func (self class) GetUv2TriplanarBlendSharpness() float64 { //gd:BaseMaterial3D.get_uv2_triplanar_blend_sharpness
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_uv2_triplanar_blend_sharpness, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_uv2_triplanar_blend_sharpness, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2679,7 +2681,7 @@ func (self class) SetBillboardMode(mode BillboardMode) { //gd:BaseMaterial3D.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_billboard_mode, 0|(gdextension.SizeInt<<4), &struct{ mode BillboardMode }{mode})
 }
 func (self class) GetBillboardMode() BillboardMode { //gd:BaseMaterial3D.get_billboard_mode
-	var r_ret = noescape.Call[BillboardMode](gd.ObjectChecked(self.AsObject()), methods.get_billboard_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[BillboardMode](gd.ObjectChecked(self.AsObject()), methods.get_billboard_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2687,7 +2689,7 @@ func (self class) SetParticlesAnimHFrames(frames int64) { //gd:BaseMaterial3D.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_particles_anim_h_frames, 0|(gdextension.SizeInt<<4), &struct{ frames int64 }{frames})
 }
 func (self class) GetParticlesAnimHFrames() int64 { //gd:BaseMaterial3D.get_particles_anim_h_frames
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_particles_anim_h_frames, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_particles_anim_h_frames, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2695,7 +2697,7 @@ func (self class) SetParticlesAnimVFrames(frames int64) { //gd:BaseMaterial3D.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_particles_anim_v_frames, 0|(gdextension.SizeInt<<4), &struct{ frames int64 }{frames})
 }
 func (self class) GetParticlesAnimVFrames() int64 { //gd:BaseMaterial3D.get_particles_anim_v_frames
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_particles_anim_v_frames, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_particles_anim_v_frames, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2703,7 +2705,7 @@ func (self class) SetParticlesAnimLoop(loop bool) { //gd:BaseMaterial3D.set_part
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_particles_anim_loop, 0|(gdextension.SizeBool<<4), &struct{ loop bool }{loop})
 }
 func (self class) GetParticlesAnimLoop() bool { //gd:BaseMaterial3D.get_particles_anim_loop
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_particles_anim_loop, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_particles_anim_loop, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2711,7 +2713,7 @@ func (self class) SetHeightmapDeepParallax(enable bool) { //gd:BaseMaterial3D.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_heightmap_deep_parallax, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsHeightmapDeepParallaxEnabled() bool { //gd:BaseMaterial3D.is_heightmap_deep_parallax_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_heightmap_deep_parallax_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_heightmap_deep_parallax_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2719,7 +2721,7 @@ func (self class) SetHeightmapDeepParallaxMinLayers(layer int64) { //gd:BaseMate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_heightmap_deep_parallax_min_layers, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 }
 func (self class) GetHeightmapDeepParallaxMinLayers() int64 { //gd:BaseMaterial3D.get_heightmap_deep_parallax_min_layers
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_heightmap_deep_parallax_min_layers, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_heightmap_deep_parallax_min_layers, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2727,7 +2729,7 @@ func (self class) SetHeightmapDeepParallaxMaxLayers(layer int64) { //gd:BaseMate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_heightmap_deep_parallax_max_layers, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 }
 func (self class) GetHeightmapDeepParallaxMaxLayers() int64 { //gd:BaseMaterial3D.get_heightmap_deep_parallax_max_layers
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_heightmap_deep_parallax_max_layers, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_heightmap_deep_parallax_max_layers, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2735,7 +2737,7 @@ func (self class) SetHeightmapDeepParallaxFlipTangent(flip bool) { //gd:BaseMate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_heightmap_deep_parallax_flip_tangent, 0|(gdextension.SizeBool<<4), &struct{ flip bool }{flip})
 }
 func (self class) GetHeightmapDeepParallaxFlipTangent() bool { //gd:BaseMaterial3D.get_heightmap_deep_parallax_flip_tangent
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_heightmap_deep_parallax_flip_tangent, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_heightmap_deep_parallax_flip_tangent, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2743,7 +2745,7 @@ func (self class) SetHeightmapDeepParallaxFlipBinormal(flip bool) { //gd:BaseMat
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_heightmap_deep_parallax_flip_binormal, 0|(gdextension.SizeBool<<4), &struct{ flip bool }{flip})
 }
 func (self class) GetHeightmapDeepParallaxFlipBinormal() bool { //gd:BaseMaterial3D.get_heightmap_deep_parallax_flip_binormal
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_heightmap_deep_parallax_flip_binormal, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_heightmap_deep_parallax_flip_binormal, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2751,7 +2753,7 @@ func (self class) SetGrow(amount float64) { //gd:BaseMaterial3D.set_grow
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_grow, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 func (self class) GetGrow() float64 { //gd:BaseMaterial3D.get_grow
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_grow, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_grow, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2759,7 +2761,7 @@ func (self class) SetEmissionOperator(operator EmissionOperator) { //gd:BaseMate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_operator, 0|(gdextension.SizeInt<<4), &struct{ operator EmissionOperator }{operator})
 }
 func (self class) GetEmissionOperator() EmissionOperator { //gd:BaseMaterial3D.get_emission_operator
-	var r_ret = noescape.Call[EmissionOperator](gd.ObjectChecked(self.AsObject()), methods.get_emission_operator, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[EmissionOperator](gd.ObjectChecked(self.AsObject()), methods.get_emission_operator, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2767,7 +2769,7 @@ func (self class) SetAoLightAffect(amount float64) { //gd:BaseMaterial3D.set_ao_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ao_light_affect, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 func (self class) GetAoLightAffect() float64 { //gd:BaseMaterial3D.get_ao_light_affect
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ao_light_affect, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ao_light_affect, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2775,7 +2777,7 @@ func (self class) SetAlphaScissorThreshold(threshold float64) { //gd:BaseMateria
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_scissor_threshold, 0|(gdextension.SizeFloat<<4), &struct{ threshold float64 }{threshold})
 }
 func (self class) GetAlphaScissorThreshold() float64 { //gd:BaseMaterial3D.get_alpha_scissor_threshold
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_alpha_scissor_threshold, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_alpha_scissor_threshold, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2783,7 +2785,7 @@ func (self class) SetAlphaHashScale(threshold float64) { //gd:BaseMaterial3D.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_hash_scale, 0|(gdextension.SizeFloat<<4), &struct{ threshold float64 }{threshold})
 }
 func (self class) GetAlphaHashScale() float64 { //gd:BaseMaterial3D.get_alpha_hash_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_alpha_hash_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_alpha_hash_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2791,7 +2793,7 @@ func (self class) SetGrowEnabled(enable bool) { //gd:BaseMaterial3D.set_grow_ena
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_grow_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsGrowEnabled() bool { //gd:BaseMaterial3D.is_grow_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_grow_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_grow_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2799,7 +2801,7 @@ func (self class) SetMetallicTextureChannel(channel TextureChannel) { //gd:BaseM
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_metallic_texture_channel, 0|(gdextension.SizeInt<<4), &struct{ channel TextureChannel }{channel})
 }
 func (self class) GetMetallicTextureChannel() TextureChannel { //gd:BaseMaterial3D.get_metallic_texture_channel
-	var r_ret = noescape.Call[TextureChannel](gd.ObjectChecked(self.AsObject()), methods.get_metallic_texture_channel, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextureChannel](gd.ObjectChecked(self.AsObject()), methods.get_metallic_texture_channel, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2807,7 +2809,7 @@ func (self class) SetRoughnessTextureChannel(channel TextureChannel) { //gd:Base
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_roughness_texture_channel, 0|(gdextension.SizeInt<<4), &struct{ channel TextureChannel }{channel})
 }
 func (self class) GetRoughnessTextureChannel() TextureChannel { //gd:BaseMaterial3D.get_roughness_texture_channel
-	var r_ret = noescape.Call[TextureChannel](gd.ObjectChecked(self.AsObject()), methods.get_roughness_texture_channel, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextureChannel](gd.ObjectChecked(self.AsObject()), methods.get_roughness_texture_channel, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2815,7 +2817,7 @@ func (self class) SetAoTextureChannel(channel TextureChannel) { //gd:BaseMateria
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ao_texture_channel, 0|(gdextension.SizeInt<<4), &struct{ channel TextureChannel }{channel})
 }
 func (self class) GetAoTextureChannel() TextureChannel { //gd:BaseMaterial3D.get_ao_texture_channel
-	var r_ret = noescape.Call[TextureChannel](gd.ObjectChecked(self.AsObject()), methods.get_ao_texture_channel, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextureChannel](gd.ObjectChecked(self.AsObject()), methods.get_ao_texture_channel, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2823,7 +2825,7 @@ func (self class) SetRefractionTextureChannel(channel TextureChannel) { //gd:Bas
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_refraction_texture_channel, 0|(gdextension.SizeInt<<4), &struct{ channel TextureChannel }{channel})
 }
 func (self class) GetRefractionTextureChannel() TextureChannel { //gd:BaseMaterial3D.get_refraction_texture_channel
-	var r_ret = noescape.Call[TextureChannel](gd.ObjectChecked(self.AsObject()), methods.get_refraction_texture_channel, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextureChannel](gd.ObjectChecked(self.AsObject()), methods.get_refraction_texture_channel, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2831,7 +2833,7 @@ func (self class) SetProximityFadeEnabled(enabled bool) { //gd:BaseMaterial3D.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_proximity_fade_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsProximityFadeEnabled() bool { //gd:BaseMaterial3D.is_proximity_fade_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_proximity_fade_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_proximity_fade_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2839,7 +2841,7 @@ func (self class) SetProximityFadeDistance(distance float64) { //gd:BaseMaterial
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_proximity_fade_distance, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 func (self class) GetProximityFadeDistance() float64 { //gd:BaseMaterial3D.get_proximity_fade_distance
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_proximity_fade_distance, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_proximity_fade_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2847,7 +2849,7 @@ func (self class) SetMsdfPixelRange(arange float64) { //gd:BaseMaterial3D.set_ms
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_msdf_pixel_range, 0|(gdextension.SizeFloat<<4), &struct{ arange float64 }{arange})
 }
 func (self class) GetMsdfPixelRange() float64 { //gd:BaseMaterial3D.get_msdf_pixel_range
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_msdf_pixel_range, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_msdf_pixel_range, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2855,7 +2857,7 @@ func (self class) SetMsdfOutlineSize(size float64) { //gd:BaseMaterial3D.set_msd
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_msdf_outline_size, 0|(gdextension.SizeFloat<<4), &struct{ size float64 }{size})
 }
 func (self class) GetMsdfOutlineSize() float64 { //gd:BaseMaterial3D.get_msdf_outline_size
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_msdf_outline_size, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_msdf_outline_size, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2863,7 +2865,7 @@ func (self class) SetDistanceFade(mode DistanceFadeMode) { //gd:BaseMaterial3D.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_distance_fade, 0|(gdextension.SizeInt<<4), &struct{ mode DistanceFadeMode }{mode})
 }
 func (self class) GetDistanceFade() DistanceFadeMode { //gd:BaseMaterial3D.get_distance_fade
-	var r_ret = noescape.Call[DistanceFadeMode](gd.ObjectChecked(self.AsObject()), methods.get_distance_fade, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DistanceFadeMode](gd.ObjectChecked(self.AsObject()), methods.get_distance_fade, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2871,7 +2873,7 @@ func (self class) SetDistanceFadeMaxDistance(distance float64) { //gd:BaseMateri
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_distance_fade_max_distance, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 func (self class) GetDistanceFadeMaxDistance() float64 { //gd:BaseMaterial3D.get_distance_fade_max_distance
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_distance_fade_max_distance, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_distance_fade_max_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2879,7 +2881,7 @@ func (self class) SetDistanceFadeMinDistance(distance float64) { //gd:BaseMateri
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_distance_fade_min_distance, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 func (self class) GetDistanceFadeMinDistance() float64 { //gd:BaseMaterial3D.get_distance_fade_min_distance
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_distance_fade_min_distance, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_distance_fade_min_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2887,7 +2889,7 @@ func (self class) SetZClipScale(scale float64) { //gd:BaseMaterial3D.set_z_clip_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_z_clip_scale, 0|(gdextension.SizeFloat<<4), &struct{ scale float64 }{scale})
 }
 func (self class) GetZClipScale() float64 { //gd:BaseMaterial3D.get_z_clip_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_z_clip_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_z_clip_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2895,7 +2897,7 @@ func (self class) SetFovOverride(scale float64) { //gd:BaseMaterial3D.set_fov_ov
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fov_override, 0|(gdextension.SizeFloat<<4), &struct{ scale float64 }{scale})
 }
 func (self class) GetFovOverride() float64 { //gd:BaseMaterial3D.get_fov_override
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fov_override, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fov_override, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2903,7 +2905,7 @@ func (self class) SetStencilMode(stencil_mode StencilMode) { //gd:BaseMaterial3D
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stencil_mode, 0|(gdextension.SizeInt<<4), &struct{ stencil_mode StencilMode }{stencil_mode})
 }
 func (self class) GetStencilMode() StencilMode { //gd:BaseMaterial3D.get_stencil_mode
-	var r_ret = noescape.Call[StencilMode](gd.ObjectChecked(self.AsObject()), methods.get_stencil_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[StencilMode](gd.ObjectChecked(self.AsObject()), methods.get_stencil_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2911,7 +2913,7 @@ func (self class) SetStencilFlags(stencil_flags int64) { //gd:BaseMaterial3D.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stencil_flags, 0|(gdextension.SizeInt<<4), &struct{ stencil_flags int64 }{stencil_flags})
 }
 func (self class) GetStencilFlags() int64 { //gd:BaseMaterial3D.get_stencil_flags
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stencil_flags, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stencil_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2919,7 +2921,7 @@ func (self class) SetStencilCompare(stencil_compare StencilCompare) { //gd:BaseM
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stencil_compare, 0|(gdextension.SizeInt<<4), &struct{ stencil_compare StencilCompare }{stencil_compare})
 }
 func (self class) GetStencilCompare() StencilCompare { //gd:BaseMaterial3D.get_stencil_compare
-	var r_ret = noescape.Call[StencilCompare](gd.ObjectChecked(self.AsObject()), methods.get_stencil_compare, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[StencilCompare](gd.ObjectChecked(self.AsObject()), methods.get_stencil_compare, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2927,7 +2929,7 @@ func (self class) SetStencilReference(stencil_reference int64) { //gd:BaseMateri
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stencil_reference, 0|(gdextension.SizeInt<<4), &struct{ stencil_reference int64 }{stencil_reference})
 }
 func (self class) GetStencilReference() int64 { //gd:BaseMaterial3D.get_stencil_reference
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stencil_reference, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stencil_reference, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2935,7 +2937,7 @@ func (self class) SetStencilEffectColor(stencil_color Color.RGBA) { //gd:BaseMat
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stencil_effect_color, 0|(gdextension.SizeColor<<4), &struct{ stencil_color Color.RGBA }{stencil_color})
 }
 func (self class) GetStencilEffectColor() Color.RGBA { //gd:BaseMaterial3D.get_stencil_effect_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_stencil_effect_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_stencil_effect_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2943,7 +2945,7 @@ func (self class) SetStencilEffectOutlineThickness(stencil_outline_thickness flo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stencil_effect_outline_thickness, 0|(gdextension.SizeFloat<<4), &struct{ stencil_outline_thickness float64 }{stencil_outline_thickness})
 }
 func (self class) GetStencilEffectOutlineThickness() float64 { //gd:BaseMaterial3D.get_stencil_effect_outline_thickness
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_stencil_effect_outline_thickness, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_stencil_effect_outline_thickness, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -27,6 +27,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -66,6 +67,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -451,7 +453,7 @@ func (self class) SetEnabled(enabled bool) { //gd:RayCast2D.set_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsEnabled() bool { //gd:RayCast2D.is_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -459,12 +461,12 @@ func (self class) SetTargetPosition(local_point Vector2.XY) { //gd:RayCast2D.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_position, 0|(gdextension.SizeVector2<<4), &struct{ local_point Vector2.XY }{local_point})
 }
 func (self class) GetTargetPosition() Vector2.XY { //gd:RayCast2D.get_target_position
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_target_position, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_target_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsColliding() bool { //gd:RayCast2D.is_colliding
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_colliding, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_colliding, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -477,22 +479,22 @@ func (self class) GetCollider() [1]gd.Object { //gd:RayCast2D.get_collider
 	return ret
 }
 func (self class) GetColliderRid() RID.Any { //gd:RayCast2D.get_collider_rid
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_collider_rid, gdextension.SizeRID, &struct{}{})
+	var r_ret = jumponly.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_collider_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetColliderShape() int64 { //gd:RayCast2D.get_collider_shape
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collider_shape, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collider_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetCollisionPoint() Vector2.XY { //gd:RayCast2D.get_collision_point
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_collision_point, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_collision_point, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetCollisionNormal() Vector2.XY { //gd:RayCast2D.get_collision_normal
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_collision_normal, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_collision_normal, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -512,10 +514,10 @@ func (self class) ClearExceptions() { //gd:RayCast2D.clear_exceptions
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_exceptions, 0, &struct{}{})
 }
 func (self class) SetCollisionMask(mask int64) { //gd:RayCast2D.set_collision_mask
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
 func (self class) GetCollisionMask() int64 { //gd:RayCast2D.get_collision_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -534,31 +536,31 @@ func (self class) SetExcludeParentBody(mask bool) { //gd:RayCast2D.set_exclude_p
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exclude_parent_body, 0|(gdextension.SizeBool<<4), &struct{ mask bool }{mask})
 }
 func (self class) GetExcludeParentBody() bool { //gd:RayCast2D.get_exclude_parent_body
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_exclude_parent_body, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_exclude_parent_body, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetCollideWithAreas(enable bool) { //gd:RayCast2D.set_collide_with_areas
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_areas, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_areas, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsCollideWithAreasEnabled() bool { //gd:RayCast2D.is_collide_with_areas_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_areas_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_areas_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetCollideWithBodies(enable bool) { //gd:RayCast2D.set_collide_with_bodies
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_bodies, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_bodies, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsCollideWithBodiesEnabled() bool { //gd:RayCast2D.is_collide_with_bodies_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_bodies_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_bodies_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetHitFromInside(enable bool) { //gd:RayCast2D.set_hit_from_inside
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hit_from_inside, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hit_from_inside, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsHitFromInsideEnabled() bool { //gd:RayCast2D.is_hit_from_inside_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hit_from_inside_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hit_from_inside_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

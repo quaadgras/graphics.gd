@@ -66,6 +66,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -103,6 +104,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -616,7 +618,7 @@ func (self class) GetCloseReason() String.Readable { //gd:WebSocketPeer.get_clos
 	return ret
 }
 func (self class) GetSupportedProtocols() Packed.Strings { //gd:WebSocketPeer.get_supported_protocols
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_supported_protocols, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_supported_protocols, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -626,7 +628,7 @@ func (self class) SetSupportedProtocols(protocols Packed.Strings) { //gd:WebSock
 	}{pointers.Get(gd.InternalPackedStrings(protocols))})
 }
 func (self class) GetHandshakeHeaders() Packed.Strings { //gd:WebSocketPeer.get_handshake_headers
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_handshake_headers, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_handshake_headers, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -636,26 +638,26 @@ func (self class) SetHandshakeHeaders(protocols Packed.Strings) { //gd:WebSocket
 	}{pointers.Get(gd.InternalPackedStrings(protocols))})
 }
 func (self class) GetInboundBufferSize() int64 { //gd:WebSocketPeer.get_inbound_buffer_size
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_inbound_buffer_size, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_inbound_buffer_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetInboundBufferSize(buffer_size int64) { //gd:WebSocketPeer.set_inbound_buffer_size
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inbound_buffer_size, 0|(gdextension.SizeInt<<4), &struct{ buffer_size int64 }{buffer_size})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inbound_buffer_size, 0|(gdextension.SizeInt<<4), &struct{ buffer_size int64 }{buffer_size})
 }
 func (self class) GetOutboundBufferSize() int64 { //gd:WebSocketPeer.get_outbound_buffer_size
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_outbound_buffer_size, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_outbound_buffer_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetOutboundBufferSize(buffer_size int64) { //gd:WebSocketPeer.set_outbound_buffer_size
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_outbound_buffer_size, 0|(gdextension.SizeInt<<4), &struct{ buffer_size int64 }{buffer_size})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_outbound_buffer_size, 0|(gdextension.SizeInt<<4), &struct{ buffer_size int64 }{buffer_size})
 }
 func (self class) SetMaxQueuedPackets(buffer_size int64) { //gd:WebSocketPeer.set_max_queued_packets
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_queued_packets, 0|(gdextension.SizeInt<<4), &struct{ buffer_size int64 }{buffer_size})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_queued_packets, 0|(gdextension.SizeInt<<4), &struct{ buffer_size int64 }{buffer_size})
 }
 func (self class) GetMaxQueuedPackets() int64 { //gd:WebSocketPeer.get_max_queued_packets
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_queued_packets, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_queued_packets, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -663,7 +665,7 @@ func (self class) SetHeartbeatInterval(interval float64) { //gd:WebSocketPeer.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_heartbeat_interval, 0|(gdextension.SizeFloat<<4), &struct{ interval float64 }{interval})
 }
 func (self class) GetHeartbeatInterval() float64 { //gd:WebSocketPeer.get_heartbeat_interval
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_heartbeat_interval, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_heartbeat_interval, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

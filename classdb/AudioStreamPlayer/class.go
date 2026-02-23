@@ -23,6 +23,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -61,6 +62,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -451,7 +453,7 @@ func (self class) SetStream(stream [1]gdclass.AudioStream) { //gd:AudioStreamPla
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream, 0|(gdextension.SizeObject<<4), &struct{ stream gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetAudioStream(stream[0])[0]))})
 }
 func (self class) GetStream() [1]gdclass.AudioStream { //gd:AudioStreamPlayer.get_stream
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_stream, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_stream, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.AudioStream{gdclass.NewAudioStream(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -459,7 +461,7 @@ func (self class) SetVolumeDb(volume_db float64) { //gd:AudioStreamPlayer.set_vo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_volume_db, 0|(gdextension.SizeFloat<<4), &struct{ volume_db float64 }{volume_db})
 }
 func (self class) GetVolumeDb() float64 { //gd:AudioStreamPlayer.get_volume_db
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_volume_db, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_volume_db, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -475,7 +477,7 @@ func (self class) SetPitchScale(pitch_scale float64) { //gd:AudioStreamPlayer.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pitch_scale, 0|(gdextension.SizeFloat<<4), &struct{ pitch_scale float64 }{pitch_scale})
 }
 func (self class) GetPitchScale() float64 { //gd:AudioStreamPlayer.get_pitch_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pitch_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pitch_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -507,18 +509,18 @@ func (self class) GetBus() String.Name { //gd:AudioStreamPlayer.get_bus
 	return ret
 }
 func (self class) SetAutoplay(enable bool) { //gd:AudioStreamPlayer.set_autoplay
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoplay, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoplay, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsAutoplayEnabled() bool { //gd:AudioStreamPlayer.is_autoplay_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_autoplay_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_autoplay_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMixTarget(mix_target MixTarget) { //gd:AudioStreamPlayer.set_mix_target
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mix_target, 0|(gdextension.SizeInt<<4), &struct{ mix_target MixTarget }{mix_target})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mix_target, 0|(gdextension.SizeInt<<4), &struct{ mix_target MixTarget }{mix_target})
 }
 func (self class) GetMixTarget() MixTarget { //gd:AudioStreamPlayer.get_mix_target
-	var r_ret = noescape.Call[MixTarget](gd.ObjectChecked(self.AsObject()), methods.get_mix_target, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[MixTarget](gd.ObjectChecked(self.AsObject()), methods.get_mix_target, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -537,7 +539,7 @@ func (self class) SetMaxPolyphony(max_polyphony int64) { //gd:AudioStreamPlayer.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_polyphony, 0|(gdextension.SizeInt<<4), &struct{ max_polyphony int64 }{max_polyphony})
 }
 func (self class) GetMaxPolyphony() int64 { //gd:AudioStreamPlayer.get_max_polyphony
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_polyphony, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_polyphony, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

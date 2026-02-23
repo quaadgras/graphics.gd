@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -52,6 +53,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -227,10 +229,10 @@ func (self Instance) SetDoubleTap(value bool) Instance { //gd:InputEventScreenTo
 }
 
 func (self class) SetIndex(index int64) { //gd:InputEventScreenTouch.set_index
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_index, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_index, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
 func (self class) GetIndex() int64 { //gd:InputEventScreenTouch.get_index
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_index, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -238,21 +240,21 @@ func (self class) SetPosition(position Vector2.XY) { //gd:InputEventScreenTouch.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 }
 func (self class) GetPosition() Vector2.XY { //gd:InputEventScreenTouch.get_position
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPressed(pressed bool) { //gd:InputEventScreenTouch.set_pressed
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
 }
 func (self class) SetCanceled(canceled bool) { //gd:InputEventScreenTouch.set_canceled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_canceled, 0|(gdextension.SizeBool<<4), &struct{ canceled bool }{canceled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_canceled, 0|(gdextension.SizeBool<<4), &struct{ canceled bool }{canceled})
 }
 func (self class) SetDoubleTap(double_tap bool) { //gd:InputEventScreenTouch.set_double_tap
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_double_tap, 0|(gdextension.SizeBool<<4), &struct{ double_tap bool }{double_tap})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_double_tap, 0|(gdextension.SizeBool<<4), &struct{ double_tap bool }{double_tap})
 }
 func (self class) IsDoubleTap() bool { //gd:InputEventScreenTouch.is_double_tap
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_double_tap, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_double_tap, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

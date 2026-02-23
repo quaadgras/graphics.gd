@@ -26,6 +26,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -71,6 +72,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -1242,7 +1244,7 @@ func (self class) SetFixedColumnWidth(width int64) { //gd:ItemList.set_fixed_col
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fixed_column_width, 0|(gdextension.SizeInt<<4), &struct{ width int64 }{width})
 }
 func (self class) GetFixedColumnWidth() int64 { //gd:ItemList.get_fixed_column_width
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fixed_column_width, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fixed_column_width, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1250,7 +1252,7 @@ func (self class) SetSameColumnWidth(enable bool) { //gd:ItemList.set_same_colum
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_same_column_width, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsSameColumnWidth() bool { //gd:ItemList.is_same_column_width
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_same_column_width, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_same_column_width, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1258,7 +1260,7 @@ func (self class) SetMaxTextLines(lines int64) { //gd:ItemList.set_max_text_line
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_text_lines, 0|(gdextension.SizeInt<<4), &struct{ lines int64 }{lines})
 }
 func (self class) GetMaxTextLines() int64 { //gd:ItemList.get_max_text_lines
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_text_lines, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_text_lines, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1266,7 +1268,7 @@ func (self class) SetMaxColumns(amount int64) { //gd:ItemList.set_max_columns
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_columns, 0|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
 }
 func (self class) GetMaxColumns() int64 { //gd:ItemList.get_max_columns
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_columns, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_columns, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1274,7 +1276,7 @@ func (self class) SetSelectMode(mode SelectMode) { //gd:ItemList.set_select_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_select_mode, 0|(gdextension.SizeInt<<4), &struct{ mode SelectMode }{mode})
 }
 func (self class) GetSelectMode() SelectMode { //gd:ItemList.get_select_mode
-	var r_ret = noescape.Call[SelectMode](gd.ObjectChecked(self.AsObject()), methods.get_select_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[SelectMode](gd.ObjectChecked(self.AsObject()), methods.get_select_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1282,7 +1284,7 @@ func (self class) SetIconMode(mode IconMode) { //gd:ItemList.set_icon_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon_mode, 0|(gdextension.SizeInt<<4), &struct{ mode IconMode }{mode})
 }
 func (self class) GetIconMode() IconMode { //gd:ItemList.get_icon_mode
-	var r_ret = noescape.Call[IconMode](gd.ObjectChecked(self.AsObject()), methods.get_icon_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[IconMode](gd.ObjectChecked(self.AsObject()), methods.get_icon_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1298,31 +1300,31 @@ func (self class) SetIconScale(scale float64) { //gd:ItemList.set_icon_scale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon_scale, 0|(gdextension.SizeFloat<<4), &struct{ scale float64 }{scale})
 }
 func (self class) GetIconScale() float64 { //gd:ItemList.get_icon_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_icon_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_icon_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetAllowRmbSelect(allow bool) { //gd:ItemList.set_allow_rmb_select
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_rmb_select, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_rmb_select, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
 }
 func (self class) GetAllowRmbSelect() bool { //gd:ItemList.get_allow_rmb_select
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_rmb_select, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_rmb_select, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetAllowReselect(allow bool) { //gd:ItemList.set_allow_reselect
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_reselect, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_reselect, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
 }
 func (self class) GetAllowReselect() bool { //gd:ItemList.get_allow_reselect
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_reselect, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_reselect, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetAllowSearch(allow bool) { //gd:ItemList.set_allow_search
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_search, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_search, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
 }
 func (self class) GetAllowSearch() bool { //gd:ItemList.get_allow_search
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_search, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_search, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1330,7 +1332,7 @@ func (self class) SetAutoWidth(enable bool) { //gd:ItemList.set_auto_width
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_width, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) HasAutoWidth() bool { //gd:ItemList.has_auto_width
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_auto_width, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_auto_width, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1338,7 +1340,7 @@ func (self class) SetAutoHeight(enable bool) { //gd:ItemList.set_auto_height
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_height, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) HasAutoHeight() bool { //gd:ItemList.has_auto_height
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_auto_height, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_auto_height, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1359,12 +1361,12 @@ func (self class) EnsureCurrentIsVisible() { //gd:ItemList.ensure_current_is_vis
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.ensure_current_is_visible, 0, &struct{}{})
 }
 func (self class) GetVScrollBar() [1]gdclass.VScrollBar { //gd:ItemList.get_v_scroll_bar
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_v_scroll_bar, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_v_scroll_bar, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.VScrollBar{gdclass.NewVScrollBar(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) GetHScrollBar() [1]gdclass.HScrollBar { //gd:ItemList.get_h_scroll_bar
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_h_scroll_bar, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_h_scroll_bar, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.HScrollBar{gdclass.NewHScrollBar(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
@@ -1372,7 +1374,7 @@ func (self class) SetScrollHintMode(scroll_hint_mode ScrollHintMode) { //gd:Item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_hint_mode, 0|(gdextension.SizeInt<<4), &struct{ scroll_hint_mode ScrollHintMode }{scroll_hint_mode})
 }
 func (self class) GetScrollHintMode() ScrollHintMode { //gd:ItemList.get_scroll_hint_mode
-	var r_ret = noescape.Call[ScrollHintMode](gd.ObjectChecked(self.AsObject()), methods.get_scroll_hint_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[ScrollHintMode](gd.ObjectChecked(self.AsObject()), methods.get_scroll_hint_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1380,7 +1382,7 @@ func (self class) SetTileScrollHint(tile_scroll_hint bool) { //gd:ItemList.set_t
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_scroll_hint, 0|(gdextension.SizeBool<<4), &struct{ tile_scroll_hint bool }{tile_scroll_hint})
 }
 func (self class) IsScrollHintTiled() bool { //gd:ItemList.is_scroll_hint_tiled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scroll_hint_tiled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scroll_hint_tiled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1388,7 +1390,7 @@ func (self class) SetTextOverrunBehavior(overrun_behavior TextServer.OverrunBeha
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_overrun_behavior, 0|(gdextension.SizeInt<<4), &struct{ overrun_behavior TextServer.OverrunBehavior }{overrun_behavior})
 }
 func (self class) GetTextOverrunBehavior() TextServer.OverrunBehavior { //gd:ItemList.get_text_overrun_behavior
-	var r_ret = noescape.Call[TextServer.OverrunBehavior](gd.ObjectChecked(self.AsObject()), methods.get_text_overrun_behavior, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[TextServer.OverrunBehavior](gd.ObjectChecked(self.AsObject()), methods.get_text_overrun_behavior, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1396,7 +1398,7 @@ func (self class) SetWraparoundItems(enable bool) { //gd:ItemList.set_wraparound
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wraparound_items, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) HasWraparoundItems() bool { //gd:ItemList.has_wraparound_items
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_wraparound_items, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_wraparound_items, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

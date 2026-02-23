@@ -17,6 +17,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -52,6 +53,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -445,7 +447,7 @@ func (self class) SetLocale(locale String.Readable) { //gd:Translation.set_local
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_locale, 0|(gdextension.SizeString<<4), &struct{ locale gdextension.String }{pointers.Get(gd.InternalString(locale))})
 }
 func (self class) GetLocale() String.Readable { //gd:Translation.get_locale
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_locale, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_locale, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -506,7 +508,7 @@ func (self class) SetPluralRulesOverride(rules String.Readable) { //gd:Translati
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_plural_rules_override, 0|(gdextension.SizeString<<4), &struct{ rules gdextension.String }{pointers.Get(gd.InternalString(rules))})
 }
 func (self class) GetPluralRulesOverride() String.Readable { //gd:Translation.get_plural_rules_override
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_plural_rules_override, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_plural_rules_override, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

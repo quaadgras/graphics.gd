@@ -18,6 +18,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -60,6 +61,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -472,7 +474,7 @@ func (self class) SetPolygon(polygon Packed.Array[Vector2.XY]) { //gd:CSGPolygon
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))})
 }
 func (self class) GetPolygon() Packed.Array[Vector2.XY] { //gd:CSGPolygon3D.get_polygon
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_polygon, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_polygon, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -480,7 +482,7 @@ func (self class) SetMode(mode Mode) { //gd:CSGPolygon3D.set_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mode, 0|(gdextension.SizeInt<<4), &struct{ mode Mode }{mode})
 }
 func (self class) GetMode() Mode { //gd:CSGPolygon3D.get_mode
-	var r_ret = noescape.Call[Mode](gd.ObjectChecked(self.AsObject()), methods.get_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Mode](gd.ObjectChecked(self.AsObject()), methods.get_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -488,7 +490,7 @@ func (self class) SetDepth(depth float64) { //gd:CSGPolygon3D.set_depth
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth, 0|(gdextension.SizeFloat<<4), &struct{ depth float64 }{depth})
 }
 func (self class) GetDepth() float64 { //gd:CSGPolygon3D.get_depth
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -496,7 +498,7 @@ func (self class) SetSpinDegrees(degrees float64) { //gd:CSGPolygon3D.set_spin_d
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spin_degrees, 0|(gdextension.SizeFloat<<4), &struct{ degrees float64 }{degrees})
 }
 func (self class) GetSpinDegrees() float64 { //gd:CSGPolygon3D.get_spin_degrees
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_spin_degrees, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_spin_degrees, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -504,7 +506,7 @@ func (self class) SetSpinSides(spin_sides int64) { //gd:CSGPolygon3D.set_spin_si
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spin_sides, 0|(gdextension.SizeInt<<4), &struct{ spin_sides int64 }{spin_sides})
 }
 func (self class) GetSpinSides() int64 { //gd:CSGPolygon3D.get_spin_sides
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_spin_sides, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_spin_sides, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -512,7 +514,7 @@ func (self class) SetPathNode(path Path.ToNode) { //gd:CSGPolygon3D.set_path_nod
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_node, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
 func (self class) GetPathNode() Path.ToNode { //gd:CSGPolygon3D.get_path_node
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_path_node, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_path_node, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -520,7 +522,7 @@ func (self class) SetPathIntervalType(interval_type PathIntervalType) { //gd:CSG
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_interval_type, 0|(gdextension.SizeInt<<4), &struct{ interval_type PathIntervalType }{interval_type})
 }
 func (self class) GetPathIntervalType() PathIntervalType { //gd:CSGPolygon3D.get_path_interval_type
-	var r_ret = noescape.Call[PathIntervalType](gd.ObjectChecked(self.AsObject()), methods.get_path_interval_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[PathIntervalType](gd.ObjectChecked(self.AsObject()), methods.get_path_interval_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -528,7 +530,7 @@ func (self class) SetPathInterval(interval float64) { //gd:CSGPolygon3D.set_path
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_interval, 0|(gdextension.SizeFloat<<4), &struct{ interval float64 }{interval})
 }
 func (self class) GetPathInterval() float64 { //gd:CSGPolygon3D.get_path_interval
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_interval, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_interval, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -536,7 +538,7 @@ func (self class) SetPathSimplifyAngle(degrees float64) { //gd:CSGPolygon3D.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_simplify_angle, 0|(gdextension.SizeFloat<<4), &struct{ degrees float64 }{degrees})
 }
 func (self class) GetPathSimplifyAngle() float64 { //gd:CSGPolygon3D.get_path_simplify_angle
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_simplify_angle, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_simplify_angle, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -544,7 +546,7 @@ func (self class) SetPathRotation(path_rotation PathRotation) { //gd:CSGPolygon3
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_rotation, 0|(gdextension.SizeInt<<4), &struct{ path_rotation PathRotation }{path_rotation})
 }
 func (self class) GetPathRotation() PathRotation { //gd:CSGPolygon3D.get_path_rotation
-	var r_ret = noescape.Call[PathRotation](gd.ObjectChecked(self.AsObject()), methods.get_path_rotation, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[PathRotation](gd.ObjectChecked(self.AsObject()), methods.get_path_rotation, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -552,7 +554,7 @@ func (self class) SetPathRotationAccurate(enable bool) { //gd:CSGPolygon3D.set_p
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_rotation_accurate, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) GetPathRotationAccurate() bool { //gd:CSGPolygon3D.get_path_rotation_accurate
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_path_rotation_accurate, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_path_rotation_accurate, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -560,7 +562,7 @@ func (self class) SetPathLocal(enable bool) { //gd:CSGPolygon3D.set_path_local
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_local, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsPathLocal() bool { //gd:CSGPolygon3D.is_path_local
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_path_local, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_path_local, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -568,7 +570,7 @@ func (self class) SetPathContinuousU(enable bool) { //gd:CSGPolygon3D.set_path_c
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_continuous_u, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsPathContinuousU() bool { //gd:CSGPolygon3D.is_path_continuous_u
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_path_continuous_u, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_path_continuous_u, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -576,7 +578,7 @@ func (self class) SetPathUDistance(distance float64) { //gd:CSGPolygon3D.set_pat
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_u_distance, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 func (self class) GetPathUDistance() float64 { //gd:CSGPolygon3D.get_path_u_distance
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_u_distance, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_u_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -584,7 +586,7 @@ func (self class) SetPathJoined(enable bool) { //gd:CSGPolygon3D.set_path_joined
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_joined, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsPathJoined() bool { //gd:CSGPolygon3D.is_path_joined
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_path_joined, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_path_joined, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -592,7 +594,7 @@ func (self class) SetMaterial(material [1]gdclass.Material) { //gd:CSGPolygon3D.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetMaterial(material[0])[0]))})
 }
 func (self class) GetMaterial() [1]gdclass.Material { //gd:CSGPolygon3D.get_material
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -600,7 +602,7 @@ func (self class) SetSmoothFaces(smooth_faces bool) { //gd:CSGPolygon3D.set_smoo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_smooth_faces, 0|(gdextension.SizeBool<<4), &struct{ smooth_faces bool }{smooth_faces})
 }
 func (self class) GetSmoothFaces() bool { //gd:CSGPolygon3D.get_smooth_faces
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_smooth_faces, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_smooth_faces, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -25,6 +25,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -63,6 +64,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -453,7 +455,7 @@ func (self class) RemoveBlendPoint(point int64) { //gd:AnimationNodeBlendSpace2D
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_blend_point, 0|(gdextension.SizeInt<<4), &struct{ point int64 }{point})
 }
 func (self class) GetBlendPointCount() int64 { //gd:AnimationNodeBlendSpace2D.get_blend_point_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_blend_point_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_blend_point_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -485,7 +487,7 @@ func (self class) SetMinSpace(min_space Vector2.XY) { //gd:AnimationNodeBlendSpa
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_space, 0|(gdextension.SizeVector2<<4), &struct{ min_space Vector2.XY }{min_space})
 }
 func (self class) GetMinSpace() Vector2.XY { //gd:AnimationNodeBlendSpace2D.get_min_space
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_min_space, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_min_space, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -493,7 +495,7 @@ func (self class) SetMaxSpace(max_space Vector2.XY) { //gd:AnimationNodeBlendSpa
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_space, 0|(gdextension.SizeVector2<<4), &struct{ max_space Vector2.XY }{max_space})
 }
 func (self class) GetMaxSpace() Vector2.XY { //gd:AnimationNodeBlendSpace2D.get_max_space
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_max_space, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_max_space, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -501,7 +503,7 @@ func (self class) SetSnap(snap Vector2.XY) { //gd:AnimationNodeBlendSpace2D.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_snap, 0|(gdextension.SizeVector2<<4), &struct{ snap Vector2.XY }{snap})
 }
 func (self class) GetSnap() Vector2.XY { //gd:AnimationNodeBlendSpace2D.get_snap
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_snap, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_snap, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -509,7 +511,7 @@ func (self class) SetXLabel(text String.Readable) { //gd:AnimationNodeBlendSpace
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_x_label, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
 func (self class) GetXLabel() String.Readable { //gd:AnimationNodeBlendSpace2D.get_x_label
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_x_label, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_x_label, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -517,7 +519,7 @@ func (self class) SetYLabel(text String.Readable) { //gd:AnimationNodeBlendSpace
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_y_label, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
 func (self class) GetYLabel() String.Readable { //gd:AnimationNodeBlendSpace2D.get_y_label
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_y_label, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_y_label, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -525,23 +527,23 @@ func (self class) SetAutoTriangles(enable bool) { //gd:AnimationNodeBlendSpace2D
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_triangles, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) GetAutoTriangles() bool { //gd:AnimationNodeBlendSpace2D.get_auto_triangles
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_auto_triangles, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_auto_triangles, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetBlendMode(mode BlendMode) { //gd:AnimationNodeBlendSpace2D.set_blend_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_mode, 0|(gdextension.SizeInt<<4), &struct{ mode BlendMode }{mode})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_mode, 0|(gdextension.SizeInt<<4), &struct{ mode BlendMode }{mode})
 }
 func (self class) GetBlendMode() BlendMode { //gd:AnimationNodeBlendSpace2D.get_blend_mode
-	var r_ret = noescape.Call[BlendMode](gd.ObjectChecked(self.AsObject()), methods.get_blend_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[BlendMode](gd.ObjectChecked(self.AsObject()), methods.get_blend_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetUseSync(enable bool) { //gd:AnimationNodeBlendSpace2D.set_use_sync
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_sync, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_sync, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsUsingSync() bool { //gd:AnimationNodeBlendSpace2D.is_using_sync
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_sync, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_sync, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

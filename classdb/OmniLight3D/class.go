@@ -20,6 +20,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -58,6 +59,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -182,7 +184,7 @@ func (self class) SetShadowMode(mode ShadowMode) { //gd:OmniLight3D.set_shadow_m
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_mode, 0|(gdextension.SizeInt<<4), &struct{ mode ShadowMode }{mode})
 }
 func (self class) GetShadowMode() ShadowMode { //gd:OmniLight3D.get_shadow_mode
-	var r_ret = noescape.Call[ShadowMode](gd.ObjectChecked(self.AsObject()), methods.get_shadow_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[ShadowMode](gd.ObjectChecked(self.AsObject()), methods.get_shadow_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

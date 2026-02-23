@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -51,6 +52,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -317,7 +319,7 @@ func (self class) SetShape(shape [1]gdclass.Resource) { //gd:PhysicsShapeQueryPa
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape, 0|(gdextension.SizeObject<<4), &struct{ shape gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetResource(shape[0])[0]))})
 }
 func (self class) GetShape() [1]gdclass.Resource { //gd:PhysicsShapeQueryParameters3D.get_shape
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shape, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shape, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Resource{gdclass.NewResource(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -325,7 +327,7 @@ func (self class) SetShapeRid(shape RID.Any) { //gd:PhysicsShapeQueryParameters3
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape_rid, 0|(gdextension.SizeRID<<4), &struct{ shape RID.Any }{shape})
 }
 func (self class) GetShapeRid() RID.Any { //gd:PhysicsShapeQueryParameters3D.get_shape_rid
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_shape_rid, gdextension.SizeRID, &struct{}{})
+	var r_ret = jumponly.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_shape_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -333,7 +335,7 @@ func (self class) SetTransform(transform Transform3D.BasisOrigin) { //gd:Physics
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transform, 0|(gdextension.SizeTransform3D<<4), &struct{ transform Transform3D.BasisOrigin }{gd.Transposed(transform)})
 }
 func (self class) GetTransform() Transform3D.BasisOrigin { //gd:PhysicsShapeQueryParameters3D.get_transform
-	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_transform, gdextension.SizeTransform3D, &struct{}{})
+	var r_ret = jumponly.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_transform, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -341,23 +343,23 @@ func (self class) SetMotion(motion Vector3.XYZ) { //gd:PhysicsShapeQueryParamete
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_motion, 0|(gdextension.SizeVector3<<4), &struct{ motion Vector3.XYZ }{motion})
 }
 func (self class) GetMotion() Vector3.XYZ { //gd:PhysicsShapeQueryParameters3D.get_motion
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_motion, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_motion, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMargin(margin float64) { //gd:PhysicsShapeQueryParameters3D.set_margin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_margin, 0|(gdextension.SizeFloat<<4), &struct{ margin float64 }{margin})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_margin, 0|(gdextension.SizeFloat<<4), &struct{ margin float64 }{margin})
 }
 func (self class) GetMargin() float64 { //gd:PhysicsShapeQueryParameters3D.get_margin
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_margin, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetCollisionMask(collision_mask int64) { //gd:PhysicsShapeQueryParameters3D.set_collision_mask
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ collision_mask int64 }{collision_mask})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ collision_mask int64 }{collision_mask})
 }
 func (self class) GetCollisionMask() int64 { //gd:PhysicsShapeQueryParameters3D.get_collision_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -370,18 +372,18 @@ func (self class) GetExclude() Array.Contains[RID.Any] { //gd:PhysicsShapeQueryP
 	return ret
 }
 func (self class) SetCollideWithBodies(enable bool) { //gd:PhysicsShapeQueryParameters3D.set_collide_with_bodies
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_bodies, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_bodies, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsCollideWithBodiesEnabled() bool { //gd:PhysicsShapeQueryParameters3D.is_collide_with_bodies_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_bodies_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_bodies_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetCollideWithAreas(enable bool) { //gd:PhysicsShapeQueryParameters3D.set_collide_with_areas
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_areas, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_areas, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsCollideWithAreasEnabled() bool { //gd:PhysicsShapeQueryParameters3D.is_collide_with_areas_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_areas_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_areas_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

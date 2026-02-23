@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -48,6 +49,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -212,7 +214,7 @@ func (self Instance) SetVrsRenderRegion(value Rect2i.PositionSize) Instance { //
 }
 
 func (self class) GetVrsMinRadius() float64 { //gd:XRVRS.get_vrs_min_radius
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_vrs_min_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_vrs_min_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -220,7 +222,7 @@ func (self class) SetVrsMinRadius(radius float64) { //gd:XRVRS.set_vrs_min_radiu
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_min_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 func (self class) GetVrsStrength() float64 { //gd:XRVRS.get_vrs_strength
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_vrs_strength, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_vrs_strength, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -228,7 +230,7 @@ func (self class) SetVrsStrength(strength float64) { //gd:XRVRS.set_vrs_strength
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_strength, 0|(gdextension.SizeFloat<<4), &struct{ strength float64 }{strength})
 }
 func (self class) GetVrsRenderRegion() Rect2i.PositionSize { //gd:XRVRS.get_vrs_render_region
-	var r_ret = noescape.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_vrs_render_region, gdextension.SizeRect2i, &struct{}{})
+	var r_ret = jumponly.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_vrs_render_region, gdextension.SizeRect2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }

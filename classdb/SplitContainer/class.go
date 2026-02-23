@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -50,6 +51,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -426,7 +428,7 @@ func (self class) SetSplitOffsets(offsets Packed.Array[int32]) { //gd:SplitConta
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](offsets))})
 }
 func (self class) GetSplitOffsets() Packed.Array[int32] { //gd:SplitContainer.get_split_offsets
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_split_offsets, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_split_offsets, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -437,7 +439,7 @@ func (self class) SetCollapsed(collapsed bool) { //gd:SplitContainer.set_collaps
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collapsed, 0|(gdextension.SizeBool<<4), &struct{ collapsed bool }{collapsed})
 }
 func (self class) IsCollapsed() bool { //gd:SplitContainer.is_collapsed
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collapsed, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collapsed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -445,7 +447,7 @@ func (self class) SetDraggerVisibility(mode DraggerVisibility) { //gd:SplitConta
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dragger_visibility, 0|(gdextension.SizeInt<<4), &struct{ mode DraggerVisibility }{mode})
 }
 func (self class) GetDraggerVisibility() DraggerVisibility { //gd:SplitContainer.get_dragger_visibility
-	var r_ret = noescape.Call[DraggerVisibility](gd.ObjectChecked(self.AsObject()), methods.get_dragger_visibility, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DraggerVisibility](gd.ObjectChecked(self.AsObject()), methods.get_dragger_visibility, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -453,7 +455,7 @@ func (self class) SetVertical(vertical bool) { //gd:SplitContainer.set_vertical
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical, 0|(gdextension.SizeBool<<4), &struct{ vertical bool }{vertical})
 }
 func (self class) IsVertical() bool { //gd:SplitContainer.is_vertical
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_vertical, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_vertical, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -461,7 +463,7 @@ func (self class) SetDraggingEnabled(dragging_enabled bool) { //gd:SplitContaine
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dragging_enabled, 0|(gdextension.SizeBool<<4), &struct{ dragging_enabled bool }{dragging_enabled})
 }
 func (self class) IsDraggingEnabled() bool { //gd:SplitContainer.is_dragging_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dragging_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dragging_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -469,7 +471,7 @@ func (self class) SetDragAreaMarginBegin(margin int64) { //gd:SplitContainer.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_area_margin_begin, 0|(gdextension.SizeInt<<4), &struct{ margin int64 }{margin})
 }
 func (self class) GetDragAreaMarginBegin() int64 { //gd:SplitContainer.get_drag_area_margin_begin
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_drag_area_margin_begin, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_drag_area_margin_begin, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -477,7 +479,7 @@ func (self class) SetDragAreaMarginEnd(margin int64) { //gd:SplitContainer.set_d
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_area_margin_end, 0|(gdextension.SizeInt<<4), &struct{ margin int64 }{margin})
 }
 func (self class) GetDragAreaMarginEnd() int64 { //gd:SplitContainer.get_drag_area_margin_end
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_drag_area_margin_end, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_drag_area_margin_end, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -485,7 +487,7 @@ func (self class) SetDragAreaOffset(offset int64) { //gd:SplitContainer.set_drag
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_area_offset, 0|(gdextension.SizeInt<<4), &struct{ offset int64 }{offset})
 }
 func (self class) GetDragAreaOffset() int64 { //gd:SplitContainer.get_drag_area_offset
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_drag_area_offset, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_drag_area_offset, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -506,7 +508,7 @@ func (self class) SetTouchDraggerEnabled(enabled bool) { //gd:SplitContainer.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_touch_dragger_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsTouchDraggerEnabled() bool { //gd:SplitContainer.is_touch_dragger_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_touch_dragger_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_touch_dragger_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

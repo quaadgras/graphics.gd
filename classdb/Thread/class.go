@@ -26,6 +26,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -60,6 +61,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -310,12 +312,12 @@ func (self class) Start(callable Callable.Function, priority Priority) Error.Cod
 	return ret
 }
 func (self class) GetId() String.Readable { //gd:Thread.get_id
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_id, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_id, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) IsStarted() bool { //gd:Thread.is_started
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_started, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_started, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -333,7 +335,7 @@ func (self class) SetThreadSafetyChecksEnabled(enabled bool) { //gd:Thread.set_t
 	noescape.CallStatic[struct{}](methods.set_thread_safety_checks_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsMainThread() bool { //gd:Thread.is_main_thread
-	var r_ret = noescape.CallStatic[bool](methods.is_main_thread, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.CallStatic[bool](methods.is_main_thread, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

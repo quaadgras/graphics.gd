@@ -15,6 +15,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -52,6 +53,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -235,7 +237,7 @@ func New() Instance {
 }
 
 func (self class) IsSimulatingPhysics() bool { //gd:PhysicalBoneSimulator3D.is_simulating_physics
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_simulating_physics, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_simulating_physics, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

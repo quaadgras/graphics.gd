@@ -24,6 +24,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -67,6 +68,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -1143,7 +1145,7 @@ func (self class) SetEnabled(enabled bool) { //gd:TileMapLayer.set_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsEnabled() bool { //gd:TileMapLayer.is_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1151,7 +1153,7 @@ func (self class) SetTileSet(tile_set [1]gdclass.TileSet) { //gd:TileMapLayer.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_set, 0|(gdextension.SizeObject<<4), &struct{ tile_set gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTileSet(tile_set[0])[0]))})
 }
 func (self class) GetTileSet() [1]gdclass.TileSet { //gd:TileMapLayer.get_tile_set
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tile_set, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tile_set, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.TileSet{gdclass.NewTileSet(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -1159,7 +1161,7 @@ func (self class) SetYSortOrigin(y_sort_origin int64) { //gd:TileMapLayer.set_y_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_y_sort_origin, 0|(gdextension.SizeInt<<4), &struct{ y_sort_origin int64 }{y_sort_origin})
 }
 func (self class) GetYSortOrigin() int64 { //gd:TileMapLayer.get_y_sort_origin
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_y_sort_origin, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_y_sort_origin, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1167,7 +1169,7 @@ func (self class) SetXDrawOrderReversed(x_draw_order_reversed bool) { //gd:TileM
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_x_draw_order_reversed, 0|(gdextension.SizeBool<<4), &struct{ x_draw_order_reversed bool }{x_draw_order_reversed})
 }
 func (self class) IsXDrawOrderReversed() bool { //gd:TileMapLayer.is_x_draw_order_reversed
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_x_draw_order_reversed, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_x_draw_order_reversed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1175,7 +1177,7 @@ func (self class) SetRenderingQuadrantSize(size int64) { //gd:TileMapLayer.set_r
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rendering_quadrant_size, 0|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 }
 func (self class) GetRenderingQuadrantSize() int64 { //gd:TileMapLayer.get_rendering_quadrant_size
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_rendering_quadrant_size, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_rendering_quadrant_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1183,7 +1185,7 @@ func (self class) SetCollisionEnabled(enabled bool) { //gd:TileMapLayer.set_coll
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsCollisionEnabled() bool { //gd:TileMapLayer.is_collision_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collision_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collision_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1191,7 +1193,7 @@ func (self class) SetUseKinematicBodies(use_kinematic_bodies bool) { //gd:TileMa
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_kinematic_bodies, 0|(gdextension.SizeBool<<4), &struct{ use_kinematic_bodies bool }{use_kinematic_bodies})
 }
 func (self class) IsUsingKinematicBodies() bool { //gd:TileMapLayer.is_using_kinematic_bodies
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_kinematic_bodies, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_kinematic_bodies, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1199,7 +1201,7 @@ func (self class) SetCollisionVisibilityMode(visibility_mode DebugVisibilityMode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_visibility_mode, 0|(gdextension.SizeInt<<4), &struct{ visibility_mode DebugVisibilityMode }{visibility_mode})
 }
 func (self class) GetCollisionVisibilityMode() DebugVisibilityMode { //gd:TileMapLayer.get_collision_visibility_mode
-	var r_ret = noescape.Call[DebugVisibilityMode](gd.ObjectChecked(self.AsObject()), methods.get_collision_visibility_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DebugVisibilityMode](gd.ObjectChecked(self.AsObject()), methods.get_collision_visibility_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1207,7 +1209,7 @@ func (self class) SetPhysicsQuadrantSize(size int64) { //gd:TileMapLayer.set_phy
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_quadrant_size, 0|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 }
 func (self class) GetPhysicsQuadrantSize() int64 { //gd:TileMapLayer.get_physics_quadrant_size
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_physics_quadrant_size, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_physics_quadrant_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1215,7 +1217,7 @@ func (self class) SetOcclusionEnabled(enabled bool) { //gd:TileMapLayer.set_occl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occlusion_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsOcclusionEnabled() bool { //gd:TileMapLayer.is_occlusion_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_occlusion_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_occlusion_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1223,7 +1225,7 @@ func (self class) SetNavigationEnabled(enabled bool) { //gd:TileMapLayer.set_nav
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsNavigationEnabled() bool { //gd:TileMapLayer.is_navigation_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_navigation_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_navigation_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1239,7 +1241,7 @@ func (self class) SetNavigationVisibilityMode(show_navigation DebugVisibilityMod
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_visibility_mode, 0|(gdextension.SizeInt<<4), &struct{ show_navigation DebugVisibilityMode }{show_navigation})
 }
 func (self class) GetNavigationVisibilityMode() DebugVisibilityMode { //gd:TileMapLayer.get_navigation_visibility_mode
-	var r_ret = noescape.Call[DebugVisibilityMode](gd.ObjectChecked(self.AsObject()), methods.get_navigation_visibility_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[DebugVisibilityMode](gd.ObjectChecked(self.AsObject()), methods.get_navigation_visibility_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

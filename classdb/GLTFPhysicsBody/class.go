@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -51,6 +52,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -355,7 +357,7 @@ func (self class) ToDictionary() Dictionary.Any { //gd:GLTFPhysicsBody.to_dictio
 	return ret
 }
 func (self class) GetBodyType() String.Readable { //gd:GLTFPhysicsBody.get_body_type
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_body_type, gdextension.SizeString, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_body_type, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -363,15 +365,15 @@ func (self class) SetBodyType(body_type String.Readable) { //gd:GLTFPhysicsBody.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_body_type, 0|(gdextension.SizeString<<4), &struct{ body_type gdextension.String }{pointers.Get(gd.InternalString(body_type))})
 }
 func (self class) GetMass() float64 { //gd:GLTFPhysicsBody.get_mass
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mass, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mass, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMass(mass float64) { //gd:GLTFPhysicsBody.set_mass
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mass, 0|(gdextension.SizeFloat<<4), &struct{ mass float64 }{mass})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mass, 0|(gdextension.SizeFloat<<4), &struct{ mass float64 }{mass})
 }
 func (self class) GetLinearVelocity() Vector3.XYZ { //gd:GLTFPhysicsBody.get_linear_velocity
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_linear_velocity, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_linear_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -379,7 +381,7 @@ func (self class) SetLinearVelocity(linear_velocity Vector3.XYZ) { //gd:GLTFPhys
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_velocity, 0|(gdextension.SizeVector3<<4), &struct{ linear_velocity Vector3.XYZ }{linear_velocity})
 }
 func (self class) GetAngularVelocity() Vector3.XYZ { //gd:GLTFPhysicsBody.get_angular_velocity
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_angular_velocity, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_angular_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -387,7 +389,7 @@ func (self class) SetAngularVelocity(angular_velocity Vector3.XYZ) { //gd:GLTFPh
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_velocity, 0|(gdextension.SizeVector3<<4), &struct{ angular_velocity Vector3.XYZ }{angular_velocity})
 }
 func (self class) GetCenterOfMass() Vector3.XYZ { //gd:GLTFPhysicsBody.get_center_of_mass
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_center_of_mass, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_center_of_mass, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -395,7 +397,7 @@ func (self class) SetCenterOfMass(center_of_mass Vector3.XYZ) { //gd:GLTFPhysics
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_center_of_mass, 0|(gdextension.SizeVector3<<4), &struct{ center_of_mass Vector3.XYZ }{center_of_mass})
 }
 func (self class) GetInertiaDiagonal() Vector3.XYZ { //gd:GLTFPhysicsBody.get_inertia_diagonal
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_inertia_diagonal, gdextension.SizeVector3, &struct{}{})
+	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_inertia_diagonal, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -403,7 +405,7 @@ func (self class) SetInertiaDiagonal(inertia_diagonal Vector3.XYZ) { //gd:GLTFPh
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inertia_diagonal, 0|(gdextension.SizeVector3<<4), &struct{ inertia_diagonal Vector3.XYZ }{inertia_diagonal})
 }
 func (self class) GetInertiaOrientation() Quaternion.IJKX { //gd:GLTFPhysicsBody.get_inertia_orientation
-	var r_ret = noescape.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_inertia_orientation, gdextension.SizeQuaternion, &struct{}{})
+	var r_ret = jumponly.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_inertia_orientation, gdextension.SizeQuaternion, &struct{}{})
 	var ret = r_ret
 	return ret
 }

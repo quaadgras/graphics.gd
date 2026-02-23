@@ -16,6 +16,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -55,6 +56,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -267,15 +269,15 @@ func (self class) SetResizable(resizable bool) { //gd:GraphElement.set_resizable
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_resizable, 0|(gdextension.SizeBool<<4), &struct{ resizable bool }{resizable})
 }
 func (self class) IsResizable() bool { //gd:GraphElement.is_resizable
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_resizable, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_resizable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetDraggable(draggable bool) { //gd:GraphElement.set_draggable
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draggable, 0|(gdextension.SizeBool<<4), &struct{ draggable bool }{draggable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draggable, 0|(gdextension.SizeBool<<4), &struct{ draggable bool }{draggable})
 }
 func (self class) IsDraggable() bool { //gd:GraphElement.is_draggable
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draggable, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draggable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -283,7 +285,7 @@ func (self class) SetSelectable(selectable bool) { //gd:GraphElement.set_selecta
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selectable, 0|(gdextension.SizeBool<<4), &struct{ selectable bool }{selectable})
 }
 func (self class) IsSelectable() bool { //gd:GraphElement.is_selectable
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_selectable, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_selectable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -291,15 +293,15 @@ func (self class) SetSelected(selected bool) { //gd:GraphElement.set_selected
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selected, 0|(gdextension.SizeBool<<4), &struct{ selected bool }{selected})
 }
 func (self class) IsSelected() bool { //gd:GraphElement.is_selected
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_selected, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_selected, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetScalingMenus(scaling_menus bool) { //gd:GraphElement.set_scaling_menus
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scaling_menus, 0|(gdextension.SizeBool<<4), &struct{ scaling_menus bool }{scaling_menus})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scaling_menus, 0|(gdextension.SizeBool<<4), &struct{ scaling_menus bool }{scaling_menus})
 }
 func (self class) IsScalingMenus() bool { //gd:GraphElement.is_scaling_menus
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scaling_menus, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scaling_menus, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -307,7 +309,7 @@ func (self class) SetPositionOffset(offset Vector2.XY) { //gd:GraphElement.set_p
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
 func (self class) GetPositionOffset() Vector2.XY { //gd:GraphElement.get_position_offset
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position_offset, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

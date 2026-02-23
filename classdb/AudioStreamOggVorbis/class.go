@@ -15,6 +15,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -52,6 +53,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -299,23 +301,23 @@ func (self class) SetPacketSequence(packet_sequence [1]gdclass.OggPacketSequence
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_packet_sequence, 0|(gdextension.SizeObject<<4), &struct{ packet_sequence gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOggPacketSequence(packet_sequence[0])[0]))})
 }
 func (self class) GetPacketSequence() [1]gdclass.OggPacketSequence { //gd:AudioStreamOggVorbis.get_packet_sequence
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_packet_sequence, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_packet_sequence, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.OggPacketSequence{gdclass.NewOggPacketSequence(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) SetLoop(enable bool) { //gd:AudioStreamOggVorbis.set_loop
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) HasLoop() bool { //gd:AudioStreamOggVorbis.has_loop
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetLoopOffset(seconds float64) { //gd:AudioStreamOggVorbis.set_loop_offset
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop_offset, 0|(gdextension.SizeFloat<<4), &struct{ seconds float64 }{seconds})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop_offset, 0|(gdextension.SizeFloat<<4), &struct{ seconds float64 }{seconds})
 }
 func (self class) GetLoopOffset() float64 { //gd:AudioStreamOggVorbis.get_loop_offset
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_loop_offset, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_loop_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -323,7 +325,7 @@ func (self class) SetBpm(bpm float64) { //gd:AudioStreamOggVorbis.set_bpm
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bpm, 0|(gdextension.SizeFloat<<4), &struct{ bpm float64 }{bpm})
 }
 func (self class) GetBpm() float64 { //gd:AudioStreamOggVorbis.get_bpm
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bpm, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bpm, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -331,7 +333,7 @@ func (self class) SetBeatCount(count int64) { //gd:AudioStreamOggVorbis.set_beat
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_beat_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
 func (self class) GetBeatCount() int64 { //gd:AudioStreamOggVorbis.get_beat_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_beat_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_beat_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -339,7 +341,7 @@ func (self class) SetBarBeats(count int64) { //gd:AudioStreamOggVorbis.set_bar_b
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bar_beats, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
 func (self class) GetBarBeats() int64 { //gd:AudioStreamOggVorbis.get_bar_beats
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bar_beats, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bar_beats, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -347,7 +349,7 @@ func (self class) SetTags(tags Dictionary.Any) { //gd:AudioStreamOggVorbis.set_t
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tags, 0|(gdextension.SizeDictionary<<4), &struct{ tags gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(tags))})
 }
 func (self class) GetTags() Dictionary.Any { //gd:AudioStreamOggVorbis.get_tags
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_tags, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_tags, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }

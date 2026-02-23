@@ -30,6 +30,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -72,6 +73,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -2551,7 +2553,7 @@ func (self class) GetSupportData() Packed.Bytes { //gd:TextServer.get_support_da
 	return ret
 }
 func (self class) IsLocaleUsingSupportData(locale String.Readable) bool { //gd:TextServer.is_locale_using_support_data
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_locale_using_support_data, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ locale gdextension.String }{pointers.Get(gd.InternalString(locale))})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_locale_using_support_data, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ locale gdextension.String }{pointers.Get(gd.InternalString(locale))})
 	var ret = r_ret
 	return ret
 }
@@ -2633,7 +2635,7 @@ func (self class) FontGetName(font_rid RID.Any) String.Readable { //gd:TextServe
 	return ret
 }
 func (self class) FontGetOtNameStrings(font_rid RID.Any) Dictionary.Any { //gd:TextServer.font_get_ot_name_strings
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.font_get_ot_name_strings, gdextension.SizeDictionary|(gdextension.SizeRID<<4), &struct{ font_rid RID.Any }{font_rid})
+	var r_ret = jumponly.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.font_get_ot_name_strings, gdextension.SizeDictionary|(gdextension.SizeRID<<4), &struct{ font_rid RID.Any }{font_rid})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -2770,7 +2772,7 @@ func (self class) FontIsAllowSystemFallback(font_rid RID.Any) bool { //gd:TextSe
 	return ret
 }
 func (self class) FontClearSystemFallbackCache() { //gd:TextServer.font_clear_system_fallback_cache
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.font_clear_system_fallback_cache, 0, &struct{}{})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.font_clear_system_fallback_cache, 0, &struct{}{})
 }
 func (self class) FontSetForceAutohinter(font_rid RID.Any, force_autohinter bool) { //gd:TextServer.font_set_force_autohinter
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.font_set_force_autohinter, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
@@ -3382,12 +3384,12 @@ func (self class) FontSupportedVariationList(font_rid RID.Any) Dictionary.Any { 
 	return ret
 }
 func (self class) FontGetGlobalOversampling() float64 { //gd:TextServer.font_get_global_oversampling
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.font_get_global_oversampling, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.font_get_global_oversampling, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) FontSetGlobalOversampling(oversampling float64) { //gd:TextServer.font_set_global_oversampling
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.font_set_global_oversampling, 0|(gdextension.SizeFloat<<4), &struct{ oversampling float64 }{oversampling})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.font_set_global_oversampling, 0|(gdextension.SizeFloat<<4), &struct{ oversampling float64 }{oversampling})
 }
 func (self class) GetHexCodeBoxSize(size int64, index int64) Vector2.XY { //gd:TextServer.get_hex_code_box_size
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_hex_code_box_size, gdextension.SizeVector2|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
@@ -4009,7 +4011,7 @@ func (self class) StringGetCharacterBreaks(s String.Readable, language String.Re
 	return ret
 }
 func (self class) IsConfusable(s String.Readable, dict Packed.Strings) int64 { //gd:TextServer.is_confusable
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.is_confusable, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8), &struct {
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.is_confusable, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8), &struct {
 		s    gdextension.String
 		dict gdextension.PackedArray[gdextension.String]
 	}{pointers.Get(gd.InternalString(s)), pointers.Get(gd.InternalPackedStrings(dict))})
@@ -4017,7 +4019,7 @@ func (self class) IsConfusable(s String.Readable, dict Packed.Strings) int64 { /
 	return ret
 }
 func (self class) SpoofCheck(s String.Readable) bool { //gd:TextServer.spoof_check
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.spoof_check, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ s gdextension.String }{pointers.Get(gd.InternalString(s))})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.spoof_check, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ s gdextension.String }{pointers.Get(gd.InternalString(s))})
 	var ret = r_ret
 	return ret
 }

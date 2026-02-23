@@ -20,6 +20,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -56,6 +57,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -210,18 +212,18 @@ func (self Instance) SetFftSize(value FFTSize) Instance { //gd:AudioEffectSpectr
 }
 
 func (self class) SetBufferLength(seconds float64) { //gd:AudioEffectSpectrumAnalyzer.set_buffer_length
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffer_length, 0|(gdextension.SizeFloat<<4), &struct{ seconds float64 }{seconds})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffer_length, 0|(gdextension.SizeFloat<<4), &struct{ seconds float64 }{seconds})
 }
 func (self class) GetBufferLength() float64 { //gd:AudioEffectSpectrumAnalyzer.get_buffer_length
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_buffer_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_buffer_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetTapBackPos(seconds float64) { //gd:AudioEffectSpectrumAnalyzer.set_tap_back_pos
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tap_back_pos, 0|(gdextension.SizeFloat<<4), &struct{ seconds float64 }{seconds})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tap_back_pos, 0|(gdextension.SizeFloat<<4), &struct{ seconds float64 }{seconds})
 }
 func (self class) GetTapBackPos() float64 { //gd:AudioEffectSpectrumAnalyzer.get_tap_back_pos
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_tap_back_pos, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_tap_back_pos, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -229,7 +231,7 @@ func (self class) SetFftSize(size FFTSize) { //gd:AudioEffectSpectrumAnalyzer.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fft_size, 0|(gdextension.SizeInt<<4), &struct{ size FFTSize }{size})
 }
 func (self class) GetFftSize() FFTSize { //gd:AudioEffectSpectrumAnalyzer.get_fft_size
-	var r_ret = noescape.Call[FFTSize](gd.ObjectChecked(self.AsObject()), methods.get_fft_size, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[FFTSize](gd.ObjectChecked(self.AsObject()), methods.get_fft_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

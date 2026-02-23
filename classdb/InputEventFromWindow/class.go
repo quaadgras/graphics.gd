@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -48,6 +49,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -178,7 +180,7 @@ func (self class) SetWindowId(id int64) { //gd:InputEventFromWindow.set_window_i
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_window_id, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 }
 func (self class) GetWindowId() int64 { //gd:InputEventFromWindow.get_window_id
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_window_id, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_window_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

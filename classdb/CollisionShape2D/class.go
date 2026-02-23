@@ -17,6 +17,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -56,6 +57,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -254,7 +256,7 @@ func (self class) SetShape(shape [1]gdclass.Shape2D) { //gd:CollisionShape2D.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape, 0|(gdextension.SizeObject<<4), &struct{ shape gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetShape2D(shape[0])[0]))})
 }
 func (self class) GetShape() [1]gdclass.Shape2D { //gd:CollisionShape2D.get_shape
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shape, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shape, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Shape2D{gdclass.NewShape2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -262,7 +264,7 @@ func (self class) SetDisabled(disabled bool) { //gd:CollisionShape2D.set_disable
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disabled, 0|(gdextension.SizeBool<<4), &struct{ disabled bool }{disabled})
 }
 func (self class) IsDisabled() bool { //gd:CollisionShape2D.is_disabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_disabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_disabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -270,7 +272,7 @@ func (self class) SetOneWayCollision(enabled bool) { //gd:CollisionShape2D.set_o
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_one_way_collision, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsOneWayCollisionEnabled() bool { //gd:CollisionShape2D.is_one_way_collision_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_one_way_collision_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_one_way_collision_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -278,7 +280,7 @@ func (self class) SetOneWayCollisionMargin(margin float64) { //gd:CollisionShape
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_one_way_collision_margin, 0|(gdextension.SizeFloat<<4), &struct{ margin float64 }{margin})
 }
 func (self class) GetOneWayCollisionMargin() float64 { //gd:CollisionShape2D.get_one_way_collision_margin
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_one_way_collision_margin, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_one_way_collision_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -286,7 +288,7 @@ func (self class) SetDebugColor(color Color.RGBA) { //gd:CollisionShape2D.set_de
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) GetDebugColor() Color.RGBA { //gd:CollisionShape2D.get_debug_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_debug_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = jumponly.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_debug_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }

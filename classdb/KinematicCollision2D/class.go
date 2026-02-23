@@ -18,6 +18,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -53,6 +54,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -291,22 +293,22 @@ func New() Instance {
 }
 
 func (self class) GetPosition() Vector2.XY { //gd:KinematicCollision2D.get_position
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetNormal() Vector2.XY { //gd:KinematicCollision2D.get_normal
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_normal, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_normal, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetTravel() Vector2.XY { //gd:KinematicCollision2D.get_travel
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_travel, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_travel, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetRemainder() Vector2.XY { //gd:KinematicCollision2D.get_remainder
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_remainder, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_remainder, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -316,7 +318,7 @@ func (self class) GetAngle(up_direction Vector2.XY) float64 { //gd:KinematicColl
 	return ret
 }
 func (self class) GetDepth() float64 { //gd:KinematicCollision2D.get_depth
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -331,12 +333,12 @@ func (self class) GetCollider() [1]gd.Object { //gd:KinematicCollision2D.get_col
 	return ret
 }
 func (self class) GetColliderId() int64 { //gd:KinematicCollision2D.get_collider_id
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collider_id, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collider_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetColliderRid() RID.Any { //gd:KinematicCollision2D.get_collider_rid
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_collider_rid, gdextension.SizeRID, &struct{}{})
+	var r_ret = jumponly.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_collider_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -346,12 +348,12 @@ func (self class) GetColliderShape() [1]gd.Object { //gd:KinematicCollision2D.ge
 	return ret
 }
 func (self class) GetColliderShapeIndex() int64 { //gd:KinematicCollision2D.get_collider_shape_index
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collider_shape_index, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collider_shape_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetColliderVelocity() Vector2.XY { //gd:KinematicCollision2D.get_collider_velocity
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_collider_velocity, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_collider_velocity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

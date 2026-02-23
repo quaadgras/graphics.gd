@@ -19,6 +19,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -57,6 +58,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -234,7 +236,7 @@ func (self class) SetCurveX(curve [1]gdclass.Curve) { //gd:CurveXYZTexture.set_c
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve_x, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCurve(curve[0])[0]))})
 }
 func (self class) GetCurveX() [1]gdclass.Curve { //gd:CurveXYZTexture.get_curve_x
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve_x, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve_x, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Curve{gdclass.NewCurve(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -242,7 +244,7 @@ func (self class) SetCurveY(curve [1]gdclass.Curve) { //gd:CurveXYZTexture.set_c
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve_y, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCurve(curve[0])[0]))})
 }
 func (self class) GetCurveY() [1]gdclass.Curve { //gd:CurveXYZTexture.get_curve_y
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve_y, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve_y, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Curve{gdclass.NewCurve(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -250,7 +252,7 @@ func (self class) SetCurveZ(curve [1]gdclass.Curve) { //gd:CurveXYZTexture.set_c
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve_z, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCurve(curve[0])[0]))})
 }
 func (self class) GetCurveZ() [1]gdclass.Curve { //gd:CurveXYZTexture.get_curve_z
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve_z, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve_z, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Curve{gdclass.NewCurve(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

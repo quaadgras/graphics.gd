@@ -23,6 +23,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -63,6 +64,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -500,7 +502,7 @@ func (self class) SetEnabled(enabled bool) { //gd:ShapeCast2D.set_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsEnabled() bool { //gd:ShapeCast2D.is_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -508,7 +510,7 @@ func (self class) SetShape(shape [1]gdclass.Shape2D) { //gd:ShapeCast2D.set_shap
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape, 0|(gdextension.SizeObject<<4), &struct{ shape gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetShape2D(shape[0])[0]))})
 }
 func (self class) GetShape() [1]gdclass.Shape2D { //gd:ShapeCast2D.get_shape
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shape, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shape, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Shape2D{gdclass.NewShape2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -516,28 +518,28 @@ func (self class) SetTargetPosition(local_point Vector2.XY) { //gd:ShapeCast2D.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_position, 0|(gdextension.SizeVector2<<4), &struct{ local_point Vector2.XY }{local_point})
 }
 func (self class) GetTargetPosition() Vector2.XY { //gd:ShapeCast2D.get_target_position
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_target_position, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_target_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMargin(margin float64) { //gd:ShapeCast2D.set_margin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_margin, 0|(gdextension.SizeFloat<<4), &struct{ margin float64 }{margin})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_margin, 0|(gdextension.SizeFloat<<4), &struct{ margin float64 }{margin})
 }
 func (self class) GetMargin() float64 { //gd:ShapeCast2D.get_margin
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_margin, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMaxResults(max_results int64) { //gd:ShapeCast2D.set_max_results
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_results, 0|(gdextension.SizeInt<<4), &struct{ max_results int64 }{max_results})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_results, 0|(gdextension.SizeInt<<4), &struct{ max_results int64 }{max_results})
 }
 func (self class) GetMaxResults() int64 { //gd:ShapeCast2D.get_max_results
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_results, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_results, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsColliding() bool { //gd:ShapeCast2D.is_colliding
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_colliding, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_colliding, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -575,12 +577,12 @@ func (self class) GetCollisionNormal(index int64) Vector2.XY { //gd:ShapeCast2D.
 	return ret
 }
 func (self class) GetClosestCollisionSafeFraction() float64 { //gd:ShapeCast2D.get_closest_collision_safe_fraction
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_closest_collision_safe_fraction, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_closest_collision_safe_fraction, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetClosestCollisionUnsafeFraction() float64 { //gd:ShapeCast2D.get_closest_collision_unsafe_fraction
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_closest_collision_unsafe_fraction, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_closest_collision_unsafe_fraction, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -600,10 +602,10 @@ func (self class) ClearExceptions() { //gd:ShapeCast2D.clear_exceptions
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_exceptions, 0, &struct{}{})
 }
 func (self class) SetCollisionMask(mask int64) { //gd:ShapeCast2D.set_collision_mask
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
 func (self class) GetCollisionMask() int64 { //gd:ShapeCast2D.get_collision_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -622,23 +624,23 @@ func (self class) SetExcludeParentBody(mask bool) { //gd:ShapeCast2D.set_exclude
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exclude_parent_body, 0|(gdextension.SizeBool<<4), &struct{ mask bool }{mask})
 }
 func (self class) GetExcludeParentBody() bool { //gd:ShapeCast2D.get_exclude_parent_body
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_exclude_parent_body, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_exclude_parent_body, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetCollideWithAreas(enable bool) { //gd:ShapeCast2D.set_collide_with_areas
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_areas, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_areas, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsCollideWithAreasEnabled() bool { //gd:ShapeCast2D.is_collide_with_areas_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_areas_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_areas_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetCollideWithBodies(enable bool) { //gd:ShapeCast2D.set_collide_with_bodies
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_bodies, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_bodies, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsCollideWithBodiesEnabled() bool { //gd:ShapeCast2D.is_collide_with_bodies_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_bodies_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_bodies_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

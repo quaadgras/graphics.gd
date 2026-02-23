@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -47,6 +48,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -217,36 +219,36 @@ func (self Instance) SetWrapT(value int) Instance { //gd:GLTFTextureSampler.wrap
 }
 
 func (self class) GetMagFilter() int64 { //gd:GLTFTextureSampler.get_mag_filter
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_mag_filter, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_mag_filter, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMagFilter(filter_mode int64) { //gd:GLTFTextureSampler.set_mag_filter
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mag_filter, 0|(gdextension.SizeInt<<4), &struct{ filter_mode int64 }{filter_mode})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mag_filter, 0|(gdextension.SizeInt<<4), &struct{ filter_mode int64 }{filter_mode})
 }
 func (self class) GetMinFilter() int64 { //gd:GLTFTextureSampler.get_min_filter
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_min_filter, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_min_filter, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMinFilter(filter_mode int64) { //gd:GLTFTextureSampler.set_min_filter
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_filter, 0|(gdextension.SizeInt<<4), &struct{ filter_mode int64 }{filter_mode})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_filter, 0|(gdextension.SizeInt<<4), &struct{ filter_mode int64 }{filter_mode})
 }
 func (self class) GetWrapS() int64 { //gd:GLTFTextureSampler.get_wrap_s
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_wrap_s, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_wrap_s, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetWrapS(wrap_mode int64) { //gd:GLTFTextureSampler.set_wrap_s
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wrap_s, 0|(gdextension.SizeInt<<4), &struct{ wrap_mode int64 }{wrap_mode})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wrap_s, 0|(gdextension.SizeInt<<4), &struct{ wrap_mode int64 }{wrap_mode})
 }
 func (self class) GetWrapT() int64 { //gd:GLTFTextureSampler.get_wrap_t
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_wrap_t, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_wrap_t, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetWrapT(wrap_mode int64) { //gd:GLTFTextureSampler.set_wrap_t
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wrap_t, 0|(gdextension.SizeInt<<4), &struct{ wrap_mode int64 }{wrap_mode})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wrap_t, 0|(gdextension.SizeInt<<4), &struct{ wrap_mode int64 }{wrap_mode})
 }
 func (o class) AsGLTFTextureSampler() Advanced         { return Advanced(o) }
 func (o Instance) AsGLTFTextureSampler() Instance      { return o }

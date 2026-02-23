@@ -17,6 +17,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -54,6 +55,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -414,27 +416,27 @@ func (class) _value_changed(impl func(ptr gdclass.Receiver, new_value float64)) 
 }
 
 func (self class) GetValue() float64 { //gd:Range.get_value
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_value, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_value, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetMin() float64 { //gd:Range.get_min
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetMax() float64 { //gd:Range.get_max
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetStep() float64 { //gd:Range.get_step
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_step, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_step, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetPage() float64 { //gd:Range.get_page
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_page, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_page, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -465,10 +467,10 @@ func (self class) SetAsRatio(value float64) { //gd:Range.set_as_ratio
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_as_ratio, 0|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
 }
 func (self class) SetUseRoundedValues(enabled bool) { //gd:Range.set_use_rounded_values
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_rounded_values, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_rounded_values, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsUsingRoundedValues() bool { //gd:Range.is_using_rounded_values
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_rounded_values, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_rounded_values, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -476,23 +478,23 @@ func (self class) SetExpRatio(enabled bool) { //gd:Range.set_exp_ratio
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exp_ratio, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsRatioExp() bool { //gd:Range.is_ratio_exp
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ratio_exp, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ratio_exp, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetAllowGreater(allow bool) { //gd:Range.set_allow_greater
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_greater, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_greater, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
 }
 func (self class) IsGreaterAllowed() bool { //gd:Range.is_greater_allowed
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_greater_allowed, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_greater_allowed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetAllowLesser(allow bool) { //gd:Range.set_allow_lesser
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_lesser, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_lesser, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
 }
 func (self class) IsLesserAllowed() bool { //gd:Range.is_lesser_allowed
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_lesser_allowed, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_lesser_allowed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

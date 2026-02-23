@@ -23,6 +23,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -66,6 +67,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -1768,7 +1770,7 @@ func (self class) SetCollapsed(enable bool) { //gd:TreeItem.set_collapsed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collapsed, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsCollapsed() bool { //gd:TreeItem.is_collapsed
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collapsed, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collapsed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1784,12 +1786,12 @@ func (self class) SetVisible(enable bool) { //gd:TreeItem.set_visible
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visible, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsVisible() bool { //gd:TreeItem.is_visible
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_visible, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_visible, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsVisibleInTree() bool { //gd:TreeItem.is_visible_in_tree
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_visible_in_tree, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_visible_in_tree, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1800,7 +1802,7 @@ func (self class) SetCustomMinimumHeight(height int64) { //gd:TreeItem.set_custo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_minimum_height, 0|(gdextension.SizeInt<<4), &struct{ height int64 }{height})
 }
 func (self class) GetCustomMinimumHeight() int64 { //gd:TreeItem.get_custom_minimum_height
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_custom_minimum_height, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_custom_minimum_height, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2043,7 +2045,7 @@ func (self class) SetDisableFolding(disable bool) { //gd:TreeItem.set_disable_fo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_folding, 0|(gdextension.SizeBool<<4), &struct{ disable bool }{disable})
 }
 func (self class) IsFoldingDisabled() bool { //gd:TreeItem.is_folding_disabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_folding_disabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_folding_disabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2059,27 +2061,27 @@ func (self class) RemoveChild(child [1]gdclass.TreeItem) { //gd:TreeItem.remove_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_child, 0|(gdextension.SizeObject<<4), &struct{ child gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTreeItem(child[0])[0]))})
 }
 func (self class) GetTree() [1]gdclass.Tree { //gd:TreeItem.get_tree
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tree, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tree, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Tree{gdclass.NewTree(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) GetNext() [1]gdclass.TreeItem { //gd:TreeItem.get_next
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_next, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_next, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) GetPrev() [1]gdclass.TreeItem { //gd:TreeItem.get_prev
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_prev, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_prev, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) GetParent() [1]gdclass.TreeItem { //gd:TreeItem.get_parent
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_parent, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_parent, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) GetFirstChild() [1]gdclass.TreeItem { //gd:TreeItem.get_first_child
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_first_child, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_first_child, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gdreference.LetObject(r_ret))}
 	return ret
 }

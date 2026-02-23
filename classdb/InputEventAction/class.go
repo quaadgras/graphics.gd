@@ -21,6 +21,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -57,6 +58,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -230,26 +232,26 @@ func (self class) SetAction(action String.Name) { //gd:InputEventAction.set_acti
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action, 0|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
 }
 func (self class) GetAction() String.Name { //gd:InputEventAction.get_action
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_action, gdextension.SizeStringName, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_action, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 func (self class) SetPressed(pressed bool) { //gd:InputEventAction.set_pressed
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
 }
 func (self class) SetStrength(strength float64) { //gd:InputEventAction.set_strength
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_strength, 0|(gdextension.SizeFloat<<4), &struct{ strength float64 }{strength})
 }
 func (self class) GetStrength() float64 { //gd:InputEventAction.get_strength
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_strength, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_strength, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetEventIndex(index int64) { //gd:InputEventAction.set_event_index
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_event_index, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_event_index, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
 func (self class) GetEventIndex() int64 { //gd:InputEventAction.get_event_index
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_event_index, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_event_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

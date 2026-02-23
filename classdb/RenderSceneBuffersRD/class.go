@@ -20,6 +20,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -60,6 +61,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -594,57 +596,57 @@ func (self class) GetVelocityLayer(layer int64, msaa bool) RID.Any { //gd:Render
 	return ret
 }
 func (self class) GetRenderTarget() RID.Any { //gd:RenderSceneBuffersRD.get_render_target
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_render_target, gdextension.SizeRID, &struct{}{})
+	var r_ret = jumponly.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_render_target, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetViewCount() int64 { //gd:RenderSceneBuffersRD.get_view_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_view_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_view_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetInternalSize() Vector2i.XY { //gd:RenderSceneBuffersRD.get_internal_size
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_internal_size, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = jumponly.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_internal_size, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetTargetSize() Vector2i.XY { //gd:RenderSceneBuffersRD.get_target_size
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_target_size, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = jumponly.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_target_size, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetScaling3dMode() RenderingServer.ViewportScaling3DMode { //gd:RenderSceneBuffersRD.get_scaling_3d_mode
-	var r_ret = noescape.Call[RenderingServer.ViewportScaling3DMode](gd.ObjectChecked(self.AsObject()), methods.get_scaling_3d_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[RenderingServer.ViewportScaling3DMode](gd.ObjectChecked(self.AsObject()), methods.get_scaling_3d_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetFsrSharpness() float64 { //gd:RenderSceneBuffersRD.get_fsr_sharpness
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fsr_sharpness, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fsr_sharpness, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetMsaa3d() RenderingServer.ViewportMSAA { //gd:RenderSceneBuffersRD.get_msaa_3d
-	var r_ret = noescape.Call[RenderingServer.ViewportMSAA](gd.ObjectChecked(self.AsObject()), methods.get_msaa_3d, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[RenderingServer.ViewportMSAA](gd.ObjectChecked(self.AsObject()), methods.get_msaa_3d, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetTextureSamples() Rendering.TextureSamples { //gd:RenderSceneBuffersRD.get_texture_samples
-	var r_ret = noescape.Call[Rendering.TextureSamples](gd.ObjectChecked(self.AsObject()), methods.get_texture_samples, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Rendering.TextureSamples](gd.ObjectChecked(self.AsObject()), methods.get_texture_samples, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetScreenSpaceAa() RenderingServer.ViewportScreenSpaceAA { //gd:RenderSceneBuffersRD.get_screen_space_aa
-	var r_ret = noescape.Call[RenderingServer.ViewportScreenSpaceAA](gd.ObjectChecked(self.AsObject()), methods.get_screen_space_aa, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[RenderingServer.ViewportScreenSpaceAA](gd.ObjectChecked(self.AsObject()), methods.get_screen_space_aa, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetUseTaa() bool { //gd:RenderSceneBuffersRD.get_use_taa
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_taa, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_taa, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetUseDebanding() bool { //gd:RenderSceneBuffersRD.get_use_debanding
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_debanding, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_debanding, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

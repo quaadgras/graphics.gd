@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -50,6 +51,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -279,7 +281,7 @@ func (self Instance) SetRecoveryAsCollision(value bool) Instance { //gd:PhysicsT
 }
 
 func (self class) GetFrom() Transform2D.OriginXY { //gd:PhysicsTestMotionParameters2D.get_from
-	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_from, gdextension.SizeTransform2D, &struct{}{})
+	var r_ret = jumponly.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_from, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -287,7 +289,7 @@ func (self class) SetFrom(from Transform2D.OriginXY) { //gd:PhysicsTestMotionPar
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_from, 0|(gdextension.SizeTransform2D<<4), &struct{ from Transform2D.OriginXY }{from})
 }
 func (self class) GetMotion() Vector2.XY { //gd:PhysicsTestMotionParameters2D.get_motion
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_motion, gdextension.SizeVector2, &struct{}{})
+	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_motion, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -295,20 +297,20 @@ func (self class) SetMotion(motion Vector2.XY) { //gd:PhysicsTestMotionParameter
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_motion, 0|(gdextension.SizeVector2<<4), &struct{ motion Vector2.XY }{motion})
 }
 func (self class) GetMargin() float64 { //gd:PhysicsTestMotionParameters2D.get_margin
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_margin, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetMargin(margin float64) { //gd:PhysicsTestMotionParameters2D.set_margin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_margin, 0|(gdextension.SizeFloat<<4), &struct{ margin float64 }{margin})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_margin, 0|(gdextension.SizeFloat<<4), &struct{ margin float64 }{margin})
 }
 func (self class) IsCollideSeparationRayEnabled() bool { //gd:PhysicsTestMotionParameters2D.is_collide_separation_ray_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_separation_ray_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_separation_ray_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetCollideSeparationRayEnabled(enabled bool) { //gd:PhysicsTestMotionParameters2D.set_collide_separation_ray_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_separation_ray_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_separation_ray_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) GetExcludeBodies() Array.Contains[RID.Any] { //gd:PhysicsTestMotionParameters2D.get_exclude_bodies
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_exclude_bodies, gdextension.SizeArray, &struct{}{})
@@ -327,12 +329,12 @@ func (self class) SetExcludeObjects(exclude_list Array.Contains[int64]) { //gd:P
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exclude_objects, 0|(gdextension.SizeArray<<4), &struct{ exclude_list gdextension.Array }{pointers.Get(gd.InternalArray(exclude_list))})
 }
 func (self class) IsRecoveryAsCollisionEnabled() bool { //gd:PhysicsTestMotionParameters2D.is_recovery_as_collision_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_recovery_as_collision_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_recovery_as_collision_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetRecoveryAsCollisionEnabled(enabled bool) { //gd:PhysicsTestMotionParameters2D.set_recovery_as_collision_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_recovery_as_collision_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_recovery_as_collision_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (o class) AsPhysicsTestMotionParameters2D() Advanced         { return Advanced(o) }
 func (o Instance) AsPhysicsTestMotionParameters2D() Instance      { return o }

@@ -34,6 +34,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -70,6 +71,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -341,7 +343,7 @@ func (self class) SetRootPath(path Path.ToNode) { //gd:MultiplayerSynchronizer.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_path, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
 func (self class) GetRootPath() Path.ToNode { //gd:MultiplayerSynchronizer.get_root_path
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root_path, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root_path, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -349,7 +351,7 @@ func (self class) SetReplicationInterval(milliseconds float64) { //gd:Multiplaye
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_replication_interval, 0|(gdextension.SizeFloat<<4), &struct{ milliseconds float64 }{milliseconds})
 }
 func (self class) GetReplicationInterval() float64 { //gd:MultiplayerSynchronizer.get_replication_interval
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_replication_interval, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_replication_interval, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -357,7 +359,7 @@ func (self class) SetDeltaInterval(milliseconds float64) { //gd:MultiplayerSynch
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_delta_interval, 0|(gdextension.SizeFloat<<4), &struct{ milliseconds float64 }{milliseconds})
 }
 func (self class) GetDeltaInterval() float64 { //gd:MultiplayerSynchronizer.get_delta_interval
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_delta_interval, gdextension.SizeFloat, &struct{}{})
+	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_delta_interval, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -365,7 +367,7 @@ func (self class) SetReplicationConfig(config [1]gdclass.SceneReplicationConfig)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_replication_config, 0|(gdextension.SizeObject<<4), &struct{ config gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetSceneReplicationConfig(config[0])[0]))})
 }
 func (self class) GetReplicationConfig() [1]gdclass.SceneReplicationConfig { //gd:MultiplayerSynchronizer.get_replication_config
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_replication_config, gdextension.SizeObject, &struct{}{})
+	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_replication_config, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.SceneReplicationConfig{gdclass.NewSceneReplicationConfig(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -373,7 +375,7 @@ func (self class) SetVisibilityUpdateMode(mode VisibilityUpdateMode) { //gd:Mult
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_update_mode, 0|(gdextension.SizeInt<<4), &struct{ mode VisibilityUpdateMode }{mode})
 }
 func (self class) GetVisibilityUpdateMode() VisibilityUpdateMode { //gd:MultiplayerSynchronizer.get_visibility_update_mode
-	var r_ret = noescape.Call[VisibilityUpdateMode](gd.ObjectChecked(self.AsObject()), methods.get_visibility_update_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[VisibilityUpdateMode](gd.ObjectChecked(self.AsObject()), methods.get_visibility_update_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -14,6 +14,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -49,6 +50,7 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
+var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -236,42 +238,42 @@ func (self Instance) SetSwizzleA(value Rendering.TextureSwizzle) Instance { //gd
 }
 
 func (self class) SetFormatOverride(p_member Rendering.DataFormat) { //gd:RDTextureView.set_format_override
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format_override, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.DataFormat }{p_member})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format_override, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.DataFormat }{p_member})
 }
 func (self class) GetFormatOverride() Rendering.DataFormat { //gd:RDTextureView.get_format_override
-	var r_ret = noescape.Call[Rendering.DataFormat](gd.ObjectChecked(self.AsObject()), methods.get_format_override, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Rendering.DataFormat](gd.ObjectChecked(self.AsObject()), methods.get_format_override, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetSwizzleR(p_member Rendering.TextureSwizzle) { //gd:RDTextureView.set_swizzle_r
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_swizzle_r, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.TextureSwizzle }{p_member})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_swizzle_r, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.TextureSwizzle }{p_member})
 }
 func (self class) GetSwizzleR() Rendering.TextureSwizzle { //gd:RDTextureView.get_swizzle_r
-	var r_ret = noescape.Call[Rendering.TextureSwizzle](gd.ObjectChecked(self.AsObject()), methods.get_swizzle_r, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Rendering.TextureSwizzle](gd.ObjectChecked(self.AsObject()), methods.get_swizzle_r, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetSwizzleG(p_member Rendering.TextureSwizzle) { //gd:RDTextureView.set_swizzle_g
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_swizzle_g, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.TextureSwizzle }{p_member})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_swizzle_g, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.TextureSwizzle }{p_member})
 }
 func (self class) GetSwizzleG() Rendering.TextureSwizzle { //gd:RDTextureView.get_swizzle_g
-	var r_ret = noescape.Call[Rendering.TextureSwizzle](gd.ObjectChecked(self.AsObject()), methods.get_swizzle_g, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Rendering.TextureSwizzle](gd.ObjectChecked(self.AsObject()), methods.get_swizzle_g, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetSwizzleB(p_member Rendering.TextureSwizzle) { //gd:RDTextureView.set_swizzle_b
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_swizzle_b, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.TextureSwizzle }{p_member})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_swizzle_b, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.TextureSwizzle }{p_member})
 }
 func (self class) GetSwizzleB() Rendering.TextureSwizzle { //gd:RDTextureView.get_swizzle_b
-	var r_ret = noescape.Call[Rendering.TextureSwizzle](gd.ObjectChecked(self.AsObject()), methods.get_swizzle_b, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Rendering.TextureSwizzle](gd.ObjectChecked(self.AsObject()), methods.get_swizzle_b, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetSwizzleA(p_member Rendering.TextureSwizzle) { //gd:RDTextureView.set_swizzle_a
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_swizzle_a, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.TextureSwizzle }{p_member})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_swizzle_a, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.TextureSwizzle }{p_member})
 }
 func (self class) GetSwizzleA() Rendering.TextureSwizzle { //gd:RDTextureView.get_swizzle_a
-	var r_ret = noescape.Call[Rendering.TextureSwizzle](gd.ObjectChecked(self.AsObject()), methods.get_swizzle_a, gdextension.SizeInt, &struct{}{})
+	var r_ret = jumponly.Call[Rendering.TextureSwizzle](gd.ObjectChecked(self.AsObject()), methods.get_swizzle_a, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
