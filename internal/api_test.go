@@ -17,6 +17,9 @@ import (
 	_ "graphics.gd/startup"
 )
 
+//go:linkname keep_reachable_instances_alive graphics.gd/classdb.keep_reachable_instances_alive
+func keep_reachable_instances_alive()
+
 func init() {
 	classdb.Register[Converter]()
 	classdb.Register[CustomConverterObject]()

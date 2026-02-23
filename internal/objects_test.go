@@ -169,7 +169,6 @@ func TestExtensionClassReturnedToTheEngineFromCallable(t *testing.T) {
 		var myobj = new(MyObject)
 		myobj.Field1 = "Hello from callable"
 		myobj.Field2 = 123
-		myobj.AsObject()
 
 		var runner = Object.New()
 		runner.SetScript(script)
@@ -177,8 +176,8 @@ func TestExtensionClassReturnedToTheEngineFromCallable(t *testing.T) {
 			return myobj
 		}))
 
-		gdreference.GC(gd.Free)
-		gdreference.GC(gd.Free)
+		keep_reachable_instances_alive()
+		keep_reachable_instances_alive()
 
 		if !Object.InstanceIsValid(Object.Instance(myobj.AsObject())) {
 			t.Error("Expected MyObject to still be valid after GC")
