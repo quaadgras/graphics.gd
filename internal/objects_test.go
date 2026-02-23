@@ -170,10 +170,40 @@ func TestExtensionClassReturnedToTheEngineFromCallable(t *testing.T) {
 		myobj.Field1 = "Hello from callable"
 		myobj.Field2 = 123
 
+		var alias = Node.Instance{gdclass.NewNode(gdreference.RawObject(gdreference.GetObject(myobj.AsObject()[0])))}
+
 		var runner = Object.New()
 		runner.SetScript(script)
 		Object.Call(runner, "test_basis", Callable.New(func() *MyObject {
 			return myobj
+		}))
+		Object.Call(runner, "test_basis", Callable.New(func() Object.Instance {
+			return alias.AsObject()
+		}))
+
+		keep_reachable_instances_alive()
+		keep_reachable_instances_alive()
+
+		if !Object.InstanceIsValid(Object.Instance(myobj.AsObject())) {
+			t.Error("Expected MyObject to still be valid after GC")
+		}
+	})
+	// Also test the case when the object is passed back from the engine as an aliased object.
+	runOnMain(t, func(t testing.TB) {
+		var script = GDScript.New().AsScript()
+		script.SetSourceCode(call_callable)
+		script.Reload()
+
+		var myobj = new(MyObject)
+		myobj.Field1 = "Hello from callable"
+		myobj.Field2 = 123
+
+		var alias = Node.Instance{gdclass.NewNode(gdreference.RawObject(gdreference.GetObject(myobj.AsObject()[0])))}
+
+		var runner = Object.New()
+		runner.SetScript(script)
+		Object.Call(runner, "test_basis", Callable.New(func() Object.Instance {
+			return alias.AsObject()
 		}))
 
 		keep_reachable_instances_alive()

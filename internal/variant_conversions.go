@@ -67,6 +67,9 @@ func CutVariant(v any, cut bool) Variant {
 				return Variant{}
 			}
 			var arg = gdreference.CutObject(gdreference.Object(obj[0]), cut)
+			if cut {
+				ExtensionInstanceGoOnly(arg, false)
+			}
 			((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeObject, gdextension.SizeObject, unsafe.Pointer(&arg))
 		} else {
 			var arg = RID(value.Uint())
@@ -105,6 +108,9 @@ func CutVariant(v any, cut bool) Variant {
 				return Variant{}
 			}
 			var arg = gdreference.CutObject(obj[0], cut)
+			if cut {
+				ExtensionInstanceGoOnly(arg, false)
+			}
 			((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeObject, gdextension.SizeObject, unsafe.Pointer(&arg))
 		} else {
 			var arg = pointers.Cut(newArray(value), cut)
