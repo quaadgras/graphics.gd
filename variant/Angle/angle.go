@@ -101,12 +101,6 @@ func Atan2[X Float.Any](y, x X) Radians { //gd:atan2
 	return Radians(math.Atan2(float64(y), float64(x)))
 }
 
-// Cos returns the cosine of angle x in radians.
-func Cos(x Radians) Float.X { return Float.X(math.Cos(float64(x))) } //gd:cos
-
-// Sin returns the sine of angle x in radians.
-func Sin(x Radians) Float.X { return Float.X(math.Sin(float64(x))) } //gd:sin
-
 // Sinh returns the hyperbolic sine of x.
 func Sinh[X Float.Any](x X) X { return X(math.Sinh(float64(x))) } //gd:sinh
 
@@ -123,15 +117,6 @@ func Cosh[X Float.Any](x X) X { return X(math.Cosh(float64(x))) } //gd:cosh
 // Lerp(0, Pi + 5 * Tau, weight) lerps clockwise.
 func Lerp[X Float.Any](from, to Radians, weight X) Radians { //gd:lerp_angle
 	return from + Difference(from, to)*Radians(weight)
-}
-
-// AsVector2 creates a unit Vector2 rotated to the given angle in radians. This is equivalent
-// to doing:
-//
-//	Vector2.New(math.Cos(angle), math.Sin(angle))
-//	Vector2.Rotated(Vector2.Right, angle).
-func (angle Radians) AsVector2() vector2 { //gd:Vector2.from_angle
-	return vector2{float(math.Cos(float64(angle))), float(math.Sin(float64(angle)))}
 }
 
 func InRadians(deg Degrees) Radians { return Radians(deg) * (Pi / 180.0) } //gd:deg_to_rad
