@@ -1,4 +1,4 @@
-//go:build !(go1.26 && (amd64 || arm64) && !windows)
+//go:build !(go1.26 && (amd64 || arm64))
 
 package jumponly
 
