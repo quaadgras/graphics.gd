@@ -845,7 +845,7 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 	},
 	"MultiplayerSpawner": {
 		"spawn": {
-			"return value": OwnershipTransferred,
+			"return value": MustAssertInstanceID,
 		},
 	},
 	"MultiplayerAPIExtension": {

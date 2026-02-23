@@ -305,7 +305,7 @@ func (self class) ClearSpawnableScenes() { //gd:MultiplayerSpawner.clear_spawnab
 }
 func (self class) Spawn(data variant.Any) [1]gdclass.Node { //gd:MultiplayerSpawner.spawn
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.spawn, gdextension.SizeObject|(gdextension.SizeVariant<<4), &struct{ data gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(data)))})
-	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerWithOwnershipTransferredToGo(r_ret))}
+	var ret = [1]gdclass.Node{gdclass.NewNode(gdreference.LetObject(r_ret))}
 	return ret
 }
 func (self class) GetSpawnPath() Path.ToNode { //gd:MultiplayerSpawner.get_spawn_path
