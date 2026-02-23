@@ -21,7 +21,7 @@ TEXT ·call(SB),NOSPLIT,$0-32
 	MOVD	·PtrcallFn(SB), R9
 	SUB	$16, RSP, RSP
 	MOVD	R30, (RSP)
-	BLR	R9
+	CALL	(R9)
 	MOVD	(RSP), R30
 	ADD	$16, RSP, RSP
 	RET
