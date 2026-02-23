@@ -76,31 +76,31 @@ TEXT ·sin32(SB),NOSPLIT,$0-12
 	FMOVD	R3, F2              // F2 = S4
 	MOVD	s3<>(SB), R3
 	FMOVD	R3, F4              // F4 = S3
-	FMADDD	F1, F2, F4, F2      // F2 = S3 + r2*S4
+	FMADDD	F1, F4, F2, F2      // F2 = F4 + F2*F1 = S3 + r2*S4
 	MOVD	s2<>(SB), R3
 	FMOVD	R3, F4              // F4 = S2
-	FMADDD	F1, F2, F4, F2      // F2 = S2 + r2*(S3+r2*S4)
+	FMADDD	F1, F4, F2, F2      // F2 = F4 + F2*F1 = S2 + r2*(S3+r2*S4)
 	MOVD	s1<>(SB), R3
 	FMOVD	R3, F4              // F4 = S1
-	FMADDD	F1, F2, F4, F2      // F2 = S1 + r2*(S2+...)
+	FMADDD	F1, F4, F2, F2      // F2 = F4 + F2*F1 = S1 + r2*(S2+...)
 	FMULD	F1, F2, F2          // F2 = r2*(S1+...)
-	FMADDD	F0, F2, F0, F2      // F2 = r + r*(r2*(S1+...)) = sinpoly
+	FMADDD	F0, F0, F2, F2      // F2 = F0 + F2*F0 = r + r*(r2*(S1+...)) = sinpoly
 
 	// cospoly = 1 + r2*(C0 + r2*(C1 + r2*(C2 + r2*C3)))
 	MOVD	c3<>(SB), R3
 	FMOVD	R3, F3              // F3 = C3
 	MOVD	c2<>(SB), R3
 	FMOVD	R3, F4              // F4 = C2
-	FMADDD	F1, F3, F4, F3      // F3 = C2 + r2*C3
+	FMADDD	F1, F4, F3, F3      // F3 = F4 + F3*F1 = C2 + r2*C3
 	MOVD	c1<>(SB), R3
 	FMOVD	R3, F4              // F4 = C1
-	FMADDD	F1, F3, F4, F3      // F3 = C1 + r2*(C2+r2*C3)
+	FMADDD	F1, F4, F3, F3      // F3 = F4 + F3*F1 = C1 + r2*(C2+r2*C3)
 	MOVD	c0<>(SB), R3
 	FMOVD	R3, F4              // F4 = C0
-	FMADDD	F1, F3, F4, F3      // F3 = C0 + r2*(C1+...)
+	FMADDD	F1, F4, F3, F3      // F3 = F4 + F3*F1 = C0 + r2*(C1+...)
 	MOVD	one<>(SB), R3
 	FMOVD	R3, F4              // F4 = 1.0
-	FMADDD	F1, F3, F4, F3      // F3 = 1.0 + r2*(C0+...) = cospoly
+	FMADDD	F1, F4, F3, F3      // F3 = F4 + F3*F1 = 1.0 + r2*(C0+...) = cospoly
 
 	// Select: if n&1==0, result=sinpoly(F2); else result=cospoly(F3)
 	ANDW	$1, R2, R3
@@ -171,31 +171,31 @@ TEXT ·cos32(SB),NOSPLIT,$0-12
 	FMOVD	R3, F2
 	MOVD	s3<>(SB), R3
 	FMOVD	R3, F4
-	FMADDD	F1, F2, F4, F2
+	FMADDD	F1, F4, F2, F2
 	MOVD	s2<>(SB), R3
 	FMOVD	R3, F4
-	FMADDD	F1, F2, F4, F2
+	FMADDD	F1, F4, F2, F2
 	MOVD	s1<>(SB), R3
 	FMOVD	R3, F4
-	FMADDD	F1, F2, F4, F2
+	FMADDD	F1, F4, F2, F2
 	FMULD	F1, F2, F2
-	FMADDD	F0, F2, F0, F2      // F2 = sinpoly
+	FMADDD	F0, F0, F2, F2      // F2 = sinpoly
 
 	// cospoly
 	MOVD	c3<>(SB), R3
 	FMOVD	R3, F3
 	MOVD	c2<>(SB), R3
 	FMOVD	R3, F4
-	FMADDD	F1, F3, F4, F3
+	FMADDD	F1, F4, F3, F3
 	MOVD	c1<>(SB), R3
 	FMOVD	R3, F4
-	FMADDD	F1, F3, F4, F3
+	FMADDD	F1, F4, F3, F3
 	MOVD	c0<>(SB), R3
 	FMOVD	R3, F4
-	FMADDD	F1, F3, F4, F3
+	FMADDD	F1, F4, F3, F3
 	MOVD	one<>(SB), R3
 	FMOVD	R3, F4
-	FMADDD	F1, F3, F4, F3      // F3 = cospoly
+	FMADDD	F1, F4, F3, F3      // F3 = cospoly
 
 	// For cos: if n&1==0, result=cospoly; else result=sinpoly (swapped)
 	ANDW	$1, R2, R3
@@ -264,31 +264,31 @@ TEXT ·sincos32(SB),NOSPLIT,$0-16
 	FMOVD	R3, F2
 	MOVD	s3<>(SB), R3
 	FMOVD	R3, F4
-	FMADDD	F1, F2, F4, F2
+	FMADDD	F1, F4, F2, F2
 	MOVD	s2<>(SB), R3
 	FMOVD	R3, F4
-	FMADDD	F1, F2, F4, F2
+	FMADDD	F1, F4, F2, F2
 	MOVD	s1<>(SB), R3
 	FMOVD	R3, F4
-	FMADDD	F1, F2, F4, F2
+	FMADDD	F1, F4, F2, F2
 	FMULD	F1, F2, F2
-	FMADDD	F0, F2, F0, F2      // F2 = sinpoly
+	FMADDD	F0, F0, F2, F2      // F2 = sinpoly
 
 	// cospoly
 	MOVD	c3<>(SB), R3
 	FMOVD	R3, F3
 	MOVD	c2<>(SB), R3
 	FMOVD	R3, F4
-	FMADDD	F1, F3, F4, F3
+	FMADDD	F1, F4, F3, F3
 	MOVD	c1<>(SB), R3
 	FMOVD	R3, F4
-	FMADDD	F1, F3, F4, F3
+	FMADDD	F1, F4, F3, F3
 	MOVD	c0<>(SB), R3
 	FMOVD	R3, F4
-	FMADDD	F1, F3, F4, F3
+	FMADDD	F1, F4, F3, F3
 	MOVD	one<>(SB), R3
 	FMOVD	R3, F4
-	FMADDD	F1, F3, F4, F3      // F3 = cospoly
+	FMADDD	F1, F4, F3, F3      // F3 = cospoly
 
 	// --- Sin result ---
 	ANDW	$1, R2, R3
