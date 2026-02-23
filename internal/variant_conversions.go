@@ -308,7 +308,9 @@ func CutVariant(v any, cut bool) Variant {
 			((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeNodePath, gdextension.SizeNodePath, unsafe.Pointer(&arg))
 		case Object:
 			var arg = gdreference.CutObject(val, cut)
-			ExtensionInstanceGoOnly(arg, false)
+			if cut {
+				ExtensionInstanceGoOnly(arg, false)
+			}
 			((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeObject, gdextension.SizeObject, unsafe.Pointer(&arg))
 		case Callable:
 			if pointers.Get(val) == ([2]uint64{}) {
