@@ -5,6 +5,7 @@ import (
 
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdreference"
+	"graphics.gd/internal/jumponly"
 	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/internal/ring"
@@ -564,7 +565,7 @@ func ObjectCall(o Object, method StringName, args ...Variant) (Variant, error) {
 }
 
 func ObjectCanTranslateMessages(o Object) bool {
-	return noescape.Call[bool](gdreference.GetObject(o), object_methods.can_translate_messages, gdextension.SizeBool, nil)
+	return jumponly.Call[bool](gdreference.GetObject(o), object_methods.can_translate_messages, gdextension.SizeBool, nil)
 }
 func ObjectGetScript(o Object) Variant {
 	return pointers.New[Variant]([3]uint64(noescape.Call[gdextension.Variant](gdreference.GetObject(o), object_methods.get_script, gdextension.SizeVariant, nil)))
@@ -573,7 +574,7 @@ func ObjectNotifyPropertyListChanged(o Object) {
 	noescape.Call[struct{}](gdreference.GetObject(o), object_methods.notify_property_list_changed, 0, nil)
 }
 func ObjectSetBlockSignals(o Object, blocking bool) {
-	noescape.Call[struct{}](gdreference.GetObject(o), object_methods.set_block_signals, 0|gdextension.SizeBool<<4, unsafe.Pointer(&struct {
+	jumponly.Call[struct{}](gdreference.GetObject(o), object_methods.set_block_signals, 0|gdextension.SizeBool<<4, unsafe.Pointer(&struct {
 		Blocking bool
 	}{
 		blocking,
@@ -608,14 +609,14 @@ func ObjectTrN(o Object, message StringName, plural StringName, n int64, context
 	})))
 }
 func ObjectSetMessageTranslation(o Object, enable bool) {
-	noescape.Call[struct{}](gdreference.GetObject(o), object_methods.set_message_translation, 0|gdextension.SizeBool<<4, unsafe.Pointer(&struct {
+	jumponly.Call[struct{}](gdreference.GetObject(o), object_methods.set_message_translation, 0|gdextension.SizeBool<<4, unsafe.Pointer(&struct {
 		Enable bool
 	}{
 		enable,
 	}))
 }
 func ObjectIsBlockingSignals(o Object) bool {
-	return noescape.Call[bool](gdreference.GetObject(o), object_methods.is_blocking_signals, gdextension.SizeBool, nil)
+	return jumponly.Call[bool](gdreference.GetObject(o), object_methods.is_blocking_signals, gdextension.SizeBool, nil)
 }
 func ObjectGetClass(o Object) String {
 	return pointers.New[String](noescape.Call[gdextension.String](gdreference.GetObject(o), object_methods.get_class, gdextension.SizeString, nil))
@@ -646,7 +647,7 @@ func ObjectDisconnect(o Object, signal StringName, callable Callable) {
 	}))
 }
 func ObjectIsQueuedForDeletion(o Object) bool {
-	return noescape.Call[bool](gdreference.GetObject(o), object_methods.is_queued_for_deletion, gdextension.SizeBool, nil)
+	return jumponly.Call[bool](gdreference.GetObject(o), object_methods.is_queued_for_deletion, gdextension.SizeBool, nil)
 }
 func ObjectNotification(o Object, what Int, reversed bool) {
 	noescape.Call[struct{}](gdreference.GetObject(o), object_methods.notification, 0|gdextension.SizeInt<<4|gdextension.SizeBool<<8, unsafe.Pointer(&struct {

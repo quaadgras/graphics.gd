@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/ring"
 	"graphics.gd/internal/threadcheck"
 )
@@ -24,7 +25,11 @@ func Call[T any](object gdextension.Object, method gdextension.MethodForClass, s
 	var result T
 	// Flush any pending ring buffer entries to maintain ordering.
 	if ring.Main.Pending() && threadcheck.Main() {
-		ring.Main.Flush()
+		if unsafe.Sizeof(result) > 0 {
+			ring.Main.Flush()
+		} else {
+			return noescape.Call[T](object, method, shape, args)
+		}
 	}
 	var argptr unsafe.Pointer
 	if args != nil {
