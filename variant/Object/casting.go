@@ -16,7 +16,7 @@ func To[T gd.IsClass](value gd.IsClass) T {
 }
 
 // Is returns true if the given class is of type T.
-func Is[T gd.IsClass](value gd.IsClass) bool {
+func Is[T gd.IsClass](value gd.IsClass) bool { //gd:Object.is_class
 	_, ok := As[T](value)
 	return ok
 }

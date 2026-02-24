@@ -32,12 +32,12 @@ func Get(object Any, property string) any { //gd:Object.get
 // HasMethod returns true if the given method name exists in the object.
 //
 // Note: In C#, method must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the MethodName class to avoid allocating a new StringName on each call.
-func HasMethod(object Any, method string) bool { //gd:Object.has_method
+func HasMethod(object Any, method string) bool {
 	return gd.ObjectHasMethod(object.AsObject()[0], gd.NewStringName(method))
 }
 
 // Call calls the method on the object and returns the result.
-func Call(object Any, method string, args ...any) any { //gd:Object.call
+func Call(object Any, method string, args ...any) any { //gd:Object.call Object.callv
 	var converted []gd.Variant
 	for _, arg := range args {
 		converted = append(converted, gd.NewVariant(arg))

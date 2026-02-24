@@ -142,19 +142,19 @@ func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(sel
 func (obj Instance) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 // ClassName returns the object's built-in class name, as a string.
-func (obj Instance) ClassName() string {
+func (obj Instance) ClassName() string { //gd:Object.get_class
 	return gd.ObjectGetClass(obj[0]).String()
 }
 
 // CanTranslateMessages returns true if the object is allowed to translate messages with tr and tr_n.
 // See also [Instance.SetMessageTranslation].
-func (obj Instance) CanTranslateMessages() bool {
+func (obj Instance) CanTranslateMessages() bool { //gd:Object.can_translate_messages
 	return bool(gd.ObjectCanTranslateMessages(obj[0]))
 }
 
 // ID returns the object's unique instance ID. This ID can be saved in EncodedObjectAsID, and can be used
 // to retrieve this object instance with [ID.Instance].
-func (obj Instance) ID() ID {
+func (obj Instance) ID() ID { //gd:Object.get_instance_id
 	var id gdextension.ObjectID
 	gdextension.Host.Objects.ID.Get(gdreference.GetObject(obj[0]), gdextension.CallReturns[gdextension.ObjectID](&id))
 	return ID(id)
@@ -162,25 +162,25 @@ func (obj Instance) ID() ID {
 
 // SignalsBlocked returns true if the object is blocking its signals from being emitted.
 // See [Instance.SetSignalsBlocked].
-func (obj Instance) SignalsBlocked() bool {
+func (obj Instance) SignalsBlocked() bool { //gd:Object.is_blocking_signals
 	return bool(gd.ObjectIsBlockingSignals(obj[0]))
 }
 
 // NotifyPropertyListChanged emits the property_list_changed signal. This is mainly used to
 // refresh the editor, so that the Inspector and editor plugins are properly updated.
-func (obj Instance) NotifyPropertyListChanged() {
+func (obj Instance) NotifyPropertyListChanged() { //gd:Object.notify_property_list_changed
 	gd.ObjectNotifyPropertyListChanged(obj[0])
 }
 
 // SetBlockSignals if set to true, the object becomes unable to emit signals. Signal connections will
 // not work, until it is set to false.
-func (obj Instance) SetSignalsBlocked(enable bool) {
+func (obj Instance) SetSignalsBlocked(enable bool) { //gd:Object.set_block_signals
 	gd.ObjectSetBlockSignals(obj[0], enable)
 }
 
 // SetMessageTranslation if set to true, allows the object to translate messages with tr and tr_n.
 // Enabled by default. See also [Instance.CanTranslateMessages].
-func (obj Instance) SetMessageTranslation(enable bool) {
+func (obj Instance) SetMessageTranslation(enable bool) { //gd:Object.set_message_translation
 	gd.ObjectSetMessageTranslation(obj[0], enable)
 }
 
@@ -189,14 +189,14 @@ func (obj Instance) SetMessageTranslation(enable bool) {
 //
 // If a script already exists, its instance is detached, and its property values and state are lost. Built-in
 // property values are still kept.
-func (obj Instance) SetScript(script [1]gdclass.Script) {
+func (obj Instance) SetScript(script [1]gdclass.Script) { //gd:Object.set_script
 	gd.PointerWithOwnershipTransferredToGodot(gdclass.GetScript(script[0])[0])
 	gd.ObjectSetScript(obj[0], gd.NewVariant(gdclass.GetScript(script[0])[0]))
 }
 
 // String returns a String representing the object. Defaults to "<ClassName#RID>". Override _to_string to
 // customize the string representation of the object.
-func (obj Instance) String() string {
+func (obj Instance) String() string { //gd:Object.to_string
 	if obj == Nil {
 		return "<Nil>"
 	}
@@ -209,7 +209,7 @@ func (obj Instance) String() string {
 //
 // If [Instance.CanTranslateMessages] is false, or no translation is available, this method returns the
 // message without changes. See [Instance.SetMessageTranslation].
-func (obj Instance) Translate(message string) string {
+func (obj Instance) Translate(message string) string { //gd:Object.tr
 	return gd.ObjectTr(obj[0], gd.NewStringName(message), gd.NewStringName("")).String()
 }
 
@@ -229,7 +229,7 @@ func (obj Instance) Translate(message string) string {
 //
 // Note: This method can't be used without an Object instance, as it requires the [Instance.CanTranslateMessages] method.
 // To translate strings in a static context, use [TranslationServer.TranslatePlural].
-func (obj Instance) Translation(message string, plural_message string, n int, context string) string {
+func (obj Instance) Translation(message string, plural_message string, n int, context string) string { //gd:Object.tr_n
 	return gd.ObjectTrN(obj[0], gd.NewStringName(message), gd.NewStringName(plural_message), gd.Int(n), gd.NewStringName(context)).String()
 }
 
@@ -241,7 +241,7 @@ func (obj Instance) Translation(message string, plural_message string, n int, co
 // use [Instance.IsConnected] first to check for existing connections.
 //
 // If the callable's object is freed, the connection will be lost.
-func (obj Instance) Connect(signal string, callable any, flags ...Signal.Flags) error {
+func (obj Instance) Connect(signal string, callable any, flags ...Signal.Flags) error { //gd:Object.connect
 	var all_flags Signal.Flags
 	for _, f := range flags {
 		all_flags |= f
@@ -254,7 +254,7 @@ func (obj Instance) Connect(signal string, callable any, flags ...Signal.Flags) 
 }
 
 // IsConnected returns true if a connection exists between the given signal name and callable.
-func (obj Instance) IsConnected(signal string, callable any) bool {
+func (obj Instance) IsConnected(signal string, callable any) bool { //gd:Object.is_connected
 	return gd.ObjectIsConnected(obj[0], gd.NewStringName(signal), gd.NewCallable(callable))
 }
 
@@ -278,7 +278,7 @@ func (obj Instance) Signal(name string) Signal.Any {
 }
 
 // HasMethod returns true if the object has a method with the given name.
-func (obj Instance) HasMethod(name string) bool {
+func (obj Instance) HasMethod(name string) bool { //gd:Object.has_method
 	return gd.ObjectHasMethod(obj[0], gd.NewStringName(name))
 }
 
