@@ -228,3 +228,53 @@ func TestJumpOnlyCall(t *testing.T) {
 		}
 	})
 }
+
+type KeepAliveNode struct {
+	Node.Extension[KeepAliveNode]
+
+	Object *MyObject
+}
+
+func init() {
+	classdb.Register[KeepAliveNode]()
+}
+
+func TestFree(t *testing.T) {
+	runOnMain(t, func(t testing.TB) {
+		var obj = new(MyObject)
+		Object.Free(obj)
+		if Object.InstanceIsValid(Object.Instance(obj.AsObject())) {
+			t.Error("Expected object to be invalid after free")
+		}
+	})
+}
+
+func TestExtensionClassGarbageCollection(t *testing.T) {
+	runOnMain(t, func(t testing.TB) {
+		var obj = new(MyObject)
+		gd.ExtensionInstanceGoOnly(gdreference.GetObject(obj.AsObject()[0]), true)
+		keep_reachable_instances_alive()
+		keep_reachable_instances_alive()
+		if Object.InstanceIsValid(Object.Instance(obj.AsObject())) {
+			t.Error("Expected object to be invalid after free")
+		}
+	})
+}
+
+func TestAutomaticKeepAlive(t *testing.T) {
+	runOnMain(t, func(t testing.TB) {
+		var node = Node.New()
+		var child = new(KeepAliveNode)
+		child.Object = new(MyObject)
+		child.Object.AsObject() // trigger the reference
+		gd.ExtensionInstanceGoOnly(gdreference.GetObject(child.AsObject()[0]), true)
+		node.AddChild(child.AsNode())
+
+		keep_reachable_instances_alive()
+		keep_reachable_instances_alive()
+
+		if !Object.InstanceIsValid(Object.Instance(child.Object.AsObject())) {
+			t.Error("Expected child node to still be valid after GC")
+		}
+	})
+}

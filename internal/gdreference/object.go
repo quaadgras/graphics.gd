@@ -85,6 +85,7 @@ func AgeObject(obj *Object, free func(gdextension.Object)) {
 		obj.revision++
 	case 1:
 		free(obj.assigned.inEngine)
+		*obj.sentinel = object{}
 		*obj = Object{revision: 1}
 	}
 }
@@ -226,14 +227,14 @@ func CutObject(obj Object, end bool) gdextension.Object {
 // UseObject marks the object as used, preventing it from being
 // freed for one frame.
 func UseObject(obj Object) {
-	if obj.sentinel != nil && obj.sentinel != &borrowSentinel && obj.assigned.objectID != 0 && obj.sentinel.objectID == obj.assigned.objectID {
+	if !BadObject(obj) && obj.sentinel != nil && obj.sentinel != &borrowSentinel && obj.assigned.objectID != 0 && obj.sentinel.objectID == obj.assigned.objectID {
 		obj.sentinel.inEngine = obj.assigned.inEngine
 	}
 }
 
 // BadObject returns true if the reference has been invalidated.
 func BadObject(obj Object) bool {
-	return obj == Object{} || GetObject(obj) == 0
+	return obj == Object{} || obj == Object{revision: 1} || GetObject(obj) == 0
 }
 
 type object struct {
