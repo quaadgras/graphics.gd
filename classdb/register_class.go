@@ -142,7 +142,9 @@ func Register[T Class](exports ...any) {
 	var super = reflect.New(superType).Elem().Interface()
 	var classType = reflect.TypeFor[T]()
 
-	if classType != gdclass.GoType(([1]T{})[0]) {
+	var underlyingType = gdclass.GoType(([1]T{})[0])
+	var trivialExtension = classType.Size() == underlyingType.Size() && classType.NumField() == 1 && classType.Field(0).Type == underlyingType
+	if !trivialExtension && classType != underlyingType && !classType.ConvertibleTo(underlyingType) {
 		panic("classdb.Register: embedded Extension type must match the registered type\nSee https://the.graphics.gd/guide/classdb/register/#inheritance")
 	}
 

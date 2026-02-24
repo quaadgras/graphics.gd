@@ -273,6 +273,11 @@ func TestNoInheritance(t *testing.T) {
 	}
 	type Player struct {
 		Common
+
+		SomeField int
+	}
+	type Allowed struct {
+		Common
 	}
 	runOnMain(t, func(t testing.TB) {
 		defer func() {
@@ -281,5 +286,8 @@ func TestNoInheritance(t *testing.T) {
 			}
 		}()
 		classdb.Register[Player]()
+	})
+	runOnMain(t, func(t testing.TB) {
+		classdb.Register[Allowed]()
 	})
 }
