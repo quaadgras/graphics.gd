@@ -266,3 +266,20 @@ func TestAutomaticKeepAlive(t *testing.T) {
 		}
 	})
 }
+
+func TestNoInheritance(t *testing.T) {
+	type Common struct {
+		Node.Extension[Common]
+	}
+	type Player struct {
+		Common
+	}
+	runOnMain(t, func(t testing.TB) {
+		defer func() {
+			if recover() == nil {
+				t.Error("Expected panic when trying to cast to an unrelated type")
+			}
+		}()
+		classdb.Register[Player]()
+	})
+}
