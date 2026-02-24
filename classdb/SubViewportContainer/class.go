@@ -148,7 +148,9 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) PropagateInputEvent(event InputEvent.Instance) (_ bool) { return }
+func (self implementation) PropagateInputEvent(event InputEvent.Instance) (_ bool) {
+	return
+}
 
 /*
 Virtual method to be implemented by the user. If it returns true, the 'event' is propagated to [SubViewport] children. Propagation doesn't happen if it returns false. If the function is not implemented, all events are propagated to SubViewports.

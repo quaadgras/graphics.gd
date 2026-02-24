@@ -200,18 +200,36 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetRecognizedExtensions() (_ []string)                    { return }
-func (self implementation) RecognizePath(path string, atype string) (_ bool)         { return }
-func (self implementation) HandlesType(atype string) (_ bool)                        { return }
-func (self implementation) GetResourceType(path string) (_ string)                   { return }
-func (self implementation) GetResourceScriptClass(path string) (_ string)            { return }
-func (self implementation) GetResourceUid(path string) (_ int)                       { return }
-func (self implementation) GetDependencies(path string, add_types bool) (_ []string) { return }
+func (self implementation) GetRecognizedExtensions() (_ []string) {
+	return
+}
+func (self implementation) RecognizePath(path string, atype string) (_ bool) {
+	return
+}
+func (self implementation) HandlesType(atype string) (_ bool) {
+	return
+}
+func (self implementation) GetResourceType(path string) (_ string) {
+	return
+}
+func (self implementation) GetResourceScriptClass(path string) (_ string) {
+	return
+}
+func (self implementation) GetResourceUid(path string) (_ int) {
+	return
+}
+func (self implementation) GetDependencies(path string, add_types bool) (_ []string) {
+	return
+}
 func (self implementation) RenameDependencies(path string, renames map[string]string) (_ error) {
 	return
 }
-func (self implementation) Exists(path string) (_ bool)             { return }
-func (self implementation) GetClassesUsed(path string) (_ []string) { return }
+func (self implementation) Exists(path string) (_ bool) {
+	return
+}
+func (self implementation) GetClassesUsed(path string) (_ []string) {
+	return
+}
 func (self implementation) Load(path string, original_path string, use_sub_threads bool, cache_mode int) (_ any) {
 	return
 }

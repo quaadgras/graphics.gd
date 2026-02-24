@@ -135,7 +135,9 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) InstantiatePlayback() (_ VideoStreamPlayback.Instance) { return }
+func (self implementation) InstantiatePlayback() (_ VideoStreamPlayback.Instance) {
+	return
+}
 
 /*
 Called when the video starts playing, to initialize and return a subclass of [VideoStreamPlayback].

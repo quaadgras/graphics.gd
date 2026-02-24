@@ -324,43 +324,56 @@ type implementation struct{}
 func (self implementation) ImportPreflight(state GLTFState.Instance, extensions []string) (_ error) {
 	return
 }
-func (self implementation) GetSupportedExtensions() (_ []string) { return }
+func (self implementation) GetSupportedExtensions() (_ []string) {
+	return
+}
 func (self implementation) ParseNodeExtensions(state GLTFState.Instance, gltf_node GLTFNode.Instance, extensions map[string]any) (_ error) {
 	return
 }
 func (self implementation) ParseImageData(state GLTFState.Instance, image_data []byte, mime_type string, ret_image Image.Instance) (_ error) {
 	return
 }
-func (self implementation) GetImageFileExtension() (_ string) { return }
+func (self implementation) GetImageFileExtension() (_ string) {
+	return
+}
 func (self implementation) ParseTextureJson(state GLTFState.Instance, texture_json map[string]any, ret_gltf_texture GLTFTexture.Instance) (_ error) {
 	return
 }
 func (self implementation) ImportObjectModelProperty(state GLTFState.Instance, split_json_pointer []string, partial_paths []string) (_ GLTFObjectModelProperty.Instance) {
 	return
 }
-func (self implementation) ImportPostParse(state GLTFState.Instance) (_ error)   { return }
-func (self implementation) ImportPreGenerate(state GLTFState.Instance) (_ error) { return }
+func (self implementation) ImportPostParse(state GLTFState.Instance) (_ error) {
+	return
+}
+func (self implementation) ImportPreGenerate(state GLTFState.Instance) (_ error) {
+	return
+}
 func (self implementation) GenerateSceneNode(state GLTFState.Instance, gltf_node GLTFNode.Instance, scene_parent Node.Instance) (_ Node3D.Instance) {
 	return
 }
 func (self implementation) ImportNode(state GLTFState.Instance, gltf_node GLTFNode.Instance, json map[string]any, node Node.Instance) (_ error) {
 	return
 }
-func (self implementation) ImportPost(state GLTFState.Instance, root Node.Instance) (_ error) { return }
+func (self implementation) ImportPost(state GLTFState.Instance, root Node.Instance) (_ error) {
+	return
+}
 func (self implementation) ExportPreflight(state GLTFState.Instance, root Node.Instance) (_ error) {
 	return
 }
 func (self implementation) ConvertSceneNode(state GLTFState.Instance, gltf_node GLTFNode.Instance, scene_node Node.Instance) {
-	return
 }
 func (self implementation) ExportPostConvert(state GLTFState.Instance, root Node.Instance) (_ error) {
 	return
 }
-func (self implementation) ExportPreserialize(state GLTFState.Instance) (_ error) { return }
+func (self implementation) ExportPreserialize(state GLTFState.Instance) (_ error) {
+	return
+}
 func (self implementation) ExportObjectModelProperty(state GLTFState.Instance, node_path string, godot_node Node.Instance, gltf_node_index int, target_object Object.Instance, target_depth int) (_ GLTFObjectModelProperty.Instance) {
 	return
 }
-func (self implementation) GetSaveableImageFormats() (_ []string) { return }
+func (self implementation) GetSaveableImageFormats() (_ []string) {
+	return
+}
 func (self implementation) SerializeImageToBytes(state GLTFState.Instance, image Image.Instance, image_dict map[string][]uint8, image_format string, lossy_quality Float.X) (_ []byte) {
 	return
 }
@@ -373,7 +386,9 @@ func (self implementation) SerializeTextureJson(state GLTFState.Instance, textur
 func (self implementation) ExportNode(state GLTFState.Instance, gltf_node GLTFNode.Instance, json map[string]any, node Node.Instance) (_ error) {
 	return
 }
-func (self implementation) ExportPost(state GLTFState.Instance) (_ error) { return }
+func (self implementation) ExportPost(state GLTFState.Instance) (_ error) {
+	return
+}
 
 /*
 Part of the import process. This method is run first, before all other parts of the import process.

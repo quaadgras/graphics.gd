@@ -176,16 +176,36 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) InstantiatePlayback() (_ AudioStreamPlayback.Instance) { return }
-func (self implementation) GetStreamName() (_ string)                             { return }
-func (self implementation) GetLength() (_ Float.X)                                { return }
-func (self implementation) IsMonophonic() (_ bool)                                { return }
-func (self implementation) GetBpm() (_ Float.X)                                   { return }
-func (self implementation) GetBeatCount() (_ int)                                 { return }
-func (self implementation) GetTags() (_ map[string]any)                           { return }
-func (self implementation) GetParameterList() (_ [][]struct{})                    { return }
-func (self implementation) HasLoop() (_ bool)                                     { return }
-func (self implementation) GetBarBeats() (_ int)                                  { return }
+func (self implementation) InstantiatePlayback() (_ AudioStreamPlayback.Instance) {
+	return
+}
+func (self implementation) GetStreamName() (_ string) {
+	return
+}
+func (self implementation) GetLength() (_ Float.X) {
+	return
+}
+func (self implementation) IsMonophonic() (_ bool) {
+	return
+}
+func (self implementation) GetBpm() (_ Float.X) {
+	return
+}
+func (self implementation) GetBeatCount() (_ int) {
+	return
+}
+func (self implementation) GetTags() (_ map[string]any) {
+	return
+}
+func (self implementation) GetParameterList() (_ [][]struct{}) {
+	return
+}
+func (self implementation) HasLoop() (_ bool) {
+	return
+}
+func (self implementation) GetBarBeats() (_ int) {
+	return
+}
 
 /*
 Override this method to customize the returned value of [InstantiatePlayback]. Should return a new [AudioStreamPlayback] created when the stream is played (such as by an [AudioStreamPlayer]).

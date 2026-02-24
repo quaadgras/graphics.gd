@@ -181,60 +181,138 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetTotalGravity() (_ Vector3.XYZ)               { return }
-func (self implementation) GetTotalLinearDamp() (_ Float.X)                { return }
-func (self implementation) GetTotalAngularDamp() (_ Float.X)               { return }
-func (self implementation) GetCenterOfMass() (_ Vector3.XYZ)               { return }
-func (self implementation) GetCenterOfMassLocal() (_ Vector3.XYZ)          { return }
-func (self implementation) GetPrincipalInertiaAxes() (_ Basis.XYZ)         { return }
-func (self implementation) GetInverseMass() (_ Float.X)                    { return }
-func (self implementation) GetInverseInertia() (_ Vector3.XYZ)             { return }
-func (self implementation) GetInverseInertiaTensor() (_ Basis.XYZ)         { return }
-func (self implementation) SetLinearVelocity(velocity Vector3.XYZ)         { return }
-func (self implementation) GetLinearVelocity() (_ Vector3.XYZ)             { return }
-func (self implementation) SetAngularVelocity(velocity Vector3.XYZ)        { return }
-func (self implementation) GetAngularVelocity() (_ Vector3.XYZ)            { return }
-func (self implementation) SetTransform(transform Transform3D.BasisOrigin) { return }
-func (self implementation) GetTransform() (_ Transform3D.BasisOrigin)      { return }
+func (self implementation) GetTotalGravity() (_ Vector3.XYZ) {
+	return
+}
+func (self implementation) GetTotalLinearDamp() (_ Float.X) {
+	return
+}
+func (self implementation) GetTotalAngularDamp() (_ Float.X) {
+	return
+}
+func (self implementation) GetCenterOfMass() (_ Vector3.XYZ) {
+	return
+}
+func (self implementation) GetCenterOfMassLocal() (_ Vector3.XYZ) {
+	return
+}
+func (self implementation) GetPrincipalInertiaAxes() (_ Basis.XYZ) {
+	return
+}
+func (self implementation) GetInverseMass() (_ Float.X) {
+	return
+}
+func (self implementation) GetInverseInertia() (_ Vector3.XYZ) {
+	return
+}
+func (self implementation) GetInverseInertiaTensor() (_ Basis.XYZ) {
+	return
+}
+func (self implementation) SetLinearVelocity(velocity Vector3.XYZ) {
+}
+func (self implementation) GetLinearVelocity() (_ Vector3.XYZ) {
+	return
+}
+func (self implementation) SetAngularVelocity(velocity Vector3.XYZ) {
+}
+func (self implementation) GetAngularVelocity() (_ Vector3.XYZ) {
+	return
+}
+func (self implementation) SetTransform(transform Transform3D.BasisOrigin) {
+}
+func (self implementation) GetTransform() (_ Transform3D.BasisOrigin) {
+	return
+}
 func (self implementation) GetVelocityAtLocalPosition(local_position Vector3.XYZ) (_ Vector3.XYZ) {
 	return
 }
-func (self implementation) ApplyCentralImpulse(impulse Vector3.XYZ)                           { return }
-func (self implementation) ApplyImpulse(impulse Vector3.XYZ, position Vector3.XYZ)            { return }
-func (self implementation) ApplyTorqueImpulse(impulse Vector3.XYZ)                            { return }
-func (self implementation) ApplyCentralForce(force Vector3.XYZ)                               { return }
-func (self implementation) ApplyForce(force Vector3.XYZ, position Vector3.XYZ)                { return }
-func (self implementation) ApplyTorque(torque Vector3.XYZ)                                    { return }
-func (self implementation) AddConstantCentralForce(force Vector3.XYZ)                         { return }
-func (self implementation) AddConstantForce(force Vector3.XYZ, position Vector3.XYZ)          { return }
-func (self implementation) AddConstantTorque(torque Vector3.XYZ)                              { return }
-func (self implementation) SetConstantForce(force Vector3.XYZ)                                { return }
-func (self implementation) GetConstantForce() (_ Vector3.XYZ)                                 { return }
-func (self implementation) SetConstantTorque(torque Vector3.XYZ)                              { return }
-func (self implementation) GetConstantTorque() (_ Vector3.XYZ)                                { return }
-func (self implementation) SetSleepState(enabled bool)                                        { return }
-func (self implementation) IsSleeping() (_ bool)                                              { return }
-func (self implementation) SetCollisionLayer(layer int)                                       { return }
-func (self implementation) GetCollisionLayer() (_ int)                                        { return }
-func (self implementation) SetCollisionMask(mask int)                                         { return }
-func (self implementation) GetCollisionMask() (_ int)                                         { return }
-func (self implementation) GetContactCount() (_ int)                                          { return }
-func (self implementation) GetContactLocalPosition(contact_idx int) (_ Vector3.XYZ)           { return }
-func (self implementation) GetContactLocalNormal(contact_idx int) (_ Vector3.XYZ)             { return }
-func (self implementation) GetContactImpulse(contact_idx int) (_ Vector3.XYZ)                 { return }
-func (self implementation) GetContactLocalShape(contact_idx int) (_ int)                      { return }
-func (self implementation) GetContactLocalVelocityAtPosition(contact_idx int) (_ Vector3.XYZ) { return }
-func (self implementation) GetContactCollider(contact_idx int) (_ RID.Body3D)                 { return }
-func (self implementation) GetContactColliderPosition(contact_idx int) (_ Vector3.XYZ)        { return }
-func (self implementation) GetContactColliderId(contact_idx int) (_ int)                      { return }
-func (self implementation) GetContactColliderObject(contact_idx int) (_ Object.Instance)      { return }
-func (self implementation) GetContactColliderShape(contact_idx int) (_ int)                   { return }
+func (self implementation) ApplyCentralImpulse(impulse Vector3.XYZ) {
+}
+func (self implementation) ApplyImpulse(impulse Vector3.XYZ, position Vector3.XYZ) {
+}
+func (self implementation) ApplyTorqueImpulse(impulse Vector3.XYZ) {
+}
+func (self implementation) ApplyCentralForce(force Vector3.XYZ) {
+}
+func (self implementation) ApplyForce(force Vector3.XYZ, position Vector3.XYZ) {
+}
+func (self implementation) ApplyTorque(torque Vector3.XYZ) {
+}
+func (self implementation) AddConstantCentralForce(force Vector3.XYZ) {
+}
+func (self implementation) AddConstantForce(force Vector3.XYZ, position Vector3.XYZ) {
+}
+func (self implementation) AddConstantTorque(torque Vector3.XYZ) {
+}
+func (self implementation) SetConstantForce(force Vector3.XYZ) {
+}
+func (self implementation) GetConstantForce() (_ Vector3.XYZ) {
+	return
+}
+func (self implementation) SetConstantTorque(torque Vector3.XYZ) {
+}
+func (self implementation) GetConstantTorque() (_ Vector3.XYZ) {
+	return
+}
+func (self implementation) SetSleepState(enabled bool) {
+}
+func (self implementation) IsSleeping() (_ bool) {
+	return
+}
+func (self implementation) SetCollisionLayer(layer int) {
+}
+func (self implementation) GetCollisionLayer() (_ int) {
+	return
+}
+func (self implementation) SetCollisionMask(mask int) {
+}
+func (self implementation) GetCollisionMask() (_ int) {
+	return
+}
+func (self implementation) GetContactCount() (_ int) {
+	return
+}
+func (self implementation) GetContactLocalPosition(contact_idx int) (_ Vector3.XYZ) {
+	return
+}
+func (self implementation) GetContactLocalNormal(contact_idx int) (_ Vector3.XYZ) {
+	return
+}
+func (self implementation) GetContactImpulse(contact_idx int) (_ Vector3.XYZ) {
+	return
+}
+func (self implementation) GetContactLocalShape(contact_idx int) (_ int) {
+	return
+}
+func (self implementation) GetContactLocalVelocityAtPosition(contact_idx int) (_ Vector3.XYZ) {
+	return
+}
+func (self implementation) GetContactCollider(contact_idx int) (_ RID.Body3D) {
+	return
+}
+func (self implementation) GetContactColliderPosition(contact_idx int) (_ Vector3.XYZ) {
+	return
+}
+func (self implementation) GetContactColliderId(contact_idx int) (_ int) {
+	return
+}
+func (self implementation) GetContactColliderObject(contact_idx int) (_ Object.Instance) {
+	return
+}
+func (self implementation) GetContactColliderShape(contact_idx int) (_ int) {
+	return
+}
 func (self implementation) GetContactColliderVelocityAtPosition(contact_idx int) (_ Vector3.XYZ) {
 	return
 }
-func (self implementation) GetStep() (_ Float.X)                                  { return }
-func (self implementation) IntegrateForces()                                      { return }
-func (self implementation) GetSpaceState() (_ PhysicsDirectSpaceState3D.Instance) { return }
+func (self implementation) GetStep() (_ Float.X) {
+	return
+}
+func (self implementation) IntegrateForces() {
+}
+func (self implementation) GetSpaceState() (_ PhysicsDirectSpaceState3D.Instance) {
+	return
+}
 func (Instance) _get_total_gravity(impl func(ptr gdclass.Receiver) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())

@@ -244,29 +244,69 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetName() (_ string)                                         { return }
-func (self implementation) GetDescription() (_ string)                                  { return }
-func (self implementation) GetCategory() (_ string)                                     { return }
-func (self implementation) GetReturnIconType() (_ VisualShaderNode.PortType)            { return }
-func (self implementation) GetInputPortCount() (_ int)                                  { return }
-func (self implementation) GetInputPortType(port int) (_ VisualShaderNode.PortType)     { return }
-func (self implementation) GetInputPortName(port int) (_ string)                        { return }
-func (self implementation) GetInputPortDefaultValue(port int) (_ any)                   { return }
-func (self implementation) GetDefaultInputPort(atype VisualShaderNode.PortType) (_ int) { return }
-func (self implementation) GetOutputPortCount() (_ int)                                 { return }
-func (self implementation) GetOutputPortType(port int) (_ VisualShaderNode.PortType)    { return }
-func (self implementation) GetOutputPortName(port int) (_ string)                       { return }
-func (self implementation) GetPropertyCount() (_ int)                                   { return }
-func (self implementation) GetPropertyName(index int) (_ string)                        { return }
-func (self implementation) GetPropertyDefaultIndex(index int) (_ int)                   { return }
-func (self implementation) GetPropertyOptions(index int) (_ []string)                   { return }
+func (self implementation) GetName() (_ string) {
+	return
+}
+func (self implementation) GetDescription() (_ string) {
+	return
+}
+func (self implementation) GetCategory() (_ string) {
+	return
+}
+func (self implementation) GetReturnIconType() (_ VisualShaderNode.PortType) {
+	return
+}
+func (self implementation) GetInputPortCount() (_ int) {
+	return
+}
+func (self implementation) GetInputPortType(port int) (_ VisualShaderNode.PortType) {
+	return
+}
+func (self implementation) GetInputPortName(port int) (_ string) {
+	return
+}
+func (self implementation) GetInputPortDefaultValue(port int) (_ any) {
+	return
+}
+func (self implementation) GetDefaultInputPort(atype VisualShaderNode.PortType) (_ int) {
+	return
+}
+func (self implementation) GetOutputPortCount() (_ int) {
+	return
+}
+func (self implementation) GetOutputPortType(port int) (_ VisualShaderNode.PortType) {
+	return
+}
+func (self implementation) GetOutputPortName(port int) (_ string) {
+	return
+}
+func (self implementation) GetPropertyCount() (_ int) {
+	return
+}
+func (self implementation) GetPropertyName(index int) (_ string) {
+	return
+}
+func (self implementation) GetPropertyDefaultIndex(index int) (_ int) {
+	return
+}
+func (self implementation) GetPropertyOptions(index int) (_ []string) {
+	return
+}
 func (self implementation) GetCode(input_vars []string, output_vars []string, mode Shader.Mode, atype VisualShader.Type) (_ string) {
 	return
 }
-func (self implementation) GetFuncCode(mode Shader.Mode, atype VisualShader.Type) (_ string) { return }
-func (self implementation) GetGlobalCode(mode Shader.Mode) (_ string)                        { return }
-func (self implementation) IsHighend() (_ bool)                                              { return }
-func (self implementation) IsAvailable(mode Shader.Mode, atype VisualShader.Type) (_ bool)   { return }
+func (self implementation) GetFuncCode(mode Shader.Mode, atype VisualShader.Type) (_ string) {
+	return
+}
+func (self implementation) GetGlobalCode(mode Shader.Mode) (_ string) {
+	return
+}
+func (self implementation) IsHighend() (_ bool) {
+	return
+}
+func (self implementation) IsAvailable(mode Shader.Mode, atype VisualShader.Type) (_ bool) {
+	return
+}
 
 /*
 Override this method to define the name of the associated custom node in the Visual Shader Editor's members dialog and graph.

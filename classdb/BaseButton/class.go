@@ -163,8 +163,10 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Pressed()                { return }
-func (self implementation) Toggled(toggled_on bool) { return }
+func (self implementation) Pressed() {
+}
+func (self implementation) Toggled(toggled_on bool) {
+}
 
 /*
 Called when the button is pressed. If you need to know the button's pressed state (and [ToggleMode] is active), use [Toggled] instead.

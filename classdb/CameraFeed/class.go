@@ -155,8 +155,11 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) ActivateFeed() (_ bool) { return }
-func (self implementation) DeactivateFeed()        { return }
+func (self implementation) ActivateFeed() (_ bool) {
+	return
+}
+func (self implementation) DeactivateFeed() {
+}
 
 /*
 Called when the camera feed is activated.

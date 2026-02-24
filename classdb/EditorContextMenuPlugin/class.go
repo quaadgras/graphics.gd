@@ -145,7 +145,8 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) PopupMenu(paths []string) { return }
+func (self implementation) PopupMenu(paths []string) {
+}
 
 /*
 Called when creating a context menu, custom options can be added by using the [AddContextMenuItem] or [AddContextMenuItemFromShortcut] functions. 'paths' contains currently selected paths (depending on menu), which can be used to conditionally add options.

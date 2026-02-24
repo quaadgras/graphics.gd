@@ -152,11 +152,12 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Execute(delta Float.X) { return }
-func (self implementation) SetupModification(modification_stack SkeletonModificationStack2D.Instance) {
-	return
+func (self implementation) Execute(delta Float.X) {
 }
-func (self implementation) DrawEditorGizmo() { return }
+func (self implementation) SetupModification(modification_stack SkeletonModificationStack2D.Instance) {
+}
+func (self implementation) DrawEditorGizmo() {
+}
 
 /*
 Executes the given modification. This is where the modification performs whatever function it is designed to do.

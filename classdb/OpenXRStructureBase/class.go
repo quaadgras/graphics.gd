@@ -128,7 +128,9 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetHeader(next int) (_ int) { return }
+func (self implementation) GetHeader(next int) (_ int) {
+	return
+}
 func (Instance) _get_header(impl func(ptr gdclass.Receiver, next int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var next = gd.UnsafeGet[int64](p_args, 0)

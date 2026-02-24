@@ -195,10 +195,15 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) SetupLocalToScene()       { return }
-func (self implementation) GetRid() (_ ID)           { return }
-func (self implementation) ResetState()              { return }
-func (self implementation) SetPathCache(path string) { return }
+func (self implementation) SetupLocalToScene() {
+}
+func (self implementation) GetRid() (_ ID) {
+	return
+}
+func (self implementation) ResetState() {
+}
+func (self implementation) SetPathCache(path string) {
+}
 
 /*
 Override this method to customize the newly duplicated resource created from [PackedScene.Instantiate], if the original's [ResourceLocalToScene] is set to true.

@@ -150,7 +150,9 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) CreateMeshArray() (_ [][]any) { return }
+func (self implementation) CreateMeshArray() (_ [][]any) {
+	return
+}
 
 /*
 Override this method to customize how this primitive mesh should be generated. Should return an slice where each element is another Array of values required for the mesh (see the [Mesh.ArrayType] constants).

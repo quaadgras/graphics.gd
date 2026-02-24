@@ -329,28 +329,63 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) WorldBoundaryShapeCreate() (_ RID.Shape3D)                    { return }
-func (self implementation) SeparationRayShapeCreate() (_ RID.Shape3D)                    { return }
-func (self implementation) SphereShapeCreate() (_ RID.Shape3D)                           { return }
-func (self implementation) BoxShapeCreate() (_ RID.Shape3D)                              { return }
-func (self implementation) CapsuleShapeCreate() (_ RID.Shape3D)                          { return }
-func (self implementation) CylinderShapeCreate() (_ RID.Shape3D)                         { return }
-func (self implementation) ConvexPolygonShapeCreate() (_ RID.Shape3D)                    { return }
-func (self implementation) ConcavePolygonShapeCreate() (_ RID.Shape3D)                   { return }
-func (self implementation) HeightmapShapeCreate() (_ RID.Shape3D)                        { return }
-func (self implementation) CustomShapeCreate() (_ RID.Shape3D)                           { return }
-func (self implementation) ShapeSetData(shape RID.Shape3D, data any)                     { return }
-func (self implementation) ShapeSetCustomSolverBias(shape RID.Shape3D, bias Float.X)     { return }
-func (self implementation) ShapeSetMargin(shape RID.Shape3D, margin Float.X)             { return }
-func (self implementation) ShapeGetMargin(shape RID.Shape3D) (_ Float.X)                 { return }
-func (self implementation) ShapeGetType(shape RID.Shape3D) (_ PhysicsServer3D.ShapeType) { return }
-func (self implementation) ShapeGetData(shape RID.Shape3D) (_ any)                       { return }
-func (self implementation) ShapeGetCustomSolverBias(shape RID.Shape3D) (_ Float.X)       { return }
-func (self implementation) SpaceCreate() (_ RID.Space3D)                                 { return }
-func (self implementation) SpaceSetActive(space RID.Space3D, active bool)                { return }
-func (self implementation) SpaceIsActive(space RID.Space3D) (_ bool)                     { return }
-func (self implementation) SpaceSetParam(space RID.Space3D, param PhysicsServer3D.SpaceParameter, value Float.X) {
+func (self implementation) WorldBoundaryShapeCreate() (_ RID.Shape3D) {
 	return
+}
+func (self implementation) SeparationRayShapeCreate() (_ RID.Shape3D) {
+	return
+}
+func (self implementation) SphereShapeCreate() (_ RID.Shape3D) {
+	return
+}
+func (self implementation) BoxShapeCreate() (_ RID.Shape3D) {
+	return
+}
+func (self implementation) CapsuleShapeCreate() (_ RID.Shape3D) {
+	return
+}
+func (self implementation) CylinderShapeCreate() (_ RID.Shape3D) {
+	return
+}
+func (self implementation) ConvexPolygonShapeCreate() (_ RID.Shape3D) {
+	return
+}
+func (self implementation) ConcavePolygonShapeCreate() (_ RID.Shape3D) {
+	return
+}
+func (self implementation) HeightmapShapeCreate() (_ RID.Shape3D) {
+	return
+}
+func (self implementation) CustomShapeCreate() (_ RID.Shape3D) {
+	return
+}
+func (self implementation) ShapeSetData(shape RID.Shape3D, data any) {
+}
+func (self implementation) ShapeSetCustomSolverBias(shape RID.Shape3D, bias Float.X) {
+}
+func (self implementation) ShapeSetMargin(shape RID.Shape3D, margin Float.X) {
+}
+func (self implementation) ShapeGetMargin(shape RID.Shape3D) (_ Float.X) {
+	return
+}
+func (self implementation) ShapeGetType(shape RID.Shape3D) (_ PhysicsServer3D.ShapeType) {
+	return
+}
+func (self implementation) ShapeGetData(shape RID.Shape3D) (_ any) {
+	return
+}
+func (self implementation) ShapeGetCustomSolverBias(shape RID.Shape3D) (_ Float.X) {
+	return
+}
+func (self implementation) SpaceCreate() (_ RID.Space3D) {
+	return
+}
+func (self implementation) SpaceSetActive(space RID.Space3D, active bool) {
+}
+func (self implementation) SpaceIsActive(space RID.Space3D) (_ bool) {
+	return
+}
+func (self implementation) SpaceSetParam(space RID.Space3D, param PhysicsServer3D.SpaceParameter, value Float.X) {
 }
 func (self implementation) SpaceGetParam(space RID.Space3D, param PhysicsServer3D.SpaceParameter) (_ Float.X) {
 	return
@@ -358,317 +393,414 @@ func (self implementation) SpaceGetParam(space RID.Space3D, param PhysicsServer3
 func (self implementation) SpaceGetDirectState(space RID.Space3D) (_ PhysicsDirectSpaceState3D.Instance) {
 	return
 }
-func (self implementation) SpaceSetDebugContacts(space RID.Space3D, max_contacts int) { return }
-func (self implementation) SpaceGetContacts(space RID.Space3D) (_ []Vector3.XYZ)      { return }
-func (self implementation) SpaceGetContactCount(space RID.Space3D) (_ int)            { return }
-func (self implementation) AreaCreate() (_ RID.Area3D)                                { return }
-func (self implementation) AreaSetSpace(area RID.Area3D, space RID.Space3D)           { return }
-func (self implementation) AreaGetSpace(area RID.Area3D) (_ RID.Space3D)              { return }
-func (self implementation) AreaAddShape(area RID.Area3D, shape RID.Shape3D, transform Transform3D.BasisOrigin, disabled bool) {
+func (self implementation) SpaceSetDebugContacts(space RID.Space3D, max_contacts int) {
+}
+func (self implementation) SpaceGetContacts(space RID.Space3D) (_ []Vector3.XYZ) {
 	return
 }
-func (self implementation) AreaSetShape(area RID.Area3D, shape_idx int, shape RID.Shape3D) { return }
-func (self implementation) AreaSetShapeTransform(area RID.Area3D, shape_idx int, transform Transform3D.BasisOrigin) {
+func (self implementation) SpaceGetContactCount(space RID.Space3D) (_ int) {
 	return
+}
+func (self implementation) AreaCreate() (_ RID.Area3D) {
+	return
+}
+func (self implementation) AreaSetSpace(area RID.Area3D, space RID.Space3D) {
+}
+func (self implementation) AreaGetSpace(area RID.Area3D) (_ RID.Space3D) {
+	return
+}
+func (self implementation) AreaAddShape(area RID.Area3D, shape RID.Shape3D, transform Transform3D.BasisOrigin, disabled bool) {
+}
+func (self implementation) AreaSetShape(area RID.Area3D, shape_idx int, shape RID.Shape3D) {
+}
+func (self implementation) AreaSetShapeTransform(area RID.Area3D, shape_idx int, transform Transform3D.BasisOrigin) {
 }
 func (self implementation) AreaSetShapeDisabled(area RID.Area3D, shape_idx int, disabled bool) {
+}
+func (self implementation) AreaGetShapeCount(area RID.Area3D) (_ int) {
 	return
 }
-func (self implementation) AreaGetShapeCount(area RID.Area3D) (_ int)                   { return }
-func (self implementation) AreaGetShape(area RID.Area3D, shape_idx int) (_ RID.Shape3D) { return }
+func (self implementation) AreaGetShape(area RID.Area3D, shape_idx int) (_ RID.Shape3D) {
+	return
+}
 func (self implementation) AreaGetShapeTransform(area RID.Area3D, shape_idx int) (_ Transform3D.BasisOrigin) {
 	return
 }
-func (self implementation) AreaRemoveShape(area RID.Area3D, shape_idx int)     { return }
-func (self implementation) AreaClearShapes(area RID.Area3D)                    { return }
-func (self implementation) AreaAttachObjectInstanceId(area RID.Area3D, id int) { return }
-func (self implementation) AreaGetObjectInstanceId(area RID.Area3D) (_ int)    { return }
-func (self implementation) AreaSetParam(area RID.Area3D, param PhysicsServer3D.AreaParameter, value any) {
+func (self implementation) AreaRemoveShape(area RID.Area3D, shape_idx int) {
+}
+func (self implementation) AreaClearShapes(area RID.Area3D) {
+}
+func (self implementation) AreaAttachObjectInstanceId(area RID.Area3D, id int) {
+}
+func (self implementation) AreaGetObjectInstanceId(area RID.Area3D) (_ int) {
 	return
 }
+func (self implementation) AreaSetParam(area RID.Area3D, param PhysicsServer3D.AreaParameter, value any) {
+}
 func (self implementation) AreaSetTransform(area RID.Area3D, transform Transform3D.BasisOrigin) {
-	return
 }
 func (self implementation) AreaGetParam(area RID.Area3D, param PhysicsServer3D.AreaParameter) (_ any) {
 	return
 }
-func (self implementation) AreaGetTransform(area RID.Area3D) (_ Transform3D.BasisOrigin) { return }
-func (self implementation) AreaSetCollisionLayer(area RID.Area3D, layer int)             { return }
-func (self implementation) AreaGetCollisionLayer(area RID.Area3D) (_ int)                { return }
-func (self implementation) AreaSetCollisionMask(area RID.Area3D, mask int)               { return }
-func (self implementation) AreaGetCollisionMask(area RID.Area3D) (_ int)                 { return }
-func (self implementation) AreaSetMonitorable(area RID.Area3D, monitorable bool)         { return }
-func (self implementation) AreaSetRayPickable(area RID.Area3D, enable bool)              { return }
-func (self implementation) AreaSetMonitorCallback(area RID.Area3D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) {
+func (self implementation) AreaGetTransform(area RID.Area3D) (_ Transform3D.BasisOrigin) {
 	return
+}
+func (self implementation) AreaSetCollisionLayer(area RID.Area3D, layer int) {
+}
+func (self implementation) AreaGetCollisionLayer(area RID.Area3D) (_ int) {
+	return
+}
+func (self implementation) AreaSetCollisionMask(area RID.Area3D, mask int) {
+}
+func (self implementation) AreaGetCollisionMask(area RID.Area3D) (_ int) {
+	return
+}
+func (self implementation) AreaSetMonitorable(area RID.Area3D, monitorable bool) {
+}
+func (self implementation) AreaSetRayPickable(area RID.Area3D, enable bool) {
+}
+func (self implementation) AreaSetMonitorCallback(area RID.Area3D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) {
 }
 func (self implementation) AreaSetAreaMonitorCallback(area RID.Area3D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) {
+}
+func (self implementation) BodyCreate() (_ RID.Body3D) {
 	return
 }
-func (self implementation) BodyCreate() (_ RID.Body3D)                                 { return }
-func (self implementation) BodySetSpace(body RID.Body3D, space RID.Space3D)            { return }
-func (self implementation) BodyGetSpace(body RID.Body3D) (_ RID.Space3D)               { return }
-func (self implementation) BodySetMode(body RID.Body3D, mode PhysicsServer3D.BodyMode) { return }
-func (self implementation) BodyGetMode(body RID.Body3D) (_ PhysicsServer3D.BodyMode)   { return }
+func (self implementation) BodySetSpace(body RID.Body3D, space RID.Space3D) {
+}
+func (self implementation) BodyGetSpace(body RID.Body3D) (_ RID.Space3D) {
+	return
+}
+func (self implementation) BodySetMode(body RID.Body3D, mode PhysicsServer3D.BodyMode) {
+}
+func (self implementation) BodyGetMode(body RID.Body3D) (_ PhysicsServer3D.BodyMode) {
+	return
+}
 func (self implementation) BodyAddShape(body RID.Body3D, shape RID.Shape3D, transform Transform3D.BasisOrigin, disabled bool) {
-	return
 }
-func (self implementation) BodySetShape(body RID.Body3D, shape_idx int, shape RID.Shape3D) { return }
+func (self implementation) BodySetShape(body RID.Body3D, shape_idx int, shape RID.Shape3D) {
+}
 func (self implementation) BodySetShapeTransform(body RID.Body3D, shape_idx int, transform Transform3D.BasisOrigin) {
-	return
 }
 func (self implementation) BodySetShapeDisabled(body RID.Body3D, shape_idx int, disabled bool) {
+}
+func (self implementation) BodyGetShapeCount(body RID.Body3D) (_ int) {
 	return
 }
-func (self implementation) BodyGetShapeCount(body RID.Body3D) (_ int)                   { return }
-func (self implementation) BodyGetShape(body RID.Body3D, shape_idx int) (_ RID.Shape3D) { return }
+func (self implementation) BodyGetShape(body RID.Body3D, shape_idx int) (_ RID.Shape3D) {
+	return
+}
 func (self implementation) BodyGetShapeTransform(body RID.Body3D, shape_idx int) (_ Transform3D.BasisOrigin) {
 	return
 }
-func (self implementation) BodyRemoveShape(body RID.Body3D, shape_idx int)     { return }
-func (self implementation) BodyClearShapes(body RID.Body3D)                    { return }
-func (self implementation) BodyAttachObjectInstanceId(body RID.Body3D, id int) { return }
-func (self implementation) BodyGetObjectInstanceId(body RID.Body3D) (_ int)    { return }
-func (self implementation) BodySetEnableContinuousCollisionDetection(body RID.Body3D, enable bool) {
+func (self implementation) BodyRemoveShape(body RID.Body3D, shape_idx int) {
+}
+func (self implementation) BodyClearShapes(body RID.Body3D) {
+}
+func (self implementation) BodyAttachObjectInstanceId(body RID.Body3D, id int) {
+}
+func (self implementation) BodyGetObjectInstanceId(body RID.Body3D) (_ int) {
 	return
+}
+func (self implementation) BodySetEnableContinuousCollisionDetection(body RID.Body3D, enable bool) {
 }
 func (self implementation) BodyIsContinuousCollisionDetectionEnabled(body RID.Body3D) (_ bool) {
 	return
 }
-func (self implementation) BodySetCollisionLayer(body RID.Body3D, layer int)           { return }
-func (self implementation) BodyGetCollisionLayer(body RID.Body3D) (_ int)              { return }
-func (self implementation) BodySetCollisionMask(body RID.Body3D, mask int)             { return }
-func (self implementation) BodyGetCollisionMask(body RID.Body3D) (_ int)               { return }
-func (self implementation) BodySetCollisionPriority(body RID.Body3D, priority Float.X) { return }
-func (self implementation) BodyGetCollisionPriority(body RID.Body3D) (_ Float.X)       { return }
-func (self implementation) BodySetUserFlags(body RID.Body3D, flags int)                { return }
-func (self implementation) BodyGetUserFlags(body RID.Body3D) (_ int)                   { return }
-func (self implementation) BodySetParam(body RID.Body3D, param PhysicsServer3D.BodyParameter, value any) {
+func (self implementation) BodySetCollisionLayer(body RID.Body3D, layer int) {
+}
+func (self implementation) BodyGetCollisionLayer(body RID.Body3D) (_ int) {
 	return
+}
+func (self implementation) BodySetCollisionMask(body RID.Body3D, mask int) {
+}
+func (self implementation) BodyGetCollisionMask(body RID.Body3D) (_ int) {
+	return
+}
+func (self implementation) BodySetCollisionPriority(body RID.Body3D, priority Float.X) {
+}
+func (self implementation) BodyGetCollisionPriority(body RID.Body3D) (_ Float.X) {
+	return
+}
+func (self implementation) BodySetUserFlags(body RID.Body3D, flags int) {
+}
+func (self implementation) BodyGetUserFlags(body RID.Body3D) (_ int) {
+	return
+}
+func (self implementation) BodySetParam(body RID.Body3D, param PhysicsServer3D.BodyParameter, value any) {
 }
 func (self implementation) BodyGetParam(body RID.Body3D, param PhysicsServer3D.BodyParameter) (_ any) {
 	return
 }
-func (self implementation) BodyResetMassProperties(body RID.Body3D) { return }
+func (self implementation) BodyResetMassProperties(body RID.Body3D) {
+}
 func (self implementation) BodySetState(body RID.Body3D, state PhysicsServer3D.BodyState, value any) {
-	return
 }
 func (self implementation) BodyGetState(body RID.Body3D, state PhysicsServer3D.BodyState) (_ any) {
 	return
 }
-func (self implementation) BodyApplyCentralImpulse(body RID.Body3D, impulse Vector3.XYZ) { return }
+func (self implementation) BodyApplyCentralImpulse(body RID.Body3D, impulse Vector3.XYZ) {
+}
 func (self implementation) BodyApplyImpulse(body RID.Body3D, impulse Vector3.XYZ, position Vector3.XYZ) {
-	return
 }
-func (self implementation) BodyApplyTorqueImpulse(body RID.Body3D, impulse Vector3.XYZ) { return }
-func (self implementation) BodyApplyCentralForce(body RID.Body3D, force Vector3.XYZ)    { return }
+func (self implementation) BodyApplyTorqueImpulse(body RID.Body3D, impulse Vector3.XYZ) {
+}
+func (self implementation) BodyApplyCentralForce(body RID.Body3D, force Vector3.XYZ) {
+}
 func (self implementation) BodyApplyForce(body RID.Body3D, force Vector3.XYZ, position Vector3.XYZ) {
-	return
 }
-func (self implementation) BodyApplyTorque(body RID.Body3D, torque Vector3.XYZ)            { return }
-func (self implementation) BodyAddConstantCentralForce(body RID.Body3D, force Vector3.XYZ) { return }
+func (self implementation) BodyApplyTorque(body RID.Body3D, torque Vector3.XYZ) {
+}
+func (self implementation) BodyAddConstantCentralForce(body RID.Body3D, force Vector3.XYZ) {
+}
 func (self implementation) BodyAddConstantForce(body RID.Body3D, force Vector3.XYZ, position Vector3.XYZ) {
+}
+func (self implementation) BodyAddConstantTorque(body RID.Body3D, torque Vector3.XYZ) {
+}
+func (self implementation) BodySetConstantForce(body RID.Body3D, force Vector3.XYZ) {
+}
+func (self implementation) BodyGetConstantForce(body RID.Body3D) (_ Vector3.XYZ) {
 	return
 }
-func (self implementation) BodyAddConstantTorque(body RID.Body3D, torque Vector3.XYZ)      { return }
-func (self implementation) BodySetConstantForce(body RID.Body3D, force Vector3.XYZ)        { return }
-func (self implementation) BodyGetConstantForce(body RID.Body3D) (_ Vector3.XYZ)           { return }
-func (self implementation) BodySetConstantTorque(body RID.Body3D, torque Vector3.XYZ)      { return }
-func (self implementation) BodyGetConstantTorque(body RID.Body3D) (_ Vector3.XYZ)          { return }
-func (self implementation) BodySetAxisVelocity(body RID.Body3D, axis_velocity Vector3.XYZ) { return }
-func (self implementation) BodySetAxisLock(body RID.Body3D, axis PhysicsServer3D.BodyAxis, lock bool) {
+func (self implementation) BodySetConstantTorque(body RID.Body3D, torque Vector3.XYZ) {
+}
+func (self implementation) BodyGetConstantTorque(body RID.Body3D) (_ Vector3.XYZ) {
 	return
+}
+func (self implementation) BodySetAxisVelocity(body RID.Body3D, axis_velocity Vector3.XYZ) {
+}
+func (self implementation) BodySetAxisLock(body RID.Body3D, axis PhysicsServer3D.BodyAxis, lock bool) {
 }
 func (self implementation) BodyIsAxisLocked(body RID.Body3D, axis PhysicsServer3D.BodyAxis) (_ bool) {
 	return
 }
 func (self implementation) BodyAddCollisionException(body RID.Body3D, excepted_body RID.Body3D) {
-	return
 }
 func (self implementation) BodyRemoveCollisionException(body RID.Body3D, excepted_body RID.Body3D) {
+}
+func (self implementation) BodyGetCollisionExceptions(body RID.Body3D) (_ []RID.Body3D) {
 	return
 }
-func (self implementation) BodyGetCollisionExceptions(body RID.Body3D) (_ []RID.Body3D) { return }
-func (self implementation) BodySetMaxContactsReported(body RID.Body3D, amount int)      { return }
-func (self implementation) BodyGetMaxContactsReported(body RID.Body3D) (_ int)          { return }
+func (self implementation) BodySetMaxContactsReported(body RID.Body3D, amount int) {
+}
+func (self implementation) BodyGetMaxContactsReported(body RID.Body3D) (_ int) {
+	return
+}
 func (self implementation) BodySetContactsReportedDepthThreshold(body RID.Body3D, threshold Float.X) {
+}
+func (self implementation) BodyGetContactsReportedDepthThreshold(body RID.Body3D) (_ Float.X) {
 	return
 }
-func (self implementation) BodyGetContactsReportedDepthThreshold(body RID.Body3D) (_ Float.X) { return }
-func (self implementation) BodySetOmitForceIntegration(body RID.Body3D, enable bool)          { return }
-func (self implementation) BodyIsOmittingForceIntegration(body RID.Body3D) (_ bool)           { return }
-func (self implementation) BodySetStateSyncCallback(body RID.Body3D, callable func(state PhysicsDirectBodyState3D.Instance)) {
+func (self implementation) BodySetOmitForceIntegration(body RID.Body3D, enable bool) {
+}
+func (self implementation) BodyIsOmittingForceIntegration(body RID.Body3D) (_ bool) {
 	return
+}
+func (self implementation) BodySetStateSyncCallback(body RID.Body3D, callable func(state PhysicsDirectBodyState3D.Instance)) {
 }
 func (self implementation) BodySetForceIntegrationCallback(body RID.Body3D, callable func(state PhysicsDirectBodyState3D.Instance, userdata any), userdata any) {
-	return
 }
-func (self implementation) BodySetRayPickable(body RID.Body3D, enable bool) { return }
+func (self implementation) BodySetRayPickable(body RID.Body3D, enable bool) {
+}
 func (self implementation) BodyTestMotion(body RID.Body3D, from Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, max_collisions int, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) (_ bool) {
 	return
 }
 func (self implementation) BodyGetDirectState(body RID.Body3D) (_ PhysicsDirectBodyState3D.Instance) {
 	return
 }
-func (self implementation) SoftBodyCreate() (_ RID.SoftBody3D) { return }
-func (self implementation) SoftBodyUpdateRenderingServer(body RID.SoftBody3D, rendering_server_handler PhysicsServer3DRenderingServerHandler.Instance) {
+func (self implementation) SoftBodyCreate() (_ RID.SoftBody3D) {
 	return
 }
-func (self implementation) SoftBodySetSpace(body RID.SoftBody3D, space RID.Space3D)  { return }
-func (self implementation) SoftBodyGetSpace(body RID.SoftBody3D) (_ RID.Space3D)     { return }
-func (self implementation) SoftBodySetRayPickable(body RID.SoftBody3D, enable bool)  { return }
-func (self implementation) SoftBodySetCollisionLayer(body RID.SoftBody3D, layer int) { return }
-func (self implementation) SoftBodyGetCollisionLayer(body RID.SoftBody3D) (_ int)    { return }
-func (self implementation) SoftBodySetCollisionMask(body RID.SoftBody3D, mask int)   { return }
-func (self implementation) SoftBodyGetCollisionMask(body RID.SoftBody3D) (_ int)     { return }
-func (self implementation) SoftBodyAddCollisionException(body RID.SoftBody3D, body_b RID.Body3D) {
+func (self implementation) SoftBodyUpdateRenderingServer(body RID.SoftBody3D, rendering_server_handler PhysicsServer3DRenderingServerHandler.Instance) {
+}
+func (self implementation) SoftBodySetSpace(body RID.SoftBody3D, space RID.Space3D) {
+}
+func (self implementation) SoftBodyGetSpace(body RID.SoftBody3D) (_ RID.Space3D) {
 	return
+}
+func (self implementation) SoftBodySetRayPickable(body RID.SoftBody3D, enable bool) {
+}
+func (self implementation) SoftBodySetCollisionLayer(body RID.SoftBody3D, layer int) {
+}
+func (self implementation) SoftBodyGetCollisionLayer(body RID.SoftBody3D) (_ int) {
+	return
+}
+func (self implementation) SoftBodySetCollisionMask(body RID.SoftBody3D, mask int) {
+}
+func (self implementation) SoftBodyGetCollisionMask(body RID.SoftBody3D) (_ int) {
+	return
+}
+func (self implementation) SoftBodyAddCollisionException(body RID.SoftBody3D, body_b RID.Body3D) {
 }
 func (self implementation) SoftBodyRemoveCollisionException(body RID.SoftBody3D, body_b RID.Body3D) {
-	return
 }
 func (self implementation) SoftBodyGetCollisionExceptions(body RID.SoftBody3D) (_ []RID.Body3D) {
 	return
 }
 func (self implementation) SoftBodySetState(body RID.SoftBody3D, state PhysicsServer3D.BodyState, v any) {
-	return
 }
 func (self implementation) SoftBodyGetState(body RID.SoftBody3D, state PhysicsServer3D.BodyState) (_ any) {
 	return
 }
 func (self implementation) SoftBodySetTransform(body RID.SoftBody3D, transform Transform3D.BasisOrigin) {
-	return
 }
 func (self implementation) SoftBodySetSimulationPrecision(body RID.SoftBody3D, simulation_precision int) {
+}
+func (self implementation) SoftBodyGetSimulationPrecision(body RID.SoftBody3D) (_ int) {
 	return
 }
-func (self implementation) SoftBodyGetSimulationPrecision(body RID.SoftBody3D) (_ int)   { return }
-func (self implementation) SoftBodySetTotalMass(body RID.SoftBody3D, total_mass Float.X) { return }
-func (self implementation) SoftBodyGetTotalMass(body RID.SoftBody3D) (_ Float.X)         { return }
+func (self implementation) SoftBodySetTotalMass(body RID.SoftBody3D, total_mass Float.X) {
+}
+func (self implementation) SoftBodyGetTotalMass(body RID.SoftBody3D) (_ Float.X) {
+	return
+}
 func (self implementation) SoftBodySetLinearStiffness(body RID.SoftBody3D, linear_stiffness Float.X) {
+}
+func (self implementation) SoftBodyGetLinearStiffness(body RID.SoftBody3D) (_ Float.X) {
 	return
 }
-func (self implementation) SoftBodyGetLinearStiffness(body RID.SoftBody3D) (_ Float.X) { return }
 func (self implementation) SoftBodySetShrinkingFactor(body RID.Body3D, shrinking_factor Float.X) {
+}
+func (self implementation) SoftBodyGetShrinkingFactor(body RID.Body3D) (_ Float.X) {
 	return
 }
-func (self implementation) SoftBodyGetShrinkingFactor(body RID.Body3D) (_ Float.X) { return }
 func (self implementation) SoftBodySetPressureCoefficient(body RID.SoftBody3D, pressure_coefficient Float.X) {
+}
+func (self implementation) SoftBodyGetPressureCoefficient(body RID.SoftBody3D) (_ Float.X) {
 	return
 }
-func (self implementation) SoftBodyGetPressureCoefficient(body RID.SoftBody3D) (_ Float.X) { return }
 func (self implementation) SoftBodySetDampingCoefficient(body RID.SoftBody3D, damping_coefficient Float.X) {
+}
+func (self implementation) SoftBodyGetDampingCoefficient(body RID.SoftBody3D) (_ Float.X) {
 	return
 }
-func (self implementation) SoftBodyGetDampingCoefficient(body RID.SoftBody3D) (_ Float.X) { return }
 func (self implementation) SoftBodySetDragCoefficient(body RID.SoftBody3D, drag_coefficient Float.X) {
+}
+func (self implementation) SoftBodyGetDragCoefficient(body RID.SoftBody3D) (_ Float.X) {
 	return
 }
-func (self implementation) SoftBodyGetDragCoefficient(body RID.SoftBody3D) (_ Float.X)  { return }
-func (self implementation) SoftBodySetMesh(body RID.SoftBody3D, mesh RID.Mesh)          { return }
-func (self implementation) SoftBodyGetBounds(body RID.SoftBody3D) (_ AABB.PositionSize) { return }
-func (self implementation) SoftBodyMovePoint(body RID.SoftBody3D, point_index int, global_position Vector3.XYZ) {
+func (self implementation) SoftBodySetMesh(body RID.SoftBody3D, mesh RID.Mesh) {
+}
+func (self implementation) SoftBodyGetBounds(body RID.SoftBody3D) (_ AABB.PositionSize) {
 	return
+}
+func (self implementation) SoftBodyMovePoint(body RID.SoftBody3D, point_index int, global_position Vector3.XYZ) {
 }
 func (self implementation) SoftBodyGetPointGlobalPosition(body RID.SoftBody3D, point_index int) (_ Vector3.XYZ) {
 	return
 }
-func (self implementation) SoftBodyRemoveAllPinnedPoints(body RID.SoftBody3D)               { return }
-func (self implementation) SoftBodyPinPoint(body RID.SoftBody3D, point_index int, pin bool) { return }
+func (self implementation) SoftBodyRemoveAllPinnedPoints(body RID.SoftBody3D) {
+}
+func (self implementation) SoftBodyPinPoint(body RID.SoftBody3D, point_index int, pin bool) {
+}
 func (self implementation) SoftBodyIsPointPinned(body RID.SoftBody3D, point_index int) (_ bool) {
 	return
 }
 func (self implementation) SoftBodyApplyPointImpulse(body RID.Body3D, point_index int, impulse Vector3.XYZ) {
-	return
 }
 func (self implementation) SoftBodyApplyPointForce(body RID.Body3D, point_index int, force Vector3.XYZ) {
+}
+func (self implementation) SoftBodyApplyCentralImpulse(body RID.Body3D, impulse Vector3.XYZ) {
+}
+func (self implementation) SoftBodyApplyCentralForce(body RID.Body3D, force Vector3.XYZ) {
+}
+func (self implementation) JointCreate() (_ RID.Joint3D) {
 	return
 }
-func (self implementation) SoftBodyApplyCentralImpulse(body RID.Body3D, impulse Vector3.XYZ) { return }
-func (self implementation) SoftBodyApplyCentralForce(body RID.Body3D, force Vector3.XYZ)     { return }
-func (self implementation) JointCreate() (_ RID.Joint3D)                                     { return }
-func (self implementation) JointClear(joint RID.Joint3D)                                     { return }
+func (self implementation) JointClear(joint RID.Joint3D) {
+}
 func (self implementation) JointMakePin(joint RID.Joint3D, body_A RID.Body3D, local_A Vector3.XYZ, body_B RID.Body3D, local_B Vector3.XYZ) {
-	return
 }
 func (self implementation) PinJointSetParam(joint RID.Joint3D, param PhysicsServer3D.PinJointParam, value Float.X) {
-	return
 }
 func (self implementation) PinJointGetParam(joint RID.Joint3D, param PhysicsServer3D.PinJointParam) (_ Float.X) {
 	return
 }
-func (self implementation) PinJointSetLocalA(joint RID.Joint3D, local_A Vector3.XYZ) { return }
-func (self implementation) PinJointGetLocalA(joint RID.Joint3D) (_ Vector3.XYZ)      { return }
-func (self implementation) PinJointSetLocalB(joint RID.Joint3D, local_B Vector3.XYZ) { return }
-func (self implementation) PinJointGetLocalB(joint RID.Joint3D) (_ Vector3.XYZ)      { return }
-func (self implementation) JointMakeHinge(joint RID.Joint3D, body_A RID.Body3D, hinge_A Transform3D.BasisOrigin, body_B RID.Body3D, hinge_B Transform3D.BasisOrigin) {
+func (self implementation) PinJointSetLocalA(joint RID.Joint3D, local_A Vector3.XYZ) {
+}
+func (self implementation) PinJointGetLocalA(joint RID.Joint3D) (_ Vector3.XYZ) {
 	return
+}
+func (self implementation) PinJointSetLocalB(joint RID.Joint3D, local_B Vector3.XYZ) {
+}
+func (self implementation) PinJointGetLocalB(joint RID.Joint3D) (_ Vector3.XYZ) {
+	return
+}
+func (self implementation) JointMakeHinge(joint RID.Joint3D, body_A RID.Body3D, hinge_A Transform3D.BasisOrigin, body_B RID.Body3D, hinge_B Transform3D.BasisOrigin) {
 }
 func (self implementation) JointMakeHingeSimple(joint RID.Joint3D, body_A RID.Body3D, pivot_A Vector3.XYZ, axis_A Vector3.XYZ, body_B RID.Body3D, pivot_B Vector3.XYZ, axis_B Vector3.XYZ) {
-	return
 }
 func (self implementation) HingeJointSetParam(joint RID.Joint3D, param PhysicsServer3D.HingeJointParam, value Float.X) {
-	return
 }
 func (self implementation) HingeJointGetParam(joint RID.Joint3D, param PhysicsServer3D.HingeJointParam) (_ Float.X) {
 	return
 }
 func (self implementation) HingeJointSetFlag(joint RID.Joint3D, flag PhysicsServer3D.HingeJointFlag, enabled bool) {
-	return
 }
 func (self implementation) HingeJointGetFlag(joint RID.Joint3D, flag PhysicsServer3D.HingeJointFlag) (_ bool) {
 	return
 }
 func (self implementation) JointMakeSlider(joint RID.Joint3D, body_A RID.Body3D, local_ref_A Transform3D.BasisOrigin, body_B RID.Body3D, local_ref_B Transform3D.BasisOrigin) {
-	return
 }
 func (self implementation) SliderJointSetParam(joint RID.Joint3D, param PhysicsServer3D.SliderJointParam, value Float.X) {
-	return
 }
 func (self implementation) SliderJointGetParam(joint RID.Joint3D, param PhysicsServer3D.SliderJointParam) (_ Float.X) {
 	return
 }
 func (self implementation) JointMakeConeTwist(joint RID.Joint3D, body_A RID.Body3D, local_ref_A Transform3D.BasisOrigin, body_B RID.Body3D, local_ref_B Transform3D.BasisOrigin) {
-	return
 }
 func (self implementation) ConeTwistJointSetParam(joint RID.Joint3D, param PhysicsServer3D.ConeTwistJointParam, value Float.X) {
-	return
 }
 func (self implementation) ConeTwistJointGetParam(joint RID.Joint3D, param PhysicsServer3D.ConeTwistJointParam) (_ Float.X) {
 	return
 }
 func (self implementation) JointMakeGeneric6dof(joint RID.Joint3D, body_A RID.Body3D, local_ref_A Transform3D.BasisOrigin, body_B RID.Body3D, local_ref_B Transform3D.BasisOrigin) {
-	return
 }
 func (self implementation) Generic6dofJointSetParam(joint RID.Joint3D, axis Vector3.Axis, param PhysicsServer3D.G6DOFJointAxisParam, value Float.X) {
-	return
 }
 func (self implementation) Generic6dofJointGetParam(joint RID.Joint3D, axis Vector3.Axis, param PhysicsServer3D.G6DOFJointAxisParam) (_ Float.X) {
 	return
 }
 func (self implementation) Generic6dofJointSetFlag(joint RID.Joint3D, axis Vector3.Axis, flag PhysicsServer3D.G6DOFJointAxisFlag, enable bool) {
-	return
 }
 func (self implementation) Generic6dofJointGetFlag(joint RID.Joint3D, axis Vector3.Axis, flag PhysicsServer3D.G6DOFJointAxisFlag) (_ bool) {
 	return
 }
-func (self implementation) JointGetType(joint RID.Joint3D) (_ PhysicsServer3D.JointType) { return }
-func (self implementation) JointSetSolverPriority(joint RID.Joint3D, priority int)       { return }
-func (self implementation) JointGetSolverPriority(joint RID.Joint3D) (_ int)             { return }
-func (self implementation) JointDisableCollisionsBetweenBodies(joint RID.Joint3D, disable bool) {
+func (self implementation) JointGetType(joint RID.Joint3D) (_ PhysicsServer3D.JointType) {
 	return
 }
-func (self implementation) JointIsDisabledCollisionsBetweenBodies(joint RID.Joint3D) (_ bool) { return }
-func (self implementation) FreeRid(rid RID.Any)                                               { return }
-func (self implementation) SetActive(active bool)                                             { return }
-func (self implementation) Init()                                                             { return }
-func (self implementation) Step(step Float.X)                                                 { return }
-func (self implementation) Sync()                                                             { return }
-func (self implementation) FlushQueries()                                                     { return }
-func (self implementation) EndSync()                                                          { return }
-func (self implementation) Finish()                                                           { return }
-func (self implementation) IsFlushingQueries() (_ bool)                                       { return }
-func (self implementation) GetProcessInfo(process_info PhysicsServer3D.ProcessInfo) (_ int)   { return }
+func (self implementation) JointSetSolverPriority(joint RID.Joint3D, priority int) {
+}
+func (self implementation) JointGetSolverPriority(joint RID.Joint3D) (_ int) {
+	return
+}
+func (self implementation) JointDisableCollisionsBetweenBodies(joint RID.Joint3D, disable bool) {
+}
+func (self implementation) JointIsDisabledCollisionsBetweenBodies(joint RID.Joint3D) (_ bool) {
+	return
+}
+func (self implementation) FreeRid(rid RID.Any) {
+}
+func (self implementation) SetActive(active bool) {
+}
+func (self implementation) Init() {
+}
+func (self implementation) Step(step Float.X) {
+}
+func (self implementation) Sync() {
+}
+func (self implementation) FlushQueries() {
+}
+func (self implementation) EndSync() {
+}
+func (self implementation) Finish() {
+}
+func (self implementation) IsFlushingQueries() (_ bool) {
+	return
+}
+func (self implementation) GetProcessInfo(process_info PhysicsServer3D.ProcessInfo) (_ int) {
+	return
+}
 func (Instance) _world_boundary_shape_create(impl func(ptr gdclass.Receiver) RID.Shape3D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())

@@ -199,7 +199,6 @@ type Implementation = implementation
 type implementation struct{}
 
 func (self implementation) DrawPort(slot_index int, position Vector2i.XY, left bool, color Color.RGBA) {
-	return
 }
 func (Instance) _draw_port(impl func(ptr gdclass.Receiver, slot_index int, position Vector2i.XY, left bool, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {

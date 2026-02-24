@@ -129,8 +129,12 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetDescription() (_ string)    { return }
-func (self implementation) GetIpModification() (_ []byte) { return }
+func (self implementation) GetDescription() (_ string) {
+	return
+}
+func (self implementation) GetIpModification() (_ []byte) {
+	return
+}
 
 /*
 Return the description of this class that is used for the title bar of the binding modifier editor.

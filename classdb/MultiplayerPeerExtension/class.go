@@ -238,27 +238,62 @@ func (self implementation) GetPacket(r_buffer gdextension.Pointer, r_buffer_size
 func (self implementation) PutPacket(p_buffer gdextension.Pointer, p_buffer_size int) (_ error) {
 	return
 }
-func (self implementation) GetAvailablePacketCount() (_ int)                          { return }
-func (self implementation) GetMaxPacketSize() (_ int)                                 { return }
-func (self implementation) GetPacketScript() (_ []byte)                               { return }
-func (self implementation) PutPacketScript(p_buffer []byte) (_ error)                 { return }
-func (self implementation) GetPacketChannel() (_ int)                                 { return }
-func (self implementation) GetPacketMode() (_ MultiplayerPeer.TransferMode)           { return }
-func (self implementation) SetTransferChannel(p_channel int)                          { return }
-func (self implementation) GetTransferChannel() (_ int)                               { return }
-func (self implementation) SetTransferMode(p_mode MultiplayerPeer.TransferMode)       { return }
-func (self implementation) GetTransferMode() (_ MultiplayerPeer.TransferMode)         { return }
-func (self implementation) SetTargetPeer(p_peer int)                                  { return }
-func (self implementation) GetPacketPeer() (_ int)                                    { return }
-func (self implementation) IsServer() (_ bool)                                        { return }
-func (self implementation) Poll()                                                     { return }
-func (self implementation) Close()                                                    { return }
-func (self implementation) DisconnectPeer(p_peer int, p_force bool)                   { return }
-func (self implementation) GetUniqueId() (_ int)                                      { return }
-func (self implementation) SetRefuseNewConnections(p_enable bool)                     { return }
-func (self implementation) IsRefusingNewConnections() (_ bool)                        { return }
-func (self implementation) IsServerRelaySupported() (_ bool)                          { return }
-func (self implementation) GetConnectionStatus() (_ MultiplayerPeer.ConnectionStatus) { return }
+func (self implementation) GetAvailablePacketCount() (_ int) {
+	return
+}
+func (self implementation) GetMaxPacketSize() (_ int) {
+	return
+}
+func (self implementation) GetPacketScript() (_ []byte) {
+	return
+}
+func (self implementation) PutPacketScript(p_buffer []byte) (_ error) {
+	return
+}
+func (self implementation) GetPacketChannel() (_ int) {
+	return
+}
+func (self implementation) GetPacketMode() (_ MultiplayerPeer.TransferMode) {
+	return
+}
+func (self implementation) SetTransferChannel(p_channel int) {
+}
+func (self implementation) GetTransferChannel() (_ int) {
+	return
+}
+func (self implementation) SetTransferMode(p_mode MultiplayerPeer.TransferMode) {
+}
+func (self implementation) GetTransferMode() (_ MultiplayerPeer.TransferMode) {
+	return
+}
+func (self implementation) SetTargetPeer(p_peer int) {
+}
+func (self implementation) GetPacketPeer() (_ int) {
+	return
+}
+func (self implementation) IsServer() (_ bool) {
+	return
+}
+func (self implementation) Poll() {
+}
+func (self implementation) Close() {
+}
+func (self implementation) DisconnectPeer(p_peer int, p_force bool) {
+}
+func (self implementation) GetUniqueId() (_ int) {
+	return
+}
+func (self implementation) SetRefuseNewConnections(p_enable bool) {
+}
+func (self implementation) IsRefusingNewConnections() (_ bool) {
+	return
+}
+func (self implementation) IsServerRelaySupported() (_ bool) {
+	return
+}
+func (self implementation) GetConnectionStatus() (_ MultiplayerPeer.ConnectionStatus) {
+	return
+}
 
 /*
 Called when a packet needs to be received by the [MultiplayerAPI], with 'r_buffer_size' being the size of the binary 'r_buffer' in bytes.

@@ -135,7 +135,9 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetRecognizedExtensions() (_ []string) { return }
+func (self implementation) GetRecognizedExtensions() (_ []string) {
+	return
+}
 func (self implementation) LoadImage(image Image.Instance, fileaccess FileAccess.Instance, flags ImageFormatLoader.LoaderFlags, scale Float.X) (_ error) {
 	return
 }

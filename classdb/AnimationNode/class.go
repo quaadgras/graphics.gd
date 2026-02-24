@@ -220,16 +220,30 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetChildNodes() (_ map[string]struct{})            { return }
-func (self implementation) GetParameterList() (_ []struct{})                  { return }
-func (self implementation) GetChildByName(name string) (_ Instance)           { return }
-func (self implementation) GetParameterDefaultValue(parameter string) (_ any) { return }
-func (self implementation) IsParameterReadOnly(parameter string) (_ bool)     { return }
+func (self implementation) GetChildNodes() (_ map[string]struct{}) {
+	return
+}
+func (self implementation) GetParameterList() (_ []struct{}) {
+	return
+}
+func (self implementation) GetChildByName(name string) (_ Instance) {
+	return
+}
+func (self implementation) GetParameterDefaultValue(parameter string) (_ any) {
+	return
+}
+func (self implementation) IsParameterReadOnly(parameter string) (_ bool) {
+	return
+}
 func (self implementation) Process(time Float.X, seek bool, is_external_seeking bool, test_only bool) (_ Float.X) {
 	return
 }
-func (self implementation) GetCaption() (_ string) { return }
-func (self implementation) HasFilter() (_ bool)    { return }
+func (self implementation) GetCaption() (_ string) {
+	return
+}
+func (self implementation) HasFilter() (_ bool) {
+	return
+}
 
 /*
 When inheriting from [AnimationRootNode], implement this virtual method to return all child animation nodes in order as a name: node dictionary.

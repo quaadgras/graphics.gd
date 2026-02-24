@@ -135,10 +135,11 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Toggle(enable bool, options []any) { return }
-func (self implementation) AddFrame(data []any)               { return }
+func (self implementation) Toggle(enable bool, options []any) {
+}
+func (self implementation) AddFrame(data []any) {
+}
 func (self implementation) Tick(frame_time Float.X, process_time Float.X, physics_time Float.X, physics_frame_time Float.X) {
-	return
 }
 
 /*

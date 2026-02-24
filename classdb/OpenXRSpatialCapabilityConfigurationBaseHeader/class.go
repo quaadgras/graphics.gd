@@ -129,8 +129,12 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) HasValidConfiguration() (_ bool) { return }
-func (self implementation) GetConfiguration() (_ int)       { return }
+func (self implementation) HasValidConfiguration() (_ bool) {
+	return
+}
+func (self implementation) GetConfiguration() (_ int) {
+	return
+}
 
 /*
 Return true if this object contains a valid configuration that can be retrieved when calling [GetConfiguration].

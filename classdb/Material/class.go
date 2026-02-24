@@ -152,10 +152,18 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetShaderRid() (_ RID.Shader)   { return }
-func (self implementation) GetShaderMode() (_ Shader.Mode) { return }
-func (self implementation) CanDoNextPass() (_ bool)        { return }
-func (self implementation) CanUseRenderPriority() (_ bool) { return }
+func (self implementation) GetShaderRid() (_ RID.Shader) {
+	return
+}
+func (self implementation) GetShaderMode() (_ Shader.Mode) {
+	return
+}
+func (self implementation) CanDoNextPass() (_ bool) {
+	return
+}
+func (self implementation) CanUseRenderPriority() (_ bool) {
+	return
+}
 
 /*
 Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools. Used to access the RID of the [Material]'s [Shader].

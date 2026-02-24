@@ -210,8 +210,12 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) ParseFile(path string) (_ [][]string)  { return }
-func (self implementation) GetRecognizedExtensions() (_ []string) { return }
+func (self implementation) ParseFile(path string) (_ [][]string) {
+	return
+}
+func (self implementation) GetRecognizedExtensions() (_ []string) {
+	return
+}
 
 /*
 Override this method to define a custom parsing logic to extract the translatable strings.

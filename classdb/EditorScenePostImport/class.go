@@ -157,7 +157,9 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) PostImport(scene Node.Instance) (_ Object.Instance) { return }
+func (self implementation) PostImport(scene Node.Instance) (_ Object.Instance) {
+	return
+}
 
 /*
 Called after the scene was imported. This method must return the modified version of the scene.

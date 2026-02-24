@@ -190,31 +190,63 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Initialize(project_path string) (_ bool) { return }
-func (self implementation) SetCredentials(username string, password string, ssh_public_key_path string, ssh_private_key_path string, ssh_passphrase string) {
+func (self implementation) Initialize(project_path string) (_ bool) {
 	return
 }
-func (self implementation) GetModifiedFilesData() (_ [][]StatusFile)                   { return }
-func (self implementation) StageFile(file_path string)                                 { return }
-func (self implementation) UnstageFile(file_path string)                               { return }
-func (self implementation) DiscardFile(file_path string)                               { return }
-func (self implementation) Commit(msg string)                                          { return }
-func (self implementation) GetDiff(identifier string, area int) (_ [][]DiffFile)       { return }
-func (self implementation) ShutDown() (_ bool)                                         { return }
-func (self implementation) GetVcsName() (_ string)                                     { return }
-func (self implementation) GetPreviousCommits(max_commits int) (_ [][]Commit)          { return }
-func (self implementation) GetBranchList() (_ []string)                                { return }
-func (self implementation) GetRemotes() (_ []string)                                   { return }
-func (self implementation) CreateBranch(branch_name string)                            { return }
-func (self implementation) RemoveBranch(branch_name string)                            { return }
-func (self implementation) CreateRemote(remote_name string, remote_url string)         { return }
-func (self implementation) RemoveRemote(remote_name string)                            { return }
-func (self implementation) GetCurrentBranchName() (_ string)                           { return }
-func (self implementation) CheckoutBranch(branch_name string) (_ bool)                 { return }
-func (self implementation) Pull(remote string)                                         { return }
-func (self implementation) Push(remote string, force bool)                             { return }
-func (self implementation) Fetch(remote string)                                        { return }
-func (self implementation) GetLineDiff(file_path string, text string) (_ [][]DiffLine) { return }
+func (self implementation) SetCredentials(username string, password string, ssh_public_key_path string, ssh_private_key_path string, ssh_passphrase string) {
+}
+func (self implementation) GetModifiedFilesData() (_ [][]StatusFile) {
+	return
+}
+func (self implementation) StageFile(file_path string) {
+}
+func (self implementation) UnstageFile(file_path string) {
+}
+func (self implementation) DiscardFile(file_path string) {
+}
+func (self implementation) Commit(msg string) {
+}
+func (self implementation) GetDiff(identifier string, area int) (_ [][]DiffFile) {
+	return
+}
+func (self implementation) ShutDown() (_ bool) {
+	return
+}
+func (self implementation) GetVcsName() (_ string) {
+	return
+}
+func (self implementation) GetPreviousCommits(max_commits int) (_ [][]Commit) {
+	return
+}
+func (self implementation) GetBranchList() (_ []string) {
+	return
+}
+func (self implementation) GetRemotes() (_ []string) {
+	return
+}
+func (self implementation) CreateBranch(branch_name string) {
+}
+func (self implementation) RemoveBranch(branch_name string) {
+}
+func (self implementation) CreateRemote(remote_name string, remote_url string) {
+}
+func (self implementation) RemoveRemote(remote_name string) {
+}
+func (self implementation) GetCurrentBranchName() (_ string) {
+	return
+}
+func (self implementation) CheckoutBranch(branch_name string) (_ bool) {
+	return
+}
+func (self implementation) Pull(remote string) {
+}
+func (self implementation) Push(remote string, force bool) {
+}
+func (self implementation) Fetch(remote string) {
+}
+func (self implementation) GetLineDiff(file_path string, text string) (_ [][]DiffLine) {
+	return
+}
 
 /*
 Initializes the VCS plugin when called from the editor. Returns whether or not the plugin was successfully initialized. A VCS project is initialized at 'project_path'.

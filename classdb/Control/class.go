@@ -666,17 +666,37 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) HasPoint(point Vector2.XY) (_ bool)                              { return }
-func (self implementation) StructuredTextParser(args []any, text string) (_ []Vector3i.XYZ) { return }
-func (self implementation) GetMinimumSize() (_ Vector2.XY)                                  { return }
-func (self implementation) GetTooltip(at_position Vector2.XY) (_ string)                    { return }
-func (self implementation) GetDragData(at_position Vector2.XY) (_ any)                      { return }
-func (self implementation) CanDropData(at_position Vector2.XY, data any) (_ bool)           { return }
-func (self implementation) DropData(at_position Vector2.XY, data any)                       { return }
-func (self implementation) MakeCustomTooltip(for_text string) (_ Object.Instance)           { return }
-func (self implementation) AccessibilityGetContextualInfo() (_ string)                      { return }
-func (self implementation) GetAccessibilityContainerName(node Node.Instance) (_ string)     { return }
-func (self implementation) GuiInput(event InputEvent.Instance)                              { return }
+func (self implementation) HasPoint(point Vector2.XY) (_ bool) {
+	return
+}
+func (self implementation) StructuredTextParser(args []any, text string) (_ []Vector3i.XYZ) {
+	return
+}
+func (self implementation) GetMinimumSize() (_ Vector2.XY) {
+	return
+}
+func (self implementation) GetTooltip(at_position Vector2.XY) (_ string) {
+	return
+}
+func (self implementation) GetDragData(at_position Vector2.XY) (_ any) {
+	return
+}
+func (self implementation) CanDropData(at_position Vector2.XY, data any) (_ bool) {
+	return
+}
+func (self implementation) DropData(at_position Vector2.XY, data any) {
+}
+func (self implementation) MakeCustomTooltip(for_text string) (_ Object.Instance) {
+	return
+}
+func (self implementation) AccessibilityGetContextualInfo() (_ string) {
+	return
+}
+func (self implementation) GetAccessibilityContainerName(node Node.Instance) (_ string) {
+	return
+}
+func (self implementation) GuiInput(event InputEvent.Instance) {
+}
 
 /*
 Virtual method to be implemented by the user. Returns whether the given 'point' is inside this control.

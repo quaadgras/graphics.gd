@@ -81,8 +81,6 @@ func (p *Parser) Parse(str string) string {
 					tag = p.parseTag(str[i+1 : j])
 					if tag.Name == "" {
 						panic("unknown tag or empty tag [" + str[i+1:j] + "] in string: \n" + str)
-						i = j
-						break
 					}
 					if !tag.Closing {
 						contentEnd, tagEnd, found := p.findEnd(str[j+1:], tag.Name)

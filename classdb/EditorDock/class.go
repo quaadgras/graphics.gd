@@ -218,9 +218,12 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) UpdateLayout(layout int)                                         { return }
-func (self implementation) SaveLayoutToConfig(config ConfigFile.Instance, section string)   { return }
-func (self implementation) LoadLayoutFromConfig(config ConfigFile.Instance, section string) { return }
+func (self implementation) UpdateLayout(layout int) {
+}
+func (self implementation) SaveLayoutToConfig(config ConfigFile.Instance, section string) {
+}
+func (self implementation) LoadLayoutFromConfig(config ConfigFile.Instance, section string) {
+}
 
 /*
 Implement this method to handle the layout switching for this dock. 'layout' is one of the [DockLayout] constants.

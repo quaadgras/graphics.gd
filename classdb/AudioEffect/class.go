@@ -162,7 +162,9 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Instantiate() (_ AudioEffectInstance.Instance) { return }
+func (self implementation) Instantiate() (_ AudioEffectInstance.Instance) {
+	return
+}
 
 /*
 Override this method to customize the [AudioEffectInstance] created when this effect is applied on a bus in the editor's Audio panel, or through [AudioServer.AddBusEffect].

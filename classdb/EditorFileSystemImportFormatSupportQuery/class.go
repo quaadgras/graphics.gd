@@ -128,9 +128,15 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) IsActive() (_ bool)              { return }
-func (self implementation) GetFileExtensions() (_ []string) { return }
-func (self implementation) Query() (_ bool)                 { return }
+func (self implementation) IsActive() (_ bool) {
+	return
+}
+func (self implementation) GetFileExtensions() (_ []string) {
+	return
+}
+func (self implementation) Query() (_ bool) {
+	return
+}
 
 /*
 Return whether this importer is active.

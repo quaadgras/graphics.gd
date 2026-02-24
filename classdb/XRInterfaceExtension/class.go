@@ -220,46 +220,95 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetName() (_ string)                                         { return }
-func (self implementation) GetCapabilities() (_ int)                                    { return }
-func (self implementation) IsInitialized() (_ bool)                                     { return }
-func (self implementation) Initialize() (_ bool)                                        { return }
-func (self implementation) Uninitialize()                                               { return }
-func (self implementation) GetSystemInfo() (_ map[string]any)                           { return }
-func (self implementation) SupportsPlayAreaMode(mode XRInterface.PlayAreaMode) (_ bool) { return }
-func (self implementation) GetPlayAreaMode() (_ XRInterface.PlayAreaMode)               { return }
-func (self implementation) SetPlayAreaMode(mode XRInterface.PlayAreaMode) (_ bool)      { return }
-func (self implementation) GetPlayArea() (_ []Vector3.XYZ)                              { return }
-func (self implementation) GetRenderTargetSize() (_ Vector2.XY)                         { return }
-func (self implementation) GetViewCount() (_ int)                                       { return }
-func (self implementation) GetCameraTransform() (_ Transform3D.BasisOrigin)             { return }
+func (self implementation) GetName() (_ string) {
+	return
+}
+func (self implementation) GetCapabilities() (_ int) {
+	return
+}
+func (self implementation) IsInitialized() (_ bool) {
+	return
+}
+func (self implementation) Initialize() (_ bool) {
+	return
+}
+func (self implementation) Uninitialize() {
+}
+func (self implementation) GetSystemInfo() (_ map[string]any) {
+	return
+}
+func (self implementation) SupportsPlayAreaMode(mode XRInterface.PlayAreaMode) (_ bool) {
+	return
+}
+func (self implementation) GetPlayAreaMode() (_ XRInterface.PlayAreaMode) {
+	return
+}
+func (self implementation) SetPlayAreaMode(mode XRInterface.PlayAreaMode) (_ bool) {
+	return
+}
+func (self implementation) GetPlayArea() (_ []Vector3.XYZ) {
+	return
+}
+func (self implementation) GetRenderTargetSize() (_ Vector2.XY) {
+	return
+}
+func (self implementation) GetViewCount() (_ int) {
+	return
+}
+func (self implementation) GetCameraTransform() (_ Transform3D.BasisOrigin) {
+	return
+}
 func (self implementation) GetTransformForView(view int, cam_transform Transform3D.BasisOrigin) (_ Transform3D.BasisOrigin) {
 	return
 }
 func (self implementation) GetProjectionForView(view int, aspect Float.X, z_near Float.X, z_far Float.X) (_ []float64) {
 	return
 }
-func (self implementation) GetVrsTexture() (_ RID.Texture)                         { return }
-func (self implementation) GetVrsTextureFormat() (_ XRInterface.VRSTextureFormat)  { return }
-func (self implementation) Process()                                               { return }
-func (self implementation) PreRender()                                             { return }
-func (self implementation) PreDrawViewport(render_target RID.Framebuffer) (_ bool) { return }
+func (self implementation) GetVrsTexture() (_ RID.Texture) {
+	return
+}
+func (self implementation) GetVrsTextureFormat() (_ XRInterface.VRSTextureFormat) {
+	return
+}
+func (self implementation) Process() {
+}
+func (self implementation) PreRender() {
+}
+func (self implementation) PreDrawViewport(render_target RID.Framebuffer) (_ bool) {
+	return
+}
 func (self implementation) PostDrawViewport(render_target RID.Framebuffer, screen_rect Rect2.PositionSize) {
+}
+func (self implementation) EndFrame() {
+}
+func (self implementation) GetSuggestedTrackerNames() (_ []string) {
 	return
 }
-func (self implementation) EndFrame()                                              { return }
-func (self implementation) GetSuggestedTrackerNames() (_ []string)                 { return }
-func (self implementation) GetSuggestedPoseNames(tracker_name string) (_ []string) { return }
-func (self implementation) GetTrackingStatus() (_ XRInterface.TrackingStatus)      { return }
+func (self implementation) GetSuggestedPoseNames(tracker_name string) (_ []string) {
+	return
+}
+func (self implementation) GetTrackingStatus() (_ XRInterface.TrackingStatus) {
+	return
+}
 func (self implementation) TriggerHapticPulse(action_name string, tracker_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X) {
+}
+func (self implementation) GetAnchorDetectionIsEnabled() (_ bool) {
 	return
 }
-func (self implementation) GetAnchorDetectionIsEnabled() (_ bool)    { return }
-func (self implementation) SetAnchorDetectionIsEnabled(enabled bool) { return }
-func (self implementation) GetCameraFeedId() (_ int)                 { return }
-func (self implementation) GetColorTexture() (_ RID.Texture)         { return }
-func (self implementation) GetDepthTexture() (_ RID.Texture)         { return }
-func (self implementation) GetVelocityTexture() (_ RID.Texture)      { return }
+func (self implementation) SetAnchorDetectionIsEnabled(enabled bool) {
+}
+func (self implementation) GetCameraFeedId() (_ int) {
+	return
+}
+func (self implementation) GetColorTexture() (_ RID.Texture) {
+	return
+}
+func (self implementation) GetDepthTexture() (_ RID.Texture) {
+	return
+}
+func (self implementation) GetVelocityTexture() (_ RID.Texture) {
+	return
+}
 
 /*
 Returns the name of this interface.

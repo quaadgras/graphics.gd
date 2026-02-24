@@ -143,7 +143,9 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetAabb() (_ AABB.PositionSize) { return }
+func (self implementation) GetAabb() (_ AABB.PositionSize) {
+	return
+}
 func (Instance) _get_aabb(impl func(ptr gdclass.Receiver) AABB.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())

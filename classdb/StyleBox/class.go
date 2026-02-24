@@ -148,10 +148,17 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Draw(to_canvas_item RID.CanvasItem, rect Rect2.PositionSize) { return }
-func (self implementation) GetDrawRect(rect Rect2.PositionSize) (_ Rect2.PositionSize)  { return }
-func (self implementation) GetMinimumSize() (_ Vector2.XY)                              { return }
-func (self implementation) TestMask(point Vector2.XY, rect Rect2.PositionSize) (_ bool) { return }
+func (self implementation) Draw(to_canvas_item RID.CanvasItem, rect Rect2.PositionSize) {
+}
+func (self implementation) GetDrawRect(rect Rect2.PositionSize) (_ Rect2.PositionSize) {
+	return
+}
+func (self implementation) GetMinimumSize() (_ Vector2.XY) {
+	return
+}
+func (self implementation) TestMask(point Vector2.XY, rect Rect2.PositionSize) (_ bool) {
+	return
+}
 func (Instance) _draw(impl func(ptr gdclass.Receiver, to_canvas_item RID.CanvasItem, rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)

@@ -169,14 +169,20 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) CanHandle(obj Object.Instance) (_ bool)             { return }
-func (self implementation) ParseBegin(obj Object.Instance)                     { return }
-func (self implementation) ParseCategory(obj Object.Instance, category string) { return }
-func (self implementation) ParseGroup(obj Object.Instance, group string)       { return }
+func (self implementation) CanHandle(obj Object.Instance) (_ bool) {
+	return
+}
+func (self implementation) ParseBegin(obj Object.Instance) {
+}
+func (self implementation) ParseCategory(obj Object.Instance, category string) {
+}
+func (self implementation) ParseGroup(obj Object.Instance, group string) {
+}
 func (self implementation) ParseProperty(obj Object.Instance, atype variant.Type, name string, hint_type ClassDB.PropertyHint, hint_string string, usage_flags ClassDB.PropertyUsageFlags, wide bool) (_ bool) {
 	return
 }
-func (self implementation) ParseEnd(obj Object.Instance) { return }
+func (self implementation) ParseEnd(obj Object.Instance) {
+}
 
 /*
 Returns true if this object can be handled by this plugin.

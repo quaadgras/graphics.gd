@@ -207,12 +207,15 @@ type Implementation = implementation
 type implementation struct{}
 
 func (self implementation) InputEvent(viewport Viewport.Instance, event InputEvent.Instance, shape_idx int) {
-	return
 }
-func (self implementation) MouseEnter()                   { return }
-func (self implementation) MouseExit()                    { return }
-func (self implementation) MouseShapeEnter(shape_idx int) { return }
-func (self implementation) MouseShapeExit(shape_idx int)  { return }
+func (self implementation) MouseEnter() {
+}
+func (self implementation) MouseExit() {
+}
+func (self implementation) MouseShapeEnter(shape_idx int) {
+}
+func (self implementation) MouseShapeExit(shape_idx int) {
+}
 
 /*
 Accepts unhandled [InputEvent]s. 'shape_idx' is the child index of the clicked [Shape2D]. Connect to [OnInputEvent] to easily pick up these events.

@@ -251,15 +251,26 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Poll() (_ error)                                              { return }
-func (self implementation) SetMultiplayerPeer(multiplayer_peer MultiplayerPeer.Instance) { return }
-func (self implementation) GetMultiplayerPeer() (_ MultiplayerPeer.Instance)             { return }
-func (self implementation) GetUniqueId() (_ int)                                         { return }
-func (self implementation) GetPeerIds() (_ []int32)                                      { return }
+func (self implementation) Poll() (_ error) {
+	return
+}
+func (self implementation) SetMultiplayerPeer(multiplayer_peer MultiplayerPeer.Instance) {
+}
+func (self implementation) GetMultiplayerPeer() (_ MultiplayerPeer.Instance) {
+	return
+}
+func (self implementation) GetUniqueId() (_ int) {
+	return
+}
+func (self implementation) GetPeerIds() (_ []int32) {
+	return
+}
 func (self implementation) Rpc(peer int, obj Object.Instance, method string, args []any) (_ error) {
 	return
 }
-func (self implementation) GetRemoteSenderId() (_ int) { return }
+func (self implementation) GetRemoteSenderId() (_ int) {
+	return
+}
 func (self implementation) ObjectConfigurationAdd(obj Object.Instance, configuration any) (_ error) {
 	return
 }

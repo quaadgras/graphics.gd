@@ -179,16 +179,31 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Start(from_pos Float.X)                                         { return }
-func (self implementation) Stop()                                                          { return }
-func (self implementation) IsPlaying() (_ bool)                                            { return }
-func (self implementation) GetLoopCount() (_ int)                                          { return }
-func (self implementation) GetPlaybackPosition() (_ Float.X)                               { return }
-func (self implementation) Seek(position Float.X)                                          { return }
-func (self implementation) Mix(buffer *AudioFrame, rate_scale Float.X, frames int) (_ int) { return }
-func (self implementation) TagUsedStreams()                                                { return }
-func (self implementation) SetParameter(name string, value any)                            { return }
-func (self implementation) GetParameter(name string) (_ any)                               { return }
+func (self implementation) Start(from_pos Float.X) {
+}
+func (self implementation) Stop() {
+}
+func (self implementation) IsPlaying() (_ bool) {
+	return
+}
+func (self implementation) GetLoopCount() (_ int) {
+	return
+}
+func (self implementation) GetPlaybackPosition() (_ Float.X) {
+	return
+}
+func (self implementation) Seek(position Float.X) {
+}
+func (self implementation) Mix(buffer *AudioFrame, rate_scale Float.X, frames int) (_ int) {
+	return
+}
+func (self implementation) TagUsedStreams() {
+}
+func (self implementation) SetParameter(name string, value any) {
+}
+func (self implementation) GetParameter(name string) (_ any) {
+	return
+}
 
 /*
 Override this method to customize what happens when the playback starts at the given position, such as by calling [AudioStreamPlayer.Play].

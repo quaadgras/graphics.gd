@@ -143,9 +143,12 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) SetVertex(vertex_id int, vertex Vector3.XYZ) { return }
-func (self implementation) SetNormal(vertex_id int, normal Vector3.XYZ) { return }
-func (self implementation) SetAabb(aabb AABB.PositionSize)              { return }
+func (self implementation) SetVertex(vertex_id int, vertex Vector3.XYZ) {
+}
+func (self implementation) SetNormal(vertex_id int, normal Vector3.XYZ) {
+}
+func (self implementation) SetAabb(aabb AABB.PositionSize) {
+}
 
 /*
 Called by the [PhysicsServer3D] to set the position for the [SoftBody3D] vertex at the index specified by 'vertex_id'.

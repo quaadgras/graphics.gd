@@ -147,11 +147,21 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Save(resource Resource.Instance, path string, flags int) (_ error) { return }
-func (self implementation) SetUid(path string, uid int) (_ error)                             { return }
-func (self implementation) Recognize(resource Resource.Instance) (_ bool)                     { return }
-func (self implementation) GetRecognizedExtensions(resource Resource.Instance) (_ []string)   { return }
-func (self implementation) RecognizePath(resource Resource.Instance, path string) (_ bool)    { return }
+func (self implementation) Save(resource Resource.Instance, path string, flags int) (_ error) {
+	return
+}
+func (self implementation) SetUid(path string, uid int) (_ error) {
+	return
+}
+func (self implementation) Recognize(resource Resource.Instance) (_ bool) {
+	return
+}
+func (self implementation) GetRecognizedExtensions(resource Resource.Instance) (_ []string) {
+	return
+}
+func (self implementation) RecognizePath(resource Resource.Instance, path string) (_ bool) {
+	return
+}
 
 /*
 Saves the given resource object to a file at the target 'path'. 'flags' is a bitmask composed with [ResourceSaver.SaverFlags] constants.

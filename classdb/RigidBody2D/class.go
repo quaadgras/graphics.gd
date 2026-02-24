@@ -220,7 +220,8 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) IntegrateForces(state PhysicsDirectBodyState2D.Instance) { return }
+func (self implementation) IntegrateForces(state PhysicsDirectBodyState2D.Instance) {
+}
 
 /*
 Called during physics processing, allowing you to read and safely modify the simulation state for the object. By default, it is called before the standard force integration, but the [CustomIntegrator] property allows you to disable the standard force integration and do fully custom force integration for a body.

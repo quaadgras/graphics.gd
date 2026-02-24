@@ -183,88 +183,172 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetName() (_ string)                          { return }
-func (self implementation) Init()                                        { return }
-func (self implementation) GetType() (_ string)                          { return }
-func (self implementation) GetExtension() (_ string)                     { return }
-func (self implementation) Finish()                                      { return }
-func (self implementation) GetReservedWords() (_ []string)               { return }
-func (self implementation) IsControlFlowKeyword(keyword string) (_ bool) { return }
-func (self implementation) GetCommentDelimiters() (_ []string)           { return }
-func (self implementation) GetDocCommentDelimiters() (_ []string)        { return }
-func (self implementation) GetStringDelimiters() (_ []string)            { return }
+func (self implementation) GetName() (_ string) {
+	return
+}
+func (self implementation) Init() {
+}
+func (self implementation) GetType() (_ string) {
+	return
+}
+func (self implementation) GetExtension() (_ string) {
+	return
+}
+func (self implementation) Finish() {
+}
+func (self implementation) GetReservedWords() (_ []string) {
+	return
+}
+func (self implementation) IsControlFlowKeyword(keyword string) (_ bool) {
+	return
+}
+func (self implementation) GetCommentDelimiters() (_ []string) {
+	return
+}
+func (self implementation) GetDocCommentDelimiters() (_ []string) {
+	return
+}
+func (self implementation) GetStringDelimiters() (_ []string) {
+	return
+}
 func (self implementation) MakeTemplate(template string, class_name string, base_class_name string) (_ Script.Instance) {
 	return
 }
-func (self implementation) GetBuiltInTemplates(obj string) (_ [][]Template) { return }
-func (self implementation) IsUsingTemplates() (_ bool)                      { return }
+func (self implementation) GetBuiltInTemplates(obj string) (_ [][]Template) {
+	return
+}
+func (self implementation) IsUsingTemplates() (_ bool) {
+	return
+}
 func (self implementation) Validate(script string, path string, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) (_ Validation) {
 	return
 }
-func (self implementation) ValidatePath(path string) (_ string)               { return }
-func (self implementation) CreateScript() (_ Object.Instance)                 { return }
-func (self implementation) HasNamedClasses() (_ bool)                         { return }
-func (self implementation) SupportsBuiltinMode() (_ bool)                     { return }
-func (self implementation) SupportsDocumentation() (_ bool)                   { return }
-func (self implementation) CanInheritFromFile() (_ bool)                      { return }
-func (self implementation) FindFunction(function string, code string) (_ int) { return }
+func (self implementation) ValidatePath(path string) (_ string) {
+	return
+}
+func (self implementation) CreateScript() (_ Object.Instance) {
+	return
+}
+func (self implementation) HasNamedClasses() (_ bool) {
+	return
+}
+func (self implementation) SupportsBuiltinMode() (_ bool) {
+	return
+}
+func (self implementation) SupportsDocumentation() (_ bool) {
+	return
+}
+func (self implementation) CanInheritFromFile() (_ bool) {
+	return
+}
+func (self implementation) FindFunction(function string, code string) (_ int) {
+	return
+}
 func (self implementation) MakeFunction(class_name string, function_name string, function_args []string) (_ string) {
 	return
 }
-func (self implementation) CanMakeFunction() (_ bool) { return }
+func (self implementation) CanMakeFunction() (_ bool) {
+	return
+}
 func (self implementation) OpenInExternalEditor(script Script.Instance, line int, column int) (_ error) {
 	return
 }
-func (self implementation) OverridesExternalEditor() (_ bool)                            { return }
-func (self implementation) PreferredFileNameCasing() (_ ScriptLanguage.ScriptNameCasing) { return }
+func (self implementation) OverridesExternalEditor() (_ bool) {
+	return
+}
+func (self implementation) PreferredFileNameCasing() (_ ScriptLanguage.ScriptNameCasing) {
+	return
+}
 func (self implementation) CompleteCode(code string, path string, owner Object.Instance) (_ Completion) {
 	return
 }
 func (self implementation) LookupCode(code string, symbol string, path string, owner Object.Instance) (_ Code) {
 	return
 }
-func (self implementation) AutoIndentCode(code string, from_line int, to_line int) (_ string) { return }
-func (self implementation) AddGlobalConstant(name string, value any)                          { return }
-func (self implementation) AddNamedGlobalConstant(name string, value any)                     { return }
-func (self implementation) RemoveNamedGlobalConstant(name string)                             { return }
-func (self implementation) ThreadEnter()                                                      { return }
-func (self implementation) ThreadExit()                                                       { return }
-func (self implementation) DebugGetError() (_ string)                                         { return }
-func (self implementation) DebugGetStackLevelCount() (_ int)                                  { return }
-func (self implementation) DebugGetStackLevelLine(level int) (_ int)                          { return }
-func (self implementation) DebugGetStackLevelFunction(level int) (_ string)                   { return }
-func (self implementation) DebugGetStackLevelSource(level int) (_ string)                     { return }
+func (self implementation) AutoIndentCode(code string, from_line int, to_line int) (_ string) {
+	return
+}
+func (self implementation) AddGlobalConstant(name string, value any) {
+}
+func (self implementation) AddNamedGlobalConstant(name string, value any) {
+}
+func (self implementation) RemoveNamedGlobalConstant(name string) {
+}
+func (self implementation) ThreadEnter() {
+}
+func (self implementation) ThreadExit() {
+}
+func (self implementation) DebugGetError() (_ string) {
+	return
+}
+func (self implementation) DebugGetStackLevelCount() (_ int) {
+	return
+}
+func (self implementation) DebugGetStackLevelLine(level int) (_ int) {
+	return
+}
+func (self implementation) DebugGetStackLevelFunction(level int) (_ string) {
+	return
+}
+func (self implementation) DebugGetStackLevelSource(level int) (_ string) {
+	return
+}
 func (self implementation) DebugGetStackLevelLocals(level int, max_subitems int, max_depth int) (_ StackLevelLocals) {
 	return
 }
 func (self implementation) DebugGetStackLevelMembers(level int, max_subitems int, max_depth int) (_ StackLevelMembers) {
 	return
 }
-func (self implementation) DebugGetStackLevelInstance(level int) (_ gdextension.Pointer) { return }
-func (self implementation) DebugGetGlobals(max_subitems int, max_depth int) (_ Globals)  { return }
+func (self implementation) DebugGetStackLevelInstance(level int) (_ gdextension.Pointer) {
+	return
+}
+func (self implementation) DebugGetGlobals(max_subitems int, max_depth int) (_ Globals) {
+	return
+}
 func (self implementation) DebugParseStackLevelExpression(level int, expression string, max_subitems int, max_depth int) (_ string) {
 	return
 }
-func (self implementation) DebugGetCurrentStackInfo() (_ []StackInfo)                 { return }
-func (self implementation) ReloadAllScripts()                                         { return }
-func (self implementation) ReloadScripts(scripts []Script.Instance, soft_reload bool) { return }
-func (self implementation) ReloadToolScript(script Script.Instance, soft_reload bool) { return }
-func (self implementation) GetRecognizedExtensions() (_ []string)                     { return }
-func (self implementation) GetPublicFunctions() (_ [][]struct{})                      { return }
-func (self implementation) GetPublicConstants() (_ []Constant)                        { return }
-func (self implementation) GetPublicAnnotations() (_ [][]struct{})                    { return }
-func (self implementation) ProfilingStart()                                           { return }
-func (self implementation) ProfilingStop()                                            { return }
-func (self implementation) ProfilingSetSaveNativeCalls(enable bool)                   { return }
+func (self implementation) DebugGetCurrentStackInfo() (_ []StackInfo) {
+	return
+}
+func (self implementation) ReloadAllScripts() {
+}
+func (self implementation) ReloadScripts(scripts []Script.Instance, soft_reload bool) {
+}
+func (self implementation) ReloadToolScript(script Script.Instance, soft_reload bool) {
+}
+func (self implementation) GetRecognizedExtensions() (_ []string) {
+	return
+}
+func (self implementation) GetPublicFunctions() (_ [][]struct{}) {
+	return
+}
+func (self implementation) GetPublicConstants() (_ []Constant) {
+	return
+}
+func (self implementation) GetPublicAnnotations() (_ [][]struct{}) {
+	return
+}
+func (self implementation) ProfilingStart() {
+}
+func (self implementation) ProfilingStop() {
+}
+func (self implementation) ProfilingSetSaveNativeCalls(enable bool) {
+}
 func (self implementation) ProfilingGetAccumulatedData(info_array *ProfilingInfo, info_max int) (_ int) {
 	return
 }
 func (self implementation) ProfilingGetFrameData(info_array *ProfilingInfo, info_max int) (_ int) {
 	return
 }
-func (self implementation) Frame()                                       { return }
-func (self implementation) HandlesGlobalClassType(atype string) (_ bool) { return }
-func (self implementation) GetGlobalClassName(path string) (_ ClassName) { return }
+func (self implementation) Frame() {
+}
+func (self implementation) HandlesGlobalClassType(atype string) (_ bool) {
+	return
+}
+func (self implementation) GetGlobalClassName(path string) (_ ClassName) {
+	return
+}
 func (Instance) _get_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())

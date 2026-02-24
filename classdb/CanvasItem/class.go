@@ -266,7 +266,8 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Draw() { return }
+func (self implementation) Draw() {
+}
 
 /*
 Called when [CanvasItem] has been requested to redraw (after [QueueRedraw] is called, either manually or by the engine).

@@ -774,35 +774,67 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) ForwardCanvasGuiInput(event InputEvent.Instance) (_ bool)        { return }
-func (self implementation) ForwardCanvasDrawOverViewport(viewport_control Control.Instance) { return }
-func (self implementation) ForwardCanvasForceDrawOverViewport(viewport_control Control.Instance) {
+func (self implementation) ForwardCanvasGuiInput(event InputEvent.Instance) (_ bool) {
 	return
+}
+func (self implementation) ForwardCanvasDrawOverViewport(viewport_control Control.Instance) {
+}
+func (self implementation) ForwardCanvasForceDrawOverViewport(viewport_control Control.Instance) {
 }
 func (self implementation) Forward3dGuiInput(viewport_camera Camera3D.Instance, event InputEvent.Instance) (_ AfterGUIInput) {
 	return
 }
-func (self implementation) Forward3dDrawOverViewport(viewport_control Control.Instance)      { return }
-func (self implementation) Forward3dForceDrawOverViewport(viewport_control Control.Instance) { return }
-func (self implementation) GetPluginName() (_ string)                                        { return }
-func (self implementation) GetPluginIcon() (_ Texture2D.Instance)                            { return }
-func (self implementation) HasMainScreen() (_ bool)                                          { return }
-func (self implementation) MakeVisible(visible bool)                                         { return }
-func (self implementation) Edit(obj Object.Instance)                                         { return }
-func (self implementation) Handles(obj Object.Instance) (_ bool)                             { return }
-func (self implementation) GetState() (_ map[any]any)                                        { return }
-func (self implementation) SetState(state map[any]any)                                       { return }
-func (self implementation) Clear()                                                           { return }
-func (self implementation) GetUnsavedStatus(for_scene string) (_ string)                     { return }
-func (self implementation) SaveExternalData()                                                { return }
-func (self implementation) ApplyChanges()                                                    { return }
-func (self implementation) GetBreakpoints() (_ []string)                                     { return }
-func (self implementation) SetWindowLayout(configuration ConfigFile.Instance)                { return }
-func (self implementation) GetWindowLayout(configuration ConfigFile.Instance)                { return }
-func (self implementation) Build() (_ bool)                                                  { return }
-func (self implementation) RunScene(scene string, args []string) (_ []string)                { return }
-func (self implementation) EnablePlugin()                                                    { return }
-func (self implementation) DisablePlugin()                                                   { return }
+func (self implementation) Forward3dDrawOverViewport(viewport_control Control.Instance) {
+}
+func (self implementation) Forward3dForceDrawOverViewport(viewport_control Control.Instance) {
+}
+func (self implementation) GetPluginName() (_ string) {
+	return
+}
+func (self implementation) GetPluginIcon() (_ Texture2D.Instance) {
+	return
+}
+func (self implementation) HasMainScreen() (_ bool) {
+	return
+}
+func (self implementation) MakeVisible(visible bool) {
+}
+func (self implementation) Edit(obj Object.Instance) {
+}
+func (self implementation) Handles(obj Object.Instance) (_ bool) {
+	return
+}
+func (self implementation) GetState() (_ map[any]any) {
+	return
+}
+func (self implementation) SetState(state map[any]any) {
+}
+func (self implementation) Clear() {
+}
+func (self implementation) GetUnsavedStatus(for_scene string) (_ string) {
+	return
+}
+func (self implementation) SaveExternalData() {
+}
+func (self implementation) ApplyChanges() {
+}
+func (self implementation) GetBreakpoints() (_ []string) {
+	return
+}
+func (self implementation) SetWindowLayout(configuration ConfigFile.Instance) {
+}
+func (self implementation) GetWindowLayout(configuration ConfigFile.Instance) {
+}
+func (self implementation) Build() (_ bool) {
+	return
+}
+func (self implementation) RunScene(scene string, args []string) (_ []string) {
+	return
+}
+func (self implementation) EnablePlugin() {
+}
+func (self implementation) DisablePlugin() {
+}
 
 /*
 Called when there is a root node in the current edited scene, [Handles] is implemented, and an [InputEvent] happens in the 2D viewport. If this method returns true, 'event' is intercepted by this [EditorPlugin], otherwise 'event' is forwarded to other Editor classes.
@@ -976,7 +1008,9 @@ Ideally, the plugin icon should be white with a transparent background and 16×1
 
 	GetPluginIcon := func() Texture2D.Instance {
 		// You can use a custom icon:
-		return Resource.Load[Texture2D.Instance]("res://addons/my_plugin/my_plugin_icon.svg")
+		if true {
+			return Resource.Load[Texture2D.Instance]("res://addons/my_plugin/my_plugin_icon.svg")
+		}
 		// Or use a built-in icon:
 		return EditorInterface.GetEditorTheme().GetIcon("Node", "EditorIcons")
 	}

@@ -28,7 +28,9 @@ import (
 func EditorPlugin_GetPluginIcon() {
 	GetPluginIcon := func() Texture2D.Instance {
 		// You can use a custom icon:
-		return Resource.Load[Texture2D.Instance]("res://addons/my_plugin/my_plugin_icon.svg")
+		if true {
+			return Resource.Load[Texture2D.Instance]("res://addons/my_plugin/my_plugin_icon.svg")
+		}
 		// Or use a built-in icon:
 		return EditorInterface.GetEditorTheme().GetIcon("Node", "EditorIcons")
 	}

@@ -190,10 +190,11 @@ type Implementation = implementation
 type implementation struct{}
 
 func (self implementation) InputEvent(camera Camera3D.Instance, event InputEvent.Instance, event_position Vector3.XYZ, normal Vector3.XYZ, shape_idx int) {
-	return
 }
-func (self implementation) MouseEnter() { return }
-func (self implementation) MouseExit()  { return }
+func (self implementation) MouseEnter() {
+}
+func (self implementation) MouseExit() {
+}
 
 /*
 Receives unhandled [InputEvent]s. 'event_position' is the location in world space of the mouse pointer on the surface of the shape with index 'shape_idx' and 'normal' is the normal vector of the surface at that point. Connect to the [OnInputEvent] signal to easily pick up these events.

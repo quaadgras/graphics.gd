@@ -160,7 +160,8 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) ValueChanged(new_value Float.X) { return }
+func (self implementation) ValueChanged(new_value Float.X) {
+}
 
 /*
 Called when the [Range]'s value is changed (following the same conditions as [OnValueChanged]).

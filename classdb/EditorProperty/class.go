@@ -178,8 +178,10 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) UpdateProperty()            { return }
-func (self implementation) SetReadOnly(read_only bool) { return }
+func (self implementation) UpdateProperty() {
+}
+func (self implementation) SetReadOnly(read_only bool) {
+}
 
 /*
 When this virtual function is called, you must update your editor.

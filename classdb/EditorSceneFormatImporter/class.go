@@ -157,11 +157,14 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetExtensions() (_ []string) { return }
+func (self implementation) GetExtensions() (_ []string) {
+	return
+}
 func (self implementation) ImportScene(path string, flags Flags, options map[string]any) (_ Object.Instance) {
 	return
 }
-func (self implementation) GetImportOptions(path string) { return }
+func (self implementation) GetImportOptions(path string) {
+}
 func (self implementation) GetOptionVisibility(path string, for_animation bool, option string) (_ any) {
 	return
 }

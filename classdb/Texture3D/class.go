@@ -165,12 +165,24 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetFormat() (_ Image.Format)   { return }
-func (self implementation) GetWidth() (_ int)             { return }
-func (self implementation) GetHeight() (_ int)            { return }
-func (self implementation) GetDepth() (_ int)             { return }
-func (self implementation) HasMipmaps() (_ bool)          { return }
-func (self implementation) GetData() (_ []Image.Instance) { return }
+func (self implementation) GetFormat() (_ Image.Format) {
+	return
+}
+func (self implementation) GetWidth() (_ int) {
+	return
+}
+func (self implementation) GetHeight() (_ int) {
+	return
+}
+func (self implementation) GetDepth() (_ int) {
+	return
+}
+func (self implementation) HasMipmaps() (_ bool) {
+	return
+}
+func (self implementation) GetData() (_ []Image.Instance) {
+	return
+}
 
 /*
 Called when the [Texture3D]'s format is queried.
