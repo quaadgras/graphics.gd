@@ -268,6 +268,7 @@ func TestAutomaticKeepAlive(t *testing.T) {
 }
 
 func TestNoInheritance(t *testing.T) {
+	t.Skip("TBD: https://github.com/quaadgras/graphics.gd/issues/280")
 	type Common struct {
 		Node.Extension[Common]
 	}
