@@ -348,13 +348,13 @@ type Quad interface {
 func NewQuadExpression[Q Quad](expr Expression) Q {
 	rtype := reflect.TypeFor[Q]()
 	switch {
-	case rtype.ConvertibleTo(reflect.TypeOf(Vec4{})):
+	case rtype.ConvertibleTo(reflect.TypeFor[Vec4]()):
 		return reflect.ValueOf(NewVec4Expression(expr)).Convert(rtype).Interface().(Q)
-	case rtype.ConvertibleTo(reflect.TypeOf(Vec4i{})):
+	case rtype.ConvertibleTo(reflect.TypeFor[Vec4i]()):
 		return reflect.ValueOf(NewVec4iExpression(expr)).Convert(rtype).Interface().(Q)
-	case rtype.ConvertibleTo(reflect.TypeOf(Vec4u{})):
+	case rtype.ConvertibleTo(reflect.TypeFor[Vec4u]()):
 		return reflect.ValueOf(NewVec4uExpression(expr)).Convert(rtype).Interface().(Q)
-	case rtype.ConvertibleTo(reflect.TypeOf(RGBA{})):
+	case rtype.ConvertibleTo(reflect.TypeFor[RGBA]()):
 		return reflect.ValueOf(NewRGBAExpression(expr)).Convert(rtype).Interface().(Q)
 	default:
 		panic("unreachable")

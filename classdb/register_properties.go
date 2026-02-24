@@ -49,7 +49,7 @@ func propertyOf(class gd.StringName, field reflect.StructField, push_into gdexte
 				hintString += fmt.Sprintf("%s:%d", name, value)
 				first = false
 			}
-		case field.Type.Kind() == reflect.Pointer && field.Type.Implements(reflect.TypeOf([0]interface{ Super() Resource.Instance }{}).Elem()):
+		case field.Type.Kind() == reflect.Pointer && field.Type.Implements(reflect.TypeFor[[0]interface{ Super() Resource.Instance }]().Elem()):
 			vtype = gdextension.TypeObject
 			hint |= PropertyHintResourceType
 			hintString = nameOf(field.Type.Elem())
@@ -87,10 +87,10 @@ func propertyOf(class gd.StringName, field reflect.StructField, push_into gdexte
 			}
 		}
 	}
-	if field.Type.Implements(reflect.TypeOf([0]interface{ AsResource() Resource.Instance }{}).Elem()) {
+	if field.Type.Implements(reflect.TypeFor[[0]interface{ AsResource() Resource.Instance }]().Elem()) {
 		hint |= PropertyHintResourceType
 	}
-	if field.Type.Implements(reflect.TypeOf([0]interface{ AsNode() Node.Instance }{}).Elem()) {
+	if field.Type.Implements(reflect.TypeFor[[0]interface{ AsNode() Node.Instance }]().Elem()) {
 		hint |= PropertyHintNodeType
 	}
 	var usage = PropertyUsageStorage | PropertyUsageEditor

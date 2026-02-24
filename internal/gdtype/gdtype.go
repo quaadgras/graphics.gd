@@ -47,8 +47,8 @@ func (name Name) Let(ctx string, val string) string {
 		prefix = "gd."
 	}
 	base := strings.TrimPrefix(string(name), "gd.")
-	if strings.HasPrefix(base, "ArrayOf") {
-		typed := prefix + "TypedArray" + strings.TrimPrefix(base, "ArrayOf")
+	if after, ok := strings.CutPrefix(base, "ArrayOf"); ok {
+		typed := prefix + "TypedArray" + after
 		return fmt.Sprintf("%s(mmm.Let["+prefix+"Array](%v.Lifetime, %v.API, %v))", typed, ctx, ctx, val)
 	}
 	return fmt.Sprintf("mmm.Let[%v](%v.Lifetime, %v.API, %v)", name, ctx, ctx, val)
@@ -80,8 +80,8 @@ func (name Name) ToUnderlying(val string) string {
 }
 
 func (name Name) ConvertToSimple(val, simple string) string {
-	if strings.HasPrefix(val, "(") {
-		val = strings.TrimPrefix(val, "(")
+	if after, ok := strings.CutPrefix(val, "("); ok {
+		val = after
 		val = strings.TrimSuffix(val, ")")
 	}
 	if strings.HasPrefix(string(name), "Array.Contains[") {

@@ -22,7 +22,7 @@ package atomicfile
 import (
 	"errors"
 	"io"
-	"io/ioutil"
+
 	"os"
 	"path/filepath"
 	"runtime"
@@ -56,7 +56,7 @@ type atomicFile struct {
 // Open a temporary file for reading and writing which will ultimately be
 // renamed to the given name when Commit() is called.
 func New(name string) (AtomicFile, error) {
-	tempfile, err := ioutil.TempFile(filepath.Dir(name), filepath.Base(name)+".tmp")
+	tempfile, err := os.CreateTemp(filepath.Dir(name), filepath.Base(name)+".tmp")
 	if err != nil {
 		return nil, err
 	}

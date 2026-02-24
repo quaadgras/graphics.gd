@@ -499,7 +499,7 @@ func Inverse(proj XYZW) XYZW { //gd:Projection.inverse
 	var pvt_val Float.X     /* Value of current pivot element */
 	var hold Float.X        /* Temporary storage */
 	var determinant Float.X = 1.0
-	for k := 0; k < 4; k++ {
+	for k := range 4 {
 		/** Locate k'th pivot element **/
 		pvt_val = p[k][k] /** Initialize for search **/
 		pvt_i[k] = k
@@ -521,7 +521,7 @@ func Inverse(proj XYZW) XYZW { //gd:Projection.inverse
 		/** "Interchange" rows (with sign change stuff) **/
 		i = pvt_i[k]
 		if i != k { /** If rows are different **/
-			for j := 0; j < 4; j++ {
+			for j := range 4 {
 				hold = -p[k][j]
 				p[k][j] = p[i][j]
 				p[i][j] = hold
@@ -530,29 +530,29 @@ func Inverse(proj XYZW) XYZW { //gd:Projection.inverse
 		/** "Interchange" columns **/
 		j = pvt_j[k]
 		if j != k { /** If columns are different **/
-			for i := 0; i < 4; i++ {
+			for i := range 4 {
 				hold = -p[i][k]
 				p[i][k] = p[i][j]
 				p[i][j] = hold
 			}
 		}
 		/** Divide column by minus pivot value **/
-		for i := 0; i < 4; i++ {
+		for i := range 4 {
 			if i != k {
 				p[i][k] /= (-pvt_val)
 			}
 		}
 		/** Reduce the matrix **/
-		for i := 0; i < 4; i++ {
+		for i := range 4 {
 			hold = p[i][k]
-			for j := 0; j < 4; j++ {
+			for j := range 4 {
 				if i != k && j != k {
 					p[i][j] += hold * p[k][j]
 				}
 			}
 		}
 		/** Divide row by pivot **/
-		for j := 0; j < 4; j++ {
+		for j := range 4 {
 			if j != k {
 				p[k][j] /= pvt_val
 			}
@@ -565,7 +565,7 @@ func Inverse(proj XYZW) XYZW { //gd:Projection.inverse
 	for k := 4 - 2; k >= 0; k-- { /* Don't need to work with 1 by 1 corner*/
 		i = pvt_j[k] /* Rows to swap correspond to pivot COLUMN */
 		if i != k {  /* If rows are different */
-			for j := 0; j < 4; j++ {
+			for j := range 4 {
 				hold = p[k][j]
 				p[k][j] = -p[i][j]
 				p[i][j] = hold
@@ -573,7 +573,7 @@ func Inverse(proj XYZW) XYZW { //gd:Projection.inverse
 		}
 		j = pvt_i[k] /* Columns to swap correspond to pivot ROW */
 		if j != k {  /* If columns are different */
-			for i := 0; i < 4; i++ {
+			for i := range 4 {
 				hold = p[i][k]
 				p[i][k] = -p[i][j]
 				p[i][j] = hold
@@ -611,10 +611,10 @@ func Mul(a, b XYZW) XYZW { //Projection*Projection
 	new_matrix := (*[4][4]Float.X)(unsafe.Pointer(&a))
 	p := (*[4][4]Float.X)(unsafe.Pointer(&a))
 	other := (*[4][4]Float.X)(unsafe.Pointer(&b))
-	for j := 0; j < 4; j++ {
-		for i := 0; i < 4; i++ {
+	for j := range 4 {
+		for i := range 4 {
 			var ab Float.X = 0
-			for k := 0; k < 4; k++ {
+			for k := range 4 {
 				ab += p[k][i] * other[j][k]
 			}
 			new_matrix[j][i] = ab

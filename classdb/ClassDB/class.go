@@ -1088,6 +1088,6 @@ type SignalInfo struct {
 	Name        string                `gd:"name"`
 	Flags       int                   `gd:"flags"`
 	ID          int                   `gd:"id"`
-	DefaultArgs []interface{}         `gd:"default_args"`
+	DefaultArgs []any                 `gd:"default_args"`
 	Args        []Object.PropertyInfo `gd:"args"`
 }

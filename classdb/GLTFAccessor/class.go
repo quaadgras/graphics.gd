@@ -154,7 +154,7 @@ type Any interface {
 /*
 Creates a new GLTFAccessor instance by parsing the given data structure.
 */
-func FromDictionary(dictionary map[string]interface{}) Instance { //gd:GLTFAccessor.from_dictionary
+func FromDictionary(dictionary map[string]any) Instance { //gd:GLTFAccessor.from_dictionary
 	self := Instance{}
 	return Instance(Advanced(self).FromDictionary(gd.DictionaryFromMap(dictionary)))
 }
@@ -162,8 +162,8 @@ func FromDictionary(dictionary map[string]interface{}) Instance { //gd:GLTFAcces
 /*
 Serializes this GLTFAccessor instance into a data structure.
 */
-func (self Instance) ToDictionary() map[string]interface{} { //gd:GLTFAccessor.to_dictionary
-	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](Advanced(self).ToDictionary()))
+func (self Instance) ToDictionary() map[string]any { //gd:GLTFAccessor.to_dictionary
+	return map[string]any(gd.DictionaryAs[map[string]any](Advanced(self).ToDictionary()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -27,8 +27,8 @@ func EngineTypeAsGoType(pkg, meta string, gdType string) string {
 	maybeInternal := func(name string) string {
 		return "gd." + name
 	}
-	if strings.HasPrefix(gdType, "typedarray::") {
-		gdType = strings.TrimPrefix(gdType, "typedarray::")
+	if after, ok := strings.CutPrefix(gdType, "typedarray::"); ok {
+		gdType = after
 		meta, rest, ok := strings.Cut(gdType, ":")
 		if ok {
 			gdType = rest

@@ -233,7 +233,7 @@ func (array Bytes) DecodeFloat64(offset uintptr) float64 { //gd:PackedByteArray.
 		return 0.0
 	}
 	var buf [8]byte
-	for i := 0; i < 8; i++ {
+	for i := range 8 {
 		buf[i] = array.Index(int(offset) + i)
 	}
 	return math.Float64frombits(array.ByteOrder().Uint64(buf[:]))
@@ -246,7 +246,7 @@ func (array Bytes) DecodeFloat32(offset uintptr) float32 { //gd:PackedByteArray.
 		return 0.0
 	}
 	var buf [4]byte
-	for i := 0; i < 4; i++ {
+	for i := range 4 {
 		buf[i] = array.Index(int(offset) + i)
 	}
 	return math.Float32frombits(array.ByteOrder().Uint32(buf[:]))
@@ -269,7 +269,7 @@ func (array Bytes) DecodeInt16(offset uintptr) int16 { //gd:PackedByteArray.deco
 		return 0
 	}
 	var buf [2]byte
-	for i := 0; i < 2; i++ {
+	for i := range 2 {
 		buf[i] = array.Index(int(offset) + i)
 	}
 	return int16(array.ByteOrder().Uint16(buf[:]))
@@ -282,7 +282,7 @@ func (array Bytes) DecodeInt32(offset uintptr) int32 { //gd:PackedByteArray.deco
 		return 0
 	}
 	var buf [4]byte
-	for i := 0; i < 4; i++ {
+	for i := range 4 {
 		buf[i] = array.Index(int(offset) + i)
 	}
 	return int32(array.ByteOrder().Uint32(buf[:]))
@@ -295,7 +295,7 @@ func (array Bytes) DecodeInt64(offset uintptr) int64 { //gd:PackedByteArray.deco
 		return 0
 	}
 	var buf [8]byte
-	for i := 0; i < 8; i++ {
+	for i := range 8 {
 		buf[i] = array.Index(int(offset) + i)
 	}
 	return int64(array.ByteOrder().Uint64(buf[:]))
@@ -317,7 +317,7 @@ func (array Bytes) DecodeUint16(offset uintptr) uint16 { //gd:PackedByteArray.de
 		return 0
 	}
 	var buf [2]byte
-	for i := 0; i < 2; i++ {
+	for i := range 2 {
 		buf[i] = array.Index(int(offset) + i)
 	}
 	return array.ByteOrder().Uint16(buf[:])
@@ -330,7 +330,7 @@ func (array Bytes) DecodeUint32(offset uintptr) uint32 { //gd:PackedByteArray.de
 		return 0
 	}
 	var buf [4]byte
-	for i := 0; i < 4; i++ {
+	for i := range 4 {
 		buf[i] = array.Index(int(offset) + i)
 	}
 	return array.ByteOrder().Uint32(buf[:])
@@ -343,7 +343,7 @@ func (array Bytes) DecodeUint64(offset uintptr) uint64 { //gd:PackedByteArray.de
 		return 0
 	}
 	var buf [8]byte
-	for i := 0; i < 8; i++ {
+	for i := range 8 {
 		buf[i] = array.Index(int(offset) + i)
 	}
 	return array.ByteOrder().Uint64(buf[:])

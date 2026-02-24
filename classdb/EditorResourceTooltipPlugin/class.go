@@ -160,7 +160,7 @@ type Interface interface {
 	// [RequestThumbnail]: https://pkg.go.dev/graphics.gd/classdb/EditorResourceTooltipPlugin#Instance.RequestThumbnail
 	// [ResourceLoader.Load]: https://pkg.go.dev/graphics.gd/classdb/ResourceLoader#Load
 	// [VBoxContainer]: https://pkg.go.dev/graphics.gd/classdb/VBoxContainer
-	MakeTooltipForPath(path string, metadata map[string]interface{}, base Control.Instance) Control.Instance
+	MakeTooltipForPath(path string, metadata map[string]any, base Control.Instance) Control.Instance
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -169,7 +169,7 @@ type Implementation = implementation
 type implementation struct{}
 
 func (self implementation) Handles(atype string) (_ bool) { return }
-func (self implementation) MakeTooltipForPath(path string, metadata map[string]interface{}, base Control.Instance) (_ Control.Instance) {
+func (self implementation) MakeTooltipForPath(path string, metadata map[string]any, base Control.Instance) (_ Control.Instance) {
 	return
 }
 
@@ -213,7 +213,7 @@ Note: If you decide to discard the 'base', make sure to call [Node.QueueFree], b
 [ResourceLoader.Load]: https://pkg.go.dev/graphics.gd/classdb/ResourceLoader#Load
 [VBoxContainer]: https://pkg.go.dev/graphics.gd/classdb/VBoxContainer
 */
-func (Instance) _make_tooltip_for_path(impl func(ptr gdclass.Receiver, path string, metadata map[string]interface{}, base Control.Instance) Control.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _make_tooltip_for_path(impl func(ptr gdclass.Receiver, path string, metadata map[string]any, base Control.Instance) Control.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
@@ -223,7 +223,7 @@ func (Instance) _make_tooltip_for_path(impl func(ptr gdclass.Receiver, path stri
 
 		defer gdreference.EndObject(gdclass.GetControl(base[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, path.String(), gd.DictionaryAs[map[string]interface{}](metadata), base)
+		ret := impl(self, path.String(), gd.DictionaryAs[map[string]any](metadata), base)
 		ptr, ok := gdreference.EndObject(gdclass.GetControl(ret[0])[0])
 
 		if !ok {

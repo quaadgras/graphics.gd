@@ -240,8 +240,8 @@ func RemoveTracker(tracker XRTracker.Instance) { //gd:XRServer.remove_tracker
 /*
 Returns a dictionary of trackers for 'tracker_types'.
 */
-func GetTrackers(tracker_types int) map[interface{}]interface{} { //gd:XRServer.get_trackers
-	return map[interface{}]interface{}(gd.DictionaryAs[map[interface{}]interface{}](Advanced().GetTrackers(int64(tracker_types))))
+func GetTrackers(tracker_types int) map[any]any { //gd:XRServer.get_trackers
+	return map[any]any(gd.DictionaryAs[map[any]any](Advanced().GetTrackers(int64(tracker_types))))
 }
 
 /*

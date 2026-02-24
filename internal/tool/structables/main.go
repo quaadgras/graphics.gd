@@ -17,8 +17,8 @@ func main() {
 }
 
 func check(class gdjson.Class, method gdjson.Method, name string, gdtype string) {
-	if strings.HasPrefix(gdtype, "typedarray::") {
-		gdtype = strings.TrimPrefix(gdtype, "typedarray::")
+	if after, ok := strings.CutPrefix(gdtype, "typedarray::"); ok {
+		gdtype = after
 		check(class, method, name, gdtype)
 		return
 	}

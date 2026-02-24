@@ -376,7 +376,7 @@ func IntersectsRay(a PositionSize, fromv, dirv Vector3.XYZ) (clip, normal Vector
 		from = *(*[3]Float.X)(unsafe.Pointer(&fromv))
 		dir  = *(*[3]Float.X)(unsafe.Pointer(&dirv))
 	)
-	for i := Vector3.Axis(0); i < 3; i++ {
+	for i := range Vector3.Axis(3) {
 		if dir[i] == 0 {
 			if (from[i] < Vector3.Index(a.Position, i)) || (from[i] > Vector3.Index(end, i)) {
 				return Vector3.Zero, Vector3.Zero, false
@@ -414,7 +414,7 @@ func IntesectsSegment(a PositionSize, from, to Vector3.XYZ) (clip, normal Vector
 
 		n1 = (*[3]Float.X)(unsafe.Pointer(&normal))
 	)
-	for i := Vector3.Axis(0); i < 3; i++ {
+	for i := range Vector3.Axis(3) {
 		var (
 			seg_from   = Vector3.Index(from, i)
 			seg_to     = Vector3.Index(to, i)

@@ -162,10 +162,10 @@ func VirtualByName(class IsClass, name string) reflect.Value {
 }
 
 func classNameOf(rtype reflect.Type) string {
-	if rtype.Kind() == reflect.Ptr || rtype.Kind() == reflect.Array {
+	if rtype.Kind() == reflect.Pointer || rtype.Kind() == reflect.Array {
 		return classNameOf(rtype.Elem())
 	}
-	if rtype.Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
+	if rtype.Implements(reflect.TypeFor[[0]IsClass]().Elem()) {
 		if rtype.Field(0).Anonymous {
 			if rename, ok := rtype.Field(0).Tag.Lookup("gd"); ok {
 				return rename

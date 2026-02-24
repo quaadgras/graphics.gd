@@ -238,7 +238,7 @@ Note: When using indices, it is recommended to only use points, lines, or triang
 [Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
 [Mesh.GetSurfaceCount]: https://pkg.go.dev/graphics.gd/classdb/Mesh#Instance.GetSurfaceCount
 */
-func (self MoreArgs) AddSurface(primitive Mesh.PrimitiveType, arrays []any, blend_shapes [][][]interface{}, lods map[float32][]int32, material Material.Instance, name string, flags int) { //gd:ImporterMesh.add_surface
+func (self MoreArgs) AddSurface(primitive Mesh.PrimitiveType, arrays []any, blend_shapes [][][]any, lods map[float32][]int32, material Material.Instance, name string, flags int) { //gd:ImporterMesh.add_surface
 	Advanced(self).AddSurface(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]](blend_shapes), gd.DictionaryFromMap(lods), material, String.New(name), int64(flags))
 }
 
@@ -277,8 +277,8 @@ func (self Instance) GetSurfaceArrays(surface_idx int) []any { //gd:ImporterMesh
 /*
 Returns a single set of blend shape arrays for the requested blend shape index for a surface.
 */
-func (self Instance) GetSurfaceBlendShapeArrays(surface_idx int, blend_shape_idx int) [][]interface{} { //gd:ImporterMesh.get_surface_blend_shape_arrays
-	return [][]interface{}(gd.ArrayAs[[][]interface{}](gd.InternalArray(Advanced(self).GetSurfaceBlendShapeArrays(int64(surface_idx), int64(blend_shape_idx)))))
+func (self Instance) GetSurfaceBlendShapeArrays(surface_idx int, blend_shape_idx int) [][]any { //gd:ImporterMesh.get_surface_blend_shape_arrays
+	return [][]any(gd.ArrayAs[[][]any](gd.InternalArray(Advanced(self).GetSurfaceBlendShapeArrays(int64(surface_idx), int64(blend_shape_idx)))))
 }
 
 /*

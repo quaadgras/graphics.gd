@@ -160,7 +160,7 @@ type Interface interface {
 	// Override this method to customize the tags for this audio stream. Should return a data structure of strings with the tag as the key and its content as the value.
 	//
 	// Commonly used tags include title, artist, album, tracknumber, and date.
-	GetTags() map[string]interface{}
+	GetTags() map[string]any
 	// Return the controllable parameters of this stream. This array contains dictionaries with a property info description format (see [Object.GetPropertyList]). Additionally, the default value for this parameter must be added tho each dictionary in "default_value" field.
 	//
 	// [Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
@@ -182,7 +182,7 @@ func (self implementation) GetLength() (_ Float.X)                              
 func (self implementation) IsMonophonic() (_ bool)                                { return }
 func (self implementation) GetBpm() (_ Float.X)                                   { return }
 func (self implementation) GetBeatCount() (_ int)                                 { return }
-func (self implementation) GetTags() (_ map[string]interface{})                   { return }
+func (self implementation) GetTags() (_ map[string]any)                           { return }
 func (self implementation) GetParameterList() (_ [][]struct{})                    { return }
 func (self implementation) HasLoop() (_ bool)                                     { return }
 func (self implementation) GetBarBeats() (_ int)                                  { return }
@@ -284,7 +284,7 @@ Override this method to customize the tags for this audio stream. Should return 
 
 Commonly used tags include title, artist, album, tracknumber, and date.
 */
-func (Instance) _get_tags(impl func(ptr gdclass.Receiver) map[string]interface{}) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_tags(impl func(ptr gdclass.Receiver) map[string]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)

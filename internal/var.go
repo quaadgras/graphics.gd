@@ -107,81 +107,81 @@ func variantTypeFromName(s string) (gdextension.VariantType, reflect.Type) {
 	case "Nil":
 		return gdextension.TypeNil, nil
 	case "bool", "Bool":
-		return gdextension.TypeBool, reflect.TypeOf(false)
+		return gdextension.TypeBool, reflect.TypeFor[bool]()
 	case "int", "Int":
-		return gdextension.TypeInt, reflect.TypeOf(int64(0))
+		return gdextension.TypeInt, reflect.TypeFor[int64]()
 	case "float", "Float":
-		return gdextension.TypeFloat, reflect.TypeOf(Float(0))
+		return gdextension.TypeFloat, reflect.TypeFor[Float]()
 	case "String":
-		return gdextension.TypeString, reflect.TypeOf(String{})
+		return gdextension.TypeString, reflect.TypeFor[String]()
 	case "Vector2":
-		return gdextension.TypeVector2, reflect.TypeOf(Vector2{})
+		return gdextension.TypeVector2, reflect.TypeFor[Vector2]()
 	case "Vector2i":
-		return gdextension.TypeVector2i, reflect.TypeOf(Vector2i{})
+		return gdextension.TypeVector2i, reflect.TypeFor[Vector2i]()
 	case "Rect2":
-		return gdextension.TypeRect2, reflect.TypeOf(Rect2{})
+		return gdextension.TypeRect2, reflect.TypeFor[Rect2]()
 	case "Rect2i":
-		return gdextension.TypeRect2i, reflect.TypeOf(Rect2i{})
+		return gdextension.TypeRect2i, reflect.TypeFor[Rect2i]()
 	case "Vector3":
-		return gdextension.TypeVector3, reflect.TypeOf(Vector3{})
+		return gdextension.TypeVector3, reflect.TypeFor[Vector3]()
 	case "Vector3i":
-		return gdextension.TypeVector3i, reflect.TypeOf(Vector3i{})
+		return gdextension.TypeVector3i, reflect.TypeFor[Vector3i]()
 	case "Transform2D":
-		return gdextension.TypeTransform2D, reflect.TypeOf(Transform2D{})
+		return gdextension.TypeTransform2D, reflect.TypeFor[Transform2D]()
 	case "Vector4":
-		return gdextension.TypeVector4, reflect.TypeOf(Vector4{})
+		return gdextension.TypeVector4, reflect.TypeFor[Vector4]()
 	case "Vector4i":
-		return gdextension.TypeVector4i, reflect.TypeOf(Vector4i{})
+		return gdextension.TypeVector4i, reflect.TypeFor[Vector4i]()
 	case "Plane":
-		return gdextension.TypePlane, reflect.TypeOf(Plane{})
+		return gdextension.TypePlane, reflect.TypeFor[Plane]()
 	case "Quaternion":
-		return gdextension.TypeQuaternion, reflect.TypeOf(Quaternion{})
+		return gdextension.TypeQuaternion, reflect.TypeFor[Quaternion]()
 	case "AABB":
-		return gdextension.TypeAABB, reflect.TypeOf(AABB{})
+		return gdextension.TypeAABB, reflect.TypeFor[AABB]()
 	case "Basis":
-		return gdextension.TypeBasis, reflect.TypeOf(Basis{})
+		return gdextension.TypeBasis, reflect.TypeFor[Basis]()
 	case "Transform3D":
-		return gdextension.TypeTransform3D, reflect.TypeOf(Transform3D{})
+		return gdextension.TypeTransform3D, reflect.TypeFor[Transform3D]()
 	case "Projection":
-		return gdextension.TypeProjection, reflect.TypeOf(Projection{})
+		return gdextension.TypeProjection, reflect.TypeFor[Projection]()
 	case "Color":
-		return gdextension.TypeColor, reflect.TypeOf(Color{})
+		return gdextension.TypeColor, reflect.TypeFor[Color]()
 	case "StringName":
-		return gdextension.TypeStringName, reflect.TypeOf(StringName{})
+		return gdextension.TypeStringName, reflect.TypeFor[StringName]()
 	case "NodePath":
-		return gdextension.TypeNodePath, reflect.TypeOf(NodePath{})
+		return gdextension.TypeNodePath, reflect.TypeFor[NodePath]()
 	case "RID":
-		return gdextension.TypeRID, reflect.TypeOf(RID(0))
+		return gdextension.TypeRID, reflect.TypeFor[RID]()
 	case "Object":
-		return gdextension.TypeObject, reflect.TypeOf(uintptr(0))
+		return gdextension.TypeObject, reflect.TypeFor[uintptr]()
 	case "Callable":
-		return gdextension.TypeCallable, reflect.TypeOf(Callable{})
+		return gdextension.TypeCallable, reflect.TypeFor[Callable]()
 	case "Signal":
-		return gdextension.TypeSignal, reflect.TypeOf(Signal{})
+		return gdextension.TypeSignal, reflect.TypeFor[Signal]()
 	case "Dictionary":
-		return gdextension.TypeDictionary, reflect.TypeOf(Dictionary{})
+		return gdextension.TypeDictionary, reflect.TypeFor[Dictionary]()
 	case "Array":
-		return gdextension.TypeArray, reflect.TypeOf(Array{})
+		return gdextension.TypeArray, reflect.TypeFor[Array]()
 	case "PackedByteArray":
-		return gdextension.TypePackedByteArray, reflect.TypeOf(PackedByteArray{})
+		return gdextension.TypePackedByteArray, reflect.TypeFor[PackedByteArray]()
 	case "PackedInt32Array":
-		return gdextension.TypePackedInt32Array, reflect.TypeOf(PackedInt32Array{})
+		return gdextension.TypePackedInt32Array, reflect.TypeFor[PackedInt32Array]()
 	case "PackedInt64Array":
-		return gdextension.TypePackedInt64Array, reflect.TypeOf(PackedInt64Array{})
+		return gdextension.TypePackedInt64Array, reflect.TypeFor[PackedInt64Array]()
 	case "PackedFloat32Array":
-		return gdextension.TypePackedFloat32Array, reflect.TypeOf(PackedFloat32Array{})
+		return gdextension.TypePackedFloat32Array, reflect.TypeFor[PackedFloat32Array]()
 	case "PackedFloat64Array":
-		return gdextension.TypePackedFloat64Array, reflect.TypeOf(PackedFloat64Array{})
+		return gdextension.TypePackedFloat64Array, reflect.TypeFor[PackedFloat64Array]()
 	case "PackedStringArray":
-		return gdextension.TypePackedStringArray, reflect.TypeOf(PackedStringArray{})
+		return gdextension.TypePackedStringArray, reflect.TypeFor[PackedStringArray]()
 	case "PackedVector2Array":
-		return gdextension.TypePackedVector2Array, reflect.TypeOf(PackedVector2Array{})
+		return gdextension.TypePackedVector2Array, reflect.TypeFor[PackedVector2Array]()
 	case "PackedVector3Array":
-		return gdextension.TypePackedVector3Array, reflect.TypeOf(PackedVector3Array{})
+		return gdextension.TypePackedVector3Array, reflect.TypeFor[PackedVector3Array]()
 	case "PackedVector4Array":
-		return gdextension.TypePackedVector4Array, reflect.TypeOf(PackedVector4Array{})
+		return gdextension.TypePackedVector4Array, reflect.TypeFor[PackedVector4Array]()
 	case "PackedColorArray":
-		return gdextension.TypePackedColorArray, reflect.TypeOf(PackedColorArray{})
+		return gdextension.TypePackedColorArray, reflect.TypeFor[PackedColorArray]()
 	default:
 		panic("gdextension.variantTypeFromName: unknown type " + s)
 	}

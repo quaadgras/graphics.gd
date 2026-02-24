@@ -305,7 +305,7 @@ func First[T any](array Contains[T]) T { //gd:Array.front
 }
 
 // Type returns the type of the elements in the array.
-func Type[T any](array Contains[T]) reflect.Type { return reflect.TypeOf([0]T{}).Elem() } //gd:Array.get_typed_builtin Array.is_same_typed Array.get_typed_class_name Array.get_typed_script
+func Type[T any](array Contains[T]) reflect.Type { return reflect.TypeFor[[0]T]().Elem() } //gd:Array.get_typed_builtin Array.is_same_typed Array.get_typed_class_name Array.get_typed_script
 
 // Has returns true if the array contains the given value.
 func Has[T comparable](value T, array Contains[T]) bool { return Find(array, value) != -1 } //gd:Array.has

@@ -150,7 +150,7 @@ type Interface interface {
 	GetScriptMethodList() [][]struct{}
 	GetScriptPropertyList() [][]struct{}
 	GetMemberLine(member string) int
-	GetConstants() map[string]interface{}
+	GetConstants() map[string]any
 	GetMembers() []string
 	IsPlaceholderFallbackEnabled() bool
 	GetRpcConfig() any
@@ -196,7 +196,7 @@ func (self implementation) UpdateExports()                                     {
 func (self implementation) GetScriptMethodList() (_ [][]struct{})              { return }
 func (self implementation) GetScriptPropertyList() (_ [][]struct{})            { return }
 func (self implementation) GetMemberLine(member string) (_ int)                { return }
-func (self implementation) GetConstants() (_ map[string]interface{})           { return }
+func (self implementation) GetConstants() (_ map[string]any)                   { return }
 func (self implementation) GetMembers() (_ []string)                           { return }
 func (self implementation) IsPlaceholderFallbackEnabled() (_ bool)             { return }
 func (self implementation) GetRpcConfig() (_ any)                              { return }
@@ -540,7 +540,7 @@ func (Instance) _get_member_line(impl func(ptr gdclass.Receiver, member string) 
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
-func (Instance) _get_constants(impl func(ptr gdclass.Receiver) map[string]interface{}) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_constants(impl func(ptr gdclass.Receiver) map[string]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)

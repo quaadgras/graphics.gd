@@ -91,18 +91,18 @@ func extractTagsFrom(name string, lines *bufio.Reader, tags map[string]FileLine)
 		if !strings.HasPrefix(line, "func ") {
 			continue
 		}
-		tagIdx := strings.Index(line, "//gd:")
-		if tagIdx == -1 {
+		_, after, ok := strings.Cut(line, "//gd:")
+		if !ok {
 			continue
 		}
-		tag := strings.TrimSpace(line[tagIdx+5:])
+		tag := strings.TrimSpace(after)
 		if tag == "" {
 			continue
 		}
 		splits := strings.Split(tag, " ")
 		for _, tag := range splits {
-			if strings.HasPrefix(tag, "PackedArray") {
-				suffix := strings.TrimPrefix(tag, "PackedArray")
+			if after, ok := strings.CutPrefix(tag, "PackedArray"); ok {
+				suffix := after
 				splits = append(splits, "PackedColorArray"+suffix)
 				splits = append(splits, "PackedFloat32Array"+suffix)
 				splits = append(splits, "PackedFloat64Array"+suffix)

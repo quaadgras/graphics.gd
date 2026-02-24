@@ -1980,12 +1980,12 @@ type Completion struct {
 	Result       Error.Code `gd:"result"`
 }
 type Constant struct {
-	Name  string      `gd:"name"`
-	Value interface{} `gd:"value"`
+	Name  string `gd:"name"`
+	Value any    `gd:"value"`
 }
 type Globals struct {
-	Globals []string      `gd:"globals"`
-	Values  []interface{} `gd:"values"`
+	Globals []string `gd:"globals"`
+	Values  []any    `gd:"values"`
 }
 type StackInfo struct {
 	File string `gd:"file"`
@@ -1993,12 +1993,12 @@ type StackInfo struct {
 	Line int    `gd:"line"`
 }
 type StackLevelLocals struct {
-	Locals []string      `gd:"locals"`
-	Values []interface{} `gd:"values"`
+	Locals []string `gd:"locals"`
+	Values []any    `gd:"values"`
 }
 type StackLevelMembers struct {
-	Members []string      `gd:"members"`
-	Values  []interface{} `gd:"values"`
+	Members []string `gd:"members"`
+	Values  []any    `gd:"values"`
 }
 type Template struct {
 	Inherit     string           `gd:"inherit"`

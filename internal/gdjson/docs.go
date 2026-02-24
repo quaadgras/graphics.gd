@@ -317,13 +317,14 @@ func DocsToGoDoc(docs string, classdb map[string]Class, className, codeblock str
 	docs = strings.ReplaceAll(docs, "$DOCS_URL", "https://docs.godotengine.org")
 	docs = strings.ReplaceAll(docs, "\n", "\n\n")
 
-	var parsed = parser.Parse(docs)
+	var parsed strings.Builder
+	parsed.WriteString(parser.Parse(docs))
 	if len(parser_links) > 0 {
-		parsed += "\n"
+		parsed.WriteString("\n")
 	}
 	for _, name := range slices.Sorted(maps.Keys(parser_links)) {
 		url := parser_links[name]
-		parsed += fmt.Sprintf("\n[%s]: %s", name, url)
+		parsed.WriteString(fmt.Sprintf("\n[%s]: %s", name, url))
 	}
-	return parsed
+	return parsed.String()
 }

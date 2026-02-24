@@ -21,7 +21,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
+
 	"os"
 )
 
@@ -81,7 +81,7 @@ func ReadZipTar(r io.Reader) (*Directory, error) {
 	} else if hdr.Name != TarMemberCD {
 		return nil, errors.New("invalid tarzip")
 	}
-	zipdir, err := ioutil.ReadAll(tr)
+	zipdir, err := io.ReadAll(tr)
 	if err != nil {
 		return nil, fmt.Errorf("error reading tar: %w", err)
 	}

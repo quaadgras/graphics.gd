@@ -92,7 +92,7 @@ func (VariantProxy) Projection(raw complex128) ProjectionType.XYZW {
 func (VariantProxy) Color(raw complex128) ColorType.RGBA {
 	return variantAsValueType[ColorType.RGBA](pointers.Load[Variant](raw), gdextension.TypeColor)
 }
-func (VariantProxy) Interface(raw complex128) interface{} {
+func (VariantProxy) Interface(raw complex128) any {
 	return pointers.Load[Variant](raw).Interface()
 }
 func (VariantProxy) RID(raw complex128) RIDType.Any {

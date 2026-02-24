@@ -140,8 +140,8 @@ If 'with_order' is true, a key named .order (note the leading period) is added t
 
 [CreateInstance]: https://pkg.go.dev/graphics.gd/classdb/InstancePlaceholder#Instance.CreateInstance
 */
-func (self Instance) GetStoredValues() map[string]interface{} { //gd:InstancePlaceholder.get_stored_values
-	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](Advanced(self).GetStoredValues(false)))
+func (self Instance) GetStoredValues() map[string]any { //gd:InstancePlaceholder.get_stored_values
+	return map[string]any(gd.DictionaryAs[map[string]any](Advanced(self).GetStoredValues(false)))
 }
 
 /*
@@ -151,8 +151,8 @@ If 'with_order' is true, a key named .order (note the leading period) is added t
 
 [CreateInstance]: https://pkg.go.dev/graphics.gd/classdb/InstancePlaceholder#Instance.CreateInstance
 */
-func (self MoreArgs) GetStoredValues(with_order bool) map[string]interface{} { //gd:InstancePlaceholder.get_stored_values
-	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](Advanced(self).GetStoredValues(with_order)))
+func (self MoreArgs) GetStoredValues(with_order bool) map[string]any { //gd:InstancePlaceholder.get_stored_values
+	return map[string]any(gd.DictionaryAs[map[string]any](Advanced(self).GetStoredValues(with_order)))
 }
 
 /*

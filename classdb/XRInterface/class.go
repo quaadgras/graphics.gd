@@ -200,8 +200,8 @@ Note:This information may only be available after [Initialize] was successfully 
 
 [Initialize]: https://pkg.go.dev/graphics.gd/classdb/XRInterface#Instance.Initialize
 */
-func (self Instance) GetSystemInfo() map[string]interface{} { //gd:XRInterface.get_system_info
-	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](Advanced(self).GetSystemInfo()))
+func (self Instance) GetSystemInfo() map[string]any { //gd:XRInterface.get_system_info
+	return map[string]any(gd.DictionaryAs[map[string]any](Advanced(self).GetSystemInfo()))
 }
 
 /*

@@ -39,7 +39,7 @@ type Method struct {
 	ReturnValue struct {
 		Type string `json:"type"`
 		Meta string `json:"meta"`
-	} `json:"return_value,omitempty"`
+	} `json:"return_value"`
 	Arguments         []Argument `json:"arguments,omitempty"`
 	ArgumentsRemapped []Argument
 }
@@ -135,8 +135,8 @@ type Specification struct {
 			} `json:"members"`
 		} `json:"classes"`
 	} `json:"builtin_class_member_offsets"`
-	GlobalConstants  []interface{} `json:"global_constants"`
-	GlobalEnums      []Enum        `json:"global_enums"`
+	GlobalConstants  []any  `json:"global_constants"`
+	GlobalEnums      []Enum `json:"global_enums"`
 	UtilityFunctions []struct {
 		Name       string `json:"name"`
 		ReturnType string `json:"return_type,omitempty"`
@@ -211,8 +211,8 @@ func ConvertName(fnName string) string {
 	fnName = strings.ToLower(fnName)
 
 	joins := []string{}
-	split := strings.Split(fnName, "_")
-	for _, word := range split {
+	split := strings.SplitSeq(fnName, "_")
+	for word := range split {
 		joins = append(joins, strings.Title(word))
 	}
 	/*if joins[0] == "Get" {

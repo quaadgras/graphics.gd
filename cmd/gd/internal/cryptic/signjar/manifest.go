@@ -199,17 +199,14 @@ const maxLineLength = 70
 
 // Write a key-value pair, wrapping long lines as necessary
 func writeAttribute(out *bytes.Buffer, key, value string) {
-	line := []byte(fmt.Sprintf("%s: %s", key, value))
+	line := fmt.Appendf(nil, "%s: %s", key, value)
 	for i := 0; i < len(line); {
 		goal := maxLineLength
 		if i != 0 {
 			out.Write([]byte{' '})
 			goal--
 		}
-		j := i + goal
-		if j > len(line) {
-			j = len(line)
-		}
+		j := min(i+goal, len(line))
 		out.Write(line[i:j])
 		out.Write([]byte("\r\n"))
 		i = j

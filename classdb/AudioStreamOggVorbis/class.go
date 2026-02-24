@@ -249,12 +249,12 @@ Commonly used tags include title, artist, album, tracknumber, and date (date doe
 
 Note: No tag is guaranteed to be present in every file, so make sure to account for the keys not always existing.
 */
-func (self Instance) Tags() map[string]interface{} { //gd:AudioStreamOggVorbis.tags
-	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](class(self).GetTags()))
+func (self Instance) Tags() map[string]any { //gd:AudioStreamOggVorbis.tags
+	return map[string]any(gd.DictionaryAs[map[string]any](class(self).GetTags()))
 }
 
 // SetTags sets the property returned by [GetTags]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTags(value map[string]interface{}) Instance { //gd:AudioStreamOggVorbis.tags
+func (self Instance) SetTags(value map[string]any) Instance { //gd:AudioStreamOggVorbis.tags
 	class(self).SetTags(gd.DictionaryFromMap(value))
 	return self
 }

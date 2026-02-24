@@ -288,7 +288,7 @@ NextSetOfPrimes:
 			todo += (nprimes - 2) / 5
 		}
 
-		for i := 0; i < nprimes; i++ {
+		for i := range nprimes {
 			var err error
 			primes[i], err = Prime(random, todo/(nprimes-i))
 			if err != nil {
@@ -299,7 +299,7 @@ NextSetOfPrimes:
 
 		// Make sure that primes is pairwise unequal.
 		for i, prime := range primes {
-			for j := 0; j < i; j++ {
+			for j := range i {
 				if prime.Cmp(primes[j]) == 0 {
 					continue NextSetOfPrimes
 				}
@@ -671,7 +671,7 @@ func DecryptOAEP(hash hash.Hash, random io.Reader, priv *PrivateKey, ciphertext 
 	lookingForIndex = 1
 	rest := db[hash.Size():]
 
-	for i := 0; i < len(rest); i++ {
+	for i := range rest {
 		equals0 := subtle.ConstantTimeByteEq(rest[i], 0)
 		equals1 := subtle.ConstantTimeByteEq(rest[i], 1)
 		index = subtle.ConstantTimeSelect(lookingForIndex&equals1, i, index)
@@ -689,10 +689,7 @@ func DecryptOAEP(hash hash.Hash, random io.Reader, priv *PrivateKey, ciphertext 
 // leftPad returns a new slice of length size. The contents of input are right
 // aligned in the new slice.
 func leftPad(input []byte, size int) (out []byte) {
-	n := len(input)
-	if n > size {
-		n = size
-	}
+	n := min(len(input), size)
 	out = make([]byte, size)
 	copy(out[len(out)-n:], input)
 	return

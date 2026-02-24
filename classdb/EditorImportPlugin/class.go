@@ -193,11 +193,11 @@ type Interface interface {
 	GetRecognizedExtensions() []string
 	// Gets the options and default values for the preset at this index. Returns an Array of Dictionaries with the following keys: name, default_value, property_hint (optional), hint_string (optional), usage (optional).
 	GetImportOptions(path string, preset_index int) [][]struct {
-		Name         string      "gd:\"name\""
-		DefaultValue interface{} "gd:\"default_value\""
-		PropertyHint int         "gd:\"property_hint\""
-		HintString   string      "gd:\"hint_string\""
-		Usage        int         "gd:\"usage\""
+		Name         string "gd:\"name\""
+		DefaultValue any    "gd:\"default_value\""
+		PropertyHint int    "gd:\"property_hint\""
+		HintString   string "gd:\"hint_string\""
+		Usage        int    "gd:\"usage\""
 	}
 	// Gets the extension used to save this resource in the .godot/imported directory (see [ProjectSettings] "application/config/use_hidden_project_data_directory").
 	//
@@ -258,7 +258,7 @@ type Interface interface {
 	// [/csharp]
 	//
 	//
-	GetOptionVisibility(path string, option_name string, options map[string]interface{}) bool
+	GetOptionVisibility(path string, option_name string, options map[string]any) bool
 	// Imports 'source_file' with the import 'options' specified. Should return [@Globalscope.Ok] if the import is successful, other values indicate failure.
 	//
 	// The imported resource is expected to be saved to save_path + "." + _get_save_extension(). If a different variant is preferred for a [feature tag], save the variant to save_path + "." + tag + "." + _get_save_extension() and add the feature tag to 'platform_variants'.
@@ -268,7 +268,7 @@ type Interface interface {
 	// This method must be overridden to do the actual importing work. See this class' description for an example of overriding this method.
 	//
 	// [feature tag]: https://docs.godotengine.org/tutorials/export/feature_tags.html
-	Import(source_file string, save_path string, options map[string]interface{}, platform_variants []string, gen_files []string) error
+	Import(source_file string, save_path string, options map[string]any, platform_variants []string, gen_files []string) error
 	// Tells whether this importer can be run in parallel on threads, or, on the contrary, it's only safe for the editor to call it from the main thread, for one file at a time.
 	//
 	// If this importer's implementation is thread-safe and can be run in parallel, override this with true to optimize for concurrency.
@@ -288,21 +288,21 @@ func (self implementation) GetPresetCount() (_ int)                   { return }
 func (self implementation) GetPresetName(preset_index int) (_ string) { return }
 func (self implementation) GetRecognizedExtensions() (_ []string)     { return }
 func (self implementation) GetImportOptions(path string, preset_index int) (_ [][]struct {
-	Name         string      "gd:\"name\""
-	DefaultValue interface{} "gd:\"default_value\""
-	PropertyHint int         "gd:\"property_hint\""
-	HintString   string      "gd:\"hint_string\""
-	Usage        int         "gd:\"usage\""
+	Name         string "gd:\"name\""
+	DefaultValue any    "gd:\"default_value\""
+	PropertyHint int    "gd:\"property_hint\""
+	HintString   string "gd:\"hint_string\""
+	Usage        int    "gd:\"usage\""
 })                                                       { return }
 func (self implementation) GetSaveExtension() (_ string) { return }
 func (self implementation) GetResourceType() (_ string)  { return }
 func (self implementation) GetPriority() (_ Float.X)     { return }
 func (self implementation) GetImportOrder() (_ int)      { return }
 func (self implementation) GetFormatVersion() (_ int)    { return }
-func (self implementation) GetOptionVisibility(path string, option_name string, options map[string]interface{}) (_ bool) {
+func (self implementation) GetOptionVisibility(path string, option_name string, options map[string]any) (_ bool) {
 	return
 }
-func (self implementation) Import(source_file string, save_path string, options map[string]interface{}, platform_variants []string, gen_files []string) (_ error) {
+func (self implementation) Import(source_file string, save_path string, options map[string]any, platform_variants []string, gen_files []string) (_ error) {
 	return
 }
 func (self implementation) CanImportThreaded() (_ bool) { return }
@@ -392,11 +392,11 @@ func (Instance) _get_recognized_extensions(impl func(ptr gdclass.Receiver) []str
 Gets the options and default values for the preset at this index. Returns an Array of Dictionaries with the following keys: name, default_value, property_hint (optional), hint_string (optional), usage (optional).
 */
 func (Instance) _get_import_options(impl func(ptr gdclass.Receiver, path string, preset_index int) [][]struct {
-	Name         string      "gd:\"name\""
-	DefaultValue interface{} "gd:\"default_value\""
-	PropertyHint int         "gd:\"property_hint\""
-	HintString   string      "gd:\"hint_string\""
-	Usage        int         "gd:\"usage\""
+	Name         string "gd:\"name\""
+	DefaultValue any    "gd:\"default_value\""
+	PropertyHint int    "gd:\"property_hint\""
+	HintString   string "gd:\"hint_string\""
+	Usage        int    "gd:\"usage\""
 }) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -485,7 +485,7 @@ func (Instance) _get_format_version(impl func(ptr gdclass.Receiver) int) (cb gd.
 /*
 Gets whether the import option specified by 'option_name' should be visible in the Import dock. The default implementation always returns true, making all options visible. This is mainly useful for hiding options that depend on others if one of them is disabled.
 */
-func (Instance) _get_option_visibility(impl func(ptr gdclass.Receiver, path string, option_name string, options map[string]interface{}) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_option_visibility(impl func(ptr gdclass.Receiver, path string, option_name string, options map[string]any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
@@ -494,7 +494,7 @@ func (Instance) _get_option_visibility(impl func(ptr gdclass.Receiver, path stri
 		var options = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(options))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, path.String(), option_name.String(), gd.DictionaryAs[map[string]interface{}](options))
+		ret := impl(self, path.String(), option_name.String(), gd.DictionaryAs[map[string]any](options))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -510,7 +510,7 @@ This method must be overridden to do the actual importing work. See this class' 
 
 [feature tag]: https://docs.godotengine.org/tutorials/export/feature_tags.html
 */
-func (Instance) _import(impl func(ptr gdclass.Receiver, source_file string, save_path string, options map[string]interface{}, platform_variants []string, gen_files []string) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _import(impl func(ptr gdclass.Receiver, source_file string, save_path string, options map[string]any, platform_variants []string, gen_files []string) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var source_file = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(source_file))
@@ -523,7 +523,7 @@ func (Instance) _import(impl func(ptr gdclass.Receiver, source_file string, save
 		var gen_files = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 4))))
 		defer pointers.End(gd.InternalArray(gen_files))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, source_file.String(), save_path.String(), gd.DictionaryAs[map[string]interface{}](options), gd.ArrayAs[[]string](gd.InternalArray(platform_variants)), gd.ArrayAs[[]string](gd.InternalArray(gen_files)))
+		ret := impl(self, source_file.String(), save_path.String(), gd.DictionaryAs[map[string]any](options), gd.ArrayAs[[]string](gd.InternalArray(platform_variants)), gd.ArrayAs[[]string](gd.InternalArray(gen_files)))
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
 		if !ok {
@@ -562,7 +562,7 @@ This function can only be called during the [Import] callback and it allows manu
 
 [Import]: https://pkg.go.dev/graphics.gd/classdb/EditorImportPlugin#Interface
 */
-func (self MoreArgs) AppendImportExternalResource(path string, custom_options map[string]interface{}, custom_importer string, generator_parameters any) error { //gd:EditorImportPlugin.append_import_external_resource
+func (self MoreArgs) AppendImportExternalResource(path string, custom_options map[string]any, custom_importer string, generator_parameters any) error { //gd:EditorImportPlugin.append_import_external_resource
 	return error(gd.ToError(Advanced(self).AppendImportExternalResource(String.New(path), gd.DictionaryFromMap(custom_options), String.New(custom_importer), variant.New(generator_parameters))))
 }
 

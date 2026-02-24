@@ -305,13 +305,13 @@ Returns the keys of all messages, that is, the context and untranslated strings 
 Note: If a message does not use a context, the corresponding element is the untranslated string. Otherwise, the corresponding element is the context and untranslated string separated by the EOT character (U+0004). This is done for compatibility purposes.
 
 	for _, key := range translation.GetMessageList() {
-		var p = strings.Index(key, "\u0004")
-		if p == -1 {
+		var before, after, ok = strings.Cut(key, "\u0004")
+		if !ok {
 			var untranslated = key
 			fmt.Printf("Message %s", untranslated)
 		} else {
-			var context = key[0:p]
-			var untranslated = key[p+1:]
+			var context = before
+			var untranslated = after
 			fmt.Printf("Message %s with context %s", untranslated, context)
 		}
 	}

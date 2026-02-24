@@ -25,10 +25,10 @@ func BitsToFloat(a XY) gpu.Vec2 { return gpu.NewVec2Expression(gpu.Fn("intBitsTo
 func either[T gpu.AnyInt | XY](v T) gpu.Evaluator {
 	rvalue := reflect.ValueOf(v)
 	switch {
-	case rvalue.Type().ConvertibleTo(reflect.TypeOf(XY{})):
-		return rvalue.Convert(reflect.TypeOf(XY{})).Interface().(XY)
-	case rvalue.Type().ConvertibleTo(reflect.TypeOf(gpu.Int{})):
-		return gpu.NewInt(rvalue.Convert(reflect.TypeOf(gpu.Int{})).Interface().(gpu.Int))
+	case rvalue.Type().ConvertibleTo(reflect.TypeFor[XY]()):
+		return rvalue.Convert(reflect.TypeFor[XY]()).Interface().(XY)
+	case rvalue.Type().ConvertibleTo(reflect.TypeFor[gpu.Int]()):
+		return gpu.NewInt(rvalue.Convert(reflect.TypeFor[gpu.Int]()).Interface().(gpu.Int))
 	default:
 		return gpu.NewInt(rvalue.Int())
 	}

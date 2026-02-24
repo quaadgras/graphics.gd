@@ -31,10 +31,10 @@ func Neg(a XY) XY { return gpu.NewVec2Expression(gpu.Op(nil, "-", a)) } //glsl:-
 func either[T gpu.AnyFloat | XY](v T) gpu.Evaluator {
 	rvalue := reflect.ValueOf(v)
 	switch {
-	case rvalue.Type().ConvertibleTo(reflect.TypeOf(XY{})):
-		return rvalue.Convert(reflect.TypeOf(XY{})).Interface().(XY)
-	case rvalue.Type().ConvertibleTo(reflect.TypeOf(gpu.Float{})):
-		return gpu.NewFloat(rvalue.Convert(reflect.TypeOf(gpu.Float{})).Interface().(gpu.Float))
+	case rvalue.Type().ConvertibleTo(reflect.TypeFor[XY]()):
+		return rvalue.Convert(reflect.TypeFor[XY]()).Interface().(XY)
+	case rvalue.Type().ConvertibleTo(reflect.TypeFor[gpu.Float]()):
+		return gpu.NewFloat(rvalue.Convert(reflect.TypeFor[gpu.Float]()).Interface().(gpu.Float))
 	default:
 		return gpu.NewFloat(rvalue.Float())
 	}

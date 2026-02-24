@@ -88,7 +88,7 @@ func CutVariant(v any, cut bool) Variant {
 		if value.IsNil() {
 			return Variant{}
 		}
-		if rtype.Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
+		if rtype.Implements(reflect.TypeFor[[0]IsClass]().Elem()) {
 			obj := value.Interface().(IsClass).AsObject()
 			if gdreference.GetObject(obj[0]) == 0 {
 				return Variant{}

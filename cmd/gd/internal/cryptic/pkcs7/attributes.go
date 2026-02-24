@@ -39,7 +39,7 @@ func (l *AttributeList) Bytes() ([]byte, error) {
 // Need to marshal authenticated attributes as a SET OF in order to digest them,
 // but since go 1.15 sets get sorted which breaks the digest. Marshal as a
 // sequence and then change the tag.
-func marshalUnsortedSet(v interface{}) ([]byte, error) {
+func marshalUnsortedSet(v any) ([]byte, error) {
 	encoded, err := asn1.Marshal(v)
 	if err != nil {
 		return nil, err
@@ -55,7 +55,7 @@ func marshalUnsortedSet(v interface{}) ([]byte, error) {
 }
 
 // GetOne unmarshals a single attribute, if it exists
-func (l *AttributeList) GetOne(oid asn1.ObjectIdentifier, dest interface{}) error {
+func (l *AttributeList) GetOne(oid asn1.ObjectIdentifier, dest any) error {
 	for _, raw := range *l {
 		if !raw.Type.Equal(oid) {
 			continue
@@ -73,7 +73,7 @@ func (l *AttributeList) GetOne(oid asn1.ObjectIdentifier, dest interface{}) erro
 }
 
 // GetAll unmarshals all values for an attribute. dest should be a pointer to a slice.
-func (l *AttributeList) GetAll(oid asn1.ObjectIdentifier, dest interface{}) error {
+func (l *AttributeList) GetAll(oid asn1.ObjectIdentifier, dest any) error {
 	for _, raw := range *l {
 		if raw.Type.Equal(oid) {
 			_, err := asn1.UnmarshalWithParams(raw.Values.FullBytes, dest, "set")
@@ -84,7 +84,7 @@ func (l *AttributeList) GetAll(oid asn1.ObjectIdentifier, dest interface{}) erro
 }
 
 // create or append to an attribute
-func (l *AttributeList) Add(oid asn1.ObjectIdentifier, obj interface{}) error {
+func (l *AttributeList) Add(oid asn1.ObjectIdentifier, obj any) error {
 	value, err := asn1.Marshal(obj)
 	if err != nil {
 		return err

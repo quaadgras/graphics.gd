@@ -136,7 +136,7 @@ type Interface interface {
 	//
 	// [FBXDocument]: https://pkg.go.dev/graphics.gd/classdb/FBXDocument
 	// [GLTFDocument]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocument
-	ImportScene(path string, flags Flags, options map[string]interface{}) Object.Instance
+	ImportScene(path string, flags Flags, options map[string]any) Object.Instance
 	// Override to add general import options. These will appear in the main import dock on the editor. Add options via [AddImportOption] and [AddImportOptionAdvanced].
 	//
 	// Note: All [EditorSceneFormatImporter] and [EditorScenePostImportPlugin] instances will add options for all files. It is good practice to check the file extension when 'path' is non-empty.
@@ -158,7 +158,7 @@ type Implementation = implementation
 type implementation struct{}
 
 func (self implementation) GetExtensions() (_ []string) { return }
-func (self implementation) ImportScene(path string, flags Flags, options map[string]interface{}) (_ Object.Instance) {
+func (self implementation) ImportScene(path string, flags Flags, options map[string]any) (_ Object.Instance) {
 	return
 }
 func (self implementation) GetImportOptions(path string) { return }
@@ -188,7 +188,7 @@ Perform the bulk of the scene import logic here, for example using [GLTFDocument
 [FBXDocument]: https://pkg.go.dev/graphics.gd/classdb/FBXDocument
 [GLTFDocument]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocument
 */
-func (Instance) _import_scene(impl func(ptr gdclass.Receiver, path string, flags Flags, options map[string]interface{}) Object.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _import_scene(impl func(ptr gdclass.Receiver, path string, flags Flags, options map[string]any) Object.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
@@ -196,7 +196,7 @@ func (Instance) _import_scene(impl func(ptr gdclass.Receiver, path string, flags
 		var options = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(options))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, path.String(), Flags(flags), gd.DictionaryAs[map[string]interface{}](options))
+		ret := impl(self, path.String(), Flags(flags), gd.DictionaryAs[map[string]any](options))
 		ptr, ok := gdreference.EndObject(ret[0])
 
 		if !ok {

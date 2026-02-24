@@ -48,7 +48,7 @@ func NewBuilder(privKey crypto.Signer, certs []*x509.Certificate, opts crypto.Si
 }
 
 // Embed bytes or a structure into the PKCS#7 content
-func (sb *SignatureBuilder) SetContent(ctype asn1.ObjectIdentifier, data interface{}) error {
+func (sb *SignatureBuilder) SetContent(ctype asn1.ObjectIdentifier, data any) error {
 	cinfo, err := NewContentInfo(ctype, data)
 	if err != nil {
 		return err
@@ -86,7 +86,7 @@ func (sb *SignatureBuilder) SetDetachedContent(ctype asn1.ObjectIdentifier, dige
 }
 
 // Add an authenticated attribute to SignerInfo
-func (sb *SignatureBuilder) AddAuthenticatedAttribute(oid asn1.ObjectIdentifier, data interface{}) error {
+func (sb *SignatureBuilder) AddAuthenticatedAttribute(oid asn1.ObjectIdentifier, data any) error {
 	return sb.authAttrs.Add(oid, data)
 }
 

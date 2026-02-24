@@ -119,8 +119,8 @@ func (docs *XML) generateFromPackage(pkg *packages.Package, seen map[string]bool
 				for _, method := range documented.Methods {
 					name := String.ToSnakeCase(method.Name)
 					doc := strings.TrimSpace(method.Doc)
-					if strings.HasPrefix(doc, method.Name) {
-						doc = name + strings.TrimPrefix(doc, method.Name)
+					if after, ok0 := strings.CutPrefix(doc, method.Name); ok0 {
+						doc = name + after
 					}
 					methods = append(methods, Method{
 						Name:        name,

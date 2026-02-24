@@ -248,7 +248,7 @@ func StepDecimals[X Any](x X) int { //gd:step_decimals
 	}
 	var abs = Abs(x)
 	var decs = abs - X((int)(abs)) // Strip away integer part
-	for i := 0; i < maxn; i++ {
+	for i := range maxn {
 		if decs >= X(sd[i]) {
 			return int(i)
 		}

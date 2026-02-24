@@ -83,7 +83,7 @@ func SubjectKeyID(pub crypto.PublicKey) ([]byte, error) {
 }
 
 // Test whether two public or private keys have the same public key
-func SameKey(pub1, pub2 interface{}) bool {
+func SameKey(pub1, pub2 any) bool {
 	if privkey, ok := pub1.(crypto.Signer); ok {
 		pub1 = privkey.Public()
 	}
@@ -103,7 +103,7 @@ func SameKey(pub1, pub2 interface{}) bool {
 }
 
 // Verify an RSA or ECDSA signature
-func Verify(pub interface{}, hash crypto.Hash, hashed []byte, sig []byte) error {
+func Verify(pub any, hash crypto.Hash, hashed []byte, sig []byte) error {
 	switch pubk := pub.(type) {
 	case *rsa.PublicKey:
 		return rsa.VerifyPKCS1v15(pubk, hash, hashed, sig)
@@ -121,7 +121,7 @@ func Verify(pub interface{}, hash crypto.Hash, hashed []byte, sig []byte) error 
 }
 
 // Determine the type of a public or private key
-func GetPublicKeyAlgorithm(key interface{}) x509.PublicKeyAlgorithm {
+func GetPublicKeyAlgorithm(key any) x509.PublicKeyAlgorithm {
 	if privkey, ok := key.(crypto.Signer); ok {
 		key = privkey.Public()
 	}

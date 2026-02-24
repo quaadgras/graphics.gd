@@ -367,17 +367,17 @@ const (
 )
 
 type Notification struct {
-	Method string      `gd:"method"`
-	Params interface{} `gd:"params"`
+	Method string `gd:"method"`
+	Params any    `gd:"params"`
 }
 type Request struct {
-	Method string      `gd:"method"`
-	Params interface{} `gd:"params"`
-	ID     string      `gd:"id"`
+	Method string `gd:"method"`
+	Params any    `gd:"params"`
+	ID     string `gd:"id"`
 }
 type Response struct {
-	Result interface{} `gd:"result"`
-	ID     string      `gd:"id"`
+	Result any    `gd:"result"`
+	ID     string `gd:"id"`
 }
 type ResponseError struct {
 	Code    int    `gd:"code"`

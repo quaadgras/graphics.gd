@@ -114,7 +114,7 @@ func NearestPowerOfTwo[T Any](x T) T { //gd:nearest_po2
 	}
 	x--
 	num := get_shift_from_power_of_2(unsafe.Sizeof(x)) + 3
-	for i := 0; i < num; i++ {
+	for i := range num {
 		x |= x >> (1 << i)
 	}
 	return x + 1

@@ -25,8 +25,8 @@ func generate_header_file() error {
 
 	for fn := range api.StructureOf(&gdextension.Host).Iter() {
 		var out = "void"
-		for result := range fn.Type.NumOut() {
-			if ctype := ctypeOf(fn.Type.Out(result)); ctype != "" {
+		for out0 := range fn.Type.Outs() {
+			if ctype := ctypeOf(out0); ctype != "" {
 				out = ctype
 				break
 			}
@@ -313,8 +313,8 @@ func toCValue(rtype reflect.Type, value string) string {
 func args_flat(rtype reflect.Type, x32 bool) iter.Seq2[int, reflect.Type] {
 	return func(yield func(int, reflect.Type) bool) {
 		var n int
-		for i := range rtype.NumIn() {
-			arg := rtype.In(i)
+		for arg := range rtype.Ins() {
+			arg := arg
 			if arg.Kind() == reflect.Array {
 				length := arg.Len()
 				if x32 && strings.HasPrefix(arg.Name(), "PackedArray[") {
@@ -322,10 +322,10 @@ func args_flat(rtype reflect.Type, x32 bool) iter.Seq2[int, reflect.Type] {
 				}
 				for j := 0; j < length; j++ {
 					if x32 && (arg.Elem().Kind() == reflect.Uint64 || arg.Elem().Kind() == reflect.Int64) {
-						if !yield(n, reflect.TypeOf(uint32(0))) {
+						if !yield(n, reflect.TypeFor[uint32]()) {
 							return
 						}
-						if !yield(n+1, reflect.TypeOf(uint32(0))) {
+						if !yield(n+1, reflect.TypeFor[uint32]()) {
 							return
 						}
 						n += 2
@@ -340,23 +340,23 @@ func args_flat(rtype reflect.Type, x32 bool) iter.Seq2[int, reflect.Type] {
 				if !yield(n, arg) {
 					return
 				}
-				if !yield(n+1, reflect.TypeOf(int(0))) {
+				if !yield(n+1, reflect.TypeFor[int]()) {
 					return
 				}
 				n += 2
 			} else if arg.Kind() == reflect.String {
-				if !yield(n, reflect.TypeOf("")) {
+				if !yield(n, reflect.TypeFor[string]()) {
 					return
 				}
-				if !yield(n+1, reflect.TypeOf(int(0))) {
+				if !yield(n+1, reflect.TypeFor[int]()) {
 					return
 				}
 				n += 2
 			} else if x32 && (arg.Kind() == reflect.Uint64 || arg.Kind() == reflect.Int64) {
-				if !yield(n, reflect.TypeOf(uint32(0))) {
+				if !yield(n, reflect.TypeFor[uint32]()) {
 					return
 				}
-				if !yield(n+1, reflect.TypeOf(uint32(0))) {
+				if !yield(n+1, reflect.TypeFor[uint32]()) {
 					return
 				}
 				n += 2
@@ -372,9 +372,9 @@ func args_flat(rtype reflect.Type, x32 bool) iter.Seq2[int, reflect.Type] {
 
 func getReturn(rtype reflect.Type) reflect.Type {
 	var out reflect.Type
-	for i := 0; i < rtype.NumOut(); i++ {
-		if rtype.Out(i).Size() > 0 {
-			out = rtype.Out(i)
+	for out0 := range rtype.Outs() {
+		if out0.Size() > 0 {
+			out = out0
 			break
 		}
 	}

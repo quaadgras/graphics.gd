@@ -27,7 +27,7 @@ type contentInfo2 struct {
 
 // Create a ContentInfo structure for the given bytes or structure. data can be
 // nil for detached signatures.
-func NewContentInfo(contentType asn1.ObjectIdentifier, data interface{}) (ci ContentInfo, err error) {
+func NewContentInfo(contentType asn1.ObjectIdentifier, data any) (ci ContentInfo, err error) {
 	if data == nil {
 		return ContentInfo{ContentType: contentType}, nil
 	}
@@ -56,7 +56,7 @@ func NewContentInfo(contentType asn1.ObjectIdentifier, data interface{}) (ci Con
 }
 
 // Unmarshal a structure from a ContentInfo.
-func (ci ContentInfo) Unmarshal(dest interface{}) (err error) {
+func (ci ContentInfo) Unmarshal(dest any) (err error) {
 	// First re-decode the contentinfo but this time with the second field
 	var ci2 contentInfo2
 	_, err = asn1.Unmarshal(ci.Raw, &ci2)

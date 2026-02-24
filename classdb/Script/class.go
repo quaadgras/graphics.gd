@@ -255,8 +255,8 @@ func (self Instance) GetScriptSignalList() []SignalInfo { //gd:Script.get_script
 /*
 Returns a dictionary containing constant names and their values.
 */
-func (self Instance) GetScriptConstantMap() map[string]interface{} { //gd:Script.get_script_constant_map
-	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](Advanced(self).GetScriptConstantMap()))
+func (self Instance) GetScriptConstantMap() map[string]any { //gd:Script.get_script_constant_map
+	return map[string]any(gd.DictionaryAs[map[string]any](Advanced(self).GetScriptConstantMap()))
 }
 
 /*
@@ -462,6 +462,6 @@ type SignalInfo struct {
 	Name        string                `gd:"name"`
 	Flags       int                   `gd:"flags"`
 	ID          int                   `gd:"id"`
-	DefaultArgs []interface{}         `gd:"default_args"`
+	DefaultArgs []any                 `gd:"default_args"`
 	Args        []Object.PropertyInfo `gd:"args"`
 }
