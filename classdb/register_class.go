@@ -15,6 +15,7 @@ import (
 	"runtime/debug"
 	"strings"
 	"unsafe"
+	"weak"
 
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
@@ -43,7 +44,6 @@ import (
 	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/internal/ring"
-	"graphics.gd/internal/threadcheck"
 	"graphics.gd/internal/threadsafe"
 )
 
@@ -612,33 +612,38 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 	// Use EngineClass (the first built-in ancestor) for construction, not Super.
 	// This prevents the issue where extension classes inheriting from other extension
 	// classes would trigger multiple calls to set_instance_binding on the same object.
-	var super *[1]gdreference.Object = (*[1]gdreference.Object)(value.UnsafePointer())
-	gdreference.PinObject(&super[0], gdextension.Host.Objects.Make(pointers.Get(class.EngineClass)))
+	var super *gdreference.Object = (*gdreference.Object)(value.UnsafePointer())
+	gdreference.PinObject(super, gdextension.Host.Objects.Make(pointers.Get(class.EngineClass)))
 	if class.RefCounted {
-		gd.RefCounted(super[0]).InitRef()
+		gd.RefCounted(*super).InitRef()
 	}
-	instance := class.reloadInstance(value, *super)
+	instance := class.reloadInstance(value, super)
 	id := gdextension.ExtensionInstanceID(instances.New(instance))
-	gdextension.Host.Objects.Extension.Setup(gdreference.GetObject(super[0]), pointers.Get(class.Name), id)
-	if !add_root && threadcheck.Main() {
-		local.Insert(value, struct{}{})
-	}
+	gdextension.Host.Objects.Extension.Setup(gdreference.GetObject(*super), pointers.Get(class.Name), id)
 	if keepalive := compile_keepalive(reflect.PointerTo(class.Type)); keepalive != nil {
 		roots.Insert(value, keepalive)
 	}
+	if add_root {
+		instance.strong, _ = reflect.TypeAssert[gdclass.Pointer](value)
+	}
+	instance.cleanup = runtime.AddCleanup(super, func(raw gdextension.Object) {
+		Callable.Defer(Callable.New(func() {
+			gd.Free(raw)
+		}))
+	}, gdreference.GetObject(*super))
 	for _, field := range class.Singletons {
 		if singleton, ok := singletons.Lookup(field.Type.Elem()); ok {
 			value.Elem().FieldByIndex(field.Index).Set(singleton)
 		}
 	}
 	if notify_postinitialize {
-		gd.ObjectNotification(super[0], 0, false)
+		gd.ObjectNotification(*super, 0, false)
 	}
 	instance.OnCreate(value)
-	return *super
+	return [1]gd.Object{*super}
 }
 
-func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd.Object) *instanceImplementation {
+func (class classImplementation) reloadInstance(value reflect.Value, super *gd.Object) *instanceImplementation {
 	value = value.Elem()
 
 	// TODO cache this check
@@ -658,14 +663,14 @@ func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd
 		name, _, _ = strings.Cut(name, "(")
 		// Signal fields need to have their values injected into the field, so that they can be used (emitted).
 		if reflect.PointerTo(field.Type).Implements(reflect.TypeFor[Signal.Pointer]()) {
-			signal := pointers.Pin(gd.NewSignalOf(super, gd.NewStringName(name)))
+			signal := pointers.Pin(gd.NewSignalOf([1]gd.Object{*super}, gd.NewStringName(name)))
 			rvalue.Interface().(Signal.Pointer).SetAny(Signal.Via(gd.SignalProxy{}, pointers.Pack(signal)))
 			signals = append(signals, signalChan{
 				signal: signal,
 			})
 		}
 		if field.Type.Kind() == reflect.Chan && field.Type.ChanDir() == reflect.SendDir {
-			signal := pointers.Pin(gd.NewSignalOf(super, gd.NewStringName(name)))
+			signal := pointers.Pin(gd.NewSignalOf([1]gd.Object{*super}, gd.NewStringName(name)))
 			ch := reflect.MakeChan(reflect.ChanOf(reflect.BothDir, field.Type.Elem()), 0)
 			rvalue.Elem().Set(ch)
 			signals = append(signals, signalChan{
@@ -679,11 +684,12 @@ func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd
 		}
 	}
 	if len(signals) > 0 {
-		go manageSignals(Object.Instance{super[0]}.ID(), chSignals)
+		go manageSignals(Object.Instance{*super}.ID(), chSignals)
 	}
 	return &instanceImplementation{
-		object:     gdreference.GetObject(super[0]),
-		Value:      value.Addr().Interface().(gdclass.Pointer),
+		object:     gdreference.GetObject(*super),
+		Type:       class.Type,
+		weak:       weak.Make(super),
 		signals:    signals,
 		isEditor:   !class.Tool && Engine.IsEditorHint(),
 		isMainLoop: class.isMainLoop,
@@ -735,7 +741,10 @@ func (class classImplementation) GetVirtual(name gd.StringName) any {
 
 type instanceImplementation struct {
 	object  gdextension.Object
-	Value   gdclass.Pointer
+	Type    reflect.Type
+	strong  gdclass.Pointer
+	weak    weak.Pointer[gdreference.Object]
+	cleanup runtime.Cleanup
 	signals []signalChan
 
 	// FIXME use a bitfield for these booleans.
@@ -744,18 +753,33 @@ type instanceImplementation struct {
 
 var lastGC int
 
+func (instance *instanceImplementation) Interface() (gdclass.Pointer, bool) {
+	if instance.strong != nil {
+		return instance.strong, true
+	}
+	ptr := instance.weak.Value()
+	if ptr == nil {
+		return nil, false
+	}
+	return reflect.TypeAssert[gdclass.Pointer](reflect.NewAt(instance.Type, unsafe.Pointer(ptr)))
+}
+
 func (instance *instanceImplementation) OnCreate(value reflect.Value) {
-	if impl, ok := instance.Value.(interface {
+	val, ok := instance.Interface()
+	if !ok {
+		return
+	}
+	if impl, ok := val.(interface {
 		OnCreate()
 	}); ok {
 		impl.OnCreate()
 	}
-	if impl, ok := instance.Value.(interface {
+	if impl, ok := val.(interface {
 		OnCreate(value reflect.Value)
 	}); ok {
 		impl.OnCreate(value)
 	}
-	if impl, ok := instance.Value.(interface {
+	if impl, ok := val.(interface {
 		Init()
 	}); ok {
 		impl.Init()
@@ -763,7 +787,10 @@ func (instance *instanceImplementation) OnCreate(value reflect.Value) {
 }
 
 func (instance *instanceImplementation) Notification(what Object.Notification, reversed bool) {
-	gdreference.PinObject((*gdreference.Object)(reflect.ValueOf(instance.Value).UnsafePointer()), instance.object)
+	val, ok := instance.Interface()
+	if !ok {
+		return
+	}
 	if what == Node.NotificationReady {
 		instance.ready()
 	}
@@ -783,7 +810,7 @@ func (instance *instanceImplementation) Notification(what Object.Notification, r
 		debug.PrintStack()
 	}
 	if !instance.isEditor {
-		switch notify := instance.Value.(type) {
+		switch notify := val.(type) {
 		case interface{ Notification(gd.NotificationType) }:
 			notify.Notification(gd.NotificationType(what))
 		case interface{ Notification(Object.Notification) }:
@@ -800,7 +827,11 @@ func (instance *instanceImplementation) Notification(what Object.Notification, r
 }
 
 func (instance *instanceImplementation) ToString() (gd.String, bool) {
-	switch onfree := instance.Value.(type) {
+	val, ok := instance.Interface()
+	if !ok {
+		return gd.String{}, false
+	}
+	switch onfree := val.(type) {
 	case interface{ ToString() string }:
 		return gd.NewString(onfree.ToString()), true
 	case interface{ String() string }:
@@ -817,8 +848,11 @@ func (instance *instanceImplementation) Unreference() bool {
 }
 
 func (instance *instanceImplementation) CallVirtual(virtual gd.ExtensionClassCallVirtualFunc, args, back gdextension.Pointer) {
-	gdreference.PinObject((*gdreference.Object)(reflect.ValueOf(instance.Value).UnsafePointer()), instance.object)
-	virtual(instance.Value, args, back)
+	val, ok := instance.Interface()
+	if !ok {
+		return
+	}
+	virtual(val, args, back)
 }
 
 func (instance *instanceImplementation) GetRID() gd.RID {
@@ -829,16 +863,20 @@ func (instance *instanceImplementation) Free() {
 	if instance.freed {
 		return
 	}
-	gdreference.EndObject(instance.Value.AsObject()[0])
-	roots.Remove(reflect.ValueOf(instance.Value))
-	local.Remove(reflect.ValueOf(instance.Value))
+	val, ok := instance.Interface()
+	if !ok {
+		return
+	}
+	instance.cleanup.Stop()
+	gdreference.EndObject(val.AsObject()[0])
+	roots.Remove(reflect.ValueOf(val))
 	for _, signal := range instance.signals {
 		if signal.rvalue.IsValid() {
 			signal.rvalue.Close()
 		}
 		signal.signal.Free()
 	}
-	rvalue := reflect.ValueOf(instance.Value).Elem()
+	rvalue := reflect.ValueOf(val).Elem()
 	for _, field := range reflect.VisibleFields(rvalue.Type()) {
 		if !field.IsExported() || field.Name == "Extension" || rvalue.FieldByIndex(field.Index).IsZero() {
 			continue
@@ -859,7 +897,7 @@ func (instance *instanceImplementation) Free() {
 			}
 		}
 	}
-	switch onfree := instance.Value.(type) {
+	switch onfree := val.(type) {
 	case interface{ OnFree() }:
 		onfree.OnFree()
 	}
@@ -898,11 +936,15 @@ func flatFieldsOf(rtype reflect.Type) iter.Seq[reflect.StructField] {
 // TODO this could be partially pre-compiled for a given [Register] type and cached in
 // order to avoid any use of reflection at instantiation time.
 func (instance *instanceImplementation) ready() {
-	parent, ok := Object.As[Node.Instance](Object.Instance(gdclass.GetObjectFromInterface(instance.Value)))
+	val, ok := instance.Interface()
 	if !ok {
 		return
 	}
-	var rvalue = reflect.ValueOf(instance.Value).Elem()
+	parent, ok := Object.As[Node.Instance](Object.Instance(gdclass.GetObjectFromInterface(val)))
+	if !ok {
+		return
+	}
+	var rvalue = reflect.ValueOf(val).Elem()
 	var front = true
 	for field := range flatFieldsOf(rvalue.Type()) {
 		if _, hasTag := field.Tag.Lookup("gd"); !hasTag && !field.IsExported() {
@@ -929,7 +971,11 @@ func (instance *instanceImplementation) ready() {
 		instance.assertChild(pointer, field, parent, parent, internal)
 	}
 	if !instance.isEditor {
-		switch ready := instance.Value.(type) {
+		val, ok := instance.Interface()
+		if !ok {
+			return
+		}
+		switch ready := val.(type) {
 		case interface{ Ready() }:
 			ready.Ready()
 		}

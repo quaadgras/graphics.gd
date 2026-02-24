@@ -76,7 +76,10 @@ func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintpt
 				arg_count: method.Type.NumIn(),
 				dynamic:   call,
 				checked: func(instance *instanceImplementation, args, ret gdextension.Pointer) {
-					extensionInstance := instance.Value
+					extensionInstance, ok := instance.Interface()
+					if !ok {
+						return
+					}
 					slowCall(false, reflect.ValueOf(extensionInstance).Method(method.Index), args, ret)
 				},
 				variant: func(instance any, v ...gd.Variant) gd.Variant {
@@ -174,7 +177,10 @@ func variantCall(method reflect.Method) func(instance any, v ...gd.Variant) (gd.
 				return gd.Variant{}, err
 			}
 		}
-		extensionInstance := instance.(*instanceImplementation).Value
+		extensionInstance, ok := instance.(*instanceImplementation).Interface()
+		if !ok {
+			return gd.Variant{}, nil
+		}
 		rets := reflect.ValueOf(extensionInstance).Method(method.Index).Call(args)
 		if len(rets) > 0 {
 			return gd.NewVariant(rets[0].Interface()), nil

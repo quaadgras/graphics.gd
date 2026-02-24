@@ -249,18 +249,6 @@ func TestFree(t *testing.T) {
 	})
 }
 
-func TestExtensionClassGarbageCollection(t *testing.T) {
-	runOnMain(t, func(t testing.TB) {
-		var obj = new(MyObject)
-		gd.ExtensionInstanceGoOnly(gdreference.GetObject(obj.AsObject()[0]), true)
-		keep_reachable_instances_alive()
-		keep_reachable_instances_alive()
-		if Object.InstanceIsValid(Object.Instance(obj.AsObject())) {
-			t.Error("Expected object to be invalid after free")
-		}
-	})
-}
-
 func TestAutomaticKeepAlive(t *testing.T) {
 	runOnMain(t, func(t testing.TB) {
 		var node = Node.New()
