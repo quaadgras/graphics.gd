@@ -1961,7 +1961,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() { gdclass.Register("OS", func(ptr gd.Object) any { return Instance{gdclass.NewOS(ptr)} }) }
 
-type RenderingDriver int //gd:OS.RenderingDriver
+type RenderingDriver int64 //gd:OS.RenderingDriver
 
 const (
 	// The Vulkan rendering driver. It requires Vulkan 1.0 support and automatically uses features from Vulkan 1.1 and 1.2 if available.
@@ -1974,7 +1974,7 @@ const (
 	RenderingDriverMetal RenderingDriver = 3
 )
 
-type SystemDir int //gd:OS.SystemDir
+type SystemDir int64 //gd:OS.SystemDir
 
 const (
 	// Refers to the Desktop directory path.
@@ -1995,7 +1995,7 @@ const (
 	SystemDirRingtones SystemDir = 7
 )
 
-type StdHandleType int //gd:OS.StdHandleType
+type StdHandleType int64 //gd:OS.StdHandleType
 
 const (
 	// Standard I/O device is invalid. No data can be received from or sent to these standard I/O devices.

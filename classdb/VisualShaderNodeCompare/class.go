@@ -269,7 +269,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeCompare", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeCompare(ptr)} })
 }
 
-type ComparisonType int //gd:VisualShaderNodeCompare.ComparisonType
+type ComparisonType int64 //gd:VisualShaderNodeCompare.ComparisonType
 
 const (
 	// A floating-point scalar.
@@ -292,7 +292,7 @@ const (
 	CtypeMax ComparisonType = 8
 )
 
-type Function int //gd:VisualShaderNodeCompare.Function
+type Function int64 //gd:VisualShaderNodeCompare.Function
 
 const (
 	// Comparison for equality (a == b).
@@ -319,7 +319,7 @@ const (
 	FuncMax Function = 6
 )
 
-type Condition int //gd:VisualShaderNodeCompare.Condition
+type Condition int64 //gd:VisualShaderNodeCompare.Condition
 
 const (
 	// The result will be true if all components in the vector satisfy the comparison condition.

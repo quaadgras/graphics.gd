@@ -658,7 +658,7 @@ func init() {
 	gdclass.Register("GeometryInstance3D", func(ptr gd.Object) any { return Instance{gdclass.NewGeometryInstance3D(ptr)} })
 }
 
-type ShadowCastingSetting int //gd:GeometryInstance3D.ShadowCastingSetting
+type ShadowCastingSetting int64 //gd:GeometryInstance3D.ShadowCastingSetting
 
 const (
 	// Will not cast any shadows. Use this to improve performance for small geometry that is unlikely to cast noticeable shadows (such as debris).
@@ -677,7 +677,7 @@ const (
 	ShadowCastingSettingShadowsOnly ShadowCastingSetting = 3
 )
 
-type GIMode int //gd:GeometryInstance3D.GIMode
+type GIMode int64 //gd:GeometryInstance3D.GIMode
 
 const (
 	// Disabled global illumination mode. Use for dynamic objects that do not contribute to global illumination (such as characters). When using [VoxelGI] and SDFGI, the geometry will receive indirect lighting and reflections but the geometry will not be considered in GI baking.
@@ -696,7 +696,7 @@ const (
 	GiModeDynamic GIMode = 2
 )
 
-type LightmapScale int //gd:GeometryInstance3D.LightmapScale
+type LightmapScale int64 //gd:GeometryInstance3D.LightmapScale
 
 const (
 	// The standard texel density for lightmapping with [LightmapGI].
@@ -719,7 +719,7 @@ const (
 	LightmapScaleMax LightmapScale = 4
 )
 
-type VisibilityRangeFadeMode int //gd:GeometryInstance3D.VisibilityRangeFadeMode
+type VisibilityRangeFadeMode int64 //gd:GeometryInstance3D.VisibilityRangeFadeMode
 
 const (
 	// Will not fade itself nor its visibility dependencies, hysteresis will be used instead. This is the fastest approach to manual LOD, but it can result in noticeable LOD transitions depending on how the LOD meshes are authored. See [VisibilityRangeBegin] and [Node3D.VisibilityParent] for more information.

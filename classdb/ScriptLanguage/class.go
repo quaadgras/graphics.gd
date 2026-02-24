@@ -172,7 +172,7 @@ func init() {
 	gdclass.Register("ScriptLanguage", func(ptr gd.Object) any { return Instance{gdclass.NewScriptLanguage(ptr)} })
 }
 
-type ScriptNameCasing int //gd:ScriptLanguage.ScriptNameCasing
+type ScriptNameCasing int64 //gd:ScriptLanguage.ScriptNameCasing
 
 const (
 	ScriptNameCasingAuto       ScriptNameCasing = 0

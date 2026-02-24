@@ -356,7 +356,7 @@ func init() {
 	gdclass.Register("CanvasItemMaterial", func(ptr gd.Object) any { return Instance{gdclass.NewCanvasItemMaterial(ptr)} })
 }
 
-type BlendMode int //gd:CanvasItemMaterial.BlendMode
+type BlendMode int64 //gd:CanvasItemMaterial.BlendMode
 
 const (
 	// Mix blending mode. Colors are assumed to be independent of the alpha (opacity) value.
@@ -371,7 +371,7 @@ const (
 	BlendModePremultAlpha BlendMode = 4
 )
 
-type LightMode int //gd:CanvasItemMaterial.LightMode
+type LightMode int64 //gd:CanvasItemMaterial.LightMode
 
 const (
 	// Render the material using both light and non-light sensitive material properties.

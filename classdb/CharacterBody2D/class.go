@@ -935,7 +935,7 @@ func init() {
 	gdclass.Register("CharacterBody2D", func(ptr gd.Object) any { return Instance{gdclass.NewCharacterBody2D(ptr)} })
 }
 
-type MotionMode int //gd:CharacterBody2D.MotionMode
+type MotionMode int64 //gd:CharacterBody2D.MotionMode
 
 const (
 	// Apply when notions of walls, ceiling and floor are relevant. In this mode the body motion will react to slopes (acceleration/slowdown). This mode is suitable for sided games like platformers.
@@ -944,7 +944,7 @@ const (
 	MotionModeFloating MotionMode = 1
 )
 
-type PlatformOnLeave int //gd:CharacterBody2D.PlatformOnLeave
+type PlatformOnLeave int64 //gd:CharacterBody2D.PlatformOnLeave
 
 const (
 	// Add the last platform velocity to the [Velocity] when you leave a moving platform.

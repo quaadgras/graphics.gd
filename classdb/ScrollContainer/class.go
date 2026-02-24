@@ -570,7 +570,7 @@ func init() {
 	gdclass.Register("ScrollContainer", func(ptr gd.Object) any { return Instance{gdclass.NewScrollContainer(ptr)} })
 }
 
-type ScrollMode int //gd:ScrollContainer.ScrollMode
+type ScrollMode int64 //gd:ScrollContainer.ScrollMode
 
 const (
 	// Scrolling disabled, scrollbar will be invisible.
@@ -585,7 +585,7 @@ const (
 	ScrollModeReserve ScrollMode = 4
 )
 
-type ScrollHintMode int //gd:ScrollContainer.ScrollHintMode
+type ScrollHintMode int64 //gd:ScrollContainer.ScrollHintMode
 
 const (
 	// Scroll hints will never be shown.

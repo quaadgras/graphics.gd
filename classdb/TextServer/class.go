@@ -4095,7 +4095,7 @@ func init() {
 	gdclass.Register("TextServer", func(ptr gd.Object) any { return Instance{gdclass.NewTextServer(ptr)} })
 }
 
-type FontAntialiasing int //gd:TextServer.FontAntialiasing
+type FontAntialiasing int64 //gd:TextServer.FontAntialiasing
 
 const (
 	// Font glyphs are rasterized as 1-bit bitmaps.
@@ -4112,7 +4112,7 @@ const (
 	FontAntialiasingLcd FontAntialiasing = 2
 )
 
-type FontLCDSubpixelLayout int //gd:TextServer.FontLCDSubpixelLayout
+type FontLCDSubpixelLayout int64 //gd:TextServer.FontLCDSubpixelLayout
 
 const (
 	// Unknown or unsupported subpixel layout, LCD subpixel antialiasing is disabled.
@@ -4129,7 +4129,7 @@ const (
 	FontLcdSubpixelLayoutMax FontLCDSubpixelLayout = 5
 )
 
-type Direction int //gd:TextServer.Direction
+type Direction int64 //gd:TextServer.Direction
 
 const (
 	// Text direction is determined based on contents and current locale.
@@ -4142,7 +4142,7 @@ const (
 	DirectionInherited Direction = 3
 )
 
-type Orientation int //gd:TextServer.Orientation
+type Orientation int64 //gd:TextServer.Orientation
 
 const (
 	// Text is written horizontally.
@@ -4153,7 +4153,7 @@ const (
 	OrientationVertical Orientation = 1
 )
 
-type JustificationFlag int //gd:TextServer.JustificationFlag
+type JustificationFlag int64 //gd:TextServer.JustificationFlag
 
 const (
 	// Do not justify text.
@@ -4176,7 +4176,7 @@ const (
 	JustificationDoNotSkipSingleLine JustificationFlag = 128
 )
 
-type AutowrapMode int //gd:TextServer.AutowrapMode
+type AutowrapMode int64 //gd:TextServer.AutowrapMode
 
 const (
 	// Autowrap is disabled.
@@ -4189,7 +4189,7 @@ const (
 	AutowrapWordSmart AutowrapMode = 3
 )
 
-type LineBreakFlag int //gd:TextServer.LineBreakFlag
+type LineBreakFlag int64 //gd:TextServer.LineBreakFlag
 
 const (
 	// Do not break the line.
@@ -4216,7 +4216,7 @@ const (
 	BreakTrimEndEdgeSpaces LineBreakFlag = 128
 )
 
-type VisibleCharactersBehavior int //gd:TextServer.VisibleCharactersBehavior
+type VisibleCharactersBehavior int64 //gd:TextServer.VisibleCharactersBehavior
 
 const (
 	// Trims text before the shaping. e.g, increasing [Label.VisibleCharacters] or [RichTextLabel.VisibleCharacters] value is visually identical to typing the text.
@@ -4249,7 +4249,7 @@ const (
 	VcGlyphsRtl VisibleCharactersBehavior = 4
 )
 
-type OverrunBehavior int //gd:TextServer.OverrunBehavior
+type OverrunBehavior int64 //gd:TextServer.OverrunBehavior
 
 const (
 	// No text trimming is performed.
@@ -4268,7 +4268,7 @@ const (
 	OverrunTrimWordEllipsisForce OverrunBehavior = 6
 )
 
-type TextOverrunFlag int //gd:TextServer.TextOverrunFlag
+type TextOverrunFlag int64 //gd:TextServer.TextOverrunFlag
 
 const (
 	// No trimming is performed.
@@ -4287,7 +4287,7 @@ const (
 	OverrunShortStringEllipsis TextOverrunFlag = 32
 )
 
-type GraphemeFlag int //gd:TextServer.GraphemeFlag
+type GraphemeFlag int64 //gd:TextServer.GraphemeFlag
 
 const (
 	// Grapheme is supported by the font, and can be drawn.
@@ -4320,7 +4320,7 @@ const (
 	GraphemeIsSoftHyphen GraphemeFlag = 8192
 )
 
-type Hinting int //gd:TextServer.Hinting
+type Hinting int64 //gd:TextServer.Hinting
 
 const (
 	// Disables font hinting (smoother but less crisp).
@@ -4333,7 +4333,7 @@ const (
 	HintingNormal Hinting = 2
 )
 
-type SubpixelPositioning int //gd:TextServer.SubpixelPositioning
+type SubpixelPositioning int64 //gd:TextServer.SubpixelPositioning
 
 const (
 	// Glyph horizontal position is rounded to the whole pixel size, each glyph is rasterized once.
@@ -4356,7 +4356,7 @@ const (
 	SubpixelPositioningOneQuarterMaxSize SubpixelPositioning = 16
 )
 
-type Feature int //gd:TextServer.Feature
+type Feature int64 //gd:TextServer.Feature
 
 const (
 	// TextServer supports simple text layouts.
@@ -4398,7 +4398,7 @@ const (
 	FeatureUnicodeSecurity Feature = 16384
 )
 
-type ContourPointTag int //gd:TextServer.ContourPointTag
+type ContourPointTag int64 //gd:TextServer.ContourPointTag
 
 const (
 	// Contour point is on the curve.
@@ -4409,7 +4409,7 @@ const (
 	ContourCurveTagOffCubic ContourPointTag = 2
 )
 
-type SpacingType int //gd:TextServer.SpacingType
+type SpacingType int64 //gd:TextServer.SpacingType
 
 const (
 	// Spacing for each glyph.
@@ -4424,7 +4424,7 @@ const (
 	SpacingMax SpacingType = 4
 )
 
-type FontStyle int //gd:TextServer.FontStyle
+type FontStyle int64 //gd:TextServer.FontStyle
 
 const (
 	// Font is bold.
@@ -4435,7 +4435,7 @@ const (
 	FontFixedWidth FontStyle = 4
 )
 
-type StructuredTextParser int //gd:TextServer.StructuredTextParser
+type StructuredTextParser int64 //gd:TextServer.StructuredTextParser
 
 const (
 	// Use default Unicode BiDi algorithm.
@@ -4454,7 +4454,7 @@ const (
 	StructuredTextCustom StructuredTextParser = 6
 )
 
-type FixedSizeScaleMode int //gd:TextServer.FixedSizeScaleMode
+type FixedSizeScaleMode int64 //gd:TextServer.FixedSizeScaleMode
 
 const (
 	// Bitmap font is not scaled.

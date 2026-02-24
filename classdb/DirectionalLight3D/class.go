@@ -276,7 +276,7 @@ func init() {
 	gdclass.Register("DirectionalLight3D", func(ptr gd.Object) any { return Instance{gdclass.NewDirectionalLight3D(ptr)} })
 }
 
-type ShadowMode int //gd:DirectionalLight3D.ShadowMode
+type ShadowMode int64 //gd:DirectionalLight3D.ShadowMode
 
 const (
 	// Renders the entire scene's shadow map from an orthogonal point of view. This is the fastest directional shadow mode. May result in blurrier shadows on close objects.
@@ -287,7 +287,7 @@ const (
 	ShadowParallel4Splits ShadowMode = 2
 )
 
-type SkyMode int //gd:DirectionalLight3D.SkyMode
+type SkyMode int64 //gd:DirectionalLight3D.SkyMode
 
 const (
 	// Makes the light visible in both scene lighting and sky rendering.

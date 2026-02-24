@@ -665,7 +665,7 @@ func init() {
 	gdclass.Register("ClassDB", func(ptr gd.Object) any { return Instance{gdclass.NewClassDB(ptr)} })
 }
 
-type APIType int //gd:ClassDB.APIType
+type APIType int64 //gd:ClassDB.APIType
 
 const (
 	// Native Core class type.
@@ -680,7 +680,7 @@ const (
 	ApiNone APIType = 4
 )
 
-type MethodFlags int //gd:MethodFlags
+type MethodFlags int64 //gd:MethodFlags
 
 const (
 	// Flag for a normal method.
@@ -705,7 +705,7 @@ const (
 	MethodFlagsDefault MethodFlags = 1
 )
 
-type PropertyHint int //gd:PropertyHint
+type PropertyHint int64 //gd:PropertyHint
 
 const (
 	// The property has no hint for the editor.
@@ -971,7 +971,7 @@ const (
 	PropertyHintMax PropertyHint = 45
 )
 
-type PropertyUsageFlags int //gd:PropertyUsageFlags
+type PropertyUsageFlags int64 //gd:PropertyUsageFlags
 
 const (
 	// The property is not stored, and does not display in the editor. This is the default for non-exported properties.

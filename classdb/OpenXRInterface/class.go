@@ -823,7 +823,7 @@ func init() {
 	gdclass.Register("OpenXRInterface", func(ptr gd.Object) any { return Instance{gdclass.NewOpenXRInterface(ptr)} })
 }
 
-type SessionState int //gd:OpenXRInterface.SessionState
+type SessionState int64 //gd:OpenXRInterface.SessionState
 
 const (
 	// The state of the session is unknown, we haven't tried setting up OpenXR yet.
@@ -864,7 +864,7 @@ const (
 	SessionStateExiting SessionState = 8
 )
 
-type Hand int //gd:OpenXRInterface.Hand
+type Hand int64 //gd:OpenXRInterface.Hand
 
 const (
 	// Left hand.
@@ -875,7 +875,7 @@ const (
 	HandMax Hand = 2
 )
 
-type HandMotionRange int //gd:OpenXRInterface.HandMotionRange
+type HandMotionRange int64 //gd:OpenXRInterface.HandMotionRange
 
 const (
 	// Full hand range, if user closes their hands, we make a full fist.
@@ -886,7 +886,7 @@ const (
 	HandMotionRangeMax HandMotionRange = 2
 )
 
-type HandTrackedSource int //gd:OpenXRInterface.HandTrackedSource
+type HandTrackedSource int64 //gd:OpenXRInterface.HandTrackedSource
 
 const (
 	// The source of hand tracking data is unknown (the extension is likely unsupported).
@@ -899,7 +899,7 @@ const (
 	HandTrackedSourceMax HandTrackedSource = 3
 )
 
-type HandJoints int //gd:OpenXRInterface.HandJoints
+type HandJoints int64 //gd:OpenXRInterface.HandJoints
 
 const (
 	// Palm joint.
@@ -958,7 +958,7 @@ const (
 	HandJointMax HandJoints = 26
 )
 
-type PerfSettingsLevel int //gd:OpenXRInterface.PerfSettingsLevel
+type PerfSettingsLevel int64 //gd:OpenXRInterface.PerfSettingsLevel
 
 const (
 	// The application has entered a non-XR section (head-locked / static screen), during which power savings are to be prioritized.
@@ -971,7 +971,7 @@ const (
 	PerfSettingsLevelBoost PerfSettingsLevel = 3
 )
 
-type PerfSettingsSubDomain int //gd:OpenXRInterface.PerfSettingsSubDomain
+type PerfSettingsSubDomain int64 //gd:OpenXRInterface.PerfSettingsSubDomain
 
 const (
 	// The compositing performance within the runtime has reached a new level.
@@ -982,7 +982,7 @@ const (
 	PerfSettingsSubDomainThermal PerfSettingsSubDomain = 2
 )
 
-type PerfSettingsNotificationLevel int //gd:OpenXRInterface.PerfSettingsNotificationLevel
+type PerfSettingsNotificationLevel int64 //gd:OpenXRInterface.PerfSettingsNotificationLevel
 
 const (
 	// The sub-domain has reached a level where no further actions other than currently applied are necessary.
@@ -993,7 +993,7 @@ const (
 	PerfSettingsNotifLevelImpaired PerfSettingsNotificationLevel = 2
 )
 
-type HandJointFlags int //gd:OpenXRInterface.HandJointFlags
+type HandJointFlags int64 //gd:OpenXRInterface.HandJointFlags
 
 const (
 	// No flags are set.

@@ -2,7 +2,7 @@
 
 package GUI
 
-type HorizontalAlignment int //gd:HorizontalAlignment
+type HorizontalAlignment int64 //gd:HorizontalAlignment
 
 const (
 	// Horizontal left alignment, usually for text-derived classes.
@@ -15,7 +15,7 @@ const (
 	HorizontalAlignmentFill HorizontalAlignment = 3
 )
 
-type InlineAlignment int //gd:InlineAlignment
+type InlineAlignment int64 //gd:InlineAlignment
 
 const (
 	// Aligns the top of the inline object (e.g. image, table) to the position of the text specified by INLINE_ALIGNMENT_TO_* constant.
@@ -46,7 +46,7 @@ const (
 	InlineAlignmentTextMask InlineAlignment = 12
 )
 
-type Orientation int //gd:Orientation
+type Orientation int64 //gd:Orientation
 
 const (
 	// General vertical alignment, usually used for [Separator], [ScrollBar], [Slider], etc.
@@ -63,7 +63,7 @@ const (
 	Horizontal Orientation = 0
 )
 
-type VerticalAlignment int //gd:VerticalAlignment
+type VerticalAlignment int64 //gd:VerticalAlignment
 
 const (
 	// Vertical top alignment, usually for text-derived classes.

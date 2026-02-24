@@ -2970,7 +2970,7 @@ func init() {
 	gdclass.Register("Window", func(ptr gd.Object) any { return Instance{gdclass.NewWindow(ptr)} })
 }
 
-type Mode int //gd:Window.Mode
+type Mode int64 //gd:Window.Mode
 
 const (
 	// Windowed mode, i.e. [Window] doesn't occupy the whole screen (unless set to the size of the screen).
@@ -3019,7 +3019,7 @@ const (
 	ModeExclusiveFullscreen Mode = 4
 )
 
-type Flags int //gd:Window.Flags
+type Flags int64 //gd:Window.Flags
 
 const (
 	// The window can't be resized by dragging its resize grip. It's still possible to resize the window using [Size]. This flag is ignored for full screen windows. Set with [Unresizable].
@@ -3099,7 +3099,7 @@ const (
 	FlagMax Flags = 13
 )
 
-type ContentScaleMode int //gd:Window.ContentScaleMode
+type ContentScaleMode int64 //gd:Window.ContentScaleMode
 
 const (
 	// The content will not be scaled to match the [Window]'s size ([ContentScaleSize] is ignored).
@@ -3113,7 +3113,7 @@ const (
 	ContentScaleModeViewport ContentScaleMode = 2
 )
 
-type ContentScaleAspect int //gd:Window.ContentScaleAspect
+type ContentScaleAspect int64 //gd:Window.ContentScaleAspect
 
 const (
 	// The aspect will be ignored. Scaling will simply stretch the content to fit the target size.
@@ -3128,7 +3128,7 @@ const (
 	ContentScaleAspectExpand ContentScaleAspect = 4
 )
 
-type ContentScaleStretch int //gd:Window.ContentScaleStretch
+type ContentScaleStretch int64 //gd:Window.ContentScaleStretch
 
 const (
 	// The content will be stretched according to a fractional factor. This fills all the space available in the window, but allows "pixel wobble" to occur due to uneven pixel scaling.
@@ -3137,7 +3137,7 @@ const (
 	ContentScaleStretchInteger ContentScaleStretch = 1
 )
 
-type LayoutDirection int //gd:Window.LayoutDirection
+type LayoutDirection int64 //gd:Window.LayoutDirection
 
 const (
 	// Automatic layout direction, determined from the parent window layout direction.
@@ -3155,7 +3155,7 @@ const (
 	LayoutDirectionLocale LayoutDirection = 1
 )
 
-type WindowInitialPosition int //gd:Window.WindowInitialPosition
+type WindowInitialPosition int64 //gd:Window.WindowInitialPosition
 
 const (
 	// Initial window position is determined by [Position].

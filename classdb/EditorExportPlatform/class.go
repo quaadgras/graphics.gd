@@ -711,7 +711,7 @@ func init() {
 	gdclass.Register("EditorExportPlatform", func(ptr gd.Object) any { return Instance{gdclass.NewEditorExportPlatform(ptr)} })
 }
 
-type ExportMessageType int //gd:EditorExportPlatform.ExportMessageType
+type ExportMessageType int64 //gd:EditorExportPlatform.ExportMessageType
 
 const (
 	// Invalid message type used as the default value when no type is specified.
@@ -724,7 +724,7 @@ const (
 	ExportMessageError ExportMessageType = 3
 )
 
-type DebugFlags int //gd:EditorExportPlatform.DebugFlags
+type DebugFlags int64 //gd:EditorExportPlatform.DebugFlags
 
 const (
 	// Flag is set if the remotely debugged project is expected to use the remote file system. If set, [GenExportFlags] will append --remote-fs and --remote-fs-password (if [EditorSettings] "filesystem/file_server/password" is defined) command line arguments to the returned list.

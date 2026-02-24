@@ -1876,7 +1876,7 @@ func init() {
 	gdclass.Register("GraphEdit", func(ptr gd.Object) any { return Instance{gdclass.NewGraphEdit(ptr)} })
 }
 
-type PanningScheme int //gd:GraphEdit.PanningScheme
+type PanningScheme int64 //gd:GraphEdit.PanningScheme
 
 const (
 	// Mouse Wheel will zoom, Ctrl + Mouse Wheel will move the view.
@@ -1885,7 +1885,7 @@ const (
 	ScrollPans PanningScheme = 1
 )
 
-type GridPattern int //gd:GraphEdit.GridPattern
+type GridPattern int64 //gd:GraphEdit.GridPattern
 
 const (
 	// Draw the grid using solid lines.

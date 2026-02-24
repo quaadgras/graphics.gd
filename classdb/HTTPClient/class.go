@@ -602,7 +602,7 @@ func init() {
 	gdclass.Register("HTTPClient", func(ptr gd.Object) any { return Instance{gdclass.NewHTTPClient(ptr)} })
 }
 
-type Method int //gd:HTTPClient.Method
+type Method int64 //gd:HTTPClient.Method
 
 const (
 	// HTTP GET method. The GET method requests a representation of the specified resource. Requests using GET should only retrieve data.
@@ -627,7 +627,7 @@ const (
 	MethodMax Method = 9
 )
 
-type Status int //gd:HTTPClient.Status
+type Status int64 //gd:HTTPClient.Status
 
 const (
 	// Status: Disconnected from the server.
@@ -652,7 +652,7 @@ const (
 	StatusTlsHandshakeError Status = 9
 )
 
-type ResponseCode int //gd:HTTPClient.ResponseCode
+type ResponseCode int64 //gd:HTTPClient.ResponseCode
 
 const (
 	// HTTP status code 100 Continue. Interim response that indicates everything so far is OK and that the client should continue with the request (or ignore this status if already finished).

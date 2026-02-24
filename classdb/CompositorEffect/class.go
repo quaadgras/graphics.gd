@@ -417,7 +417,7 @@ func init() {
 	gdclass.Register("CompositorEffect", func(ptr gd.Object) any { return Instance{gdclass.NewCompositorEffect(ptr)} })
 }
 
-type EffectCallbackType int //gd:CompositorEffect.EffectCallbackType
+type EffectCallbackType int64 //gd:CompositorEffect.EffectCallbackType
 
 const (
 	// The callback is called before our opaque rendering pass, but after depth prepass (if applicable).

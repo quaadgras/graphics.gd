@@ -696,7 +696,7 @@ func init() {
 	gdclass.Register("WebSocketPeer", func(ptr gd.Object) any { return Instance{gdclass.NewWebSocketPeer(ptr)} })
 }
 
-type WriteMode int //gd:WebSocketPeer.WriteMode
+type WriteMode int64 //gd:WebSocketPeer.WriteMode
 
 const (
 	// Specifies that WebSockets messages should be transferred as text payload (only valid UTF-8 is allowed).
@@ -705,7 +705,7 @@ const (
 	WriteModeBinary WriteMode = 1
 )
 
-type State int //gd:WebSocketPeer.State
+type State int64 //gd:WebSocketPeer.State
 
 const (
 	// Socket has been created. The connection is not yet open.

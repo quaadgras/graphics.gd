@@ -806,7 +806,7 @@ func init() {
 	gdclass.Register("LightmapGI", func(ptr gd.Object) any { return Instance{gdclass.NewLightmapGI(ptr)} })
 }
 
-type BakeQuality int //gd:LightmapGI.BakeQuality
+type BakeQuality int64 //gd:LightmapGI.BakeQuality
 
 const (
 	// Low bake quality (fastest bake times). The quality of this preset can be adjusted by changing [ProjectSettings] "rendering/lightmapping/bake_quality/low_quality_ray_count" and [ProjectSettings] "rendering/lightmapping/bake_quality/low_quality_probe_ray_count".
@@ -827,7 +827,7 @@ const (
 	BakeQualityUltra BakeQuality = 3
 )
 
-type GenerateProbes int //gd:LightmapGI.GenerateProbes
+type GenerateProbes int64 //gd:LightmapGI.GenerateProbes
 
 const (
 	// Don't generate lightmap probes for lighting dynamic objects.
@@ -842,7 +842,7 @@ const (
 	GenerateProbesSubdiv32 GenerateProbes = 4
 )
 
-type BakeError int //gd:LightmapGI.BakeError
+type BakeError int64 //gd:LightmapGI.BakeError
 
 const (
 	// Lightmap baking was successful.
@@ -875,7 +875,7 @@ const (
 	BakeErrorAtlasTooSmall BakeError = 11
 )
 
-type EnvironmentMode int //gd:LightmapGI.EnvironmentMode
+type EnvironmentMode int64 //gd:LightmapGI.EnvironmentMode
 
 const (
 	// Ignore environment lighting when baking lightmaps.

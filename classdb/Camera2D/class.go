@@ -982,7 +982,7 @@ func init() {
 	gdclass.Register("Camera2D", func(ptr gd.Object) any { return Instance{gdclass.NewCamera2D(ptr)} })
 }
 
-type AnchorMode int //gd:Camera2D.AnchorMode
+type AnchorMode int64 //gd:Camera2D.AnchorMode
 
 const (
 	// The camera's position is fixed so that the top-left corner is always at the origin.
@@ -991,7 +991,7 @@ const (
 	AnchorModeDragCenter AnchorMode = 1
 )
 
-type Camera2DProcessCallback int //gd:Camera2D.Camera2DProcessCallback
+type Camera2DProcessCallback int64 //gd:Camera2D.Camera2DProcessCallback
 
 const (
 	// The camera updates during physics frames (see [Node.NotificationInternalPhysicsProcess]).

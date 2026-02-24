@@ -445,7 +445,7 @@ func init() {
 	gdclass.Register("InputEventMIDI", func(ptr gd.Object) any { return Instance{gdclass.NewInputEventMIDI(ptr)} })
 }
 
-type Message int //gd:MIDIMessage
+type Message int64 //gd:MIDIMessage
 
 const (
 	// Does not correspond to any MIDI message. This is the default value of [InputEventMIDI.Message].

@@ -1578,7 +1578,7 @@ func init() {
 	gdclass.Register("TileSet", func(ptr gd.Object) any { return Instance{gdclass.NewTileSet(ptr)} })
 }
 
-type TileShape int //gd:TileSet.TileShape
+type TileShape int64 //gd:TileSet.TileShape
 
 const (
 	// Rectangular tile shape.
@@ -1597,7 +1597,7 @@ const (
 	TileShapeHexagon TileShape = 3
 )
 
-type TileLayout int //gd:TileSet.TileLayout
+type TileLayout int64 //gd:TileSet.TileLayout
 
 const (
 	// Tile coordinates layout where both axis stay consistent with their respective local horizontal and vertical axis.
@@ -1614,7 +1614,7 @@ const (
 	TileLayoutDiamondDown TileLayout = 5
 )
 
-type TileOffsetAxis int //gd:TileSet.TileOffsetAxis
+type TileOffsetAxis int64 //gd:TileSet.TileOffsetAxis
 
 const (
 	// Horizontal half-offset.
@@ -1623,7 +1623,7 @@ const (
 	TileOffsetAxisVertical TileOffsetAxis = 1
 )
 
-type CellNeighbor int //gd:TileSet.CellNeighbor
+type CellNeighbor int64 //gd:TileSet.CellNeighbor
 
 const (
 	// Neighbor on the right side.
@@ -1660,7 +1660,7 @@ const (
 	CellNeighborTopRightCorner CellNeighbor = 15
 )
 
-type TerrainMode int //gd:TileSet.TerrainMode
+type TerrainMode int64 //gd:TileSet.TerrainMode
 
 const (
 	// Requires both corners and side to match with neighboring tiles' terrains.

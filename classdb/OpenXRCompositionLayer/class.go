@@ -706,7 +706,7 @@ func init() {
 	gdclass.Register("OpenXRCompositionLayer", func(ptr gd.Object) any { return Instance{gdclass.NewOpenXRCompositionLayer(ptr)} })
 }
 
-type Filter int //gd:OpenXRCompositionLayer.Filter
+type Filter int64 //gd:OpenXRCompositionLayer.Filter
 
 const (
 	// Perform nearest-neighbor filtering when sampling the texture.
@@ -717,7 +717,7 @@ const (
 	FilterCubic Filter = 2
 )
 
-type MipmapMode int //gd:OpenXRCompositionLayer.MipmapMode
+type MipmapMode int64 //gd:OpenXRCompositionLayer.MipmapMode
 
 const (
 	// Disable mipmapping.
@@ -730,7 +730,7 @@ const (
 	MipmapModeLinear MipmapMode = 2
 )
 
-type Wrap int //gd:OpenXRCompositionLayer.Wrap
+type Wrap int64 //gd:OpenXRCompositionLayer.Wrap
 
 const (
 	// Clamp the texture to its specified border color.
@@ -747,7 +747,7 @@ const (
 	WrapMirrorClampToEdge Wrap = 4
 )
 
-type Swizzle int //gd:OpenXRCompositionLayer.Swizzle
+type Swizzle int64 //gd:OpenXRCompositionLayer.Swizzle
 
 const (
 	// Maps a color channel to the value of the red channel.

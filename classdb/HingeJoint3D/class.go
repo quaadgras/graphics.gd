@@ -250,7 +250,7 @@ func init() {
 	gdclass.Register("HingeJoint3D", func(ptr gd.Object) any { return Instance{gdclass.NewHingeJoint3D(ptr)} })
 }
 
-type Param int //gd:HingeJoint3D.Param
+type Param int64 //gd:HingeJoint3D.Param
 
 const (
 	// The speed with which the two bodies get pulled together when they move in different directions.
@@ -272,7 +272,7 @@ const (
 	ParamMax Param = 8
 )
 
-type Flag int //gd:HingeJoint3D.Flag
+type Flag int64 //gd:HingeJoint3D.Flag
 
 const (
 	// If true, the hinges maximum and minimum rotation, defined by "angular_limit/lower" and "angular_limit/upper" has effects.

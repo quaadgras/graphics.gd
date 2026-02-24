@@ -322,7 +322,7 @@ func init() {
 	gdclass.Register("NavigationPathQueryResult3D", func(ptr gd.Object) any { return Instance{gdclass.NewNavigationPathQueryResult3D(ptr)} })
 }
 
-type PathSegmentType int //gd:NavigationPathQueryResult3D.PathSegmentType
+type PathSegmentType int64 //gd:NavigationPathQueryResult3D.PathSegmentType
 
 const (
 	// This segment of the path goes through a region.

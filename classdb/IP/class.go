@@ -329,7 +329,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() { gdclass.Register("IP", func(ptr gd.Object) any { return Instance{gdclass.NewIP(ptr)} }) }
 
-type ResolverStatus int //gd:IP.ResolverStatus
+type ResolverStatus int64 //gd:IP.ResolverStatus
 
 const (
 	// DNS hostname resolver status: No status.
@@ -342,7 +342,7 @@ const (
 	ResolverStatusError ResolverStatus = 3
 )
 
-type Type int //gd:IP.Type
+type Type int64 //gd:IP.Type
 
 const (
 	// Address type: None.

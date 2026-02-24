@@ -244,7 +244,7 @@ func init() {
 	gdclass.Register("XRFaceTracker", func(ptr gd.Object) any { return Instance{gdclass.NewXRFaceTracker(ptr)} })
 }
 
-type BlendShapeEntry int //gd:XRFaceTracker.BlendShapeEntry
+type BlendShapeEntry int64 //gd:XRFaceTracker.BlendShapeEntry
 
 const (
 	// Right eye looks outwards.

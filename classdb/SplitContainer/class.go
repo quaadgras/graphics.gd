@@ -607,7 +607,7 @@ func init() {
 	gdclass.Register("SplitContainer", func(ptr gd.Object) any { return Instance{gdclass.NewSplitContainer(ptr)} })
 }
 
-type DraggerVisibility int //gd:SplitContainer.DraggerVisibility
+type DraggerVisibility int64 //gd:SplitContainer.DraggerVisibility
 
 const (
 	// The split dragger icon is always visible when theme's 'autohide' is false, otherwise visible only when the cursor hovers it.

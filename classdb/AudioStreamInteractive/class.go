@@ -602,7 +602,7 @@ func init() {
 	gdclass.Register("AudioStreamInteractive", func(ptr gd.Object) any { return Instance{gdclass.NewAudioStreamInteractive(ptr)} })
 }
 
-type TransitionFromTime int //gd:AudioStreamInteractive.TransitionFromTime
+type TransitionFromTime int64 //gd:AudioStreamInteractive.TransitionFromTime
 
 const (
 	// Start transition as soon as possible, don't wait for any specific time position.
@@ -615,7 +615,7 @@ const (
 	TransitionFromTimeEnd TransitionFromTime = 3
 )
 
-type TransitionToTime int //gd:AudioStreamInteractive.TransitionToTime
+type TransitionToTime int64 //gd:AudioStreamInteractive.TransitionToTime
 
 const (
 	// Transition to the same position in the destination clip. This is useful when both clips have exactly the same length and the music should fade between them.
@@ -624,7 +624,7 @@ const (
 	TransitionToTimeStart TransitionToTime = 1
 )
 
-type FadeMode int //gd:AudioStreamInteractive.FadeMode
+type FadeMode int64 //gd:AudioStreamInteractive.FadeMode
 
 const (
 	// Do not use fade for the transition. This is useful when transitioning from a clip-end to clip-beginning, and each clip has their begin/end.
@@ -639,7 +639,7 @@ const (
 	FadeAutomatic FadeMode = 4
 )
 
-type AutoAdvanceMode int //gd:AudioStreamInteractive.AutoAdvanceMode
+type AutoAdvanceMode int64 //gd:AudioStreamInteractive.AutoAdvanceMode
 
 const (
 	// Disable auto-advance (default).

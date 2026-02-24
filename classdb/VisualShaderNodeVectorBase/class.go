@@ -218,7 +218,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeVectorBase", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeVectorBase(ptr)} })
 }
 
-type OpType int //gd:VisualShaderNodeVectorBase.OpType
+type OpType int64 //gd:VisualShaderNodeVectorBase.OpType
 
 const (
 	// A 2D vector type.

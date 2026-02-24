@@ -312,7 +312,7 @@ func init() {
 	gdclass.Register("Generic6DOFJoint3D", func(ptr gd.Object) any { return Instance{gdclass.NewGeneric6DOFJoint3D(ptr)} })
 }
 
-type Param int //gd:Generic6DOFJoint3D.Param
+type Param int64 //gd:Generic6DOFJoint3D.Param
 
 const (
 	// The minimum difference between the pivot points' axes.
@@ -357,7 +357,7 @@ const (
 	ParamMax Param = 22
 )
 
-type Flag int //gd:Generic6DOFJoint3D.Flag
+type Flag int64 //gd:Generic6DOFJoint3D.Flag
 
 const (
 	// If enabled, linear motion is possible within the given limits.

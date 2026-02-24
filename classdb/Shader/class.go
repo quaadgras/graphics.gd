@@ -351,7 +351,7 @@ func init() {
 	gdclass.Register("Shader", func(ptr gd.Object) any { return Instance{gdclass.NewShader(ptr)} })
 }
 
-type Mode int //gd:Shader.Mode
+type Mode int64 //gd:Shader.Mode
 
 const (
 	// Mode used to draw all 3D objects.

@@ -233,7 +233,7 @@ func init() {
 	gdclass.Register("OpenXRSpatialCapabilityConfigurationAprilTag", func(ptr gd.Object) any { return Instance{gdclass.NewOpenXRSpatialCapabilityConfigurationAprilTag(ptr)} })
 }
 
-type AprilTagDict int //gd:OpenXRSpatialCapabilityConfigurationAprilTag.AprilTagDict
+type AprilTagDict int64 //gd:OpenXRSpatialCapabilityConfigurationAprilTag.AprilTagDict
 
 const (
 	// 4 by 4 bits, minimum Hamming distance between any two codes = 5, 30 codes.

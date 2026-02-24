@@ -283,7 +283,7 @@ func init() {
 	gdclass.Register("AudioEffectFilter", func(ptr gd.Object) any { return Instance{gdclass.NewAudioEffectFilter(ptr)} })
 }
 
-type FilterDB int //gd:AudioEffectFilter.FilterDB
+type FilterDB int64 //gd:AudioEffectFilter.FilterDB
 
 const (
 	// Cutting off at 6dB per octave.

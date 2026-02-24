@@ -374,7 +374,7 @@ func init() {
 	gdclass.Register("SceneReplicationConfig", func(ptr gd.Object) any { return Instance{gdclass.NewSceneReplicationConfig(ptr)} })
 }
 
-type ReplicationMode int //gd:SceneReplicationConfig.ReplicationMode
+type ReplicationMode int64 //gd:SceneReplicationConfig.ReplicationMode
 
 const (
 	// Do not keep the given property synchronized.

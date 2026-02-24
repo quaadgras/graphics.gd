@@ -719,7 +719,7 @@ func init() {
 	gdclass.Register("EditorDock", func(ptr gd.Object) any { return Instance{gdclass.NewEditorDock(ptr)} })
 }
 
-type DockLayout int //gd:EditorDock.DockLayout
+type DockLayout int64 //gd:EditorDock.DockLayout
 
 const (
 	// Allows placing the dock in the vertical dock slots on either side of the editor.
@@ -732,7 +732,7 @@ const (
 	DockLayoutAll DockLayout = 7
 )
 
-type DockSlot int //gd:EditorDock.DockSlot
+type DockSlot int64 //gd:EditorDock.DockSlot
 
 const (
 	// The dock is closed.

@@ -220,7 +220,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeIntOp", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeIntOp(ptr)} })
 }
 
-type Operator int //gd:VisualShaderNodeIntOp.Operator
+type Operator int64 //gd:VisualShaderNodeIntOp.Operator
 
 const (
 	// Sums two numbers using a + b.

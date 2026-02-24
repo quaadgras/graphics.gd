@@ -1697,7 +1697,7 @@ func init() {
 	gdclass.Register("NativeMenu", func(ptr gd.Object) any { return Instance{gdclass.NewNativeMenu(ptr)} })
 }
 
-type Feature int //gd:NativeMenu.Feature
+type Feature int64 //gd:NativeMenu.Feature
 
 const (
 	// [NativeMenu] supports native global main menu.
@@ -1722,7 +1722,7 @@ const (
 	FeatureKeyCallback Feature = 4
 )
 
-type SystemMenus int //gd:NativeMenu.SystemMenus
+type SystemMenus int64 //gd:NativeMenu.SystemMenus
 
 const (
 	// Invalid special system menu ID.

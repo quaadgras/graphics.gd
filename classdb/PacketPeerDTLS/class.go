@@ -267,7 +267,7 @@ func init() {
 	gdclass.Register("PacketPeerDTLS", func(ptr gd.Object) any { return Instance{gdclass.NewPacketPeerDTLS(ptr)} })
 }
 
-type Status int //gd:PacketPeerDTLS.Status
+type Status int64 //gd:PacketPeerDTLS.Status
 
 const (
 	// A status representing a [PacketPeerDTLS] that is disconnected.

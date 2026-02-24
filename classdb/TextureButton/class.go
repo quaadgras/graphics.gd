@@ -456,7 +456,7 @@ func init() {
 	gdclass.Register("TextureButton", func(ptr gd.Object) any { return Instance{gdclass.NewTextureButton(ptr)} })
 }
 
-type StretchMode int //gd:TextureButton.StretchMode
+type StretchMode int64 //gd:TextureButton.StretchMode
 
 const (
 	// Scale to fit the node's bounding rectangle.

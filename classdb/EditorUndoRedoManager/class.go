@@ -526,7 +526,7 @@ func init() {
 	gdclass.Register("EditorUndoRedoManager", func(ptr gd.Object) any { return Instance{gdclass.NewEditorUndoRedoManager(ptr)} })
 }
 
-type SpecialHistory int //gd:EditorUndoRedoManager.SpecialHistory
+type SpecialHistory int64 //gd:EditorUndoRedoManager.SpecialHistory
 
 const (
 	// Global history not associated with any scene, but with external resources etc.

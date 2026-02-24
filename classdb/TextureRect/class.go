@@ -309,7 +309,7 @@ func init() {
 	gdclass.Register("TextureRect", func(ptr gd.Object) any { return Instance{gdclass.NewTextureRect(ptr)} })
 }
 
-type ExpandMode int //gd:TextureRect.ExpandMode
+type ExpandMode int64 //gd:TextureRect.ExpandMode
 
 const (
 	// The minimum size will be equal to texture size, i.e. [TextureRect] can't be smaller than the texture.
@@ -334,7 +334,7 @@ const (
 	ExpandFitHeightProportional ExpandMode = 5
 )
 
-type StretchMode int //gd:TextureRect.StretchMode
+type StretchMode int64 //gd:TextureRect.StretchMode
 
 const (
 	// Scale to fit the node's bounding rectangle.

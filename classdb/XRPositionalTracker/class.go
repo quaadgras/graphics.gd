@@ -452,7 +452,7 @@ func init() {
 	gdclass.Register("XRPositionalTracker", func(ptr gd.Object) any { return Instance{gdclass.NewXRPositionalTracker(ptr)} })
 }
 
-type TrackerHand int //gd:XRPositionalTracker.TrackerHand
+type TrackerHand int64 //gd:XRPositionalTracker.TrackerHand
 
 const (
 	// The hand this tracker is held in is unknown or not applicable.

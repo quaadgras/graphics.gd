@@ -823,7 +823,7 @@ func init() {
 	gdclass.Register("SurfaceTool", func(ptr gd.Object) any { return Instance{gdclass.NewSurfaceTool(ptr)} })
 }
 
-type CustomFormat int //gd:SurfaceTool.CustomFormat
+type CustomFormat int64 //gd:SurfaceTool.CustomFormat
 
 const (
 	// Limits range of data passed to [SetCustom] to unsigned normalized 0 to 1 stored in 8 bits per channel. See [Mesh.ArrayCustomRgba8Unorm].
@@ -862,7 +862,7 @@ const (
 	CustomMax CustomFormat = 8
 )
 
-type SkinWeightCount int //gd:SurfaceTool.SkinWeightCount
+type SkinWeightCount int64 //gd:SurfaceTool.SkinWeightCount
 
 const (
 	// Each individual vertex can be influenced by only 4 bone weights.

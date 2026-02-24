@@ -1058,7 +1058,7 @@ func init() {
 	gdclass.Register("GLTFState", func(ptr gd.Object) any { return Instance{gdclass.NewGLTFState(ptr)} })
 }
 
-type HandleBinaryImageMode int //gd:GLTFState.HandleBinaryImageMode
+type HandleBinaryImageMode int64 //gd:GLTFState.HandleBinaryImageMode
 
 const (
 	// When importing a glTF file with embedded binary images, discards all images and uses untextured materials in their place. Images stored as separate files in the res:// folder are not affected by this; those will be used as Godot imported them.

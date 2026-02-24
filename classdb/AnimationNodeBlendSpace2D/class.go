@@ -605,7 +605,7 @@ func init() {
 	gdclass.Register("AnimationNodeBlendSpace2D", func(ptr gd.Object) any { return Instance{gdclass.NewAnimationNodeBlendSpace2D(ptr)} })
 }
 
-type BlendMode int //gd:AnimationNodeBlendSpace2D.BlendMode
+type BlendMode int64 //gd:AnimationNodeBlendSpace2D.BlendMode
 
 const (
 	// The interpolation between animations is linear.

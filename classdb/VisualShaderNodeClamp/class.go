@@ -218,7 +218,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeClamp", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeClamp(ptr)} })
 }
 
-type OpType int //gd:VisualShaderNodeClamp.OpType
+type OpType int64 //gd:VisualShaderNodeClamp.OpType
 
 const (
 	// A floating-point scalar.

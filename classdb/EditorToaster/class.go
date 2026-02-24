@@ -234,7 +234,7 @@ func init() {
 	gdclass.Register("EditorToaster", func(ptr gd.Object) any { return Instance{gdclass.NewEditorToaster(ptr)} })
 }
 
-type Severity int //gd:EditorToaster.Severity
+type Severity int64 //gd:EditorToaster.Severity
 
 const (
 	// Toast will display with an INFO severity.

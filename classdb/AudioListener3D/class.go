@@ -272,7 +272,7 @@ func init() {
 	gdclass.Register("AudioListener3D", func(ptr gd.Object) any { return Instance{gdclass.NewAudioListener3D(ptr)} })
 }
 
-type DopplerTracking int //gd:AudioListener3D.DopplerTracking
+type DopplerTracking int64 //gd:AudioListener3D.DopplerTracking
 
 const (
 	// Disables [Doppler effect] simulation (default).

@@ -204,7 +204,7 @@ func init() {
 	gdclass.Register("OpenXRSpatialComponentPlaneSemanticLabelList", func(ptr gd.Object) any { return Instance{gdclass.NewOpenXRSpatialComponentPlaneSemanticLabelList(ptr)} })
 }
 
-type PlaneSemanticLabel int //gd:OpenXRSpatialComponentPlaneSemanticLabelList.PlaneSemanticLabel
+type PlaneSemanticLabel int64 //gd:OpenXRSpatialComponentPlaneSemanticLabelList.PlaneSemanticLabel
 
 const (
 	// Uncategorized plane.

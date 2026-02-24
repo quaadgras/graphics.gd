@@ -2424,7 +2424,7 @@ func init() {
 	gdclass.Register("ParticleProcessMaterial", func(ptr gd.Object) any { return Instance{gdclass.NewParticleProcessMaterial(ptr)} })
 }
 
-type Parameter int //gd:ParticleProcessMaterial.Parameter
+type Parameter int64 //gd:ParticleProcessMaterial.Parameter
 
 const (
 	// Use with [SetParamMin], [SetParamMax], and [SetParamTexture] to set initial velocity properties.
@@ -2535,7 +2535,7 @@ const (
 	ParamTurbInfluenceOverLife Parameter = 12
 )
 
-type ParticleFlags int //gd:ParticleProcessMaterial.ParticleFlags
+type ParticleFlags int64 //gd:ParticleProcessMaterial.ParticleFlags
 
 const (
 	// Use with [SetParticleFlag] to set [ParticleFlagAlignY].
@@ -2558,7 +2558,7 @@ const (
 	ParticleFlagMax ParticleFlags = 4
 )
 
-type EmissionShape int //gd:ParticleProcessMaterial.EmissionShape
+type EmissionShape int64 //gd:ParticleProcessMaterial.EmissionShape
 
 const (
 	// All particles will be emitted from a single point.
@@ -2586,7 +2586,7 @@ const (
 	EmissionShapeMax EmissionShape = 7
 )
 
-type SubEmitterMode int //gd:ParticleProcessMaterial.SubEmitterMode
+type SubEmitterMode int64 //gd:ParticleProcessMaterial.SubEmitterMode
 
 const (
 	SubEmitterDisabled    SubEmitterMode = 0
@@ -2598,7 +2598,7 @@ const (
 	SubEmitterMax SubEmitterMode = 5
 )
 
-type CollisionMode int //gd:ParticleProcessMaterial.CollisionMode
+type CollisionMode int64 //gd:ParticleProcessMaterial.CollisionMode
 
 const (
 	// No collision for particles. Particles will go through [GPUParticlesCollision3D] nodes.

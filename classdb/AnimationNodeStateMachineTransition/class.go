@@ -439,7 +439,7 @@ func init() {
 	gdclass.Register("AnimationNodeStateMachineTransition", func(ptr gd.Object) any { return Instance{gdclass.NewAnimationNodeStateMachineTransition(ptr)} })
 }
 
-type SwitchMode int //gd:AnimationNodeStateMachineTransition.SwitchMode
+type SwitchMode int64 //gd:AnimationNodeStateMachineTransition.SwitchMode
 
 const (
 	// Switch to the next state immediately. The current state will end and blend into the beginning of the new one.
@@ -450,7 +450,7 @@ const (
 	SwitchModeAtEnd SwitchMode = 2
 )
 
-type AdvanceMode int //gd:AnimationNodeStateMachineTransition.AdvanceMode
+type AdvanceMode int64 //gd:AnimationNodeStateMachineTransition.AdvanceMode
 
 const (
 	// Don't use this transition.

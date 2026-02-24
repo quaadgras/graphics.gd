@@ -306,7 +306,7 @@ func init() {
 	gdclass.Register("AudioEffectDistortion", func(ptr gd.Object) any { return Instance{gdclass.NewAudioEffectDistortion(ptr)} })
 }
 
-type Mode int //gd:AudioEffectDistortion.Mode
+type Mode int64 //gd:AudioEffectDistortion.Mode
 
 const (
 	// Digital distortion effect which cuts off peaks at the top and bottom of the waveform.

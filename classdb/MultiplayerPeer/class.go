@@ -473,7 +473,7 @@ func init() {
 	gdclass.Register("MultiplayerPeer", func(ptr gd.Object) any { return Instance{gdclass.NewMultiplayerPeer(ptr)} })
 }
 
-type ConnectionStatus int //gd:MultiplayerPeer.ConnectionStatus
+type ConnectionStatus int64 //gd:MultiplayerPeer.ConnectionStatus
 
 const (
 	// The MultiplayerPeer is disconnected.
@@ -484,7 +484,7 @@ const (
 	ConnectionConnected ConnectionStatus = 2
 )
 
-type TransferMode int //gd:MultiplayerPeer.TransferMode
+type TransferMode int64 //gd:MultiplayerPeer.TransferMode
 
 const (
 	// Packets are not acknowledged, no resend attempts are made for lost packets. Packets may arrive in any order. Potentially faster than [TransferModeUnreliableOrdered]. Use for non-critical data, and always consider whether the order matters.

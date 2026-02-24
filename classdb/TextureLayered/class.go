@@ -526,7 +526,7 @@ func init() {
 	gdclass.Register("TextureLayered", func(ptr gd.Object) any { return Instance{gdclass.NewTextureLayered(ptr)} })
 }
 
-type LayeredType int //gd:TextureLayered.LayeredType
+type LayeredType int64 //gd:TextureLayered.LayeredType
 
 const (
 	// Texture is a generic [Texture2DArray].

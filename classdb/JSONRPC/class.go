@@ -349,7 +349,7 @@ func init() {
 	gdclass.Register("JSONRPC", func(ptr gd.Object) any { return Instance{gdclass.NewJSONRPC(ptr)} })
 }
 
-type ErrorCode int //gd:JSONRPC.ErrorCode
+type ErrorCode int64 //gd:JSONRPC.ErrorCode
 
 const (
 	// The request could not be parsed as it was not valid by JSON standard ([JSON.Parse] failed).

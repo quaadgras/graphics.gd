@@ -220,7 +220,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeIntFunc", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeIntFunc(ptr)} })
 }
 
-type Function int //gd:VisualShaderNodeIntFunc.Function
+type Function int64 //gd:VisualShaderNodeIntFunc.Function
 
 const (
 	// Returns the absolute value of the parameter. Translates to abs(x) in the Godot Shader Language.

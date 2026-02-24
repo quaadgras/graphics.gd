@@ -377,7 +377,7 @@ func init() {
 	gdclass.Register("RetargetModifier3D", func(ptr gd.Object) any { return Instance{gdclass.NewRetargetModifier3D(ptr)} })
 }
 
-type TransformFlag int //gd:RetargetModifier3D.TransformFlag
+type TransformFlag int64 //gd:RetargetModifier3D.TransformFlag
 
 const (
 	// If set, allows to retarget the position.

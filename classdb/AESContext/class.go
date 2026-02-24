@@ -305,7 +305,7 @@ func init() {
 	gdclass.Register("AESContext", func(ptr gd.Object) any { return Instance{gdclass.NewAESContext(ptr)} })
 }
 
-type Mode int //gd:AESContext.Mode
+type Mode int64 //gd:AESContext.Mode
 
 const (
 	// AES electronic codebook encryption mode.

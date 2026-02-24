@@ -684,7 +684,7 @@ func init() {
 	gdclass.Register("CopyTransformModifier3D", func(ptr gd.Object) any { return Instance{gdclass.NewCopyTransformModifier3D(ptr)} })
 }
 
-type TransformFlag int //gd:CopyTransformModifier3D.TransformFlag
+type TransformFlag int64 //gd:CopyTransformModifier3D.TransformFlag
 
 const (
 	// If set, allows to copy the position.
@@ -697,7 +697,7 @@ const (
 	TransformFlagAll TransformFlag = 7
 )
 
-type AxisFlag int //gd:CopyTransformModifier3D.AxisFlag
+type AxisFlag int64 //gd:CopyTransformModifier3D.AxisFlag
 
 const (
 	// If set, allows to process the X-axis.

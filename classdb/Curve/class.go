@@ -669,7 +669,7 @@ func init() {
 	gdclass.Register("Curve", func(ptr gd.Object) any { return Instance{gdclass.NewCurve(ptr)} })
 }
 
-type TangentMode int //gd:Curve.TangentMode
+type TangentMode int64 //gd:Curve.TangentMode
 
 const (
 	// The tangent on this side of the point is user-defined.

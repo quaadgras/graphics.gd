@@ -2325,7 +2325,7 @@ func init() {
 	gdclass.Register("NavigationServer2D", func(ptr gd.Object) any { return Instance{gdclass.NewNavigationServer2D(ptr)} })
 }
 
-type ProcessInfo int //gd:NavigationServer2D.ProcessInfo
+type ProcessInfo int64 //gd:NavigationServer2D.ProcessInfo
 
 const (
 	// Constant to get the number of active navigation maps.

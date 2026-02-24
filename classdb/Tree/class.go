@@ -1529,7 +1529,7 @@ func init() {
 	gdclass.Register("Tree", func(ptr gd.Object) any { return Instance{gdclass.NewTree(ptr)} })
 }
 
-type SelectMode int //gd:Tree.SelectMode
+type SelectMode int64 //gd:Tree.SelectMode
 
 const (
 	// Allows selection of a single cell at a time. From the perspective of items, only a single item is allowed to be selected. And there is only one column selected in the selected item.
@@ -1546,7 +1546,7 @@ const (
 	SelectMulti SelectMode = 2
 )
 
-type DropModeFlags int //gd:Tree.DropModeFlags
+type DropModeFlags int64 //gd:Tree.DropModeFlags
 
 const (
 	// Disables all drop sections, but still allows to detect the "on item" drop section by [GetDropSectionAtPosition].
@@ -1565,7 +1565,7 @@ const (
 	DropModeInbetween DropModeFlags = 2
 )
 
-type ScrollHintMode int //gd:Tree.ScrollHintMode
+type ScrollHintMode int64 //gd:Tree.ScrollHintMode
 
 const (
 	// Scroll hints will never be shown.

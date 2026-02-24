@@ -668,7 +668,7 @@ func init() {
 	gdclass.Register("OpenXRSpatialEntityExtension", func(ptr gd.Object) any { return Instance{gdclass.NewOpenXRSpatialEntityExtension(ptr)} })
 }
 
-type Capability int //gd:OpenXRSpatialEntityExtension.Capability
+type Capability int64 //gd:OpenXRSpatialEntityExtension.Capability
 
 const (
 	// Plane tracking capability.
@@ -685,7 +685,7 @@ const (
 	CapabilityAnchor Capability = 1000762000
 )
 
-type ComponentType int //gd:OpenXRSpatialEntityExtension.ComponentType
+type ComponentType int64 //gd:OpenXRSpatialEntityExtension.ComponentType
 
 const (
 	// Component that provides the 2D bounds for a spatial entity. The corresponding list structure is XrSpatialComponentBounded2DListEXT; the corresponding data structure is XrSpatialBounded2DDataEXT.

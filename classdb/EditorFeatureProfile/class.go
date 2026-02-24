@@ -354,7 +354,7 @@ func init() {
 	gdclass.Register("EditorFeatureProfile", func(ptr gd.Object) any { return Instance{gdclass.NewEditorFeatureProfile(ptr)} })
 }
 
-type Feature int //gd:EditorFeatureProfile.Feature
+type Feature int64 //gd:EditorFeatureProfile.Feature
 
 const (
 	// The 3D editor. If this feature is disabled, the 3D editor won't display but 3D nodes will still display in the Create New Node dialog.

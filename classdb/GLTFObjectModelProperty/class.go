@@ -446,7 +446,7 @@ func init() {
 	gdclass.Register("GLTFObjectModelProperty", func(ptr gd.Object) any { return Instance{gdclass.NewGLTFObjectModelProperty(ptr)} })
 }
 
-type GLTFObjectModelType int //gd:GLTFObjectModelProperty.GLTFObjectModelType
+type GLTFObjectModelType int64 //gd:GLTFObjectModelProperty.GLTFObjectModelType
 
 const (
 	// Unknown or not set object model type. If the object model type is set to this value, the real type still needs to be determined.

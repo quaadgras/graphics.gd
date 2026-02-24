@@ -3632,7 +3632,7 @@ func init() {
 	gdclass.Register("Node", func(ptr gd.Object) any { return Instance{gdclass.NewNode(ptr)} })
 }
 
-type ProcessMode int //gd:Node.ProcessMode
+type ProcessMode int64 //gd:Node.ProcessMode
 
 const (
 	// Inherits [ProcessMode] from the node's parent. This is the default for any newly created node.
@@ -3657,7 +3657,7 @@ const (
 	ProcessModeDisabled ProcessMode = 4
 )
 
-type ProcessThreadGroup int //gd:Node.ProcessThreadGroup
+type ProcessThreadGroup int64 //gd:Node.ProcessThreadGroup
 
 const (
 	// Process this node based on the thread group mode of the first parent (or grandparent) node that has a thread group mode that is not inherit. See [ProcessThreadGroup] for more information.
@@ -3674,7 +3674,7 @@ const (
 	ProcessThreadGroupSubThread ProcessThreadGroup = 2
 )
 
-type ProcessThreadMessages int //gd:Node.ProcessThreadMessages
+type ProcessThreadMessages int64 //gd:Node.ProcessThreadMessages
 
 const (
 	// Allows this node to process threaded messages created with [CallDeferredThreadGroup] right before [Process] is called.
@@ -3695,7 +3695,7 @@ const (
 	FlagProcessThreadMessagesAll ProcessThreadMessages = 3
 )
 
-type PhysicsInterpolationMode int //gd:Node.PhysicsInterpolationMode
+type PhysicsInterpolationMode int64 //gd:Node.PhysicsInterpolationMode
 
 const (
 	// Inherits [PhysicsInterpolationMode] from the node's parent. This is the default for any newly created node.
@@ -3708,7 +3708,7 @@ const (
 	PhysicsInterpolationModeOff PhysicsInterpolationMode = 2
 )
 
-type DuplicateFlags int //gd:Node.DuplicateFlags
+type DuplicateFlags int64 //gd:Node.DuplicateFlags
 
 const (
 	// Duplicate the node's signal connections that are connected with the [Object.ConnectPersist] flag.
@@ -3735,7 +3735,7 @@ const (
 	DuplicateDefault DuplicateFlags = 15
 )
 
-type InternalMode int //gd:Node.InternalMode
+type InternalMode int64 //gd:Node.InternalMode
 
 const (
 	// The node will not be internal.
@@ -3746,7 +3746,7 @@ const (
 	InternalModeBack InternalMode = 2
 )
 
-type AutoTranslateMode int //gd:Node.AutoTranslateMode
+type AutoTranslateMode int64 //gd:Node.AutoTranslateMode
 
 const (
 	// Inherits [AutoTranslateMode] from the node's parent. This is the default for any newly created node.

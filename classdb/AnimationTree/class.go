@@ -322,7 +322,7 @@ func init() {
 	gdclass.Register("AnimationTree", func(ptr gd.Object) any { return Instance{gdclass.NewAnimationTree(ptr)} })
 }
 
-type AnimationProcessCallback int //gd:AnimationTree.AnimationProcessCallback
+type AnimationProcessCallback int64 //gd:AnimationTree.AnimationProcessCallback
 
 const (
 	AnimationProcessPhysics AnimationProcessCallback = 0

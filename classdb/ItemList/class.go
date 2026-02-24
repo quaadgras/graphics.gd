@@ -1524,7 +1524,7 @@ func init() {
 	gdclass.Register("ItemList", func(ptr gd.Object) any { return Instance{gdclass.NewItemList(ptr)} })
 }
 
-type IconMode int //gd:ItemList.IconMode
+type IconMode int64 //gd:ItemList.IconMode
 
 const (
 	// Icon is drawn above the text.
@@ -1533,7 +1533,7 @@ const (
 	IconModeLeft IconMode = 1
 )
 
-type SelectMode int //gd:ItemList.SelectMode
+type SelectMode int64 //gd:ItemList.SelectMode
 
 const (
 	// Only allow selecting a single item.
@@ -1544,7 +1544,7 @@ const (
 	SelectToggle SelectMode = 2
 )
 
-type ScrollHintMode int //gd:ItemList.ScrollHintMode
+type ScrollHintMode int64 //gd:ItemList.ScrollHintMode
 
 const (
 	// Scroll hints will never be shown.

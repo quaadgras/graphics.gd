@@ -534,7 +534,7 @@ func init() {
 	gdclass.Register("WebRTCPeerConnection", func(ptr gd.Object) any { return Instance{gdclass.NewWebRTCPeerConnection(ptr)} })
 }
 
-type ConnectionState int //gd:WebRTCPeerConnection.ConnectionState
+type ConnectionState int64 //gd:WebRTCPeerConnection.ConnectionState
 
 const (
 	// The connection is new, data channels and an offer can be created in this state.
@@ -553,7 +553,7 @@ const (
 	StateClosed ConnectionState = 5
 )
 
-type GatheringState int //gd:WebRTCPeerConnection.GatheringState
+type GatheringState int64 //gd:WebRTCPeerConnection.GatheringState
 
 const (
 	// The peer connection was just created and hasn't done any networking yet.
@@ -564,7 +564,7 @@ const (
 	GatheringStateComplete GatheringState = 2
 )
 
-type SignalingState int //gd:WebRTCPeerConnection.SignalingState
+type SignalingState int64 //gd:WebRTCPeerConnection.SignalingState
 
 const (
 	// There is no ongoing exchange of offer and answer underway. This may mean that the [WebRTCPeerConnection] is new ([StateNew]) or that negotiation is complete and a connection has been established ([StateConnected]).

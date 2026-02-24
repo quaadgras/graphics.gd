@@ -275,7 +275,7 @@ func init() {
 	gdclass.Register("XRBodyModifier3D", func(ptr gd.Object) any { return Instance{gdclass.NewXRBodyModifier3D(ptr)} })
 }
 
-type BodyUpdate int //gd:XRBodyModifier3D.BodyUpdate
+type BodyUpdate int64 //gd:XRBodyModifier3D.BodyUpdate
 
 const (
 	// The skeleton's upper body joints are updated.
@@ -286,7 +286,7 @@ const (
 	BodyUpdateHands BodyUpdate = 4
 )
 
-type BoneUpdate int //gd:XRBodyModifier3D.BoneUpdate
+type BoneUpdate int64 //gd:XRBodyModifier3D.BoneUpdate
 
 const (
 	// The skeleton's bones are fully updated (both position and rotation) to match the tracked bones.

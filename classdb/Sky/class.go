@@ -268,7 +268,7 @@ func init() {
 	gdclass.Register("Sky", func(ptr gd.Object) any { return Instance{gdclass.NewSky(ptr)} })
 }
 
-type RadianceSize int //gd:Sky.RadianceSize
+type RadianceSize int64 //gd:Sky.RadianceSize
 
 const (
 	// Radiance texture size is 32×32 pixels.
@@ -289,7 +289,7 @@ const (
 	RadianceSizeMax RadianceSize = 7
 )
 
-type ProcessMode int //gd:Sky.ProcessMode
+type ProcessMode int64 //gd:Sky.ProcessMode
 
 const (
 	// Automatically selects the appropriate process mode based on your sky shader. If your shader uses TIME or POSITION, this will use [ProcessModeRealtime]. If your shader uses any of the LIGHT_* variables or any custom uniforms, this uses [ProcessModeIncremental]. Otherwise, this defaults to [ProcessModeQuality].

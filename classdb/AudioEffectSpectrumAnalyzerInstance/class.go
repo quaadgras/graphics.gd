@@ -230,7 +230,7 @@ func init() {
 	gdclass.Register("AudioEffectSpectrumAnalyzerInstance", func(ptr gd.Object) any { return Instance{gdclass.NewAudioEffectSpectrumAnalyzerInstance(ptr)} })
 }
 
-type MagnitudeMode int //gd:AudioEffectSpectrumAnalyzerInstance.MagnitudeMode
+type MagnitudeMode int64 //gd:AudioEffectSpectrumAnalyzerInstance.MagnitudeMode
 
 const (
 	// Use the average value across the frequency range as magnitude.

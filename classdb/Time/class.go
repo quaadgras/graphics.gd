@@ -519,7 +519,7 @@ func init() {
 	gdclass.Register("Time", func(ptr gd.Object) any { return Instance{gdclass.NewTime(ptr)} })
 }
 
-type Month int //gd:Time.Month
+type Month int64 //gd:Time.Month
 
 const (
 	// The month of January, represented numerically as 01.
@@ -548,7 +548,7 @@ const (
 	MonthDecember Month = 12
 )
 
-type Weekday int //gd:Time.Weekday
+type Weekday int64 //gd:Time.Weekday
 
 const (
 	// The day of the week Sunday, represented numerically as 0.

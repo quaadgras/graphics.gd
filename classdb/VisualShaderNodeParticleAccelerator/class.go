@@ -218,7 +218,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeParticleAccelerator", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeParticleAccelerator(ptr)} })
 }
 
-type Mode int //gd:VisualShaderNodeParticleAccelerator.Mode
+type Mode int64 //gd:VisualShaderNodeParticleAccelerator.Mode
 
 const (
 	// The particles will be accelerated based on their velocity.

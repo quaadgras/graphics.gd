@@ -490,7 +490,7 @@ func init() {
 	gdclass.Register("ResourceLoader", func(ptr gd.Object) any { return Instance{gdclass.NewResourceLoader(ptr)} })
 }
 
-type ThreadLoadStatus int //gd:ResourceLoader.ThreadLoadStatus
+type ThreadLoadStatus int64 //gd:ResourceLoader.ThreadLoadStatus
 
 const (
 	// The resource is invalid, or has not been loaded with [LoadThreadedRequest].
@@ -507,7 +507,7 @@ const (
 	ThreadLoadLoaded ThreadLoadStatus = 3
 )
 
-type CacheMode int //gd:ResourceLoader.CacheMode
+type CacheMode int64 //gd:ResourceLoader.CacheMode
 
 const (
 	// Neither the main resource (the one requested to be loaded) nor any of its subresources are retrieved from cache nor stored into it. Dependencies (external resources) are loaded with [CacheModeReuse].

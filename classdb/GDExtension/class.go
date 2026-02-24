@@ -216,7 +216,7 @@ func init() {
 	gdclass.Register("GDExtension", func(ptr gd.Object) any { return Instance{gdclass.NewGDExtension(ptr)} })
 }
 
-type InitializationLevel int //gd:GDExtension.InitializationLevel
+type InitializationLevel int64 //gd:GDExtension.InitializationLevel
 
 const (
 	// The library is initialized at the same time as the core features of the engine.

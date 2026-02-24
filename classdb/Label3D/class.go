@@ -994,7 +994,7 @@ func init() {
 	gdclass.Register("Label3D", func(ptr gd.Object) any { return Instance{gdclass.NewLabel3D(ptr)} })
 }
 
-type DrawFlags int //gd:Label3D.DrawFlags
+type DrawFlags int64 //gd:Label3D.DrawFlags
 
 const (
 	// If set, lights in the environment affect the label.
@@ -1009,7 +1009,7 @@ const (
 	FlagMax DrawFlags = 4
 )
 
-type AlphaCutMode int //gd:Label3D.AlphaCutMode
+type AlphaCutMode int64 //gd:Label3D.AlphaCutMode
 
 const (
 	// This mode performs standard alpha blending. It can display translucent areas, but transparency sorting issues may be visible when multiple transparent materials are overlapping. [GeometryInstance3D.CastShadow] has no effect when this transparency mode is used; the [Label3D] will never cast shadows.

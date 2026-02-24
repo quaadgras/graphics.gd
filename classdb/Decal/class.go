@@ -606,7 +606,7 @@ func init() {
 	gdclass.Register("Decal", func(ptr gd.Object) any { return Instance{gdclass.NewDecal(ptr)} })
 }
 
-type DecalTexture int //gd:Decal.DecalTexture
+type DecalTexture int64 //gd:Decal.DecalTexture
 
 const (
 	// [Texture2D] corresponding to [TextureAlbedo].

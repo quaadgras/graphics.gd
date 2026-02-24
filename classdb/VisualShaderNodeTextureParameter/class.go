@@ -320,7 +320,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeTextureParameter", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeTextureParameter(ptr)} })
 }
 
-type TextureType int //gd:VisualShaderNodeTextureParameter.TextureType
+type TextureType int64 //gd:VisualShaderNodeTextureParameter.TextureType
 
 const (
 	// No hints are added to the uniform declaration.
@@ -335,7 +335,7 @@ const (
 	TypeMax TextureType = 4
 )
 
-type ColorDefault int //gd:VisualShaderNodeTextureParameter.ColorDefault
+type ColorDefault int64 //gd:VisualShaderNodeTextureParameter.ColorDefault
 
 const (
 	// Defaults to fully opaque white color.
@@ -348,7 +348,7 @@ const (
 	ColorDefaultMax ColorDefault = 3
 )
 
-type TextureFilter int //gd:VisualShaderNodeTextureParameter.TextureFilter
+type TextureFilter int64 //gd:VisualShaderNodeTextureParameter.TextureFilter
 
 const (
 	// Sample the texture using the filter determined by the node this shader is attached to.
@@ -387,7 +387,7 @@ const (
 	FilterMax TextureFilter = 7
 )
 
-type TextureRepeat int //gd:VisualShaderNodeTextureParameter.TextureRepeat
+type TextureRepeat int64 //gd:VisualShaderNodeTextureParameter.TextureRepeat
 
 const (
 	// Sample the texture using the repeat mode determined by the node this shader is attached to.
@@ -400,7 +400,7 @@ const (
 	RepeatMax TextureRepeat = 3
 )
 
-type TextureSource int //gd:VisualShaderNodeTextureParameter.TextureSource
+type TextureSource int64 //gd:VisualShaderNodeTextureParameter.TextureSource
 
 const (
 	// The texture source is not specified in the shader.

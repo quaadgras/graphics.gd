@@ -600,7 +600,7 @@ func init() {
 	gdclass.Register("TextureProgressBar", func(ptr gd.Object) any { return Instance{gdclass.NewTextureProgressBar(ptr)} })
 }
 
-type FillMode int //gd:TextureProgressBar.FillMode
+type FillMode int64 //gd:TextureProgressBar.FillMode
 
 const (
 	// The [TextureProgress] fills from left to right.

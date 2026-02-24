@@ -313,7 +313,7 @@ func init() {
 	gdclass.Register("OpenXRHand", func(ptr gd.Object) any { return Instance{gdclass.NewOpenXRHand(ptr)} })
 }
 
-type Hands int //gd:OpenXRHand.Hands
+type Hands int64 //gd:OpenXRHand.Hands
 
 const (
 	// Tracking the player's left hand.
@@ -324,7 +324,7 @@ const (
 	HandMax Hands = 2
 )
 
-type MotionRange int //gd:OpenXRHand.MotionRange
+type MotionRange int64 //gd:OpenXRHand.MotionRange
 
 const (
 	// When player grips, hand skeleton will form a full fist.
@@ -335,7 +335,7 @@ const (
 	MotionRangeMax MotionRange = 2
 )
 
-type SkeletonRig int //gd:OpenXRHand.SkeletonRig
+type SkeletonRig int64 //gd:OpenXRHand.SkeletonRig
 
 const (
 	// An OpenXR compliant skeleton.
@@ -348,7 +348,7 @@ const (
 	SkeletonRigMax SkeletonRig = 2
 )
 
-type BoneUpdate int //gd:OpenXRHand.BoneUpdate
+type BoneUpdate int64 //gd:OpenXRHand.BoneUpdate
 
 const (
 	// The skeletons bones are fully updated (both position and rotation) to match the tracked bones.

@@ -334,7 +334,7 @@ func init() {
 	gdclass.Register("VisualShaderNode", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNode(ptr)} })
 }
 
-type PortType int //gd:VisualShaderNode.PortType
+type PortType int64 //gd:VisualShaderNode.PortType
 
 const (
 	// Floating-point scalar. Translated to float type in shader code.

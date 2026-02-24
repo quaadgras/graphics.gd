@@ -10,8 +10,6 @@ type goString struct {
 	bytes *byte
 }
 
-const maxSafeInt = 9007199254740991
-
 func fromGoString(s string) Readable {
 	if len(s) > maxSafeInt {
 		panic("string too long")

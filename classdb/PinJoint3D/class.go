@@ -220,7 +220,7 @@ func init() {
 	gdclass.Register("PinJoint3D", func(ptr gd.Object) any { return Instance{gdclass.NewPinJoint3D(ptr)} })
 }
 
-type Param int //gd:PinJoint3D.Param
+type Param int64 //gd:PinJoint3D.Param
 
 const (
 	// The force with which the pinned objects stay in positional relation to each other. The higher, the stronger.

@@ -363,7 +363,7 @@ func init() {
 	gdclass.Register("Thread", func(ptr gd.Object) any { return Instance{gdclass.NewThread(ptr)} })
 }
 
-type Priority int //gd:Thread.Priority
+type Priority int64 //gd:Thread.Priority
 
 const (
 	// A thread running with lower priority than normally.

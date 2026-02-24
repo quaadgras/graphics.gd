@@ -246,7 +246,7 @@ func init() {
 	gdclass.Register("BackBufferCopy", func(ptr gd.Object) any { return Instance{gdclass.NewBackBufferCopy(ptr)} })
 }
 
-type CopyMode int //gd:BackBufferCopy.CopyMode
+type CopyMode int64 //gd:BackBufferCopy.CopyMode
 
 const (
 	// Disables the buffering mode. This means the [BackBufferCopy] node will directly use the portion of screen it covers.

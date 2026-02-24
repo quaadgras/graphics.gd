@@ -389,7 +389,7 @@ func init() {
 	gdclass.Register("GPUParticlesCollisionSDF3D", func(ptr gd.Object) any { return Instance{gdclass.NewGPUParticlesCollisionSDF3D(ptr)} })
 }
 
-type Resolution int //gd:GPUParticlesCollisionSDF3D.Resolution
+type Resolution int64 //gd:GPUParticlesCollisionSDF3D.Resolution
 
 const (
 	// Bake a 16×16×16 signed distance field. This is the fastest option, but also the least precise.

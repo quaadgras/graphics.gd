@@ -265,7 +265,7 @@ func init() {
 	gdclass.Register("AudioEffectSpectrumAnalyzer", func(ptr gd.Object) any { return Instance{gdclass.NewAudioEffectSpectrumAnalyzer(ptr)} })
 }
 
-type FFTSize int //gd:AudioEffectSpectrumAnalyzer.FFTSize
+type FFTSize int64 //gd:AudioEffectSpectrumAnalyzer.FFTSize
 
 const (
 	// Use a buffer of 256 samples for the Fast Fourier transform. Lowest latency, but least stable over time.

@@ -580,7 +580,7 @@ func init() {
 	gdclass.Register("AnimationNodeStateMachine", func(ptr gd.Object) any { return Instance{gdclass.NewAnimationNodeStateMachine(ptr)} })
 }
 
-type StateMachineType int //gd:AnimationNodeStateMachine.StateMachineType
+type StateMachineType int64 //gd:AnimationNodeStateMachine.StateMachineType
 
 const (
 	// Seeking to the beginning is treated as playing from the start state. Transition to the end state is treated as exiting the state machine.

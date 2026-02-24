@@ -421,7 +421,7 @@ func init() {
 	gdclass.Register("AnimationNodeAnimation", func(ptr gd.Object) any { return Instance{gdclass.NewAnimationNodeAnimation(ptr)} })
 }
 
-type PlayMode int //gd:AnimationNodeAnimation.PlayMode
+type PlayMode int64 //gd:AnimationNodeAnimation.PlayMode
 
 const (
 	// Plays animation in forward direction.

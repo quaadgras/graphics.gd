@@ -650,7 +650,7 @@ func init() {
 	gdclass.Register("Line2D", func(ptr gd.Object) any { return Instance{gdclass.NewLine2D(ptr)} })
 }
 
-type LineJointMode int //gd:Line2D.LineJointMode
+type LineJointMode int64 //gd:Line2D.LineJointMode
 
 const (
 	// Makes the polyline's joints pointy, connecting the sides of the two segments by extending them until they intersect. If the rotation of a joint is too big (based on [SharpLimit]), the joint falls back to [LineJointBevel] to prevent very long miters.
@@ -665,7 +665,7 @@ const (
 	LineJointRound LineJointMode = 2
 )
 
-type LineCapMode int //gd:Line2D.LineCapMode
+type LineCapMode int64 //gd:Line2D.LineCapMode
 
 const (
 	// Draws no line cap.
@@ -676,7 +676,7 @@ const (
 	LineCapRound LineCapMode = 2
 )
 
-type LineTextureMode int //gd:Line2D.LineTextureMode
+type LineTextureMode int64 //gd:Line2D.LineTextureMode
 
 const (
 	// Takes the left pixels of the texture and renders them over the whole polyline.

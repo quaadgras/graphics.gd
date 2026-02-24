@@ -868,7 +868,7 @@ func init() {
 	gdclass.Register("OpenXRAPIExtension", func(ptr gd.Object) any { return Instance{gdclass.NewOpenXRAPIExtension(ptr)} })
 }
 
-type OpenXRAlphaBlendModeSupport int //gd:OpenXRAPIExtension.OpenXRAlphaBlendModeSupport
+type OpenXRAlphaBlendModeSupport int64 //gd:OpenXRAPIExtension.OpenXRAlphaBlendModeSupport
 
 const (
 	// Means that [Xrinterface.XrEnvBlendModeAlphaBlend] isn't supported at all.

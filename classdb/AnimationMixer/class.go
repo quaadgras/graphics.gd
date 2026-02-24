@@ -1084,7 +1084,7 @@ func init() {
 	gdclass.Register("AnimationMixer", func(ptr gd.Object) any { return Instance{gdclass.NewAnimationMixer(ptr)} })
 }
 
-type AnimationCallbackModeProcess int //gd:AnimationMixer.AnimationCallbackModeProcess
+type AnimationCallbackModeProcess int64 //gd:AnimationMixer.AnimationCallbackModeProcess
 
 const (
 	// Process animation during physics frames (see [Node.NotificationInternalPhysicsProcess]). This is especially useful when animating physics bodies.
@@ -1097,7 +1097,7 @@ const (
 	AnimationCallbackModeProcessManual AnimationCallbackModeProcess = 2
 )
 
-type AnimationCallbackModeMethod int //gd:AnimationMixer.AnimationCallbackModeMethod
+type AnimationCallbackModeMethod int64 //gd:AnimationMixer.AnimationCallbackModeMethod
 
 const (
 	// Batch method calls during the animation process, then do the calls after events are processed. This avoids bugs involving deleting nodes or modifying the AnimationPlayer while playing.
@@ -1106,7 +1106,7 @@ const (
 	AnimationCallbackModeMethodImmediate AnimationCallbackModeMethod = 1
 )
 
-type AnimationCallbackModeDiscrete int //gd:AnimationMixer.AnimationCallbackModeDiscrete
+type AnimationCallbackModeDiscrete int64 //gd:AnimationMixer.AnimationCallbackModeDiscrete
 
 const (
 	// An [Animation.UpdateDiscrete] track value takes precedence when blending [Animation.UpdateContinuous] or [Animation.UpdateCapture] track values and [Animation.UpdateDiscrete] track values.

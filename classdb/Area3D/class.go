@@ -1047,7 +1047,7 @@ func init() {
 	gdclass.Register("Area3D", func(ptr gd.Object) any { return Instance{gdclass.NewArea3D(ptr)} })
 }
 
-type SpaceOverride int //gd:Area3D.SpaceOverride
+type SpaceOverride int64 //gd:Area3D.SpaceOverride
 
 const (
 	// This area does not affect gravity/damping.

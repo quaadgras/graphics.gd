@@ -666,7 +666,7 @@ func init() {
 	gdclass.Register("SkeletonProfile", func(ptr gd.Object) any { return Instance{gdclass.NewSkeletonProfile(ptr)} })
 }
 
-type TailDirection int //gd:SkeletonProfile.TailDirection
+type TailDirection int64 //gd:SkeletonProfile.TailDirection
 
 const (
 	// Direction to the average coordinates of bone children.

@@ -270,7 +270,7 @@ func init() {
 	gdclass.Register("OpenXRRenderModelManager", func(ptr gd.Object) any { return Instance{gdclass.NewOpenXRRenderModelManager(ptr)} })
 }
 
-type RenderModelTracker int //gd:OpenXRRenderModelManager.RenderModelTracker
+type RenderModelTracker int64 //gd:OpenXRRenderModelManager.RenderModelTracker
 
 const (
 	// All active render models are shown regardless of what tracker they relate to.

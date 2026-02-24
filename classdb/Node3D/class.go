@@ -1365,7 +1365,7 @@ func init() {
 	gdclass.Register("Node3D", func(ptr gd.Object) any { return Instance{gdclass.NewNode3D(ptr)} })
 }
 
-type RotationEditMode int //gd:Node3D.RotationEditMode
+type RotationEditMode int64 //gd:Node3D.RotationEditMode
 
 const (
 	// The rotation is edited using a [Vector3.XYZ] in [Euler angles].

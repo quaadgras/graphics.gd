@@ -540,7 +540,7 @@ func init() {
 	gdclass.Register("EditorExportPreset", func(ptr gd.Object) any { return Instance{gdclass.NewEditorExportPreset(ptr)} })
 }
 
-type ExportFilter int //gd:EditorExportPreset.ExportFilter
+type ExportFilter int64 //gd:EditorExportPreset.ExportFilter
 
 const (
 	ExportAllResources       ExportFilter = 0
@@ -550,7 +550,7 @@ const (
 	ExportCustomized         ExportFilter = 4
 )
 
-type FileExportMode int //gd:EditorExportPreset.FileExportMode
+type FileExportMode int64 //gd:EditorExportPreset.FileExportMode
 
 const (
 	ModeFileNotCustomized FileExportMode = 0
@@ -559,7 +559,7 @@ const (
 	ModeFileRemove        FileExportMode = 3
 )
 
-type ScriptExportMode int //gd:EditorExportPreset.ScriptExportMode
+type ScriptExportMode int64 //gd:EditorExportPreset.ScriptExportMode
 
 const (
 	ModeScriptText                   ScriptExportMode = 0

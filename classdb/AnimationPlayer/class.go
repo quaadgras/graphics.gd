@@ -1226,7 +1226,7 @@ func init() {
 	gdclass.Register("AnimationPlayer", func(ptr gd.Object) any { return Instance{gdclass.NewAnimationPlayer(ptr)} })
 }
 
-type AnimationProcessCallback int //gd:AnimationPlayer.AnimationProcessCallback
+type AnimationProcessCallback int64 //gd:AnimationPlayer.AnimationProcessCallback
 
 const (
 	AnimationProcessPhysics AnimationProcessCallback = 0
@@ -1234,7 +1234,7 @@ const (
 	AnimationProcessManual  AnimationProcessCallback = 2
 )
 
-type AnimationMethodCallMode int //gd:AnimationPlayer.AnimationMethodCallMode
+type AnimationMethodCallMode int64 //gd:AnimationPlayer.AnimationMethodCallMode
 
 const (
 	AnimationMethodCallDeferred  AnimationMethodCallMode = 0

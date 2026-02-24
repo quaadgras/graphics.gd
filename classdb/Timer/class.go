@@ -461,7 +461,7 @@ func init() {
 	gdclass.Register("Timer", func(ptr gd.Object) any { return Instance{gdclass.NewTimer(ptr)} })
 }
 
-type TimerProcessCallback int //gd:Timer.TimerProcessCallback
+type TimerProcessCallback int64 //gd:Timer.TimerProcessCallback
 
 const (
 	// Update the timer every physics process frame (see [Node.NotificationInternalPhysicsProcess]).

@@ -1070,7 +1070,7 @@ func init() {
 	gdclass.Register("EditorVCSInterface", func(ptr gd.Object) any { return Instance{gdclass.NewEditorVCSInterface(ptr)} })
 }
 
-type ChangeType int //gd:EditorVCSInterface.ChangeType
+type ChangeType int64 //gd:EditorVCSInterface.ChangeType
 
 const (
 	// A new file has been added.
@@ -1087,7 +1087,7 @@ const (
 	ChangeTypeUnmerged ChangeType = 5
 )
 
-type TreeArea int //gd:EditorVCSInterface.TreeArea
+type TreeArea int64 //gd:EditorVCSInterface.TreeArea
 
 const (
 	// A commit is encountered from the commit area.

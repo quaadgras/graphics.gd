@@ -2359,7 +2359,7 @@ func init() {
 	gdclass.Register("CanvasItem", func(ptr gd.Object) any { return Instance{gdclass.NewCanvasItem(ptr)} })
 }
 
-type TextureFilter int //gd:CanvasItem.TextureFilter
+type TextureFilter int64 //gd:CanvasItem.TextureFilter
 
 const (
 	// The [CanvasItem] will inherit the filter from its parent.
@@ -2400,7 +2400,7 @@ const (
 	TextureFilterMax TextureFilter = 7
 )
 
-type TextureRepeat int //gd:CanvasItem.TextureRepeat
+type TextureRepeat int64 //gd:CanvasItem.TextureRepeat
 
 const (
 	// The [CanvasItem] will inherit the filter from its parent.
@@ -2417,7 +2417,7 @@ const (
 	TextureRepeatMax TextureRepeat = 4
 )
 
-type ClipChildrenMode int //gd:CanvasItem.ClipChildrenMode
+type ClipChildrenMode int64 //gd:CanvasItem.ClipChildrenMode
 
 const (
 	// Children are drawn over this node and are not clipped.

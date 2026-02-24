@@ -2599,7 +2599,7 @@ func init() {
 	gdclass.Register("Environment", func(ptr gd.Object) any { return Instance{gdclass.NewEnvironment(ptr)} })
 }
 
-type BGMode int //gd:Environment.BGMode
+type BGMode int64 //gd:Environment.BGMode
 
 const (
 	// Clears the background using the clear color defined in [ProjectSettings] "rendering/environment/defaults/default_clear_color".
@@ -2622,7 +2622,7 @@ const (
 	BgMax BGMode = 6
 )
 
-type AmbientSource int //gd:Environment.AmbientSource
+type AmbientSource int64 //gd:Environment.AmbientSource
 
 const (
 	// Gather ambient light from whichever source is specified as the background.
@@ -2639,7 +2639,7 @@ const (
 	AmbientSourceSky AmbientSource = 3
 )
 
-type ReflectionSource int //gd:Environment.ReflectionSource
+type ReflectionSource int64 //gd:Environment.ReflectionSource
 
 const (
 	// Use the background for reflections.
@@ -2652,7 +2652,7 @@ const (
 	ReflectionSourceSky ReflectionSource = 2
 )
 
-type ToneMapper int //gd:Environment.ToneMapper
+type ToneMapper int64 //gd:Environment.ToneMapper
 
 const (
 	// Does not modify color data, resulting in a linear tonemapping curve which unnaturally clips bright values, causing bright lighting to look blown out. The simplest and fastest tonemapper.
@@ -2673,7 +2673,7 @@ const (
 	ToneMapperAgx ToneMapper = 4
 )
 
-type GlowBlendMode int //gd:Environment.GlowBlendMode
+type GlowBlendMode int64 //gd:Environment.GlowBlendMode
 
 const (
 	// Adds the glow effect to the scene.
@@ -2693,7 +2693,7 @@ const (
 	GlowBlendModeMix GlowBlendMode = 4
 )
 
-type FogMode int //gd:Environment.FogMode
+type FogMode int64 //gd:Environment.FogMode
 
 const (
 	// Use a physically-based fog model defined primarily by fog density.
@@ -2702,7 +2702,7 @@ const (
 	FogModeDepth FogMode = 1
 )
 
-type SDFGIYScale int //gd:Environment.SDFGIYScale
+type SDFGIYScale int64 //gd:Environment.SDFGIYScale
 
 const (
 	// Use 50% scale for SDFGI on the Y (vertical) axis. SDFGI cells will be twice as short as they are wide. This allows providing increased GI detail and reduced light leaking with thin floors and ceilings. This is usually the best choice for scenes that don't feature much verticality.

@@ -415,7 +415,7 @@ func init() {
 	gdclass.Register("UPNPDevice", func(ptr gd.Object) any { return Instance{gdclass.NewUPNPDevice(ptr)} })
 }
 
-type IGDStatus int //gd:UPNPDevice.IGDStatus
+type IGDStatus int64 //gd:UPNPDevice.IGDStatus
 
 const (
 	// OK.

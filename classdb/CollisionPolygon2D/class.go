@@ -326,7 +326,7 @@ func init() {
 	gdclass.Register("CollisionPolygon2D", func(ptr gd.Object) any { return Instance{gdclass.NewCollisionPolygon2D(ptr)} })
 }
 
-type BuildMode int //gd:CollisionPolygon2D.BuildMode
+type BuildMode int64 //gd:CollisionPolygon2D.BuildMode
 
 const (
 	// Collisions will include the polygon and its contained area. In this mode the node has the same effect as several [ConvexPolygonShape2D] nodes, one for each convex shape in the convex decomposition of the polygon (but without the overhead of multiple nodes).

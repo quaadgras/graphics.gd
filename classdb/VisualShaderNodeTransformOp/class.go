@@ -220,7 +220,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeTransformOp", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeTransformOp(ptr)} })
 }
 
-type Operator int //gd:VisualShaderNodeTransformOp.Operator
+type Operator int64 //gd:VisualShaderNodeTransformOp.Operator
 
 const (
 	// Multiplies transform a by the transform b.

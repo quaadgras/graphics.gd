@@ -685,7 +685,7 @@ func init() {
 	gdclass.Register("ResourceFormatLoader", func(ptr gd.Object) any { return Instance{gdclass.NewResourceFormatLoader(ptr)} })
 }
 
-type CacheMode int //gd:ResourceFormatLoader.CacheMode
+type CacheMode int64 //gd:ResourceFormatLoader.CacheMode
 
 const (
 	// Neither the main resource (the one requested to be loaded) nor any of its subresources are retrieved from cache nor stored into it. Dependencies (external resources) are loaded with [CacheModeReuse].

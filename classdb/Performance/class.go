@@ -302,7 +302,7 @@ func init() {
 	gdclass.Register("Performance", func(ptr gd.Object) any { return Instance{gdclass.NewPerformance(ptr)} })
 }
 
-type Monitor int //gd:Performance.Monitor
+type Monitor int64 //gd:Performance.Monitor
 
 const (
 	// The number of frames rendered in the last second. This metric is only updated once per second, even if queried more often. Higher is better.
@@ -511,7 +511,7 @@ const (
 	MonitorMax Monitor = 59
 )
 
-type MonitorType int //gd:Performance.MonitorType
+type MonitorType int64 //gd:Performance.MonitorType
 
 const (
 	// Monitor output is formatted as an integer value.

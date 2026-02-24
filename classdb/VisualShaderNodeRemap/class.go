@@ -217,7 +217,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeRemap", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeRemap(ptr)} })
 }
 
-type OpType int //gd:VisualShaderNodeRemap.OpType
+type OpType int64 //gd:VisualShaderNodeRemap.OpType
 
 const (
 	// A floating-point scalar type.

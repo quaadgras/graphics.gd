@@ -322,7 +322,7 @@ func init() {
 	gdclass.Register("PlaneMesh", func(ptr gd.Object) any { return Instance{gdclass.NewPlaneMesh(ptr)} })
 }
 
-type Orientation int //gd:PlaneMesh.Orientation
+type Orientation int64 //gd:PlaneMesh.Orientation
 
 const (
 	// [PlaneMesh] will face the positive X-axis.

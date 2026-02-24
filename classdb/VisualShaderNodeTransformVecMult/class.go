@@ -218,7 +218,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeTransformVecMult", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeTransformVecMult(ptr)} })
 }
 
-type Operator int //gd:VisualShaderNodeTransformVecMult.Operator
+type Operator int64 //gd:VisualShaderNodeTransformVecMult.Operator
 
 const (
 	// Multiplies transform a by the vector b.

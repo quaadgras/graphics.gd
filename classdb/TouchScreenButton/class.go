@@ -461,7 +461,7 @@ func init() {
 	gdclass.Register("TouchScreenButton", func(ptr gd.Object) any { return Instance{gdclass.NewTouchScreenButton(ptr)} })
 }
 
-type VisibilityMode int //gd:TouchScreenButton.VisibilityMode
+type VisibilityMode int64 //gd:TouchScreenButton.VisibilityMode
 
 const (
 	// Always visible.

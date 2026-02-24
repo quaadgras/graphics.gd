@@ -228,7 +228,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeVectorOp", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeVectorOp(ptr)} })
 }
 
-type Operator int //gd:VisualShaderNodeVectorOp.Operator
+type Operator int64 //gd:VisualShaderNodeVectorOp.Operator
 
 const (
 	// Adds two vectors.

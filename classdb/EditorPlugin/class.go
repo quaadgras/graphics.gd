@@ -2668,7 +2668,7 @@ func init() {
 	gdclass.Register("EditorPlugin", func(ptr gd.Object) any { return Instance{gdclass.NewEditorPlugin(ptr)} })
 }
 
-type CustomControlContainer int //gd:EditorPlugin.CustomControlContainer
+type CustomControlContainer int64 //gd:EditorPlugin.CustomControlContainer
 
 const (
 	// Main editor toolbar, next to play buttons.
@@ -2697,7 +2697,7 @@ const (
 	ContainerProjectSettingTabRight CustomControlContainer = 11
 )
 
-type DockSlot int //gd:EditorPlugin.DockSlot
+type DockSlot int64 //gd:EditorPlugin.DockSlot
 
 const (
 	// The dock is closed.
@@ -2724,7 +2724,7 @@ const (
 	DockSlotMax DockSlot = 9
 )
 
-type AfterGUIInput int //gd:EditorPlugin.AfterGUIInput
+type AfterGUIInput int64 //gd:EditorPlugin.AfterGUIInput
 
 const (
 	// Forwards the [InputEvent] to other EditorPlugins.

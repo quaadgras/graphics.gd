@@ -309,7 +309,7 @@ func init() {
 	gdclass.Register("FlowContainer", func(ptr gd.Object) any { return Instance{gdclass.NewFlowContainer(ptr)} })
 }
 
-type AlignmentMode int //gd:FlowContainer.AlignmentMode
+type AlignmentMode int64 //gd:FlowContainer.AlignmentMode
 
 const (
 	// The child controls will be arranged at the beginning of the container, i.e. top if orientation is vertical, left if orientation is horizontal (right for RTL layout).
@@ -320,7 +320,7 @@ const (
 	AlignmentEnd AlignmentMode = 2
 )
 
-type LastWrapAlignmentMode int //gd:FlowContainer.LastWrapAlignmentMode
+type LastWrapAlignmentMode int64 //gd:FlowContainer.LastWrapAlignmentMode
 
 const (
 	// The last partially filled row or column will wrap aligned to the previous row or column in accordance with [Alignment].

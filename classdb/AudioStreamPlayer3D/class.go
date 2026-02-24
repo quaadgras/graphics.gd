@@ -857,7 +857,7 @@ func init() {
 	gdclass.Register("AudioStreamPlayer3D", func(ptr gd.Object) any { return Instance{gdclass.NewAudioStreamPlayer3D(ptr)} })
 }
 
-type AttenuationModel int //gd:AudioStreamPlayer3D.AttenuationModel
+type AttenuationModel int64 //gd:AudioStreamPlayer3D.AttenuationModel
 
 const (
 	// Attenuation of loudness according to linear distance.
@@ -873,7 +873,7 @@ const (
 	AttenuationDisabled AttenuationModel = 3
 )
 
-type DopplerTracking int //gd:AudioStreamPlayer3D.DopplerTracking
+type DopplerTracking int64 //gd:AudioStreamPlayer3D.DopplerTracking
 
 const (
 	// Disables doppler tracking.

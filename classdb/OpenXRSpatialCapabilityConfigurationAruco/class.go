@@ -233,7 +233,7 @@ func init() {
 	gdclass.Register("OpenXRSpatialCapabilityConfigurationAruco", func(ptr gd.Object) any { return Instance{gdclass.NewOpenXRSpatialCapabilityConfigurationAruco(ptr)} })
 }
 
-type ArucoDict int //gd:OpenXRSpatialCapabilityConfigurationAruco.ArucoDict
+type ArucoDict int64 //gd:OpenXRSpatialCapabilityConfigurationAruco.ArucoDict
 
 const (
 	// 4 by 4 pixel Aruco marker dictionary with 50 IDs.

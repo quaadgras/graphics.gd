@@ -876,7 +876,7 @@ func init() {
 	gdclass.Register("Tween", func(ptr gd.Object) any { return Instance{gdclass.NewTween(ptr)} })
 }
 
-type TweenProcessMode int //gd:Tween.TweenProcessMode
+type TweenProcessMode int64 //gd:Tween.TweenProcessMode
 
 const (
 	// The [Tween] updates after each physics frame (see [Node.PhysicsProcess]).
@@ -891,7 +891,7 @@ const (
 	TweenProcessIdle TweenProcessMode = 1
 )
 
-type TweenPauseMode int //gd:Tween.TweenPauseMode
+type TweenPauseMode int64 //gd:Tween.TweenPauseMode
 
 const (
 	// If the [Tween] has a bound node, it will process when that node can process (see [Node.ProcessMode]). Otherwise it's the same as [TweenPauseStop].
@@ -911,7 +911,7 @@ const (
 	TweenPauseProcess TweenPauseMode = 2
 )
 
-type TransitionType int //gd:Tween.TransitionType
+type TransitionType int64 //gd:Tween.TransitionType
 
 const (
 	// The animation is interpolated linearly.
@@ -940,7 +940,7 @@ const (
 	TransSpring TransitionType = 11
 )
 
-type EaseType int //gd:Tween.EaseType
+type EaseType int64 //gd:Tween.EaseType
 
 const (
 	// The interpolation starts slowly and speeds up towards the end.

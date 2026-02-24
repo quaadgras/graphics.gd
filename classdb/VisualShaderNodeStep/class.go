@@ -220,7 +220,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeStep", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeStep(ptr)} })
 }
 
-type OpType int //gd:VisualShaderNodeStep.OpType
+type OpType int64 //gd:VisualShaderNodeStep.OpType
 
 const (
 	// A floating-point scalar type.

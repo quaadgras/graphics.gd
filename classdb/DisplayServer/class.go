@@ -5274,7 +5274,7 @@ func init() {
 	gdclass.Register("DisplayServer", func(ptr gd.Object) any { return Instance{gdclass.NewDisplayServer(ptr)} })
 }
 
-type Feature int //gd:DisplayServer.Feature
+type Feature int64 //gd:DisplayServer.Feature
 
 const (
 	// Display server supports global menu. This allows the application to display its menu items in the operating system's top bar. macOS
@@ -5370,7 +5370,7 @@ const (
 	FeatureAccessibilityScreenReader Feature = 34
 )
 
-type AccessibilityRole int //gd:DisplayServer.AccessibilityRole
+type AccessibilityRole int64 //gd:DisplayServer.AccessibilityRole
 
 const (
 	// Unknown or custom role.
@@ -5467,7 +5467,7 @@ const (
 	RoleTooltip AccessibilityRole = 45
 )
 
-type AccessibilityPopupType int //gd:DisplayServer.AccessibilityPopupType
+type AccessibilityPopupType int64 //gd:DisplayServer.AccessibilityPopupType
 
 const (
 	// Popup menu.
@@ -5480,7 +5480,7 @@ const (
 	PopupDialog AccessibilityPopupType = 3
 )
 
-type AccessibilityFlags int //gd:DisplayServer.AccessibilityFlags
+type AccessibilityFlags int64 //gd:DisplayServer.AccessibilityFlags
 
 const (
 	// Element is hidden for accessibility tools.
@@ -5505,7 +5505,7 @@ const (
 	FlagClipsChildren AccessibilityFlags = 9
 )
 
-type AccessibilityAction int //gd:DisplayServer.AccessibilityAction
+type AccessibilityAction int64 //gd:DisplayServer.AccessibilityAction
 
 const (
 	// Single click action, callback argument is not set.
@@ -5568,7 +5568,7 @@ const (
 	ActionCustom AccessibilityAction = 22
 )
 
-type AccessibilityLiveMode int //gd:DisplayServer.AccessibilityLiveMode
+type AccessibilityLiveMode int64 //gd:DisplayServer.AccessibilityLiveMode
 
 const (
 	// Indicates that updates to the live region should not be presented.
@@ -5579,7 +5579,7 @@ const (
 	LiveAssertive AccessibilityLiveMode = 2
 )
 
-type AccessibilityScrollUnit int //gd:DisplayServer.AccessibilityScrollUnit
+type AccessibilityScrollUnit int64 //gd:DisplayServer.AccessibilityScrollUnit
 
 const (
 	// The amount by which to scroll. A single item of a list, line of text.
@@ -5588,7 +5588,7 @@ const (
 	ScrollUnitPage AccessibilityScrollUnit = 1
 )
 
-type AccessibilityScrollHint int //gd:DisplayServer.AccessibilityScrollHint
+type AccessibilityScrollHint int64 //gd:DisplayServer.AccessibilityScrollHint
 
 const (
 	// A preferred position for the node scrolled into view. Top-left edge of the scroll container.
@@ -5605,7 +5605,7 @@ const (
 	ScrollHintRightEdge AccessibilityScrollHint = 5
 )
 
-type MouseModeValue int //gd:DisplayServer.MouseMode
+type MouseModeValue int64 //gd:DisplayServer.MouseMode
 
 const (
 	// Makes the mouse cursor visible if it is hidden.
@@ -5626,7 +5626,7 @@ const (
 	MouseModeMax MouseModeValue = 5
 )
 
-type ScreenOrientation int //gd:DisplayServer.ScreenOrientation
+type ScreenOrientation int64 //gd:DisplayServer.ScreenOrientation
 
 const (
 	// Default landscape orientation.
@@ -5645,7 +5645,7 @@ const (
 	ScreenSensor ScreenOrientation = 6
 )
 
-type VirtualKeyboardType int //gd:DisplayServer.VirtualKeyboardType
+type VirtualKeyboardType int64 //gd:DisplayServer.VirtualKeyboardType
 
 const (
 	// Default text virtual keyboard.
@@ -5668,7 +5668,7 @@ const (
 	KeyboardTypeUrl VirtualKeyboardType = 7
 )
 
-type CursorShape int //gd:DisplayServer.CursorShape
+type CursorShape int64 //gd:DisplayServer.CursorShape
 
 const (
 	// Arrow cursor shape. This is the default when not pointing anything that overrides the mouse cursor, such as a [LineEdit] or [TextEdit].
@@ -5738,7 +5738,7 @@ const (
 	CursorMax CursorShape = 17
 )
 
-type FileDialogMode int //gd:DisplayServer.FileDialogMode
+type FileDialogMode int64 //gd:DisplayServer.FileDialogMode
 
 const (
 	// The native file dialog allows selecting one, and only one file.
@@ -5753,7 +5753,7 @@ const (
 	FileDialogModeSaveFile FileDialogMode = 4
 )
 
-type WindowMode int //gd:DisplayServer.WindowMode
+type WindowMode int64 //gd:DisplayServer.WindowMode
 
 const (
 	// Windowed mode, i.e. [Window] doesn't occupy the whole screen (unless set to the size of the screen).
@@ -5802,7 +5802,7 @@ const (
 	WindowModeExclusiveFullscreen WindowMode = 4
 )
 
-type WindowFlags int //gd:DisplayServer.WindowFlags
+type WindowFlags int64 //gd:DisplayServer.WindowFlags
 
 const (
 	// The window can't be resized by dragging its resize grip. It's still possible to resize the window using [WindowSetSize]. This flag is ignored for full screen windows.
@@ -5872,7 +5872,7 @@ const (
 	WindowFlagMax WindowFlags = 13
 )
 
-type WindowEvent int //gd:DisplayServer.WindowEvent
+type WindowEvent int64 //gd:DisplayServer.WindowEvent
 
 const (
 	// Sent when the mouse pointer enters the window.
@@ -5903,7 +5903,7 @@ const (
 	WindowEventForceClose WindowEvent = 8
 )
 
-type WindowResizeEdge int //gd:DisplayServer.WindowResizeEdge
+type WindowResizeEdge int64 //gd:DisplayServer.WindowResizeEdge
 
 const (
 	// Top-left edge of a window.
@@ -5926,7 +5926,7 @@ const (
 	WindowEdgeMax WindowResizeEdge = 8
 )
 
-type VSyncMode int //gd:DisplayServer.VSyncMode
+type VSyncMode int64 //gd:DisplayServer.VSyncMode
 
 const (
 	// No vertical synchronization, which means the engine will display frames as fast as possible (tearing may be visible). Framerate is unlimited (regardless of [Engine.MaxFps]).
@@ -5949,7 +5949,7 @@ const (
 	VsyncMailbox VSyncMode = 3
 )
 
-type HandleType int //gd:DisplayServer.HandleType
+type HandleType int64 //gd:DisplayServer.HandleType
 
 const (
 	// Display handle:
@@ -6008,7 +6008,7 @@ const (
 	EglConfig HandleType = 5
 )
 
-type TTSUtteranceEvent int //gd:DisplayServer.TTSUtteranceEvent
+type TTSUtteranceEvent int64 //gd:DisplayServer.TTSUtteranceEvent
 
 const (
 	// Utterance has begun to be spoken.

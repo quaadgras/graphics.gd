@@ -550,7 +550,7 @@ func Load[T Generic[T, P], P Size](data complex128) T {
 
 // Size of a pointer up to [3]uintptr's, suitable for supporting fat pointers.
 type Size interface {
-	~[1]uint32 | ~[1]uintptr | ~[1]uint64 | ~[2]uint64 | ~[3]uint64
+	~[1]uint32 | ~[1]uintptr | ~[1]uint64 | ~[2]uint64 | ~[3]uint64 | ~[2]uint32
 }
 
 // Generic pointer.

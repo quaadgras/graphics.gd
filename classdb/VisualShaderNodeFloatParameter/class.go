@@ -351,7 +351,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeFloatParameter", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeFloatParameter(ptr)} })
 }
 
-type Hint int //gd:VisualShaderNodeFloatParameter.Hint
+type Hint int64 //gd:VisualShaderNodeFloatParameter.Hint
 
 const (
 	// No hint used.

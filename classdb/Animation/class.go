@@ -1612,7 +1612,7 @@ func init() {
 	gdclass.Register("Animation", func(ptr gd.Object) any { return Instance{gdclass.NewAnimation(ptr)} })
 }
 
-type TrackType int //gd:Animation.TrackType
+type TrackType int64 //gd:Animation.TrackType
 
 const (
 	// Value tracks set values in node properties, but only those which can be interpolated. For 3D position/rotation/scale, using the dedicated [TypePosition3d], [TypeRotation3d] and [TypeScale3d] track types instead of [TypeValue] is recommended for performance reasons.
@@ -1647,7 +1647,7 @@ const (
 	TypeAnimation TrackType = 8
 )
 
-type InterpolationType int //gd:Animation.InterpolationType
+type InterpolationType int64 //gd:Animation.InterpolationType
 
 const (
 	// No interpolation (nearest value).
@@ -1666,7 +1666,7 @@ const (
 	InterpolationCubicAngle InterpolationType = 4
 )
 
-type UpdateMode int //gd:Animation.UpdateMode
+type UpdateMode int64 //gd:Animation.UpdateMode
 
 const (
 	// Update between keyframes and hold the value.
@@ -1681,7 +1681,7 @@ const (
 	UpdateCapture UpdateMode = 2
 )
 
-type LoopMode int //gd:Animation.LoopMode
+type LoopMode int64 //gd:Animation.LoopMode
 
 const (
 	// At both ends of the animation, the animation will stop playing.
@@ -1692,7 +1692,7 @@ const (
 	LoopPingpong LoopMode = 2
 )
 
-type LoopedFlag int //gd:Animation.LoopedFlag
+type LoopedFlag int64 //gd:Animation.LoopedFlag
 
 const (
 	// This flag indicates that the animation proceeds without any looping.
@@ -1703,7 +1703,7 @@ const (
 	LoopedFlagStart LoopedFlag = 2
 )
 
-type FindMode int //gd:Animation.FindMode
+type FindMode int64 //gd:Animation.FindMode
 
 const (
 	// Finds the nearest time key.

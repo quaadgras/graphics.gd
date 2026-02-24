@@ -702,7 +702,7 @@ func init() {
 	gdclass.Register("SpriteBase3D", func(ptr gd.Object) any { return Instance{gdclass.NewSpriteBase3D(ptr)} })
 }
 
-type DrawFlags int //gd:SpriteBase3D.DrawFlags
+type DrawFlags int64 //gd:SpriteBase3D.DrawFlags
 
 const (
 	// If set, the texture's transparency and the opacity are used to make those parts of the sprite invisible.
@@ -719,7 +719,7 @@ const (
 	FlagMax DrawFlags = 5
 )
 
-type AlphaCutMode int //gd:SpriteBase3D.AlphaCutMode
+type AlphaCutMode int64 //gd:SpriteBase3D.AlphaCutMode
 
 const (
 	// This mode performs standard alpha blending. It can display translucent areas, but transparency sorting issues may be visible when multiple transparent materials are overlapping.

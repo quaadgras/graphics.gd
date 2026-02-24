@@ -1310,7 +1310,7 @@ func init() {
 	gdclass.Register("TileMapLayer", func(ptr gd.Object) any { return Instance{gdclass.NewTileMapLayer(ptr)} })
 }
 
-type DebugVisibilityMode int //gd:TileMapLayer.DebugVisibilityMode
+type DebugVisibilityMode int64 //gd:TileMapLayer.DebugVisibilityMode
 
 const (
 	// Hide the collisions or navigation debug shapes in the editor, and use the debug settings to determine their visibility in game (i.e. [SceneTree.DebugCollisionsHint] or [SceneTree.DebugNavigationHint]).

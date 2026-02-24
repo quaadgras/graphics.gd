@@ -220,7 +220,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeColorOp", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeColorOp(ptr)} })
 }
 
-type Operator int //gd:VisualShaderNodeColorOp.Operator
+type Operator int64 //gd:VisualShaderNodeColorOp.Operator
 
 const (
 	// Produce a screen effect with the following formula:

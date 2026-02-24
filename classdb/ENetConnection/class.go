@@ -548,7 +548,7 @@ func init() {
 	gdclass.Register("ENetConnection", func(ptr gd.Object) any { return Instance{gdclass.NewENetConnection(ptr)} })
 }
 
-type CompressionMode int //gd:ENetConnection.CompressionMode
+type CompressionMode int64 //gd:ENetConnection.CompressionMode
 
 const (
 	// No compression. This uses the most bandwidth, but has the upside of requiring the fewest CPU resources. This option may also be used to make network debugging using tools like Wireshark easier.
@@ -569,7 +569,7 @@ const (
 	CompressZstd CompressionMode = 4
 )
 
-type EventType int //gd:ENetConnection.EventType
+type EventType int64 //gd:ENetConnection.EventType
 
 const (
 	// An error occurred during [Service]. You will likely need to [Destroy] the host and recreate it.
@@ -592,7 +592,7 @@ const (
 	EventReceive EventType = 3
 )
 
-type HostStatistic int //gd:ENetConnection.HostStatistic
+type HostStatistic int64 //gd:ENetConnection.HostStatistic
 
 const (
 	// Total data sent.

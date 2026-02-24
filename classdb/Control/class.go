@@ -4164,7 +4164,7 @@ func init() {
 	gdclass.Register("Control", func(ptr gd.Object) any { return Instance{gdclass.NewControl(ptr)} })
 }
 
-type FocusMode int //gd:Control.FocusMode
+type FocusMode int64 //gd:Control.FocusMode
 
 const (
 	// The node cannot grab focus. Use with [FocusMode].
@@ -4185,7 +4185,7 @@ const (
 	FocusAccessibility FocusMode = 3
 )
 
-type FocusBehaviorRecursive int //gd:Control.FocusBehaviorRecursive
+type FocusBehaviorRecursive int64 //gd:Control.FocusBehaviorRecursive
 
 const (
 	// Inherits the [FocusBehaviorRecursive] from the parent control. If there is no parent control, this is the same as [FocusBehaviorEnabled].
@@ -4204,7 +4204,7 @@ const (
 	FocusBehaviorEnabled FocusBehaviorRecursive = 2
 )
 
-type MouseBehaviorRecursive int //gd:Control.MouseBehaviorRecursive
+type MouseBehaviorRecursive int64 //gd:Control.MouseBehaviorRecursive
 
 const (
 	// Inherits the [MouseBehaviorRecursive] from the parent control. If there is no parent control, this is the same as [MouseBehaviorEnabled].
@@ -4223,7 +4223,7 @@ const (
 	MouseBehaviorEnabled MouseBehaviorRecursive = 2
 )
 
-type CursorShape int //gd:Control.CursorShape
+type CursorShape int64 //gd:Control.CursorShape
 
 const (
 	// Show the system's arrow mouse cursor when the user hovers the node. Use with [MouseDefaultCursorShape].
@@ -4264,7 +4264,7 @@ const (
 	CursorHelp CursorShape = 16
 )
 
-type LayoutPreset int //gd:Control.LayoutPreset
+type LayoutPreset int64 //gd:Control.LayoutPreset
 
 const (
 	// Snap all 4 anchors to the top-left of the parent control's bounds. Use with [SetAnchorsPreset].
@@ -4334,7 +4334,7 @@ const (
 	PresetFullRect LayoutPreset = 15
 )
 
-type LayoutPresetMode int //gd:Control.LayoutPresetMode
+type LayoutPresetMode int64 //gd:Control.LayoutPresetMode
 
 const (
 	// The control will be resized to its minimum size.
@@ -4347,7 +4347,7 @@ const (
 	PresetModeKeepSize LayoutPresetMode = 3
 )
 
-type SizeFlags int //gd:Control.SizeFlags
+type SizeFlags int64 //gd:Control.SizeFlags
 
 const (
 	// Tells the parent [Container] to align the node with its start, either the top or the left edge. It is mutually exclusive with [SizeFill] and other shrink size flags, but can be used with [SizeExpand] in some containers. Use with [SizeFlagsHorizontal] and [SizeFlagsVertical].
@@ -4387,7 +4387,7 @@ const (
 	SizeShrinkEnd SizeFlags = 8
 )
 
-type MouseFilter int //gd:Control.MouseFilter
+type MouseFilter int64 //gd:Control.MouseFilter
 
 const (
 	// The control will receive mouse movement input events and mouse button input events if clicked on through [GuiInput]. The control will also receive the [OnMouseEntered] and [OnMouseExited] signals. These events are automatically marked as handled, and they will not propagate further to other controls. This also results in blocking signals in other controls.
@@ -4418,7 +4418,7 @@ const (
 	MouseFilterIgnore MouseFilter = 2
 )
 
-type GrowDirection int //gd:Control.GrowDirection
+type GrowDirection int64 //gd:Control.GrowDirection
 
 const (
 	// The control will grow to the left or top to make up if its minimum size is changed to be greater than its current size on the respective axis.
@@ -4429,7 +4429,7 @@ const (
 	GrowDirectionBoth GrowDirection = 2
 )
 
-type Anchor int //gd:Control.Anchor
+type Anchor int64 //gd:Control.Anchor
 
 const (
 	// Snaps one of the 4 anchor's sides to the origin of the node's Rect, in the top left. Use it with one of the anchor_* member variables, like [AnchorLeft]. To change all 4 anchors at once, use [SetAnchorsPreset].
@@ -4444,7 +4444,7 @@ const (
 	AnchorEnd Anchor = 1
 )
 
-type LayoutDirection int //gd:Control.LayoutDirection
+type LayoutDirection int64 //gd:Control.LayoutDirection
 
 const (
 	// Automatic layout direction, determined from the parent control layout direction.
@@ -4468,7 +4468,7 @@ const (
 	LayoutDirectionLocale LayoutDirection = 1
 )
 
-type TextDirection int //gd:Control.TextDirection
+type TextDirection int64 //gd:Control.TextDirection
 
 const (
 	// Text writing direction is the same as layout direction.

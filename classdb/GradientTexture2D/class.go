@@ -378,7 +378,7 @@ func init() {
 	gdclass.Register("GradientTexture2D", func(ptr gd.Object) any { return Instance{gdclass.NewGradientTexture2D(ptr)} })
 }
 
-type Fill int //gd:GradientTexture2D.Fill
+type Fill int64 //gd:GradientTexture2D.Fill
 
 const (
 	// The colors are linearly interpolated in a straight line.
@@ -389,7 +389,7 @@ const (
 	FillSquare Fill = 2
 )
 
-type Repeat int //gd:GradientTexture2D.Repeat
+type Repeat int64 //gd:GradientTexture2D.Repeat
 
 const (
 	// The gradient fill is restricted to the range defined by [FillFrom] to [FillTo] offsets.

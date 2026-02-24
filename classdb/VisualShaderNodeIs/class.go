@@ -218,7 +218,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeIs", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeIs(ptr)} })
 }
 
-type Function int //gd:VisualShaderNodeIs.Function
+type Function int64 //gd:VisualShaderNodeIs.Function
 
 const (
 	// Comparison with INF (Infinity).

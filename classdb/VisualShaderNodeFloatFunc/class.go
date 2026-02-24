@@ -220,7 +220,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeFloatFunc", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeFloatFunc(ptr)} })
 }
 
-type Function int //gd:VisualShaderNodeFloatFunc.Function
+type Function int64 //gd:VisualShaderNodeFloatFunc.Function
 
 const (
 	// Returns the sine of the parameter. Translates to sin(x) in the Godot Shader Language.

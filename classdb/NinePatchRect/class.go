@@ -390,7 +390,7 @@ func init() {
 	gdclass.Register("NinePatchRect", func(ptr gd.Object) any { return Instance{gdclass.NewNinePatchRect(ptr)} })
 }
 
-type AxisStretchMode int //gd:NinePatchRect.AxisStretchMode
+type AxisStretchMode int64 //gd:NinePatchRect.AxisStretchMode
 
 const (
 	// Stretches the center texture across the NinePatchRect. This may cause the texture to be distorted.

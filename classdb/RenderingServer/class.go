@@ -9349,7 +9349,7 @@ func init() {
 	gdclass.Register("RenderingServer", func(ptr gd.Object) any { return Instance{gdclass.NewRenderingServer(ptr)} })
 }
 
-type TextureType int //gd:RenderingServer.TextureType
+type TextureType int64 //gd:RenderingServer.TextureType
 
 const (
 	// 2D texture.
@@ -9360,7 +9360,7 @@ const (
 	TextureType3d TextureType = 2
 )
 
-type TextureLayeredType int //gd:RenderingServer.TextureLayeredType
+type TextureLayeredType int64 //gd:RenderingServer.TextureLayeredType
 
 const (
 	// Array of 2-dimensional textures (see [Texture2DArray]).
@@ -9377,7 +9377,7 @@ const (
 	TextureLayeredCubemapArray TextureLayeredType = 2
 )
 
-type CubeMapLayer int //gd:RenderingServer.CubeMapLayer
+type CubeMapLayer int64 //gd:RenderingServer.CubeMapLayer
 
 const (
 	// Left face of a [Cubemap].
@@ -9406,7 +9406,7 @@ const (
 	CubemapLayerBack CubeMapLayer = 5
 )
 
-type ShaderMode int //gd:RenderingServer.ShaderMode
+type ShaderMode int64 //gd:RenderingServer.ShaderMode
 
 const (
 	// Shader is a 3D shader.
@@ -9423,7 +9423,7 @@ const (
 	ShaderMax ShaderMode = 5
 )
 
-type ArrayType int //gd:RenderingServer.ArrayType
+type ArrayType int64 //gd:RenderingServer.ArrayType
 
 const (
 	// Array is a vertex position array.
@@ -9456,7 +9456,7 @@ const (
 	ArrayMax ArrayType = 13
 )
 
-type ArrayCustomFormat int //gd:RenderingServer.ArrayCustomFormat
+type ArrayCustomFormat int64 //gd:RenderingServer.ArrayCustomFormat
 
 const (
 	// Custom data array contains 8-bit-per-channel red/green/blue/alpha color data. Values are normalized, unsigned floating-point in the [0.0, 1.0] range.
@@ -9479,7 +9479,7 @@ const (
 	ArrayCustomMax ArrayCustomFormat = 8
 )
 
-type ArrayFormat int //gd:RenderingServer.ArrayFormat
+type ArrayFormat int64 //gd:RenderingServer.ArrayFormat
 
 const (
 	// Flag used to mark a vertex position array.
@@ -9553,7 +9553,7 @@ const (
 	ArrayFlagFormatVersionMask ArrayFormat = 255
 )
 
-type PrimitiveType int //gd:RenderingServer.PrimitiveType
+type PrimitiveType int64 //gd:RenderingServer.PrimitiveType
 
 const (
 	// Primitive to draw consists of points.
@@ -9570,7 +9570,7 @@ const (
 	PrimitiveMax PrimitiveType = 5
 )
 
-type BlendShapeMode int //gd:RenderingServer.BlendShapeMode
+type BlendShapeMode int64 //gd:RenderingServer.BlendShapeMode
 
 const (
 	// Blend shapes are normalized.
@@ -9579,7 +9579,7 @@ const (
 	BlendShapeModeRelative BlendShapeMode = 1
 )
 
-type MultimeshTransformFormat int //gd:RenderingServer.MultimeshTransformFormat
+type MultimeshTransformFormat int64 //gd:RenderingServer.MultimeshTransformFormat
 
 const (
 	// Use [Transform2D.OriginXY] to store MultiMesh transform.
@@ -9592,7 +9592,7 @@ const (
 	MultimeshTransform3d MultimeshTransformFormat = 1
 )
 
-type MultimeshPhysicsInterpolationQuality int //gd:RenderingServer.MultimeshPhysicsInterpolationQuality
+type MultimeshPhysicsInterpolationQuality int64 //gd:RenderingServer.MultimeshPhysicsInterpolationQuality
 
 const (
 	// MultiMesh physics interpolation favors speed over quality.
@@ -9601,7 +9601,7 @@ const (
 	MultimeshInterpQualityHigh MultimeshPhysicsInterpolationQuality = 1
 )
 
-type LightProjectorFilter int //gd:RenderingServer.LightProjectorFilter
+type LightProjectorFilter int64 //gd:RenderingServer.LightProjectorFilter
 
 const (
 	// Nearest-neighbor filter for light projectors (use for pixel art light projectors). No mipmaps are used for rendering, which means light projectors at a distance will look sharp but grainy. This has roughly the same performance cost as using mipmaps.
@@ -9622,7 +9622,7 @@ const (
 	LightProjectorFilterLinearMipmapsAnisotropic LightProjectorFilter = 5
 )
 
-type LightType int //gd:RenderingServer.LightType
+type LightType int64 //gd:RenderingServer.LightType
 
 const (
 	// Directional (sun/moon) light (see [DirectionalLight3D]).
@@ -9639,7 +9639,7 @@ const (
 	LightSpot LightType = 2
 )
 
-type LightParam int //gd:RenderingServer.LightParam
+type LightParam int64 //gd:RenderingServer.LightParam
 
 const (
 	// The light's energy multiplier.
@@ -9692,7 +9692,7 @@ const (
 	LightParamMax LightParam = 21
 )
 
-type LightBakeMode int //gd:RenderingServer.LightBakeMode
+type LightBakeMode int64 //gd:RenderingServer.LightBakeMode
 
 const (
 	// Light is ignored when baking. This is the fastest mode, but the light will be taken into account when baking global illumination. This mode should generally be used for dynamic lights that change quickly, as the effect of global illumination is less noticeable on those lights.
@@ -9711,7 +9711,7 @@ const (
 	LightBakeDynamic LightBakeMode = 2
 )
 
-type LightOmniShadowMode int //gd:RenderingServer.LightOmniShadowMode
+type LightOmniShadowMode int64 //gd:RenderingServer.LightOmniShadowMode
 
 const (
 	// Use a dual paraboloid shadow map for omni lights.
@@ -9720,7 +9720,7 @@ const (
 	LightOmniShadowCube LightOmniShadowMode = 1
 )
 
-type LightDirectionalShadowMode int //gd:RenderingServer.LightDirectionalShadowMode
+type LightDirectionalShadowMode int64 //gd:RenderingServer.LightDirectionalShadowMode
 
 const (
 	// Use orthogonal shadow projection for directional light.
@@ -9731,7 +9731,7 @@ const (
 	LightDirectionalShadowParallel4Splits LightDirectionalShadowMode = 2
 )
 
-type LightDirectionalSkyMode int //gd:RenderingServer.LightDirectionalSkyMode
+type LightDirectionalSkyMode int64 //gd:RenderingServer.LightDirectionalSkyMode
 
 const (
 	// Use DirectionalLight3D in both sky rendering and scene lighting.
@@ -9742,7 +9742,7 @@ const (
 	LightDirectionalSkyModeSkyOnly LightDirectionalSkyMode = 2
 )
 
-type ShadowQuality int //gd:RenderingServer.ShadowQuality
+type ShadowQuality int64 //gd:RenderingServer.ShadowQuality
 
 const (
 	// Lowest shadow filtering quality (fastest). Soft shadows are not available with this quality setting, which means the [Light3D.ShadowBlur] property is ignored if [Light3D.LightSize] and [Light3D.LightAngularDistance] is 0.0.
@@ -9779,7 +9779,7 @@ const (
 	ShadowQualityMax ShadowQuality = 6
 )
 
-type ReflectionProbeUpdateMode int //gd:RenderingServer.ReflectionProbeUpdateMode
+type ReflectionProbeUpdateMode int64 //gd:RenderingServer.ReflectionProbeUpdateMode
 
 const (
 	// Reflection probe will update reflections once and then stop.
@@ -9788,7 +9788,7 @@ const (
 	ReflectionProbeUpdateAlways ReflectionProbeUpdateMode = 1
 )
 
-type ReflectionProbeAmbientMode int //gd:RenderingServer.ReflectionProbeAmbientMode
+type ReflectionProbeAmbientMode int64 //gd:RenderingServer.ReflectionProbeAmbientMode
 
 const (
 	// Do not apply any ambient lighting inside the reflection probe's box defined by its size.
@@ -9802,7 +9802,7 @@ const (
 	ReflectionProbeAmbientColor ReflectionProbeAmbientMode = 2
 )
 
-type DecalTexture int //gd:RenderingServer.DecalTexture
+type DecalTexture int64 //gd:RenderingServer.DecalTexture
 
 const (
 	// Albedo texture slot in a decal ([Decal.TextureAlbedo]).
@@ -9825,7 +9825,7 @@ const (
 	DecalTextureMax DecalTexture = 4
 )
 
-type DecalFilter int //gd:RenderingServer.DecalFilter
+type DecalFilter int64 //gd:RenderingServer.DecalFilter
 
 const (
 	// Nearest-neighbor filter for decals (use for pixel art decals). No mipmaps are used for rendering, which means decals at a distance will look sharp but grainy. This has roughly the same performance cost as using mipmaps.
@@ -9846,7 +9846,7 @@ const (
 	DecalFilterLinearMipmapsAnisotropic DecalFilter = 5
 )
 
-type VoxelGIQuality int //gd:RenderingServer.VoxelGIQuality
+type VoxelGIQuality int64 //gd:RenderingServer.VoxelGIQuality
 
 const (
 	// Low [VoxelGI] rendering quality using 4 cones.
@@ -9859,7 +9859,7 @@ const (
 	VoxelGiQualityHigh VoxelGIQuality = 1
 )
 
-type ParticlesMode int //gd:RenderingServer.ParticlesMode
+type ParticlesMode int64 //gd:RenderingServer.ParticlesMode
 
 const (
 	// 2D particles.
@@ -9868,7 +9868,7 @@ const (
 	ParticlesMode3d ParticlesMode = 1
 )
 
-type ParticlesTransformAlign int //gd:RenderingServer.ParticlesTransformAlign
+type ParticlesTransformAlign int64 //gd:RenderingServer.ParticlesTransformAlign
 
 const (
 	ParticlesTransformAlignDisabled              ParticlesTransformAlign = 0
@@ -9877,7 +9877,7 @@ const (
 	ParticlesTransformAlignZBillboardYToVelocity ParticlesTransformAlign = 3
 )
 
-type ParticlesDrawOrder int //gd:RenderingServer.ParticlesDrawOrder
+type ParticlesDrawOrder int64 //gd:RenderingServer.ParticlesDrawOrder
 
 const (
 	// Draw particles in the order that they appear in the particles array.
@@ -9890,7 +9890,7 @@ const (
 	ParticlesDrawOrderViewDepth ParticlesDrawOrder = 3
 )
 
-type ParticlesCollisionType int //gd:RenderingServer.ParticlesCollisionType
+type ParticlesCollisionType int64 //gd:RenderingServer.ParticlesCollisionType
 
 const (
 	ParticlesCollisionTypeSphereAttract      ParticlesCollisionType = 0
@@ -9902,7 +9902,7 @@ const (
 	ParticlesCollisionTypeHeightfieldCollide ParticlesCollisionType = 6
 )
 
-type ParticlesCollisionHeightfieldResolution int //gd:RenderingServer.ParticlesCollisionHeightfieldResolution
+type ParticlesCollisionHeightfieldResolution int64 //gd:RenderingServer.ParticlesCollisionHeightfieldResolution
 
 const (
 	ParticlesCollisionHeightfieldResolution256  ParticlesCollisionHeightfieldResolution = 0
@@ -9915,7 +9915,7 @@ const (
 	ParticlesCollisionHeightfieldResolutionMax ParticlesCollisionHeightfieldResolution = 6
 )
 
-type FogVolumeShape int //gd:RenderingServer.FogVolumeShape
+type FogVolumeShape int64 //gd:RenderingServer.FogVolumeShape
 
 const (
 	// [FogVolume] will be shaped like an ellipsoid (stretched sphere).
@@ -9942,7 +9942,7 @@ const (
 	FogVolumeShapeMax FogVolumeShape = 5
 )
 
-type ViewportScaling3DMode int //gd:RenderingServer.ViewportScaling3DMode
+type ViewportScaling3DMode int64 //gd:RenderingServer.ViewportScaling3DMode
 
 const (
 	// Use bilinear scaling for the viewport's 3D buffer. The amount of scaling can be set using [Viewport.Scaling3dScale]. Values less than 1.0 will result in undersampling while values greater than 1.0 will result in supersampling. A value of 1.0 disables scaling.
@@ -9973,7 +9973,7 @@ const (
 	ViewportScaling3dModeMax ViewportScaling3DMode = 5
 )
 
-type ViewportUpdateMode int //gd:RenderingServer.ViewportUpdateMode
+type ViewportUpdateMode int64 //gd:RenderingServer.ViewportUpdateMode
 
 const (
 	// Do not update the viewport's render target.
@@ -9988,7 +9988,7 @@ const (
 	ViewportUpdateAlways ViewportUpdateMode = 4
 )
 
-type ViewportClearMode int //gd:RenderingServer.ViewportClearMode
+type ViewportClearMode int64 //gd:RenderingServer.ViewportClearMode
 
 const (
 	// Always clear the viewport's render target before drawing.
@@ -9999,7 +9999,7 @@ const (
 	ViewportClearOnlyNextFrame ViewportClearMode = 2
 )
 
-type ViewportEnvironmentMode int //gd:RenderingServer.ViewportEnvironmentMode
+type ViewportEnvironmentMode int64 //gd:RenderingServer.ViewportEnvironmentMode
 
 const (
 	// Disable rendering of 3D environment over 2D canvas.
@@ -10012,7 +10012,7 @@ const (
 	ViewportEnvironmentMax ViewportEnvironmentMode = 3
 )
 
-type ViewportSDFOversize int //gd:RenderingServer.ViewportSDFOversize
+type ViewportSDFOversize int64 //gd:RenderingServer.ViewportSDFOversize
 
 const (
 	// Do not oversize the 2D signed distance field. Occluders may disappear when touching the viewport's edges, and [GPUParticles3D] collision may stop working earlier than intended. This has the lowest GPU requirements.
@@ -10029,7 +10029,7 @@ const (
 	ViewportSdfOversizeMax ViewportSDFOversize = 4
 )
 
-type ViewportSDFScale int //gd:RenderingServer.ViewportSDFScale
+type ViewportSDFScale int64 //gd:RenderingServer.ViewportSDFScale
 
 const (
 	// Full resolution 2D signed distance field scale. This has the highest GPU requirements.
@@ -10042,7 +10042,7 @@ const (
 	ViewportSdfScaleMax ViewportSDFScale = 3
 )
 
-type ViewportMSAA int //gd:RenderingServer.ViewportMSAA
+type ViewportMSAA int64 //gd:RenderingServer.ViewportMSAA
 
 const (
 	// Multisample antialiasing for 3D is disabled. This is the default value, and also the fastest setting.
@@ -10057,7 +10057,7 @@ const (
 	ViewportMsaaMax ViewportMSAA = 4
 )
 
-type ViewportAnisotropicFiltering int //gd:RenderingServer.ViewportAnisotropicFiltering
+type ViewportAnisotropicFiltering int64 //gd:RenderingServer.ViewportAnisotropicFiltering
 
 const (
 	// Anisotropic filtering is disabled.
@@ -10074,7 +10074,7 @@ const (
 	ViewportAnisotropyMax ViewportAnisotropicFiltering = 5
 )
 
-type ViewportScreenSpaceAA int //gd:RenderingServer.ViewportScreenSpaceAA
+type ViewportScreenSpaceAA int64 //gd:RenderingServer.ViewportScreenSpaceAA
 
 const (
 	// Do not perform any antialiasing in the full screen post-process.
@@ -10087,7 +10087,7 @@ const (
 	ViewportScreenSpaceAaMax ViewportScreenSpaceAA = 3
 )
 
-type ViewportOcclusionCullingBuildQuality int //gd:RenderingServer.ViewportOcclusionCullingBuildQuality
+type ViewportOcclusionCullingBuildQuality int64 //gd:RenderingServer.ViewportOcclusionCullingBuildQuality
 
 const (
 	// Low occlusion culling BVH build quality (as defined by Embree). Results in the lowest CPU usage, but least effective culling.
@@ -10098,7 +10098,7 @@ const (
 	ViewportOcclusionBuildQualityHigh ViewportOcclusionCullingBuildQuality = 2
 )
 
-type ViewportRenderInfo int //gd:RenderingServer.ViewportRenderInfo
+type ViewportRenderInfo int64 //gd:RenderingServer.ViewportRenderInfo
 
 const (
 	// Number of objects drawn in a single frame.
@@ -10111,7 +10111,7 @@ const (
 	ViewportRenderInfoMax ViewportRenderInfo = 3
 )
 
-type ViewportRenderInfoType int //gd:RenderingServer.ViewportRenderInfoType
+type ViewportRenderInfoType int64 //gd:RenderingServer.ViewportRenderInfoType
 
 const (
 	// Visible render pass (excluding shadows).
@@ -10124,7 +10124,7 @@ const (
 	ViewportRenderInfoTypeMax ViewportRenderInfoType = 3
 )
 
-type ViewportDebugDraw int //gd:RenderingServer.ViewportDebugDraw
+type ViewportDebugDraw int64 //gd:RenderingServer.ViewportDebugDraw
 
 const (
 	// Debug draw is disabled. Default setting.
@@ -10269,7 +10269,7 @@ const (
 	ViewportDebugDrawInternalBuffer ViewportDebugDraw = 26
 )
 
-type ViewportVRSMode int //gd:RenderingServer.ViewportVRSMode
+type ViewportVRSMode int64 //gd:RenderingServer.ViewportVRSMode
 
 const (
 	// Variable rate shading is disabled.
@@ -10284,7 +10284,7 @@ const (
 	ViewportVrsMax ViewportVRSMode = 3
 )
 
-type ViewportVRSUpdateMode int //gd:RenderingServer.ViewportVRSUpdateMode
+type ViewportVRSUpdateMode int64 //gd:RenderingServer.ViewportVRSUpdateMode
 
 const (
 	// The input texture for variable rate shading will not be processed.
@@ -10297,7 +10297,7 @@ const (
 	ViewportVrsUpdateMax ViewportVRSUpdateMode = 3
 )
 
-type SkyMode int //gd:RenderingServer.SkyMode
+type SkyMode int64 //gd:RenderingServer.SkyMode
 
 const (
 	// Automatically selects the appropriate process mode based on your sky shader. If your shader uses TIME or POSITION, this will use [SkyModeRealtime]. If your shader uses any of the LIGHT_* variables or any custom uniforms, this uses [SkyModeIncremental]. Otherwise, this defaults to [SkyModeQuality].
@@ -10319,7 +10319,7 @@ const (
 	SkyModeRealtime SkyMode = 3
 )
 
-type CompositorEffectFlags int //gd:RenderingServer.CompositorEffectFlags
+type CompositorEffectFlags int64 //gd:RenderingServer.CompositorEffectFlags
 
 const (
 	// The rendering effect requires the color buffer to be resolved if MSAA is enabled.
@@ -10334,7 +10334,7 @@ const (
 	CompositorEffectFlagNeedsSeparateSpecular CompositorEffectFlags = 16
 )
 
-type CompositorEffectCallbackType int //gd:RenderingServer.CompositorEffectCallbackType
+type CompositorEffectCallbackType int64 //gd:RenderingServer.CompositorEffectCallbackType
 
 const (
 	// The callback is called before our opaque rendering pass, but after depth prepass (if applicable).
@@ -10350,7 +10350,7 @@ const (
 	CompositorEffectCallbackTypeAny             CompositorEffectCallbackType = -1
 )
 
-type EnvironmentBG int //gd:RenderingServer.EnvironmentBG
+type EnvironmentBG int64 //gd:RenderingServer.EnvironmentBG
 
 const (
 	// Use the clear color as background.
@@ -10369,7 +10369,7 @@ const (
 	EnvBgMax EnvironmentBG = 6
 )
 
-type EnvironmentAmbientSource int //gd:RenderingServer.EnvironmentAmbientSource
+type EnvironmentAmbientSource int64 //gd:RenderingServer.EnvironmentAmbientSource
 
 const (
 	// Gather ambient light from whichever source is specified as the background.
@@ -10386,7 +10386,7 @@ const (
 	EnvAmbientSourceSky EnvironmentAmbientSource = 3
 )
 
-type EnvironmentReflectionSource int //gd:RenderingServer.EnvironmentReflectionSource
+type EnvironmentReflectionSource int64 //gd:RenderingServer.EnvironmentReflectionSource
 
 const (
 	// Use the background for reflections.
@@ -10399,7 +10399,7 @@ const (
 	EnvReflectionSourceSky EnvironmentReflectionSource = 2
 )
 
-type EnvironmentGlowBlendMode int //gd:RenderingServer.EnvironmentGlowBlendMode
+type EnvironmentGlowBlendMode int64 //gd:RenderingServer.EnvironmentGlowBlendMode
 
 const (
 	// Additive glow blending mode. Mostly used for particles, glows (bloom), lens flare, bright sources.
@@ -10414,7 +10414,7 @@ const (
 	EnvGlowBlendModeMix EnvironmentGlowBlendMode = 4
 )
 
-type EnvironmentFogMode int //gd:RenderingServer.EnvironmentFogMode
+type EnvironmentFogMode int64 //gd:RenderingServer.EnvironmentFogMode
 
 const (
 	// Use a physically-based fog model defined primarily by fog density.
@@ -10423,7 +10423,7 @@ const (
 	EnvFogModeDepth EnvironmentFogMode = 1
 )
 
-type EnvironmentToneMapper int //gd:RenderingServer.EnvironmentToneMapper
+type EnvironmentToneMapper int64 //gd:RenderingServer.EnvironmentToneMapper
 
 const (
 	// Does not modify color data, resulting in a linear tonemapping curve which unnaturally clips bright values, causing bright lighting to look blown out. The simplest and fastest tonemapper.
@@ -10444,7 +10444,7 @@ const (
 	EnvToneMapperAgx EnvironmentToneMapper = 4
 )
 
-type EnvironmentSSRRoughnessQuality int //gd:RenderingServer.EnvironmentSSRRoughnessQuality
+type EnvironmentSSRRoughnessQuality int64 //gd:RenderingServer.EnvironmentSSRRoughnessQuality
 
 const (
 	// Lowest quality of roughness filter for screen-space reflections. Rough materials will not have blurrier screen-space reflections compared to smooth (non-rough) materials. This is the fastest option.
@@ -10457,7 +10457,7 @@ const (
 	EnvSsrRoughnessQualityHigh EnvironmentSSRRoughnessQuality = 3
 )
 
-type EnvironmentSSAOQuality int //gd:RenderingServer.EnvironmentSSAOQuality
+type EnvironmentSSAOQuality int64 //gd:RenderingServer.EnvironmentSSAOQuality
 
 const (
 	// Lowest quality of screen-space ambient occlusion.
@@ -10472,7 +10472,7 @@ const (
 	EnvSsaoQualityUltra EnvironmentSSAOQuality = 4
 )
 
-type EnvironmentSSILQuality int //gd:RenderingServer.EnvironmentSSILQuality
+type EnvironmentSSILQuality int64 //gd:RenderingServer.EnvironmentSSILQuality
 
 const (
 	// Lowest quality of screen-space indirect lighting.
@@ -10487,7 +10487,7 @@ const (
 	EnvSsilQualityUltra EnvironmentSSILQuality = 4
 )
 
-type EnvironmentSDFGIYScale int //gd:RenderingServer.EnvironmentSDFGIYScale
+type EnvironmentSDFGIYScale int64 //gd:RenderingServer.EnvironmentSDFGIYScale
 
 const (
 	// Use 50% scale for SDFGI on the Y (vertical) axis. SDFGI cells will be twice as short as they are wide. This allows providing increased GI detail and reduced light leaking with thin floors and ceilings. This is usually the best choice for scenes that don't feature much verticality.
@@ -10498,7 +10498,7 @@ const (
 	EnvSdfgiYScale100Percent EnvironmentSDFGIYScale = 2
 )
 
-type EnvironmentSDFGIRayCount int //gd:RenderingServer.EnvironmentSDFGIRayCount
+type EnvironmentSDFGIRayCount int64 //gd:RenderingServer.EnvironmentSDFGIRayCount
 
 const (
 	// Throw 4 rays per frame when converging SDFGI. This has the lowest GPU requirements, but creates the most noisy result.
@@ -10519,7 +10519,7 @@ const (
 	EnvSdfgiRayCountMax EnvironmentSDFGIRayCount = 7
 )
 
-type EnvironmentSDFGIFramesToConverge int //gd:RenderingServer.EnvironmentSDFGIFramesToConverge
+type EnvironmentSDFGIFramesToConverge int64 //gd:RenderingServer.EnvironmentSDFGIFramesToConverge
 
 const (
 	// Converge SDFGI over 5 frames. This is the most responsive, but creates the most noisy result with a given ray count.
@@ -10538,7 +10538,7 @@ const (
 	EnvSdfgiConvergeMax EnvironmentSDFGIFramesToConverge = 6
 )
 
-type EnvironmentSDFGIFramesToUpdateLight int //gd:RenderingServer.EnvironmentSDFGIFramesToUpdateLight
+type EnvironmentSDFGIFramesToUpdateLight int64 //gd:RenderingServer.EnvironmentSDFGIFramesToUpdateLight
 
 const (
 	// Update indirect light from dynamic lights in SDFGI over 1 frame. This is the most responsive, but has the highest GPU requirements.
@@ -10555,7 +10555,7 @@ const (
 	EnvSdfgiUpdateLightMax EnvironmentSDFGIFramesToUpdateLight = 5
 )
 
-type SubSurfaceScatteringQuality int //gd:RenderingServer.SubSurfaceScatteringQuality
+type SubSurfaceScatteringQuality int64 //gd:RenderingServer.SubSurfaceScatteringQuality
 
 const (
 	// Disables subsurface scattering entirely, even on materials that have [BaseMaterial3D.SubsurfScatterEnabled] set to true. This has the lowest GPU requirements.
@@ -10570,7 +10570,7 @@ const (
 	SubSurfaceScatteringQualityHigh SubSurfaceScatteringQuality = 3
 )
 
-type DOFBokehShape int //gd:RenderingServer.DOFBokehShape
+type DOFBokehShape int64 //gd:RenderingServer.DOFBokehShape
 
 const (
 	// Calculate the DOF blur using a box filter. The fastest option, but results in obvious lines in blur pattern.
@@ -10581,7 +10581,7 @@ const (
 	DofBokehCircle DOFBokehShape = 2
 )
 
-type DOFBlurQuality int //gd:RenderingServer.DOFBlurQuality
+type DOFBlurQuality int64 //gd:RenderingServer.DOFBlurQuality
 
 const (
 	// Lowest quality DOF blur. This is the fastest setting, but you may be able to see filtering artifacts.
@@ -10594,7 +10594,7 @@ const (
 	DofBlurQualityHigh DOFBlurQuality = 3
 )
 
-type InstanceType int //gd:RenderingServer.InstanceType
+type InstanceType int64 //gd:RenderingServer.InstanceType
 
 const (
 	// The instance does not have a type.
@@ -10629,7 +10629,7 @@ const (
 	InstanceGeometryMask InstanceType = 14
 )
 
-type InstanceFlags int //gd:RenderingServer.InstanceFlags
+type InstanceFlags int64 //gd:RenderingServer.InstanceFlags
 
 const (
 	// Allows the instance to be used in baked lighting.
@@ -10644,7 +10644,7 @@ const (
 	InstanceFlagMax InstanceFlags = 4
 )
 
-type ShadowCastingSetting int //gd:RenderingServer.ShadowCastingSetting
+type ShadowCastingSetting int64 //gd:RenderingServer.ShadowCastingSetting
 
 const (
 	// Disable shadows from this instance.
@@ -10657,7 +10657,7 @@ const (
 	ShadowCastingSettingShadowsOnly ShadowCastingSetting = 3
 )
 
-type VisibilityRangeFadeMode int //gd:RenderingServer.VisibilityRangeFadeMode
+type VisibilityRangeFadeMode int64 //gd:RenderingServer.VisibilityRangeFadeMode
 
 const (
 	// Disable visibility range fading for the given instance.
@@ -10668,7 +10668,7 @@ const (
 	VisibilityRangeFadeDependencies VisibilityRangeFadeMode = 2
 )
 
-type BakeChannels int //gd:RenderingServer.BakeChannels
+type BakeChannels int64 //gd:RenderingServer.BakeChannels
 
 const (
 	// Index of [Image] in array of [Image]s returned by [BakeRenderUv2]. Image uses [Image.FormatRgba8] and contains albedo color in the .rgb channels and alpha in the .a channel.
@@ -10693,7 +10693,7 @@ const (
 	BakeChannelEmission BakeChannels = 3
 )
 
-type CanvasTextureChannel int //gd:RenderingServer.CanvasTextureChannel
+type CanvasTextureChannel int64 //gd:RenderingServer.CanvasTextureChannel
 
 const (
 	// Diffuse canvas texture ([CanvasTexture.DiffuseTexture]).
@@ -10710,7 +10710,7 @@ const (
 	CanvasTextureChannelSpecular CanvasTextureChannel = 2
 )
 
-type NinePatchAxisMode int //gd:RenderingServer.NinePatchAxisMode
+type NinePatchAxisMode int64 //gd:RenderingServer.NinePatchAxisMode
 
 const (
 	// The nine patch gets stretched where needed.
@@ -10721,7 +10721,7 @@ const (
 	NinePatchTileFit NinePatchAxisMode = 2
 )
 
-type CanvasItemTextureFilter int //gd:RenderingServer.CanvasItemTextureFilter
+type CanvasItemTextureFilter int64 //gd:RenderingServer.CanvasItemTextureFilter
 
 const (
 	// Uses the default filter mode for this [Viewport].
@@ -10762,7 +10762,7 @@ const (
 	CanvasItemTextureFilterMax CanvasItemTextureFilter = 7
 )
 
-type CanvasItemTextureRepeat int //gd:RenderingServer.CanvasItemTextureRepeat
+type CanvasItemTextureRepeat int64 //gd:RenderingServer.CanvasItemTextureRepeat
 
 const (
 	// Uses the default repeat mode for this [Viewport].
@@ -10779,7 +10779,7 @@ const (
 	CanvasItemTextureRepeatMax CanvasItemTextureRepeat = 4
 )
 
-type CanvasGroupMode int //gd:RenderingServer.CanvasGroupMode
+type CanvasGroupMode int64 //gd:RenderingServer.CanvasGroupMode
 
 const (
 	// Child draws over parent and is not clipped.
@@ -10791,7 +10791,7 @@ const (
 	CanvasGroupModeTransparent CanvasGroupMode = 3
 )
 
-type CanvasLightMode int //gd:RenderingServer.CanvasLightMode
+type CanvasLightMode int64 //gd:RenderingServer.CanvasLightMode
 
 const (
 	// 2D point light (see [PointLight2D]).
@@ -10804,7 +10804,7 @@ const (
 	CanvasLightModeDirectional CanvasLightMode = 1
 )
 
-type CanvasLightBlendMode int //gd:RenderingServer.CanvasLightBlendMode
+type CanvasLightBlendMode int64 //gd:RenderingServer.CanvasLightBlendMode
 
 const (
 	// Adds light color additive to the canvas.
@@ -10815,7 +10815,7 @@ const (
 	CanvasLightBlendModeMix CanvasLightBlendMode = 2
 )
 
-type CanvasLightShadowFilter int //gd:RenderingServer.CanvasLightShadowFilter
+type CanvasLightShadowFilter int64 //gd:RenderingServer.CanvasLightShadowFilter
 
 const (
 	// Do not apply a filter to canvas light shadows.
@@ -10828,7 +10828,7 @@ const (
 	CanvasLightFilterMax CanvasLightShadowFilter = 3
 )
 
-type CanvasOccluderPolygonCullMode int //gd:RenderingServer.CanvasOccluderPolygonCullMode
+type CanvasOccluderPolygonCullMode int64 //gd:RenderingServer.CanvasOccluderPolygonCullMode
 
 const (
 	// Culling of the canvas occluder is disabled.
@@ -10839,7 +10839,7 @@ const (
 	CanvasOccluderPolygonCullCounterClockwise CanvasOccluderPolygonCullMode = 2
 )
 
-type GlobalShaderParameterType int //gd:RenderingServer.GlobalShaderParameterType
+type GlobalShaderParameterType int64 //gd:RenderingServer.GlobalShaderParameterType
 
 const (
 	// Boolean global shader parameter (global uniform bool ...).
@@ -10928,7 +10928,7 @@ const (
 	GlobalVarTypeMax GlobalShaderParameterType = 29
 )
 
-type RenderingInfo int //gd:RenderingServer.RenderingInfo
+type RenderingInfo int64 //gd:RenderingServer.RenderingInfo
 
 const (
 	// Number of objects rendered in the current 3D scene. This varies depending on camera position and rotation.
@@ -10955,7 +10955,7 @@ const (
 	RenderingInfoPipelineCompilationsSpecialization RenderingInfo = 10
 )
 
-type PipelineSource int //gd:RenderingServer.PipelineSource
+type PipelineSource int64 //gd:RenderingServer.PipelineSource
 
 const (
 	// Pipeline compilation that was triggered by the 2D canvas renderer.
@@ -10972,7 +10972,7 @@ const (
 	PipelineSourceMax PipelineSource = 5
 )
 
-type SplashStretchMode int //gd:RenderingServer.SplashStretchMode
+type SplashStretchMode int64 //gd:RenderingServer.SplashStretchMode
 
 const (
 	// No stretching is applied.
@@ -10989,7 +10989,7 @@ const (
 	SplashStretchModeIgnore SplashStretchMode = 5
 )
 
-type Features int //gd:RenderingServer.Features
+type Features int64 //gd:RenderingServer.Features
 
 const (
 	FeatureShaders       Features = 0

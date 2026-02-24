@@ -1465,7 +1465,7 @@ func init() {
 	gdclass.Register("FileAccess", func(ptr gd.Object) any { return Instance{gdclass.NewFileAccess(ptr)} })
 }
 
-type ModeFlags int //gd:FileAccess.ModeFlags
+type ModeFlags int64 //gd:FileAccess.ModeFlags
 
 const (
 	// Opens the file for read operations. The file cursor is positioned at the beginning of the file.
@@ -1486,7 +1486,7 @@ const (
 	WriteRead ModeFlags = 7
 )
 
-type CompressionMode int //gd:FileAccess.CompressionMode
+type CompressionMode int64 //gd:FileAccess.CompressionMode
 
 const (
 	// Uses the [FastLZ] compression method.
@@ -1511,7 +1511,7 @@ const (
 	CompressionBrotli CompressionMode = 4
 )
 
-type UnixPermissionFlags int //gd:FileAccess.UnixPermissionFlags
+type UnixPermissionFlags int64 //gd:FileAccess.UnixPermissionFlags
 
 const (
 	// Read for owner bit.

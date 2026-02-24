@@ -254,7 +254,7 @@ func init() {
 	gdclass.Register("OpenXRSpatialEntityTracker", func(ptr gd.Object) any { return Instance{gdclass.NewOpenXRSpatialEntityTracker(ptr)} })
 }
 
-type EntityTrackingState int //gd:OpenXRSpatialEntityTracker.EntityTrackingState
+type EntityTrackingState int64 //gd:OpenXRSpatialEntityTracker.EntityTrackingState
 
 const (
 	// This anchor has stopped tracking.

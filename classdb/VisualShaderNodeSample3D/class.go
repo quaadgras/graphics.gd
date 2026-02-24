@@ -218,7 +218,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeSample3D", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeSample3D(ptr)} })
 }
 
-type Source int //gd:VisualShaderNodeSample3D.Source
+type Source int64 //gd:VisualShaderNodeSample3D.Source
 
 const (
 	// Creates internal uniform and provides a way to assign it within node.

@@ -441,7 +441,7 @@ func init() {
 	gdclass.Register("SkeletonModifier3D", func(ptr gd.Object) any { return Instance{gdclass.NewSkeletonModifier3D(ptr)} })
 }
 
-type BoneAxis int //gd:SkeletonModifier3D.BoneAxis
+type BoneAxis int64 //gd:SkeletonModifier3D.BoneAxis
 
 const (
 	// Enumerated value for the +X axis.
@@ -458,7 +458,7 @@ const (
 	BoneAxisMinusZ BoneAxis = 5
 )
 
-type BoneDirection int //gd:SkeletonModifier3D.BoneDirection
+type BoneDirection int64 //gd:SkeletonModifier3D.BoneDirection
 
 const (
 	// Enumerated value for the +X axis.
@@ -477,7 +477,7 @@ const (
 	BoneDirectionFromParent BoneDirection = 6
 )
 
-type SecondaryDirection int //gd:SkeletonModifier3D.SecondaryDirection
+type SecondaryDirection int64 //gd:SkeletonModifier3D.SecondaryDirection
 
 const (
 	// Enumerated value for the case when the axis is undefined.
@@ -498,7 +498,7 @@ const (
 	SecondaryDirectionCustom SecondaryDirection = 7
 )
 
-type RotationAxis int //gd:SkeletonModifier3D.RotationAxis
+type RotationAxis int64 //gd:SkeletonModifier3D.RotationAxis
 
 const (
 	// Enumerated value for the rotation of the X axis.

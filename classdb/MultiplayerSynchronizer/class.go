@@ -482,7 +482,7 @@ func init() {
 	gdclass.Register("MultiplayerSynchronizer", func(ptr gd.Object) any { return Instance{gdclass.NewMultiplayerSynchronizer(ptr)} })
 }
 
-type VisibilityUpdateMode int //gd:MultiplayerSynchronizer.VisibilityUpdateMode
+type VisibilityUpdateMode int64 //gd:MultiplayerSynchronizer.VisibilityUpdateMode
 
 const (
 	// Visibility filters are updated during process frames (see [Node.NotificationInternalProcess]).

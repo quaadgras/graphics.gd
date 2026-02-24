@@ -228,7 +228,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeVectorFunc", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeVectorFunc(ptr)} })
 }
 
-type Function int //gd:VisualShaderNodeVectorFunc.Function
+type Function int64 //gd:VisualShaderNodeVectorFunc.Function
 
 const (
 	// Normalizes the vector so that it has a length of 1 but points in the same direction.

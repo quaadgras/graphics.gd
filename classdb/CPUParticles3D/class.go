@@ -1836,7 +1836,7 @@ func init() {
 	gdclass.Register("CPUParticles3D", func(ptr gd.Object) any { return Instance{gdclass.NewCPUParticles3D(ptr)} })
 }
 
-type DrawOrder int //gd:CPUParticles3D.DrawOrder
+type DrawOrder int64 //gd:CPUParticles3D.DrawOrder
 
 const (
 	// Particles are drawn in the order emitted.
@@ -1847,7 +1847,7 @@ const (
 	DrawOrderViewDepth DrawOrder = 2
 )
 
-type Parameter int //gd:CPUParticles3D.Parameter
+type Parameter int64 //gd:CPUParticles3D.Parameter
 
 const (
 	// Use with [SetParamMin], [SetParamMax], and [SetParamCurve] to set initial velocity properties.
@@ -1926,7 +1926,7 @@ const (
 	ParamMax Parameter = 12
 )
 
-type ParticleFlags int //gd:CPUParticles3D.ParticleFlags
+type ParticleFlags int64 //gd:CPUParticles3D.ParticleFlags
 
 const (
 	// Use with [SetParticleFlag] to set [ParticleFlagAlignY].
@@ -1948,7 +1948,7 @@ const (
 	ParticleFlagMax ParticleFlags = 3
 )
 
-type EmissionShape int //gd:CPUParticles3D.EmissionShape
+type EmissionShape int64 //gd:CPUParticles3D.EmissionShape
 
 const (
 	// All particles will be emitted from a single point.
