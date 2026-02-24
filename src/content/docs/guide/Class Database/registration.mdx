@@ -281,9 +281,10 @@ func main() {
 
 ```
 
-If you *really* want to have an inheritance-hierarchy, use the advanced 
+If you *really* want to have an inheritance-hierarchy in the engine, use the advanced 
 [classdb.ExtensionInherits](https://pkg.go.dev/graphics.gd/classdb#ExtensionInherits)
-technique:
+technique (fields and methods will not be promoted in Go, you have to use Super() to
+access the parent):
 
 ```go
 package main
