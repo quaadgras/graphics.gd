@@ -259,7 +259,14 @@ func (obj Instance) IsConnected(signal string, callable any) bool {
 }
 
 // Use keeps an object alive, preventing it from being garbage collected until the next frame.
-func Use(obj interface{ AsObject() [1]gdclass.Object }) { gdreference.UseObject(obj.AsObject()[0]) }
+func Use(obj interface{ AsObject() [1]gdclass.Object }) {
+	if p, ok := obj.(gdclass.Pointer); ok {
+		gdreference.UseObject((*gd.Object)(reflect.ValueOf(p).UnsafePointer()))
+	} else {
+		var obj = obj.AsObject()
+		gdreference.UseObject(&obj[0])
+	}
+}
 
 // Signal returns the signal with the given name, or a nil signal if it does not exist.
 func (obj Instance) Signal(name string) Signal.Any {

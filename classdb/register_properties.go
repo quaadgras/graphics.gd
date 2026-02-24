@@ -115,13 +115,17 @@ func propertyOf(class gd.StringName, field reflect.StructField, push_into gdexte
 
 // Set needs to reference++ any resources that are sucessfully set.
 func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant) bool {
+	val, ok := instance.Interface()
+	if !ok {
+		return false
+	}
 	sname := name.String()
-	if impl, ok := instance.Value.(interface {
+	if impl, ok := val.(interface {
 		Set(string, any) bool
 	}); ok {
 		ok := bool(impl.Set(sname, value.Interface()))
 		if ok {
-			if impl, ok := instance.Value.(interface {
+			if impl, ok := val.(interface {
 				OnSet(string, any)
 			}); ok {
 				impl.OnSet(sname, value.Interface())
@@ -129,7 +133,7 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 		}
 		return ok
 	}
-	rvalue := reflect.ValueOf(instance.Value).Elem()
+	rvalue := reflect.ValueOf(val).Elem()
 	field := rvalue.FieldByName(sname)
 	if !field.IsValid() {
 		for _, rfield := range reflect.VisibleFields(rvalue.Type()) {
@@ -207,7 +211,7 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 		}
 	}
 	field.Set(converted)
-	if impl, ok := instance.Value.(interface {
+	if impl, ok := val.(interface {
 		OnSet(string, any)
 	}); ok {
 		impl.OnSet(name.String(), value)
@@ -216,13 +220,17 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 }
 
 func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, bool) {
-	if impl, ok := instance.Value.(interface {
+	val, ok := instance.Interface()
+	if !ok {
+		return gd.Variant{}, false
+	}
+	if impl, ok := val.(interface {
 		Get(string) any
 	}); ok {
 		return gd.NewVariant(impl.Get(name.String())), true
 	}
 	sname := name.String()
-	rvalue := reflect.ValueOf(instance.Value).Elem()
+	rvalue := reflect.ValueOf(val).Elem()
 	field := rvalue.FieldByName(String.ToPascalCase(sname))
 	if !field.IsValid() {
 		for _, rfield := range reflect.VisibleFields(rvalue.Type()) {
@@ -253,7 +261,11 @@ func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, boo
 }
 
 func (instance *instanceImplementation) GetPropertyList() gdextension.PropertyList {
-	if impl, ok := instance.Value.(interface {
+	val, ok := instance.Interface()
+	if !ok {
+		return 0
+	}
+	if impl, ok := val.(interface {
 		GetPropertyList() []Object.PropertyInfo
 	}); ok {
 		var list = impl.GetPropertyList()
@@ -276,13 +288,17 @@ func (instance *instanceImplementation) GetPropertyList() gdextension.PropertyLi
 }
 
 func (instance *instanceImplementation) PropertyCanRevert(name gd.StringName) bool {
-	if impl, ok := instance.Value.(interface {
+	val, ok := instance.Interface()
+	if !ok {
+		return false
+	}
+	if impl, ok := val.(interface {
 		PropertyCanRevert(string) bool
 	}); ok {
 		return bool(impl.PropertyCanRevert(name.String()))
 	}
 	sname := name.String()
-	rtype := reflect.TypeOf(instance.Value).Elem()
+	rtype := reflect.TypeOf(val).Elem()
 	field, ok := rtype.FieldByName(sname)
 	if !ok {
 		for _, rfield := range reflect.VisibleFields(rtype) {
@@ -300,14 +316,18 @@ func (instance *instanceImplementation) PropertyCanRevert(name gd.StringName) bo
 	return ok
 }
 func (instance *instanceImplementation) PropertyGetRevert(name gd.StringName) (gd.Variant, bool) {
-	if impl, ok := instance.Value.(interface {
+	val, ok := instance.Interface()
+	if !ok {
+		return gd.Variant{}, false
+	}
+	if impl, ok := val.(interface {
 		PropertyGetRevert(string) (any, bool)
 	}); ok {
 		val, ok := impl.PropertyGetRevert(name.String())
 		return gd.NewVariant(val), ok
 	}
 	sname := name.String()
-	rtype := reflect.TypeOf(instance.Value).Elem()
+	rtype := reflect.TypeOf(val).Elem()
 	field, ok := rtype.FieldByName(sname)
 	if !ok {
 		for _, rfield := range reflect.VisibleFields(rtype) {
@@ -332,7 +352,11 @@ func (instance *instanceImplementation) PropertyGetRevert(name gd.StringName) (g
 }
 
 func (instance *instanceImplementation) ValidateProperty(list gdextension.PropertyList) bool {
-	switch validate := instance.Value.(type) {
+	val, ok := instance.Interface()
+	if !ok {
+		return false
+	}
+	switch validate := val.(type) {
 	case interface {
 		ValidateProperty(Object.PropertyInfo) bool
 	}:

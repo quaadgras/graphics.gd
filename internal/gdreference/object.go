@@ -77,19 +77,6 @@ func PinObject(obj *Object, raw gdextension.Object) {
 	obj.assigned = object{objectID: id, inEngine: raw}
 }
 
-// AgeObject ages a pinned object marking it for collection if it isn't pinned again
-// before the next call to AgeObject.
-func AgeObject(obj *Object, free func(gdextension.Object)) {
-	switch obj.revision {
-	case 0:
-		obj.revision++
-	case 1:
-		free(obj.assigned.inEngine)
-		*obj.sentinel = object{}
-		*obj = Object{revision: 1}
-	}
-}
-
 // OwnObject creates a Go-owned [Object] reference.
 func OwnObject(obj gdextension.Object, free func(gdextension.Object)) Object {
 	if obj == 0 {
@@ -226,8 +213,12 @@ func CutObject(obj Object, end bool) gdextension.Object {
 
 // UseObject marks the object as used, preventing it from being
 // freed for one frame.
-func UseObject(obj Object) {
-	if !BadObject(obj) && obj.sentinel != nil && obj.sentinel != &borrowSentinel && obj.assigned.objectID != 0 && obj.sentinel.objectID == obj.assigned.objectID {
+func UseObject(obj *Object) {
+	if obj.sentinel == &obj.assigned {
+		obj.revision = 0
+		return
+	}
+	if !BadObject(*obj) && obj.sentinel != nil && obj.sentinel != &borrowSentinel && obj.assigned.objectID != 0 && obj.sentinel.objectID == obj.assigned.objectID {
 		obj.sentinel.inEngine = obj.assigned.inEngine
 	}
 }

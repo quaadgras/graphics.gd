@@ -3,7 +3,6 @@ package classdb
 import (
 	"fmt"
 	"os"
-	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -33,7 +32,8 @@ func init() {
 		if val == nil {
 			return nil
 		}
-		return val.Value
+		ptr, _ := val.Interface()
+		return ptr
 	}
 	gd.ExtensionInstanceGoOnly = func(obj gdextension.Object, goOnly bool) (gdreference.Object, bool) {
 		impl := instances.Get(gdextension.Host.Objects.Extension.Fetch(obj))
@@ -48,14 +48,16 @@ func init() {
 			_, file, line, _ := runtime.Caller(2)
 			fmt.Fprintf(os.Stderr, "%s now owned by %s (%s:%d)\n", gd.ObjectGetClass(gdreference.RawObject(obj)).String(), owner, file, line)
 		}
-		key := reflect.ValueOf(impl.Value)
 		if goOnly {
-			local.Insert(key, struct{}{})
+			impl.strong = nil
 		} else {
-			gdreference.PinObject((*gdreference.Object)(reflect.ValueOf(impl.Value).UnsafePointer()), obj)
-			local.Remove(key)
+			impl.strong, _ = impl.Interface()
 		}
-		return impl.Value.AsObject()[0], true
+		val, ok := impl.Interface()
+		if !ok {
+			return gdreference.Object{}, false
+		}
+		return val.AsObject()[0], true
 	}
 	gd.RegisterCleanup(func() {
 		for instance := range instances.All {
@@ -156,7 +158,11 @@ func init() {
 			Called: func(instance gdextension.ExtensionInstanceID, callData gdextension.Pointer, result gdextension.Returns[any], args gdextension.Accepts[any]) {
 				pv := (*pinnedVirtualFunc)(*(*unsafe.Pointer)(unsafe.Pointer(&callData))) // runtime.Pinned, so this is ok.
 				receiver := instances.Get(instance)
-				pv.fn(receiver.Value, gdextension.Pointer(args), gdextension.Pointer(result))
+				ptr, ok := receiver.Interface()
+				if !ok {
+					return
+				}
+				pv.fn(ptr, gdextension.Pointer(args), gdextension.Pointer(result))
 				gdreference.Barrier()
 			},
 			VariantCall: func(instance gdextension.ExtensionInstanceID, fn gdextension.FunctionID, result gdextension.Returns[gdextension.Variant], args gdextension.Accepts[gdextension.Variant]) {
@@ -221,7 +227,11 @@ func init() {
 				}
 				return methods.New(&methodImplementation{
 					checked: func(instance *instanceImplementation, args, ret gdextension.Pointer) {
-						virtual(instance.Value, args, ret)
+						ptr, ok := instance.Interface()
+						if !ok {
+							return
+						}
+						virtual(ptr, args, ret)
 					},
 				})
 			},

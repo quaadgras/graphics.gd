@@ -84,7 +84,7 @@ func (class *Extension[T, S]) AsObject() [1]gd.Object {
 			class.setObject(obj)
 		}
 	}
-	gdreference.UseObject(obj[0])
+	gdreference.UseObject((*gd.Object)(unsafe.Pointer(class.Class.Super())))
 	return obj
 }
 
@@ -129,6 +129,6 @@ func (class *ExtensionInherits[S, T]) AsObject() [1]gd.Object {
 			class.setObject(obj)
 		}
 	}
-	gdreference.UseObject(obj[0])
+	gdreference.UseObject((*gd.Object)(unsafe.Pointer(&class.super)))
 	return obj
 }
