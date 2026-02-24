@@ -1,4 +1,4 @@
-//go:build arm || i386
+//go:build arm || i386 || wasm32
 
 package String
 
