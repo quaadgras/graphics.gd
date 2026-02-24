@@ -181,7 +181,7 @@ func init() {
 	gdclass.Register("ImageFormatLoader", func(ptr gd.Object) any { return Instance{gdclass.NewImageFormatLoader(ptr)} })
 }
 
-type LoaderFlags int //gd:ImageFormatLoader.LoaderFlags
+type LoaderFlags int64 //gd:ImageFormatLoader.LoaderFlags
 
 const (
 	FlagNone          LoaderFlags = 0

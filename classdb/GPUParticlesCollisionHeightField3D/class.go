@@ -390,7 +390,7 @@ func init() {
 	gdclass.Register("GPUParticlesCollisionHeightField3D", func(ptr gd.Object) any { return Instance{gdclass.NewGPUParticlesCollisionHeightField3D(ptr)} })
 }
 
-type Resolution int //gd:GPUParticlesCollisionHeightField3D.Resolution
+type Resolution int64 //gd:GPUParticlesCollisionHeightField3D.Resolution
 
 const (
 	// Generate a 256×256 heightmap. Intended for small-scale scenes, or larger scenes with no distant particles.
@@ -409,7 +409,7 @@ const (
 	ResolutionMax Resolution = 6
 )
 
-type UpdateMode int //gd:GPUParticlesCollisionHeightField3D.UpdateMode
+type UpdateMode int64 //gd:GPUParticlesCollisionHeightField3D.UpdateMode
 
 const (
 	// Only update the heightmap when the [GPUParticlesCollisionHeightField3D] node is moved, or when the camera moves if [FollowCameraEnabled] is true. An update can be forced by slightly moving the [GPUParticlesCollisionHeightField3D] in any direction, or by calling [RenderingServer.ParticlesCollisionHeightFieldUpdate].

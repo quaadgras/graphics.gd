@@ -229,7 +229,7 @@ func init() {
 	gdclass.Register("OpenXRAndroidThreadSettingsExtension", func(ptr gd.Object) any { return Instance{gdclass.NewOpenXRAndroidThreadSettingsExtension(ptr)} })
 }
 
-type ThreadType int //gd:OpenXRAndroidThreadSettingsExtension.ThreadType
+type ThreadType int64 //gd:OpenXRAndroidThreadSettingsExtension.ThreadType
 
 const (
 	// Hints to the XR runtime that the thread is doing time critical CPU tasks.

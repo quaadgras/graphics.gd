@@ -224,7 +224,7 @@ func init() {
 	gdclass.Register("StreamPeerSocket", func(ptr gd.Object) any { return Instance{gdclass.NewStreamPeerSocket(ptr)} })
 }
 
-type Status int //gd:StreamPeerSocket.Status
+type Status int64 //gd:StreamPeerSocket.Status
 
 const (
 	// The initial status of the [StreamPeerSocket]. This is also the status after disconnecting.

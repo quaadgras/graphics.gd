@@ -2165,7 +2165,7 @@ func init() {
 	gdclass.Register("TreeItem", func(ptr gd.Object) any { return Instance{gdclass.NewTreeItem(ptr)} })
 }
 
-type TreeCellMode int //gd:TreeItem.TreeCellMode
+type TreeCellMode int64 //gd:TreeItem.TreeCellMode
 
 const (
 	// Cell shows a string label, optionally with an icon. When editable, the text can be edited using a [LineEdit], or a [TextEdit] popup if [SetEditMultiline] is used.

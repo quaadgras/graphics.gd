@@ -303,7 +303,7 @@ func init() {
 	gdclass.Register("PackedScene", func(ptr gd.Object) any { return Instance{gdclass.NewPackedScene(ptr)} })
 }
 
-type GenEditState int //gd:PackedScene.GenEditState
+type GenEditState int64 //gd:PackedScene.GenEditState
 
 const (
 	// If passed to [Instantiate], blocks edits to the scene state.

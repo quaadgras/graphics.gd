@@ -856,7 +856,7 @@ func init() {
 	gdclass.Register("AStarGrid2D", func(ptr gd.Object) any { return Instance{gdclass.NewAStarGrid2D(ptr)} })
 }
 
-type Heuristic int //gd:AStarGrid2D.Heuristic
+type Heuristic int64 //gd:AStarGrid2D.Heuristic
 
 const (
 	// The [Euclidean heuristic] to be used for the pathfinding using the following formula:
@@ -926,7 +926,7 @@ const (
 	HeuristicMax Heuristic = 4
 )
 
-type DiagonalMode int //gd:AStarGrid2D.DiagonalMode
+type DiagonalMode int64 //gd:AStarGrid2D.DiagonalMode
 
 const (
 	// The pathfinding algorithm will ignore solid neighbors around the target cell and allow passing using diagonals.
@@ -941,7 +941,7 @@ const (
 	DiagonalModeMax DiagonalMode = 4
 )
 
-type CellShape int //gd:AStarGrid2D.CellShape
+type CellShape int64 //gd:AStarGrid2D.CellShape
 
 const (
 	// Rectangular cell shape.

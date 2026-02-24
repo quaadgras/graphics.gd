@@ -430,7 +430,7 @@ func init() {
 	gdclass.Register("PathFollow3D", func(ptr gd.Object) any { return Instance{gdclass.NewPathFollow3D(ptr)} })
 }
 
-type RotationMode int //gd:PathFollow3D.RotationMode
+type RotationMode int64 //gd:PathFollow3D.RotationMode
 
 const (
 	// Forbids the PathFollow3D to rotate.

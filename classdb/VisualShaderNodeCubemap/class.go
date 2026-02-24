@@ -268,7 +268,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeCubemap", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeCubemap(ptr)} })
 }
 
-type Source int //gd:VisualShaderNodeCubemap.Source
+type Source int64 //gd:VisualShaderNodeCubemap.Source
 
 const (
 	// Use the [Cubemap] set via [CubeMap]. If this is set to [Source], the samplerCube port is ignored.
@@ -287,7 +287,7 @@ const (
 	SourceMax Source = 2
 )
 
-type TextureType int //gd:VisualShaderNodeCubemap.TextureType
+type TextureType int64 //gd:VisualShaderNodeCubemap.TextureType
 
 const (
 	// No hints are added to the uniform declaration.

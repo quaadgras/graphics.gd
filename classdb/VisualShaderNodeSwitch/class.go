@@ -220,7 +220,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeSwitch", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeSwitch(ptr)} })
 }
 
-type OpType int //gd:VisualShaderNodeSwitch.OpType
+type OpType int64 //gd:VisualShaderNodeSwitch.OpType
 
 const (
 	// A floating-point scalar.

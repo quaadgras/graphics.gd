@@ -446,7 +446,7 @@ func init() {
 	gdclass.Register("FoldableContainer", func(ptr gd.Object) any { return Instance{gdclass.NewFoldableContainer(ptr)} })
 }
 
-type TitlePosition int //gd:FoldableContainer.TitlePosition
+type TitlePosition int64 //gd:FoldableContainer.TitlePosition
 
 const (
 	// Makes the title appear at the top of the container.

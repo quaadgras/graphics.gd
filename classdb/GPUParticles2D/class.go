@@ -1011,7 +1011,7 @@ func init() {
 	gdclass.Register("GPUParticles2D", func(ptr gd.Object) any { return Instance{gdclass.NewGPUParticles2D(ptr)} })
 }
 
-type DrawOrder int //gd:GPUParticles2D.DrawOrder
+type DrawOrder int64 //gd:GPUParticles2D.DrawOrder
 
 const (
 	// Particles are drawn in the order emitted.
@@ -1022,7 +1022,7 @@ const (
 	DrawOrderReverseLifetime DrawOrder = 2
 )
 
-type EmitFlags int //gd:GPUParticles2D.EmitFlags
+type EmitFlags int64 //gd:GPUParticles2D.EmitFlags
 
 const (
 	// Particle starts at the specified position.

@@ -233,7 +233,7 @@ func init() {
 	gdclass.Register("OpenXRSpatialComponentMarkerList", func(ptr gd.Object) any { return Instance{gdclass.NewOpenXRSpatialComponentMarkerList(ptr)} })
 }
 
-type MarkerType int //gd:OpenXRSpatialComponentMarkerList.MarkerType
+type MarkerType int64 //gd:OpenXRSpatialComponentMarkerList.MarkerType
 
 const (
 	// Unknown or unset marker type.

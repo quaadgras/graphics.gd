@@ -920,7 +920,7 @@ func init() {
 	gdclass.Register("Camera3D", func(ptr gd.Object) any { return Instance{gdclass.NewCamera3D(ptr)} })
 }
 
-type ProjectionType int //gd:Camera3D.ProjectionType
+type ProjectionType int64 //gd:Camera3D.ProjectionType
 
 const (
 	// Perspective projection. Objects on the screen becomes smaller when they are far away.
@@ -933,7 +933,7 @@ const (
 	ProjectionFrustum ProjectionType = 2
 )
 
-type KeepAspect int //gd:Camera3D.KeepAspect
+type KeepAspect int64 //gd:Camera3D.KeepAspect
 
 const (
 	// Preserves the horizontal aspect ratio; also known as Vert- scaling. This is usually the best option for projects running in portrait mode, as taller aspect ratios will benefit from a wider vertical FOV.
@@ -942,7 +942,7 @@ const (
 	KeepHeight KeepAspect = 1
 )
 
-type DopplerTracking int //gd:Camera3D.DopplerTracking
+type DopplerTracking int64 //gd:Camera3D.DopplerTracking
 
 const (
 	// Disables [Doppler effect] simulation (default).

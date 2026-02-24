@@ -872,7 +872,7 @@ func init() {
 	gdclass.Register("TileSetAtlasSource", func(ptr gd.Object) any { return Instance{gdclass.NewTileSetAtlasSource(ptr)} })
 }
 
-type TileAnimationMode int //gd:TileSetAtlasSource.TileAnimationMode
+type TileAnimationMode int64 //gd:TileSetAtlasSource.TileAnimationMode
 
 const (
 	// Tile animations start at same time, looking identical.

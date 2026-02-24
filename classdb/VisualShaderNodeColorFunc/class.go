@@ -221,7 +221,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeColorFunc", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeColorFunc(ptr)} })
 }
 
-type Function int //gd:VisualShaderNodeColorFunc.Function
+type Function int64 //gd:VisualShaderNodeColorFunc.Function
 
 const (
 	// Converts the color to grayscale using the following formula:

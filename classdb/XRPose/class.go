@@ -349,7 +349,7 @@ func init() {
 	gdclass.Register("XRPose", func(ptr gd.Object) any { return Instance{gdclass.NewXRPose(ptr)} })
 }
 
-type TrackingConfidence int //gd:XRPose.TrackingConfidence
+type TrackingConfidence int64 //gd:XRPose.TrackingConfidence
 
 const (
 	// No tracking information is available for this pose.

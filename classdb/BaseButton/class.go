@@ -624,7 +624,7 @@ func init() {
 	gdclass.Register("BaseButton", func(ptr gd.Object) any { return Instance{gdclass.NewBaseButton(ptr)} })
 }
 
-type DrawMode int //gd:BaseButton.DrawMode
+type DrawMode int64 //gd:BaseButton.DrawMode
 
 const (
 	// The normal state (i.e. not pressed, not hovered, not toggled and enabled) of buttons.
@@ -639,7 +639,7 @@ const (
 	DrawHoverPressed DrawMode = 4
 )
 
-type ActionMode int //gd:BaseButton.ActionMode
+type ActionMode int64 //gd:BaseButton.ActionMode
 
 const (
 	// Require just a press to consider the button clicked.

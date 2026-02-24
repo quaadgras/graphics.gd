@@ -324,7 +324,7 @@ func init() {
 	gdclass.Register("GDExtensionManager", func(ptr gd.Object) any { return Instance{gdclass.NewGDExtensionManager(ptr)} })
 }
 
-type LoadStatus int //gd:GDExtensionManager.LoadStatus
+type LoadStatus int64 //gd:GDExtensionManager.LoadStatus
 
 const (
 	// The extension has loaded successfully.

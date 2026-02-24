@@ -247,7 +247,7 @@ func init() {
 	gdclass.Register("HashingContext", func(ptr gd.Object) any { return Instance{gdclass.NewHashingContext(ptr)} })
 }
 
-type HashType int //gd:HashingContext.HashType
+type HashType int64 //gd:HashingContext.HashType
 
 const (
 	// Hashing algorithm: MD5.

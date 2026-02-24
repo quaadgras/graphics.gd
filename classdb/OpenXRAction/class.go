@@ -264,7 +264,7 @@ func init() {
 	gdclass.Register("OpenXRAction", func(ptr gd.Object) any { return Instance{gdclass.NewOpenXRAction(ptr)} })
 }
 
-type ActionType int //gd:OpenXRAction.ActionType
+type ActionType int64 //gd:OpenXRAction.ActionType
 
 const (
 	// This action provides a boolean value.

@@ -348,7 +348,7 @@ func init() {
 	gdclass.Register("RibbonTrailMesh", func(ptr gd.Object) any { return Instance{gdclass.NewRibbonTrailMesh(ptr)} })
 }
 
-type Shape int //gd:RibbonTrailMesh.Shape
+type Shape int64 //gd:RibbonTrailMesh.Shape
 
 const (
 	// Gives the mesh a single flat face.

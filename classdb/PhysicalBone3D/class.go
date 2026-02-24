@@ -752,7 +752,7 @@ func init() {
 	gdclass.Register("PhysicalBone3D", func(ptr gd.Object) any { return Instance{gdclass.NewPhysicalBone3D(ptr)} })
 }
 
-type DampMode int //gd:PhysicalBone3D.DampMode
+type DampMode int64 //gd:PhysicalBone3D.DampMode
 
 const (
 	// In this mode, the body's damping value is added to any value set in areas or the default value.
@@ -761,7 +761,7 @@ const (
 	DampModeReplace DampMode = 1
 )
 
-type JointType int //gd:PhysicalBone3D.JointType
+type JointType int64 //gd:PhysicalBone3D.JointType
 
 const (
 	// No joint is applied to the PhysicsBone3D.

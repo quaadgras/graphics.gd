@@ -1450,7 +1450,7 @@ func init() {
 	gdclass.Register("Theme", func(ptr gd.Object) any { return Instance{gdclass.NewTheme(ptr)} })
 }
 
-type DataType int //gd:Theme.DataType
+type DataType int64 //gd:Theme.DataType
 
 const (
 	// Theme's [Color.RGBA] item type.

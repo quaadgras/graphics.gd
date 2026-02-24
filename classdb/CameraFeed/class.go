@@ -521,7 +521,7 @@ func init() {
 	gdclass.Register("CameraFeed", func(ptr gd.Object) any { return Instance{gdclass.NewCameraFeed(ptr)} })
 }
 
-type FeedDataType int //gd:CameraFeed.FeedDataType
+type FeedDataType int64 //gd:CameraFeed.FeedDataType
 
 const (
 	// No image set for the feed.
@@ -536,7 +536,7 @@ const (
 	FeedExternal FeedDataType = 4
 )
 
-type FeedPosition int //gd:CameraFeed.FeedPosition
+type FeedPosition int64 //gd:CameraFeed.FeedPosition
 
 const (
 	// Unspecified position.
@@ -547,7 +547,7 @@ const (
 	FeedBack FeedPosition = 2
 )
 
-type ImageType int //gd:CameraServer.FeedImage
+type ImageType int64 //gd:CameraServer.FeedImage
 
 const (
 	// The RGBA camera image.

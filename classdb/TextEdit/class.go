@@ -4442,7 +4442,7 @@ func init() {
 	gdclass.Register("TextEdit", func(ptr gd.Object) any { return Instance{gdclass.NewTextEdit(ptr)} })
 }
 
-type MenuItems int //gd:TextEdit.MenuItems
+type MenuItems int64 //gd:TextEdit.MenuItems
 
 const (
 	// Cuts (copies and clears) the selected text.
@@ -4515,7 +4515,7 @@ const (
 	MenuMax MenuItems = 31
 )
 
-type EditAction int //gd:TextEdit.EditAction
+type EditAction int64 //gd:TextEdit.EditAction
 
 const (
 	// No current action.
@@ -4528,7 +4528,7 @@ const (
 	ActionDelete EditAction = 3
 )
 
-type SearchFlags int //gd:TextEdit.SearchFlags
+type SearchFlags int64 //gd:TextEdit.SearchFlags
 
 const (
 	// Match case when searching.
@@ -4539,7 +4539,7 @@ const (
 	SearchBackwards SearchFlags = 4
 )
 
-type CaretType int //gd:TextEdit.CaretType
+type CaretType int64 //gd:TextEdit.CaretType
 
 const (
 	// Vertical line caret.
@@ -4548,7 +4548,7 @@ const (
 	CaretTypeBlock CaretType = 1
 )
 
-type SelectionMode int //gd:TextEdit.SelectionMode
+type SelectionMode int64 //gd:TextEdit.SelectionMode
 
 const (
 	// Not selecting.
@@ -4563,7 +4563,7 @@ const (
 	SelectionModeLine SelectionMode = 4
 )
 
-type LineWrappingMode int //gd:TextEdit.LineWrappingMode
+type LineWrappingMode int64 //gd:TextEdit.LineWrappingMode
 
 const (
 	// Line wrapping is disabled.
@@ -4572,7 +4572,7 @@ const (
 	LineWrappingBoundary LineWrappingMode = 1
 )
 
-type GutterType int //gd:TextEdit.GutterType
+type GutterType int64 //gd:TextEdit.GutterType
 
 const (
 	// When a gutter is set to string using [SetGutterType], it is used to contain text set via the [SetLineGutterText] method.

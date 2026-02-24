@@ -872,7 +872,7 @@ func init() {
 	gdclass.Register("WebXRInterface", func(ptr gd.Object) any { return Instance{gdclass.NewWebXRInterface(ptr)} })
 }
 
-type TargetRayMode int //gd:WebXRInterface.TargetRayMode
+type TargetRayMode int64 //gd:WebXRInterface.TargetRayMode
 
 const (
 	// We don't know the target ray mode.

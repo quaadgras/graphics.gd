@@ -328,7 +328,7 @@ func init() {
 	gdclass.Register("AudioStreamGenerator", func(ptr gd.Object) any { return Instance{gdclass.NewAudioStreamGenerator(ptr)} })
 }
 
-type AudioStreamGeneratorMixRate int //gd:AudioStreamGenerator.AudioStreamGeneratorMixRate
+type AudioStreamGeneratorMixRate int64 //gd:AudioStreamGenerator.AudioStreamGeneratorMixRate
 
 const (
 	// Current [AudioServer] output mixing rate.

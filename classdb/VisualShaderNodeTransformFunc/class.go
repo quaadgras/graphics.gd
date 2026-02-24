@@ -220,7 +220,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeTransformFunc", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeTransformFunc(ptr)} })
 }
 
-type Function int //gd:VisualShaderNodeTransformFunc.Function
+type Function int64 //gd:VisualShaderNodeTransformFunc.Function
 
 const (
 	// Perform the inverse operation on the [Transform3D.BasisOrigin] matrix.

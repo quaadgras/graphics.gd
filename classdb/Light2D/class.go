@@ -586,7 +586,7 @@ func init() {
 	gdclass.Register("Light2D", func(ptr gd.Object) any { return Instance{gdclass.NewLight2D(ptr)} })
 }
 
-type ShadowFilter int //gd:Light2D.ShadowFilter
+type ShadowFilter int64 //gd:Light2D.ShadowFilter
 
 const (
 	// No filter applies to the shadow map. This provides hard shadow edges and is the fastest to render. See [ShadowFilter].
@@ -603,7 +603,7 @@ const (
 	ShadowFilterPcf13 ShadowFilter = 2
 )
 
-type BlendMode int //gd:Light2D.BlendMode
+type BlendMode int64 //gd:Light2D.BlendMode
 
 const (
 	// Adds the value of pixels corresponding to the Light2D to the values of pixels under it. This is the common behavior of a light.

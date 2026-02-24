@@ -1012,7 +1012,7 @@ func init() {
 	gdclass.Register("LookAtModifier3D", func(ptr gd.Object) any { return Instance{gdclass.NewLookAtModifier3D(ptr)} })
 }
 
-type OriginFrom int //gd:LookAtModifier3D.OriginFrom
+type OriginFrom int64 //gd:LookAtModifier3D.OriginFrom
 
 const (
 	// The bone rest position of the bone specified in [Bone] is used as origin.

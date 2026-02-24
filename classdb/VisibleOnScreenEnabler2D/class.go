@@ -256,7 +256,7 @@ func init() {
 	gdclass.Register("VisibleOnScreenEnabler2D", func(ptr gd.Object) any { return Instance{gdclass.NewVisibleOnScreenEnabler2D(ptr)} })
 }
 
-type EnableMode int //gd:VisibleOnScreenEnabler2D.EnableMode
+type EnableMode int64 //gd:VisibleOnScreenEnabler2D.EnableMode
 
 const (
 	// Corresponds to [Node.ProcessModeInherit].

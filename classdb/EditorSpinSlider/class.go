@@ -448,7 +448,7 @@ func init() {
 	gdclass.Register("EditorSpinSlider", func(ptr gd.Object) any { return Instance{gdclass.NewEditorSpinSlider(ptr)} })
 }
 
-type ControlState int //gd:EditorSpinSlider.ControlState
+type ControlState int64 //gd:EditorSpinSlider.ControlState
 
 const (
 	// The type of control used will depend on the value of [EditingInteger]. Up-down arrows if true, a slider if false.

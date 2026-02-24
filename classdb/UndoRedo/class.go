@@ -612,7 +612,7 @@ func init() {
 	gdclass.Register("UndoRedo", func(ptr gd.Object) any { return Instance{gdclass.NewUndoRedo(ptr)} })
 }
 
-type MergeMode int //gd:UndoRedo.MergeMode
+type MergeMode int64 //gd:UndoRedo.MergeMode
 
 const (
 	// Makes "do"/"undo" operations stay in separate actions.

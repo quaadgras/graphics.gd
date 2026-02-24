@@ -399,7 +399,7 @@ func init() {
 	gdclass.Register("XRHandTracker", func(ptr gd.Object) any { return Instance{gdclass.NewXRHandTracker(ptr)} })
 }
 
-type HandTrackingSource int //gd:XRHandTracker.HandTrackingSource
+type HandTrackingSource int64 //gd:XRHandTracker.HandTrackingSource
 
 const (
 	// The source of hand tracking data is unknown.
@@ -414,7 +414,7 @@ const (
 	HandTrackingSourceMax HandTrackingSource = 4
 )
 
-type HandJoint int //gd:XRHandTracker.HandJoint
+type HandJoint int64 //gd:XRHandTracker.HandJoint
 
 const (
 	// Palm joint.
@@ -473,7 +473,7 @@ const (
 	HandJointMax HandJoint = 26
 )
 
-type HandJointFlags int //gd:XRHandTracker.HandJointFlags
+type HandJointFlags int64 //gd:XRHandTracker.HandJointFlags
 
 const (
 	// The hand joint's orientation data is valid.

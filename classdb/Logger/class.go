@@ -321,7 +321,7 @@ func init() {
 	gdclass.Register("Logger", func(ptr gd.Object) any { return Instance{gdclass.NewLogger(ptr)} })
 }
 
-type ErrorType int //gd:Logger.ErrorType
+type ErrorType int64 //gd:Logger.ErrorType
 
 const (
 	// The message received is an error.

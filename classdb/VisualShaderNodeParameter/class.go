@@ -268,7 +268,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeParameter", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeParameter(ptr)} })
 }
 
-type Qualifier int //gd:VisualShaderNodeParameter.Qualifier
+type Qualifier int64 //gd:VisualShaderNodeParameter.Qualifier
 
 const (
 	// The parameter will be tied to the [ShaderMaterial] using this shader.

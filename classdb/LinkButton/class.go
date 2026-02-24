@@ -411,7 +411,7 @@ func init() {
 	gdclass.Register("LinkButton", func(ptr gd.Object) any { return Instance{gdclass.NewLinkButton(ptr)} })
 }
 
-type UnderlineMode int //gd:LinkButton.UnderlineMode
+type UnderlineMode int64 //gd:LinkButton.UnderlineMode
 
 const (
 	// The LinkButton will always show an underline at the bottom of its text.

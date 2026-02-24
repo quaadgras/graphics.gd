@@ -448,7 +448,7 @@ func init() {
 	gdclass.Register("ENetPacketPeer", func(ptr gd.Object) any { return Instance{gdclass.NewENetPacketPeer(ptr)} })
 }
 
-type PeerState int //gd:ENetPacketPeer.PeerState
+type PeerState int64 //gd:ENetPacketPeer.PeerState
 
 const (
 	// The peer is disconnected.
@@ -473,7 +473,7 @@ const (
 	StateZombie PeerState = 9
 )
 
-type PeerStatistic int //gd:ENetPacketPeer.PeerStatistic
+type PeerStatistic int64 //gd:ENetPacketPeer.PeerStatistic
 
 const (
 	// Mean packet loss of reliable packets as a ratio with respect to the [PacketLossScale].

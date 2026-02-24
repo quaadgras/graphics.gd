@@ -2240,7 +2240,7 @@ func init() {
 	gdclass.Register("Viewport", func(ptr gd.Object) any { return Instance{gdclass.NewViewport(ptr)} })
 }
 
-type PositionalShadowAtlasQuadrantSubdiv int //gd:Viewport.PositionalShadowAtlasQuadrantSubdiv
+type PositionalShadowAtlasQuadrantSubdiv int64 //gd:Viewport.PositionalShadowAtlasQuadrantSubdiv
 
 const (
 	// This quadrant will not be used.
@@ -2265,7 +2265,7 @@ const (
 	ShadowAtlasQuadrantSubdivMax PositionalShadowAtlasQuadrantSubdiv = 7
 )
 
-type Scaling3DMode int //gd:Viewport.Scaling3DMode
+type Scaling3DMode int64 //gd:Viewport.Scaling3DMode
 
 const (
 	// Use bilinear scaling for the viewport's 3D buffer. The amount of scaling can be set using [Scaling3dScale]. Values less than 1.0 will result in undersampling while values greater than 1.0 will result in supersampling. A value of 1.0 disables scaling.
@@ -2313,7 +2313,7 @@ const (
 	Scaling3dModeMax Scaling3DMode = 5
 )
 
-type MSAA int //gd:Viewport.MSAA
+type MSAA int64 //gd:Viewport.MSAA
 
 const (
 	// Multisample antialiasing mode disabled. This is the default value, and is also the fastest setting.
@@ -2328,7 +2328,7 @@ const (
 	MsaaMax MSAA = 4
 )
 
-type AnisotropicFiltering int //gd:Viewport.AnisotropicFiltering
+type AnisotropicFiltering int64 //gd:Viewport.AnisotropicFiltering
 
 const (
 	// Anisotropic filtering is disabled.
@@ -2345,7 +2345,7 @@ const (
 	AnisotropyMax AnisotropicFiltering = 5
 )
 
-type ScreenSpaceAA int //gd:Viewport.ScreenSpaceAA
+type ScreenSpaceAA int64 //gd:Viewport.ScreenSpaceAA
 
 const (
 	// Do not perform any antialiasing in the full screen post-process.
@@ -2358,7 +2358,7 @@ const (
 	ScreenSpaceAaMax ScreenSpaceAA = 3
 )
 
-type RenderInfo int //gd:Viewport.RenderInfo
+type RenderInfo int64 //gd:Viewport.RenderInfo
 
 const (
 	// Amount of objects in frame.
@@ -2371,7 +2371,7 @@ const (
 	RenderInfoMax RenderInfo = 3
 )
 
-type RenderInfoType int //gd:Viewport.RenderInfoType
+type RenderInfoType int64 //gd:Viewport.RenderInfoType
 
 const (
 	// Visible render pass (excluding shadows).
@@ -2384,7 +2384,7 @@ const (
 	RenderInfoTypeMax RenderInfoType = 3
 )
 
-type DebugDraw int //gd:Viewport.DebugDraw
+type DebugDraw int64 //gd:Viewport.DebugDraw
 
 const (
 	// Objects are displayed normally.
@@ -2538,7 +2538,7 @@ const (
 	DebugDrawInternalBuffer DebugDraw = 26
 )
 
-type DefaultCanvasItemTextureFilter int //gd:Viewport.DefaultCanvasItemTextureFilter
+type DefaultCanvasItemTextureFilter int64 //gd:Viewport.DefaultCanvasItemTextureFilter
 
 const (
 	// The texture filter reads from the nearest pixel only. This makes the texture look pixelated from up close, and grainy from a distance (due to mipmaps not being sampled).
@@ -2563,7 +2563,7 @@ const (
 	DefaultCanvasItemTextureFilterMax DefaultCanvasItemTextureFilter = 4
 )
 
-type DefaultCanvasItemTextureRepeat int //gd:Viewport.DefaultCanvasItemTextureRepeat
+type DefaultCanvasItemTextureRepeat int64 //gd:Viewport.DefaultCanvasItemTextureRepeat
 
 const (
 	// Disables textures repeating. Instead, when reading UVs outside the 0-1 range, the value will be clamped to the edge of the texture, resulting in a stretched out look at the borders of the texture.
@@ -2576,7 +2576,7 @@ const (
 	DefaultCanvasItemTextureRepeatMax DefaultCanvasItemTextureRepeat = 3
 )
 
-type SDFOversize int //gd:Viewport.SDFOversize
+type SDFOversize int64 //gd:Viewport.SDFOversize
 
 const (
 	// The signed distance field only covers the viewport's own rectangle.
@@ -2591,7 +2591,7 @@ const (
 	SdfOversizeMax SDFOversize = 4
 )
 
-type SDFScale int //gd:Viewport.SDFScale
+type SDFScale int64 //gd:Viewport.SDFScale
 
 const (
 	// The signed distance field is rendered at full resolution.
@@ -2604,7 +2604,7 @@ const (
 	SdfScaleMax SDFScale = 3
 )
 
-type VRSMode int //gd:Viewport.VRSMode
+type VRSMode int64 //gd:Viewport.VRSMode
 
 const (
 	// Variable Rate Shading is disabled.
@@ -2619,7 +2619,7 @@ const (
 	VrsMax VRSMode = 3
 )
 
-type VRSUpdateMode int //gd:Viewport.VRSUpdateMode
+type VRSUpdateMode int64 //gd:Viewport.VRSUpdateMode
 
 const (
 	// The input texture for variable rate shading will not be processed.

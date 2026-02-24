@@ -269,7 +269,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeTexture", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeTexture(ptr)} })
 }
 
-type Source int //gd:VisualShaderNodeTexture.Source
+type Source int64 //gd:VisualShaderNodeTexture.Source
 
 const (
 	// Use the texture given as an argument for this function.
@@ -294,7 +294,7 @@ const (
 	SourceMax Source = 8
 )
 
-type TextureType int //gd:VisualShaderNodeTexture.TextureType
+type TextureType int64 //gd:VisualShaderNodeTexture.TextureType
 
 const (
 	// No hints are added to the uniform declaration.

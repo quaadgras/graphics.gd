@@ -683,7 +683,7 @@ func init() {
 	gdclass.Register("HTTPRequest", func(ptr gd.Object) any { return Instance{gdclass.NewHTTPRequest(ptr)} })
 }
 
-type Result int //gd:HTTPRequest.Result
+type Result int64 //gd:HTTPRequest.Result
 
 const (
 	// Request successful.

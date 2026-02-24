@@ -347,7 +347,7 @@ func init() {
 	gdclass.Register("Slider", func(ptr gd.Object) any { return Instance{gdclass.NewSlider(ptr)} })
 }
 
-type TickPosition int //gd:Slider.TickPosition
+type TickPosition int64 //gd:Slider.TickPosition
 
 const (
 	// Places the ticks at the bottom of the [HSlider], or right of the [VSlider].

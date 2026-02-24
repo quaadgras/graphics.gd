@@ -1251,7 +1251,7 @@ func init() {
 	gdclass.Register("SceneTree", func(ptr gd.Object) any { return Instance{gdclass.NewSceneTree(ptr)} })
 }
 
-type GroupCallFlags int //gd:SceneTree.GroupCallFlags
+type GroupCallFlags int64 //gd:SceneTree.GroupCallFlags
 
 const (
 	// Call nodes within a group with no special behavior (default).

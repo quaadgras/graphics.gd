@@ -260,7 +260,7 @@ func init() {
 	gdclass.Register("BoxContainer", func(ptr gd.Object) any { return Instance{gdclass.NewBoxContainer(ptr)} })
 }
 
-type AlignmentMode int //gd:BoxContainer.AlignmentMode
+type AlignmentMode int64 //gd:BoxContainer.AlignmentMode
 
 const (
 	// The child controls will be arranged at the beginning of the container, i.e. top if orientation is vertical, left if orientation is horizontal (right for RTL layout).

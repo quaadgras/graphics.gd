@@ -116,9 +116,9 @@ func generateEnum(code io.Writer, classDB map[string]gdjson.Class, prefix string
 		return
 	} else {
 		if original != "" {
-			fmt.Fprintf(code, "type %v int//gd:%s\n\n", rename, original)
+			fmt.Fprintf(code, "type %v int64//gd:%s\n\n", rename, original)
 		} else {
-			fmt.Fprintf(code, "type %v int\n\n", rename)
+			fmt.Fprintf(code, "type %v int64\n\n", rename)
 		}
 	}
 	fmt.Fprintf(code, "const (\n")

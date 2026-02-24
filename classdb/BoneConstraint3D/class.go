@@ -457,7 +457,7 @@ func init() {
 	gdclass.Register("BoneConstraint3D", func(ptr gd.Object) any { return Instance{gdclass.NewBoneConstraint3D(ptr)} })
 }
 
-type ReferenceType int //gd:BoneConstraint3D.ReferenceType
+type ReferenceType int64 //gd:BoneConstraint3D.ReferenceType
 
 const (
 	// The reference target is a bone. In this case, the reference target spaces is local space.

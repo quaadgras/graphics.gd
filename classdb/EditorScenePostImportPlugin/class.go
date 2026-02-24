@@ -567,7 +567,7 @@ func init() {
 	gdclass.Register("EditorScenePostImportPlugin", func(ptr gd.Object) any { return Instance{gdclass.NewEditorScenePostImportPlugin(ptr)} })
 }
 
-type InternalImportCategory int //gd:EditorScenePostImportPlugin.InternalImportCategory
+type InternalImportCategory int64 //gd:EditorScenePostImportPlugin.InternalImportCategory
 
 const (
 	InternalImportCategoryNode           InternalImportCategory = 0

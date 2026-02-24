@@ -2,7 +2,7 @@
 
 package Rendering
 
-type DeviceType int //gd:RenderingDevice.DeviceType
+type DeviceType int64 //gd:RenderingDevice.DeviceType
 
 const (
 	// Rendering device type does not match any of the other enum values or is unknown.
@@ -21,7 +21,7 @@ const (
 	DeviceTypeMax DeviceType = 5
 )
 
-type DriverResource int //gd:RenderingDevice.DriverResource
+type DriverResource int64 //gd:RenderingDevice.DriverResource
 
 const (
 	// Specific device object based on a physical device (rid parameter is ignored).
@@ -103,7 +103,7 @@ const (
 	DriverResourceVulkanRenderPipeline           DriverResource = 12
 )
 
-type DataFormat int //gd:RenderingDevice.DataFormat
+type DataFormat int64 //gd:RenderingDevice.DataFormat
 
 const (
 	// 4-bit-per-channel red/green channel data format, packed into 8 bits. Values are in the [0.0, 1.0] range.
@@ -565,7 +565,7 @@ const (
 	DataFormatMax DataFormat = 232
 )
 
-type BarrierMask int //gd:RenderingDevice.BarrierMask
+type BarrierMask int64 //gd:RenderingDevice.BarrierMask
 
 const (
 	// Vertex shader barrier mask.
@@ -584,7 +584,7 @@ const (
 	BarrierMaskNoBarrier BarrierMask = 32768
 )
 
-type TextureType int //gd:RenderingDevice.TextureType
+type TextureType int64 //gd:RenderingDevice.TextureType
 
 const (
 	// 1-dimensional texture.
@@ -609,7 +609,7 @@ const (
 	TextureTypeMax TextureType = 7
 )
 
-type TextureSamples int //gd:RenderingDevice.TextureSamples
+type TextureSamples int64 //gd:RenderingDevice.TextureSamples
 
 const (
 	// Perform 1 texture sample (this is the fastest but lowest-quality for antialiasing).
@@ -630,7 +630,7 @@ const (
 	TextureSamplesMax TextureSamples = 7
 )
 
-type TextureUsageBits int //gd:RenderingDevice.TextureUsageBits
+type TextureUsageBits int64 //gd:RenderingDevice.TextureUsageBits
 
 const (
 	// Texture can be sampled.
@@ -671,7 +671,7 @@ const (
 	TextureUsageInputAttachmentBit TextureUsageBits = 512
 )
 
-type TextureSwizzle int //gd:RenderingDevice.TextureSwizzle
+type TextureSwizzle int64 //gd:RenderingDevice.TextureSwizzle
 
 const (
 	// Return the sampled value as-is.
@@ -692,7 +692,7 @@ const (
 	TextureSwizzleMax TextureSwizzle = 7
 )
 
-type TextureSliceType int //gd:RenderingDevice.TextureSliceType
+type TextureSliceType int64 //gd:RenderingDevice.TextureSliceType
 
 const (
 	// 2-dimensional texture slice.
@@ -703,7 +703,7 @@ const (
 	TextureSlice3d TextureSliceType = 2
 )
 
-type SamplerFilter int //gd:RenderingDevice.SamplerFilter
+type SamplerFilter int64 //gd:RenderingDevice.SamplerFilter
 
 const (
 	// Nearest-neighbor sampler filtering. Sampling at higher resolutions than the source will result in a pixelated look.
@@ -712,7 +712,7 @@ const (
 	SamplerFilterLinear SamplerFilter = 1
 )
 
-type SamplerRepeatMode int //gd:RenderingDevice.SamplerRepeatMode
+type SamplerRepeatMode int64 //gd:RenderingDevice.SamplerRepeatMode
 
 const (
 	// Sample with repeating enabled.
@@ -731,7 +731,7 @@ const (
 	SamplerRepeatModeMax SamplerRepeatMode = 5
 )
 
-type SamplerBorderColor int //gd:RenderingDevice.SamplerBorderColor
+type SamplerBorderColor int64 //gd:RenderingDevice.SamplerBorderColor
 
 const (
 	// Return a floating-point transparent black color when sampling outside the [0.0, 1.0] range. Only effective if the sampler repeat mode is [SamplerRepeatModeClampToBorder].
@@ -750,7 +750,7 @@ const (
 	SamplerBorderColorMax SamplerBorderColor = 6
 )
 
-type VertexFrequency int //gd:RenderingDevice.VertexFrequency
+type VertexFrequency int64 //gd:RenderingDevice.VertexFrequency
 
 const (
 	// Vertex attribute addressing is a function of the vertex. This is used to specify the rate at which vertex attributes are pulled from buffers.
@@ -759,7 +759,7 @@ const (
 	VertexFrequencyInstance VertexFrequency = 1
 )
 
-type IndexBufferFormat int //gd:RenderingDevice.IndexBufferFormat
+type IndexBufferFormat int64 //gd:RenderingDevice.IndexBufferFormat
 
 const (
 	// Index buffer in 16-bit unsigned integer format. This limits the maximum index that can be specified to 65535.
@@ -768,13 +768,13 @@ const (
 	IndexBufferFormatUint32 IndexBufferFormat = 1
 )
 
-type StorageBufferUsage int //gd:RenderingDevice.StorageBufferUsage
+type StorageBufferUsage int64 //gd:RenderingDevice.StorageBufferUsage
 
 const (
 	StorageBufferUsageDispatchIndirect StorageBufferUsage = 1
 )
 
-type BufferCreationBits int //gd:RenderingDevice.BufferCreationBits
+type BufferCreationBits int64 //gd:RenderingDevice.BufferCreationBits
 
 const (
 	// Optionally, set this flag if you wish to use [BufferGetDeviceAddress] functionality. You must first check the GPU supports it:
@@ -803,7 +803,7 @@ const (
 	BufferCreationAsStorageBit BufferCreationBits = 2
 )
 
-type UniformType int //gd:RenderingDevice.UniformType
+type UniformType int64 //gd:RenderingDevice.UniformType
 
 const (
 	// Sampler uniform.
@@ -844,7 +844,7 @@ const (
 	UniformTypeMax UniformType = 12
 )
 
-type RenderPrimitive int //gd:RenderingDevice.RenderPrimitive
+type RenderPrimitive int64 //gd:RenderingDevice.RenderPrimitive
 
 const (
 	// Point rendering primitive (with constant size, regardless of distance from camera).
@@ -891,7 +891,7 @@ const (
 	RenderPrimitiveMax RenderPrimitive = 11
 )
 
-type PolygonCullMode int //gd:RenderingDevice.PolygonCullMode
+type PolygonCullMode int64 //gd:RenderingDevice.PolygonCullMode
 
 const (
 	// Do not use polygon front face or backface culling.
@@ -902,7 +902,7 @@ const (
 	PolygonCullBack PolygonCullMode = 2
 )
 
-type PolygonFrontFace int //gd:RenderingDevice.PolygonFrontFace
+type PolygonFrontFace int64 //gd:RenderingDevice.PolygonFrontFace
 
 const (
 	// Clockwise winding order to determine which face of a polygon is its front face.
@@ -911,7 +911,7 @@ const (
 	PolygonFrontFaceCounterClockwise PolygonFrontFace = 1
 )
 
-type StencilOperation int //gd:RenderingDevice.StencilOperation
+type StencilOperation int64 //gd:RenderingDevice.StencilOperation
 
 const (
 	// Keep the current stencil value.
@@ -934,7 +934,7 @@ const (
 	StencilOpMax StencilOperation = 8
 )
 
-type CompareOperator int //gd:RenderingDevice.CompareOperator
+type CompareOperator int64 //gd:RenderingDevice.CompareOperator
 
 const (
 	// "Never" comparison (opposite of [CompareOpAlways]).
@@ -957,7 +957,7 @@ const (
 	CompareOpMax CompareOperator = 8
 )
 
-type LogicOperation int //gd:RenderingDevice.LogicOperation
+type LogicOperation int64 //gd:RenderingDevice.LogicOperation
 
 const (
 	// Clear logic operation (result is always 0). See also [LogicOpSet].
@@ -996,7 +996,7 @@ const (
 	LogicOpMax LogicOperation = 16
 )
 
-type BlendFactor int //gd:RenderingDevice.BlendFactor
+type BlendFactor int64 //gd:RenderingDevice.BlendFactor
 
 const (
 	// Constant 0.0 blend factor.
@@ -1049,7 +1049,7 @@ const (
 	BlendFactorMax BlendFactor = 19
 )
 
-type BlendOperation int //gd:RenderingDevice.BlendOperation
+type BlendOperation int64 //gd:RenderingDevice.BlendOperation
 
 const (
 	// Additive blending operation (source + destination).
@@ -1066,7 +1066,7 @@ const (
 	BlendOpMax BlendOperation = 5
 )
 
-type PipelineDynamicStateFlags int //gd:RenderingDevice.PipelineDynamicStateFlags
+type PipelineDynamicStateFlags int64 //gd:RenderingDevice.PipelineDynamicStateFlags
 
 const (
 	// Allows dynamically changing the width of rendering lines.
@@ -1080,7 +1080,7 @@ const (
 	DynamicStateStencilReference   PipelineDynamicStateFlags = 64
 )
 
-type InitialAction int //gd:RenderingDevice.InitialAction
+type InitialAction int64 //gd:RenderingDevice.InitialAction
 
 const (
 	// Load the previous contents of the framebuffer.
@@ -1098,7 +1098,7 @@ const (
 	InitialActionContinue            InitialAction = 0
 )
 
-type FinalAction int //gd:RenderingDevice.FinalAction
+type FinalAction int64 //gd:RenderingDevice.FinalAction
 
 const (
 	// Store the result of the draw list in the framebuffer. This is generally what you want to do.
@@ -1111,7 +1111,7 @@ const (
 	FinalActionContinue FinalAction = 0
 )
 
-type ShaderStage int //gd:RenderingDevice.ShaderStage
+type ShaderStage int64 //gd:RenderingDevice.ShaderStage
 
 const (
 	// Vertex shader stage. This can be used to manipulate vertices from a shader (but not create new vertices).
@@ -1138,7 +1138,7 @@ const (
 	ShaderStageComputeBit ShaderStage = 16
 )
 
-type ShaderLanguage int //gd:RenderingDevice.ShaderLanguage
+type ShaderLanguage int64 //gd:RenderingDevice.ShaderLanguage
 
 const (
 	// Khronos' GLSL shading language (used natively by OpenGL and Vulkan). This is the language used for core Godot shaders.
@@ -1147,7 +1147,7 @@ const (
 	ShaderLanguageHlsl ShaderLanguage = 1
 )
 
-type PipelineSpecializationConstantType int //gd:RenderingDevice.PipelineSpecializationConstantType
+type PipelineSpecializationConstantType int64 //gd:RenderingDevice.PipelineSpecializationConstantType
 
 const (
 	// Boolean specialization constant.
@@ -1158,7 +1158,7 @@ const (
 	PipelineSpecializationConstantTypeFloat PipelineSpecializationConstantType = 2
 )
 
-type Features int //gd:RenderingDevice.Features
+type Features int64 //gd:RenderingDevice.Features
 
 const (
 	// Support for MetalFX spatial upscaling.
@@ -1171,7 +1171,7 @@ const (
 	SupportsImageAtomic32Bit Features = 7
 )
 
-type Limit int //gd:RenderingDevice.Limit
+type Limit int64 //gd:RenderingDevice.Limit
 
 const (
 	// Maximum number of uniform sets that can be bound at a given time.
@@ -1266,7 +1266,7 @@ const (
 	LimitMetalfxTemporalScalerMaxScale Limit = 47
 )
 
-type MemoryType int //gd:RenderingDevice.MemoryType
+type MemoryType int64 //gd:RenderingDevice.MemoryType
 
 const (
 	// Memory taken by textures.
@@ -1277,7 +1277,7 @@ const (
 	MemoryTotal MemoryType = 2
 )
 
-type BreadcrumbMarker int //gd:RenderingDevice.BreadcrumbMarker
+type BreadcrumbMarker int64 //gd:RenderingDevice.BreadcrumbMarker
 
 const (
 	// No breadcrumb marker will be added.
@@ -1308,7 +1308,7 @@ const (
 	DebugPass BreadcrumbMarker = 786432
 )
 
-type DrawFlags int //gd:RenderingDevice.DrawFlags
+type DrawFlags int64 //gd:RenderingDevice.DrawFlags
 
 const (
 	// Do not clear or ignore any attachments.

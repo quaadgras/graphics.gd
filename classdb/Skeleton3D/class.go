@@ -1168,7 +1168,7 @@ func init() {
 	gdclass.Register("Skeleton3D", func(ptr gd.Object) any { return Instance{gdclass.NewSkeleton3D(ptr)} })
 }
 
-type ModifierCallbackModeProcess int //gd:Skeleton3D.ModifierCallbackModeProcess
+type ModifierCallbackModeProcess int64 //gd:Skeleton3D.ModifierCallbackModeProcess
 
 const (
 	// Set a flag to process modification during physics frames (see [Node.NotificationInternalPhysicsProcess]).

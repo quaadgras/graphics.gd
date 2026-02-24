@@ -243,7 +243,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeBillboard", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeBillboard(ptr)} })
 }
 
-type BillboardType int //gd:VisualShaderNodeBillboard.BillboardType
+type BillboardType int64 //gd:VisualShaderNodeBillboard.BillboardType
 
 const (
 	// Billboarding is disabled and the node does nothing.

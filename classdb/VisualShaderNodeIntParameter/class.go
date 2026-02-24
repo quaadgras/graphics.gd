@@ -380,7 +380,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeIntParameter", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeIntParameter(ptr)} })
 }
 
-type Hint int //gd:VisualShaderNodeIntParameter.Hint
+type Hint int64 //gd:VisualShaderNodeIntParameter.Hint
 
 const (
 	// The parameter will not constrain its value.

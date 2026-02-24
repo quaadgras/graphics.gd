@@ -1616,7 +1616,7 @@ func init() {
 	gdclass.Register("LineEdit", func(ptr gd.Object) any { return Instance{gdclass.NewLineEdit(ptr)} })
 }
 
-type MenuItems int //gd:LineEdit.MenuItems
+type MenuItems int64 //gd:LineEdit.MenuItems
 
 const (
 	// Cuts (copies and clears) the selected text.
@@ -1693,7 +1693,7 @@ const (
 	MenuMax MenuItems = 31
 )
 
-type VirtualKeyboardType int //gd:LineEdit.VirtualKeyboardType
+type VirtualKeyboardType int64 //gd:LineEdit.VirtualKeyboardType
 
 const (
 	// Default text virtual keyboard.
@@ -1716,7 +1716,7 @@ const (
 	KeyboardTypeUrl VirtualKeyboardType = 7
 )
 
-type ExpandMode int //gd:LineEdit.ExpandMode
+type ExpandMode int64 //gd:LineEdit.ExpandMode
 
 const (
 	// Use the original size for the right icon.

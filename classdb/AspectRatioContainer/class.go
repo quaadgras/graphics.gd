@@ -287,7 +287,7 @@ func init() {
 	gdclass.Register("AspectRatioContainer", func(ptr gd.Object) any { return Instance{gdclass.NewAspectRatioContainer(ptr)} })
 }
 
-type StretchMode int //gd:AspectRatioContainer.StretchMode
+type StretchMode int64 //gd:AspectRatioContainer.StretchMode
 
 const (
 	// The height of child controls is automatically adjusted based on the width of the container.
@@ -304,7 +304,7 @@ const (
 	StretchCover StretchMode = 3
 )
 
-type AlignmentMode int //gd:AspectRatioContainer.AlignmentMode
+type AlignmentMode int64 //gd:AspectRatioContainer.AlignmentMode
 
 const (
 	// Aligns child controls with the beginning (left or top) of the container.

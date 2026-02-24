@@ -1890,7 +1890,7 @@ func init() {
 	gdclass.Register("ScriptLanguageExtension", func(ptr gd.Object) any { return Instance{gdclass.NewScriptLanguageExtension(ptr)} })
 }
 
-type LookupResultType int //gd:ScriptLanguageExtension.LookupResultType
+type LookupResultType int64 //gd:ScriptLanguageExtension.LookupResultType
 
 const (
 	LookupResultScriptLocation      LookupResultType = 0
@@ -1907,7 +1907,7 @@ const (
 	LookupResultMax                 LookupResultType = 11
 )
 
-type CodeCompletionLocation int //gd:ScriptLanguageExtension.CodeCompletionLocation
+type CodeCompletionLocation int64 //gd:ScriptLanguageExtension.CodeCompletionLocation
 
 const (
 	// The option is local to the location of the code completion query - e.g. a local variable. Subsequent value of location represent options from the outer class, the exact value represent how far they are (in terms of inner classes).
@@ -1920,7 +1920,7 @@ const (
 	LocationOther CodeCompletionLocation = 1024
 )
 
-type CodeCompletionKind int //gd:ScriptLanguageExtension.CodeCompletionKind
+type CodeCompletionKind int64 //gd:ScriptLanguageExtension.CodeCompletionKind
 
 const (
 	CodeCompletionKindClass     CodeCompletionKind = 0

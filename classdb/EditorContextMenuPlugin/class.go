@@ -359,7 +359,7 @@ func init() {
 	gdclass.Register("EditorContextMenuPlugin", func(ptr gd.Object) any { return Instance{gdclass.NewEditorContextMenuPlugin(ptr)} })
 }
 
-type ContextMenuSlot int //gd:EditorContextMenuPlugin.ContextMenuSlot
+type ContextMenuSlot int64 //gd:EditorContextMenuPlugin.ContextMenuSlot
 
 const (
 	// Context menu of Scene dock. [PopupMenu] will be called with a list of paths to currently selected nodes, while option callback will receive the list of currently selected nodes.

@@ -1590,7 +1590,7 @@ func init() {
 	gdclass.Register("TileMap", func(ptr gd.Object) any { return Instance{gdclass.NewTileMap(ptr)} })
 }
 
-type VisibilityMode int //gd:TileMap.VisibilityMode
+type VisibilityMode int64 //gd:TileMap.VisibilityMode
 
 const (
 	// Use the debug settings to determine visibility.

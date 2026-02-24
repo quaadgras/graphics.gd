@@ -433,7 +433,7 @@ func init() {
 	gdclass.Register("XMLParser", func(ptr gd.Object) any { return Instance{gdclass.NewXMLParser(ptr)} })
 }
 
-type NodeType int //gd:XMLParser.NodeType
+type NodeType int64 //gd:XMLParser.NodeType
 
 const (
 	// There's no node (no file or buffer opened).

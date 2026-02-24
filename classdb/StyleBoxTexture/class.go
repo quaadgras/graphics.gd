@@ -522,7 +522,7 @@ func init() {
 	gdclass.Register("StyleBoxTexture", func(ptr gd.Object) any { return Instance{gdclass.NewStyleBoxTexture(ptr)} })
 }
 
-type AxisStretchMode int //gd:StyleBoxTexture.AxisStretchMode
+type AxisStretchMode int64 //gd:StyleBoxTexture.AxisStretchMode
 
 const (
 	// Stretch the stylebox's texture. This results in visible distortion unless the texture size matches the stylebox's size perfectly.

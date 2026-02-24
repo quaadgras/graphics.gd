@@ -523,7 +523,7 @@ func init() {
 	gdclass.Register("VisualShader", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShader(ptr)} })
 }
 
-type Type int //gd:VisualShader.Type
+type Type int64 //gd:VisualShader.Type
 
 const (
 	// A vertex shader, operating on vertices.
@@ -550,7 +550,7 @@ const (
 	TypeMax Type = 10
 )
 
-type VaryingMode int //gd:VisualShader.VaryingMode
+type VaryingMode int64 //gd:VisualShader.VaryingMode
 
 const (
 	// Varying is passed from Vertex function to Fragment and Light functions.
@@ -561,7 +561,7 @@ const (
 	VaryingModeMax VaryingMode = 2
 )
 
-type VaryingType int //gd:VisualShader.VaryingType
+type VaryingType int64 //gd:VisualShader.VaryingType
 
 const (
 	// Varying is of type [Float.X].

@@ -261,7 +261,7 @@ func init() {
 	gdclass.Register("OccluderPolygon2D", func(ptr gd.Object) any { return Instance{gdclass.NewOccluderPolygon2D(ptr)} })
 }
 
-type CullMode int //gd:OccluderPolygon2D.CullMode
+type CullMode int64 //gd:OccluderPolygon2D.CullMode
 
 const (
 	// Culling is disabled. See [CullMode].

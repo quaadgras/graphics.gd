@@ -271,7 +271,7 @@ func init() {
 	gdclass.Register("ResourceSaver", func(ptr gd.Object) any { return Instance{gdclass.NewResourceSaver(ptr)} })
 }
 
-type SaverFlags int //gd:ResourceSaver.SaverFlags
+type SaverFlags int64 //gd:ResourceSaver.SaverFlags
 
 const (
 	// No resource saving option.

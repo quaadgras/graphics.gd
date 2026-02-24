@@ -2167,7 +2167,7 @@ func init() {
 	gdclass.Register("PhysicsServer2D", func(ptr gd.Object) any { return Instance{gdclass.NewPhysicsServer2D(ptr)} })
 }
 
-type SpaceParameter int //gd:PhysicsServer2D.SpaceParameter
+type SpaceParameter int64 //gd:PhysicsServer2D.SpaceParameter
 
 const (
 	// Constant to set/get the maximum distance a pair of bodies has to move before their collision status has to be recalculated. The default value of this parameter is [ProjectSettings] "physics/2d/solver/contact_recycle_radius".
@@ -2208,7 +2208,7 @@ const (
 	SpaceParamSolverIterations SpaceParameter = 8
 )
 
-type ShapeType int //gd:PhysicsServer2D.ShapeType
+type ShapeType int64 //gd:PhysicsServer2D.ShapeType
 
 const (
 	// This is the constant for creating world boundary shapes. A world boundary shape is an infinite line with an origin point, and a normal. Thus, it can be used for front/behind checks.
@@ -2231,7 +2231,7 @@ const (
 	ShapeCustom ShapeType = 8
 )
 
-type AreaParameter int //gd:PhysicsServer2D.AreaParameter
+type AreaParameter int64 //gd:PhysicsServer2D.AreaParameter
 
 const (
 	// Constant to set/get gravity override mode in an area. See [AreaSpaceOverrideMode] for possible values. The default value of this parameter is [AreaSpaceOverrideDisabled].
@@ -2258,7 +2258,7 @@ const (
 	AreaParamPriority AreaParameter = 9
 )
 
-type AreaSpaceOverrideMode int //gd:PhysicsServer2D.AreaSpaceOverrideMode
+type AreaSpaceOverrideMode int64 //gd:PhysicsServer2D.AreaSpaceOverrideMode
 
 const (
 	// This area does not affect gravity/damp. These are generally areas that exist only to detect collisions, and objects entering or exiting them.
@@ -2273,7 +2273,7 @@ const (
 	AreaSpaceOverrideReplaceCombine AreaSpaceOverrideMode = 4
 )
 
-type BodyMode int //gd:PhysicsServer2D.BodyMode
+type BodyMode int64 //gd:PhysicsServer2D.BodyMode
 
 const (
 	// Constant for static bodies. In this mode, a body can be only moved by user code and doesn't collide with other bodies along its path when moved.
@@ -2286,7 +2286,7 @@ const (
 	BodyModeRigidLinear BodyMode = 3
 )
 
-type BodyParameter int //gd:PhysicsServer2D.BodyParameter
+type BodyParameter int64 //gd:PhysicsServer2D.BodyParameter
 
 const (
 	// Constant to set/get a body's bounce factor. The default value of this parameter is 0.0.
@@ -2319,7 +2319,7 @@ const (
 	BodyParamMax BodyParameter = 10
 )
 
-type BodyDampMode int //gd:PhysicsServer2D.BodyDampMode
+type BodyDampMode int64 //gd:PhysicsServer2D.BodyDampMode
 
 const (
 	// The body's damping value is added to any value set in areas or the default value.
@@ -2328,7 +2328,7 @@ const (
 	BodyDampModeReplace BodyDampMode = 1
 )
 
-type BodyState int //gd:PhysicsServer2D.BodyState
+type BodyState int64 //gd:PhysicsServer2D.BodyState
 
 const (
 	// Constant to set/get the current transform matrix of the body.
@@ -2343,7 +2343,7 @@ const (
 	BodyStateCanSleep BodyState = 4
 )
 
-type JointType int //gd:PhysicsServer2D.JointType
+type JointType int64 //gd:PhysicsServer2D.JointType
 
 const (
 	// Constant to create pin joints.
@@ -2356,7 +2356,7 @@ const (
 	JointTypeMax JointType = 3
 )
 
-type JointParam int //gd:PhysicsServer2D.JointParam
+type JointParam int64 //gd:PhysicsServer2D.JointParam
 
 const (
 	// Constant to set/get how fast the joint pulls the bodies back to satisfy the joint constraint. The lower the value, the more the two bodies can pull on the joint. The default value of this parameter is 0.0.
@@ -2373,7 +2373,7 @@ const (
 	JointParamMaxForce JointParam = 2
 )
 
-type PinJointParam int //gd:PhysicsServer2D.PinJointParam
+type PinJointParam int64 //gd:PhysicsServer2D.PinJointParam
 
 const (
 	// Constant to set/get a how much the bond of the pin joint can flex. The default value of this parameter is 0.0.
@@ -2386,7 +2386,7 @@ const (
 	PinJointMotorTargetVelocity PinJointParam = 3
 )
 
-type PinJointFlag int //gd:PhysicsServer2D.PinJointFlag
+type PinJointFlag int64 //gd:PhysicsServer2D.PinJointFlag
 
 const (
 	// If true, the pin has a maximum and a minimum rotation.
@@ -2395,7 +2395,7 @@ const (
 	PinJointFlagMotorEnabled PinJointFlag = 1
 )
 
-type DampedSpringParam int //gd:PhysicsServer2D.DampedSpringParam
+type DampedSpringParam int64 //gd:PhysicsServer2D.DampedSpringParam
 
 const (
 	// Sets the resting length of the spring joint. The joint will always try to go to back this length when pulled apart. The default value of this parameter is the distance between the joint's anchor points.
@@ -2406,7 +2406,7 @@ const (
 	DampedSpringDamping DampedSpringParam = 2
 )
 
-type CCDMode int //gd:PhysicsServer2D.CCDMode
+type CCDMode int64 //gd:PhysicsServer2D.CCDMode
 
 const (
 	// Disables continuous collision detection. This is the fastest way to detect body collisions, but it can miss small and/or fast-moving objects.
@@ -2417,7 +2417,7 @@ const (
 	CcdModeCastShape CCDMode = 2
 )
 
-type AreaBodyStatus int //gd:PhysicsServer2D.AreaBodyStatus
+type AreaBodyStatus int64 //gd:PhysicsServer2D.AreaBodyStatus
 
 const (
 	// The value of the first parameter and area callback function receives, when an object enters one of its shapes.
@@ -2426,7 +2426,7 @@ const (
 	AreaBodyRemoved AreaBodyStatus = 1
 )
 
-type ProcessInfo int //gd:PhysicsServer2D.ProcessInfo
+type ProcessInfo int64 //gd:PhysicsServer2D.ProcessInfo
 
 const (
 	// Constant to get the number of objects that are not sleeping.

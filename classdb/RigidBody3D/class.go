@@ -1265,7 +1265,7 @@ func init() {
 	gdclass.Register("RigidBody3D", func(ptr gd.Object) any { return Instance{gdclass.NewRigidBody3D(ptr)} })
 }
 
-type FreezeMode int //gd:RigidBody3D.FreezeMode
+type FreezeMode int64 //gd:RigidBody3D.FreezeMode
 
 const (
 	// Static body freeze mode (default). The body is not affected by gravity and forces. It can be only moved by user code and doesn't collide with other bodies along its path.
@@ -1274,7 +1274,7 @@ const (
 	FreezeModeKinematic FreezeMode = 1
 )
 
-type CenterOfMassMode int //gd:RigidBody3D.CenterOfMassMode
+type CenterOfMassMode int64 //gd:RigidBody3D.CenterOfMassMode
 
 const (
 	// In this mode, the body's center of mass is calculated automatically based on its shapes. This assumes that the shapes' origins are also their center of mass.
@@ -1285,7 +1285,7 @@ const (
 	CenterOfMassModeCustom CenterOfMassMode = 1
 )
 
-type DampMode int //gd:RigidBody3D.DampMode
+type DampMode int64 //gd:RigidBody3D.DampMode
 
 const (
 	// In this mode, the body's damping value is added to any value set in areas or the default value.

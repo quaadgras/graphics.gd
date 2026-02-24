@@ -611,7 +611,7 @@ func init() {
 	gdclass.Register("ReflectionProbe", func(ptr gd.Object) any { return Instance{gdclass.NewReflectionProbe(ptr)} })
 }
 
-type UpdateMode int //gd:ReflectionProbe.UpdateMode
+type UpdateMode int64 //gd:ReflectionProbe.UpdateMode
 
 const (
 	// Update the probe once on the next frame (recommended for most objects). The corresponding radiance map will be generated over the following six frames. This takes more time to update than [UpdateAlways], but it has a lower performance cost and can result in higher-quality reflections. The ReflectionProbe is updated when its transform changes, but not when nearby geometry changes. You can force a [ReflectionProbe] update by moving the [ReflectionProbe] slightly in any direction.
@@ -622,7 +622,7 @@ const (
 	UpdateAlways UpdateMode = 1
 )
 
-type AmbientMode int //gd:ReflectionProbe.AmbientMode
+type AmbientMode int64 //gd:ReflectionProbe.AmbientMode
 
 const (
 	// Do not apply any ambient lighting inside the [ReflectionProbe]'s box defined by its [Size].

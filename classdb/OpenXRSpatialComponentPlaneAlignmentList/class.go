@@ -204,7 +204,7 @@ func init() {
 	gdclass.Register("OpenXRSpatialComponentPlaneAlignmentList", func(ptr gd.Object) any { return Instance{gdclass.NewOpenXRSpatialComponentPlaneAlignmentList(ptr)} })
 }
 
-type PlaneAlignment int //gd:OpenXRSpatialComponentPlaneAlignmentList.PlaneAlignment
+type PlaneAlignment int64 //gd:OpenXRSpatialComponentPlaneAlignmentList.PlaneAlignment
 
 const (
 	// Plane is facing upward.

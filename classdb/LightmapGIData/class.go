@@ -338,7 +338,7 @@ func init() {
 	gdclass.Register("LightmapGIData", func(ptr gd.Object) any { return Instance{gdclass.NewLightmapGIData(ptr)} })
 }
 
-type ShadowmaskMode int //gd:LightmapGIData.ShadowmaskMode
+type ShadowmaskMode int64 //gd:LightmapGIData.ShadowmaskMode
 
 const (
 	// Shadowmasking is disabled. No shadowmask texture will be created when baking lightmaps. Existing shadowmask textures will be removed during baking.

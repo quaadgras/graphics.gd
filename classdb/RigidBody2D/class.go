@@ -1267,7 +1267,7 @@ func init() {
 	gdclass.Register("RigidBody2D", func(ptr gd.Object) any { return Instance{gdclass.NewRigidBody2D(ptr)} })
 }
 
-type FreezeMode int //gd:RigidBody2D.FreezeMode
+type FreezeMode int64 //gd:RigidBody2D.FreezeMode
 
 const (
 	// Static body freeze mode (default). The body is not affected by gravity and forces. It can be only moved by user code and doesn't collide with other bodies along its path.
@@ -1276,7 +1276,7 @@ const (
 	FreezeModeKinematic FreezeMode = 1
 )
 
-type CenterOfMassMode int //gd:RigidBody2D.CenterOfMassMode
+type CenterOfMassMode int64 //gd:RigidBody2D.CenterOfMassMode
 
 const (
 	// In this mode, the body's center of mass is calculated automatically based on its shapes. This assumes that the shapes' origins are also their center of mass.
@@ -1287,7 +1287,7 @@ const (
 	CenterOfMassModeCustom CenterOfMassMode = 1
 )
 
-type DampMode int //gd:RigidBody2D.DampMode
+type DampMode int64 //gd:RigidBody2D.DampMode
 
 const (
 	// In this mode, the body's damping value is added to any value set in areas or the default value.
@@ -1296,7 +1296,7 @@ const (
 	DampModeReplace DampMode = 1
 )
 
-type CCDMode int //gd:RigidBody2D.CCDMode
+type CCDMode int64 //gd:RigidBody2D.CCDMode
 
 const (
 	// Continuous collision detection disabled. This is the fastest way to detect body collisions, but can miss small, fast-moving objects.

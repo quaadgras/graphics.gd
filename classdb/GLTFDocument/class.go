@@ -615,7 +615,7 @@ func init() {
 	gdclass.Register("GLTFDocument", func(ptr gd.Object) any { return Instance{gdclass.NewGLTFDocument(ptr)} })
 }
 
-type RootNodeMode int //gd:GLTFDocument.RootNodeMode
+type RootNodeMode int64 //gd:GLTFDocument.RootNodeMode
 
 const (
 	// Treat the Godot scene's root node as the root node of the glTF file, and mark it as the single root node via the GODOT_single_root glTF extension. This will be parsed the same as [RootNodeModeKeepRoot] if the implementation does not support GODOT_single_root.
@@ -626,7 +626,7 @@ const (
 	RootNodeModeMultiRoot RootNodeMode = 2
 )
 
-type VisibilityMode int //gd:GLTFDocument.VisibilityMode
+type VisibilityMode int64 //gd:GLTFDocument.VisibilityMode
 
 const (
 	// If the scene contains any non-visible nodes, include them, mark them as non-visible with KHR_node_visibility, and require that importers respect their non-visibility. Downside: If the importer does not support KHR_node_visibility, the file cannot be imported.

@@ -2443,7 +2443,7 @@ func init() {
 	gdclass.Register("RichTextLabel", func(ptr gd.Object) any { return Instance{gdclass.NewRichTextLabel(ptr)} })
 }
 
-type ListType int //gd:RichTextLabel.ListType
+type ListType int64 //gd:RichTextLabel.ListType
 
 const (
 	// Each list item has a number marker.
@@ -2456,7 +2456,7 @@ const (
 	ListDots ListType = 3
 )
 
-type MenuItems int //gd:RichTextLabel.MenuItems
+type MenuItems int64 //gd:RichTextLabel.MenuItems
 
 const (
 	// Copies the selected text.
@@ -2469,7 +2469,7 @@ const (
 	MenuMax MenuItems = 2
 )
 
-type MetaUnderline int //gd:RichTextLabel.MetaUnderline
+type MetaUnderline int64 //gd:RichTextLabel.MetaUnderline
 
 const (
 	// Meta tag does not display an underline, even if [MetaUnderlined] is true.
@@ -2486,7 +2486,7 @@ const (
 	MetaUnderlineOnHover MetaUnderline = 2
 )
 
-type ImageUpdateMask int //gd:RichTextLabel.ImageUpdateMask
+type ImageUpdateMask int64 //gd:RichTextLabel.ImageUpdateMask
 
 const (
 	// If this bit is set, [UpdateImage] changes image texture.

@@ -322,7 +322,7 @@ func init() {
 	gdclass.Register("ZIPPacker", func(ptr gd.Object) any { return Instance{gdclass.NewZIPPacker(ptr)} })
 }
 
-type ZipAppend int //gd:ZIPPacker.ZipAppend
+type ZipAppend int64 //gd:ZIPPacker.ZipAppend
 
 const (
 	// Create a new zip archive at the given path.
@@ -333,7 +333,7 @@ const (
 	AppendAddinzip ZipAppend = 2
 )
 
-type CompressionLevel int //gd:ZIPPacker.CompressionLevel
+type CompressionLevel int64 //gd:ZIPPacker.CompressionLevel
 
 const (
 	// Start a file with the default Deflate compression level (6). This is a good compromise between speed and file size.

@@ -227,7 +227,7 @@ func init() {
 	gdclass.Register("OmniLight3D", func(ptr gd.Object) any { return Instance{gdclass.NewOmniLight3D(ptr)} })
 }
 
-type ShadowMode int //gd:OmniLight3D.ShadowMode
+type ShadowMode int64 //gd:OmniLight3D.ShadowMode
 
 const (
 	// Shadows are rendered to a dual-paraboloid texture. Faster than [ShadowCube], but lower-quality.

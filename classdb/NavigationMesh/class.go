@@ -922,7 +922,7 @@ func init() {
 	gdclass.Register("NavigationMesh", func(ptr gd.Object) any { return Instance{gdclass.NewNavigationMesh(ptr)} })
 }
 
-type SamplePartitionType int //gd:NavigationMesh.SamplePartitionType
+type SamplePartitionType int64 //gd:NavigationMesh.SamplePartitionType
 
 const (
 	// Watershed partitioning. Generally the best choice if you precompute the navigation mesh, use this if you have large open areas.
@@ -935,7 +935,7 @@ const (
 	SamplePartitionMax SamplePartitionType = 3
 )
 
-type ParsedGeometryType int //gd:NavigationMesh.ParsedGeometryType
+type ParsedGeometryType int64 //gd:NavigationMesh.ParsedGeometryType
 
 const (
 	// Parses mesh instances as geometry. This includes [MeshInstance3D], [CSGShape3D], and [GridMap] nodes.
@@ -955,7 +955,7 @@ const (
 	ParsedGeometryMax ParsedGeometryType = 3
 )
 
-type SourceGeometryMode int //gd:NavigationMesh.SourceGeometryMode
+type SourceGeometryMode int64 //gd:NavigationMesh.SourceGeometryMode
 
 const (
 	// Scans the child nodes of the root node recursively for geometry.

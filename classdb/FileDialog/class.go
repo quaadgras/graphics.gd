@@ -1158,7 +1158,7 @@ func init() {
 	gdclass.Register("FileDialog", func(ptr gd.Object) any { return Instance{gdclass.NewFileDialog(ptr)} })
 }
 
-type FileMode int //gd:FileDialog.FileMode
+type FileMode int64 //gd:FileDialog.FileMode
 
 const (
 	// The dialog allows selecting one, and only one file.
@@ -1173,7 +1173,7 @@ const (
 	FileModeSaveFile FileMode = 4
 )
 
-type Access int //gd:FileDialog.Access
+type Access int64 //gd:FileDialog.Access
 
 const (
 	// The dialog only allows accessing files under the [Resource] path (res://).
@@ -1186,7 +1186,7 @@ const (
 	AccessFilesystem Access = 2
 )
 
-type DisplayMode int //gd:FileDialog.DisplayMode
+type DisplayMode int64 //gd:FileDialog.DisplayMode
 
 const (
 	// The dialog displays files as a grid of thumbnails. Use theme's 'thumbnail_size' to adjust their size.
@@ -1195,7 +1195,7 @@ const (
 	DisplayList DisplayMode = 1
 )
 
-type Customization int //gd:FileDialog.Customization
+type Customization int64 //gd:FileDialog.Customization
 
 const (
 	// Toggles visibility of the favorite button, and the favorite list on the left side of the dialog.

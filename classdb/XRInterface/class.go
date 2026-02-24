@@ -607,7 +607,7 @@ func init() {
 	gdclass.Register("XRInterface", func(ptr gd.Object) any { return Instance{gdclass.NewXRInterface(ptr)} })
 }
 
-type Capabilities int //gd:XRInterface.Capabilities
+type Capabilities int64 //gd:XRInterface.Capabilities
 
 const (
 	// No XR capabilities.
@@ -628,7 +628,7 @@ const (
 	XrExternal Capabilities = 32
 )
 
-type TrackingStatus int //gd:XRInterface.TrackingStatus
+type TrackingStatus int64 //gd:XRInterface.TrackingStatus
 
 const (
 	// Tracking is behaving as expected.
@@ -643,7 +643,7 @@ const (
 	XrNotTracking TrackingStatus = 4
 )
 
-type PlayAreaMode int //gd:XRInterface.PlayAreaMode
+type PlayAreaMode int64 //gd:XRInterface.PlayAreaMode
 
 const (
 	// Play area mode not set or not available.
@@ -662,7 +662,7 @@ const (
 	XrPlayAreaCustom PlayAreaMode = 2147483647
 )
 
-type EnvironmentBlendMode int //gd:XRInterface.EnvironmentBlendMode
+type EnvironmentBlendMode int64 //gd:XRInterface.EnvironmentBlendMode
 
 const (
 	// Opaque blend mode. This is typically used for VR devices.
@@ -673,7 +673,7 @@ const (
 	XrEnvBlendModeAlphaBlend EnvironmentBlendMode = 2
 )
 
-type VRSTextureFormat int //gd:XRInterface.VRSTextureFormat
+type VRSTextureFormat int64 //gd:XRInterface.VRSTextureFormat
 
 const (
 	// The texture format is the same as returned by [XRVRS.MakeVrsTexture].

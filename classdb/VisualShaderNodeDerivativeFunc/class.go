@@ -264,7 +264,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeDerivativeFunc", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeDerivativeFunc(ptr)} })
 }
 
-type OpType int //gd:VisualShaderNodeDerivativeFunc.OpType
+type OpType int64 //gd:VisualShaderNodeDerivativeFunc.OpType
 
 const (
 	// A floating-point scalar.
@@ -279,7 +279,7 @@ const (
 	OpTypeMax OpType = 4
 )
 
-type Function int //gd:VisualShaderNodeDerivativeFunc.Function
+type Function int64 //gd:VisualShaderNodeDerivativeFunc.Function
 
 const (
 	// Sum of absolute derivative in x and y.
@@ -292,7 +292,7 @@ const (
 	FuncMax Function = 3
 )
 
-type Precision int //gd:VisualShaderNodeDerivativeFunc.Precision
+type Precision int64 //gd:VisualShaderNodeDerivativeFunc.Precision
 
 const (
 	// No precision is specified, the GPU driver is allowed to use whatever level of precision it chooses. This is the default option and is equivalent to using dFdx() or dFdy() in text shaders.

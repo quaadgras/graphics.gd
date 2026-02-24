@@ -2970,7 +2970,7 @@ func init() {
 	gdclass.Register("PhysicsServer3D", func(ptr gd.Object) any { return Instance{gdclass.NewPhysicsServer3D(ptr)} })
 }
 
-type JointType int //gd:PhysicsServer3D.JointType
+type JointType int64 //gd:PhysicsServer3D.JointType
 
 const (
 	// The [Joint3D] is a [PinJoint3D].
@@ -3002,7 +3002,7 @@ const (
 	JointTypeMax JointType = 5
 )
 
-type PinJointParam int //gd:PhysicsServer3D.PinJointParam
+type PinJointParam int64 //gd:PhysicsServer3D.PinJointParam
 
 const (
 	// The strength with which the pinned objects try to stay in positional relation to each other.
@@ -3017,7 +3017,7 @@ const (
 	PinJointImpulseClamp PinJointParam = 2
 )
 
-type HingeJointParam int //gd:PhysicsServer3D.HingeJointParam
+type HingeJointParam int64 //gd:PhysicsServer3D.HingeJointParam
 
 const (
 	// The speed with which the two bodies get pulled together when they move in different directions.
@@ -3037,7 +3037,7 @@ const (
 	HingeJointMotorMaxImpulse HingeJointParam = 7
 )
 
-type HingeJointFlag int //gd:PhysicsServer3D.HingeJointFlag
+type HingeJointFlag int64 //gd:PhysicsServer3D.HingeJointFlag
 
 const (
 	// If true, the Hinge has a maximum and a minimum rotation.
@@ -3046,7 +3046,7 @@ const (
 	HingeJointFlagEnableMotor HingeJointFlag = 1
 )
 
-type SliderJointParam int //gd:PhysicsServer3D.SliderJointParam
+type SliderJointParam int64 //gd:PhysicsServer3D.SliderJointParam
 
 const (
 	// The maximum difference between the pivot points on their X axis before damping happens.
@@ -3097,7 +3097,7 @@ const (
 	SliderJointMax SliderJointParam = 22
 )
 
-type ConeTwistJointParam int //gd:PhysicsServer3D.ConeTwistJointParam
+type ConeTwistJointParam int64 //gd:PhysicsServer3D.ConeTwistJointParam
 
 const (
 	// Swing is rotation from side to side, around the axis perpendicular to the twist axis.
@@ -3124,7 +3124,7 @@ const (
 	ConeTwistJointRelaxation ConeTwistJointParam = 4
 )
 
-type G6DOFJointAxisParam int //gd:PhysicsServer3D.G6DOFJointAxisParam
+type G6DOFJointAxisParam int64 //gd:PhysicsServer3D.G6DOFJointAxisParam
 
 const (
 	// The minimum difference between the pivot points' axes.
@@ -3169,7 +3169,7 @@ const (
 	G6dofJointMax G6DOFJointAxisParam = 22
 )
 
-type G6DOFJointAxisFlag int //gd:PhysicsServer3D.G6DOFJointAxisFlag
+type G6DOFJointAxisFlag int64 //gd:PhysicsServer3D.G6DOFJointAxisFlag
 
 const (
 	// If set, linear motion is possible within the given limits.
@@ -3186,7 +3186,7 @@ const (
 	G6dofJointFlagMax G6DOFJointAxisFlag = 6
 )
 
-type ShapeType int //gd:PhysicsServer3D.ShapeType
+type ShapeType int64 //gd:PhysicsServer3D.ShapeType
 
 const (
 	// Constant for creating a world boundary shape (used by the [WorldBoundaryShape3D] resource).
@@ -3231,7 +3231,7 @@ const (
 	ShapeCustom ShapeType = 10
 )
 
-type AreaParameter int //gd:PhysicsServer3D.AreaParameter
+type AreaParameter int64 //gd:PhysicsServer3D.AreaParameter
 
 const (
 	// Constant to set/get gravity override mode in an area. See [AreaSpaceOverrideMode] for possible values.
@@ -3268,7 +3268,7 @@ const (
 	AreaParamWindAttenuationFactor AreaParameter = 13
 )
 
-type AreaSpaceOverrideMode int //gd:PhysicsServer3D.AreaSpaceOverrideMode
+type AreaSpaceOverrideMode int64 //gd:PhysicsServer3D.AreaSpaceOverrideMode
 
 const (
 	// This area does not affect gravity/damp. These are generally areas that exist only to detect collisions, and objects entering or exiting them.
@@ -3283,7 +3283,7 @@ const (
 	AreaSpaceOverrideReplaceCombine AreaSpaceOverrideMode = 4
 )
 
-type BodyMode int //gd:PhysicsServer3D.BodyMode
+type BodyMode int64 //gd:PhysicsServer3D.BodyMode
 
 const (
 	// Constant for static bodies. In this mode, a body can be only moved by user code and doesn't collide with other bodies along its path when moved.
@@ -3296,7 +3296,7 @@ const (
 	BodyModeRigidLinear BodyMode = 3
 )
 
-type BodyParameter int //gd:PhysicsServer3D.BodyParameter
+type BodyParameter int64 //gd:PhysicsServer3D.BodyParameter
 
 const (
 	// Constant to set/get a body's bounce factor.
@@ -3323,7 +3323,7 @@ const (
 	BodyParamMax BodyParameter = 10
 )
 
-type BodyDampMode int //gd:PhysicsServer3D.BodyDampMode
+type BodyDampMode int64 //gd:PhysicsServer3D.BodyDampMode
 
 const (
 	// The body's damping value is added to any value set in areas or the default value.
@@ -3332,7 +3332,7 @@ const (
 	BodyDampModeReplace BodyDampMode = 1
 )
 
-type BodyState int //gd:PhysicsServer3D.BodyState
+type BodyState int64 //gd:PhysicsServer3D.BodyState
 
 const (
 	// Constant to set/get the current transform matrix of the body.
@@ -3347,7 +3347,7 @@ const (
 	BodyStateCanSleep BodyState = 4
 )
 
-type AreaBodyStatus int //gd:PhysicsServer3D.AreaBodyStatus
+type AreaBodyStatus int64 //gd:PhysicsServer3D.AreaBodyStatus
 
 const (
 	// The value of the first parameter and area callback function receives, when an object enters one of its shapes.
@@ -3356,7 +3356,7 @@ const (
 	AreaBodyRemoved AreaBodyStatus = 1
 )
 
-type ProcessInfo int //gd:PhysicsServer3D.ProcessInfo
+type ProcessInfo int64 //gd:PhysicsServer3D.ProcessInfo
 
 const (
 	// Constant to get the number of objects that are not sleeping.
@@ -3367,7 +3367,7 @@ const (
 	InfoIslandCount ProcessInfo = 2
 )
 
-type SpaceParameter int //gd:PhysicsServer3D.SpaceParameter
+type SpaceParameter int64 //gd:PhysicsServer3D.SpaceParameter
 
 const (
 	// Constant to set/get the maximum distance a pair of bodies has to move before their collision status has to be recalculated.
@@ -3388,7 +3388,7 @@ const (
 	SpaceParamSolverIterations SpaceParameter = 7
 )
 
-type BodyAxis int //gd:PhysicsServer3D.BodyAxis
+type BodyAxis int64 //gd:PhysicsServer3D.BodyAxis
 
 const (
 	BodyAxisLinearX  BodyAxis = 1

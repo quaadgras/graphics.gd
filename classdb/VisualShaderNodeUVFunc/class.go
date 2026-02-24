@@ -220,7 +220,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeUVFunc", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeUVFunc(ptr)} })
 }
 
-type Function int //gd:VisualShaderNodeUVFunc.Function
+type Function int64 //gd:VisualShaderNodeUVFunc.Function
 
 const (
 	// Translates uv by using scale and offset values using the following formula: uv = uv + offset * scale. uv port is connected to UV built-in by default.

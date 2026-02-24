@@ -1538,7 +1538,7 @@ func init() {
 	gdclass.Register("Image", func(ptr gd.Object) any { return Instance{gdclass.NewImage(ptr)} })
 }
 
-type Format int //gd:Image.Format
+type Format int64 //gd:Image.Format
 
 const (
 	// Texture format with a single 8-bit depth representing luminance.
@@ -1744,7 +1744,7 @@ const (
 	FormatMax Format = 47
 )
 
-type Interpolation int //gd:Image.Interpolation
+type Interpolation int64 //gd:Image.Interpolation
 
 const (
 	// Performs nearest-neighbor interpolation. If the image is resized, it will be pixelated.
@@ -1769,7 +1769,7 @@ const (
 	InterpolateLanczos Interpolation = 4
 )
 
-type AlphaMode int //gd:Image.AlphaMode
+type AlphaMode int64 //gd:Image.AlphaMode
 
 const (
 	// Image is fully opaque. It does not store alpha data.
@@ -1780,7 +1780,7 @@ const (
 	AlphaBlend AlphaMode = 2
 )
 
-type CompressMode int //gd:Image.CompressMode
+type CompressMode int64 //gd:Image.CompressMode
 
 const (
 	// Use S3TC compression.
@@ -1797,7 +1797,7 @@ const (
 	CompressMax CompressMode = 5
 )
 
-type UsedChannels int //gd:Image.UsedChannels
+type UsedChannels int64 //gd:Image.UsedChannels
 
 const (
 	// The image only uses one channel for luminance (grayscale).
@@ -1814,7 +1814,7 @@ const (
 	UsedChannelsRgba UsedChannels = 5
 )
 
-type CompressSource int //gd:Image.CompressSource
+type CompressSource int64 //gd:Image.CompressSource
 
 const (
 	// Source texture (before compression) is a regular texture. Default for all textures.
@@ -1825,7 +1825,7 @@ const (
 	CompressSourceNormal CompressSource = 2
 )
 
-type ASTCFormat int //gd:Image.ASTCFormat
+type ASTCFormat int64 //gd:Image.ASTCFormat
 
 const (
 	// Hint to indicate that the high quality 4×4 ASTC compression format should be used.

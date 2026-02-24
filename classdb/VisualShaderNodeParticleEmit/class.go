@@ -218,7 +218,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeParticleEmit", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeParticleEmit(ptr)} })
 }
 
-type EmitFlags int //gd:VisualShaderNodeParticleEmit.EmitFlags
+type EmitFlags int64 //gd:VisualShaderNodeParticleEmit.EmitFlags
 
 const (
 	// If enabled, the particle starts with the position defined by this node.

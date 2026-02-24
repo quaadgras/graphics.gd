@@ -2029,7 +2029,7 @@ func init() {
 	gdclass.Register("CodeEdit", func(ptr gd.Object) any { return Instance{gdclass.NewCodeEdit(ptr)} })
 }
 
-type CodeCompletionKind int //gd:CodeEdit.CodeCompletionKind
+type CodeCompletionKind int64 //gd:CodeEdit.CodeCompletionKind
 
 const (
 	// Marks the option as a class.
@@ -2054,7 +2054,7 @@ const (
 	KindPlainText CodeCompletionKind = 9
 )
 
-type CodeCompletionLocation int //gd:CodeEdit.CodeCompletionLocation
+type CodeCompletionLocation int64 //gd:CodeEdit.CodeCompletionLocation
 
 const (
 	// The option is local to the location of the code completion query - e.g. a local variable. Subsequent value of location represent options from the outer class, the exact value represent how far they are (in terms of inner classes).

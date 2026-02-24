@@ -728,7 +728,7 @@ func init() {
 	gdclass.Register("NavigationPolygon", func(ptr gd.Object) any { return Instance{gdclass.NewNavigationPolygon(ptr)} })
 }
 
-type SamplePartitionType int //gd:NavigationPolygon.SamplePartitionType
+type SamplePartitionType int64 //gd:NavigationPolygon.SamplePartitionType
 
 const (
 	// Convex partitioning that results in a navigation mesh with convex polygons.
@@ -739,7 +739,7 @@ const (
 	SamplePartitionMax SamplePartitionType = 2
 )
 
-type ParsedGeometryType int //gd:NavigationPolygon.ParsedGeometryType
+type ParsedGeometryType int64 //gd:NavigationPolygon.ParsedGeometryType
 
 const (
 	// Parses mesh instances as obstruction geometry. This includes [Polygon2D], [MeshInstance2D], [MultiMeshInstance2D], and [TileMap] nodes.
@@ -763,7 +763,7 @@ const (
 	ParsedGeometryMax ParsedGeometryType = 3
 )
 
-type SourceGeometryMode int //gd:NavigationPolygon.SourceGeometryMode
+type SourceGeometryMode int64 //gd:NavigationPolygon.SourceGeometryMode
 
 const (
 	// Scans the child nodes of the root node recursively for geometry.

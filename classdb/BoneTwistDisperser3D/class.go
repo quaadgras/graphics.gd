@@ -746,7 +746,7 @@ func init() {
 	gdclass.Register("BoneTwistDisperser3D", func(ptr gd.Object) any { return Instance{gdclass.NewBoneTwistDisperser3D(ptr)} })
 }
 
-type DisperseMode int //gd:BoneTwistDisperser3D.DisperseMode
+type DisperseMode int64 //gd:BoneTwistDisperser3D.DisperseMode
 
 const (
 	// Assign amounts so that they monotonically increase from 0.0 to 1.0, ensuring all weights are equal. For example, with five joints, the amounts would be 0.2, 0.4, 0.6, 0.8, and 1.0 starting from the root bone.

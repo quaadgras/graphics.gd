@@ -489,7 +489,7 @@ func init() {
 	gdclass.Register("AudioStreamWAV", func(ptr gd.Object) any { return Instance{gdclass.NewAudioStreamWAV(ptr)} })
 }
 
-type Format int //gd:AudioStreamWAV.Format
+type Format int64 //gd:AudioStreamWAV.Format
 
 const (
 	// 8-bit PCM audio codec.
@@ -504,7 +504,7 @@ const (
 	FormatQoa Format = 3
 )
 
-type LoopMode int //gd:AudioStreamWAV.LoopMode
+type LoopMode int64 //gd:AudioStreamWAV.LoopMode
 
 const (
 	// Audio does not loop.

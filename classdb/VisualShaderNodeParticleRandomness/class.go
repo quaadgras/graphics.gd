@@ -218,7 +218,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeParticleRandomness", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeParticleRandomness(ptr)} })
 }
 
-type OpType int //gd:VisualShaderNodeParticleRandomness.OpType
+type OpType int64 //gd:VisualShaderNodeParticleRandomness.OpType
 
 const (
 	// A floating-point scalar.

@@ -289,7 +289,7 @@ func init() {
 	gdclass.Register("ProgressBar", func(ptr gd.Object) any { return Instance{gdclass.NewProgressBar(ptr)} })
 }
 
-type FillMode int //gd:ProgressBar.FillMode
+type FillMode int64 //gd:ProgressBar.FillMode
 
 const (
 	// The progress bar fills from begin to end horizontally, according to the language direction. If [Control.IsLayoutRtl] returns false, it fills from left to right, and if it returns true, it fills from right to left.

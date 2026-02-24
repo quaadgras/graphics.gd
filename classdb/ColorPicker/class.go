@@ -608,7 +608,7 @@ func init() {
 	gdclass.Register("ColorPicker", func(ptr gd.Object) any { return Instance{gdclass.NewColorPicker(ptr)} })
 }
 
-type ColorModeType int //gd:ColorPicker.ColorModeType
+type ColorModeType int64 //gd:ColorPicker.ColorModeType
 
 const (
 	// Allows editing the color with Red/Green/Blue sliders in sRGB color space.
@@ -628,7 +628,7 @@ const (
 	ModeOkhsl ColorModeType = 3
 )
 
-type PickerShapeType int //gd:ColorPicker.PickerShapeType
+type PickerShapeType int64 //gd:ColorPicker.PickerShapeType
 
 const (
 	// HSV Color Model rectangle color space.

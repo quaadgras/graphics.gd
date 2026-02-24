@@ -604,7 +604,7 @@ func init() {
 	gdclass.Register("AudioStreamPlayer", func(ptr gd.Object) any { return Instance{gdclass.NewAudioStreamPlayer(ptr)} })
 }
 
-type MixTarget int //gd:AudioStreamPlayer.MixTarget
+type MixTarget int64 //gd:AudioStreamPlayer.MixTarget
 
 const (
 	// The audio will be played only on the first channel. This is the default.

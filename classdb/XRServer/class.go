@@ -582,7 +582,7 @@ func init() {
 	gdclass.Register("XRServer", func(ptr gd.Object) any { return Instance{gdclass.NewXRServer(ptr)} })
 }
 
-type RotationMode int //gd:XRServer.RotationMode
+type RotationMode int64 //gd:XRServer.RotationMode
 
 const (
 	// Fully reset the orientation of the HMD. Regardless of what direction the user is looking to in the real world. The user will look dead ahead in the virtual world.

@@ -1138,7 +1138,7 @@ func init() {
 	gdclass.Register("TabBar", func(ptr gd.Object) any { return Instance{gdclass.NewTabBar(ptr)} })
 }
 
-type AlignmentMode int //gd:TabBar.AlignmentMode
+type AlignmentMode int64 //gd:TabBar.AlignmentMode
 
 const (
 	// Aligns tabs to the left.
@@ -1151,7 +1151,7 @@ const (
 	AlignmentMax AlignmentMode = 3
 )
 
-type CloseButtonDisplayPolicy int //gd:TabBar.CloseButtonDisplayPolicy
+type CloseButtonDisplayPolicy int64 //gd:TabBar.CloseButtonDisplayPolicy
 
 const (
 	// Never show the close buttons.

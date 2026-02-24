@@ -937,7 +937,7 @@ func init() {
 	gdclass.Register("CharacterBody3D", func(ptr gd.Object) any { return Instance{gdclass.NewCharacterBody3D(ptr)} })
 }
 
-type MotionMode int //gd:CharacterBody3D.MotionMode
+type MotionMode int64 //gd:CharacterBody3D.MotionMode
 
 const (
 	// Apply when notions of walls, ceiling and floor are relevant. In this mode the body motion will react to slopes (acceleration/slowdown). This mode is suitable for grounded games like platformers.
@@ -946,7 +946,7 @@ const (
 	MotionModeFloating MotionMode = 1
 )
 
-type PlatformOnLeave int //gd:CharacterBody3D.PlatformOnLeave
+type PlatformOnLeave int64 //gd:CharacterBody3D.PlatformOnLeave
 
 const (
 	// Add the last platform velocity to the [Velocity] when you leave a moving platform.

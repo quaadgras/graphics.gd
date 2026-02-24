@@ -565,7 +565,7 @@ func init() {
 	gdclass.Register("GLTFAccessor", func(ptr gd.Object) any { return Instance{gdclass.NewGLTFAccessor(ptr)} })
 }
 
-type GLTFAccessorType int //gd:GLTFAccessor.GLTFAccessorType
+type GLTFAccessorType int64 //gd:GLTFAccessor.GLTFAccessorType
 
 const (
 	// Accessor type "SCALAR". For the glTF object model, this can be used to map to a single float, int, or bool value, or a float array.
@@ -584,7 +584,7 @@ const (
 	TypeMat4 GLTFAccessorType = 6
 )
 
-type GLTFComponentType int //gd:GLTFAccessor.GLTFComponentType
+type GLTFComponentType int64 //gd:GLTFAccessor.GLTFComponentType
 
 const (
 	// Component type "NONE". This is not a valid component type, and is used to indicate that the component type is not set.

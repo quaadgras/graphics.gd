@@ -264,7 +264,7 @@ func init() {
 	gdclass.Register("OpenXRFutureResult", func(ptr gd.Object) any { return Instance{gdclass.NewOpenXRFutureResult(ptr)} })
 }
 
-type ResultStatus int //gd:OpenXRFutureResult.ResultStatus
+type ResultStatus int64 //gd:OpenXRFutureResult.ResultStatus
 
 const (
 	// The asynchronous function is running.

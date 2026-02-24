@@ -279,7 +279,7 @@ func init() {
 	gdclass.Register("ConeTwistJoint3D", func(ptr gd.Object) any { return Instance{gdclass.NewConeTwistJoint3D(ptr)} })
 }
 
-type Param int //gd:ConeTwistJoint3D.Param
+type Param int64 //gd:ConeTwistJoint3D.Param
 
 const (
 	// Swing is rotation from side to side, around the axis perpendicular to the twist axis.

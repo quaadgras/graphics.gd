@@ -297,7 +297,7 @@ func init() {
 	gdclass.Register("StreamPeerTLS", func(ptr gd.Object) any { return Instance{gdclass.NewStreamPeerTLS(ptr)} })
 }
 
-type Status int //gd:StreamPeerTLS.Status
+type Status int64 //gd:StreamPeerTLS.Status
 
 const (
 	// A status representing a [StreamPeerTLS] that is disconnected.

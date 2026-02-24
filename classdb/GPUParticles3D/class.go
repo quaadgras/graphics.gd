@@ -1086,7 +1086,7 @@ func init() {
 	gdclass.Register("GPUParticles3D", func(ptr gd.Object) any { return Instance{gdclass.NewGPUParticles3D(ptr)} })
 }
 
-type DrawOrder int //gd:GPUParticles3D.DrawOrder
+type DrawOrder int64 //gd:GPUParticles3D.DrawOrder
 
 const (
 	// Particles are drawn in the order emitted.
@@ -1099,7 +1099,7 @@ const (
 	DrawOrderViewDepth DrawOrder = 3
 )
 
-type EmitFlags int //gd:GPUParticles3D.EmitFlags
+type EmitFlags int64 //gd:GPUParticles3D.EmitFlags
 
 const (
 	// Particle starts at the specified position.
@@ -1114,7 +1114,7 @@ const (
 	EmitFlagCustom EmitFlags = 16
 )
 
-type TransformAlign int //gd:GPUParticles3D.TransformAlign
+type TransformAlign int64 //gd:GPUParticles3D.TransformAlign
 
 const (
 	TransformAlignDisabled              TransformAlign = 0

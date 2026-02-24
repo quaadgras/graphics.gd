@@ -365,7 +365,7 @@ func init() {
 	gdclass.Register("PortableCompressedTexture2D", func(ptr gd.Object) any { return Instance{gdclass.NewPortableCompressedTexture2D(ptr)} })
 }
 
-type CompressionMode int //gd:PortableCompressedTexture2D.CompressionMode
+type CompressionMode int64 //gd:PortableCompressedTexture2D.CompressionMode
 
 const (
 	CompressionModeLossless       CompressionMode = 0

@@ -308,7 +308,7 @@ func init() {
 	gdclass.Register("XRBodyTracker", func(ptr gd.Object) any { return Instance{gdclass.NewXRBodyTracker(ptr)} })
 }
 
-type BodyFlags int //gd:XRBodyTracker.BodyFlags
+type BodyFlags int64 //gd:XRBodyTracker.BodyFlags
 
 const (
 	// Upper body tracking supported.
@@ -319,7 +319,7 @@ const (
 	BodyFlagHandsSupported BodyFlags = 4
 )
 
-type Joint int //gd:XRBodyTracker.Joint
+type Joint int64 //gd:XRBodyTracker.Joint
 
 const (
 	// Root joint.
@@ -500,7 +500,7 @@ const (
 	JointMax Joint = 87
 )
 
-type JointFlags int //gd:XRBodyTracker.JointFlags
+type JointFlags int64 //gd:XRBodyTracker.JointFlags
 
 const (
 	// The joint's orientation data is valid.

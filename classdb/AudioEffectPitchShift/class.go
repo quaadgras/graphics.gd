@@ -262,7 +262,7 @@ func init() {
 	gdclass.Register("AudioEffectPitchShift", func(ptr gd.Object) any { return Instance{gdclass.NewAudioEffectPitchShift(ptr)} })
 }
 
-type FFTSize int //gd:AudioEffectPitchShift.FFTSize
+type FFTSize int64 //gd:AudioEffectPitchShift.FFTSize
 
 const (
 	// Use a buffer of 256 samples for the Fast Fourier transform. Lowest latency, but least stable over time.

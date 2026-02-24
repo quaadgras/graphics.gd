@@ -836,7 +836,7 @@ func init() {
 	gdclass.Register("CollisionObject3D", func(ptr gd.Object) any { return Instance{gdclass.NewCollisionObject3D(ptr)} })
 }
 
-type DisableMode int //gd:CollisionObject3D.DisableMode
+type DisableMode int64 //gd:CollisionObject3D.DisableMode
 
 const (
 	// When [Node.ProcessMode] is set to [Node.ProcessModeDisabled], remove from the physics simulation to stop all physics interactions with this [CollisionObject3D].

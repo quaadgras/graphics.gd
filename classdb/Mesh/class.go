@@ -933,7 +933,7 @@ func init() {
 	gdclass.Register("Mesh", func(ptr gd.Object) any { return Instance{gdclass.NewMesh(ptr)} })
 }
 
-type PrimitiveType int //gd:Mesh.PrimitiveType
+type PrimitiveType int64 //gd:Mesh.PrimitiveType
 
 const (
 	// Render array as points (one vertex equals one point).
@@ -948,7 +948,7 @@ const (
 	PrimitiveTriangleStrip PrimitiveType = 4
 )
 
-type ArrayType int //gd:Mesh.ArrayType
+type ArrayType int64 //gd:Mesh.ArrayType
 
 const (
 	// [][Vector3.XYZ], [][Vector2.XY], or slice of vertex positions.
@@ -996,7 +996,7 @@ const (
 	ArrayMax ArrayType = 13
 )
 
-type ArrayCustomFormat int //gd:Mesh.ArrayCustomFormat
+type ArrayCustomFormat int64 //gd:Mesh.ArrayCustomFormat
 
 const (
 	// Indicates this custom channel contains unsigned normalized byte colors from 0 to 1, encoded as []byte.
@@ -1019,7 +1019,7 @@ const (
 	ArrayCustomMax ArrayCustomFormat = 8
 )
 
-type ArrayFormat int //gd:Mesh.ArrayFormat
+type ArrayFormat int64 //gd:Mesh.ArrayFormat
 
 const (
 	// Mesh array contains vertices. All meshes require a vertex array so this should always be present.
@@ -1081,7 +1081,7 @@ const (
 	ArrayFlagCompressAttributes ArrayFormat = 536870912
 )
 
-type BlendShapeMode int //gd:Mesh.BlendShapeMode
+type BlendShapeMode int64 //gd:Mesh.BlendShapeMode
 
 const (
 	// Blend shapes are normalized.

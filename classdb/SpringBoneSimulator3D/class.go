@@ -1601,7 +1601,7 @@ func init() {
 	gdclass.Register("SpringBoneSimulator3D", func(ptr gd.Object) any { return Instance{gdclass.NewSpringBoneSimulator3D(ptr)} })
 }
 
-type CenterFrom int //gd:SpringBoneSimulator3D.CenterFrom
+type CenterFrom int64 //gd:SpringBoneSimulator3D.CenterFrom
 
 const (
 	// The world origin is defined as center.

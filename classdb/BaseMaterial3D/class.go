@@ -2979,7 +2979,7 @@ func init() {
 	gdclass.Register("BaseMaterial3D", func(ptr gd.Object) any { return Instance{gdclass.NewBaseMaterial3D(ptr)} })
 }
 
-type TextureParam int //gd:BaseMaterial3D.TextureParam
+type TextureParam int64 //gd:BaseMaterial3D.TextureParam
 
 const (
 	// Texture specifying per-pixel color.
@@ -3026,7 +3026,7 @@ const (
 	TextureMax TextureParam = 19
 )
 
-type TextureFilter int //gd:BaseMaterial3D.TextureFilter
+type TextureFilter int64 //gd:BaseMaterial3D.TextureFilter
 
 const (
 	// The texture filter reads from the nearest pixel only. This makes the texture look pixelated from up close, and grainy from a distance (due to mipmaps not being sampled).
@@ -3053,7 +3053,7 @@ const (
 	TextureFilterMax TextureFilter = 6
 )
 
-type DetailUV int //gd:BaseMaterial3D.DetailUV
+type DetailUV int64 //gd:BaseMaterial3D.DetailUV
 
 const (
 	// Use UV with the detail texture.
@@ -3062,7 +3062,7 @@ const (
 	DetailUv2 DetailUV = 1
 )
 
-type Transparency int //gd:BaseMaterial3D.Transparency
+type Transparency int64 //gd:BaseMaterial3D.Transparency
 
 const (
 	// The material will not use transparency. This is the fastest to render.
@@ -3079,7 +3079,7 @@ const (
 	TransparencyMax Transparency = 5
 )
 
-type ShadingMode int //gd:BaseMaterial3D.ShadingMode
+type ShadingMode int64 //gd:BaseMaterial3D.ShadingMode
 
 const (
 	// The object will not receive shadows. This is the fastest to render, but it disables all interactions with lights.
@@ -3092,7 +3092,7 @@ const (
 	ShadingModeMax ShadingMode = 3
 )
 
-type Feature int //gd:BaseMaterial3D.Feature
+type Feature int64 //gd:BaseMaterial3D.Feature
 
 const (
 	// Constant for setting [EmissionEnabled].
@@ -3151,7 +3151,7 @@ const (
 	FeatureMax Feature = 13
 )
 
-type BlendMode int //gd:BaseMaterial3D.BlendMode
+type BlendMode int64 //gd:BaseMaterial3D.BlendMode
 
 const (
 	// Default blend mode. The color of the object is blended over the background based on the object's alpha value.
@@ -3166,7 +3166,7 @@ const (
 	BlendModePremultAlpha BlendMode = 4
 )
 
-type AlphaAntiAliasing int //gd:BaseMaterial3D.AlphaAntiAliasing
+type AlphaAntiAliasing int64 //gd:BaseMaterial3D.AlphaAntiAliasing
 
 const (
 	// Disables Alpha AntiAliasing for the material.
@@ -3177,7 +3177,7 @@ const (
 	AlphaAntialiasingAlphaToCoverageAndToOne AlphaAntiAliasing = 2
 )
 
-type DepthDrawMode int //gd:BaseMaterial3D.DepthDrawMode
+type DepthDrawMode int64 //gd:BaseMaterial3D.DepthDrawMode
 
 const (
 	// Default depth draw mode. Depth is drawn only for opaque objects during the opaque prepass (if any) and during the opaque pass.
@@ -3190,7 +3190,7 @@ const (
 	DepthDrawDisabled DepthDrawMode = 2
 )
 
-type DepthTest int //gd:BaseMaterial3D.DepthTest
+type DepthTest int64 //gd:BaseMaterial3D.DepthTest
 
 const (
 	// Depth test will discard the pixel if it is behind other pixels.
@@ -3199,7 +3199,7 @@ const (
 	DepthTestInverted DepthTest = 1
 )
 
-type CullMode int //gd:BaseMaterial3D.CullMode
+type CullMode int64 //gd:BaseMaterial3D.CullMode
 
 const (
 	// Default cull mode. The back of the object is culled when not visible. Back face triangles will be culled when facing the camera. This results in only the front side of triangles being drawn. For closed-surface meshes, this means that only the exterior of the mesh will be visible.
@@ -3210,7 +3210,7 @@ const (
 	CullDisabled CullMode = 2
 )
 
-type Flags int //gd:BaseMaterial3D.Flags
+type Flags int64 //gd:BaseMaterial3D.Flags
 
 const (
 	// Disables the depth test, so this object is drawn on top of all others drawn before it. This puts the object in the transparent draw pass where it is sorted based on distance to camera. Objects drawn after it in the draw order may cover it. This also disables writing to depth.
@@ -3287,7 +3287,7 @@ const (
 	FlagMax Flags = 25
 )
 
-type DiffuseMode int //gd:BaseMaterial3D.DiffuseMode
+type DiffuseMode int64 //gd:BaseMaterial3D.DiffuseMode
 
 const (
 	// Default diffuse scattering algorithm.
@@ -3300,7 +3300,7 @@ const (
 	DiffuseToon DiffuseMode = 3
 )
 
-type SpecularMode int //gd:BaseMaterial3D.SpecularMode
+type SpecularMode int64 //gd:BaseMaterial3D.SpecularMode
 
 const (
 	// Default specular blob.
@@ -3315,7 +3315,7 @@ const (
 	SpecularDisabled SpecularMode = 2
 )
 
-type BillboardMode int //gd:BaseMaterial3D.BillboardMode
+type BillboardMode int64 //gd:BaseMaterial3D.BillboardMode
 
 const (
 	// Billboard mode is disabled.
@@ -3335,7 +3335,7 @@ const (
 	BillboardParticles BillboardMode = 3
 )
 
-type TextureChannel int //gd:BaseMaterial3D.TextureChannel
+type TextureChannel int64 //gd:BaseMaterial3D.TextureChannel
 
 const (
 	// Used to read from the red channel of a texture.
@@ -3350,7 +3350,7 @@ const (
 	TextureChannelGrayscale TextureChannel = 4
 )
 
-type EmissionOperator int //gd:BaseMaterial3D.EmissionOperator
+type EmissionOperator int64 //gd:BaseMaterial3D.EmissionOperator
 
 const (
 	// Adds the emission color to the color from the emission texture.
@@ -3359,7 +3359,7 @@ const (
 	EmissionOpMultiply EmissionOperator = 1
 )
 
-type DistanceFadeMode int //gd:BaseMaterial3D.DistanceFadeMode
+type DistanceFadeMode int64 //gd:BaseMaterial3D.DistanceFadeMode
 
 const (
 	// Do not use distance fade.
@@ -3372,7 +3372,7 @@ const (
 	DistanceFadeObjectDither DistanceFadeMode = 3
 )
 
-type StencilMode int //gd:BaseMaterial3D.StencilMode
+type StencilMode int64 //gd:BaseMaterial3D.StencilMode
 
 const (
 	// Disables stencil operations.
@@ -3395,7 +3395,7 @@ const (
 	StencilModeCustom StencilMode = 3
 )
 
-type StencilFlags int //gd:BaseMaterial3D.StencilFlags
+type StencilFlags int64 //gd:BaseMaterial3D.StencilFlags
 
 const (
 	// The material will only be rendered where it passes a stencil comparison with existing stencil buffer values.
@@ -3406,7 +3406,7 @@ const (
 	StencilFlagWriteDepthFail StencilFlags = 4
 )
 
-type StencilCompare int //gd:BaseMaterial3D.StencilCompare
+type StencilCompare int64 //gd:BaseMaterial3D.StencilCompare
 
 const (
 	// Always passes the stencil test.

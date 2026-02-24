@@ -381,7 +381,7 @@ func init() {
 	gdclass.Register("VoxelGI", func(ptr gd.Object) any { return Instance{gdclass.NewVoxelGI(ptr)} })
 }
 
-type Subdiv int //gd:VoxelGI.Subdiv
+type Subdiv int64 //gd:VoxelGI.Subdiv
 
 const (
 	// Use 64 subdivisions. This is the lowest quality setting, but the fastest. Use it if you can, but especially use it on lower-end hardware.

@@ -543,7 +543,7 @@ func init() {
 	gdclass.Register("ConvertTransformModifier3D", func(ptr gd.Object) any { return Instance{gdclass.NewConvertTransformModifier3D(ptr)} })
 }
 
-type TransformMode int //gd:ConvertTransformModifier3D.TransformMode
+type TransformMode int64 //gd:ConvertTransformModifier3D.TransformMode
 
 const (
 	// Convert with position. Transfer the difference.

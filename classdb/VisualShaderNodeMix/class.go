@@ -218,7 +218,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeMix", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeMix(ptr)} })
 }
 
-type OpType int //gd:VisualShaderNodeMix.OpType
+type OpType int64 //gd:VisualShaderNodeMix.OpType
 
 const (
 	// A floating-point scalar.

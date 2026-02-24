@@ -1297,7 +1297,7 @@ func init() {
 	gdclass.Register("Input", func(ptr gd.Object) any { return Instance{gdclass.NewInput(ptr)} })
 }
 
-type CursorShape int //gd:Input.CursorShape
+type CursorShape int64 //gd:Input.CursorShape
 
 const (
 	// Arrow cursor. Standard, default pointing cursor.
@@ -1338,7 +1338,7 @@ const (
 	CursorHelp CursorShape = 16
 )
 
-type MouseModeValue int //gd:Input.MouseMode
+type MouseModeValue int64 //gd:Input.MouseMode
 
 const (
 	// Makes the mouse cursor visible if it is hidden.
@@ -1359,7 +1359,7 @@ const (
 	MouseModeMax MouseModeValue = 5
 )
 
-type JoyAxis int //gd:JoyAxis
+type JoyAxis int64 //gd:JoyAxis
 
 const (
 	// An invalid game controller axis.
@@ -1382,7 +1382,7 @@ const (
 	JoyAxisMax JoyAxis = 10
 )
 
-type JoyButton int //gd:JoyButton
+type JoyButton int64 //gd:JoyButton
 
 const (
 	// An invalid game controller button.
@@ -1441,7 +1441,7 @@ const (
 	JoyButtonMax JoyButton = 128
 )
 
-type Key int //gd:Key
+type Key int64 //gd:Key
 
 const (
 	// Enum value which doesn't correspond to any key. This is used to initialize [Key] properties with a generic state.
@@ -1832,7 +1832,7 @@ const (
 	KeySection Key = 167
 )
 
-type KeyLocation int //gd:KeyLocation
+type KeyLocation int64 //gd:KeyLocation
 
 const (
 	// Used for keys which only appear once, or when a comparison doesn't need to differentiate the LEFT and RIGHT versions.
@@ -1847,7 +1847,7 @@ const (
 	KeyLocationRight KeyLocation = 2
 )
 
-type KeyModifierMask int //gd:KeyModifierMask
+type KeyModifierMask int64 //gd:KeyModifierMask
 
 const (
 	// Key Code mask.
@@ -1870,7 +1870,7 @@ const (
 	KeyMaskGroupSwitch KeyModifierMask = 1073741824
 )
 
-type MouseButton int //gd:MouseButton
+type MouseButton int64 //gd:MouseButton
 
 const (
 	// Enum value which doesn't correspond to any mouse button. This is used to initialize [MouseButton] properties with a generic state.
@@ -1895,7 +1895,7 @@ const (
 	MouseButtonXbutton2 MouseButton = 9
 )
 
-type MouseButtonMask int //gd:MouseButtonMask
+type MouseButtonMask int64 //gd:MouseButtonMask
 
 const (
 	// Primary mouse button mask, usually for the left button.

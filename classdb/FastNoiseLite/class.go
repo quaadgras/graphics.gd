@@ -681,7 +681,7 @@ func init() {
 	gdclass.Register("FastNoiseLite", func(ptr gd.Object) any { return Instance{gdclass.NewFastNoiseLite(ptr)} })
 }
 
-type NoiseType int //gd:FastNoiseLite.NoiseType
+type NoiseType int64 //gd:FastNoiseLite.NoiseType
 
 const (
 	// A lattice of points are assigned random values then interpolated based on neighboring values.
@@ -700,7 +700,7 @@ const (
 	TypeSimplexSmooth NoiseType = 1
 )
 
-type FractalType int //gd:FastNoiseLite.FractalType
+type FractalType int64 //gd:FastNoiseLite.FractalType
 
 const (
 	// No fractal noise.
@@ -713,7 +713,7 @@ const (
 	FractalPingPong FractalType = 3
 )
 
-type CellularDistanceFunction int //gd:FastNoiseLite.CellularDistanceFunction
+type CellularDistanceFunction int64 //gd:FastNoiseLite.CellularDistanceFunction
 
 const (
 	// Euclidean distance to the nearest point.
@@ -726,7 +726,7 @@ const (
 	DistanceHybrid CellularDistanceFunction = 3
 )
 
-type CellularReturnType int //gd:FastNoiseLite.CellularReturnType
+type CellularReturnType int64 //gd:FastNoiseLite.CellularReturnType
 
 const (
 	// The cellular distance function will return the same value for all points within a cell.
@@ -745,7 +745,7 @@ const (
 	ReturnDistance2Div CellularReturnType = 6
 )
 
-type DomainWarpType int //gd:FastNoiseLite.DomainWarpType
+type DomainWarpType int64 //gd:FastNoiseLite.DomainWarpType
 
 const (
 	// The domain is warped using the simplex noise algorithm.
@@ -756,7 +756,7 @@ const (
 	DomainWarpBasicGrid DomainWarpType = 2
 )
 
-type DomainWarpFractalType int //gd:FastNoiseLite.DomainWarpFractalType
+type DomainWarpFractalType int64 //gd:FastNoiseLite.DomainWarpFractalType
 
 const (
 	// No fractal noise for warping the space.

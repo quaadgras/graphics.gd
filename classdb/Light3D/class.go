@@ -821,7 +821,7 @@ func init() {
 	gdclass.Register("Light3D", func(ptr gd.Object) any { return Instance{gdclass.NewLight3D(ptr)} })
 }
 
-type Param int //gd:Light3D.Param
+type Param int64 //gd:Light3D.Param
 
 const (
 	// Constant for accessing [LightEnergy].
@@ -916,7 +916,7 @@ const (
 	ParamMax Param = 21
 )
 
-type BakeMode int //gd:Light3D.BakeMode
+type BakeMode int64 //gd:Light3D.BakeMode
 
 const (
 	// Light is ignored when baking. This is the fastest mode, but the light will not be taken into account when baking global illumination. This mode should generally be used for dynamic lights that change quickly, as the effect of global illumination is less noticeable on those lights.

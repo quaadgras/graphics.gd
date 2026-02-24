@@ -767,7 +767,7 @@ func init() {
 	gdclass.Register("SoftBody3D", func(ptr gd.Object) any { return Instance{gdclass.NewSoftBody3D(ptr)} })
 }
 
-type DisableMode int //gd:SoftBody3D.DisableMode
+type DisableMode int64 //gd:SoftBody3D.DisableMode
 
 const (
 	// When [Node.ProcessMode] is set to [Node.ProcessModeDisabled], remove from the physics simulation to stop all physics interactions with this [SoftBody3D].

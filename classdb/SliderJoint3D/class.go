@@ -220,7 +220,7 @@ func init() {
 	gdclass.Register("SliderJoint3D", func(ptr gd.Object) any { return Instance{gdclass.NewSliderJoint3D(ptr)} })
 }
 
-type Param int //gd:SliderJoint3D.Param
+type Param int64 //gd:SliderJoint3D.Param
 
 const (
 	// Constant for accessing "linear_limit/upper_distance". The maximum difference between the pivot points on their X axis before damping happens.

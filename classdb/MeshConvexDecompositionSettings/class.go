@@ -482,7 +482,7 @@ func init() {
 	gdclass.Register("MeshConvexDecompositionSettings", func(ptr gd.Object) any { return Instance{gdclass.NewMeshConvexDecompositionSettings(ptr)} })
 }
 
-type Mode int //gd:MeshConvexDecompositionSettings.Mode
+type Mode int64 //gd:MeshConvexDecompositionSettings.Mode
 
 const (
 	// Constant for voxel-based approximate convex decomposition.

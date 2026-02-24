@@ -426,7 +426,7 @@ func init() {
 	gdclass.Register("AudioStreamRandomizer", func(ptr gd.Object) any { return Instance{gdclass.NewAudioStreamRandomizer(ptr)} })
 }
 
-type PlaybackMode int //gd:AudioStreamRandomizer.PlaybackMode
+type PlaybackMode int64 //gd:AudioStreamRandomizer.PlaybackMode
 
 const (
 	// Pick a stream at random according to the probability weights chosen for each stream, but avoid playing the same stream twice in a row whenever possible. If only 1 sound is present in the pool, the same sound will always play, effectively allowing repeats to occur.

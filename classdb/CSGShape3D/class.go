@@ -540,7 +540,7 @@ func init() {
 	gdclass.Register("CSGShape3D", func(ptr gd.Object) any { return Instance{gdclass.NewCSGShape3D(ptr)} })
 }
 
-type Operation int //gd:CSGShape3D.Operation
+type Operation int64 //gd:CSGShape3D.Operation
 
 const (
 	// Geometry of both primitives is merged, intersecting geometry is removed.

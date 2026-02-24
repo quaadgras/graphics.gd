@@ -1078,7 +1078,7 @@ func init() {
 	gdclass.Register("AudioServer", func(ptr gd.Object) any { return Instance{gdclass.NewAudioServer(ptr)} })
 }
 
-type SpeakerMode int //gd:AudioServer.SpeakerMode
+type SpeakerMode int64 //gd:AudioServer.SpeakerMode
 
 const (
 	// Two or fewer speakers were detected.
@@ -1091,7 +1091,7 @@ const (
 	SpeakerSurround71 SpeakerMode = 3
 )
 
-type PlaybackType int //gd:AudioServer.PlaybackType
+type PlaybackType int64 //gd:AudioServer.PlaybackType
 
 const (
 	// The playback will be considered of the type declared at [ProjectSettings] "audio/general/default_playback_type".

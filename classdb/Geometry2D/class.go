@@ -654,7 +654,7 @@ func init() {
 	gdclass.Register("Geometry2D", func(ptr gd.Object) any { return Instance{gdclass.NewGeometry2D(ptr)} })
 }
 
-type PolyBooleanOperation int //gd:Geometry2D.PolyBooleanOperation
+type PolyBooleanOperation int64 //gd:Geometry2D.PolyBooleanOperation
 
 const (
 	// Create regions where either subject or clip polygons (or both) are filled.
@@ -667,7 +667,7 @@ const (
 	OperationXor PolyBooleanOperation = 3
 )
 
-type PolyJoinType int //gd:Geometry2D.PolyJoinType
+type PolyJoinType int64 //gd:Geometry2D.PolyJoinType
 
 const (
 	// Squaring is applied uniformally at all convex edge joins at 1 * delta.
@@ -678,7 +678,7 @@ const (
 	JoinMiter PolyJoinType = 2
 )
 
-type PolyEndType int //gd:Geometry2D.PolyEndType
+type PolyEndType int64 //gd:Geometry2D.PolyEndType
 
 const (
 	// Endpoints are joined using the [PolyJoinType] value and the path filled as a polygon.

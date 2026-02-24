@@ -220,7 +220,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeUIntFunc", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeUIntFunc(ptr)} })
 }
 
-type Function int //gd:VisualShaderNodeUIntFunc.Function
+type Function int64 //gd:VisualShaderNodeUIntFunc.Function
 
 const (
 	// Negates the x using -(x).

@@ -1027,7 +1027,7 @@ func init() {
 	gdclass.Register("TabContainer", func(ptr gd.Object) any { return Instance{gdclass.NewTabContainer(ptr)} })
 }
 
-type TabPosition int //gd:TabContainer.TabPosition
+type TabPosition int64 //gd:TabContainer.TabPosition
 
 const (
 	// Places the tab bar at the top.

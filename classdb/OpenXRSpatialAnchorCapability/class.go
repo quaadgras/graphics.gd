@@ -410,7 +410,7 @@ func init() {
 	gdclass.Register("OpenXRSpatialAnchorCapability", func(ptr gd.Object) any { return Instance{gdclass.NewOpenXRSpatialAnchorCapability(ptr)} })
 }
 
-type PersistenceScope int //gd:OpenXRSpatialAnchorCapability.PersistenceScope
+type PersistenceScope int64 //gd:OpenXRSpatialAnchorCapability.PersistenceScope
 
 const (
 	// Provides the application with read-only access (i.e. application cannot modify this scope) to spatial entities persisted and managed by the system. The application can use the UUID in the persistence component for this scope to correlate entities across spatial contexts and device reboots.

@@ -663,7 +663,7 @@ func init() {
 	gdclass.Register("CSGPolygon3D", func(ptr gd.Object) any { return Instance{gdclass.NewCSGPolygon3D(ptr)} })
 }
 
-type Mode int //gd:CSGPolygon3D.Mode
+type Mode int64 //gd:CSGPolygon3D.Mode
 
 const (
 	// The [Polygon] shape is extruded along the negative Z axis.
@@ -682,7 +682,7 @@ const (
 	ModePath Mode = 2
 )
 
-type PathRotation int //gd:CSGPolygon3D.PathRotation
+type PathRotation int64 //gd:CSGPolygon3D.PathRotation
 
 const (
 	// The [Polygon] shape is not rotated.
@@ -703,7 +703,7 @@ const (
 	PathRotationPathFollow PathRotation = 2
 )
 
-type PathIntervalType int //gd:CSGPolygon3D.PathIntervalType
+type PathIntervalType int64 //gd:CSGPolygon3D.PathIntervalType
 
 const (
 	// When [Mode] is set to [ModePath], [PathInterval] will determine the distance, in meters, each interval of the path will extrude.

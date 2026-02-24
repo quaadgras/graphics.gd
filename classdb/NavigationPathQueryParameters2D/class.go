@@ -551,14 +551,14 @@ func init() {
 	gdclass.Register("NavigationPathQueryParameters2D", func(ptr gd.Object) any { return Instance{gdclass.NewNavigationPathQueryParameters2D(ptr)} })
 }
 
-type PathfindingAlgorithm int //gd:NavigationPathQueryParameters2D.PathfindingAlgorithm
+type PathfindingAlgorithm int64 //gd:NavigationPathQueryParameters2D.PathfindingAlgorithm
 
 const (
 	// The path query uses the default A* pathfinding algorithm.
 	PathfindingAlgorithmAstar PathfindingAlgorithm = 0
 )
 
-type PathPostProcessing int //gd:NavigationPathQueryParameters2D.PathPostProcessing
+type PathPostProcessing int64 //gd:NavigationPathQueryParameters2D.PathPostProcessing
 
 const (
 	// Applies a funnel algorithm to the raw path corridor found by the pathfinding algorithm. This will result in the shortest path possible inside the path corridor. This postprocessing very much depends on the navigation mesh polygon layout and the created corridor. Especially tile- or gridbased layouts can face artificial corners with diagonal movement due to a jagged path corridor imposed by the cell shapes.
@@ -569,7 +569,7 @@ const (
 	PathPostprocessingNone PathPostProcessing = 2
 )
 
-type PathMetadataFlags int //gd:NavigationPathQueryParameters2D.PathMetadataFlags
+type PathMetadataFlags int64 //gd:NavigationPathQueryParameters2D.PathMetadataFlags
 
 const (
 	// Don't include any additional metadata about the returned path.

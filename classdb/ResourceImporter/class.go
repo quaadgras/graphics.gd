@@ -266,7 +266,7 @@ func init() {
 	gdclass.Register("ResourceImporter", func(ptr gd.Object) any { return Instance{gdclass.NewResourceImporter(ptr)} })
 }
 
-type ImportOrder int //gd:ResourceImporter.ImportOrder
+type ImportOrder int64 //gd:ResourceImporter.ImportOrder
 
 const (
 	// The default import order.

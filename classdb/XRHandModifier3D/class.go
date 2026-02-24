@@ -252,7 +252,7 @@ func init() {
 	gdclass.Register("XRHandModifier3D", func(ptr gd.Object) any { return Instance{gdclass.NewXRHandModifier3D(ptr)} })
 }
 
-type BoneUpdate int //gd:XRHandModifier3D.BoneUpdate
+type BoneUpdate int64 //gd:XRHandModifier3D.BoneUpdate
 
 const (
 	// The skeleton's bones are fully updated (both position and rotation) to match the tracked bones.

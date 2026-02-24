@@ -781,7 +781,7 @@ func init() {
 	gdclass.Register("Resource", func(ptr gd.Object) any { return Instance{gdclass.NewResource(ptr)} })
 }
 
-type DeepDuplicateMode int //gd:Resource.DeepDuplicateMode
+type DeepDuplicateMode int64 //gd:Resource.DeepDuplicateMode
 
 const (
 	// No subresorces at all are duplicated. This is useful even in a deep duplication to have all the arrays and dictionaries duplicated but still pointing to the original resources.

@@ -218,7 +218,7 @@ func init() {
 	gdclass.Register("VisualShaderNodeMultiplyAdd", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShaderNodeMultiplyAdd(ptr)} })
 }
 
-type OpType int //gd:VisualShaderNodeMultiplyAdd.OpType
+type OpType int64 //gd:VisualShaderNodeMultiplyAdd.OpType
 
 const (
 	// A floating-point scalar type.

@@ -264,7 +264,7 @@ func init() {
 	gdclass.Register("CurveTexture", func(ptr gd.Object) any { return Instance{gdclass.NewCurveTexture(ptr)} })
 }
 
-type TextureMode int //gd:CurveTexture.TextureMode
+type TextureMode int64 //gd:CurveTexture.TextureMode
 
 const (
 	// Store the curve equally across the red, green and blue channels. This uses more video memory, but is more compatible with shaders that only read the green and blue values.

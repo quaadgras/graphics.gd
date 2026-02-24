@@ -427,7 +427,7 @@ func init() {
 	gdclass.Register("Gradient", func(ptr gd.Object) any { return Instance{gdclass.NewGradient(ptr)} })
 }
 
-type InterpolationMode int //gd:Gradient.InterpolationMode
+type InterpolationMode int64 //gd:Gradient.InterpolationMode
 
 const (
 	// Linear interpolation.
@@ -438,7 +438,7 @@ const (
 	GradientInterpolateCubic InterpolationMode = 2
 )
 
-type ColorSpace int //gd:Gradient.ColorSpace
+type ColorSpace int64 //gd:Gradient.ColorSpace
 
 const (
 	// sRGB color space.

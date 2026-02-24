@@ -538,7 +538,7 @@ func init() {
 	gdclass.Register("MultiplayerAPI", func(ptr gd.Object) any { return Instance{gdclass.NewMultiplayerAPI(ptr)} })
 }
 
-type RPCMode int //gd:MultiplayerAPI.RPCMode
+type RPCMode int64 //gd:MultiplayerAPI.RPCMode
 
 const (
 	// Used with [Node.RpcConfig] to disable a method or property for all RPC calls, making it unavailable. Default for all methods.

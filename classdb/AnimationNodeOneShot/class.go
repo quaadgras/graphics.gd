@@ -480,7 +480,7 @@ func init() {
 	gdclass.Register("AnimationNodeOneShot", func(ptr gd.Object) any { return Instance{gdclass.NewAnimationNodeOneShot(ptr)} })
 }
 
-type OneShotRequest int //gd:AnimationNodeOneShot.OneShotRequest
+type OneShotRequest int64 //gd:AnimationNodeOneShot.OneShotRequest
 
 const (
 	// The default state of the request. Nothing is done.
@@ -493,7 +493,7 @@ const (
 	OneShotRequestFadeOut OneShotRequest = 3
 )
 
-type MixMode int //gd:AnimationNodeOneShot.MixMode
+type MixMode int64 //gd:AnimationNodeOneShot.MixMode
 
 const (
 	// Blends two animations. See also [AnimationNodeBlend2].

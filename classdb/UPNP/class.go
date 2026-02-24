@@ -581,7 +581,7 @@ func init() {
 	gdclass.Register("UPNP", func(ptr gd.Object) any { return Instance{gdclass.NewUPNP(ptr)} })
 }
 
-type UPNPResult int //gd:UPNP.UPNPResult
+type UPNPResult int64 //gd:UPNP.UPNPResult
 
 const (
 	// UPNP command or discovery was successful.

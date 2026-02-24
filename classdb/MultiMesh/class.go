@@ -637,7 +637,7 @@ func init() {
 	gdclass.Register("MultiMesh", func(ptr gd.Object) any { return Instance{gdclass.NewMultiMesh(ptr)} })
 }
 
-type TransformFormat int //gd:MultiMesh.TransformFormat
+type TransformFormat int64 //gd:MultiMesh.TransformFormat
 
 const (
 	// Use this when using 2D transforms.
@@ -646,7 +646,7 @@ const (
 	Transform3d TransformFormat = 1
 )
 
-type PhysicsInterpolationQuality int //gd:MultiMesh.PhysicsInterpolationQuality
+type PhysicsInterpolationQuality int64 //gd:MultiMesh.PhysicsInterpolationQuality
 
 const (
 	// Always interpolate using Basis lerping, which can produce warping artifacts in some situations.

@@ -365,7 +365,7 @@ func init() {
 	gdclass.Register("WebRTCDataChannel", func(ptr gd.Object) any { return Instance{gdclass.NewWebRTCDataChannel(ptr)} })
 }
 
-type WriteMode int //gd:WebRTCDataChannel.WriteMode
+type WriteMode int64 //gd:WebRTCDataChannel.WriteMode
 
 const (
 	// Tells the channel to send data over this channel as text. An external peer (non-Godot) would receive this as a string.
@@ -374,7 +374,7 @@ const (
 	WriteModeBinary WriteMode = 1
 )
 
-type ChannelState int //gd:WebRTCDataChannel.ChannelState
+type ChannelState int64 //gd:WebRTCDataChannel.ChannelState
 
 const (
 	// The channel was created, but it's still trying to connect.

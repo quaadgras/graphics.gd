@@ -919,7 +919,7 @@ func init() {
 	gdclass.Register("AnimationNode", func(ptr gd.Object) any { return Instance{gdclass.NewAnimationNode(ptr)} })
 }
 
-type FilterAction int //gd:AnimationNode.FilterAction
+type FilterAction int64 //gd:AnimationNode.FilterAction
 
 const (
 	// Do not use filtering.

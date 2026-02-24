@@ -317,7 +317,7 @@ func init() {
 	gdclass.Register("SubViewport", func(ptr gd.Object) any { return Instance{gdclass.NewSubViewport(ptr)} })
 }
 
-type ClearMode int //gd:SubViewport.ClearMode
+type ClearMode int64 //gd:SubViewport.ClearMode
 
 const (
 	// Always clear the render target before drawing.
@@ -328,7 +328,7 @@ const (
 	ClearModeOnce ClearMode = 2
 )
 
-type UpdateMode int //gd:SubViewport.UpdateMode
+type UpdateMode int64 //gd:SubViewport.UpdateMode
 
 const (
 	// Do not update the render target.
