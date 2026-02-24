@@ -58,7 +58,7 @@ var _ Object.ID
 
 type _ gdclass.Node
 
-var _ gd.Object
+var _ gd.String
 var _ RefCounted.Instance
 var _ reflect.Type
 var _ callframe.Frame
@@ -177,23 +177,23 @@ func InstantiatePropertyEditor(obj Object.Instance, atype variant.Type, path str
 type Advanced = class
 type class [1]gdclass.EditorInspector
 
-func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
-func (self *class) SetObject(obj [1]gd.Object) bool {
+func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (self *class) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorInspector(obj[0])
 		return true
 	}
 	return false
 }
-func (self *Instance) SetObject(obj [1]gd.Object) bool {
+func (self *Instance) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorInspector(obj[0])
 		return true
 	}
 	return false
 }
-func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
-func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
+func (o Instance) AsObject() [1]gdreference.Object      { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gdreference.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.EditorInspector{gdclass.NewEditorInspector(gdreference.NewObject())})
@@ -215,7 +215,7 @@ func New() Instance {
 	return casted
 }
 
-func (self class) Edit(obj [1]gd.Object) { //gd:EditorInspector.edit
+func (self class) Edit(obj [1]gdreference.Object) { //gd:EditorInspector.edit
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetObject(obj[0])[0]))})
 }
 func (self class) GetSelectedPath() String.Readable { //gd:EditorInspector.get_selected_path
@@ -223,12 +223,12 @@ func (self class) GetSelectedPath() String.Readable { //gd:EditorInspector.get_s
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-func (self class) GetEditedObject() [1]gd.Object { //gd:EditorInspector.get_edited_object
+func (self class) GetEditedObject() [1]gdreference.Object { //gd:EditorInspector.get_edited_object
 	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_object, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gd.Object{gdreference.LetObject(r_ret)}
+	var ret = [1]gdreference.Object{gdreference.LetObject(r_ret)}
 	return ret
 }
-func (self class) InstantiatePropertyEditor(obj [1]gd.Object, atype variant.Type, path String.Readable, hint ClassDB.PropertyHint, hint_text String.Readable, usage int64, wide bool) [1]gdclass.EditorProperty { //gd:EditorInspector.instantiate_property_editor
+func (self class) InstantiatePropertyEditor(obj [1]gdreference.Object, atype variant.Type, path String.Readable, hint ClassDB.PropertyHint, hint_text String.Readable, usage int64, wide bool) [1]gdclass.EditorProperty { //gd:EditorInspector.instantiate_property_editor
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.instantiate_property_editor, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeString<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeBool<<28), &struct {
 		obj       gdextension.Object
 		atype     variant.Type
@@ -429,5 +429,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorInspector", func(ptr gd.Object) any { return Instance{gdclass.NewEditorInspector(ptr)} })
+	gdclass.Register("EditorInspector", func(ptr gdreference.Object) any { return Instance{gdclass.NewEditorInspector(ptr)} })
 }

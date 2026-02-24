@@ -315,7 +315,7 @@ func CutVariant(v any, cut bool) Variant {
 		case NodePath:
 			var arg = pointers.Cut(val, cut)
 			((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeNodePath, gdextension.SizeNodePath, unsafe.Pointer(&arg))
-		case Object:
+		case gdreference.Object:
 			var arg = gdreference.CutObject(val, cut)
 			if cut {
 				ExtensionInstanceGoOnly(arg, false)
@@ -572,7 +572,7 @@ func variantAsPointerType[T pointers.Generic[T, Size], Size gdextension.AnyPoint
 	return pointers.New[T](noescape.LoadNative[Size](vtype, gdextension.Variant(pointers.Get(variant))))
 }
 
-func VariantAsObject(variant Variant) Object {
+func VariantAsObject(variant Variant) gdreference.Object {
 	return gdreference.LetObject(noescape.LoadNative[gdextension.Object](gdextension.TypeObject, pointers.Get(variant)))
 }
 
@@ -580,6 +580,6 @@ func LetVariantAsPointerType[T pointers.Generic[T, Size], Size gdextension.AnyPo
 	return pointers.Let[T](noescape.LoadNative[Size](vtype, gdextension.Variant(pointers.Get(variant))))
 }
 
-var ObjectAs = func(name string, ptr Object) any {
+var ObjectAs = func(name string, ptr gdreference.Object) any {
 	return ptr
 }

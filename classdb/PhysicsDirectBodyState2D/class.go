@@ -42,7 +42,7 @@ var _ Object.ID
 
 type _ gdclass.Node
 
-var _ gd.Object
+var _ gd.String
 var _ RefCounted.Instance
 var _ reflect.Type
 var _ callframe.Frame
@@ -489,23 +489,23 @@ func (self Instance) GetSpaceState() PhysicsDirectSpaceState2D.Instance { //gd:P
 type Advanced = class
 type class [1]gdclass.PhysicsDirectBodyState2D
 
-func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
-func (self *class) SetObject(obj [1]gd.Object) bool {
+func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (self *class) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewPhysicsDirectBodyState2D(obj[0])
 		return true
 	}
 	return false
 }
-func (self *Instance) SetObject(obj [1]gd.Object) bool {
+func (self *Instance) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewPhysicsDirectBodyState2D(obj[0])
 		return true
 	}
 	return false
 }
-func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
-func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
+func (o Instance) AsObject() [1]gdreference.Object      { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gdreference.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.PhysicsDirectBodyState2D{gdclass.NewPhysicsDirectBodyState2D(gdreference.NewObject())})
@@ -841,9 +841,9 @@ func (self class) GetContactColliderId(contact_idx int64) int64 { //gd:PhysicsDi
 	var ret = r_ret
 	return ret
 }
-func (self class) GetContactColliderObject(contact_idx int64) [1]gd.Object { //gd:PhysicsDirectBodyState2D.get_contact_collider_object
+func (self class) GetContactColliderObject(contact_idx int64) [1]gdreference.Object { //gd:PhysicsDirectBodyState2D.get_contact_collider_object
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_contact_collider_object, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
-	var ret = [1]gd.Object{gdreference.LetObject(r_ret)}
+	var ret = [1]gdreference.Object{gdreference.LetObject(r_ret)}
 	return ret
 }
 func (self class) GetContactColliderShape(contact_idx int64) int64 { //gd:PhysicsDirectBodyState2D.get_contact_collider_shape
@@ -892,5 +892,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PhysicsDirectBodyState2D", func(ptr gd.Object) any { return Instance{gdclass.NewPhysicsDirectBodyState2D(ptr)} })
+	gdclass.Register("PhysicsDirectBodyState2D", func(ptr gdreference.Object) any { return Instance{gdclass.NewPhysicsDirectBodyState2D(ptr)} })
 }

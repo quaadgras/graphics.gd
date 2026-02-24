@@ -29,7 +29,7 @@ func (self Is[T]) AsResource() Resource.Instance {
 func (self Is[T]) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self *Is[T]) SetObject(obj [1]gd.Object) bool {
+func (self *Is[T]) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = *(*gdclass.PackedScene)(unsafe.Pointer(&obj))
 		return true
@@ -44,7 +44,7 @@ func (self Is[T]) Virtual(name string) reflect.Value {
 	}
 }
 
-func (self Is[T]) AsObject() [1]gd.Object { return gdclass.GetPackedScene(self[0]) }
+func (self Is[T]) AsObject() [1]gdreference.Object { return gdclass.GetPackedScene(self[0]) }
 
 //go:nosplit
 func (self *Is[T]) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }

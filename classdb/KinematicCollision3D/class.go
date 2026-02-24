@@ -43,7 +43,7 @@ var _ Object.ID
 
 type _ gdclass.Node
 
-var _ gd.Object
+var _ gd.String
 var _ RefCounted.Instance
 var _ reflect.Type
 var _ callframe.Frame
@@ -334,23 +334,23 @@ func (self MoreArgs) GetColliderVelocity(collision_index int) Vector3.XYZ { //gd
 type Advanced = class
 type class [1]gdclass.KinematicCollision3D
 
-func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
-func (self *class) SetObject(obj [1]gd.Object) bool {
+func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (self *class) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewKinematicCollision3D(obj[0])
 		return true
 	}
 	return false
 }
-func (self *Instance) SetObject(obj [1]gd.Object) bool {
+func (self *Instance) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewKinematicCollision3D(obj[0])
 		return true
 	}
 	return false
 }
-func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
-func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
+func (o Instance) AsObject() [1]gdreference.Object      { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gdreference.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.KinematicCollision3D{gdclass.NewKinematicCollision3D(gdreference.NewObject())})
@@ -411,14 +411,14 @@ func (self class) GetAngle(collision_index int64, up_direction Vector3.XYZ) floa
 	var ret = r_ret
 	return ret
 }
-func (self class) GetLocalShape(collision_index int64) [1]gd.Object { //gd:KinematicCollision3D.get_local_shape
+func (self class) GetLocalShape(collision_index int64) [1]gdreference.Object { //gd:KinematicCollision3D.get_local_shape
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_local_shape, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ collision_index int64 }{collision_index})
-	var ret = [1]gd.Object{gdreference.LetObject(r_ret)}
+	var ret = [1]gdreference.Object{gdreference.LetObject(r_ret)}
 	return ret
 }
-func (self class) GetCollider(collision_index int64) [1]gd.Object { //gd:KinematicCollision3D.get_collider
+func (self class) GetCollider(collision_index int64) [1]gdreference.Object { //gd:KinematicCollision3D.get_collider
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_collider, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ collision_index int64 }{collision_index})
-	var ret = [1]gd.Object{gdreference.LetObject(r_ret)}
+	var ret = [1]gdreference.Object{gdreference.LetObject(r_ret)}
 	return ret
 }
 func (self class) GetColliderId(collision_index int64) int64 { //gd:KinematicCollision3D.get_collider_id
@@ -431,9 +431,9 @@ func (self class) GetColliderRid(collision_index int64) RID.Any { //gd:Kinematic
 	var ret = r_ret
 	return ret
 }
-func (self class) GetColliderShape(collision_index int64) [1]gd.Object { //gd:KinematicCollision3D.get_collider_shape
+func (self class) GetColliderShape(collision_index int64) [1]gdreference.Object { //gd:KinematicCollision3D.get_collider_shape
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_collider_shape, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ collision_index int64 }{collision_index})
-	var ret = [1]gd.Object{gdreference.LetObject(r_ret)}
+	var ret = [1]gdreference.Object{gdreference.LetObject(r_ret)}
 	return ret
 }
 func (self class) GetColliderShapeIndex(collision_index int64) int64 { //gd:KinematicCollision3D.get_collider_shape_index
@@ -467,5 +467,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("KinematicCollision3D", func(ptr gd.Object) any { return Instance{gdclass.NewKinematicCollision3D(ptr)} })
+	gdclass.Register("KinematicCollision3D", func(ptr gdreference.Object) any { return Instance{gdclass.NewKinematicCollision3D(ptr)} })
 }

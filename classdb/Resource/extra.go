@@ -71,7 +71,7 @@ func Load[T Any, P string | Path.ToResource](path_to_resource P) T {
 	path := Path.ToResource(String.New(path_to_resource))
 	if !gd.Linked {
 		var placeholder T
-		*(*gd.Object)(unsafe.Pointer(&placeholder)) = gdreference.NewObject()
+		*(*gdreference.Object)(unsafe.Pointer(&placeholder)) = gdreference.NewObject()
 		preloaded_resources = append(preloaded_resources, *(*gd.RefCounted)(unsafe.Pointer(&placeholder)))
 		startup = append(startup, func() {
 			resource := Instance(load(String.Readable(path), String.New(""), 1))
@@ -84,7 +84,7 @@ func Load[T Any, P string | Path.ToResource](path_to_resource P) T {
 			}
 			raw, ok := gdreference.EndObject(result.AsObject()[0])
 			if ok {
-				gdreference.SetObject(*(*gd.Object)(unsafe.Pointer(&placeholder)), raw)
+				gdreference.SetObject(*(*gdreference.Object)(unsafe.Pointer(&placeholder)), raw)
 			}
 		})
 		return placeholder

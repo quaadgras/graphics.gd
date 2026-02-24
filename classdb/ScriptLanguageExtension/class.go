@@ -34,7 +34,7 @@ var _ Object.ID
 
 type _ gdclass.Node
 
-var _ gd.Object
+var _ gd.String
 var _ RefCounted.Instance
 var _ reflect.Type
 var _ callframe.Frame
@@ -560,7 +560,7 @@ func (Instance) _complete_code(impl func(ptr gdclass.Receiver, code string, path
 		defer pointers.End(gd.InternalString(code))
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(path))
-		var owner = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 2), gd.Free)}
+		var owner = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 2), gd.Free)}
 		defer gdreference.EndObject(owner[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, code.String(), path.String(), owner)
@@ -580,7 +580,7 @@ func (Instance) _lookup_code(impl func(ptr gdclass.Receiver, code string, symbol
 		defer pointers.End(gd.InternalString(symbol))
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
-		var owner = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 3), gd.Free)}
+		var owner = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 3), gd.Free)}
 		defer gdreference.EndObject(owner[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, code.String(), symbol.String(), path.String(), owner)
@@ -930,23 +930,23 @@ func (Instance) _get_global_class_name(impl func(ptr gdclass.Receiver, path stri
 type Advanced = class
 type class [1]gdclass.ScriptLanguageExtension
 
-func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
-func (self *class) SetObject(obj [1]gd.Object) bool {
+func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (self *class) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewScriptLanguageExtension(obj[0])
 		return true
 	}
 	return false
 }
-func (self *Instance) SetObject(obj [1]gd.Object) bool {
+func (self *Instance) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewScriptLanguageExtension(obj[0])
 		return true
 	}
 	return false
 }
-func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
-func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
+func (o Instance) AsObject() [1]gdreference.Object      { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gdreference.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.ScriptLanguageExtension{gdclass.NewScriptLanguageExtension(gdreference.NewObject())})
@@ -1145,7 +1145,7 @@ func (class) _validate_path(impl func(ptr gdclass.Receiver, path String.Readable
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (class) _create_script(impl func(ptr gdclass.Receiver) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _create_script(impl func(ptr gdclass.Receiver) [1]gdreference.Object) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -1252,13 +1252,13 @@ func (class) _preferred_file_name_casing(impl func(ptr gdclass.Receiver) ScriptL
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (class) _complete_code(impl func(ptr gdclass.Receiver, code String.Readable, path String.Readable, owner [1]gd.Object) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _complete_code(impl func(ptr gdclass.Receiver, code String.Readable, path String.Readable, owner [1]gdreference.Object) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var code = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(code))
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(path))
-		var owner = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 2), gd.Free)}
+		var owner = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 2), gd.Free)}
 		defer gdreference.EndObject(owner[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, code, path, owner)
@@ -1270,7 +1270,7 @@ func (class) _complete_code(impl func(ptr gdclass.Receiver, code String.Readable
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (class) _lookup_code(impl func(ptr gdclass.Receiver, code String.Readable, symbol String.Readable, path String.Readable, owner [1]gd.Object) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _lookup_code(impl func(ptr gdclass.Receiver, code String.Readable, symbol String.Readable, path String.Readable, owner [1]gdreference.Object) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var code = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(code))
@@ -1278,7 +1278,7 @@ func (class) _lookup_code(impl func(ptr gdclass.Receiver, code String.Readable, 
 		defer pointers.End(gd.InternalString(symbol))
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
-		var owner = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 3), gd.Free)}
+		var owner = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 3), gd.Free)}
 		defer gdreference.EndObject(owner[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, code, symbol, path, owner)
@@ -1887,7 +1887,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ScriptLanguageExtension", func(ptr gd.Object) any { return Instance{gdclass.NewScriptLanguageExtension(ptr)} })
+	gdclass.Register("ScriptLanguageExtension", func(ptr gdreference.Object) any { return Instance{gdclass.NewScriptLanguageExtension(ptr)} })
 }
 
 type LookupResultType int64 //gd:ScriptLanguageExtension.LookupResultType

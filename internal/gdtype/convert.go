@@ -128,7 +128,7 @@ func EngineTypeAsGoType(pkg, meta string, gdType string) string {
 	case "void*", "uint8_t*":
 		return "gdextension.Pointer"
 	case "Object":
-		return "[1]gd.Object"
+		return "[1]gdreference.Object"
 	case "RefCounted":
 		return "gd." + gdType
 	default:
@@ -163,7 +163,7 @@ func EngineTypeAsGoType(pkg, meta string, gdType string) string {
 		gdType = strings.Replace(gdType, ".", "", -1)
 		gdType = strings.Replace(gdType, ".", "", -1)
 		if gdType == "Object" {
-			return "[1]gd.Object"
+			return "[1]gdreference.Object"
 		}
 		if class, ok := ClassDB[gdType]; ok {
 			return "[1]gdclass." + class.Name

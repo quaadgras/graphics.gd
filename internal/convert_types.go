@@ -45,7 +45,7 @@ func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.V
 				return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %s to %s", value.Type(), rtype))
 			}
 			var result = reflect.New(rtype)
-			result.Interface().(IsClassCastable).SetObject([1]Object{VariantAsObject(value)})
+			result.Interface().(IsClassCastable).SetObject([1]gdreference.Object{VariantAsObject(value)})
 			return result.Elem(), nil
 		}
 		fallthrough
@@ -112,7 +112,7 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 		switch value := value.(type) {
 		case RID, Int, Float:
 			return reflect.ValueOf(value).Convert(rtype), nil
-		case Object:
+		case gdreference.Object:
 			if rtype.Name() == "ID" {
 				var id gdextension.ObjectID
 				gdextension.Host.Objects.ID.Get(gdreference.GetObject(value), gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
@@ -158,7 +158,7 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 	case reflect.Array:
 		if rtype.Implements(reflect.TypeFor[IsClass]()) {
 			var obj = reflect.New(rtype)
-			obj.Interface().(IsClassCastable).SetObject([1]Object{VariantAsObject(variant)})
+			obj.Interface().(IsClassCastable).SetObject([1]gdreference.Object{VariantAsObject(variant)})
 			return obj.Elem(), nil
 		}
 		val, err := convertToGoArrayOf(rtype.Elem(), rtype.Len(), value)
@@ -182,7 +182,7 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 				if isclass, ok := value.(IsClass); ok {
 					object = isclass.AsObject()[0]
 				}
-				object, ok := value.(Object)
+				object, ok := value.(gdreference.Object)
 				if !ok {
 					return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 				}
@@ -285,7 +285,7 @@ func convertToGoStruct(rtype reflect.Type, engineValue any) (reflect.Value, erro
 		}
 	}
 	switch value := engineValue.(type) {
-	case Object:
+	case gdreference.Object:
 		var structure = reflect.New(rtype).Elem()
 		for field, rvalue := range structure.Fields() {
 			if !field.IsExported() {

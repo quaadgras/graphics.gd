@@ -397,7 +397,7 @@ func (s Signal) GetConnections() Array {
 	var ptr = gdextension.Signal(pointers.Get(s))
 	return pointers.New[Array](callBuiltinMethod[gdextension.Array](unsafe.Pointer(&ptr), builtin.Signal.get_connections, gdextension.SizeArray|gdextension.SizeSignal<<4, nil))
 }
-func (s Signal) GetObject() Object {
+func (s Signal) GetObject() gdreference.Object {
 	var ptr = gdextension.Signal(pointers.Get(s))
 	return gdreference.OwnObject(callBuiltinMethod[gdextension.Object](unsafe.Pointer(&ptr), builtin.Signal.get_object, gdextension.SizeObject|gdextension.SizeSignal<<4, nil), Free)
 }
@@ -503,14 +503,14 @@ var refcounted_methods struct {
 	get_reference_count gdextension.MethodForClass `hash:"3905245786"`
 }
 
-func ObjectGet(o Object, name StringName) Variant {
+func ObjectGet(o gdreference.Object, name StringName) Variant {
 	return pointers.New[Variant]([3]uint64(noescape.Call[gdextension.Variant](gdreference.GetObject(o), object_methods.get, gdextension.SizeVariant|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
 		Name gdextension.StringName
 	}{
 		pointers.Get(name),
 	}))))
 }
-func ObjectSet(o Object, name StringName, value Variant) {
+func ObjectSet(o gdreference.Object, name StringName, value Variant) {
 	noescape.Call[struct{}](gdreference.GetObject(o), object_methods.set, 0|gdextension.SizeStringName<<4|gdextension.SizeVariant<<8, unsafe.Pointer(&struct {
 		Name  gdextension.StringName
 		Value gdextension.Variant
@@ -519,14 +519,14 @@ func ObjectSet(o Object, name StringName, value Variant) {
 	}))
 }
 
-func ObjectGetMeta(o Object, name StringName) Variant {
+func ObjectGetMeta(o gdreference.Object, name StringName) Variant {
 	return pointers.New[Variant]([3]uint64(noescape.Call[gdextension.Variant](gdreference.GetObject(o), object_methods.get_meta, gdextension.SizeVariant|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
 		Name gdextension.StringName
 	}{
 		pointers.Get(name),
 	}))))
 }
-func ObjectSetMeta(o Object, name StringName, value Variant) {
+func ObjectSetMeta(o gdreference.Object, name StringName, value Variant) {
 	noescape.Call[struct{}](gdreference.GetObject(o), object_methods.set_meta, 0|gdextension.SizeStringName<<4|gdextension.SizeVariant<<8, unsafe.Pointer(&struct {
 		Name  gdextension.StringName
 		Value gdextension.Variant
@@ -535,14 +535,14 @@ func ObjectSetMeta(o Object, name StringName, value Variant) {
 	}))
 }
 
-func ObjectHasMethod(o Object, name StringName) bool {
+func ObjectHasMethod(o gdreference.Object, name StringName) bool {
 	return noescape.Call[bool](gdreference.GetObject(o), object_methods.has_method, gdextension.SizeBool|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
 		Name gdextension.StringName
 	}{
 		pointers.Get(name),
 	}))
 }
-func ObjectCall(o Object, method StringName, args ...Variant) (Variant, error) {
+func ObjectCall(o gdreference.Object, method StringName, args ...Variant) (Variant, error) {
 	ring.Main.Flush()
 	self := gdreference.GetObject(o)
 	name := pointers.Get(method)
@@ -564,33 +564,33 @@ func ObjectCall(o Object, method StringName, args ...Variant) (Variant, error) {
 	return NewVariant(o).Call(method, args...) // FIXME is this ok?
 }
 
-func ObjectCanTranslateMessages(o Object) bool {
+func ObjectCanTranslateMessages(o gdreference.Object) bool {
 	return jumponly.Call[bool](gdreference.GetObject(o), object_methods.can_translate_messages, gdextension.SizeBool, nil)
 }
-func ObjectGetScript(o Object) Variant {
+func ObjectGetScript(o gdreference.Object) Variant {
 	return pointers.New[Variant]([3]uint64(noescape.Call[gdextension.Variant](gdreference.GetObject(o), object_methods.get_script, gdextension.SizeVariant, nil)))
 }
-func ObjectNotifyPropertyListChanged(o Object) {
+func ObjectNotifyPropertyListChanged(o gdreference.Object) {
 	noescape.Call[struct{}](gdreference.GetObject(o), object_methods.notify_property_list_changed, 0, nil)
 }
-func ObjectSetBlockSignals(o Object, blocking bool) {
+func ObjectSetBlockSignals(o gdreference.Object, blocking bool) {
 	jumponly.Call[struct{}](gdreference.GetObject(o), object_methods.set_block_signals, 0|gdextension.SizeBool<<4, unsafe.Pointer(&struct {
 		Blocking bool
 	}{
 		blocking,
 	}))
 }
-func ObjectSetScript(o Object, script Variant) {
+func ObjectSetScript(o gdreference.Object, script Variant) {
 	noescape.Call[struct{}](gdreference.GetObject(o), object_methods.set_script, 0|gdextension.SizeVariant<<4, unsafe.Pointer(&struct {
 		Script gdextension.Variant
 	}{
 		gdextension.Variant(pointers.Get(script)),
 	}))
 }
-func ObjectToString(o Object) String {
+func ObjectToString(o gdreference.Object) String {
 	return pointers.New[String](noescape.Call[gdextension.String](gdreference.GetObject(o), object_methods.to_string, gdextension.SizeString, nil))
 }
-func ObjectTr(o Object, message StringName, context StringName) String {
+func ObjectTr(o gdreference.Object, message StringName, context StringName) String {
 	return pointers.New[String](noescape.Call[gdextension.String](gdreference.GetObject(o), object_methods.tr, gdextension.SizeString|gdextension.SizeStringName<<4|gdextension.SizeStringName<<8, unsafe.Pointer(&struct {
 		Message gdextension.StringName
 		Context gdextension.StringName
@@ -598,7 +598,7 @@ func ObjectTr(o Object, message StringName, context StringName) String {
 		pointers.Get(message), pointers.Get(context),
 	})))
 }
-func ObjectTrN(o Object, message StringName, plural StringName, n int64, context StringName) String {
+func ObjectTrN(o gdreference.Object, message StringName, plural StringName, n int64, context StringName) String {
 	return pointers.New[String](noescape.Call[gdextension.String](gdreference.GetObject(o), object_methods.tr_n, gdextension.SizeString|gdextension.SizeStringName<<4|gdextension.SizeStringName<<8|gdextension.SizeInt<<12|gdextension.SizeStringName<<16, unsafe.Pointer(&struct {
 		Message gdextension.StringName
 		Plural  gdextension.StringName
@@ -608,20 +608,20 @@ func ObjectTrN(o Object, message StringName, plural StringName, n int64, context
 		pointers.Get(message), pointers.Get(plural), n, pointers.Get(context),
 	})))
 }
-func ObjectSetMessageTranslation(o Object, enable bool) {
+func ObjectSetMessageTranslation(o gdreference.Object, enable bool) {
 	jumponly.Call[struct{}](gdreference.GetObject(o), object_methods.set_message_translation, 0|gdextension.SizeBool<<4, unsafe.Pointer(&struct {
 		Enable bool
 	}{
 		enable,
 	}))
 }
-func ObjectIsBlockingSignals(o Object) bool {
+func ObjectIsBlockingSignals(o gdreference.Object) bool {
 	return jumponly.Call[bool](gdreference.GetObject(o), object_methods.is_blocking_signals, gdextension.SizeBool, nil)
 }
-func ObjectGetClass(o Object) String {
+func ObjectGetClass(o gdreference.Object) String {
 	return pointers.New[String](noescape.Call[gdextension.String](gdreference.GetObject(o), object_methods.get_class, gdextension.SizeString, nil))
 }
-func ObjectConnect(o Object, signal StringName, callable Callable, flags int64) int64 {
+func ObjectConnect(o gdreference.Object, signal StringName, callable Callable, flags int64) int64 {
 	return noescape.Call[int64](gdreference.GetObject(o), object_methods.connect, gdextension.SizeInt|gdextension.SizeStringName<<4|gdextension.SizeCallable<<8|gdextension.SizeInt<<12, unsafe.Pointer(&struct {
 		Signal   gdextension.StringName
 		Callable gdextension.Callable
@@ -630,7 +630,7 @@ func ObjectConnect(o Object, signal StringName, callable Callable, flags int64) 
 		pointers.Get(signal), gdextension.Callable(pointers.Get(callable)), flags,
 	}))
 }
-func ObjectIsConnected(o Object, signal StringName, callable Callable) bool {
+func ObjectIsConnected(o gdreference.Object, signal StringName, callable Callable) bool {
 	return noescape.Call[bool](gdreference.GetObject(o), object_methods.is_connected, gdextension.SizeBool|gdextension.SizeStringName<<4|gdextension.SizeCallable<<8, unsafe.Pointer(&struct {
 		Signal   gdextension.StringName
 		Callable gdextension.Callable
@@ -638,7 +638,7 @@ func ObjectIsConnected(o Object, signal StringName, callable Callable) bool {
 		pointers.Get(signal), gdextension.Callable(pointers.Get(callable)),
 	}))
 }
-func ObjectDisconnect(o Object, signal StringName, callable Callable) {
+func ObjectDisconnect(o gdreference.Object, signal StringName, callable Callable) {
 	noescape.Call[struct{}](gdreference.GetObject(o), object_methods.disconnect, 0|gdextension.SizeStringName<<4|gdextension.SizeCallable<<8, unsafe.Pointer(&struct {
 		Signal   gdextension.StringName
 		Callable gdextension.Callable
@@ -646,10 +646,10 @@ func ObjectDisconnect(o Object, signal StringName, callable Callable) {
 		pointers.Get(signal), gdextension.Callable(pointers.Get(callable)),
 	}))
 }
-func ObjectIsQueuedForDeletion(o Object) bool {
+func ObjectIsQueuedForDeletion(o gdreference.Object) bool {
 	return jumponly.Call[bool](gdreference.GetObject(o), object_methods.is_queued_for_deletion, gdextension.SizeBool, nil)
 }
-func ObjectNotification(o Object, what Int, reversed bool) {
+func ObjectNotification(o gdreference.Object, what Int, reversed bool) {
 	noescape.Call[struct{}](gdreference.GetObject(o), object_methods.notification, 0|gdextension.SizeInt<<4|gdextension.SizeBool<<8, unsafe.Pointer(&struct {
 		What     int64
 		Reversed bool
@@ -657,11 +657,11 @@ func ObjectNotification(o Object, what Int, reversed bool) {
 		int64(what), reversed,
 	}))
 }
-func ObjectGetPropertyList(o Object) Array {
+func ObjectGetPropertyList(o gdreference.Object) Array {
 	return pointers.New[Array](noescape.Call[gdextension.Array](gdreference.GetObject(o), object_methods.get_property_list, gdextension.SizeArray, nil))
 }
 
-func ObjectSetIndex(o Object, i int, v Variant) {
+func ObjectSetIndex(o gdreference.Object, i int, v Variant) {
 	noescape.Call[struct{}](gdreference.GetObject(o), object_methods.set_indexed, 0|gdextension.SizeInt<<4|gdextension.SizeVariant<<8, unsafe.Pointer(&struct {
 		Index   int64
 		Element gdextension.Variant
@@ -670,7 +670,7 @@ func ObjectSetIndex(o Object, i int, v Variant) {
 	}))
 }
 
-func ObjectGetIndex(o Object, i int) Variant {
+func ObjectGetIndex(o gdreference.Object, i int) Variant {
 	return pointers.New[Variant]([3]uint64(noescape.Call[gdextension.Variant](gdreference.GetObject(o), object_methods.get_indexed, gdextension.SizeVariant|gdextension.SizeInt<<4, unsafe.Pointer(&struct {
 		Index int64
 	}{

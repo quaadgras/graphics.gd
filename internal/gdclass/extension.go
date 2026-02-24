@@ -14,15 +14,15 @@ type Receiver unsafe.Pointer
 type Interface interface {
 	superType() reflect.Type
 	goType() reflect.Type
-	getObject() [1]gd.Object
+	getObject() [1]gdreference.Object
 	Virtual(string) reflect.Value
 }
 
 type Pointer interface {
 	gd.IsClass
 
-	getObject() [1]gd.Object
-	setObject([1]gd.Object)
+	getObject() [1]gdreference.Object
+	setObject([1]gdreference.Object)
 
 	superType() reflect.Type
 	goType() reflect.Type
@@ -36,22 +36,22 @@ func GoType(class Interface) reflect.Type {
 	return class.goType()
 }
 
-func SetObject(class Pointer, obj [1]gd.Object) {
+func SetObject(class Pointer, obj [1]gdreference.Object) {
 	class.setObject(obj)
 }
 
-func GetObjectFromInterface(class Interface) [1]gd.Object {
+func GetObjectFromInterface(class Interface) [1]gdreference.Object {
 	return class.getObject()
 }
 
-func GetObject(class Object) [1]gd.Object {
-	return [1]gd.Object{class}
+func GetObject(class Object) [1]gdreference.Object {
+	return [1]gdreference.Object{class}
 }
 
 var Registered sync.Map
 
 type Constructor interface {
-	CreateInstanceFrom(reflect.Value, bool, bool) [1]gd.Object
+	CreateInstanceFrom(reflect.Value, bool, bool) [1]gdreference.Object
 }
 
 type Extension[T Interface, S gd.IsClass] struct {
@@ -68,12 +68,12 @@ func (class *Extension[T, S]) Super() S {
 	return *class.Class.Super()
 }
 
-func (class Extension[T, S]) getObject() [1]gd.Object {
-	return *(*[1]gd.Object)(unsafe.Pointer(class.Class.Super()))
+func (class Extension[T, S]) getObject() [1]gdreference.Object {
+	return *(*[1]gdreference.Object)(unsafe.Pointer(class.Class.Super()))
 }
 
-func (class *Extension[T, S]) setObject(obj [1]gd.Object) {
-	*(*[1]gd.Object)(unsafe.Pointer(class.Class.Super())) = obj
+func (class *Extension[T, S]) setObject(obj [1]gdreference.Object) {
+	*(*[1]gdreference.Object)(unsafe.Pointer(class.Class.Super())) = obj
 }
 
 func (class Extension[T, S]) superType() reflect.Type {
@@ -84,9 +84,9 @@ func (class Extension[T, S]) goType() reflect.Type {
 	return reflect.TypeFor[T]()
 }
 
-func (class *Extension[T, S]) AsObject() [1]gd.Object {
+func (class *Extension[T, S]) AsObject() [1]gdreference.Object {
 	obj := class.getObject()
-	if obj == ([1]gd.Object{}) {
+	if obj == ([1]gdreference.Object{}) {
 		impl, ok := Registered.Load(reflect.TypeFor[T]())
 		if ok {
 			instancer := impl.(Constructor)
@@ -94,7 +94,7 @@ func (class *Extension[T, S]) AsObject() [1]gd.Object {
 			class.setObject(obj)
 		}
 	}
-	gdreference.UseObject((*gd.Object)(unsafe.Pointer(class.Class.Super())))
+	gdreference.UseObject((*gdreference.Object)(unsafe.Pointer(class.Class.Super())))
 	return obj
 }
 
@@ -117,7 +117,7 @@ func (class ExtensionInherits[S, T]) Virtual(s string) reflect.Value {
 	return class.super.Virtual(s)
 }
 
-func (class ExtensionInherits[S, T]) getObject() [1]gd.Object {
+func (class ExtensionInherits[S, T]) getObject() [1]gdreference.Object {
 	return class.super.getObject()
 }
 
@@ -129,13 +129,13 @@ func (class ExtensionInherits[S, T]) goType() reflect.Type {
 	return reflect.TypeFor[T]()
 }
 
-func (class *ExtensionInherits[S, T]) setObject(obj [1]gd.Object) {
-	*(*[1]gd.Object)(unsafe.Pointer(&class.super)) = obj
+func (class *ExtensionInherits[S, T]) setObject(obj [1]gdreference.Object) {
+	*(*[1]gdreference.Object)(unsafe.Pointer(&class.super)) = obj
 }
 
-func (class *ExtensionInherits[S, T]) AsObject() [1]gd.Object {
+func (class *ExtensionInherits[S, T]) AsObject() [1]gdreference.Object {
 	obj := class.getObject()
-	if obj == ([1]gd.Object{}) {
+	if obj == ([1]gdreference.Object{}) {
 		impl, ok := Registered.Load(reflect.TypeFor[T]())
 		if ok {
 			instancer := impl.(Constructor)
@@ -143,6 +143,6 @@ func (class *ExtensionInherits[S, T]) AsObject() [1]gd.Object {
 			class.setObject(obj)
 		}
 	}
-	gdreference.UseObject((*gd.Object)(unsafe.Pointer(&class.super)))
+	gdreference.UseObject((*gdreference.Object)(unsafe.Pointer(&class.super)))
 	return obj
 }

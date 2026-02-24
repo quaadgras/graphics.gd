@@ -27,7 +27,7 @@ func (id ID) Instance() Instance { //gd:instance_from_id is_instance_id_valid
 	if instance == 0 {
 		return Nil
 	}
-	return Instance([1]gd.Object{gdreference.LetObject(instance)})
+	return Instance([1]gdreference.Object{gdreference.LetObject(instance)})
 }
 
 type Notification int
@@ -61,7 +61,7 @@ Each [Interface] method can be overidden independently:
 		ValidateProperty(ClassDB.PropertyInfo)
 	}
 */
-type Instance [1]gdclass.Object
+type Instance [1]gdreference.Object
 
 // Extension can be embedded in a struct to create a new class. T should be the type of the struct
 // that embeds this Extension.
@@ -91,7 +91,7 @@ func (self *Instance) SetObject(obj [1]gdclass.Object) bool {
 	return false
 }
 
-func (class *Extension[T]) AsObject() [1]gdclass.Object { return class.Super() }
+func (class *Extension[T]) AsObject() [1]gdreference.Object { return class.Super() }
 
 // Nil is a nil Object instance. Useful for comparisons.
 var Nil Instance
@@ -120,11 +120,11 @@ type PropertyInfo struct {
 func New() Instance {
 	if !gd.Linked {
 		var placeholder Instance
-		*(*gd.Object)(unsafe.Pointer(&placeholder)) = gdreference.NewObject()
+		*(*gdreference.Object)(unsafe.Pointer(&placeholder)) = gdreference.NewObject()
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := gdreference.EndObject(New().AsObject()[0])
-				gdreference.SetObject(*(*gd.Object)(unsafe.Pointer(&placeholder)), raw)
+				gdreference.SetObject(*(*gdreference.Object)(unsafe.Pointer(&placeholder)), raw)
 				gd.RegisterCleanup(func() {
 					gdextension.Host.Objects.Unsafe.Free(raw)
 				})
@@ -135,7 +135,7 @@ func New() Instance {
 	return Instance{gdreference.OwnObject(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Object"))), gd.Free)}
 }
 
-func (obj Instance) AsObject() [1]gd.Object          { return obj }
+func (obj Instance) AsObject() [1]gdreference.Object { return obj }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 
 // Virtual method lookup.
@@ -261,7 +261,7 @@ func (obj Instance) IsConnected(signal string, callable any) bool { //gd:Object.
 // Use keeps an object alive, preventing it from being garbage collected until the next frame.
 func Use(obj interface{ AsObject() [1]gdclass.Object }) {
 	if p, ok := obj.(gdclass.Pointer); ok {
-		gdreference.UseObject((*gd.Object)(reflect.ValueOf(p).UnsafePointer()))
+		gdreference.UseObject((*gdreference.Object)(reflect.ValueOf(p).UnsafePointer()))
 	} else {
 		var obj = obj.AsObject()
 		gdreference.UseObject(&obj[0])

@@ -49,7 +49,7 @@ var _ Object.ID
 
 type _ gdclass.Node
 
-var _ gd.Object
+var _ gd.String
 var _ RefCounted.Instance
 var _ reflect.Type
 var _ callframe.Frame
@@ -292,23 +292,23 @@ func CreateDefaultInterface() Instance { //gd:MultiplayerAPI.create_default_inte
 type Advanced = class
 type class [1]gdclass.MultiplayerAPI
 
-func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
-func (self *class) SetObject(obj [1]gd.Object) bool {
+func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (self *class) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewMultiplayerAPI(obj[0])
 		return true
 	}
 	return false
 }
-func (self *Instance) SetObject(obj [1]gd.Object) bool {
+func (self *Instance) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewMultiplayerAPI(obj[0])
 		return true
 	}
 	return false
 }
-func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
-func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
+func (o Instance) AsObject() [1]gdreference.Object      { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gdreference.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.MultiplayerAPI{gdclass.NewMultiplayerAPI(gdreference.NewObject())})
@@ -379,7 +379,7 @@ func (self class) Poll() Error.Code { //gd:MultiplayerAPI.poll
 	var ret = Error.Code(r_ret)
 	return ret
 }
-func (self class) Rpc(peer int64, obj [1]gd.Object, method String.Name, arguments Array.Any) Error.Code { //gd:MultiplayerAPI.rpc
+func (self class) Rpc(peer int64, obj [1]gdreference.Object, method String.Name, arguments Array.Any) Error.Code { //gd:MultiplayerAPI.rpc
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.rpc, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeArray<<16), &struct {
 		peer      int64
 		obj       gdextension.Object
@@ -389,7 +389,7 @@ func (self class) Rpc(peer int64, obj [1]gd.Object, method String.Name, argument
 	var ret = Error.Code(r_ret)
 	return ret
 }
-func (self class) ObjectConfigurationAdd(obj [1]gd.Object, configuration variant.Any) Error.Code { //gd:MultiplayerAPI.object_configuration_add
+func (self class) ObjectConfigurationAdd(obj [1]gdreference.Object, configuration variant.Any) Error.Code { //gd:MultiplayerAPI.object_configuration_add
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.object_configuration_add, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeVariant<<8), &struct {
 		obj           gdextension.Object
 		configuration gdextension.Variant
@@ -397,7 +397,7 @@ func (self class) ObjectConfigurationAdd(obj [1]gd.Object, configuration variant
 	var ret = Error.Code(r_ret)
 	return ret
 }
-func (self class) ObjectConfigurationRemove(obj [1]gd.Object, configuration variant.Any) Error.Code { //gd:MultiplayerAPI.object_configuration_remove
+func (self class) ObjectConfigurationRemove(obj [1]gdreference.Object, configuration variant.Any) Error.Code { //gd:MultiplayerAPI.object_configuration_remove
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.object_configuration_remove, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeVariant<<8), &struct {
 		obj           gdextension.Object
 		configuration gdextension.Variant
@@ -535,7 +535,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("MultiplayerAPI", func(ptr gd.Object) any { return Instance{gdclass.NewMultiplayerAPI(ptr)} })
+	gdclass.Register("MultiplayerAPI", func(ptr gdreference.Object) any { return Instance{gdclass.NewMultiplayerAPI(ptr)} })
 }
 
 type RPCMode int64 //gd:MultiplayerAPI.RPCMode

@@ -49,7 +49,7 @@ var _ Object.ID
 
 type _ gdclass.Node
 
-var _ gd.Object
+var _ gd.String
 var _ RefCounted.Instance
 var _ reflect.Type
 var _ callframe.Frame
@@ -173,7 +173,7 @@ Note: Implement [HandleMenuSelected] to handle these custom items.
 */
 func (Instance) _set_create_options(impl func(ptr gdclass.Receiver, menu_node Object.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var menu_node = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		var menu_node = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
 		defer gdreference.EndObject(menu_node[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, menu_node)
@@ -219,23 +219,23 @@ func (self Instance) SetTogglePressed(pressed bool) Instance { //gd:EditorResour
 type Advanced = class
 type class [1]gdclass.EditorResourcePicker
 
-func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
-func (self *class) SetObject(obj [1]gd.Object) bool {
+func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (self *class) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorResourcePicker(obj[0])
 		return true
 	}
 	return false
 }
-func (self *Instance) SetObject(obj [1]gd.Object) bool {
+func (self *Instance) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorResourcePicker(obj[0])
 		return true
 	}
 	return false
 }
-func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
-func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
+func (o Instance) AsObject() [1]gdreference.Object      { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gdreference.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.EditorResourcePicker{gdclass.NewEditorResourcePicker(gdreference.NewObject())})
@@ -310,9 +310,9 @@ func (self Instance) SetToggleMode(value bool) Instance { //gd:EditorResourcePic
 	class(self).SetToggleMode(value)
 	return self
 }
-func (class) _set_create_options(impl func(ptr gdclass.Receiver, menu_node [1]gd.Object)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_create_options(impl func(ptr gdclass.Receiver, menu_node [1]gdreference.Object)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var menu_node = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		var menu_node = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
 		defer gdreference.EndObject(menu_node[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, menu_node)
@@ -446,5 +446,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorResourcePicker", func(ptr gd.Object) any { return Instance{gdclass.NewEditorResourcePicker(ptr)} })
+	gdclass.Register("EditorResourcePicker", func(ptr gdreference.Object) any { return Instance{gdclass.NewEditorResourcePicker(ptr)} })
 }

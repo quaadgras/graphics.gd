@@ -204,8 +204,8 @@ func (name Name) LoadFromRawPointerValue(val string) string {
 		return fmt.Sprintf("String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](%s)))", val)
 	case "Dictionary.Any":
 		return fmt.Sprintf("Dictionary.Through(gd.DictionaryProxy[variant.Any,variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](%s)))", val)
-	case "[1]gd.Object":
-		return fmt.Sprintf("[1]gd.Object{gdreference.OwnObject(%s, gd.Free)}", val)
+	case "[1]gdreference.Object":
+		return fmt.Sprintf("[1]gdreference.Object{gdreference.OwnObject(%s, gd.Free)}", val)
 	case "Callable.Function":
 		return fmt.Sprintf("Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](%s)))", val)
 	case "Path.ToNode":
@@ -235,7 +235,7 @@ func (name Name) LoadFromRawPointerValue(val string) string {
 	default:
 		_, argIsPtr := name.IsPointer()
 		if name == "Object" {
-			return fmt.Sprintf("[1]gd.Object{gdreference.OwnObject(%v, gd.Free)}\n", val)
+			return fmt.Sprintf("[1]gdreference.Object{gdreference.OwnObject(%v, gd.Free)}\n", val)
 		}
 		class_name := strings.TrimPrefix(string(name), "[1]gdclass.")
 		_, ok := ClassDB[class_name]
@@ -287,7 +287,7 @@ func (name Name) EndPointer(val string) string {
 	default:
 		name := strings.TrimPrefix(string(name), "classdb.")
 		name = strings.TrimPrefix(name, "[1]gdclass.")
-		if name == "[1]gd.Object" {
+		if name == "[1]gdreference.Object" {
 			return fmt.Sprintf("gdreference.EndObject(%v[0])", val)
 		}
 		class, ok := ClassDB[strings.TrimPrefix(name, "[1]gdclass.")]
@@ -386,7 +386,7 @@ func (name Name) IsPointer() (string, bool) {
 		return "gd.PackedPointers", true
 	case "Variant", "variant.Any":
 		return "gdextension.Variant", true
-	case "Object":
+	case "gdreference.Object":
 		return "gdextension.Object", true
 	case "Error.Code":
 		return "int64", true

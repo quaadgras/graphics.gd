@@ -54,7 +54,7 @@ var _ Object.ID
 
 type _ gdclass.Node
 
-var _ gd.Object
+var _ gd.String
 var _ RefCounted.Instance
 var _ reflect.Type
 var _ callframe.Frame
@@ -339,7 +339,7 @@ Below is a sample code to help get started:
 */
 func (Instance) _is_in_input_hotzone(impl func(ptr gdclass.Receiver, in_node Object.Instance, in_port int, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var in_node = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		var in_node = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
 		defer gdreference.EndObject(in_node[0])
 		var in_port = gd.UnsafeGet[int64](p_args, 1)
 		var mouse_position = gd.UnsafeGet[Vector2.XY](p_args, 2)
@@ -367,7 +367,7 @@ Below is a sample code to help get started:
 */
 func (Instance) _is_in_output_hotzone(impl func(ptr gdclass.Receiver, in_node Object.Instance, in_port int, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var in_node = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		var in_node = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
 		defer gdreference.EndObject(in_node[0])
 		var in_port = gd.UnsafeGet[int64](p_args, 1)
 		var mouse_position = gd.UnsafeGet[Vector2.XY](p_args, 2)
@@ -732,23 +732,23 @@ func (self Instance) SetSelected(node Node.Instance) Instance { //gd:GraphEdit.s
 type Advanced = class
 type class [1]gdclass.GraphEdit
 
-func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
-func (self *class) SetObject(obj [1]gd.Object) bool {
+func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (self *class) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewGraphEdit(obj[0])
 		return true
 	}
 	return false
 }
-func (self *Instance) SetObject(obj [1]gd.Object) bool {
+func (self *Instance) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewGraphEdit(obj[0])
 		return true
 	}
 	return false
 }
-func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
-func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
+func (o Instance) AsObject() [1]gdreference.Object      { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gdreference.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.GraphEdit{gdclass.NewGraphEdit(gdreference.NewObject())})
@@ -1100,9 +1100,9 @@ func (self Instance) SetShowArrangeButton(value bool) Instance { //gd:GraphEdit.
 	class(self).SetShowArrangeButton(value)
 	return self
 }
-func (class) _is_in_input_hotzone(impl func(ptr gdclass.Receiver, in_node [1]gd.Object, in_port int64, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_in_input_hotzone(impl func(ptr gdclass.Receiver, in_node [1]gdreference.Object, in_port int64, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var in_node = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		var in_node = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
 		defer gdreference.EndObject(in_node[0])
 		var in_port = gd.UnsafeGet[int64](p_args, 1)
 		var mouse_position = gd.UnsafeGet[Vector2.XY](p_args, 2)
@@ -1111,9 +1111,9 @@ func (class) _is_in_input_hotzone(impl func(ptr gdclass.Receiver, in_node [1]gd.
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (class) _is_in_output_hotzone(impl func(ptr gdclass.Receiver, in_node [1]gd.Object, in_port int64, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_in_output_hotzone(impl func(ptr gdclass.Receiver, in_node [1]gdreference.Object, in_port int64, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var in_node = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		var in_node = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
 		defer gdreference.EndObject(in_node[0])
 		var in_port = gd.UnsafeGet[int64](p_args, 1)
 		var mouse_position = gd.UnsafeGet[Vector2.XY](p_args, 2)
@@ -1873,7 +1873,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("GraphEdit", func(ptr gd.Object) any { return Instance{gdclass.NewGraphEdit(ptr)} })
+	gdclass.Register("GraphEdit", func(ptr gdreference.Object) any { return Instance{gdclass.NewGraphEdit(ptr)} })
 }
 
 type PanningScheme int64 //gd:GraphEdit.PanningScheme

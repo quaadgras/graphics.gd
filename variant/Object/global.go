@@ -10,7 +10,7 @@ import (
 // Any object.
 type Any interface {
 	gd.IsClass
-	AsObject() [1]gd.Object
+	AsObject() [1]gdreference.Object
 }
 
 // Set assigns value to the given property. If the property does not exist or the given

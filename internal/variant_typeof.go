@@ -5,6 +5,7 @@ import (
 	"unsafe"
 
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/gdreference"
 	VariantPkg "graphics.gd/variant"
 	ArrayType "graphics.gd/variant/Array"
 	CallableType "graphics.gd/variant/Callable"
@@ -67,7 +68,7 @@ func ConvieniantGoTypeOf(vtype gdextension.VariantType) reflect.Type {
 	case gdextension.TypeRID:
 		return reflect.TypeFor[RID]()
 	case gdextension.TypeObject:
-		return reflect.TypeFor[Object]()
+		return reflect.TypeFor[gdreference.Object]()
 	case gdextension.TypeCallable:
 		return reflect.TypeFor[CallableType.Function]()
 	case gdextension.TypeSignal:
@@ -252,7 +253,7 @@ func VariantTypeOf(rtype reflect.Type) (vtype gdextension.VariantType, ok bool) 
 			vtype = gdextension.TypeNodePath
 		case reflect.TypeOf([0]RID{}).Elem():
 			vtype = gdextension.TypeRID
-		case reflect.TypeOf([0]Object{}).Elem():
+		case reflect.TypeOf([0]gdreference.Object{}).Elem():
 			vtype = gdextension.TypeObject
 		case reflect.TypeFor[Callable](), reflect.TypeFor[CallableType.Function]():
 			vtype = gdextension.TypeCallable

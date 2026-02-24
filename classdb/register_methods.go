@@ -255,7 +255,7 @@ func slowCall(hasContext bool, method reflect.Value, p_args, p_ret gdextension.P
 				value = gd.UnsafeGet[gd.RID](p_args, i-offset)
 			case gdextension.TypeObject:
 				ptr := gd.UnsafeGet[gd.EnginePointer](p_args, i-offset)
-				val := [1]gd.Object{gdreference.LetObject(gdextension.Object(ptr))}
+				val := [1]gdreference.Object{gdreference.LetObject(gdextension.Object(ptr))}
 				value = val
 			case gdextension.TypeCallable:
 				ptr := gd.UnsafeGet[[2]uint64](p_args, i-offset)
@@ -384,9 +384,9 @@ func slowCall(hasContext bool, method reflect.Value, p_args, p_ret gdextension.P
 		case gd.NodePath:
 			gd.UnsafeSet[gdextension.NodePath](p_ret, pointers.Get(val))
 			pointers.End(val)
-		case gd.Object:
+		case gdreference.Object:
 			gd.UnsafeSet[gd.EnginePointer](p_ret, gd.PointerWithOwnershipTransferredToGodot(val))
-		case [1]gd.Object:
+		case [1]gdreference.Object:
 			gd.UnsafeSet[gd.EnginePointer](p_ret, gd.PointerWithOwnershipTransferredToGodot(val[0]))
 		case gd.Callable:
 			gd.UnsafeSet[[2]uint64](p_ret, pointers.Get(val))

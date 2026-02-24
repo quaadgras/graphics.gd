@@ -4,13 +4,13 @@ import (
 	"reflect"
 	"unsafe"
 
-	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdclass"
+	"graphics.gd/internal/gdreference"
 )
 
 type Advanced [1]gdclass.Object
 
-func (obj Advanced) AsObject() [1]gd.Object          { return obj }
+func (obj Advanced) AsObject() [1]gdreference.Object { return obj }
 func (self *Advanced) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 
 // Virtual method lookup.
