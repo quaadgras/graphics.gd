@@ -241,3 +241,48 @@ func main() {
 	startup.Scene()
 }
 ```
+
+### Inheritance
+
+Go doesn't have inheritance or OOP built into the language but you can achieve
+a similar effect of sharing common functionality between extension classes by using 
+struct embedding.
+
+<Aside type="caution">
+    The class type that you register must always be passed through to the underlying 
+    `Extension` or `Singleton` type, so that the correct type is registered with the 
+    engine. `graphics.gd` does not support registering inheritance hierarchies.
+</Aside>
+
+```go
+package main
+
+import (
+  "graphics.gd/classdb"
+  "graphics.gd/classdb/Node"
+  "graphics.gd/startup"
+)
+
+type Common[T classdb.ExtensionTo[Node.Instance]] struct {
+  Node.Extension[T]
+}
+
+func (c *Common[T]) Ready() {
+  fmt.Println("Ready from Common!")
+}
+
+type MyClass struct {
+  Common[MyClass]
+}
+
+type MyOtherClass struct {
+  Common[MyOtherClass]
+}
+
+func main() {
+	classdb.Register[MyClass]()
+	classdb.Register[MyOtherClass]()
+	startup.Scene()
+}
+
+```

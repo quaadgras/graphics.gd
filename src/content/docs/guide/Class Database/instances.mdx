@@ -1,5 +1,5 @@
 ---
-title: Instantiating Classes
+title: Instantiating Objects
 slug: guide/classdb/instances
 sidebar:
   order: 40
@@ -36,4 +36,28 @@ func main() {
 	var id Node.ID = node.ID() // all instances have an ID type and method.
 	fmt.Println("Node ID:", id)
 }
+```
+
+### Converting Between Objects
+
+Sometimes you will receive a generic `Node.Instance` and you want to check if it is a 
+`Node3D.Instance` or `*ExtensionNode`, use the 
+[Object.Is](https://pkg.go.dev/graphics.gd/variant/Object#Is),  
+[Object.As](https://pkg.go.dev/graphics.gd/variant/Object#As) and 
+[Object.To](https://pkg.go.dev/graphics.gd/variant/Object#To) 
+functions to check and convert between these types.
+
+```go
+if node3D, ok := Object.As[Node3D.Instance](node); ok {
+  fmt.Println(node3D, " is a Node3D!")
+}
+
+if Object.Is[*ExtensionNode](node) {
+	fmt.Println("Node is an ExtensionNode!")
+}
+
+// if you already know the type of the object and just 
+// want to convert it, use Object.To, this will panic 
+// if the type is incorrect.
+node2d := Object.To[Node2D.Instance](node) 
 ```
