@@ -41,7 +41,7 @@ var _ Object.ID
 
 type _ gdclass.Node
 
-var _ gd.Object
+var _ gd.String
 var _ RefCounted.Instance
 var _ reflect.Type
 var _ callframe.Frame
@@ -372,23 +372,23 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.ClassDB
 
-func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
-func (self *class) SetObject(obj [1]gd.Object) bool {
+func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (self *class) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewClassDB(obj[0])
 		return true
 	}
 	return false
 }
-func (self *Instance) SetObject(obj [1]gd.Object) bool {
+func (self *Instance) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewClassDB(obj[0])
 		return true
 	}
 	return false
 }
-func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
-func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
+func (o Instance) AsObject() [1]gdreference.Object      { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gdreference.Object { return o.Super().AsObject() }
 
 func (self class) GetClassList() Packed.Strings { //gd:ClassDB.get_class_list
 	once.Do(singleton)
@@ -495,7 +495,7 @@ func (self class) ClassGetPropertySetter(class_ String.Name, property String.Nam
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-func (self class) ClassGetProperty(obj [1]gd.Object, property String.Name) variant.Any { //gd:ClassDB.class_get_property
+func (self class) ClassGetProperty(obj [1]gdreference.Object, property String.Name) variant.Any { //gd:ClassDB.class_get_property
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Variant](gdreference.GetObject(self.AsObject()[0]), methods.class_get_property, gdextension.SizeVariant|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8), &struct {
 		obj      gdextension.Object
@@ -504,7 +504,7 @@ func (self class) ClassGetProperty(obj [1]gd.Object, property String.Name) varia
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-func (self class) ClassSetProperty(obj [1]gd.Object, property String.Name, value variant.Any) Error.Code { //gd:ClassDB.class_set_property
+func (self class) ClassSetProperty(obj [1]gdreference.Object, property String.Name, value variant.Any) Error.Code { //gd:ClassDB.class_set_property
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.class_set_property, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeVariant<<12), &struct {
 		obj      gdextension.Object
@@ -662,7 +662,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ClassDB", func(ptr gd.Object) any { return Instance{gdclass.NewClassDB(ptr)} })
+	gdclass.Register("ClassDB", func(ptr gdreference.Object) any { return Instance{gdclass.NewClassDB(ptr)} })
 }
 
 type APIType int64 //gd:ClassDB.APIType

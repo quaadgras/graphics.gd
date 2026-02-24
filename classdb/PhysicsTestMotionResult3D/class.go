@@ -39,7 +39,7 @@ var _ Object.ID
 
 type _ gdclass.Node
 
-var _ gd.Object
+var _ gd.String
 var _ RefCounted.Instance
 var _ reflect.Type
 var _ callframe.Frame
@@ -323,23 +323,23 @@ func (self MoreArgs) GetCollisionDepth(collision_index int) Float.X { //gd:Physi
 type Advanced = class
 type class [1]gdclass.PhysicsTestMotionResult3D
 
-func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
-func (self *class) SetObject(obj [1]gd.Object) bool {
+func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (self *class) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewPhysicsTestMotionResult3D(obj[0])
 		return true
 	}
 	return false
 }
-func (self *Instance) SetObject(obj [1]gd.Object) bool {
+func (self *Instance) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewPhysicsTestMotionResult3D(obj[0])
 		return true
 	}
 	return false
 }
-func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
-func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
+func (o Instance) AsObject() [1]gdreference.Object      { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gdreference.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.PhysicsTestMotionResult3D{gdclass.NewPhysicsTestMotionResult3D(gdreference.NewObject())})
@@ -412,9 +412,9 @@ func (self class) GetColliderRid(collision_index int64) RID.Any { //gd:PhysicsTe
 	var ret = r_ret
 	return ret
 }
-func (self class) GetCollider(collision_index int64) [1]gd.Object { //gd:PhysicsTestMotionResult3D.get_collider
+func (self class) GetCollider(collision_index int64) [1]gdreference.Object { //gd:PhysicsTestMotionResult3D.get_collider
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_collider, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ collision_index int64 }{collision_index})
-	var ret = [1]gd.Object{gdreference.LetObject(r_ret)}
+	var ret = [1]gdreference.Object{gdreference.LetObject(r_ret)}
 	return ret
 }
 func (self class) GetColliderShape(collision_index int64) int64 { //gd:PhysicsTestMotionResult3D.get_collider_shape
@@ -453,5 +453,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PhysicsTestMotionResult3D", func(ptr gd.Object) any { return Instance{gdclass.NewPhysicsTestMotionResult3D(ptr)} })
+	gdclass.Register("PhysicsTestMotionResult3D", func(ptr gdreference.Object) any { return Instance{gdclass.NewPhysicsTestMotionResult3D(ptr)} })
 }

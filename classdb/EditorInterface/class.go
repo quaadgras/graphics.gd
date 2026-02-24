@@ -76,7 +76,7 @@ var _ Object.ID
 
 type _ gdclass.Node
 
-var _ gd.Object
+var _ gd.String
 var _ RefCounted.Instance
 var _ reflect.Type
 var _ callframe.Frame
@@ -882,23 +882,23 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.EditorInterface
 
-func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
-func (self *class) SetObject(obj [1]gd.Object) bool {
+func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (self *class) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorInterface(obj[0])
 		return true
 	}
 	return false
 }
-func (self *Instance) SetObject(obj [1]gd.Object) bool {
+func (self *Instance) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorInterface(obj[0])
 		return true
 	}
 	return false
 }
-func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
-func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
+func (o Instance) AsObject() [1]gdreference.Object      { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gdreference.Object { return o.Super().AsObject() }
 
 /*
 If true, enables distraction-free mode which hides side docks to increase the space available for the main view.
@@ -1143,7 +1143,7 @@ func (self class) PopupNodeSelector(callback Callable.Function, valid_types Arra
 		current_value gdextension.Object
 	}{pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalArray(valid_types)), gdextension.Object(gdreference.GetObject(gdclass.GetNode(current_value[0])[0]))})
 }
-func (self class) PopupPropertySelector(obj [1]gd.Object, callback Callable.Function, type_filter Packed.Array[int32], current_value String.Readable) { //gd:EditorInterface.popup_property_selector
+func (self class) PopupPropertySelector(obj [1]gdreference.Object, callback Callable.Function, type_filter Packed.Array[int32], current_value String.Readable) { //gd:EditorInterface.popup_property_selector
 	once.Do(singleton)
 	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.popup_property_selector, 0|(gdextension.SizeObject<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeString<<16), &struct {
 		obj           gdextension.Object
@@ -1152,7 +1152,7 @@ func (self class) PopupPropertySelector(obj [1]gd.Object, callback Callable.Func
 		current_value gdextension.String
 	}{gdextension.Object(gdreference.GetObject(gdclass.GetObject(obj[0])[0])), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](type_filter)), pointers.Get(gd.InternalString(current_value))})
 }
-func (self class) PopupMethodSelector(obj [1]gd.Object, callback Callable.Function, current_value String.Readable) { //gd:EditorInterface.popup_method_selector
+func (self class) PopupMethodSelector(obj [1]gdreference.Object, callback Callable.Function, current_value String.Readable) { //gd:EditorInterface.popup_method_selector
 	once.Do(singleton)
 	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.popup_method_selector, 0|(gdextension.SizeObject<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeString<<12), &struct {
 		obj           gdextension.Object
@@ -1211,7 +1211,7 @@ func (self class) GetInspector() [1]gdclass.EditorInspector { //gd:EditorInterfa
 	var ret = [1]gdclass.EditorInspector{gdclass.NewEditorInspector(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
-func (self class) InspectObject(obj [1]gd.Object, for_property String.Readable, inspector_only bool) { //gd:EditorInterface.inspect_object
+func (self class) InspectObject(obj [1]gdreference.Object, for_property String.Readable, inspector_only bool) { //gd:EditorInterface.inspect_object
 	once.Do(singleton)
 	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.inspect_object, 0|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12), &struct {
 		obj            gdextension.Object
@@ -1247,14 +1247,14 @@ func (self class) ReloadSceneFromPath(scene_filepath String.Readable) { //gd:Edi
 	once.Do(singleton)
 	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.reload_scene_from_path, 0|(gdextension.SizeString<<4), &struct{ scene_filepath gdextension.String }{pointers.Get(gd.InternalString(scene_filepath))})
 }
-func (self class) SetObjectEdited(obj [1]gd.Object, edited bool) { //gd:EditorInterface.set_object_edited
+func (self class) SetObjectEdited(obj [1]gdreference.Object, edited bool) { //gd:EditorInterface.set_object_edited
 	once.Do(singleton)
 	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_object_edited, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		obj    gdextension.Object
 		edited bool
 	}{gdextension.Object(gdreference.GetObject(gdclass.GetObject(obj[0])[0])), edited})
 }
-func (self class) IsObjectEdited(obj [1]gd.Object) bool { //gd:EditorInterface.is_object_edited
+func (self class) IsObjectEdited(obj [1]gdreference.Object) bool { //gd:EditorInterface.is_object_edited
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_object_edited, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetObject(obj[0])[0]))})
 	var ret = r_ret
@@ -1361,5 +1361,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorInterface", func(ptr gd.Object) any { return Instance{gdclass.NewEditorInterface(ptr)} })
+	gdclass.Register("EditorInterface", func(ptr gdreference.Object) any { return Instance{gdclass.NewEditorInterface(ptr)} })
 }

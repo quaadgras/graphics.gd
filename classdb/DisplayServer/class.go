@@ -56,7 +56,7 @@ var _ Object.ID
 
 type _ gdclass.Node
 
-var _ gd.Object
+var _ gd.String
 var _ RefCounted.Instance
 var _ reflect.Type
 var _ callframe.Frame
@@ -3350,23 +3350,23 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.DisplayServer
 
-func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
-func (self *class) SetObject(obj [1]gd.Object) bool {
+func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (self *class) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewDisplayServer(obj[0])
 		return true
 	}
 	return false
 }
-func (self *Instance) SetObject(obj [1]gd.Object) bool {
+func (self *Instance) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewDisplayServer(obj[0])
 		return true
 	}
 	return false
 }
-func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
-func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
+func (o Instance) AsObject() [1]gdreference.Object      { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gdreference.Object { return o.Super().AsObject() }
 
 func (self class) HasFeature(feature Feature) bool { //gd:DisplayServer.has_feature
 	once.Do(singleton)
@@ -5243,11 +5243,11 @@ func (self class) IsWindowTransparencyAvailable() bool { //gd:DisplayServer.is_w
 	var ret = r_ret
 	return ret
 }
-func (self class) RegisterAdditionalOutput(obj [1]gd.Object) { //gd:DisplayServer.register_additional_output
+func (self class) RegisterAdditionalOutput(obj [1]gdreference.Object) { //gd:DisplayServer.register_additional_output
 	once.Do(singleton)
 	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.register_additional_output, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0]))})
 }
-func (self class) UnregisterAdditionalOutput(obj [1]gd.Object) { //gd:DisplayServer.unregister_additional_output
+func (self class) UnregisterAdditionalOutput(obj [1]gdreference.Object) { //gd:DisplayServer.unregister_additional_output
 	once.Do(singleton)
 	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.unregister_additional_output, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetObject(obj[0])[0]))})
 }
@@ -5271,7 +5271,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("DisplayServer", func(ptr gd.Object) any { return Instance{gdclass.NewDisplayServer(ptr)} })
+	gdclass.Register("DisplayServer", func(ptr gdreference.Object) any { return Instance{gdclass.NewDisplayServer(ptr)} })
 }
 
 type Feature int64 //gd:DisplayServer.Feature

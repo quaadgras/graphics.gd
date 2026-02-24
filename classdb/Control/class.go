@@ -91,7 +91,7 @@ var _ Object.ID
 
 type _ gdclass.Node
 
-var _ gd.Object
+var _ gd.String
 var _ RefCounted.Instance
 var _ reflect.Type
 var _ callframe.Frame
@@ -2267,23 +2267,23 @@ func (self Instance) IsLayoutRtl() bool { //gd:Control.is_layout_rtl
 type Advanced = class
 type class [1]gdclass.Control
 
-func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
-func (self *class) SetObject(obj [1]gd.Object) bool {
+func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (self *class) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewControl(obj[0])
 		return true
 	}
 	return false
 }
-func (self *Instance) SetObject(obj [1]gd.Object) bool {
+func (self *Instance) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewControl(obj[0])
 		return true
 	}
 	return false
 }
-func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
-func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
+func (o Instance) AsObject() [1]gdreference.Object      { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gdreference.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.Control{gdclass.NewControl(gdreference.NewObject())})
@@ -3152,7 +3152,7 @@ func (class) _drop_data(impl func(ptr gdclass.Receiver, at_position Vector2.XY, 
 		impl(self, at_position, data)
 	}
 }
-func (class) _make_custom_tooltip(impl func(ptr gdclass.Receiver, for_text String.Readable) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _make_custom_tooltip(impl func(ptr gdclass.Receiver, for_text String.Readable) [1]gdreference.Object) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var for_text = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(for_text))
@@ -4161,7 +4161,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Control", func(ptr gd.Object) any { return Instance{gdclass.NewControl(ptr)} })
+	gdclass.Register("Control", func(ptr gdreference.Object) any { return Instance{gdclass.NewControl(ptr)} })
 }
 
 type FocusMode int64 //gd:Control.FocusMode

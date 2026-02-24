@@ -42,7 +42,7 @@ var _ Object.ID
 
 type _ gdclass.Node
 
-var _ gd.Object
+var _ gd.String
 var _ RefCounted.Instance
 var _ reflect.Type
 var _ callframe.Frame
@@ -171,23 +171,23 @@ func (self Instance) CheckForInvalidation(path string) { //gd:EditorResourcePrev
 type Advanced = class
 type class [1]gdclass.EditorResourcePreview
 
-func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
-func (self *class) SetObject(obj [1]gd.Object) bool {
+func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (self *class) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorResourcePreview(obj[0])
 		return true
 	}
 	return false
 }
-func (self *Instance) SetObject(obj [1]gd.Object) bool {
+func (self *Instance) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorResourcePreview(obj[0])
 		return true
 	}
 	return false
 }
-func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
-func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
+func (o Instance) AsObject() [1]gdreference.Object      { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gdreference.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.EditorResourcePreview{gdclass.NewEditorResourcePreview(gdreference.NewObject())})
@@ -209,7 +209,7 @@ func New() Instance {
 	return casted
 }
 
-func (self class) QueueResourcePreview(path String.Readable, receiver [1]gd.Object, receiver_func String.Name, userdata variant.Any) { //gd:EditorResourcePreview.queue_resource_preview
+func (self class) QueueResourcePreview(path String.Readable, receiver [1]gdreference.Object, receiver_func String.Name, userdata variant.Any) { //gd:EditorResourcePreview.queue_resource_preview
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_resource_preview, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeVariant<<16), &struct {
 		path          gdextension.String
 		receiver      gdextension.Object
@@ -217,7 +217,7 @@ func (self class) QueueResourcePreview(path String.Readable, receiver [1]gd.Obje
 		userdata      gdextension.Variant
 	}{pointers.Get(gd.InternalString(path)), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(receiver[0])[0])), pointers.Get(gd.InternalStringName(receiver_func)), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))})
 }
-func (self class) QueueEditedResourcePreview(resource [1]gdclass.Resource, receiver [1]gd.Object, receiver_func String.Name, userdata variant.Any) { //gd:EditorResourcePreview.queue_edited_resource_preview
+func (self class) QueueEditedResourcePreview(resource [1]gdclass.Resource, receiver [1]gdreference.Object, receiver_func String.Name, userdata variant.Any) { //gd:EditorResourcePreview.queue_edited_resource_preview
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_edited_resource_preview, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeVariant<<16), &struct {
 		resource      gdextension.Object
 		receiver      gdextension.Object
@@ -272,5 +272,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorResourcePreview", func(ptr gd.Object) any { return Instance{gdclass.NewEditorResourcePreview(ptr)} })
+	gdclass.Register("EditorResourcePreview", func(ptr gdreference.Object) any { return Instance{gdclass.NewEditorResourcePreview(ptr)} })
 }

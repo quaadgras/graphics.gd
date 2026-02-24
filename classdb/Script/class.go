@@ -42,7 +42,7 @@ var _ Object.ID
 
 type _ gdclass.Node
 
-var _ gd.Object
+var _ gd.String
 var _ RefCounted.Instance
 var _ reflect.Type
 var _ callframe.Frame
@@ -291,23 +291,23 @@ func (self Instance) GetRpcConfig() any { //gd:Script.get_rpc_config
 type Advanced = class
 type class [1]gdclass.Script
 
-func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
-func (self *class) SetObject(obj [1]gd.Object) bool {
+func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (self *class) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewScript(obj[0])
 		return true
 	}
 	return false
 }
-func (self *Instance) SetObject(obj [1]gd.Object) bool {
+func (self *Instance) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewScript(obj[0])
 		return true
 	}
 	return false
 }
-func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
-func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
+func (o Instance) AsObject() [1]gdreference.Object      { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gdreference.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.Script{gdclass.NewScript(gdreference.NewObject())})
@@ -348,7 +348,7 @@ func (self class) CanInstantiate() bool { //gd:Script.can_instantiate
 	var ret = r_ret
 	return ret
 }
-func (self class) InstanceHas(base_object [1]gd.Object) bool { //gd:Script.instance_has
+func (self class) InstanceHas(base_object [1]gdreference.Object) bool { //gd:Script.instance_has
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.instance_has, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ base_object gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetObject(base_object[0])[0]))})
 	var ret = r_ret
 	return ret
@@ -455,7 +455,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Script", func(ptr gd.Object) any { return Instance{gdclass.NewScript(ptr)} })
+	gdclass.Register("Script", func(ptr gdreference.Object) any { return Instance{gdclass.NewScript(ptr)} })
 }
 
 type SignalInfo struct {

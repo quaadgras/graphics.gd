@@ -50,7 +50,7 @@ var _ Object.ID
 
 type _ gdclass.Node
 
-var _ gd.Object
+var _ gd.String
 var _ RefCounted.Instance
 var _ reflect.Type
 var _ callframe.Frame
@@ -594,23 +594,23 @@ func Get(peer Node.Instance) Instance { //gd:Node.get_tree
 type Advanced = class
 type class [1]gdclass.SceneTree
 
-func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
-func (self *class) SetObject(obj [1]gd.Object) bool {
+func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (self *class) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewSceneTree(obj[0])
 		return true
 	}
 	return false
 }
-func (self *Instance) SetObject(obj [1]gd.Object) bool {
+func (self *Instance) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewSceneTree(obj[0])
 		return true
 	}
 	return false
 }
-func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
-func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
+func (o Instance) AsObject() [1]gdreference.Object      { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gdreference.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.SceneTree{gdclass.NewSceneTree(gdreference.NewObject())})
@@ -948,7 +948,7 @@ func (self class) IsPhysicsInterpolationEnabled() bool { //gd:SceneTree.is_physi
 	var ret = r_ret
 	return ret
 }
-func (self class) QueueDelete(obj [1]gd.Object) { //gd:SceneTree.queue_delete
+func (self class) QueueDelete(obj [1]gdreference.Object) { //gd:SceneTree.queue_delete
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_delete, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0]))})
 }
 func (self class) CallGroupFlags(flags int64, group String.Name, method String.Name, args ...gd.Variant) { //gd:SceneTree.call_group_flags
@@ -1248,7 +1248,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("SceneTree", func(ptr gd.Object) any { return Instance{gdclass.NewSceneTree(ptr)} })
+	gdclass.Register("SceneTree", func(ptr gdreference.Object) any { return Instance{gdclass.NewSceneTree(ptr)} })
 }
 
 type GroupCallFlags int64 //gd:SceneTree.GroupCallFlags

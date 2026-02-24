@@ -197,7 +197,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprintln(file)
 		fmt.Fprintln(file, "var _ Object.ID")
 		fmt.Fprintln(file, "type _ gdclass.Node")
-		fmt.Fprintln(file, "var _ gd.Object")
+		fmt.Fprintln(file, "var _ gd.String")
 		fmt.Fprintln(file, "var _ RefCounted.Instance")
 		fmt.Fprintln(file, "var _ reflect.Type")
 		fmt.Fprintln(file, "var _ callframe.Frame")
@@ -410,15 +410,15 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			fmt.Fprintf(file, "\ntype Advanced = class\n")
 		}
 		fmt.Fprintf(file, "type class [1]gdclass.%s\n", class.Name)
-		fmt.Fprintf(file, "func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }\n")
-		fmt.Fprintln(file, "func (self *class) SetObject(obj [1]gd.Object) bool {")
+		fmt.Fprintf(file, "func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }\n")
+		fmt.Fprintln(file, "func (self *class) SetObject(obj [1]gdreference.Object) bool {")
 		fmt.Fprintln(file, "\tif gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {")
 		fmt.Fprintf(file, "\t\tself[0] = gdclass.New%[1]s(obj[0])\n", class.Name)
 		fmt.Fprintln(file, "\t\treturn true")
 		fmt.Fprintln(file, "\t}")
 		fmt.Fprintln(file, "\treturn false")
 		fmt.Fprintln(file, "}")
-		fmt.Fprintln(file, "func (self *Instance) SetObject(obj [1]gd.Object) bool {")
+		fmt.Fprintln(file, "func (self *Instance) SetObject(obj [1]gdreference.Object) bool {")
 		fmt.Fprintln(file, "\tif gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {")
 		fmt.Fprintf(file, "\t\tself[0] = gdclass.New%[1]s(obj[0])\n", class.Name)
 		fmt.Fprintln(file, "\t\treturn true")
@@ -426,8 +426,8 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprintln(file, "\treturn false")
 		fmt.Fprintln(file, "}")
 
-		fmt.Fprintf(file, "func (o Instance) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }\n")
-		fmt.Fprintln(file, "func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }")
+		fmt.Fprintf(file, "func (o Instance) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }\n")
+		fmt.Fprintln(file, "func (o *Extension[T]) AsObject() [1]gdreference.Object { return o.Super().AsObject() }")
 		if !singleton {
 			classDB.new(file, class)
 		}
@@ -490,7 +490,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			fmt.Fprintf(file, "}\n")
 		}
 		fmt.Fprintf(file, `func init() {`)
-		fmt.Fprintf(file, `gdclass.Register("%s", func(ptr gd.Object) any { return Instance{gdclass.New%[1]s(ptr)} })`, class.Name)
+		fmt.Fprintf(file, `gdclass.Register("%s", func(ptr gdreference.Object) any { return Instance{gdclass.New%[1]s(ptr)} })`, class.Name)
 		fmt.Fprintf(file, "}\n")
 		if class.Name != "RenderingDevice" {
 			for _, enum := range class.Enums {

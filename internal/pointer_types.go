@@ -12,7 +12,6 @@ import (
 // is required for the pointers garbage collector to call the correct
 // Free method.
 
-type Object = gdreference.Object
 type RefCounted gdreference.Object
 
 type enginePointer = EnginePointer

@@ -25,7 +25,7 @@ func (s Signal) Free() {
 	}
 }
 
-func NewSignalOf(object [1]Object, signal StringName) Signal {
+func NewSignalOf(object [1]gdreference.Object, signal StringName) Signal {
 	return pointers.New[Signal](noescape.Make[gdextension.Signal](builtin.creation.Signal[2], gdextension.SizeObject<<4|gdextension.SizeStringName<<8, unsafe.Pointer(&struct {
 		object gdextension.Object
 		signal gdextension.StringName

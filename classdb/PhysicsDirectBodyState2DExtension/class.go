@@ -43,7 +43,7 @@ var _ Object.ID
 
 type _ gdclass.Node
 
-var _ gd.Object
+var _ gd.String
 var _ RefCounted.Instance
 var _ reflect.Type
 var _ callframe.Frame
@@ -991,23 +991,23 @@ func (Instance) _get_space_state(impl func(ptr gdclass.Receiver) PhysicsDirectSp
 type Advanced = class
 type class [1]gdclass.PhysicsDirectBodyState2DExtension
 
-func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
-func (self *class) SetObject(obj [1]gd.Object) bool {
+func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (self *class) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewPhysicsDirectBodyState2DExtension(obj[0])
 		return true
 	}
 	return false
 }
-func (self *Instance) SetObject(obj [1]gd.Object) bool {
+func (self *Instance) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewPhysicsDirectBodyState2DExtension(obj[0])
 		return true
 	}
 	return false
 }
-func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
-func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
+func (o Instance) AsObject() [1]gdreference.Object      { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gdreference.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.PhysicsDirectBodyState2DExtension{gdclass.NewPhysicsDirectBodyState2DExtension(gdreference.NewObject())})
@@ -1326,7 +1326,7 @@ func (class) _get_contact_collider_id(impl func(ptr gdclass.Receiver, contact_id
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (class) _get_contact_collider_object(impl func(ptr gdclass.Receiver, contact_idx int64) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_contact_collider_object(impl func(ptr gdclass.Receiver, contact_idx int64) [1]gdreference.Object) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1608,5 +1608,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PhysicsDirectBodyState2DExtension", func(ptr gd.Object) any { return Instance{gdclass.NewPhysicsDirectBodyState2DExtension(ptr)} })
+	gdclass.Register("PhysicsDirectBodyState2DExtension", func(ptr gdreference.Object) any { return Instance{gdclass.NewPhysicsDirectBodyState2DExtension(ptr)} })
 }

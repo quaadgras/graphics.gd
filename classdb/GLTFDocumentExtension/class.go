@@ -52,7 +52,7 @@ var _ Object.ID
 
 type _ gdclass.Node
 
-var _ gd.Object
+var _ gd.String
 var _ RefCounted.Instance
 var _ reflect.Type
 var _ callframe.Frame
@@ -825,7 +825,7 @@ func (Instance) _export_object_model_property(impl func(ptr gdclass.Receiver, st
 
 		defer gdreference.EndObject(gdclass.GetNode(godot_node[0])[0])
 		var gltf_node_index = gd.UnsafeGet[int64](p_args, 3)
-		var target_object = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 4), gd.Free)}
+		var target_object = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 4), gd.Free)}
 		defer gdreference.EndObject(target_object[0])
 		var target_depth = gd.UnsafeGet[int64](p_args, 5)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1029,23 +1029,23 @@ func (Instance) _export_post(impl func(ptr gdclass.Receiver, state GLTFState.Ins
 type Advanced = class
 type class [1]gdclass.GLTFDocumentExtension
 
-func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
-func (self *class) SetObject(obj [1]gd.Object) bool {
+func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (self *class) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewGLTFDocumentExtension(obj[0])
 		return true
 	}
 	return false
 }
-func (self *Instance) SetObject(obj [1]gd.Object) bool {
+func (self *Instance) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewGLTFDocumentExtension(obj[0])
 		return true
 	}
 	return false
 }
-func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
-func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
+func (o Instance) AsObject() [1]gdreference.Object      { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gdreference.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.GLTFDocumentExtension{gdclass.NewGLTFDocumentExtension(gdreference.NewObject())})
@@ -1347,7 +1347,7 @@ func (class) _export_preserialize(impl func(ptr gdclass.Receiver, state [1]gdcla
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (class) _export_object_model_property(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, node_path Path.ToNode, godot_node [1]gdclass.Node, gltf_node_index int64, target_object [1]gd.Object, target_depth int64) [1]gdclass.GLTFObjectModelProperty) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _export_object_model_property(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, node_path Path.ToNode, godot_node [1]gdclass.Node, gltf_node_index int64, target_object [1]gdreference.Object, target_depth int64) [1]gdclass.GLTFObjectModelProperty) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
@@ -1358,7 +1358,7 @@ func (class) _export_object_model_property(impl func(ptr gdclass.Receiver, state
 
 		defer gdreference.EndObject(gdclass.GetNode(godot_node[0])[0])
 		var gltf_node_index = gd.UnsafeGet[int64](p_args, 3)
-		var target_object = [1]gd.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 4), gd.Free)}
+		var target_object = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 4), gd.Free)}
 		defer gdreference.EndObject(target_object[0])
 		var target_depth = gd.UnsafeGet[int64](p_args, 5)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1606,5 +1606,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("GLTFDocumentExtension", func(ptr gd.Object) any { return Instance{gdclass.NewGLTFDocumentExtension(ptr)} })
+	gdclass.Register("GLTFDocumentExtension", func(ptr gdreference.Object) any { return Instance{gdclass.NewGLTFDocumentExtension(ptr)} })
 }

@@ -24,7 +24,7 @@ func Is[T gd.IsClass](value gd.IsClass) bool { //gd:Object.is_class
 // As attempts to cast the given class to T, returning true
 // if the cast was successful.
 func As[T gd.IsClass](value gd.IsClass) (T, bool) {
-	if value.AsObject() == ([1]gd.Object{}) || value == nil {
+	if value.AsObject() == ([1]gdreference.Object{}) || value == nil {
 		var zero T
 		return zero, false
 	}

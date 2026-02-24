@@ -40,7 +40,7 @@ func PointerBorrowedTemporarily(ptr gdextension.Object) gdreference.Object {
 	return gdreference.LetObject(ptr)
 }
 
-func PointerWithOwnershipTransferredToGodot(obj Object) EnginePointer {
+func PointerWithOwnershipTransferredToGodot(obj gdreference.Object) EnginePointer {
 	raw, ok := gdreference.EndObject(obj)
 	if !ok {
 		panic("illegal transfer of ownership from Go -> Godot")
@@ -64,19 +64,19 @@ func PointerMustAssertInstanceID[T pointers.Generic[T, [3]uint64]](ptr gdextensi
 	return pointers.Let[T]([3]uint64{uint64(ptr), uint64(id)})
 }
 
-func PointerLifetimeBoundTo(obj [1]Object, ptr gdextension.Object) gdreference.Object {
+func PointerLifetimeBoundTo(obj [1]gdreference.Object, ptr gdextension.Object) gdreference.Object {
 	if ptr == 0 {
 		return gdreference.Object{}
 	}
 	return gdreference.LetObject(ptr)
 }
 
-func CallerIncrements(obj [1]Object) gdextension.Object {
+func CallerIncrements(obj [1]gdreference.Object) gdextension.Object {
 	RefCounted(obj[0]).Reference()
-	return ObjectChecked([1]Object{Object(obj[0])})
+	return ObjectChecked([1]gdreference.Object{gdreference.Object(obj[0])})
 }
 
-func ObjectChecked(obj [1]Object) gdextension.Object {
+func ObjectChecked(obj [1]gdreference.Object) gdextension.Object {
 	raw := gdreference.GetObject(obj[0])
 	if raw == 0 {
 		panic("use of an invalid reference (please read https://the.graphics.gd/guide/memory)")
@@ -84,8 +84,8 @@ func ObjectChecked(obj [1]Object) gdextension.Object {
 	return raw
 }
 
-func (self RefCounted) AsObject() [1]Object {
-	return *(*[1]Object)(unsafe.Pointer(&self))
+func (self RefCounted) AsObject() [1]gdreference.Object {
+	return *(*[1]gdreference.Object)(unsafe.Pointer(&self))
 }
 
 func (class RefCounted) Virtual(s string) reflect.Value {
@@ -96,7 +96,7 @@ func (self RefCounted) Free() {
 	ObjectFree(self.AsObject()[0])
 }
 
-func (self *RefCounted) SetObject(obj [1]Object) bool {
+func (self *RefCounted) SetObject(obj [1]gdreference.Object) bool {
 	ref := gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), refCountedClassTag)
 	if ref != 0 {
 		*self = RefCounted(obj[0])
@@ -132,7 +132,7 @@ func Free(raw gdextension.Object) {
 	gdextension.Host.Objects.Unsafe.Free(raw)
 }
 
-func ObjectFree(self Object) {
+func ObjectFree(self gdreference.Object) {
 	raw, ok := gdreference.EndObject(self)
 	if !ok {
 		return
@@ -145,7 +145,7 @@ type Class[T any, S IsClass] struct {
 	super S
 }
 
-func (class *Class[T, S]) AsObject() [1]Object {
+func (class *Class[T, S]) AsObject() [1]gdreference.Object {
 	return class.super.AsObject()
 }
 
@@ -191,14 +191,14 @@ type Extends[T IsClass] interface {
 
 type PointerToClass interface {
 	IsClass
-	SetPointer([1]Object)
+	SetPointer([1]gdreference.Object)
 }
 
 type IsClass interface {
 	Virtual(string) reflect.Value
-	AsObject() [1]Object
+	AsObject() [1]gdreference.Object
 }
 
 type IsClassCastable interface {
-	SetObject([1]Object) bool
+	SetObject([1]gdreference.Object) bool
 }

@@ -56,7 +56,7 @@ var _ Object.ID
 
 type _ gdclass.Node
 
-var _ gd.Object
+var _ gd.String
 var _ RefCounted.Instance
 var _ reflect.Type
 var _ callframe.Frame
@@ -1392,23 +1392,23 @@ func (self Instance) CallRecursive(method string, args ...any) { //gd:TreeItem.c
 type Advanced = class
 type class [1]gdclass.TreeItem
 
-func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
-func (self *class) SetObject(obj [1]gd.Object) bool {
+func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (self *class) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewTreeItem(obj[0])
 		return true
 	}
 	return false
 }
-func (self *Instance) SetObject(obj [1]gd.Object) bool {
+func (self *Instance) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewTreeItem(obj[0])
 		return true
 	}
 	return false
 }
-func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
-func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
+func (o Instance) AsObject() [1]gdreference.Object      { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gdreference.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.TreeItem{gdclass.NewTreeItem(gdreference.NewObject())})
@@ -1737,7 +1737,7 @@ func (self class) GetMetadata(column int64) variant.Any { //gd:TreeItem.get_meta
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-func (self class) SetCustomDraw(column int64, obj [1]gd.Object, callback String.Name) { //gd:TreeItem.set_custom_draw
+func (self class) SetCustomDraw(column int64, obj [1]gdreference.Object, callback String.Name) { //gd:TreeItem.set_custom_draw
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_draw, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeStringName<<12), &struct {
 		column   int64
 		obj      gdextension.Object
@@ -2162,7 +2162,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("TreeItem", func(ptr gd.Object) any { return Instance{gdclass.NewTreeItem(ptr)} })
+	gdclass.Register("TreeItem", func(ptr gdreference.Object) any { return Instance{gdclass.NewTreeItem(ptr)} })
 }
 
 type TreeCellMode int64 //gd:TreeItem.TreeCellMode

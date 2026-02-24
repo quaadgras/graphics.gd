@@ -43,7 +43,7 @@ var _ Object.ID
 
 type _ gdclass.Node
 
-var _ gd.Object
+var _ gd.String
 var _ RefCounted.Instance
 var _ reflect.Type
 var _ callframe.Frame
@@ -253,23 +253,23 @@ func (self Instance) GetColliderVelocity() Vector2.XY { //gd:KinematicCollision2
 type Advanced = class
 type class [1]gdclass.KinematicCollision2D
 
-func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
-func (self *class) SetObject(obj [1]gd.Object) bool {
+func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (self *class) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewKinematicCollision2D(obj[0])
 		return true
 	}
 	return false
 }
-func (self *Instance) SetObject(obj [1]gd.Object) bool {
+func (self *Instance) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewKinematicCollision2D(obj[0])
 		return true
 	}
 	return false
 }
-func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
-func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
+func (o Instance) AsObject() [1]gdreference.Object      { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gdreference.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.KinematicCollision2D{gdclass.NewKinematicCollision2D(gdreference.NewObject())})
@@ -322,14 +322,14 @@ func (self class) GetDepth() float64 { //gd:KinematicCollision2D.get_depth
 	var ret = r_ret
 	return ret
 }
-func (self class) GetLocalShape() [1]gd.Object { //gd:KinematicCollision2D.get_local_shape
+func (self class) GetLocalShape() [1]gdreference.Object { //gd:KinematicCollision2D.get_local_shape
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_local_shape, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gd.Object{gdreference.LetObject(r_ret)}
+	var ret = [1]gdreference.Object{gdreference.LetObject(r_ret)}
 	return ret
 }
-func (self class) GetCollider() [1]gd.Object { //gd:KinematicCollision2D.get_collider
+func (self class) GetCollider() [1]gdreference.Object { //gd:KinematicCollision2D.get_collider
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_collider, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gd.Object{gdreference.LetObject(r_ret)}
+	var ret = [1]gdreference.Object{gdreference.LetObject(r_ret)}
 	return ret
 }
 func (self class) GetColliderId() int64 { //gd:KinematicCollision2D.get_collider_id
@@ -342,9 +342,9 @@ func (self class) GetColliderRid() RID.Any { //gd:KinematicCollision2D.get_colli
 	var ret = r_ret
 	return ret
 }
-func (self class) GetColliderShape() [1]gd.Object { //gd:KinematicCollision2D.get_collider_shape
+func (self class) GetColliderShape() [1]gdreference.Object { //gd:KinematicCollision2D.get_collider_shape
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_collider_shape, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gd.Object{gdreference.LetObject(r_ret)}
+	var ret = [1]gdreference.Object{gdreference.LetObject(r_ret)}
 	return ret
 }
 func (self class) GetColliderShapeIndex() int64 { //gd:KinematicCollision2D.get_collider_shape_index
@@ -378,5 +378,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("KinematicCollision2D", func(ptr gd.Object) any { return Instance{gdclass.NewKinematicCollision2D(ptr)} })
+	gdclass.Register("KinematicCollision2D", func(ptr gdreference.Object) any { return Instance{gdclass.NewKinematicCollision2D(ptr)} })
 }

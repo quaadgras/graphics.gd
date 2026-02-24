@@ -42,7 +42,7 @@ var _ Object.ID
 
 type _ gdclass.Node
 
-var _ gd.Object
+var _ gd.String
 var _ RefCounted.Instance
 var _ reflect.Type
 var _ callframe.Frame
@@ -513,23 +513,23 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.Engine
 
-func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
-func (self *class) SetObject(obj [1]gd.Object) bool {
+func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (self *class) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewEngine(obj[0])
 		return true
 	}
 	return false
 }
-func (self *Instance) SetObject(obj [1]gd.Object) bool {
+func (self *Instance) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewEngine(obj[0])
 		return true
 	}
 	return false
 }
-func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
-func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
+func (o Instance) AsObject() [1]gdreference.Object      { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gdreference.Object { return o.Super().AsObject() }
 
 /*
 If false, stops printing error and warning messages to the console and editor Output log. This can be used to hide error and warning messages during unit test suite runs. This property is equivalent to the [ProjectSettings] "application/run/disable_stderr" project setting.
@@ -827,13 +827,13 @@ func (self class) HasSingleton(name String.Name) bool { //gd:Engine.has_singleto
 	var ret = r_ret
 	return ret
 }
-func (self class) GetSingleton(name String.Name) [1]gd.Object { //gd:Engine.get_singleton
+func (self class) GetSingleton(name String.Name) [1]gdreference.Object { //gd:Engine.get_singleton
 	once.Do(singleton)
 	var r_ret = jumponly.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.get_singleton, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
-	var ret = [1]gd.Object{gdreference.LetObject(r_ret)}
+	var ret = [1]gdreference.Object{gdreference.LetObject(r_ret)}
 	return ret
 }
-func (self class) RegisterSingleton(name String.Name, instance [1]gd.Object) { //gd:Engine.register_singleton
+func (self class) RegisterSingleton(name String.Name, instance [1]gdreference.Object) { //gd:Engine.register_singleton
 	once.Do(singleton)
 	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.register_singleton, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name     gdextension.StringName
@@ -932,7 +932,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Engine", func(ptr gd.Object) any { return Instance{gdclass.NewEngine(ptr)} })
+	gdclass.Register("Engine", func(ptr gdreference.Object) any { return Instance{gdclass.NewEngine(ptr)} })
 }
 
 type AuthorInfo struct {

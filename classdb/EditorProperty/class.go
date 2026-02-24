@@ -44,7 +44,7 @@ var _ Object.ID
 
 type _ gdclass.Node
 
-var _ gd.Object
+var _ gd.String
 var _ RefCounted.Instance
 var _ reflect.Type
 var _ callframe.Frame
@@ -319,23 +319,23 @@ func (self MoreArgs) EmitChanged(property string, value any, field string, chang
 type Advanced = class
 type class [1]gdclass.EditorProperty
 
-func (o class) AsObject() [1]gd.Object { return *(*[1]gd.Object)(ie.As(&o)) }
-func (self *class) SetObject(obj [1]gd.Object) bool {
+func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (self *class) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorProperty(obj[0])
 		return true
 	}
 	return false
 }
-func (self *Instance) SetObject(obj [1]gd.Object) bool {
+func (self *Instance) SetObject(obj [1]gdreference.Object) bool {
 	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
 		self[0] = gdclass.NewEditorProperty(obj[0])
 		return true
 	}
 	return false
 }
-func (o Instance) AsObject() [1]gd.Object      { return *(*[1]gd.Object)(ie.As(&o)) }
-func (o *Extension[T]) AsObject() [1]gd.Object { return o.Super().AsObject() }
+func (o Instance) AsObject() [1]gdreference.Object      { return *(*[1]gdreference.Object)(ie.As(&o)) }
+func (o *Extension[T]) AsObject() [1]gdreference.Object { return o.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
 		var placeholder = Instance([1]gdclass.EditorProperty{gdclass.NewEditorProperty(gdreference.NewObject())})
@@ -597,9 +597,9 @@ func (self class) GetEditedProperty() String.Name { //gd:EditorProperty.get_edit
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-func (self class) GetEditedObject() [1]gd.Object { //gd:EditorProperty.get_edited_object
+func (self class) GetEditedObject() [1]gdreference.Object { //gd:EditorProperty.get_edited_object
 	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_object, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gd.Object{gdreference.LetObject(r_ret)}
+	var ret = [1]gdreference.Object{gdreference.LetObject(r_ret)}
 	return ret
 }
 func (self class) UpdateProperty() { //gd:EditorProperty.update_property
@@ -646,7 +646,7 @@ func (self class) IsSelected() bool { //gd:EditorProperty.is_selected
 func (self class) Select(focusable int64) { //gd:EditorProperty.select_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.select_, 0|(gdextension.SizeInt<<4), &struct{ focusable int64 }{focusable})
 }
-func (self class) SetObjectAndProperty(obj [1]gd.Object, property String.Name) { //gd:EditorProperty.set_object_and_property
+func (self class) SetObjectAndProperty(obj [1]gdreference.Object, property String.Name) { //gd:EditorProperty.set_object_and_property
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_object_and_property, 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8), &struct {
 		obj      gdextension.Object
 		property gdextension.StringName
@@ -916,5 +916,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorProperty", func(ptr gd.Object) any { return Instance{gdclass.NewEditorProperty(ptr)} })
+	gdclass.Register("EditorProperty", func(ptr gdreference.Object) any { return Instance{gdclass.NewEditorProperty(ptr)} })
 }
