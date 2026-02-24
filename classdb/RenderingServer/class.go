@@ -10996,7 +10996,7 @@ const (
 	FeatureMultithreaded Features = 1
 )
 
-type Surface map[interface{}]interface{}
+type Surface map[any]any
 type ParticlesEmitFlag int
 
 const ArrayWeightsSize int = 4                             //gd:RenderingServer.ARRAY_WEIGHTS_SIZE

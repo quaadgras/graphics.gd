@@ -420,4 +420,4 @@ func init() {
 	gdclass.Register("GLTFLight", func(ptr gdreference.Object) any { return Instance{gdclass.NewGLTFLight(ptr)} })
 }
 
-type Structure map[interface{}]interface{}
+type Structure map[any]any

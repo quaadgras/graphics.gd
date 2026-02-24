@@ -365,4 +365,4 @@ func init() {
 	gdclass.Register("GLTFCamera", func(ptr gdreference.Object) any { return Instance{gdclass.NewGLTFCamera(ptr)} })
 }
 
-type Structure map[interface{}]interface{}
+type Structure map[any]any
