@@ -13,6 +13,7 @@ type Receiver unsafe.Pointer
 
 type Interface interface {
 	superType() reflect.Type
+	goType() reflect.Type
 	getObject() [1]gd.Object
 	Virtual(string) reflect.Value
 }
@@ -24,10 +25,15 @@ type Pointer interface {
 	setObject([1]gd.Object)
 
 	superType() reflect.Type
+	goType() reflect.Type
 }
 
 func SuperType(class Interface) reflect.Type {
 	return class.superType()
+}
+
+func GoType(class Interface) reflect.Type {
+	return class.goType()
 }
 
 func SetObject(class Pointer, obj [1]gd.Object) {
@@ -74,6 +80,10 @@ func (class Extension[T, S]) superType() reflect.Type {
 	return reflect.TypeFor[S]()
 }
 
+func (class Extension[T, S]) goType() reflect.Type {
+	return reflect.TypeFor[T]()
+}
+
 func (class *Extension[T, S]) AsObject() [1]gd.Object {
 	obj := class.getObject()
 	if obj == ([1]gd.Object{}) {
@@ -113,6 +123,10 @@ func (class ExtensionInherits[S, T]) getObject() [1]gd.Object {
 
 func (class ExtensionInherits[S, T]) superType() reflect.Type {
 	return reflect.TypeFor[S]()
+}
+
+func (class ExtensionInherits[S, T]) goType() reflect.Type {
+	return reflect.TypeFor[T]()
 }
 
 func (class *ExtensionInherits[S, T]) setObject(obj [1]gd.Object) {

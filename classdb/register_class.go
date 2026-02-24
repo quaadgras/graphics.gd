@@ -142,6 +142,10 @@ func Register[T Class](exports ...any) {
 	var super = reflect.New(superType).Elem().Interface()
 	var classType = reflect.TypeFor[T]()
 
+	if classType != gdclass.GoType(([1]T{})[0]) {
+		panic("classdb.Register: embedded Extension type must match the registered type\nSee https://the.graphics.gd/guide/classdb/register/#inheritance")
+	}
+
 	register := func() {
 		// Mark this type as registered and process any pending child registrations
 		registeredTypes[classType] = true
