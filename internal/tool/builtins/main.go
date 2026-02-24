@@ -151,6 +151,9 @@ func work() error {
 	if err := extractFromPackages("./variant/", tags); err != nil {
 		return xray.New(err)
 	}
+	if err := extractFromPackages("./classdb/", tags); err != nil {
+		return xray.New(err)
+	}
 	for _, builtin := range spec.BuiltinClasses {
 		if builtin.Name == "StringName" {
 			builtin.Name = "String"
