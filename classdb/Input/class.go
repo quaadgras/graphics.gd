@@ -504,7 +504,7 @@ Starts to vibrate the joypad. Joypads usually come with two rumble motors, a str
 
 Note: Not every hardware is compatible with long effect durations; it is recommended to restart an effect if it has to be played for more than a few seconds.
 
-Note: For macOS, vibration is only supported in macOS 11 and later.
+Note: For macOS, vibration is only supported in macOS 11 and later. When connected via USB, vibration is only supported for major brand controllers (except Xbox One and Xbox Series X/S controllers) due to macOS limitations.
 */
 func StartJoyVibration(device Device, weak_magnitude Float.X, strong_magnitude Float.X, duration Float.X) { //gd:Input.start_joy_vibration
 	Advanced().StartJoyVibration(int64(device), float64(weak_magnitude), float64(strong_magnitude), float64(duration))

@@ -5,11 +5,12 @@ Represents an object from the Java Native Interface. It can be returned from Jav
 
 Note: This class only works on Android. On any other platform, this class does nothing.
 
-Note: This class is not to be confused with JavaScriptObject.
+Note: This class is not to be confused with [JavaScriptObject].
 
 [JavaClass]: https://pkg.go.dev/graphics.gd/classdb/JavaClass
 [JavaClassWrapper]: https://pkg.go.dev/graphics.gd/classdb/JavaClassWrapper
 [JavaObject]: https://pkg.go.dev/graphics.gd/classdb/JavaObject
+[JavaScriptObject]: https://pkg.go.dev/graphics.gd/classdb/JavaScriptObject
 */
 package JavaObject
 

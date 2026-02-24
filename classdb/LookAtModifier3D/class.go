@@ -353,7 +353,12 @@ func (self Instance) SetUseSecondaryRotation(value bool) Instance { //gd:LookAtM
 /*
 The relative option. If true, the rotation is applied relative to the pose. If false, the rotation is applied relative to the rest. It means to replace the current pose with the [LookAtModifier3D]'s result.
 
+Note: This option affects the base angle for [UseAngleLimitation] unlike [IterateIK3D]'s [JointLimitation3D]. Since the [LookAtModifier3D] relies strongly on Euler rotation, the axis that determines the limitation and the actual rotation are strongly tied together.
+
+[IterateIK3D]: https://pkg.go.dev/graphics.gd/classdb/IterateIK3D
+[JointLimitation3D]: https://pkg.go.dev/graphics.gd/classdb/JointLimitation3D
 [LookAtModifier3D]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D
+[UseAngleLimitation]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.UseAngleLimitation
 */
 func (self Instance) Relative() bool { //gd:LookAtModifier3D.relative
 	return bool(class(self).IsRelative())
@@ -506,11 +511,13 @@ func (self Instance) SetEaseType(value Tween.EaseType) Instance { //gd:LookAtMod
 /*
 If true, limits the amount of rotation. For example, this helps to prevent a character's neck from rotating 360 degrees.
 
-Note: As with [AnimationTree] blending, interpolation is provided that favors [Skeleton3D.GetBoneRest]. This means that interpolation does not select the shortest path in some cases.
+Note: As with [AnimationTree] blending, interpolation is provided that favors [Skeleton3D.GetBoneRest] or [Skeleton3D.GetBonePose] depends on the [Relative] option. This means that interpolation does not select the shortest path in some cases.
 
 Note: Some values for [TransitionType] (such as [Tween.TransBack], [Tween.TransElastic], and [Tween.TransSpring]) may exceed the limitations. If interpolation occurs while overshooting the limitations, the result might not respect the bone rest.
 
 [AnimationTree]: https://pkg.go.dev/graphics.gd/classdb/AnimationTree
+[Relative]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.Relative
+[Skeleton3D.GetBonePose]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.GetBonePose
 [Skeleton3D.GetBoneRest]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.GetBoneRest
 [TransitionType]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.TransitionType
 */

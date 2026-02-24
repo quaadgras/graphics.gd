@@ -631,7 +631,7 @@ func (self Instance) SetShowHiddenFiles(value bool) Instance { //gd:FileDialog.s
 /*
 If true, and if supported by the current [DisplayServer], OS native dialog will be used instead of custom one.
 
-Note: On Android, it is only supported for Android 10+ devices and when using [AccessFilesystem]. For access mode [AccessResources] and [AccessUserdata], the system will fall back to custom FileDialog.
+Note: On Android, it is only supported when using [AccessFilesystem]. For access mode [AccessResources] and [AccessUserdata], the system will fall back to custom FileDialog.
 
 Note: On Linux and macOS, sandboxed apps always use native dialogs to access the host file system.
 

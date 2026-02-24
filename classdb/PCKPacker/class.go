@@ -109,10 +109,11 @@ type Instance [1]gdclass.PCKPacker
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	pck_start        gdextension.MethodForClass `hash:"508410629"`
-	add_file         gdextension.MethodForClass `hash:"2215643711"`
-	add_file_removal gdextension.MethodForClass `hash:"166001499"`
-	flush            gdextension.MethodForClass `hash:"1633102583"`
+	pck_start            gdextension.MethodForClass `hash:"508410629"`
+	add_file             gdextension.MethodForClass `hash:"2215643711"`
+	add_file_from_buffer gdextension.MethodForClass `hash:"1131482346"`
+	add_file_removal     gdextension.MethodForClass `hash:"166001499"`
+	flush                gdextension.MethodForClass `hash:"1633102583"`
 }
 
 func init() {
@@ -168,6 +169,20 @@ Adds the 'source_path' file to the current PCK package at the 'target_path' inte
 */
 func (self MoreArgs) AddFile(target_path string, source_path string, encrypt bool) error { //gd:PCKPacker.add_file
 	return error(gd.ToError(Advanced(self).AddFile(String.New(target_path), String.New(source_path), encrypt)))
+}
+
+/*
+Adds the 'data' to the current PCK package at the 'target_path' internal path. The res:// prefix for 'target_path' is optional and stripped internally. File content is immediately written to the PCK.
+*/
+func (self Instance) AddFileFromBuffer(target_path string, data []byte) error { //gd:PCKPacker.add_file_from_buffer
+	return error(gd.ToError(Advanced(self).AddFileFromBuffer(String.New(target_path), Packed.BytesFrom(data...), false)))
+}
+
+/*
+Adds the 'data' to the current PCK package at the 'target_path' internal path. The res:// prefix for 'target_path' is optional and stripped internally. File content is immediately written to the PCK.
+*/
+func (self MoreArgs) AddFileFromBuffer(target_path string, data []byte, encrypt bool) error { //gd:PCKPacker.add_file_from_buffer
+	return error(gd.ToError(Advanced(self).AddFileFromBuffer(String.New(target_path), Packed.BytesFrom(data...), encrypt)))
 }
 
 /*
@@ -258,6 +273,15 @@ func (self class) AddFile(target_path String.Readable, source_path String.Readab
 		source_path gdextension.String
 		encrypt     bool
 	}{pointers.Get(gd.InternalString(target_path)), pointers.Get(gd.InternalString(source_path)), encrypt})
+	var ret = Error.Code(r_ret)
+	return ret
+}
+func (self class) AddFileFromBuffer(target_path String.Readable, data Packed.Bytes, encrypt bool) Error.Code { //gd:PCKPacker.add_file_from_buffer
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_file_from_buffer, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeBool<<12), &struct {
+		target_path gdextension.String
+		data        gdextension.PackedArray[byte]
+		encrypt     bool
+	}{pointers.Get(gd.InternalString(target_path)), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array))), encrypt})
 	var ret = Error.Code(r_ret)
 	return ret
 }
