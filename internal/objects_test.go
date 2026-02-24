@@ -240,7 +240,6 @@ func init() {
 }
 
 func TestFree(t *testing.T) {
-	t.Skip()
 	runOnMain(t, func(t testing.TB) {
 		var obj = new(MyObject)
 		Object.Free(obj)

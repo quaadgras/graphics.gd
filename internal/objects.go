@@ -13,6 +13,7 @@ import (
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/internal/ring"
 )
 
 type ExtensionClassCallVirtualFunc func(any, gdextension.Pointer, gdextension.Pointer)
@@ -127,6 +128,7 @@ func Free(raw gdextension.Object) {
 		fmt.Fprintln(os.Stderr, "FREE ", ObjectGetClass(gdreference.RawObject(raw)).String())
 		fmt.Println(runtime.Caller(2))
 	}
+	ring.Main.Flush()
 	gdextension.Host.Objects.Unsafe.Free(raw)
 }
 
