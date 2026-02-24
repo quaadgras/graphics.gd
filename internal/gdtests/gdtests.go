@@ -20,41 +20,44 @@ func Sprint(value any) string {
 	}
 	rvalue := reflect.ValueOf(value)
 	if collection, ok := value.(interface{ Size() int }); ok {
-		printed := "["
+		var printed strings.Builder
+		printed.WriteString("[")
 		for i := 0; i < collection.Size(); i++ {
 			if i > 0 {
-				printed += ", "
+				printed.WriteString(", ")
 			}
-			printed += Sprint(rvalue.MethodByName("Index").Call([]reflect.Value{reflect.ValueOf(i)})[0].Interface())
+			printed.WriteString(Sprint(rvalue.MethodByName("Index").Call([]reflect.Value{reflect.ValueOf(i)})[0].Interface()))
 		}
-		printed += "]"
-		return printed
+		printed.WriteString("]")
+		return printed.String()
 	}
 	if collection, ok := value.(interface{ Len() int }); ok {
-		printed := "["
+		var printed strings.Builder
+		printed.WriteString("[")
 		for i := 0; i < collection.Len(); i++ {
 			if i > 0 {
-				printed += ", "
+				printed.WriteString(", ")
 			}
-			printed += Sprint(rvalue.MethodByName("Index").Call([]reflect.Value{reflect.ValueOf(i)})[0].Interface())
+			printed.WriteString(Sprint(rvalue.MethodByName("Index").Call([]reflect.Value{reflect.ValueOf(i)})[0].Interface()))
 		}
-		printed += "]"
-		return printed
+		printed.WriteString("]")
+		return printed.String()
 	}
-	for rvalue.Kind() == reflect.Ptr && !rvalue.IsNil() {
+	for rvalue.Kind() == reflect.Pointer && !rvalue.IsNil() {
 		rvalue = rvalue.Elem()
 	}
 	switch rvalue.Kind() {
 	case reflect.Slice, reflect.Array:
-		printed := "["
+		var printed strings.Builder
+		printed.WriteString("[")
 		for i := range rvalue.Len() {
 			if i > 0 {
-				printed += ", "
+				printed.WriteString(", ")
 			}
-			printed += Sprint(rvalue.Index(i).Interface())
+			printed.WriteString(Sprint(rvalue.Index(i).Interface()))
 		}
-		printed += "]"
-		return printed
+		printed.WriteString("]")
+		return printed.String()
 	case reflect.String:
 		return fmt.Sprintf("%q", rvalue.Interface())
 	case reflect.Float32, reflect.Float64:

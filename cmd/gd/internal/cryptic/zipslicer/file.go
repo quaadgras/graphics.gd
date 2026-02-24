@@ -27,7 +27,7 @@ import (
 	"hash"
 	"hash/crc32"
 	"io"
-	"io/ioutil"
+
 	"time"
 )
 
@@ -329,7 +329,7 @@ func (f *File) OpenAndTeeRaw(sink io.Writer) (*Reader, error) {
 	var rc io.ReadCloser
 	switch f.Method {
 	case zip.Store:
-		rc = ioutil.NopCloser(r)
+		rc = io.NopCloser(r)
 	case zip.Deflate:
 		rc = flate.NewReader(r)
 	default:

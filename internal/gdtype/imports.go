@@ -109,8 +109,8 @@ func ImportsForClass(class gdjson.Class) iter.Seq[string] {
 
 func importsForEngineType(class gdjson.Class, identifier, s string) iter.Seq[string] {
 	return func(yield func(string) bool) {
-		if strings.HasPrefix(s, "typedarray::") {
-			s = strings.TrimPrefix(s, "typedarray::")
+		if after, ok := strings.CutPrefix(s, "typedarray::"); ok {
+			s = after
 			for pkg := range importsForEngineType(class, identifier, s) {
 				if !yield(pkg) {
 					return

@@ -23,13 +23,13 @@ var translation Translation.Instance
 
 func Translation_GetMessageList() {
 	for _, key := range translation.GetMessageList() {
-		var p = strings.Index(key, "\u0004")
-		if p == -1 {
+		var before, after, ok = strings.Cut(key, "\u0004")
+		if !ok {
 			var untranslated = key
 			fmt.Printf("Message %s", untranslated)
 		} else {
-			var context = key[0:p]
-			var untranslated = key[p+1:]
+			var context = before
+			var untranslated = after
 			fmt.Printf("Message %s with context %s", untranslated, context)
 		}
 	}

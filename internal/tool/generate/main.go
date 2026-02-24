@@ -50,8 +50,8 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 		}
 		return name
 	}
-	if strings.HasPrefix(gdType, "typedarray::") {
-		gdType = strings.TrimPrefix(gdType, "typedarray::")
+	if after, ok := strings.CutPrefix(gdType, "typedarray::"); ok {
+		gdType = after
 		return maybeInternal("Array")
 	}
 	switch gdType {
@@ -188,8 +188,8 @@ func convertName(fnName string) string {
 	fnName = strings.ToLower(fnName)
 
 	joins := []string{}
-	split := strings.Split(fnName, "_")
-	for _, word := range split {
+	split := strings.SplitSeq(fnName, "_")
+	for word := range split {
 		joins = append(joins, strings.Title(word))
 	}
 	/*if joins[0] == "Get" {

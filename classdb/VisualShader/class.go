@@ -249,8 +249,8 @@ func (self Instance) ConnectNodesForced(atype Type, from_node NodeID, from_port 
 /*
 Returns the list of connected nodes with the specified type.
 */
-func (self Instance) GetNodeConnections(atype Type) []map[string]interface{} { //gd:VisualShader.get_node_connections
-	return []map[string]interface{}(gd.ArrayAs[[]map[string]interface{}](gd.InternalArray(Advanced(self).GetNodeConnections(atype))))
+func (self Instance) GetNodeConnections(atype Type) []map[string]any { //gd:VisualShader.get_node_connections
+	return []map[string]any(gd.ArrayAs[[]map[string]any](gd.InternalArray(Advanced(self).GetNodeConnections(atype))))
 }
 
 /*

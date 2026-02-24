@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"slices"
 	"sort"
 	"strings"
 
@@ -18,10 +19,8 @@ func (g Graph) AddEdge(u, v string) {
 		g[u] = []string{}
 	}
 	// Check for duplicates
-	for _, neighbor := range g[u] {
-		if neighbor == v {
-			return
-		}
+	if slices.Contains(g[u], v) {
+		return
 	}
 	g[u] = append(g[u], v)
 }

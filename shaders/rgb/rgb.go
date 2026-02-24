@@ -27,10 +27,10 @@ func Neg(a vec3.RGB) vec3.RGB { return gpu.NewRGBExpression(gpu.Op(nil, "-", a))
 func either[T gpu.AnyFloat | vec3.RGB](v T) gpu.Evaluator {
 	rvalue := reflect.ValueOf(v)
 	switch {
-	case rvalue.Type().ConvertibleTo(reflect.TypeOf(vec3.RGB{})):
-		return rvalue.Convert(reflect.TypeOf(vec3.RGB{})).Interface().(vec3.RGB)
-	case rvalue.Type().ConvertibleTo(reflect.TypeOf(gpu.Float{})):
-		return gpu.NewFloat(rvalue.Convert(reflect.TypeOf(gpu.Float{})).Interface().(gpu.Float))
+	case rvalue.Type().ConvertibleTo(reflect.TypeFor[vec3.RGB]()):
+		return rvalue.Convert(reflect.TypeFor[vec3.RGB]()).Interface().(vec3.RGB)
+	case rvalue.Type().ConvertibleTo(reflect.TypeFor[gpu.Float]()):
+		return gpu.NewFloat(rvalue.Convert(reflect.TypeFor[gpu.Float]()).Interface().(gpu.Float))
 	default:
 		return gpu.NewFloat(rvalue.Float())
 	}

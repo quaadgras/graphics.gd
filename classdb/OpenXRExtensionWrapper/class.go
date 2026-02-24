@@ -310,7 +310,7 @@ type Interface interface {
 	// Gets a data structure containing the default values for the properties returned by [GetViewportCompositionLayerExtensionProperties].
 	//
 	// [GetViewportCompositionLayerExtensionProperties]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Interface
-	GetViewportCompositionLayerExtensionPropertyDefaults() map[string]interface{}
+	GetViewportCompositionLayerExtensionPropertyDefaults() map[string]any
 	// Called when a composition layer created via [OpenXRCompositionLayer] is destroyed.
 	//
 	// 'layer' is a pointer to an XrCompositionLayerBaseHeader struct.
@@ -398,7 +398,7 @@ func (self implementation) SetViewportCompositionLayerAndGetNextPointer(layer gd
 	return
 }
 func (self implementation) GetViewportCompositionLayerExtensionProperties() (_ [][]struct{}) { return }
-func (self implementation) GetViewportCompositionLayerExtensionPropertyDefaults() (_ map[string]interface{}) {
+func (self implementation) GetViewportCompositionLayerExtensionPropertyDefaults() (_ map[string]any) {
 	return
 }
 func (self implementation) OnViewportCompositionLayerDestroyed(layer gdextension.Pointer) { return }
@@ -975,7 +975,7 @@ Gets a data structure containing the default values for the properties returned 
 
 [GetViewportCompositionLayerExtensionProperties]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Interface
 */
-func (Instance) _get_viewport_composition_layer_extension_property_defaults(impl func(ptr gdclass.Receiver) map[string]interface{}) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_viewport_composition_layer_extension_property_defaults(impl func(ptr gdclass.Receiver) map[string]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)

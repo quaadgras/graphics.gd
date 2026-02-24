@@ -157,13 +157,13 @@ type Interface interface {
 	// [HasValidExportConfiguration]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatformExtension#Interface
 	// [Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
 	GetExportOptions() [][]struct {
-		Hint             int         "gd:\"hint\""
-		HintString       string      "gd:\"hint_string\""
-		Usage            int         "gd:\"usage\""
-		ClassName        string      "gd:\"class_name\""
-		DefaultValue     interface{} "gd:\"default_value\""
-		UpdateVisibility bool        "gd:\"update_visibility\""
-		Required         bool        "gd:\"required\""
+		Hint             int    "gd:\"hint\""
+		HintString       string "gd:\"hint_string\""
+		Usage            int    "gd:\"usage\""
+		ClassName        string "gd:\"class_name\""
+		DefaultValue     any    "gd:\"default_value\""
+		UpdateVisibility bool   "gd:\"update_visibility\""
+		Required         bool   "gd:\"required\""
 	}
 	// Returns true if export options list is changed and presets should be updated.
 	ShouldUpdateExportOptions() bool
@@ -266,13 +266,13 @@ type implementation struct{}
 func (self implementation) GetPresetFeatures(preset EditorExportPreset.Instance) (_ []string) { return }
 func (self implementation) IsExecutable(path string) (_ bool)                                 { return }
 func (self implementation) GetExportOptions() (_ [][]struct {
-	Hint             int         "gd:\"hint\""
-	HintString       string      "gd:\"hint_string\""
-	Usage            int         "gd:\"usage\""
-	ClassName        string      "gd:\"class_name\""
-	DefaultValue     interface{} "gd:\"default_value\""
-	UpdateVisibility bool        "gd:\"update_visibility\""
-	Required         bool        "gd:\"required\""
+	Hint             int    "gd:\"hint\""
+	HintString       string "gd:\"hint_string\""
+	Usage            int    "gd:\"usage\""
+	ClassName        string "gd:\"class_name\""
+	DefaultValue     any    "gd:\"default_value\""
+	UpdateVisibility bool   "gd:\"update_visibility\""
+	Required         bool   "gd:\"required\""
 })                                                              { return }
 func (self implementation) ShouldUpdateExportOptions() (_ bool) { return }
 func (self implementation) GetExportOptionVisibility(preset EditorExportPreset.Instance, option string) (_ bool) {
@@ -383,13 +383,13 @@ See also [Object.GetPropertyList].
 [Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
 */
 func (Instance) _get_export_options(impl func(ptr gdclass.Receiver) [][]struct {
-	Hint             int         "gd:\"hint\""
-	HintString       string      "gd:\"hint_string\""
-	Usage            int         "gd:\"usage\""
-	ClassName        string      "gd:\"class_name\""
-	DefaultValue     interface{} "gd:\"default_value\""
-	UpdateVisibility bool        "gd:\"update_visibility\""
-	Required         bool        "gd:\"required\""
+	Hint             int    "gd:\"hint\""
+	HintString       string "gd:\"hint_string\""
+	Usage            int    "gd:\"usage\""
+	ClassName        string "gd:\"class_name\""
+	DefaultValue     any    "gd:\"default_value\""
+	UpdateVisibility bool   "gd:\"update_visibility\""
+	Required         bool   "gd:\"required\""
 }) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())

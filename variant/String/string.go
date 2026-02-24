@@ -168,10 +168,10 @@ func As[T, S Any](s S) T {
 	case rtype.Kind() == reflect.Slice && rtype.Elem().Kind() == reflect.Uint8:
 		b := []byte(uni.api.String(uni.buf))
 		return *(*T)(unsafe.Pointer(&b))
-	case rtype.ConvertibleTo(reflect.TypeOf(Readable{})):
+	case rtype.ConvertibleTo(reflect.TypeFor[Readable]()):
 		u := uni
 		return *(*T)(unsafe.Pointer(&u))
-	case rtype.ConvertibleTo(reflect.TypeOf(Comparable{})):
+	case rtype.ConvertibleTo(reflect.TypeFor[Comparable]()):
 		c := MakeComparable(uni)
 		return *(*T)(unsafe.Pointer(&c))
 	default:
@@ -1196,8 +1196,8 @@ func Similarity[S Any](a, b S) Float.X { //gd:String.similarity
 	tgt_size := len(tgt_bigrams)
 	var sum = Float.X(src_size + tgt_size)
 	var inter Float.X = 0
-	for i := 0; i < src_size; i++ {
-		for j := 0; j < tgt_size; j++ {
+	for i := range src_size {
+		for j := range tgt_size {
 			if Comparison(src_bigrams[i], tgt_bigrams[j]) == 0 {
 				inter++
 				break
@@ -1315,16 +1315,16 @@ func ToFloat[S Any](s S) Float.X { //gd:String.to_float
 // ToInt converts the string representing an integer number into an int. This method removes any
 // non-number character and stops at the first decimal point (.). See also [IsValidInt].
 func ToInt[S Any](s S) int { //gd:String.to_int
-	n := ""
+	var n strings.Builder
 	for i := 0; i < Length(s); i++ {
 		if unicode.IsDigit(rune(Index(s, i))) || Index(s, i) == '-' {
-			n += string(Index(s, i))
+			n.WriteString(string(Index(s, i)))
 		}
 		if Index(s, i) == '.' {
 			break
 		}
 	}
-	i, _ := strconv.Atoi(string(n))
+	i, _ := strconv.Atoi(string(n.String()))
 	return i
 }
 

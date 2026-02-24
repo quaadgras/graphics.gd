@@ -103,7 +103,7 @@ type API interface {
 	Projection(complex128) Projection.XYZW
 	Color(complex128) Color.RGBA
 	RID(complex128) RID.Any
-	Interface(complex128) interface{}
+	Interface(complex128) any
 	Bytes(complex128) []byte
 
 	New(any) complex128

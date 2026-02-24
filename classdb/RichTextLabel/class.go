@@ -774,7 +774,7 @@ Adds a custom effect tag to the tag stack. The effect does not need to be in [Cu
 
 [CustomEffects]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.CustomEffects
 */
-func (self Instance) PushCustomfx(effect RichTextEffect.Instance, env map[string]interface{}) { //gd:RichTextLabel.push_customfx
+func (self Instance) PushCustomfx(effect RichTextEffect.Instance, env map[string]any) { //gd:RichTextLabel.push_customfx
 	Advanced(self).PushCustomfx(effect, gd.DictionaryFromMap(env))
 }
 
@@ -1157,8 +1157,8 @@ func (self Instance) GetParagraphOffset(paragraph int) Float.X { //gd:RichTextLa
 /*
 Parses BBCode parameter 'expressions' into a dictionary.
 */
-func (self Instance) ParseExpressionsForValues(expressions []string) map[string]interface{} { //gd:RichTextLabel.parse_expressions_for_values
-	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](Advanced(self).ParseExpressionsForValues(Packed.MakeStrings(expressions...))))
+func (self Instance) ParseExpressionsForValues(expressions []string) map[string]any { //gd:RichTextLabel.parse_expressions_for_values
+	return map[string]any(gd.DictionaryAs[map[string]any](Advanced(self).ParseExpressionsForValues(Packed.MakeStrings(expressions...))))
 }
 
 /*

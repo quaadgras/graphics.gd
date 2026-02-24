@@ -52,12 +52,12 @@ func into(ptr reflect.Value, value reflect.Value) bool {
 	if variant, ok := reflect.TypeAssert[iInterface](value); ok {
 		value = reflect.ValueOf(variant.Interface())
 	}
-	if reflect.TypeOf(ptr).Kind() != reflect.Pointer {
+	if reflect.TypeFor[reflect.Value]().Kind() != reflect.Pointer {
 		return false
 	}
-	rtype := reflect.TypeOf(ptr).Elem()
+	rtype := reflect.TypeFor[reflect.Value]().Elem()
 	rdata := reflect.ValueOf(ptr).Elem()
-	vtype := reflect.TypeOf(value)
+	vtype := reflect.TypeFor[reflect.Value]()
 	vdata := reflect.ValueOf(value)
 	if vtype.Kind() == reflect.Array && vtype.Len() == 1 {
 		vtype = vtype.Elem()

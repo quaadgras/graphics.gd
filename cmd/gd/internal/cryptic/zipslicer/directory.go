@@ -179,7 +179,7 @@ func ReadStream(r io.Reader, size int64, cd []byte) (*Directory, error) {
 // writers, which may be the same writer.
 func (d *Directory) Truncate(n int, body, dir io.Writer) error {
 	if body != nil {
-		for i := 0; i < n; i++ {
+		for i := range n {
 			f := d.File[i]
 			fs, err := f.GetTotalSize()
 			if err != nil {
@@ -192,7 +192,7 @@ func (d *Directory) Truncate(n int, body, dir io.Writer) error {
 	}
 	cdOffset := d.File[n].Offset
 	var size uint64
-	for i := 0; i < n; i++ {
+	for i := range n {
 		blob, err := d.File[i].GetDirectoryHeader()
 		if err != nil {
 			return err

@@ -16,10 +16,10 @@ func New[X, Y, Z, W gpu.AnyUint](x X, y Y, z Z, w W) XYZW { return gpu.NewVec4u(
 func either[T gpu.AnyUint | XYZW](v T) gpu.Evaluator {
 	rvalue := reflect.ValueOf(v)
 	switch {
-	case rvalue.Type().ConvertibleTo(reflect.TypeOf(XYZW{})):
-		return rvalue.Convert(reflect.TypeOf(XYZW{})).Interface().(XYZW)
-	case rvalue.Type().ConvertibleTo(reflect.TypeOf(gpu.Uint{})):
-		return gpu.NewUint(rvalue.Convert(reflect.TypeOf(gpu.Uint{})).Interface().(gpu.Uint))
+	case rvalue.Type().ConvertibleTo(reflect.TypeFor[XYZW]()):
+		return rvalue.Convert(reflect.TypeFor[XYZW]()).Interface().(XYZW)
+	case rvalue.Type().ConvertibleTo(reflect.TypeFor[gpu.Uint]()):
+		return gpu.NewUint(rvalue.Convert(reflect.TypeFor[gpu.Uint]()).Interface().(gpu.Uint))
 	default:
 		return gpu.NewUint(rvalue.Uint())
 	}

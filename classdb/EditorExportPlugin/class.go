@@ -238,9 +238,9 @@ type Interface interface {
 	// [Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
 	// [OnObject.PropertyListChanged]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Instance.OnObject.PropertyListChanged
 	GetExportOptions(platform EditorExportPlatform.Instance) [][]struct {
-		Option           interface{} "gd:\"option\" type:\"Object.PropertyInfo\""
-		DefaultValue     interface{} "gd:\"default_value\""
-		UpdateVisibility bool        "gd:\"update_visibility\""
+		Option           any  "gd:\"option\" type:\"Object.PropertyInfo\""
+		DefaultValue     any  "gd:\"default_value\""
+		UpdateVisibility bool "gd:\"update_visibility\""
 	}
 	// Return a data structure of override values for export options, that will be used instead of user-provided values. Overridden options will be hidden from the user interface.
 	//
@@ -277,7 +277,7 @@ type Interface interface {
 	// 		}
 	//
 	//
-	GetExportOptionsOverrides(platform EditorExportPlatform.Instance) map[string]interface{}
+	GetExportOptionsOverrides(platform EditorExportPlatform.Instance) map[string]any
 	// Return true if the result of [GetExportOptions] has changed and the export options of the preset corresponding to 'platform' should be updated.
 	//
 	// [GetExportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Interface
@@ -376,11 +376,11 @@ func (self implementation) GetCustomizationConfigurationHash() (_ int)          
 func (self implementation) EndCustomizeScenes()                                               { return }
 func (self implementation) EndCustomizeResources()                                            { return }
 func (self implementation) GetExportOptions(platform EditorExportPlatform.Instance) (_ [][]struct {
-	Option           interface{} "gd:\"option\" type:\"Object.PropertyInfo\""
-	DefaultValue     interface{} "gd:\"default_value\""
-	UpdateVisibility bool        "gd:\"update_visibility\""
+	Option           any  "gd:\"option\" type:\"Object.PropertyInfo\""
+	DefaultValue     any  "gd:\"default_value\""
+	UpdateVisibility bool "gd:\"update_visibility\""
 }) { return }
-func (self implementation) GetExportOptionsOverrides(platform EditorExportPlatform.Instance) (_ map[string]interface{}) {
+func (self implementation) GetExportOptionsOverrides(platform EditorExportPlatform.Instance) (_ map[string]any) {
 	return
 }
 func (self implementation) ShouldUpdateExportOptions(platform EditorExportPlatform.Instance) (_ bool) {
@@ -637,9 +637,9 @@ Each element in the return value is a data structure with the following keys:
 [OnObject.PropertyListChanged]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Instance.OnObject.PropertyListChanged
 */
 func (Instance) _get_export_options(impl func(ptr gdclass.Receiver, platform EditorExportPlatform.Instance) [][]struct {
-	Option           interface{} "gd:\"option\" type:\"Object.PropertyInfo\""
-	DefaultValue     interface{} "gd:\"default_value\""
-	UpdateVisibility bool        "gd:\"update_visibility\""
+	Option           any  "gd:\"option\" type:\"Object.PropertyInfo\""
+	DefaultValue     any  "gd:\"default_value\""
+	UpdateVisibility bool "gd:\"update_visibility\""
 }) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var platform = [1]gdclass.EditorExportPlatform{gdclass.NewEditorExportPlatform(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
@@ -684,7 +684,7 @@ Return a data structure of override values for export options, that will be used
 		}
 	}
 */
-func (Instance) _get_export_options_overrides(impl func(ptr gdclass.Receiver, platform EditorExportPlatform.Instance) map[string]interface{}) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_export_options_overrides(impl func(ptr gdclass.Receiver, platform EditorExportPlatform.Instance) map[string]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var platform = [1]gdclass.EditorExportPlatform{gdclass.NewEditorExportPlatform(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 

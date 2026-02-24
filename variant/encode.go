@@ -22,7 +22,7 @@ import (
 )
 
 // Marshal a variant-encoded value.
-func Marshal(value interface{}) ([]byte, error) { //gd:var_to_bytes var_to_bytes_with_objects
+func Marshal(value any) ([]byte, error) { //gd:var_to_bytes var_to_bytes_with_objects
 	var buf []byte
 	switch value := value.(type) {
 	case bool:
@@ -48,7 +48,7 @@ func Marshal(value interface{}) ([]byte, error) { //gd:var_to_bytes var_to_bytes
 		buf = binary.LittleEndian.AppendUint32(buf, typeInteger&encodeFlag64)
 		buf = binary.LittleEndian.AppendUint64(buf, *(*uint64)(unsafe.Pointer(&value)))
 	case int:
-		if reflect.TypeOf(int(0)).Size() == 4 {
+		if reflect.TypeFor[int]().Size() == 4 {
 			var i32 int32 = int32(value)
 			buf = binary.LittleEndian.AppendUint32(buf, typeInteger)
 			buf = binary.LittleEndian.AppendUint32(buf, *(*uint32)(unsafe.Pointer(&i32)))
@@ -69,7 +69,7 @@ func Marshal(value interface{}) ([]byte, error) { //gd:var_to_bytes var_to_bytes
 		buf = binary.LittleEndian.AppendUint32(buf, typeRID)
 		buf = binary.LittleEndian.AppendUint64(buf, value)
 	case uint:
-		if reflect.TypeOf(uint(0)).Size() == 4 {
+		if reflect.TypeFor[uint]().Size() == 4 {
 			buf = binary.LittleEndian.AppendUint32(buf, typeInteger&encodeFlag64)
 			buf = binary.LittleEndian.AppendUint64(buf, uint64(value))
 		} else {

@@ -148,7 +148,7 @@ func (p PackedStringArray) String() string {
 	var builder strings.Builder
 	builder.WriteString("[")
 	size := int(p.Size())
-	for i := 0; i < size; i++ {
+	for i := range size {
 		builder.WriteString(p.Index(Int(i)).String())
 		if i < size-1 {
 			builder.WriteString(" ")

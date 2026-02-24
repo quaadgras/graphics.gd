@@ -593,7 +593,9 @@ func generateStructables(file io.Writer) {
 				if override, ok := field.Tag.Lookup("type"); ok {
 					ftype = override
 				}
-				ftype = strings.Replace(ftype, "gdjson.", "", -1)
+				ftype = strings.ReplaceAll(ftype, "gdjson.", "")
+				ftype = strings.ReplaceAll(ftype, "interface{}", "any")
+				ftype = strings.ReplaceAll(ftype, "interface {}", "any")
 				gdTag := field.Tag.Get("gd")
 				fmt.Fprintf(&w, "%v %v `gd:\"%s\"`\n", field.Name, ftype, gdTag)
 			}

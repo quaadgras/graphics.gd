@@ -500,7 +500,7 @@ func ShapeVariants(count int) Shape {
 		panic("ShapeVariants: count must be between 0 and 16")
 	}
 	var shape Shape
-	for i := 0; i < count; i++ {
+	for i := range count {
 		shape |= SizeVariant << ((i + 1) * 4)
 	}
 	return shape

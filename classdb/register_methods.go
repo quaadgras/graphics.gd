@@ -26,9 +26,8 @@ var methods threadsafe.Handles[*methodImplementation, gdextension.FunctionID]
 func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintptr]string) {
 	classTypePtr := reflect.PointerTo(rtype)
 	var elligible []reflect.Method
-	for i := range classTypePtr.NumMethod() {
-		i := i
-		method := classTypePtr.Method(i)
+	for method := range classTypePtr.Methods() {
+		method := method
 		if !method.IsExported() || method.Type.NumIn() < 1 {
 			continue
 		}

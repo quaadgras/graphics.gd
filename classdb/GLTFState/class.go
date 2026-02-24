@@ -386,12 +386,12 @@ func New() Instance {
 /*
 The original raw JSON document corresponding to this GLTFState.
 */
-func (self Instance) Json() map[string]interface{} { //gd:GLTFState.json
-	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](class(self).GetJson()))
+func (self Instance) Json() map[string]any { //gd:GLTFState.json
+	return map[string]any(gd.DictionaryAs[map[string]any](class(self).GetJson()))
 }
 
 // SetJson sets the property returned by [GetJson]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetJson(value map[string]interface{}) Instance { //gd:GLTFState.json
+func (self Instance) SetJson(value map[string]any) Instance { //gd:GLTFState.json
 	class(self).SetJson(gd.DictionaryFromMap(value))
 	return self
 }

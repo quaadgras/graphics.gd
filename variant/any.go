@@ -70,7 +70,7 @@ func (a Any) Int() int {
 		return int(proxy.Int(a.local))
 	}
 	rtype := reflect.TypeOf(a.value)
-	if rtype.Kind() != reflect.Ptr {
+	if rtype.Kind() != reflect.Pointer {
 		panic("variant conversion: variant is " + a.Type().String() + ", not " + reflect.TypeFor[int]().String())
 	}
 	switch rtype.Elem().Kind() {

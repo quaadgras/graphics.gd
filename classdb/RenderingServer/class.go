@@ -957,8 +957,8 @@ func ShaderGetCode(shader RID.Shader) string { //gd:RenderingServer.shader_get_c
 /*
 Returns the parameters of a shader.
 */
-func GetShaderParameterList(shader RID.Shader) []map[string]interface{} { //gd:RenderingServer.get_shader_parameter_list
-	return []map[string]interface{}(gd.ArrayAs[[]map[string]interface{}](gd.InternalArray(Advanced().GetShaderParameterList(RID.Any(shader)))))
+func GetShaderParameterList(shader RID.Shader) []map[string]any { //gd:RenderingServer.get_shader_parameter_list
+	return []map[string]any(gd.ArrayAs[[]map[string]any](gd.InternalArray(Advanced().GetShaderParameterList(RID.Any(shader)))))
 }
 
 /*
@@ -1113,7 +1113,7 @@ func MeshSurfaceGetFormatIndexStride(format ArrayFormat, vertex_count int) int {
 func MeshAddSurface(mesh RID.Mesh, surface Surface) { //gd:RenderingServer.mesh_add_surface
 	Advanced().MeshAddSurface(RID.Any(mesh), gd.DictionaryFromMap(surface))
 }
-func MeshAddSurfaceFromArrays(mesh RID.Mesh, primitive PrimitiveType, arrays []any, blend_shapes [][]interface{}, lods map[float32][]int32, compress_format ArrayFormat) { //gd:RenderingServer.mesh_add_surface_from_arrays
+func MeshAddSurfaceFromArrays(mesh RID.Mesh, primitive PrimitiveType, arrays []any, blend_shapes [][]any, lods map[float32][]int32, compress_format ArrayFormat) { //gd:RenderingServer.mesh_add_surface_from_arrays
 	Advanced().MeshAddSurfaceFromArrays(RID.Any(mesh), primitive, gd.EngineArrayFromSlice(arrays), gd.EngineArrayFromSlice(blend_shapes), gd.DictionaryFromMap(lods), compress_format)
 }
 
@@ -1165,8 +1165,8 @@ func MeshSurfaceGetArrays(mesh RID.Mesh, surface int) []any { //gd:RenderingServ
 /*
 Returns a mesh's surface's arrays for blend shapes.
 */
-func MeshSurfaceGetBlendShapeArrays(mesh RID.Mesh, surface int) [][][]interface{} { //gd:RenderingServer.mesh_surface_get_blend_shape_arrays
-	return [][][]interface{}(gd.ArrayAs[[][][]interface{}](gd.InternalArray(Advanced().MeshSurfaceGetBlendShapeArrays(RID.Any(mesh), int64(surface)))))
+func MeshSurfaceGetBlendShapeArrays(mesh RID.Mesh, surface int) [][][]any { //gd:RenderingServer.mesh_surface_get_blend_shape_arrays
+	return [][][]any(gd.ArrayAs[[][][]any](gd.InternalArray(Advanced().MeshSurfaceGetBlendShapeArrays(RID.Any(mesh), int64(surface)))))
 }
 
 /*
@@ -4008,8 +4008,8 @@ Returns a dictionary of per-instance shader uniform names of the per-instance sh
 
 [GeometryInstance3D.GetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.GetInstanceShaderParameter
 */
-func InstanceGeometryGetShaderParameterList(instance RID.VisualInstance) []map[string]interface{} { //gd:RenderingServer.instance_geometry_get_shader_parameter_list
-	return []map[string]interface{}(gd.ArrayAs[[]map[string]interface{}](gd.InternalArray(Advanced().InstanceGeometryGetShaderParameterList(RID.Any(instance)))))
+func InstanceGeometryGetShaderParameterList(instance RID.VisualInstance) []map[string]any { //gd:RenderingServer.instance_geometry_get_shader_parameter_list
+	return []map[string]any(gd.ArrayAs[[]map[string]any](gd.InternalArray(Advanced().InstanceGeometryGetShaderParameterList(RID.Any(instance)))))
 }
 
 /*

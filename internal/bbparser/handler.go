@@ -55,17 +55,17 @@ func URLHandler(tag Tag, content string) string {
 
 // ListHandler - parse list with one-line tags (double tags like [li] parsed separated)
 func ListHandler(tag Tag, content string) string {
-	var listContent string
-	items := strings.Split(content, "\n")
-	for _, item := range items {
+	var listContent strings.Builder
+	items := strings.SplitSeq(content, "\n")
+	for item := range items {
 		trimed := strings.TrimSpace(item)
 		if strings.HasPrefix(trimed, "[*]") || strings.HasPrefix(trimed, "*") {
 			trimed = strings.TrimPrefix(trimed, "[*]")
 			trimed = strings.TrimPrefix(trimed, "*")
-			listContent += fmt.Sprintf("<li>%s</li>", trimed)
+			listContent.WriteString(fmt.Sprintf("<li>%s</li>", trimed))
 		} else {
-			listContent += trimed
+			listContent.WriteString(trimed)
 		}
 	}
-	return fmt.Sprintf("<%s>%s</%s>", tag.Name, listContent, tag.Name)
+	return fmt.Sprintf("<%s>%s</%s>", tag.Name, listContent.String(), tag.Name)
 }

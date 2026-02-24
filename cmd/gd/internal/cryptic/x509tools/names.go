@@ -145,7 +145,7 @@ func attName(t asn1.ObjectIdentifier, style NameStyle) string {
 	return defaultPrefix + t.String()
 }
 
-func attValue(raw interface{}, style NameStyle) string {
+func attValue(raw any, style NameStyle) string {
 	var value string
 	switch v := raw.(type) {
 	case string:

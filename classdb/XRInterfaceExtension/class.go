@@ -137,7 +137,7 @@ type Interface interface {
 	// Uninitialize the interface.
 	Uninitialize()
 	// Returns a data structure with system information related to this interface.
-	GetSystemInfo() map[string]interface{}
+	GetSystemInfo() map[string]any
 	// Returns true if this interface supports this play area mode.
 	SupportsPlayAreaMode(mode XRInterface.PlayAreaMode) bool
 	// Returns the play area mode that sets up our play area.
@@ -225,7 +225,7 @@ func (self implementation) GetCapabilities() (_ int)                            
 func (self implementation) IsInitialized() (_ bool)                                     { return }
 func (self implementation) Initialize() (_ bool)                                        { return }
 func (self implementation) Uninitialize()                                               { return }
-func (self implementation) GetSystemInfo() (_ map[string]interface{})                   { return }
+func (self implementation) GetSystemInfo() (_ map[string]any)                           { return }
 func (self implementation) SupportsPlayAreaMode(mode XRInterface.PlayAreaMode) (_ bool) { return }
 func (self implementation) GetPlayAreaMode() (_ XRInterface.PlayAreaMode)               { return }
 func (self implementation) SetPlayAreaMode(mode XRInterface.PlayAreaMode) (_ bool)      { return }
@@ -323,7 +323,7 @@ func (Instance) _uninitialize(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionC
 /*
 Returns a data structure with system information related to this interface.
 */
-func (Instance) _get_system_info(impl func(ptr gdclass.Receiver) map[string]interface{}) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_system_info(impl func(ptr gdclass.Receiver) map[string]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)

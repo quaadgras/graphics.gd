@@ -94,8 +94,8 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string
 		}
 		return distinction[2]
 	}
-	if strings.HasPrefix(gdType, "typedarray::") {
-		gdType = strings.TrimPrefix(gdType, "typedarray::")
+	if after, ok := strings.CutPrefix(gdType, "typedarray::"); ok {
+		gdType = after
 		meta, rest, ok := strings.Cut(gdType, ":")
 		if ok {
 			gdType = rest
@@ -187,12 +187,21 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string
 		}
 		registerStructables(rtype)
 		if rtype.Name() == "" {
-			return strings.Replace(rtype.String(), "gdjson.", "", -1)
+			name := rtype.String()
+			name = strings.ReplaceAll(name, "interface{}", "any")
+			name = strings.ReplaceAll(name, "interface {}", "any")
+			return strings.ReplaceAll(name, "gdjson.", "")
 		}
 		if rtype.PkgPath() != "" && rtype.PkgPath() != "graphics.gd/internal/gdjson" {
-			return rtype.String()
+			name := rtype.String()
+			name = strings.ReplaceAll(name, "interface {}", "any")
+			name = strings.ReplaceAll(name, "interface{}", "any")
+			return name
 		}
-		return strings.Replace(rtype.Name(), "gdjson.", "", -1)
+		name := rtype.Name()
+		name = strings.ReplaceAll(name, "interface{}", "any")
+		name = strings.ReplaceAll(name, "interface {}", "any")
+		return strings.ReplaceAll(name, "gdjson.", "")
 	case "Array":
 		rtype, ok := gdjson.Structables[lookup]
 		if !ok || rtype == reflect.TypeFor[[]any]() {
@@ -200,12 +209,21 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string
 		}
 		registerStructables(rtype)
 		if rtype.Name() == "" {
-			return strings.Replace(rtype.String(), "gdjson.", "", -1)
+			name := rtype.String()
+			name = strings.ReplaceAll(name, "interface{}", "any")
+			name = strings.ReplaceAll(name, "interface {}", "any")
+			return strings.ReplaceAll(name, "gdjson.", "")
 		}
 		if rtype.PkgPath() != "" && rtype.PkgPath() != "graphics.gd/internal/gdjson" {
-			return rtype.String()
+			name := rtype.String()
+			name = strings.ReplaceAll(name, "interface{}", "any")
+			name = strings.ReplaceAll(name, "interface {}", "any")
+			return name
 		}
-		return strings.Replace(rtype.Name(), "gdjson.", "", -1)
+		name := rtype.Name()
+		name = strings.ReplaceAll(name, "interface{}", "any")
+		name = strings.ReplaceAll(name, "interface {}", "any")
+		return strings.ReplaceAll(name, "gdjson.", "")
 	case "Variant":
 		return "any"
 	case "Object":
@@ -215,23 +233,24 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string
 		if !ok || len(details) == 0 || strings.HasSuffix(lookup, ".") {
 			return "Callable.Function"
 		}
-		var ftype string = "func("
+		var ftype strings.Builder
+		ftype.WriteString("func(")
 		for i, arg := range details[1:] {
 			if i > 0 {
-				ftype += ", "
+				ftype.WriteString(", ")
 			}
 			atype, name, ok := strings.Cut(arg, " ")
 			if ok {
-				ftype += name + " " + classDB.convertTypeSimple(class, "", "", atype)
+				ftype.WriteString(name + " " + classDB.convertTypeSimple(class, "", "", atype))
 			} else {
-				ftype += classDB.convertTypeSimple(class, "", "", arg)
+				ftype.WriteString(classDB.convertTypeSimple(class, "", "", arg))
 			}
 		}
-		ftype += ")"
+		ftype.WriteString(")")
 		if details[0] != "void" {
-			ftype += " " + classDB.convertTypeSimple(class, "", "", details[0])
+			ftype.WriteString(" " + classDB.convertTypeSimple(class, "", "", details[0]))
 		}
-		return ftype
+		return ftype.String()
 	default:
 		object, ok := classDB[gdType]
 		if ok {

@@ -522,9 +522,9 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 		}
 	}
 	rtype = reflect.PointerTo(rtype)
-	for i := range rtype.NumMethod() {
-		name := String.ToSnakeCase(rtype.Method(i).Name)
-		if rename, ok := method_renames[rtype.Method(i).Func.Pointer()]; ok {
+	for method := range rtype.Methods() {
+		name := String.ToSnakeCase(method.Name)
+		if rename, ok := method_renames[method.Func.Pointer()]; ok {
 			name = rename
 		}
 		if _, ok := docs[name]; !ok {

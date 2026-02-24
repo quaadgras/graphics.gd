@@ -175,12 +175,12 @@ func New() Instance {
 /*
 Contains the raw packets that make up this OggPacketSequence.
 */
-func (self Instance) PacketData() [][][]interface{} { //gd:OggPacketSequence.packet_data
-	return [][][]interface{}(gd.ArrayAs[[][][]interface{}](gd.InternalArray(class(self).GetPacketData())))
+func (self Instance) PacketData() [][][]any { //gd:OggPacketSequence.packet_data
+	return [][][]any(gd.ArrayAs[[][][]any](gd.InternalArray(class(self).GetPacketData())))
 }
 
 // SetPacketData sets the property returned by [GetPacketData]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPacketData(value [][][]interface{}) Instance { //gd:OggPacketSequence.packet_data
+func (self Instance) SetPacketData(value [][][]any) Instance { //gd:OggPacketSequence.packet_data
 	class(self).SetPacketData(gd.ArrayFromSlice[Array.Contains[Array.Any]](value))
 	return self
 }

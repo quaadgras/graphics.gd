@@ -632,7 +632,7 @@ type Interface interface {
 	// [GetPluginName]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
 	// [GetWindowLayout]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
 	// [SetState]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-	GetState() map[interface{}]interface{}
+	GetState() map[any]any
 	// Restore the state saved by [GetState]. This method is called when the current scene tab is changed in the editor.
 	//
 	// Note: Your plugin must implement [GetPluginName], otherwise it will not be recognized and this method will not be called.
@@ -649,7 +649,7 @@ type Interface interface {
 	//
 	// [GetPluginName]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
 	// [GetState]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
-	SetState(state map[interface{}]interface{})
+	SetState(state map[any]any)
 	// Clear all the state and reset the object being edited to zero. This ensures your plugin does not keep editing a currently existing node, or a node from the wrong scene.
 	Clear()
 	// Override this method to provide a custom message that lists unsaved changes. The editor will call this method when exiting or when closing a scene, and display the returned string in a confirmation dialog. Return empty string if the plugin has no unsaved changes.
@@ -790,8 +790,8 @@ func (self implementation) HasMainScreen() (_ bool)                             
 func (self implementation) MakeVisible(visible bool)                                         { return }
 func (self implementation) Edit(obj Object.Instance)                                         { return }
 func (self implementation) Handles(obj Object.Instance) (_ bool)                             { return }
-func (self implementation) GetState() (_ map[interface{}]interface{})                        { return }
-func (self implementation) SetState(state map[interface{}]interface{})                       { return }
+func (self implementation) GetState() (_ map[any]any)                                        { return }
+func (self implementation) SetState(state map[any]any)                                       { return }
 func (self implementation) Clear()                                                           { return }
 func (self implementation) GetUnsavedStatus(for_scene string) (_ string)                     { return }
 func (self implementation) SaveExternalData()                                                { return }
@@ -1115,7 +1115,7 @@ Note: You must implement [GetPluginName] for the state to be stored and restored
 [GetWindowLayout]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
 [SetState]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
 */
-func (Instance) _get_state(impl func(ptr gdclass.Receiver) map[interface{}]interface{}) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_state(impl func(ptr gdclass.Receiver) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -1143,12 +1143,12 @@ Note: Your plugin must implement [GetPluginName], otherwise it will not be recog
 [GetPluginName]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
 [GetState]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
 */
-func (Instance) _set_state(impl func(ptr gdclass.Receiver, state map[interface{}]interface{})) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_state(impl func(ptr gdclass.Receiver, state map[any]any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 0))))
 		defer pointers.End(gd.InternalDictionary(state))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, gd.DictionaryAs[map[interface{}]interface{}](state))
+		impl(self, gd.DictionaryAs[map[any]any](state))
 	}
 }
 

@@ -142,7 +142,7 @@ type Any interface {
 
 type Interface interface {
 	// Override this method to customize how this primitive mesh should be generated. Should return an slice where each element is another Array of values required for the mesh (see the [Mesh.ArrayType] constants).
-	CreateMeshArray() [][]interface{}
+	CreateMeshArray() [][]any
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -150,12 +150,12 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) CreateMeshArray() (_ [][]interface{}) { return }
+func (self implementation) CreateMeshArray() (_ [][]any) { return }
 
 /*
 Override this method to customize how this primitive mesh should be generated. Should return an slice where each element is another Array of values required for the mesh (see the [Mesh.ArrayType] constants).
 */
-func (Instance) _create_mesh_array(impl func(ptr gdclass.Receiver) [][]interface{}) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _create_mesh_array(impl func(ptr gdclass.Receiver) [][]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)

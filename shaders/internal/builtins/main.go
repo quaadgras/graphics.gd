@@ -93,16 +93,16 @@ func extractTagsFrom(name string, lines *bufio.Reader, tags map[string]FileLine)
 		if !strings.HasPrefix(line, "func ") {
 			continue
 		}
-		tagIdx := strings.Index(line, "//glsl:")
-		if tagIdx == -1 {
+		_, after, ok := strings.Cut(line, "//glsl:")
+		if !ok {
 			continue
 		}
-		tag := strings.TrimSpace(line[tagIdx+7:])
+		tag := strings.TrimSpace(after)
 		if tag == "" {
 			continue
 		}
-		splits := strings.Split(tag, " ")
-		for _, tag := range splits {
+		splits := strings.SplitSeq(tag, " ")
+		for tag := range splits {
 			if _, ok := tags[tag]; ok {
 				return fmt.Errorf("duplicate tag %q in %s:%d and %s:%d\n",
 					tag, tags[tag].File, tags[tag].Line, name, n)

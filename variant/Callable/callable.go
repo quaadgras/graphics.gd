@@ -236,7 +236,7 @@ func IsProxy(fn Function) bool { //gd:Callable.is_custom
 	if fn == Nil {
 		return true
 	}
-	return reflect.TypeOf(fn).Kind() != reflect.Func
+	return reflect.TypeFor[Function]().Kind() != reflect.Func
 }
 
 // Hash returns the 32-bit hash value of this Callable's object.
@@ -246,7 +246,7 @@ func IsProxy(fn Function) bool { //gd:Callable.is_custom
 // callables are equal, because different callables can have identical hash values due
 // to hash collisions. The engine uses a 32-bit hash algorithm for hash.
 func Hash(fn Function) uint32 { //gd:Callable.hash
-	return uint32(reflect.ValueOf(reflect.TypeOf(fn)).Pointer() % math.MaxUint32)
+	return uint32(reflect.ValueOf(reflect.TypeFor[Function]()).Pointer() % math.MaxUint32)
 }
 
 // Receiver returns the receiver of the method represented by this Callable.
@@ -272,7 +272,7 @@ func IsStandard(fn Function) bool { //gd:Callable.is_standard
 	if fn == Nil {
 		return false
 	}
-	return reflect.TypeOf(fn).Kind() == reflect.Func
+	return reflect.TypeFor[Function]().Kind() == reflect.Func
 }
 
 // IsValid returns true if the given value is not nil.

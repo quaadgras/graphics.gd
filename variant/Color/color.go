@@ -227,7 +227,7 @@ func AsHex(c RGBA) string { //gd:Color.to_html
 func _to_hex(val float32) string {
 	v := rune(min(255, max(0, math.Round(float64(val*255)))))
 	var ret string
-	for i := 0; i < 2; i++ {
+	for range 2 {
 		var c = [2]rune{0, 0}
 		var lv = v & 0xF
 		if lv < 10 {

@@ -245,7 +245,7 @@ func UnmarshalAny(data []byte) (any, error) { //gd:bytes_to_var bytes_to_var_wit
 			return nil, err
 		}
 		result := make([]string, length)
-		for i := uint32(0); i < length; i++ {
+		for i := range length {
 			result[i], err = decodeString(data)
 			if err != nil {
 				return nil, err
@@ -338,7 +338,7 @@ func UnmarshalSize(data []byte) (uintptr, error) {
 			return 0, err
 		}
 		size := uintptr(4)
-		for i := uint32(0); i < length; i++ {
+		for range length {
 			s, err := UnmarshalSize(data[size:])
 			if err != nil {
 				return 0, err
@@ -353,7 +353,7 @@ func UnmarshalSize(data []byte) (uintptr, error) {
 			return 0, err
 		}
 		size := uintptr(4)
-		for i := uint32(0); i < length; i++ {
+		for range length {
 			s, err := UnmarshalSize(data[size:])
 			if err != nil {
 				return 0, err
@@ -392,7 +392,7 @@ func UnmarshalSize(data []byte) (uintptr, error) {
 			return 0, err
 		}
 		size := uintptr(4)
-		for i := uint32(0); i < length; i++ {
+		for range length {
 			length, err := decode[uint32](data[size:])
 			if err != nil {
 				return 0, err
