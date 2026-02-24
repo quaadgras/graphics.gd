@@ -28,7 +28,7 @@ provide a cohesive and curated experience for using [Go](https://go.dev/) on top
 
 ```go
 // This file is all you need to start a project.
-// Save it somewhere, install the `gd` command and use `gd run` to get started.
+// Save it somewhere, install the `gd` command and use `gd run` to launch.
 package main
 
 import (
