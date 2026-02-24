@@ -145,9 +145,13 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetLineSyntaxHighlighting(line int) (_ map[int]Entry) { return }
-func (self implementation) ClearHighlightingCache()                              { return }
-func (self implementation) UpdateCache()                                         { return }
+func (self implementation) GetLineSyntaxHighlighting(line int) (_ map[int]Entry) {
+	return
+}
+func (self implementation) ClearHighlightingCache() {
+}
+func (self implementation) UpdateCache() {
+}
 
 /*
 Virtual method which can be overridden to return syntax highlighting data.

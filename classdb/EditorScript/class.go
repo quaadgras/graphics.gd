@@ -157,7 +157,8 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Run() { return }
+func (self implementation) Run() {
+}
 
 /*
 This method is executed by the Editor when File > Run is used.

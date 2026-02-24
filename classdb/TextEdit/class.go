@@ -421,12 +421,18 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) HandleUnicodeInput(unicode_char int, caret_index int) { return }
-func (self implementation) Backspace(caret_index int)                            { return }
-func (self implementation) Cut(caret_index int)                                  { return }
-func (self implementation) Copy(caret_index int)                                 { return }
-func (self implementation) Paste(caret_index int)                                { return }
-func (self implementation) PastePrimaryClipboard(caret_index int)                { return }
+func (self implementation) HandleUnicodeInput(unicode_char int, caret_index int) {
+}
+func (self implementation) Backspace(caret_index int) {
+}
+func (self implementation) Cut(caret_index int) {
+}
+func (self implementation) Copy(caret_index int) {
+}
+func (self implementation) Paste(caret_index int) {
+}
+func (self implementation) PastePrimaryClipboard(caret_index int) {
+}
 
 /*
 Override this method to define what happens when the user types in the provided key 'unicode_char'.

@@ -266,8 +266,10 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) ConfirmCodeCompletion(replace bool) { return }
-func (self implementation) RequestCodeCompletion(force bool)   { return }
+func (self implementation) ConfirmCodeCompletion(replace bool) {
+}
+func (self implementation) RequestCodeCompletion(force bool) {
+}
 func (self implementation) FilterCodeCompletionCandidates(candidates [][]CompletionInfo) (_ [][]CompletionInfo) {
 	return
 }

@@ -134,11 +134,16 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Configure(config RenderSceneBuffersConfiguration.Instance)    { return }
-func (self implementation) SetFsrSharpness(fsr_sharpness Float.X)                        { return }
-func (self implementation) SetTextureMipmapBias(texture_mipmap_bias Float.X)             { return }
-func (self implementation) SetAnisotropicFilteringLevel(anisotropic_filtering_level int) { return }
-func (self implementation) SetUseDebanding(use_debanding bool)                           { return }
+func (self implementation) Configure(config RenderSceneBuffersConfiguration.Instance) {
+}
+func (self implementation) SetFsrSharpness(fsr_sharpness Float.X) {
+}
+func (self implementation) SetTextureMipmapBias(texture_mipmap_bias Float.X) {
+}
+func (self implementation) SetAnisotropicFilteringLevel(anisotropic_filtering_level int) {
+}
+func (self implementation) SetUseDebanding(use_debanding bool) {
+}
 
 /*
 Implement this in GDExtension to handle the (re)sizing of a viewport.

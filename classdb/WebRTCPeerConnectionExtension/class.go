@@ -132,21 +132,38 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetConnectionState() (_ WebRTCPeerConnection.ConnectionState) { return }
-func (self implementation) GetGatheringState() (_ WebRTCPeerConnection.GatheringState)   { return }
-func (self implementation) GetSignalingState() (_ WebRTCPeerConnection.SignalingState)   { return }
-func (self implementation) Initialize(p_config Configuration) (_ error)                  { return }
+func (self implementation) GetConnectionState() (_ WebRTCPeerConnection.ConnectionState) {
+	return
+}
+func (self implementation) GetGatheringState() (_ WebRTCPeerConnection.GatheringState) {
+	return
+}
+func (self implementation) GetSignalingState() (_ WebRTCPeerConnection.SignalingState) {
+	return
+}
+func (self implementation) Initialize(p_config Configuration) (_ error) {
+	return
+}
 func (self implementation) CreateDataChannel(p_label string, p_config Configuration) (_ WebRTCDataChannel.Instance) {
 	return
 }
-func (self implementation) CreateOffer() (_ error)                                     { return }
-func (self implementation) SetRemoteDescription(p_type string, p_sdp string) (_ error) { return }
-func (self implementation) SetLocalDescription(p_type string, p_sdp string) (_ error)  { return }
+func (self implementation) CreateOffer() (_ error) {
+	return
+}
+func (self implementation) SetRemoteDescription(p_type string, p_sdp string) (_ error) {
+	return
+}
+func (self implementation) SetLocalDescription(p_type string, p_sdp string) (_ error) {
+	return
+}
 func (self implementation) AddIceCandidate(p_sdp_mid_name string, p_sdp_mline_index int, p_sdp_name string) (_ error) {
 	return
 }
-func (self implementation) Poll() (_ error) { return }
-func (self implementation) Close()          { return }
+func (self implementation) Poll() (_ error) {
+	return
+}
+func (self implementation) Close() {
+}
 func (Instance) _get_connection_state(impl func(ptr gdclass.Receiver) WebRTCPeerConnection.ConnectionState) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())

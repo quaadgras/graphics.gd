@@ -240,15 +240,26 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) HasGizmo(for_node_3d Node3D.Instance) (_ bool) { return }
+func (self implementation) HasGizmo(for_node_3d Node3D.Instance) (_ bool) {
+	return
+}
 func (self implementation) CreateGizmo(for_node_3d Node3D.Instance) (_ EditorNode3DGizmo.Instance) {
 	return
 }
-func (self implementation) GetGizmoName() (_ string)                { return }
-func (self implementation) GetPriority() (_ int)                    { return }
-func (self implementation) CanBeHidden() (_ bool)                   { return }
-func (self implementation) IsSelectableWhenHidden() (_ bool)        { return }
-func (self implementation) Redraw(gizmo EditorNode3DGizmo.Instance) { return }
+func (self implementation) GetGizmoName() (_ string) {
+	return
+}
+func (self implementation) GetPriority() (_ int) {
+	return
+}
+func (self implementation) CanBeHidden() (_ bool) {
+	return
+}
+func (self implementation) IsSelectableWhenHidden() (_ bool) {
+	return
+}
+func (self implementation) Redraw(gizmo EditorNode3DGizmo.Instance) {
+}
 func (self implementation) GetHandleName(gizmo EditorNode3DGizmo.Instance, handle_id int, secondary bool) (_ string) {
 	return
 }
@@ -259,13 +270,10 @@ func (self implementation) GetHandleValue(gizmo EditorNode3DGizmo.Instance, hand
 	return
 }
 func (self implementation) BeginHandleAction(gizmo EditorNode3DGizmo.Instance, handle_id int, secondary bool) {
-	return
 }
 func (self implementation) SetHandle(gizmo EditorNode3DGizmo.Instance, handle_id int, secondary bool, camera Camera3D.Instance, screen_pos Vector2.XY) {
-	return
 }
 func (self implementation) CommitHandle(gizmo EditorNode3DGizmo.Instance, handle_id int, secondary bool, restore any, cancel bool) {
-	return
 }
 func (self implementation) SubgizmosIntersectRay(gizmo EditorNode3DGizmo.Instance, camera Camera3D.Instance, screen_pos Vector2.XY) (_ int) {
 	return
@@ -277,10 +285,8 @@ func (self implementation) GetSubgizmoTransform(gizmo EditorNode3DGizmo.Instance
 	return
 }
 func (self implementation) SetSubgizmoTransform(gizmo EditorNode3DGizmo.Instance, subgizmo_id int, transform Transform3D.BasisOrigin) {
-	return
 }
 func (self implementation) CommitSubgizmos(gizmo EditorNode3DGizmo.Instance, ids []int32, restores []Transform3D.BasisOrigin, cancel bool) {
-	return
 }
 
 /*

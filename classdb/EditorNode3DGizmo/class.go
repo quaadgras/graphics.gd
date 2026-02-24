@@ -228,25 +228,35 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Redraw()                                             { return }
-func (self implementation) GetHandleName(id int, secondary bool) (_ string)     { return }
-func (self implementation) IsHandleHighlighted(id int, secondary bool) (_ bool) { return }
-func (self implementation) GetHandleValue(id int, secondary bool) (_ any)       { return }
-func (self implementation) BeginHandleAction(id int, secondary bool)            { return }
-func (self implementation) SetHandle(id int, secondary bool, camera Camera3D.Instance, point Vector2.XY) {
+func (self implementation) Redraw() {
+}
+func (self implementation) GetHandleName(id int, secondary bool) (_ string) {
 	return
 }
-func (self implementation) CommitHandle(id int, secondary bool, restore any, cancel bool) { return }
+func (self implementation) IsHandleHighlighted(id int, secondary bool) (_ bool) {
+	return
+}
+func (self implementation) GetHandleValue(id int, secondary bool) (_ any) {
+	return
+}
+func (self implementation) BeginHandleAction(id int, secondary bool) {
+}
+func (self implementation) SetHandle(id int, secondary bool, camera Camera3D.Instance, point Vector2.XY) {
+}
+func (self implementation) CommitHandle(id int, secondary bool, restore any, cancel bool) {
+}
 func (self implementation) SubgizmosIntersectRay(camera Camera3D.Instance, point Vector2.XY) (_ int) {
 	return
 }
 func (self implementation) SubgizmosIntersectFrustum(camera Camera3D.Instance, frustum []Plane.NormalD) (_ []int32) {
 	return
 }
-func (self implementation) SetSubgizmoTransform(id int, transform Transform3D.BasisOrigin) { return }
-func (self implementation) GetSubgizmoTransform(id int) (_ Transform3D.BasisOrigin)        { return }
-func (self implementation) CommitSubgizmos(ids []int32, restores []Transform3D.BasisOrigin, cancel bool) {
+func (self implementation) SetSubgizmoTransform(id int, transform Transform3D.BasisOrigin) {
+}
+func (self implementation) GetSubgizmoTransform(id int) (_ Transform3D.BasisOrigin) {
 	return
+}
+func (self implementation) CommitSubgizmos(ids []int32, restores []Transform3D.BasisOrigin, cancel bool) {
 }
 
 /*

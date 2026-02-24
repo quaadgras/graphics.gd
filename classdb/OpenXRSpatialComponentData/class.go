@@ -129,9 +129,14 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) SetCapacity(capacity int)          { return }
-func (self implementation) GetComponentType() (_ int)         { return }
-func (self implementation) GetStructureData(next int) (_ int) { return }
+func (self implementation) SetCapacity(capacity int) {
+}
+func (self implementation) GetComponentType() (_ int) {
+	return
+}
+func (self implementation) GetStructureData(next int) (_ int) {
+	return
+}
 
 /*
 Set the expected capacity as provided by the spatial entities query system. Buffers should be initialized with the correct storage.

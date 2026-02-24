@@ -263,8 +263,12 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetPresetFeatures(preset EditorExportPreset.Instance) (_ []string) { return }
-func (self implementation) IsExecutable(path string) (_ bool)                                 { return }
+func (self implementation) GetPresetFeatures(preset EditorExportPreset.Instance) (_ []string) {
+	return
+}
+func (self implementation) IsExecutable(path string) (_ bool) {
+	return
+}
 func (self implementation) GetExportOptions() (_ [][]struct {
 	Hint             int    "gd:\"hint\""
 	HintString       string "gd:\"hint_string\""
@@ -273,30 +277,59 @@ func (self implementation) GetExportOptions() (_ [][]struct {
 	DefaultValue     any    "gd:\"default_value\""
 	UpdateVisibility bool   "gd:\"update_visibility\""
 	Required         bool   "gd:\"required\""
-})                                                              { return }
-func (self implementation) ShouldUpdateExportOptions() (_ bool) { return }
+}) {
+	return
+}
+func (self implementation) ShouldUpdateExportOptions() (_ bool) {
+	return
+}
 func (self implementation) GetExportOptionVisibility(preset EditorExportPreset.Instance, option string) (_ bool) {
 	return
 }
 func (self implementation) GetExportOptionWarning(preset EditorExportPreset.Instance, option string) (_ string) {
 	return
 }
-func (self implementation) GetOsName() (_ string)                           { return }
-func (self implementation) GetName() (_ string)                             { return }
-func (self implementation) GetLogo() (_ Texture2D.Instance)                 { return }
-func (self implementation) PollExport() (_ bool)                            { return }
-func (self implementation) GetOptionsCount() (_ int)                        { return }
-func (self implementation) GetOptionsTooltip() (_ string)                   { return }
-func (self implementation) GetOptionIcon(device int) (_ Texture2D.Instance) { return }
-func (self implementation) GetOptionLabel(device int) (_ string)            { return }
-func (self implementation) GetOptionTooltip(device int) (_ string)          { return }
-func (self implementation) GetDeviceArchitecture(device int) (_ string)     { return }
-func (self implementation) Cleanup()                                        { return }
+func (self implementation) GetOsName() (_ string) {
+	return
+}
+func (self implementation) GetName() (_ string) {
+	return
+}
+func (self implementation) GetLogo() (_ Texture2D.Instance) {
+	return
+}
+func (self implementation) PollExport() (_ bool) {
+	return
+}
+func (self implementation) GetOptionsCount() (_ int) {
+	return
+}
+func (self implementation) GetOptionsTooltip() (_ string) {
+	return
+}
+func (self implementation) GetOptionIcon(device int) (_ Texture2D.Instance) {
+	return
+}
+func (self implementation) GetOptionLabel(device int) (_ string) {
+	return
+}
+func (self implementation) GetOptionTooltip(device int) (_ string) {
+	return
+}
+func (self implementation) GetDeviceArchitecture(device int) (_ string) {
+	return
+}
+func (self implementation) Cleanup() {
+}
 func (self implementation) Run(preset EditorExportPreset.Instance, device int, debug_flags EditorExportPlatform.DebugFlags) (_ error) {
 	return
 }
-func (self implementation) GetRunIcon() (_ Texture2D.Instance)                                { return }
-func (self implementation) CanExport(preset EditorExportPreset.Instance, debug bool) (_ bool) { return }
+func (self implementation) GetRunIcon() (_ Texture2D.Instance) {
+	return
+}
+func (self implementation) CanExport(preset EditorExportPreset.Instance, debug bool) (_ bool) {
+	return
+}
 func (self implementation) HasValidExportConfiguration(preset EditorExportPreset.Instance, debug bool) (_ bool) {
 	return
 }
@@ -321,9 +354,14 @@ func (self implementation) ExportPackPatch(preset EditorExportPreset.Instance, d
 func (self implementation) ExportZipPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags EditorExportPlatform.DebugFlags) (_ error) {
 	return
 }
-func (self implementation) GetPlatformFeatures() (_ []string) { return }
-func (self implementation) GetDebugProtocol() (_ string)      { return }
-func (self implementation) Initialize()                       { return }
+func (self implementation) GetPlatformFeatures() (_ []string) {
+	return
+}
+func (self implementation) GetDebugProtocol() (_ string) {
+	return
+}
+func (self implementation) Initialize() {
+}
 
 /*
 Returns array of platform specific features for the specified 'preset'.

@@ -137,9 +137,15 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetName() (_ string)                 { return }
-func (self implementation) GetSupportedLanguages() (_ []string) { return }
-func (self implementation) Create() (_ Instance)                { return }
+func (self implementation) GetName() (_ string) {
+	return
+}
+func (self implementation) GetSupportedLanguages() (_ []string) {
+	return
+}
+func (self implementation) Create() (_ Instance) {
+	return
+}
 
 /*
 Virtual method which can be overridden to return the syntax highlighter name.

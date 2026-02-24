@@ -191,16 +191,23 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetAudioMixRate() (_ int)                         { return }
-func (self implementation) GetAudioSpeakerMode() (_ AudioServer.SpeakerMode) { return }
-func (self implementation) HandlesFile(path string) (_ bool)                 { return }
+func (self implementation) GetAudioMixRate() (_ int) {
+	return
+}
+func (self implementation) GetAudioSpeakerMode() (_ AudioServer.SpeakerMode) {
+	return
+}
+func (self implementation) HandlesFile(path string) (_ bool) {
+	return
+}
 func (self implementation) WriteBegin(movie_size Vector2i.XY, fps int, base_path string) (_ error) {
 	return
 }
 func (self implementation) WriteFrame(frame_image Image.Instance, audio_frame_block gdextension.Pointer) (_ error) {
 	return
 }
-func (self implementation) WriteEnd() { return }
+func (self implementation) WriteEnd() {
+}
 
 /*
 Called when the audio sample rate used for recording the audio is requested by the engine. The value returned must be specified in Hz. Defaults to 48000 Hz if [GetAudioMixRate] is not overridden.

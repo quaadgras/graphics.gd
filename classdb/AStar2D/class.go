@@ -181,9 +181,15 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) FilterNeighbor(from_id Point, neighbor_id Point) (_ bool) { return }
-func (self implementation) EstimateCost(from_id Point, end_id Point) (_ Float.X)     { return }
-func (self implementation) ComputeCost(from_id Point, to_id Point) (_ Float.X)       { return }
+func (self implementation) FilterNeighbor(from_id Point, neighbor_id Point) (_ bool) {
+	return
+}
+func (self implementation) EstimateCost(from_id Point, end_id Point) (_ Float.X) {
+	return
+}
+func (self implementation) ComputeCost(from_id Point, to_id Point) (_ Float.X) {
+	return
+}
 
 /*
 Called when neighboring enters processing and if [NeighborFilterEnabled] is true. If true is returned the point will not be processed.

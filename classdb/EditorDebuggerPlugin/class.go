@@ -247,13 +247,19 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) SetupSession(session_id int)                                 { return }
-func (self implementation) HasCapture(capture string) (_ bool)                          { return }
-func (self implementation) Capture(message string, data []any, session_id int) (_ bool) { return }
-func (self implementation) GotoScriptLine(script Script.Instance, line int)             { return }
-func (self implementation) BreakpointsClearedInTree()                                   { return }
-func (self implementation) BreakpointSetInTree(script Script.Instance, line int, enabled bool) {
+func (self implementation) SetupSession(session_id int) {
+}
+func (self implementation) HasCapture(capture string) (_ bool) {
 	return
+}
+func (self implementation) Capture(message string, data []any, session_id int) (_ bool) {
+	return
+}
+func (self implementation) GotoScriptLine(script Script.Instance, line int) {
+}
+func (self implementation) BreakpointsClearedInTree() {
+}
+func (self implementation) BreakpointSetInTree(script Script.Instance, line int, enabled bool) {
 }
 
 /*

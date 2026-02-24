@@ -148,7 +148,6 @@ type Implementation = implementation
 type implementation struct{}
 
 func (self implementation) RenderCallback(effect_callback_type int, render_data RenderData.Instance) {
-	return
 }
 
 /*

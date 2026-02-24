@@ -168,7 +168,9 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Handles(atype string) (_ bool) { return }
+func (self implementation) Handles(atype string) (_ bool) {
+	return
+}
 func (self implementation) MakeTooltipForPath(path string, metadata map[string]any, base Control.Instance) (_ Control.Instance) {
 	return
 }

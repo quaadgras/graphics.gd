@@ -173,9 +173,15 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) ConvertsTo() (_ string)                                   { return }
-func (self implementation) Handles(resource Resource.Instance) (_ bool)              { return }
-func (self implementation) Convert(resource Resource.Instance) (_ Resource.Instance) { return }
+func (self implementation) ConvertsTo() (_ string) {
+	return
+}
+func (self implementation) Handles(resource Resource.Instance) (_ bool) {
+	return
+}
+func (self implementation) Convert(resource Resource.Instance) (_ Resource.Instance) {
+	return
+}
 
 /*
 Returns the class name of the target type of [Resource] that this plugin converts source resources to.

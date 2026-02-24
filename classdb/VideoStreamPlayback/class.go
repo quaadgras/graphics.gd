@@ -188,19 +188,39 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Stop()                              { return }
-func (self implementation) Play()                              { return }
-func (self implementation) IsPlaying() (_ bool)                { return }
-func (self implementation) SetPaused(paused bool)              { return }
-func (self implementation) IsPaused() (_ bool)                 { return }
-func (self implementation) GetLength() (_ Float.X)             { return }
-func (self implementation) GetPlaybackPosition() (_ Float.X)   { return }
-func (self implementation) Seek(time Float.X)                  { return }
-func (self implementation) SetAudioTrack(idx int)              { return }
-func (self implementation) GetTexture() (_ Texture2D.Instance) { return }
-func (self implementation) Update(delta Float.X)               { return }
-func (self implementation) GetChannels() (_ int)               { return }
-func (self implementation) GetMixRate() (_ int)                { return }
+func (self implementation) Stop() {
+}
+func (self implementation) Play() {
+}
+func (self implementation) IsPlaying() (_ bool) {
+	return
+}
+func (self implementation) SetPaused(paused bool) {
+}
+func (self implementation) IsPaused() (_ bool) {
+	return
+}
+func (self implementation) GetLength() (_ Float.X) {
+	return
+}
+func (self implementation) GetPlaybackPosition() (_ Float.X) {
+	return
+}
+func (self implementation) Seek(time Float.X) {
+}
+func (self implementation) SetAudioTrack(idx int) {
+}
+func (self implementation) GetTexture() (_ Texture2D.Instance) {
+	return
+}
+func (self implementation) Update(delta Float.X) {
+}
+func (self implementation) GetChannels() (_ int) {
+	return
+}
+func (self implementation) GetMixRate() (_ int) {
+	return
+}
 
 /*
 Stops playback. May be called multiple times before [Play], or in response to [VideoStreamPlayer.Stop]. [IsPlaying] should return false once stopped.

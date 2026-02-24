@@ -755,27 +755,55 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) WorldBoundaryShapeCreate() (_ RID.Shape2D)                    { return }
-func (self implementation) SeparationRayShapeCreate() (_ RID.Shape2D)                    { return }
-func (self implementation) SegmentShapeCreate() (_ RID.Shape2D)                          { return }
-func (self implementation) CircleShapeCreate() (_ RID.Shape2D)                           { return }
-func (self implementation) RectangleShapeCreate() (_ RID.Shape2D)                        { return }
-func (self implementation) CapsuleShapeCreate() (_ RID.Shape2D)                          { return }
-func (self implementation) ConvexPolygonShapeCreate() (_ RID.Shape2D)                    { return }
-func (self implementation) ConcavePolygonShapeCreate() (_ RID.Shape2D)                   { return }
-func (self implementation) ShapeSetData(shape RID.Shape2D, data any)                     { return }
-func (self implementation) ShapeSetCustomSolverBias(shape RID.Shape2D, bias Float.X)     { return }
-func (self implementation) ShapeGetType(shape RID.Shape2D) (_ PhysicsServer2D.ShapeType) { return }
-func (self implementation) ShapeGetData(shape RID.Shape2D) (_ any)                       { return }
-func (self implementation) ShapeGetCustomSolverBias(shape RID.Shape2D) (_ Float.X)       { return }
+func (self implementation) WorldBoundaryShapeCreate() (_ RID.Shape2D) {
+	return
+}
+func (self implementation) SeparationRayShapeCreate() (_ RID.Shape2D) {
+	return
+}
+func (self implementation) SegmentShapeCreate() (_ RID.Shape2D) {
+	return
+}
+func (self implementation) CircleShapeCreate() (_ RID.Shape2D) {
+	return
+}
+func (self implementation) RectangleShapeCreate() (_ RID.Shape2D) {
+	return
+}
+func (self implementation) CapsuleShapeCreate() (_ RID.Shape2D) {
+	return
+}
+func (self implementation) ConvexPolygonShapeCreate() (_ RID.Shape2D) {
+	return
+}
+func (self implementation) ConcavePolygonShapeCreate() (_ RID.Shape2D) {
+	return
+}
+func (self implementation) ShapeSetData(shape RID.Shape2D, data any) {
+}
+func (self implementation) ShapeSetCustomSolverBias(shape RID.Shape2D, bias Float.X) {
+}
+func (self implementation) ShapeGetType(shape RID.Shape2D) (_ PhysicsServer2D.ShapeType) {
+	return
+}
+func (self implementation) ShapeGetData(shape RID.Shape2D) (_ any) {
+	return
+}
+func (self implementation) ShapeGetCustomSolverBias(shape RID.Shape2D) (_ Float.X) {
+	return
+}
 func (self implementation) ShapeCollide(shape_A RID.Shape2D, xform_A Transform2D.OriginXY, motion_A Vector2.XY, shape_B RID.Shape2D, xform_B Transform2D.OriginXY, motion_B Vector2.XY, results gdextension.Pointer, result_max int, result_count *int32) (_ bool) {
 	return
 }
-func (self implementation) SpaceCreate() (_ RID.Space2D)                  { return }
-func (self implementation) SpaceSetActive(space RID.Space2D, active bool) { return }
-func (self implementation) SpaceIsActive(space RID.Space2D) (_ bool)      { return }
-func (self implementation) SpaceSetParam(space RID.Space2D, param PhysicsServer2D.SpaceParameter, value Float.X) {
+func (self implementation) SpaceCreate() (_ RID.Space2D) {
 	return
+}
+func (self implementation) SpaceSetActive(space RID.Space2D, active bool) {
+}
+func (self implementation) SpaceIsActive(space RID.Space2D) (_ bool) {
+	return
+}
+func (self implementation) SpaceSetParam(space RID.Space2D, param PhysicsServer2D.SpaceParameter, value Float.X) {
 }
 func (self implementation) SpaceGetParam(space RID.Space2D, param PhysicsServer2D.SpaceParameter) (_ Float.X) {
 	return
@@ -783,208 +811,287 @@ func (self implementation) SpaceGetParam(space RID.Space2D, param PhysicsServer2
 func (self implementation) SpaceGetDirectState(space RID.Space2D) (_ PhysicsDirectSpaceState2D.Instance) {
 	return
 }
-func (self implementation) SpaceSetDebugContacts(space RID.Space2D, max_contacts int) { return }
-func (self implementation) SpaceGetContacts(space RID.Space2D) (_ []Vector2.XY)       { return }
-func (self implementation) SpaceGetContactCount(space RID.Space2D) (_ int)            { return }
-func (self implementation) AreaCreate() (_ RID.Area2D)                                { return }
-func (self implementation) AreaSetSpace(area RID.Area2D, space RID.Space2D)           { return }
-func (self implementation) AreaGetSpace(area RID.Area2D) (_ RID.Space2D)              { return }
-func (self implementation) AreaAddShape(area RID.Area2D, shape RID.Shape2D, transform Transform2D.OriginXY, disabled bool) {
+func (self implementation) SpaceSetDebugContacts(space RID.Space2D, max_contacts int) {
+}
+func (self implementation) SpaceGetContacts(space RID.Space2D) (_ []Vector2.XY) {
 	return
 }
-func (self implementation) AreaSetShape(area RID.Area2D, shape_idx int, shape RID.Shape2D) { return }
-func (self implementation) AreaSetShapeTransform(area RID.Area2D, shape_idx int, transform Transform2D.OriginXY) {
+func (self implementation) SpaceGetContactCount(space RID.Space2D) (_ int) {
 	return
+}
+func (self implementation) AreaCreate() (_ RID.Area2D) {
+	return
+}
+func (self implementation) AreaSetSpace(area RID.Area2D, space RID.Space2D) {
+}
+func (self implementation) AreaGetSpace(area RID.Area2D) (_ RID.Space2D) {
+	return
+}
+func (self implementation) AreaAddShape(area RID.Area2D, shape RID.Shape2D, transform Transform2D.OriginXY, disabled bool) {
+}
+func (self implementation) AreaSetShape(area RID.Area2D, shape_idx int, shape RID.Shape2D) {
+}
+func (self implementation) AreaSetShapeTransform(area RID.Area2D, shape_idx int, transform Transform2D.OriginXY) {
 }
 func (self implementation) AreaSetShapeDisabled(area RID.Area2D, shape_idx int, disabled bool) {
+}
+func (self implementation) AreaGetShapeCount(area RID.Area2D) (_ int) {
 	return
 }
-func (self implementation) AreaGetShapeCount(area RID.Area2D) (_ int)                  { return }
-func (self implementation) AreaGetShape(area RID.Area2D, shape_idx int) (_ RID.Area2D) { return }
+func (self implementation) AreaGetShape(area RID.Area2D, shape_idx int) (_ RID.Area2D) {
+	return
+}
 func (self implementation) AreaGetShapeTransform(area RID.Area2D, shape_idx int) (_ Transform2D.OriginXY) {
 	return
 }
-func (self implementation) AreaRemoveShape(area RID.Area2D, shape_idx int)     { return }
-func (self implementation) AreaClearShapes(area RID.Area2D)                    { return }
-func (self implementation) AreaAttachObjectInstanceId(area RID.Area2D, id int) { return }
-func (self implementation) AreaGetObjectInstanceId(area RID.Area2D) (_ int)    { return }
-func (self implementation) AreaAttachCanvasInstanceId(area RID.Area2D, id int) { return }
-func (self implementation) AreaGetCanvasInstanceId(area RID.Area2D) (_ int)    { return }
-func (self implementation) AreaSetParam(area RID.Area2D, param PhysicsServer2D.AreaParameter, value any) {
+func (self implementation) AreaRemoveShape(area RID.Area2D, shape_idx int) {
+}
+func (self implementation) AreaClearShapes(area RID.Area2D) {
+}
+func (self implementation) AreaAttachObjectInstanceId(area RID.Area2D, id int) {
+}
+func (self implementation) AreaGetObjectInstanceId(area RID.Area2D) (_ int) {
 	return
 }
-func (self implementation) AreaSetTransform(area RID.Area2D, transform Transform2D.OriginXY) { return }
+func (self implementation) AreaAttachCanvasInstanceId(area RID.Area2D, id int) {
+}
+func (self implementation) AreaGetCanvasInstanceId(area RID.Area2D) (_ int) {
+	return
+}
+func (self implementation) AreaSetParam(area RID.Area2D, param PhysicsServer2D.AreaParameter, value any) {
+}
+func (self implementation) AreaSetTransform(area RID.Area2D, transform Transform2D.OriginXY) {
+}
 func (self implementation) AreaGetParam(area RID.Area2D, param PhysicsServer2D.AreaParameter) (_ any) {
 	return
 }
-func (self implementation) AreaGetTransform(area RID.Area2D) (_ Transform2D.OriginXY) { return }
-func (self implementation) AreaSetCollisionLayer(area RID.Area2D, layer int)          { return }
-func (self implementation) AreaGetCollisionLayer(area RID.Area2D) (_ int)             { return }
-func (self implementation) AreaSetCollisionMask(area RID.Area2D, mask int)            { return }
-func (self implementation) AreaGetCollisionMask(area RID.Area2D) (_ int)              { return }
-func (self implementation) AreaSetMonitorable(area RID.Area2D, monitorable bool)      { return }
-func (self implementation) AreaSetPickable(area RID.Area2D, pickable bool)            { return }
-func (self implementation) AreaSetMonitorCallback(area RID.Area2D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) {
+func (self implementation) AreaGetTransform(area RID.Area2D) (_ Transform2D.OriginXY) {
 	return
+}
+func (self implementation) AreaSetCollisionLayer(area RID.Area2D, layer int) {
+}
+func (self implementation) AreaGetCollisionLayer(area RID.Area2D) (_ int) {
+	return
+}
+func (self implementation) AreaSetCollisionMask(area RID.Area2D, mask int) {
+}
+func (self implementation) AreaGetCollisionMask(area RID.Area2D) (_ int) {
+	return
+}
+func (self implementation) AreaSetMonitorable(area RID.Area2D, monitorable bool) {
+}
+func (self implementation) AreaSetPickable(area RID.Area2D, pickable bool) {
+}
+func (self implementation) AreaSetMonitorCallback(area RID.Area2D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) {
 }
 func (self implementation) AreaSetAreaMonitorCallback(area RID.Area2D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) {
+}
+func (self implementation) BodyCreate() (_ RID.Body2D) {
 	return
 }
-func (self implementation) BodyCreate() (_ RID.Body2D)                                 { return }
-func (self implementation) BodySetSpace(body RID.Body2D, space RID.Space2D)            { return }
-func (self implementation) BodyGetSpace(body RID.Body2D) (_ RID.Space2D)               { return }
-func (self implementation) BodySetMode(body RID.Body2D, mode PhysicsServer2D.BodyMode) { return }
-func (self implementation) BodyGetMode(body RID.Body2D) (_ PhysicsServer2D.BodyMode)   { return }
+func (self implementation) BodySetSpace(body RID.Body2D, space RID.Space2D) {
+}
+func (self implementation) BodyGetSpace(body RID.Body2D) (_ RID.Space2D) {
+	return
+}
+func (self implementation) BodySetMode(body RID.Body2D, mode PhysicsServer2D.BodyMode) {
+}
+func (self implementation) BodyGetMode(body RID.Body2D) (_ PhysicsServer2D.BodyMode) {
+	return
+}
 func (self implementation) BodyAddShape(body RID.Body2D, shape RID.Shape2D, transform Transform2D.OriginXY, disabled bool) {
-	return
 }
-func (self implementation) BodySetShape(body RID.Body2D, shape_idx int, shape RID.Shape2D) { return }
+func (self implementation) BodySetShape(body RID.Body2D, shape_idx int, shape RID.Shape2D) {
+}
 func (self implementation) BodySetShapeTransform(body RID.Body2D, shape_idx int, transform Transform2D.OriginXY) {
+}
+func (self implementation) BodyGetShapeCount(body RID.Body2D) (_ int) {
 	return
 }
-func (self implementation) BodyGetShapeCount(body RID.Body2D) (_ int)                  { return }
-func (self implementation) BodyGetShape(body RID.Body2D, shape_idx int) (_ RID.Body2D) { return }
+func (self implementation) BodyGetShape(body RID.Body2D, shape_idx int) (_ RID.Body2D) {
+	return
+}
 func (self implementation) BodyGetShapeTransform(body RID.Body2D, shape_idx int) (_ Transform2D.OriginXY) {
 	return
 }
 func (self implementation) BodySetShapeDisabled(body RID.Body2D, shape_idx int, disabled bool) {
-	return
 }
 func (self implementation) BodySetShapeAsOneWayCollision(body RID.Body2D, shape_idx int, enable bool, margin Float.X) {
+}
+func (self implementation) BodyRemoveShape(body RID.Body2D, shape_idx int) {
+}
+func (self implementation) BodyClearShapes(body RID.Body2D) {
+}
+func (self implementation) BodyAttachObjectInstanceId(body RID.Body2D, id int) {
+}
+func (self implementation) BodyGetObjectInstanceId(body RID.Body2D) (_ int) {
 	return
 }
-func (self implementation) BodyRemoveShape(body RID.Body2D, shape_idx int)     { return }
-func (self implementation) BodyClearShapes(body RID.Body2D)                    { return }
-func (self implementation) BodyAttachObjectInstanceId(body RID.Body2D, id int) { return }
-func (self implementation) BodyGetObjectInstanceId(body RID.Body2D) (_ int)    { return }
-func (self implementation) BodyAttachCanvasInstanceId(body RID.Body2D, id int) { return }
-func (self implementation) BodyGetCanvasInstanceId(body RID.Body2D) (_ int)    { return }
-func (self implementation) BodySetContinuousCollisionDetectionMode(body RID.Body2D, mode PhysicsServer2D.CCDMode) {
+func (self implementation) BodyAttachCanvasInstanceId(body RID.Body2D, id int) {
+}
+func (self implementation) BodyGetCanvasInstanceId(body RID.Body2D) (_ int) {
 	return
+}
+func (self implementation) BodySetContinuousCollisionDetectionMode(body RID.Body2D, mode PhysicsServer2D.CCDMode) {
 }
 func (self implementation) BodyGetContinuousCollisionDetectionMode(body RID.Body2D) (_ PhysicsServer2D.CCDMode) {
 	return
 }
-func (self implementation) BodySetCollisionLayer(body RID.Body2D, layer int)           { return }
-func (self implementation) BodyGetCollisionLayer(body RID.Body2D) (_ int)              { return }
-func (self implementation) BodySetCollisionMask(body RID.Body2D, mask int)             { return }
-func (self implementation) BodyGetCollisionMask(body RID.Body2D) (_ int)               { return }
-func (self implementation) BodySetCollisionPriority(body RID.Body2D, priority Float.X) { return }
-func (self implementation) BodyGetCollisionPriority(body RID.Body2D) (_ Float.X)       { return }
-func (self implementation) BodySetParam(body RID.Body2D, param PhysicsServer2D.BodyParameter, value any) {
+func (self implementation) BodySetCollisionLayer(body RID.Body2D, layer int) {
+}
+func (self implementation) BodyGetCollisionLayer(body RID.Body2D) (_ int) {
 	return
+}
+func (self implementation) BodySetCollisionMask(body RID.Body2D, mask int) {
+}
+func (self implementation) BodyGetCollisionMask(body RID.Body2D) (_ int) {
+	return
+}
+func (self implementation) BodySetCollisionPriority(body RID.Body2D, priority Float.X) {
+}
+func (self implementation) BodyGetCollisionPriority(body RID.Body2D) (_ Float.X) {
+	return
+}
+func (self implementation) BodySetParam(body RID.Body2D, param PhysicsServer2D.BodyParameter, value any) {
 }
 func (self implementation) BodyGetParam(body RID.Body2D, param PhysicsServer2D.BodyParameter) (_ any) {
 	return
 }
-func (self implementation) BodyResetMassProperties(body RID.Body2D) { return }
+func (self implementation) BodyResetMassProperties(body RID.Body2D) {
+}
 func (self implementation) BodySetState(body RID.Body2D, state PhysicsServer2D.BodyState, value any) {
-	return
 }
 func (self implementation) BodyGetState(body RID.Body2D, state PhysicsServer2D.BodyState) (_ any) {
 	return
 }
-func (self implementation) BodyApplyCentralImpulse(body RID.Body2D, impulse Vector2.XY) { return }
-func (self implementation) BodyApplyTorqueImpulse(body RID.Body2D, impulse Float.X)     { return }
+func (self implementation) BodyApplyCentralImpulse(body RID.Body2D, impulse Vector2.XY) {
+}
+func (self implementation) BodyApplyTorqueImpulse(body RID.Body2D, impulse Float.X) {
+}
 func (self implementation) BodyApplyImpulse(body RID.Body2D, impulse Vector2.XY, position Vector2.XY) {
-	return
 }
-func (self implementation) BodyApplyCentralForce(body RID.Body2D, force Vector2.XY) { return }
+func (self implementation) BodyApplyCentralForce(body RID.Body2D, force Vector2.XY) {
+}
 func (self implementation) BodyApplyForce(body RID.Body2D, force Vector2.XY, position Vector2.XY) {
-	return
 }
-func (self implementation) BodyApplyTorque(body RID.Body2D, torque Float.X)               { return }
-func (self implementation) BodyAddConstantCentralForce(body RID.Body2D, force Vector2.XY) { return }
+func (self implementation) BodyApplyTorque(body RID.Body2D, torque Float.X) {
+}
+func (self implementation) BodyAddConstantCentralForce(body RID.Body2D, force Vector2.XY) {
+}
 func (self implementation) BodyAddConstantForce(body RID.Body2D, force Vector2.XY, position Vector2.XY) {
+}
+func (self implementation) BodyAddConstantTorque(body RID.Body2D, torque Float.X) {
+}
+func (self implementation) BodySetConstantForce(body RID.Body2D, force Vector2.XY) {
+}
+func (self implementation) BodyGetConstantForce(body RID.Body2D) (_ Vector2.XY) {
 	return
 }
-func (self implementation) BodyAddConstantTorque(body RID.Body2D, torque Float.X)         { return }
-func (self implementation) BodySetConstantForce(body RID.Body2D, force Vector2.XY)        { return }
-func (self implementation) BodyGetConstantForce(body RID.Body2D) (_ Vector2.XY)           { return }
-func (self implementation) BodySetConstantTorque(body RID.Body2D, torque Float.X)         { return }
-func (self implementation) BodyGetConstantTorque(body RID.Body2D) (_ Float.X)             { return }
-func (self implementation) BodySetAxisVelocity(body RID.Body2D, axis_velocity Vector2.XY) { return }
-func (self implementation) BodyAddCollisionException(body RID.Body2D, excepted_body RID.Body2D) {
+func (self implementation) BodySetConstantTorque(body RID.Body2D, torque Float.X) {
+}
+func (self implementation) BodyGetConstantTorque(body RID.Body2D) (_ Float.X) {
 	return
+}
+func (self implementation) BodySetAxisVelocity(body RID.Body2D, axis_velocity Vector2.XY) {
+}
+func (self implementation) BodyAddCollisionException(body RID.Body2D, excepted_body RID.Body2D) {
 }
 func (self implementation) BodyRemoveCollisionException(body RID.Body2D, excepted_body RID.Body2D) {
+}
+func (self implementation) BodyGetCollisionExceptions(body RID.Body2D) (_ []RID.Body2D) {
 	return
 }
-func (self implementation) BodyGetCollisionExceptions(body RID.Body2D) (_ []RID.Body2D) { return }
-func (self implementation) BodySetMaxContactsReported(body RID.Body2D, amount int)      { return }
-func (self implementation) BodyGetMaxContactsReported(body RID.Body2D) (_ int)          { return }
+func (self implementation) BodySetMaxContactsReported(body RID.Body2D, amount int) {
+}
+func (self implementation) BodyGetMaxContactsReported(body RID.Body2D) (_ int) {
+	return
+}
 func (self implementation) BodySetContactsReportedDepthThreshold(body RID.Body2D, threshold Float.X) {
+}
+func (self implementation) BodyGetContactsReportedDepthThreshold(body RID.Body2D) (_ Float.X) {
 	return
 }
-func (self implementation) BodyGetContactsReportedDepthThreshold(body RID.Body2D) (_ Float.X) { return }
-func (self implementation) BodySetOmitForceIntegration(body RID.Body2D, enable bool)          { return }
-func (self implementation) BodyIsOmittingForceIntegration(body RID.Body2D) (_ bool)           { return }
-func (self implementation) BodySetStateSyncCallback(body RID.Body2D, callable func(state PhysicsDirectBodyState2D.Instance)) {
+func (self implementation) BodySetOmitForceIntegration(body RID.Body2D, enable bool) {
+}
+func (self implementation) BodyIsOmittingForceIntegration(body RID.Body2D) (_ bool) {
 	return
+}
+func (self implementation) BodySetStateSyncCallback(body RID.Body2D, callable func(state PhysicsDirectBodyState2D.Instance)) {
 }
 func (self implementation) BodySetForceIntegrationCallback(body RID.Body2D, callable func(state PhysicsDirectBodyState2D.Instance, userdata any), userdata any) {
-	return
 }
 func (self implementation) BodyCollideShape(body RID.Body2D, body_shape int, shape RID.Shape2D, shape_xform Transform2D.OriginXY, motion Vector2.XY, results gdextension.Pointer, result_max int, result_count *int32) (_ bool) {
 	return
 }
-func (self implementation) BodySetPickable(body RID.Body2D, pickable bool) { return }
+func (self implementation) BodySetPickable(body RID.Body2D, pickable bool) {
+}
 func (self implementation) BodyGetDirectState(body RID.Body2D) (_ PhysicsDirectBodyState2D.Instance) {
 	return
 }
 func (self implementation) BodyTestMotion(body RID.Body2D, from Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) (_ bool) {
 	return
 }
-func (self implementation) JointCreate() (_ RID.Joint2D) { return }
-func (self implementation) JointClear(joint RID.Joint2D) { return }
-func (self implementation) JointSetParam(joint RID.Joint2D, param PhysicsServer2D.JointParam, value Float.X) {
+func (self implementation) JointCreate() (_ RID.Joint2D) {
 	return
+}
+func (self implementation) JointClear(joint RID.Joint2D) {
+}
+func (self implementation) JointSetParam(joint RID.Joint2D, param PhysicsServer2D.JointParam, value Float.X) {
 }
 func (self implementation) JointGetParam(joint RID.Joint2D, param PhysicsServer2D.JointParam) (_ Float.X) {
 	return
 }
 func (self implementation) JointDisableCollisionsBetweenBodies(joint RID.Joint2D, disable bool) {
+}
+func (self implementation) JointIsDisabledCollisionsBetweenBodies(joint RID.Joint2D) (_ bool) {
 	return
 }
-func (self implementation) JointIsDisabledCollisionsBetweenBodies(joint RID.Joint2D) (_ bool) { return }
 func (self implementation) JointMakePin(joint RID.Joint2D, anchor Vector2.XY, body_a RID.Body2D, body_b RID.Body2D) {
-	return
 }
 func (self implementation) JointMakeGroove(joint RID.Joint2D, a_groove1 Vector2.XY, a_groove2 Vector2.XY, b_anchor Vector2.XY, body_a RID.Body2D, body_b RID.Body2D) {
-	return
 }
 func (self implementation) JointMakeDampedSpring(joint RID.Joint2D, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Body2D, body_b RID.Body2D) {
-	return
 }
 func (self implementation) PinJointSetFlag(joint RID.Joint2D, flag PhysicsServer2D.PinJointFlag, enabled bool) {
-	return
 }
 func (self implementation) PinJointGetFlag(joint RID.Joint2D, flag PhysicsServer2D.PinJointFlag) (_ bool) {
 	return
 }
 func (self implementation) PinJointSetParam(joint RID.Joint2D, param PhysicsServer2D.PinJointParam, value Float.X) {
-	return
 }
 func (self implementation) PinJointGetParam(joint RID.Joint2D, param PhysicsServer2D.PinJointParam) (_ Float.X) {
 	return
 }
 func (self implementation) DampedSpringJointSetParam(joint RID.Joint2D, param PhysicsServer2D.DampedSpringParam, value Float.X) {
-	return
 }
 func (self implementation) DampedSpringJointGetParam(joint RID.Joint2D, param PhysicsServer2D.DampedSpringParam) (_ Float.X) {
 	return
 }
-func (self implementation) JointGetType(joint RID.Joint2D) (_ PhysicsServer2D.JointType)    { return }
-func (self implementation) FreeRid(rid RID.Any)                                             { return }
-func (self implementation) SetActive(active bool)                                           { return }
-func (self implementation) Init()                                                           { return }
-func (self implementation) Step(step Float.X)                                               { return }
-func (self implementation) Sync()                                                           { return }
-func (self implementation) FlushQueries()                                                   { return }
-func (self implementation) EndSync()                                                        { return }
-func (self implementation) Finish()                                                         { return }
-func (self implementation) IsFlushingQueries() (_ bool)                                     { return }
-func (self implementation) GetProcessInfo(process_info PhysicsServer2D.ProcessInfo) (_ int) { return }
+func (self implementation) JointGetType(joint RID.Joint2D) (_ PhysicsServer2D.JointType) {
+	return
+}
+func (self implementation) FreeRid(rid RID.Any) {
+}
+func (self implementation) SetActive(active bool) {
+}
+func (self implementation) Init() {
+}
+func (self implementation) Step(step Float.X) {
+}
+func (self implementation) Sync() {
+}
+func (self implementation) FlushQueries() {
+}
+func (self implementation) EndSync() {
+}
+func (self implementation) Finish() {
+}
+func (self implementation) IsFlushingQueries() (_ bool) {
+	return
+}
+func (self implementation) GetProcessInfo(process_info PhysicsServer2D.ProcessInfo) (_ int) {
+	return
+}
 
 /*
 Overridable version of [PhysicsServer2D.WorldBoundaryShapeCreate].

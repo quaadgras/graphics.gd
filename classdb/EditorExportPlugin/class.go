@@ -357,11 +357,12 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) ExportFile(path string, atype string, features []string) { return }
-func (self implementation) ExportBegin(features []string, is_debug bool, path string, flags int) {
-	return
+func (self implementation) ExportFile(path string, atype string, features []string) {
 }
-func (self implementation) ExportEnd() { return }
+func (self implementation) ExportBegin(features []string, is_debug bool, path string, flags int) {
+}
+func (self implementation) ExportEnd() {
+}
 func (self implementation) BeginCustomizeResources(platform EditorExportPlatform.Instance, features []string) (_ bool) {
 	return
 }
@@ -371,15 +372,23 @@ func (self implementation) CustomizeResource(resource Resource.Instance, path st
 func (self implementation) BeginCustomizeScenes(platform EditorExportPlatform.Instance, features []string) (_ bool) {
 	return
 }
-func (self implementation) CustomizeScene(scene Node.Instance, path string) (_ Node.Instance) { return }
-func (self implementation) GetCustomizationConfigurationHash() (_ int)                        { return }
-func (self implementation) EndCustomizeScenes()                                               { return }
-func (self implementation) EndCustomizeResources()                                            { return }
+func (self implementation) CustomizeScene(scene Node.Instance, path string) (_ Node.Instance) {
+	return
+}
+func (self implementation) GetCustomizationConfigurationHash() (_ int) {
+	return
+}
+func (self implementation) EndCustomizeScenes() {
+}
+func (self implementation) EndCustomizeResources() {
+}
 func (self implementation) GetExportOptions(platform EditorExportPlatform.Instance) (_ [][]struct {
 	Option           any  "gd:\"option\" type:\"Object.PropertyInfo\""
 	DefaultValue     any  "gd:\"default_value\""
 	UpdateVisibility bool "gd:\"update_visibility\""
-}) { return }
+}) {
+	return
+}
 func (self implementation) GetExportOptionsOverrides(platform EditorExportPlatform.Instance) (_ map[string]any) {
 	return
 }
@@ -395,8 +404,12 @@ func (self implementation) GetExportOptionWarning(platform EditorExportPlatform.
 func (self implementation) GetExportFeatures(platform EditorExportPlatform.Instance, debug bool) (_ []string) {
 	return
 }
-func (self implementation) GetName() (_ string)                                              { return }
-func (self implementation) SupportsPlatform(platform EditorExportPlatform.Instance) (_ bool) { return }
+func (self implementation) GetName() (_ string) {
+	return
+}
+func (self implementation) SupportsPlatform(platform EditorExportPlatform.Instance) (_ bool) {
+	return
+}
 func (self implementation) GetAndroidDependencies(platform EditorExportPlatform.Instance, debug bool) (_ []string) {
 	return
 }

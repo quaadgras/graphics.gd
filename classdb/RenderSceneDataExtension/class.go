@@ -146,12 +146,24 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetCamTransform() (_ Transform3D.BasisOrigin)   { return }
-func (self implementation) GetCamProjection() (_ Projection.XYZW)          { return }
-func (self implementation) GetViewCount() (_ int)                          { return }
-func (self implementation) GetViewEyeOffset(view int) (_ Vector3.XYZ)      { return }
-func (self implementation) GetViewProjection(view int) (_ Projection.XYZW) { return }
-func (self implementation) GetUniformBuffer() (_ RID.UniformSet)           { return }
+func (self implementation) GetCamTransform() (_ Transform3D.BasisOrigin) {
+	return
+}
+func (self implementation) GetCamProjection() (_ Projection.XYZW) {
+	return
+}
+func (self implementation) GetViewCount() (_ int) {
+	return
+}
+func (self implementation) GetViewEyeOffset(view int) (_ Vector3.XYZ) {
+	return
+}
+func (self implementation) GetViewProjection(view int) (_ Projection.XYZW) {
+	return
+}
+func (self implementation) GetUniformBuffer() (_ RID.UniformSet) {
+	return
+}
 
 /*
 Implement this in GDExtension to return the camera [Transform3D.BasisOrigin].

@@ -660,7 +660,11 @@ func generateInterface(file io.Writer, classDB ClassDB, class gdjson.Class, impl
 			if method.ReturnValue.Type != "" {
 				fmt.Fprintf(file, "(_ %s)", classDB.convertTypeSimple(class, class.Name+"."+method.Name+".", method.ReturnValue.Meta, method.ReturnValue.Type))
 			}
-			fmt.Fprintln(file, " { return }")
+			fmt.Fprintln(file, " { ")
+			if method.ReturnValue.Type != "" {
+				fmt.Fprintln(file, "\treturn")
+			}
+			fmt.Fprintln(file, " }")
 		}
 	}
 }

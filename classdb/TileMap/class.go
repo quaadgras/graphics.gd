@@ -232,9 +232,10 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) UseTileDataRuntimeUpdate(layer int, coords Vector2i.XY) (_ bool) { return }
-func (self implementation) TileDataRuntimeUpdate(layer int, coords Vector2i.XY, tile_data TileData.Instance) {
+func (self implementation) UseTileDataRuntimeUpdate(layer int, coords Vector2i.XY) (_ bool) {
 	return
+}
+func (self implementation) TileDataRuntimeUpdate(layer int, coords Vector2i.XY, tile_data TileData.Instance) {
 }
 
 /*

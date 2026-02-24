@@ -149,7 +149,9 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetBuildDependencies(path string) (_ []string) { return }
+func (self implementation) GetBuildDependencies(path string) (_ []string) {
+	return
+}
 
 /*
 Called when the engine compilation profile editor wants to check what build options an imported resource needs. For example, [ResourceImporterDynamicFont] has a property called [ResourceImporterDynamicFont.MultichannelSignedDistanceField], that depends on the engine to be build with the "msdfgen" module. If that resource happened to be a custom one, it would be handled like this:

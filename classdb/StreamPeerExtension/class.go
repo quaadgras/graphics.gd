@@ -137,7 +137,9 @@ func (self implementation) PutData(p_data gdextension.Pointer, p_bytes int, r_se
 func (self implementation) PutPartialData(p_data gdextension.Pointer, p_bytes int, r_sent *int32) (_ error) {
 	return
 }
-func (self implementation) GetAvailableBytes() (_ int) { return }
+func (self implementation) GetAvailableBytes() (_ int) {
+	return
+}
 func (Instance) _get_data(impl func(ptr gdclass.Receiver, r_buffer gdextension.Pointer, r_bytes int, r_received *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var r_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)

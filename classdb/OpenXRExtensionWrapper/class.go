@@ -333,7 +333,9 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetRequestedExtensions(xr_version int) (_ map[string]*bool) { return }
+func (self implementation) GetRequestedExtensions(xr_version int) (_ map[string]*bool) {
+	return
+}
 func (self implementation) SetSystemPropertiesAndGetNextPointer(next_pointer gdextension.Pointer) (_ int) {
 	return
 }
@@ -364,44 +366,79 @@ func (self implementation) SetViewLocateInfoAndGetNextPointer(next_pointer gdext
 func (self implementation) SetReferenceSpaceCreateInfoAndGetNextPointer(reference_space_type int, next_pointer gdextension.Pointer) (_ int) {
 	return
 }
-func (self implementation) PrepareViewConfiguration(view_count int) { return }
+func (self implementation) PrepareViewConfiguration(view_count int) {
+}
 func (self implementation) SetViewConfigurationAndGetNextPointer(view int, next_pointer gdextension.Pointer) (_ int) {
 	return
 }
-func (self implementation) PrintViewConfigurationInfo(view int)              { return }
-func (self implementation) GetCompositionLayerCount() (_ int)                { return }
-func (self implementation) GetCompositionLayer(index int) (_ int)            { return }
-func (self implementation) GetCompositionLayerOrder(index int) (_ int)       { return }
-func (self implementation) GetSuggestedTrackerNames() (_ []string)           { return }
-func (self implementation) OnRegisterMetadata()                              { return }
-func (self implementation) OnBeforeInstanceCreated()                         { return }
-func (self implementation) OnInstanceCreated(instance int)                   { return }
-func (self implementation) OnInstanceDestroyed()                             { return }
-func (self implementation) OnSessionCreated(session int)                     { return }
-func (self implementation) OnProcess()                                       { return }
-func (self implementation) OnSyncActions()                                   { return }
-func (self implementation) OnPreRender()                                     { return }
-func (self implementation) OnMainSwapchainsCreated()                         { return }
-func (self implementation) OnPreDrawViewport(viewport RID.Viewport)          { return }
-func (self implementation) OnPostDrawViewport(viewport RID.Viewport)         { return }
-func (self implementation) OnSessionDestroyed()                              { return }
-func (self implementation) OnStateIdle()                                     { return }
-func (self implementation) OnStateReady()                                    { return }
-func (self implementation) OnStateSynchronized()                             { return }
-func (self implementation) OnStateVisible()                                  { return }
-func (self implementation) OnStateFocused()                                  { return }
-func (self implementation) OnStateStopping()                                 { return }
-func (self implementation) OnStateLossPending()                              { return }
-func (self implementation) OnStateExiting()                                  { return }
-func (self implementation) OnEventPolled(event gdextension.Pointer) (_ bool) { return }
+func (self implementation) PrintViewConfigurationInfo(view int) {
+}
+func (self implementation) GetCompositionLayerCount() (_ int) {
+	return
+}
+func (self implementation) GetCompositionLayer(index int) (_ int) {
+	return
+}
+func (self implementation) GetCompositionLayerOrder(index int) (_ int) {
+	return
+}
+func (self implementation) GetSuggestedTrackerNames() (_ []string) {
+	return
+}
+func (self implementation) OnRegisterMetadata() {
+}
+func (self implementation) OnBeforeInstanceCreated() {
+}
+func (self implementation) OnInstanceCreated(instance int) {
+}
+func (self implementation) OnInstanceDestroyed() {
+}
+func (self implementation) OnSessionCreated(session int) {
+}
+func (self implementation) OnProcess() {
+}
+func (self implementation) OnSyncActions() {
+}
+func (self implementation) OnPreRender() {
+}
+func (self implementation) OnMainSwapchainsCreated() {
+}
+func (self implementation) OnPreDrawViewport(viewport RID.Viewport) {
+}
+func (self implementation) OnPostDrawViewport(viewport RID.Viewport) {
+}
+func (self implementation) OnSessionDestroyed() {
+}
+func (self implementation) OnStateIdle() {
+}
+func (self implementation) OnStateReady() {
+}
+func (self implementation) OnStateSynchronized() {
+}
+func (self implementation) OnStateVisible() {
+}
+func (self implementation) OnStateFocused() {
+}
+func (self implementation) OnStateStopping() {
+}
+func (self implementation) OnStateLossPending() {
+}
+func (self implementation) OnStateExiting() {
+}
+func (self implementation) OnEventPolled(event gdextension.Pointer) (_ bool) {
+	return
+}
 func (self implementation) SetViewportCompositionLayerAndGetNextPointer(layer gdextension.Pointer, property_values Object.PropertyInfo, next_pointer gdextension.Pointer) (_ int) {
 	return
 }
-func (self implementation) GetViewportCompositionLayerExtensionProperties() (_ [][]struct{}) { return }
+func (self implementation) GetViewportCompositionLayerExtensionProperties() (_ [][]struct{}) {
+	return
+}
 func (self implementation) GetViewportCompositionLayerExtensionPropertyDefaults() (_ map[string]any) {
 	return
 }
-func (self implementation) OnViewportCompositionLayerDestroyed(layer gdextension.Pointer) { return }
+func (self implementation) OnViewportCompositionLayerDestroyed(layer gdextension.Pointer) {
+}
 func (self implementation) SetAndroidSurfaceSwapchainCreateInfoAndGetNextPointer(property_values Object.PropertyInfo, next_pointer gdextension.Pointer) (_ int) {
 	return
 }

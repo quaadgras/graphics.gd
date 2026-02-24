@@ -281,7 +281,9 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetContentsMinimumSize() (_ Vector2.XY) { return }
+func (self implementation) GetContentsMinimumSize() (_ Vector2.XY) {
+	return
+}
 
 /*
 Virtual method to be implemented by the user. Overrides the value returned by [GetContentsMinimumSize].

@@ -161,45 +161,114 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) EditorCanReloadFromFile() (_ bool)                                 { return }
-func (self implementation) PlaceholderErased(placeholder gdextension.Pointer)                 { return }
-func (self implementation) CanInstantiate() (_ bool)                                          { return }
-func (self implementation) GetBaseScript() (_ Script.Instance)                                { return }
-func (self implementation) GetGlobalName() (_ string)                                         { return }
-func (self implementation) InheritsScript(script Script.Instance) (_ bool)                    { return }
-func (self implementation) GetInstanceBaseType() (_ string)                                   { return }
-func (self implementation) InstanceCreate(for_object Object.Instance) (_ gdextension.Pointer) { return }
+func (self implementation) EditorCanReloadFromFile() (_ bool) {
+	return
+}
+func (self implementation) PlaceholderErased(placeholder gdextension.Pointer) {
+}
+func (self implementation) CanInstantiate() (_ bool) {
+	return
+}
+func (self implementation) GetBaseScript() (_ Script.Instance) {
+	return
+}
+func (self implementation) GetGlobalName() (_ string) {
+	return
+}
+func (self implementation) InheritsScript(script Script.Instance) (_ bool) {
+	return
+}
+func (self implementation) GetInstanceBaseType() (_ string) {
+	return
+}
+func (self implementation) InstanceCreate(for_object Object.Instance) (_ gdextension.Pointer) {
+	return
+}
 func (self implementation) PlaceholderInstanceCreate(for_object Object.Instance) (_ gdextension.Pointer) {
 	return
 }
-func (self implementation) InstanceHas(obj Object.Instance) (_ bool)           { return }
-func (self implementation) HasSourceCode() (_ bool)                            { return }
-func (self implementation) GetSourceCode() (_ string)                          { return }
-func (self implementation) SetSourceCode(code string)                          { return }
-func (self implementation) Reload(keep_state bool) (_ error)                   { return }
-func (self implementation) GetDocClassName() (_ string)                        { return }
-func (self implementation) GetDocumentation() (_ [][]ClassDoc)                 { return }
-func (self implementation) GetClassIconPath() (_ string)                       { return }
-func (self implementation) HasMethod(method string) (_ bool)                   { return }
-func (self implementation) HasStaticMethod(method string) (_ bool)             { return }
-func (self implementation) GetScriptMethodArgumentCount(method string) (_ any) { return }
-func (self implementation) GetMethodInfo(method string) (_ Object.MethodInfo)  { return }
-func (self implementation) IsTool() (_ bool)                                   { return }
-func (self implementation) IsValid() (_ bool)                                  { return }
-func (self implementation) IsAbstract() (_ bool)                               { return }
-func (self implementation) GetLanguage() (_ ScriptLanguage.Instance)           { return }
-func (self implementation) HasScriptSignal(signal string) (_ bool)             { return }
-func (self implementation) GetScriptSignalList() (_ [][]struct{})              { return }
-func (self implementation) HasPropertyDefaultValue(property string) (_ bool)   { return }
-func (self implementation) GetPropertyDefaultValue(property string) (_ any)    { return }
-func (self implementation) UpdateExports()                                     { return }
-func (self implementation) GetScriptMethodList() (_ [][]struct{})              { return }
-func (self implementation) GetScriptPropertyList() (_ [][]struct{})            { return }
-func (self implementation) GetMemberLine(member string) (_ int)                { return }
-func (self implementation) GetConstants() (_ map[string]any)                   { return }
-func (self implementation) GetMembers() (_ []string)                           { return }
-func (self implementation) IsPlaceholderFallbackEnabled() (_ bool)             { return }
-func (self implementation) GetRpcConfig() (_ any)                              { return }
+func (self implementation) InstanceHas(obj Object.Instance) (_ bool) {
+	return
+}
+func (self implementation) HasSourceCode() (_ bool) {
+	return
+}
+func (self implementation) GetSourceCode() (_ string) {
+	return
+}
+func (self implementation) SetSourceCode(code string) {
+}
+func (self implementation) Reload(keep_state bool) (_ error) {
+	return
+}
+func (self implementation) GetDocClassName() (_ string) {
+	return
+}
+func (self implementation) GetDocumentation() (_ [][]ClassDoc) {
+	return
+}
+func (self implementation) GetClassIconPath() (_ string) {
+	return
+}
+func (self implementation) HasMethod(method string) (_ bool) {
+	return
+}
+func (self implementation) HasStaticMethod(method string) (_ bool) {
+	return
+}
+func (self implementation) GetScriptMethodArgumentCount(method string) (_ any) {
+	return
+}
+func (self implementation) GetMethodInfo(method string) (_ Object.MethodInfo) {
+	return
+}
+func (self implementation) IsTool() (_ bool) {
+	return
+}
+func (self implementation) IsValid() (_ bool) {
+	return
+}
+func (self implementation) IsAbstract() (_ bool) {
+	return
+}
+func (self implementation) GetLanguage() (_ ScriptLanguage.Instance) {
+	return
+}
+func (self implementation) HasScriptSignal(signal string) (_ bool) {
+	return
+}
+func (self implementation) GetScriptSignalList() (_ [][]struct{}) {
+	return
+}
+func (self implementation) HasPropertyDefaultValue(property string) (_ bool) {
+	return
+}
+func (self implementation) GetPropertyDefaultValue(property string) (_ any) {
+	return
+}
+func (self implementation) UpdateExports() {
+}
+func (self implementation) GetScriptMethodList() (_ [][]struct{}) {
+	return
+}
+func (self implementation) GetScriptPropertyList() (_ [][]struct{}) {
+	return
+}
+func (self implementation) GetMemberLine(member string) (_ int) {
+	return
+}
+func (self implementation) GetConstants() (_ map[string]any) {
+	return
+}
+func (self implementation) GetMembers() (_ []string) {
+	return
+}
+func (self implementation) IsPlaceholderFallbackEnabled() (_ bool) {
+	return
+}
+func (self implementation) GetRpcConfig() (_ any) {
+	return
+}
 func (Instance) _editor_can_reload_from_file(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())

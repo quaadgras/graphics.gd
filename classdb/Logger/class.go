@@ -154,9 +154,9 @@ type Implementation = implementation
 type implementation struct{}
 
 func (self implementation) LogError(function string, file string, line int, code string, rationale string, editor_notify bool, error_type int, script_backtraces []ScriptBacktrace.Instance) {
-	return
 }
-func (self implementation) LogMessage(message string, error bool) { return }
+func (self implementation) LogMessage(message string, error bool) {
+}
 
 /*
 Called when an error is logged. The error provides the 'function', 'file', and 'line' that it originated from, as well as either the 'code' that generated the error or a 'rationale'.

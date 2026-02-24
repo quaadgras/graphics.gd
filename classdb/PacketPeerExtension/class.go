@@ -130,8 +130,12 @@ func (self implementation) GetPacket(r_buffer gdextension.Pointer, r_buffer_size
 func (self implementation) PutPacket(p_buffer gdextension.Pointer, p_buffer_size int) (_ error) {
 	return
 }
-func (self implementation) GetAvailablePacketCount() (_ int) { return }
-func (self implementation) GetMaxPacketSize() (_ int)        { return }
+func (self implementation) GetAvailablePacketCount() (_ int) {
+	return
+}
+func (self implementation) GetMaxPacketSize() (_ int) {
+	return
+}
 func (Instance) _get_packet(impl func(ptr gdclass.Receiver, r_buffer gdextension.Pointer, r_buffer_size *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var r_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)

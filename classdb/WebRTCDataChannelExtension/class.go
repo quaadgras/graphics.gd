@@ -145,22 +145,52 @@ func (self implementation) GetPacket(r_buffer gdextension.Pointer, r_buffer_size
 func (self implementation) PutPacket(p_buffer gdextension.Pointer, p_buffer_size int) (_ error) {
 	return
 }
-func (self implementation) GetAvailablePacketCount() (_ int)                      { return }
-func (self implementation) GetMaxPacketSize() (_ int)                             { return }
-func (self implementation) Poll() (_ error)                                       { return }
-func (self implementation) Close()                                                { return }
-func (self implementation) SetWriteMode(p_write_mode WebRTCDataChannel.WriteMode) { return }
-func (self implementation) GetWriteMode() (_ WebRTCDataChannel.WriteMode)         { return }
-func (self implementation) WasStringPacket() (_ bool)                             { return }
-func (self implementation) GetReadyState() (_ WebRTCDataChannel.ChannelState)     { return }
-func (self implementation) GetLabel() (_ string)                                  { return }
-func (self implementation) IsOrdered() (_ bool)                                   { return }
-func (self implementation) GetId() (_ int)                                        { return }
-func (self implementation) GetMaxPacketLifeTime() (_ int)                         { return }
-func (self implementation) GetMaxRetransmits() (_ int)                            { return }
-func (self implementation) GetProtocol() (_ string)                               { return }
-func (self implementation) IsNegotiated() (_ bool)                                { return }
-func (self implementation) GetBufferedAmount() (_ int)                            { return }
+func (self implementation) GetAvailablePacketCount() (_ int) {
+	return
+}
+func (self implementation) GetMaxPacketSize() (_ int) {
+	return
+}
+func (self implementation) Poll() (_ error) {
+	return
+}
+func (self implementation) Close() {
+}
+func (self implementation) SetWriteMode(p_write_mode WebRTCDataChannel.WriteMode) {
+}
+func (self implementation) GetWriteMode() (_ WebRTCDataChannel.WriteMode) {
+	return
+}
+func (self implementation) WasStringPacket() (_ bool) {
+	return
+}
+func (self implementation) GetReadyState() (_ WebRTCDataChannel.ChannelState) {
+	return
+}
+func (self implementation) GetLabel() (_ string) {
+	return
+}
+func (self implementation) IsOrdered() (_ bool) {
+	return
+}
+func (self implementation) GetId() (_ int) {
+	return
+}
+func (self implementation) GetMaxPacketLifeTime() (_ int) {
+	return
+}
+func (self implementation) GetMaxRetransmits() (_ int) {
+	return
+}
+func (self implementation) GetProtocol() (_ string) {
+	return
+}
+func (self implementation) IsNegotiated() (_ bool) {
+	return
+}
+func (self implementation) GetBufferedAmount() (_ int) {
+	return
+}
 func (Instance) _get_packet(impl func(ptr gdclass.Receiver, r_buffer gdextension.Pointer, r_buffer_size *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var r_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)

@@ -142,7 +142,9 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) ProcessCustomFx(char_fx CharFXTransform.Instance) (_ bool) { return }
+func (self implementation) ProcessCustomFx(char_fx CharFXTransform.Instance) (_ bool) {
+	return
+}
 
 /*
 Override this method to modify properties in 'char_fx'. The method must return true if the character could be transformed successfully. If the method returns false, it will skip transformation to avoid displaying broken text.

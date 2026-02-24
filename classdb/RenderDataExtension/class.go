@@ -141,10 +141,18 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetRenderSceneBuffers() (_ RenderSceneBuffers.Instance) { return }
-func (self implementation) GetRenderSceneData() (_ RenderSceneData.Instance)       { return }
-func (self implementation) GetEnvironment() (_ RID.Environment)                    { return }
-func (self implementation) GetCameraAttributes() (_ RID.CameraAttributes)          { return }
+func (self implementation) GetRenderSceneBuffers() (_ RenderSceneBuffers.Instance) {
+	return
+}
+func (self implementation) GetRenderSceneData() (_ RenderSceneData.Instance) {
+	return
+}
+func (self implementation) GetEnvironment() (_ RID.Environment) {
+	return
+}
+func (self implementation) GetCameraAttributes() (_ RID.CameraAttributes) {
+	return
+}
 
 /*
 Implement this in GDExtension to return the implementation's [RenderSceneBuffers] object.

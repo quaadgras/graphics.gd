@@ -492,18 +492,33 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Process(delta Float.X)                                        { return }
-func (self implementation) PhysicsProcess(delta Float.X)                                 { return }
-func (self implementation) EnterTree()                                                   { return }
-func (self implementation) ExitTree()                                                    { return }
-func (self implementation) Ready()                                                       { return }
-func (self implementation) GetConfigurationWarnings() (_ []string)                       { return }
-func (self implementation) GetAccessibilityConfigurationWarnings() (_ []string)          { return }
-func (self implementation) Input(event InputEvent.Instance)                              { return }
-func (self implementation) ShortcutInput(event InputEvent.Instance)                      { return }
-func (self implementation) UnhandledInput(event InputEvent.Instance)                     { return }
-func (self implementation) UnhandledKeyInput(event InputEvent.Instance)                  { return }
-func (self implementation) GetFocusedAccessibilityElement() (_ RID.AccessibilityElement) { return }
+func (self implementation) Process(delta Float.X) {
+}
+func (self implementation) PhysicsProcess(delta Float.X) {
+}
+func (self implementation) EnterTree() {
+}
+func (self implementation) ExitTree() {
+}
+func (self implementation) Ready() {
+}
+func (self implementation) GetConfigurationWarnings() (_ []string) {
+	return
+}
+func (self implementation) GetAccessibilityConfigurationWarnings() (_ []string) {
+	return
+}
+func (self implementation) Input(event InputEvent.Instance) {
+}
+func (self implementation) ShortcutInput(event InputEvent.Instance) {
+}
+func (self implementation) UnhandledInput(event InputEvent.Instance) {
+}
+func (self implementation) UnhandledKeyInput(event InputEvent.Instance) {
+}
+func (self implementation) GetFocusedAccessibilityElement() (_ RID.AccessibilityElement) {
+	return
+}
 
 /*
 Called on each idle frame, prior to rendering, and after physics ticks have been processed. 'delta' is the time between frames in seconds.

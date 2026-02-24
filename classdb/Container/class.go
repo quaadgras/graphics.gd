@@ -138,8 +138,12 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetAllowedSizeFlagsHorizontal() (_ []int32) { return }
-func (self implementation) GetAllowedSizeFlagsVertical() (_ []int32)   { return }
+func (self implementation) GetAllowedSizeFlagsHorizontal() (_ []int32) {
+	return
+}
+func (self implementation) GetAllowedSizeFlagsVertical() (_ []int32) {
+	return
+}
 
 /*
 Implement to return a list of allowed horizontal [Control.SizeFlags] for child nodes. This doesn't technically prevent the usages of any other size flags, if your implementation requires that. This only limits the options available to the user in the Inspector dock.

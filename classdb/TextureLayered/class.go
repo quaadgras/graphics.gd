@@ -175,13 +175,27 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetFormat() (_ Image.Format)                     { return }
-func (self implementation) GetLayeredType() (_ int)                         { return }
-func (self implementation) GetWidth() (_ int)                               { return }
-func (self implementation) GetHeight() (_ int)                              { return }
-func (self implementation) GetLayers() (_ int)                              { return }
-func (self implementation) HasMipmaps() (_ bool)                            { return }
-func (self implementation) GetLayerData(layer_index int) (_ Image.Instance) { return }
+func (self implementation) GetFormat() (_ Image.Format) {
+	return
+}
+func (self implementation) GetLayeredType() (_ int) {
+	return
+}
+func (self implementation) GetWidth() (_ int) {
+	return
+}
+func (self implementation) GetHeight() (_ int) {
+	return
+}
+func (self implementation) GetLayers() (_ int) {
+	return
+}
+func (self implementation) HasMipmaps() (_ bool) {
+	return
+}
+func (self implementation) GetLayerData(layer_index int) (_ Image.Instance) {
+	return
+}
 
 /*
 Called when the [TextureLayered]'s format is queried.

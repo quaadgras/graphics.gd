@@ -140,9 +140,10 @@ type Implementation = implementation
 type implementation struct{}
 
 func (self implementation) Process(src_buffer gdextension.Pointer, dst_buffer *AudioFrame, frame_count int) {
+}
+func (self implementation) ProcessSilence() (_ bool) {
 	return
 }
-func (self implementation) ProcessSilence() (_ bool) { return }
 
 /*
 Called by the [AudioServer] to process this effect. When [ProcessSilence] is not overridden or it returns false, this method is called only when the bus is active.

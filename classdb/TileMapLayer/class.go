@@ -249,11 +249,13 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) UseTileDataRuntimeUpdate(coords Vector2i.XY) (_ bool) { return }
-func (self implementation) TileDataRuntimeUpdate(coords Vector2i.XY, tile_data TileData.Instance) {
+func (self implementation) UseTileDataRuntimeUpdate(coords Vector2i.XY) (_ bool) {
 	return
 }
-func (self implementation) UpdateCells(coords []Vector2i.XY, forced_cleanup bool) { return }
+func (self implementation) TileDataRuntimeUpdate(coords Vector2i.XY, tile_data TileData.Instance) {
+}
+func (self implementation) UpdateCells(coords []Vector2i.XY, forced_cleanup bool) {
+}
 
 /*
 Should return true if the tile at coordinates 'coords' requires a runtime update.

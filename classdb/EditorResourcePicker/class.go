@@ -159,8 +159,11 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) SetCreateOptions(menu_node Object.Instance) { return }
-func (self implementation) HandleMenuSelected(id int) (_ bool)         { return }
+func (self implementation) SetCreateOptions(menu_node Object.Instance) {
+}
+func (self implementation) HandleMenuSelected(id int) (_ bool) {
+	return
+}
 
 /*
 This virtual method is called when updating the context menu of [EditorResourcePicker]. Implement this method to override the "New ..." items with your own options. 'menu_node' is a reference to the [PopupMenu] node.

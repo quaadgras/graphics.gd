@@ -160,7 +160,9 @@ type implementation struct{}
 func (self implementation) GetPluralMessage(src_message string, src_plural_message string, n int, context string) (_ string) {
 	return
 }
-func (self implementation) GetMessage(src_message string, context string) (_ string) { return }
+func (self implementation) GetMessage(src_message string, context string) (_ string) {
+	return
+}
 
 /*
 Virtual method to override [GetPluralMessage].

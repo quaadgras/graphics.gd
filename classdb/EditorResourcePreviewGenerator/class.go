@@ -165,15 +165,21 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Handles(atype string) (_ bool) { return }
+func (self implementation) Handles(atype string) (_ bool) {
+	return
+}
 func (self implementation) Generate(resource Resource.Instance, size Vector2i.XY, metadata map[string]any) (_ Texture2D.Instance) {
 	return
 }
 func (self implementation) GenerateFromPath(path string, size Vector2i.XY, metadata map[string]any) (_ Texture2D.Instance) {
 	return
 }
-func (self implementation) GenerateSmallPreviewAutomatically() (_ bool) { return }
-func (self implementation) CanGenerateSmallPreview() (_ bool)           { return }
+func (self implementation) GenerateSmallPreviewAutomatically() (_ bool) {
+	return
+}
+func (self implementation) CanGenerateSmallPreview() (_ bool) {
+	return
+}
 
 /*
 Returns true if your generator supports the resource of type 'type'.

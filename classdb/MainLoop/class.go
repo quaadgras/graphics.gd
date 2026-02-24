@@ -195,10 +195,16 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Initialize()                           { return }
-func (self implementation) PhysicsProcess(delta Float.X) (_ bool) { return }
-func (self implementation) Process(delta Float.X) (_ bool)        { return }
-func (self implementation) Finalize()                             { return }
+func (self implementation) Initialize() {
+}
+func (self implementation) PhysicsProcess(delta Float.X) (_ bool) {
+	return
+}
+func (self implementation) Process(delta Float.X) (_ bool) {
+	return
+}
+func (self implementation) Finalize() {
+}
 
 /*
 Called once during initialization.

@@ -123,8 +123,12 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) MixResampled(dst_buffer *AudioFrame, frame_count int) (_ int) { return }
-func (self implementation) GetStreamSamplingRate() (_ Float.X)                           { return }
+func (self implementation) MixResampled(dst_buffer *AudioFrame, frame_count int) (_ int) {
+	return
+}
+func (self implementation) GetStreamSamplingRate() (_ Float.X) {
+	return
+}
 func (Instance) _mix_resampled(impl func(ptr gdclass.Receiver, dst_buffer *AudioFrame, frame_count int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)

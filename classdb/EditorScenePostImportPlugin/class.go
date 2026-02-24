@@ -159,7 +159,8 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetInternalImportOptions(category int) { return }
+func (self implementation) GetInternalImportOptions(category int) {
+}
 func (self implementation) GetInternalOptionVisibility(category int, for_animation bool, option string) (_ any) {
 	return
 }
@@ -167,14 +168,16 @@ func (self implementation) GetInternalOptionUpdateViewRequired(category int, opt
 	return
 }
 func (self implementation) InternalProcess(category int, base_node Node.Instance, node Node.Instance, resource Resource.Instance) {
-	return
 }
-func (self implementation) GetImportOptions(path string) { return }
+func (self implementation) GetImportOptions(path string) {
+}
 func (self implementation) GetOptionVisibility(path string, for_animation bool, option string) (_ any) {
 	return
 }
-func (self implementation) PreProcess(scene Node.Instance)  { return }
-func (self implementation) PostProcess(scene Node.Instance) { return }
+func (self implementation) PreProcess(scene Node.Instance) {
+}
+func (self implementation) PostProcess(scene Node.Instance) {
+}
 
 /*
 Override to add internal import options. These will appear in the 3D scene import dialog. Add options via [AddImportOption] and [AddImportOptionAdvanced].

@@ -210,8 +210,12 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) EstimateCost(from_id Point, end_id Point) (_ Float.X) { return }
-func (self implementation) ComputeCost(from_id Point, to_id Point) (_ Float.X)   { return }
+func (self implementation) EstimateCost(from_id Point, end_id Point) (_ Float.X) {
+	return
+}
+func (self implementation) ComputeCost(from_id Point, to_id Point) (_ Float.X) {
+	return
+}
 
 /*
 Called when estimating the cost between a point and the path's ending point.

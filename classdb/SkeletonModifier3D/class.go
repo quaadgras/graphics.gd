@@ -167,12 +167,14 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) ProcessModificationWithDelta(delta Float.X) { return }
-func (self implementation) ProcessModification()                       { return }
-func (self implementation) SkeletonChanged(old_skeleton Skeleton3D.Instance, new_skeleton Skeleton3D.Instance) {
-	return
+func (self implementation) ProcessModificationWithDelta(delta Float.X) {
 }
-func (self implementation) ValidateBoneNames() { return }
+func (self implementation) ProcessModification() {
+}
+func (self implementation) SkeletonChanged(old_skeleton Skeleton3D.Instance, new_skeleton Skeleton3D.Instance) {
+}
+func (self implementation) ValidateBoneNames() {
+}
 
 /*
 Override this virtual method to implement a custom skeleton modifier. You should do things like get the [Skeleton3D]'s current pose and apply the pose here.

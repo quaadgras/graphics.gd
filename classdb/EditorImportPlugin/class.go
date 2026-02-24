@@ -282,30 +282,54 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetImporterName() (_ string)               { return }
-func (self implementation) GetVisibleName() (_ string)                { return }
-func (self implementation) GetPresetCount() (_ int)                   { return }
-func (self implementation) GetPresetName(preset_index int) (_ string) { return }
-func (self implementation) GetRecognizedExtensions() (_ []string)     { return }
+func (self implementation) GetImporterName() (_ string) {
+	return
+}
+func (self implementation) GetVisibleName() (_ string) {
+	return
+}
+func (self implementation) GetPresetCount() (_ int) {
+	return
+}
+func (self implementation) GetPresetName(preset_index int) (_ string) {
+	return
+}
+func (self implementation) GetRecognizedExtensions() (_ []string) {
+	return
+}
 func (self implementation) GetImportOptions(path string, preset_index int) (_ [][]struct {
 	Name         string "gd:\"name\""
 	DefaultValue any    "gd:\"default_value\""
 	PropertyHint int    "gd:\"property_hint\""
 	HintString   string "gd:\"hint_string\""
 	Usage        int    "gd:\"usage\""
-})                                                       { return }
-func (self implementation) GetSaveExtension() (_ string) { return }
-func (self implementation) GetResourceType() (_ string)  { return }
-func (self implementation) GetPriority() (_ Float.X)     { return }
-func (self implementation) GetImportOrder() (_ int)      { return }
-func (self implementation) GetFormatVersion() (_ int)    { return }
+}) {
+	return
+}
+func (self implementation) GetSaveExtension() (_ string) {
+	return
+}
+func (self implementation) GetResourceType() (_ string) {
+	return
+}
+func (self implementation) GetPriority() (_ Float.X) {
+	return
+}
+func (self implementation) GetImportOrder() (_ int) {
+	return
+}
+func (self implementation) GetFormatVersion() (_ int) {
+	return
+}
 func (self implementation) GetOptionVisibility(path string, option_name string, options map[string]any) (_ bool) {
 	return
 }
 func (self implementation) Import(source_file string, save_path string, options map[string]any, platform_variants []string, gen_files []string) (_ error) {
 	return
 }
-func (self implementation) CanImportThreaded() (_ bool) { return }
+func (self implementation) CanImportThreaded() (_ bool) {
+	return
+}
 
 /*
 Gets the unique name of the importer.

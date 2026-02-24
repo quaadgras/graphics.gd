@@ -194,18 +194,23 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetWidth() (_ int)                   { return }
-func (self implementation) GetHeight() (_ int)                  { return }
-func (self implementation) IsPixelOpaque(x int, y int) (_ bool) { return }
-func (self implementation) HasAlpha() (_ bool)                  { return }
-func (self implementation) Draw(to_canvas_item RID.CanvasItem, pos Vector2.XY, modulate Color.RGBA, transpose bool) {
+func (self implementation) GetWidth() (_ int) {
 	return
+}
+func (self implementation) GetHeight() (_ int) {
+	return
+}
+func (self implementation) IsPixelOpaque(x int, y int) (_ bool) {
+	return
+}
+func (self implementation) HasAlpha() (_ bool) {
+	return
+}
+func (self implementation) Draw(to_canvas_item RID.CanvasItem, pos Vector2.XY, modulate Color.RGBA, transpose bool) {
 }
 func (self implementation) DrawRect(to_canvas_item RID.CanvasItem, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool) {
-	return
 }
 func (self implementation) DrawRectRegion(to_canvas_item RID.CanvasItem, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) {
-	return
 }
 
 /*
