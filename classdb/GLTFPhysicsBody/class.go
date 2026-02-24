@@ -447,4 +447,4 @@ func init() {
 	gdclass.Register("GLTFPhysicsBody", func(ptr gdreference.Object) any { return Instance{gdclass.NewGLTFPhysicsBody(ptr)} })
 }
 
-type Structure map[interface{}]interface{}
+type Structure map[any]any

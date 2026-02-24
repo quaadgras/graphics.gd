@@ -580,8 +580,13 @@ func generateStructables(file io.Writer) {
 	for rtype := range StructablesInThisPackageGlobalHack {
 		switch rtype.Kind() {
 		case reflect.Map:
+			name := rtype.Name()
+			name = strings.ReplaceAll(name, "interface{}", "any")
+			name = strings.ReplaceAll(name, "interface {}", "any")
 			sortable = append(sortable,
-				fmt.Sprintf("type %v map[%v]%v\n", rtype.Name(), rtype.Key().String(), rtype.Elem().String()))
+				fmt.Sprintf("type %v map[%v]%v\n", name,
+					strings.ReplaceAll(rtype.Key().String(), "interface {}", "any"),
+					strings.ReplaceAll(rtype.Elem().String(), "interface {}", "any")))
 		case reflect.Struct:
 			var w strings.Builder
 			fmt.Fprintf(&w, "type %v struct {\n", rtype.Name())
@@ -615,7 +620,7 @@ func generateInterface(file io.Writer, classDB ClassDB, class gdjson.Class, impl
 	for _, method := range class.Methods {
 		if method.IsVirtual {
 			if method.Description != "" {
-				description := strings.Replace(method.Description, "*/", "", -1)
+				description := strings.ReplaceAll(method.Description, "*/", "")
 				description = strings.TrimSpace(description)
 				description = gdjson.DocsToGoDoc(description, classDB, class.Name, "")
 				description = strings.ReplaceAll(description, "\n", "\n\t\t// ")

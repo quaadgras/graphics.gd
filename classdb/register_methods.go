@@ -27,7 +27,6 @@ func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintpt
 	classTypePtr := reflect.PointerTo(rtype)
 	var elligible []reflect.Method
 	for method := range classTypePtr.Methods() {
-		method := method
 		if !method.IsExported() || method.Type.NumIn() < 1 {
 			continue
 		}
