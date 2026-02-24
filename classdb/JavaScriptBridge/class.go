@@ -139,17 +139,20 @@ func Eval(code string, use_global_execution_context bool) any { //gd:JavaScriptB
 }
 
 /*
-Returns an interface to a JavaScript object that can be used by scripts. The 'interface' must be a valid property of the JavaScript window. The callback must accept a single slice argument, which will contain the JavaScript arguments. See JavaScriptObject for usage.
+Returns an interface to a JavaScript object that can be used by scripts. The 'interface' must be a valid property of the JavaScript window. The callback must accept a single slice argument, which will contain the JavaScript arguments. See [JavaScriptObject] for usage.
+
+[JavaScriptObject]: https://pkg.go.dev/graphics.gd/classdb/JavaScriptObject
 */
 func GetInterface(intf string) JavaScriptObject.Instance { //gd:JavaScriptBridge.get_interface
 	return JavaScriptObject.Instance(Advanced().GetInterface(String.New(intf)))
 }
 
 /*
-Creates a reference to a func that can be used as a callback by JavaScript. The reference must be kept until the callback happens, or it won't be called at all. See JavaScriptObject for usage.
+Creates a reference to a func that can be used as a callback by JavaScript. The reference must be kept until the callback happens, or it won't be called at all. See [JavaScriptObject] for usage.
 
 Note: The callback function must take exactly one slice argument, which is going to be the JavaScript [arguments object] converted to an array.
 
+[JavaScriptObject]: https://pkg.go.dev/graphics.gd/classdb/JavaScriptObject
 [arguments object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments
 */
 func CreateCallback(callable func(args []any) any) JavaScriptObject.Instance { //gd:JavaScriptBridge.create_callback
@@ -176,7 +179,9 @@ func JsBufferToPackedByteArray(javascript_buffer JavaScriptObject.Instance) []by
 }
 
 /*
-Creates a new JavaScript object using the new constructor. The 'object' must a valid property of the JavaScript window. See JavaScriptObject for usage.
+Creates a new JavaScript object using the new constructor. The 'object' must a valid property of the JavaScript window. See [JavaScriptObject] for usage.
+
+[JavaScriptObject]: https://pkg.go.dev/graphics.gd/classdb/JavaScriptObject
 */
 func CreateObject(obj string, args ...any) any { //gd:JavaScriptBridge.create_object
 	var converted_variants = make([]gd.Variant, len(args))

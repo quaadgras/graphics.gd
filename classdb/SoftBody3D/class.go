@@ -429,6 +429,8 @@ func (self Instance) SetSimulationPrecision(value int) Instance { //gd:SoftBody3
 
 /*
 The SoftBody3D's mass.
+
+Note: When using Jolt Physics, the default value of this property will instead be 0.0, which will cause the body to automatically calculate the mass to 1 kg per point. This is a bug, which will be fixed in Godot 4.7.
 */
 func (self Instance) TotalMass() Float.X { //gd:SoftBody3D.total_mass
 	return Float.X(Float.X(class(self).GetTotalMass()))

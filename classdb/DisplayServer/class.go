@@ -2988,7 +2988,7 @@ Each filter string in the 'filters' array should be formatted like this: *.png,*
 
 Callbacks have the following arguments: status: bool, selected_paths: PackedStringArray, selected_filter_index: int. On Android, the third callback argument (selected_filter_index) is always 0.
 
-Note: This method is implemented if the display server has the [FeatureNativeDialogFile] feature. Supported platforms include Linux (X11/Wayland), Windows, macOS, and Android (API level 29+).
+Note: This method is implemented if the display server has the [FeatureNativeDialogFile] feature. Supported platforms include Linux (X11/Wayland), Windows, macOS, and Android.
 
 Note: 'current_directory' might be ignored.
 

@@ -5,9 +5,10 @@ Represents a class from the Java Native Interface. It is returned from [JavaClas
 
 Note: This class only works on Android. On any other platform, this class does nothing.
 
-Note: This class is not to be confused with JavaScriptObject.
+Note: This class is not to be confused with [JavaScriptObject].
 
 [JavaClassWrapper.Wrap]: https://pkg.go.dev/graphics.gd/classdb/JavaClassWrapper#Wrap
+[JavaScriptObject]: https://pkg.go.dev/graphics.gd/classdb/JavaScriptObject
 */
 package JavaClass
 
