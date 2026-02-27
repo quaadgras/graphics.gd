@@ -4,9941 +4,9501 @@
 package gdclass
 
 type AESContext struct {
-	Locked
-	_AESContext Object
+	object
+	_AESContext struct{}
 }
 
-func NewAESContext(obj Object) AESContext    { return AESContext{Locked{}, obj} }
-func GetAESContext(obj AESContext) [1]Object { return [1]Object{obj._AESContext} }
+func NewAESContext(obj Object) AESContext    { return AESContext{object: object(obj)} }
+func GetAESContext(obj AESContext) [1]Object { return obj.AsObject() }
 
 type AStar2D struct {
-	Locked
-	_AStar2D Object
+	object
+	_AStar2D struct{}
 }
 
-func NewAStar2D(obj Object) AStar2D    { return AStar2D{Locked{}, obj} }
-func GetAStar2D(obj AStar2D) [1]Object { return [1]Object{obj._AStar2D} }
+func NewAStar2D(obj Object) AStar2D    { return AStar2D{object: object(obj)} }
+func GetAStar2D(obj AStar2D) [1]Object { return obj.AsObject() }
 
 type AStar3D struct {
-	Locked
-	_AStar3D Object
+	object
+	_AStar3D struct{}
 }
 
-func NewAStar3D(obj Object) AStar3D    { return AStar3D{Locked{}, obj} }
-func GetAStar3D(obj AStar3D) [1]Object { return [1]Object{obj._AStar3D} }
+func NewAStar3D(obj Object) AStar3D    { return AStar3D{object: object(obj)} }
+func GetAStar3D(obj AStar3D) [1]Object { return obj.AsObject() }
 
 type AStarGrid2D struct {
-	Locked
-	_AStarGrid2D Object
+	object
+	_AStarGrid2D struct{}
 }
 
-func NewAStarGrid2D(obj Object) AStarGrid2D    { return AStarGrid2D{Locked{}, obj} }
-func GetAStarGrid2D(obj AStarGrid2D) [1]Object { return [1]Object{obj._AStarGrid2D} }
+func NewAStarGrid2D(obj Object) AStarGrid2D    { return AStarGrid2D{object: object(obj)} }
+func GetAStarGrid2D(obj AStarGrid2D) [1]Object { return obj.AsObject() }
 
 type AcceptDialog struct {
-	Locked
-	_AcceptDialog Object
+	object
+	_AcceptDialog struct{}
 }
 
-func NewAcceptDialog(obj Object) AcceptDialog    { return AcceptDialog{Locked{}, obj} }
-func GetAcceptDialog(obj AcceptDialog) [1]Object { return [1]Object{obj._AcceptDialog} }
+func NewAcceptDialog(obj Object) AcceptDialog    { return AcceptDialog{object: object(obj)} }
+func GetAcceptDialog(obj AcceptDialog) [1]Object { return obj.AsObject() }
 
 type AimModifier3D struct {
-	Locked
-	_AimModifier3D Object
+	object
+	_AimModifier3D struct{}
 }
 
-func NewAimModifier3D(obj Object) AimModifier3D    { return AimModifier3D{Locked{}, obj} }
-func GetAimModifier3D(obj AimModifier3D) [1]Object { return [1]Object{obj._AimModifier3D} }
+func NewAimModifier3D(obj Object) AimModifier3D    { return AimModifier3D{object: object(obj)} }
+func GetAimModifier3D(obj AimModifier3D) [1]Object { return obj.AsObject() }
 
 type AnimatableBody2D struct {
-	Locked
-	_AnimatableBody2D Object
+	object
+	_AnimatableBody2D struct{}
 }
 
-func NewAnimatableBody2D(obj Object) AnimatableBody2D    { return AnimatableBody2D{Locked{}, obj} }
-func GetAnimatableBody2D(obj AnimatableBody2D) [1]Object { return [1]Object{obj._AnimatableBody2D} }
+func NewAnimatableBody2D(obj Object) AnimatableBody2D    { return AnimatableBody2D{object: object(obj)} }
+func GetAnimatableBody2D(obj AnimatableBody2D) [1]Object { return obj.AsObject() }
 
 type AnimatableBody3D struct {
-	Locked
-	_AnimatableBody3D Object
+	object
+	_AnimatableBody3D struct{}
 }
 
-func NewAnimatableBody3D(obj Object) AnimatableBody3D    { return AnimatableBody3D{Locked{}, obj} }
-func GetAnimatableBody3D(obj AnimatableBody3D) [1]Object { return [1]Object{obj._AnimatableBody3D} }
+func NewAnimatableBody3D(obj Object) AnimatableBody3D    { return AnimatableBody3D{object: object(obj)} }
+func GetAnimatableBody3D(obj AnimatableBody3D) [1]Object { return obj.AsObject() }
 
 type AnimatedSprite2D struct {
-	Locked
-	_AnimatedSprite2D Object
+	object
+	_AnimatedSprite2D struct{}
 }
 
-func NewAnimatedSprite2D(obj Object) AnimatedSprite2D    { return AnimatedSprite2D{Locked{}, obj} }
-func GetAnimatedSprite2D(obj AnimatedSprite2D) [1]Object { return [1]Object{obj._AnimatedSprite2D} }
+func NewAnimatedSprite2D(obj Object) AnimatedSprite2D    { return AnimatedSprite2D{object: object(obj)} }
+func GetAnimatedSprite2D(obj AnimatedSprite2D) [1]Object { return obj.AsObject() }
 
 type AnimatedSprite3D struct {
-	Locked
-	_AnimatedSprite3D Object
+	object
+	_AnimatedSprite3D struct{}
 }
 
-func NewAnimatedSprite3D(obj Object) AnimatedSprite3D    { return AnimatedSprite3D{Locked{}, obj} }
-func GetAnimatedSprite3D(obj AnimatedSprite3D) [1]Object { return [1]Object{obj._AnimatedSprite3D} }
+func NewAnimatedSprite3D(obj Object) AnimatedSprite3D    { return AnimatedSprite3D{object: object(obj)} }
+func GetAnimatedSprite3D(obj AnimatedSprite3D) [1]Object { return obj.AsObject() }
 
 type AnimatedTexture struct {
-	Locked
-	_AnimatedTexture Object
+	object
+	_AnimatedTexture struct{}
 }
 
-func NewAnimatedTexture(obj Object) AnimatedTexture    { return AnimatedTexture{Locked{}, obj} }
-func GetAnimatedTexture(obj AnimatedTexture) [1]Object { return [1]Object{obj._AnimatedTexture} }
+func NewAnimatedTexture(obj Object) AnimatedTexture    { return AnimatedTexture{object: object(obj)} }
+func GetAnimatedTexture(obj AnimatedTexture) [1]Object { return obj.AsObject() }
 
 type Animation struct {
-	Locked
-	_Animation Object
+	object
+	_Animation struct{}
 }
 
-func NewAnimation(obj Object) Animation    { return Animation{Locked{}, obj} }
-func GetAnimation(obj Animation) [1]Object { return [1]Object{obj._Animation} }
+func NewAnimation(obj Object) Animation    { return Animation{object: object(obj)} }
+func GetAnimation(obj Animation) [1]Object { return obj.AsObject() }
 
 type AnimationLibrary struct {
-	Locked
-	_AnimationLibrary Object
+	object
+	_AnimationLibrary struct{}
 }
 
-func NewAnimationLibrary(obj Object) AnimationLibrary    { return AnimationLibrary{Locked{}, obj} }
-func GetAnimationLibrary(obj AnimationLibrary) [1]Object { return [1]Object{obj._AnimationLibrary} }
+func NewAnimationLibrary(obj Object) AnimationLibrary    { return AnimationLibrary{object: object(obj)} }
+func GetAnimationLibrary(obj AnimationLibrary) [1]Object { return obj.AsObject() }
 
 type AnimationMixer struct {
-	Locked
-	_AnimationMixer Object
+	object
+	_AnimationMixer struct{}
 }
 
-func NewAnimationMixer(obj Object) AnimationMixer    { return AnimationMixer{Locked{}, obj} }
-func GetAnimationMixer(obj AnimationMixer) [1]Object { return [1]Object{obj._AnimationMixer} }
+func NewAnimationMixer(obj Object) AnimationMixer    { return AnimationMixer{object: object(obj)} }
+func GetAnimationMixer(obj AnimationMixer) [1]Object { return obj.AsObject() }
 
 type AnimationNode struct {
-	Locked
-	_AnimationNode Object
+	object
+	_AnimationNode struct{}
 }
 
-func NewAnimationNode(obj Object) AnimationNode    { return AnimationNode{Locked{}, obj} }
-func GetAnimationNode(obj AnimationNode) [1]Object { return [1]Object{obj._AnimationNode} }
+func NewAnimationNode(obj Object) AnimationNode    { return AnimationNode{object: object(obj)} }
+func GetAnimationNode(obj AnimationNode) [1]Object { return obj.AsObject() }
 
 type AnimationNodeAdd2 struct {
-	Locked
-	_AnimationNodeAdd2 Object
+	object
+	_AnimationNodeAdd2 struct{}
 }
 
-func NewAnimationNodeAdd2(obj Object) AnimationNodeAdd2    { return AnimationNodeAdd2{Locked{}, obj} }
-func GetAnimationNodeAdd2(obj AnimationNodeAdd2) [1]Object { return [1]Object{obj._AnimationNodeAdd2} }
+func NewAnimationNodeAdd2(obj Object) AnimationNodeAdd2 {
+	return AnimationNodeAdd2{object: object(obj)}
+}
+func GetAnimationNodeAdd2(obj AnimationNodeAdd2) [1]Object { return obj.AsObject() }
 
 type AnimationNodeAdd3 struct {
-	Locked
-	_AnimationNodeAdd3 Object
+	object
+	_AnimationNodeAdd3 struct{}
 }
 
-func NewAnimationNodeAdd3(obj Object) AnimationNodeAdd3    { return AnimationNodeAdd3{Locked{}, obj} }
-func GetAnimationNodeAdd3(obj AnimationNodeAdd3) [1]Object { return [1]Object{obj._AnimationNodeAdd3} }
+func NewAnimationNodeAdd3(obj Object) AnimationNodeAdd3 {
+	return AnimationNodeAdd3{object: object(obj)}
+}
+func GetAnimationNodeAdd3(obj AnimationNodeAdd3) [1]Object { return obj.AsObject() }
 
 type AnimationNodeAnimation struct {
-	Locked
-	_AnimationNodeAnimation Object
+	object
+	_AnimationNodeAnimation struct{}
 }
 
 func NewAnimationNodeAnimation(obj Object) AnimationNodeAnimation {
-	return AnimationNodeAnimation{Locked{}, obj}
+	return AnimationNodeAnimation{object: object(obj)}
 }
-func GetAnimationNodeAnimation(obj AnimationNodeAnimation) [1]Object {
-	return [1]Object{obj._AnimationNodeAnimation}
-}
+func GetAnimationNodeAnimation(obj AnimationNodeAnimation) [1]Object { return obj.AsObject() }
 
 type AnimationNodeBlend2 struct {
-	Locked
-	_AnimationNodeBlend2 Object
+	object
+	_AnimationNodeBlend2 struct{}
 }
 
 func NewAnimationNodeBlend2(obj Object) AnimationNodeBlend2 {
-	return AnimationNodeBlend2{Locked{}, obj}
+	return AnimationNodeBlend2{object: object(obj)}
 }
-func GetAnimationNodeBlend2(obj AnimationNodeBlend2) [1]Object {
-	return [1]Object{obj._AnimationNodeBlend2}
-}
+func GetAnimationNodeBlend2(obj AnimationNodeBlend2) [1]Object { return obj.AsObject() }
 
 type AnimationNodeBlend3 struct {
-	Locked
-	_AnimationNodeBlend3 Object
+	object
+	_AnimationNodeBlend3 struct{}
 }
 
 func NewAnimationNodeBlend3(obj Object) AnimationNodeBlend3 {
-	return AnimationNodeBlend3{Locked{}, obj}
+	return AnimationNodeBlend3{object: object(obj)}
 }
-func GetAnimationNodeBlend3(obj AnimationNodeBlend3) [1]Object {
-	return [1]Object{obj._AnimationNodeBlend3}
-}
+func GetAnimationNodeBlend3(obj AnimationNodeBlend3) [1]Object { return obj.AsObject() }
 
 type AnimationNodeBlendSpace1D struct {
-	Locked
-	_AnimationNodeBlendSpace1D Object
+	object
+	_AnimationNodeBlendSpace1D struct{}
 }
 
 func NewAnimationNodeBlendSpace1D(obj Object) AnimationNodeBlendSpace1D {
-	return AnimationNodeBlendSpace1D{Locked{}, obj}
+	return AnimationNodeBlendSpace1D{object: object(obj)}
 }
-func GetAnimationNodeBlendSpace1D(obj AnimationNodeBlendSpace1D) [1]Object {
-	return [1]Object{obj._AnimationNodeBlendSpace1D}
-}
+func GetAnimationNodeBlendSpace1D(obj AnimationNodeBlendSpace1D) [1]Object { return obj.AsObject() }
 
 type AnimationNodeBlendSpace2D struct {
-	Locked
-	_AnimationNodeBlendSpace2D Object
+	object
+	_AnimationNodeBlendSpace2D struct{}
 }
 
 func NewAnimationNodeBlendSpace2D(obj Object) AnimationNodeBlendSpace2D {
-	return AnimationNodeBlendSpace2D{Locked{}, obj}
+	return AnimationNodeBlendSpace2D{object: object(obj)}
 }
-func GetAnimationNodeBlendSpace2D(obj AnimationNodeBlendSpace2D) [1]Object {
-	return [1]Object{obj._AnimationNodeBlendSpace2D}
-}
+func GetAnimationNodeBlendSpace2D(obj AnimationNodeBlendSpace2D) [1]Object { return obj.AsObject() }
 
 type AnimationNodeBlendTree struct {
-	Locked
-	_AnimationNodeBlendTree Object
+	object
+	_AnimationNodeBlendTree struct{}
 }
 
 func NewAnimationNodeBlendTree(obj Object) AnimationNodeBlendTree {
-	return AnimationNodeBlendTree{Locked{}, obj}
+	return AnimationNodeBlendTree{object: object(obj)}
 }
-func GetAnimationNodeBlendTree(obj AnimationNodeBlendTree) [1]Object {
-	return [1]Object{obj._AnimationNodeBlendTree}
-}
+func GetAnimationNodeBlendTree(obj AnimationNodeBlendTree) [1]Object { return obj.AsObject() }
 
 type AnimationNodeExtension struct {
-	Locked
-	_AnimationNodeExtension Object
+	object
+	_AnimationNodeExtension struct{}
 }
 
 func NewAnimationNodeExtension(obj Object) AnimationNodeExtension {
-	return AnimationNodeExtension{Locked{}, obj}
+	return AnimationNodeExtension{object: object(obj)}
 }
-func GetAnimationNodeExtension(obj AnimationNodeExtension) [1]Object {
-	return [1]Object{obj._AnimationNodeExtension}
-}
+func GetAnimationNodeExtension(obj AnimationNodeExtension) [1]Object { return obj.AsObject() }
 
 type AnimationNodeOneShot struct {
-	Locked
-	_AnimationNodeOneShot Object
+	object
+	_AnimationNodeOneShot struct{}
 }
 
 func NewAnimationNodeOneShot(obj Object) AnimationNodeOneShot {
-	return AnimationNodeOneShot{Locked{}, obj}
+	return AnimationNodeOneShot{object: object(obj)}
 }
-func GetAnimationNodeOneShot(obj AnimationNodeOneShot) [1]Object {
-	return [1]Object{obj._AnimationNodeOneShot}
-}
+func GetAnimationNodeOneShot(obj AnimationNodeOneShot) [1]Object { return obj.AsObject() }
 
 type AnimationNodeOutput struct {
-	Locked
-	_AnimationNodeOutput Object
+	object
+	_AnimationNodeOutput struct{}
 }
 
 func NewAnimationNodeOutput(obj Object) AnimationNodeOutput {
-	return AnimationNodeOutput{Locked{}, obj}
+	return AnimationNodeOutput{object: object(obj)}
 }
-func GetAnimationNodeOutput(obj AnimationNodeOutput) [1]Object {
-	return [1]Object{obj._AnimationNodeOutput}
-}
+func GetAnimationNodeOutput(obj AnimationNodeOutput) [1]Object { return obj.AsObject() }
 
 type AnimationNodeStateMachine struct {
-	Locked
-	_AnimationNodeStateMachine Object
+	object
+	_AnimationNodeStateMachine struct{}
 }
 
 func NewAnimationNodeStateMachine(obj Object) AnimationNodeStateMachine {
-	return AnimationNodeStateMachine{Locked{}, obj}
+	return AnimationNodeStateMachine{object: object(obj)}
 }
-func GetAnimationNodeStateMachine(obj AnimationNodeStateMachine) [1]Object {
-	return [1]Object{obj._AnimationNodeStateMachine}
-}
+func GetAnimationNodeStateMachine(obj AnimationNodeStateMachine) [1]Object { return obj.AsObject() }
 
 type AnimationNodeStateMachinePlayback struct {
-	Locked
-	_AnimationNodeStateMachinePlayback Object
+	object
+	_AnimationNodeStateMachinePlayback struct{}
 }
 
 func NewAnimationNodeStateMachinePlayback(obj Object) AnimationNodeStateMachinePlayback {
-	return AnimationNodeStateMachinePlayback{Locked{}, obj}
+	return AnimationNodeStateMachinePlayback{object: object(obj)}
 }
 func GetAnimationNodeStateMachinePlayback(obj AnimationNodeStateMachinePlayback) [1]Object {
-	return [1]Object{obj._AnimationNodeStateMachinePlayback}
+	return obj.AsObject()
 }
 
 type AnimationNodeStateMachineTransition struct {
-	Locked
-	_AnimationNodeStateMachineTransition Object
+	object
+	_AnimationNodeStateMachineTransition struct{}
 }
 
 func NewAnimationNodeStateMachineTransition(obj Object) AnimationNodeStateMachineTransition {
-	return AnimationNodeStateMachineTransition{Locked{}, obj}
+	return AnimationNodeStateMachineTransition{object: object(obj)}
 }
 func GetAnimationNodeStateMachineTransition(obj AnimationNodeStateMachineTransition) [1]Object {
-	return [1]Object{obj._AnimationNodeStateMachineTransition}
+	return obj.AsObject()
 }
 
 type AnimationNodeSub2 struct {
-	Locked
-	_AnimationNodeSub2 Object
+	object
+	_AnimationNodeSub2 struct{}
 }
 
-func NewAnimationNodeSub2(obj Object) AnimationNodeSub2    { return AnimationNodeSub2{Locked{}, obj} }
-func GetAnimationNodeSub2(obj AnimationNodeSub2) [1]Object { return [1]Object{obj._AnimationNodeSub2} }
+func NewAnimationNodeSub2(obj Object) AnimationNodeSub2 {
+	return AnimationNodeSub2{object: object(obj)}
+}
+func GetAnimationNodeSub2(obj AnimationNodeSub2) [1]Object { return obj.AsObject() }
 
 type AnimationNodeSync struct {
-	Locked
-	_AnimationNodeSync Object
+	object
+	_AnimationNodeSync struct{}
 }
 
-func NewAnimationNodeSync(obj Object) AnimationNodeSync    { return AnimationNodeSync{Locked{}, obj} }
-func GetAnimationNodeSync(obj AnimationNodeSync) [1]Object { return [1]Object{obj._AnimationNodeSync} }
+func NewAnimationNodeSync(obj Object) AnimationNodeSync {
+	return AnimationNodeSync{object: object(obj)}
+}
+func GetAnimationNodeSync(obj AnimationNodeSync) [1]Object { return obj.AsObject() }
 
 type AnimationNodeTimeScale struct {
-	Locked
-	_AnimationNodeTimeScale Object
+	object
+	_AnimationNodeTimeScale struct{}
 }
 
 func NewAnimationNodeTimeScale(obj Object) AnimationNodeTimeScale {
-	return AnimationNodeTimeScale{Locked{}, obj}
+	return AnimationNodeTimeScale{object: object(obj)}
 }
-func GetAnimationNodeTimeScale(obj AnimationNodeTimeScale) [1]Object {
-	return [1]Object{obj._AnimationNodeTimeScale}
-}
+func GetAnimationNodeTimeScale(obj AnimationNodeTimeScale) [1]Object { return obj.AsObject() }
 
 type AnimationNodeTimeSeek struct {
-	Locked
-	_AnimationNodeTimeSeek Object
+	object
+	_AnimationNodeTimeSeek struct{}
 }
 
 func NewAnimationNodeTimeSeek(obj Object) AnimationNodeTimeSeek {
-	return AnimationNodeTimeSeek{Locked{}, obj}
+	return AnimationNodeTimeSeek{object: object(obj)}
 }
-func GetAnimationNodeTimeSeek(obj AnimationNodeTimeSeek) [1]Object {
-	return [1]Object{obj._AnimationNodeTimeSeek}
-}
+func GetAnimationNodeTimeSeek(obj AnimationNodeTimeSeek) [1]Object { return obj.AsObject() }
 
 type AnimationNodeTransition struct {
-	Locked
-	_AnimationNodeTransition Object
+	object
+	_AnimationNodeTransition struct{}
 }
 
 func NewAnimationNodeTransition(obj Object) AnimationNodeTransition {
-	return AnimationNodeTransition{Locked{}, obj}
+	return AnimationNodeTransition{object: object(obj)}
 }
-func GetAnimationNodeTransition(obj AnimationNodeTransition) [1]Object {
-	return [1]Object{obj._AnimationNodeTransition}
-}
+func GetAnimationNodeTransition(obj AnimationNodeTransition) [1]Object { return obj.AsObject() }
 
 type AnimationPlayer struct {
-	Locked
-	_AnimationPlayer Object
+	object
+	_AnimationPlayer struct{}
 }
 
-func NewAnimationPlayer(obj Object) AnimationPlayer    { return AnimationPlayer{Locked{}, obj} }
-func GetAnimationPlayer(obj AnimationPlayer) [1]Object { return [1]Object{obj._AnimationPlayer} }
+func NewAnimationPlayer(obj Object) AnimationPlayer    { return AnimationPlayer{object: object(obj)} }
+func GetAnimationPlayer(obj AnimationPlayer) [1]Object { return obj.AsObject() }
 
 type AnimationRootNode struct {
-	Locked
-	_AnimationRootNode Object
+	object
+	_AnimationRootNode struct{}
 }
 
-func NewAnimationRootNode(obj Object) AnimationRootNode    { return AnimationRootNode{Locked{}, obj} }
-func GetAnimationRootNode(obj AnimationRootNode) [1]Object { return [1]Object{obj._AnimationRootNode} }
+func NewAnimationRootNode(obj Object) AnimationRootNode {
+	return AnimationRootNode{object: object(obj)}
+}
+func GetAnimationRootNode(obj AnimationRootNode) [1]Object { return obj.AsObject() }
 
 type AnimationTree struct {
-	Locked
-	_AnimationTree Object
+	object
+	_AnimationTree struct{}
 }
 
-func NewAnimationTree(obj Object) AnimationTree    { return AnimationTree{Locked{}, obj} }
-func GetAnimationTree(obj AnimationTree) [1]Object { return [1]Object{obj._AnimationTree} }
+func NewAnimationTree(obj Object) AnimationTree    { return AnimationTree{object: object(obj)} }
+func GetAnimationTree(obj AnimationTree) [1]Object { return obj.AsObject() }
 
 type Area2D struct {
-	Locked
-	_Area2D Object
+	object
+	_Area2D struct{}
 }
 
-func NewArea2D(obj Object) Area2D    { return Area2D{Locked{}, obj} }
-func GetArea2D(obj Area2D) [1]Object { return [1]Object{obj._Area2D} }
+func NewArea2D(obj Object) Area2D    { return Area2D{object: object(obj)} }
+func GetArea2D(obj Area2D) [1]Object { return obj.AsObject() }
 
 type Area3D struct {
-	Locked
-	_Area3D Object
+	object
+	_Area3D struct{}
 }
 
-func NewArea3D(obj Object) Area3D    { return Area3D{Locked{}, obj} }
-func GetArea3D(obj Area3D) [1]Object { return [1]Object{obj._Area3D} }
+func NewArea3D(obj Object) Area3D    { return Area3D{object: object(obj)} }
+func GetArea3D(obj Area3D) [1]Object { return obj.AsObject() }
 
 type ArrayMesh struct {
-	Locked
-	_ArrayMesh Object
+	object
+	_ArrayMesh struct{}
 }
 
-func NewArrayMesh(obj Object) ArrayMesh    { return ArrayMesh{Locked{}, obj} }
-func GetArrayMesh(obj ArrayMesh) [1]Object { return [1]Object{obj._ArrayMesh} }
+func NewArrayMesh(obj Object) ArrayMesh    { return ArrayMesh{object: object(obj)} }
+func GetArrayMesh(obj ArrayMesh) [1]Object { return obj.AsObject() }
 
 type ArrayOccluder3D struct {
-	Locked
-	_ArrayOccluder3D Object
+	object
+	_ArrayOccluder3D struct{}
 }
 
-func NewArrayOccluder3D(obj Object) ArrayOccluder3D    { return ArrayOccluder3D{Locked{}, obj} }
-func GetArrayOccluder3D(obj ArrayOccluder3D) [1]Object { return [1]Object{obj._ArrayOccluder3D} }
+func NewArrayOccluder3D(obj Object) ArrayOccluder3D    { return ArrayOccluder3D{object: object(obj)} }
+func GetArrayOccluder3D(obj ArrayOccluder3D) [1]Object { return obj.AsObject() }
 
 type AspectRatioContainer struct {
-	Locked
-	_AspectRatioContainer Object
+	object
+	_AspectRatioContainer struct{}
 }
 
 func NewAspectRatioContainer(obj Object) AspectRatioContainer {
-	return AspectRatioContainer{Locked{}, obj}
+	return AspectRatioContainer{object: object(obj)}
 }
-func GetAspectRatioContainer(obj AspectRatioContainer) [1]Object {
-	return [1]Object{obj._AspectRatioContainer}
-}
+func GetAspectRatioContainer(obj AspectRatioContainer) [1]Object { return obj.AsObject() }
 
 type AtlasTexture struct {
-	Locked
-	_AtlasTexture Object
+	object
+	_AtlasTexture struct{}
 }
 
-func NewAtlasTexture(obj Object) AtlasTexture    { return AtlasTexture{Locked{}, obj} }
-func GetAtlasTexture(obj AtlasTexture) [1]Object { return [1]Object{obj._AtlasTexture} }
+func NewAtlasTexture(obj Object) AtlasTexture    { return AtlasTexture{object: object(obj)} }
+func GetAtlasTexture(obj AtlasTexture) [1]Object { return obj.AsObject() }
 
 type AudioBusLayout struct {
-	Locked
-	_AudioBusLayout Object
+	object
+	_AudioBusLayout struct{}
 }
 
-func NewAudioBusLayout(obj Object) AudioBusLayout    { return AudioBusLayout{Locked{}, obj} }
-func GetAudioBusLayout(obj AudioBusLayout) [1]Object { return [1]Object{obj._AudioBusLayout} }
+func NewAudioBusLayout(obj Object) AudioBusLayout    { return AudioBusLayout{object: object(obj)} }
+func GetAudioBusLayout(obj AudioBusLayout) [1]Object { return obj.AsObject() }
 
 type AudioEffect struct {
-	Locked
-	_AudioEffect Object
+	object
+	_AudioEffect struct{}
 }
 
-func NewAudioEffect(obj Object) AudioEffect    { return AudioEffect{Locked{}, obj} }
-func GetAudioEffect(obj AudioEffect) [1]Object { return [1]Object{obj._AudioEffect} }
+func NewAudioEffect(obj Object) AudioEffect    { return AudioEffect{object: object(obj)} }
+func GetAudioEffect(obj AudioEffect) [1]Object { return obj.AsObject() }
 
 type AudioEffectAmplify struct {
-	Locked
-	_AudioEffectAmplify Object
+	object
+	_AudioEffectAmplify struct{}
 }
 
-func NewAudioEffectAmplify(obj Object) AudioEffectAmplify { return AudioEffectAmplify{Locked{}, obj} }
-func GetAudioEffectAmplify(obj AudioEffectAmplify) [1]Object {
-	return [1]Object{obj._AudioEffectAmplify}
+func NewAudioEffectAmplify(obj Object) AudioEffectAmplify {
+	return AudioEffectAmplify{object: object(obj)}
 }
+func GetAudioEffectAmplify(obj AudioEffectAmplify) [1]Object { return obj.AsObject() }
 
 type AudioEffectBandLimitFilter struct {
-	Locked
-	_AudioEffectBandLimitFilter Object
+	object
+	_AudioEffectBandLimitFilter struct{}
 }
 
 func NewAudioEffectBandLimitFilter(obj Object) AudioEffectBandLimitFilter {
-	return AudioEffectBandLimitFilter{Locked{}, obj}
+	return AudioEffectBandLimitFilter{object: object(obj)}
 }
-func GetAudioEffectBandLimitFilter(obj AudioEffectBandLimitFilter) [1]Object {
-	return [1]Object{obj._AudioEffectBandLimitFilter}
-}
+func GetAudioEffectBandLimitFilter(obj AudioEffectBandLimitFilter) [1]Object { return obj.AsObject() }
 
 type AudioEffectBandPassFilter struct {
-	Locked
-	_AudioEffectBandPassFilter Object
+	object
+	_AudioEffectBandPassFilter struct{}
 }
 
 func NewAudioEffectBandPassFilter(obj Object) AudioEffectBandPassFilter {
-	return AudioEffectBandPassFilter{Locked{}, obj}
+	return AudioEffectBandPassFilter{object: object(obj)}
 }
-func GetAudioEffectBandPassFilter(obj AudioEffectBandPassFilter) [1]Object {
-	return [1]Object{obj._AudioEffectBandPassFilter}
-}
+func GetAudioEffectBandPassFilter(obj AudioEffectBandPassFilter) [1]Object { return obj.AsObject() }
 
 type AudioEffectCapture struct {
-	Locked
-	_AudioEffectCapture Object
+	object
+	_AudioEffectCapture struct{}
 }
 
-func NewAudioEffectCapture(obj Object) AudioEffectCapture { return AudioEffectCapture{Locked{}, obj} }
-func GetAudioEffectCapture(obj AudioEffectCapture) [1]Object {
-	return [1]Object{obj._AudioEffectCapture}
+func NewAudioEffectCapture(obj Object) AudioEffectCapture {
+	return AudioEffectCapture{object: object(obj)}
 }
+func GetAudioEffectCapture(obj AudioEffectCapture) [1]Object { return obj.AsObject() }
 
 type AudioEffectChorus struct {
-	Locked
-	_AudioEffectChorus Object
+	object
+	_AudioEffectChorus struct{}
 }
 
-func NewAudioEffectChorus(obj Object) AudioEffectChorus    { return AudioEffectChorus{Locked{}, obj} }
-func GetAudioEffectChorus(obj AudioEffectChorus) [1]Object { return [1]Object{obj._AudioEffectChorus} }
+func NewAudioEffectChorus(obj Object) AudioEffectChorus {
+	return AudioEffectChorus{object: object(obj)}
+}
+func GetAudioEffectChorus(obj AudioEffectChorus) [1]Object { return obj.AsObject() }
 
 type AudioEffectCompressor struct {
-	Locked
-	_AudioEffectCompressor Object
+	object
+	_AudioEffectCompressor struct{}
 }
 
 func NewAudioEffectCompressor(obj Object) AudioEffectCompressor {
-	return AudioEffectCompressor{Locked{}, obj}
+	return AudioEffectCompressor{object: object(obj)}
 }
-func GetAudioEffectCompressor(obj AudioEffectCompressor) [1]Object {
-	return [1]Object{obj._AudioEffectCompressor}
-}
+func GetAudioEffectCompressor(obj AudioEffectCompressor) [1]Object { return obj.AsObject() }
 
 type AudioEffectDelay struct {
-	Locked
-	_AudioEffectDelay Object
+	object
+	_AudioEffectDelay struct{}
 }
 
-func NewAudioEffectDelay(obj Object) AudioEffectDelay    { return AudioEffectDelay{Locked{}, obj} }
-func GetAudioEffectDelay(obj AudioEffectDelay) [1]Object { return [1]Object{obj._AudioEffectDelay} }
+func NewAudioEffectDelay(obj Object) AudioEffectDelay    { return AudioEffectDelay{object: object(obj)} }
+func GetAudioEffectDelay(obj AudioEffectDelay) [1]Object { return obj.AsObject() }
 
 type AudioEffectDistortion struct {
-	Locked
-	_AudioEffectDistortion Object
+	object
+	_AudioEffectDistortion struct{}
 }
 
 func NewAudioEffectDistortion(obj Object) AudioEffectDistortion {
-	return AudioEffectDistortion{Locked{}, obj}
+	return AudioEffectDistortion{object: object(obj)}
 }
-func GetAudioEffectDistortion(obj AudioEffectDistortion) [1]Object {
-	return [1]Object{obj._AudioEffectDistortion}
-}
+func GetAudioEffectDistortion(obj AudioEffectDistortion) [1]Object { return obj.AsObject() }
 
 type AudioEffectEQ struct {
-	Locked
-	_AudioEffectEQ Object
+	object
+	_AudioEffectEQ struct{}
 }
 
-func NewAudioEffectEQ(obj Object) AudioEffectEQ    { return AudioEffectEQ{Locked{}, obj} }
-func GetAudioEffectEQ(obj AudioEffectEQ) [1]Object { return [1]Object{obj._AudioEffectEQ} }
+func NewAudioEffectEQ(obj Object) AudioEffectEQ    { return AudioEffectEQ{object: object(obj)} }
+func GetAudioEffectEQ(obj AudioEffectEQ) [1]Object { return obj.AsObject() }
 
 type AudioEffectEQ10 struct {
-	Locked
-	_AudioEffectEQ10 Object
+	object
+	_AudioEffectEQ10 struct{}
 }
 
-func NewAudioEffectEQ10(obj Object) AudioEffectEQ10    { return AudioEffectEQ10{Locked{}, obj} }
-func GetAudioEffectEQ10(obj AudioEffectEQ10) [1]Object { return [1]Object{obj._AudioEffectEQ10} }
+func NewAudioEffectEQ10(obj Object) AudioEffectEQ10    { return AudioEffectEQ10{object: object(obj)} }
+func GetAudioEffectEQ10(obj AudioEffectEQ10) [1]Object { return obj.AsObject() }
 
 type AudioEffectEQ21 struct {
-	Locked
-	_AudioEffectEQ21 Object
+	object
+	_AudioEffectEQ21 struct{}
 }
 
-func NewAudioEffectEQ21(obj Object) AudioEffectEQ21    { return AudioEffectEQ21{Locked{}, obj} }
-func GetAudioEffectEQ21(obj AudioEffectEQ21) [1]Object { return [1]Object{obj._AudioEffectEQ21} }
+func NewAudioEffectEQ21(obj Object) AudioEffectEQ21    { return AudioEffectEQ21{object: object(obj)} }
+func GetAudioEffectEQ21(obj AudioEffectEQ21) [1]Object { return obj.AsObject() }
 
 type AudioEffectEQ6 struct {
-	Locked
-	_AudioEffectEQ6 Object
+	object
+	_AudioEffectEQ6 struct{}
 }
 
-func NewAudioEffectEQ6(obj Object) AudioEffectEQ6    { return AudioEffectEQ6{Locked{}, obj} }
-func GetAudioEffectEQ6(obj AudioEffectEQ6) [1]Object { return [1]Object{obj._AudioEffectEQ6} }
+func NewAudioEffectEQ6(obj Object) AudioEffectEQ6    { return AudioEffectEQ6{object: object(obj)} }
+func GetAudioEffectEQ6(obj AudioEffectEQ6) [1]Object { return obj.AsObject() }
 
 type AudioEffectFilter struct {
-	Locked
-	_AudioEffectFilter Object
+	object
+	_AudioEffectFilter struct{}
 }
 
-func NewAudioEffectFilter(obj Object) AudioEffectFilter    { return AudioEffectFilter{Locked{}, obj} }
-func GetAudioEffectFilter(obj AudioEffectFilter) [1]Object { return [1]Object{obj._AudioEffectFilter} }
+func NewAudioEffectFilter(obj Object) AudioEffectFilter {
+	return AudioEffectFilter{object: object(obj)}
+}
+func GetAudioEffectFilter(obj AudioEffectFilter) [1]Object { return obj.AsObject() }
 
 type AudioEffectHardLimiter struct {
-	Locked
-	_AudioEffectHardLimiter Object
+	object
+	_AudioEffectHardLimiter struct{}
 }
 
 func NewAudioEffectHardLimiter(obj Object) AudioEffectHardLimiter {
-	return AudioEffectHardLimiter{Locked{}, obj}
+	return AudioEffectHardLimiter{object: object(obj)}
 }
-func GetAudioEffectHardLimiter(obj AudioEffectHardLimiter) [1]Object {
-	return [1]Object{obj._AudioEffectHardLimiter}
-}
+func GetAudioEffectHardLimiter(obj AudioEffectHardLimiter) [1]Object { return obj.AsObject() }
 
 type AudioEffectHighPassFilter struct {
-	Locked
-	_AudioEffectHighPassFilter Object
+	object
+	_AudioEffectHighPassFilter struct{}
 }
 
 func NewAudioEffectHighPassFilter(obj Object) AudioEffectHighPassFilter {
-	return AudioEffectHighPassFilter{Locked{}, obj}
+	return AudioEffectHighPassFilter{object: object(obj)}
 }
-func GetAudioEffectHighPassFilter(obj AudioEffectHighPassFilter) [1]Object {
-	return [1]Object{obj._AudioEffectHighPassFilter}
-}
+func GetAudioEffectHighPassFilter(obj AudioEffectHighPassFilter) [1]Object { return obj.AsObject() }
 
 type AudioEffectHighShelfFilter struct {
-	Locked
-	_AudioEffectHighShelfFilter Object
+	object
+	_AudioEffectHighShelfFilter struct{}
 }
 
 func NewAudioEffectHighShelfFilter(obj Object) AudioEffectHighShelfFilter {
-	return AudioEffectHighShelfFilter{Locked{}, obj}
+	return AudioEffectHighShelfFilter{object: object(obj)}
 }
-func GetAudioEffectHighShelfFilter(obj AudioEffectHighShelfFilter) [1]Object {
-	return [1]Object{obj._AudioEffectHighShelfFilter}
-}
+func GetAudioEffectHighShelfFilter(obj AudioEffectHighShelfFilter) [1]Object { return obj.AsObject() }
 
 type AudioEffectInstance struct {
-	Locked
-	_AudioEffectInstance Object
+	object
+	_AudioEffectInstance struct{}
 }
 
 func NewAudioEffectInstance(obj Object) AudioEffectInstance {
-	return AudioEffectInstance{Locked{}, obj}
+	return AudioEffectInstance{object: object(obj)}
 }
-func GetAudioEffectInstance(obj AudioEffectInstance) [1]Object {
-	return [1]Object{obj._AudioEffectInstance}
-}
+func GetAudioEffectInstance(obj AudioEffectInstance) [1]Object { return obj.AsObject() }
 
 type AudioEffectLimiter struct {
-	Locked
-	_AudioEffectLimiter Object
+	object
+	_AudioEffectLimiter struct{}
 }
 
-func NewAudioEffectLimiter(obj Object) AudioEffectLimiter { return AudioEffectLimiter{Locked{}, obj} }
-func GetAudioEffectLimiter(obj AudioEffectLimiter) [1]Object {
-	return [1]Object{obj._AudioEffectLimiter}
+func NewAudioEffectLimiter(obj Object) AudioEffectLimiter {
+	return AudioEffectLimiter{object: object(obj)}
 }
+func GetAudioEffectLimiter(obj AudioEffectLimiter) [1]Object { return obj.AsObject() }
 
 type AudioEffectLowPassFilter struct {
-	Locked
-	_AudioEffectLowPassFilter Object
+	object
+	_AudioEffectLowPassFilter struct{}
 }
 
 func NewAudioEffectLowPassFilter(obj Object) AudioEffectLowPassFilter {
-	return AudioEffectLowPassFilter{Locked{}, obj}
+	return AudioEffectLowPassFilter{object: object(obj)}
 }
-func GetAudioEffectLowPassFilter(obj AudioEffectLowPassFilter) [1]Object {
-	return [1]Object{obj._AudioEffectLowPassFilter}
-}
+func GetAudioEffectLowPassFilter(obj AudioEffectLowPassFilter) [1]Object { return obj.AsObject() }
 
 type AudioEffectLowShelfFilter struct {
-	Locked
-	_AudioEffectLowShelfFilter Object
+	object
+	_AudioEffectLowShelfFilter struct{}
 }
 
 func NewAudioEffectLowShelfFilter(obj Object) AudioEffectLowShelfFilter {
-	return AudioEffectLowShelfFilter{Locked{}, obj}
+	return AudioEffectLowShelfFilter{object: object(obj)}
 }
-func GetAudioEffectLowShelfFilter(obj AudioEffectLowShelfFilter) [1]Object {
-	return [1]Object{obj._AudioEffectLowShelfFilter}
-}
+func GetAudioEffectLowShelfFilter(obj AudioEffectLowShelfFilter) [1]Object { return obj.AsObject() }
 
 type AudioEffectNotchFilter struct {
-	Locked
-	_AudioEffectNotchFilter Object
+	object
+	_AudioEffectNotchFilter struct{}
 }
 
 func NewAudioEffectNotchFilter(obj Object) AudioEffectNotchFilter {
-	return AudioEffectNotchFilter{Locked{}, obj}
+	return AudioEffectNotchFilter{object: object(obj)}
 }
-func GetAudioEffectNotchFilter(obj AudioEffectNotchFilter) [1]Object {
-	return [1]Object{obj._AudioEffectNotchFilter}
-}
+func GetAudioEffectNotchFilter(obj AudioEffectNotchFilter) [1]Object { return obj.AsObject() }
 
 type AudioEffectPanner struct {
-	Locked
-	_AudioEffectPanner Object
+	object
+	_AudioEffectPanner struct{}
 }
 
-func NewAudioEffectPanner(obj Object) AudioEffectPanner    { return AudioEffectPanner{Locked{}, obj} }
-func GetAudioEffectPanner(obj AudioEffectPanner) [1]Object { return [1]Object{obj._AudioEffectPanner} }
+func NewAudioEffectPanner(obj Object) AudioEffectPanner {
+	return AudioEffectPanner{object: object(obj)}
+}
+func GetAudioEffectPanner(obj AudioEffectPanner) [1]Object { return obj.AsObject() }
 
 type AudioEffectPhaser struct {
-	Locked
-	_AudioEffectPhaser Object
+	object
+	_AudioEffectPhaser struct{}
 }
 
-func NewAudioEffectPhaser(obj Object) AudioEffectPhaser    { return AudioEffectPhaser{Locked{}, obj} }
-func GetAudioEffectPhaser(obj AudioEffectPhaser) [1]Object { return [1]Object{obj._AudioEffectPhaser} }
+func NewAudioEffectPhaser(obj Object) AudioEffectPhaser {
+	return AudioEffectPhaser{object: object(obj)}
+}
+func GetAudioEffectPhaser(obj AudioEffectPhaser) [1]Object { return obj.AsObject() }
 
 type AudioEffectPitchShift struct {
-	Locked
-	_AudioEffectPitchShift Object
+	object
+	_AudioEffectPitchShift struct{}
 }
 
 func NewAudioEffectPitchShift(obj Object) AudioEffectPitchShift {
-	return AudioEffectPitchShift{Locked{}, obj}
+	return AudioEffectPitchShift{object: object(obj)}
 }
-func GetAudioEffectPitchShift(obj AudioEffectPitchShift) [1]Object {
-	return [1]Object{obj._AudioEffectPitchShift}
-}
+func GetAudioEffectPitchShift(obj AudioEffectPitchShift) [1]Object { return obj.AsObject() }
 
 type AudioEffectRecord struct {
-	Locked
-	_AudioEffectRecord Object
+	object
+	_AudioEffectRecord struct{}
 }
 
-func NewAudioEffectRecord(obj Object) AudioEffectRecord    { return AudioEffectRecord{Locked{}, obj} }
-func GetAudioEffectRecord(obj AudioEffectRecord) [1]Object { return [1]Object{obj._AudioEffectRecord} }
+func NewAudioEffectRecord(obj Object) AudioEffectRecord {
+	return AudioEffectRecord{object: object(obj)}
+}
+func GetAudioEffectRecord(obj AudioEffectRecord) [1]Object { return obj.AsObject() }
 
 type AudioEffectReverb struct {
-	Locked
-	_AudioEffectReverb Object
+	object
+	_AudioEffectReverb struct{}
 }
 
-func NewAudioEffectReverb(obj Object) AudioEffectReverb    { return AudioEffectReverb{Locked{}, obj} }
-func GetAudioEffectReverb(obj AudioEffectReverb) [1]Object { return [1]Object{obj._AudioEffectReverb} }
+func NewAudioEffectReverb(obj Object) AudioEffectReverb {
+	return AudioEffectReverb{object: object(obj)}
+}
+func GetAudioEffectReverb(obj AudioEffectReverb) [1]Object { return obj.AsObject() }
 
 type AudioEffectSpectrumAnalyzer struct {
-	Locked
-	_AudioEffectSpectrumAnalyzer Object
+	object
+	_AudioEffectSpectrumAnalyzer struct{}
 }
 
 func NewAudioEffectSpectrumAnalyzer(obj Object) AudioEffectSpectrumAnalyzer {
-	return AudioEffectSpectrumAnalyzer{Locked{}, obj}
+	return AudioEffectSpectrumAnalyzer{object: object(obj)}
 }
-func GetAudioEffectSpectrumAnalyzer(obj AudioEffectSpectrumAnalyzer) [1]Object {
-	return [1]Object{obj._AudioEffectSpectrumAnalyzer}
-}
+func GetAudioEffectSpectrumAnalyzer(obj AudioEffectSpectrumAnalyzer) [1]Object { return obj.AsObject() }
 
 type AudioEffectSpectrumAnalyzerInstance struct {
-	Locked
-	_AudioEffectSpectrumAnalyzerInstance Object
+	object
+	_AudioEffectSpectrumAnalyzerInstance struct{}
 }
 
 func NewAudioEffectSpectrumAnalyzerInstance(obj Object) AudioEffectSpectrumAnalyzerInstance {
-	return AudioEffectSpectrumAnalyzerInstance{Locked{}, obj}
+	return AudioEffectSpectrumAnalyzerInstance{object: object(obj)}
 }
 func GetAudioEffectSpectrumAnalyzerInstance(obj AudioEffectSpectrumAnalyzerInstance) [1]Object {
-	return [1]Object{obj._AudioEffectSpectrumAnalyzerInstance}
+	return obj.AsObject()
 }
 
 type AudioEffectStereoEnhance struct {
-	Locked
-	_AudioEffectStereoEnhance Object
+	object
+	_AudioEffectStereoEnhance struct{}
 }
 
 func NewAudioEffectStereoEnhance(obj Object) AudioEffectStereoEnhance {
-	return AudioEffectStereoEnhance{Locked{}, obj}
+	return AudioEffectStereoEnhance{object: object(obj)}
 }
-func GetAudioEffectStereoEnhance(obj AudioEffectStereoEnhance) [1]Object {
-	return [1]Object{obj._AudioEffectStereoEnhance}
-}
+func GetAudioEffectStereoEnhance(obj AudioEffectStereoEnhance) [1]Object { return obj.AsObject() }
 
 type AudioListener2D struct {
-	Locked
-	_AudioListener2D Object
+	object
+	_AudioListener2D struct{}
 }
 
-func NewAudioListener2D(obj Object) AudioListener2D    { return AudioListener2D{Locked{}, obj} }
-func GetAudioListener2D(obj AudioListener2D) [1]Object { return [1]Object{obj._AudioListener2D} }
+func NewAudioListener2D(obj Object) AudioListener2D    { return AudioListener2D{object: object(obj)} }
+func GetAudioListener2D(obj AudioListener2D) [1]Object { return obj.AsObject() }
 
 type AudioListener3D struct {
-	Locked
-	_AudioListener3D Object
+	object
+	_AudioListener3D struct{}
 }
 
-func NewAudioListener3D(obj Object) AudioListener3D    { return AudioListener3D{Locked{}, obj} }
-func GetAudioListener3D(obj AudioListener3D) [1]Object { return [1]Object{obj._AudioListener3D} }
+func NewAudioListener3D(obj Object) AudioListener3D    { return AudioListener3D{object: object(obj)} }
+func GetAudioListener3D(obj AudioListener3D) [1]Object { return obj.AsObject() }
 
 type AudioSample struct {
-	Locked
-	_AudioSample Object
+	object
+	_AudioSample struct{}
 }
 
-func NewAudioSample(obj Object) AudioSample    { return AudioSample{Locked{}, obj} }
-func GetAudioSample(obj AudioSample) [1]Object { return [1]Object{obj._AudioSample} }
+func NewAudioSample(obj Object) AudioSample    { return AudioSample{object: object(obj)} }
+func GetAudioSample(obj AudioSample) [1]Object { return obj.AsObject() }
 
 type AudioSamplePlayback struct {
-	Locked
-	_AudioSamplePlayback Object
+	object
+	_AudioSamplePlayback struct{}
 }
 
 func NewAudioSamplePlayback(obj Object) AudioSamplePlayback {
-	return AudioSamplePlayback{Locked{}, obj}
+	return AudioSamplePlayback{object: object(obj)}
 }
-func GetAudioSamplePlayback(obj AudioSamplePlayback) [1]Object {
-	return [1]Object{obj._AudioSamplePlayback}
-}
+func GetAudioSamplePlayback(obj AudioSamplePlayback) [1]Object { return obj.AsObject() }
 
 type AudioServer struct {
-	Locked
-	_AudioServer Object
+	object
+	_AudioServer struct{}
 }
 
-func NewAudioServer(obj Object) AudioServer    { return AudioServer{Locked{}, obj} }
-func GetAudioServer(obj AudioServer) [1]Object { return [1]Object{obj._AudioServer} }
+func NewAudioServer(obj Object) AudioServer    { return AudioServer{object: object(obj)} }
+func GetAudioServer(obj AudioServer) [1]Object { return obj.AsObject() }
 
 type AudioStream struct {
-	Locked
-	_AudioStream Object
+	object
+	_AudioStream struct{}
 }
 
-func NewAudioStream(obj Object) AudioStream    { return AudioStream{Locked{}, obj} }
-func GetAudioStream(obj AudioStream) [1]Object { return [1]Object{obj._AudioStream} }
+func NewAudioStream(obj Object) AudioStream    { return AudioStream{object: object(obj)} }
+func GetAudioStream(obj AudioStream) [1]Object { return obj.AsObject() }
 
 type AudioStreamGenerator struct {
-	Locked
-	_AudioStreamGenerator Object
+	object
+	_AudioStreamGenerator struct{}
 }
 
 func NewAudioStreamGenerator(obj Object) AudioStreamGenerator {
-	return AudioStreamGenerator{Locked{}, obj}
+	return AudioStreamGenerator{object: object(obj)}
 }
-func GetAudioStreamGenerator(obj AudioStreamGenerator) [1]Object {
-	return [1]Object{obj._AudioStreamGenerator}
-}
+func GetAudioStreamGenerator(obj AudioStreamGenerator) [1]Object { return obj.AsObject() }
 
 type AudioStreamGeneratorPlayback struct {
-	Locked
-	_AudioStreamGeneratorPlayback Object
+	object
+	_AudioStreamGeneratorPlayback struct{}
 }
 
 func NewAudioStreamGeneratorPlayback(obj Object) AudioStreamGeneratorPlayback {
-	return AudioStreamGeneratorPlayback{Locked{}, obj}
+	return AudioStreamGeneratorPlayback{object: object(obj)}
 }
 func GetAudioStreamGeneratorPlayback(obj AudioStreamGeneratorPlayback) [1]Object {
-	return [1]Object{obj._AudioStreamGeneratorPlayback}
+	return obj.AsObject()
 }
 
 type AudioStreamInteractive struct {
-	Locked
-	_AudioStreamInteractive Object
+	object
+	_AudioStreamInteractive struct{}
 }
 
 func NewAudioStreamInteractive(obj Object) AudioStreamInteractive {
-	return AudioStreamInteractive{Locked{}, obj}
+	return AudioStreamInteractive{object: object(obj)}
 }
-func GetAudioStreamInteractive(obj AudioStreamInteractive) [1]Object {
-	return [1]Object{obj._AudioStreamInteractive}
-}
+func GetAudioStreamInteractive(obj AudioStreamInteractive) [1]Object { return obj.AsObject() }
 
 type AudioStreamMP3 struct {
-	Locked
-	_AudioStreamMP3 Object
+	object
+	_AudioStreamMP3 struct{}
 }
 
-func NewAudioStreamMP3(obj Object) AudioStreamMP3    { return AudioStreamMP3{Locked{}, obj} }
-func GetAudioStreamMP3(obj AudioStreamMP3) [1]Object { return [1]Object{obj._AudioStreamMP3} }
+func NewAudioStreamMP3(obj Object) AudioStreamMP3    { return AudioStreamMP3{object: object(obj)} }
+func GetAudioStreamMP3(obj AudioStreamMP3) [1]Object { return obj.AsObject() }
 
 type AudioStreamMicrophone struct {
-	Locked
-	_AudioStreamMicrophone Object
+	object
+	_AudioStreamMicrophone struct{}
 }
 
 func NewAudioStreamMicrophone(obj Object) AudioStreamMicrophone {
-	return AudioStreamMicrophone{Locked{}, obj}
+	return AudioStreamMicrophone{object: object(obj)}
 }
-func GetAudioStreamMicrophone(obj AudioStreamMicrophone) [1]Object {
-	return [1]Object{obj._AudioStreamMicrophone}
-}
+func GetAudioStreamMicrophone(obj AudioStreamMicrophone) [1]Object { return obj.AsObject() }
 
 type AudioStreamOggVorbis struct {
-	Locked
-	_AudioStreamOggVorbis Object
+	object
+	_AudioStreamOggVorbis struct{}
 }
 
 func NewAudioStreamOggVorbis(obj Object) AudioStreamOggVorbis {
-	return AudioStreamOggVorbis{Locked{}, obj}
+	return AudioStreamOggVorbis{object: object(obj)}
 }
-func GetAudioStreamOggVorbis(obj AudioStreamOggVorbis) [1]Object {
-	return [1]Object{obj._AudioStreamOggVorbis}
-}
+func GetAudioStreamOggVorbis(obj AudioStreamOggVorbis) [1]Object { return obj.AsObject() }
 
 type AudioStreamPlayback struct {
-	Locked
-	_AudioStreamPlayback Object
+	object
+	_AudioStreamPlayback struct{}
 }
 
 func NewAudioStreamPlayback(obj Object) AudioStreamPlayback {
-	return AudioStreamPlayback{Locked{}, obj}
+	return AudioStreamPlayback{object: object(obj)}
 }
-func GetAudioStreamPlayback(obj AudioStreamPlayback) [1]Object {
-	return [1]Object{obj._AudioStreamPlayback}
-}
+func GetAudioStreamPlayback(obj AudioStreamPlayback) [1]Object { return obj.AsObject() }
 
 type AudioStreamPlaybackInteractive struct {
-	Locked
-	_AudioStreamPlaybackInteractive Object
+	object
+	_AudioStreamPlaybackInteractive struct{}
 }
 
 func NewAudioStreamPlaybackInteractive(obj Object) AudioStreamPlaybackInteractive {
-	return AudioStreamPlaybackInteractive{Locked{}, obj}
+	return AudioStreamPlaybackInteractive{object: object(obj)}
 }
 func GetAudioStreamPlaybackInteractive(obj AudioStreamPlaybackInteractive) [1]Object {
-	return [1]Object{obj._AudioStreamPlaybackInteractive}
+	return obj.AsObject()
 }
 
 type AudioStreamPlaybackOggVorbis struct {
-	Locked
-	_AudioStreamPlaybackOggVorbis Object
+	object
+	_AudioStreamPlaybackOggVorbis struct{}
 }
 
 func NewAudioStreamPlaybackOggVorbis(obj Object) AudioStreamPlaybackOggVorbis {
-	return AudioStreamPlaybackOggVorbis{Locked{}, obj}
+	return AudioStreamPlaybackOggVorbis{object: object(obj)}
 }
 func GetAudioStreamPlaybackOggVorbis(obj AudioStreamPlaybackOggVorbis) [1]Object {
-	return [1]Object{obj._AudioStreamPlaybackOggVorbis}
+	return obj.AsObject()
 }
 
 type AudioStreamPlaybackPlaylist struct {
-	Locked
-	_AudioStreamPlaybackPlaylist Object
+	object
+	_AudioStreamPlaybackPlaylist struct{}
 }
 
 func NewAudioStreamPlaybackPlaylist(obj Object) AudioStreamPlaybackPlaylist {
-	return AudioStreamPlaybackPlaylist{Locked{}, obj}
+	return AudioStreamPlaybackPlaylist{object: object(obj)}
 }
-func GetAudioStreamPlaybackPlaylist(obj AudioStreamPlaybackPlaylist) [1]Object {
-	return [1]Object{obj._AudioStreamPlaybackPlaylist}
-}
+func GetAudioStreamPlaybackPlaylist(obj AudioStreamPlaybackPlaylist) [1]Object { return obj.AsObject() }
 
 type AudioStreamPlaybackPolyphonic struct {
-	Locked
-	_AudioStreamPlaybackPolyphonic Object
+	object
+	_AudioStreamPlaybackPolyphonic struct{}
 }
 
 func NewAudioStreamPlaybackPolyphonic(obj Object) AudioStreamPlaybackPolyphonic {
-	return AudioStreamPlaybackPolyphonic{Locked{}, obj}
+	return AudioStreamPlaybackPolyphonic{object: object(obj)}
 }
 func GetAudioStreamPlaybackPolyphonic(obj AudioStreamPlaybackPolyphonic) [1]Object {
-	return [1]Object{obj._AudioStreamPlaybackPolyphonic}
+	return obj.AsObject()
 }
 
 type AudioStreamPlaybackResampled struct {
-	Locked
-	_AudioStreamPlaybackResampled Object
+	object
+	_AudioStreamPlaybackResampled struct{}
 }
 
 func NewAudioStreamPlaybackResampled(obj Object) AudioStreamPlaybackResampled {
-	return AudioStreamPlaybackResampled{Locked{}, obj}
+	return AudioStreamPlaybackResampled{object: object(obj)}
 }
 func GetAudioStreamPlaybackResampled(obj AudioStreamPlaybackResampled) [1]Object {
-	return [1]Object{obj._AudioStreamPlaybackResampled}
+	return obj.AsObject()
 }
 
 type AudioStreamPlaybackSynchronized struct {
-	Locked
-	_AudioStreamPlaybackSynchronized Object
+	object
+	_AudioStreamPlaybackSynchronized struct{}
 }
 
 func NewAudioStreamPlaybackSynchronized(obj Object) AudioStreamPlaybackSynchronized {
-	return AudioStreamPlaybackSynchronized{Locked{}, obj}
+	return AudioStreamPlaybackSynchronized{object: object(obj)}
 }
 func GetAudioStreamPlaybackSynchronized(obj AudioStreamPlaybackSynchronized) [1]Object {
-	return [1]Object{obj._AudioStreamPlaybackSynchronized}
+	return obj.AsObject()
 }
 
 type AudioStreamPlayer struct {
-	Locked
-	_AudioStreamPlayer Object
+	object
+	_AudioStreamPlayer struct{}
 }
 
-func NewAudioStreamPlayer(obj Object) AudioStreamPlayer    { return AudioStreamPlayer{Locked{}, obj} }
-func GetAudioStreamPlayer(obj AudioStreamPlayer) [1]Object { return [1]Object{obj._AudioStreamPlayer} }
+func NewAudioStreamPlayer(obj Object) AudioStreamPlayer {
+	return AudioStreamPlayer{object: object(obj)}
+}
+func GetAudioStreamPlayer(obj AudioStreamPlayer) [1]Object { return obj.AsObject() }
 
 type AudioStreamPlayer2D struct {
-	Locked
-	_AudioStreamPlayer2D Object
+	object
+	_AudioStreamPlayer2D struct{}
 }
 
 func NewAudioStreamPlayer2D(obj Object) AudioStreamPlayer2D {
-	return AudioStreamPlayer2D{Locked{}, obj}
+	return AudioStreamPlayer2D{object: object(obj)}
 }
-func GetAudioStreamPlayer2D(obj AudioStreamPlayer2D) [1]Object {
-	return [1]Object{obj._AudioStreamPlayer2D}
-}
+func GetAudioStreamPlayer2D(obj AudioStreamPlayer2D) [1]Object { return obj.AsObject() }
 
 type AudioStreamPlayer3D struct {
-	Locked
-	_AudioStreamPlayer3D Object
+	object
+	_AudioStreamPlayer3D struct{}
 }
 
 func NewAudioStreamPlayer3D(obj Object) AudioStreamPlayer3D {
-	return AudioStreamPlayer3D{Locked{}, obj}
+	return AudioStreamPlayer3D{object: object(obj)}
 }
-func GetAudioStreamPlayer3D(obj AudioStreamPlayer3D) [1]Object {
-	return [1]Object{obj._AudioStreamPlayer3D}
-}
+func GetAudioStreamPlayer3D(obj AudioStreamPlayer3D) [1]Object { return obj.AsObject() }
 
 type AudioStreamPlaylist struct {
-	Locked
-	_AudioStreamPlaylist Object
+	object
+	_AudioStreamPlaylist struct{}
 }
 
 func NewAudioStreamPlaylist(obj Object) AudioStreamPlaylist {
-	return AudioStreamPlaylist{Locked{}, obj}
+	return AudioStreamPlaylist{object: object(obj)}
 }
-func GetAudioStreamPlaylist(obj AudioStreamPlaylist) [1]Object {
-	return [1]Object{obj._AudioStreamPlaylist}
-}
+func GetAudioStreamPlaylist(obj AudioStreamPlaylist) [1]Object { return obj.AsObject() }
 
 type AudioStreamPolyphonic struct {
-	Locked
-	_AudioStreamPolyphonic Object
+	object
+	_AudioStreamPolyphonic struct{}
 }
 
 func NewAudioStreamPolyphonic(obj Object) AudioStreamPolyphonic {
-	return AudioStreamPolyphonic{Locked{}, obj}
+	return AudioStreamPolyphonic{object: object(obj)}
 }
-func GetAudioStreamPolyphonic(obj AudioStreamPolyphonic) [1]Object {
-	return [1]Object{obj._AudioStreamPolyphonic}
-}
+func GetAudioStreamPolyphonic(obj AudioStreamPolyphonic) [1]Object { return obj.AsObject() }
 
 type AudioStreamRandomizer struct {
-	Locked
-	_AudioStreamRandomizer Object
+	object
+	_AudioStreamRandomizer struct{}
 }
 
 func NewAudioStreamRandomizer(obj Object) AudioStreamRandomizer {
-	return AudioStreamRandomizer{Locked{}, obj}
+	return AudioStreamRandomizer{object: object(obj)}
 }
-func GetAudioStreamRandomizer(obj AudioStreamRandomizer) [1]Object {
-	return [1]Object{obj._AudioStreamRandomizer}
-}
+func GetAudioStreamRandomizer(obj AudioStreamRandomizer) [1]Object { return obj.AsObject() }
 
 type AudioStreamSynchronized struct {
-	Locked
-	_AudioStreamSynchronized Object
+	object
+	_AudioStreamSynchronized struct{}
 }
 
 func NewAudioStreamSynchronized(obj Object) AudioStreamSynchronized {
-	return AudioStreamSynchronized{Locked{}, obj}
+	return AudioStreamSynchronized{object: object(obj)}
 }
-func GetAudioStreamSynchronized(obj AudioStreamSynchronized) [1]Object {
-	return [1]Object{obj._AudioStreamSynchronized}
-}
+func GetAudioStreamSynchronized(obj AudioStreamSynchronized) [1]Object { return obj.AsObject() }
 
 type AudioStreamWAV struct {
-	Locked
-	_AudioStreamWAV Object
+	object
+	_AudioStreamWAV struct{}
 }
 
-func NewAudioStreamWAV(obj Object) AudioStreamWAV    { return AudioStreamWAV{Locked{}, obj} }
-func GetAudioStreamWAV(obj AudioStreamWAV) [1]Object { return [1]Object{obj._AudioStreamWAV} }
+func NewAudioStreamWAV(obj Object) AudioStreamWAV    { return AudioStreamWAV{object: object(obj)} }
+func GetAudioStreamWAV(obj AudioStreamWAV) [1]Object { return obj.AsObject() }
 
 type BackBufferCopy struct {
-	Locked
-	_BackBufferCopy Object
+	object
+	_BackBufferCopy struct{}
 }
 
-func NewBackBufferCopy(obj Object) BackBufferCopy    { return BackBufferCopy{Locked{}, obj} }
-func GetBackBufferCopy(obj BackBufferCopy) [1]Object { return [1]Object{obj._BackBufferCopy} }
+func NewBackBufferCopy(obj Object) BackBufferCopy    { return BackBufferCopy{object: object(obj)} }
+func GetBackBufferCopy(obj BackBufferCopy) [1]Object { return obj.AsObject() }
 
 type BaseButton struct {
-	Locked
-	_BaseButton Object
+	object
+	_BaseButton struct{}
 }
 
-func NewBaseButton(obj Object) BaseButton    { return BaseButton{Locked{}, obj} }
-func GetBaseButton(obj BaseButton) [1]Object { return [1]Object{obj._BaseButton} }
+func NewBaseButton(obj Object) BaseButton    { return BaseButton{object: object(obj)} }
+func GetBaseButton(obj BaseButton) [1]Object { return obj.AsObject() }
 
 type BaseMaterial3D struct {
-	Locked
-	_BaseMaterial3D Object
+	object
+	_BaseMaterial3D struct{}
 }
 
-func NewBaseMaterial3D(obj Object) BaseMaterial3D    { return BaseMaterial3D{Locked{}, obj} }
-func GetBaseMaterial3D(obj BaseMaterial3D) [1]Object { return [1]Object{obj._BaseMaterial3D} }
+func NewBaseMaterial3D(obj Object) BaseMaterial3D    { return BaseMaterial3D{object: object(obj)} }
+func GetBaseMaterial3D(obj BaseMaterial3D) [1]Object { return obj.AsObject() }
 
 type BitMap struct {
-	Locked
-	_BitMap Object
+	object
+	_BitMap struct{}
 }
 
-func NewBitMap(obj Object) BitMap    { return BitMap{Locked{}, obj} }
-func GetBitMap(obj BitMap) [1]Object { return [1]Object{obj._BitMap} }
+func NewBitMap(obj Object) BitMap    { return BitMap{object: object(obj)} }
+func GetBitMap(obj BitMap) [1]Object { return obj.AsObject() }
 
 type Bone2D struct {
-	Locked
-	_Bone2D Object
+	object
+	_Bone2D struct{}
 }
 
-func NewBone2D(obj Object) Bone2D    { return Bone2D{Locked{}, obj} }
-func GetBone2D(obj Bone2D) [1]Object { return [1]Object{obj._Bone2D} }
+func NewBone2D(obj Object) Bone2D    { return Bone2D{object: object(obj)} }
+func GetBone2D(obj Bone2D) [1]Object { return obj.AsObject() }
 
 type BoneAttachment3D struct {
-	Locked
-	_BoneAttachment3D Object
+	object
+	_BoneAttachment3D struct{}
 }
 
-func NewBoneAttachment3D(obj Object) BoneAttachment3D    { return BoneAttachment3D{Locked{}, obj} }
-func GetBoneAttachment3D(obj BoneAttachment3D) [1]Object { return [1]Object{obj._BoneAttachment3D} }
+func NewBoneAttachment3D(obj Object) BoneAttachment3D    { return BoneAttachment3D{object: object(obj)} }
+func GetBoneAttachment3D(obj BoneAttachment3D) [1]Object { return obj.AsObject() }
 
 type BoneConstraint3D struct {
-	Locked
-	_BoneConstraint3D Object
+	object
+	_BoneConstraint3D struct{}
 }
 
-func NewBoneConstraint3D(obj Object) BoneConstraint3D    { return BoneConstraint3D{Locked{}, obj} }
-func GetBoneConstraint3D(obj BoneConstraint3D) [1]Object { return [1]Object{obj._BoneConstraint3D} }
+func NewBoneConstraint3D(obj Object) BoneConstraint3D    { return BoneConstraint3D{object: object(obj)} }
+func GetBoneConstraint3D(obj BoneConstraint3D) [1]Object { return obj.AsObject() }
 
 type BoneMap struct {
-	Locked
-	_BoneMap Object
+	object
+	_BoneMap struct{}
 }
 
-func NewBoneMap(obj Object) BoneMap    { return BoneMap{Locked{}, obj} }
-func GetBoneMap(obj BoneMap) [1]Object { return [1]Object{obj._BoneMap} }
+func NewBoneMap(obj Object) BoneMap    { return BoneMap{object: object(obj)} }
+func GetBoneMap(obj BoneMap) [1]Object { return obj.AsObject() }
 
 type BoneTwistDisperser3D struct {
-	Locked
-	_BoneTwistDisperser3D Object
+	object
+	_BoneTwistDisperser3D struct{}
 }
 
 func NewBoneTwistDisperser3D(obj Object) BoneTwistDisperser3D {
-	return BoneTwistDisperser3D{Locked{}, obj}
+	return BoneTwistDisperser3D{object: object(obj)}
 }
-func GetBoneTwistDisperser3D(obj BoneTwistDisperser3D) [1]Object {
-	return [1]Object{obj._BoneTwistDisperser3D}
-}
+func GetBoneTwistDisperser3D(obj BoneTwistDisperser3D) [1]Object { return obj.AsObject() }
 
 type BoxContainer struct {
-	Locked
-	_BoxContainer Object
+	object
+	_BoxContainer struct{}
 }
 
-func NewBoxContainer(obj Object) BoxContainer    { return BoxContainer{Locked{}, obj} }
-func GetBoxContainer(obj BoxContainer) [1]Object { return [1]Object{obj._BoxContainer} }
+func NewBoxContainer(obj Object) BoxContainer    { return BoxContainer{object: object(obj)} }
+func GetBoxContainer(obj BoxContainer) [1]Object { return obj.AsObject() }
 
 type BoxMesh struct {
-	Locked
-	_BoxMesh Object
+	object
+	_BoxMesh struct{}
 }
 
-func NewBoxMesh(obj Object) BoxMesh    { return BoxMesh{Locked{}, obj} }
-func GetBoxMesh(obj BoxMesh) [1]Object { return [1]Object{obj._BoxMesh} }
+func NewBoxMesh(obj Object) BoxMesh    { return BoxMesh{object: object(obj)} }
+func GetBoxMesh(obj BoxMesh) [1]Object { return obj.AsObject() }
 
 type BoxOccluder3D struct {
-	Locked
-	_BoxOccluder3D Object
+	object
+	_BoxOccluder3D struct{}
 }
 
-func NewBoxOccluder3D(obj Object) BoxOccluder3D    { return BoxOccluder3D{Locked{}, obj} }
-func GetBoxOccluder3D(obj BoxOccluder3D) [1]Object { return [1]Object{obj._BoxOccluder3D} }
+func NewBoxOccluder3D(obj Object) BoxOccluder3D    { return BoxOccluder3D{object: object(obj)} }
+func GetBoxOccluder3D(obj BoxOccluder3D) [1]Object { return obj.AsObject() }
 
 type BoxShape3D struct {
-	Locked
-	_BoxShape3D Object
+	object
+	_BoxShape3D struct{}
 }
 
-func NewBoxShape3D(obj Object) BoxShape3D    { return BoxShape3D{Locked{}, obj} }
-func GetBoxShape3D(obj BoxShape3D) [1]Object { return [1]Object{obj._BoxShape3D} }
+func NewBoxShape3D(obj Object) BoxShape3D    { return BoxShape3D{object: object(obj)} }
+func GetBoxShape3D(obj BoxShape3D) [1]Object { return obj.AsObject() }
 
 type Button struct {
-	Locked
-	_Button Object
+	object
+	_Button struct{}
 }
 
-func NewButton(obj Object) Button    { return Button{Locked{}, obj} }
-func GetButton(obj Button) [1]Object { return [1]Object{obj._Button} }
+func NewButton(obj Object) Button    { return Button{object: object(obj)} }
+func GetButton(obj Button) [1]Object { return obj.AsObject() }
 
 type ButtonGroup struct {
-	Locked
-	_ButtonGroup Object
+	object
+	_ButtonGroup struct{}
 }
 
-func NewButtonGroup(obj Object) ButtonGroup    { return ButtonGroup{Locked{}, obj} }
-func GetButtonGroup(obj ButtonGroup) [1]Object { return [1]Object{obj._ButtonGroup} }
+func NewButtonGroup(obj Object) ButtonGroup    { return ButtonGroup{object: object(obj)} }
+func GetButtonGroup(obj ButtonGroup) [1]Object { return obj.AsObject() }
 
 type CCDIK3D struct {
-	Locked
-	_CCDIK3D Object
+	object
+	_CCDIK3D struct{}
 }
 
-func NewCCDIK3D(obj Object) CCDIK3D    { return CCDIK3D{Locked{}, obj} }
-func GetCCDIK3D(obj CCDIK3D) [1]Object { return [1]Object{obj._CCDIK3D} }
+func NewCCDIK3D(obj Object) CCDIK3D    { return CCDIK3D{object: object(obj)} }
+func GetCCDIK3D(obj CCDIK3D) [1]Object { return obj.AsObject() }
 
 type CPUParticles2D struct {
-	Locked
-	_CPUParticles2D Object
+	object
+	_CPUParticles2D struct{}
 }
 
-func NewCPUParticles2D(obj Object) CPUParticles2D    { return CPUParticles2D{Locked{}, obj} }
-func GetCPUParticles2D(obj CPUParticles2D) [1]Object { return [1]Object{obj._CPUParticles2D} }
+func NewCPUParticles2D(obj Object) CPUParticles2D    { return CPUParticles2D{object: object(obj)} }
+func GetCPUParticles2D(obj CPUParticles2D) [1]Object { return obj.AsObject() }
 
 type CPUParticles3D struct {
-	Locked
-	_CPUParticles3D Object
+	object
+	_CPUParticles3D struct{}
 }
 
-func NewCPUParticles3D(obj Object) CPUParticles3D    { return CPUParticles3D{Locked{}, obj} }
-func GetCPUParticles3D(obj CPUParticles3D) [1]Object { return [1]Object{obj._CPUParticles3D} }
+func NewCPUParticles3D(obj Object) CPUParticles3D    { return CPUParticles3D{object: object(obj)} }
+func GetCPUParticles3D(obj CPUParticles3D) [1]Object { return obj.AsObject() }
 
 type CSGBox3D struct {
-	Locked
-	_CSGBox3D Object
+	object
+	_CSGBox3D struct{}
 }
 
-func NewCSGBox3D(obj Object) CSGBox3D    { return CSGBox3D{Locked{}, obj} }
-func GetCSGBox3D(obj CSGBox3D) [1]Object { return [1]Object{obj._CSGBox3D} }
+func NewCSGBox3D(obj Object) CSGBox3D    { return CSGBox3D{object: object(obj)} }
+func GetCSGBox3D(obj CSGBox3D) [1]Object { return obj.AsObject() }
 
 type CSGCombiner3D struct {
-	Locked
-	_CSGCombiner3D Object
+	object
+	_CSGCombiner3D struct{}
 }
 
-func NewCSGCombiner3D(obj Object) CSGCombiner3D    { return CSGCombiner3D{Locked{}, obj} }
-func GetCSGCombiner3D(obj CSGCombiner3D) [1]Object { return [1]Object{obj._CSGCombiner3D} }
+func NewCSGCombiner3D(obj Object) CSGCombiner3D    { return CSGCombiner3D{object: object(obj)} }
+func GetCSGCombiner3D(obj CSGCombiner3D) [1]Object { return obj.AsObject() }
 
 type CSGCylinder3D struct {
-	Locked
-	_CSGCylinder3D Object
+	object
+	_CSGCylinder3D struct{}
 }
 
-func NewCSGCylinder3D(obj Object) CSGCylinder3D    { return CSGCylinder3D{Locked{}, obj} }
-func GetCSGCylinder3D(obj CSGCylinder3D) [1]Object { return [1]Object{obj._CSGCylinder3D} }
+func NewCSGCylinder3D(obj Object) CSGCylinder3D    { return CSGCylinder3D{object: object(obj)} }
+func GetCSGCylinder3D(obj CSGCylinder3D) [1]Object { return obj.AsObject() }
 
 type CSGMesh3D struct {
-	Locked
-	_CSGMesh3D Object
+	object
+	_CSGMesh3D struct{}
 }
 
-func NewCSGMesh3D(obj Object) CSGMesh3D    { return CSGMesh3D{Locked{}, obj} }
-func GetCSGMesh3D(obj CSGMesh3D) [1]Object { return [1]Object{obj._CSGMesh3D} }
+func NewCSGMesh3D(obj Object) CSGMesh3D    { return CSGMesh3D{object: object(obj)} }
+func GetCSGMesh3D(obj CSGMesh3D) [1]Object { return obj.AsObject() }
 
 type CSGPolygon3D struct {
-	Locked
-	_CSGPolygon3D Object
+	object
+	_CSGPolygon3D struct{}
 }
 
-func NewCSGPolygon3D(obj Object) CSGPolygon3D    { return CSGPolygon3D{Locked{}, obj} }
-func GetCSGPolygon3D(obj CSGPolygon3D) [1]Object { return [1]Object{obj._CSGPolygon3D} }
+func NewCSGPolygon3D(obj Object) CSGPolygon3D    { return CSGPolygon3D{object: object(obj)} }
+func GetCSGPolygon3D(obj CSGPolygon3D) [1]Object { return obj.AsObject() }
 
 type CSGPrimitive3D struct {
-	Locked
-	_CSGPrimitive3D Object
+	object
+	_CSGPrimitive3D struct{}
 }
 
-func NewCSGPrimitive3D(obj Object) CSGPrimitive3D    { return CSGPrimitive3D{Locked{}, obj} }
-func GetCSGPrimitive3D(obj CSGPrimitive3D) [1]Object { return [1]Object{obj._CSGPrimitive3D} }
+func NewCSGPrimitive3D(obj Object) CSGPrimitive3D    { return CSGPrimitive3D{object: object(obj)} }
+func GetCSGPrimitive3D(obj CSGPrimitive3D) [1]Object { return obj.AsObject() }
 
 type CSGShape3D struct {
-	Locked
-	_CSGShape3D Object
+	object
+	_CSGShape3D struct{}
 }
 
-func NewCSGShape3D(obj Object) CSGShape3D    { return CSGShape3D{Locked{}, obj} }
-func GetCSGShape3D(obj CSGShape3D) [1]Object { return [1]Object{obj._CSGShape3D} }
+func NewCSGShape3D(obj Object) CSGShape3D    { return CSGShape3D{object: object(obj)} }
+func GetCSGShape3D(obj CSGShape3D) [1]Object { return obj.AsObject() }
 
 type CSGSphere3D struct {
-	Locked
-	_CSGSphere3D Object
+	object
+	_CSGSphere3D struct{}
 }
 
-func NewCSGSphere3D(obj Object) CSGSphere3D    { return CSGSphere3D{Locked{}, obj} }
-func GetCSGSphere3D(obj CSGSphere3D) [1]Object { return [1]Object{obj._CSGSphere3D} }
+func NewCSGSphere3D(obj Object) CSGSphere3D    { return CSGSphere3D{object: object(obj)} }
+func GetCSGSphere3D(obj CSGSphere3D) [1]Object { return obj.AsObject() }
 
 type CSGTorus3D struct {
-	Locked
-	_CSGTorus3D Object
+	object
+	_CSGTorus3D struct{}
 }
 
-func NewCSGTorus3D(obj Object) CSGTorus3D    { return CSGTorus3D{Locked{}, obj} }
-func GetCSGTorus3D(obj CSGTorus3D) [1]Object { return [1]Object{obj._CSGTorus3D} }
+func NewCSGTorus3D(obj Object) CSGTorus3D    { return CSGTorus3D{object: object(obj)} }
+func GetCSGTorus3D(obj CSGTorus3D) [1]Object { return obj.AsObject() }
 
 type CallbackTweener struct {
-	Locked
-	_CallbackTweener Object
+	object
+	_CallbackTweener struct{}
 }
 
-func NewCallbackTweener(obj Object) CallbackTweener    { return CallbackTweener{Locked{}, obj} }
-func GetCallbackTweener(obj CallbackTweener) [1]Object { return [1]Object{obj._CallbackTweener} }
+func NewCallbackTweener(obj Object) CallbackTweener    { return CallbackTweener{object: object(obj)} }
+func GetCallbackTweener(obj CallbackTweener) [1]Object { return obj.AsObject() }
 
 type Camera2D struct {
-	Locked
-	_Camera2D Object
+	object
+	_Camera2D struct{}
 }
 
-func NewCamera2D(obj Object) Camera2D    { return Camera2D{Locked{}, obj} }
-func GetCamera2D(obj Camera2D) [1]Object { return [1]Object{obj._Camera2D} }
+func NewCamera2D(obj Object) Camera2D    { return Camera2D{object: object(obj)} }
+func GetCamera2D(obj Camera2D) [1]Object { return obj.AsObject() }
 
 type Camera3D struct {
-	Locked
-	_Camera3D Object
+	object
+	_Camera3D struct{}
 }
 
-func NewCamera3D(obj Object) Camera3D    { return Camera3D{Locked{}, obj} }
-func GetCamera3D(obj Camera3D) [1]Object { return [1]Object{obj._Camera3D} }
+func NewCamera3D(obj Object) Camera3D    { return Camera3D{object: object(obj)} }
+func GetCamera3D(obj Camera3D) [1]Object { return obj.AsObject() }
 
 type CameraAttributes struct {
-	Locked
-	_CameraAttributes Object
+	object
+	_CameraAttributes struct{}
 }
 
-func NewCameraAttributes(obj Object) CameraAttributes    { return CameraAttributes{Locked{}, obj} }
-func GetCameraAttributes(obj CameraAttributes) [1]Object { return [1]Object{obj._CameraAttributes} }
+func NewCameraAttributes(obj Object) CameraAttributes    { return CameraAttributes{object: object(obj)} }
+func GetCameraAttributes(obj CameraAttributes) [1]Object { return obj.AsObject() }
 
 type CameraAttributesPhysical struct {
-	Locked
-	_CameraAttributesPhysical Object
+	object
+	_CameraAttributesPhysical struct{}
 }
 
 func NewCameraAttributesPhysical(obj Object) CameraAttributesPhysical {
-	return CameraAttributesPhysical{Locked{}, obj}
+	return CameraAttributesPhysical{object: object(obj)}
 }
-func GetCameraAttributesPhysical(obj CameraAttributesPhysical) [1]Object {
-	return [1]Object{obj._CameraAttributesPhysical}
-}
+func GetCameraAttributesPhysical(obj CameraAttributesPhysical) [1]Object { return obj.AsObject() }
 
 type CameraAttributesPractical struct {
-	Locked
-	_CameraAttributesPractical Object
+	object
+	_CameraAttributesPractical struct{}
 }
 
 func NewCameraAttributesPractical(obj Object) CameraAttributesPractical {
-	return CameraAttributesPractical{Locked{}, obj}
+	return CameraAttributesPractical{object: object(obj)}
 }
-func GetCameraAttributesPractical(obj CameraAttributesPractical) [1]Object {
-	return [1]Object{obj._CameraAttributesPractical}
-}
+func GetCameraAttributesPractical(obj CameraAttributesPractical) [1]Object { return obj.AsObject() }
 
 type CameraFeed struct {
-	Locked
-	_CameraFeed Object
+	object
+	_CameraFeed struct{}
 }
 
-func NewCameraFeed(obj Object) CameraFeed    { return CameraFeed{Locked{}, obj} }
-func GetCameraFeed(obj CameraFeed) [1]Object { return [1]Object{obj._CameraFeed} }
+func NewCameraFeed(obj Object) CameraFeed    { return CameraFeed{object: object(obj)} }
+func GetCameraFeed(obj CameraFeed) [1]Object { return obj.AsObject() }
 
 type CameraServer struct {
-	Locked
-	_CameraServer Object
+	object
+	_CameraServer struct{}
 }
 
-func NewCameraServer(obj Object) CameraServer    { return CameraServer{Locked{}, obj} }
-func GetCameraServer(obj CameraServer) [1]Object { return [1]Object{obj._CameraServer} }
+func NewCameraServer(obj Object) CameraServer    { return CameraServer{object: object(obj)} }
+func GetCameraServer(obj CameraServer) [1]Object { return obj.AsObject() }
 
 type CameraTexture struct {
-	Locked
-	_CameraTexture Object
+	object
+	_CameraTexture struct{}
 }
 
-func NewCameraTexture(obj Object) CameraTexture    { return CameraTexture{Locked{}, obj} }
-func GetCameraTexture(obj CameraTexture) [1]Object { return [1]Object{obj._CameraTexture} }
+func NewCameraTexture(obj Object) CameraTexture    { return CameraTexture{object: object(obj)} }
+func GetCameraTexture(obj CameraTexture) [1]Object { return obj.AsObject() }
 
 type CanvasGroup struct {
-	Locked
-	_CanvasGroup Object
+	object
+	_CanvasGroup struct{}
 }
 
-func NewCanvasGroup(obj Object) CanvasGroup    { return CanvasGroup{Locked{}, obj} }
-func GetCanvasGroup(obj CanvasGroup) [1]Object { return [1]Object{obj._CanvasGroup} }
+func NewCanvasGroup(obj Object) CanvasGroup    { return CanvasGroup{object: object(obj)} }
+func GetCanvasGroup(obj CanvasGroup) [1]Object { return obj.AsObject() }
 
 type CanvasItem struct {
-	Locked
-	_CanvasItem Object
+	object
+	_CanvasItem struct{}
 }
 
-func NewCanvasItem(obj Object) CanvasItem    { return CanvasItem{Locked{}, obj} }
-func GetCanvasItem(obj CanvasItem) [1]Object { return [1]Object{obj._CanvasItem} }
+func NewCanvasItem(obj Object) CanvasItem    { return CanvasItem{object: object(obj)} }
+func GetCanvasItem(obj CanvasItem) [1]Object { return obj.AsObject() }
 
 type CanvasItemMaterial struct {
-	Locked
-	_CanvasItemMaterial Object
+	object
+	_CanvasItemMaterial struct{}
 }
 
-func NewCanvasItemMaterial(obj Object) CanvasItemMaterial { return CanvasItemMaterial{Locked{}, obj} }
-func GetCanvasItemMaterial(obj CanvasItemMaterial) [1]Object {
-	return [1]Object{obj._CanvasItemMaterial}
+func NewCanvasItemMaterial(obj Object) CanvasItemMaterial {
+	return CanvasItemMaterial{object: object(obj)}
 }
+func GetCanvasItemMaterial(obj CanvasItemMaterial) [1]Object { return obj.AsObject() }
 
 type CanvasLayer struct {
-	Locked
-	_CanvasLayer Object
+	object
+	_CanvasLayer struct{}
 }
 
-func NewCanvasLayer(obj Object) CanvasLayer    { return CanvasLayer{Locked{}, obj} }
-func GetCanvasLayer(obj CanvasLayer) [1]Object { return [1]Object{obj._CanvasLayer} }
+func NewCanvasLayer(obj Object) CanvasLayer    { return CanvasLayer{object: object(obj)} }
+func GetCanvasLayer(obj CanvasLayer) [1]Object { return obj.AsObject() }
 
 type CanvasModulate struct {
-	Locked
-	_CanvasModulate Object
+	object
+	_CanvasModulate struct{}
 }
 
-func NewCanvasModulate(obj Object) CanvasModulate    { return CanvasModulate{Locked{}, obj} }
-func GetCanvasModulate(obj CanvasModulate) [1]Object { return [1]Object{obj._CanvasModulate} }
+func NewCanvasModulate(obj Object) CanvasModulate    { return CanvasModulate{object: object(obj)} }
+func GetCanvasModulate(obj CanvasModulate) [1]Object { return obj.AsObject() }
 
 type CanvasTexture struct {
-	Locked
-	_CanvasTexture Object
+	object
+	_CanvasTexture struct{}
 }
 
-func NewCanvasTexture(obj Object) CanvasTexture    { return CanvasTexture{Locked{}, obj} }
-func GetCanvasTexture(obj CanvasTexture) [1]Object { return [1]Object{obj._CanvasTexture} }
+func NewCanvasTexture(obj Object) CanvasTexture    { return CanvasTexture{object: object(obj)} }
+func GetCanvasTexture(obj CanvasTexture) [1]Object { return obj.AsObject() }
 
 type CapsuleMesh struct {
-	Locked
-	_CapsuleMesh Object
+	object
+	_CapsuleMesh struct{}
 }
 
-func NewCapsuleMesh(obj Object) CapsuleMesh    { return CapsuleMesh{Locked{}, obj} }
-func GetCapsuleMesh(obj CapsuleMesh) [1]Object { return [1]Object{obj._CapsuleMesh} }
+func NewCapsuleMesh(obj Object) CapsuleMesh    { return CapsuleMesh{object: object(obj)} }
+func GetCapsuleMesh(obj CapsuleMesh) [1]Object { return obj.AsObject() }
 
 type CapsuleShape2D struct {
-	Locked
-	_CapsuleShape2D Object
+	object
+	_CapsuleShape2D struct{}
 }
 
-func NewCapsuleShape2D(obj Object) CapsuleShape2D    { return CapsuleShape2D{Locked{}, obj} }
-func GetCapsuleShape2D(obj CapsuleShape2D) [1]Object { return [1]Object{obj._CapsuleShape2D} }
+func NewCapsuleShape2D(obj Object) CapsuleShape2D    { return CapsuleShape2D{object: object(obj)} }
+func GetCapsuleShape2D(obj CapsuleShape2D) [1]Object { return obj.AsObject() }
 
 type CapsuleShape3D struct {
-	Locked
-	_CapsuleShape3D Object
+	object
+	_CapsuleShape3D struct{}
 }
 
-func NewCapsuleShape3D(obj Object) CapsuleShape3D    { return CapsuleShape3D{Locked{}, obj} }
-func GetCapsuleShape3D(obj CapsuleShape3D) [1]Object { return [1]Object{obj._CapsuleShape3D} }
+func NewCapsuleShape3D(obj Object) CapsuleShape3D    { return CapsuleShape3D{object: object(obj)} }
+func GetCapsuleShape3D(obj CapsuleShape3D) [1]Object { return obj.AsObject() }
 
 type CenterContainer struct {
-	Locked
-	_CenterContainer Object
+	object
+	_CenterContainer struct{}
 }
 
-func NewCenterContainer(obj Object) CenterContainer    { return CenterContainer{Locked{}, obj} }
-func GetCenterContainer(obj CenterContainer) [1]Object { return [1]Object{obj._CenterContainer} }
+func NewCenterContainer(obj Object) CenterContainer    { return CenterContainer{object: object(obj)} }
+func GetCenterContainer(obj CenterContainer) [1]Object { return obj.AsObject() }
 
 type ChainIK3D struct {
-	Locked
-	_ChainIK3D Object
+	object
+	_ChainIK3D struct{}
 }
 
-func NewChainIK3D(obj Object) ChainIK3D    { return ChainIK3D{Locked{}, obj} }
-func GetChainIK3D(obj ChainIK3D) [1]Object { return [1]Object{obj._ChainIK3D} }
+func NewChainIK3D(obj Object) ChainIK3D    { return ChainIK3D{object: object(obj)} }
+func GetChainIK3D(obj ChainIK3D) [1]Object { return obj.AsObject() }
 
 type CharFXTransform struct {
-	Locked
-	_CharFXTransform Object
+	object
+	_CharFXTransform struct{}
 }
 
-func NewCharFXTransform(obj Object) CharFXTransform    { return CharFXTransform{Locked{}, obj} }
-func GetCharFXTransform(obj CharFXTransform) [1]Object { return [1]Object{obj._CharFXTransform} }
+func NewCharFXTransform(obj Object) CharFXTransform    { return CharFXTransform{object: object(obj)} }
+func GetCharFXTransform(obj CharFXTransform) [1]Object { return obj.AsObject() }
 
 type CharacterBody2D struct {
-	Locked
-	_CharacterBody2D Object
+	object
+	_CharacterBody2D struct{}
 }
 
-func NewCharacterBody2D(obj Object) CharacterBody2D    { return CharacterBody2D{Locked{}, obj} }
-func GetCharacterBody2D(obj CharacterBody2D) [1]Object { return [1]Object{obj._CharacterBody2D} }
+func NewCharacterBody2D(obj Object) CharacterBody2D    { return CharacterBody2D{object: object(obj)} }
+func GetCharacterBody2D(obj CharacterBody2D) [1]Object { return obj.AsObject() }
 
 type CharacterBody3D struct {
-	Locked
-	_CharacterBody3D Object
+	object
+	_CharacterBody3D struct{}
 }
 
-func NewCharacterBody3D(obj Object) CharacterBody3D    { return CharacterBody3D{Locked{}, obj} }
-func GetCharacterBody3D(obj CharacterBody3D) [1]Object { return [1]Object{obj._CharacterBody3D} }
+func NewCharacterBody3D(obj Object) CharacterBody3D    { return CharacterBody3D{object: object(obj)} }
+func GetCharacterBody3D(obj CharacterBody3D) [1]Object { return obj.AsObject() }
 
 type CheckBox struct {
-	Locked
-	_CheckBox Object
+	object
+	_CheckBox struct{}
 }
 
-func NewCheckBox(obj Object) CheckBox    { return CheckBox{Locked{}, obj} }
-func GetCheckBox(obj CheckBox) [1]Object { return [1]Object{obj._CheckBox} }
+func NewCheckBox(obj Object) CheckBox    { return CheckBox{object: object(obj)} }
+func GetCheckBox(obj CheckBox) [1]Object { return obj.AsObject() }
 
 type CheckButton struct {
-	Locked
-	_CheckButton Object
+	object
+	_CheckButton struct{}
 }
 
-func NewCheckButton(obj Object) CheckButton    { return CheckButton{Locked{}, obj} }
-func GetCheckButton(obj CheckButton) [1]Object { return [1]Object{obj._CheckButton} }
+func NewCheckButton(obj Object) CheckButton    { return CheckButton{object: object(obj)} }
+func GetCheckButton(obj CheckButton) [1]Object { return obj.AsObject() }
 
 type CircleShape2D struct {
-	Locked
-	_CircleShape2D Object
+	object
+	_CircleShape2D struct{}
 }
 
-func NewCircleShape2D(obj Object) CircleShape2D    { return CircleShape2D{Locked{}, obj} }
-func GetCircleShape2D(obj CircleShape2D) [1]Object { return [1]Object{obj._CircleShape2D} }
+func NewCircleShape2D(obj Object) CircleShape2D    { return CircleShape2D{object: object(obj)} }
+func GetCircleShape2D(obj CircleShape2D) [1]Object { return obj.AsObject() }
 
 type ClassDB struct {
-	Locked
-	_ClassDB Object
+	object
+	_ClassDB struct{}
 }
 
-func NewClassDB(obj Object) ClassDB    { return ClassDB{Locked{}, obj} }
-func GetClassDB(obj ClassDB) [1]Object { return [1]Object{obj._ClassDB} }
+func NewClassDB(obj Object) ClassDB    { return ClassDB{object: object(obj)} }
+func GetClassDB(obj ClassDB) [1]Object { return obj.AsObject() }
 
 type CodeEdit struct {
-	Locked
-	_CodeEdit Object
+	object
+	_CodeEdit struct{}
 }
 
-func NewCodeEdit(obj Object) CodeEdit    { return CodeEdit{Locked{}, obj} }
-func GetCodeEdit(obj CodeEdit) [1]Object { return [1]Object{obj._CodeEdit} }
+func NewCodeEdit(obj Object) CodeEdit    { return CodeEdit{object: object(obj)} }
+func GetCodeEdit(obj CodeEdit) [1]Object { return obj.AsObject() }
 
 type CodeHighlighter struct {
-	Locked
-	_CodeHighlighter Object
+	object
+	_CodeHighlighter struct{}
 }
 
-func NewCodeHighlighter(obj Object) CodeHighlighter    { return CodeHighlighter{Locked{}, obj} }
-func GetCodeHighlighter(obj CodeHighlighter) [1]Object { return [1]Object{obj._CodeHighlighter} }
+func NewCodeHighlighter(obj Object) CodeHighlighter    { return CodeHighlighter{object: object(obj)} }
+func GetCodeHighlighter(obj CodeHighlighter) [1]Object { return obj.AsObject() }
 
 type CollisionObject2D struct {
-	Locked
-	_CollisionObject2D Object
+	object
+	_CollisionObject2D struct{}
 }
 
-func NewCollisionObject2D(obj Object) CollisionObject2D    { return CollisionObject2D{Locked{}, obj} }
-func GetCollisionObject2D(obj CollisionObject2D) [1]Object { return [1]Object{obj._CollisionObject2D} }
+func NewCollisionObject2D(obj Object) CollisionObject2D {
+	return CollisionObject2D{object: object(obj)}
+}
+func GetCollisionObject2D(obj CollisionObject2D) [1]Object { return obj.AsObject() }
 
 type CollisionObject3D struct {
-	Locked
-	_CollisionObject3D Object
+	object
+	_CollisionObject3D struct{}
 }
 
-func NewCollisionObject3D(obj Object) CollisionObject3D    { return CollisionObject3D{Locked{}, obj} }
-func GetCollisionObject3D(obj CollisionObject3D) [1]Object { return [1]Object{obj._CollisionObject3D} }
+func NewCollisionObject3D(obj Object) CollisionObject3D {
+	return CollisionObject3D{object: object(obj)}
+}
+func GetCollisionObject3D(obj CollisionObject3D) [1]Object { return obj.AsObject() }
 
 type CollisionPolygon2D struct {
-	Locked
-	_CollisionPolygon2D Object
+	object
+	_CollisionPolygon2D struct{}
 }
 
-func NewCollisionPolygon2D(obj Object) CollisionPolygon2D { return CollisionPolygon2D{Locked{}, obj} }
-func GetCollisionPolygon2D(obj CollisionPolygon2D) [1]Object {
-	return [1]Object{obj._CollisionPolygon2D}
+func NewCollisionPolygon2D(obj Object) CollisionPolygon2D {
+	return CollisionPolygon2D{object: object(obj)}
 }
+func GetCollisionPolygon2D(obj CollisionPolygon2D) [1]Object { return obj.AsObject() }
 
 type CollisionPolygon3D struct {
-	Locked
-	_CollisionPolygon3D Object
+	object
+	_CollisionPolygon3D struct{}
 }
 
-func NewCollisionPolygon3D(obj Object) CollisionPolygon3D { return CollisionPolygon3D{Locked{}, obj} }
-func GetCollisionPolygon3D(obj CollisionPolygon3D) [1]Object {
-	return [1]Object{obj._CollisionPolygon3D}
+func NewCollisionPolygon3D(obj Object) CollisionPolygon3D {
+	return CollisionPolygon3D{object: object(obj)}
 }
+func GetCollisionPolygon3D(obj CollisionPolygon3D) [1]Object { return obj.AsObject() }
 
 type CollisionShape2D struct {
-	Locked
-	_CollisionShape2D Object
+	object
+	_CollisionShape2D struct{}
 }
 
-func NewCollisionShape2D(obj Object) CollisionShape2D    { return CollisionShape2D{Locked{}, obj} }
-func GetCollisionShape2D(obj CollisionShape2D) [1]Object { return [1]Object{obj._CollisionShape2D} }
+func NewCollisionShape2D(obj Object) CollisionShape2D    { return CollisionShape2D{object: object(obj)} }
+func GetCollisionShape2D(obj CollisionShape2D) [1]Object { return obj.AsObject() }
 
 type CollisionShape3D struct {
-	Locked
-	_CollisionShape3D Object
+	object
+	_CollisionShape3D struct{}
 }
 
-func NewCollisionShape3D(obj Object) CollisionShape3D    { return CollisionShape3D{Locked{}, obj} }
-func GetCollisionShape3D(obj CollisionShape3D) [1]Object { return [1]Object{obj._CollisionShape3D} }
+func NewCollisionShape3D(obj Object) CollisionShape3D    { return CollisionShape3D{object: object(obj)} }
+func GetCollisionShape3D(obj CollisionShape3D) [1]Object { return obj.AsObject() }
 
 type ColorPalette struct {
-	Locked
-	_ColorPalette Object
+	object
+	_ColorPalette struct{}
 }
 
-func NewColorPalette(obj Object) ColorPalette    { return ColorPalette{Locked{}, obj} }
-func GetColorPalette(obj ColorPalette) [1]Object { return [1]Object{obj._ColorPalette} }
+func NewColorPalette(obj Object) ColorPalette    { return ColorPalette{object: object(obj)} }
+func GetColorPalette(obj ColorPalette) [1]Object { return obj.AsObject() }
 
 type ColorPicker struct {
-	Locked
-	_ColorPicker Object
+	object
+	_ColorPicker struct{}
 }
 
-func NewColorPicker(obj Object) ColorPicker    { return ColorPicker{Locked{}, obj} }
-func GetColorPicker(obj ColorPicker) [1]Object { return [1]Object{obj._ColorPicker} }
+func NewColorPicker(obj Object) ColorPicker    { return ColorPicker{object: object(obj)} }
+func GetColorPicker(obj ColorPicker) [1]Object { return obj.AsObject() }
 
 type ColorPickerButton struct {
-	Locked
-	_ColorPickerButton Object
+	object
+	_ColorPickerButton struct{}
 }
 
-func NewColorPickerButton(obj Object) ColorPickerButton    { return ColorPickerButton{Locked{}, obj} }
-func GetColorPickerButton(obj ColorPickerButton) [1]Object { return [1]Object{obj._ColorPickerButton} }
+func NewColorPickerButton(obj Object) ColorPickerButton {
+	return ColorPickerButton{object: object(obj)}
+}
+func GetColorPickerButton(obj ColorPickerButton) [1]Object { return obj.AsObject() }
 
 type ColorRect struct {
-	Locked
-	_ColorRect Object
+	object
+	_ColorRect struct{}
 }
 
-func NewColorRect(obj Object) ColorRect    { return ColorRect{Locked{}, obj} }
-func GetColorRect(obj ColorRect) [1]Object { return [1]Object{obj._ColorRect} }
+func NewColorRect(obj Object) ColorRect    { return ColorRect{object: object(obj)} }
+func GetColorRect(obj ColorRect) [1]Object { return obj.AsObject() }
 
 type Compositor struct {
-	Locked
-	_Compositor Object
+	object
+	_Compositor struct{}
 }
 
-func NewCompositor(obj Object) Compositor    { return Compositor{Locked{}, obj} }
-func GetCompositor(obj Compositor) [1]Object { return [1]Object{obj._Compositor} }
+func NewCompositor(obj Object) Compositor    { return Compositor{object: object(obj)} }
+func GetCompositor(obj Compositor) [1]Object { return obj.AsObject() }
 
 type CompositorEffect struct {
-	Locked
-	_CompositorEffect Object
+	object
+	_CompositorEffect struct{}
 }
 
-func NewCompositorEffect(obj Object) CompositorEffect    { return CompositorEffect{Locked{}, obj} }
-func GetCompositorEffect(obj CompositorEffect) [1]Object { return [1]Object{obj._CompositorEffect} }
+func NewCompositorEffect(obj Object) CompositorEffect    { return CompositorEffect{object: object(obj)} }
+func GetCompositorEffect(obj CompositorEffect) [1]Object { return obj.AsObject() }
 
 type CompressedCubemap struct {
-	Locked
-	_CompressedCubemap Object
+	object
+	_CompressedCubemap struct{}
 }
 
-func NewCompressedCubemap(obj Object) CompressedCubemap    { return CompressedCubemap{Locked{}, obj} }
-func GetCompressedCubemap(obj CompressedCubemap) [1]Object { return [1]Object{obj._CompressedCubemap} }
+func NewCompressedCubemap(obj Object) CompressedCubemap {
+	return CompressedCubemap{object: object(obj)}
+}
+func GetCompressedCubemap(obj CompressedCubemap) [1]Object { return obj.AsObject() }
 
 type CompressedCubemapArray struct {
-	Locked
-	_CompressedCubemapArray Object
+	object
+	_CompressedCubemapArray struct{}
 }
 
 func NewCompressedCubemapArray(obj Object) CompressedCubemapArray {
-	return CompressedCubemapArray{Locked{}, obj}
+	return CompressedCubemapArray{object: object(obj)}
 }
-func GetCompressedCubemapArray(obj CompressedCubemapArray) [1]Object {
-	return [1]Object{obj._CompressedCubemapArray}
-}
+func GetCompressedCubemapArray(obj CompressedCubemapArray) [1]Object { return obj.AsObject() }
 
 type CompressedTexture2D struct {
-	Locked
-	_CompressedTexture2D Object
+	object
+	_CompressedTexture2D struct{}
 }
 
 func NewCompressedTexture2D(obj Object) CompressedTexture2D {
-	return CompressedTexture2D{Locked{}, obj}
+	return CompressedTexture2D{object: object(obj)}
 }
-func GetCompressedTexture2D(obj CompressedTexture2D) [1]Object {
-	return [1]Object{obj._CompressedTexture2D}
-}
+func GetCompressedTexture2D(obj CompressedTexture2D) [1]Object { return obj.AsObject() }
 
 type CompressedTexture2DArray struct {
-	Locked
-	_CompressedTexture2DArray Object
+	object
+	_CompressedTexture2DArray struct{}
 }
 
 func NewCompressedTexture2DArray(obj Object) CompressedTexture2DArray {
-	return CompressedTexture2DArray{Locked{}, obj}
+	return CompressedTexture2DArray{object: object(obj)}
 }
-func GetCompressedTexture2DArray(obj CompressedTexture2DArray) [1]Object {
-	return [1]Object{obj._CompressedTexture2DArray}
-}
+func GetCompressedTexture2DArray(obj CompressedTexture2DArray) [1]Object { return obj.AsObject() }
 
 type CompressedTexture3D struct {
-	Locked
-	_CompressedTexture3D Object
+	object
+	_CompressedTexture3D struct{}
 }
 
 func NewCompressedTexture3D(obj Object) CompressedTexture3D {
-	return CompressedTexture3D{Locked{}, obj}
+	return CompressedTexture3D{object: object(obj)}
 }
-func GetCompressedTexture3D(obj CompressedTexture3D) [1]Object {
-	return [1]Object{obj._CompressedTexture3D}
-}
+func GetCompressedTexture3D(obj CompressedTexture3D) [1]Object { return obj.AsObject() }
 
 type CompressedTextureLayered struct {
-	Locked
-	_CompressedTextureLayered Object
+	object
+	_CompressedTextureLayered struct{}
 }
 
 func NewCompressedTextureLayered(obj Object) CompressedTextureLayered {
-	return CompressedTextureLayered{Locked{}, obj}
+	return CompressedTextureLayered{object: object(obj)}
 }
-func GetCompressedTextureLayered(obj CompressedTextureLayered) [1]Object {
-	return [1]Object{obj._CompressedTextureLayered}
-}
+func GetCompressedTextureLayered(obj CompressedTextureLayered) [1]Object { return obj.AsObject() }
 
 type ConcavePolygonShape2D struct {
-	Locked
-	_ConcavePolygonShape2D Object
+	object
+	_ConcavePolygonShape2D struct{}
 }
 
 func NewConcavePolygonShape2D(obj Object) ConcavePolygonShape2D {
-	return ConcavePolygonShape2D{Locked{}, obj}
+	return ConcavePolygonShape2D{object: object(obj)}
 }
-func GetConcavePolygonShape2D(obj ConcavePolygonShape2D) [1]Object {
-	return [1]Object{obj._ConcavePolygonShape2D}
-}
+func GetConcavePolygonShape2D(obj ConcavePolygonShape2D) [1]Object { return obj.AsObject() }
 
 type ConcavePolygonShape3D struct {
-	Locked
-	_ConcavePolygonShape3D Object
+	object
+	_ConcavePolygonShape3D struct{}
 }
 
 func NewConcavePolygonShape3D(obj Object) ConcavePolygonShape3D {
-	return ConcavePolygonShape3D{Locked{}, obj}
+	return ConcavePolygonShape3D{object: object(obj)}
 }
-func GetConcavePolygonShape3D(obj ConcavePolygonShape3D) [1]Object {
-	return [1]Object{obj._ConcavePolygonShape3D}
-}
+func GetConcavePolygonShape3D(obj ConcavePolygonShape3D) [1]Object { return obj.AsObject() }
 
 type ConeTwistJoint3D struct {
-	Locked
-	_ConeTwistJoint3D Object
+	object
+	_ConeTwistJoint3D struct{}
 }
 
-func NewConeTwistJoint3D(obj Object) ConeTwistJoint3D    { return ConeTwistJoint3D{Locked{}, obj} }
-func GetConeTwistJoint3D(obj ConeTwistJoint3D) [1]Object { return [1]Object{obj._ConeTwistJoint3D} }
+func NewConeTwistJoint3D(obj Object) ConeTwistJoint3D    { return ConeTwistJoint3D{object: object(obj)} }
+func GetConeTwistJoint3D(obj ConeTwistJoint3D) [1]Object { return obj.AsObject() }
 
 type ConfigFile struct {
-	Locked
-	_ConfigFile Object
+	object
+	_ConfigFile struct{}
 }
 
-func NewConfigFile(obj Object) ConfigFile    { return ConfigFile{Locked{}, obj} }
-func GetConfigFile(obj ConfigFile) [1]Object { return [1]Object{obj._ConfigFile} }
+func NewConfigFile(obj Object) ConfigFile    { return ConfigFile{object: object(obj)} }
+func GetConfigFile(obj ConfigFile) [1]Object { return obj.AsObject() }
 
 type ConfirmationDialog struct {
-	Locked
-	_ConfirmationDialog Object
+	object
+	_ConfirmationDialog struct{}
 }
 
-func NewConfirmationDialog(obj Object) ConfirmationDialog { return ConfirmationDialog{Locked{}, obj} }
-func GetConfirmationDialog(obj ConfirmationDialog) [1]Object {
-	return [1]Object{obj._ConfirmationDialog}
+func NewConfirmationDialog(obj Object) ConfirmationDialog {
+	return ConfirmationDialog{object: object(obj)}
 }
+func GetConfirmationDialog(obj ConfirmationDialog) [1]Object { return obj.AsObject() }
 
 type Container struct {
-	Locked
-	_Container Object
+	object
+	_Container struct{}
 }
 
-func NewContainer(obj Object) Container    { return Container{Locked{}, obj} }
-func GetContainer(obj Container) [1]Object { return [1]Object{obj._Container} }
+func NewContainer(obj Object) Container    { return Container{object: object(obj)} }
+func GetContainer(obj Container) [1]Object { return obj.AsObject() }
 
 type Control struct {
-	Locked
-	_Control Object
+	object
+	_Control struct{}
 }
 
-func NewControl(obj Object) Control    { return Control{Locked{}, obj} }
-func GetControl(obj Control) [1]Object { return [1]Object{obj._Control} }
+func NewControl(obj Object) Control    { return Control{object: object(obj)} }
+func GetControl(obj Control) [1]Object { return obj.AsObject() }
 
 type ConvertTransformModifier3D struct {
-	Locked
-	_ConvertTransformModifier3D Object
+	object
+	_ConvertTransformModifier3D struct{}
 }
 
 func NewConvertTransformModifier3D(obj Object) ConvertTransformModifier3D {
-	return ConvertTransformModifier3D{Locked{}, obj}
+	return ConvertTransformModifier3D{object: object(obj)}
 }
-func GetConvertTransformModifier3D(obj ConvertTransformModifier3D) [1]Object {
-	return [1]Object{obj._ConvertTransformModifier3D}
-}
+func GetConvertTransformModifier3D(obj ConvertTransformModifier3D) [1]Object { return obj.AsObject() }
 
 type ConvexPolygonShape2D struct {
-	Locked
-	_ConvexPolygonShape2D Object
+	object
+	_ConvexPolygonShape2D struct{}
 }
 
 func NewConvexPolygonShape2D(obj Object) ConvexPolygonShape2D {
-	return ConvexPolygonShape2D{Locked{}, obj}
+	return ConvexPolygonShape2D{object: object(obj)}
 }
-func GetConvexPolygonShape2D(obj ConvexPolygonShape2D) [1]Object {
-	return [1]Object{obj._ConvexPolygonShape2D}
-}
+func GetConvexPolygonShape2D(obj ConvexPolygonShape2D) [1]Object { return obj.AsObject() }
 
 type ConvexPolygonShape3D struct {
-	Locked
-	_ConvexPolygonShape3D Object
+	object
+	_ConvexPolygonShape3D struct{}
 }
 
 func NewConvexPolygonShape3D(obj Object) ConvexPolygonShape3D {
-	return ConvexPolygonShape3D{Locked{}, obj}
+	return ConvexPolygonShape3D{object: object(obj)}
 }
-func GetConvexPolygonShape3D(obj ConvexPolygonShape3D) [1]Object {
-	return [1]Object{obj._ConvexPolygonShape3D}
-}
+func GetConvexPolygonShape3D(obj ConvexPolygonShape3D) [1]Object { return obj.AsObject() }
 
 type CopyTransformModifier3D struct {
-	Locked
-	_CopyTransformModifier3D Object
+	object
+	_CopyTransformModifier3D struct{}
 }
 
 func NewCopyTransformModifier3D(obj Object) CopyTransformModifier3D {
-	return CopyTransformModifier3D{Locked{}, obj}
+	return CopyTransformModifier3D{object: object(obj)}
 }
-func GetCopyTransformModifier3D(obj CopyTransformModifier3D) [1]Object {
-	return [1]Object{obj._CopyTransformModifier3D}
-}
+func GetCopyTransformModifier3D(obj CopyTransformModifier3D) [1]Object { return obj.AsObject() }
 
 type Crypto struct {
-	Locked
-	_Crypto Object
+	object
+	_Crypto struct{}
 }
 
-func NewCrypto(obj Object) Crypto    { return Crypto{Locked{}, obj} }
-func GetCrypto(obj Crypto) [1]Object { return [1]Object{obj._Crypto} }
+func NewCrypto(obj Object) Crypto    { return Crypto{object: object(obj)} }
+func GetCrypto(obj Crypto) [1]Object { return obj.AsObject() }
 
 type CryptoKey struct {
-	Locked
-	_CryptoKey Object
+	object
+	_CryptoKey struct{}
 }
 
-func NewCryptoKey(obj Object) CryptoKey    { return CryptoKey{Locked{}, obj} }
-func GetCryptoKey(obj CryptoKey) [1]Object { return [1]Object{obj._CryptoKey} }
+func NewCryptoKey(obj Object) CryptoKey    { return CryptoKey{object: object(obj)} }
+func GetCryptoKey(obj CryptoKey) [1]Object { return obj.AsObject() }
 
 type Cubemap struct {
-	Locked
-	_Cubemap Object
+	object
+	_Cubemap struct{}
 }
 
-func NewCubemap(obj Object) Cubemap    { return Cubemap{Locked{}, obj} }
-func GetCubemap(obj Cubemap) [1]Object { return [1]Object{obj._Cubemap} }
+func NewCubemap(obj Object) Cubemap    { return Cubemap{object: object(obj)} }
+func GetCubemap(obj Cubemap) [1]Object { return obj.AsObject() }
 
 type CubemapArray struct {
-	Locked
-	_CubemapArray Object
+	object
+	_CubemapArray struct{}
 }
 
-func NewCubemapArray(obj Object) CubemapArray    { return CubemapArray{Locked{}, obj} }
-func GetCubemapArray(obj CubemapArray) [1]Object { return [1]Object{obj._CubemapArray} }
+func NewCubemapArray(obj Object) CubemapArray    { return CubemapArray{object: object(obj)} }
+func GetCubemapArray(obj CubemapArray) [1]Object { return obj.AsObject() }
 
 type Curve struct {
-	Locked
-	_Curve Object
+	object
+	_Curve struct{}
 }
 
-func NewCurve(obj Object) Curve    { return Curve{Locked{}, obj} }
-func GetCurve(obj Curve) [1]Object { return [1]Object{obj._Curve} }
+func NewCurve(obj Object) Curve    { return Curve{object: object(obj)} }
+func GetCurve(obj Curve) [1]Object { return obj.AsObject() }
 
 type Curve2D struct {
-	Locked
-	_Curve2D Object
+	object
+	_Curve2D struct{}
 }
 
-func NewCurve2D(obj Object) Curve2D    { return Curve2D{Locked{}, obj} }
-func GetCurve2D(obj Curve2D) [1]Object { return [1]Object{obj._Curve2D} }
+func NewCurve2D(obj Object) Curve2D    { return Curve2D{object: object(obj)} }
+func GetCurve2D(obj Curve2D) [1]Object { return obj.AsObject() }
 
 type Curve3D struct {
-	Locked
-	_Curve3D Object
+	object
+	_Curve3D struct{}
 }
 
-func NewCurve3D(obj Object) Curve3D    { return Curve3D{Locked{}, obj} }
-func GetCurve3D(obj Curve3D) [1]Object { return [1]Object{obj._Curve3D} }
+func NewCurve3D(obj Object) Curve3D    { return Curve3D{object: object(obj)} }
+func GetCurve3D(obj Curve3D) [1]Object { return obj.AsObject() }
 
 type CurveTexture struct {
-	Locked
-	_CurveTexture Object
+	object
+	_CurveTexture struct{}
 }
 
-func NewCurveTexture(obj Object) CurveTexture    { return CurveTexture{Locked{}, obj} }
-func GetCurveTexture(obj CurveTexture) [1]Object { return [1]Object{obj._CurveTexture} }
+func NewCurveTexture(obj Object) CurveTexture    { return CurveTexture{object: object(obj)} }
+func GetCurveTexture(obj CurveTexture) [1]Object { return obj.AsObject() }
 
 type CurveXYZTexture struct {
-	Locked
-	_CurveXYZTexture Object
+	object
+	_CurveXYZTexture struct{}
 }
 
-func NewCurveXYZTexture(obj Object) CurveXYZTexture    { return CurveXYZTexture{Locked{}, obj} }
-func GetCurveXYZTexture(obj CurveXYZTexture) [1]Object { return [1]Object{obj._CurveXYZTexture} }
+func NewCurveXYZTexture(obj Object) CurveXYZTexture    { return CurveXYZTexture{object: object(obj)} }
+func GetCurveXYZTexture(obj CurveXYZTexture) [1]Object { return obj.AsObject() }
 
 type CylinderMesh struct {
-	Locked
-	_CylinderMesh Object
+	object
+	_CylinderMesh struct{}
 }
 
-func NewCylinderMesh(obj Object) CylinderMesh    { return CylinderMesh{Locked{}, obj} }
-func GetCylinderMesh(obj CylinderMesh) [1]Object { return [1]Object{obj._CylinderMesh} }
+func NewCylinderMesh(obj Object) CylinderMesh    { return CylinderMesh{object: object(obj)} }
+func GetCylinderMesh(obj CylinderMesh) [1]Object { return obj.AsObject() }
 
 type CylinderShape3D struct {
-	Locked
-	_CylinderShape3D Object
+	object
+	_CylinderShape3D struct{}
 }
 
-func NewCylinderShape3D(obj Object) CylinderShape3D    { return CylinderShape3D{Locked{}, obj} }
-func GetCylinderShape3D(obj CylinderShape3D) [1]Object { return [1]Object{obj._CylinderShape3D} }
+func NewCylinderShape3D(obj Object) CylinderShape3D    { return CylinderShape3D{object: object(obj)} }
+func GetCylinderShape3D(obj CylinderShape3D) [1]Object { return obj.AsObject() }
 
 type DPITexture struct {
-	Locked
-	_DPITexture Object
+	object
+	_DPITexture struct{}
 }
 
-func NewDPITexture(obj Object) DPITexture    { return DPITexture{Locked{}, obj} }
-func GetDPITexture(obj DPITexture) [1]Object { return [1]Object{obj._DPITexture} }
+func NewDPITexture(obj Object) DPITexture    { return DPITexture{object: object(obj)} }
+func GetDPITexture(obj DPITexture) [1]Object { return obj.AsObject() }
 
 type DTLSServer struct {
-	Locked
-	_DTLSServer Object
+	object
+	_DTLSServer struct{}
 }
 
-func NewDTLSServer(obj Object) DTLSServer    { return DTLSServer{Locked{}, obj} }
-func GetDTLSServer(obj DTLSServer) [1]Object { return [1]Object{obj._DTLSServer} }
+func NewDTLSServer(obj Object) DTLSServer    { return DTLSServer{object: object(obj)} }
+func GetDTLSServer(obj DTLSServer) [1]Object { return obj.AsObject() }
 
 type DampedSpringJoint2D struct {
-	Locked
-	_DampedSpringJoint2D Object
+	object
+	_DampedSpringJoint2D struct{}
 }
 
 func NewDampedSpringJoint2D(obj Object) DampedSpringJoint2D {
-	return DampedSpringJoint2D{Locked{}, obj}
+	return DampedSpringJoint2D{object: object(obj)}
 }
-func GetDampedSpringJoint2D(obj DampedSpringJoint2D) [1]Object {
-	return [1]Object{obj._DampedSpringJoint2D}
-}
+func GetDampedSpringJoint2D(obj DampedSpringJoint2D) [1]Object { return obj.AsObject() }
 
 type Decal struct {
-	Locked
-	_Decal Object
+	object
+	_Decal struct{}
 }
 
-func NewDecal(obj Object) Decal    { return Decal{Locked{}, obj} }
-func GetDecal(obj Decal) [1]Object { return [1]Object{obj._Decal} }
+func NewDecal(obj Object) Decal    { return Decal{object: object(obj)} }
+func GetDecal(obj Decal) [1]Object { return obj.AsObject() }
 
 type DirAccess struct {
-	Locked
-	_DirAccess Object
+	object
+	_DirAccess struct{}
 }
 
-func NewDirAccess(obj Object) DirAccess    { return DirAccess{Locked{}, obj} }
-func GetDirAccess(obj DirAccess) [1]Object { return [1]Object{obj._DirAccess} }
+func NewDirAccess(obj Object) DirAccess    { return DirAccess{object: object(obj)} }
+func GetDirAccess(obj DirAccess) [1]Object { return obj.AsObject() }
 
 type DirectionalLight2D struct {
-	Locked
-	_DirectionalLight2D Object
+	object
+	_DirectionalLight2D struct{}
 }
 
-func NewDirectionalLight2D(obj Object) DirectionalLight2D { return DirectionalLight2D{Locked{}, obj} }
-func GetDirectionalLight2D(obj DirectionalLight2D) [1]Object {
-	return [1]Object{obj._DirectionalLight2D}
+func NewDirectionalLight2D(obj Object) DirectionalLight2D {
+	return DirectionalLight2D{object: object(obj)}
 }
+func GetDirectionalLight2D(obj DirectionalLight2D) [1]Object { return obj.AsObject() }
 
 type DirectionalLight3D struct {
-	Locked
-	_DirectionalLight3D Object
+	object
+	_DirectionalLight3D struct{}
 }
 
-func NewDirectionalLight3D(obj Object) DirectionalLight3D { return DirectionalLight3D{Locked{}, obj} }
-func GetDirectionalLight3D(obj DirectionalLight3D) [1]Object {
-	return [1]Object{obj._DirectionalLight3D}
+func NewDirectionalLight3D(obj Object) DirectionalLight3D {
+	return DirectionalLight3D{object: object(obj)}
 }
+func GetDirectionalLight3D(obj DirectionalLight3D) [1]Object { return obj.AsObject() }
 
 type DisplayServer struct {
-	Locked
-	_DisplayServer Object
+	object
+	_DisplayServer struct{}
 }
 
-func NewDisplayServer(obj Object) DisplayServer    { return DisplayServer{Locked{}, obj} }
-func GetDisplayServer(obj DisplayServer) [1]Object { return [1]Object{obj._DisplayServer} }
+func NewDisplayServer(obj Object) DisplayServer    { return DisplayServer{object: object(obj)} }
+func GetDisplayServer(obj DisplayServer) [1]Object { return obj.AsObject() }
 
 type ENetConnection struct {
-	Locked
-	_ENetConnection Object
+	object
+	_ENetConnection struct{}
 }
 
-func NewENetConnection(obj Object) ENetConnection    { return ENetConnection{Locked{}, obj} }
-func GetENetConnection(obj ENetConnection) [1]Object { return [1]Object{obj._ENetConnection} }
+func NewENetConnection(obj Object) ENetConnection    { return ENetConnection{object: object(obj)} }
+func GetENetConnection(obj ENetConnection) [1]Object { return obj.AsObject() }
 
 type ENetMultiplayerPeer struct {
-	Locked
-	_ENetMultiplayerPeer Object
+	object
+	_ENetMultiplayerPeer struct{}
 }
 
 func NewENetMultiplayerPeer(obj Object) ENetMultiplayerPeer {
-	return ENetMultiplayerPeer{Locked{}, obj}
+	return ENetMultiplayerPeer{object: object(obj)}
 }
-func GetENetMultiplayerPeer(obj ENetMultiplayerPeer) [1]Object {
-	return [1]Object{obj._ENetMultiplayerPeer}
-}
+func GetENetMultiplayerPeer(obj ENetMultiplayerPeer) [1]Object { return obj.AsObject() }
 
 type ENetPacketPeer struct {
-	Locked
-	_ENetPacketPeer Object
+	object
+	_ENetPacketPeer struct{}
 }
 
-func NewENetPacketPeer(obj Object) ENetPacketPeer    { return ENetPacketPeer{Locked{}, obj} }
-func GetENetPacketPeer(obj ENetPacketPeer) [1]Object { return [1]Object{obj._ENetPacketPeer} }
+func NewENetPacketPeer(obj Object) ENetPacketPeer    { return ENetPacketPeer{object: object(obj)} }
+func GetENetPacketPeer(obj ENetPacketPeer) [1]Object { return obj.AsObject() }
 
 type EditorCommandPalette struct {
-	Locked
-	_EditorCommandPalette Object
+	object
+	_EditorCommandPalette struct{}
 }
 
 func NewEditorCommandPalette(obj Object) EditorCommandPalette {
-	return EditorCommandPalette{Locked{}, obj}
+	return EditorCommandPalette{object: object(obj)}
 }
-func GetEditorCommandPalette(obj EditorCommandPalette) [1]Object {
-	return [1]Object{obj._EditorCommandPalette}
-}
+func GetEditorCommandPalette(obj EditorCommandPalette) [1]Object { return obj.AsObject() }
 
 type EditorContextMenuPlugin struct {
-	Locked
-	_EditorContextMenuPlugin Object
+	object
+	_EditorContextMenuPlugin struct{}
 }
 
 func NewEditorContextMenuPlugin(obj Object) EditorContextMenuPlugin {
-	return EditorContextMenuPlugin{Locked{}, obj}
+	return EditorContextMenuPlugin{object: object(obj)}
 }
-func GetEditorContextMenuPlugin(obj EditorContextMenuPlugin) [1]Object {
-	return [1]Object{obj._EditorContextMenuPlugin}
-}
+func GetEditorContextMenuPlugin(obj EditorContextMenuPlugin) [1]Object { return obj.AsObject() }
 
 type EditorDebuggerPlugin struct {
-	Locked
-	_EditorDebuggerPlugin Object
+	object
+	_EditorDebuggerPlugin struct{}
 }
 
 func NewEditorDebuggerPlugin(obj Object) EditorDebuggerPlugin {
-	return EditorDebuggerPlugin{Locked{}, obj}
+	return EditorDebuggerPlugin{object: object(obj)}
 }
-func GetEditorDebuggerPlugin(obj EditorDebuggerPlugin) [1]Object {
-	return [1]Object{obj._EditorDebuggerPlugin}
-}
+func GetEditorDebuggerPlugin(obj EditorDebuggerPlugin) [1]Object { return obj.AsObject() }
 
 type EditorDebuggerSession struct {
-	Locked
-	_EditorDebuggerSession Object
+	object
+	_EditorDebuggerSession struct{}
 }
 
 func NewEditorDebuggerSession(obj Object) EditorDebuggerSession {
-	return EditorDebuggerSession{Locked{}, obj}
+	return EditorDebuggerSession{object: object(obj)}
 }
-func GetEditorDebuggerSession(obj EditorDebuggerSession) [1]Object {
-	return [1]Object{obj._EditorDebuggerSession}
-}
+func GetEditorDebuggerSession(obj EditorDebuggerSession) [1]Object { return obj.AsObject() }
 
 type EditorDock struct {
-	Locked
-	_EditorDock Object
+	object
+	_EditorDock struct{}
 }
 
-func NewEditorDock(obj Object) EditorDock    { return EditorDock{Locked{}, obj} }
-func GetEditorDock(obj EditorDock) [1]Object { return [1]Object{obj._EditorDock} }
+func NewEditorDock(obj Object) EditorDock    { return EditorDock{object: object(obj)} }
+func GetEditorDock(obj EditorDock) [1]Object { return obj.AsObject() }
 
 type EditorExportPlatform struct {
-	Locked
-	_EditorExportPlatform Object
+	object
+	_EditorExportPlatform struct{}
 }
 
 func NewEditorExportPlatform(obj Object) EditorExportPlatform {
-	return EditorExportPlatform{Locked{}, obj}
+	return EditorExportPlatform{object: object(obj)}
 }
-func GetEditorExportPlatform(obj EditorExportPlatform) [1]Object {
-	return [1]Object{obj._EditorExportPlatform}
-}
+func GetEditorExportPlatform(obj EditorExportPlatform) [1]Object { return obj.AsObject() }
 
 type EditorExportPlatformAndroid struct {
-	Locked
-	_EditorExportPlatformAndroid Object
+	object
+	_EditorExportPlatformAndroid struct{}
 }
 
 func NewEditorExportPlatformAndroid(obj Object) EditorExportPlatformAndroid {
-	return EditorExportPlatformAndroid{Locked{}, obj}
+	return EditorExportPlatformAndroid{object: object(obj)}
 }
-func GetEditorExportPlatformAndroid(obj EditorExportPlatformAndroid) [1]Object {
-	return [1]Object{obj._EditorExportPlatformAndroid}
-}
+func GetEditorExportPlatformAndroid(obj EditorExportPlatformAndroid) [1]Object { return obj.AsObject() }
 
 type EditorExportPlatformAppleEmbedded struct {
-	Locked
-	_EditorExportPlatformAppleEmbedded Object
+	object
+	_EditorExportPlatformAppleEmbedded struct{}
 }
 
 func NewEditorExportPlatformAppleEmbedded(obj Object) EditorExportPlatformAppleEmbedded {
-	return EditorExportPlatformAppleEmbedded{Locked{}, obj}
+	return EditorExportPlatformAppleEmbedded{object: object(obj)}
 }
 func GetEditorExportPlatformAppleEmbedded(obj EditorExportPlatformAppleEmbedded) [1]Object {
-	return [1]Object{obj._EditorExportPlatformAppleEmbedded}
+	return obj.AsObject()
 }
 
 type EditorExportPlatformExtension struct {
-	Locked
-	_EditorExportPlatformExtension Object
+	object
+	_EditorExportPlatformExtension struct{}
 }
 
 func NewEditorExportPlatformExtension(obj Object) EditorExportPlatformExtension {
-	return EditorExportPlatformExtension{Locked{}, obj}
+	return EditorExportPlatformExtension{object: object(obj)}
 }
 func GetEditorExportPlatformExtension(obj EditorExportPlatformExtension) [1]Object {
-	return [1]Object{obj._EditorExportPlatformExtension}
+	return obj.AsObject()
 }
 
 type EditorExportPlatformIOS struct {
-	Locked
-	_EditorExportPlatformIOS Object
+	object
+	_EditorExportPlatformIOS struct{}
 }
 
 func NewEditorExportPlatformIOS(obj Object) EditorExportPlatformIOS {
-	return EditorExportPlatformIOS{Locked{}, obj}
+	return EditorExportPlatformIOS{object: object(obj)}
 }
-func GetEditorExportPlatformIOS(obj EditorExportPlatformIOS) [1]Object {
-	return [1]Object{obj._EditorExportPlatformIOS}
-}
+func GetEditorExportPlatformIOS(obj EditorExportPlatformIOS) [1]Object { return obj.AsObject() }
 
 type EditorExportPlatformLinuxBSD struct {
-	Locked
-	_EditorExportPlatformLinuxBSD Object
+	object
+	_EditorExportPlatformLinuxBSD struct{}
 }
 
 func NewEditorExportPlatformLinuxBSD(obj Object) EditorExportPlatformLinuxBSD {
-	return EditorExportPlatformLinuxBSD{Locked{}, obj}
+	return EditorExportPlatformLinuxBSD{object: object(obj)}
 }
 func GetEditorExportPlatformLinuxBSD(obj EditorExportPlatformLinuxBSD) [1]Object {
-	return [1]Object{obj._EditorExportPlatformLinuxBSD}
+	return obj.AsObject()
 }
 
 type EditorExportPlatformMacOS struct {
-	Locked
-	_EditorExportPlatformMacOS Object
+	object
+	_EditorExportPlatformMacOS struct{}
 }
 
 func NewEditorExportPlatformMacOS(obj Object) EditorExportPlatformMacOS {
-	return EditorExportPlatformMacOS{Locked{}, obj}
+	return EditorExportPlatformMacOS{object: object(obj)}
 }
-func GetEditorExportPlatformMacOS(obj EditorExportPlatformMacOS) [1]Object {
-	return [1]Object{obj._EditorExportPlatformMacOS}
-}
+func GetEditorExportPlatformMacOS(obj EditorExportPlatformMacOS) [1]Object { return obj.AsObject() }
 
 type EditorExportPlatformPC struct {
-	Locked
-	_EditorExportPlatformPC Object
+	object
+	_EditorExportPlatformPC struct{}
 }
 
 func NewEditorExportPlatformPC(obj Object) EditorExportPlatformPC {
-	return EditorExportPlatformPC{Locked{}, obj}
+	return EditorExportPlatformPC{object: object(obj)}
 }
-func GetEditorExportPlatformPC(obj EditorExportPlatformPC) [1]Object {
-	return [1]Object{obj._EditorExportPlatformPC}
-}
+func GetEditorExportPlatformPC(obj EditorExportPlatformPC) [1]Object { return obj.AsObject() }
 
 type EditorExportPlatformVisionOS struct {
-	Locked
-	_EditorExportPlatformVisionOS Object
+	object
+	_EditorExportPlatformVisionOS struct{}
 }
 
 func NewEditorExportPlatformVisionOS(obj Object) EditorExportPlatformVisionOS {
-	return EditorExportPlatformVisionOS{Locked{}, obj}
+	return EditorExportPlatformVisionOS{object: object(obj)}
 }
 func GetEditorExportPlatformVisionOS(obj EditorExportPlatformVisionOS) [1]Object {
-	return [1]Object{obj._EditorExportPlatformVisionOS}
+	return obj.AsObject()
 }
 
 type EditorExportPlatformWeb struct {
-	Locked
-	_EditorExportPlatformWeb Object
+	object
+	_EditorExportPlatformWeb struct{}
 }
 
 func NewEditorExportPlatformWeb(obj Object) EditorExportPlatformWeb {
-	return EditorExportPlatformWeb{Locked{}, obj}
+	return EditorExportPlatformWeb{object: object(obj)}
 }
-func GetEditorExportPlatformWeb(obj EditorExportPlatformWeb) [1]Object {
-	return [1]Object{obj._EditorExportPlatformWeb}
-}
+func GetEditorExportPlatformWeb(obj EditorExportPlatformWeb) [1]Object { return obj.AsObject() }
 
 type EditorExportPlatformWindows struct {
-	Locked
-	_EditorExportPlatformWindows Object
+	object
+	_EditorExportPlatformWindows struct{}
 }
 
 func NewEditorExportPlatformWindows(obj Object) EditorExportPlatformWindows {
-	return EditorExportPlatformWindows{Locked{}, obj}
+	return EditorExportPlatformWindows{object: object(obj)}
 }
-func GetEditorExportPlatformWindows(obj EditorExportPlatformWindows) [1]Object {
-	return [1]Object{obj._EditorExportPlatformWindows}
-}
+func GetEditorExportPlatformWindows(obj EditorExportPlatformWindows) [1]Object { return obj.AsObject() }
 
 type EditorExportPlugin struct {
-	Locked
-	_EditorExportPlugin Object
+	object
+	_EditorExportPlugin struct{}
 }
 
-func NewEditorExportPlugin(obj Object) EditorExportPlugin { return EditorExportPlugin{Locked{}, obj} }
-func GetEditorExportPlugin(obj EditorExportPlugin) [1]Object {
-	return [1]Object{obj._EditorExportPlugin}
+func NewEditorExportPlugin(obj Object) EditorExportPlugin {
+	return EditorExportPlugin{object: object(obj)}
 }
+func GetEditorExportPlugin(obj EditorExportPlugin) [1]Object { return obj.AsObject() }
 
 type EditorExportPreset struct {
-	Locked
-	_EditorExportPreset Object
+	object
+	_EditorExportPreset struct{}
 }
 
-func NewEditorExportPreset(obj Object) EditorExportPreset { return EditorExportPreset{Locked{}, obj} }
-func GetEditorExportPreset(obj EditorExportPreset) [1]Object {
-	return [1]Object{obj._EditorExportPreset}
+func NewEditorExportPreset(obj Object) EditorExportPreset {
+	return EditorExportPreset{object: object(obj)}
 }
+func GetEditorExportPreset(obj EditorExportPreset) [1]Object { return obj.AsObject() }
 
 type EditorFeatureProfile struct {
-	Locked
-	_EditorFeatureProfile Object
+	object
+	_EditorFeatureProfile struct{}
 }
 
 func NewEditorFeatureProfile(obj Object) EditorFeatureProfile {
-	return EditorFeatureProfile{Locked{}, obj}
+	return EditorFeatureProfile{object: object(obj)}
 }
-func GetEditorFeatureProfile(obj EditorFeatureProfile) [1]Object {
-	return [1]Object{obj._EditorFeatureProfile}
-}
+func GetEditorFeatureProfile(obj EditorFeatureProfile) [1]Object { return obj.AsObject() }
 
 type EditorFileDialog struct {
-	Locked
-	_EditorFileDialog Object
+	object
+	_EditorFileDialog struct{}
 }
 
-func NewEditorFileDialog(obj Object) EditorFileDialog    { return EditorFileDialog{Locked{}, obj} }
-func GetEditorFileDialog(obj EditorFileDialog) [1]Object { return [1]Object{obj._EditorFileDialog} }
+func NewEditorFileDialog(obj Object) EditorFileDialog    { return EditorFileDialog{object: object(obj)} }
+func GetEditorFileDialog(obj EditorFileDialog) [1]Object { return obj.AsObject() }
 
 type EditorFileSystem struct {
-	Locked
-	_EditorFileSystem Object
+	object
+	_EditorFileSystem struct{}
 }
 
-func NewEditorFileSystem(obj Object) EditorFileSystem    { return EditorFileSystem{Locked{}, obj} }
-func GetEditorFileSystem(obj EditorFileSystem) [1]Object { return [1]Object{obj._EditorFileSystem} }
+func NewEditorFileSystem(obj Object) EditorFileSystem    { return EditorFileSystem{object: object(obj)} }
+func GetEditorFileSystem(obj EditorFileSystem) [1]Object { return obj.AsObject() }
 
 type EditorFileSystemDirectory struct {
-	Locked
-	_EditorFileSystemDirectory Object
+	object
+	_EditorFileSystemDirectory struct{}
 }
 
 func NewEditorFileSystemDirectory(obj Object) EditorFileSystemDirectory {
-	return EditorFileSystemDirectory{Locked{}, obj}
+	return EditorFileSystemDirectory{object: object(obj)}
 }
-func GetEditorFileSystemDirectory(obj EditorFileSystemDirectory) [1]Object {
-	return [1]Object{obj._EditorFileSystemDirectory}
-}
+func GetEditorFileSystemDirectory(obj EditorFileSystemDirectory) [1]Object { return obj.AsObject() }
 
 type EditorFileSystemImportFormatSupportQuery struct {
-	Locked
-	_EditorFileSystemImportFormatSupportQuery Object
+	object
+	_EditorFileSystemImportFormatSupportQuery struct{}
 }
 
 func NewEditorFileSystemImportFormatSupportQuery(obj Object) EditorFileSystemImportFormatSupportQuery {
-	return EditorFileSystemImportFormatSupportQuery{Locked{}, obj}
+	return EditorFileSystemImportFormatSupportQuery{object: object(obj)}
 }
 func GetEditorFileSystemImportFormatSupportQuery(obj EditorFileSystemImportFormatSupportQuery) [1]Object {
-	return [1]Object{obj._EditorFileSystemImportFormatSupportQuery}
+	return obj.AsObject()
 }
 
 type EditorImportPlugin struct {
-	Locked
-	_EditorImportPlugin Object
+	object
+	_EditorImportPlugin struct{}
 }
 
-func NewEditorImportPlugin(obj Object) EditorImportPlugin { return EditorImportPlugin{Locked{}, obj} }
-func GetEditorImportPlugin(obj EditorImportPlugin) [1]Object {
-	return [1]Object{obj._EditorImportPlugin}
+func NewEditorImportPlugin(obj Object) EditorImportPlugin {
+	return EditorImportPlugin{object: object(obj)}
 }
+func GetEditorImportPlugin(obj EditorImportPlugin) [1]Object { return obj.AsObject() }
 
 type EditorInspector struct {
-	Locked
-	_EditorInspector Object
+	object
+	_EditorInspector struct{}
 }
 
-func NewEditorInspector(obj Object) EditorInspector    { return EditorInspector{Locked{}, obj} }
-func GetEditorInspector(obj EditorInspector) [1]Object { return [1]Object{obj._EditorInspector} }
+func NewEditorInspector(obj Object) EditorInspector    { return EditorInspector{object: object(obj)} }
+func GetEditorInspector(obj EditorInspector) [1]Object { return obj.AsObject() }
 
 type EditorInspectorPlugin struct {
-	Locked
-	_EditorInspectorPlugin Object
+	object
+	_EditorInspectorPlugin struct{}
 }
 
 func NewEditorInspectorPlugin(obj Object) EditorInspectorPlugin {
-	return EditorInspectorPlugin{Locked{}, obj}
+	return EditorInspectorPlugin{object: object(obj)}
 }
-func GetEditorInspectorPlugin(obj EditorInspectorPlugin) [1]Object {
-	return [1]Object{obj._EditorInspectorPlugin}
-}
+func GetEditorInspectorPlugin(obj EditorInspectorPlugin) [1]Object { return obj.AsObject() }
 
 type EditorInterface struct {
-	Locked
-	_EditorInterface Object
+	object
+	_EditorInterface struct{}
 }
 
-func NewEditorInterface(obj Object) EditorInterface    { return EditorInterface{Locked{}, obj} }
-func GetEditorInterface(obj EditorInterface) [1]Object { return [1]Object{obj._EditorInterface} }
+func NewEditorInterface(obj Object) EditorInterface    { return EditorInterface{object: object(obj)} }
+func GetEditorInterface(obj EditorInterface) [1]Object { return obj.AsObject() }
 
 type EditorNode3DGizmo struct {
-	Locked
-	_EditorNode3DGizmo Object
+	object
+	_EditorNode3DGizmo struct{}
 }
 
-func NewEditorNode3DGizmo(obj Object) EditorNode3DGizmo    { return EditorNode3DGizmo{Locked{}, obj} }
-func GetEditorNode3DGizmo(obj EditorNode3DGizmo) [1]Object { return [1]Object{obj._EditorNode3DGizmo} }
+func NewEditorNode3DGizmo(obj Object) EditorNode3DGizmo {
+	return EditorNode3DGizmo{object: object(obj)}
+}
+func GetEditorNode3DGizmo(obj EditorNode3DGizmo) [1]Object { return obj.AsObject() }
 
 type EditorNode3DGizmoPlugin struct {
-	Locked
-	_EditorNode3DGizmoPlugin Object
+	object
+	_EditorNode3DGizmoPlugin struct{}
 }
 
 func NewEditorNode3DGizmoPlugin(obj Object) EditorNode3DGizmoPlugin {
-	return EditorNode3DGizmoPlugin{Locked{}, obj}
+	return EditorNode3DGizmoPlugin{object: object(obj)}
 }
-func GetEditorNode3DGizmoPlugin(obj EditorNode3DGizmoPlugin) [1]Object {
-	return [1]Object{obj._EditorNode3DGizmoPlugin}
-}
+func GetEditorNode3DGizmoPlugin(obj EditorNode3DGizmoPlugin) [1]Object { return obj.AsObject() }
 
 type EditorPaths struct {
-	Locked
-	_EditorPaths Object
+	object
+	_EditorPaths struct{}
 }
 
-func NewEditorPaths(obj Object) EditorPaths    { return EditorPaths{Locked{}, obj} }
-func GetEditorPaths(obj EditorPaths) [1]Object { return [1]Object{obj._EditorPaths} }
+func NewEditorPaths(obj Object) EditorPaths    { return EditorPaths{object: object(obj)} }
+func GetEditorPaths(obj EditorPaths) [1]Object { return obj.AsObject() }
 
 type EditorPlugin struct {
-	Locked
-	_EditorPlugin Object
+	object
+	_EditorPlugin struct{}
 }
 
-func NewEditorPlugin(obj Object) EditorPlugin    { return EditorPlugin{Locked{}, obj} }
-func GetEditorPlugin(obj EditorPlugin) [1]Object { return [1]Object{obj._EditorPlugin} }
+func NewEditorPlugin(obj Object) EditorPlugin    { return EditorPlugin{object: object(obj)} }
+func GetEditorPlugin(obj EditorPlugin) [1]Object { return obj.AsObject() }
 
 type EditorProperty struct {
-	Locked
-	_EditorProperty Object
+	object
+	_EditorProperty struct{}
 }
 
-func NewEditorProperty(obj Object) EditorProperty    { return EditorProperty{Locked{}, obj} }
-func GetEditorProperty(obj EditorProperty) [1]Object { return [1]Object{obj._EditorProperty} }
+func NewEditorProperty(obj Object) EditorProperty    { return EditorProperty{object: object(obj)} }
+func GetEditorProperty(obj EditorProperty) [1]Object { return obj.AsObject() }
 
 type EditorResourceConversionPlugin struct {
-	Locked
-	_EditorResourceConversionPlugin Object
+	object
+	_EditorResourceConversionPlugin struct{}
 }
 
 func NewEditorResourceConversionPlugin(obj Object) EditorResourceConversionPlugin {
-	return EditorResourceConversionPlugin{Locked{}, obj}
+	return EditorResourceConversionPlugin{object: object(obj)}
 }
 func GetEditorResourceConversionPlugin(obj EditorResourceConversionPlugin) [1]Object {
-	return [1]Object{obj._EditorResourceConversionPlugin}
+	return obj.AsObject()
 }
 
 type EditorResourcePicker struct {
-	Locked
-	_EditorResourcePicker Object
+	object
+	_EditorResourcePicker struct{}
 }
 
 func NewEditorResourcePicker(obj Object) EditorResourcePicker {
-	return EditorResourcePicker{Locked{}, obj}
+	return EditorResourcePicker{object: object(obj)}
 }
-func GetEditorResourcePicker(obj EditorResourcePicker) [1]Object {
-	return [1]Object{obj._EditorResourcePicker}
-}
+func GetEditorResourcePicker(obj EditorResourcePicker) [1]Object { return obj.AsObject() }
 
 type EditorResourcePreview struct {
-	Locked
-	_EditorResourcePreview Object
+	object
+	_EditorResourcePreview struct{}
 }
 
 func NewEditorResourcePreview(obj Object) EditorResourcePreview {
-	return EditorResourcePreview{Locked{}, obj}
+	return EditorResourcePreview{object: object(obj)}
 }
-func GetEditorResourcePreview(obj EditorResourcePreview) [1]Object {
-	return [1]Object{obj._EditorResourcePreview}
-}
+func GetEditorResourcePreview(obj EditorResourcePreview) [1]Object { return obj.AsObject() }
 
 type EditorResourcePreviewGenerator struct {
-	Locked
-	_EditorResourcePreviewGenerator Object
+	object
+	_EditorResourcePreviewGenerator struct{}
 }
 
 func NewEditorResourcePreviewGenerator(obj Object) EditorResourcePreviewGenerator {
-	return EditorResourcePreviewGenerator{Locked{}, obj}
+	return EditorResourcePreviewGenerator{object: object(obj)}
 }
 func GetEditorResourcePreviewGenerator(obj EditorResourcePreviewGenerator) [1]Object {
-	return [1]Object{obj._EditorResourcePreviewGenerator}
+	return obj.AsObject()
 }
 
 type EditorResourceTooltipPlugin struct {
-	Locked
-	_EditorResourceTooltipPlugin Object
+	object
+	_EditorResourceTooltipPlugin struct{}
 }
 
 func NewEditorResourceTooltipPlugin(obj Object) EditorResourceTooltipPlugin {
-	return EditorResourceTooltipPlugin{Locked{}, obj}
+	return EditorResourceTooltipPlugin{object: object(obj)}
 }
-func GetEditorResourceTooltipPlugin(obj EditorResourceTooltipPlugin) [1]Object {
-	return [1]Object{obj._EditorResourceTooltipPlugin}
-}
+func GetEditorResourceTooltipPlugin(obj EditorResourceTooltipPlugin) [1]Object { return obj.AsObject() }
 
 type EditorSceneFormatImporter struct {
-	Locked
-	_EditorSceneFormatImporter Object
+	object
+	_EditorSceneFormatImporter struct{}
 }
 
 func NewEditorSceneFormatImporter(obj Object) EditorSceneFormatImporter {
-	return EditorSceneFormatImporter{Locked{}, obj}
+	return EditorSceneFormatImporter{object: object(obj)}
 }
-func GetEditorSceneFormatImporter(obj EditorSceneFormatImporter) [1]Object {
-	return [1]Object{obj._EditorSceneFormatImporter}
-}
+func GetEditorSceneFormatImporter(obj EditorSceneFormatImporter) [1]Object { return obj.AsObject() }
 
 type EditorSceneFormatImporterBlend struct {
-	Locked
-	_EditorSceneFormatImporterBlend Object
+	object
+	_EditorSceneFormatImporterBlend struct{}
 }
 
 func NewEditorSceneFormatImporterBlend(obj Object) EditorSceneFormatImporterBlend {
-	return EditorSceneFormatImporterBlend{Locked{}, obj}
+	return EditorSceneFormatImporterBlend{object: object(obj)}
 }
 func GetEditorSceneFormatImporterBlend(obj EditorSceneFormatImporterBlend) [1]Object {
-	return [1]Object{obj._EditorSceneFormatImporterBlend}
+	return obj.AsObject()
 }
 
 type EditorSceneFormatImporterFBX2GLTF struct {
-	Locked
-	_EditorSceneFormatImporterFBX2GLTF Object
+	object
+	_EditorSceneFormatImporterFBX2GLTF struct{}
 }
 
 func NewEditorSceneFormatImporterFBX2GLTF(obj Object) EditorSceneFormatImporterFBX2GLTF {
-	return EditorSceneFormatImporterFBX2GLTF{Locked{}, obj}
+	return EditorSceneFormatImporterFBX2GLTF{object: object(obj)}
 }
 func GetEditorSceneFormatImporterFBX2GLTF(obj EditorSceneFormatImporterFBX2GLTF) [1]Object {
-	return [1]Object{obj._EditorSceneFormatImporterFBX2GLTF}
+	return obj.AsObject()
 }
 
 type EditorSceneFormatImporterGLTF struct {
-	Locked
-	_EditorSceneFormatImporterGLTF Object
+	object
+	_EditorSceneFormatImporterGLTF struct{}
 }
 
 func NewEditorSceneFormatImporterGLTF(obj Object) EditorSceneFormatImporterGLTF {
-	return EditorSceneFormatImporterGLTF{Locked{}, obj}
+	return EditorSceneFormatImporterGLTF{object: object(obj)}
 }
 func GetEditorSceneFormatImporterGLTF(obj EditorSceneFormatImporterGLTF) [1]Object {
-	return [1]Object{obj._EditorSceneFormatImporterGLTF}
+	return obj.AsObject()
 }
 
 type EditorSceneFormatImporterUFBX struct {
-	Locked
-	_EditorSceneFormatImporterUFBX Object
+	object
+	_EditorSceneFormatImporterUFBX struct{}
 }
 
 func NewEditorSceneFormatImporterUFBX(obj Object) EditorSceneFormatImporterUFBX {
-	return EditorSceneFormatImporterUFBX{Locked{}, obj}
+	return EditorSceneFormatImporterUFBX{object: object(obj)}
 }
 func GetEditorSceneFormatImporterUFBX(obj EditorSceneFormatImporterUFBX) [1]Object {
-	return [1]Object{obj._EditorSceneFormatImporterUFBX}
+	return obj.AsObject()
 }
 
 type EditorScenePostImport struct {
-	Locked
-	_EditorScenePostImport Object
+	object
+	_EditorScenePostImport struct{}
 }
 
 func NewEditorScenePostImport(obj Object) EditorScenePostImport {
-	return EditorScenePostImport{Locked{}, obj}
+	return EditorScenePostImport{object: object(obj)}
 }
-func GetEditorScenePostImport(obj EditorScenePostImport) [1]Object {
-	return [1]Object{obj._EditorScenePostImport}
-}
+func GetEditorScenePostImport(obj EditorScenePostImport) [1]Object { return obj.AsObject() }
 
 type EditorScenePostImportPlugin struct {
-	Locked
-	_EditorScenePostImportPlugin Object
+	object
+	_EditorScenePostImportPlugin struct{}
 }
 
 func NewEditorScenePostImportPlugin(obj Object) EditorScenePostImportPlugin {
-	return EditorScenePostImportPlugin{Locked{}, obj}
+	return EditorScenePostImportPlugin{object: object(obj)}
 }
-func GetEditorScenePostImportPlugin(obj EditorScenePostImportPlugin) [1]Object {
-	return [1]Object{obj._EditorScenePostImportPlugin}
-}
+func GetEditorScenePostImportPlugin(obj EditorScenePostImportPlugin) [1]Object { return obj.AsObject() }
 
 type EditorScript struct {
-	Locked
-	_EditorScript Object
+	object
+	_EditorScript struct{}
 }
 
-func NewEditorScript(obj Object) EditorScript    { return EditorScript{Locked{}, obj} }
-func GetEditorScript(obj EditorScript) [1]Object { return [1]Object{obj._EditorScript} }
+func NewEditorScript(obj Object) EditorScript    { return EditorScript{object: object(obj)} }
+func GetEditorScript(obj EditorScript) [1]Object { return obj.AsObject() }
 
 type EditorScriptPicker struct {
-	Locked
-	_EditorScriptPicker Object
+	object
+	_EditorScriptPicker struct{}
 }
 
-func NewEditorScriptPicker(obj Object) EditorScriptPicker { return EditorScriptPicker{Locked{}, obj} }
-func GetEditorScriptPicker(obj EditorScriptPicker) [1]Object {
-	return [1]Object{obj._EditorScriptPicker}
+func NewEditorScriptPicker(obj Object) EditorScriptPicker {
+	return EditorScriptPicker{object: object(obj)}
 }
+func GetEditorScriptPicker(obj EditorScriptPicker) [1]Object { return obj.AsObject() }
 
 type EditorSelection struct {
-	Locked
-	_EditorSelection Object
+	object
+	_EditorSelection struct{}
 }
 
-func NewEditorSelection(obj Object) EditorSelection    { return EditorSelection{Locked{}, obj} }
-func GetEditorSelection(obj EditorSelection) [1]Object { return [1]Object{obj._EditorSelection} }
+func NewEditorSelection(obj Object) EditorSelection    { return EditorSelection{object: object(obj)} }
+func GetEditorSelection(obj EditorSelection) [1]Object { return obj.AsObject() }
 
 type EditorSettings struct {
-	Locked
-	_EditorSettings Object
+	object
+	_EditorSettings struct{}
 }
 
-func NewEditorSettings(obj Object) EditorSettings    { return EditorSettings{Locked{}, obj} }
-func GetEditorSettings(obj EditorSettings) [1]Object { return [1]Object{obj._EditorSettings} }
+func NewEditorSettings(obj Object) EditorSettings    { return EditorSettings{object: object(obj)} }
+func GetEditorSettings(obj EditorSettings) [1]Object { return obj.AsObject() }
 
 type EditorSpinSlider struct {
-	Locked
-	_EditorSpinSlider Object
+	object
+	_EditorSpinSlider struct{}
 }
 
-func NewEditorSpinSlider(obj Object) EditorSpinSlider    { return EditorSpinSlider{Locked{}, obj} }
-func GetEditorSpinSlider(obj EditorSpinSlider) [1]Object { return [1]Object{obj._EditorSpinSlider} }
+func NewEditorSpinSlider(obj Object) EditorSpinSlider    { return EditorSpinSlider{object: object(obj)} }
+func GetEditorSpinSlider(obj EditorSpinSlider) [1]Object { return obj.AsObject() }
 
 type EditorSyntaxHighlighter struct {
-	Locked
-	_EditorSyntaxHighlighter Object
+	object
+	_EditorSyntaxHighlighter struct{}
 }
 
 func NewEditorSyntaxHighlighter(obj Object) EditorSyntaxHighlighter {
-	return EditorSyntaxHighlighter{Locked{}, obj}
+	return EditorSyntaxHighlighter{object: object(obj)}
 }
-func GetEditorSyntaxHighlighter(obj EditorSyntaxHighlighter) [1]Object {
-	return [1]Object{obj._EditorSyntaxHighlighter}
-}
+func GetEditorSyntaxHighlighter(obj EditorSyntaxHighlighter) [1]Object { return obj.AsObject() }
 
 type EditorToaster struct {
-	Locked
-	_EditorToaster Object
+	object
+	_EditorToaster struct{}
 }
 
-func NewEditorToaster(obj Object) EditorToaster    { return EditorToaster{Locked{}, obj} }
-func GetEditorToaster(obj EditorToaster) [1]Object { return [1]Object{obj._EditorToaster} }
+func NewEditorToaster(obj Object) EditorToaster    { return EditorToaster{object: object(obj)} }
+func GetEditorToaster(obj EditorToaster) [1]Object { return obj.AsObject() }
 
 type EditorTranslationParserPlugin struct {
-	Locked
-	_EditorTranslationParserPlugin Object
+	object
+	_EditorTranslationParserPlugin struct{}
 }
 
 func NewEditorTranslationParserPlugin(obj Object) EditorTranslationParserPlugin {
-	return EditorTranslationParserPlugin{Locked{}, obj}
+	return EditorTranslationParserPlugin{object: object(obj)}
 }
 func GetEditorTranslationParserPlugin(obj EditorTranslationParserPlugin) [1]Object {
-	return [1]Object{obj._EditorTranslationParserPlugin}
+	return obj.AsObject()
 }
 
 type EditorUndoRedoManager struct {
-	Locked
-	_EditorUndoRedoManager Object
+	object
+	_EditorUndoRedoManager struct{}
 }
 
 func NewEditorUndoRedoManager(obj Object) EditorUndoRedoManager {
-	return EditorUndoRedoManager{Locked{}, obj}
+	return EditorUndoRedoManager{object: object(obj)}
 }
-func GetEditorUndoRedoManager(obj EditorUndoRedoManager) [1]Object {
-	return [1]Object{obj._EditorUndoRedoManager}
-}
+func GetEditorUndoRedoManager(obj EditorUndoRedoManager) [1]Object { return obj.AsObject() }
 
 type EditorVCSInterface struct {
-	Locked
-	_EditorVCSInterface Object
+	object
+	_EditorVCSInterface struct{}
 }
 
-func NewEditorVCSInterface(obj Object) EditorVCSInterface { return EditorVCSInterface{Locked{}, obj} }
-func GetEditorVCSInterface(obj EditorVCSInterface) [1]Object {
-	return [1]Object{obj._EditorVCSInterface}
+func NewEditorVCSInterface(obj Object) EditorVCSInterface {
+	return EditorVCSInterface{object: object(obj)}
 }
+func GetEditorVCSInterface(obj EditorVCSInterface) [1]Object { return obj.AsObject() }
 
 type EncodedObjectAsID struct {
-	Locked
-	_EncodedObjectAsID Object
+	object
+	_EncodedObjectAsID struct{}
 }
 
-func NewEncodedObjectAsID(obj Object) EncodedObjectAsID    { return EncodedObjectAsID{Locked{}, obj} }
-func GetEncodedObjectAsID(obj EncodedObjectAsID) [1]Object { return [1]Object{obj._EncodedObjectAsID} }
+func NewEncodedObjectAsID(obj Object) EncodedObjectAsID {
+	return EncodedObjectAsID{object: object(obj)}
+}
+func GetEncodedObjectAsID(obj EncodedObjectAsID) [1]Object { return obj.AsObject() }
 
 type Engine struct {
-	Locked
-	_Engine Object
+	object
+	_Engine struct{}
 }
 
-func NewEngine(obj Object) Engine    { return Engine{Locked{}, obj} }
-func GetEngine(obj Engine) [1]Object { return [1]Object{obj._Engine} }
+func NewEngine(obj Object) Engine    { return Engine{object: object(obj)} }
+func GetEngine(obj Engine) [1]Object { return obj.AsObject() }
 
 type EngineDebugger struct {
-	Locked
-	_EngineDebugger Object
+	object
+	_EngineDebugger struct{}
 }
 
-func NewEngineDebugger(obj Object) EngineDebugger    { return EngineDebugger{Locked{}, obj} }
-func GetEngineDebugger(obj EngineDebugger) [1]Object { return [1]Object{obj._EngineDebugger} }
+func NewEngineDebugger(obj Object) EngineDebugger    { return EngineDebugger{object: object(obj)} }
+func GetEngineDebugger(obj EngineDebugger) [1]Object { return obj.AsObject() }
 
 type EngineProfiler struct {
-	Locked
-	_EngineProfiler Object
+	object
+	_EngineProfiler struct{}
 }
 
-func NewEngineProfiler(obj Object) EngineProfiler    { return EngineProfiler{Locked{}, obj} }
-func GetEngineProfiler(obj EngineProfiler) [1]Object { return [1]Object{obj._EngineProfiler} }
+func NewEngineProfiler(obj Object) EngineProfiler    { return EngineProfiler{object: object(obj)} }
+func GetEngineProfiler(obj EngineProfiler) [1]Object { return obj.AsObject() }
 
 type Environment struct {
-	Locked
-	_Environment Object
+	object
+	_Environment struct{}
 }
 
-func NewEnvironment(obj Object) Environment    { return Environment{Locked{}, obj} }
-func GetEnvironment(obj Environment) [1]Object { return [1]Object{obj._Environment} }
+func NewEnvironment(obj Object) Environment    { return Environment{object: object(obj)} }
+func GetEnvironment(obj Environment) [1]Object { return obj.AsObject() }
 
 type Expression struct {
-	Locked
-	_Expression Object
+	object
+	_Expression struct{}
 }
 
-func NewExpression(obj Object) Expression    { return Expression{Locked{}, obj} }
-func GetExpression(obj Expression) [1]Object { return [1]Object{obj._Expression} }
+func NewExpression(obj Object) Expression    { return Expression{object: object(obj)} }
+func GetExpression(obj Expression) [1]Object { return obj.AsObject() }
 
 type ExternalTexture struct {
-	Locked
-	_ExternalTexture Object
+	object
+	_ExternalTexture struct{}
 }
 
-func NewExternalTexture(obj Object) ExternalTexture    { return ExternalTexture{Locked{}, obj} }
-func GetExternalTexture(obj ExternalTexture) [1]Object { return [1]Object{obj._ExternalTexture} }
+func NewExternalTexture(obj Object) ExternalTexture    { return ExternalTexture{object: object(obj)} }
+func GetExternalTexture(obj ExternalTexture) [1]Object { return obj.AsObject() }
 
 type FABRIK3D struct {
-	Locked
-	_FABRIK3D Object
+	object
+	_FABRIK3D struct{}
 }
 
-func NewFABRIK3D(obj Object) FABRIK3D    { return FABRIK3D{Locked{}, obj} }
-func GetFABRIK3D(obj FABRIK3D) [1]Object { return [1]Object{obj._FABRIK3D} }
+func NewFABRIK3D(obj Object) FABRIK3D    { return FABRIK3D{object: object(obj)} }
+func GetFABRIK3D(obj FABRIK3D) [1]Object { return obj.AsObject() }
 
 type FBXDocument struct {
-	Locked
-	_FBXDocument Object
+	object
+	_FBXDocument struct{}
 }
 
-func NewFBXDocument(obj Object) FBXDocument    { return FBXDocument{Locked{}, obj} }
-func GetFBXDocument(obj FBXDocument) [1]Object { return [1]Object{obj._FBXDocument} }
+func NewFBXDocument(obj Object) FBXDocument    { return FBXDocument{object: object(obj)} }
+func GetFBXDocument(obj FBXDocument) [1]Object { return obj.AsObject() }
 
 type FBXState struct {
-	Locked
-	_FBXState Object
+	object
+	_FBXState struct{}
 }
 
-func NewFBXState(obj Object) FBXState    { return FBXState{Locked{}, obj} }
-func GetFBXState(obj FBXState) [1]Object { return [1]Object{obj._FBXState} }
+func NewFBXState(obj Object) FBXState    { return FBXState{object: object(obj)} }
+func GetFBXState(obj FBXState) [1]Object { return obj.AsObject() }
 
 type FastNoiseLite struct {
-	Locked
-	_FastNoiseLite Object
+	object
+	_FastNoiseLite struct{}
 }
 
-func NewFastNoiseLite(obj Object) FastNoiseLite    { return FastNoiseLite{Locked{}, obj} }
-func GetFastNoiseLite(obj FastNoiseLite) [1]Object { return [1]Object{obj._FastNoiseLite} }
+func NewFastNoiseLite(obj Object) FastNoiseLite    { return FastNoiseLite{object: object(obj)} }
+func GetFastNoiseLite(obj FastNoiseLite) [1]Object { return obj.AsObject() }
 
 type FileAccess struct {
-	Locked
-	_FileAccess Object
+	object
+	_FileAccess struct{}
 }
 
-func NewFileAccess(obj Object) FileAccess    { return FileAccess{Locked{}, obj} }
-func GetFileAccess(obj FileAccess) [1]Object { return [1]Object{obj._FileAccess} }
+func NewFileAccess(obj Object) FileAccess    { return FileAccess{object: object(obj)} }
+func GetFileAccess(obj FileAccess) [1]Object { return obj.AsObject() }
 
 type FileDialog struct {
-	Locked
-	_FileDialog Object
+	object
+	_FileDialog struct{}
 }
 
-func NewFileDialog(obj Object) FileDialog    { return FileDialog{Locked{}, obj} }
-func GetFileDialog(obj FileDialog) [1]Object { return [1]Object{obj._FileDialog} }
+func NewFileDialog(obj Object) FileDialog    { return FileDialog{object: object(obj)} }
+func GetFileDialog(obj FileDialog) [1]Object { return obj.AsObject() }
 
 type FileSystemDock struct {
-	Locked
-	_FileSystemDock Object
+	object
+	_FileSystemDock struct{}
 }
 
-func NewFileSystemDock(obj Object) FileSystemDock    { return FileSystemDock{Locked{}, obj} }
-func GetFileSystemDock(obj FileSystemDock) [1]Object { return [1]Object{obj._FileSystemDock} }
+func NewFileSystemDock(obj Object) FileSystemDock    { return FileSystemDock{object: object(obj)} }
+func GetFileSystemDock(obj FileSystemDock) [1]Object { return obj.AsObject() }
 
 type FlowContainer struct {
-	Locked
-	_FlowContainer Object
+	object
+	_FlowContainer struct{}
 }
 
-func NewFlowContainer(obj Object) FlowContainer    { return FlowContainer{Locked{}, obj} }
-func GetFlowContainer(obj FlowContainer) [1]Object { return [1]Object{obj._FlowContainer} }
+func NewFlowContainer(obj Object) FlowContainer    { return FlowContainer{object: object(obj)} }
+func GetFlowContainer(obj FlowContainer) [1]Object { return obj.AsObject() }
 
 type FogMaterial struct {
-	Locked
-	_FogMaterial Object
+	object
+	_FogMaterial struct{}
 }
 
-func NewFogMaterial(obj Object) FogMaterial    { return FogMaterial{Locked{}, obj} }
-func GetFogMaterial(obj FogMaterial) [1]Object { return [1]Object{obj._FogMaterial} }
+func NewFogMaterial(obj Object) FogMaterial    { return FogMaterial{object: object(obj)} }
+func GetFogMaterial(obj FogMaterial) [1]Object { return obj.AsObject() }
 
 type FogVolume struct {
-	Locked
-	_FogVolume Object
+	object
+	_FogVolume struct{}
 }
 
-func NewFogVolume(obj Object) FogVolume    { return FogVolume{Locked{}, obj} }
-func GetFogVolume(obj FogVolume) [1]Object { return [1]Object{obj._FogVolume} }
+func NewFogVolume(obj Object) FogVolume    { return FogVolume{object: object(obj)} }
+func GetFogVolume(obj FogVolume) [1]Object { return obj.AsObject() }
 
 type FoldableContainer struct {
-	Locked
-	_FoldableContainer Object
+	object
+	_FoldableContainer struct{}
 }
 
-func NewFoldableContainer(obj Object) FoldableContainer    { return FoldableContainer{Locked{}, obj} }
-func GetFoldableContainer(obj FoldableContainer) [1]Object { return [1]Object{obj._FoldableContainer} }
+func NewFoldableContainer(obj Object) FoldableContainer {
+	return FoldableContainer{object: object(obj)}
+}
+func GetFoldableContainer(obj FoldableContainer) [1]Object { return obj.AsObject() }
 
 type FoldableGroup struct {
-	Locked
-	_FoldableGroup Object
+	object
+	_FoldableGroup struct{}
 }
 
-func NewFoldableGroup(obj Object) FoldableGroup    { return FoldableGroup{Locked{}, obj} }
-func GetFoldableGroup(obj FoldableGroup) [1]Object { return [1]Object{obj._FoldableGroup} }
+func NewFoldableGroup(obj Object) FoldableGroup    { return FoldableGroup{object: object(obj)} }
+func GetFoldableGroup(obj FoldableGroup) [1]Object { return obj.AsObject() }
 
 type Font struct {
-	Locked
-	_Font Object
+	object
+	_Font struct{}
 }
 
-func NewFont(obj Object) Font    { return Font{Locked{}, obj} }
-func GetFont(obj Font) [1]Object { return [1]Object{obj._Font} }
+func NewFont(obj Object) Font    { return Font{object: object(obj)} }
+func GetFont(obj Font) [1]Object { return obj.AsObject() }
 
 type FontFile struct {
-	Locked
-	_FontFile Object
+	object
+	_FontFile struct{}
 }
 
-func NewFontFile(obj Object) FontFile    { return FontFile{Locked{}, obj} }
-func GetFontFile(obj FontFile) [1]Object { return [1]Object{obj._FontFile} }
+func NewFontFile(obj Object) FontFile    { return FontFile{object: object(obj)} }
+func GetFontFile(obj FontFile) [1]Object { return obj.AsObject() }
 
 type FontVariation struct {
-	Locked
-	_FontVariation Object
+	object
+	_FontVariation struct{}
 }
 
-func NewFontVariation(obj Object) FontVariation    { return FontVariation{Locked{}, obj} }
-func GetFontVariation(obj FontVariation) [1]Object { return [1]Object{obj._FontVariation} }
+func NewFontVariation(obj Object) FontVariation    { return FontVariation{object: object(obj)} }
+func GetFontVariation(obj FontVariation) [1]Object { return obj.AsObject() }
 
 type FramebufferCacheRD struct {
-	Locked
-	_FramebufferCacheRD Object
+	object
+	_FramebufferCacheRD struct{}
 }
 
-func NewFramebufferCacheRD(obj Object) FramebufferCacheRD { return FramebufferCacheRD{Locked{}, obj} }
-func GetFramebufferCacheRD(obj FramebufferCacheRD) [1]Object {
-	return [1]Object{obj._FramebufferCacheRD}
+func NewFramebufferCacheRD(obj Object) FramebufferCacheRD {
+	return FramebufferCacheRD{object: object(obj)}
 }
+func GetFramebufferCacheRD(obj FramebufferCacheRD) [1]Object { return obj.AsObject() }
 
 type GDExtension struct {
-	Locked
-	_GDExtension Object
+	object
+	_GDExtension struct{}
 }
 
-func NewGDExtension(obj Object) GDExtension    { return GDExtension{Locked{}, obj} }
-func GetGDExtension(obj GDExtension) [1]Object { return [1]Object{obj._GDExtension} }
+func NewGDExtension(obj Object) GDExtension    { return GDExtension{object: object(obj)} }
+func GetGDExtension(obj GDExtension) [1]Object { return obj.AsObject() }
 
 type GDExtensionManager struct {
-	Locked
-	_GDExtensionManager Object
+	object
+	_GDExtensionManager struct{}
 }
 
-func NewGDExtensionManager(obj Object) GDExtensionManager { return GDExtensionManager{Locked{}, obj} }
-func GetGDExtensionManager(obj GDExtensionManager) [1]Object {
-	return [1]Object{obj._GDExtensionManager}
+func NewGDExtensionManager(obj Object) GDExtensionManager {
+	return GDExtensionManager{object: object(obj)}
 }
+func GetGDExtensionManager(obj GDExtensionManager) [1]Object { return obj.AsObject() }
 
 type GDScript struct {
-	Locked
-	_GDScript Object
+	object
+	_GDScript struct{}
 }
 
-func NewGDScript(obj Object) GDScript    { return GDScript{Locked{}, obj} }
-func GetGDScript(obj GDScript) [1]Object { return [1]Object{obj._GDScript} }
+func NewGDScript(obj Object) GDScript    { return GDScript{object: object(obj)} }
+func GetGDScript(obj GDScript) [1]Object { return obj.AsObject() }
 
 type GDScriptSyntaxHighlighter struct {
-	Locked
-	_GDScriptSyntaxHighlighter Object
+	object
+	_GDScriptSyntaxHighlighter struct{}
 }
 
 func NewGDScriptSyntaxHighlighter(obj Object) GDScriptSyntaxHighlighter {
-	return GDScriptSyntaxHighlighter{Locked{}, obj}
+	return GDScriptSyntaxHighlighter{object: object(obj)}
 }
-func GetGDScriptSyntaxHighlighter(obj GDScriptSyntaxHighlighter) [1]Object {
-	return [1]Object{obj._GDScriptSyntaxHighlighter}
-}
+func GetGDScriptSyntaxHighlighter(obj GDScriptSyntaxHighlighter) [1]Object { return obj.AsObject() }
 
 type GLTFAccessor struct {
-	Locked
-	_GLTFAccessor Object
+	object
+	_GLTFAccessor struct{}
 }
 
-func NewGLTFAccessor(obj Object) GLTFAccessor    { return GLTFAccessor{Locked{}, obj} }
-func GetGLTFAccessor(obj GLTFAccessor) [1]Object { return [1]Object{obj._GLTFAccessor} }
+func NewGLTFAccessor(obj Object) GLTFAccessor    { return GLTFAccessor{object: object(obj)} }
+func GetGLTFAccessor(obj GLTFAccessor) [1]Object { return obj.AsObject() }
 
 type GLTFAnimation struct {
-	Locked
-	_GLTFAnimation Object
+	object
+	_GLTFAnimation struct{}
 }
 
-func NewGLTFAnimation(obj Object) GLTFAnimation    { return GLTFAnimation{Locked{}, obj} }
-func GetGLTFAnimation(obj GLTFAnimation) [1]Object { return [1]Object{obj._GLTFAnimation} }
+func NewGLTFAnimation(obj Object) GLTFAnimation    { return GLTFAnimation{object: object(obj)} }
+func GetGLTFAnimation(obj GLTFAnimation) [1]Object { return obj.AsObject() }
 
 type GLTFBufferView struct {
-	Locked
-	_GLTFBufferView Object
+	object
+	_GLTFBufferView struct{}
 }
 
-func NewGLTFBufferView(obj Object) GLTFBufferView    { return GLTFBufferView{Locked{}, obj} }
-func GetGLTFBufferView(obj GLTFBufferView) [1]Object { return [1]Object{obj._GLTFBufferView} }
+func NewGLTFBufferView(obj Object) GLTFBufferView    { return GLTFBufferView{object: object(obj)} }
+func GetGLTFBufferView(obj GLTFBufferView) [1]Object { return obj.AsObject() }
 
 type GLTFCamera struct {
-	Locked
-	_GLTFCamera Object
+	object
+	_GLTFCamera struct{}
 }
 
-func NewGLTFCamera(obj Object) GLTFCamera    { return GLTFCamera{Locked{}, obj} }
-func GetGLTFCamera(obj GLTFCamera) [1]Object { return [1]Object{obj._GLTFCamera} }
+func NewGLTFCamera(obj Object) GLTFCamera    { return GLTFCamera{object: object(obj)} }
+func GetGLTFCamera(obj GLTFCamera) [1]Object { return obj.AsObject() }
 
 type GLTFDocument struct {
-	Locked
-	_GLTFDocument Object
+	object
+	_GLTFDocument struct{}
 }
 
-func NewGLTFDocument(obj Object) GLTFDocument    { return GLTFDocument{Locked{}, obj} }
-func GetGLTFDocument(obj GLTFDocument) [1]Object { return [1]Object{obj._GLTFDocument} }
+func NewGLTFDocument(obj Object) GLTFDocument    { return GLTFDocument{object: object(obj)} }
+func GetGLTFDocument(obj GLTFDocument) [1]Object { return obj.AsObject() }
 
 type GLTFDocumentExtension struct {
-	Locked
-	_GLTFDocumentExtension Object
+	object
+	_GLTFDocumentExtension struct{}
 }
 
 func NewGLTFDocumentExtension(obj Object) GLTFDocumentExtension {
-	return GLTFDocumentExtension{Locked{}, obj}
+	return GLTFDocumentExtension{object: object(obj)}
 }
-func GetGLTFDocumentExtension(obj GLTFDocumentExtension) [1]Object {
-	return [1]Object{obj._GLTFDocumentExtension}
-}
+func GetGLTFDocumentExtension(obj GLTFDocumentExtension) [1]Object { return obj.AsObject() }
 
 type GLTFDocumentExtensionConvertImporterMesh struct {
-	Locked
-	_GLTFDocumentExtensionConvertImporterMesh Object
+	object
+	_GLTFDocumentExtensionConvertImporterMesh struct{}
 }
 
 func NewGLTFDocumentExtensionConvertImporterMesh(obj Object) GLTFDocumentExtensionConvertImporterMesh {
-	return GLTFDocumentExtensionConvertImporterMesh{Locked{}, obj}
+	return GLTFDocumentExtensionConvertImporterMesh{object: object(obj)}
 }
 func GetGLTFDocumentExtensionConvertImporterMesh(obj GLTFDocumentExtensionConvertImporterMesh) [1]Object {
-	return [1]Object{obj._GLTFDocumentExtensionConvertImporterMesh}
+	return obj.AsObject()
 }
 
 type GLTFLight struct {
-	Locked
-	_GLTFLight Object
+	object
+	_GLTFLight struct{}
 }
 
-func NewGLTFLight(obj Object) GLTFLight    { return GLTFLight{Locked{}, obj} }
-func GetGLTFLight(obj GLTFLight) [1]Object { return [1]Object{obj._GLTFLight} }
+func NewGLTFLight(obj Object) GLTFLight    { return GLTFLight{object: object(obj)} }
+func GetGLTFLight(obj GLTFLight) [1]Object { return obj.AsObject() }
 
 type GLTFMesh struct {
-	Locked
-	_GLTFMesh Object
+	object
+	_GLTFMesh struct{}
 }
 
-func NewGLTFMesh(obj Object) GLTFMesh    { return GLTFMesh{Locked{}, obj} }
-func GetGLTFMesh(obj GLTFMesh) [1]Object { return [1]Object{obj._GLTFMesh} }
+func NewGLTFMesh(obj Object) GLTFMesh    { return GLTFMesh{object: object(obj)} }
+func GetGLTFMesh(obj GLTFMesh) [1]Object { return obj.AsObject() }
 
 type GLTFNode struct {
-	Locked
-	_GLTFNode Object
+	object
+	_GLTFNode struct{}
 }
 
-func NewGLTFNode(obj Object) GLTFNode    { return GLTFNode{Locked{}, obj} }
-func GetGLTFNode(obj GLTFNode) [1]Object { return [1]Object{obj._GLTFNode} }
+func NewGLTFNode(obj Object) GLTFNode    { return GLTFNode{object: object(obj)} }
+func GetGLTFNode(obj GLTFNode) [1]Object { return obj.AsObject() }
 
 type GLTFObjectModelProperty struct {
-	Locked
-	_GLTFObjectModelProperty Object
+	object
+	_GLTFObjectModelProperty struct{}
 }
 
 func NewGLTFObjectModelProperty(obj Object) GLTFObjectModelProperty {
-	return GLTFObjectModelProperty{Locked{}, obj}
+	return GLTFObjectModelProperty{object: object(obj)}
 }
-func GetGLTFObjectModelProperty(obj GLTFObjectModelProperty) [1]Object {
-	return [1]Object{obj._GLTFObjectModelProperty}
-}
+func GetGLTFObjectModelProperty(obj GLTFObjectModelProperty) [1]Object { return obj.AsObject() }
 
 type GLTFPhysicsBody struct {
-	Locked
-	_GLTFPhysicsBody Object
+	object
+	_GLTFPhysicsBody struct{}
 }
 
-func NewGLTFPhysicsBody(obj Object) GLTFPhysicsBody    { return GLTFPhysicsBody{Locked{}, obj} }
-func GetGLTFPhysicsBody(obj GLTFPhysicsBody) [1]Object { return [1]Object{obj._GLTFPhysicsBody} }
+func NewGLTFPhysicsBody(obj Object) GLTFPhysicsBody    { return GLTFPhysicsBody{object: object(obj)} }
+func GetGLTFPhysicsBody(obj GLTFPhysicsBody) [1]Object { return obj.AsObject() }
 
 type GLTFPhysicsShape struct {
-	Locked
-	_GLTFPhysicsShape Object
+	object
+	_GLTFPhysicsShape struct{}
 }
 
-func NewGLTFPhysicsShape(obj Object) GLTFPhysicsShape    { return GLTFPhysicsShape{Locked{}, obj} }
-func GetGLTFPhysicsShape(obj GLTFPhysicsShape) [1]Object { return [1]Object{obj._GLTFPhysicsShape} }
+func NewGLTFPhysicsShape(obj Object) GLTFPhysicsShape    { return GLTFPhysicsShape{object: object(obj)} }
+func GetGLTFPhysicsShape(obj GLTFPhysicsShape) [1]Object { return obj.AsObject() }
 
 type GLTFSkeleton struct {
-	Locked
-	_GLTFSkeleton Object
+	object
+	_GLTFSkeleton struct{}
 }
 
-func NewGLTFSkeleton(obj Object) GLTFSkeleton    { return GLTFSkeleton{Locked{}, obj} }
-func GetGLTFSkeleton(obj GLTFSkeleton) [1]Object { return [1]Object{obj._GLTFSkeleton} }
+func NewGLTFSkeleton(obj Object) GLTFSkeleton    { return GLTFSkeleton{object: object(obj)} }
+func GetGLTFSkeleton(obj GLTFSkeleton) [1]Object { return obj.AsObject() }
 
 type GLTFSkin struct {
-	Locked
-	_GLTFSkin Object
+	object
+	_GLTFSkin struct{}
 }
 
-func NewGLTFSkin(obj Object) GLTFSkin    { return GLTFSkin{Locked{}, obj} }
-func GetGLTFSkin(obj GLTFSkin) [1]Object { return [1]Object{obj._GLTFSkin} }
+func NewGLTFSkin(obj Object) GLTFSkin    { return GLTFSkin{object: object(obj)} }
+func GetGLTFSkin(obj GLTFSkin) [1]Object { return obj.AsObject() }
 
 type GLTFSpecGloss struct {
-	Locked
-	_GLTFSpecGloss Object
+	object
+	_GLTFSpecGloss struct{}
 }
 
-func NewGLTFSpecGloss(obj Object) GLTFSpecGloss    { return GLTFSpecGloss{Locked{}, obj} }
-func GetGLTFSpecGloss(obj GLTFSpecGloss) [1]Object { return [1]Object{obj._GLTFSpecGloss} }
+func NewGLTFSpecGloss(obj Object) GLTFSpecGloss    { return GLTFSpecGloss{object: object(obj)} }
+func GetGLTFSpecGloss(obj GLTFSpecGloss) [1]Object { return obj.AsObject() }
 
 type GLTFState struct {
-	Locked
-	_GLTFState Object
+	object
+	_GLTFState struct{}
 }
 
-func NewGLTFState(obj Object) GLTFState    { return GLTFState{Locked{}, obj} }
-func GetGLTFState(obj GLTFState) [1]Object { return [1]Object{obj._GLTFState} }
+func NewGLTFState(obj Object) GLTFState    { return GLTFState{object: object(obj)} }
+func GetGLTFState(obj GLTFState) [1]Object { return obj.AsObject() }
 
 type GLTFTexture struct {
-	Locked
-	_GLTFTexture Object
+	object
+	_GLTFTexture struct{}
 }
 
-func NewGLTFTexture(obj Object) GLTFTexture    { return GLTFTexture{Locked{}, obj} }
-func GetGLTFTexture(obj GLTFTexture) [1]Object { return [1]Object{obj._GLTFTexture} }
+func NewGLTFTexture(obj Object) GLTFTexture    { return GLTFTexture{object: object(obj)} }
+func GetGLTFTexture(obj GLTFTexture) [1]Object { return obj.AsObject() }
 
 type GLTFTextureSampler struct {
-	Locked
-	_GLTFTextureSampler Object
+	object
+	_GLTFTextureSampler struct{}
 }
 
-func NewGLTFTextureSampler(obj Object) GLTFTextureSampler { return GLTFTextureSampler{Locked{}, obj} }
-func GetGLTFTextureSampler(obj GLTFTextureSampler) [1]Object {
-	return [1]Object{obj._GLTFTextureSampler}
+func NewGLTFTextureSampler(obj Object) GLTFTextureSampler {
+	return GLTFTextureSampler{object: object(obj)}
 }
+func GetGLTFTextureSampler(obj GLTFTextureSampler) [1]Object { return obj.AsObject() }
 
 type GPUParticles2D struct {
-	Locked
-	_GPUParticles2D Object
+	object
+	_GPUParticles2D struct{}
 }
 
-func NewGPUParticles2D(obj Object) GPUParticles2D    { return GPUParticles2D{Locked{}, obj} }
-func GetGPUParticles2D(obj GPUParticles2D) [1]Object { return [1]Object{obj._GPUParticles2D} }
+func NewGPUParticles2D(obj Object) GPUParticles2D    { return GPUParticles2D{object: object(obj)} }
+func GetGPUParticles2D(obj GPUParticles2D) [1]Object { return obj.AsObject() }
 
 type GPUParticles3D struct {
-	Locked
-	_GPUParticles3D Object
+	object
+	_GPUParticles3D struct{}
 }
 
-func NewGPUParticles3D(obj Object) GPUParticles3D    { return GPUParticles3D{Locked{}, obj} }
-func GetGPUParticles3D(obj GPUParticles3D) [1]Object { return [1]Object{obj._GPUParticles3D} }
+func NewGPUParticles3D(obj Object) GPUParticles3D    { return GPUParticles3D{object: object(obj)} }
+func GetGPUParticles3D(obj GPUParticles3D) [1]Object { return obj.AsObject() }
 
 type GPUParticlesAttractor3D struct {
-	Locked
-	_GPUParticlesAttractor3D Object
+	object
+	_GPUParticlesAttractor3D struct{}
 }
 
 func NewGPUParticlesAttractor3D(obj Object) GPUParticlesAttractor3D {
-	return GPUParticlesAttractor3D{Locked{}, obj}
+	return GPUParticlesAttractor3D{object: object(obj)}
 }
-func GetGPUParticlesAttractor3D(obj GPUParticlesAttractor3D) [1]Object {
-	return [1]Object{obj._GPUParticlesAttractor3D}
-}
+func GetGPUParticlesAttractor3D(obj GPUParticlesAttractor3D) [1]Object { return obj.AsObject() }
 
 type GPUParticlesAttractorBox3D struct {
-	Locked
-	_GPUParticlesAttractorBox3D Object
+	object
+	_GPUParticlesAttractorBox3D struct{}
 }
 
 func NewGPUParticlesAttractorBox3D(obj Object) GPUParticlesAttractorBox3D {
-	return GPUParticlesAttractorBox3D{Locked{}, obj}
+	return GPUParticlesAttractorBox3D{object: object(obj)}
 }
-func GetGPUParticlesAttractorBox3D(obj GPUParticlesAttractorBox3D) [1]Object {
-	return [1]Object{obj._GPUParticlesAttractorBox3D}
-}
+func GetGPUParticlesAttractorBox3D(obj GPUParticlesAttractorBox3D) [1]Object { return obj.AsObject() }
 
 type GPUParticlesAttractorSphere3D struct {
-	Locked
-	_GPUParticlesAttractorSphere3D Object
+	object
+	_GPUParticlesAttractorSphere3D struct{}
 }
 
 func NewGPUParticlesAttractorSphere3D(obj Object) GPUParticlesAttractorSphere3D {
-	return GPUParticlesAttractorSphere3D{Locked{}, obj}
+	return GPUParticlesAttractorSphere3D{object: object(obj)}
 }
 func GetGPUParticlesAttractorSphere3D(obj GPUParticlesAttractorSphere3D) [1]Object {
-	return [1]Object{obj._GPUParticlesAttractorSphere3D}
+	return obj.AsObject()
 }
 
 type GPUParticlesAttractorVectorField3D struct {
-	Locked
-	_GPUParticlesAttractorVectorField3D Object
+	object
+	_GPUParticlesAttractorVectorField3D struct{}
 }
 
 func NewGPUParticlesAttractorVectorField3D(obj Object) GPUParticlesAttractorVectorField3D {
-	return GPUParticlesAttractorVectorField3D{Locked{}, obj}
+	return GPUParticlesAttractorVectorField3D{object: object(obj)}
 }
 func GetGPUParticlesAttractorVectorField3D(obj GPUParticlesAttractorVectorField3D) [1]Object {
-	return [1]Object{obj._GPUParticlesAttractorVectorField3D}
+	return obj.AsObject()
 }
 
 type GPUParticlesCollision3D struct {
-	Locked
-	_GPUParticlesCollision3D Object
+	object
+	_GPUParticlesCollision3D struct{}
 }
 
 func NewGPUParticlesCollision3D(obj Object) GPUParticlesCollision3D {
-	return GPUParticlesCollision3D{Locked{}, obj}
+	return GPUParticlesCollision3D{object: object(obj)}
 }
-func GetGPUParticlesCollision3D(obj GPUParticlesCollision3D) [1]Object {
-	return [1]Object{obj._GPUParticlesCollision3D}
-}
+func GetGPUParticlesCollision3D(obj GPUParticlesCollision3D) [1]Object { return obj.AsObject() }
 
 type GPUParticlesCollisionBox3D struct {
-	Locked
-	_GPUParticlesCollisionBox3D Object
+	object
+	_GPUParticlesCollisionBox3D struct{}
 }
 
 func NewGPUParticlesCollisionBox3D(obj Object) GPUParticlesCollisionBox3D {
-	return GPUParticlesCollisionBox3D{Locked{}, obj}
+	return GPUParticlesCollisionBox3D{object: object(obj)}
 }
-func GetGPUParticlesCollisionBox3D(obj GPUParticlesCollisionBox3D) [1]Object {
-	return [1]Object{obj._GPUParticlesCollisionBox3D}
-}
+func GetGPUParticlesCollisionBox3D(obj GPUParticlesCollisionBox3D) [1]Object { return obj.AsObject() }
 
 type GPUParticlesCollisionHeightField3D struct {
-	Locked
-	_GPUParticlesCollisionHeightField3D Object
+	object
+	_GPUParticlesCollisionHeightField3D struct{}
 }
 
 func NewGPUParticlesCollisionHeightField3D(obj Object) GPUParticlesCollisionHeightField3D {
-	return GPUParticlesCollisionHeightField3D{Locked{}, obj}
+	return GPUParticlesCollisionHeightField3D{object: object(obj)}
 }
 func GetGPUParticlesCollisionHeightField3D(obj GPUParticlesCollisionHeightField3D) [1]Object {
-	return [1]Object{obj._GPUParticlesCollisionHeightField3D}
+	return obj.AsObject()
 }
 
 type GPUParticlesCollisionSDF3D struct {
-	Locked
-	_GPUParticlesCollisionSDF3D Object
+	object
+	_GPUParticlesCollisionSDF3D struct{}
 }
 
 func NewGPUParticlesCollisionSDF3D(obj Object) GPUParticlesCollisionSDF3D {
-	return GPUParticlesCollisionSDF3D{Locked{}, obj}
+	return GPUParticlesCollisionSDF3D{object: object(obj)}
 }
-func GetGPUParticlesCollisionSDF3D(obj GPUParticlesCollisionSDF3D) [1]Object {
-	return [1]Object{obj._GPUParticlesCollisionSDF3D}
-}
+func GetGPUParticlesCollisionSDF3D(obj GPUParticlesCollisionSDF3D) [1]Object { return obj.AsObject() }
 
 type GPUParticlesCollisionSphere3D struct {
-	Locked
-	_GPUParticlesCollisionSphere3D Object
+	object
+	_GPUParticlesCollisionSphere3D struct{}
 }
 
 func NewGPUParticlesCollisionSphere3D(obj Object) GPUParticlesCollisionSphere3D {
-	return GPUParticlesCollisionSphere3D{Locked{}, obj}
+	return GPUParticlesCollisionSphere3D{object: object(obj)}
 }
 func GetGPUParticlesCollisionSphere3D(obj GPUParticlesCollisionSphere3D) [1]Object {
-	return [1]Object{obj._GPUParticlesCollisionSphere3D}
+	return obj.AsObject()
 }
 
 type Generic6DOFJoint3D struct {
-	Locked
-	_Generic6DOFJoint3D Object
+	object
+	_Generic6DOFJoint3D struct{}
 }
 
-func NewGeneric6DOFJoint3D(obj Object) Generic6DOFJoint3D { return Generic6DOFJoint3D{Locked{}, obj} }
-func GetGeneric6DOFJoint3D(obj Generic6DOFJoint3D) [1]Object {
-	return [1]Object{obj._Generic6DOFJoint3D}
+func NewGeneric6DOFJoint3D(obj Object) Generic6DOFJoint3D {
+	return Generic6DOFJoint3D{object: object(obj)}
 }
+func GetGeneric6DOFJoint3D(obj Generic6DOFJoint3D) [1]Object { return obj.AsObject() }
 
 type Geometry2D struct {
-	Locked
-	_Geometry2D Object
+	object
+	_Geometry2D struct{}
 }
 
-func NewGeometry2D(obj Object) Geometry2D    { return Geometry2D{Locked{}, obj} }
-func GetGeometry2D(obj Geometry2D) [1]Object { return [1]Object{obj._Geometry2D} }
+func NewGeometry2D(obj Object) Geometry2D    { return Geometry2D{object: object(obj)} }
+func GetGeometry2D(obj Geometry2D) [1]Object { return obj.AsObject() }
 
 type Geometry3D struct {
-	Locked
-	_Geometry3D Object
+	object
+	_Geometry3D struct{}
 }
 
-func NewGeometry3D(obj Object) Geometry3D    { return Geometry3D{Locked{}, obj} }
-func GetGeometry3D(obj Geometry3D) [1]Object { return [1]Object{obj._Geometry3D} }
+func NewGeometry3D(obj Object) Geometry3D    { return Geometry3D{object: object(obj)} }
+func GetGeometry3D(obj Geometry3D) [1]Object { return obj.AsObject() }
 
 type GeometryInstance3D struct {
-	Locked
-	_GeometryInstance3D Object
+	object
+	_GeometryInstance3D struct{}
 }
 
-func NewGeometryInstance3D(obj Object) GeometryInstance3D { return GeometryInstance3D{Locked{}, obj} }
-func GetGeometryInstance3D(obj GeometryInstance3D) [1]Object {
-	return [1]Object{obj._GeometryInstance3D}
+func NewGeometryInstance3D(obj Object) GeometryInstance3D {
+	return GeometryInstance3D{object: object(obj)}
 }
+func GetGeometryInstance3D(obj GeometryInstance3D) [1]Object { return obj.AsObject() }
 
 type Startup struct {
-	Locked
-	_Startup Object
+	object
+	_Startup struct{}
 }
 
-func NewStartup(obj Object) Startup    { return Startup{Locked{}, obj} }
-func GetStartup(obj Startup) [1]Object { return [1]Object{obj._Startup} }
+func NewStartup(obj Object) Startup    { return Startup{object: object(obj)} }
+func GetStartup(obj Startup) [1]Object { return obj.AsObject() }
 
 type Gradient struct {
-	Locked
-	_Gradient Object
+	object
+	_Gradient struct{}
 }
 
-func NewGradient(obj Object) Gradient    { return Gradient{Locked{}, obj} }
-func GetGradient(obj Gradient) [1]Object { return [1]Object{obj._Gradient} }
+func NewGradient(obj Object) Gradient    { return Gradient{object: object(obj)} }
+func GetGradient(obj Gradient) [1]Object { return obj.AsObject() }
 
 type GradientTexture1D struct {
-	Locked
-	_GradientTexture1D Object
+	object
+	_GradientTexture1D struct{}
 }
 
-func NewGradientTexture1D(obj Object) GradientTexture1D    { return GradientTexture1D{Locked{}, obj} }
-func GetGradientTexture1D(obj GradientTexture1D) [1]Object { return [1]Object{obj._GradientTexture1D} }
+func NewGradientTexture1D(obj Object) GradientTexture1D {
+	return GradientTexture1D{object: object(obj)}
+}
+func GetGradientTexture1D(obj GradientTexture1D) [1]Object { return obj.AsObject() }
 
 type GradientTexture2D struct {
-	Locked
-	_GradientTexture2D Object
+	object
+	_GradientTexture2D struct{}
 }
 
-func NewGradientTexture2D(obj Object) GradientTexture2D    { return GradientTexture2D{Locked{}, obj} }
-func GetGradientTexture2D(obj GradientTexture2D) [1]Object { return [1]Object{obj._GradientTexture2D} }
+func NewGradientTexture2D(obj Object) GradientTexture2D {
+	return GradientTexture2D{object: object(obj)}
+}
+func GetGradientTexture2D(obj GradientTexture2D) [1]Object { return obj.AsObject() }
 
 type GraphEdit struct {
-	Locked
-	_GraphEdit Object
+	object
+	_GraphEdit struct{}
 }
 
-func NewGraphEdit(obj Object) GraphEdit    { return GraphEdit{Locked{}, obj} }
-func GetGraphEdit(obj GraphEdit) [1]Object { return [1]Object{obj._GraphEdit} }
+func NewGraphEdit(obj Object) GraphEdit    { return GraphEdit{object: object(obj)} }
+func GetGraphEdit(obj GraphEdit) [1]Object { return obj.AsObject() }
 
 type GraphElement struct {
-	Locked
-	_GraphElement Object
+	object
+	_GraphElement struct{}
 }
 
-func NewGraphElement(obj Object) GraphElement    { return GraphElement{Locked{}, obj} }
-func GetGraphElement(obj GraphElement) [1]Object { return [1]Object{obj._GraphElement} }
+func NewGraphElement(obj Object) GraphElement    { return GraphElement{object: object(obj)} }
+func GetGraphElement(obj GraphElement) [1]Object { return obj.AsObject() }
 
 type GraphFrame struct {
-	Locked
-	_GraphFrame Object
+	object
+	_GraphFrame struct{}
 }
 
-func NewGraphFrame(obj Object) GraphFrame    { return GraphFrame{Locked{}, obj} }
-func GetGraphFrame(obj GraphFrame) [1]Object { return [1]Object{obj._GraphFrame} }
+func NewGraphFrame(obj Object) GraphFrame    { return GraphFrame{object: object(obj)} }
+func GetGraphFrame(obj GraphFrame) [1]Object { return obj.AsObject() }
 
 type GraphNode struct {
-	Locked
-	_GraphNode Object
+	object
+	_GraphNode struct{}
 }
 
-func NewGraphNode(obj Object) GraphNode    { return GraphNode{Locked{}, obj} }
-func GetGraphNode(obj GraphNode) [1]Object { return [1]Object{obj._GraphNode} }
+func NewGraphNode(obj Object) GraphNode    { return GraphNode{object: object(obj)} }
+func GetGraphNode(obj GraphNode) [1]Object { return obj.AsObject() }
 
 type GridContainer struct {
-	Locked
-	_GridContainer Object
+	object
+	_GridContainer struct{}
 }
 
-func NewGridContainer(obj Object) GridContainer    { return GridContainer{Locked{}, obj} }
-func GetGridContainer(obj GridContainer) [1]Object { return [1]Object{obj._GridContainer} }
+func NewGridContainer(obj Object) GridContainer    { return GridContainer{object: object(obj)} }
+func GetGridContainer(obj GridContainer) [1]Object { return obj.AsObject() }
 
 type GridMap struct {
-	Locked
-	_GridMap Object
+	object
+	_GridMap struct{}
 }
 
-func NewGridMap(obj Object) GridMap    { return GridMap{Locked{}, obj} }
-func GetGridMap(obj GridMap) [1]Object { return [1]Object{obj._GridMap} }
+func NewGridMap(obj Object) GridMap    { return GridMap{object: object(obj)} }
+func GetGridMap(obj GridMap) [1]Object { return obj.AsObject() }
 
 type GridMapEditorPlugin struct {
-	Locked
-	_GridMapEditorPlugin Object
+	object
+	_GridMapEditorPlugin struct{}
 }
 
 func NewGridMapEditorPlugin(obj Object) GridMapEditorPlugin {
-	return GridMapEditorPlugin{Locked{}, obj}
+	return GridMapEditorPlugin{object: object(obj)}
 }
-func GetGridMapEditorPlugin(obj GridMapEditorPlugin) [1]Object {
-	return [1]Object{obj._GridMapEditorPlugin}
-}
+func GetGridMapEditorPlugin(obj GridMapEditorPlugin) [1]Object { return obj.AsObject() }
 
 type GrooveJoint2D struct {
-	Locked
-	_GrooveJoint2D Object
+	object
+	_GrooveJoint2D struct{}
 }
 
-func NewGrooveJoint2D(obj Object) GrooveJoint2D    { return GrooveJoint2D{Locked{}, obj} }
-func GetGrooveJoint2D(obj GrooveJoint2D) [1]Object { return [1]Object{obj._GrooveJoint2D} }
+func NewGrooveJoint2D(obj Object) GrooveJoint2D    { return GrooveJoint2D{object: object(obj)} }
+func GetGrooveJoint2D(obj GrooveJoint2D) [1]Object { return obj.AsObject() }
 
 type HBoxContainer struct {
-	Locked
-	_HBoxContainer Object
+	object
+	_HBoxContainer struct{}
 }
 
-func NewHBoxContainer(obj Object) HBoxContainer    { return HBoxContainer{Locked{}, obj} }
-func GetHBoxContainer(obj HBoxContainer) [1]Object { return [1]Object{obj._HBoxContainer} }
+func NewHBoxContainer(obj Object) HBoxContainer    { return HBoxContainer{object: object(obj)} }
+func GetHBoxContainer(obj HBoxContainer) [1]Object { return obj.AsObject() }
 
 type HFlowContainer struct {
-	Locked
-	_HFlowContainer Object
+	object
+	_HFlowContainer struct{}
 }
 
-func NewHFlowContainer(obj Object) HFlowContainer    { return HFlowContainer{Locked{}, obj} }
-func GetHFlowContainer(obj HFlowContainer) [1]Object { return [1]Object{obj._HFlowContainer} }
+func NewHFlowContainer(obj Object) HFlowContainer    { return HFlowContainer{object: object(obj)} }
+func GetHFlowContainer(obj HFlowContainer) [1]Object { return obj.AsObject() }
 
 type HMACContext struct {
-	Locked
-	_HMACContext Object
+	object
+	_HMACContext struct{}
 }
 
-func NewHMACContext(obj Object) HMACContext    { return HMACContext{Locked{}, obj} }
-func GetHMACContext(obj HMACContext) [1]Object { return [1]Object{obj._HMACContext} }
+func NewHMACContext(obj Object) HMACContext    { return HMACContext{object: object(obj)} }
+func GetHMACContext(obj HMACContext) [1]Object { return obj.AsObject() }
 
 type HScrollBar struct {
-	Locked
-	_HScrollBar Object
+	object
+	_HScrollBar struct{}
 }
 
-func NewHScrollBar(obj Object) HScrollBar    { return HScrollBar{Locked{}, obj} }
-func GetHScrollBar(obj HScrollBar) [1]Object { return [1]Object{obj._HScrollBar} }
+func NewHScrollBar(obj Object) HScrollBar    { return HScrollBar{object: object(obj)} }
+func GetHScrollBar(obj HScrollBar) [1]Object { return obj.AsObject() }
 
 type HSeparator struct {
-	Locked
-	_HSeparator Object
+	object
+	_HSeparator struct{}
 }
 
-func NewHSeparator(obj Object) HSeparator    { return HSeparator{Locked{}, obj} }
-func GetHSeparator(obj HSeparator) [1]Object { return [1]Object{obj._HSeparator} }
+func NewHSeparator(obj Object) HSeparator    { return HSeparator{object: object(obj)} }
+func GetHSeparator(obj HSeparator) [1]Object { return obj.AsObject() }
 
 type HSlider struct {
-	Locked
-	_HSlider Object
+	object
+	_HSlider struct{}
 }
 
-func NewHSlider(obj Object) HSlider    { return HSlider{Locked{}, obj} }
-func GetHSlider(obj HSlider) [1]Object { return [1]Object{obj._HSlider} }
+func NewHSlider(obj Object) HSlider    { return HSlider{object: object(obj)} }
+func GetHSlider(obj HSlider) [1]Object { return obj.AsObject() }
 
 type HSplitContainer struct {
-	Locked
-	_HSplitContainer Object
+	object
+	_HSplitContainer struct{}
 }
 
-func NewHSplitContainer(obj Object) HSplitContainer    { return HSplitContainer{Locked{}, obj} }
-func GetHSplitContainer(obj HSplitContainer) [1]Object { return [1]Object{obj._HSplitContainer} }
+func NewHSplitContainer(obj Object) HSplitContainer    { return HSplitContainer{object: object(obj)} }
+func GetHSplitContainer(obj HSplitContainer) [1]Object { return obj.AsObject() }
 
 type HTTPClient struct {
-	Locked
-	_HTTPClient Object
+	object
+	_HTTPClient struct{}
 }
 
-func NewHTTPClient(obj Object) HTTPClient    { return HTTPClient{Locked{}, obj} }
-func GetHTTPClient(obj HTTPClient) [1]Object { return [1]Object{obj._HTTPClient} }
+func NewHTTPClient(obj Object) HTTPClient    { return HTTPClient{object: object(obj)} }
+func GetHTTPClient(obj HTTPClient) [1]Object { return obj.AsObject() }
 
 type HTTPRequest struct {
-	Locked
-	_HTTPRequest Object
+	object
+	_HTTPRequest struct{}
 }
 
-func NewHTTPRequest(obj Object) HTTPRequest    { return HTTPRequest{Locked{}, obj} }
-func GetHTTPRequest(obj HTTPRequest) [1]Object { return [1]Object{obj._HTTPRequest} }
+func NewHTTPRequest(obj Object) HTTPRequest    { return HTTPRequest{object: object(obj)} }
+func GetHTTPRequest(obj HTTPRequest) [1]Object { return obj.AsObject() }
 
 type HashingContext struct {
-	Locked
-	_HashingContext Object
+	object
+	_HashingContext struct{}
 }
 
-func NewHashingContext(obj Object) HashingContext    { return HashingContext{Locked{}, obj} }
-func GetHashingContext(obj HashingContext) [1]Object { return [1]Object{obj._HashingContext} }
+func NewHashingContext(obj Object) HashingContext    { return HashingContext{object: object(obj)} }
+func GetHashingContext(obj HashingContext) [1]Object { return obj.AsObject() }
 
 type HeightMapShape3D struct {
-	Locked
-	_HeightMapShape3D Object
+	object
+	_HeightMapShape3D struct{}
 }
 
-func NewHeightMapShape3D(obj Object) HeightMapShape3D    { return HeightMapShape3D{Locked{}, obj} }
-func GetHeightMapShape3D(obj HeightMapShape3D) [1]Object { return [1]Object{obj._HeightMapShape3D} }
+func NewHeightMapShape3D(obj Object) HeightMapShape3D    { return HeightMapShape3D{object: object(obj)} }
+func GetHeightMapShape3D(obj HeightMapShape3D) [1]Object { return obj.AsObject() }
 
 type HingeJoint3D struct {
-	Locked
-	_HingeJoint3D Object
+	object
+	_HingeJoint3D struct{}
 }
 
-func NewHingeJoint3D(obj Object) HingeJoint3D    { return HingeJoint3D{Locked{}, obj} }
-func GetHingeJoint3D(obj HingeJoint3D) [1]Object { return [1]Object{obj._HingeJoint3D} }
+func NewHingeJoint3D(obj Object) HingeJoint3D    { return HingeJoint3D{object: object(obj)} }
+func GetHingeJoint3D(obj HingeJoint3D) [1]Object { return obj.AsObject() }
 
 type IKModifier3D struct {
-	Locked
-	_IKModifier3D Object
+	object
+	_IKModifier3D struct{}
 }
 
-func NewIKModifier3D(obj Object) IKModifier3D    { return IKModifier3D{Locked{}, obj} }
-func GetIKModifier3D(obj IKModifier3D) [1]Object { return [1]Object{obj._IKModifier3D} }
+func NewIKModifier3D(obj Object) IKModifier3D    { return IKModifier3D{object: object(obj)} }
+func GetIKModifier3D(obj IKModifier3D) [1]Object { return obj.AsObject() }
 
 type IP struct {
-	Locked
-	_IP Object
+	object
+	_IP struct{}
 }
 
-func NewIP(obj Object) IP    { return IP{Locked{}, obj} }
-func GetIP(obj IP) [1]Object { return [1]Object{obj._IP} }
+func NewIP(obj Object) IP    { return IP{object: object(obj)} }
+func GetIP(obj IP) [1]Object { return obj.AsObject() }
 
 type Image struct {
-	Locked
-	_Image Object
+	object
+	_Image struct{}
 }
 
-func NewImage(obj Object) Image    { return Image{Locked{}, obj} }
-func GetImage(obj Image) [1]Object { return [1]Object{obj._Image} }
+func NewImage(obj Object) Image    { return Image{object: object(obj)} }
+func GetImage(obj Image) [1]Object { return obj.AsObject() }
 
 type ImageFormatLoader struct {
-	Locked
-	_ImageFormatLoader Object
+	object
+	_ImageFormatLoader struct{}
 }
 
-func NewImageFormatLoader(obj Object) ImageFormatLoader    { return ImageFormatLoader{Locked{}, obj} }
-func GetImageFormatLoader(obj ImageFormatLoader) [1]Object { return [1]Object{obj._ImageFormatLoader} }
+func NewImageFormatLoader(obj Object) ImageFormatLoader {
+	return ImageFormatLoader{object: object(obj)}
+}
+func GetImageFormatLoader(obj ImageFormatLoader) [1]Object { return obj.AsObject() }
 
 type ImageFormatLoaderExtension struct {
-	Locked
-	_ImageFormatLoaderExtension Object
+	object
+	_ImageFormatLoaderExtension struct{}
 }
 
 func NewImageFormatLoaderExtension(obj Object) ImageFormatLoaderExtension {
-	return ImageFormatLoaderExtension{Locked{}, obj}
+	return ImageFormatLoaderExtension{object: object(obj)}
 }
-func GetImageFormatLoaderExtension(obj ImageFormatLoaderExtension) [1]Object {
-	return [1]Object{obj._ImageFormatLoaderExtension}
-}
+func GetImageFormatLoaderExtension(obj ImageFormatLoaderExtension) [1]Object { return obj.AsObject() }
 
 type ImageTexture struct {
-	Locked
-	_ImageTexture Object
+	object
+	_ImageTexture struct{}
 }
 
-func NewImageTexture(obj Object) ImageTexture    { return ImageTexture{Locked{}, obj} }
-func GetImageTexture(obj ImageTexture) [1]Object { return [1]Object{obj._ImageTexture} }
+func NewImageTexture(obj Object) ImageTexture    { return ImageTexture{object: object(obj)} }
+func GetImageTexture(obj ImageTexture) [1]Object { return obj.AsObject() }
 
 type ImageTexture3D struct {
-	Locked
-	_ImageTexture3D Object
+	object
+	_ImageTexture3D struct{}
 }
 
-func NewImageTexture3D(obj Object) ImageTexture3D    { return ImageTexture3D{Locked{}, obj} }
-func GetImageTexture3D(obj ImageTexture3D) [1]Object { return [1]Object{obj._ImageTexture3D} }
+func NewImageTexture3D(obj Object) ImageTexture3D    { return ImageTexture3D{object: object(obj)} }
+func GetImageTexture3D(obj ImageTexture3D) [1]Object { return obj.AsObject() }
 
 type ImageTextureLayered struct {
-	Locked
-	_ImageTextureLayered Object
+	object
+	_ImageTextureLayered struct{}
 }
 
 func NewImageTextureLayered(obj Object) ImageTextureLayered {
-	return ImageTextureLayered{Locked{}, obj}
+	return ImageTextureLayered{object: object(obj)}
 }
-func GetImageTextureLayered(obj ImageTextureLayered) [1]Object {
-	return [1]Object{obj._ImageTextureLayered}
-}
+func GetImageTextureLayered(obj ImageTextureLayered) [1]Object { return obj.AsObject() }
 
 type ImmediateMesh struct {
-	Locked
-	_ImmediateMesh Object
+	object
+	_ImmediateMesh struct{}
 }
 
-func NewImmediateMesh(obj Object) ImmediateMesh    { return ImmediateMesh{Locked{}, obj} }
-func GetImmediateMesh(obj ImmediateMesh) [1]Object { return [1]Object{obj._ImmediateMesh} }
+func NewImmediateMesh(obj Object) ImmediateMesh    { return ImmediateMesh{object: object(obj)} }
+func GetImmediateMesh(obj ImmediateMesh) [1]Object { return obj.AsObject() }
 
 type ImporterMesh struct {
-	Locked
-	_ImporterMesh Object
+	object
+	_ImporterMesh struct{}
 }
 
-func NewImporterMesh(obj Object) ImporterMesh    { return ImporterMesh{Locked{}, obj} }
-func GetImporterMesh(obj ImporterMesh) [1]Object { return [1]Object{obj._ImporterMesh} }
+func NewImporterMesh(obj Object) ImporterMesh    { return ImporterMesh{object: object(obj)} }
+func GetImporterMesh(obj ImporterMesh) [1]Object { return obj.AsObject() }
 
 type ImporterMeshInstance3D struct {
-	Locked
-	_ImporterMeshInstance3D Object
+	object
+	_ImporterMeshInstance3D struct{}
 }
 
 func NewImporterMeshInstance3D(obj Object) ImporterMeshInstance3D {
-	return ImporterMeshInstance3D{Locked{}, obj}
+	return ImporterMeshInstance3D{object: object(obj)}
 }
-func GetImporterMeshInstance3D(obj ImporterMeshInstance3D) [1]Object {
-	return [1]Object{obj._ImporterMeshInstance3D}
-}
+func GetImporterMeshInstance3D(obj ImporterMeshInstance3D) [1]Object { return obj.AsObject() }
 
 type Input struct {
-	Locked
-	_Input Object
+	object
+	_Input struct{}
 }
 
-func NewInput(obj Object) Input    { return Input{Locked{}, obj} }
-func GetInput(obj Input) [1]Object { return [1]Object{obj._Input} }
+func NewInput(obj Object) Input    { return Input{object: object(obj)} }
+func GetInput(obj Input) [1]Object { return obj.AsObject() }
 
 type InputEvent struct {
-	Locked
-	_InputEvent Object
+	object
+	_InputEvent struct{}
 }
 
-func NewInputEvent(obj Object) InputEvent    { return InputEvent{Locked{}, obj} }
-func GetInputEvent(obj InputEvent) [1]Object { return [1]Object{obj._InputEvent} }
+func NewInputEvent(obj Object) InputEvent    { return InputEvent{object: object(obj)} }
+func GetInputEvent(obj InputEvent) [1]Object { return obj.AsObject() }
 
 type InputEventAction struct {
-	Locked
-	_InputEventAction Object
+	object
+	_InputEventAction struct{}
 }
 
-func NewInputEventAction(obj Object) InputEventAction    { return InputEventAction{Locked{}, obj} }
-func GetInputEventAction(obj InputEventAction) [1]Object { return [1]Object{obj._InputEventAction} }
+func NewInputEventAction(obj Object) InputEventAction    { return InputEventAction{object: object(obj)} }
+func GetInputEventAction(obj InputEventAction) [1]Object { return obj.AsObject() }
 
 type InputEventFromWindow struct {
-	Locked
-	_InputEventFromWindow Object
+	object
+	_InputEventFromWindow struct{}
 }
 
 func NewInputEventFromWindow(obj Object) InputEventFromWindow {
-	return InputEventFromWindow{Locked{}, obj}
+	return InputEventFromWindow{object: object(obj)}
 }
-func GetInputEventFromWindow(obj InputEventFromWindow) [1]Object {
-	return [1]Object{obj._InputEventFromWindow}
-}
+func GetInputEventFromWindow(obj InputEventFromWindow) [1]Object { return obj.AsObject() }
 
 type InputEventGesture struct {
-	Locked
-	_InputEventGesture Object
+	object
+	_InputEventGesture struct{}
 }
 
-func NewInputEventGesture(obj Object) InputEventGesture    { return InputEventGesture{Locked{}, obj} }
-func GetInputEventGesture(obj InputEventGesture) [1]Object { return [1]Object{obj._InputEventGesture} }
+func NewInputEventGesture(obj Object) InputEventGesture {
+	return InputEventGesture{object: object(obj)}
+}
+func GetInputEventGesture(obj InputEventGesture) [1]Object { return obj.AsObject() }
 
 type InputEventJoypadButton struct {
-	Locked
-	_InputEventJoypadButton Object
+	object
+	_InputEventJoypadButton struct{}
 }
 
 func NewInputEventJoypadButton(obj Object) InputEventJoypadButton {
-	return InputEventJoypadButton{Locked{}, obj}
+	return InputEventJoypadButton{object: object(obj)}
 }
-func GetInputEventJoypadButton(obj InputEventJoypadButton) [1]Object {
-	return [1]Object{obj._InputEventJoypadButton}
-}
+func GetInputEventJoypadButton(obj InputEventJoypadButton) [1]Object { return obj.AsObject() }
 
 type InputEventJoypadMotion struct {
-	Locked
-	_InputEventJoypadMotion Object
+	object
+	_InputEventJoypadMotion struct{}
 }
 
 func NewInputEventJoypadMotion(obj Object) InputEventJoypadMotion {
-	return InputEventJoypadMotion{Locked{}, obj}
+	return InputEventJoypadMotion{object: object(obj)}
 }
-func GetInputEventJoypadMotion(obj InputEventJoypadMotion) [1]Object {
-	return [1]Object{obj._InputEventJoypadMotion}
-}
+func GetInputEventJoypadMotion(obj InputEventJoypadMotion) [1]Object { return obj.AsObject() }
 
 type InputEventKey struct {
-	Locked
-	_InputEventKey Object
+	object
+	_InputEventKey struct{}
 }
 
-func NewInputEventKey(obj Object) InputEventKey    { return InputEventKey{Locked{}, obj} }
-func GetInputEventKey(obj InputEventKey) [1]Object { return [1]Object{obj._InputEventKey} }
+func NewInputEventKey(obj Object) InputEventKey    { return InputEventKey{object: object(obj)} }
+func GetInputEventKey(obj InputEventKey) [1]Object { return obj.AsObject() }
 
 type InputEventMIDI struct {
-	Locked
-	_InputEventMIDI Object
+	object
+	_InputEventMIDI struct{}
 }
 
-func NewInputEventMIDI(obj Object) InputEventMIDI    { return InputEventMIDI{Locked{}, obj} }
-func GetInputEventMIDI(obj InputEventMIDI) [1]Object { return [1]Object{obj._InputEventMIDI} }
+func NewInputEventMIDI(obj Object) InputEventMIDI    { return InputEventMIDI{object: object(obj)} }
+func GetInputEventMIDI(obj InputEventMIDI) [1]Object { return obj.AsObject() }
 
 type InputEventMagnifyGesture struct {
-	Locked
-	_InputEventMagnifyGesture Object
+	object
+	_InputEventMagnifyGesture struct{}
 }
 
 func NewInputEventMagnifyGesture(obj Object) InputEventMagnifyGesture {
-	return InputEventMagnifyGesture{Locked{}, obj}
+	return InputEventMagnifyGesture{object: object(obj)}
 }
-func GetInputEventMagnifyGesture(obj InputEventMagnifyGesture) [1]Object {
-	return [1]Object{obj._InputEventMagnifyGesture}
-}
+func GetInputEventMagnifyGesture(obj InputEventMagnifyGesture) [1]Object { return obj.AsObject() }
 
 type InputEventMouse struct {
-	Locked
-	_InputEventMouse Object
+	object
+	_InputEventMouse struct{}
 }
 
-func NewInputEventMouse(obj Object) InputEventMouse    { return InputEventMouse{Locked{}, obj} }
-func GetInputEventMouse(obj InputEventMouse) [1]Object { return [1]Object{obj._InputEventMouse} }
+func NewInputEventMouse(obj Object) InputEventMouse    { return InputEventMouse{object: object(obj)} }
+func GetInputEventMouse(obj InputEventMouse) [1]Object { return obj.AsObject() }
 
 type InputEventMouseButton struct {
-	Locked
-	_InputEventMouseButton Object
+	object
+	_InputEventMouseButton struct{}
 }
 
 func NewInputEventMouseButton(obj Object) InputEventMouseButton {
-	return InputEventMouseButton{Locked{}, obj}
+	return InputEventMouseButton{object: object(obj)}
 }
-func GetInputEventMouseButton(obj InputEventMouseButton) [1]Object {
-	return [1]Object{obj._InputEventMouseButton}
-}
+func GetInputEventMouseButton(obj InputEventMouseButton) [1]Object { return obj.AsObject() }
 
 type InputEventMouseMotion struct {
-	Locked
-	_InputEventMouseMotion Object
+	object
+	_InputEventMouseMotion struct{}
 }
 
 func NewInputEventMouseMotion(obj Object) InputEventMouseMotion {
-	return InputEventMouseMotion{Locked{}, obj}
+	return InputEventMouseMotion{object: object(obj)}
 }
-func GetInputEventMouseMotion(obj InputEventMouseMotion) [1]Object {
-	return [1]Object{obj._InputEventMouseMotion}
-}
+func GetInputEventMouseMotion(obj InputEventMouseMotion) [1]Object { return obj.AsObject() }
 
 type InputEventPanGesture struct {
-	Locked
-	_InputEventPanGesture Object
+	object
+	_InputEventPanGesture struct{}
 }
 
 func NewInputEventPanGesture(obj Object) InputEventPanGesture {
-	return InputEventPanGesture{Locked{}, obj}
+	return InputEventPanGesture{object: object(obj)}
 }
-func GetInputEventPanGesture(obj InputEventPanGesture) [1]Object {
-	return [1]Object{obj._InputEventPanGesture}
-}
+func GetInputEventPanGesture(obj InputEventPanGesture) [1]Object { return obj.AsObject() }
 
 type InputEventScreenDrag struct {
-	Locked
-	_InputEventScreenDrag Object
+	object
+	_InputEventScreenDrag struct{}
 }
 
 func NewInputEventScreenDrag(obj Object) InputEventScreenDrag {
-	return InputEventScreenDrag{Locked{}, obj}
+	return InputEventScreenDrag{object: object(obj)}
 }
-func GetInputEventScreenDrag(obj InputEventScreenDrag) [1]Object {
-	return [1]Object{obj._InputEventScreenDrag}
-}
+func GetInputEventScreenDrag(obj InputEventScreenDrag) [1]Object { return obj.AsObject() }
 
 type InputEventScreenTouch struct {
-	Locked
-	_InputEventScreenTouch Object
+	object
+	_InputEventScreenTouch struct{}
 }
 
 func NewInputEventScreenTouch(obj Object) InputEventScreenTouch {
-	return InputEventScreenTouch{Locked{}, obj}
+	return InputEventScreenTouch{object: object(obj)}
 }
-func GetInputEventScreenTouch(obj InputEventScreenTouch) [1]Object {
-	return [1]Object{obj._InputEventScreenTouch}
-}
+func GetInputEventScreenTouch(obj InputEventScreenTouch) [1]Object { return obj.AsObject() }
 
 type InputEventShortcut struct {
-	Locked
-	_InputEventShortcut Object
+	object
+	_InputEventShortcut struct{}
 }
 
-func NewInputEventShortcut(obj Object) InputEventShortcut { return InputEventShortcut{Locked{}, obj} }
-func GetInputEventShortcut(obj InputEventShortcut) [1]Object {
-	return [1]Object{obj._InputEventShortcut}
+func NewInputEventShortcut(obj Object) InputEventShortcut {
+	return InputEventShortcut{object: object(obj)}
 }
+func GetInputEventShortcut(obj InputEventShortcut) [1]Object { return obj.AsObject() }
 
 type InputEventWithModifiers struct {
-	Locked
-	_InputEventWithModifiers Object
+	object
+	_InputEventWithModifiers struct{}
 }
 
 func NewInputEventWithModifiers(obj Object) InputEventWithModifiers {
-	return InputEventWithModifiers{Locked{}, obj}
+	return InputEventWithModifiers{object: object(obj)}
 }
-func GetInputEventWithModifiers(obj InputEventWithModifiers) [1]Object {
-	return [1]Object{obj._InputEventWithModifiers}
-}
+func GetInputEventWithModifiers(obj InputEventWithModifiers) [1]Object { return obj.AsObject() }
 
 type InputMap struct {
-	Locked
-	_InputMap Object
+	object
+	_InputMap struct{}
 }
 
-func NewInputMap(obj Object) InputMap    { return InputMap{Locked{}, obj} }
-func GetInputMap(obj InputMap) [1]Object { return [1]Object{obj._InputMap} }
+func NewInputMap(obj Object) InputMap    { return InputMap{object: object(obj)} }
+func GetInputMap(obj InputMap) [1]Object { return obj.AsObject() }
 
 type InstancePlaceholder struct {
-	Locked
-	_InstancePlaceholder Object
+	object
+	_InstancePlaceholder struct{}
 }
 
 func NewInstancePlaceholder(obj Object) InstancePlaceholder {
-	return InstancePlaceholder{Locked{}, obj}
+	return InstancePlaceholder{object: object(obj)}
 }
-func GetInstancePlaceholder(obj InstancePlaceholder) [1]Object {
-	return [1]Object{obj._InstancePlaceholder}
-}
+func GetInstancePlaceholder(obj InstancePlaceholder) [1]Object { return obj.AsObject() }
 
 type IntervalTweener struct {
-	Locked
-	_IntervalTweener Object
+	object
+	_IntervalTweener struct{}
 }
 
-func NewIntervalTweener(obj Object) IntervalTweener    { return IntervalTweener{Locked{}, obj} }
-func GetIntervalTweener(obj IntervalTweener) [1]Object { return [1]Object{obj._IntervalTweener} }
+func NewIntervalTweener(obj Object) IntervalTweener    { return IntervalTweener{object: object(obj)} }
+func GetIntervalTweener(obj IntervalTweener) [1]Object { return obj.AsObject() }
 
 type ItemList struct {
-	Locked
-	_ItemList Object
+	object
+	_ItemList struct{}
 }
 
-func NewItemList(obj Object) ItemList    { return ItemList{Locked{}, obj} }
-func GetItemList(obj ItemList) [1]Object { return [1]Object{obj._ItemList} }
+func NewItemList(obj Object) ItemList    { return ItemList{object: object(obj)} }
+func GetItemList(obj ItemList) [1]Object { return obj.AsObject() }
 
 type IterateIK3D struct {
-	Locked
-	_IterateIK3D Object
+	object
+	_IterateIK3D struct{}
 }
 
-func NewIterateIK3D(obj Object) IterateIK3D    { return IterateIK3D{Locked{}, obj} }
-func GetIterateIK3D(obj IterateIK3D) [1]Object { return [1]Object{obj._IterateIK3D} }
+func NewIterateIK3D(obj Object) IterateIK3D    { return IterateIK3D{object: object(obj)} }
+func GetIterateIK3D(obj IterateIK3D) [1]Object { return obj.AsObject() }
 
 type JNISingleton struct {
-	Locked
-	_JNISingleton Object
+	object
+	_JNISingleton struct{}
 }
 
-func NewJNISingleton(obj Object) JNISingleton    { return JNISingleton{Locked{}, obj} }
-func GetJNISingleton(obj JNISingleton) [1]Object { return [1]Object{obj._JNISingleton} }
+func NewJNISingleton(obj Object) JNISingleton    { return JNISingleton{object: object(obj)} }
+func GetJNISingleton(obj JNISingleton) [1]Object { return obj.AsObject() }
 
 type JSON struct {
-	Locked
-	_JSON Object
+	object
+	_JSON struct{}
 }
 
-func NewJSON(obj Object) JSON    { return JSON{Locked{}, obj} }
-func GetJSON(obj JSON) [1]Object { return [1]Object{obj._JSON} }
+func NewJSON(obj Object) JSON    { return JSON{object: object(obj)} }
+func GetJSON(obj JSON) [1]Object { return obj.AsObject() }
 
 type JSONRPC struct {
-	Locked
-	_JSONRPC Object
+	object
+	_JSONRPC struct{}
 }
 
-func NewJSONRPC(obj Object) JSONRPC    { return JSONRPC{Locked{}, obj} }
-func GetJSONRPC(obj JSONRPC) [1]Object { return [1]Object{obj._JSONRPC} }
+func NewJSONRPC(obj Object) JSONRPC    { return JSONRPC{object: object(obj)} }
+func GetJSONRPC(obj JSONRPC) [1]Object { return obj.AsObject() }
 
 type JacobianIK3D struct {
-	Locked
-	_JacobianIK3D Object
+	object
+	_JacobianIK3D struct{}
 }
 
-func NewJacobianIK3D(obj Object) JacobianIK3D    { return JacobianIK3D{Locked{}, obj} }
-func GetJacobianIK3D(obj JacobianIK3D) [1]Object { return [1]Object{obj._JacobianIK3D} }
+func NewJacobianIK3D(obj Object) JacobianIK3D    { return JacobianIK3D{object: object(obj)} }
+func GetJacobianIK3D(obj JacobianIK3D) [1]Object { return obj.AsObject() }
 
 type JavaClass struct {
-	Locked
-	_JavaClass Object
+	object
+	_JavaClass struct{}
 }
 
-func NewJavaClass(obj Object) JavaClass    { return JavaClass{Locked{}, obj} }
-func GetJavaClass(obj JavaClass) [1]Object { return [1]Object{obj._JavaClass} }
+func NewJavaClass(obj Object) JavaClass    { return JavaClass{object: object(obj)} }
+func GetJavaClass(obj JavaClass) [1]Object { return obj.AsObject() }
 
 type JavaClassWrapper struct {
-	Locked
-	_JavaClassWrapper Object
+	object
+	_JavaClassWrapper struct{}
 }
 
-func NewJavaClassWrapper(obj Object) JavaClassWrapper    { return JavaClassWrapper{Locked{}, obj} }
-func GetJavaClassWrapper(obj JavaClassWrapper) [1]Object { return [1]Object{obj._JavaClassWrapper} }
+func NewJavaClassWrapper(obj Object) JavaClassWrapper    { return JavaClassWrapper{object: object(obj)} }
+func GetJavaClassWrapper(obj JavaClassWrapper) [1]Object { return obj.AsObject() }
 
 type JavaObject struct {
-	Locked
-	_JavaObject Object
+	object
+	_JavaObject struct{}
 }
 
-func NewJavaObject(obj Object) JavaObject    { return JavaObject{Locked{}, obj} }
-func GetJavaObject(obj JavaObject) [1]Object { return [1]Object{obj._JavaObject} }
+func NewJavaObject(obj Object) JavaObject    { return JavaObject{object: object(obj)} }
+func GetJavaObject(obj JavaObject) [1]Object { return obj.AsObject() }
 
 type JavaScriptBridge struct {
-	Locked
-	_JavaScriptBridge Object
+	object
+	_JavaScriptBridge struct{}
 }
 
-func NewJavaScriptBridge(obj Object) JavaScriptBridge    { return JavaScriptBridge{Locked{}, obj} }
-func GetJavaScriptBridge(obj JavaScriptBridge) [1]Object { return [1]Object{obj._JavaScriptBridge} }
+func NewJavaScriptBridge(obj Object) JavaScriptBridge    { return JavaScriptBridge{object: object(obj)} }
+func GetJavaScriptBridge(obj JavaScriptBridge) [1]Object { return obj.AsObject() }
 
 type JavaScriptObject struct {
-	Locked
-	_JavaScriptObject Object
+	object
+	_JavaScriptObject struct{}
 }
 
-func NewJavaScriptObject(obj Object) JavaScriptObject    { return JavaScriptObject{Locked{}, obj} }
-func GetJavaScriptObject(obj JavaScriptObject) [1]Object { return [1]Object{obj._JavaScriptObject} }
+func NewJavaScriptObject(obj Object) JavaScriptObject    { return JavaScriptObject{object: object(obj)} }
+func GetJavaScriptObject(obj JavaScriptObject) [1]Object { return obj.AsObject() }
 
 type Joint2D struct {
-	Locked
-	_Joint2D Object
+	object
+	_Joint2D struct{}
 }
 
-func NewJoint2D(obj Object) Joint2D    { return Joint2D{Locked{}, obj} }
-func GetJoint2D(obj Joint2D) [1]Object { return [1]Object{obj._Joint2D} }
+func NewJoint2D(obj Object) Joint2D    { return Joint2D{object: object(obj)} }
+func GetJoint2D(obj Joint2D) [1]Object { return obj.AsObject() }
 
 type Joint3D struct {
-	Locked
-	_Joint3D Object
+	object
+	_Joint3D struct{}
 }
 
-func NewJoint3D(obj Object) Joint3D    { return Joint3D{Locked{}, obj} }
-func GetJoint3D(obj Joint3D) [1]Object { return [1]Object{obj._Joint3D} }
+func NewJoint3D(obj Object) Joint3D    { return Joint3D{object: object(obj)} }
+func GetJoint3D(obj Joint3D) [1]Object { return obj.AsObject() }
 
 type JointLimitation3D struct {
-	Locked
-	_JointLimitation3D Object
+	object
+	_JointLimitation3D struct{}
 }
 
-func NewJointLimitation3D(obj Object) JointLimitation3D    { return JointLimitation3D{Locked{}, obj} }
-func GetJointLimitation3D(obj JointLimitation3D) [1]Object { return [1]Object{obj._JointLimitation3D} }
+func NewJointLimitation3D(obj Object) JointLimitation3D {
+	return JointLimitation3D{object: object(obj)}
+}
+func GetJointLimitation3D(obj JointLimitation3D) [1]Object { return obj.AsObject() }
 
 type JointLimitationCone3D struct {
-	Locked
-	_JointLimitationCone3D Object
+	object
+	_JointLimitationCone3D struct{}
 }
 
 func NewJointLimitationCone3D(obj Object) JointLimitationCone3D {
-	return JointLimitationCone3D{Locked{}, obj}
+	return JointLimitationCone3D{object: object(obj)}
 }
-func GetJointLimitationCone3D(obj JointLimitationCone3D) [1]Object {
-	return [1]Object{obj._JointLimitationCone3D}
-}
+func GetJointLimitationCone3D(obj JointLimitationCone3D) [1]Object { return obj.AsObject() }
 
 type KinematicCollision2D struct {
-	Locked
-	_KinematicCollision2D Object
+	object
+	_KinematicCollision2D struct{}
 }
 
 func NewKinematicCollision2D(obj Object) KinematicCollision2D {
-	return KinematicCollision2D{Locked{}, obj}
+	return KinematicCollision2D{object: object(obj)}
 }
-func GetKinematicCollision2D(obj KinematicCollision2D) [1]Object {
-	return [1]Object{obj._KinematicCollision2D}
-}
+func GetKinematicCollision2D(obj KinematicCollision2D) [1]Object { return obj.AsObject() }
 
 type KinematicCollision3D struct {
-	Locked
-	_KinematicCollision3D Object
+	object
+	_KinematicCollision3D struct{}
 }
 
 func NewKinematicCollision3D(obj Object) KinematicCollision3D {
-	return KinematicCollision3D{Locked{}, obj}
+	return KinematicCollision3D{object: object(obj)}
 }
-func GetKinematicCollision3D(obj KinematicCollision3D) [1]Object {
-	return [1]Object{obj._KinematicCollision3D}
-}
+func GetKinematicCollision3D(obj KinematicCollision3D) [1]Object { return obj.AsObject() }
 
 type Label struct {
-	Locked
-	_Label Object
+	object
+	_Label struct{}
 }
 
-func NewLabel(obj Object) Label    { return Label{Locked{}, obj} }
-func GetLabel(obj Label) [1]Object { return [1]Object{obj._Label} }
+func NewLabel(obj Object) Label    { return Label{object: object(obj)} }
+func GetLabel(obj Label) [1]Object { return obj.AsObject() }
 
 type Label3D struct {
-	Locked
-	_Label3D Object
+	object
+	_Label3D struct{}
 }
 
-func NewLabel3D(obj Object) Label3D    { return Label3D{Locked{}, obj} }
-func GetLabel3D(obj Label3D) [1]Object { return [1]Object{obj._Label3D} }
+func NewLabel3D(obj Object) Label3D    { return Label3D{object: object(obj)} }
+func GetLabel3D(obj Label3D) [1]Object { return obj.AsObject() }
 
 type LabelSettings struct {
-	Locked
-	_LabelSettings Object
+	object
+	_LabelSettings struct{}
 }
 
-func NewLabelSettings(obj Object) LabelSettings    { return LabelSettings{Locked{}, obj} }
-func GetLabelSettings(obj LabelSettings) [1]Object { return [1]Object{obj._LabelSettings} }
+func NewLabelSettings(obj Object) LabelSettings    { return LabelSettings{object: object(obj)} }
+func GetLabelSettings(obj LabelSettings) [1]Object { return obj.AsObject() }
 
 type Light2D struct {
-	Locked
-	_Light2D Object
+	object
+	_Light2D struct{}
 }
 
-func NewLight2D(obj Object) Light2D    { return Light2D{Locked{}, obj} }
-func GetLight2D(obj Light2D) [1]Object { return [1]Object{obj._Light2D} }
+func NewLight2D(obj Object) Light2D    { return Light2D{object: object(obj)} }
+func GetLight2D(obj Light2D) [1]Object { return obj.AsObject() }
 
 type Light3D struct {
-	Locked
-	_Light3D Object
+	object
+	_Light3D struct{}
 }
 
-func NewLight3D(obj Object) Light3D    { return Light3D{Locked{}, obj} }
-func GetLight3D(obj Light3D) [1]Object { return [1]Object{obj._Light3D} }
+func NewLight3D(obj Object) Light3D    { return Light3D{object: object(obj)} }
+func GetLight3D(obj Light3D) [1]Object { return obj.AsObject() }
 
 type LightOccluder2D struct {
-	Locked
-	_LightOccluder2D Object
+	object
+	_LightOccluder2D struct{}
 }
 
-func NewLightOccluder2D(obj Object) LightOccluder2D    { return LightOccluder2D{Locked{}, obj} }
-func GetLightOccluder2D(obj LightOccluder2D) [1]Object { return [1]Object{obj._LightOccluder2D} }
+func NewLightOccluder2D(obj Object) LightOccluder2D    { return LightOccluder2D{object: object(obj)} }
+func GetLightOccluder2D(obj LightOccluder2D) [1]Object { return obj.AsObject() }
 
 type LightmapGI struct {
-	Locked
-	_LightmapGI Object
+	object
+	_LightmapGI struct{}
 }
 
-func NewLightmapGI(obj Object) LightmapGI    { return LightmapGI{Locked{}, obj} }
-func GetLightmapGI(obj LightmapGI) [1]Object { return [1]Object{obj._LightmapGI} }
+func NewLightmapGI(obj Object) LightmapGI    { return LightmapGI{object: object(obj)} }
+func GetLightmapGI(obj LightmapGI) [1]Object { return obj.AsObject() }
 
 type LightmapGIData struct {
-	Locked
-	_LightmapGIData Object
+	object
+	_LightmapGIData struct{}
 }
 
-func NewLightmapGIData(obj Object) LightmapGIData    { return LightmapGIData{Locked{}, obj} }
-func GetLightmapGIData(obj LightmapGIData) [1]Object { return [1]Object{obj._LightmapGIData} }
+func NewLightmapGIData(obj Object) LightmapGIData    { return LightmapGIData{object: object(obj)} }
+func GetLightmapGIData(obj LightmapGIData) [1]Object { return obj.AsObject() }
 
 type LightmapProbe struct {
-	Locked
-	_LightmapProbe Object
+	object
+	_LightmapProbe struct{}
 }
 
-func NewLightmapProbe(obj Object) LightmapProbe    { return LightmapProbe{Locked{}, obj} }
-func GetLightmapProbe(obj LightmapProbe) [1]Object { return [1]Object{obj._LightmapProbe} }
+func NewLightmapProbe(obj Object) LightmapProbe    { return LightmapProbe{object: object(obj)} }
+func GetLightmapProbe(obj LightmapProbe) [1]Object { return obj.AsObject() }
 
 type Lightmapper struct {
-	Locked
-	_Lightmapper Object
+	object
+	_Lightmapper struct{}
 }
 
-func NewLightmapper(obj Object) Lightmapper    { return Lightmapper{Locked{}, obj} }
-func GetLightmapper(obj Lightmapper) [1]Object { return [1]Object{obj._Lightmapper} }
+func NewLightmapper(obj Object) Lightmapper    { return Lightmapper{object: object(obj)} }
+func GetLightmapper(obj Lightmapper) [1]Object { return obj.AsObject() }
 
 type LightmapperRD struct {
-	Locked
-	_LightmapperRD Object
+	object
+	_LightmapperRD struct{}
 }
 
-func NewLightmapperRD(obj Object) LightmapperRD    { return LightmapperRD{Locked{}, obj} }
-func GetLightmapperRD(obj LightmapperRD) [1]Object { return [1]Object{obj._LightmapperRD} }
+func NewLightmapperRD(obj Object) LightmapperRD    { return LightmapperRD{object: object(obj)} }
+func GetLightmapperRD(obj LightmapperRD) [1]Object { return obj.AsObject() }
 
 type LimitAngularVelocityModifier3D struct {
-	Locked
-	_LimitAngularVelocityModifier3D Object
+	object
+	_LimitAngularVelocityModifier3D struct{}
 }
 
 func NewLimitAngularVelocityModifier3D(obj Object) LimitAngularVelocityModifier3D {
-	return LimitAngularVelocityModifier3D{Locked{}, obj}
+	return LimitAngularVelocityModifier3D{object: object(obj)}
 }
 func GetLimitAngularVelocityModifier3D(obj LimitAngularVelocityModifier3D) [1]Object {
-	return [1]Object{obj._LimitAngularVelocityModifier3D}
+	return obj.AsObject()
 }
 
 type Line2D struct {
-	Locked
-	_Line2D Object
+	object
+	_Line2D struct{}
 }
 
-func NewLine2D(obj Object) Line2D    { return Line2D{Locked{}, obj} }
-func GetLine2D(obj Line2D) [1]Object { return [1]Object{obj._Line2D} }
+func NewLine2D(obj Object) Line2D    { return Line2D{object: object(obj)} }
+func GetLine2D(obj Line2D) [1]Object { return obj.AsObject() }
 
 type LineEdit struct {
-	Locked
-	_LineEdit Object
+	object
+	_LineEdit struct{}
 }
 
-func NewLineEdit(obj Object) LineEdit    { return LineEdit{Locked{}, obj} }
-func GetLineEdit(obj LineEdit) [1]Object { return [1]Object{obj._LineEdit} }
+func NewLineEdit(obj Object) LineEdit    { return LineEdit{object: object(obj)} }
+func GetLineEdit(obj LineEdit) [1]Object { return obj.AsObject() }
 
 type LinkButton struct {
-	Locked
-	_LinkButton Object
+	object
+	_LinkButton struct{}
 }
 
-func NewLinkButton(obj Object) LinkButton    { return LinkButton{Locked{}, obj} }
-func GetLinkButton(obj LinkButton) [1]Object { return [1]Object{obj._LinkButton} }
+func NewLinkButton(obj Object) LinkButton    { return LinkButton{object: object(obj)} }
+func GetLinkButton(obj LinkButton) [1]Object { return obj.AsObject() }
 
 type Logger struct {
-	Locked
-	_Logger Object
+	object
+	_Logger struct{}
 }
 
-func NewLogger(obj Object) Logger    { return Logger{Locked{}, obj} }
-func GetLogger(obj Logger) [1]Object { return [1]Object{obj._Logger} }
+func NewLogger(obj Object) Logger    { return Logger{object: object(obj)} }
+func GetLogger(obj Logger) [1]Object { return obj.AsObject() }
 
 type LookAtModifier3D struct {
-	Locked
-	_LookAtModifier3D Object
+	object
+	_LookAtModifier3D struct{}
 }
 
-func NewLookAtModifier3D(obj Object) LookAtModifier3D    { return LookAtModifier3D{Locked{}, obj} }
-func GetLookAtModifier3D(obj LookAtModifier3D) [1]Object { return [1]Object{obj._LookAtModifier3D} }
+func NewLookAtModifier3D(obj Object) LookAtModifier3D    { return LookAtModifier3D{object: object(obj)} }
+func GetLookAtModifier3D(obj LookAtModifier3D) [1]Object { return obj.AsObject() }
 
 type MainLoop struct {
-	Locked
-	_MainLoop Object
+	object
+	_MainLoop struct{}
 }
 
-func NewMainLoop(obj Object) MainLoop    { return MainLoop{Locked{}, obj} }
-func GetMainLoop(obj MainLoop) [1]Object { return [1]Object{obj._MainLoop} }
+func NewMainLoop(obj Object) MainLoop    { return MainLoop{object: object(obj)} }
+func GetMainLoop(obj MainLoop) [1]Object { return obj.AsObject() }
 
 type MarginContainer struct {
-	Locked
-	_MarginContainer Object
+	object
+	_MarginContainer struct{}
 }
 
-func NewMarginContainer(obj Object) MarginContainer    { return MarginContainer{Locked{}, obj} }
-func GetMarginContainer(obj MarginContainer) [1]Object { return [1]Object{obj._MarginContainer} }
+func NewMarginContainer(obj Object) MarginContainer    { return MarginContainer{object: object(obj)} }
+func GetMarginContainer(obj MarginContainer) [1]Object { return obj.AsObject() }
 
 type Marker2D struct {
-	Locked
-	_Marker2D Object
+	object
+	_Marker2D struct{}
 }
 
-func NewMarker2D(obj Object) Marker2D    { return Marker2D{Locked{}, obj} }
-func GetMarker2D(obj Marker2D) [1]Object { return [1]Object{obj._Marker2D} }
+func NewMarker2D(obj Object) Marker2D    { return Marker2D{object: object(obj)} }
+func GetMarker2D(obj Marker2D) [1]Object { return obj.AsObject() }
 
 type Marker3D struct {
-	Locked
-	_Marker3D Object
+	object
+	_Marker3D struct{}
 }
 
-func NewMarker3D(obj Object) Marker3D    { return Marker3D{Locked{}, obj} }
-func GetMarker3D(obj Marker3D) [1]Object { return [1]Object{obj._Marker3D} }
+func NewMarker3D(obj Object) Marker3D    { return Marker3D{object: object(obj)} }
+func GetMarker3D(obj Marker3D) [1]Object { return obj.AsObject() }
 
 type Marshalls struct {
-	Locked
-	_Marshalls Object
+	object
+	_Marshalls struct{}
 }
 
-func NewMarshalls(obj Object) Marshalls    { return Marshalls{Locked{}, obj} }
-func GetMarshalls(obj Marshalls) [1]Object { return [1]Object{obj._Marshalls} }
+func NewMarshalls(obj Object) Marshalls    { return Marshalls{object: object(obj)} }
+func GetMarshalls(obj Marshalls) [1]Object { return obj.AsObject() }
 
 type Material struct {
-	Locked
-	_Material Object
+	object
+	_Material struct{}
 }
 
-func NewMaterial(obj Object) Material    { return Material{Locked{}, obj} }
-func GetMaterial(obj Material) [1]Object { return [1]Object{obj._Material} }
+func NewMaterial(obj Object) Material    { return Material{object: object(obj)} }
+func GetMaterial(obj Material) [1]Object { return obj.AsObject() }
 
 type MenuBar struct {
-	Locked
-	_MenuBar Object
+	object
+	_MenuBar struct{}
 }
 
-func NewMenuBar(obj Object) MenuBar    { return MenuBar{Locked{}, obj} }
-func GetMenuBar(obj MenuBar) [1]Object { return [1]Object{obj._MenuBar} }
+func NewMenuBar(obj Object) MenuBar    { return MenuBar{object: object(obj)} }
+func GetMenuBar(obj MenuBar) [1]Object { return obj.AsObject() }
 
 type MenuButton struct {
-	Locked
-	_MenuButton Object
+	object
+	_MenuButton struct{}
 }
 
-func NewMenuButton(obj Object) MenuButton    { return MenuButton{Locked{}, obj} }
-func GetMenuButton(obj MenuButton) [1]Object { return [1]Object{obj._MenuButton} }
+func NewMenuButton(obj Object) MenuButton    { return MenuButton{object: object(obj)} }
+func GetMenuButton(obj MenuButton) [1]Object { return obj.AsObject() }
 
 type Mesh struct {
-	Locked
-	_Mesh Object
+	object
+	_Mesh struct{}
 }
 
-func NewMesh(obj Object) Mesh    { return Mesh{Locked{}, obj} }
-func GetMesh(obj Mesh) [1]Object { return [1]Object{obj._Mesh} }
+func NewMesh(obj Object) Mesh    { return Mesh{object: object(obj)} }
+func GetMesh(obj Mesh) [1]Object { return obj.AsObject() }
 
 type MeshConvexDecompositionSettings struct {
-	Locked
-	_MeshConvexDecompositionSettings Object
+	object
+	_MeshConvexDecompositionSettings struct{}
 }
 
 func NewMeshConvexDecompositionSettings(obj Object) MeshConvexDecompositionSettings {
-	return MeshConvexDecompositionSettings{Locked{}, obj}
+	return MeshConvexDecompositionSettings{object: object(obj)}
 }
 func GetMeshConvexDecompositionSettings(obj MeshConvexDecompositionSettings) [1]Object {
-	return [1]Object{obj._MeshConvexDecompositionSettings}
+	return obj.AsObject()
 }
 
 type MeshDataTool struct {
-	Locked
-	_MeshDataTool Object
+	object
+	_MeshDataTool struct{}
 }
 
-func NewMeshDataTool(obj Object) MeshDataTool    { return MeshDataTool{Locked{}, obj} }
-func GetMeshDataTool(obj MeshDataTool) [1]Object { return [1]Object{obj._MeshDataTool} }
+func NewMeshDataTool(obj Object) MeshDataTool    { return MeshDataTool{object: object(obj)} }
+func GetMeshDataTool(obj MeshDataTool) [1]Object { return obj.AsObject() }
 
 type MeshInstance2D struct {
-	Locked
-	_MeshInstance2D Object
+	object
+	_MeshInstance2D struct{}
 }
 
-func NewMeshInstance2D(obj Object) MeshInstance2D    { return MeshInstance2D{Locked{}, obj} }
-func GetMeshInstance2D(obj MeshInstance2D) [1]Object { return [1]Object{obj._MeshInstance2D} }
+func NewMeshInstance2D(obj Object) MeshInstance2D    { return MeshInstance2D{object: object(obj)} }
+func GetMeshInstance2D(obj MeshInstance2D) [1]Object { return obj.AsObject() }
 
 type MeshInstance3D struct {
-	Locked
-	_MeshInstance3D Object
+	object
+	_MeshInstance3D struct{}
 }
 
-func NewMeshInstance3D(obj Object) MeshInstance3D    { return MeshInstance3D{Locked{}, obj} }
-func GetMeshInstance3D(obj MeshInstance3D) [1]Object { return [1]Object{obj._MeshInstance3D} }
+func NewMeshInstance3D(obj Object) MeshInstance3D    { return MeshInstance3D{object: object(obj)} }
+func GetMeshInstance3D(obj MeshInstance3D) [1]Object { return obj.AsObject() }
 
 type MeshLibrary struct {
-	Locked
-	_MeshLibrary Object
+	object
+	_MeshLibrary struct{}
 }
 
-func NewMeshLibrary(obj Object) MeshLibrary    { return MeshLibrary{Locked{}, obj} }
-func GetMeshLibrary(obj MeshLibrary) [1]Object { return [1]Object{obj._MeshLibrary} }
+func NewMeshLibrary(obj Object) MeshLibrary    { return MeshLibrary{object: object(obj)} }
+func GetMeshLibrary(obj MeshLibrary) [1]Object { return obj.AsObject() }
 
 type MeshTexture struct {
-	Locked
-	_MeshTexture Object
+	object
+	_MeshTexture struct{}
 }
 
-func NewMeshTexture(obj Object) MeshTexture    { return MeshTexture{Locked{}, obj} }
-func GetMeshTexture(obj MeshTexture) [1]Object { return [1]Object{obj._MeshTexture} }
+func NewMeshTexture(obj Object) MeshTexture    { return MeshTexture{object: object(obj)} }
+func GetMeshTexture(obj MeshTexture) [1]Object { return obj.AsObject() }
 
 type MethodTweener struct {
-	Locked
-	_MethodTweener Object
+	object
+	_MethodTweener struct{}
 }
 
-func NewMethodTweener(obj Object) MethodTweener    { return MethodTweener{Locked{}, obj} }
-func GetMethodTweener(obj MethodTweener) [1]Object { return [1]Object{obj._MethodTweener} }
+func NewMethodTweener(obj Object) MethodTweener    { return MethodTweener{object: object(obj)} }
+func GetMethodTweener(obj MethodTweener) [1]Object { return obj.AsObject() }
 
 type MissingNode struct {
-	Locked
-	_MissingNode Object
+	object
+	_MissingNode struct{}
 }
 
-func NewMissingNode(obj Object) MissingNode    { return MissingNode{Locked{}, obj} }
-func GetMissingNode(obj MissingNode) [1]Object { return [1]Object{obj._MissingNode} }
+func NewMissingNode(obj Object) MissingNode    { return MissingNode{object: object(obj)} }
+func GetMissingNode(obj MissingNode) [1]Object { return obj.AsObject() }
 
 type MissingResource struct {
-	Locked
-	_MissingResource Object
+	object
+	_MissingResource struct{}
 }
 
-func NewMissingResource(obj Object) MissingResource    { return MissingResource{Locked{}, obj} }
-func GetMissingResource(obj MissingResource) [1]Object { return [1]Object{obj._MissingResource} }
+func NewMissingResource(obj Object) MissingResource    { return MissingResource{object: object(obj)} }
+func GetMissingResource(obj MissingResource) [1]Object { return obj.AsObject() }
 
 type MobileVRInterface struct {
-	Locked
-	_MobileVRInterface Object
+	object
+	_MobileVRInterface struct{}
 }
 
-func NewMobileVRInterface(obj Object) MobileVRInterface    { return MobileVRInterface{Locked{}, obj} }
-func GetMobileVRInterface(obj MobileVRInterface) [1]Object { return [1]Object{obj._MobileVRInterface} }
+func NewMobileVRInterface(obj Object) MobileVRInterface {
+	return MobileVRInterface{object: object(obj)}
+}
+func GetMobileVRInterface(obj MobileVRInterface) [1]Object { return obj.AsObject() }
 
 type ModifierBoneTarget3D struct {
-	Locked
-	_ModifierBoneTarget3D Object
+	object
+	_ModifierBoneTarget3D struct{}
 }
 
 func NewModifierBoneTarget3D(obj Object) ModifierBoneTarget3D {
-	return ModifierBoneTarget3D{Locked{}, obj}
+	return ModifierBoneTarget3D{object: object(obj)}
 }
-func GetModifierBoneTarget3D(obj ModifierBoneTarget3D) [1]Object {
-	return [1]Object{obj._ModifierBoneTarget3D}
-}
+func GetModifierBoneTarget3D(obj ModifierBoneTarget3D) [1]Object { return obj.AsObject() }
 
 type MovieWriter struct {
-	Locked
-	_MovieWriter Object
+	object
+	_MovieWriter struct{}
 }
 
-func NewMovieWriter(obj Object) MovieWriter    { return MovieWriter{Locked{}, obj} }
-func GetMovieWriter(obj MovieWriter) [1]Object { return [1]Object{obj._MovieWriter} }
+func NewMovieWriter(obj Object) MovieWriter    { return MovieWriter{object: object(obj)} }
+func GetMovieWriter(obj MovieWriter) [1]Object { return obj.AsObject() }
 
 type MultiMesh struct {
-	Locked
-	_MultiMesh Object
+	object
+	_MultiMesh struct{}
 }
 
-func NewMultiMesh(obj Object) MultiMesh    { return MultiMesh{Locked{}, obj} }
-func GetMultiMesh(obj MultiMesh) [1]Object { return [1]Object{obj._MultiMesh} }
+func NewMultiMesh(obj Object) MultiMesh    { return MultiMesh{object: object(obj)} }
+func GetMultiMesh(obj MultiMesh) [1]Object { return obj.AsObject() }
 
 type MultiMeshInstance2D struct {
-	Locked
-	_MultiMeshInstance2D Object
+	object
+	_MultiMeshInstance2D struct{}
 }
 
 func NewMultiMeshInstance2D(obj Object) MultiMeshInstance2D {
-	return MultiMeshInstance2D{Locked{}, obj}
+	return MultiMeshInstance2D{object: object(obj)}
 }
-func GetMultiMeshInstance2D(obj MultiMeshInstance2D) [1]Object {
-	return [1]Object{obj._MultiMeshInstance2D}
-}
+func GetMultiMeshInstance2D(obj MultiMeshInstance2D) [1]Object { return obj.AsObject() }
 
 type MultiMeshInstance3D struct {
-	Locked
-	_MultiMeshInstance3D Object
+	object
+	_MultiMeshInstance3D struct{}
 }
 
 func NewMultiMeshInstance3D(obj Object) MultiMeshInstance3D {
-	return MultiMeshInstance3D{Locked{}, obj}
+	return MultiMeshInstance3D{object: object(obj)}
 }
-func GetMultiMeshInstance3D(obj MultiMeshInstance3D) [1]Object {
-	return [1]Object{obj._MultiMeshInstance3D}
-}
+func GetMultiMeshInstance3D(obj MultiMeshInstance3D) [1]Object { return obj.AsObject() }
 
 type MultiplayerAPI struct {
-	Locked
-	_MultiplayerAPI Object
+	object
+	_MultiplayerAPI struct{}
 }
 
-func NewMultiplayerAPI(obj Object) MultiplayerAPI    { return MultiplayerAPI{Locked{}, obj} }
-func GetMultiplayerAPI(obj MultiplayerAPI) [1]Object { return [1]Object{obj._MultiplayerAPI} }
+func NewMultiplayerAPI(obj Object) MultiplayerAPI    { return MultiplayerAPI{object: object(obj)} }
+func GetMultiplayerAPI(obj MultiplayerAPI) [1]Object { return obj.AsObject() }
 
 type MultiplayerAPIExtension struct {
-	Locked
-	_MultiplayerAPIExtension Object
+	object
+	_MultiplayerAPIExtension struct{}
 }
 
 func NewMultiplayerAPIExtension(obj Object) MultiplayerAPIExtension {
-	return MultiplayerAPIExtension{Locked{}, obj}
+	return MultiplayerAPIExtension{object: object(obj)}
 }
-func GetMultiplayerAPIExtension(obj MultiplayerAPIExtension) [1]Object {
-	return [1]Object{obj._MultiplayerAPIExtension}
-}
+func GetMultiplayerAPIExtension(obj MultiplayerAPIExtension) [1]Object { return obj.AsObject() }
 
 type MultiplayerPeer struct {
-	Locked
-	_MultiplayerPeer Object
+	object
+	_MultiplayerPeer struct{}
 }
 
-func NewMultiplayerPeer(obj Object) MultiplayerPeer    { return MultiplayerPeer{Locked{}, obj} }
-func GetMultiplayerPeer(obj MultiplayerPeer) [1]Object { return [1]Object{obj._MultiplayerPeer} }
+func NewMultiplayerPeer(obj Object) MultiplayerPeer    { return MultiplayerPeer{object: object(obj)} }
+func GetMultiplayerPeer(obj MultiplayerPeer) [1]Object { return obj.AsObject() }
 
 type MultiplayerPeerExtension struct {
-	Locked
-	_MultiplayerPeerExtension Object
+	object
+	_MultiplayerPeerExtension struct{}
 }
 
 func NewMultiplayerPeerExtension(obj Object) MultiplayerPeerExtension {
-	return MultiplayerPeerExtension{Locked{}, obj}
+	return MultiplayerPeerExtension{object: object(obj)}
 }
-func GetMultiplayerPeerExtension(obj MultiplayerPeerExtension) [1]Object {
-	return [1]Object{obj._MultiplayerPeerExtension}
-}
+func GetMultiplayerPeerExtension(obj MultiplayerPeerExtension) [1]Object { return obj.AsObject() }
 
 type MultiplayerSpawner struct {
-	Locked
-	_MultiplayerSpawner Object
+	object
+	_MultiplayerSpawner struct{}
 }
 
-func NewMultiplayerSpawner(obj Object) MultiplayerSpawner { return MultiplayerSpawner{Locked{}, obj} }
-func GetMultiplayerSpawner(obj MultiplayerSpawner) [1]Object {
-	return [1]Object{obj._MultiplayerSpawner}
+func NewMultiplayerSpawner(obj Object) MultiplayerSpawner {
+	return MultiplayerSpawner{object: object(obj)}
 }
+func GetMultiplayerSpawner(obj MultiplayerSpawner) [1]Object { return obj.AsObject() }
 
 type MultiplayerSynchronizer struct {
-	Locked
-	_MultiplayerSynchronizer Object
+	object
+	_MultiplayerSynchronizer struct{}
 }
 
 func NewMultiplayerSynchronizer(obj Object) MultiplayerSynchronizer {
-	return MultiplayerSynchronizer{Locked{}, obj}
+	return MultiplayerSynchronizer{object: object(obj)}
 }
-func GetMultiplayerSynchronizer(obj MultiplayerSynchronizer) [1]Object {
-	return [1]Object{obj._MultiplayerSynchronizer}
-}
+func GetMultiplayerSynchronizer(obj MultiplayerSynchronizer) [1]Object { return obj.AsObject() }
 
 type Mutex struct {
-	Locked
-	_Mutex Object
+	object
+	_Mutex struct{}
 }
 
-func NewMutex(obj Object) Mutex    { return Mutex{Locked{}, obj} }
-func GetMutex(obj Mutex) [1]Object { return [1]Object{obj._Mutex} }
+func NewMutex(obj Object) Mutex    { return Mutex{object: object(obj)} }
+func GetMutex(obj Mutex) [1]Object { return obj.AsObject() }
 
 type NativeMenu struct {
-	Locked
-	_NativeMenu Object
+	object
+	_NativeMenu struct{}
 }
 
-func NewNativeMenu(obj Object) NativeMenu    { return NativeMenu{Locked{}, obj} }
-func GetNativeMenu(obj NativeMenu) [1]Object { return [1]Object{obj._NativeMenu} }
+func NewNativeMenu(obj Object) NativeMenu    { return NativeMenu{object: object(obj)} }
+func GetNativeMenu(obj NativeMenu) [1]Object { return obj.AsObject() }
 
 type NavigationAgent2D struct {
-	Locked
-	_NavigationAgent2D Object
+	object
+	_NavigationAgent2D struct{}
 }
 
-func NewNavigationAgent2D(obj Object) NavigationAgent2D    { return NavigationAgent2D{Locked{}, obj} }
-func GetNavigationAgent2D(obj NavigationAgent2D) [1]Object { return [1]Object{obj._NavigationAgent2D} }
+func NewNavigationAgent2D(obj Object) NavigationAgent2D {
+	return NavigationAgent2D{object: object(obj)}
+}
+func GetNavigationAgent2D(obj NavigationAgent2D) [1]Object { return obj.AsObject() }
 
 type NavigationAgent3D struct {
-	Locked
-	_NavigationAgent3D Object
+	object
+	_NavigationAgent3D struct{}
 }
 
-func NewNavigationAgent3D(obj Object) NavigationAgent3D    { return NavigationAgent3D{Locked{}, obj} }
-func GetNavigationAgent3D(obj NavigationAgent3D) [1]Object { return [1]Object{obj._NavigationAgent3D} }
+func NewNavigationAgent3D(obj Object) NavigationAgent3D {
+	return NavigationAgent3D{object: object(obj)}
+}
+func GetNavigationAgent3D(obj NavigationAgent3D) [1]Object { return obj.AsObject() }
 
 type NavigationLink2D struct {
-	Locked
-	_NavigationLink2D Object
+	object
+	_NavigationLink2D struct{}
 }
 
-func NewNavigationLink2D(obj Object) NavigationLink2D    { return NavigationLink2D{Locked{}, obj} }
-func GetNavigationLink2D(obj NavigationLink2D) [1]Object { return [1]Object{obj._NavigationLink2D} }
+func NewNavigationLink2D(obj Object) NavigationLink2D    { return NavigationLink2D{object: object(obj)} }
+func GetNavigationLink2D(obj NavigationLink2D) [1]Object { return obj.AsObject() }
 
 type NavigationLink3D struct {
-	Locked
-	_NavigationLink3D Object
+	object
+	_NavigationLink3D struct{}
 }
 
-func NewNavigationLink3D(obj Object) NavigationLink3D    { return NavigationLink3D{Locked{}, obj} }
-func GetNavigationLink3D(obj NavigationLink3D) [1]Object { return [1]Object{obj._NavigationLink3D} }
+func NewNavigationLink3D(obj Object) NavigationLink3D    { return NavigationLink3D{object: object(obj)} }
+func GetNavigationLink3D(obj NavigationLink3D) [1]Object { return obj.AsObject() }
 
 type NavigationMesh struct {
-	Locked
-	_NavigationMesh Object
+	object
+	_NavigationMesh struct{}
 }
 
-func NewNavigationMesh(obj Object) NavigationMesh    { return NavigationMesh{Locked{}, obj} }
-func GetNavigationMesh(obj NavigationMesh) [1]Object { return [1]Object{obj._NavigationMesh} }
+func NewNavigationMesh(obj Object) NavigationMesh    { return NavigationMesh{object: object(obj)} }
+func GetNavigationMesh(obj NavigationMesh) [1]Object { return obj.AsObject() }
 
 type NavigationMeshGenerator struct {
-	Locked
-	_NavigationMeshGenerator Object
+	object
+	_NavigationMeshGenerator struct{}
 }
 
 func NewNavigationMeshGenerator(obj Object) NavigationMeshGenerator {
-	return NavigationMeshGenerator{Locked{}, obj}
+	return NavigationMeshGenerator{object: object(obj)}
 }
-func GetNavigationMeshGenerator(obj NavigationMeshGenerator) [1]Object {
-	return [1]Object{obj._NavigationMeshGenerator}
-}
+func GetNavigationMeshGenerator(obj NavigationMeshGenerator) [1]Object { return obj.AsObject() }
 
 type NavigationMeshSourceGeometryData2D struct {
-	Locked
-	_NavigationMeshSourceGeometryData2D Object
+	object
+	_NavigationMeshSourceGeometryData2D struct{}
 }
 
 func NewNavigationMeshSourceGeometryData2D(obj Object) NavigationMeshSourceGeometryData2D {
-	return NavigationMeshSourceGeometryData2D{Locked{}, obj}
+	return NavigationMeshSourceGeometryData2D{object: object(obj)}
 }
 func GetNavigationMeshSourceGeometryData2D(obj NavigationMeshSourceGeometryData2D) [1]Object {
-	return [1]Object{obj._NavigationMeshSourceGeometryData2D}
+	return obj.AsObject()
 }
 
 type NavigationMeshSourceGeometryData3D struct {
-	Locked
-	_NavigationMeshSourceGeometryData3D Object
+	object
+	_NavigationMeshSourceGeometryData3D struct{}
 }
 
 func NewNavigationMeshSourceGeometryData3D(obj Object) NavigationMeshSourceGeometryData3D {
-	return NavigationMeshSourceGeometryData3D{Locked{}, obj}
+	return NavigationMeshSourceGeometryData3D{object: object(obj)}
 }
 func GetNavigationMeshSourceGeometryData3D(obj NavigationMeshSourceGeometryData3D) [1]Object {
-	return [1]Object{obj._NavigationMeshSourceGeometryData3D}
+	return obj.AsObject()
 }
 
 type NavigationObstacle2D struct {
-	Locked
-	_NavigationObstacle2D Object
+	object
+	_NavigationObstacle2D struct{}
 }
 
 func NewNavigationObstacle2D(obj Object) NavigationObstacle2D {
-	return NavigationObstacle2D{Locked{}, obj}
+	return NavigationObstacle2D{object: object(obj)}
 }
-func GetNavigationObstacle2D(obj NavigationObstacle2D) [1]Object {
-	return [1]Object{obj._NavigationObstacle2D}
-}
+func GetNavigationObstacle2D(obj NavigationObstacle2D) [1]Object { return obj.AsObject() }
 
 type NavigationObstacle3D struct {
-	Locked
-	_NavigationObstacle3D Object
+	object
+	_NavigationObstacle3D struct{}
 }
 
 func NewNavigationObstacle3D(obj Object) NavigationObstacle3D {
-	return NavigationObstacle3D{Locked{}, obj}
+	return NavigationObstacle3D{object: object(obj)}
 }
-func GetNavigationObstacle3D(obj NavigationObstacle3D) [1]Object {
-	return [1]Object{obj._NavigationObstacle3D}
-}
+func GetNavigationObstacle3D(obj NavigationObstacle3D) [1]Object { return obj.AsObject() }
 
 type NavigationPathQueryParameters2D struct {
-	Locked
-	_NavigationPathQueryParameters2D Object
+	object
+	_NavigationPathQueryParameters2D struct{}
 }
 
 func NewNavigationPathQueryParameters2D(obj Object) NavigationPathQueryParameters2D {
-	return NavigationPathQueryParameters2D{Locked{}, obj}
+	return NavigationPathQueryParameters2D{object: object(obj)}
 }
 func GetNavigationPathQueryParameters2D(obj NavigationPathQueryParameters2D) [1]Object {
-	return [1]Object{obj._NavigationPathQueryParameters2D}
+	return obj.AsObject()
 }
 
 type NavigationPathQueryParameters3D struct {
-	Locked
-	_NavigationPathQueryParameters3D Object
+	object
+	_NavigationPathQueryParameters3D struct{}
 }
 
 func NewNavigationPathQueryParameters3D(obj Object) NavigationPathQueryParameters3D {
-	return NavigationPathQueryParameters3D{Locked{}, obj}
+	return NavigationPathQueryParameters3D{object: object(obj)}
 }
 func GetNavigationPathQueryParameters3D(obj NavigationPathQueryParameters3D) [1]Object {
-	return [1]Object{obj._NavigationPathQueryParameters3D}
+	return obj.AsObject()
 }
 
 type NavigationPathQueryResult2D struct {
-	Locked
-	_NavigationPathQueryResult2D Object
+	object
+	_NavigationPathQueryResult2D struct{}
 }
 
 func NewNavigationPathQueryResult2D(obj Object) NavigationPathQueryResult2D {
-	return NavigationPathQueryResult2D{Locked{}, obj}
+	return NavigationPathQueryResult2D{object: object(obj)}
 }
-func GetNavigationPathQueryResult2D(obj NavigationPathQueryResult2D) [1]Object {
-	return [1]Object{obj._NavigationPathQueryResult2D}
-}
+func GetNavigationPathQueryResult2D(obj NavigationPathQueryResult2D) [1]Object { return obj.AsObject() }
 
 type NavigationPathQueryResult3D struct {
-	Locked
-	_NavigationPathQueryResult3D Object
+	object
+	_NavigationPathQueryResult3D struct{}
 }
 
 func NewNavigationPathQueryResult3D(obj Object) NavigationPathQueryResult3D {
-	return NavigationPathQueryResult3D{Locked{}, obj}
+	return NavigationPathQueryResult3D{object: object(obj)}
 }
-func GetNavigationPathQueryResult3D(obj NavigationPathQueryResult3D) [1]Object {
-	return [1]Object{obj._NavigationPathQueryResult3D}
-}
+func GetNavigationPathQueryResult3D(obj NavigationPathQueryResult3D) [1]Object { return obj.AsObject() }
 
 type NavigationPolygon struct {
-	Locked
-	_NavigationPolygon Object
+	object
+	_NavigationPolygon struct{}
 }
 
-func NewNavigationPolygon(obj Object) NavigationPolygon    { return NavigationPolygon{Locked{}, obj} }
-func GetNavigationPolygon(obj NavigationPolygon) [1]Object { return [1]Object{obj._NavigationPolygon} }
+func NewNavigationPolygon(obj Object) NavigationPolygon {
+	return NavigationPolygon{object: object(obj)}
+}
+func GetNavigationPolygon(obj NavigationPolygon) [1]Object { return obj.AsObject() }
 
 type NavigationRegion2D struct {
-	Locked
-	_NavigationRegion2D Object
+	object
+	_NavigationRegion2D struct{}
 }
 
-func NewNavigationRegion2D(obj Object) NavigationRegion2D { return NavigationRegion2D{Locked{}, obj} }
-func GetNavigationRegion2D(obj NavigationRegion2D) [1]Object {
-	return [1]Object{obj._NavigationRegion2D}
+func NewNavigationRegion2D(obj Object) NavigationRegion2D {
+	return NavigationRegion2D{object: object(obj)}
 }
+func GetNavigationRegion2D(obj NavigationRegion2D) [1]Object { return obj.AsObject() }
 
 type NavigationRegion3D struct {
-	Locked
-	_NavigationRegion3D Object
+	object
+	_NavigationRegion3D struct{}
 }
 
-func NewNavigationRegion3D(obj Object) NavigationRegion3D { return NavigationRegion3D{Locked{}, obj} }
-func GetNavigationRegion3D(obj NavigationRegion3D) [1]Object {
-	return [1]Object{obj._NavigationRegion3D}
+func NewNavigationRegion3D(obj Object) NavigationRegion3D {
+	return NavigationRegion3D{object: object(obj)}
 }
+func GetNavigationRegion3D(obj NavigationRegion3D) [1]Object { return obj.AsObject() }
 
 type NavigationServer2D struct {
-	Locked
-	_NavigationServer2D Object
+	object
+	_NavigationServer2D struct{}
 }
 
-func NewNavigationServer2D(obj Object) NavigationServer2D { return NavigationServer2D{Locked{}, obj} }
-func GetNavigationServer2D(obj NavigationServer2D) [1]Object {
-	return [1]Object{obj._NavigationServer2D}
+func NewNavigationServer2D(obj Object) NavigationServer2D {
+	return NavigationServer2D{object: object(obj)}
 }
+func GetNavigationServer2D(obj NavigationServer2D) [1]Object { return obj.AsObject() }
 
 type NavigationServer2DManager struct {
-	Locked
-	_NavigationServer2DManager Object
+	object
+	_NavigationServer2DManager struct{}
 }
 
 func NewNavigationServer2DManager(obj Object) NavigationServer2DManager {
-	return NavigationServer2DManager{Locked{}, obj}
+	return NavigationServer2DManager{object: object(obj)}
 }
-func GetNavigationServer2DManager(obj NavigationServer2DManager) [1]Object {
-	return [1]Object{obj._NavigationServer2DManager}
-}
+func GetNavigationServer2DManager(obj NavigationServer2DManager) [1]Object { return obj.AsObject() }
 
 type NavigationServer3D struct {
-	Locked
-	_NavigationServer3D Object
+	object
+	_NavigationServer3D struct{}
 }
 
-func NewNavigationServer3D(obj Object) NavigationServer3D { return NavigationServer3D{Locked{}, obj} }
-func GetNavigationServer3D(obj NavigationServer3D) [1]Object {
-	return [1]Object{obj._NavigationServer3D}
+func NewNavigationServer3D(obj Object) NavigationServer3D {
+	return NavigationServer3D{object: object(obj)}
 }
+func GetNavigationServer3D(obj NavigationServer3D) [1]Object { return obj.AsObject() }
 
 type NavigationServer3DManager struct {
-	Locked
-	_NavigationServer3DManager Object
+	object
+	_NavigationServer3DManager struct{}
 }
 
 func NewNavigationServer3DManager(obj Object) NavigationServer3DManager {
-	return NavigationServer3DManager{Locked{}, obj}
+	return NavigationServer3DManager{object: object(obj)}
 }
-func GetNavigationServer3DManager(obj NavigationServer3DManager) [1]Object {
-	return [1]Object{obj._NavigationServer3DManager}
-}
+func GetNavigationServer3DManager(obj NavigationServer3DManager) [1]Object { return obj.AsObject() }
 
 type NinePatchRect struct {
-	Locked
-	_NinePatchRect Object
+	object
+	_NinePatchRect struct{}
 }
 
-func NewNinePatchRect(obj Object) NinePatchRect    { return NinePatchRect{Locked{}, obj} }
-func GetNinePatchRect(obj NinePatchRect) [1]Object { return [1]Object{obj._NinePatchRect} }
+func NewNinePatchRect(obj Object) NinePatchRect    { return NinePatchRect{object: object(obj)} }
+func GetNinePatchRect(obj NinePatchRect) [1]Object { return obj.AsObject() }
 
 type Node struct {
-	Locked
-	_Node Object
+	object
+	_Node struct{}
 }
 
-func NewNode(obj Object) Node    { return Node{Locked{}, obj} }
-func GetNode(obj Node) [1]Object { return [1]Object{obj._Node} }
+func NewNode(obj Object) Node    { return Node{object: object(obj)} }
+func GetNode(obj Node) [1]Object { return obj.AsObject() }
 
 type Node2D struct {
-	Locked
-	_Node2D Object
+	object
+	_Node2D struct{}
 }
 
-func NewNode2D(obj Object) Node2D    { return Node2D{Locked{}, obj} }
-func GetNode2D(obj Node2D) [1]Object { return [1]Object{obj._Node2D} }
+func NewNode2D(obj Object) Node2D    { return Node2D{object: object(obj)} }
+func GetNode2D(obj Node2D) [1]Object { return obj.AsObject() }
 
 type Node3D struct {
-	Locked
-	_Node3D Object
+	object
+	_Node3D struct{}
 }
 
-func NewNode3D(obj Object) Node3D    { return Node3D{Locked{}, obj} }
-func GetNode3D(obj Node3D) [1]Object { return [1]Object{obj._Node3D} }
+func NewNode3D(obj Object) Node3D    { return Node3D{object: object(obj)} }
+func GetNode3D(obj Node3D) [1]Object { return obj.AsObject() }
 
 type Node3DGizmo struct {
-	Locked
-	_Node3DGizmo Object
+	object
+	_Node3DGizmo struct{}
 }
 
-func NewNode3DGizmo(obj Object) Node3DGizmo    { return Node3DGizmo{Locked{}, obj} }
-func GetNode3DGizmo(obj Node3DGizmo) [1]Object { return [1]Object{obj._Node3DGizmo} }
+func NewNode3DGizmo(obj Object) Node3DGizmo    { return Node3DGizmo{object: object(obj)} }
+func GetNode3DGizmo(obj Node3DGizmo) [1]Object { return obj.AsObject() }
 
 type Noise struct {
-	Locked
-	_Noise Object
+	object
+	_Noise struct{}
 }
 
-func NewNoise(obj Object) Noise    { return Noise{Locked{}, obj} }
-func GetNoise(obj Noise) [1]Object { return [1]Object{obj._Noise} }
+func NewNoise(obj Object) Noise    { return Noise{object: object(obj)} }
+func GetNoise(obj Noise) [1]Object { return obj.AsObject() }
 
 type NoiseTexture2D struct {
-	Locked
-	_NoiseTexture2D Object
+	object
+	_NoiseTexture2D struct{}
 }
 
-func NewNoiseTexture2D(obj Object) NoiseTexture2D    { return NoiseTexture2D{Locked{}, obj} }
-func GetNoiseTexture2D(obj NoiseTexture2D) [1]Object { return [1]Object{obj._NoiseTexture2D} }
+func NewNoiseTexture2D(obj Object) NoiseTexture2D    { return NoiseTexture2D{object: object(obj)} }
+func GetNoiseTexture2D(obj NoiseTexture2D) [1]Object { return obj.AsObject() }
 
 type NoiseTexture3D struct {
-	Locked
-	_NoiseTexture3D Object
+	object
+	_NoiseTexture3D struct{}
 }
 
-func NewNoiseTexture3D(obj Object) NoiseTexture3D    { return NoiseTexture3D{Locked{}, obj} }
-func GetNoiseTexture3D(obj NoiseTexture3D) [1]Object { return [1]Object{obj._NoiseTexture3D} }
+func NewNoiseTexture3D(obj Object) NoiseTexture3D    { return NoiseTexture3D{object: object(obj)} }
+func GetNoiseTexture3D(obj NoiseTexture3D) [1]Object { return obj.AsObject() }
 
 type ORMMaterial3D struct {
-	Locked
-	_ORMMaterial3D Object
+	object
+	_ORMMaterial3D struct{}
 }
 
-func NewORMMaterial3D(obj Object) ORMMaterial3D    { return ORMMaterial3D{Locked{}, obj} }
-func GetORMMaterial3D(obj ORMMaterial3D) [1]Object { return [1]Object{obj._ORMMaterial3D} }
+func NewORMMaterial3D(obj Object) ORMMaterial3D    { return ORMMaterial3D{object: object(obj)} }
+func GetORMMaterial3D(obj ORMMaterial3D) [1]Object { return obj.AsObject() }
 
 type OS struct {
-	Locked
-	_OS Object
+	object
+	_OS struct{}
 }
 
-func NewOS(obj Object) OS    { return OS{Locked{}, obj} }
-func GetOS(obj OS) [1]Object { return [1]Object{obj._OS} }
+func NewOS(obj Object) OS    { return OS{object: object(obj)} }
+func GetOS(obj OS) [1]Object { return obj.AsObject() }
 
 type Occluder3D struct {
-	Locked
-	_Occluder3D Object
+	object
+	_Occluder3D struct{}
 }
 
-func NewOccluder3D(obj Object) Occluder3D    { return Occluder3D{Locked{}, obj} }
-func GetOccluder3D(obj Occluder3D) [1]Object { return [1]Object{obj._Occluder3D} }
+func NewOccluder3D(obj Object) Occluder3D    { return Occluder3D{object: object(obj)} }
+func GetOccluder3D(obj Occluder3D) [1]Object { return obj.AsObject() }
 
 type OccluderInstance3D struct {
-	Locked
-	_OccluderInstance3D Object
+	object
+	_OccluderInstance3D struct{}
 }
 
-func NewOccluderInstance3D(obj Object) OccluderInstance3D { return OccluderInstance3D{Locked{}, obj} }
-func GetOccluderInstance3D(obj OccluderInstance3D) [1]Object {
-	return [1]Object{obj._OccluderInstance3D}
+func NewOccluderInstance3D(obj Object) OccluderInstance3D {
+	return OccluderInstance3D{object: object(obj)}
 }
+func GetOccluderInstance3D(obj OccluderInstance3D) [1]Object { return obj.AsObject() }
 
 type OccluderPolygon2D struct {
-	Locked
-	_OccluderPolygon2D Object
+	object
+	_OccluderPolygon2D struct{}
 }
 
-func NewOccluderPolygon2D(obj Object) OccluderPolygon2D    { return OccluderPolygon2D{Locked{}, obj} }
-func GetOccluderPolygon2D(obj OccluderPolygon2D) [1]Object { return [1]Object{obj._OccluderPolygon2D} }
+func NewOccluderPolygon2D(obj Object) OccluderPolygon2D {
+	return OccluderPolygon2D{object: object(obj)}
+}
+func GetOccluderPolygon2D(obj OccluderPolygon2D) [1]Object { return obj.AsObject() }
 
 type OfflineMultiplayerPeer struct {
-	Locked
-	_OfflineMultiplayerPeer Object
+	object
+	_OfflineMultiplayerPeer struct{}
 }
 
 func NewOfflineMultiplayerPeer(obj Object) OfflineMultiplayerPeer {
-	return OfflineMultiplayerPeer{Locked{}, obj}
+	return OfflineMultiplayerPeer{object: object(obj)}
 }
-func GetOfflineMultiplayerPeer(obj OfflineMultiplayerPeer) [1]Object {
-	return [1]Object{obj._OfflineMultiplayerPeer}
-}
+func GetOfflineMultiplayerPeer(obj OfflineMultiplayerPeer) [1]Object { return obj.AsObject() }
 
 type OggPacketSequence struct {
-	Locked
-	_OggPacketSequence Object
+	object
+	_OggPacketSequence struct{}
 }
 
-func NewOggPacketSequence(obj Object) OggPacketSequence    { return OggPacketSequence{Locked{}, obj} }
-func GetOggPacketSequence(obj OggPacketSequence) [1]Object { return [1]Object{obj._OggPacketSequence} }
+func NewOggPacketSequence(obj Object) OggPacketSequence {
+	return OggPacketSequence{object: object(obj)}
+}
+func GetOggPacketSequence(obj OggPacketSequence) [1]Object { return obj.AsObject() }
 
 type OggPacketSequencePlayback struct {
-	Locked
-	_OggPacketSequencePlayback Object
+	object
+	_OggPacketSequencePlayback struct{}
 }
 
 func NewOggPacketSequencePlayback(obj Object) OggPacketSequencePlayback {
-	return OggPacketSequencePlayback{Locked{}, obj}
+	return OggPacketSequencePlayback{object: object(obj)}
 }
-func GetOggPacketSequencePlayback(obj OggPacketSequencePlayback) [1]Object {
-	return [1]Object{obj._OggPacketSequencePlayback}
-}
+func GetOggPacketSequencePlayback(obj OggPacketSequencePlayback) [1]Object { return obj.AsObject() }
 
 type OmniLight3D struct {
-	Locked
-	_OmniLight3D Object
+	object
+	_OmniLight3D struct{}
 }
 
-func NewOmniLight3D(obj Object) OmniLight3D    { return OmniLight3D{Locked{}, obj} }
-func GetOmniLight3D(obj OmniLight3D) [1]Object { return [1]Object{obj._OmniLight3D} }
+func NewOmniLight3D(obj Object) OmniLight3D    { return OmniLight3D{object: object(obj)} }
+func GetOmniLight3D(obj OmniLight3D) [1]Object { return obj.AsObject() }
 
 type OpenXRAPIExtension struct {
-	Locked
-	_OpenXRAPIExtension Object
+	object
+	_OpenXRAPIExtension struct{}
 }
 
-func NewOpenXRAPIExtension(obj Object) OpenXRAPIExtension { return OpenXRAPIExtension{Locked{}, obj} }
-func GetOpenXRAPIExtension(obj OpenXRAPIExtension) [1]Object {
-	return [1]Object{obj._OpenXRAPIExtension}
+func NewOpenXRAPIExtension(obj Object) OpenXRAPIExtension {
+	return OpenXRAPIExtension{object: object(obj)}
 }
+func GetOpenXRAPIExtension(obj OpenXRAPIExtension) [1]Object { return obj.AsObject() }
 
 type OpenXRAction struct {
-	Locked
-	_OpenXRAction Object
+	object
+	_OpenXRAction struct{}
 }
 
-func NewOpenXRAction(obj Object) OpenXRAction    { return OpenXRAction{Locked{}, obj} }
-func GetOpenXRAction(obj OpenXRAction) [1]Object { return [1]Object{obj._OpenXRAction} }
+func NewOpenXRAction(obj Object) OpenXRAction    { return OpenXRAction{object: object(obj)} }
+func GetOpenXRAction(obj OpenXRAction) [1]Object { return obj.AsObject() }
 
 type OpenXRActionBindingModifier struct {
-	Locked
-	_OpenXRActionBindingModifier Object
+	object
+	_OpenXRActionBindingModifier struct{}
 }
 
 func NewOpenXRActionBindingModifier(obj Object) OpenXRActionBindingModifier {
-	return OpenXRActionBindingModifier{Locked{}, obj}
+	return OpenXRActionBindingModifier{object: object(obj)}
 }
-func GetOpenXRActionBindingModifier(obj OpenXRActionBindingModifier) [1]Object {
-	return [1]Object{obj._OpenXRActionBindingModifier}
-}
+func GetOpenXRActionBindingModifier(obj OpenXRActionBindingModifier) [1]Object { return obj.AsObject() }
 
 type OpenXRActionMap struct {
-	Locked
-	_OpenXRActionMap Object
+	object
+	_OpenXRActionMap struct{}
 }
 
-func NewOpenXRActionMap(obj Object) OpenXRActionMap    { return OpenXRActionMap{Locked{}, obj} }
-func GetOpenXRActionMap(obj OpenXRActionMap) [1]Object { return [1]Object{obj._OpenXRActionMap} }
+func NewOpenXRActionMap(obj Object) OpenXRActionMap    { return OpenXRActionMap{object: object(obj)} }
+func GetOpenXRActionMap(obj OpenXRActionMap) [1]Object { return obj.AsObject() }
 
 type OpenXRActionSet struct {
-	Locked
-	_OpenXRActionSet Object
+	object
+	_OpenXRActionSet struct{}
 }
 
-func NewOpenXRActionSet(obj Object) OpenXRActionSet    { return OpenXRActionSet{Locked{}, obj} }
-func GetOpenXRActionSet(obj OpenXRActionSet) [1]Object { return [1]Object{obj._OpenXRActionSet} }
+func NewOpenXRActionSet(obj Object) OpenXRActionSet    { return OpenXRActionSet{object: object(obj)} }
+func GetOpenXRActionSet(obj OpenXRActionSet) [1]Object { return obj.AsObject() }
 
 type OpenXRAnalogThresholdModifier struct {
-	Locked
-	_OpenXRAnalogThresholdModifier Object
+	object
+	_OpenXRAnalogThresholdModifier struct{}
 }
 
 func NewOpenXRAnalogThresholdModifier(obj Object) OpenXRAnalogThresholdModifier {
-	return OpenXRAnalogThresholdModifier{Locked{}, obj}
+	return OpenXRAnalogThresholdModifier{object: object(obj)}
 }
 func GetOpenXRAnalogThresholdModifier(obj OpenXRAnalogThresholdModifier) [1]Object {
-	return [1]Object{obj._OpenXRAnalogThresholdModifier}
+	return obj.AsObject()
 }
 
 type OpenXRAnchorTracker struct {
-	Locked
-	_OpenXRAnchorTracker Object
+	object
+	_OpenXRAnchorTracker struct{}
 }
 
 func NewOpenXRAnchorTracker(obj Object) OpenXRAnchorTracker {
-	return OpenXRAnchorTracker{Locked{}, obj}
+	return OpenXRAnchorTracker{object: object(obj)}
 }
-func GetOpenXRAnchorTracker(obj OpenXRAnchorTracker) [1]Object {
-	return [1]Object{obj._OpenXRAnchorTracker}
-}
+func GetOpenXRAnchorTracker(obj OpenXRAnchorTracker) [1]Object { return obj.AsObject() }
 
 type OpenXRAndroidThreadSettingsExtension struct {
-	Locked
-	_OpenXRAndroidThreadSettingsExtension Object
+	object
+	_OpenXRAndroidThreadSettingsExtension struct{}
 }
 
 func NewOpenXRAndroidThreadSettingsExtension(obj Object) OpenXRAndroidThreadSettingsExtension {
-	return OpenXRAndroidThreadSettingsExtension{Locked{}, obj}
+	return OpenXRAndroidThreadSettingsExtension{object: object(obj)}
 }
 func GetOpenXRAndroidThreadSettingsExtension(obj OpenXRAndroidThreadSettingsExtension) [1]Object {
-	return [1]Object{obj._OpenXRAndroidThreadSettingsExtension}
+	return obj.AsObject()
 }
 
 type OpenXRBindingModifier struct {
-	Locked
-	_OpenXRBindingModifier Object
+	object
+	_OpenXRBindingModifier struct{}
 }
 
 func NewOpenXRBindingModifier(obj Object) OpenXRBindingModifier {
-	return OpenXRBindingModifier{Locked{}, obj}
+	return OpenXRBindingModifier{object: object(obj)}
 }
-func GetOpenXRBindingModifier(obj OpenXRBindingModifier) [1]Object {
-	return [1]Object{obj._OpenXRBindingModifier}
-}
+func GetOpenXRBindingModifier(obj OpenXRBindingModifier) [1]Object { return obj.AsObject() }
 
 type OpenXRBindingModifierEditor struct {
-	Locked
-	_OpenXRBindingModifierEditor Object
+	object
+	_OpenXRBindingModifierEditor struct{}
 }
 
 func NewOpenXRBindingModifierEditor(obj Object) OpenXRBindingModifierEditor {
-	return OpenXRBindingModifierEditor{Locked{}, obj}
+	return OpenXRBindingModifierEditor{object: object(obj)}
 }
-func GetOpenXRBindingModifierEditor(obj OpenXRBindingModifierEditor) [1]Object {
-	return [1]Object{obj._OpenXRBindingModifierEditor}
-}
+func GetOpenXRBindingModifierEditor(obj OpenXRBindingModifierEditor) [1]Object { return obj.AsObject() }
 
 type OpenXRCompositionLayer struct {
-	Locked
-	_OpenXRCompositionLayer Object
+	object
+	_OpenXRCompositionLayer struct{}
 }
 
 func NewOpenXRCompositionLayer(obj Object) OpenXRCompositionLayer {
-	return OpenXRCompositionLayer{Locked{}, obj}
+	return OpenXRCompositionLayer{object: object(obj)}
 }
-func GetOpenXRCompositionLayer(obj OpenXRCompositionLayer) [1]Object {
-	return [1]Object{obj._OpenXRCompositionLayer}
-}
+func GetOpenXRCompositionLayer(obj OpenXRCompositionLayer) [1]Object { return obj.AsObject() }
 
 type OpenXRCompositionLayerCylinder struct {
-	Locked
-	_OpenXRCompositionLayerCylinder Object
+	object
+	_OpenXRCompositionLayerCylinder struct{}
 }
 
 func NewOpenXRCompositionLayerCylinder(obj Object) OpenXRCompositionLayerCylinder {
-	return OpenXRCompositionLayerCylinder{Locked{}, obj}
+	return OpenXRCompositionLayerCylinder{object: object(obj)}
 }
 func GetOpenXRCompositionLayerCylinder(obj OpenXRCompositionLayerCylinder) [1]Object {
-	return [1]Object{obj._OpenXRCompositionLayerCylinder}
+	return obj.AsObject()
 }
 
 type OpenXRCompositionLayerEquirect struct {
-	Locked
-	_OpenXRCompositionLayerEquirect Object
+	object
+	_OpenXRCompositionLayerEquirect struct{}
 }
 
 func NewOpenXRCompositionLayerEquirect(obj Object) OpenXRCompositionLayerEquirect {
-	return OpenXRCompositionLayerEquirect{Locked{}, obj}
+	return OpenXRCompositionLayerEquirect{object: object(obj)}
 }
 func GetOpenXRCompositionLayerEquirect(obj OpenXRCompositionLayerEquirect) [1]Object {
-	return [1]Object{obj._OpenXRCompositionLayerEquirect}
+	return obj.AsObject()
 }
 
 type OpenXRCompositionLayerQuad struct {
-	Locked
-	_OpenXRCompositionLayerQuad Object
+	object
+	_OpenXRCompositionLayerQuad struct{}
 }
 
 func NewOpenXRCompositionLayerQuad(obj Object) OpenXRCompositionLayerQuad {
-	return OpenXRCompositionLayerQuad{Locked{}, obj}
+	return OpenXRCompositionLayerQuad{object: object(obj)}
 }
-func GetOpenXRCompositionLayerQuad(obj OpenXRCompositionLayerQuad) [1]Object {
-	return [1]Object{obj._OpenXRCompositionLayerQuad}
-}
+func GetOpenXRCompositionLayerQuad(obj OpenXRCompositionLayerQuad) [1]Object { return obj.AsObject() }
 
 type OpenXRDpadBindingModifier struct {
-	Locked
-	_OpenXRDpadBindingModifier Object
+	object
+	_OpenXRDpadBindingModifier struct{}
 }
 
 func NewOpenXRDpadBindingModifier(obj Object) OpenXRDpadBindingModifier {
-	return OpenXRDpadBindingModifier{Locked{}, obj}
+	return OpenXRDpadBindingModifier{object: object(obj)}
 }
-func GetOpenXRDpadBindingModifier(obj OpenXRDpadBindingModifier) [1]Object {
-	return [1]Object{obj._OpenXRDpadBindingModifier}
-}
+func GetOpenXRDpadBindingModifier(obj OpenXRDpadBindingModifier) [1]Object { return obj.AsObject() }
 
 type OpenXRExtensionWrapper struct {
-	Locked
-	_OpenXRExtensionWrapper Object
+	object
+	_OpenXRExtensionWrapper struct{}
 }
 
 func NewOpenXRExtensionWrapper(obj Object) OpenXRExtensionWrapper {
-	return OpenXRExtensionWrapper{Locked{}, obj}
+	return OpenXRExtensionWrapper{object: object(obj)}
 }
-func GetOpenXRExtensionWrapper(obj OpenXRExtensionWrapper) [1]Object {
-	return [1]Object{obj._OpenXRExtensionWrapper}
-}
+func GetOpenXRExtensionWrapper(obj OpenXRExtensionWrapper) [1]Object { return obj.AsObject() }
 
 type OpenXRExtensionWrapperExtension struct {
-	Locked
-	_OpenXRExtensionWrapperExtension Object
+	object
+	_OpenXRExtensionWrapperExtension struct{}
 }
 
 func NewOpenXRExtensionWrapperExtension(obj Object) OpenXRExtensionWrapperExtension {
-	return OpenXRExtensionWrapperExtension{Locked{}, obj}
+	return OpenXRExtensionWrapperExtension{object: object(obj)}
 }
 func GetOpenXRExtensionWrapperExtension(obj OpenXRExtensionWrapperExtension) [1]Object {
-	return [1]Object{obj._OpenXRExtensionWrapperExtension}
+	return obj.AsObject()
 }
 
 type OpenXRFrameSynthesisExtension struct {
-	Locked
-	_OpenXRFrameSynthesisExtension Object
+	object
+	_OpenXRFrameSynthesisExtension struct{}
 }
 
 func NewOpenXRFrameSynthesisExtension(obj Object) OpenXRFrameSynthesisExtension {
-	return OpenXRFrameSynthesisExtension{Locked{}, obj}
+	return OpenXRFrameSynthesisExtension{object: object(obj)}
 }
 func GetOpenXRFrameSynthesisExtension(obj OpenXRFrameSynthesisExtension) [1]Object {
-	return [1]Object{obj._OpenXRFrameSynthesisExtension}
+	return obj.AsObject()
 }
 
 type OpenXRFutureExtension struct {
-	Locked
-	_OpenXRFutureExtension Object
+	object
+	_OpenXRFutureExtension struct{}
 }
 
 func NewOpenXRFutureExtension(obj Object) OpenXRFutureExtension {
-	return OpenXRFutureExtension{Locked{}, obj}
+	return OpenXRFutureExtension{object: object(obj)}
 }
-func GetOpenXRFutureExtension(obj OpenXRFutureExtension) [1]Object {
-	return [1]Object{obj._OpenXRFutureExtension}
-}
+func GetOpenXRFutureExtension(obj OpenXRFutureExtension) [1]Object { return obj.AsObject() }
 
 type OpenXRFutureResult struct {
-	Locked
-	_OpenXRFutureResult Object
+	object
+	_OpenXRFutureResult struct{}
 }
 
-func NewOpenXRFutureResult(obj Object) OpenXRFutureResult { return OpenXRFutureResult{Locked{}, obj} }
-func GetOpenXRFutureResult(obj OpenXRFutureResult) [1]Object {
-	return [1]Object{obj._OpenXRFutureResult}
+func NewOpenXRFutureResult(obj Object) OpenXRFutureResult {
+	return OpenXRFutureResult{object: object(obj)}
 }
+func GetOpenXRFutureResult(obj OpenXRFutureResult) [1]Object { return obj.AsObject() }
 
 type OpenXRHand struct {
-	Locked
-	_OpenXRHand Object
+	object
+	_OpenXRHand struct{}
 }
 
-func NewOpenXRHand(obj Object) OpenXRHand    { return OpenXRHand{Locked{}, obj} }
-func GetOpenXRHand(obj OpenXRHand) [1]Object { return [1]Object{obj._OpenXRHand} }
+func NewOpenXRHand(obj Object) OpenXRHand    { return OpenXRHand{object: object(obj)} }
+func GetOpenXRHand(obj OpenXRHand) [1]Object { return obj.AsObject() }
 
 type OpenXRHapticBase struct {
-	Locked
-	_OpenXRHapticBase Object
+	object
+	_OpenXRHapticBase struct{}
 }
 
-func NewOpenXRHapticBase(obj Object) OpenXRHapticBase    { return OpenXRHapticBase{Locked{}, obj} }
-func GetOpenXRHapticBase(obj OpenXRHapticBase) [1]Object { return [1]Object{obj._OpenXRHapticBase} }
+func NewOpenXRHapticBase(obj Object) OpenXRHapticBase    { return OpenXRHapticBase{object: object(obj)} }
+func GetOpenXRHapticBase(obj OpenXRHapticBase) [1]Object { return obj.AsObject() }
 
 type OpenXRHapticVibration struct {
-	Locked
-	_OpenXRHapticVibration Object
+	object
+	_OpenXRHapticVibration struct{}
 }
 
 func NewOpenXRHapticVibration(obj Object) OpenXRHapticVibration {
-	return OpenXRHapticVibration{Locked{}, obj}
+	return OpenXRHapticVibration{object: object(obj)}
 }
-func GetOpenXRHapticVibration(obj OpenXRHapticVibration) [1]Object {
-	return [1]Object{obj._OpenXRHapticVibration}
-}
+func GetOpenXRHapticVibration(obj OpenXRHapticVibration) [1]Object { return obj.AsObject() }
 
 type OpenXRIPBinding struct {
-	Locked
-	_OpenXRIPBinding Object
+	object
+	_OpenXRIPBinding struct{}
 }
 
-func NewOpenXRIPBinding(obj Object) OpenXRIPBinding    { return OpenXRIPBinding{Locked{}, obj} }
-func GetOpenXRIPBinding(obj OpenXRIPBinding) [1]Object { return [1]Object{obj._OpenXRIPBinding} }
+func NewOpenXRIPBinding(obj Object) OpenXRIPBinding    { return OpenXRIPBinding{object: object(obj)} }
+func GetOpenXRIPBinding(obj OpenXRIPBinding) [1]Object { return obj.AsObject() }
 
 type OpenXRIPBindingModifier struct {
-	Locked
-	_OpenXRIPBindingModifier Object
+	object
+	_OpenXRIPBindingModifier struct{}
 }
 
 func NewOpenXRIPBindingModifier(obj Object) OpenXRIPBindingModifier {
-	return OpenXRIPBindingModifier{Locked{}, obj}
+	return OpenXRIPBindingModifier{object: object(obj)}
 }
-func GetOpenXRIPBindingModifier(obj OpenXRIPBindingModifier) [1]Object {
-	return [1]Object{obj._OpenXRIPBindingModifier}
-}
+func GetOpenXRIPBindingModifier(obj OpenXRIPBindingModifier) [1]Object { return obj.AsObject() }
 
 type OpenXRInteractionProfile struct {
-	Locked
-	_OpenXRInteractionProfile Object
+	object
+	_OpenXRInteractionProfile struct{}
 }
 
 func NewOpenXRInteractionProfile(obj Object) OpenXRInteractionProfile {
-	return OpenXRInteractionProfile{Locked{}, obj}
+	return OpenXRInteractionProfile{object: object(obj)}
 }
-func GetOpenXRInteractionProfile(obj OpenXRInteractionProfile) [1]Object {
-	return [1]Object{obj._OpenXRInteractionProfile}
-}
+func GetOpenXRInteractionProfile(obj OpenXRInteractionProfile) [1]Object { return obj.AsObject() }
 
 type OpenXRInteractionProfileEditor struct {
-	Locked
-	_OpenXRInteractionProfileEditor Object
+	object
+	_OpenXRInteractionProfileEditor struct{}
 }
 
 func NewOpenXRInteractionProfileEditor(obj Object) OpenXRInteractionProfileEditor {
-	return OpenXRInteractionProfileEditor{Locked{}, obj}
+	return OpenXRInteractionProfileEditor{object: object(obj)}
 }
 func GetOpenXRInteractionProfileEditor(obj OpenXRInteractionProfileEditor) [1]Object {
-	return [1]Object{obj._OpenXRInteractionProfileEditor}
+	return obj.AsObject()
 }
 
 type OpenXRInteractionProfileEditorBase struct {
-	Locked
-	_OpenXRInteractionProfileEditorBase Object
+	object
+	_OpenXRInteractionProfileEditorBase struct{}
 }
 
 func NewOpenXRInteractionProfileEditorBase(obj Object) OpenXRInteractionProfileEditorBase {
-	return OpenXRInteractionProfileEditorBase{Locked{}, obj}
+	return OpenXRInteractionProfileEditorBase{object: object(obj)}
 }
 func GetOpenXRInteractionProfileEditorBase(obj OpenXRInteractionProfileEditorBase) [1]Object {
-	return [1]Object{obj._OpenXRInteractionProfileEditorBase}
+	return obj.AsObject()
 }
 
 type OpenXRInteractionProfileMetadata struct {
-	Locked
-	_OpenXRInteractionProfileMetadata Object
+	object
+	_OpenXRInteractionProfileMetadata struct{}
 }
 
 func NewOpenXRInteractionProfileMetadata(obj Object) OpenXRInteractionProfileMetadata {
-	return OpenXRInteractionProfileMetadata{Locked{}, obj}
+	return OpenXRInteractionProfileMetadata{object: object(obj)}
 }
 func GetOpenXRInteractionProfileMetadata(obj OpenXRInteractionProfileMetadata) [1]Object {
-	return [1]Object{obj._OpenXRInteractionProfileMetadata}
+	return obj.AsObject()
 }
 
 type OpenXRInterface struct {
-	Locked
-	_OpenXRInterface Object
+	object
+	_OpenXRInterface struct{}
 }
 
-func NewOpenXRInterface(obj Object) OpenXRInterface    { return OpenXRInterface{Locked{}, obj} }
-func GetOpenXRInterface(obj OpenXRInterface) [1]Object { return [1]Object{obj._OpenXRInterface} }
+func NewOpenXRInterface(obj Object) OpenXRInterface    { return OpenXRInterface{object: object(obj)} }
+func GetOpenXRInterface(obj OpenXRInterface) [1]Object { return obj.AsObject() }
 
 type OpenXRMarkerTracker struct {
-	Locked
-	_OpenXRMarkerTracker Object
+	object
+	_OpenXRMarkerTracker struct{}
 }
 
 func NewOpenXRMarkerTracker(obj Object) OpenXRMarkerTracker {
-	return OpenXRMarkerTracker{Locked{}, obj}
+	return OpenXRMarkerTracker{object: object(obj)}
 }
-func GetOpenXRMarkerTracker(obj OpenXRMarkerTracker) [1]Object {
-	return [1]Object{obj._OpenXRMarkerTracker}
-}
+func GetOpenXRMarkerTracker(obj OpenXRMarkerTracker) [1]Object { return obj.AsObject() }
 
 type OpenXRPlaneTracker struct {
-	Locked
-	_OpenXRPlaneTracker Object
+	object
+	_OpenXRPlaneTracker struct{}
 }
 
-func NewOpenXRPlaneTracker(obj Object) OpenXRPlaneTracker { return OpenXRPlaneTracker{Locked{}, obj} }
-func GetOpenXRPlaneTracker(obj OpenXRPlaneTracker) [1]Object {
-	return [1]Object{obj._OpenXRPlaneTracker}
+func NewOpenXRPlaneTracker(obj Object) OpenXRPlaneTracker {
+	return OpenXRPlaneTracker{object: object(obj)}
 }
+func GetOpenXRPlaneTracker(obj OpenXRPlaneTracker) [1]Object { return obj.AsObject() }
 
 type OpenXRRenderModel struct {
-	Locked
-	_OpenXRRenderModel Object
+	object
+	_OpenXRRenderModel struct{}
 }
 
-func NewOpenXRRenderModel(obj Object) OpenXRRenderModel    { return OpenXRRenderModel{Locked{}, obj} }
-func GetOpenXRRenderModel(obj OpenXRRenderModel) [1]Object { return [1]Object{obj._OpenXRRenderModel} }
+func NewOpenXRRenderModel(obj Object) OpenXRRenderModel {
+	return OpenXRRenderModel{object: object(obj)}
+}
+func GetOpenXRRenderModel(obj OpenXRRenderModel) [1]Object { return obj.AsObject() }
 
 type OpenXRRenderModelExtension struct {
-	Locked
-	_OpenXRRenderModelExtension Object
+	object
+	_OpenXRRenderModelExtension struct{}
 }
 
 func NewOpenXRRenderModelExtension(obj Object) OpenXRRenderModelExtension {
-	return OpenXRRenderModelExtension{Locked{}, obj}
+	return OpenXRRenderModelExtension{object: object(obj)}
 }
-func GetOpenXRRenderModelExtension(obj OpenXRRenderModelExtension) [1]Object {
-	return [1]Object{obj._OpenXRRenderModelExtension}
-}
+func GetOpenXRRenderModelExtension(obj OpenXRRenderModelExtension) [1]Object { return obj.AsObject() }
 
 type OpenXRRenderModelManager struct {
-	Locked
-	_OpenXRRenderModelManager Object
+	object
+	_OpenXRRenderModelManager struct{}
 }
 
 func NewOpenXRRenderModelManager(obj Object) OpenXRRenderModelManager {
-	return OpenXRRenderModelManager{Locked{}, obj}
+	return OpenXRRenderModelManager{object: object(obj)}
 }
-func GetOpenXRRenderModelManager(obj OpenXRRenderModelManager) [1]Object {
-	return [1]Object{obj._OpenXRRenderModelManager}
-}
+func GetOpenXRRenderModelManager(obj OpenXRRenderModelManager) [1]Object { return obj.AsObject() }
 
 type OpenXRSpatialAnchorCapability struct {
-	Locked
-	_OpenXRSpatialAnchorCapability Object
+	object
+	_OpenXRSpatialAnchorCapability struct{}
 }
 
 func NewOpenXRSpatialAnchorCapability(obj Object) OpenXRSpatialAnchorCapability {
-	return OpenXRSpatialAnchorCapability{Locked{}, obj}
+	return OpenXRSpatialAnchorCapability{object: object(obj)}
 }
 func GetOpenXRSpatialAnchorCapability(obj OpenXRSpatialAnchorCapability) [1]Object {
-	return [1]Object{obj._OpenXRSpatialAnchorCapability}
+	return obj.AsObject()
 }
 
 type OpenXRSpatialCapabilityConfigurationAnchor struct {
-	Locked
-	_OpenXRSpatialCapabilityConfigurationAnchor Object
+	object
+	_OpenXRSpatialCapabilityConfigurationAnchor struct{}
 }
 
 func NewOpenXRSpatialCapabilityConfigurationAnchor(obj Object) OpenXRSpatialCapabilityConfigurationAnchor {
-	return OpenXRSpatialCapabilityConfigurationAnchor{Locked{}, obj}
+	return OpenXRSpatialCapabilityConfigurationAnchor{object: object(obj)}
 }
 func GetOpenXRSpatialCapabilityConfigurationAnchor(obj OpenXRSpatialCapabilityConfigurationAnchor) [1]Object {
-	return [1]Object{obj._OpenXRSpatialCapabilityConfigurationAnchor}
+	return obj.AsObject()
 }
 
 type OpenXRSpatialCapabilityConfigurationAprilTag struct {
-	Locked
-	_OpenXRSpatialCapabilityConfigurationAprilTag Object
+	object
+	_OpenXRSpatialCapabilityConfigurationAprilTag struct{}
 }
 
 func NewOpenXRSpatialCapabilityConfigurationAprilTag(obj Object) OpenXRSpatialCapabilityConfigurationAprilTag {
-	return OpenXRSpatialCapabilityConfigurationAprilTag{Locked{}, obj}
+	return OpenXRSpatialCapabilityConfigurationAprilTag{object: object(obj)}
 }
 func GetOpenXRSpatialCapabilityConfigurationAprilTag(obj OpenXRSpatialCapabilityConfigurationAprilTag) [1]Object {
-	return [1]Object{obj._OpenXRSpatialCapabilityConfigurationAprilTag}
+	return obj.AsObject()
 }
 
 type OpenXRSpatialCapabilityConfigurationAruco struct {
-	Locked
-	_OpenXRSpatialCapabilityConfigurationAruco Object
+	object
+	_OpenXRSpatialCapabilityConfigurationAruco struct{}
 }
 
 func NewOpenXRSpatialCapabilityConfigurationAruco(obj Object) OpenXRSpatialCapabilityConfigurationAruco {
-	return OpenXRSpatialCapabilityConfigurationAruco{Locked{}, obj}
+	return OpenXRSpatialCapabilityConfigurationAruco{object: object(obj)}
 }
 func GetOpenXRSpatialCapabilityConfigurationAruco(obj OpenXRSpatialCapabilityConfigurationAruco) [1]Object {
-	return [1]Object{obj._OpenXRSpatialCapabilityConfigurationAruco}
+	return obj.AsObject()
 }
 
 type OpenXRSpatialCapabilityConfigurationBaseHeader struct {
-	Locked
-	_OpenXRSpatialCapabilityConfigurationBaseHeader Object
+	object
+	_OpenXRSpatialCapabilityConfigurationBaseHeader struct{}
 }
 
 func NewOpenXRSpatialCapabilityConfigurationBaseHeader(obj Object) OpenXRSpatialCapabilityConfigurationBaseHeader {
-	return OpenXRSpatialCapabilityConfigurationBaseHeader{Locked{}, obj}
+	return OpenXRSpatialCapabilityConfigurationBaseHeader{object: object(obj)}
 }
 func GetOpenXRSpatialCapabilityConfigurationBaseHeader(obj OpenXRSpatialCapabilityConfigurationBaseHeader) [1]Object {
-	return [1]Object{obj._OpenXRSpatialCapabilityConfigurationBaseHeader}
+	return obj.AsObject()
 }
 
 type OpenXRSpatialCapabilityConfigurationMicroQrCode struct {
-	Locked
-	_OpenXRSpatialCapabilityConfigurationMicroQrCode Object
+	object
+	_OpenXRSpatialCapabilityConfigurationMicroQrCode struct{}
 }
 
 func NewOpenXRSpatialCapabilityConfigurationMicroQrCode(obj Object) OpenXRSpatialCapabilityConfigurationMicroQrCode {
-	return OpenXRSpatialCapabilityConfigurationMicroQrCode{Locked{}, obj}
+	return OpenXRSpatialCapabilityConfigurationMicroQrCode{object: object(obj)}
 }
 func GetOpenXRSpatialCapabilityConfigurationMicroQrCode(obj OpenXRSpatialCapabilityConfigurationMicroQrCode) [1]Object {
-	return [1]Object{obj._OpenXRSpatialCapabilityConfigurationMicroQrCode}
+	return obj.AsObject()
 }
 
 type OpenXRSpatialCapabilityConfigurationPlaneTracking struct {
-	Locked
-	_OpenXRSpatialCapabilityConfigurationPlaneTracking Object
+	object
+	_OpenXRSpatialCapabilityConfigurationPlaneTracking struct{}
 }
 
 func NewOpenXRSpatialCapabilityConfigurationPlaneTracking(obj Object) OpenXRSpatialCapabilityConfigurationPlaneTracking {
-	return OpenXRSpatialCapabilityConfigurationPlaneTracking{Locked{}, obj}
+	return OpenXRSpatialCapabilityConfigurationPlaneTracking{object: object(obj)}
 }
 func GetOpenXRSpatialCapabilityConfigurationPlaneTracking(obj OpenXRSpatialCapabilityConfigurationPlaneTracking) [1]Object {
-	return [1]Object{obj._OpenXRSpatialCapabilityConfigurationPlaneTracking}
+	return obj.AsObject()
 }
 
 type OpenXRSpatialCapabilityConfigurationQrCode struct {
-	Locked
-	_OpenXRSpatialCapabilityConfigurationQrCode Object
+	object
+	_OpenXRSpatialCapabilityConfigurationQrCode struct{}
 }
 
 func NewOpenXRSpatialCapabilityConfigurationQrCode(obj Object) OpenXRSpatialCapabilityConfigurationQrCode {
-	return OpenXRSpatialCapabilityConfigurationQrCode{Locked{}, obj}
+	return OpenXRSpatialCapabilityConfigurationQrCode{object: object(obj)}
 }
 func GetOpenXRSpatialCapabilityConfigurationQrCode(obj OpenXRSpatialCapabilityConfigurationQrCode) [1]Object {
-	return [1]Object{obj._OpenXRSpatialCapabilityConfigurationQrCode}
+	return obj.AsObject()
 }
 
 type OpenXRSpatialComponentAnchorList struct {
-	Locked
-	_OpenXRSpatialComponentAnchorList Object
+	object
+	_OpenXRSpatialComponentAnchorList struct{}
 }
 
 func NewOpenXRSpatialComponentAnchorList(obj Object) OpenXRSpatialComponentAnchorList {
-	return OpenXRSpatialComponentAnchorList{Locked{}, obj}
+	return OpenXRSpatialComponentAnchorList{object: object(obj)}
 }
 func GetOpenXRSpatialComponentAnchorList(obj OpenXRSpatialComponentAnchorList) [1]Object {
-	return [1]Object{obj._OpenXRSpatialComponentAnchorList}
+	return obj.AsObject()
 }
 
 type OpenXRSpatialComponentBounded2DList struct {
-	Locked
-	_OpenXRSpatialComponentBounded2DList Object
+	object
+	_OpenXRSpatialComponentBounded2DList struct{}
 }
 
 func NewOpenXRSpatialComponentBounded2DList(obj Object) OpenXRSpatialComponentBounded2DList {
-	return OpenXRSpatialComponentBounded2DList{Locked{}, obj}
+	return OpenXRSpatialComponentBounded2DList{object: object(obj)}
 }
 func GetOpenXRSpatialComponentBounded2DList(obj OpenXRSpatialComponentBounded2DList) [1]Object {
-	return [1]Object{obj._OpenXRSpatialComponentBounded2DList}
+	return obj.AsObject()
 }
 
 type OpenXRSpatialComponentBounded3DList struct {
-	Locked
-	_OpenXRSpatialComponentBounded3DList Object
+	object
+	_OpenXRSpatialComponentBounded3DList struct{}
 }
 
 func NewOpenXRSpatialComponentBounded3DList(obj Object) OpenXRSpatialComponentBounded3DList {
-	return OpenXRSpatialComponentBounded3DList{Locked{}, obj}
+	return OpenXRSpatialComponentBounded3DList{object: object(obj)}
 }
 func GetOpenXRSpatialComponentBounded3DList(obj OpenXRSpatialComponentBounded3DList) [1]Object {
-	return [1]Object{obj._OpenXRSpatialComponentBounded3DList}
+	return obj.AsObject()
 }
 
 type OpenXRSpatialComponentData struct {
-	Locked
-	_OpenXRSpatialComponentData Object
+	object
+	_OpenXRSpatialComponentData struct{}
 }
 
 func NewOpenXRSpatialComponentData(obj Object) OpenXRSpatialComponentData {
-	return OpenXRSpatialComponentData{Locked{}, obj}
+	return OpenXRSpatialComponentData{object: object(obj)}
 }
-func GetOpenXRSpatialComponentData(obj OpenXRSpatialComponentData) [1]Object {
-	return [1]Object{obj._OpenXRSpatialComponentData}
-}
+func GetOpenXRSpatialComponentData(obj OpenXRSpatialComponentData) [1]Object { return obj.AsObject() }
 
 type OpenXRSpatialComponentMarkerList struct {
-	Locked
-	_OpenXRSpatialComponentMarkerList Object
+	object
+	_OpenXRSpatialComponentMarkerList struct{}
 }
 
 func NewOpenXRSpatialComponentMarkerList(obj Object) OpenXRSpatialComponentMarkerList {
-	return OpenXRSpatialComponentMarkerList{Locked{}, obj}
+	return OpenXRSpatialComponentMarkerList{object: object(obj)}
 }
 func GetOpenXRSpatialComponentMarkerList(obj OpenXRSpatialComponentMarkerList) [1]Object {
-	return [1]Object{obj._OpenXRSpatialComponentMarkerList}
+	return obj.AsObject()
 }
 
 type OpenXRSpatialComponentMesh2DList struct {
-	Locked
-	_OpenXRSpatialComponentMesh2DList Object
+	object
+	_OpenXRSpatialComponentMesh2DList struct{}
 }
 
 func NewOpenXRSpatialComponentMesh2DList(obj Object) OpenXRSpatialComponentMesh2DList {
-	return OpenXRSpatialComponentMesh2DList{Locked{}, obj}
+	return OpenXRSpatialComponentMesh2DList{object: object(obj)}
 }
 func GetOpenXRSpatialComponentMesh2DList(obj OpenXRSpatialComponentMesh2DList) [1]Object {
-	return [1]Object{obj._OpenXRSpatialComponentMesh2DList}
+	return obj.AsObject()
 }
 
 type OpenXRSpatialComponentMesh3DList struct {
-	Locked
-	_OpenXRSpatialComponentMesh3DList Object
+	object
+	_OpenXRSpatialComponentMesh3DList struct{}
 }
 
 func NewOpenXRSpatialComponentMesh3DList(obj Object) OpenXRSpatialComponentMesh3DList {
-	return OpenXRSpatialComponentMesh3DList{Locked{}, obj}
+	return OpenXRSpatialComponentMesh3DList{object: object(obj)}
 }
 func GetOpenXRSpatialComponentMesh3DList(obj OpenXRSpatialComponentMesh3DList) [1]Object {
-	return [1]Object{obj._OpenXRSpatialComponentMesh3DList}
+	return obj.AsObject()
 }
 
 type OpenXRSpatialComponentParentList struct {
-	Locked
-	_OpenXRSpatialComponentParentList Object
+	object
+	_OpenXRSpatialComponentParentList struct{}
 }
 
 func NewOpenXRSpatialComponentParentList(obj Object) OpenXRSpatialComponentParentList {
-	return OpenXRSpatialComponentParentList{Locked{}, obj}
+	return OpenXRSpatialComponentParentList{object: object(obj)}
 }
 func GetOpenXRSpatialComponentParentList(obj OpenXRSpatialComponentParentList) [1]Object {
-	return [1]Object{obj._OpenXRSpatialComponentParentList}
+	return obj.AsObject()
 }
 
 type OpenXRSpatialComponentPersistenceList struct {
-	Locked
-	_OpenXRSpatialComponentPersistenceList Object
+	object
+	_OpenXRSpatialComponentPersistenceList struct{}
 }
 
 func NewOpenXRSpatialComponentPersistenceList(obj Object) OpenXRSpatialComponentPersistenceList {
-	return OpenXRSpatialComponentPersistenceList{Locked{}, obj}
+	return OpenXRSpatialComponentPersistenceList{object: object(obj)}
 }
 func GetOpenXRSpatialComponentPersistenceList(obj OpenXRSpatialComponentPersistenceList) [1]Object {
-	return [1]Object{obj._OpenXRSpatialComponentPersistenceList}
+	return obj.AsObject()
 }
 
 type OpenXRSpatialComponentPlaneAlignmentList struct {
-	Locked
-	_OpenXRSpatialComponentPlaneAlignmentList Object
+	object
+	_OpenXRSpatialComponentPlaneAlignmentList struct{}
 }
 
 func NewOpenXRSpatialComponentPlaneAlignmentList(obj Object) OpenXRSpatialComponentPlaneAlignmentList {
-	return OpenXRSpatialComponentPlaneAlignmentList{Locked{}, obj}
+	return OpenXRSpatialComponentPlaneAlignmentList{object: object(obj)}
 }
 func GetOpenXRSpatialComponentPlaneAlignmentList(obj OpenXRSpatialComponentPlaneAlignmentList) [1]Object {
-	return [1]Object{obj._OpenXRSpatialComponentPlaneAlignmentList}
+	return obj.AsObject()
 }
 
 type OpenXRSpatialComponentPlaneSemanticLabelList struct {
-	Locked
-	_OpenXRSpatialComponentPlaneSemanticLabelList Object
+	object
+	_OpenXRSpatialComponentPlaneSemanticLabelList struct{}
 }
 
 func NewOpenXRSpatialComponentPlaneSemanticLabelList(obj Object) OpenXRSpatialComponentPlaneSemanticLabelList {
-	return OpenXRSpatialComponentPlaneSemanticLabelList{Locked{}, obj}
+	return OpenXRSpatialComponentPlaneSemanticLabelList{object: object(obj)}
 }
 func GetOpenXRSpatialComponentPlaneSemanticLabelList(obj OpenXRSpatialComponentPlaneSemanticLabelList) [1]Object {
-	return [1]Object{obj._OpenXRSpatialComponentPlaneSemanticLabelList}
+	return obj.AsObject()
 }
 
 type OpenXRSpatialComponentPolygon2DList struct {
-	Locked
-	_OpenXRSpatialComponentPolygon2DList Object
+	object
+	_OpenXRSpatialComponentPolygon2DList struct{}
 }
 
 func NewOpenXRSpatialComponentPolygon2DList(obj Object) OpenXRSpatialComponentPolygon2DList {
-	return OpenXRSpatialComponentPolygon2DList{Locked{}, obj}
+	return OpenXRSpatialComponentPolygon2DList{object: object(obj)}
 }
 func GetOpenXRSpatialComponentPolygon2DList(obj OpenXRSpatialComponentPolygon2DList) [1]Object {
-	return [1]Object{obj._OpenXRSpatialComponentPolygon2DList}
+	return obj.AsObject()
 }
 
 type OpenXRSpatialContextPersistenceConfig struct {
-	Locked
-	_OpenXRSpatialContextPersistenceConfig Object
+	object
+	_OpenXRSpatialContextPersistenceConfig struct{}
 }
 
 func NewOpenXRSpatialContextPersistenceConfig(obj Object) OpenXRSpatialContextPersistenceConfig {
-	return OpenXRSpatialContextPersistenceConfig{Locked{}, obj}
+	return OpenXRSpatialContextPersistenceConfig{object: object(obj)}
 }
 func GetOpenXRSpatialContextPersistenceConfig(obj OpenXRSpatialContextPersistenceConfig) [1]Object {
-	return [1]Object{obj._OpenXRSpatialContextPersistenceConfig}
+	return obj.AsObject()
 }
 
 type OpenXRSpatialEntityExtension struct {
-	Locked
-	_OpenXRSpatialEntityExtension Object
+	object
+	_OpenXRSpatialEntityExtension struct{}
 }
 
 func NewOpenXRSpatialEntityExtension(obj Object) OpenXRSpatialEntityExtension {
-	return OpenXRSpatialEntityExtension{Locked{}, obj}
+	return OpenXRSpatialEntityExtension{object: object(obj)}
 }
 func GetOpenXRSpatialEntityExtension(obj OpenXRSpatialEntityExtension) [1]Object {
-	return [1]Object{obj._OpenXRSpatialEntityExtension}
+	return obj.AsObject()
 }
 
 type OpenXRSpatialEntityTracker struct {
-	Locked
-	_OpenXRSpatialEntityTracker Object
+	object
+	_OpenXRSpatialEntityTracker struct{}
 }
 
 func NewOpenXRSpatialEntityTracker(obj Object) OpenXRSpatialEntityTracker {
-	return OpenXRSpatialEntityTracker{Locked{}, obj}
+	return OpenXRSpatialEntityTracker{object: object(obj)}
 }
-func GetOpenXRSpatialEntityTracker(obj OpenXRSpatialEntityTracker) [1]Object {
-	return [1]Object{obj._OpenXRSpatialEntityTracker}
-}
+func GetOpenXRSpatialEntityTracker(obj OpenXRSpatialEntityTracker) [1]Object { return obj.AsObject() }
 
 type OpenXRSpatialMarkerTrackingCapability struct {
-	Locked
-	_OpenXRSpatialMarkerTrackingCapability Object
+	object
+	_OpenXRSpatialMarkerTrackingCapability struct{}
 }
 
 func NewOpenXRSpatialMarkerTrackingCapability(obj Object) OpenXRSpatialMarkerTrackingCapability {
-	return OpenXRSpatialMarkerTrackingCapability{Locked{}, obj}
+	return OpenXRSpatialMarkerTrackingCapability{object: object(obj)}
 }
 func GetOpenXRSpatialMarkerTrackingCapability(obj OpenXRSpatialMarkerTrackingCapability) [1]Object {
-	return [1]Object{obj._OpenXRSpatialMarkerTrackingCapability}
+	return obj.AsObject()
 }
 
 type OpenXRSpatialPlaneTrackingCapability struct {
-	Locked
-	_OpenXRSpatialPlaneTrackingCapability Object
+	object
+	_OpenXRSpatialPlaneTrackingCapability struct{}
 }
 
 func NewOpenXRSpatialPlaneTrackingCapability(obj Object) OpenXRSpatialPlaneTrackingCapability {
-	return OpenXRSpatialPlaneTrackingCapability{Locked{}, obj}
+	return OpenXRSpatialPlaneTrackingCapability{object: object(obj)}
 }
 func GetOpenXRSpatialPlaneTrackingCapability(obj OpenXRSpatialPlaneTrackingCapability) [1]Object {
-	return [1]Object{obj._OpenXRSpatialPlaneTrackingCapability}
+	return obj.AsObject()
 }
 
 type OpenXRSpatialQueryResultData struct {
-	Locked
-	_OpenXRSpatialQueryResultData Object
+	object
+	_OpenXRSpatialQueryResultData struct{}
 }
 
 func NewOpenXRSpatialQueryResultData(obj Object) OpenXRSpatialQueryResultData {
-	return OpenXRSpatialQueryResultData{Locked{}, obj}
+	return OpenXRSpatialQueryResultData{object: object(obj)}
 }
 func GetOpenXRSpatialQueryResultData(obj OpenXRSpatialQueryResultData) [1]Object {
-	return [1]Object{obj._OpenXRSpatialQueryResultData}
+	return obj.AsObject()
 }
 
 type OpenXRStructureBase struct {
-	Locked
-	_OpenXRStructureBase Object
+	object
+	_OpenXRStructureBase struct{}
 }
 
 func NewOpenXRStructureBase(obj Object) OpenXRStructureBase {
-	return OpenXRStructureBase{Locked{}, obj}
+	return OpenXRStructureBase{object: object(obj)}
 }
-func GetOpenXRStructureBase(obj OpenXRStructureBase) [1]Object {
-	return [1]Object{obj._OpenXRStructureBase}
-}
+func GetOpenXRStructureBase(obj OpenXRStructureBase) [1]Object { return obj.AsObject() }
 
 type OpenXRVisibilityMask struct {
-	Locked
-	_OpenXRVisibilityMask Object
+	object
+	_OpenXRVisibilityMask struct{}
 }
 
 func NewOpenXRVisibilityMask(obj Object) OpenXRVisibilityMask {
-	return OpenXRVisibilityMask{Locked{}, obj}
+	return OpenXRVisibilityMask{object: object(obj)}
 }
-func GetOpenXRVisibilityMask(obj OpenXRVisibilityMask) [1]Object {
-	return [1]Object{obj._OpenXRVisibilityMask}
-}
+func GetOpenXRVisibilityMask(obj OpenXRVisibilityMask) [1]Object { return obj.AsObject() }
 
 type OptimizedTranslation struct {
-	Locked
-	_OptimizedTranslation Object
+	object
+	_OptimizedTranslation struct{}
 }
 
 func NewOptimizedTranslation(obj Object) OptimizedTranslation {
-	return OptimizedTranslation{Locked{}, obj}
+	return OptimizedTranslation{object: object(obj)}
 }
-func GetOptimizedTranslation(obj OptimizedTranslation) [1]Object {
-	return [1]Object{obj._OptimizedTranslation}
-}
+func GetOptimizedTranslation(obj OptimizedTranslation) [1]Object { return obj.AsObject() }
 
 type OptionButton struct {
-	Locked
-	_OptionButton Object
+	object
+	_OptionButton struct{}
 }
 
-func NewOptionButton(obj Object) OptionButton    { return OptionButton{Locked{}, obj} }
-func GetOptionButton(obj OptionButton) [1]Object { return [1]Object{obj._OptionButton} }
+func NewOptionButton(obj Object) OptionButton    { return OptionButton{object: object(obj)} }
+func GetOptionButton(obj OptionButton) [1]Object { return obj.AsObject() }
 
 type PCKPacker struct {
-	Locked
-	_PCKPacker Object
+	object
+	_PCKPacker struct{}
 }
 
-func NewPCKPacker(obj Object) PCKPacker    { return PCKPacker{Locked{}, obj} }
-func GetPCKPacker(obj PCKPacker) [1]Object { return [1]Object{obj._PCKPacker} }
+func NewPCKPacker(obj Object) PCKPacker    { return PCKPacker{object: object(obj)} }
+func GetPCKPacker(obj PCKPacker) [1]Object { return obj.AsObject() }
 
 type PackedDataContainer struct {
-	Locked
-	_PackedDataContainer Object
+	object
+	_PackedDataContainer struct{}
 }
 
 func NewPackedDataContainer(obj Object) PackedDataContainer {
-	return PackedDataContainer{Locked{}, obj}
+	return PackedDataContainer{object: object(obj)}
 }
-func GetPackedDataContainer(obj PackedDataContainer) [1]Object {
-	return [1]Object{obj._PackedDataContainer}
-}
+func GetPackedDataContainer(obj PackedDataContainer) [1]Object { return obj.AsObject() }
 
 type PackedDataContainerRef struct {
-	Locked
-	_PackedDataContainerRef Object
+	object
+	_PackedDataContainerRef struct{}
 }
 
 func NewPackedDataContainerRef(obj Object) PackedDataContainerRef {
-	return PackedDataContainerRef{Locked{}, obj}
+	return PackedDataContainerRef{object: object(obj)}
 }
-func GetPackedDataContainerRef(obj PackedDataContainerRef) [1]Object {
-	return [1]Object{obj._PackedDataContainerRef}
-}
+func GetPackedDataContainerRef(obj PackedDataContainerRef) [1]Object { return obj.AsObject() }
 
 type PackedScene struct {
-	Locked
-	_PackedScene Object
+	object
+	_PackedScene struct{}
 }
 
-func NewPackedScene(obj Object) PackedScene    { return PackedScene{Locked{}, obj} }
-func GetPackedScene(obj PackedScene) [1]Object { return [1]Object{obj._PackedScene} }
+func NewPackedScene(obj Object) PackedScene    { return PackedScene{object: object(obj)} }
+func GetPackedScene(obj PackedScene) [1]Object { return obj.AsObject() }
 
 type PacketPeer struct {
-	Locked
-	_PacketPeer Object
+	object
+	_PacketPeer struct{}
 }
 
-func NewPacketPeer(obj Object) PacketPeer    { return PacketPeer{Locked{}, obj} }
-func GetPacketPeer(obj PacketPeer) [1]Object { return [1]Object{obj._PacketPeer} }
+func NewPacketPeer(obj Object) PacketPeer    { return PacketPeer{object: object(obj)} }
+func GetPacketPeer(obj PacketPeer) [1]Object { return obj.AsObject() }
 
 type PacketPeerDTLS struct {
-	Locked
-	_PacketPeerDTLS Object
+	object
+	_PacketPeerDTLS struct{}
 }
 
-func NewPacketPeerDTLS(obj Object) PacketPeerDTLS    { return PacketPeerDTLS{Locked{}, obj} }
-func GetPacketPeerDTLS(obj PacketPeerDTLS) [1]Object { return [1]Object{obj._PacketPeerDTLS} }
+func NewPacketPeerDTLS(obj Object) PacketPeerDTLS    { return PacketPeerDTLS{object: object(obj)} }
+func GetPacketPeerDTLS(obj PacketPeerDTLS) [1]Object { return obj.AsObject() }
 
 type PacketPeerExtension struct {
-	Locked
-	_PacketPeerExtension Object
+	object
+	_PacketPeerExtension struct{}
 }
 
 func NewPacketPeerExtension(obj Object) PacketPeerExtension {
-	return PacketPeerExtension{Locked{}, obj}
+	return PacketPeerExtension{object: object(obj)}
 }
-func GetPacketPeerExtension(obj PacketPeerExtension) [1]Object {
-	return [1]Object{obj._PacketPeerExtension}
-}
+func GetPacketPeerExtension(obj PacketPeerExtension) [1]Object { return obj.AsObject() }
 
 type PacketPeerStream struct {
-	Locked
-	_PacketPeerStream Object
+	object
+	_PacketPeerStream struct{}
 }
 
-func NewPacketPeerStream(obj Object) PacketPeerStream    { return PacketPeerStream{Locked{}, obj} }
-func GetPacketPeerStream(obj PacketPeerStream) [1]Object { return [1]Object{obj._PacketPeerStream} }
+func NewPacketPeerStream(obj Object) PacketPeerStream    { return PacketPeerStream{object: object(obj)} }
+func GetPacketPeerStream(obj PacketPeerStream) [1]Object { return obj.AsObject() }
 
 type PacketPeerUDP struct {
-	Locked
-	_PacketPeerUDP Object
+	object
+	_PacketPeerUDP struct{}
 }
 
-func NewPacketPeerUDP(obj Object) PacketPeerUDP    { return PacketPeerUDP{Locked{}, obj} }
-func GetPacketPeerUDP(obj PacketPeerUDP) [1]Object { return [1]Object{obj._PacketPeerUDP} }
+func NewPacketPeerUDP(obj Object) PacketPeerUDP    { return PacketPeerUDP{object: object(obj)} }
+func GetPacketPeerUDP(obj PacketPeerUDP) [1]Object { return obj.AsObject() }
 
 type Panel struct {
-	Locked
-	_Panel Object
+	object
+	_Panel struct{}
 }
 
-func NewPanel(obj Object) Panel    { return Panel{Locked{}, obj} }
-func GetPanel(obj Panel) [1]Object { return [1]Object{obj._Panel} }
+func NewPanel(obj Object) Panel    { return Panel{object: object(obj)} }
+func GetPanel(obj Panel) [1]Object { return obj.AsObject() }
 
 type PanelContainer struct {
-	Locked
-	_PanelContainer Object
+	object
+	_PanelContainer struct{}
 }
 
-func NewPanelContainer(obj Object) PanelContainer    { return PanelContainer{Locked{}, obj} }
-func GetPanelContainer(obj PanelContainer) [1]Object { return [1]Object{obj._PanelContainer} }
+func NewPanelContainer(obj Object) PanelContainer    { return PanelContainer{object: object(obj)} }
+func GetPanelContainer(obj PanelContainer) [1]Object { return obj.AsObject() }
 
 type PanoramaSkyMaterial struct {
-	Locked
-	_PanoramaSkyMaterial Object
+	object
+	_PanoramaSkyMaterial struct{}
 }
 
 func NewPanoramaSkyMaterial(obj Object) PanoramaSkyMaterial {
-	return PanoramaSkyMaterial{Locked{}, obj}
+	return PanoramaSkyMaterial{object: object(obj)}
 }
-func GetPanoramaSkyMaterial(obj PanoramaSkyMaterial) [1]Object {
-	return [1]Object{obj._PanoramaSkyMaterial}
-}
+func GetPanoramaSkyMaterial(obj PanoramaSkyMaterial) [1]Object { return obj.AsObject() }
 
 type Parallax2D struct {
-	Locked
-	_Parallax2D Object
+	object
+	_Parallax2D struct{}
 }
 
-func NewParallax2D(obj Object) Parallax2D    { return Parallax2D{Locked{}, obj} }
-func GetParallax2D(obj Parallax2D) [1]Object { return [1]Object{obj._Parallax2D} }
+func NewParallax2D(obj Object) Parallax2D    { return Parallax2D{object: object(obj)} }
+func GetParallax2D(obj Parallax2D) [1]Object { return obj.AsObject() }
 
 type ParallaxBackground struct {
-	Locked
-	_ParallaxBackground Object
+	object
+	_ParallaxBackground struct{}
 }
 
-func NewParallaxBackground(obj Object) ParallaxBackground { return ParallaxBackground{Locked{}, obj} }
-func GetParallaxBackground(obj ParallaxBackground) [1]Object {
-	return [1]Object{obj._ParallaxBackground}
+func NewParallaxBackground(obj Object) ParallaxBackground {
+	return ParallaxBackground{object: object(obj)}
 }
+func GetParallaxBackground(obj ParallaxBackground) [1]Object { return obj.AsObject() }
 
 type ParallaxLayer struct {
-	Locked
-	_ParallaxLayer Object
+	object
+	_ParallaxLayer struct{}
 }
 
-func NewParallaxLayer(obj Object) ParallaxLayer    { return ParallaxLayer{Locked{}, obj} }
-func GetParallaxLayer(obj ParallaxLayer) [1]Object { return [1]Object{obj._ParallaxLayer} }
+func NewParallaxLayer(obj Object) ParallaxLayer    { return ParallaxLayer{object: object(obj)} }
+func GetParallaxLayer(obj ParallaxLayer) [1]Object { return obj.AsObject() }
 
 type ParticleProcessMaterial struct {
-	Locked
-	_ParticleProcessMaterial Object
+	object
+	_ParticleProcessMaterial struct{}
 }
 
 func NewParticleProcessMaterial(obj Object) ParticleProcessMaterial {
-	return ParticleProcessMaterial{Locked{}, obj}
+	return ParticleProcessMaterial{object: object(obj)}
 }
-func GetParticleProcessMaterial(obj ParticleProcessMaterial) [1]Object {
-	return [1]Object{obj._ParticleProcessMaterial}
-}
+func GetParticleProcessMaterial(obj ParticleProcessMaterial) [1]Object { return obj.AsObject() }
 
 type Path2D struct {
-	Locked
-	_Path2D Object
+	object
+	_Path2D struct{}
 }
 
-func NewPath2D(obj Object) Path2D    { return Path2D{Locked{}, obj} }
-func GetPath2D(obj Path2D) [1]Object { return [1]Object{obj._Path2D} }
+func NewPath2D(obj Object) Path2D    { return Path2D{object: object(obj)} }
+func GetPath2D(obj Path2D) [1]Object { return obj.AsObject() }
 
 type Path3D struct {
-	Locked
-	_Path3D Object
+	object
+	_Path3D struct{}
 }
 
-func NewPath3D(obj Object) Path3D    { return Path3D{Locked{}, obj} }
-func GetPath3D(obj Path3D) [1]Object { return [1]Object{obj._Path3D} }
+func NewPath3D(obj Object) Path3D    { return Path3D{object: object(obj)} }
+func GetPath3D(obj Path3D) [1]Object { return obj.AsObject() }
 
 type PathFollow2D struct {
-	Locked
-	_PathFollow2D Object
+	object
+	_PathFollow2D struct{}
 }
 
-func NewPathFollow2D(obj Object) PathFollow2D    { return PathFollow2D{Locked{}, obj} }
-func GetPathFollow2D(obj PathFollow2D) [1]Object { return [1]Object{obj._PathFollow2D} }
+func NewPathFollow2D(obj Object) PathFollow2D    { return PathFollow2D{object: object(obj)} }
+func GetPathFollow2D(obj PathFollow2D) [1]Object { return obj.AsObject() }
 
 type PathFollow3D struct {
-	Locked
-	_PathFollow3D Object
+	object
+	_PathFollow3D struct{}
 }
 
-func NewPathFollow3D(obj Object) PathFollow3D    { return PathFollow3D{Locked{}, obj} }
-func GetPathFollow3D(obj PathFollow3D) [1]Object { return [1]Object{obj._PathFollow3D} }
+func NewPathFollow3D(obj Object) PathFollow3D    { return PathFollow3D{object: object(obj)} }
+func GetPathFollow3D(obj PathFollow3D) [1]Object { return obj.AsObject() }
 
 type Performance struct {
-	Locked
-	_Performance Object
+	object
+	_Performance struct{}
 }
 
-func NewPerformance(obj Object) Performance    { return Performance{Locked{}, obj} }
-func GetPerformance(obj Performance) [1]Object { return [1]Object{obj._Performance} }
+func NewPerformance(obj Object) Performance    { return Performance{object: object(obj)} }
+func GetPerformance(obj Performance) [1]Object { return obj.AsObject() }
 
 type PhysicalBone2D struct {
-	Locked
-	_PhysicalBone2D Object
+	object
+	_PhysicalBone2D struct{}
 }
 
-func NewPhysicalBone2D(obj Object) PhysicalBone2D    { return PhysicalBone2D{Locked{}, obj} }
-func GetPhysicalBone2D(obj PhysicalBone2D) [1]Object { return [1]Object{obj._PhysicalBone2D} }
+func NewPhysicalBone2D(obj Object) PhysicalBone2D    { return PhysicalBone2D{object: object(obj)} }
+func GetPhysicalBone2D(obj PhysicalBone2D) [1]Object { return obj.AsObject() }
 
 type PhysicalBone3D struct {
-	Locked
-	_PhysicalBone3D Object
+	object
+	_PhysicalBone3D struct{}
 }
 
-func NewPhysicalBone3D(obj Object) PhysicalBone3D    { return PhysicalBone3D{Locked{}, obj} }
-func GetPhysicalBone3D(obj PhysicalBone3D) [1]Object { return [1]Object{obj._PhysicalBone3D} }
+func NewPhysicalBone3D(obj Object) PhysicalBone3D    { return PhysicalBone3D{object: object(obj)} }
+func GetPhysicalBone3D(obj PhysicalBone3D) [1]Object { return obj.AsObject() }
 
 type PhysicalBoneSimulator3D struct {
-	Locked
-	_PhysicalBoneSimulator3D Object
+	object
+	_PhysicalBoneSimulator3D struct{}
 }
 
 func NewPhysicalBoneSimulator3D(obj Object) PhysicalBoneSimulator3D {
-	return PhysicalBoneSimulator3D{Locked{}, obj}
+	return PhysicalBoneSimulator3D{object: object(obj)}
 }
-func GetPhysicalBoneSimulator3D(obj PhysicalBoneSimulator3D) [1]Object {
-	return [1]Object{obj._PhysicalBoneSimulator3D}
-}
+func GetPhysicalBoneSimulator3D(obj PhysicalBoneSimulator3D) [1]Object { return obj.AsObject() }
 
 type PhysicalSkyMaterial struct {
-	Locked
-	_PhysicalSkyMaterial Object
+	object
+	_PhysicalSkyMaterial struct{}
 }
 
 func NewPhysicalSkyMaterial(obj Object) PhysicalSkyMaterial {
-	return PhysicalSkyMaterial{Locked{}, obj}
+	return PhysicalSkyMaterial{object: object(obj)}
 }
-func GetPhysicalSkyMaterial(obj PhysicalSkyMaterial) [1]Object {
-	return [1]Object{obj._PhysicalSkyMaterial}
-}
+func GetPhysicalSkyMaterial(obj PhysicalSkyMaterial) [1]Object { return obj.AsObject() }
 
 type PhysicsBody2D struct {
-	Locked
-	_PhysicsBody2D Object
+	object
+	_PhysicsBody2D struct{}
 }
 
-func NewPhysicsBody2D(obj Object) PhysicsBody2D    { return PhysicsBody2D{Locked{}, obj} }
-func GetPhysicsBody2D(obj PhysicsBody2D) [1]Object { return [1]Object{obj._PhysicsBody2D} }
+func NewPhysicsBody2D(obj Object) PhysicsBody2D    { return PhysicsBody2D{object: object(obj)} }
+func GetPhysicsBody2D(obj PhysicsBody2D) [1]Object { return obj.AsObject() }
 
 type PhysicsBody3D struct {
-	Locked
-	_PhysicsBody3D Object
+	object
+	_PhysicsBody3D struct{}
 }
 
-func NewPhysicsBody3D(obj Object) PhysicsBody3D    { return PhysicsBody3D{Locked{}, obj} }
-func GetPhysicsBody3D(obj PhysicsBody3D) [1]Object { return [1]Object{obj._PhysicsBody3D} }
+func NewPhysicsBody3D(obj Object) PhysicsBody3D    { return PhysicsBody3D{object: object(obj)} }
+func GetPhysicsBody3D(obj PhysicsBody3D) [1]Object { return obj.AsObject() }
 
 type PhysicsDirectBodyState2D struct {
-	Locked
-	_PhysicsDirectBodyState2D Object
+	object
+	_PhysicsDirectBodyState2D struct{}
 }
 
 func NewPhysicsDirectBodyState2D(obj Object) PhysicsDirectBodyState2D {
-	return PhysicsDirectBodyState2D{Locked{}, obj}
+	return PhysicsDirectBodyState2D{object: object(obj)}
 }
-func GetPhysicsDirectBodyState2D(obj PhysicsDirectBodyState2D) [1]Object {
-	return [1]Object{obj._PhysicsDirectBodyState2D}
-}
+func GetPhysicsDirectBodyState2D(obj PhysicsDirectBodyState2D) [1]Object { return obj.AsObject() }
 
 type PhysicsDirectBodyState2DExtension struct {
-	Locked
-	_PhysicsDirectBodyState2DExtension Object
+	object
+	_PhysicsDirectBodyState2DExtension struct{}
 }
 
 func NewPhysicsDirectBodyState2DExtension(obj Object) PhysicsDirectBodyState2DExtension {
-	return PhysicsDirectBodyState2DExtension{Locked{}, obj}
+	return PhysicsDirectBodyState2DExtension{object: object(obj)}
 }
 func GetPhysicsDirectBodyState2DExtension(obj PhysicsDirectBodyState2DExtension) [1]Object {
-	return [1]Object{obj._PhysicsDirectBodyState2DExtension}
+	return obj.AsObject()
 }
 
 type PhysicsDirectBodyState3D struct {
-	Locked
-	_PhysicsDirectBodyState3D Object
+	object
+	_PhysicsDirectBodyState3D struct{}
 }
 
 func NewPhysicsDirectBodyState3D(obj Object) PhysicsDirectBodyState3D {
-	return PhysicsDirectBodyState3D{Locked{}, obj}
+	return PhysicsDirectBodyState3D{object: object(obj)}
 }
-func GetPhysicsDirectBodyState3D(obj PhysicsDirectBodyState3D) [1]Object {
-	return [1]Object{obj._PhysicsDirectBodyState3D}
-}
+func GetPhysicsDirectBodyState3D(obj PhysicsDirectBodyState3D) [1]Object { return obj.AsObject() }
 
 type PhysicsDirectBodyState3DExtension struct {
-	Locked
-	_PhysicsDirectBodyState3DExtension Object
+	object
+	_PhysicsDirectBodyState3DExtension struct{}
 }
 
 func NewPhysicsDirectBodyState3DExtension(obj Object) PhysicsDirectBodyState3DExtension {
-	return PhysicsDirectBodyState3DExtension{Locked{}, obj}
+	return PhysicsDirectBodyState3DExtension{object: object(obj)}
 }
 func GetPhysicsDirectBodyState3DExtension(obj PhysicsDirectBodyState3DExtension) [1]Object {
-	return [1]Object{obj._PhysicsDirectBodyState3DExtension}
+	return obj.AsObject()
 }
 
 type PhysicsDirectSpaceState2D struct {
-	Locked
-	_PhysicsDirectSpaceState2D Object
+	object
+	_PhysicsDirectSpaceState2D struct{}
 }
 
 func NewPhysicsDirectSpaceState2D(obj Object) PhysicsDirectSpaceState2D {
-	return PhysicsDirectSpaceState2D{Locked{}, obj}
+	return PhysicsDirectSpaceState2D{object: object(obj)}
 }
-func GetPhysicsDirectSpaceState2D(obj PhysicsDirectSpaceState2D) [1]Object {
-	return [1]Object{obj._PhysicsDirectSpaceState2D}
-}
+func GetPhysicsDirectSpaceState2D(obj PhysicsDirectSpaceState2D) [1]Object { return obj.AsObject() }
 
 type PhysicsDirectSpaceState2DExtension struct {
-	Locked
-	_PhysicsDirectSpaceState2DExtension Object
+	object
+	_PhysicsDirectSpaceState2DExtension struct{}
 }
 
 func NewPhysicsDirectSpaceState2DExtension(obj Object) PhysicsDirectSpaceState2DExtension {
-	return PhysicsDirectSpaceState2DExtension{Locked{}, obj}
+	return PhysicsDirectSpaceState2DExtension{object: object(obj)}
 }
 func GetPhysicsDirectSpaceState2DExtension(obj PhysicsDirectSpaceState2DExtension) [1]Object {
-	return [1]Object{obj._PhysicsDirectSpaceState2DExtension}
+	return obj.AsObject()
 }
 
 type PhysicsDirectSpaceState3D struct {
-	Locked
-	_PhysicsDirectSpaceState3D Object
+	object
+	_PhysicsDirectSpaceState3D struct{}
 }
 
 func NewPhysicsDirectSpaceState3D(obj Object) PhysicsDirectSpaceState3D {
-	return PhysicsDirectSpaceState3D{Locked{}, obj}
+	return PhysicsDirectSpaceState3D{object: object(obj)}
 }
-func GetPhysicsDirectSpaceState3D(obj PhysicsDirectSpaceState3D) [1]Object {
-	return [1]Object{obj._PhysicsDirectSpaceState3D}
-}
+func GetPhysicsDirectSpaceState3D(obj PhysicsDirectSpaceState3D) [1]Object { return obj.AsObject() }
 
 type PhysicsDirectSpaceState3DExtension struct {
-	Locked
-	_PhysicsDirectSpaceState3DExtension Object
+	object
+	_PhysicsDirectSpaceState3DExtension struct{}
 }
 
 func NewPhysicsDirectSpaceState3DExtension(obj Object) PhysicsDirectSpaceState3DExtension {
-	return PhysicsDirectSpaceState3DExtension{Locked{}, obj}
+	return PhysicsDirectSpaceState3DExtension{object: object(obj)}
 }
 func GetPhysicsDirectSpaceState3DExtension(obj PhysicsDirectSpaceState3DExtension) [1]Object {
-	return [1]Object{obj._PhysicsDirectSpaceState3DExtension}
+	return obj.AsObject()
 }
 
 type PhysicsMaterial struct {
-	Locked
-	_PhysicsMaterial Object
+	object
+	_PhysicsMaterial struct{}
 }
 
-func NewPhysicsMaterial(obj Object) PhysicsMaterial    { return PhysicsMaterial{Locked{}, obj} }
-func GetPhysicsMaterial(obj PhysicsMaterial) [1]Object { return [1]Object{obj._PhysicsMaterial} }
+func NewPhysicsMaterial(obj Object) PhysicsMaterial    { return PhysicsMaterial{object: object(obj)} }
+func GetPhysicsMaterial(obj PhysicsMaterial) [1]Object { return obj.AsObject() }
 
 type PhysicsPointQueryParameters2D struct {
-	Locked
-	_PhysicsPointQueryParameters2D Object
+	object
+	_PhysicsPointQueryParameters2D struct{}
 }
 
 func NewPhysicsPointQueryParameters2D(obj Object) PhysicsPointQueryParameters2D {
-	return PhysicsPointQueryParameters2D{Locked{}, obj}
+	return PhysicsPointQueryParameters2D{object: object(obj)}
 }
 func GetPhysicsPointQueryParameters2D(obj PhysicsPointQueryParameters2D) [1]Object {
-	return [1]Object{obj._PhysicsPointQueryParameters2D}
+	return obj.AsObject()
 }
 
 type PhysicsPointQueryParameters3D struct {
-	Locked
-	_PhysicsPointQueryParameters3D Object
+	object
+	_PhysicsPointQueryParameters3D struct{}
 }
 
 func NewPhysicsPointQueryParameters3D(obj Object) PhysicsPointQueryParameters3D {
-	return PhysicsPointQueryParameters3D{Locked{}, obj}
+	return PhysicsPointQueryParameters3D{object: object(obj)}
 }
 func GetPhysicsPointQueryParameters3D(obj PhysicsPointQueryParameters3D) [1]Object {
-	return [1]Object{obj._PhysicsPointQueryParameters3D}
+	return obj.AsObject()
 }
 
 type PhysicsRayQueryParameters2D struct {
-	Locked
-	_PhysicsRayQueryParameters2D Object
+	object
+	_PhysicsRayQueryParameters2D struct{}
 }
 
 func NewPhysicsRayQueryParameters2D(obj Object) PhysicsRayQueryParameters2D {
-	return PhysicsRayQueryParameters2D{Locked{}, obj}
+	return PhysicsRayQueryParameters2D{object: object(obj)}
 }
-func GetPhysicsRayQueryParameters2D(obj PhysicsRayQueryParameters2D) [1]Object {
-	return [1]Object{obj._PhysicsRayQueryParameters2D}
-}
+func GetPhysicsRayQueryParameters2D(obj PhysicsRayQueryParameters2D) [1]Object { return obj.AsObject() }
 
 type PhysicsRayQueryParameters3D struct {
-	Locked
-	_PhysicsRayQueryParameters3D Object
+	object
+	_PhysicsRayQueryParameters3D struct{}
 }
 
 func NewPhysicsRayQueryParameters3D(obj Object) PhysicsRayQueryParameters3D {
-	return PhysicsRayQueryParameters3D{Locked{}, obj}
+	return PhysicsRayQueryParameters3D{object: object(obj)}
 }
-func GetPhysicsRayQueryParameters3D(obj PhysicsRayQueryParameters3D) [1]Object {
-	return [1]Object{obj._PhysicsRayQueryParameters3D}
-}
+func GetPhysicsRayQueryParameters3D(obj PhysicsRayQueryParameters3D) [1]Object { return obj.AsObject() }
 
 type PhysicsServer2D struct {
-	Locked
-	_PhysicsServer2D Object
+	object
+	_PhysicsServer2D struct{}
 }
 
-func NewPhysicsServer2D(obj Object) PhysicsServer2D    { return PhysicsServer2D{Locked{}, obj} }
-func GetPhysicsServer2D(obj PhysicsServer2D) [1]Object { return [1]Object{obj._PhysicsServer2D} }
+func NewPhysicsServer2D(obj Object) PhysicsServer2D    { return PhysicsServer2D{object: object(obj)} }
+func GetPhysicsServer2D(obj PhysicsServer2D) [1]Object { return obj.AsObject() }
 
 type PhysicsServer2DExtension struct {
-	Locked
-	_PhysicsServer2DExtension Object
+	object
+	_PhysicsServer2DExtension struct{}
 }
 
 func NewPhysicsServer2DExtension(obj Object) PhysicsServer2DExtension {
-	return PhysicsServer2DExtension{Locked{}, obj}
+	return PhysicsServer2DExtension{object: object(obj)}
 }
-func GetPhysicsServer2DExtension(obj PhysicsServer2DExtension) [1]Object {
-	return [1]Object{obj._PhysicsServer2DExtension}
-}
+func GetPhysicsServer2DExtension(obj PhysicsServer2DExtension) [1]Object { return obj.AsObject() }
 
 type PhysicsServer2DManager struct {
-	Locked
-	_PhysicsServer2DManager Object
+	object
+	_PhysicsServer2DManager struct{}
 }
 
 func NewPhysicsServer2DManager(obj Object) PhysicsServer2DManager {
-	return PhysicsServer2DManager{Locked{}, obj}
+	return PhysicsServer2DManager{object: object(obj)}
 }
-func GetPhysicsServer2DManager(obj PhysicsServer2DManager) [1]Object {
-	return [1]Object{obj._PhysicsServer2DManager}
-}
+func GetPhysicsServer2DManager(obj PhysicsServer2DManager) [1]Object { return obj.AsObject() }
 
 type PhysicsServer3D struct {
-	Locked
-	_PhysicsServer3D Object
+	object
+	_PhysicsServer3D struct{}
 }
 
-func NewPhysicsServer3D(obj Object) PhysicsServer3D    { return PhysicsServer3D{Locked{}, obj} }
-func GetPhysicsServer3D(obj PhysicsServer3D) [1]Object { return [1]Object{obj._PhysicsServer3D} }
+func NewPhysicsServer3D(obj Object) PhysicsServer3D    { return PhysicsServer3D{object: object(obj)} }
+func GetPhysicsServer3D(obj PhysicsServer3D) [1]Object { return obj.AsObject() }
 
 type PhysicsServer3DExtension struct {
-	Locked
-	_PhysicsServer3DExtension Object
+	object
+	_PhysicsServer3DExtension struct{}
 }
 
 func NewPhysicsServer3DExtension(obj Object) PhysicsServer3DExtension {
-	return PhysicsServer3DExtension{Locked{}, obj}
+	return PhysicsServer3DExtension{object: object(obj)}
 }
-func GetPhysicsServer3DExtension(obj PhysicsServer3DExtension) [1]Object {
-	return [1]Object{obj._PhysicsServer3DExtension}
-}
+func GetPhysicsServer3DExtension(obj PhysicsServer3DExtension) [1]Object { return obj.AsObject() }
 
 type PhysicsServer3DManager struct {
-	Locked
-	_PhysicsServer3DManager Object
+	object
+	_PhysicsServer3DManager struct{}
 }
 
 func NewPhysicsServer3DManager(obj Object) PhysicsServer3DManager {
-	return PhysicsServer3DManager{Locked{}, obj}
+	return PhysicsServer3DManager{object: object(obj)}
 }
-func GetPhysicsServer3DManager(obj PhysicsServer3DManager) [1]Object {
-	return [1]Object{obj._PhysicsServer3DManager}
-}
+func GetPhysicsServer3DManager(obj PhysicsServer3DManager) [1]Object { return obj.AsObject() }
 
 type PhysicsServer3DRenderingServerHandler struct {
-	Locked
-	_PhysicsServer3DRenderingServerHandler Object
+	object
+	_PhysicsServer3DRenderingServerHandler struct{}
 }
 
 func NewPhysicsServer3DRenderingServerHandler(obj Object) PhysicsServer3DRenderingServerHandler {
-	return PhysicsServer3DRenderingServerHandler{Locked{}, obj}
+	return PhysicsServer3DRenderingServerHandler{object: object(obj)}
 }
 func GetPhysicsServer3DRenderingServerHandler(obj PhysicsServer3DRenderingServerHandler) [1]Object {
-	return [1]Object{obj._PhysicsServer3DRenderingServerHandler}
+	return obj.AsObject()
 }
 
 type PhysicsShapeQueryParameters2D struct {
-	Locked
-	_PhysicsShapeQueryParameters2D Object
+	object
+	_PhysicsShapeQueryParameters2D struct{}
 }
 
 func NewPhysicsShapeQueryParameters2D(obj Object) PhysicsShapeQueryParameters2D {
-	return PhysicsShapeQueryParameters2D{Locked{}, obj}
+	return PhysicsShapeQueryParameters2D{object: object(obj)}
 }
 func GetPhysicsShapeQueryParameters2D(obj PhysicsShapeQueryParameters2D) [1]Object {
-	return [1]Object{obj._PhysicsShapeQueryParameters2D}
+	return obj.AsObject()
 }
 
 type PhysicsShapeQueryParameters3D struct {
-	Locked
-	_PhysicsShapeQueryParameters3D Object
+	object
+	_PhysicsShapeQueryParameters3D struct{}
 }
 
 func NewPhysicsShapeQueryParameters3D(obj Object) PhysicsShapeQueryParameters3D {
-	return PhysicsShapeQueryParameters3D{Locked{}, obj}
+	return PhysicsShapeQueryParameters3D{object: object(obj)}
 }
 func GetPhysicsShapeQueryParameters3D(obj PhysicsShapeQueryParameters3D) [1]Object {
-	return [1]Object{obj._PhysicsShapeQueryParameters3D}
+	return obj.AsObject()
 }
 
 type PhysicsTestMotionParameters2D struct {
-	Locked
-	_PhysicsTestMotionParameters2D Object
+	object
+	_PhysicsTestMotionParameters2D struct{}
 }
 
 func NewPhysicsTestMotionParameters2D(obj Object) PhysicsTestMotionParameters2D {
-	return PhysicsTestMotionParameters2D{Locked{}, obj}
+	return PhysicsTestMotionParameters2D{object: object(obj)}
 }
 func GetPhysicsTestMotionParameters2D(obj PhysicsTestMotionParameters2D) [1]Object {
-	return [1]Object{obj._PhysicsTestMotionParameters2D}
+	return obj.AsObject()
 }
 
 type PhysicsTestMotionParameters3D struct {
-	Locked
-	_PhysicsTestMotionParameters3D Object
+	object
+	_PhysicsTestMotionParameters3D struct{}
 }
 
 func NewPhysicsTestMotionParameters3D(obj Object) PhysicsTestMotionParameters3D {
-	return PhysicsTestMotionParameters3D{Locked{}, obj}
+	return PhysicsTestMotionParameters3D{object: object(obj)}
 }
 func GetPhysicsTestMotionParameters3D(obj PhysicsTestMotionParameters3D) [1]Object {
-	return [1]Object{obj._PhysicsTestMotionParameters3D}
+	return obj.AsObject()
 }
 
 type PhysicsTestMotionResult2D struct {
-	Locked
-	_PhysicsTestMotionResult2D Object
+	object
+	_PhysicsTestMotionResult2D struct{}
 }
 
 func NewPhysicsTestMotionResult2D(obj Object) PhysicsTestMotionResult2D {
-	return PhysicsTestMotionResult2D{Locked{}, obj}
+	return PhysicsTestMotionResult2D{object: object(obj)}
 }
-func GetPhysicsTestMotionResult2D(obj PhysicsTestMotionResult2D) [1]Object {
-	return [1]Object{obj._PhysicsTestMotionResult2D}
-}
+func GetPhysicsTestMotionResult2D(obj PhysicsTestMotionResult2D) [1]Object { return obj.AsObject() }
 
 type PhysicsTestMotionResult3D struct {
-	Locked
-	_PhysicsTestMotionResult3D Object
+	object
+	_PhysicsTestMotionResult3D struct{}
 }
 
 func NewPhysicsTestMotionResult3D(obj Object) PhysicsTestMotionResult3D {
-	return PhysicsTestMotionResult3D{Locked{}, obj}
+	return PhysicsTestMotionResult3D{object: object(obj)}
 }
-func GetPhysicsTestMotionResult3D(obj PhysicsTestMotionResult3D) [1]Object {
-	return [1]Object{obj._PhysicsTestMotionResult3D}
-}
+func GetPhysicsTestMotionResult3D(obj PhysicsTestMotionResult3D) [1]Object { return obj.AsObject() }
 
 type PinJoint2D struct {
-	Locked
-	_PinJoint2D Object
+	object
+	_PinJoint2D struct{}
 }
 
-func NewPinJoint2D(obj Object) PinJoint2D    { return PinJoint2D{Locked{}, obj} }
-func GetPinJoint2D(obj PinJoint2D) [1]Object { return [1]Object{obj._PinJoint2D} }
+func NewPinJoint2D(obj Object) PinJoint2D    { return PinJoint2D{object: object(obj)} }
+func GetPinJoint2D(obj PinJoint2D) [1]Object { return obj.AsObject() }
 
 type PinJoint3D struct {
-	Locked
-	_PinJoint3D Object
+	object
+	_PinJoint3D struct{}
 }
 
-func NewPinJoint3D(obj Object) PinJoint3D    { return PinJoint3D{Locked{}, obj} }
-func GetPinJoint3D(obj PinJoint3D) [1]Object { return [1]Object{obj._PinJoint3D} }
+func NewPinJoint3D(obj Object) PinJoint3D    { return PinJoint3D{object: object(obj)} }
+func GetPinJoint3D(obj PinJoint3D) [1]Object { return obj.AsObject() }
 
 type PlaceholderCubemap struct {
-	Locked
-	_PlaceholderCubemap Object
+	object
+	_PlaceholderCubemap struct{}
 }
 
-func NewPlaceholderCubemap(obj Object) PlaceholderCubemap { return PlaceholderCubemap{Locked{}, obj} }
-func GetPlaceholderCubemap(obj PlaceholderCubemap) [1]Object {
-	return [1]Object{obj._PlaceholderCubemap}
+func NewPlaceholderCubemap(obj Object) PlaceholderCubemap {
+	return PlaceholderCubemap{object: object(obj)}
 }
+func GetPlaceholderCubemap(obj PlaceholderCubemap) [1]Object { return obj.AsObject() }
 
 type PlaceholderCubemapArray struct {
-	Locked
-	_PlaceholderCubemapArray Object
+	object
+	_PlaceholderCubemapArray struct{}
 }
 
 func NewPlaceholderCubemapArray(obj Object) PlaceholderCubemapArray {
-	return PlaceholderCubemapArray{Locked{}, obj}
+	return PlaceholderCubemapArray{object: object(obj)}
 }
-func GetPlaceholderCubemapArray(obj PlaceholderCubemapArray) [1]Object {
-	return [1]Object{obj._PlaceholderCubemapArray}
-}
+func GetPlaceholderCubemapArray(obj PlaceholderCubemapArray) [1]Object { return obj.AsObject() }
 
 type PlaceholderMaterial struct {
-	Locked
-	_PlaceholderMaterial Object
+	object
+	_PlaceholderMaterial struct{}
 }
 
 func NewPlaceholderMaterial(obj Object) PlaceholderMaterial {
-	return PlaceholderMaterial{Locked{}, obj}
+	return PlaceholderMaterial{object: object(obj)}
 }
-func GetPlaceholderMaterial(obj PlaceholderMaterial) [1]Object {
-	return [1]Object{obj._PlaceholderMaterial}
-}
+func GetPlaceholderMaterial(obj PlaceholderMaterial) [1]Object { return obj.AsObject() }
 
 type PlaceholderMesh struct {
-	Locked
-	_PlaceholderMesh Object
+	object
+	_PlaceholderMesh struct{}
 }
 
-func NewPlaceholderMesh(obj Object) PlaceholderMesh    { return PlaceholderMesh{Locked{}, obj} }
-func GetPlaceholderMesh(obj PlaceholderMesh) [1]Object { return [1]Object{obj._PlaceholderMesh} }
+func NewPlaceholderMesh(obj Object) PlaceholderMesh    { return PlaceholderMesh{object: object(obj)} }
+func GetPlaceholderMesh(obj PlaceholderMesh) [1]Object { return obj.AsObject() }
 
 type PlaceholderTexture2D struct {
-	Locked
-	_PlaceholderTexture2D Object
+	object
+	_PlaceholderTexture2D struct{}
 }
 
 func NewPlaceholderTexture2D(obj Object) PlaceholderTexture2D {
-	return PlaceholderTexture2D{Locked{}, obj}
+	return PlaceholderTexture2D{object: object(obj)}
 }
-func GetPlaceholderTexture2D(obj PlaceholderTexture2D) [1]Object {
-	return [1]Object{obj._PlaceholderTexture2D}
-}
+func GetPlaceholderTexture2D(obj PlaceholderTexture2D) [1]Object { return obj.AsObject() }
 
 type PlaceholderTexture2DArray struct {
-	Locked
-	_PlaceholderTexture2DArray Object
+	object
+	_PlaceholderTexture2DArray struct{}
 }
 
 func NewPlaceholderTexture2DArray(obj Object) PlaceholderTexture2DArray {
-	return PlaceholderTexture2DArray{Locked{}, obj}
+	return PlaceholderTexture2DArray{object: object(obj)}
 }
-func GetPlaceholderTexture2DArray(obj PlaceholderTexture2DArray) [1]Object {
-	return [1]Object{obj._PlaceholderTexture2DArray}
-}
+func GetPlaceholderTexture2DArray(obj PlaceholderTexture2DArray) [1]Object { return obj.AsObject() }
 
 type PlaceholderTexture3D struct {
-	Locked
-	_PlaceholderTexture3D Object
+	object
+	_PlaceholderTexture3D struct{}
 }
 
 func NewPlaceholderTexture3D(obj Object) PlaceholderTexture3D {
-	return PlaceholderTexture3D{Locked{}, obj}
+	return PlaceholderTexture3D{object: object(obj)}
 }
-func GetPlaceholderTexture3D(obj PlaceholderTexture3D) [1]Object {
-	return [1]Object{obj._PlaceholderTexture3D}
-}
+func GetPlaceholderTexture3D(obj PlaceholderTexture3D) [1]Object { return obj.AsObject() }
 
 type PlaceholderTextureLayered struct {
-	Locked
-	_PlaceholderTextureLayered Object
+	object
+	_PlaceholderTextureLayered struct{}
 }
 
 func NewPlaceholderTextureLayered(obj Object) PlaceholderTextureLayered {
-	return PlaceholderTextureLayered{Locked{}, obj}
+	return PlaceholderTextureLayered{object: object(obj)}
 }
-func GetPlaceholderTextureLayered(obj PlaceholderTextureLayered) [1]Object {
-	return [1]Object{obj._PlaceholderTextureLayered}
-}
+func GetPlaceholderTextureLayered(obj PlaceholderTextureLayered) [1]Object { return obj.AsObject() }
 
 type PlaneMesh struct {
-	Locked
-	_PlaneMesh Object
+	object
+	_PlaneMesh struct{}
 }
 
-func NewPlaneMesh(obj Object) PlaneMesh    { return PlaneMesh{Locked{}, obj} }
-func GetPlaneMesh(obj PlaneMesh) [1]Object { return [1]Object{obj._PlaneMesh} }
+func NewPlaneMesh(obj Object) PlaneMesh    { return PlaneMesh{object: object(obj)} }
+func GetPlaneMesh(obj PlaneMesh) [1]Object { return obj.AsObject() }
 
 type PointLight2D struct {
-	Locked
-	_PointLight2D Object
+	object
+	_PointLight2D struct{}
 }
 
-func NewPointLight2D(obj Object) PointLight2D    { return PointLight2D{Locked{}, obj} }
-func GetPointLight2D(obj PointLight2D) [1]Object { return [1]Object{obj._PointLight2D} }
+func NewPointLight2D(obj Object) PointLight2D    { return PointLight2D{object: object(obj)} }
+func GetPointLight2D(obj PointLight2D) [1]Object { return obj.AsObject() }
 
 type PointMesh struct {
-	Locked
-	_PointMesh Object
+	object
+	_PointMesh struct{}
 }
 
-func NewPointMesh(obj Object) PointMesh    { return PointMesh{Locked{}, obj} }
-func GetPointMesh(obj PointMesh) [1]Object { return [1]Object{obj._PointMesh} }
+func NewPointMesh(obj Object) PointMesh    { return PointMesh{object: object(obj)} }
+func GetPointMesh(obj PointMesh) [1]Object { return obj.AsObject() }
 
 type Polygon2D struct {
-	Locked
-	_Polygon2D Object
+	object
+	_Polygon2D struct{}
 }
 
-func NewPolygon2D(obj Object) Polygon2D    { return Polygon2D{Locked{}, obj} }
-func GetPolygon2D(obj Polygon2D) [1]Object { return [1]Object{obj._Polygon2D} }
+func NewPolygon2D(obj Object) Polygon2D    { return Polygon2D{object: object(obj)} }
+func GetPolygon2D(obj Polygon2D) [1]Object { return obj.AsObject() }
 
 type PolygonOccluder3D struct {
-	Locked
-	_PolygonOccluder3D Object
+	object
+	_PolygonOccluder3D struct{}
 }
 
-func NewPolygonOccluder3D(obj Object) PolygonOccluder3D    { return PolygonOccluder3D{Locked{}, obj} }
-func GetPolygonOccluder3D(obj PolygonOccluder3D) [1]Object { return [1]Object{obj._PolygonOccluder3D} }
+func NewPolygonOccluder3D(obj Object) PolygonOccluder3D {
+	return PolygonOccluder3D{object: object(obj)}
+}
+func GetPolygonOccluder3D(obj PolygonOccluder3D) [1]Object { return obj.AsObject() }
 
 type PolygonPathFinder struct {
-	Locked
-	_PolygonPathFinder Object
+	object
+	_PolygonPathFinder struct{}
 }
 
-func NewPolygonPathFinder(obj Object) PolygonPathFinder    { return PolygonPathFinder{Locked{}, obj} }
-func GetPolygonPathFinder(obj PolygonPathFinder) [1]Object { return [1]Object{obj._PolygonPathFinder} }
+func NewPolygonPathFinder(obj Object) PolygonPathFinder {
+	return PolygonPathFinder{object: object(obj)}
+}
+func GetPolygonPathFinder(obj PolygonPathFinder) [1]Object { return obj.AsObject() }
 
 type Popup struct {
-	Locked
-	_Popup Object
+	object
+	_Popup struct{}
 }
 
-func NewPopup(obj Object) Popup    { return Popup{Locked{}, obj} }
-func GetPopup(obj Popup) [1]Object { return [1]Object{obj._Popup} }
+func NewPopup(obj Object) Popup    { return Popup{object: object(obj)} }
+func GetPopup(obj Popup) [1]Object { return obj.AsObject() }
 
 type PopupMenu struct {
-	Locked
-	_PopupMenu Object
+	object
+	_PopupMenu struct{}
 }
 
-func NewPopupMenu(obj Object) PopupMenu    { return PopupMenu{Locked{}, obj} }
-func GetPopupMenu(obj PopupMenu) [1]Object { return [1]Object{obj._PopupMenu} }
+func NewPopupMenu(obj Object) PopupMenu    { return PopupMenu{object: object(obj)} }
+func GetPopupMenu(obj PopupMenu) [1]Object { return obj.AsObject() }
 
 type PopupPanel struct {
-	Locked
-	_PopupPanel Object
+	object
+	_PopupPanel struct{}
 }
 
-func NewPopupPanel(obj Object) PopupPanel    { return PopupPanel{Locked{}, obj} }
-func GetPopupPanel(obj PopupPanel) [1]Object { return [1]Object{obj._PopupPanel} }
+func NewPopupPanel(obj Object) PopupPanel    { return PopupPanel{object: object(obj)} }
+func GetPopupPanel(obj PopupPanel) [1]Object { return obj.AsObject() }
 
 type PortableCompressedTexture2D struct {
-	Locked
-	_PortableCompressedTexture2D Object
+	object
+	_PortableCompressedTexture2D struct{}
 }
 
 func NewPortableCompressedTexture2D(obj Object) PortableCompressedTexture2D {
-	return PortableCompressedTexture2D{Locked{}, obj}
+	return PortableCompressedTexture2D{object: object(obj)}
 }
-func GetPortableCompressedTexture2D(obj PortableCompressedTexture2D) [1]Object {
-	return [1]Object{obj._PortableCompressedTexture2D}
-}
+func GetPortableCompressedTexture2D(obj PortableCompressedTexture2D) [1]Object { return obj.AsObject() }
 
 type PrimitiveMesh struct {
-	Locked
-	_PrimitiveMesh Object
+	object
+	_PrimitiveMesh struct{}
 }
 
-func NewPrimitiveMesh(obj Object) PrimitiveMesh    { return PrimitiveMesh{Locked{}, obj} }
-func GetPrimitiveMesh(obj PrimitiveMesh) [1]Object { return [1]Object{obj._PrimitiveMesh} }
+func NewPrimitiveMesh(obj Object) PrimitiveMesh    { return PrimitiveMesh{object: object(obj)} }
+func GetPrimitiveMesh(obj PrimitiveMesh) [1]Object { return obj.AsObject() }
 
 type PrismMesh struct {
-	Locked
-	_PrismMesh Object
+	object
+	_PrismMesh struct{}
 }
 
-func NewPrismMesh(obj Object) PrismMesh    { return PrismMesh{Locked{}, obj} }
-func GetPrismMesh(obj PrismMesh) [1]Object { return [1]Object{obj._PrismMesh} }
+func NewPrismMesh(obj Object) PrismMesh    { return PrismMesh{object: object(obj)} }
+func GetPrismMesh(obj PrismMesh) [1]Object { return obj.AsObject() }
 
 type ProceduralSkyMaterial struct {
-	Locked
-	_ProceduralSkyMaterial Object
+	object
+	_ProceduralSkyMaterial struct{}
 }
 
 func NewProceduralSkyMaterial(obj Object) ProceduralSkyMaterial {
-	return ProceduralSkyMaterial{Locked{}, obj}
+	return ProceduralSkyMaterial{object: object(obj)}
 }
-func GetProceduralSkyMaterial(obj ProceduralSkyMaterial) [1]Object {
-	return [1]Object{obj._ProceduralSkyMaterial}
-}
+func GetProceduralSkyMaterial(obj ProceduralSkyMaterial) [1]Object { return obj.AsObject() }
 
 type ProgressBar struct {
-	Locked
-	_ProgressBar Object
+	object
+	_ProgressBar struct{}
 }
 
-func NewProgressBar(obj Object) ProgressBar    { return ProgressBar{Locked{}, obj} }
-func GetProgressBar(obj ProgressBar) [1]Object { return [1]Object{obj._ProgressBar} }
+func NewProgressBar(obj Object) ProgressBar    { return ProgressBar{object: object(obj)} }
+func GetProgressBar(obj ProgressBar) [1]Object { return obj.AsObject() }
 
 type ProjectSettings struct {
-	Locked
-	_ProjectSettings Object
+	object
+	_ProjectSettings struct{}
 }
 
-func NewProjectSettings(obj Object) ProjectSettings    { return ProjectSettings{Locked{}, obj} }
-func GetProjectSettings(obj ProjectSettings) [1]Object { return [1]Object{obj._ProjectSettings} }
+func NewProjectSettings(obj Object) ProjectSettings    { return ProjectSettings{object: object(obj)} }
+func GetProjectSettings(obj ProjectSettings) [1]Object { return obj.AsObject() }
 
 type PropertyTweener struct {
-	Locked
-	_PropertyTweener Object
+	object
+	_PropertyTweener struct{}
 }
 
-func NewPropertyTweener(obj Object) PropertyTweener    { return PropertyTweener{Locked{}, obj} }
-func GetPropertyTweener(obj PropertyTweener) [1]Object { return [1]Object{obj._PropertyTweener} }
+func NewPropertyTweener(obj Object) PropertyTweener    { return PropertyTweener{object: object(obj)} }
+func GetPropertyTweener(obj PropertyTweener) [1]Object { return obj.AsObject() }
 
 type QuadMesh struct {
-	Locked
-	_QuadMesh Object
+	object
+	_QuadMesh struct{}
 }
 
-func NewQuadMesh(obj Object) QuadMesh    { return QuadMesh{Locked{}, obj} }
-func GetQuadMesh(obj QuadMesh) [1]Object { return [1]Object{obj._QuadMesh} }
+func NewQuadMesh(obj Object) QuadMesh    { return QuadMesh{object: object(obj)} }
+func GetQuadMesh(obj QuadMesh) [1]Object { return obj.AsObject() }
 
 type QuadOccluder3D struct {
-	Locked
-	_QuadOccluder3D Object
+	object
+	_QuadOccluder3D struct{}
 }
 
-func NewQuadOccluder3D(obj Object) QuadOccluder3D    { return QuadOccluder3D{Locked{}, obj} }
-func GetQuadOccluder3D(obj QuadOccluder3D) [1]Object { return [1]Object{obj._QuadOccluder3D} }
+func NewQuadOccluder3D(obj Object) QuadOccluder3D    { return QuadOccluder3D{object: object(obj)} }
+func GetQuadOccluder3D(obj QuadOccluder3D) [1]Object { return obj.AsObject() }
 
 type RDAttachmentFormat struct {
-	Locked
-	_RDAttachmentFormat Object
+	object
+	_RDAttachmentFormat struct{}
 }
 
-func NewRDAttachmentFormat(obj Object) RDAttachmentFormat { return RDAttachmentFormat{Locked{}, obj} }
-func GetRDAttachmentFormat(obj RDAttachmentFormat) [1]Object {
-	return [1]Object{obj._RDAttachmentFormat}
+func NewRDAttachmentFormat(obj Object) RDAttachmentFormat {
+	return RDAttachmentFormat{object: object(obj)}
 }
+func GetRDAttachmentFormat(obj RDAttachmentFormat) [1]Object { return obj.AsObject() }
 
 type RDFramebufferPass struct {
-	Locked
-	_RDFramebufferPass Object
+	object
+	_RDFramebufferPass struct{}
 }
 
-func NewRDFramebufferPass(obj Object) RDFramebufferPass    { return RDFramebufferPass{Locked{}, obj} }
-func GetRDFramebufferPass(obj RDFramebufferPass) [1]Object { return [1]Object{obj._RDFramebufferPass} }
+func NewRDFramebufferPass(obj Object) RDFramebufferPass {
+	return RDFramebufferPass{object: object(obj)}
+}
+func GetRDFramebufferPass(obj RDFramebufferPass) [1]Object { return obj.AsObject() }
 
 type RDPipelineColorBlendState struct {
-	Locked
-	_RDPipelineColorBlendState Object
+	object
+	_RDPipelineColorBlendState struct{}
 }
 
 func NewRDPipelineColorBlendState(obj Object) RDPipelineColorBlendState {
-	return RDPipelineColorBlendState{Locked{}, obj}
+	return RDPipelineColorBlendState{object: object(obj)}
 }
-func GetRDPipelineColorBlendState(obj RDPipelineColorBlendState) [1]Object {
-	return [1]Object{obj._RDPipelineColorBlendState}
-}
+func GetRDPipelineColorBlendState(obj RDPipelineColorBlendState) [1]Object { return obj.AsObject() }
 
 type RDPipelineColorBlendStateAttachment struct {
-	Locked
-	_RDPipelineColorBlendStateAttachment Object
+	object
+	_RDPipelineColorBlendStateAttachment struct{}
 }
 
 func NewRDPipelineColorBlendStateAttachment(obj Object) RDPipelineColorBlendStateAttachment {
-	return RDPipelineColorBlendStateAttachment{Locked{}, obj}
+	return RDPipelineColorBlendStateAttachment{object: object(obj)}
 }
 func GetRDPipelineColorBlendStateAttachment(obj RDPipelineColorBlendStateAttachment) [1]Object {
-	return [1]Object{obj._RDPipelineColorBlendStateAttachment}
+	return obj.AsObject()
 }
 
 type RDPipelineDepthStencilState struct {
-	Locked
-	_RDPipelineDepthStencilState Object
+	object
+	_RDPipelineDepthStencilState struct{}
 }
 
 func NewRDPipelineDepthStencilState(obj Object) RDPipelineDepthStencilState {
-	return RDPipelineDepthStencilState{Locked{}, obj}
+	return RDPipelineDepthStencilState{object: object(obj)}
 }
-func GetRDPipelineDepthStencilState(obj RDPipelineDepthStencilState) [1]Object {
-	return [1]Object{obj._RDPipelineDepthStencilState}
-}
+func GetRDPipelineDepthStencilState(obj RDPipelineDepthStencilState) [1]Object { return obj.AsObject() }
 
 type RDPipelineMultisampleState struct {
-	Locked
-	_RDPipelineMultisampleState Object
+	object
+	_RDPipelineMultisampleState struct{}
 }
 
 func NewRDPipelineMultisampleState(obj Object) RDPipelineMultisampleState {
-	return RDPipelineMultisampleState{Locked{}, obj}
+	return RDPipelineMultisampleState{object: object(obj)}
 }
-func GetRDPipelineMultisampleState(obj RDPipelineMultisampleState) [1]Object {
-	return [1]Object{obj._RDPipelineMultisampleState}
-}
+func GetRDPipelineMultisampleState(obj RDPipelineMultisampleState) [1]Object { return obj.AsObject() }
 
 type RDPipelineRasterizationState struct {
-	Locked
-	_RDPipelineRasterizationState Object
+	object
+	_RDPipelineRasterizationState struct{}
 }
 
 func NewRDPipelineRasterizationState(obj Object) RDPipelineRasterizationState {
-	return RDPipelineRasterizationState{Locked{}, obj}
+	return RDPipelineRasterizationState{object: object(obj)}
 }
 func GetRDPipelineRasterizationState(obj RDPipelineRasterizationState) [1]Object {
-	return [1]Object{obj._RDPipelineRasterizationState}
+	return obj.AsObject()
 }
 
 type RDPipelineSpecializationConstant struct {
-	Locked
-	_RDPipelineSpecializationConstant Object
+	object
+	_RDPipelineSpecializationConstant struct{}
 }
 
 func NewRDPipelineSpecializationConstant(obj Object) RDPipelineSpecializationConstant {
-	return RDPipelineSpecializationConstant{Locked{}, obj}
+	return RDPipelineSpecializationConstant{object: object(obj)}
 }
 func GetRDPipelineSpecializationConstant(obj RDPipelineSpecializationConstant) [1]Object {
-	return [1]Object{obj._RDPipelineSpecializationConstant}
+	return obj.AsObject()
 }
 
 type RDSamplerState struct {
-	Locked
-	_RDSamplerState Object
+	object
+	_RDSamplerState struct{}
 }
 
-func NewRDSamplerState(obj Object) RDSamplerState    { return RDSamplerState{Locked{}, obj} }
-func GetRDSamplerState(obj RDSamplerState) [1]Object { return [1]Object{obj._RDSamplerState} }
+func NewRDSamplerState(obj Object) RDSamplerState    { return RDSamplerState{object: object(obj)} }
+func GetRDSamplerState(obj RDSamplerState) [1]Object { return obj.AsObject() }
 
 type RDShaderFile struct {
-	Locked
-	_RDShaderFile Object
+	object
+	_RDShaderFile struct{}
 }
 
-func NewRDShaderFile(obj Object) RDShaderFile    { return RDShaderFile{Locked{}, obj} }
-func GetRDShaderFile(obj RDShaderFile) [1]Object { return [1]Object{obj._RDShaderFile} }
+func NewRDShaderFile(obj Object) RDShaderFile    { return RDShaderFile{object: object(obj)} }
+func GetRDShaderFile(obj RDShaderFile) [1]Object { return obj.AsObject() }
 
 type RDShaderSPIRV struct {
-	Locked
-	_RDShaderSPIRV Object
+	object
+	_RDShaderSPIRV struct{}
 }
 
-func NewRDShaderSPIRV(obj Object) RDShaderSPIRV    { return RDShaderSPIRV{Locked{}, obj} }
-func GetRDShaderSPIRV(obj RDShaderSPIRV) [1]Object { return [1]Object{obj._RDShaderSPIRV} }
+func NewRDShaderSPIRV(obj Object) RDShaderSPIRV    { return RDShaderSPIRV{object: object(obj)} }
+func GetRDShaderSPIRV(obj RDShaderSPIRV) [1]Object { return obj.AsObject() }
 
 type RDShaderSource struct {
-	Locked
-	_RDShaderSource Object
+	object
+	_RDShaderSource struct{}
 }
 
-func NewRDShaderSource(obj Object) RDShaderSource    { return RDShaderSource{Locked{}, obj} }
-func GetRDShaderSource(obj RDShaderSource) [1]Object { return [1]Object{obj._RDShaderSource} }
+func NewRDShaderSource(obj Object) RDShaderSource    { return RDShaderSource{object: object(obj)} }
+func GetRDShaderSource(obj RDShaderSource) [1]Object { return obj.AsObject() }
 
 type RDTextureFormat struct {
-	Locked
-	_RDTextureFormat Object
+	object
+	_RDTextureFormat struct{}
 }
 
-func NewRDTextureFormat(obj Object) RDTextureFormat    { return RDTextureFormat{Locked{}, obj} }
-func GetRDTextureFormat(obj RDTextureFormat) [1]Object { return [1]Object{obj._RDTextureFormat} }
+func NewRDTextureFormat(obj Object) RDTextureFormat    { return RDTextureFormat{object: object(obj)} }
+func GetRDTextureFormat(obj RDTextureFormat) [1]Object { return obj.AsObject() }
 
 type RDTextureView struct {
-	Locked
-	_RDTextureView Object
+	object
+	_RDTextureView struct{}
 }
 
-func NewRDTextureView(obj Object) RDTextureView    { return RDTextureView{Locked{}, obj} }
-func GetRDTextureView(obj RDTextureView) [1]Object { return [1]Object{obj._RDTextureView} }
+func NewRDTextureView(obj Object) RDTextureView    { return RDTextureView{object: object(obj)} }
+func GetRDTextureView(obj RDTextureView) [1]Object { return obj.AsObject() }
 
 type RDUniform struct {
-	Locked
-	_RDUniform Object
+	object
+	_RDUniform struct{}
 }
 
-func NewRDUniform(obj Object) RDUniform    { return RDUniform{Locked{}, obj} }
-func GetRDUniform(obj RDUniform) [1]Object { return [1]Object{obj._RDUniform} }
+func NewRDUniform(obj Object) RDUniform    { return RDUniform{object: object(obj)} }
+func GetRDUniform(obj RDUniform) [1]Object { return obj.AsObject() }
 
 type RDVertexAttribute struct {
-	Locked
-	_RDVertexAttribute Object
+	object
+	_RDVertexAttribute struct{}
 }
 
-func NewRDVertexAttribute(obj Object) RDVertexAttribute    { return RDVertexAttribute{Locked{}, obj} }
-func GetRDVertexAttribute(obj RDVertexAttribute) [1]Object { return [1]Object{obj._RDVertexAttribute} }
+func NewRDVertexAttribute(obj Object) RDVertexAttribute {
+	return RDVertexAttribute{object: object(obj)}
+}
+func GetRDVertexAttribute(obj RDVertexAttribute) [1]Object { return obj.AsObject() }
 
 type RandomNumberGenerator struct {
-	Locked
-	_RandomNumberGenerator Object
+	object
+	_RandomNumberGenerator struct{}
 }
 
 func NewRandomNumberGenerator(obj Object) RandomNumberGenerator {
-	return RandomNumberGenerator{Locked{}, obj}
+	return RandomNumberGenerator{object: object(obj)}
 }
-func GetRandomNumberGenerator(obj RandomNumberGenerator) [1]Object {
-	return [1]Object{obj._RandomNumberGenerator}
-}
+func GetRandomNumberGenerator(obj RandomNumberGenerator) [1]Object { return obj.AsObject() }
 
 type Range struct {
-	Locked
-	_Range Object
+	object
+	_Range struct{}
 }
 
-func NewRange(obj Object) Range    { return Range{Locked{}, obj} }
-func GetRange(obj Range) [1]Object { return [1]Object{obj._Range} }
+func NewRange(obj Object) Range    { return Range{object: object(obj)} }
+func GetRange(obj Range) [1]Object { return obj.AsObject() }
 
 type RayCast2D struct {
-	Locked
-	_RayCast2D Object
+	object
+	_RayCast2D struct{}
 }
 
-func NewRayCast2D(obj Object) RayCast2D    { return RayCast2D{Locked{}, obj} }
-func GetRayCast2D(obj RayCast2D) [1]Object { return [1]Object{obj._RayCast2D} }
+func NewRayCast2D(obj Object) RayCast2D    { return RayCast2D{object: object(obj)} }
+func GetRayCast2D(obj RayCast2D) [1]Object { return obj.AsObject() }
 
 type RayCast3D struct {
-	Locked
-	_RayCast3D Object
+	object
+	_RayCast3D struct{}
 }
 
-func NewRayCast3D(obj Object) RayCast3D    { return RayCast3D{Locked{}, obj} }
-func GetRayCast3D(obj RayCast3D) [1]Object { return [1]Object{obj._RayCast3D} }
+func NewRayCast3D(obj Object) RayCast3D    { return RayCast3D{object: object(obj)} }
+func GetRayCast3D(obj RayCast3D) [1]Object { return obj.AsObject() }
 
 type RectangleShape2D struct {
-	Locked
-	_RectangleShape2D Object
+	object
+	_RectangleShape2D struct{}
 }
 
-func NewRectangleShape2D(obj Object) RectangleShape2D    { return RectangleShape2D{Locked{}, obj} }
-func GetRectangleShape2D(obj RectangleShape2D) [1]Object { return [1]Object{obj._RectangleShape2D} }
+func NewRectangleShape2D(obj Object) RectangleShape2D    { return RectangleShape2D{object: object(obj)} }
+func GetRectangleShape2D(obj RectangleShape2D) [1]Object { return obj.AsObject() }
 
 type ReferenceRect struct {
-	Locked
-	_ReferenceRect Object
+	object
+	_ReferenceRect struct{}
 }
 
-func NewReferenceRect(obj Object) ReferenceRect    { return ReferenceRect{Locked{}, obj} }
-func GetReferenceRect(obj ReferenceRect) [1]Object { return [1]Object{obj._ReferenceRect} }
+func NewReferenceRect(obj Object) ReferenceRect    { return ReferenceRect{object: object(obj)} }
+func GetReferenceRect(obj ReferenceRect) [1]Object { return obj.AsObject() }
 
 type ReflectionProbe struct {
-	Locked
-	_ReflectionProbe Object
+	object
+	_ReflectionProbe struct{}
 }
 
-func NewReflectionProbe(obj Object) ReflectionProbe    { return ReflectionProbe{Locked{}, obj} }
-func GetReflectionProbe(obj ReflectionProbe) [1]Object { return [1]Object{obj._ReflectionProbe} }
+func NewReflectionProbe(obj Object) ReflectionProbe    { return ReflectionProbe{object: object(obj)} }
+func GetReflectionProbe(obj ReflectionProbe) [1]Object { return obj.AsObject() }
 
 type RegEx struct {
-	Locked
-	_RegEx Object
+	object
+	_RegEx struct{}
 }
 
-func NewRegEx(obj Object) RegEx    { return RegEx{Locked{}, obj} }
-func GetRegEx(obj RegEx) [1]Object { return [1]Object{obj._RegEx} }
+func NewRegEx(obj Object) RegEx    { return RegEx{object: object(obj)} }
+func GetRegEx(obj RegEx) [1]Object { return obj.AsObject() }
 
 type RegExMatch struct {
-	Locked
-	_RegExMatch Object
+	object
+	_RegExMatch struct{}
 }
 
-func NewRegExMatch(obj Object) RegExMatch    { return RegExMatch{Locked{}, obj} }
-func GetRegExMatch(obj RegExMatch) [1]Object { return [1]Object{obj._RegExMatch} }
+func NewRegExMatch(obj Object) RegExMatch    { return RegExMatch{object: object(obj)} }
+func GetRegExMatch(obj RegExMatch) [1]Object { return obj.AsObject() }
 
 type RemoteTransform2D struct {
-	Locked
-	_RemoteTransform2D Object
+	object
+	_RemoteTransform2D struct{}
 }
 
-func NewRemoteTransform2D(obj Object) RemoteTransform2D    { return RemoteTransform2D{Locked{}, obj} }
-func GetRemoteTransform2D(obj RemoteTransform2D) [1]Object { return [1]Object{obj._RemoteTransform2D} }
+func NewRemoteTransform2D(obj Object) RemoteTransform2D {
+	return RemoteTransform2D{object: object(obj)}
+}
+func GetRemoteTransform2D(obj RemoteTransform2D) [1]Object { return obj.AsObject() }
 
 type RemoteTransform3D struct {
-	Locked
-	_RemoteTransform3D Object
+	object
+	_RemoteTransform3D struct{}
 }
 
-func NewRemoteTransform3D(obj Object) RemoteTransform3D    { return RemoteTransform3D{Locked{}, obj} }
-func GetRemoteTransform3D(obj RemoteTransform3D) [1]Object { return [1]Object{obj._RemoteTransform3D} }
+func NewRemoteTransform3D(obj Object) RemoteTransform3D {
+	return RemoteTransform3D{object: object(obj)}
+}
+func GetRemoteTransform3D(obj RemoteTransform3D) [1]Object { return obj.AsObject() }
 
 type RenderData struct {
-	Locked
-	_RenderData Object
+	object
+	_RenderData struct{}
 }
 
-func NewRenderData(obj Object) RenderData    { return RenderData{Locked{}, obj} }
-func GetRenderData(obj RenderData) [1]Object { return [1]Object{obj._RenderData} }
+func NewRenderData(obj Object) RenderData    { return RenderData{object: object(obj)} }
+func GetRenderData(obj RenderData) [1]Object { return obj.AsObject() }
 
 type RenderDataExtension struct {
-	Locked
-	_RenderDataExtension Object
+	object
+	_RenderDataExtension struct{}
 }
 
 func NewRenderDataExtension(obj Object) RenderDataExtension {
-	return RenderDataExtension{Locked{}, obj}
+	return RenderDataExtension{object: object(obj)}
 }
-func GetRenderDataExtension(obj RenderDataExtension) [1]Object {
-	return [1]Object{obj._RenderDataExtension}
-}
+func GetRenderDataExtension(obj RenderDataExtension) [1]Object { return obj.AsObject() }
 
 type RenderDataRD struct {
-	Locked
-	_RenderDataRD Object
+	object
+	_RenderDataRD struct{}
 }
 
-func NewRenderDataRD(obj Object) RenderDataRD    { return RenderDataRD{Locked{}, obj} }
-func GetRenderDataRD(obj RenderDataRD) [1]Object { return [1]Object{obj._RenderDataRD} }
+func NewRenderDataRD(obj Object) RenderDataRD    { return RenderDataRD{object: object(obj)} }
+func GetRenderDataRD(obj RenderDataRD) [1]Object { return obj.AsObject() }
 
 type RenderSceneBuffers struct {
-	Locked
-	_RenderSceneBuffers Object
+	object
+	_RenderSceneBuffers struct{}
 }
 
-func NewRenderSceneBuffers(obj Object) RenderSceneBuffers { return RenderSceneBuffers{Locked{}, obj} }
-func GetRenderSceneBuffers(obj RenderSceneBuffers) [1]Object {
-	return [1]Object{obj._RenderSceneBuffers}
+func NewRenderSceneBuffers(obj Object) RenderSceneBuffers {
+	return RenderSceneBuffers{object: object(obj)}
 }
+func GetRenderSceneBuffers(obj RenderSceneBuffers) [1]Object { return obj.AsObject() }
 
 type RenderSceneBuffersConfiguration struct {
-	Locked
-	_RenderSceneBuffersConfiguration Object
+	object
+	_RenderSceneBuffersConfiguration struct{}
 }
 
 func NewRenderSceneBuffersConfiguration(obj Object) RenderSceneBuffersConfiguration {
-	return RenderSceneBuffersConfiguration{Locked{}, obj}
+	return RenderSceneBuffersConfiguration{object: object(obj)}
 }
 func GetRenderSceneBuffersConfiguration(obj RenderSceneBuffersConfiguration) [1]Object {
-	return [1]Object{obj._RenderSceneBuffersConfiguration}
+	return obj.AsObject()
 }
 
 type RenderSceneBuffersExtension struct {
-	Locked
-	_RenderSceneBuffersExtension Object
+	object
+	_RenderSceneBuffersExtension struct{}
 }
 
 func NewRenderSceneBuffersExtension(obj Object) RenderSceneBuffersExtension {
-	return RenderSceneBuffersExtension{Locked{}, obj}
+	return RenderSceneBuffersExtension{object: object(obj)}
 }
-func GetRenderSceneBuffersExtension(obj RenderSceneBuffersExtension) [1]Object {
-	return [1]Object{obj._RenderSceneBuffersExtension}
-}
+func GetRenderSceneBuffersExtension(obj RenderSceneBuffersExtension) [1]Object { return obj.AsObject() }
 
 type RenderSceneBuffersRD struct {
-	Locked
-	_RenderSceneBuffersRD Object
+	object
+	_RenderSceneBuffersRD struct{}
 }
 
 func NewRenderSceneBuffersRD(obj Object) RenderSceneBuffersRD {
-	return RenderSceneBuffersRD{Locked{}, obj}
+	return RenderSceneBuffersRD{object: object(obj)}
 }
-func GetRenderSceneBuffersRD(obj RenderSceneBuffersRD) [1]Object {
-	return [1]Object{obj._RenderSceneBuffersRD}
-}
+func GetRenderSceneBuffersRD(obj RenderSceneBuffersRD) [1]Object { return obj.AsObject() }
 
 type RenderSceneData struct {
-	Locked
-	_RenderSceneData Object
+	object
+	_RenderSceneData struct{}
 }
 
-func NewRenderSceneData(obj Object) RenderSceneData    { return RenderSceneData{Locked{}, obj} }
-func GetRenderSceneData(obj RenderSceneData) [1]Object { return [1]Object{obj._RenderSceneData} }
+func NewRenderSceneData(obj Object) RenderSceneData    { return RenderSceneData{object: object(obj)} }
+func GetRenderSceneData(obj RenderSceneData) [1]Object { return obj.AsObject() }
 
 type RenderSceneDataExtension struct {
-	Locked
-	_RenderSceneDataExtension Object
+	object
+	_RenderSceneDataExtension struct{}
 }
 
 func NewRenderSceneDataExtension(obj Object) RenderSceneDataExtension {
-	return RenderSceneDataExtension{Locked{}, obj}
+	return RenderSceneDataExtension{object: object(obj)}
 }
-func GetRenderSceneDataExtension(obj RenderSceneDataExtension) [1]Object {
-	return [1]Object{obj._RenderSceneDataExtension}
-}
+func GetRenderSceneDataExtension(obj RenderSceneDataExtension) [1]Object { return obj.AsObject() }
 
 type RenderSceneDataRD struct {
-	Locked
-	_RenderSceneDataRD Object
+	object
+	_RenderSceneDataRD struct{}
 }
 
-func NewRenderSceneDataRD(obj Object) RenderSceneDataRD    { return RenderSceneDataRD{Locked{}, obj} }
-func GetRenderSceneDataRD(obj RenderSceneDataRD) [1]Object { return [1]Object{obj._RenderSceneDataRD} }
+func NewRenderSceneDataRD(obj Object) RenderSceneDataRD {
+	return RenderSceneDataRD{object: object(obj)}
+}
+func GetRenderSceneDataRD(obj RenderSceneDataRD) [1]Object { return obj.AsObject() }
 
 type RenderingDevice struct {
-	Locked
-	_RenderingDevice Object
+	object
+	_RenderingDevice struct{}
 }
 
-func NewRenderingDevice(obj Object) RenderingDevice    { return RenderingDevice{Locked{}, obj} }
-func GetRenderingDevice(obj RenderingDevice) [1]Object { return [1]Object{obj._RenderingDevice} }
+func NewRenderingDevice(obj Object) RenderingDevice    { return RenderingDevice{object: object(obj)} }
+func GetRenderingDevice(obj RenderingDevice) [1]Object { return obj.AsObject() }
 
 type RenderingServer struct {
-	Locked
-	_RenderingServer Object
+	object
+	_RenderingServer struct{}
 }
 
-func NewRenderingServer(obj Object) RenderingServer    { return RenderingServer{Locked{}, obj} }
-func GetRenderingServer(obj RenderingServer) [1]Object { return [1]Object{obj._RenderingServer} }
+func NewRenderingServer(obj Object) RenderingServer    { return RenderingServer{object: object(obj)} }
+func GetRenderingServer(obj RenderingServer) [1]Object { return obj.AsObject() }
 
 type Resource struct {
-	Locked
-	_Resource Object
+	object
+	_Resource struct{}
 }
 
-func NewResource(obj Object) Resource    { return Resource{Locked{}, obj} }
-func GetResource(obj Resource) [1]Object { return [1]Object{obj._Resource} }
+func NewResource(obj Object) Resource    { return Resource{object: object(obj)} }
+func GetResource(obj Resource) [1]Object { return obj.AsObject() }
 
 type ResourceFormatLoader struct {
-	Locked
-	_ResourceFormatLoader Object
+	object
+	_ResourceFormatLoader struct{}
 }
 
 func NewResourceFormatLoader(obj Object) ResourceFormatLoader {
-	return ResourceFormatLoader{Locked{}, obj}
+	return ResourceFormatLoader{object: object(obj)}
 }
-func GetResourceFormatLoader(obj ResourceFormatLoader) [1]Object {
-	return [1]Object{obj._ResourceFormatLoader}
-}
+func GetResourceFormatLoader(obj ResourceFormatLoader) [1]Object { return obj.AsObject() }
 
 type ResourceFormatSaver struct {
-	Locked
-	_ResourceFormatSaver Object
+	object
+	_ResourceFormatSaver struct{}
 }
 
 func NewResourceFormatSaver(obj Object) ResourceFormatSaver {
-	return ResourceFormatSaver{Locked{}, obj}
+	return ResourceFormatSaver{object: object(obj)}
 }
-func GetResourceFormatSaver(obj ResourceFormatSaver) [1]Object {
-	return [1]Object{obj._ResourceFormatSaver}
-}
+func GetResourceFormatSaver(obj ResourceFormatSaver) [1]Object { return obj.AsObject() }
 
 type ResourceImporter struct {
-	Locked
-	_ResourceImporter Object
+	object
+	_ResourceImporter struct{}
 }
 
-func NewResourceImporter(obj Object) ResourceImporter    { return ResourceImporter{Locked{}, obj} }
-func GetResourceImporter(obj ResourceImporter) [1]Object { return [1]Object{obj._ResourceImporter} }
+func NewResourceImporter(obj Object) ResourceImporter    { return ResourceImporter{object: object(obj)} }
+func GetResourceImporter(obj ResourceImporter) [1]Object { return obj.AsObject() }
 
 type ResourceImporterBMFont struct {
-	Locked
-	_ResourceImporterBMFont Object
+	object
+	_ResourceImporterBMFont struct{}
 }
 
 func NewResourceImporterBMFont(obj Object) ResourceImporterBMFont {
-	return ResourceImporterBMFont{Locked{}, obj}
+	return ResourceImporterBMFont{object: object(obj)}
 }
-func GetResourceImporterBMFont(obj ResourceImporterBMFont) [1]Object {
-	return [1]Object{obj._ResourceImporterBMFont}
-}
+func GetResourceImporterBMFont(obj ResourceImporterBMFont) [1]Object { return obj.AsObject() }
 
 type ResourceImporterBitMap struct {
-	Locked
-	_ResourceImporterBitMap Object
+	object
+	_ResourceImporterBitMap struct{}
 }
 
 func NewResourceImporterBitMap(obj Object) ResourceImporterBitMap {
-	return ResourceImporterBitMap{Locked{}, obj}
+	return ResourceImporterBitMap{object: object(obj)}
 }
-func GetResourceImporterBitMap(obj ResourceImporterBitMap) [1]Object {
-	return [1]Object{obj._ResourceImporterBitMap}
-}
+func GetResourceImporterBitMap(obj ResourceImporterBitMap) [1]Object { return obj.AsObject() }
 
 type ResourceImporterCSVTranslation struct {
-	Locked
-	_ResourceImporterCSVTranslation Object
+	object
+	_ResourceImporterCSVTranslation struct{}
 }
 
 func NewResourceImporterCSVTranslation(obj Object) ResourceImporterCSVTranslation {
-	return ResourceImporterCSVTranslation{Locked{}, obj}
+	return ResourceImporterCSVTranslation{object: object(obj)}
 }
 func GetResourceImporterCSVTranslation(obj ResourceImporterCSVTranslation) [1]Object {
-	return [1]Object{obj._ResourceImporterCSVTranslation}
+	return obj.AsObject()
 }
 
 type ResourceImporterDynamicFont struct {
-	Locked
-	_ResourceImporterDynamicFont Object
+	object
+	_ResourceImporterDynamicFont struct{}
 }
 
 func NewResourceImporterDynamicFont(obj Object) ResourceImporterDynamicFont {
-	return ResourceImporterDynamicFont{Locked{}, obj}
+	return ResourceImporterDynamicFont{object: object(obj)}
 }
-func GetResourceImporterDynamicFont(obj ResourceImporterDynamicFont) [1]Object {
-	return [1]Object{obj._ResourceImporterDynamicFont}
-}
+func GetResourceImporterDynamicFont(obj ResourceImporterDynamicFont) [1]Object { return obj.AsObject() }
 
 type ResourceImporterImage struct {
-	Locked
-	_ResourceImporterImage Object
+	object
+	_ResourceImporterImage struct{}
 }
 
 func NewResourceImporterImage(obj Object) ResourceImporterImage {
-	return ResourceImporterImage{Locked{}, obj}
+	return ResourceImporterImage{object: object(obj)}
 }
-func GetResourceImporterImage(obj ResourceImporterImage) [1]Object {
-	return [1]Object{obj._ResourceImporterImage}
-}
+func GetResourceImporterImage(obj ResourceImporterImage) [1]Object { return obj.AsObject() }
 
 type ResourceImporterImageFont struct {
-	Locked
-	_ResourceImporterImageFont Object
+	object
+	_ResourceImporterImageFont struct{}
 }
 
 func NewResourceImporterImageFont(obj Object) ResourceImporterImageFont {
-	return ResourceImporterImageFont{Locked{}, obj}
+	return ResourceImporterImageFont{object: object(obj)}
 }
-func GetResourceImporterImageFont(obj ResourceImporterImageFont) [1]Object {
-	return [1]Object{obj._ResourceImporterImageFont}
-}
+func GetResourceImporterImageFont(obj ResourceImporterImageFont) [1]Object { return obj.AsObject() }
 
 type ResourceImporterLayeredTexture struct {
-	Locked
-	_ResourceImporterLayeredTexture Object
+	object
+	_ResourceImporterLayeredTexture struct{}
 }
 
 func NewResourceImporterLayeredTexture(obj Object) ResourceImporterLayeredTexture {
-	return ResourceImporterLayeredTexture{Locked{}, obj}
+	return ResourceImporterLayeredTexture{object: object(obj)}
 }
 func GetResourceImporterLayeredTexture(obj ResourceImporterLayeredTexture) [1]Object {
-	return [1]Object{obj._ResourceImporterLayeredTexture}
+	return obj.AsObject()
 }
 
 type ResourceImporterMP3 struct {
-	Locked
-	_ResourceImporterMP3 Object
+	object
+	_ResourceImporterMP3 struct{}
 }
 
 func NewResourceImporterMP3(obj Object) ResourceImporterMP3 {
-	return ResourceImporterMP3{Locked{}, obj}
+	return ResourceImporterMP3{object: object(obj)}
 }
-func GetResourceImporterMP3(obj ResourceImporterMP3) [1]Object {
-	return [1]Object{obj._ResourceImporterMP3}
-}
+func GetResourceImporterMP3(obj ResourceImporterMP3) [1]Object { return obj.AsObject() }
 
 type ResourceImporterOBJ struct {
-	Locked
-	_ResourceImporterOBJ Object
+	object
+	_ResourceImporterOBJ struct{}
 }
 
 func NewResourceImporterOBJ(obj Object) ResourceImporterOBJ {
-	return ResourceImporterOBJ{Locked{}, obj}
+	return ResourceImporterOBJ{object: object(obj)}
 }
-func GetResourceImporterOBJ(obj ResourceImporterOBJ) [1]Object {
-	return [1]Object{obj._ResourceImporterOBJ}
-}
+func GetResourceImporterOBJ(obj ResourceImporterOBJ) [1]Object { return obj.AsObject() }
 
 type ResourceImporterOggVorbis struct {
-	Locked
-	_ResourceImporterOggVorbis Object
+	object
+	_ResourceImporterOggVorbis struct{}
 }
 
 func NewResourceImporterOggVorbis(obj Object) ResourceImporterOggVorbis {
-	return ResourceImporterOggVorbis{Locked{}, obj}
+	return ResourceImporterOggVorbis{object: object(obj)}
 }
-func GetResourceImporterOggVorbis(obj ResourceImporterOggVorbis) [1]Object {
-	return [1]Object{obj._ResourceImporterOggVorbis}
-}
+func GetResourceImporterOggVorbis(obj ResourceImporterOggVorbis) [1]Object { return obj.AsObject() }
 
 type ResourceImporterSVG struct {
-	Locked
-	_ResourceImporterSVG Object
+	object
+	_ResourceImporterSVG struct{}
 }
 
 func NewResourceImporterSVG(obj Object) ResourceImporterSVG {
-	return ResourceImporterSVG{Locked{}, obj}
+	return ResourceImporterSVG{object: object(obj)}
 }
-func GetResourceImporterSVG(obj ResourceImporterSVG) [1]Object {
-	return [1]Object{obj._ResourceImporterSVG}
-}
+func GetResourceImporterSVG(obj ResourceImporterSVG) [1]Object { return obj.AsObject() }
 
 type ResourceImporterScene struct {
-	Locked
-	_ResourceImporterScene Object
+	object
+	_ResourceImporterScene struct{}
 }
 
 func NewResourceImporterScene(obj Object) ResourceImporterScene {
-	return ResourceImporterScene{Locked{}, obj}
+	return ResourceImporterScene{object: object(obj)}
 }
-func GetResourceImporterScene(obj ResourceImporterScene) [1]Object {
-	return [1]Object{obj._ResourceImporterScene}
-}
+func GetResourceImporterScene(obj ResourceImporterScene) [1]Object { return obj.AsObject() }
 
 type ResourceImporterShaderFile struct {
-	Locked
-	_ResourceImporterShaderFile Object
+	object
+	_ResourceImporterShaderFile struct{}
 }
 
 func NewResourceImporterShaderFile(obj Object) ResourceImporterShaderFile {
-	return ResourceImporterShaderFile{Locked{}, obj}
+	return ResourceImporterShaderFile{object: object(obj)}
 }
-func GetResourceImporterShaderFile(obj ResourceImporterShaderFile) [1]Object {
-	return [1]Object{obj._ResourceImporterShaderFile}
-}
+func GetResourceImporterShaderFile(obj ResourceImporterShaderFile) [1]Object { return obj.AsObject() }
 
 type ResourceImporterTexture struct {
-	Locked
-	_ResourceImporterTexture Object
+	object
+	_ResourceImporterTexture struct{}
 }
 
 func NewResourceImporterTexture(obj Object) ResourceImporterTexture {
-	return ResourceImporterTexture{Locked{}, obj}
+	return ResourceImporterTexture{object: object(obj)}
 }
-func GetResourceImporterTexture(obj ResourceImporterTexture) [1]Object {
-	return [1]Object{obj._ResourceImporterTexture}
-}
+func GetResourceImporterTexture(obj ResourceImporterTexture) [1]Object { return obj.AsObject() }
 
 type ResourceImporterTextureAtlas struct {
-	Locked
-	_ResourceImporterTextureAtlas Object
+	object
+	_ResourceImporterTextureAtlas struct{}
 }
 
 func NewResourceImporterTextureAtlas(obj Object) ResourceImporterTextureAtlas {
-	return ResourceImporterTextureAtlas{Locked{}, obj}
+	return ResourceImporterTextureAtlas{object: object(obj)}
 }
 func GetResourceImporterTextureAtlas(obj ResourceImporterTextureAtlas) [1]Object {
-	return [1]Object{obj._ResourceImporterTextureAtlas}
+	return obj.AsObject()
 }
 
 type ResourceImporterWAV struct {
-	Locked
-	_ResourceImporterWAV Object
+	object
+	_ResourceImporterWAV struct{}
 }
 
 func NewResourceImporterWAV(obj Object) ResourceImporterWAV {
-	return ResourceImporterWAV{Locked{}, obj}
+	return ResourceImporterWAV{object: object(obj)}
 }
-func GetResourceImporterWAV(obj ResourceImporterWAV) [1]Object {
-	return [1]Object{obj._ResourceImporterWAV}
-}
+func GetResourceImporterWAV(obj ResourceImporterWAV) [1]Object { return obj.AsObject() }
 
 type ResourceLoader struct {
-	Locked
-	_ResourceLoader Object
+	object
+	_ResourceLoader struct{}
 }
 
-func NewResourceLoader(obj Object) ResourceLoader    { return ResourceLoader{Locked{}, obj} }
-func GetResourceLoader(obj ResourceLoader) [1]Object { return [1]Object{obj._ResourceLoader} }
+func NewResourceLoader(obj Object) ResourceLoader    { return ResourceLoader{object: object(obj)} }
+func GetResourceLoader(obj ResourceLoader) [1]Object { return obj.AsObject() }
 
 type ResourcePreloader struct {
-	Locked
-	_ResourcePreloader Object
+	object
+	_ResourcePreloader struct{}
 }
 
-func NewResourcePreloader(obj Object) ResourcePreloader    { return ResourcePreloader{Locked{}, obj} }
-func GetResourcePreloader(obj ResourcePreloader) [1]Object { return [1]Object{obj._ResourcePreloader} }
+func NewResourcePreloader(obj Object) ResourcePreloader {
+	return ResourcePreloader{object: object(obj)}
+}
+func GetResourcePreloader(obj ResourcePreloader) [1]Object { return obj.AsObject() }
 
 type ResourceSaver struct {
-	Locked
-	_ResourceSaver Object
+	object
+	_ResourceSaver struct{}
 }
 
-func NewResourceSaver(obj Object) ResourceSaver    { return ResourceSaver{Locked{}, obj} }
-func GetResourceSaver(obj ResourceSaver) [1]Object { return [1]Object{obj._ResourceSaver} }
+func NewResourceSaver(obj Object) ResourceSaver    { return ResourceSaver{object: object(obj)} }
+func GetResourceSaver(obj ResourceSaver) [1]Object { return obj.AsObject() }
 
 type ResourceUID struct {
-	Locked
-	_ResourceUID Object
+	object
+	_ResourceUID struct{}
 }
 
-func NewResourceUID(obj Object) ResourceUID    { return ResourceUID{Locked{}, obj} }
-func GetResourceUID(obj ResourceUID) [1]Object { return [1]Object{obj._ResourceUID} }
+func NewResourceUID(obj Object) ResourceUID    { return ResourceUID{object: object(obj)} }
+func GetResourceUID(obj ResourceUID) [1]Object { return obj.AsObject() }
 
 type RetargetModifier3D struct {
-	Locked
-	_RetargetModifier3D Object
+	object
+	_RetargetModifier3D struct{}
 }
 
-func NewRetargetModifier3D(obj Object) RetargetModifier3D { return RetargetModifier3D{Locked{}, obj} }
-func GetRetargetModifier3D(obj RetargetModifier3D) [1]Object {
-	return [1]Object{obj._RetargetModifier3D}
+func NewRetargetModifier3D(obj Object) RetargetModifier3D {
+	return RetargetModifier3D{object: object(obj)}
 }
+func GetRetargetModifier3D(obj RetargetModifier3D) [1]Object { return obj.AsObject() }
 
 type RibbonTrailMesh struct {
-	Locked
-	_RibbonTrailMesh Object
+	object
+	_RibbonTrailMesh struct{}
 }
 
-func NewRibbonTrailMesh(obj Object) RibbonTrailMesh    { return RibbonTrailMesh{Locked{}, obj} }
-func GetRibbonTrailMesh(obj RibbonTrailMesh) [1]Object { return [1]Object{obj._RibbonTrailMesh} }
+func NewRibbonTrailMesh(obj Object) RibbonTrailMesh    { return RibbonTrailMesh{object: object(obj)} }
+func GetRibbonTrailMesh(obj RibbonTrailMesh) [1]Object { return obj.AsObject() }
 
 type RichTextEffect struct {
-	Locked
-	_RichTextEffect Object
+	object
+	_RichTextEffect struct{}
 }
 
-func NewRichTextEffect(obj Object) RichTextEffect    { return RichTextEffect{Locked{}, obj} }
-func GetRichTextEffect(obj RichTextEffect) [1]Object { return [1]Object{obj._RichTextEffect} }
+func NewRichTextEffect(obj Object) RichTextEffect    { return RichTextEffect{object: object(obj)} }
+func GetRichTextEffect(obj RichTextEffect) [1]Object { return obj.AsObject() }
 
 type RichTextLabel struct {
-	Locked
-	_RichTextLabel Object
+	object
+	_RichTextLabel struct{}
 }
 
-func NewRichTextLabel(obj Object) RichTextLabel    { return RichTextLabel{Locked{}, obj} }
-func GetRichTextLabel(obj RichTextLabel) [1]Object { return [1]Object{obj._RichTextLabel} }
+func NewRichTextLabel(obj Object) RichTextLabel    { return RichTextLabel{object: object(obj)} }
+func GetRichTextLabel(obj RichTextLabel) [1]Object { return obj.AsObject() }
 
 type RigidBody2D struct {
-	Locked
-	_RigidBody2D Object
+	object
+	_RigidBody2D struct{}
 }
 
-func NewRigidBody2D(obj Object) RigidBody2D    { return RigidBody2D{Locked{}, obj} }
-func GetRigidBody2D(obj RigidBody2D) [1]Object { return [1]Object{obj._RigidBody2D} }
+func NewRigidBody2D(obj Object) RigidBody2D    { return RigidBody2D{object: object(obj)} }
+func GetRigidBody2D(obj RigidBody2D) [1]Object { return obj.AsObject() }
 
 type RigidBody3D struct {
-	Locked
-	_RigidBody3D Object
+	object
+	_RigidBody3D struct{}
 }
 
-func NewRigidBody3D(obj Object) RigidBody3D    { return RigidBody3D{Locked{}, obj} }
-func GetRigidBody3D(obj RigidBody3D) [1]Object { return [1]Object{obj._RigidBody3D} }
+func NewRigidBody3D(obj Object) RigidBody3D    { return RigidBody3D{object: object(obj)} }
+func GetRigidBody3D(obj RigidBody3D) [1]Object { return obj.AsObject() }
 
 type RootMotionView struct {
-	Locked
-	_RootMotionView Object
+	object
+	_RootMotionView struct{}
 }
 
-func NewRootMotionView(obj Object) RootMotionView    { return RootMotionView{Locked{}, obj} }
-func GetRootMotionView(obj RootMotionView) [1]Object { return [1]Object{obj._RootMotionView} }
+func NewRootMotionView(obj Object) RootMotionView    { return RootMotionView{object: object(obj)} }
+func GetRootMotionView(obj RootMotionView) [1]Object { return obj.AsObject() }
 
 type SceneMultiplayer struct {
-	Locked
-	_SceneMultiplayer Object
+	object
+	_SceneMultiplayer struct{}
 }
 
-func NewSceneMultiplayer(obj Object) SceneMultiplayer    { return SceneMultiplayer{Locked{}, obj} }
-func GetSceneMultiplayer(obj SceneMultiplayer) [1]Object { return [1]Object{obj._SceneMultiplayer} }
+func NewSceneMultiplayer(obj Object) SceneMultiplayer    { return SceneMultiplayer{object: object(obj)} }
+func GetSceneMultiplayer(obj SceneMultiplayer) [1]Object { return obj.AsObject() }
 
 type SceneReplicationConfig struct {
-	Locked
-	_SceneReplicationConfig Object
+	object
+	_SceneReplicationConfig struct{}
 }
 
 func NewSceneReplicationConfig(obj Object) SceneReplicationConfig {
-	return SceneReplicationConfig{Locked{}, obj}
+	return SceneReplicationConfig{object: object(obj)}
 }
-func GetSceneReplicationConfig(obj SceneReplicationConfig) [1]Object {
-	return [1]Object{obj._SceneReplicationConfig}
-}
+func GetSceneReplicationConfig(obj SceneReplicationConfig) [1]Object { return obj.AsObject() }
 
 type SceneState struct {
-	Locked
-	_SceneState Object
+	object
+	_SceneState struct{}
 }
 
-func NewSceneState(obj Object) SceneState    { return SceneState{Locked{}, obj} }
-func GetSceneState(obj SceneState) [1]Object { return [1]Object{obj._SceneState} }
+func NewSceneState(obj Object) SceneState    { return SceneState{object: object(obj)} }
+func GetSceneState(obj SceneState) [1]Object { return obj.AsObject() }
 
 type SceneTree struct {
-	Locked
-	_SceneTree Object
+	object
+	_SceneTree struct{}
 }
 
-func NewSceneTree(obj Object) SceneTree    { return SceneTree{Locked{}, obj} }
-func GetSceneTree(obj SceneTree) [1]Object { return [1]Object{obj._SceneTree} }
+func NewSceneTree(obj Object) SceneTree    { return SceneTree{object: object(obj)} }
+func GetSceneTree(obj SceneTree) [1]Object { return obj.AsObject() }
 
 type SceneTreeTimer struct {
-	Locked
-	_SceneTreeTimer Object
+	object
+	_SceneTreeTimer struct{}
 }
 
-func NewSceneTreeTimer(obj Object) SceneTreeTimer    { return SceneTreeTimer{Locked{}, obj} }
-func GetSceneTreeTimer(obj SceneTreeTimer) [1]Object { return [1]Object{obj._SceneTreeTimer} }
+func NewSceneTreeTimer(obj Object) SceneTreeTimer    { return SceneTreeTimer{object: object(obj)} }
+func GetSceneTreeTimer(obj SceneTreeTimer) [1]Object { return obj.AsObject() }
 
 type Script struct {
-	Locked
-	_Script Object
+	object
+	_Script struct{}
 }
 
-func NewScript(obj Object) Script    { return Script{Locked{}, obj} }
-func GetScript(obj Script) [1]Object { return [1]Object{obj._Script} }
+func NewScript(obj Object) Script    { return Script{object: object(obj)} }
+func GetScript(obj Script) [1]Object { return obj.AsObject() }
 
 type ScriptBacktrace struct {
-	Locked
-	_ScriptBacktrace Object
+	object
+	_ScriptBacktrace struct{}
 }
 
-func NewScriptBacktrace(obj Object) ScriptBacktrace    { return ScriptBacktrace{Locked{}, obj} }
-func GetScriptBacktrace(obj ScriptBacktrace) [1]Object { return [1]Object{obj._ScriptBacktrace} }
+func NewScriptBacktrace(obj Object) ScriptBacktrace    { return ScriptBacktrace{object: object(obj)} }
+func GetScriptBacktrace(obj ScriptBacktrace) [1]Object { return obj.AsObject() }
 
 type ScriptCreateDialog struct {
-	Locked
-	_ScriptCreateDialog Object
+	object
+	_ScriptCreateDialog struct{}
 }
 
-func NewScriptCreateDialog(obj Object) ScriptCreateDialog { return ScriptCreateDialog{Locked{}, obj} }
-func GetScriptCreateDialog(obj ScriptCreateDialog) [1]Object {
-	return [1]Object{obj._ScriptCreateDialog}
+func NewScriptCreateDialog(obj Object) ScriptCreateDialog {
+	return ScriptCreateDialog{object: object(obj)}
 }
+func GetScriptCreateDialog(obj ScriptCreateDialog) [1]Object { return obj.AsObject() }
 
 type ScriptEditor struct {
-	Locked
-	_ScriptEditor Object
+	object
+	_ScriptEditor struct{}
 }
 
-func NewScriptEditor(obj Object) ScriptEditor    { return ScriptEditor{Locked{}, obj} }
-func GetScriptEditor(obj ScriptEditor) [1]Object { return [1]Object{obj._ScriptEditor} }
+func NewScriptEditor(obj Object) ScriptEditor    { return ScriptEditor{object: object(obj)} }
+func GetScriptEditor(obj ScriptEditor) [1]Object { return obj.AsObject() }
 
 type ScriptEditorBase struct {
-	Locked
-	_ScriptEditorBase Object
+	object
+	_ScriptEditorBase struct{}
 }
 
-func NewScriptEditorBase(obj Object) ScriptEditorBase    { return ScriptEditorBase{Locked{}, obj} }
-func GetScriptEditorBase(obj ScriptEditorBase) [1]Object { return [1]Object{obj._ScriptEditorBase} }
+func NewScriptEditorBase(obj Object) ScriptEditorBase    { return ScriptEditorBase{object: object(obj)} }
+func GetScriptEditorBase(obj ScriptEditorBase) [1]Object { return obj.AsObject() }
 
 type ScriptExtension struct {
-	Locked
-	_ScriptExtension Object
+	object
+	_ScriptExtension struct{}
 }
 
-func NewScriptExtension(obj Object) ScriptExtension    { return ScriptExtension{Locked{}, obj} }
-func GetScriptExtension(obj ScriptExtension) [1]Object { return [1]Object{obj._ScriptExtension} }
+func NewScriptExtension(obj Object) ScriptExtension    { return ScriptExtension{object: object(obj)} }
+func GetScriptExtension(obj ScriptExtension) [1]Object { return obj.AsObject() }
 
 type ScriptLanguage struct {
-	Locked
-	_ScriptLanguage Object
+	object
+	_ScriptLanguage struct{}
 }
 
-func NewScriptLanguage(obj Object) ScriptLanguage    { return ScriptLanguage{Locked{}, obj} }
-func GetScriptLanguage(obj ScriptLanguage) [1]Object { return [1]Object{obj._ScriptLanguage} }
+func NewScriptLanguage(obj Object) ScriptLanguage    { return ScriptLanguage{object: object(obj)} }
+func GetScriptLanguage(obj ScriptLanguage) [1]Object { return obj.AsObject() }
 
 type ScriptLanguageExtension struct {
-	Locked
-	_ScriptLanguageExtension Object
+	object
+	_ScriptLanguageExtension struct{}
 }
 
 func NewScriptLanguageExtension(obj Object) ScriptLanguageExtension {
-	return ScriptLanguageExtension{Locked{}, obj}
+	return ScriptLanguageExtension{object: object(obj)}
 }
-func GetScriptLanguageExtension(obj ScriptLanguageExtension) [1]Object {
-	return [1]Object{obj._ScriptLanguageExtension}
-}
+func GetScriptLanguageExtension(obj ScriptLanguageExtension) [1]Object { return obj.AsObject() }
 
 type ScrollBar struct {
-	Locked
-	_ScrollBar Object
+	object
+	_ScrollBar struct{}
 }
 
-func NewScrollBar(obj Object) ScrollBar    { return ScrollBar{Locked{}, obj} }
-func GetScrollBar(obj ScrollBar) [1]Object { return [1]Object{obj._ScrollBar} }
+func NewScrollBar(obj Object) ScrollBar    { return ScrollBar{object: object(obj)} }
+func GetScrollBar(obj ScrollBar) [1]Object { return obj.AsObject() }
 
 type ScrollContainer struct {
-	Locked
-	_ScrollContainer Object
+	object
+	_ScrollContainer struct{}
 }
 
-func NewScrollContainer(obj Object) ScrollContainer    { return ScrollContainer{Locked{}, obj} }
-func GetScrollContainer(obj ScrollContainer) [1]Object { return [1]Object{obj._ScrollContainer} }
+func NewScrollContainer(obj Object) ScrollContainer    { return ScrollContainer{object: object(obj)} }
+func GetScrollContainer(obj ScrollContainer) [1]Object { return obj.AsObject() }
 
 type SegmentShape2D struct {
-	Locked
-	_SegmentShape2D Object
+	object
+	_SegmentShape2D struct{}
 }
 
-func NewSegmentShape2D(obj Object) SegmentShape2D    { return SegmentShape2D{Locked{}, obj} }
-func GetSegmentShape2D(obj SegmentShape2D) [1]Object { return [1]Object{obj._SegmentShape2D} }
+func NewSegmentShape2D(obj Object) SegmentShape2D    { return SegmentShape2D{object: object(obj)} }
+func GetSegmentShape2D(obj SegmentShape2D) [1]Object { return obj.AsObject() }
 
 type Semaphore struct {
-	Locked
-	_Semaphore Object
+	object
+	_Semaphore struct{}
 }
 
-func NewSemaphore(obj Object) Semaphore    { return Semaphore{Locked{}, obj} }
-func GetSemaphore(obj Semaphore) [1]Object { return [1]Object{obj._Semaphore} }
+func NewSemaphore(obj Object) Semaphore    { return Semaphore{object: object(obj)} }
+func GetSemaphore(obj Semaphore) [1]Object { return obj.AsObject() }
 
 type SeparationRayShape2D struct {
-	Locked
-	_SeparationRayShape2D Object
+	object
+	_SeparationRayShape2D struct{}
 }
 
 func NewSeparationRayShape2D(obj Object) SeparationRayShape2D {
-	return SeparationRayShape2D{Locked{}, obj}
+	return SeparationRayShape2D{object: object(obj)}
 }
-func GetSeparationRayShape2D(obj SeparationRayShape2D) [1]Object {
-	return [1]Object{obj._SeparationRayShape2D}
-}
+func GetSeparationRayShape2D(obj SeparationRayShape2D) [1]Object { return obj.AsObject() }
 
 type SeparationRayShape3D struct {
-	Locked
-	_SeparationRayShape3D Object
+	object
+	_SeparationRayShape3D struct{}
 }
 
 func NewSeparationRayShape3D(obj Object) SeparationRayShape3D {
-	return SeparationRayShape3D{Locked{}, obj}
+	return SeparationRayShape3D{object: object(obj)}
 }
-func GetSeparationRayShape3D(obj SeparationRayShape3D) [1]Object {
-	return [1]Object{obj._SeparationRayShape3D}
-}
+func GetSeparationRayShape3D(obj SeparationRayShape3D) [1]Object { return obj.AsObject() }
 
 type Separator struct {
-	Locked
-	_Separator Object
+	object
+	_Separator struct{}
 }
 
-func NewSeparator(obj Object) Separator    { return Separator{Locked{}, obj} }
-func GetSeparator(obj Separator) [1]Object { return [1]Object{obj._Separator} }
+func NewSeparator(obj Object) Separator    { return Separator{object: object(obj)} }
+func GetSeparator(obj Separator) [1]Object { return obj.AsObject() }
 
 type Shader struct {
-	Locked
-	_Shader Object
+	object
+	_Shader struct{}
 }
 
-func NewShader(obj Object) Shader    { return Shader{Locked{}, obj} }
-func GetShader(obj Shader) [1]Object { return [1]Object{obj._Shader} }
+func NewShader(obj Object) Shader    { return Shader{object: object(obj)} }
+func GetShader(obj Shader) [1]Object { return obj.AsObject() }
 
 type ShaderGlobalsOverride struct {
-	Locked
-	_ShaderGlobalsOverride Object
+	object
+	_ShaderGlobalsOverride struct{}
 }
 
 func NewShaderGlobalsOverride(obj Object) ShaderGlobalsOverride {
-	return ShaderGlobalsOverride{Locked{}, obj}
+	return ShaderGlobalsOverride{object: object(obj)}
 }
-func GetShaderGlobalsOverride(obj ShaderGlobalsOverride) [1]Object {
-	return [1]Object{obj._ShaderGlobalsOverride}
-}
+func GetShaderGlobalsOverride(obj ShaderGlobalsOverride) [1]Object { return obj.AsObject() }
 
 type ShaderInclude struct {
-	Locked
-	_ShaderInclude Object
+	object
+	_ShaderInclude struct{}
 }
 
-func NewShaderInclude(obj Object) ShaderInclude    { return ShaderInclude{Locked{}, obj} }
-func GetShaderInclude(obj ShaderInclude) [1]Object { return [1]Object{obj._ShaderInclude} }
+func NewShaderInclude(obj Object) ShaderInclude    { return ShaderInclude{object: object(obj)} }
+func GetShaderInclude(obj ShaderInclude) [1]Object { return obj.AsObject() }
 
 type ShaderIncludeDB struct {
-	Locked
-	_ShaderIncludeDB Object
+	object
+	_ShaderIncludeDB struct{}
 }
 
-func NewShaderIncludeDB(obj Object) ShaderIncludeDB    { return ShaderIncludeDB{Locked{}, obj} }
-func GetShaderIncludeDB(obj ShaderIncludeDB) [1]Object { return [1]Object{obj._ShaderIncludeDB} }
+func NewShaderIncludeDB(obj Object) ShaderIncludeDB    { return ShaderIncludeDB{object: object(obj)} }
+func GetShaderIncludeDB(obj ShaderIncludeDB) [1]Object { return obj.AsObject() }
 
 type ShaderMaterial struct {
-	Locked
-	_ShaderMaterial Object
+	object
+	_ShaderMaterial struct{}
 }
 
-func NewShaderMaterial(obj Object) ShaderMaterial    { return ShaderMaterial{Locked{}, obj} }
-func GetShaderMaterial(obj ShaderMaterial) [1]Object { return [1]Object{obj._ShaderMaterial} }
+func NewShaderMaterial(obj Object) ShaderMaterial    { return ShaderMaterial{object: object(obj)} }
+func GetShaderMaterial(obj ShaderMaterial) [1]Object { return obj.AsObject() }
 
 type Shape2D struct {
-	Locked
-	_Shape2D Object
+	object
+	_Shape2D struct{}
 }
 
-func NewShape2D(obj Object) Shape2D    { return Shape2D{Locked{}, obj} }
-func GetShape2D(obj Shape2D) [1]Object { return [1]Object{obj._Shape2D} }
+func NewShape2D(obj Object) Shape2D    { return Shape2D{object: object(obj)} }
+func GetShape2D(obj Shape2D) [1]Object { return obj.AsObject() }
 
 type Shape3D struct {
-	Locked
-	_Shape3D Object
+	object
+	_Shape3D struct{}
 }
 
-func NewShape3D(obj Object) Shape3D    { return Shape3D{Locked{}, obj} }
-func GetShape3D(obj Shape3D) [1]Object { return [1]Object{obj._Shape3D} }
+func NewShape3D(obj Object) Shape3D    { return Shape3D{object: object(obj)} }
+func GetShape3D(obj Shape3D) [1]Object { return obj.AsObject() }
 
 type ShapeCast2D struct {
-	Locked
-	_ShapeCast2D Object
+	object
+	_ShapeCast2D struct{}
 }
 
-func NewShapeCast2D(obj Object) ShapeCast2D    { return ShapeCast2D{Locked{}, obj} }
-func GetShapeCast2D(obj ShapeCast2D) [1]Object { return [1]Object{obj._ShapeCast2D} }
+func NewShapeCast2D(obj Object) ShapeCast2D    { return ShapeCast2D{object: object(obj)} }
+func GetShapeCast2D(obj ShapeCast2D) [1]Object { return obj.AsObject() }
 
 type ShapeCast3D struct {
-	Locked
-	_ShapeCast3D Object
+	object
+	_ShapeCast3D struct{}
 }
 
-func NewShapeCast3D(obj Object) ShapeCast3D    { return ShapeCast3D{Locked{}, obj} }
-func GetShapeCast3D(obj ShapeCast3D) [1]Object { return [1]Object{obj._ShapeCast3D} }
+func NewShapeCast3D(obj Object) ShapeCast3D    { return ShapeCast3D{object: object(obj)} }
+func GetShapeCast3D(obj ShapeCast3D) [1]Object { return obj.AsObject() }
 
 type Shortcut struct {
-	Locked
-	_Shortcut Object
+	object
+	_Shortcut struct{}
 }
 
-func NewShortcut(obj Object) Shortcut    { return Shortcut{Locked{}, obj} }
-func GetShortcut(obj Shortcut) [1]Object { return [1]Object{obj._Shortcut} }
+func NewShortcut(obj Object) Shortcut    { return Shortcut{object: object(obj)} }
+func GetShortcut(obj Shortcut) [1]Object { return obj.AsObject() }
 
 type Skeleton2D struct {
-	Locked
-	_Skeleton2D Object
+	object
+	_Skeleton2D struct{}
 }
 
-func NewSkeleton2D(obj Object) Skeleton2D    { return Skeleton2D{Locked{}, obj} }
-func GetSkeleton2D(obj Skeleton2D) [1]Object { return [1]Object{obj._Skeleton2D} }
+func NewSkeleton2D(obj Object) Skeleton2D    { return Skeleton2D{object: object(obj)} }
+func GetSkeleton2D(obj Skeleton2D) [1]Object { return obj.AsObject() }
 
 type Skeleton3D struct {
-	Locked
-	_Skeleton3D Object
+	object
+	_Skeleton3D struct{}
 }
 
-func NewSkeleton3D(obj Object) Skeleton3D    { return Skeleton3D{Locked{}, obj} }
-func GetSkeleton3D(obj Skeleton3D) [1]Object { return [1]Object{obj._Skeleton3D} }
+func NewSkeleton3D(obj Object) Skeleton3D    { return Skeleton3D{object: object(obj)} }
+func GetSkeleton3D(obj Skeleton3D) [1]Object { return obj.AsObject() }
 
 type SkeletonIK3D struct {
-	Locked
-	_SkeletonIK3D Object
+	object
+	_SkeletonIK3D struct{}
 }
 
-func NewSkeletonIK3D(obj Object) SkeletonIK3D    { return SkeletonIK3D{Locked{}, obj} }
-func GetSkeletonIK3D(obj SkeletonIK3D) [1]Object { return [1]Object{obj._SkeletonIK3D} }
+func NewSkeletonIK3D(obj Object) SkeletonIK3D    { return SkeletonIK3D{object: object(obj)} }
+func GetSkeletonIK3D(obj SkeletonIK3D) [1]Object { return obj.AsObject() }
 
 type SkeletonModification2D struct {
-	Locked
-	_SkeletonModification2D Object
+	object
+	_SkeletonModification2D struct{}
 }
 
 func NewSkeletonModification2D(obj Object) SkeletonModification2D {
-	return SkeletonModification2D{Locked{}, obj}
+	return SkeletonModification2D{object: object(obj)}
 }
-func GetSkeletonModification2D(obj SkeletonModification2D) [1]Object {
-	return [1]Object{obj._SkeletonModification2D}
-}
+func GetSkeletonModification2D(obj SkeletonModification2D) [1]Object { return obj.AsObject() }
 
 type SkeletonModification2DCCDIK struct {
-	Locked
-	_SkeletonModification2DCCDIK Object
+	object
+	_SkeletonModification2DCCDIK struct{}
 }
 
 func NewSkeletonModification2DCCDIK(obj Object) SkeletonModification2DCCDIK {
-	return SkeletonModification2DCCDIK{Locked{}, obj}
+	return SkeletonModification2DCCDIK{object: object(obj)}
 }
-func GetSkeletonModification2DCCDIK(obj SkeletonModification2DCCDIK) [1]Object {
-	return [1]Object{obj._SkeletonModification2DCCDIK}
-}
+func GetSkeletonModification2DCCDIK(obj SkeletonModification2DCCDIK) [1]Object { return obj.AsObject() }
 
 type SkeletonModification2DFABRIK struct {
-	Locked
-	_SkeletonModification2DFABRIK Object
+	object
+	_SkeletonModification2DFABRIK struct{}
 }
 
 func NewSkeletonModification2DFABRIK(obj Object) SkeletonModification2DFABRIK {
-	return SkeletonModification2DFABRIK{Locked{}, obj}
+	return SkeletonModification2DFABRIK{object: object(obj)}
 }
 func GetSkeletonModification2DFABRIK(obj SkeletonModification2DFABRIK) [1]Object {
-	return [1]Object{obj._SkeletonModification2DFABRIK}
+	return obj.AsObject()
 }
 
 type SkeletonModification2DJiggle struct {
-	Locked
-	_SkeletonModification2DJiggle Object
+	object
+	_SkeletonModification2DJiggle struct{}
 }
 
 func NewSkeletonModification2DJiggle(obj Object) SkeletonModification2DJiggle {
-	return SkeletonModification2DJiggle{Locked{}, obj}
+	return SkeletonModification2DJiggle{object: object(obj)}
 }
 func GetSkeletonModification2DJiggle(obj SkeletonModification2DJiggle) [1]Object {
-	return [1]Object{obj._SkeletonModification2DJiggle}
+	return obj.AsObject()
 }
 
 type SkeletonModification2DLookAt struct {
-	Locked
-	_SkeletonModification2DLookAt Object
+	object
+	_SkeletonModification2DLookAt struct{}
 }
 
 func NewSkeletonModification2DLookAt(obj Object) SkeletonModification2DLookAt {
-	return SkeletonModification2DLookAt{Locked{}, obj}
+	return SkeletonModification2DLookAt{object: object(obj)}
 }
 func GetSkeletonModification2DLookAt(obj SkeletonModification2DLookAt) [1]Object {
-	return [1]Object{obj._SkeletonModification2DLookAt}
+	return obj.AsObject()
 }
 
 type SkeletonModification2DPhysicalBones struct {
-	Locked
-	_SkeletonModification2DPhysicalBones Object
+	object
+	_SkeletonModification2DPhysicalBones struct{}
 }
 
 func NewSkeletonModification2DPhysicalBones(obj Object) SkeletonModification2DPhysicalBones {
-	return SkeletonModification2DPhysicalBones{Locked{}, obj}
+	return SkeletonModification2DPhysicalBones{object: object(obj)}
 }
 func GetSkeletonModification2DPhysicalBones(obj SkeletonModification2DPhysicalBones) [1]Object {
-	return [1]Object{obj._SkeletonModification2DPhysicalBones}
+	return obj.AsObject()
 }
 
 type SkeletonModification2DStackHolder struct {
-	Locked
-	_SkeletonModification2DStackHolder Object
+	object
+	_SkeletonModification2DStackHolder struct{}
 }
 
 func NewSkeletonModification2DStackHolder(obj Object) SkeletonModification2DStackHolder {
-	return SkeletonModification2DStackHolder{Locked{}, obj}
+	return SkeletonModification2DStackHolder{object: object(obj)}
 }
 func GetSkeletonModification2DStackHolder(obj SkeletonModification2DStackHolder) [1]Object {
-	return [1]Object{obj._SkeletonModification2DStackHolder}
+	return obj.AsObject()
 }
 
 type SkeletonModification2DTwoBoneIK struct {
-	Locked
-	_SkeletonModification2DTwoBoneIK Object
+	object
+	_SkeletonModification2DTwoBoneIK struct{}
 }
 
 func NewSkeletonModification2DTwoBoneIK(obj Object) SkeletonModification2DTwoBoneIK {
-	return SkeletonModification2DTwoBoneIK{Locked{}, obj}
+	return SkeletonModification2DTwoBoneIK{object: object(obj)}
 }
 func GetSkeletonModification2DTwoBoneIK(obj SkeletonModification2DTwoBoneIK) [1]Object {
-	return [1]Object{obj._SkeletonModification2DTwoBoneIK}
+	return obj.AsObject()
 }
 
 type SkeletonModificationStack2D struct {
-	Locked
-	_SkeletonModificationStack2D Object
+	object
+	_SkeletonModificationStack2D struct{}
 }
 
 func NewSkeletonModificationStack2D(obj Object) SkeletonModificationStack2D {
-	return SkeletonModificationStack2D{Locked{}, obj}
+	return SkeletonModificationStack2D{object: object(obj)}
 }
-func GetSkeletonModificationStack2D(obj SkeletonModificationStack2D) [1]Object {
-	return [1]Object{obj._SkeletonModificationStack2D}
-}
+func GetSkeletonModificationStack2D(obj SkeletonModificationStack2D) [1]Object { return obj.AsObject() }
 
 type SkeletonModifier3D struct {
-	Locked
-	_SkeletonModifier3D Object
+	object
+	_SkeletonModifier3D struct{}
 }
 
-func NewSkeletonModifier3D(obj Object) SkeletonModifier3D { return SkeletonModifier3D{Locked{}, obj} }
-func GetSkeletonModifier3D(obj SkeletonModifier3D) [1]Object {
-	return [1]Object{obj._SkeletonModifier3D}
+func NewSkeletonModifier3D(obj Object) SkeletonModifier3D {
+	return SkeletonModifier3D{object: object(obj)}
 }
+func GetSkeletonModifier3D(obj SkeletonModifier3D) [1]Object { return obj.AsObject() }
 
 type SkeletonProfile struct {
-	Locked
-	_SkeletonProfile Object
+	object
+	_SkeletonProfile struct{}
 }
 
-func NewSkeletonProfile(obj Object) SkeletonProfile    { return SkeletonProfile{Locked{}, obj} }
-func GetSkeletonProfile(obj SkeletonProfile) [1]Object { return [1]Object{obj._SkeletonProfile} }
+func NewSkeletonProfile(obj Object) SkeletonProfile    { return SkeletonProfile{object: object(obj)} }
+func GetSkeletonProfile(obj SkeletonProfile) [1]Object { return obj.AsObject() }
 
 type SkeletonProfileHumanoid struct {
-	Locked
-	_SkeletonProfileHumanoid Object
+	object
+	_SkeletonProfileHumanoid struct{}
 }
 
 func NewSkeletonProfileHumanoid(obj Object) SkeletonProfileHumanoid {
-	return SkeletonProfileHumanoid{Locked{}, obj}
+	return SkeletonProfileHumanoid{object: object(obj)}
 }
-func GetSkeletonProfileHumanoid(obj SkeletonProfileHumanoid) [1]Object {
-	return [1]Object{obj._SkeletonProfileHumanoid}
-}
+func GetSkeletonProfileHumanoid(obj SkeletonProfileHumanoid) [1]Object { return obj.AsObject() }
 
 type Skin struct {
-	Locked
-	_Skin Object
+	object
+	_Skin struct{}
 }
 
-func NewSkin(obj Object) Skin    { return Skin{Locked{}, obj} }
-func GetSkin(obj Skin) [1]Object { return [1]Object{obj._Skin} }
+func NewSkin(obj Object) Skin    { return Skin{object: object(obj)} }
+func GetSkin(obj Skin) [1]Object { return obj.AsObject() }
 
 type SkinReference struct {
-	Locked
-	_SkinReference Object
+	object
+	_SkinReference struct{}
 }
 
-func NewSkinReference(obj Object) SkinReference    { return SkinReference{Locked{}, obj} }
-func GetSkinReference(obj SkinReference) [1]Object { return [1]Object{obj._SkinReference} }
+func NewSkinReference(obj Object) SkinReference    { return SkinReference{object: object(obj)} }
+func GetSkinReference(obj SkinReference) [1]Object { return obj.AsObject() }
 
 type Sky struct {
-	Locked
-	_Sky Object
+	object
+	_Sky struct{}
 }
 
-func NewSky(obj Object) Sky    { return Sky{Locked{}, obj} }
-func GetSky(obj Sky) [1]Object { return [1]Object{obj._Sky} }
+func NewSky(obj Object) Sky    { return Sky{object: object(obj)} }
+func GetSky(obj Sky) [1]Object { return obj.AsObject() }
 
 type Slider struct {
-	Locked
-	_Slider Object
+	object
+	_Slider struct{}
 }
 
-func NewSlider(obj Object) Slider    { return Slider{Locked{}, obj} }
-func GetSlider(obj Slider) [1]Object { return [1]Object{obj._Slider} }
+func NewSlider(obj Object) Slider    { return Slider{object: object(obj)} }
+func GetSlider(obj Slider) [1]Object { return obj.AsObject() }
 
 type SliderJoint3D struct {
-	Locked
-	_SliderJoint3D Object
+	object
+	_SliderJoint3D struct{}
 }
 
-func NewSliderJoint3D(obj Object) SliderJoint3D    { return SliderJoint3D{Locked{}, obj} }
-func GetSliderJoint3D(obj SliderJoint3D) [1]Object { return [1]Object{obj._SliderJoint3D} }
+func NewSliderJoint3D(obj Object) SliderJoint3D    { return SliderJoint3D{object: object(obj)} }
+func GetSliderJoint3D(obj SliderJoint3D) [1]Object { return obj.AsObject() }
 
 type SocketServer struct {
-	Locked
-	_SocketServer Object
+	object
+	_SocketServer struct{}
 }
 
-func NewSocketServer(obj Object) SocketServer    { return SocketServer{Locked{}, obj} }
-func GetSocketServer(obj SocketServer) [1]Object { return [1]Object{obj._SocketServer} }
+func NewSocketServer(obj Object) SocketServer    { return SocketServer{object: object(obj)} }
+func GetSocketServer(obj SocketServer) [1]Object { return obj.AsObject() }
 
 type SoftBody3D struct {
-	Locked
-	_SoftBody3D Object
+	object
+	_SoftBody3D struct{}
 }
 
-func NewSoftBody3D(obj Object) SoftBody3D    { return SoftBody3D{Locked{}, obj} }
-func GetSoftBody3D(obj SoftBody3D) [1]Object { return [1]Object{obj._SoftBody3D} }
+func NewSoftBody3D(obj Object) SoftBody3D    { return SoftBody3D{object: object(obj)} }
+func GetSoftBody3D(obj SoftBody3D) [1]Object { return obj.AsObject() }
 
 type SphereMesh struct {
-	Locked
-	_SphereMesh Object
+	object
+	_SphereMesh struct{}
 }
 
-func NewSphereMesh(obj Object) SphereMesh    { return SphereMesh{Locked{}, obj} }
-func GetSphereMesh(obj SphereMesh) [1]Object { return [1]Object{obj._SphereMesh} }
+func NewSphereMesh(obj Object) SphereMesh    { return SphereMesh{object: object(obj)} }
+func GetSphereMesh(obj SphereMesh) [1]Object { return obj.AsObject() }
 
 type SphereOccluder3D struct {
-	Locked
-	_SphereOccluder3D Object
+	object
+	_SphereOccluder3D struct{}
 }
 
-func NewSphereOccluder3D(obj Object) SphereOccluder3D    { return SphereOccluder3D{Locked{}, obj} }
-func GetSphereOccluder3D(obj SphereOccluder3D) [1]Object { return [1]Object{obj._SphereOccluder3D} }
+func NewSphereOccluder3D(obj Object) SphereOccluder3D    { return SphereOccluder3D{object: object(obj)} }
+func GetSphereOccluder3D(obj SphereOccluder3D) [1]Object { return obj.AsObject() }
 
 type SphereShape3D struct {
-	Locked
-	_SphereShape3D Object
+	object
+	_SphereShape3D struct{}
 }
 
-func NewSphereShape3D(obj Object) SphereShape3D    { return SphereShape3D{Locked{}, obj} }
-func GetSphereShape3D(obj SphereShape3D) [1]Object { return [1]Object{obj._SphereShape3D} }
+func NewSphereShape3D(obj Object) SphereShape3D    { return SphereShape3D{object: object(obj)} }
+func GetSphereShape3D(obj SphereShape3D) [1]Object { return obj.AsObject() }
 
 type SpinBox struct {
-	Locked
-	_SpinBox Object
+	object
+	_SpinBox struct{}
 }
 
-func NewSpinBox(obj Object) SpinBox    { return SpinBox{Locked{}, obj} }
-func GetSpinBox(obj SpinBox) [1]Object { return [1]Object{obj._SpinBox} }
+func NewSpinBox(obj Object) SpinBox    { return SpinBox{object: object(obj)} }
+func GetSpinBox(obj SpinBox) [1]Object { return obj.AsObject() }
 
 type SplineIK3D struct {
-	Locked
-	_SplineIK3D Object
+	object
+	_SplineIK3D struct{}
 }
 
-func NewSplineIK3D(obj Object) SplineIK3D    { return SplineIK3D{Locked{}, obj} }
-func GetSplineIK3D(obj SplineIK3D) [1]Object { return [1]Object{obj._SplineIK3D} }
+func NewSplineIK3D(obj Object) SplineIK3D    { return SplineIK3D{object: object(obj)} }
+func GetSplineIK3D(obj SplineIK3D) [1]Object { return obj.AsObject() }
 
 type SplitContainer struct {
-	Locked
-	_SplitContainer Object
+	object
+	_SplitContainer struct{}
 }
 
-func NewSplitContainer(obj Object) SplitContainer    { return SplitContainer{Locked{}, obj} }
-func GetSplitContainer(obj SplitContainer) [1]Object { return [1]Object{obj._SplitContainer} }
+func NewSplitContainer(obj Object) SplitContainer    { return SplitContainer{object: object(obj)} }
+func GetSplitContainer(obj SplitContainer) [1]Object { return obj.AsObject() }
 
 type SpotLight3D struct {
-	Locked
-	_SpotLight3D Object
+	object
+	_SpotLight3D struct{}
 }
 
-func NewSpotLight3D(obj Object) SpotLight3D    { return SpotLight3D{Locked{}, obj} }
-func GetSpotLight3D(obj SpotLight3D) [1]Object { return [1]Object{obj._SpotLight3D} }
+func NewSpotLight3D(obj Object) SpotLight3D    { return SpotLight3D{object: object(obj)} }
+func GetSpotLight3D(obj SpotLight3D) [1]Object { return obj.AsObject() }
 
 type SpringArm3D struct {
-	Locked
-	_SpringArm3D Object
+	object
+	_SpringArm3D struct{}
 }
 
-func NewSpringArm3D(obj Object) SpringArm3D    { return SpringArm3D{Locked{}, obj} }
-func GetSpringArm3D(obj SpringArm3D) [1]Object { return [1]Object{obj._SpringArm3D} }
+func NewSpringArm3D(obj Object) SpringArm3D    { return SpringArm3D{object: object(obj)} }
+func GetSpringArm3D(obj SpringArm3D) [1]Object { return obj.AsObject() }
 
 type SpringBoneCollision3D struct {
-	Locked
-	_SpringBoneCollision3D Object
+	object
+	_SpringBoneCollision3D struct{}
 }
 
 func NewSpringBoneCollision3D(obj Object) SpringBoneCollision3D {
-	return SpringBoneCollision3D{Locked{}, obj}
+	return SpringBoneCollision3D{object: object(obj)}
 }
-func GetSpringBoneCollision3D(obj SpringBoneCollision3D) [1]Object {
-	return [1]Object{obj._SpringBoneCollision3D}
-}
+func GetSpringBoneCollision3D(obj SpringBoneCollision3D) [1]Object { return obj.AsObject() }
 
 type SpringBoneCollisionCapsule3D struct {
-	Locked
-	_SpringBoneCollisionCapsule3D Object
+	object
+	_SpringBoneCollisionCapsule3D struct{}
 }
 
 func NewSpringBoneCollisionCapsule3D(obj Object) SpringBoneCollisionCapsule3D {
-	return SpringBoneCollisionCapsule3D{Locked{}, obj}
+	return SpringBoneCollisionCapsule3D{object: object(obj)}
 }
 func GetSpringBoneCollisionCapsule3D(obj SpringBoneCollisionCapsule3D) [1]Object {
-	return [1]Object{obj._SpringBoneCollisionCapsule3D}
+	return obj.AsObject()
 }
 
 type SpringBoneCollisionPlane3D struct {
-	Locked
-	_SpringBoneCollisionPlane3D Object
+	object
+	_SpringBoneCollisionPlane3D struct{}
 }
 
 func NewSpringBoneCollisionPlane3D(obj Object) SpringBoneCollisionPlane3D {
-	return SpringBoneCollisionPlane3D{Locked{}, obj}
+	return SpringBoneCollisionPlane3D{object: object(obj)}
 }
-func GetSpringBoneCollisionPlane3D(obj SpringBoneCollisionPlane3D) [1]Object {
-	return [1]Object{obj._SpringBoneCollisionPlane3D}
-}
+func GetSpringBoneCollisionPlane3D(obj SpringBoneCollisionPlane3D) [1]Object { return obj.AsObject() }
 
 type SpringBoneCollisionSphere3D struct {
-	Locked
-	_SpringBoneCollisionSphere3D Object
+	object
+	_SpringBoneCollisionSphere3D struct{}
 }
 
 func NewSpringBoneCollisionSphere3D(obj Object) SpringBoneCollisionSphere3D {
-	return SpringBoneCollisionSphere3D{Locked{}, obj}
+	return SpringBoneCollisionSphere3D{object: object(obj)}
 }
-func GetSpringBoneCollisionSphere3D(obj SpringBoneCollisionSphere3D) [1]Object {
-	return [1]Object{obj._SpringBoneCollisionSphere3D}
-}
+func GetSpringBoneCollisionSphere3D(obj SpringBoneCollisionSphere3D) [1]Object { return obj.AsObject() }
 
 type SpringBoneSimulator3D struct {
-	Locked
-	_SpringBoneSimulator3D Object
+	object
+	_SpringBoneSimulator3D struct{}
 }
 
 func NewSpringBoneSimulator3D(obj Object) SpringBoneSimulator3D {
-	return SpringBoneSimulator3D{Locked{}, obj}
+	return SpringBoneSimulator3D{object: object(obj)}
 }
-func GetSpringBoneSimulator3D(obj SpringBoneSimulator3D) [1]Object {
-	return [1]Object{obj._SpringBoneSimulator3D}
-}
+func GetSpringBoneSimulator3D(obj SpringBoneSimulator3D) [1]Object { return obj.AsObject() }
 
 type Sprite2D struct {
-	Locked
-	_Sprite2D Object
+	object
+	_Sprite2D struct{}
 }
 
-func NewSprite2D(obj Object) Sprite2D    { return Sprite2D{Locked{}, obj} }
-func GetSprite2D(obj Sprite2D) [1]Object { return [1]Object{obj._Sprite2D} }
+func NewSprite2D(obj Object) Sprite2D    { return Sprite2D{object: object(obj)} }
+func GetSprite2D(obj Sprite2D) [1]Object { return obj.AsObject() }
 
 type Sprite3D struct {
-	Locked
-	_Sprite3D Object
+	object
+	_Sprite3D struct{}
 }
 
-func NewSprite3D(obj Object) Sprite3D    { return Sprite3D{Locked{}, obj} }
-func GetSprite3D(obj Sprite3D) [1]Object { return [1]Object{obj._Sprite3D} }
+func NewSprite3D(obj Object) Sprite3D    { return Sprite3D{object: object(obj)} }
+func GetSprite3D(obj Sprite3D) [1]Object { return obj.AsObject() }
 
 type SpriteBase3D struct {
-	Locked
-	_SpriteBase3D Object
+	object
+	_SpriteBase3D struct{}
 }
 
-func NewSpriteBase3D(obj Object) SpriteBase3D    { return SpriteBase3D{Locked{}, obj} }
-func GetSpriteBase3D(obj SpriteBase3D) [1]Object { return [1]Object{obj._SpriteBase3D} }
+func NewSpriteBase3D(obj Object) SpriteBase3D    { return SpriteBase3D{object: object(obj)} }
+func GetSpriteBase3D(obj SpriteBase3D) [1]Object { return obj.AsObject() }
 
 type SpriteFrames struct {
-	Locked
-	_SpriteFrames Object
+	object
+	_SpriteFrames struct{}
 }
 
-func NewSpriteFrames(obj Object) SpriteFrames    { return SpriteFrames{Locked{}, obj} }
-func GetSpriteFrames(obj SpriteFrames) [1]Object { return [1]Object{obj._SpriteFrames} }
+func NewSpriteFrames(obj Object) SpriteFrames    { return SpriteFrames{object: object(obj)} }
+func GetSpriteFrames(obj SpriteFrames) [1]Object { return obj.AsObject() }
 
 type StandardMaterial3D struct {
-	Locked
-	_StandardMaterial3D Object
+	object
+	_StandardMaterial3D struct{}
 }
 
-func NewStandardMaterial3D(obj Object) StandardMaterial3D { return StandardMaterial3D{Locked{}, obj} }
-func GetStandardMaterial3D(obj StandardMaterial3D) [1]Object {
-	return [1]Object{obj._StandardMaterial3D}
+func NewStandardMaterial3D(obj Object) StandardMaterial3D {
+	return StandardMaterial3D{object: object(obj)}
 }
+func GetStandardMaterial3D(obj StandardMaterial3D) [1]Object { return obj.AsObject() }
 
 type StaticBody2D struct {
-	Locked
-	_StaticBody2D Object
+	object
+	_StaticBody2D struct{}
 }
 
-func NewStaticBody2D(obj Object) StaticBody2D    { return StaticBody2D{Locked{}, obj} }
-func GetStaticBody2D(obj StaticBody2D) [1]Object { return [1]Object{obj._StaticBody2D} }
+func NewStaticBody2D(obj Object) StaticBody2D    { return StaticBody2D{object: object(obj)} }
+func GetStaticBody2D(obj StaticBody2D) [1]Object { return obj.AsObject() }
 
 type StaticBody3D struct {
-	Locked
-	_StaticBody3D Object
+	object
+	_StaticBody3D struct{}
 }
 
-func NewStaticBody3D(obj Object) StaticBody3D    { return StaticBody3D{Locked{}, obj} }
-func GetStaticBody3D(obj StaticBody3D) [1]Object { return [1]Object{obj._StaticBody3D} }
+func NewStaticBody3D(obj Object) StaticBody3D    { return StaticBody3D{object: object(obj)} }
+func GetStaticBody3D(obj StaticBody3D) [1]Object { return obj.AsObject() }
 
 type StatusIndicator struct {
-	Locked
-	_StatusIndicator Object
+	object
+	_StatusIndicator struct{}
 }
 
-func NewStatusIndicator(obj Object) StatusIndicator    { return StatusIndicator{Locked{}, obj} }
-func GetStatusIndicator(obj StatusIndicator) [1]Object { return [1]Object{obj._StatusIndicator} }
+func NewStatusIndicator(obj Object) StatusIndicator    { return StatusIndicator{object: object(obj)} }
+func GetStatusIndicator(obj StatusIndicator) [1]Object { return obj.AsObject() }
 
 type StreamPeer struct {
-	Locked
-	_StreamPeer Object
+	object
+	_StreamPeer struct{}
 }
 
-func NewStreamPeer(obj Object) StreamPeer    { return StreamPeer{Locked{}, obj} }
-func GetStreamPeer(obj StreamPeer) [1]Object { return [1]Object{obj._StreamPeer} }
+func NewStreamPeer(obj Object) StreamPeer    { return StreamPeer{object: object(obj)} }
+func GetStreamPeer(obj StreamPeer) [1]Object { return obj.AsObject() }
 
 type StreamPeerBuffer struct {
-	Locked
-	_StreamPeerBuffer Object
+	object
+	_StreamPeerBuffer struct{}
 }
 
-func NewStreamPeerBuffer(obj Object) StreamPeerBuffer    { return StreamPeerBuffer{Locked{}, obj} }
-func GetStreamPeerBuffer(obj StreamPeerBuffer) [1]Object { return [1]Object{obj._StreamPeerBuffer} }
+func NewStreamPeerBuffer(obj Object) StreamPeerBuffer    { return StreamPeerBuffer{object: object(obj)} }
+func GetStreamPeerBuffer(obj StreamPeerBuffer) [1]Object { return obj.AsObject() }
 
 type StreamPeerExtension struct {
-	Locked
-	_StreamPeerExtension Object
+	object
+	_StreamPeerExtension struct{}
 }
 
 func NewStreamPeerExtension(obj Object) StreamPeerExtension {
-	return StreamPeerExtension{Locked{}, obj}
+	return StreamPeerExtension{object: object(obj)}
 }
-func GetStreamPeerExtension(obj StreamPeerExtension) [1]Object {
-	return [1]Object{obj._StreamPeerExtension}
-}
+func GetStreamPeerExtension(obj StreamPeerExtension) [1]Object { return obj.AsObject() }
 
 type StreamPeerGZIP struct {
-	Locked
-	_StreamPeerGZIP Object
+	object
+	_StreamPeerGZIP struct{}
 }
 
-func NewStreamPeerGZIP(obj Object) StreamPeerGZIP    { return StreamPeerGZIP{Locked{}, obj} }
-func GetStreamPeerGZIP(obj StreamPeerGZIP) [1]Object { return [1]Object{obj._StreamPeerGZIP} }
+func NewStreamPeerGZIP(obj Object) StreamPeerGZIP    { return StreamPeerGZIP{object: object(obj)} }
+func GetStreamPeerGZIP(obj StreamPeerGZIP) [1]Object { return obj.AsObject() }
 
 type StreamPeerSocket struct {
-	Locked
-	_StreamPeerSocket Object
+	object
+	_StreamPeerSocket struct{}
 }
 
-func NewStreamPeerSocket(obj Object) StreamPeerSocket    { return StreamPeerSocket{Locked{}, obj} }
-func GetStreamPeerSocket(obj StreamPeerSocket) [1]Object { return [1]Object{obj._StreamPeerSocket} }
+func NewStreamPeerSocket(obj Object) StreamPeerSocket    { return StreamPeerSocket{object: object(obj)} }
+func GetStreamPeerSocket(obj StreamPeerSocket) [1]Object { return obj.AsObject() }
 
 type StreamPeerTCP struct {
-	Locked
-	_StreamPeerTCP Object
+	object
+	_StreamPeerTCP struct{}
 }
 
-func NewStreamPeerTCP(obj Object) StreamPeerTCP    { return StreamPeerTCP{Locked{}, obj} }
-func GetStreamPeerTCP(obj StreamPeerTCP) [1]Object { return [1]Object{obj._StreamPeerTCP} }
+func NewStreamPeerTCP(obj Object) StreamPeerTCP    { return StreamPeerTCP{object: object(obj)} }
+func GetStreamPeerTCP(obj StreamPeerTCP) [1]Object { return obj.AsObject() }
 
 type StreamPeerTLS struct {
-	Locked
-	_StreamPeerTLS Object
+	object
+	_StreamPeerTLS struct{}
 }
 
-func NewStreamPeerTLS(obj Object) StreamPeerTLS    { return StreamPeerTLS{Locked{}, obj} }
-func GetStreamPeerTLS(obj StreamPeerTLS) [1]Object { return [1]Object{obj._StreamPeerTLS} }
+func NewStreamPeerTLS(obj Object) StreamPeerTLS    { return StreamPeerTLS{object: object(obj)} }
+func GetStreamPeerTLS(obj StreamPeerTLS) [1]Object { return obj.AsObject() }
 
 type StreamPeerUDS struct {
-	Locked
-	_StreamPeerUDS Object
+	object
+	_StreamPeerUDS struct{}
 }
 
-func NewStreamPeerUDS(obj Object) StreamPeerUDS    { return StreamPeerUDS{Locked{}, obj} }
-func GetStreamPeerUDS(obj StreamPeerUDS) [1]Object { return [1]Object{obj._StreamPeerUDS} }
+func NewStreamPeerUDS(obj Object) StreamPeerUDS    { return StreamPeerUDS{object: object(obj)} }
+func GetStreamPeerUDS(obj StreamPeerUDS) [1]Object { return obj.AsObject() }
 
 type StyleBox struct {
-	Locked
-	_StyleBox Object
+	object
+	_StyleBox struct{}
 }
 
-func NewStyleBox(obj Object) StyleBox    { return StyleBox{Locked{}, obj} }
-func GetStyleBox(obj StyleBox) [1]Object { return [1]Object{obj._StyleBox} }
+func NewStyleBox(obj Object) StyleBox    { return StyleBox{object: object(obj)} }
+func GetStyleBox(obj StyleBox) [1]Object { return obj.AsObject() }
 
 type StyleBoxEmpty struct {
-	Locked
-	_StyleBoxEmpty Object
+	object
+	_StyleBoxEmpty struct{}
 }
 
-func NewStyleBoxEmpty(obj Object) StyleBoxEmpty    { return StyleBoxEmpty{Locked{}, obj} }
-func GetStyleBoxEmpty(obj StyleBoxEmpty) [1]Object { return [1]Object{obj._StyleBoxEmpty} }
+func NewStyleBoxEmpty(obj Object) StyleBoxEmpty    { return StyleBoxEmpty{object: object(obj)} }
+func GetStyleBoxEmpty(obj StyleBoxEmpty) [1]Object { return obj.AsObject() }
 
 type StyleBoxFlat struct {
-	Locked
-	_StyleBoxFlat Object
+	object
+	_StyleBoxFlat struct{}
 }
 
-func NewStyleBoxFlat(obj Object) StyleBoxFlat    { return StyleBoxFlat{Locked{}, obj} }
-func GetStyleBoxFlat(obj StyleBoxFlat) [1]Object { return [1]Object{obj._StyleBoxFlat} }
+func NewStyleBoxFlat(obj Object) StyleBoxFlat    { return StyleBoxFlat{object: object(obj)} }
+func GetStyleBoxFlat(obj StyleBoxFlat) [1]Object { return obj.AsObject() }
 
 type StyleBoxLine struct {
-	Locked
-	_StyleBoxLine Object
+	object
+	_StyleBoxLine struct{}
 }
 
-func NewStyleBoxLine(obj Object) StyleBoxLine    { return StyleBoxLine{Locked{}, obj} }
-func GetStyleBoxLine(obj StyleBoxLine) [1]Object { return [1]Object{obj._StyleBoxLine} }
+func NewStyleBoxLine(obj Object) StyleBoxLine    { return StyleBoxLine{object: object(obj)} }
+func GetStyleBoxLine(obj StyleBoxLine) [1]Object { return obj.AsObject() }
 
 type StyleBoxTexture struct {
-	Locked
-	_StyleBoxTexture Object
+	object
+	_StyleBoxTexture struct{}
 }
 
-func NewStyleBoxTexture(obj Object) StyleBoxTexture    { return StyleBoxTexture{Locked{}, obj} }
-func GetStyleBoxTexture(obj StyleBoxTexture) [1]Object { return [1]Object{obj._StyleBoxTexture} }
+func NewStyleBoxTexture(obj Object) StyleBoxTexture    { return StyleBoxTexture{object: object(obj)} }
+func GetStyleBoxTexture(obj StyleBoxTexture) [1]Object { return obj.AsObject() }
 
 type SubViewport struct {
-	Locked
-	_SubViewport Object
+	object
+	_SubViewport struct{}
 }
 
-func NewSubViewport(obj Object) SubViewport    { return SubViewport{Locked{}, obj} }
-func GetSubViewport(obj SubViewport) [1]Object { return [1]Object{obj._SubViewport} }
+func NewSubViewport(obj Object) SubViewport    { return SubViewport{object: object(obj)} }
+func GetSubViewport(obj SubViewport) [1]Object { return obj.AsObject() }
 
 type SubViewportContainer struct {
-	Locked
-	_SubViewportContainer Object
+	object
+	_SubViewportContainer struct{}
 }
 
 func NewSubViewportContainer(obj Object) SubViewportContainer {
-	return SubViewportContainer{Locked{}, obj}
+	return SubViewportContainer{object: object(obj)}
 }
-func GetSubViewportContainer(obj SubViewportContainer) [1]Object {
-	return [1]Object{obj._SubViewportContainer}
-}
+func GetSubViewportContainer(obj SubViewportContainer) [1]Object { return obj.AsObject() }
 
 type SubtweenTweener struct {
-	Locked
-	_SubtweenTweener Object
+	object
+	_SubtweenTweener struct{}
 }
 
-func NewSubtweenTweener(obj Object) SubtweenTweener    { return SubtweenTweener{Locked{}, obj} }
-func GetSubtweenTweener(obj SubtweenTweener) [1]Object { return [1]Object{obj._SubtweenTweener} }
+func NewSubtweenTweener(obj Object) SubtweenTweener    { return SubtweenTweener{object: object(obj)} }
+func GetSubtweenTweener(obj SubtweenTweener) [1]Object { return obj.AsObject() }
 
 type SurfaceTool struct {
-	Locked
-	_SurfaceTool Object
+	object
+	_SurfaceTool struct{}
 }
 
-func NewSurfaceTool(obj Object) SurfaceTool    { return SurfaceTool{Locked{}, obj} }
-func GetSurfaceTool(obj SurfaceTool) [1]Object { return [1]Object{obj._SurfaceTool} }
+func NewSurfaceTool(obj Object) SurfaceTool    { return SurfaceTool{object: object(obj)} }
+func GetSurfaceTool(obj SurfaceTool) [1]Object { return obj.AsObject() }
 
 type SyntaxHighlighter struct {
-	Locked
-	_SyntaxHighlighter Object
+	object
+	_SyntaxHighlighter struct{}
 }
 
-func NewSyntaxHighlighter(obj Object) SyntaxHighlighter    { return SyntaxHighlighter{Locked{}, obj} }
-func GetSyntaxHighlighter(obj SyntaxHighlighter) [1]Object { return [1]Object{obj._SyntaxHighlighter} }
+func NewSyntaxHighlighter(obj Object) SyntaxHighlighter {
+	return SyntaxHighlighter{object: object(obj)}
+}
+func GetSyntaxHighlighter(obj SyntaxHighlighter) [1]Object { return obj.AsObject() }
 
 type SystemFont struct {
-	Locked
-	_SystemFont Object
+	object
+	_SystemFont struct{}
 }
 
-func NewSystemFont(obj Object) SystemFont    { return SystemFont{Locked{}, obj} }
-func GetSystemFont(obj SystemFont) [1]Object { return [1]Object{obj._SystemFont} }
+func NewSystemFont(obj Object) SystemFont    { return SystemFont{object: object(obj)} }
+func GetSystemFont(obj SystemFont) [1]Object { return obj.AsObject() }
 
 type TCPServer struct {
-	Locked
-	_TCPServer Object
+	object
+	_TCPServer struct{}
 }
 
-func NewTCPServer(obj Object) TCPServer    { return TCPServer{Locked{}, obj} }
-func GetTCPServer(obj TCPServer) [1]Object { return [1]Object{obj._TCPServer} }
+func NewTCPServer(obj Object) TCPServer    { return TCPServer{object: object(obj)} }
+func GetTCPServer(obj TCPServer) [1]Object { return obj.AsObject() }
 
 type TLSOptions struct {
-	Locked
-	_TLSOptions Object
+	object
+	_TLSOptions struct{}
 }
 
-func NewTLSOptions(obj Object) TLSOptions    { return TLSOptions{Locked{}, obj} }
-func GetTLSOptions(obj TLSOptions) [1]Object { return [1]Object{obj._TLSOptions} }
+func NewTLSOptions(obj Object) TLSOptions    { return TLSOptions{object: object(obj)} }
+func GetTLSOptions(obj TLSOptions) [1]Object { return obj.AsObject() }
 
 type TabBar struct {
-	Locked
-	_TabBar Object
+	object
+	_TabBar struct{}
 }
 
-func NewTabBar(obj Object) TabBar    { return TabBar{Locked{}, obj} }
-func GetTabBar(obj TabBar) [1]Object { return [1]Object{obj._TabBar} }
+func NewTabBar(obj Object) TabBar    { return TabBar{object: object(obj)} }
+func GetTabBar(obj TabBar) [1]Object { return obj.AsObject() }
 
 type TabContainer struct {
-	Locked
-	_TabContainer Object
+	object
+	_TabContainer struct{}
 }
 
-func NewTabContainer(obj Object) TabContainer    { return TabContainer{Locked{}, obj} }
-func GetTabContainer(obj TabContainer) [1]Object { return [1]Object{obj._TabContainer} }
+func NewTabContainer(obj Object) TabContainer    { return TabContainer{object: object(obj)} }
+func GetTabContainer(obj TabContainer) [1]Object { return obj.AsObject() }
 
 type TextEdit struct {
-	Locked
-	_TextEdit Object
+	object
+	_TextEdit struct{}
 }
 
-func NewTextEdit(obj Object) TextEdit    { return TextEdit{Locked{}, obj} }
-func GetTextEdit(obj TextEdit) [1]Object { return [1]Object{obj._TextEdit} }
+func NewTextEdit(obj Object) TextEdit    { return TextEdit{object: object(obj)} }
+func GetTextEdit(obj TextEdit) [1]Object { return obj.AsObject() }
 
 type TextLine struct {
-	Locked
-	_TextLine Object
+	object
+	_TextLine struct{}
 }
 
-func NewTextLine(obj Object) TextLine    { return TextLine{Locked{}, obj} }
-func GetTextLine(obj TextLine) [1]Object { return [1]Object{obj._TextLine} }
+func NewTextLine(obj Object) TextLine    { return TextLine{object: object(obj)} }
+func GetTextLine(obj TextLine) [1]Object { return obj.AsObject() }
 
 type TextMesh struct {
-	Locked
-	_TextMesh Object
+	object
+	_TextMesh struct{}
 }
 
-func NewTextMesh(obj Object) TextMesh    { return TextMesh{Locked{}, obj} }
-func GetTextMesh(obj TextMesh) [1]Object { return [1]Object{obj._TextMesh} }
+func NewTextMesh(obj Object) TextMesh    { return TextMesh{object: object(obj)} }
+func GetTextMesh(obj TextMesh) [1]Object { return obj.AsObject() }
 
 type TextParagraph struct {
-	Locked
-	_TextParagraph Object
+	object
+	_TextParagraph struct{}
 }
 
-func NewTextParagraph(obj Object) TextParagraph    { return TextParagraph{Locked{}, obj} }
-func GetTextParagraph(obj TextParagraph) [1]Object { return [1]Object{obj._TextParagraph} }
+func NewTextParagraph(obj Object) TextParagraph    { return TextParagraph{object: object(obj)} }
+func GetTextParagraph(obj TextParagraph) [1]Object { return obj.AsObject() }
 
 type TextServer struct {
-	Locked
-	_TextServer Object
+	object
+	_TextServer struct{}
 }
 
-func NewTextServer(obj Object) TextServer    { return TextServer{Locked{}, obj} }
-func GetTextServer(obj TextServer) [1]Object { return [1]Object{obj._TextServer} }
+func NewTextServer(obj Object) TextServer    { return TextServer{object: object(obj)} }
+func GetTextServer(obj TextServer) [1]Object { return obj.AsObject() }
 
 type TextServerAdvanced struct {
-	Locked
-	_TextServerAdvanced Object
+	object
+	_TextServerAdvanced struct{}
 }
 
-func NewTextServerAdvanced(obj Object) TextServerAdvanced { return TextServerAdvanced{Locked{}, obj} }
-func GetTextServerAdvanced(obj TextServerAdvanced) [1]Object {
-	return [1]Object{obj._TextServerAdvanced}
+func NewTextServerAdvanced(obj Object) TextServerAdvanced {
+	return TextServerAdvanced{object: object(obj)}
 }
+func GetTextServerAdvanced(obj TextServerAdvanced) [1]Object { return obj.AsObject() }
 
 type TextServerDummy struct {
-	Locked
-	_TextServerDummy Object
+	object
+	_TextServerDummy struct{}
 }
 
-func NewTextServerDummy(obj Object) TextServerDummy    { return TextServerDummy{Locked{}, obj} }
-func GetTextServerDummy(obj TextServerDummy) [1]Object { return [1]Object{obj._TextServerDummy} }
+func NewTextServerDummy(obj Object) TextServerDummy    { return TextServerDummy{object: object(obj)} }
+func GetTextServerDummy(obj TextServerDummy) [1]Object { return obj.AsObject() }
 
 type TextServerExtension struct {
-	Locked
-	_TextServerExtension Object
+	object
+	_TextServerExtension struct{}
 }
 
 func NewTextServerExtension(obj Object) TextServerExtension {
-	return TextServerExtension{Locked{}, obj}
+	return TextServerExtension{object: object(obj)}
 }
-func GetTextServerExtension(obj TextServerExtension) [1]Object {
-	return [1]Object{obj._TextServerExtension}
-}
+func GetTextServerExtension(obj TextServerExtension) [1]Object { return obj.AsObject() }
 
 type TextServerManager struct {
-	Locked
-	_TextServerManager Object
+	object
+	_TextServerManager struct{}
 }
 
-func NewTextServerManager(obj Object) TextServerManager    { return TextServerManager{Locked{}, obj} }
-func GetTextServerManager(obj TextServerManager) [1]Object { return [1]Object{obj._TextServerManager} }
+func NewTextServerManager(obj Object) TextServerManager {
+	return TextServerManager{object: object(obj)}
+}
+func GetTextServerManager(obj TextServerManager) [1]Object { return obj.AsObject() }
 
 type Texture struct {
-	Locked
-	_Texture Object
+	object
+	_Texture struct{}
 }
 
-func NewTexture(obj Object) Texture    { return Texture{Locked{}, obj} }
-func GetTexture(obj Texture) [1]Object { return [1]Object{obj._Texture} }
+func NewTexture(obj Object) Texture    { return Texture{object: object(obj)} }
+func GetTexture(obj Texture) [1]Object { return obj.AsObject() }
 
 type Texture2D struct {
-	Locked
-	_Texture2D Object
+	object
+	_Texture2D struct{}
 }
 
-func NewTexture2D(obj Object) Texture2D    { return Texture2D{Locked{}, obj} }
-func GetTexture2D(obj Texture2D) [1]Object { return [1]Object{obj._Texture2D} }
+func NewTexture2D(obj Object) Texture2D    { return Texture2D{object: object(obj)} }
+func GetTexture2D(obj Texture2D) [1]Object { return obj.AsObject() }
 
 type Texture2DArray struct {
-	Locked
-	_Texture2DArray Object
+	object
+	_Texture2DArray struct{}
 }
 
-func NewTexture2DArray(obj Object) Texture2DArray    { return Texture2DArray{Locked{}, obj} }
-func GetTexture2DArray(obj Texture2DArray) [1]Object { return [1]Object{obj._Texture2DArray} }
+func NewTexture2DArray(obj Object) Texture2DArray    { return Texture2DArray{object: object(obj)} }
+func GetTexture2DArray(obj Texture2DArray) [1]Object { return obj.AsObject() }
 
 type Texture2DArrayRD struct {
-	Locked
-	_Texture2DArrayRD Object
+	object
+	_Texture2DArrayRD struct{}
 }
 
-func NewTexture2DArrayRD(obj Object) Texture2DArrayRD    { return Texture2DArrayRD{Locked{}, obj} }
-func GetTexture2DArrayRD(obj Texture2DArrayRD) [1]Object { return [1]Object{obj._Texture2DArrayRD} }
+func NewTexture2DArrayRD(obj Object) Texture2DArrayRD    { return Texture2DArrayRD{object: object(obj)} }
+func GetTexture2DArrayRD(obj Texture2DArrayRD) [1]Object { return obj.AsObject() }
 
 type Texture2DRD struct {
-	Locked
-	_Texture2DRD Object
+	object
+	_Texture2DRD struct{}
 }
 
-func NewTexture2DRD(obj Object) Texture2DRD    { return Texture2DRD{Locked{}, obj} }
-func GetTexture2DRD(obj Texture2DRD) [1]Object { return [1]Object{obj._Texture2DRD} }
+func NewTexture2DRD(obj Object) Texture2DRD    { return Texture2DRD{object: object(obj)} }
+func GetTexture2DRD(obj Texture2DRD) [1]Object { return obj.AsObject() }
 
 type Texture3D struct {
-	Locked
-	_Texture3D Object
+	object
+	_Texture3D struct{}
 }
 
-func NewTexture3D(obj Object) Texture3D    { return Texture3D{Locked{}, obj} }
-func GetTexture3D(obj Texture3D) [1]Object { return [1]Object{obj._Texture3D} }
+func NewTexture3D(obj Object) Texture3D    { return Texture3D{object: object(obj)} }
+func GetTexture3D(obj Texture3D) [1]Object { return obj.AsObject() }
 
 type Texture3DRD struct {
-	Locked
-	_Texture3DRD Object
+	object
+	_Texture3DRD struct{}
 }
 
-func NewTexture3DRD(obj Object) Texture3DRD    { return Texture3DRD{Locked{}, obj} }
-func GetTexture3DRD(obj Texture3DRD) [1]Object { return [1]Object{obj._Texture3DRD} }
+func NewTexture3DRD(obj Object) Texture3DRD    { return Texture3DRD{object: object(obj)} }
+func GetTexture3DRD(obj Texture3DRD) [1]Object { return obj.AsObject() }
 
 type TextureButton struct {
-	Locked
-	_TextureButton Object
+	object
+	_TextureButton struct{}
 }
 
-func NewTextureButton(obj Object) TextureButton    { return TextureButton{Locked{}, obj} }
-func GetTextureButton(obj TextureButton) [1]Object { return [1]Object{obj._TextureButton} }
+func NewTextureButton(obj Object) TextureButton    { return TextureButton{object: object(obj)} }
+func GetTextureButton(obj TextureButton) [1]Object { return obj.AsObject() }
 
 type TextureCubemapArrayRD struct {
-	Locked
-	_TextureCubemapArrayRD Object
+	object
+	_TextureCubemapArrayRD struct{}
 }
 
 func NewTextureCubemapArrayRD(obj Object) TextureCubemapArrayRD {
-	return TextureCubemapArrayRD{Locked{}, obj}
+	return TextureCubemapArrayRD{object: object(obj)}
 }
-func GetTextureCubemapArrayRD(obj TextureCubemapArrayRD) [1]Object {
-	return [1]Object{obj._TextureCubemapArrayRD}
-}
+func GetTextureCubemapArrayRD(obj TextureCubemapArrayRD) [1]Object { return obj.AsObject() }
 
 type TextureCubemapRD struct {
-	Locked
-	_TextureCubemapRD Object
+	object
+	_TextureCubemapRD struct{}
 }
 
-func NewTextureCubemapRD(obj Object) TextureCubemapRD    { return TextureCubemapRD{Locked{}, obj} }
-func GetTextureCubemapRD(obj TextureCubemapRD) [1]Object { return [1]Object{obj._TextureCubemapRD} }
+func NewTextureCubemapRD(obj Object) TextureCubemapRD    { return TextureCubemapRD{object: object(obj)} }
+func GetTextureCubemapRD(obj TextureCubemapRD) [1]Object { return obj.AsObject() }
 
 type TextureLayered struct {
-	Locked
-	_TextureLayered Object
+	object
+	_TextureLayered struct{}
 }
 
-func NewTextureLayered(obj Object) TextureLayered    { return TextureLayered{Locked{}, obj} }
-func GetTextureLayered(obj TextureLayered) [1]Object { return [1]Object{obj._TextureLayered} }
+func NewTextureLayered(obj Object) TextureLayered    { return TextureLayered{object: object(obj)} }
+func GetTextureLayered(obj TextureLayered) [1]Object { return obj.AsObject() }
 
 type TextureLayeredRD struct {
-	Locked
-	_TextureLayeredRD Object
+	object
+	_TextureLayeredRD struct{}
 }
 
-func NewTextureLayeredRD(obj Object) TextureLayeredRD    { return TextureLayeredRD{Locked{}, obj} }
-func GetTextureLayeredRD(obj TextureLayeredRD) [1]Object { return [1]Object{obj._TextureLayeredRD} }
+func NewTextureLayeredRD(obj Object) TextureLayeredRD    { return TextureLayeredRD{object: object(obj)} }
+func GetTextureLayeredRD(obj TextureLayeredRD) [1]Object { return obj.AsObject() }
 
 type TextureProgressBar struct {
-	Locked
-	_TextureProgressBar Object
+	object
+	_TextureProgressBar struct{}
 }
 
-func NewTextureProgressBar(obj Object) TextureProgressBar { return TextureProgressBar{Locked{}, obj} }
-func GetTextureProgressBar(obj TextureProgressBar) [1]Object {
-	return [1]Object{obj._TextureProgressBar}
+func NewTextureProgressBar(obj Object) TextureProgressBar {
+	return TextureProgressBar{object: object(obj)}
 }
+func GetTextureProgressBar(obj TextureProgressBar) [1]Object { return obj.AsObject() }
 
 type TextureRect struct {
-	Locked
-	_TextureRect Object
+	object
+	_TextureRect struct{}
 }
 
-func NewTextureRect(obj Object) TextureRect    { return TextureRect{Locked{}, obj} }
-func GetTextureRect(obj TextureRect) [1]Object { return [1]Object{obj._TextureRect} }
+func NewTextureRect(obj Object) TextureRect    { return TextureRect{object: object(obj)} }
+func GetTextureRect(obj TextureRect) [1]Object { return obj.AsObject() }
 
 type Theme struct {
-	Locked
-	_Theme Object
+	object
+	_Theme struct{}
 }
 
-func NewTheme(obj Object) Theme    { return Theme{Locked{}, obj} }
-func GetTheme(obj Theme) [1]Object { return [1]Object{obj._Theme} }
+func NewTheme(obj Object) Theme    { return Theme{object: object(obj)} }
+func GetTheme(obj Theme) [1]Object { return obj.AsObject() }
 
 type ThemeDB struct {
-	Locked
-	_ThemeDB Object
+	object
+	_ThemeDB struct{}
 }
 
-func NewThemeDB(obj Object) ThemeDB    { return ThemeDB{Locked{}, obj} }
-func GetThemeDB(obj ThemeDB) [1]Object { return [1]Object{obj._ThemeDB} }
+func NewThemeDB(obj Object) ThemeDB    { return ThemeDB{object: object(obj)} }
+func GetThemeDB(obj ThemeDB) [1]Object { return obj.AsObject() }
 
 type Thread struct {
-	Locked
-	_Thread Object
+	object
+	_Thread struct{}
 }
 
-func NewThread(obj Object) Thread    { return Thread{Locked{}, obj} }
-func GetThread(obj Thread) [1]Object { return [1]Object{obj._Thread} }
+func NewThread(obj Object) Thread    { return Thread{object: object(obj)} }
+func GetThread(obj Thread) [1]Object { return obj.AsObject() }
 
 type TileData struct {
-	Locked
-	_TileData Object
+	object
+	_TileData struct{}
 }
 
-func NewTileData(obj Object) TileData    { return TileData{Locked{}, obj} }
-func GetTileData(obj TileData) [1]Object { return [1]Object{obj._TileData} }
+func NewTileData(obj Object) TileData    { return TileData{object: object(obj)} }
+func GetTileData(obj TileData) [1]Object { return obj.AsObject() }
 
 type TileMap struct {
-	Locked
-	_TileMap Object
+	object
+	_TileMap struct{}
 }
 
-func NewTileMap(obj Object) TileMap    { return TileMap{Locked{}, obj} }
-func GetTileMap(obj TileMap) [1]Object { return [1]Object{obj._TileMap} }
+func NewTileMap(obj Object) TileMap    { return TileMap{object: object(obj)} }
+func GetTileMap(obj TileMap) [1]Object { return obj.AsObject() }
 
 type TileMapLayer struct {
-	Locked
-	_TileMapLayer Object
+	object
+	_TileMapLayer struct{}
 }
 
-func NewTileMapLayer(obj Object) TileMapLayer    { return TileMapLayer{Locked{}, obj} }
-func GetTileMapLayer(obj TileMapLayer) [1]Object { return [1]Object{obj._TileMapLayer} }
+func NewTileMapLayer(obj Object) TileMapLayer    { return TileMapLayer{object: object(obj)} }
+func GetTileMapLayer(obj TileMapLayer) [1]Object { return obj.AsObject() }
 
 type TileMapPattern struct {
-	Locked
-	_TileMapPattern Object
+	object
+	_TileMapPattern struct{}
 }
 
-func NewTileMapPattern(obj Object) TileMapPattern    { return TileMapPattern{Locked{}, obj} }
-func GetTileMapPattern(obj TileMapPattern) [1]Object { return [1]Object{obj._TileMapPattern} }
+func NewTileMapPattern(obj Object) TileMapPattern    { return TileMapPattern{object: object(obj)} }
+func GetTileMapPattern(obj TileMapPattern) [1]Object { return obj.AsObject() }
 
 type TileSet struct {
-	Locked
-	_TileSet Object
+	object
+	_TileSet struct{}
 }
 
-func NewTileSet(obj Object) TileSet    { return TileSet{Locked{}, obj} }
-func GetTileSet(obj TileSet) [1]Object { return [1]Object{obj._TileSet} }
+func NewTileSet(obj Object) TileSet    { return TileSet{object: object(obj)} }
+func GetTileSet(obj TileSet) [1]Object { return obj.AsObject() }
 
 type TileSetAtlasSource struct {
-	Locked
-	_TileSetAtlasSource Object
+	object
+	_TileSetAtlasSource struct{}
 }
 
-func NewTileSetAtlasSource(obj Object) TileSetAtlasSource { return TileSetAtlasSource{Locked{}, obj} }
-func GetTileSetAtlasSource(obj TileSetAtlasSource) [1]Object {
-	return [1]Object{obj._TileSetAtlasSource}
+func NewTileSetAtlasSource(obj Object) TileSetAtlasSource {
+	return TileSetAtlasSource{object: object(obj)}
 }
+func GetTileSetAtlasSource(obj TileSetAtlasSource) [1]Object { return obj.AsObject() }
 
 type TileSetScenesCollectionSource struct {
-	Locked
-	_TileSetScenesCollectionSource Object
+	object
+	_TileSetScenesCollectionSource struct{}
 }
 
 func NewTileSetScenesCollectionSource(obj Object) TileSetScenesCollectionSource {
-	return TileSetScenesCollectionSource{Locked{}, obj}
+	return TileSetScenesCollectionSource{object: object(obj)}
 }
 func GetTileSetScenesCollectionSource(obj TileSetScenesCollectionSource) [1]Object {
-	return [1]Object{obj._TileSetScenesCollectionSource}
+	return obj.AsObject()
 }
 
 type TileSetSource struct {
-	Locked
-	_TileSetSource Object
+	object
+	_TileSetSource struct{}
 }
 
-func NewTileSetSource(obj Object) TileSetSource    { return TileSetSource{Locked{}, obj} }
-func GetTileSetSource(obj TileSetSource) [1]Object { return [1]Object{obj._TileSetSource} }
+func NewTileSetSource(obj Object) TileSetSource    { return TileSetSource{object: object(obj)} }
+func GetTileSetSource(obj TileSetSource) [1]Object { return obj.AsObject() }
 
 type Time struct {
-	Locked
-	_Time Object
+	object
+	_Time struct{}
 }
 
-func NewTime(obj Object) Time    { return Time{Locked{}, obj} }
-func GetTime(obj Time) [1]Object { return [1]Object{obj._Time} }
+func NewTime(obj Object) Time    { return Time{object: object(obj)} }
+func GetTime(obj Time) [1]Object { return obj.AsObject() }
 
 type Timer struct {
-	Locked
-	_Timer Object
+	object
+	_Timer struct{}
 }
 
-func NewTimer(obj Object) Timer    { return Timer{Locked{}, obj} }
-func GetTimer(obj Timer) [1]Object { return [1]Object{obj._Timer} }
+func NewTimer(obj Object) Timer    { return Timer{object: object(obj)} }
+func GetTimer(obj Timer) [1]Object { return obj.AsObject() }
 
 type TorusMesh struct {
-	Locked
-	_TorusMesh Object
+	object
+	_TorusMesh struct{}
 }
 
-func NewTorusMesh(obj Object) TorusMesh    { return TorusMesh{Locked{}, obj} }
-func GetTorusMesh(obj TorusMesh) [1]Object { return [1]Object{obj._TorusMesh} }
+func NewTorusMesh(obj Object) TorusMesh    { return TorusMesh{object: object(obj)} }
+func GetTorusMesh(obj TorusMesh) [1]Object { return obj.AsObject() }
 
 type TouchScreenButton struct {
-	Locked
-	_TouchScreenButton Object
+	object
+	_TouchScreenButton struct{}
 }
 
-func NewTouchScreenButton(obj Object) TouchScreenButton    { return TouchScreenButton{Locked{}, obj} }
-func GetTouchScreenButton(obj TouchScreenButton) [1]Object { return [1]Object{obj._TouchScreenButton} }
+func NewTouchScreenButton(obj Object) TouchScreenButton {
+	return TouchScreenButton{object: object(obj)}
+}
+func GetTouchScreenButton(obj TouchScreenButton) [1]Object { return obj.AsObject() }
 
 type Translation struct {
-	Locked
-	_Translation Object
+	object
+	_Translation struct{}
 }
 
-func NewTranslation(obj Object) Translation    { return Translation{Locked{}, obj} }
-func GetTranslation(obj Translation) [1]Object { return [1]Object{obj._Translation} }
+func NewTranslation(obj Object) Translation    { return Translation{object: object(obj)} }
+func GetTranslation(obj Translation) [1]Object { return obj.AsObject() }
 
 type TranslationDomain struct {
-	Locked
-	_TranslationDomain Object
+	object
+	_TranslationDomain struct{}
 }
 
-func NewTranslationDomain(obj Object) TranslationDomain    { return TranslationDomain{Locked{}, obj} }
-func GetTranslationDomain(obj TranslationDomain) [1]Object { return [1]Object{obj._TranslationDomain} }
+func NewTranslationDomain(obj Object) TranslationDomain {
+	return TranslationDomain{object: object(obj)}
+}
+func GetTranslationDomain(obj TranslationDomain) [1]Object { return obj.AsObject() }
 
 type TranslationServer struct {
-	Locked
-	_TranslationServer Object
+	object
+	_TranslationServer struct{}
 }
 
-func NewTranslationServer(obj Object) TranslationServer    { return TranslationServer{Locked{}, obj} }
-func GetTranslationServer(obj TranslationServer) [1]Object { return [1]Object{obj._TranslationServer} }
+func NewTranslationServer(obj Object) TranslationServer {
+	return TranslationServer{object: object(obj)}
+}
+func GetTranslationServer(obj TranslationServer) [1]Object { return obj.AsObject() }
 
 type Tree struct {
-	Locked
-	_Tree Object
+	object
+	_Tree struct{}
 }
 
-func NewTree(obj Object) Tree    { return Tree{Locked{}, obj} }
-func GetTree(obj Tree) [1]Object { return [1]Object{obj._Tree} }
+func NewTree(obj Object) Tree    { return Tree{object: object(obj)} }
+func GetTree(obj Tree) [1]Object { return obj.AsObject() }
 
 type TreeItem struct {
-	Locked
-	_TreeItem Object
+	object
+	_TreeItem struct{}
 }
 
-func NewTreeItem(obj Object) TreeItem    { return TreeItem{Locked{}, obj} }
-func GetTreeItem(obj TreeItem) [1]Object { return [1]Object{obj._TreeItem} }
+func NewTreeItem(obj Object) TreeItem    { return TreeItem{object: object(obj)} }
+func GetTreeItem(obj TreeItem) [1]Object { return obj.AsObject() }
 
 type TriangleMesh struct {
-	Locked
-	_TriangleMesh Object
+	object
+	_TriangleMesh struct{}
 }
 
-func NewTriangleMesh(obj Object) TriangleMesh    { return TriangleMesh{Locked{}, obj} }
-func GetTriangleMesh(obj TriangleMesh) [1]Object { return [1]Object{obj._TriangleMesh} }
+func NewTriangleMesh(obj Object) TriangleMesh    { return TriangleMesh{object: object(obj)} }
+func GetTriangleMesh(obj TriangleMesh) [1]Object { return obj.AsObject() }
 
 type TubeTrailMesh struct {
-	Locked
-	_TubeTrailMesh Object
+	object
+	_TubeTrailMesh struct{}
 }
 
-func NewTubeTrailMesh(obj Object) TubeTrailMesh    { return TubeTrailMesh{Locked{}, obj} }
-func GetTubeTrailMesh(obj TubeTrailMesh) [1]Object { return [1]Object{obj._TubeTrailMesh} }
+func NewTubeTrailMesh(obj Object) TubeTrailMesh    { return TubeTrailMesh{object: object(obj)} }
+func GetTubeTrailMesh(obj TubeTrailMesh) [1]Object { return obj.AsObject() }
 
 type Tween struct {
-	Locked
-	_Tween Object
+	object
+	_Tween struct{}
 }
 
-func NewTween(obj Object) Tween    { return Tween{Locked{}, obj} }
-func GetTween(obj Tween) [1]Object { return [1]Object{obj._Tween} }
+func NewTween(obj Object) Tween    { return Tween{object: object(obj)} }
+func GetTween(obj Tween) [1]Object { return obj.AsObject() }
 
 type Tweener struct {
-	Locked
-	_Tweener Object
+	object
+	_Tweener struct{}
 }
 
-func NewTweener(obj Object) Tweener    { return Tweener{Locked{}, obj} }
-func GetTweener(obj Tweener) [1]Object { return [1]Object{obj._Tweener} }
+func NewTweener(obj Object) Tweener    { return Tweener{object: object(obj)} }
+func GetTweener(obj Tweener) [1]Object { return obj.AsObject() }
 
 type TwoBoneIK3D struct {
-	Locked
-	_TwoBoneIK3D Object
+	object
+	_TwoBoneIK3D struct{}
 }
 
-func NewTwoBoneIK3D(obj Object) TwoBoneIK3D    { return TwoBoneIK3D{Locked{}, obj} }
-func GetTwoBoneIK3D(obj TwoBoneIK3D) [1]Object { return [1]Object{obj._TwoBoneIK3D} }
+func NewTwoBoneIK3D(obj Object) TwoBoneIK3D    { return TwoBoneIK3D{object: object(obj)} }
+func GetTwoBoneIK3D(obj TwoBoneIK3D) [1]Object { return obj.AsObject() }
 
 type UDPServer struct {
-	Locked
-	_UDPServer Object
+	object
+	_UDPServer struct{}
 }
 
-func NewUDPServer(obj Object) UDPServer    { return UDPServer{Locked{}, obj} }
-func GetUDPServer(obj UDPServer) [1]Object { return [1]Object{obj._UDPServer} }
+func NewUDPServer(obj Object) UDPServer    { return UDPServer{object: object(obj)} }
+func GetUDPServer(obj UDPServer) [1]Object { return obj.AsObject() }
 
 type UDSServer struct {
-	Locked
-	_UDSServer Object
+	object
+	_UDSServer struct{}
 }
 
-func NewUDSServer(obj Object) UDSServer    { return UDSServer{Locked{}, obj} }
-func GetUDSServer(obj UDSServer) [1]Object { return [1]Object{obj._UDSServer} }
+func NewUDSServer(obj Object) UDSServer    { return UDSServer{object: object(obj)} }
+func GetUDSServer(obj UDSServer) [1]Object { return obj.AsObject() }
 
 type UPNP struct {
-	Locked
-	_UPNP Object
+	object
+	_UPNP struct{}
 }
 
-func NewUPNP(obj Object) UPNP    { return UPNP{Locked{}, obj} }
-func GetUPNP(obj UPNP) [1]Object { return [1]Object{obj._UPNP} }
+func NewUPNP(obj Object) UPNP    { return UPNP{object: object(obj)} }
+func GetUPNP(obj UPNP) [1]Object { return obj.AsObject() }
 
 type UPNPDevice struct {
-	Locked
-	_UPNPDevice Object
+	object
+	_UPNPDevice struct{}
 }
 
-func NewUPNPDevice(obj Object) UPNPDevice    { return UPNPDevice{Locked{}, obj} }
-func GetUPNPDevice(obj UPNPDevice) [1]Object { return [1]Object{obj._UPNPDevice} }
+func NewUPNPDevice(obj Object) UPNPDevice    { return UPNPDevice{object: object(obj)} }
+func GetUPNPDevice(obj UPNPDevice) [1]Object { return obj.AsObject() }
 
 type UndoRedo struct {
-	Locked
-	_UndoRedo Object
+	object
+	_UndoRedo struct{}
 }
 
-func NewUndoRedo(obj Object) UndoRedo    { return UndoRedo{Locked{}, obj} }
-func GetUndoRedo(obj UndoRedo) [1]Object { return [1]Object{obj._UndoRedo} }
+func NewUndoRedo(obj Object) UndoRedo    { return UndoRedo{object: object(obj)} }
+func GetUndoRedo(obj UndoRedo) [1]Object { return obj.AsObject() }
 
 type UniformSetCacheRD struct {
-	Locked
-	_UniformSetCacheRD Object
+	object
+	_UniformSetCacheRD struct{}
 }
 
-func NewUniformSetCacheRD(obj Object) UniformSetCacheRD    { return UniformSetCacheRD{Locked{}, obj} }
-func GetUniformSetCacheRD(obj UniformSetCacheRD) [1]Object { return [1]Object{obj._UniformSetCacheRD} }
+func NewUniformSetCacheRD(obj Object) UniformSetCacheRD {
+	return UniformSetCacheRD{object: object(obj)}
+}
+func GetUniformSetCacheRD(obj UniformSetCacheRD) [1]Object { return obj.AsObject() }
 
 type VBoxContainer struct {
-	Locked
-	_VBoxContainer Object
+	object
+	_VBoxContainer struct{}
 }
 
-func NewVBoxContainer(obj Object) VBoxContainer    { return VBoxContainer{Locked{}, obj} }
-func GetVBoxContainer(obj VBoxContainer) [1]Object { return [1]Object{obj._VBoxContainer} }
+func NewVBoxContainer(obj Object) VBoxContainer    { return VBoxContainer{object: object(obj)} }
+func GetVBoxContainer(obj VBoxContainer) [1]Object { return obj.AsObject() }
 
 type VFlowContainer struct {
-	Locked
-	_VFlowContainer Object
+	object
+	_VFlowContainer struct{}
 }
 
-func NewVFlowContainer(obj Object) VFlowContainer    { return VFlowContainer{Locked{}, obj} }
-func GetVFlowContainer(obj VFlowContainer) [1]Object { return [1]Object{obj._VFlowContainer} }
+func NewVFlowContainer(obj Object) VFlowContainer    { return VFlowContainer{object: object(obj)} }
+func GetVFlowContainer(obj VFlowContainer) [1]Object { return obj.AsObject() }
 
 type VScrollBar struct {
-	Locked
-	_VScrollBar Object
+	object
+	_VScrollBar struct{}
 }
 
-func NewVScrollBar(obj Object) VScrollBar    { return VScrollBar{Locked{}, obj} }
-func GetVScrollBar(obj VScrollBar) [1]Object { return [1]Object{obj._VScrollBar} }
+func NewVScrollBar(obj Object) VScrollBar    { return VScrollBar{object: object(obj)} }
+func GetVScrollBar(obj VScrollBar) [1]Object { return obj.AsObject() }
 
 type VSeparator struct {
-	Locked
-	_VSeparator Object
+	object
+	_VSeparator struct{}
 }
 
-func NewVSeparator(obj Object) VSeparator    { return VSeparator{Locked{}, obj} }
-func GetVSeparator(obj VSeparator) [1]Object { return [1]Object{obj._VSeparator} }
+func NewVSeparator(obj Object) VSeparator    { return VSeparator{object: object(obj)} }
+func GetVSeparator(obj VSeparator) [1]Object { return obj.AsObject() }
 
 type VSlider struct {
-	Locked
-	_VSlider Object
+	object
+	_VSlider struct{}
 }
 
-func NewVSlider(obj Object) VSlider    { return VSlider{Locked{}, obj} }
-func GetVSlider(obj VSlider) [1]Object { return [1]Object{obj._VSlider} }
+func NewVSlider(obj Object) VSlider    { return VSlider{object: object(obj)} }
+func GetVSlider(obj VSlider) [1]Object { return obj.AsObject() }
 
 type VSplitContainer struct {
-	Locked
-	_VSplitContainer Object
+	object
+	_VSplitContainer struct{}
 }
 
-func NewVSplitContainer(obj Object) VSplitContainer    { return VSplitContainer{Locked{}, obj} }
-func GetVSplitContainer(obj VSplitContainer) [1]Object { return [1]Object{obj._VSplitContainer} }
+func NewVSplitContainer(obj Object) VSplitContainer    { return VSplitContainer{object: object(obj)} }
+func GetVSplitContainer(obj VSplitContainer) [1]Object { return obj.AsObject() }
 
 type VehicleBody3D struct {
-	Locked
-	_VehicleBody3D Object
+	object
+	_VehicleBody3D struct{}
 }
 
-func NewVehicleBody3D(obj Object) VehicleBody3D    { return VehicleBody3D{Locked{}, obj} }
-func GetVehicleBody3D(obj VehicleBody3D) [1]Object { return [1]Object{obj._VehicleBody3D} }
+func NewVehicleBody3D(obj Object) VehicleBody3D    { return VehicleBody3D{object: object(obj)} }
+func GetVehicleBody3D(obj VehicleBody3D) [1]Object { return obj.AsObject() }
 
 type VehicleWheel3D struct {
-	Locked
-	_VehicleWheel3D Object
+	object
+	_VehicleWheel3D struct{}
 }
 
-func NewVehicleWheel3D(obj Object) VehicleWheel3D    { return VehicleWheel3D{Locked{}, obj} }
-func GetVehicleWheel3D(obj VehicleWheel3D) [1]Object { return [1]Object{obj._VehicleWheel3D} }
+func NewVehicleWheel3D(obj Object) VehicleWheel3D    { return VehicleWheel3D{object: object(obj)} }
+func GetVehicleWheel3D(obj VehicleWheel3D) [1]Object { return obj.AsObject() }
 
 type VideoStream struct {
-	Locked
-	_VideoStream Object
+	object
+	_VideoStream struct{}
 }
 
-func NewVideoStream(obj Object) VideoStream    { return VideoStream{Locked{}, obj} }
-func GetVideoStream(obj VideoStream) [1]Object { return [1]Object{obj._VideoStream} }
+func NewVideoStream(obj Object) VideoStream    { return VideoStream{object: object(obj)} }
+func GetVideoStream(obj VideoStream) [1]Object { return obj.AsObject() }
 
 type VideoStreamPlayback struct {
-	Locked
-	_VideoStreamPlayback Object
+	object
+	_VideoStreamPlayback struct{}
 }
 
 func NewVideoStreamPlayback(obj Object) VideoStreamPlayback {
-	return VideoStreamPlayback{Locked{}, obj}
+	return VideoStreamPlayback{object: object(obj)}
 }
-func GetVideoStreamPlayback(obj VideoStreamPlayback) [1]Object {
-	return [1]Object{obj._VideoStreamPlayback}
-}
+func GetVideoStreamPlayback(obj VideoStreamPlayback) [1]Object { return obj.AsObject() }
 
 type VideoStreamPlayer struct {
-	Locked
-	_VideoStreamPlayer Object
+	object
+	_VideoStreamPlayer struct{}
 }
 
-func NewVideoStreamPlayer(obj Object) VideoStreamPlayer    { return VideoStreamPlayer{Locked{}, obj} }
-func GetVideoStreamPlayer(obj VideoStreamPlayer) [1]Object { return [1]Object{obj._VideoStreamPlayer} }
+func NewVideoStreamPlayer(obj Object) VideoStreamPlayer {
+	return VideoStreamPlayer{object: object(obj)}
+}
+func GetVideoStreamPlayer(obj VideoStreamPlayer) [1]Object { return obj.AsObject() }
 
 type VideoStreamTheora struct {
-	Locked
-	_VideoStreamTheora Object
+	object
+	_VideoStreamTheora struct{}
 }
 
-func NewVideoStreamTheora(obj Object) VideoStreamTheora    { return VideoStreamTheora{Locked{}, obj} }
-func GetVideoStreamTheora(obj VideoStreamTheora) [1]Object { return [1]Object{obj._VideoStreamTheora} }
+func NewVideoStreamTheora(obj Object) VideoStreamTheora {
+	return VideoStreamTheora{object: object(obj)}
+}
+func GetVideoStreamTheora(obj VideoStreamTheora) [1]Object { return obj.AsObject() }
 
 type Viewport struct {
-	Locked
-	_Viewport Object
+	object
+	_Viewport struct{}
 }
 
-func NewViewport(obj Object) Viewport    { return Viewport{Locked{}, obj} }
-func GetViewport(obj Viewport) [1]Object { return [1]Object{obj._Viewport} }
+func NewViewport(obj Object) Viewport    { return Viewport{object: object(obj)} }
+func GetViewport(obj Viewport) [1]Object { return obj.AsObject() }
 
 type ViewportTexture struct {
-	Locked
-	_ViewportTexture Object
+	object
+	_ViewportTexture struct{}
 }
 
-func NewViewportTexture(obj Object) ViewportTexture    { return ViewportTexture{Locked{}, obj} }
-func GetViewportTexture(obj ViewportTexture) [1]Object { return [1]Object{obj._ViewportTexture} }
+func NewViewportTexture(obj Object) ViewportTexture    { return ViewportTexture{object: object(obj)} }
+func GetViewportTexture(obj ViewportTexture) [1]Object { return obj.AsObject() }
 
 type VisibleOnScreenEnabler2D struct {
-	Locked
-	_VisibleOnScreenEnabler2D Object
+	object
+	_VisibleOnScreenEnabler2D struct{}
 }
 
 func NewVisibleOnScreenEnabler2D(obj Object) VisibleOnScreenEnabler2D {
-	return VisibleOnScreenEnabler2D{Locked{}, obj}
+	return VisibleOnScreenEnabler2D{object: object(obj)}
 }
-func GetVisibleOnScreenEnabler2D(obj VisibleOnScreenEnabler2D) [1]Object {
-	return [1]Object{obj._VisibleOnScreenEnabler2D}
-}
+func GetVisibleOnScreenEnabler2D(obj VisibleOnScreenEnabler2D) [1]Object { return obj.AsObject() }
 
 type VisibleOnScreenEnabler3D struct {
-	Locked
-	_VisibleOnScreenEnabler3D Object
+	object
+	_VisibleOnScreenEnabler3D struct{}
 }
 
 func NewVisibleOnScreenEnabler3D(obj Object) VisibleOnScreenEnabler3D {
-	return VisibleOnScreenEnabler3D{Locked{}, obj}
+	return VisibleOnScreenEnabler3D{object: object(obj)}
 }
-func GetVisibleOnScreenEnabler3D(obj VisibleOnScreenEnabler3D) [1]Object {
-	return [1]Object{obj._VisibleOnScreenEnabler3D}
-}
+func GetVisibleOnScreenEnabler3D(obj VisibleOnScreenEnabler3D) [1]Object { return obj.AsObject() }
 
 type VisibleOnScreenNotifier2D struct {
-	Locked
-	_VisibleOnScreenNotifier2D Object
+	object
+	_VisibleOnScreenNotifier2D struct{}
 }
 
 func NewVisibleOnScreenNotifier2D(obj Object) VisibleOnScreenNotifier2D {
-	return VisibleOnScreenNotifier2D{Locked{}, obj}
+	return VisibleOnScreenNotifier2D{object: object(obj)}
 }
-func GetVisibleOnScreenNotifier2D(obj VisibleOnScreenNotifier2D) [1]Object {
-	return [1]Object{obj._VisibleOnScreenNotifier2D}
-}
+func GetVisibleOnScreenNotifier2D(obj VisibleOnScreenNotifier2D) [1]Object { return obj.AsObject() }
 
 type VisibleOnScreenNotifier3D struct {
-	Locked
-	_VisibleOnScreenNotifier3D Object
+	object
+	_VisibleOnScreenNotifier3D struct{}
 }
 
 func NewVisibleOnScreenNotifier3D(obj Object) VisibleOnScreenNotifier3D {
-	return VisibleOnScreenNotifier3D{Locked{}, obj}
+	return VisibleOnScreenNotifier3D{object: object(obj)}
 }
-func GetVisibleOnScreenNotifier3D(obj VisibleOnScreenNotifier3D) [1]Object {
-	return [1]Object{obj._VisibleOnScreenNotifier3D}
-}
+func GetVisibleOnScreenNotifier3D(obj VisibleOnScreenNotifier3D) [1]Object { return obj.AsObject() }
 
 type VisualInstance3D struct {
-	Locked
-	_VisualInstance3D Object
+	object
+	_VisualInstance3D struct{}
 }
 
-func NewVisualInstance3D(obj Object) VisualInstance3D    { return VisualInstance3D{Locked{}, obj} }
-func GetVisualInstance3D(obj VisualInstance3D) [1]Object { return [1]Object{obj._VisualInstance3D} }
+func NewVisualInstance3D(obj Object) VisualInstance3D    { return VisualInstance3D{object: object(obj)} }
+func GetVisualInstance3D(obj VisualInstance3D) [1]Object { return obj.AsObject() }
 
 type VisualShader struct {
-	Locked
-	_VisualShader Object
+	object
+	_VisualShader struct{}
 }
 
-func NewVisualShader(obj Object) VisualShader    { return VisualShader{Locked{}, obj} }
-func GetVisualShader(obj VisualShader) [1]Object { return [1]Object{obj._VisualShader} }
+func NewVisualShader(obj Object) VisualShader    { return VisualShader{object: object(obj)} }
+func GetVisualShader(obj VisualShader) [1]Object { return obj.AsObject() }
 
 type VisualShaderNode struct {
-	Locked
-	_VisualShaderNode Object
+	object
+	_VisualShaderNode struct{}
 }
 
-func NewVisualShaderNode(obj Object) VisualShaderNode    { return VisualShaderNode{Locked{}, obj} }
-func GetVisualShaderNode(obj VisualShaderNode) [1]Object { return [1]Object{obj._VisualShaderNode} }
+func NewVisualShaderNode(obj Object) VisualShaderNode    { return VisualShaderNode{object: object(obj)} }
+func GetVisualShaderNode(obj VisualShaderNode) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeBillboard struct {
-	Locked
-	_VisualShaderNodeBillboard Object
+	object
+	_VisualShaderNodeBillboard struct{}
 }
 
 func NewVisualShaderNodeBillboard(obj Object) VisualShaderNodeBillboard {
-	return VisualShaderNodeBillboard{Locked{}, obj}
+	return VisualShaderNodeBillboard{object: object(obj)}
 }
-func GetVisualShaderNodeBillboard(obj VisualShaderNodeBillboard) [1]Object {
-	return [1]Object{obj._VisualShaderNodeBillboard}
-}
+func GetVisualShaderNodeBillboard(obj VisualShaderNodeBillboard) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeBooleanConstant struct {
-	Locked
-	_VisualShaderNodeBooleanConstant Object
+	object
+	_VisualShaderNodeBooleanConstant struct{}
 }
 
 func NewVisualShaderNodeBooleanConstant(obj Object) VisualShaderNodeBooleanConstant {
-	return VisualShaderNodeBooleanConstant{Locked{}, obj}
+	return VisualShaderNodeBooleanConstant{object: object(obj)}
 }
 func GetVisualShaderNodeBooleanConstant(obj VisualShaderNodeBooleanConstant) [1]Object {
-	return [1]Object{obj._VisualShaderNodeBooleanConstant}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeBooleanParameter struct {
-	Locked
-	_VisualShaderNodeBooleanParameter Object
+	object
+	_VisualShaderNodeBooleanParameter struct{}
 }
 
 func NewVisualShaderNodeBooleanParameter(obj Object) VisualShaderNodeBooleanParameter {
-	return VisualShaderNodeBooleanParameter{Locked{}, obj}
+	return VisualShaderNodeBooleanParameter{object: object(obj)}
 }
 func GetVisualShaderNodeBooleanParameter(obj VisualShaderNodeBooleanParameter) [1]Object {
-	return [1]Object{obj._VisualShaderNodeBooleanParameter}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeClamp struct {
-	Locked
-	_VisualShaderNodeClamp Object
+	object
+	_VisualShaderNodeClamp struct{}
 }
 
 func NewVisualShaderNodeClamp(obj Object) VisualShaderNodeClamp {
-	return VisualShaderNodeClamp{Locked{}, obj}
+	return VisualShaderNodeClamp{object: object(obj)}
 }
-func GetVisualShaderNodeClamp(obj VisualShaderNodeClamp) [1]Object {
-	return [1]Object{obj._VisualShaderNodeClamp}
-}
+func GetVisualShaderNodeClamp(obj VisualShaderNodeClamp) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeColorConstant struct {
-	Locked
-	_VisualShaderNodeColorConstant Object
+	object
+	_VisualShaderNodeColorConstant struct{}
 }
 
 func NewVisualShaderNodeColorConstant(obj Object) VisualShaderNodeColorConstant {
-	return VisualShaderNodeColorConstant{Locked{}, obj}
+	return VisualShaderNodeColorConstant{object: object(obj)}
 }
 func GetVisualShaderNodeColorConstant(obj VisualShaderNodeColorConstant) [1]Object {
-	return [1]Object{obj._VisualShaderNodeColorConstant}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeColorFunc struct {
-	Locked
-	_VisualShaderNodeColorFunc Object
+	object
+	_VisualShaderNodeColorFunc struct{}
 }
 
 func NewVisualShaderNodeColorFunc(obj Object) VisualShaderNodeColorFunc {
-	return VisualShaderNodeColorFunc{Locked{}, obj}
+	return VisualShaderNodeColorFunc{object: object(obj)}
 }
-func GetVisualShaderNodeColorFunc(obj VisualShaderNodeColorFunc) [1]Object {
-	return [1]Object{obj._VisualShaderNodeColorFunc}
-}
+func GetVisualShaderNodeColorFunc(obj VisualShaderNodeColorFunc) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeColorOp struct {
-	Locked
-	_VisualShaderNodeColorOp Object
+	object
+	_VisualShaderNodeColorOp struct{}
 }
 
 func NewVisualShaderNodeColorOp(obj Object) VisualShaderNodeColorOp {
-	return VisualShaderNodeColorOp{Locked{}, obj}
+	return VisualShaderNodeColorOp{object: object(obj)}
 }
-func GetVisualShaderNodeColorOp(obj VisualShaderNodeColorOp) [1]Object {
-	return [1]Object{obj._VisualShaderNodeColorOp}
-}
+func GetVisualShaderNodeColorOp(obj VisualShaderNodeColorOp) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeColorParameter struct {
-	Locked
-	_VisualShaderNodeColorParameter Object
+	object
+	_VisualShaderNodeColorParameter struct{}
 }
 
 func NewVisualShaderNodeColorParameter(obj Object) VisualShaderNodeColorParameter {
-	return VisualShaderNodeColorParameter{Locked{}, obj}
+	return VisualShaderNodeColorParameter{object: object(obj)}
 }
 func GetVisualShaderNodeColorParameter(obj VisualShaderNodeColorParameter) [1]Object {
-	return [1]Object{obj._VisualShaderNodeColorParameter}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeComment struct {
-	Locked
-	_VisualShaderNodeComment Object
+	object
+	_VisualShaderNodeComment struct{}
 }
 
 func NewVisualShaderNodeComment(obj Object) VisualShaderNodeComment {
-	return VisualShaderNodeComment{Locked{}, obj}
+	return VisualShaderNodeComment{object: object(obj)}
 }
-func GetVisualShaderNodeComment(obj VisualShaderNodeComment) [1]Object {
-	return [1]Object{obj._VisualShaderNodeComment}
-}
+func GetVisualShaderNodeComment(obj VisualShaderNodeComment) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeCompare struct {
-	Locked
-	_VisualShaderNodeCompare Object
+	object
+	_VisualShaderNodeCompare struct{}
 }
 
 func NewVisualShaderNodeCompare(obj Object) VisualShaderNodeCompare {
-	return VisualShaderNodeCompare{Locked{}, obj}
+	return VisualShaderNodeCompare{object: object(obj)}
 }
-func GetVisualShaderNodeCompare(obj VisualShaderNodeCompare) [1]Object {
-	return [1]Object{obj._VisualShaderNodeCompare}
-}
+func GetVisualShaderNodeCompare(obj VisualShaderNodeCompare) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeConstant struct {
-	Locked
-	_VisualShaderNodeConstant Object
+	object
+	_VisualShaderNodeConstant struct{}
 }
 
 func NewVisualShaderNodeConstant(obj Object) VisualShaderNodeConstant {
-	return VisualShaderNodeConstant{Locked{}, obj}
+	return VisualShaderNodeConstant{object: object(obj)}
 }
-func GetVisualShaderNodeConstant(obj VisualShaderNodeConstant) [1]Object {
-	return [1]Object{obj._VisualShaderNodeConstant}
-}
+func GetVisualShaderNodeConstant(obj VisualShaderNodeConstant) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeCubemap struct {
-	Locked
-	_VisualShaderNodeCubemap Object
+	object
+	_VisualShaderNodeCubemap struct{}
 }
 
 func NewVisualShaderNodeCubemap(obj Object) VisualShaderNodeCubemap {
-	return VisualShaderNodeCubemap{Locked{}, obj}
+	return VisualShaderNodeCubemap{object: object(obj)}
 }
-func GetVisualShaderNodeCubemap(obj VisualShaderNodeCubemap) [1]Object {
-	return [1]Object{obj._VisualShaderNodeCubemap}
-}
+func GetVisualShaderNodeCubemap(obj VisualShaderNodeCubemap) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeCubemapParameter struct {
-	Locked
-	_VisualShaderNodeCubemapParameter Object
+	object
+	_VisualShaderNodeCubemapParameter struct{}
 }
 
 func NewVisualShaderNodeCubemapParameter(obj Object) VisualShaderNodeCubemapParameter {
-	return VisualShaderNodeCubemapParameter{Locked{}, obj}
+	return VisualShaderNodeCubemapParameter{object: object(obj)}
 }
 func GetVisualShaderNodeCubemapParameter(obj VisualShaderNodeCubemapParameter) [1]Object {
-	return [1]Object{obj._VisualShaderNodeCubemapParameter}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeCurveTexture struct {
-	Locked
-	_VisualShaderNodeCurveTexture Object
+	object
+	_VisualShaderNodeCurveTexture struct{}
 }
 
 func NewVisualShaderNodeCurveTexture(obj Object) VisualShaderNodeCurveTexture {
-	return VisualShaderNodeCurveTexture{Locked{}, obj}
+	return VisualShaderNodeCurveTexture{object: object(obj)}
 }
 func GetVisualShaderNodeCurveTexture(obj VisualShaderNodeCurveTexture) [1]Object {
-	return [1]Object{obj._VisualShaderNodeCurveTexture}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeCurveXYZTexture struct {
-	Locked
-	_VisualShaderNodeCurveXYZTexture Object
+	object
+	_VisualShaderNodeCurveXYZTexture struct{}
 }
 
 func NewVisualShaderNodeCurveXYZTexture(obj Object) VisualShaderNodeCurveXYZTexture {
-	return VisualShaderNodeCurveXYZTexture{Locked{}, obj}
+	return VisualShaderNodeCurveXYZTexture{object: object(obj)}
 }
 func GetVisualShaderNodeCurveXYZTexture(obj VisualShaderNodeCurveXYZTexture) [1]Object {
-	return [1]Object{obj._VisualShaderNodeCurveXYZTexture}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeCustom struct {
-	Locked
-	_VisualShaderNodeCustom Object
+	object
+	_VisualShaderNodeCustom struct{}
 }
 
 func NewVisualShaderNodeCustom(obj Object) VisualShaderNodeCustom {
-	return VisualShaderNodeCustom{Locked{}, obj}
+	return VisualShaderNodeCustom{object: object(obj)}
 }
-func GetVisualShaderNodeCustom(obj VisualShaderNodeCustom) [1]Object {
-	return [1]Object{obj._VisualShaderNodeCustom}
-}
+func GetVisualShaderNodeCustom(obj VisualShaderNodeCustom) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeDerivativeFunc struct {
-	Locked
-	_VisualShaderNodeDerivativeFunc Object
+	object
+	_VisualShaderNodeDerivativeFunc struct{}
 }
 
 func NewVisualShaderNodeDerivativeFunc(obj Object) VisualShaderNodeDerivativeFunc {
-	return VisualShaderNodeDerivativeFunc{Locked{}, obj}
+	return VisualShaderNodeDerivativeFunc{object: object(obj)}
 }
 func GetVisualShaderNodeDerivativeFunc(obj VisualShaderNodeDerivativeFunc) [1]Object {
-	return [1]Object{obj._VisualShaderNodeDerivativeFunc}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeDeterminant struct {
-	Locked
-	_VisualShaderNodeDeterminant Object
+	object
+	_VisualShaderNodeDeterminant struct{}
 }
 
 func NewVisualShaderNodeDeterminant(obj Object) VisualShaderNodeDeterminant {
-	return VisualShaderNodeDeterminant{Locked{}, obj}
+	return VisualShaderNodeDeterminant{object: object(obj)}
 }
-func GetVisualShaderNodeDeterminant(obj VisualShaderNodeDeterminant) [1]Object {
-	return [1]Object{obj._VisualShaderNodeDeterminant}
-}
+func GetVisualShaderNodeDeterminant(obj VisualShaderNodeDeterminant) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeDistanceFade struct {
-	Locked
-	_VisualShaderNodeDistanceFade Object
+	object
+	_VisualShaderNodeDistanceFade struct{}
 }
 
 func NewVisualShaderNodeDistanceFade(obj Object) VisualShaderNodeDistanceFade {
-	return VisualShaderNodeDistanceFade{Locked{}, obj}
+	return VisualShaderNodeDistanceFade{object: object(obj)}
 }
 func GetVisualShaderNodeDistanceFade(obj VisualShaderNodeDistanceFade) [1]Object {
-	return [1]Object{obj._VisualShaderNodeDistanceFade}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeDotProduct struct {
-	Locked
-	_VisualShaderNodeDotProduct Object
+	object
+	_VisualShaderNodeDotProduct struct{}
 }
 
 func NewVisualShaderNodeDotProduct(obj Object) VisualShaderNodeDotProduct {
-	return VisualShaderNodeDotProduct{Locked{}, obj}
+	return VisualShaderNodeDotProduct{object: object(obj)}
 }
-func GetVisualShaderNodeDotProduct(obj VisualShaderNodeDotProduct) [1]Object {
-	return [1]Object{obj._VisualShaderNodeDotProduct}
-}
+func GetVisualShaderNodeDotProduct(obj VisualShaderNodeDotProduct) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeExpression struct {
-	Locked
-	_VisualShaderNodeExpression Object
+	object
+	_VisualShaderNodeExpression struct{}
 }
 
 func NewVisualShaderNodeExpression(obj Object) VisualShaderNodeExpression {
-	return VisualShaderNodeExpression{Locked{}, obj}
+	return VisualShaderNodeExpression{object: object(obj)}
 }
-func GetVisualShaderNodeExpression(obj VisualShaderNodeExpression) [1]Object {
-	return [1]Object{obj._VisualShaderNodeExpression}
-}
+func GetVisualShaderNodeExpression(obj VisualShaderNodeExpression) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeFaceForward struct {
-	Locked
-	_VisualShaderNodeFaceForward Object
+	object
+	_VisualShaderNodeFaceForward struct{}
 }
 
 func NewVisualShaderNodeFaceForward(obj Object) VisualShaderNodeFaceForward {
-	return VisualShaderNodeFaceForward{Locked{}, obj}
+	return VisualShaderNodeFaceForward{object: object(obj)}
 }
-func GetVisualShaderNodeFaceForward(obj VisualShaderNodeFaceForward) [1]Object {
-	return [1]Object{obj._VisualShaderNodeFaceForward}
-}
+func GetVisualShaderNodeFaceForward(obj VisualShaderNodeFaceForward) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeFloatConstant struct {
-	Locked
-	_VisualShaderNodeFloatConstant Object
+	object
+	_VisualShaderNodeFloatConstant struct{}
 }
 
 func NewVisualShaderNodeFloatConstant(obj Object) VisualShaderNodeFloatConstant {
-	return VisualShaderNodeFloatConstant{Locked{}, obj}
+	return VisualShaderNodeFloatConstant{object: object(obj)}
 }
 func GetVisualShaderNodeFloatConstant(obj VisualShaderNodeFloatConstant) [1]Object {
-	return [1]Object{obj._VisualShaderNodeFloatConstant}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeFloatFunc struct {
-	Locked
-	_VisualShaderNodeFloatFunc Object
+	object
+	_VisualShaderNodeFloatFunc struct{}
 }
 
 func NewVisualShaderNodeFloatFunc(obj Object) VisualShaderNodeFloatFunc {
-	return VisualShaderNodeFloatFunc{Locked{}, obj}
+	return VisualShaderNodeFloatFunc{object: object(obj)}
 }
-func GetVisualShaderNodeFloatFunc(obj VisualShaderNodeFloatFunc) [1]Object {
-	return [1]Object{obj._VisualShaderNodeFloatFunc}
-}
+func GetVisualShaderNodeFloatFunc(obj VisualShaderNodeFloatFunc) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeFloatOp struct {
-	Locked
-	_VisualShaderNodeFloatOp Object
+	object
+	_VisualShaderNodeFloatOp struct{}
 }
 
 func NewVisualShaderNodeFloatOp(obj Object) VisualShaderNodeFloatOp {
-	return VisualShaderNodeFloatOp{Locked{}, obj}
+	return VisualShaderNodeFloatOp{object: object(obj)}
 }
-func GetVisualShaderNodeFloatOp(obj VisualShaderNodeFloatOp) [1]Object {
-	return [1]Object{obj._VisualShaderNodeFloatOp}
-}
+func GetVisualShaderNodeFloatOp(obj VisualShaderNodeFloatOp) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeFloatParameter struct {
-	Locked
-	_VisualShaderNodeFloatParameter Object
+	object
+	_VisualShaderNodeFloatParameter struct{}
 }
 
 func NewVisualShaderNodeFloatParameter(obj Object) VisualShaderNodeFloatParameter {
-	return VisualShaderNodeFloatParameter{Locked{}, obj}
+	return VisualShaderNodeFloatParameter{object: object(obj)}
 }
 func GetVisualShaderNodeFloatParameter(obj VisualShaderNodeFloatParameter) [1]Object {
-	return [1]Object{obj._VisualShaderNodeFloatParameter}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeFrame struct {
-	Locked
-	_VisualShaderNodeFrame Object
+	object
+	_VisualShaderNodeFrame struct{}
 }
 
 func NewVisualShaderNodeFrame(obj Object) VisualShaderNodeFrame {
-	return VisualShaderNodeFrame{Locked{}, obj}
+	return VisualShaderNodeFrame{object: object(obj)}
 }
-func GetVisualShaderNodeFrame(obj VisualShaderNodeFrame) [1]Object {
-	return [1]Object{obj._VisualShaderNodeFrame}
-}
+func GetVisualShaderNodeFrame(obj VisualShaderNodeFrame) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeFresnel struct {
-	Locked
-	_VisualShaderNodeFresnel Object
+	object
+	_VisualShaderNodeFresnel struct{}
 }
 
 func NewVisualShaderNodeFresnel(obj Object) VisualShaderNodeFresnel {
-	return VisualShaderNodeFresnel{Locked{}, obj}
+	return VisualShaderNodeFresnel{object: object(obj)}
 }
-func GetVisualShaderNodeFresnel(obj VisualShaderNodeFresnel) [1]Object {
-	return [1]Object{obj._VisualShaderNodeFresnel}
-}
+func GetVisualShaderNodeFresnel(obj VisualShaderNodeFresnel) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeGlobalExpression struct {
-	Locked
-	_VisualShaderNodeGlobalExpression Object
+	object
+	_VisualShaderNodeGlobalExpression struct{}
 }
 
 func NewVisualShaderNodeGlobalExpression(obj Object) VisualShaderNodeGlobalExpression {
-	return VisualShaderNodeGlobalExpression{Locked{}, obj}
+	return VisualShaderNodeGlobalExpression{object: object(obj)}
 }
 func GetVisualShaderNodeGlobalExpression(obj VisualShaderNodeGlobalExpression) [1]Object {
-	return [1]Object{obj._VisualShaderNodeGlobalExpression}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeGroupBase struct {
-	Locked
-	_VisualShaderNodeGroupBase Object
+	object
+	_VisualShaderNodeGroupBase struct{}
 }
 
 func NewVisualShaderNodeGroupBase(obj Object) VisualShaderNodeGroupBase {
-	return VisualShaderNodeGroupBase{Locked{}, obj}
+	return VisualShaderNodeGroupBase{object: object(obj)}
 }
-func GetVisualShaderNodeGroupBase(obj VisualShaderNodeGroupBase) [1]Object {
-	return [1]Object{obj._VisualShaderNodeGroupBase}
-}
+func GetVisualShaderNodeGroupBase(obj VisualShaderNodeGroupBase) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeIf struct {
-	Locked
-	_VisualShaderNodeIf Object
+	object
+	_VisualShaderNodeIf struct{}
 }
 
-func NewVisualShaderNodeIf(obj Object) VisualShaderNodeIf { return VisualShaderNodeIf{Locked{}, obj} }
-func GetVisualShaderNodeIf(obj VisualShaderNodeIf) [1]Object {
-	return [1]Object{obj._VisualShaderNodeIf}
+func NewVisualShaderNodeIf(obj Object) VisualShaderNodeIf {
+	return VisualShaderNodeIf{object: object(obj)}
 }
+func GetVisualShaderNodeIf(obj VisualShaderNodeIf) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeInput struct {
-	Locked
-	_VisualShaderNodeInput Object
+	object
+	_VisualShaderNodeInput struct{}
 }
 
 func NewVisualShaderNodeInput(obj Object) VisualShaderNodeInput {
-	return VisualShaderNodeInput{Locked{}, obj}
+	return VisualShaderNodeInput{object: object(obj)}
 }
-func GetVisualShaderNodeInput(obj VisualShaderNodeInput) [1]Object {
-	return [1]Object{obj._VisualShaderNodeInput}
-}
+func GetVisualShaderNodeInput(obj VisualShaderNodeInput) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeIntConstant struct {
-	Locked
-	_VisualShaderNodeIntConstant Object
+	object
+	_VisualShaderNodeIntConstant struct{}
 }
 
 func NewVisualShaderNodeIntConstant(obj Object) VisualShaderNodeIntConstant {
-	return VisualShaderNodeIntConstant{Locked{}, obj}
+	return VisualShaderNodeIntConstant{object: object(obj)}
 }
-func GetVisualShaderNodeIntConstant(obj VisualShaderNodeIntConstant) [1]Object {
-	return [1]Object{obj._VisualShaderNodeIntConstant}
-}
+func GetVisualShaderNodeIntConstant(obj VisualShaderNodeIntConstant) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeIntFunc struct {
-	Locked
-	_VisualShaderNodeIntFunc Object
+	object
+	_VisualShaderNodeIntFunc struct{}
 }
 
 func NewVisualShaderNodeIntFunc(obj Object) VisualShaderNodeIntFunc {
-	return VisualShaderNodeIntFunc{Locked{}, obj}
+	return VisualShaderNodeIntFunc{object: object(obj)}
 }
-func GetVisualShaderNodeIntFunc(obj VisualShaderNodeIntFunc) [1]Object {
-	return [1]Object{obj._VisualShaderNodeIntFunc}
-}
+func GetVisualShaderNodeIntFunc(obj VisualShaderNodeIntFunc) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeIntOp struct {
-	Locked
-	_VisualShaderNodeIntOp Object
+	object
+	_VisualShaderNodeIntOp struct{}
 }
 
 func NewVisualShaderNodeIntOp(obj Object) VisualShaderNodeIntOp {
-	return VisualShaderNodeIntOp{Locked{}, obj}
+	return VisualShaderNodeIntOp{object: object(obj)}
 }
-func GetVisualShaderNodeIntOp(obj VisualShaderNodeIntOp) [1]Object {
-	return [1]Object{obj._VisualShaderNodeIntOp}
-}
+func GetVisualShaderNodeIntOp(obj VisualShaderNodeIntOp) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeIntParameter struct {
-	Locked
-	_VisualShaderNodeIntParameter Object
+	object
+	_VisualShaderNodeIntParameter struct{}
 }
 
 func NewVisualShaderNodeIntParameter(obj Object) VisualShaderNodeIntParameter {
-	return VisualShaderNodeIntParameter{Locked{}, obj}
+	return VisualShaderNodeIntParameter{object: object(obj)}
 }
 func GetVisualShaderNodeIntParameter(obj VisualShaderNodeIntParameter) [1]Object {
-	return [1]Object{obj._VisualShaderNodeIntParameter}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeIs struct {
-	Locked
-	_VisualShaderNodeIs Object
+	object
+	_VisualShaderNodeIs struct{}
 }
 
-func NewVisualShaderNodeIs(obj Object) VisualShaderNodeIs { return VisualShaderNodeIs{Locked{}, obj} }
-func GetVisualShaderNodeIs(obj VisualShaderNodeIs) [1]Object {
-	return [1]Object{obj._VisualShaderNodeIs}
+func NewVisualShaderNodeIs(obj Object) VisualShaderNodeIs {
+	return VisualShaderNodeIs{object: object(obj)}
 }
+func GetVisualShaderNodeIs(obj VisualShaderNodeIs) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeLinearSceneDepth struct {
-	Locked
-	_VisualShaderNodeLinearSceneDepth Object
+	object
+	_VisualShaderNodeLinearSceneDepth struct{}
 }
 
 func NewVisualShaderNodeLinearSceneDepth(obj Object) VisualShaderNodeLinearSceneDepth {
-	return VisualShaderNodeLinearSceneDepth{Locked{}, obj}
+	return VisualShaderNodeLinearSceneDepth{object: object(obj)}
 }
 func GetVisualShaderNodeLinearSceneDepth(obj VisualShaderNodeLinearSceneDepth) [1]Object {
-	return [1]Object{obj._VisualShaderNodeLinearSceneDepth}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeMix struct {
-	Locked
-	_VisualShaderNodeMix Object
+	object
+	_VisualShaderNodeMix struct{}
 }
 
 func NewVisualShaderNodeMix(obj Object) VisualShaderNodeMix {
-	return VisualShaderNodeMix{Locked{}, obj}
+	return VisualShaderNodeMix{object: object(obj)}
 }
-func GetVisualShaderNodeMix(obj VisualShaderNodeMix) [1]Object {
-	return [1]Object{obj._VisualShaderNodeMix}
-}
+func GetVisualShaderNodeMix(obj VisualShaderNodeMix) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeMultiplyAdd struct {
-	Locked
-	_VisualShaderNodeMultiplyAdd Object
+	object
+	_VisualShaderNodeMultiplyAdd struct{}
 }
 
 func NewVisualShaderNodeMultiplyAdd(obj Object) VisualShaderNodeMultiplyAdd {
-	return VisualShaderNodeMultiplyAdd{Locked{}, obj}
+	return VisualShaderNodeMultiplyAdd{object: object(obj)}
 }
-func GetVisualShaderNodeMultiplyAdd(obj VisualShaderNodeMultiplyAdd) [1]Object {
-	return [1]Object{obj._VisualShaderNodeMultiplyAdd}
-}
+func GetVisualShaderNodeMultiplyAdd(obj VisualShaderNodeMultiplyAdd) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeOuterProduct struct {
-	Locked
-	_VisualShaderNodeOuterProduct Object
+	object
+	_VisualShaderNodeOuterProduct struct{}
 }
 
 func NewVisualShaderNodeOuterProduct(obj Object) VisualShaderNodeOuterProduct {
-	return VisualShaderNodeOuterProduct{Locked{}, obj}
+	return VisualShaderNodeOuterProduct{object: object(obj)}
 }
 func GetVisualShaderNodeOuterProduct(obj VisualShaderNodeOuterProduct) [1]Object {
-	return [1]Object{obj._VisualShaderNodeOuterProduct}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeOutput struct {
-	Locked
-	_VisualShaderNodeOutput Object
+	object
+	_VisualShaderNodeOutput struct{}
 }
 
 func NewVisualShaderNodeOutput(obj Object) VisualShaderNodeOutput {
-	return VisualShaderNodeOutput{Locked{}, obj}
+	return VisualShaderNodeOutput{object: object(obj)}
 }
-func GetVisualShaderNodeOutput(obj VisualShaderNodeOutput) [1]Object {
-	return [1]Object{obj._VisualShaderNodeOutput}
-}
+func GetVisualShaderNodeOutput(obj VisualShaderNodeOutput) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeParameter struct {
-	Locked
-	_VisualShaderNodeParameter Object
+	object
+	_VisualShaderNodeParameter struct{}
 }
 
 func NewVisualShaderNodeParameter(obj Object) VisualShaderNodeParameter {
-	return VisualShaderNodeParameter{Locked{}, obj}
+	return VisualShaderNodeParameter{object: object(obj)}
 }
-func GetVisualShaderNodeParameter(obj VisualShaderNodeParameter) [1]Object {
-	return [1]Object{obj._VisualShaderNodeParameter}
-}
+func GetVisualShaderNodeParameter(obj VisualShaderNodeParameter) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeParameterRef struct {
-	Locked
-	_VisualShaderNodeParameterRef Object
+	object
+	_VisualShaderNodeParameterRef struct{}
 }
 
 func NewVisualShaderNodeParameterRef(obj Object) VisualShaderNodeParameterRef {
-	return VisualShaderNodeParameterRef{Locked{}, obj}
+	return VisualShaderNodeParameterRef{object: object(obj)}
 }
 func GetVisualShaderNodeParameterRef(obj VisualShaderNodeParameterRef) [1]Object {
-	return [1]Object{obj._VisualShaderNodeParameterRef}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeParticleAccelerator struct {
-	Locked
-	_VisualShaderNodeParticleAccelerator Object
+	object
+	_VisualShaderNodeParticleAccelerator struct{}
 }
 
 func NewVisualShaderNodeParticleAccelerator(obj Object) VisualShaderNodeParticleAccelerator {
-	return VisualShaderNodeParticleAccelerator{Locked{}, obj}
+	return VisualShaderNodeParticleAccelerator{object: object(obj)}
 }
 func GetVisualShaderNodeParticleAccelerator(obj VisualShaderNodeParticleAccelerator) [1]Object {
-	return [1]Object{obj._VisualShaderNodeParticleAccelerator}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeParticleBoxEmitter struct {
-	Locked
-	_VisualShaderNodeParticleBoxEmitter Object
+	object
+	_VisualShaderNodeParticleBoxEmitter struct{}
 }
 
 func NewVisualShaderNodeParticleBoxEmitter(obj Object) VisualShaderNodeParticleBoxEmitter {
-	return VisualShaderNodeParticleBoxEmitter{Locked{}, obj}
+	return VisualShaderNodeParticleBoxEmitter{object: object(obj)}
 }
 func GetVisualShaderNodeParticleBoxEmitter(obj VisualShaderNodeParticleBoxEmitter) [1]Object {
-	return [1]Object{obj._VisualShaderNodeParticleBoxEmitter}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeParticleConeVelocity struct {
-	Locked
-	_VisualShaderNodeParticleConeVelocity Object
+	object
+	_VisualShaderNodeParticleConeVelocity struct{}
 }
 
 func NewVisualShaderNodeParticleConeVelocity(obj Object) VisualShaderNodeParticleConeVelocity {
-	return VisualShaderNodeParticleConeVelocity{Locked{}, obj}
+	return VisualShaderNodeParticleConeVelocity{object: object(obj)}
 }
 func GetVisualShaderNodeParticleConeVelocity(obj VisualShaderNodeParticleConeVelocity) [1]Object {
-	return [1]Object{obj._VisualShaderNodeParticleConeVelocity}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeParticleEmit struct {
-	Locked
-	_VisualShaderNodeParticleEmit Object
+	object
+	_VisualShaderNodeParticleEmit struct{}
 }
 
 func NewVisualShaderNodeParticleEmit(obj Object) VisualShaderNodeParticleEmit {
-	return VisualShaderNodeParticleEmit{Locked{}, obj}
+	return VisualShaderNodeParticleEmit{object: object(obj)}
 }
 func GetVisualShaderNodeParticleEmit(obj VisualShaderNodeParticleEmit) [1]Object {
-	return [1]Object{obj._VisualShaderNodeParticleEmit}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeParticleEmitter struct {
-	Locked
-	_VisualShaderNodeParticleEmitter Object
+	object
+	_VisualShaderNodeParticleEmitter struct{}
 }
 
 func NewVisualShaderNodeParticleEmitter(obj Object) VisualShaderNodeParticleEmitter {
-	return VisualShaderNodeParticleEmitter{Locked{}, obj}
+	return VisualShaderNodeParticleEmitter{object: object(obj)}
 }
 func GetVisualShaderNodeParticleEmitter(obj VisualShaderNodeParticleEmitter) [1]Object {
-	return [1]Object{obj._VisualShaderNodeParticleEmitter}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeParticleMeshEmitter struct {
-	Locked
-	_VisualShaderNodeParticleMeshEmitter Object
+	object
+	_VisualShaderNodeParticleMeshEmitter struct{}
 }
 
 func NewVisualShaderNodeParticleMeshEmitter(obj Object) VisualShaderNodeParticleMeshEmitter {
-	return VisualShaderNodeParticleMeshEmitter{Locked{}, obj}
+	return VisualShaderNodeParticleMeshEmitter{object: object(obj)}
 }
 func GetVisualShaderNodeParticleMeshEmitter(obj VisualShaderNodeParticleMeshEmitter) [1]Object {
-	return [1]Object{obj._VisualShaderNodeParticleMeshEmitter}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeParticleMultiplyByAxisAngle struct {
-	Locked
-	_VisualShaderNodeParticleMultiplyByAxisAngle Object
+	object
+	_VisualShaderNodeParticleMultiplyByAxisAngle struct{}
 }
 
 func NewVisualShaderNodeParticleMultiplyByAxisAngle(obj Object) VisualShaderNodeParticleMultiplyByAxisAngle {
-	return VisualShaderNodeParticleMultiplyByAxisAngle{Locked{}, obj}
+	return VisualShaderNodeParticleMultiplyByAxisAngle{object: object(obj)}
 }
 func GetVisualShaderNodeParticleMultiplyByAxisAngle(obj VisualShaderNodeParticleMultiplyByAxisAngle) [1]Object {
-	return [1]Object{obj._VisualShaderNodeParticleMultiplyByAxisAngle}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeParticleOutput struct {
-	Locked
-	_VisualShaderNodeParticleOutput Object
+	object
+	_VisualShaderNodeParticleOutput struct{}
 }
 
 func NewVisualShaderNodeParticleOutput(obj Object) VisualShaderNodeParticleOutput {
-	return VisualShaderNodeParticleOutput{Locked{}, obj}
+	return VisualShaderNodeParticleOutput{object: object(obj)}
 }
 func GetVisualShaderNodeParticleOutput(obj VisualShaderNodeParticleOutput) [1]Object {
-	return [1]Object{obj._VisualShaderNodeParticleOutput}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeParticleRandomness struct {
-	Locked
-	_VisualShaderNodeParticleRandomness Object
+	object
+	_VisualShaderNodeParticleRandomness struct{}
 }
 
 func NewVisualShaderNodeParticleRandomness(obj Object) VisualShaderNodeParticleRandomness {
-	return VisualShaderNodeParticleRandomness{Locked{}, obj}
+	return VisualShaderNodeParticleRandomness{object: object(obj)}
 }
 func GetVisualShaderNodeParticleRandomness(obj VisualShaderNodeParticleRandomness) [1]Object {
-	return [1]Object{obj._VisualShaderNodeParticleRandomness}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeParticleRingEmitter struct {
-	Locked
-	_VisualShaderNodeParticleRingEmitter Object
+	object
+	_VisualShaderNodeParticleRingEmitter struct{}
 }
 
 func NewVisualShaderNodeParticleRingEmitter(obj Object) VisualShaderNodeParticleRingEmitter {
-	return VisualShaderNodeParticleRingEmitter{Locked{}, obj}
+	return VisualShaderNodeParticleRingEmitter{object: object(obj)}
 }
 func GetVisualShaderNodeParticleRingEmitter(obj VisualShaderNodeParticleRingEmitter) [1]Object {
-	return [1]Object{obj._VisualShaderNodeParticleRingEmitter}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeParticleSphereEmitter struct {
-	Locked
-	_VisualShaderNodeParticleSphereEmitter Object
+	object
+	_VisualShaderNodeParticleSphereEmitter struct{}
 }
 
 func NewVisualShaderNodeParticleSphereEmitter(obj Object) VisualShaderNodeParticleSphereEmitter {
-	return VisualShaderNodeParticleSphereEmitter{Locked{}, obj}
+	return VisualShaderNodeParticleSphereEmitter{object: object(obj)}
 }
 func GetVisualShaderNodeParticleSphereEmitter(obj VisualShaderNodeParticleSphereEmitter) [1]Object {
-	return [1]Object{obj._VisualShaderNodeParticleSphereEmitter}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeProximityFade struct {
-	Locked
-	_VisualShaderNodeProximityFade Object
+	object
+	_VisualShaderNodeProximityFade struct{}
 }
 
 func NewVisualShaderNodeProximityFade(obj Object) VisualShaderNodeProximityFade {
-	return VisualShaderNodeProximityFade{Locked{}, obj}
+	return VisualShaderNodeProximityFade{object: object(obj)}
 }
 func GetVisualShaderNodeProximityFade(obj VisualShaderNodeProximityFade) [1]Object {
-	return [1]Object{obj._VisualShaderNodeProximityFade}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeRandomRange struct {
-	Locked
-	_VisualShaderNodeRandomRange Object
+	object
+	_VisualShaderNodeRandomRange struct{}
 }
 
 func NewVisualShaderNodeRandomRange(obj Object) VisualShaderNodeRandomRange {
-	return VisualShaderNodeRandomRange{Locked{}, obj}
+	return VisualShaderNodeRandomRange{object: object(obj)}
 }
-func GetVisualShaderNodeRandomRange(obj VisualShaderNodeRandomRange) [1]Object {
-	return [1]Object{obj._VisualShaderNodeRandomRange}
-}
+func GetVisualShaderNodeRandomRange(obj VisualShaderNodeRandomRange) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeRemap struct {
-	Locked
-	_VisualShaderNodeRemap Object
+	object
+	_VisualShaderNodeRemap struct{}
 }
 
 func NewVisualShaderNodeRemap(obj Object) VisualShaderNodeRemap {
-	return VisualShaderNodeRemap{Locked{}, obj}
+	return VisualShaderNodeRemap{object: object(obj)}
 }
-func GetVisualShaderNodeRemap(obj VisualShaderNodeRemap) [1]Object {
-	return [1]Object{obj._VisualShaderNodeRemap}
-}
+func GetVisualShaderNodeRemap(obj VisualShaderNodeRemap) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeReroute struct {
-	Locked
-	_VisualShaderNodeReroute Object
+	object
+	_VisualShaderNodeReroute struct{}
 }
 
 func NewVisualShaderNodeReroute(obj Object) VisualShaderNodeReroute {
-	return VisualShaderNodeReroute{Locked{}, obj}
+	return VisualShaderNodeReroute{object: object(obj)}
 }
-func GetVisualShaderNodeReroute(obj VisualShaderNodeReroute) [1]Object {
-	return [1]Object{obj._VisualShaderNodeReroute}
-}
+func GetVisualShaderNodeReroute(obj VisualShaderNodeReroute) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeResizableBase struct {
-	Locked
-	_VisualShaderNodeResizableBase Object
+	object
+	_VisualShaderNodeResizableBase struct{}
 }
 
 func NewVisualShaderNodeResizableBase(obj Object) VisualShaderNodeResizableBase {
-	return VisualShaderNodeResizableBase{Locked{}, obj}
+	return VisualShaderNodeResizableBase{object: object(obj)}
 }
 func GetVisualShaderNodeResizableBase(obj VisualShaderNodeResizableBase) [1]Object {
-	return [1]Object{obj._VisualShaderNodeResizableBase}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeRotationByAxis struct {
-	Locked
-	_VisualShaderNodeRotationByAxis Object
+	object
+	_VisualShaderNodeRotationByAxis struct{}
 }
 
 func NewVisualShaderNodeRotationByAxis(obj Object) VisualShaderNodeRotationByAxis {
-	return VisualShaderNodeRotationByAxis{Locked{}, obj}
+	return VisualShaderNodeRotationByAxis{object: object(obj)}
 }
 func GetVisualShaderNodeRotationByAxis(obj VisualShaderNodeRotationByAxis) [1]Object {
-	return [1]Object{obj._VisualShaderNodeRotationByAxis}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeSDFRaymarch struct {
-	Locked
-	_VisualShaderNodeSDFRaymarch Object
+	object
+	_VisualShaderNodeSDFRaymarch struct{}
 }
 
 func NewVisualShaderNodeSDFRaymarch(obj Object) VisualShaderNodeSDFRaymarch {
-	return VisualShaderNodeSDFRaymarch{Locked{}, obj}
+	return VisualShaderNodeSDFRaymarch{object: object(obj)}
 }
-func GetVisualShaderNodeSDFRaymarch(obj VisualShaderNodeSDFRaymarch) [1]Object {
-	return [1]Object{obj._VisualShaderNodeSDFRaymarch}
-}
+func GetVisualShaderNodeSDFRaymarch(obj VisualShaderNodeSDFRaymarch) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeSDFToScreenUV struct {
-	Locked
-	_VisualShaderNodeSDFToScreenUV Object
+	object
+	_VisualShaderNodeSDFToScreenUV struct{}
 }
 
 func NewVisualShaderNodeSDFToScreenUV(obj Object) VisualShaderNodeSDFToScreenUV {
-	return VisualShaderNodeSDFToScreenUV{Locked{}, obj}
+	return VisualShaderNodeSDFToScreenUV{object: object(obj)}
 }
 func GetVisualShaderNodeSDFToScreenUV(obj VisualShaderNodeSDFToScreenUV) [1]Object {
-	return [1]Object{obj._VisualShaderNodeSDFToScreenUV}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeSample3D struct {
-	Locked
-	_VisualShaderNodeSample3D Object
+	object
+	_VisualShaderNodeSample3D struct{}
 }
 
 func NewVisualShaderNodeSample3D(obj Object) VisualShaderNodeSample3D {
-	return VisualShaderNodeSample3D{Locked{}, obj}
+	return VisualShaderNodeSample3D{object: object(obj)}
 }
-func GetVisualShaderNodeSample3D(obj VisualShaderNodeSample3D) [1]Object {
-	return [1]Object{obj._VisualShaderNodeSample3D}
-}
+func GetVisualShaderNodeSample3D(obj VisualShaderNodeSample3D) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeScreenNormalWorldSpace struct {
-	Locked
-	_VisualShaderNodeScreenNormalWorldSpace Object
+	object
+	_VisualShaderNodeScreenNormalWorldSpace struct{}
 }
 
 func NewVisualShaderNodeScreenNormalWorldSpace(obj Object) VisualShaderNodeScreenNormalWorldSpace {
-	return VisualShaderNodeScreenNormalWorldSpace{Locked{}, obj}
+	return VisualShaderNodeScreenNormalWorldSpace{object: object(obj)}
 }
 func GetVisualShaderNodeScreenNormalWorldSpace(obj VisualShaderNodeScreenNormalWorldSpace) [1]Object {
-	return [1]Object{obj._VisualShaderNodeScreenNormalWorldSpace}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeScreenUVToSDF struct {
-	Locked
-	_VisualShaderNodeScreenUVToSDF Object
+	object
+	_VisualShaderNodeScreenUVToSDF struct{}
 }
 
 func NewVisualShaderNodeScreenUVToSDF(obj Object) VisualShaderNodeScreenUVToSDF {
-	return VisualShaderNodeScreenUVToSDF{Locked{}, obj}
+	return VisualShaderNodeScreenUVToSDF{object: object(obj)}
 }
 func GetVisualShaderNodeScreenUVToSDF(obj VisualShaderNodeScreenUVToSDF) [1]Object {
-	return [1]Object{obj._VisualShaderNodeScreenUVToSDF}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeSmoothStep struct {
-	Locked
-	_VisualShaderNodeSmoothStep Object
+	object
+	_VisualShaderNodeSmoothStep struct{}
 }
 
 func NewVisualShaderNodeSmoothStep(obj Object) VisualShaderNodeSmoothStep {
-	return VisualShaderNodeSmoothStep{Locked{}, obj}
+	return VisualShaderNodeSmoothStep{object: object(obj)}
 }
-func GetVisualShaderNodeSmoothStep(obj VisualShaderNodeSmoothStep) [1]Object {
-	return [1]Object{obj._VisualShaderNodeSmoothStep}
-}
+func GetVisualShaderNodeSmoothStep(obj VisualShaderNodeSmoothStep) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeStep struct {
-	Locked
-	_VisualShaderNodeStep Object
+	object
+	_VisualShaderNodeStep struct{}
 }
 
 func NewVisualShaderNodeStep(obj Object) VisualShaderNodeStep {
-	return VisualShaderNodeStep{Locked{}, obj}
+	return VisualShaderNodeStep{object: object(obj)}
 }
-func GetVisualShaderNodeStep(obj VisualShaderNodeStep) [1]Object {
-	return [1]Object{obj._VisualShaderNodeStep}
-}
+func GetVisualShaderNodeStep(obj VisualShaderNodeStep) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeSwitch struct {
-	Locked
-	_VisualShaderNodeSwitch Object
+	object
+	_VisualShaderNodeSwitch struct{}
 }
 
 func NewVisualShaderNodeSwitch(obj Object) VisualShaderNodeSwitch {
-	return VisualShaderNodeSwitch{Locked{}, obj}
+	return VisualShaderNodeSwitch{object: object(obj)}
 }
-func GetVisualShaderNodeSwitch(obj VisualShaderNodeSwitch) [1]Object {
-	return [1]Object{obj._VisualShaderNodeSwitch}
-}
+func GetVisualShaderNodeSwitch(obj VisualShaderNodeSwitch) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeTexture struct {
-	Locked
-	_VisualShaderNodeTexture Object
+	object
+	_VisualShaderNodeTexture struct{}
 }
 
 func NewVisualShaderNodeTexture(obj Object) VisualShaderNodeTexture {
-	return VisualShaderNodeTexture{Locked{}, obj}
+	return VisualShaderNodeTexture{object: object(obj)}
 }
-func GetVisualShaderNodeTexture(obj VisualShaderNodeTexture) [1]Object {
-	return [1]Object{obj._VisualShaderNodeTexture}
-}
+func GetVisualShaderNodeTexture(obj VisualShaderNodeTexture) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeTexture2DArray struct {
-	Locked
-	_VisualShaderNodeTexture2DArray Object
+	object
+	_VisualShaderNodeTexture2DArray struct{}
 }
 
 func NewVisualShaderNodeTexture2DArray(obj Object) VisualShaderNodeTexture2DArray {
-	return VisualShaderNodeTexture2DArray{Locked{}, obj}
+	return VisualShaderNodeTexture2DArray{object: object(obj)}
 }
 func GetVisualShaderNodeTexture2DArray(obj VisualShaderNodeTexture2DArray) [1]Object {
-	return [1]Object{obj._VisualShaderNodeTexture2DArray}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeTexture2DArrayParameter struct {
-	Locked
-	_VisualShaderNodeTexture2DArrayParameter Object
+	object
+	_VisualShaderNodeTexture2DArrayParameter struct{}
 }
 
 func NewVisualShaderNodeTexture2DArrayParameter(obj Object) VisualShaderNodeTexture2DArrayParameter {
-	return VisualShaderNodeTexture2DArrayParameter{Locked{}, obj}
+	return VisualShaderNodeTexture2DArrayParameter{object: object(obj)}
 }
 func GetVisualShaderNodeTexture2DArrayParameter(obj VisualShaderNodeTexture2DArrayParameter) [1]Object {
-	return [1]Object{obj._VisualShaderNodeTexture2DArrayParameter}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeTexture2DParameter struct {
-	Locked
-	_VisualShaderNodeTexture2DParameter Object
+	object
+	_VisualShaderNodeTexture2DParameter struct{}
 }
 
 func NewVisualShaderNodeTexture2DParameter(obj Object) VisualShaderNodeTexture2DParameter {
-	return VisualShaderNodeTexture2DParameter{Locked{}, obj}
+	return VisualShaderNodeTexture2DParameter{object: object(obj)}
 }
 func GetVisualShaderNodeTexture2DParameter(obj VisualShaderNodeTexture2DParameter) [1]Object {
-	return [1]Object{obj._VisualShaderNodeTexture2DParameter}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeTexture3D struct {
-	Locked
-	_VisualShaderNodeTexture3D Object
+	object
+	_VisualShaderNodeTexture3D struct{}
 }
 
 func NewVisualShaderNodeTexture3D(obj Object) VisualShaderNodeTexture3D {
-	return VisualShaderNodeTexture3D{Locked{}, obj}
+	return VisualShaderNodeTexture3D{object: object(obj)}
 }
-func GetVisualShaderNodeTexture3D(obj VisualShaderNodeTexture3D) [1]Object {
-	return [1]Object{obj._VisualShaderNodeTexture3D}
-}
+func GetVisualShaderNodeTexture3D(obj VisualShaderNodeTexture3D) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeTexture3DParameter struct {
-	Locked
-	_VisualShaderNodeTexture3DParameter Object
+	object
+	_VisualShaderNodeTexture3DParameter struct{}
 }
 
 func NewVisualShaderNodeTexture3DParameter(obj Object) VisualShaderNodeTexture3DParameter {
-	return VisualShaderNodeTexture3DParameter{Locked{}, obj}
+	return VisualShaderNodeTexture3DParameter{object: object(obj)}
 }
 func GetVisualShaderNodeTexture3DParameter(obj VisualShaderNodeTexture3DParameter) [1]Object {
-	return [1]Object{obj._VisualShaderNodeTexture3DParameter}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeTextureParameter struct {
-	Locked
-	_VisualShaderNodeTextureParameter Object
+	object
+	_VisualShaderNodeTextureParameter struct{}
 }
 
 func NewVisualShaderNodeTextureParameter(obj Object) VisualShaderNodeTextureParameter {
-	return VisualShaderNodeTextureParameter{Locked{}, obj}
+	return VisualShaderNodeTextureParameter{object: object(obj)}
 }
 func GetVisualShaderNodeTextureParameter(obj VisualShaderNodeTextureParameter) [1]Object {
-	return [1]Object{obj._VisualShaderNodeTextureParameter}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeTextureParameterTriplanar struct {
-	Locked
-	_VisualShaderNodeTextureParameterTriplanar Object
+	object
+	_VisualShaderNodeTextureParameterTriplanar struct{}
 }
 
 func NewVisualShaderNodeTextureParameterTriplanar(obj Object) VisualShaderNodeTextureParameterTriplanar {
-	return VisualShaderNodeTextureParameterTriplanar{Locked{}, obj}
+	return VisualShaderNodeTextureParameterTriplanar{object: object(obj)}
 }
 func GetVisualShaderNodeTextureParameterTriplanar(obj VisualShaderNodeTextureParameterTriplanar) [1]Object {
-	return [1]Object{obj._VisualShaderNodeTextureParameterTriplanar}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeTextureSDF struct {
-	Locked
-	_VisualShaderNodeTextureSDF Object
+	object
+	_VisualShaderNodeTextureSDF struct{}
 }
 
 func NewVisualShaderNodeTextureSDF(obj Object) VisualShaderNodeTextureSDF {
-	return VisualShaderNodeTextureSDF{Locked{}, obj}
+	return VisualShaderNodeTextureSDF{object: object(obj)}
 }
-func GetVisualShaderNodeTextureSDF(obj VisualShaderNodeTextureSDF) [1]Object {
-	return [1]Object{obj._VisualShaderNodeTextureSDF}
-}
+func GetVisualShaderNodeTextureSDF(obj VisualShaderNodeTextureSDF) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeTextureSDFNormal struct {
-	Locked
-	_VisualShaderNodeTextureSDFNormal Object
+	object
+	_VisualShaderNodeTextureSDFNormal struct{}
 }
 
 func NewVisualShaderNodeTextureSDFNormal(obj Object) VisualShaderNodeTextureSDFNormal {
-	return VisualShaderNodeTextureSDFNormal{Locked{}, obj}
+	return VisualShaderNodeTextureSDFNormal{object: object(obj)}
 }
 func GetVisualShaderNodeTextureSDFNormal(obj VisualShaderNodeTextureSDFNormal) [1]Object {
-	return [1]Object{obj._VisualShaderNodeTextureSDFNormal}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeTransformCompose struct {
-	Locked
-	_VisualShaderNodeTransformCompose Object
+	object
+	_VisualShaderNodeTransformCompose struct{}
 }
 
 func NewVisualShaderNodeTransformCompose(obj Object) VisualShaderNodeTransformCompose {
-	return VisualShaderNodeTransformCompose{Locked{}, obj}
+	return VisualShaderNodeTransformCompose{object: object(obj)}
 }
 func GetVisualShaderNodeTransformCompose(obj VisualShaderNodeTransformCompose) [1]Object {
-	return [1]Object{obj._VisualShaderNodeTransformCompose}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeTransformConstant struct {
-	Locked
-	_VisualShaderNodeTransformConstant Object
+	object
+	_VisualShaderNodeTransformConstant struct{}
 }
 
 func NewVisualShaderNodeTransformConstant(obj Object) VisualShaderNodeTransformConstant {
-	return VisualShaderNodeTransformConstant{Locked{}, obj}
+	return VisualShaderNodeTransformConstant{object: object(obj)}
 }
 func GetVisualShaderNodeTransformConstant(obj VisualShaderNodeTransformConstant) [1]Object {
-	return [1]Object{obj._VisualShaderNodeTransformConstant}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeTransformDecompose struct {
-	Locked
-	_VisualShaderNodeTransformDecompose Object
+	object
+	_VisualShaderNodeTransformDecompose struct{}
 }
 
 func NewVisualShaderNodeTransformDecompose(obj Object) VisualShaderNodeTransformDecompose {
-	return VisualShaderNodeTransformDecompose{Locked{}, obj}
+	return VisualShaderNodeTransformDecompose{object: object(obj)}
 }
 func GetVisualShaderNodeTransformDecompose(obj VisualShaderNodeTransformDecompose) [1]Object {
-	return [1]Object{obj._VisualShaderNodeTransformDecompose}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeTransformFunc struct {
-	Locked
-	_VisualShaderNodeTransformFunc Object
+	object
+	_VisualShaderNodeTransformFunc struct{}
 }
 
 func NewVisualShaderNodeTransformFunc(obj Object) VisualShaderNodeTransformFunc {
-	return VisualShaderNodeTransformFunc{Locked{}, obj}
+	return VisualShaderNodeTransformFunc{object: object(obj)}
 }
 func GetVisualShaderNodeTransformFunc(obj VisualShaderNodeTransformFunc) [1]Object {
-	return [1]Object{obj._VisualShaderNodeTransformFunc}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeTransformOp struct {
-	Locked
-	_VisualShaderNodeTransformOp Object
+	object
+	_VisualShaderNodeTransformOp struct{}
 }
 
 func NewVisualShaderNodeTransformOp(obj Object) VisualShaderNodeTransformOp {
-	return VisualShaderNodeTransformOp{Locked{}, obj}
+	return VisualShaderNodeTransformOp{object: object(obj)}
 }
-func GetVisualShaderNodeTransformOp(obj VisualShaderNodeTransformOp) [1]Object {
-	return [1]Object{obj._VisualShaderNodeTransformOp}
-}
+func GetVisualShaderNodeTransformOp(obj VisualShaderNodeTransformOp) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeTransformParameter struct {
-	Locked
-	_VisualShaderNodeTransformParameter Object
+	object
+	_VisualShaderNodeTransformParameter struct{}
 }
 
 func NewVisualShaderNodeTransformParameter(obj Object) VisualShaderNodeTransformParameter {
-	return VisualShaderNodeTransformParameter{Locked{}, obj}
+	return VisualShaderNodeTransformParameter{object: object(obj)}
 }
 func GetVisualShaderNodeTransformParameter(obj VisualShaderNodeTransformParameter) [1]Object {
-	return [1]Object{obj._VisualShaderNodeTransformParameter}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeTransformVecMult struct {
-	Locked
-	_VisualShaderNodeTransformVecMult Object
+	object
+	_VisualShaderNodeTransformVecMult struct{}
 }
 
 func NewVisualShaderNodeTransformVecMult(obj Object) VisualShaderNodeTransformVecMult {
-	return VisualShaderNodeTransformVecMult{Locked{}, obj}
+	return VisualShaderNodeTransformVecMult{object: object(obj)}
 }
 func GetVisualShaderNodeTransformVecMult(obj VisualShaderNodeTransformVecMult) [1]Object {
-	return [1]Object{obj._VisualShaderNodeTransformVecMult}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeUIntConstant struct {
-	Locked
-	_VisualShaderNodeUIntConstant Object
+	object
+	_VisualShaderNodeUIntConstant struct{}
 }
 
 func NewVisualShaderNodeUIntConstant(obj Object) VisualShaderNodeUIntConstant {
-	return VisualShaderNodeUIntConstant{Locked{}, obj}
+	return VisualShaderNodeUIntConstant{object: object(obj)}
 }
 func GetVisualShaderNodeUIntConstant(obj VisualShaderNodeUIntConstant) [1]Object {
-	return [1]Object{obj._VisualShaderNodeUIntConstant}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeUIntFunc struct {
-	Locked
-	_VisualShaderNodeUIntFunc Object
+	object
+	_VisualShaderNodeUIntFunc struct{}
 }
 
 func NewVisualShaderNodeUIntFunc(obj Object) VisualShaderNodeUIntFunc {
-	return VisualShaderNodeUIntFunc{Locked{}, obj}
+	return VisualShaderNodeUIntFunc{object: object(obj)}
 }
-func GetVisualShaderNodeUIntFunc(obj VisualShaderNodeUIntFunc) [1]Object {
-	return [1]Object{obj._VisualShaderNodeUIntFunc}
-}
+func GetVisualShaderNodeUIntFunc(obj VisualShaderNodeUIntFunc) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeUIntOp struct {
-	Locked
-	_VisualShaderNodeUIntOp Object
+	object
+	_VisualShaderNodeUIntOp struct{}
 }
 
 func NewVisualShaderNodeUIntOp(obj Object) VisualShaderNodeUIntOp {
-	return VisualShaderNodeUIntOp{Locked{}, obj}
+	return VisualShaderNodeUIntOp{object: object(obj)}
 }
-func GetVisualShaderNodeUIntOp(obj VisualShaderNodeUIntOp) [1]Object {
-	return [1]Object{obj._VisualShaderNodeUIntOp}
-}
+func GetVisualShaderNodeUIntOp(obj VisualShaderNodeUIntOp) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeUIntParameter struct {
-	Locked
-	_VisualShaderNodeUIntParameter Object
+	object
+	_VisualShaderNodeUIntParameter struct{}
 }
 
 func NewVisualShaderNodeUIntParameter(obj Object) VisualShaderNodeUIntParameter {
-	return VisualShaderNodeUIntParameter{Locked{}, obj}
+	return VisualShaderNodeUIntParameter{object: object(obj)}
 }
 func GetVisualShaderNodeUIntParameter(obj VisualShaderNodeUIntParameter) [1]Object {
-	return [1]Object{obj._VisualShaderNodeUIntParameter}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeUVFunc struct {
-	Locked
-	_VisualShaderNodeUVFunc Object
+	object
+	_VisualShaderNodeUVFunc struct{}
 }
 
 func NewVisualShaderNodeUVFunc(obj Object) VisualShaderNodeUVFunc {
-	return VisualShaderNodeUVFunc{Locked{}, obj}
+	return VisualShaderNodeUVFunc{object: object(obj)}
 }
-func GetVisualShaderNodeUVFunc(obj VisualShaderNodeUVFunc) [1]Object {
-	return [1]Object{obj._VisualShaderNodeUVFunc}
-}
+func GetVisualShaderNodeUVFunc(obj VisualShaderNodeUVFunc) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeUVPolarCoord struct {
-	Locked
-	_VisualShaderNodeUVPolarCoord Object
+	object
+	_VisualShaderNodeUVPolarCoord struct{}
 }
 
 func NewVisualShaderNodeUVPolarCoord(obj Object) VisualShaderNodeUVPolarCoord {
-	return VisualShaderNodeUVPolarCoord{Locked{}, obj}
+	return VisualShaderNodeUVPolarCoord{object: object(obj)}
 }
 func GetVisualShaderNodeUVPolarCoord(obj VisualShaderNodeUVPolarCoord) [1]Object {
-	return [1]Object{obj._VisualShaderNodeUVPolarCoord}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeVarying struct {
-	Locked
-	_VisualShaderNodeVarying Object
+	object
+	_VisualShaderNodeVarying struct{}
 }
 
 func NewVisualShaderNodeVarying(obj Object) VisualShaderNodeVarying {
-	return VisualShaderNodeVarying{Locked{}, obj}
+	return VisualShaderNodeVarying{object: object(obj)}
 }
-func GetVisualShaderNodeVarying(obj VisualShaderNodeVarying) [1]Object {
-	return [1]Object{obj._VisualShaderNodeVarying}
-}
+func GetVisualShaderNodeVarying(obj VisualShaderNodeVarying) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeVaryingGetter struct {
-	Locked
-	_VisualShaderNodeVaryingGetter Object
+	object
+	_VisualShaderNodeVaryingGetter struct{}
 }
 
 func NewVisualShaderNodeVaryingGetter(obj Object) VisualShaderNodeVaryingGetter {
-	return VisualShaderNodeVaryingGetter{Locked{}, obj}
+	return VisualShaderNodeVaryingGetter{object: object(obj)}
 }
 func GetVisualShaderNodeVaryingGetter(obj VisualShaderNodeVaryingGetter) [1]Object {
-	return [1]Object{obj._VisualShaderNodeVaryingGetter}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeVaryingSetter struct {
-	Locked
-	_VisualShaderNodeVaryingSetter Object
+	object
+	_VisualShaderNodeVaryingSetter struct{}
 }
 
 func NewVisualShaderNodeVaryingSetter(obj Object) VisualShaderNodeVaryingSetter {
-	return VisualShaderNodeVaryingSetter{Locked{}, obj}
+	return VisualShaderNodeVaryingSetter{object: object(obj)}
 }
 func GetVisualShaderNodeVaryingSetter(obj VisualShaderNodeVaryingSetter) [1]Object {
-	return [1]Object{obj._VisualShaderNodeVaryingSetter}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeVec2Constant struct {
-	Locked
-	_VisualShaderNodeVec2Constant Object
+	object
+	_VisualShaderNodeVec2Constant struct{}
 }
 
 func NewVisualShaderNodeVec2Constant(obj Object) VisualShaderNodeVec2Constant {
-	return VisualShaderNodeVec2Constant{Locked{}, obj}
+	return VisualShaderNodeVec2Constant{object: object(obj)}
 }
 func GetVisualShaderNodeVec2Constant(obj VisualShaderNodeVec2Constant) [1]Object {
-	return [1]Object{obj._VisualShaderNodeVec2Constant}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeVec2Parameter struct {
-	Locked
-	_VisualShaderNodeVec2Parameter Object
+	object
+	_VisualShaderNodeVec2Parameter struct{}
 }
 
 func NewVisualShaderNodeVec2Parameter(obj Object) VisualShaderNodeVec2Parameter {
-	return VisualShaderNodeVec2Parameter{Locked{}, obj}
+	return VisualShaderNodeVec2Parameter{object: object(obj)}
 }
 func GetVisualShaderNodeVec2Parameter(obj VisualShaderNodeVec2Parameter) [1]Object {
-	return [1]Object{obj._VisualShaderNodeVec2Parameter}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeVec3Constant struct {
-	Locked
-	_VisualShaderNodeVec3Constant Object
+	object
+	_VisualShaderNodeVec3Constant struct{}
 }
 
 func NewVisualShaderNodeVec3Constant(obj Object) VisualShaderNodeVec3Constant {
-	return VisualShaderNodeVec3Constant{Locked{}, obj}
+	return VisualShaderNodeVec3Constant{object: object(obj)}
 }
 func GetVisualShaderNodeVec3Constant(obj VisualShaderNodeVec3Constant) [1]Object {
-	return [1]Object{obj._VisualShaderNodeVec3Constant}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeVec3Parameter struct {
-	Locked
-	_VisualShaderNodeVec3Parameter Object
+	object
+	_VisualShaderNodeVec3Parameter struct{}
 }
 
 func NewVisualShaderNodeVec3Parameter(obj Object) VisualShaderNodeVec3Parameter {
-	return VisualShaderNodeVec3Parameter{Locked{}, obj}
+	return VisualShaderNodeVec3Parameter{object: object(obj)}
 }
 func GetVisualShaderNodeVec3Parameter(obj VisualShaderNodeVec3Parameter) [1]Object {
-	return [1]Object{obj._VisualShaderNodeVec3Parameter}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeVec4Constant struct {
-	Locked
-	_VisualShaderNodeVec4Constant Object
+	object
+	_VisualShaderNodeVec4Constant struct{}
 }
 
 func NewVisualShaderNodeVec4Constant(obj Object) VisualShaderNodeVec4Constant {
-	return VisualShaderNodeVec4Constant{Locked{}, obj}
+	return VisualShaderNodeVec4Constant{object: object(obj)}
 }
 func GetVisualShaderNodeVec4Constant(obj VisualShaderNodeVec4Constant) [1]Object {
-	return [1]Object{obj._VisualShaderNodeVec4Constant}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeVec4Parameter struct {
-	Locked
-	_VisualShaderNodeVec4Parameter Object
+	object
+	_VisualShaderNodeVec4Parameter struct{}
 }
 
 func NewVisualShaderNodeVec4Parameter(obj Object) VisualShaderNodeVec4Parameter {
-	return VisualShaderNodeVec4Parameter{Locked{}, obj}
+	return VisualShaderNodeVec4Parameter{object: object(obj)}
 }
 func GetVisualShaderNodeVec4Parameter(obj VisualShaderNodeVec4Parameter) [1]Object {
-	return [1]Object{obj._VisualShaderNodeVec4Parameter}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeVectorBase struct {
-	Locked
-	_VisualShaderNodeVectorBase Object
+	object
+	_VisualShaderNodeVectorBase struct{}
 }
 
 func NewVisualShaderNodeVectorBase(obj Object) VisualShaderNodeVectorBase {
-	return VisualShaderNodeVectorBase{Locked{}, obj}
+	return VisualShaderNodeVectorBase{object: object(obj)}
 }
-func GetVisualShaderNodeVectorBase(obj VisualShaderNodeVectorBase) [1]Object {
-	return [1]Object{obj._VisualShaderNodeVectorBase}
-}
+func GetVisualShaderNodeVectorBase(obj VisualShaderNodeVectorBase) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeVectorCompose struct {
-	Locked
-	_VisualShaderNodeVectorCompose Object
+	object
+	_VisualShaderNodeVectorCompose struct{}
 }
 
 func NewVisualShaderNodeVectorCompose(obj Object) VisualShaderNodeVectorCompose {
-	return VisualShaderNodeVectorCompose{Locked{}, obj}
+	return VisualShaderNodeVectorCompose{object: object(obj)}
 }
 func GetVisualShaderNodeVectorCompose(obj VisualShaderNodeVectorCompose) [1]Object {
-	return [1]Object{obj._VisualShaderNodeVectorCompose}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeVectorDecompose struct {
-	Locked
-	_VisualShaderNodeVectorDecompose Object
+	object
+	_VisualShaderNodeVectorDecompose struct{}
 }
 
 func NewVisualShaderNodeVectorDecompose(obj Object) VisualShaderNodeVectorDecompose {
-	return VisualShaderNodeVectorDecompose{Locked{}, obj}
+	return VisualShaderNodeVectorDecompose{object: object(obj)}
 }
 func GetVisualShaderNodeVectorDecompose(obj VisualShaderNodeVectorDecompose) [1]Object {
-	return [1]Object{obj._VisualShaderNodeVectorDecompose}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeVectorDistance struct {
-	Locked
-	_VisualShaderNodeVectorDistance Object
+	object
+	_VisualShaderNodeVectorDistance struct{}
 }
 
 func NewVisualShaderNodeVectorDistance(obj Object) VisualShaderNodeVectorDistance {
-	return VisualShaderNodeVectorDistance{Locked{}, obj}
+	return VisualShaderNodeVectorDistance{object: object(obj)}
 }
 func GetVisualShaderNodeVectorDistance(obj VisualShaderNodeVectorDistance) [1]Object {
-	return [1]Object{obj._VisualShaderNodeVectorDistance}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeVectorFunc struct {
-	Locked
-	_VisualShaderNodeVectorFunc Object
+	object
+	_VisualShaderNodeVectorFunc struct{}
 }
 
 func NewVisualShaderNodeVectorFunc(obj Object) VisualShaderNodeVectorFunc {
-	return VisualShaderNodeVectorFunc{Locked{}, obj}
+	return VisualShaderNodeVectorFunc{object: object(obj)}
 }
-func GetVisualShaderNodeVectorFunc(obj VisualShaderNodeVectorFunc) [1]Object {
-	return [1]Object{obj._VisualShaderNodeVectorFunc}
-}
+func GetVisualShaderNodeVectorFunc(obj VisualShaderNodeVectorFunc) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeVectorLen struct {
-	Locked
-	_VisualShaderNodeVectorLen Object
+	object
+	_VisualShaderNodeVectorLen struct{}
 }
 
 func NewVisualShaderNodeVectorLen(obj Object) VisualShaderNodeVectorLen {
-	return VisualShaderNodeVectorLen{Locked{}, obj}
+	return VisualShaderNodeVectorLen{object: object(obj)}
 }
-func GetVisualShaderNodeVectorLen(obj VisualShaderNodeVectorLen) [1]Object {
-	return [1]Object{obj._VisualShaderNodeVectorLen}
-}
+func GetVisualShaderNodeVectorLen(obj VisualShaderNodeVectorLen) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeVectorOp struct {
-	Locked
-	_VisualShaderNodeVectorOp Object
+	object
+	_VisualShaderNodeVectorOp struct{}
 }
 
 func NewVisualShaderNodeVectorOp(obj Object) VisualShaderNodeVectorOp {
-	return VisualShaderNodeVectorOp{Locked{}, obj}
+	return VisualShaderNodeVectorOp{object: object(obj)}
 }
-func GetVisualShaderNodeVectorOp(obj VisualShaderNodeVectorOp) [1]Object {
-	return [1]Object{obj._VisualShaderNodeVectorOp}
-}
+func GetVisualShaderNodeVectorOp(obj VisualShaderNodeVectorOp) [1]Object { return obj.AsObject() }
 
 type VisualShaderNodeVectorRefract struct {
-	Locked
-	_VisualShaderNodeVectorRefract Object
+	object
+	_VisualShaderNodeVectorRefract struct{}
 }
 
 func NewVisualShaderNodeVectorRefract(obj Object) VisualShaderNodeVectorRefract {
-	return VisualShaderNodeVectorRefract{Locked{}, obj}
+	return VisualShaderNodeVectorRefract{object: object(obj)}
 }
 func GetVisualShaderNodeVectorRefract(obj VisualShaderNodeVectorRefract) [1]Object {
-	return [1]Object{obj._VisualShaderNodeVectorRefract}
+	return obj.AsObject()
 }
 
 type VisualShaderNodeWorldPositionFromDepth struct {
-	Locked
-	_VisualShaderNodeWorldPositionFromDepth Object
+	object
+	_VisualShaderNodeWorldPositionFromDepth struct{}
 }
 
 func NewVisualShaderNodeWorldPositionFromDepth(obj Object) VisualShaderNodeWorldPositionFromDepth {
-	return VisualShaderNodeWorldPositionFromDepth{Locked{}, obj}
+	return VisualShaderNodeWorldPositionFromDepth{object: object(obj)}
 }
 func GetVisualShaderNodeWorldPositionFromDepth(obj VisualShaderNodeWorldPositionFromDepth) [1]Object {
-	return [1]Object{obj._VisualShaderNodeWorldPositionFromDepth}
+	return obj.AsObject()
 }
 
 type VoxelGI struct {
-	Locked
-	_VoxelGI Object
+	object
+	_VoxelGI struct{}
 }
 
-func NewVoxelGI(obj Object) VoxelGI    { return VoxelGI{Locked{}, obj} }
-func GetVoxelGI(obj VoxelGI) [1]Object { return [1]Object{obj._VoxelGI} }
+func NewVoxelGI(obj Object) VoxelGI    { return VoxelGI{object: object(obj)} }
+func GetVoxelGI(obj VoxelGI) [1]Object { return obj.AsObject() }
 
 type VoxelGIData struct {
-	Locked
-	_VoxelGIData Object
+	object
+	_VoxelGIData struct{}
 }
 
-func NewVoxelGIData(obj Object) VoxelGIData    { return VoxelGIData{Locked{}, obj} }
-func GetVoxelGIData(obj VoxelGIData) [1]Object { return [1]Object{obj._VoxelGIData} }
+func NewVoxelGIData(obj Object) VoxelGIData    { return VoxelGIData{object: object(obj)} }
+func GetVoxelGIData(obj VoxelGIData) [1]Object { return obj.AsObject() }
 
 type WeakRef struct {
-	Locked
-	_WeakRef Object
+	object
+	_WeakRef struct{}
 }
 
-func NewWeakRef(obj Object) WeakRef    { return WeakRef{Locked{}, obj} }
-func GetWeakRef(obj WeakRef) [1]Object { return [1]Object{obj._WeakRef} }
+func NewWeakRef(obj Object) WeakRef    { return WeakRef{object: object(obj)} }
+func GetWeakRef(obj WeakRef) [1]Object { return obj.AsObject() }
 
 type WebRTCDataChannel struct {
-	Locked
-	_WebRTCDataChannel Object
+	object
+	_WebRTCDataChannel struct{}
 }
 
-func NewWebRTCDataChannel(obj Object) WebRTCDataChannel    { return WebRTCDataChannel{Locked{}, obj} }
-func GetWebRTCDataChannel(obj WebRTCDataChannel) [1]Object { return [1]Object{obj._WebRTCDataChannel} }
+func NewWebRTCDataChannel(obj Object) WebRTCDataChannel {
+	return WebRTCDataChannel{object: object(obj)}
+}
+func GetWebRTCDataChannel(obj WebRTCDataChannel) [1]Object { return obj.AsObject() }
 
 type WebRTCDataChannelExtension struct {
-	Locked
-	_WebRTCDataChannelExtension Object
+	object
+	_WebRTCDataChannelExtension struct{}
 }
 
 func NewWebRTCDataChannelExtension(obj Object) WebRTCDataChannelExtension {
-	return WebRTCDataChannelExtension{Locked{}, obj}
+	return WebRTCDataChannelExtension{object: object(obj)}
 }
-func GetWebRTCDataChannelExtension(obj WebRTCDataChannelExtension) [1]Object {
-	return [1]Object{obj._WebRTCDataChannelExtension}
-}
+func GetWebRTCDataChannelExtension(obj WebRTCDataChannelExtension) [1]Object { return obj.AsObject() }
 
 type WebRTCMultiplayerPeer struct {
-	Locked
-	_WebRTCMultiplayerPeer Object
+	object
+	_WebRTCMultiplayerPeer struct{}
 }
 
 func NewWebRTCMultiplayerPeer(obj Object) WebRTCMultiplayerPeer {
-	return WebRTCMultiplayerPeer{Locked{}, obj}
+	return WebRTCMultiplayerPeer{object: object(obj)}
 }
-func GetWebRTCMultiplayerPeer(obj WebRTCMultiplayerPeer) [1]Object {
-	return [1]Object{obj._WebRTCMultiplayerPeer}
-}
+func GetWebRTCMultiplayerPeer(obj WebRTCMultiplayerPeer) [1]Object { return obj.AsObject() }
 
 type WebRTCPeerConnection struct {
-	Locked
-	_WebRTCPeerConnection Object
+	object
+	_WebRTCPeerConnection struct{}
 }
 
 func NewWebRTCPeerConnection(obj Object) WebRTCPeerConnection {
-	return WebRTCPeerConnection{Locked{}, obj}
+	return WebRTCPeerConnection{object: object(obj)}
 }
-func GetWebRTCPeerConnection(obj WebRTCPeerConnection) [1]Object {
-	return [1]Object{obj._WebRTCPeerConnection}
-}
+func GetWebRTCPeerConnection(obj WebRTCPeerConnection) [1]Object { return obj.AsObject() }
 
 type WebRTCPeerConnectionExtension struct {
-	Locked
-	_WebRTCPeerConnectionExtension Object
+	object
+	_WebRTCPeerConnectionExtension struct{}
 }
 
 func NewWebRTCPeerConnectionExtension(obj Object) WebRTCPeerConnectionExtension {
-	return WebRTCPeerConnectionExtension{Locked{}, obj}
+	return WebRTCPeerConnectionExtension{object: object(obj)}
 }
 func GetWebRTCPeerConnectionExtension(obj WebRTCPeerConnectionExtension) [1]Object {
-	return [1]Object{obj._WebRTCPeerConnectionExtension}
+	return obj.AsObject()
 }
 
 type WebSocketMultiplayerPeer struct {
-	Locked
-	_WebSocketMultiplayerPeer Object
+	object
+	_WebSocketMultiplayerPeer struct{}
 }
 
 func NewWebSocketMultiplayerPeer(obj Object) WebSocketMultiplayerPeer {
-	return WebSocketMultiplayerPeer{Locked{}, obj}
+	return WebSocketMultiplayerPeer{object: object(obj)}
 }
-func GetWebSocketMultiplayerPeer(obj WebSocketMultiplayerPeer) [1]Object {
-	return [1]Object{obj._WebSocketMultiplayerPeer}
-}
+func GetWebSocketMultiplayerPeer(obj WebSocketMultiplayerPeer) [1]Object { return obj.AsObject() }
 
 type WebSocketPeer struct {
-	Locked
-	_WebSocketPeer Object
+	object
+	_WebSocketPeer struct{}
 }
 
-func NewWebSocketPeer(obj Object) WebSocketPeer    { return WebSocketPeer{Locked{}, obj} }
-func GetWebSocketPeer(obj WebSocketPeer) [1]Object { return [1]Object{obj._WebSocketPeer} }
+func NewWebSocketPeer(obj Object) WebSocketPeer    { return WebSocketPeer{object: object(obj)} }
+func GetWebSocketPeer(obj WebSocketPeer) [1]Object { return obj.AsObject() }
 
 type WebXRInterface struct {
-	Locked
-	_WebXRInterface Object
+	object
+	_WebXRInterface struct{}
 }
 
-func NewWebXRInterface(obj Object) WebXRInterface    { return WebXRInterface{Locked{}, obj} }
-func GetWebXRInterface(obj WebXRInterface) [1]Object { return [1]Object{obj._WebXRInterface} }
+func NewWebXRInterface(obj Object) WebXRInterface    { return WebXRInterface{object: object(obj)} }
+func GetWebXRInterface(obj WebXRInterface) [1]Object { return obj.AsObject() }
 
 type Window struct {
-	Locked
-	_Window Object
+	object
+	_Window struct{}
 }
 
-func NewWindow(obj Object) Window    { return Window{Locked{}, obj} }
-func GetWindow(obj Window) [1]Object { return [1]Object{obj._Window} }
+func NewWindow(obj Object) Window    { return Window{object: object(obj)} }
+func GetWindow(obj Window) [1]Object { return obj.AsObject() }
 
 type WorkerThreadPool struct {
-	Locked
-	_WorkerThreadPool Object
+	object
+	_WorkerThreadPool struct{}
 }
 
-func NewWorkerThreadPool(obj Object) WorkerThreadPool    { return WorkerThreadPool{Locked{}, obj} }
-func GetWorkerThreadPool(obj WorkerThreadPool) [1]Object { return [1]Object{obj._WorkerThreadPool} }
+func NewWorkerThreadPool(obj Object) WorkerThreadPool    { return WorkerThreadPool{object: object(obj)} }
+func GetWorkerThreadPool(obj WorkerThreadPool) [1]Object { return obj.AsObject() }
 
 type World2D struct {
-	Locked
-	_World2D Object
+	object
+	_World2D struct{}
 }
 
-func NewWorld2D(obj Object) World2D    { return World2D{Locked{}, obj} }
-func GetWorld2D(obj World2D) [1]Object { return [1]Object{obj._World2D} }
+func NewWorld2D(obj Object) World2D    { return World2D{object: object(obj)} }
+func GetWorld2D(obj World2D) [1]Object { return obj.AsObject() }
 
 type World3D struct {
-	Locked
-	_World3D Object
+	object
+	_World3D struct{}
 }
 
-func NewWorld3D(obj Object) World3D    { return World3D{Locked{}, obj} }
-func GetWorld3D(obj World3D) [1]Object { return [1]Object{obj._World3D} }
+func NewWorld3D(obj Object) World3D    { return World3D{object: object(obj)} }
+func GetWorld3D(obj World3D) [1]Object { return obj.AsObject() }
 
 type WorldBoundaryShape2D struct {
-	Locked
-	_WorldBoundaryShape2D Object
+	object
+	_WorldBoundaryShape2D struct{}
 }
 
 func NewWorldBoundaryShape2D(obj Object) WorldBoundaryShape2D {
-	return WorldBoundaryShape2D{Locked{}, obj}
+	return WorldBoundaryShape2D{object: object(obj)}
 }
-func GetWorldBoundaryShape2D(obj WorldBoundaryShape2D) [1]Object {
-	return [1]Object{obj._WorldBoundaryShape2D}
-}
+func GetWorldBoundaryShape2D(obj WorldBoundaryShape2D) [1]Object { return obj.AsObject() }
 
 type WorldBoundaryShape3D struct {
-	Locked
-	_WorldBoundaryShape3D Object
+	object
+	_WorldBoundaryShape3D struct{}
 }
 
 func NewWorldBoundaryShape3D(obj Object) WorldBoundaryShape3D {
-	return WorldBoundaryShape3D{Locked{}, obj}
+	return WorldBoundaryShape3D{object: object(obj)}
 }
-func GetWorldBoundaryShape3D(obj WorldBoundaryShape3D) [1]Object {
-	return [1]Object{obj._WorldBoundaryShape3D}
-}
+func GetWorldBoundaryShape3D(obj WorldBoundaryShape3D) [1]Object { return obj.AsObject() }
 
 type WorldEnvironment struct {
-	Locked
-	_WorldEnvironment Object
+	object
+	_WorldEnvironment struct{}
 }
 
-func NewWorldEnvironment(obj Object) WorldEnvironment    { return WorldEnvironment{Locked{}, obj} }
-func GetWorldEnvironment(obj WorldEnvironment) [1]Object { return [1]Object{obj._WorldEnvironment} }
+func NewWorldEnvironment(obj Object) WorldEnvironment    { return WorldEnvironment{object: object(obj)} }
+func GetWorldEnvironment(obj WorldEnvironment) [1]Object { return obj.AsObject() }
 
 type X509Certificate struct {
-	Locked
-	_X509Certificate Object
+	object
+	_X509Certificate struct{}
 }
 
-func NewX509Certificate(obj Object) X509Certificate    { return X509Certificate{Locked{}, obj} }
-func GetX509Certificate(obj X509Certificate) [1]Object { return [1]Object{obj._X509Certificate} }
+func NewX509Certificate(obj Object) X509Certificate    { return X509Certificate{object: object(obj)} }
+func GetX509Certificate(obj X509Certificate) [1]Object { return obj.AsObject() }
 
 type XMLParser struct {
-	Locked
-	_XMLParser Object
+	object
+	_XMLParser struct{}
 }
 
-func NewXMLParser(obj Object) XMLParser    { return XMLParser{Locked{}, obj} }
-func GetXMLParser(obj XMLParser) [1]Object { return [1]Object{obj._XMLParser} }
+func NewXMLParser(obj Object) XMLParser    { return XMLParser{object: object(obj)} }
+func GetXMLParser(obj XMLParser) [1]Object { return obj.AsObject() }
 
 type XRAnchor3D struct {
-	Locked
-	_XRAnchor3D Object
+	object
+	_XRAnchor3D struct{}
 }
 
-func NewXRAnchor3D(obj Object) XRAnchor3D    { return XRAnchor3D{Locked{}, obj} }
-func GetXRAnchor3D(obj XRAnchor3D) [1]Object { return [1]Object{obj._XRAnchor3D} }
+func NewXRAnchor3D(obj Object) XRAnchor3D    { return XRAnchor3D{object: object(obj)} }
+func GetXRAnchor3D(obj XRAnchor3D) [1]Object { return obj.AsObject() }
 
 type XRBodyModifier3D struct {
-	Locked
-	_XRBodyModifier3D Object
+	object
+	_XRBodyModifier3D struct{}
 }
 
-func NewXRBodyModifier3D(obj Object) XRBodyModifier3D    { return XRBodyModifier3D{Locked{}, obj} }
-func GetXRBodyModifier3D(obj XRBodyModifier3D) [1]Object { return [1]Object{obj._XRBodyModifier3D} }
+func NewXRBodyModifier3D(obj Object) XRBodyModifier3D    { return XRBodyModifier3D{object: object(obj)} }
+func GetXRBodyModifier3D(obj XRBodyModifier3D) [1]Object { return obj.AsObject() }
 
 type XRBodyTracker struct {
-	Locked
-	_XRBodyTracker Object
+	object
+	_XRBodyTracker struct{}
 }
 
-func NewXRBodyTracker(obj Object) XRBodyTracker    { return XRBodyTracker{Locked{}, obj} }
-func GetXRBodyTracker(obj XRBodyTracker) [1]Object { return [1]Object{obj._XRBodyTracker} }
+func NewXRBodyTracker(obj Object) XRBodyTracker    { return XRBodyTracker{object: object(obj)} }
+func GetXRBodyTracker(obj XRBodyTracker) [1]Object { return obj.AsObject() }
 
 type XRCamera3D struct {
-	Locked
-	_XRCamera3D Object
+	object
+	_XRCamera3D struct{}
 }
 
-func NewXRCamera3D(obj Object) XRCamera3D    { return XRCamera3D{Locked{}, obj} }
-func GetXRCamera3D(obj XRCamera3D) [1]Object { return [1]Object{obj._XRCamera3D} }
+func NewXRCamera3D(obj Object) XRCamera3D    { return XRCamera3D{object: object(obj)} }
+func GetXRCamera3D(obj XRCamera3D) [1]Object { return obj.AsObject() }
 
 type XRController3D struct {
-	Locked
-	_XRController3D Object
+	object
+	_XRController3D struct{}
 }
 
-func NewXRController3D(obj Object) XRController3D    { return XRController3D{Locked{}, obj} }
-func GetXRController3D(obj XRController3D) [1]Object { return [1]Object{obj._XRController3D} }
+func NewXRController3D(obj Object) XRController3D    { return XRController3D{object: object(obj)} }
+func GetXRController3D(obj XRController3D) [1]Object { return obj.AsObject() }
 
 type XRControllerTracker struct {
-	Locked
-	_XRControllerTracker Object
+	object
+	_XRControllerTracker struct{}
 }
 
 func NewXRControllerTracker(obj Object) XRControllerTracker {
-	return XRControllerTracker{Locked{}, obj}
+	return XRControllerTracker{object: object(obj)}
 }
-func GetXRControllerTracker(obj XRControllerTracker) [1]Object {
-	return [1]Object{obj._XRControllerTracker}
-}
+func GetXRControllerTracker(obj XRControllerTracker) [1]Object { return obj.AsObject() }
 
 type XRFaceModifier3D struct {
-	Locked
-	_XRFaceModifier3D Object
+	object
+	_XRFaceModifier3D struct{}
 }
 
-func NewXRFaceModifier3D(obj Object) XRFaceModifier3D    { return XRFaceModifier3D{Locked{}, obj} }
-func GetXRFaceModifier3D(obj XRFaceModifier3D) [1]Object { return [1]Object{obj._XRFaceModifier3D} }
+func NewXRFaceModifier3D(obj Object) XRFaceModifier3D    { return XRFaceModifier3D{object: object(obj)} }
+func GetXRFaceModifier3D(obj XRFaceModifier3D) [1]Object { return obj.AsObject() }
 
 type XRFaceTracker struct {
-	Locked
-	_XRFaceTracker Object
+	object
+	_XRFaceTracker struct{}
 }
 
-func NewXRFaceTracker(obj Object) XRFaceTracker    { return XRFaceTracker{Locked{}, obj} }
-func GetXRFaceTracker(obj XRFaceTracker) [1]Object { return [1]Object{obj._XRFaceTracker} }
+func NewXRFaceTracker(obj Object) XRFaceTracker    { return XRFaceTracker{object: object(obj)} }
+func GetXRFaceTracker(obj XRFaceTracker) [1]Object { return obj.AsObject() }
 
 type XRHandModifier3D struct {
-	Locked
-	_XRHandModifier3D Object
+	object
+	_XRHandModifier3D struct{}
 }
 
-func NewXRHandModifier3D(obj Object) XRHandModifier3D    { return XRHandModifier3D{Locked{}, obj} }
-func GetXRHandModifier3D(obj XRHandModifier3D) [1]Object { return [1]Object{obj._XRHandModifier3D} }
+func NewXRHandModifier3D(obj Object) XRHandModifier3D    { return XRHandModifier3D{object: object(obj)} }
+func GetXRHandModifier3D(obj XRHandModifier3D) [1]Object { return obj.AsObject() }
 
 type XRHandTracker struct {
-	Locked
-	_XRHandTracker Object
+	object
+	_XRHandTracker struct{}
 }
 
-func NewXRHandTracker(obj Object) XRHandTracker    { return XRHandTracker{Locked{}, obj} }
-func GetXRHandTracker(obj XRHandTracker) [1]Object { return [1]Object{obj._XRHandTracker} }
+func NewXRHandTracker(obj Object) XRHandTracker    { return XRHandTracker{object: object(obj)} }
+func GetXRHandTracker(obj XRHandTracker) [1]Object { return obj.AsObject() }
 
 type XRInterface struct {
-	Locked
-	_XRInterface Object
+	object
+	_XRInterface struct{}
 }
 
-func NewXRInterface(obj Object) XRInterface    { return XRInterface{Locked{}, obj} }
-func GetXRInterface(obj XRInterface) [1]Object { return [1]Object{obj._XRInterface} }
+func NewXRInterface(obj Object) XRInterface    { return XRInterface{object: object(obj)} }
+func GetXRInterface(obj XRInterface) [1]Object { return obj.AsObject() }
 
 type XRInterfaceExtension struct {
-	Locked
-	_XRInterfaceExtension Object
+	object
+	_XRInterfaceExtension struct{}
 }
 
 func NewXRInterfaceExtension(obj Object) XRInterfaceExtension {
-	return XRInterfaceExtension{Locked{}, obj}
+	return XRInterfaceExtension{object: object(obj)}
 }
-func GetXRInterfaceExtension(obj XRInterfaceExtension) [1]Object {
-	return [1]Object{obj._XRInterfaceExtension}
-}
+func GetXRInterfaceExtension(obj XRInterfaceExtension) [1]Object { return obj.AsObject() }
 
 type XRNode3D struct {
-	Locked
-	_XRNode3D Object
+	object
+	_XRNode3D struct{}
 }
 
-func NewXRNode3D(obj Object) XRNode3D    { return XRNode3D{Locked{}, obj} }
-func GetXRNode3D(obj XRNode3D) [1]Object { return [1]Object{obj._XRNode3D} }
+func NewXRNode3D(obj Object) XRNode3D    { return XRNode3D{object: object(obj)} }
+func GetXRNode3D(obj XRNode3D) [1]Object { return obj.AsObject() }
 
 type XROrigin3D struct {
-	Locked
-	_XROrigin3D Object
+	object
+	_XROrigin3D struct{}
 }
 
-func NewXROrigin3D(obj Object) XROrigin3D    { return XROrigin3D{Locked{}, obj} }
-func GetXROrigin3D(obj XROrigin3D) [1]Object { return [1]Object{obj._XROrigin3D} }
+func NewXROrigin3D(obj Object) XROrigin3D    { return XROrigin3D{object: object(obj)} }
+func GetXROrigin3D(obj XROrigin3D) [1]Object { return obj.AsObject() }
 
 type XRPose struct {
-	Locked
-	_XRPose Object
+	object
+	_XRPose struct{}
 }
 
-func NewXRPose(obj Object) XRPose    { return XRPose{Locked{}, obj} }
-func GetXRPose(obj XRPose) [1]Object { return [1]Object{obj._XRPose} }
+func NewXRPose(obj Object) XRPose    { return XRPose{object: object(obj)} }
+func GetXRPose(obj XRPose) [1]Object { return obj.AsObject() }
 
 type XRPositionalTracker struct {
-	Locked
-	_XRPositionalTracker Object
+	object
+	_XRPositionalTracker struct{}
 }
 
 func NewXRPositionalTracker(obj Object) XRPositionalTracker {
-	return XRPositionalTracker{Locked{}, obj}
+	return XRPositionalTracker{object: object(obj)}
 }
-func GetXRPositionalTracker(obj XRPositionalTracker) [1]Object {
-	return [1]Object{obj._XRPositionalTracker}
-}
+func GetXRPositionalTracker(obj XRPositionalTracker) [1]Object { return obj.AsObject() }
 
 type XRServer struct {
-	Locked
-	_XRServer Object
+	object
+	_XRServer struct{}
 }
 
-func NewXRServer(obj Object) XRServer    { return XRServer{Locked{}, obj} }
-func GetXRServer(obj XRServer) [1]Object { return [1]Object{obj._XRServer} }
+func NewXRServer(obj Object) XRServer    { return XRServer{object: object(obj)} }
+func GetXRServer(obj XRServer) [1]Object { return obj.AsObject() }
 
 type XRTracker struct {
-	Locked
-	_XRTracker Object
+	object
+	_XRTracker struct{}
 }
 
-func NewXRTracker(obj Object) XRTracker    { return XRTracker{Locked{}, obj} }
-func GetXRTracker(obj XRTracker) [1]Object { return [1]Object{obj._XRTracker} }
+func NewXRTracker(obj Object) XRTracker    { return XRTracker{object: object(obj)} }
+func GetXRTracker(obj XRTracker) [1]Object { return obj.AsObject() }
 
 type XRVRS struct {
-	Locked
-	_XRVRS Object
+	object
+	_XRVRS struct{}
 }
 
-func NewXRVRS(obj Object) XRVRS    { return XRVRS{Locked{}, obj} }
-func GetXRVRS(obj XRVRS) [1]Object { return [1]Object{obj._XRVRS} }
+func NewXRVRS(obj Object) XRVRS    { return XRVRS{object: object(obj)} }
+func GetXRVRS(obj XRVRS) [1]Object { return obj.AsObject() }
 
 type ZIPPacker struct {
-	Locked
-	_ZIPPacker Object
+	object
+	_ZIPPacker struct{}
 }
 
-func NewZIPPacker(obj Object) ZIPPacker    { return ZIPPacker{Locked{}, obj} }
-func GetZIPPacker(obj ZIPPacker) [1]Object { return [1]Object{obj._ZIPPacker} }
+func NewZIPPacker(obj Object) ZIPPacker    { return ZIPPacker{object: object(obj)} }
+func GetZIPPacker(obj ZIPPacker) [1]Object { return obj.AsObject() }
 
 type ZIPReader struct {
-	Locked
-	_ZIPReader Object
+	object
+	_ZIPReader struct{}
 }
 
-func NewZIPReader(obj Object) ZIPReader    { return ZIPReader{Locked{}, obj} }
-func GetZIPReader(obj ZIPReader) [1]Object { return [1]Object{obj._ZIPReader} }
+func NewZIPReader(obj Object) ZIPReader    { return ZIPReader{object: object(obj)} }
+func GetZIPReader(obj ZIPReader) [1]Object { return obj.AsObject() }

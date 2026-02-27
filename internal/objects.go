@@ -197,6 +197,10 @@ type PointerToClass interface {
 	SetPointer([1]gdreference.Object)
 }
 
+type ObjectAny interface {
+	AsObject() [1]gdreference.Object
+}
+
 type IsClass interface {
 	Virtual(string) reflect.Value
 	AsObject() [1]gdreference.Object
