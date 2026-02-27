@@ -2801,6 +2801,7 @@ func (self class) AddChild(node [1]gdclass.Node, force_readable_name bool, inter
 		force_readable_name bool
 		internal_           InternalMode
 	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetNode(node[0])[0])), force_readable_name, internal_})
+	gd.Flush()
 }
 func (self class) RemoveChild(node [1]gdclass.Node) { //gd:Node.remove_child
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_child, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(node[0])[0]))})
