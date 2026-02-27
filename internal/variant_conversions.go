@@ -102,8 +102,13 @@ func CutVariant(v any, cut bool) Variant {
 			return NewVariant(value.Elem().Interface())
 		}
 	case reflect.Array:
-		if rtype.Implements(reflect.TypeFor[IsClass]()) {
-			obj := value.Interface().(IsClass).AsObject()
+		if rtype.Elem().Implements(reflect.TypeFor[ObjectAny]()) {
+			rtype = rtype.Elem()
+			value = value.Index(0)
+		}
+		if rtype.Implements(reflect.TypeFor[ObjectAny]()) {
+			anyobj, _ := reflect.TypeAssert[ObjectAny](value)
+			obj := anyobj.AsObject()
 			if gdreference.GetObject(obj[0]) == 0 {
 				return Variant{}
 			}

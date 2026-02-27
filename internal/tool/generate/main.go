@@ -416,9 +416,9 @@ func generate() error {
 		var w = all
 		pkg := class.Package
 		if class.Name != "Object" && class.Name != "RefCounted" {
-			fmt.Fprintf(w, "type %[1]v struct{ Locked; _%[1]v Object }\n", class.Name, classDB.nameOf(pkg, class.Inherits))
-			fmt.Fprintf(w, "func New%[1]v(obj Object) %[1]v { return %[1]v{Locked{}, obj} }\n", class.Name)
-			fmt.Fprintf(w, "func Get%[1]v(obj %[1]v) [1]Object { return [1]Object{obj._%[1]v} }\n", class.Name)
+			fmt.Fprintf(w, "type %[1]v struct{ object; _%[1]v struct{} }\n", class.Name, classDB.nameOf(pkg, class.Inherits))
+			fmt.Fprintf(w, "func New%[1]v(obj Object) %[1]v { return %[1]v{object: object(obj)} }\n", class.Name)
+			fmt.Fprintf(w, "func Get%[1]v(obj %[1]v) [1]Object { return obj.AsObject() }\n", class.Name)
 		}
 	}
 	return nil

@@ -5,7 +5,15 @@ import (
 	"graphics.gd/internal/gdreference"
 )
 
-type Locked struct{}
+type object gdreference.Object
+
+func (obj object) AsObject() [1]gdreference.Object {
+	return [1]gdreference.Object{gdreference.Object(obj)}
+}
+
+type Any interface {
+	AsObject() [1]gdreference.Object
+}
 
 type Object = gdreference.Object
 type RefCounted = gd.RefCounted
