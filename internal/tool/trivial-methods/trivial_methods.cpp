@@ -64,6 +64,12 @@ public:
             isa<CXXConversionDecl>(MD))
             return true;
 
+        // Virtual methods are never trivial — the base class body may be
+        // simple, but any subclass override can do arbitrary work, and
+        // Godot dispatches through the vtable at runtime.
+        if (MD->isVirtual())
+            return true;
+
         // Must have a body in this TU.
         if (!MD->hasBody())
             return true;

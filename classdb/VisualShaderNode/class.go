@@ -261,7 +261,7 @@ func (self Instance) SetLinkedParentGraphFrame(value int) Instance { //gd:Visual
 }
 
 func (self class) GetDefaultInputPort(atype PortType) int64 { //gd:VisualShaderNode.get_default_input_port
-	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_default_input_port, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ atype PortType }{atype})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_default_input_port, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ atype PortType }{atype})
 	var ret = r_ret
 	return ret
 }

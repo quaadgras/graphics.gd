@@ -400,7 +400,7 @@ func (self class) SetAutoExposureMinSensitivity(min_sensitivity float64) { //gd:
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_min_sensitivity, 0|(gdextension.SizeFloat<<4), &struct{ min_sensitivity float64 }{min_sensitivity})
 }
 func (self class) GetAutoExposureMinSensitivity() float64 { //gd:CameraAttributesPractical.get_auto_exposure_min_sensitivity
-	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_min_sensitivity, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_min_sensitivity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

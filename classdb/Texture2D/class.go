@@ -23,7 +23,6 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
-import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -64,7 +63,6 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
-var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -595,7 +593,7 @@ func (self class) DrawRectRegion(canvas_item RID.Any, rect Rect2.PositionSize, s
 	}{canvas_item, rect, src_rect, modulate, transpose, clip_uv})
 }
 func (self class) GetImage() [1]gdclass.Image { //gd:Texture2D.get_image
-	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_image, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_image, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

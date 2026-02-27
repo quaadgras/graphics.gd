@@ -67,6 +67,10 @@ func LetObject(obj gdextension.Object) Object {
 // PinObject writes a [gdextension.Object] into an existing [Object] pointer on the heap.
 // Useful for extension classes, object is not automatically freed.
 func PinObject(obj *Object, raw gdextension.Object) {
+	if raw == 0 {
+		*obj = Object{}
+		return
+	}
 	if obj.assigned.inEngine == raw {
 		obj.revision = 0
 		return
@@ -140,6 +144,10 @@ func GetObject(obj Object) gdextension.Object {
 func SetObject(obj Object, val gdextension.Object) {
 	if obj.assigned != (object{}) {
 		panic("SetObject can only be used with objects created by NewObject")
+	}
+	if val == 0 {
+		*obj.sentinel = object{}
+		return
 	}
 	var id gdextension.ObjectID
 	gdextension.Host.Objects.ID.Get(val, gdextension.CallReturns[gdextension.ObjectID](&id))

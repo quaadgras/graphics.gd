@@ -1219,7 +1219,7 @@ func (self class) SetAllowRmbSelect(allow bool) { //gd:Tree.set_allow_rmb_select
 	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_rmb_select, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
 }
 func (self class) GetAllowRmbSelect() bool { //gd:Tree.get_allow_rmb_select
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_rmb_select, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_rmb_select, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

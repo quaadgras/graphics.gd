@@ -1128,12 +1128,12 @@ func (self class) Flush() { //gd:FileAccess.flush
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.flush, 0, &struct{}{})
 }
 func (self class) GetPath() String.Readable { //gd:FileAccess.get_path
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_path, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetPathAbsolute() String.Readable { //gd:FileAccess.get_path_absolute
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_path_absolute, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_path_absolute, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1239,7 +1239,7 @@ func (self class) IsBigEndian() bool { //gd:FileAccess.is_big_endian
 	return ret
 }
 func (self class) SetBigEndian(big_endian bool) { //gd:FileAccess.set_big_endian
-	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_big_endian, 0|(gdextension.SizeBool<<4), &struct{ big_endian bool }{big_endian})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_big_endian, 0|(gdextension.SizeBool<<4), &struct{ big_endian bool }{big_endian})
 }
 func (self class) GetError() Error.Code { //gd:FileAccess.get_error
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_error, gdextension.SizeInt, &struct{}{})

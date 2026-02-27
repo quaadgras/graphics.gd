@@ -45,6 +45,9 @@ func PointerWithOwnershipTransferredToGodot(obj gdreference.Object) EnginePointe
 	if !ok {
 		panic("illegal transfer of ownership from Go -> Godot")
 	}
+	if raw == 0 {
+		return 0
+	}
 	var id gdextension.ObjectID
 	gdextension.Host.Objects.ID.Get(raw, gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
 	ExtensionInstanceGoOnly(raw, false)

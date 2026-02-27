@@ -859,7 +859,7 @@ func (self class) SetBreakFlags(flags TextServer.LineBreakFlag) { //gd:TextParag
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_break_flags, 0|(gdextension.SizeInt<<4), &struct{ flags TextServer.LineBreakFlag }{flags})
 }
 func (self class) GetBreakFlags() TextServer.LineBreakFlag { //gd:TextParagraph.get_break_flags
-	var r_ret = jumponly.Call[TextServer.LineBreakFlag](gd.ObjectChecked(self.AsObject()), methods.get_break_flags, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[TextServer.LineBreakFlag](gd.ObjectChecked(self.AsObject()), methods.get_break_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -838,7 +838,7 @@ func (self class) GetDragVerticalOffset() float64 { //gd:Camera2D.get_drag_verti
 	return ret
 }
 func (self class) SetDragHorizontalOffset(offset float64) { //gd:Camera2D.set_drag_horizontal_offset
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_horizontal_offset, 0|(gdextension.SizeFloat<<4), &struct{ offset float64 }{offset})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_horizontal_offset, 0|(gdextension.SizeFloat<<4), &struct{ offset float64 }{offset})
 }
 func (self class) GetDragHorizontalOffset() float64 { //gd:Camera2D.get_drag_horizontal_offset
 	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_drag_horizontal_offset, gdextension.SizeFloat, &struct{}{})

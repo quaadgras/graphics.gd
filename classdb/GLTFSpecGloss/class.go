@@ -268,7 +268,7 @@ func (self class) SetSpecularFactor(specular_factor Color.RGBA) { //gd:GLTFSpecG
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_specular_factor, 0|(gdextension.SizeColor<<4), &struct{ specular_factor Color.RGBA }{specular_factor})
 }
 func (self class) GetSpecGlossImg() [1]gdclass.Image { //gd:GLTFSpecGloss.get_spec_gloss_img
-	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_spec_gloss_img, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_spec_gloss_img, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

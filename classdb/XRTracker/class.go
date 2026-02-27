@@ -229,7 +229,7 @@ func (self class) GetTrackerType() Type { //gd:XRTracker.get_tracker_type
 	return ret
 }
 func (self class) SetTrackerType(atype Type) { //gd:XRTracker.set_tracker_type
-	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker_type, 0|(gdextension.SizeInt<<4), &struct{ atype Type }{atype})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker_type, 0|(gdextension.SizeInt<<4), &struct{ atype Type }{atype})
 }
 func (self class) GetTrackerName() String.Name { //gd:XRTracker.get_tracker_name
 	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_tracker_name, gdextension.SizeStringName, &struct{}{})

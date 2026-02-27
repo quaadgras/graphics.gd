@@ -315,7 +315,7 @@ func (self class) SetEdgeFade(edge_fade float64) { //gd:FogMaterial.set_edge_fad
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edge_fade, 0|(gdextension.SizeFloat<<4), &struct{ edge_fade float64 }{edge_fade})
 }
 func (self class) GetEdgeFade() float64 { //gd:FogMaterial.get_edge_fade
-	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_edge_fade, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_edge_fade, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

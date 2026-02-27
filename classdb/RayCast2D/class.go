@@ -494,7 +494,7 @@ func (self class) GetCollisionPoint() Vector2.XY { //gd:RayCast2D.get_collision_
 	return ret
 }
 func (self class) GetCollisionNormal() Vector2.XY { //gd:RayCast2D.get_collision_normal
-	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_collision_normal, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_collision_normal, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

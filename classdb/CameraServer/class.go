@@ -214,7 +214,7 @@ func SetMonitoringFeeds(value bool) { //gd:CameraServer.monitoring_feeds
 
 func (self class) SetMonitoringFeeds(is_monitoring_feeds bool) { //gd:CameraServer.set_monitoring_feeds
 	once.Do(singleton)
-	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_monitoring_feeds, 0|(gdextension.SizeBool<<4), &struct{ is_monitoring_feeds bool }{is_monitoring_feeds})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_monitoring_feeds, 0|(gdextension.SizeBool<<4), &struct{ is_monitoring_feeds bool }{is_monitoring_feeds})
 }
 func (self class) IsMonitoringFeeds() bool { //gd:CameraServer.is_monitoring_feeds
 	once.Do(singleton)

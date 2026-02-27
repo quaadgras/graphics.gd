@@ -60,8 +60,11 @@ func main() {
 			fmt.Fprintf(os.Stderr, "warning: skipping malformed line: %v\n", err)
 			continue
 		}
-		if r.Trivial {
-			trivialSet[r.Class+"::"+r.Method] = true
+		key := r.Class + "::" + r.Method
+		if !r.Trivial {
+			trivialSet[key] = false
+		} else if _, seen := trivialSet[key]; !seen {
+			trivialSet[key] = true
 		}
 	}
 	f.Close()

@@ -264,7 +264,7 @@ func (self class) SetDrive(drive float64) { //gd:AudioEffectDistortion.set_drive
 	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drive, 0|(gdextension.SizeFloat<<4), &struct{ drive float64 }{drive})
 }
 func (self class) GetDrive() float64 { //gd:AudioEffectDistortion.get_drive
-	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_drive, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_drive, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

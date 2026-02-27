@@ -1316,7 +1316,7 @@ func (self class) SetAllowReselect(allow bool) { //gd:ItemList.set_allow_reselec
 	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_reselect, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
 }
 func (self class) GetAllowReselect() bool { //gd:ItemList.get_allow_reselect
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_reselect, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_reselect, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

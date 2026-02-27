@@ -19,7 +19,6 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
-import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -67,7 +66,6 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
-var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -3896,31 +3894,31 @@ func (self class) TtsSetUtteranceCallback(event TTSUtteranceEvent, callable Call
 }
 func (self class) IsDarkModeSupported() bool { //gd:DisplayServer.is_dark_mode_supported
 	once.Do(singleton)
-	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_dark_mode_supported, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_dark_mode_supported, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsDarkMode() bool { //gd:DisplayServer.is_dark_mode
 	once.Do(singleton)
-	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_dark_mode, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_dark_mode, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetAccentColor() Color.RGBA { //gd:DisplayServer.get_accent_color
 	once.Do(singleton)
-	var r_ret = jumponly.Call[Color.RGBA](gdreference.GetObject(self.AsObject()[0]), methods.get_accent_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = noescape.Call[Color.RGBA](gdreference.GetObject(self.AsObject()[0]), methods.get_accent_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetBaseColor() Color.RGBA { //gd:DisplayServer.get_base_color
 	once.Do(singleton)
-	var r_ret = jumponly.Call[Color.RGBA](gdreference.GetObject(self.AsObject()[0]), methods.get_base_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = noescape.Call[Color.RGBA](gdreference.GetObject(self.AsObject()[0]), methods.get_base_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetSystemThemeChangeCallback(callable Callable.Function) { //gd:DisplayServer.set_system_theme_change_callback
 	once.Do(singleton)
-	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_system_theme_change_callback, 0|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_system_theme_change_callback, 0|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
 }
 func (self class) MouseSetMode(mouse_mode MouseModeValue) { //gd:DisplayServer.mouse_set_mode
 	once.Do(singleton)
@@ -3928,13 +3926,13 @@ func (self class) MouseSetMode(mouse_mode MouseModeValue) { //gd:DisplayServer.m
 }
 func (self class) MouseGetMode() MouseModeValue { //gd:DisplayServer.mouse_get_mode
 	once.Do(singleton)
-	var r_ret = jumponly.Call[MouseModeValue](gdreference.GetObject(self.AsObject()[0]), methods.mouse_get_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[MouseModeValue](gdreference.GetObject(self.AsObject()[0]), methods.mouse_get_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) WarpMouse(position Vector2i.XY) { //gd:DisplayServer.warp_mouse
 	once.Do(singleton)
-	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.warp_mouse, 0|(gdextension.SizeVector2i<<4), &struct{ position Vector2i.XY }{position})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.warp_mouse, 0|(gdextension.SizeVector2i<<4), &struct{ position Vector2i.XY }{position})
 }
 func (self class) MouseGetPosition() Vector2i.XY { //gd:DisplayServer.mouse_get_position
 	once.Do(singleton)
@@ -3988,7 +3986,7 @@ func (self class) ClipboardGetPrimary() String.Readable { //gd:DisplayServer.cli
 }
 func (self class) GetDisplayCutouts() Array.Contains[Rect2.PositionSize] { //gd:DisplayServer.get_display_cutouts
 	once.Do(singleton)
-	var r_ret = jumponly.Call[gdextension.Array](gdreference.GetObject(self.AsObject()[0]), methods.get_display_cutouts, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gdreference.GetObject(self.AsObject()[0]), methods.get_display_cutouts, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Rect2.PositionSize]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -4048,7 +4046,7 @@ func (self class) ScreenGetDpi(screen int64) int64 { //gd:DisplayServer.screen_g
 }
 func (self class) ScreenGetScale(screen int64) float64 { //gd:DisplayServer.screen_get_scale
 	once.Do(singleton)
-	var r_ret = jumponly.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.screen_get_scale, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.screen_get_scale, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
@@ -4072,19 +4070,19 @@ func (self class) ScreenGetRefreshRate(screen int64) float64 { //gd:DisplayServe
 }
 func (self class) ScreenGetPixel(position Vector2i.XY) Color.RGBA { //gd:DisplayServer.screen_get_pixel
 	once.Do(singleton)
-	var r_ret = jumponly.Call[Color.RGBA](gdreference.GetObject(self.AsObject()[0]), methods.screen_get_pixel, gdextension.SizeColor|(gdextension.SizeVector2i<<4), &struct{ position Vector2i.XY }{position})
+	var r_ret = noescape.Call[Color.RGBA](gdreference.GetObject(self.AsObject()[0]), methods.screen_get_pixel, gdextension.SizeColor|(gdextension.SizeVector2i<<4), &struct{ position Vector2i.XY }{position})
 	var ret = r_ret
 	return ret
 }
 func (self class) ScreenGetImage(screen int64) [1]gdclass.Image { //gd:DisplayServer.screen_get_image
 	once.Do(singleton)
-	var r_ret = jumponly.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.screen_get_image, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
+	var r_ret = noescape.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.screen_get_image, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) ScreenGetImageRect(rect Rect2i.PositionSize) [1]gdclass.Image { //gd:DisplayServer.screen_get_image_rect
 	once.Do(singleton)
-	var r_ret = jumponly.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.screen_get_image_rect, gdextension.SizeObject|(gdextension.SizeRect2i<<4), &struct{ rect Rect2i.PositionSize }{rect})
+	var r_ret = noescape.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.screen_get_image_rect, gdextension.SizeObject|(gdextension.SizeRect2i<<4), &struct{ rect Rect2i.PositionSize }{rect})
 	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -4097,7 +4095,7 @@ func (self class) ScreenSetOrientation(orientation ScreenOrientation, screen int
 }
 func (self class) ScreenGetOrientation(screen int64) ScreenOrientation { //gd:DisplayServer.screen_get_orientation
 	once.Do(singleton)
-	var r_ret = jumponly.Call[ScreenOrientation](gdreference.GetObject(self.AsObject()[0]), methods.screen_get_orientation, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
+	var r_ret = noescape.Call[ScreenOrientation](gdreference.GetObject(self.AsObject()[0]), methods.screen_get_orientation, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
@@ -4107,7 +4105,7 @@ func (self class) ScreenSetKeepOn(enable bool) { //gd:DisplayServer.screen_set_k
 }
 func (self class) ScreenIsKeptOn() bool { //gd:DisplayServer.screen_is_kept_on
 	once.Do(singleton)
-	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.screen_is_kept_on, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.screen_is_kept_on, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4134,20 +4132,20 @@ func (self class) WindowGetNativeHandle(handle_type HandleType, window_id int64)
 }
 func (self class) WindowGetActivePopup() int64 { //gd:DisplayServer.window_get_active_popup
 	once.Do(singleton)
-	var r_ret = jumponly.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.window_get_active_popup, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.window_get_active_popup, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) WindowSetPopupSafeRect(window int64, rect Rect2i.PositionSize) { //gd:DisplayServer.window_set_popup_safe_rect
 	once.Do(singleton)
-	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_popup_safe_rect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRect2i<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_popup_safe_rect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRect2i<<8), &struct {
 		window int64
 		rect   Rect2i.PositionSize
 	}{window, rect})
 }
 func (self class) WindowGetPopupSafeRect(window int64) Rect2i.PositionSize { //gd:DisplayServer.window_get_popup_safe_rect
 	once.Do(singleton)
-	var r_ret = jumponly.Call[Rect2i.PositionSize](gdreference.GetObject(self.AsObject()[0]), methods.window_get_popup_safe_rect, gdextension.SizeRect2i|(gdextension.SizeInt<<4), &struct{ window int64 }{window})
+	var r_ret = noescape.Call[Rect2i.PositionSize](gdreference.GetObject(self.AsObject()[0]), methods.window_get_popup_safe_rect, gdextension.SizeRect2i|(gdextension.SizeInt<<4), &struct{ window int64 }{window})
 	var ret = r_ret
 	return ret
 }
@@ -4160,7 +4158,7 @@ func (self class) WindowSetTitle(title String.Readable, window_id int64) { //gd:
 }
 func (self class) WindowGetTitleSize(title String.Readable, window_id int64) Vector2i.XY { //gd:DisplayServer.window_get_title_size
 	once.Do(singleton)
-	var r_ret = jumponly.Call[Vector2i.XY](gdreference.GetObject(self.AsObject()[0]), methods.window_get_title_size, gdextension.SizeVector2i|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[Vector2i.XY](gdreference.GetObject(self.AsObject()[0]), methods.window_get_title_size, gdextension.SizeVector2i|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		title     gdextension.String
 		window_id int64
 	}{pointers.Get(gd.InternalString(title)), window_id})
@@ -4324,14 +4322,14 @@ func (self class) WindowGetFlag(flag WindowFlags, window_id int64) bool { //gd:D
 }
 func (self class) WindowSetWindowButtonsOffset(offset Vector2i.XY, window_id int64) { //gd:DisplayServer.window_set_window_buttons_offset
 	once.Do(singleton)
-	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_window_buttons_offset, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_window_buttons_offset, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		offset    Vector2i.XY
 		window_id int64
 	}{offset, window_id})
 }
 func (self class) WindowGetSafeTitleMargins(window_id int64) Vector3i.XYZ { //gd:DisplayServer.window_get_safe_title_margins
 	once.Do(singleton)
-	var r_ret = jumponly.Call[Vector3i.XYZ](gdreference.GetObject(self.AsObject()[0]), methods.window_get_safe_title_margins, gdextension.SizeVector3i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[Vector3i.XYZ](gdreference.GetObject(self.AsObject()[0]), methods.window_get_safe_title_margins, gdextension.SizeVector3i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
@@ -4364,7 +4362,7 @@ func (self class) WindowSetTransient(window_id int64, parent_window_id int64) { 
 }
 func (self class) WindowSetExclusive(window_id int64, exclusive bool) { //gd:DisplayServer.window_set_exclusive
 	once.Do(singleton)
-	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_exclusive, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_exclusive, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		window_id int64
 		exclusive bool
 	}{window_id, exclusive})
@@ -4404,52 +4402,52 @@ func (self class) WindowIsMaximizeAllowed(window_id int64) bool { //gd:DisplaySe
 }
 func (self class) WindowMaximizeOnTitleDblClick() bool { //gd:DisplayServer.window_maximize_on_title_dbl_click
 	once.Do(singleton)
-	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.window_maximize_on_title_dbl_click, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.window_maximize_on_title_dbl_click, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) WindowMinimizeOnTitleDblClick() bool { //gd:DisplayServer.window_minimize_on_title_dbl_click
 	once.Do(singleton)
-	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.window_minimize_on_title_dbl_click, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.window_minimize_on_title_dbl_click, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) WindowStartDrag(window_id int64) { //gd:DisplayServer.window_start_drag
 	once.Do(singleton)
-	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_start_drag, 0|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_start_drag, 0|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 }
 func (self class) WindowStartResize(edge WindowResizeEdge, window_id int64) { //gd:DisplayServer.window_start_resize
 	once.Do(singleton)
-	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_start_resize, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_start_resize, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		edge      WindowResizeEdge
 		window_id int64
 	}{edge, window_id})
 }
 func (self class) WindowSetColor(color Color.RGBA) { //gd:DisplayServer.window_set_color
 	once.Do(singleton)
-	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 func (self class) AccessibilityShouldIncreaseContrast() int64 { //gd:DisplayServer.accessibility_should_increase_contrast
 	once.Do(singleton)
-	var r_ret = jumponly.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_should_increase_contrast, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_should_increase_contrast, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) AccessibilityShouldReduceAnimation() int64 { //gd:DisplayServer.accessibility_should_reduce_animation
 	once.Do(singleton)
-	var r_ret = jumponly.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_should_reduce_animation, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_should_reduce_animation, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) AccessibilityShouldReduceTransparency() int64 { //gd:DisplayServer.accessibility_should_reduce_transparency
 	once.Do(singleton)
-	var r_ret = jumponly.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_should_reduce_transparency, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_should_reduce_transparency, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) AccessibilityScreenReaderActive() int64 { //gd:DisplayServer.accessibility_screen_reader_active
 	once.Do(singleton)
-	var r_ret = jumponly.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_screen_reader_active, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_screen_reader_active, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -5007,13 +5005,13 @@ func (self class) VirtualKeyboardGetHeight() int64 { //gd:DisplayServer.virtual_
 }
 func (self class) HasHardwareKeyboard() bool { //gd:DisplayServer.has_hardware_keyboard
 	once.Do(singleton)
-	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.has_hardware_keyboard, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.has_hardware_keyboard, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetHardwareKeyboardConnectionChangeCallback(callable Callable.Function) { //gd:DisplayServer.set_hardware_keyboard_connection_change_callback
 	once.Do(singleton)
-	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_hardware_keyboard_connection_change_callback, 0|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_hardware_keyboard_connection_change_callback, 0|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
 }
 func (self class) CursorSetShape(shape CursorShape) { //gd:DisplayServer.cursor_set_shape
 	once.Do(singleton)
@@ -5021,7 +5019,7 @@ func (self class) CursorSetShape(shape CursorShape) { //gd:DisplayServer.cursor_
 }
 func (self class) CursorGetShape() CursorShape { //gd:DisplayServer.cursor_get_shape
 	once.Do(singleton)
-	var r_ret = jumponly.Call[CursorShape](gdreference.GetObject(self.AsObject()[0]), methods.cursor_get_shape, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[CursorShape](gdreference.GetObject(self.AsObject()[0]), methods.cursor_get_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -5035,13 +5033,13 @@ func (self class) CursorSetCustomImage(cursor [1]gdclass.Resource, shape CursorS
 }
 func (self class) GetSwapCancelOk() bool { //gd:DisplayServer.get_swap_cancel_ok
 	once.Do(singleton)
-	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.get_swap_cancel_ok, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.get_swap_cancel_ok, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) EnableForStealingFocus(process_id int64) { //gd:DisplayServer.enable_for_stealing_focus
 	once.Do(singleton)
-	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.enable_for_stealing_focus, 0|(gdextension.SizeInt<<4), &struct{ process_id int64 }{process_id})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.enable_for_stealing_focus, 0|(gdextension.SizeInt<<4), &struct{ process_id int64 }{process_id})
 }
 func (self class) DialogShow(title String.Readable, description String.Readable, buttons Packed.Strings, callback Callable.Function) Error.Code { //gd:DisplayServer.dialog_show
 	once.Do(singleton)
@@ -5099,33 +5097,33 @@ func (self class) FileDialogWithOptionsShow(title String.Readable, current_direc
 }
 func (self class) Beep() { //gd:DisplayServer.beep
 	once.Do(singleton)
-	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.beep, 0, &struct{}{})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.beep, 0, &struct{}{})
 }
 func (self class) KeyboardGetLayoutCount() int64 { //gd:DisplayServer.keyboard_get_layout_count
 	once.Do(singleton)
-	var r_ret = jumponly.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.keyboard_get_layout_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.keyboard_get_layout_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) KeyboardGetCurrentLayout() int64 { //gd:DisplayServer.keyboard_get_current_layout
 	once.Do(singleton)
-	var r_ret = jumponly.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.keyboard_get_current_layout, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.keyboard_get_current_layout, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) KeyboardSetCurrentLayout(index int64) { //gd:DisplayServer.keyboard_set_current_layout
 	once.Do(singleton)
-	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.keyboard_set_current_layout, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.keyboard_set_current_layout, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
 func (self class) KeyboardGetLayoutLanguage(index int64) String.Readable { //gd:DisplayServer.keyboard_get_layout_language
 	once.Do(singleton)
-	var r_ret = jumponly.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.keyboard_get_layout_language, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.keyboard_get_layout_language, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) KeyboardGetLayoutName(index int64) String.Readable { //gd:DisplayServer.keyboard_get_layout_name
 	once.Do(singleton)
-	var r_ret = jumponly.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.keyboard_get_layout_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.keyboard_get_layout_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -5143,11 +5141,11 @@ func (self class) KeyboardGetLabelFromPhysical(keycode Input.Key) Input.Key { //
 }
 func (self class) ShowEmojiAndSymbolPicker() { //gd:DisplayServer.show_emoji_and_symbol_picker
 	once.Do(singleton)
-	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.show_emoji_and_symbol_picker, 0, &struct{}{})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.show_emoji_and_symbol_picker, 0, &struct{}{})
 }
 func (self class) ColorPicker(callback Callable.Function) bool { //gd:DisplayServer.color_picker
 	once.Do(singleton)
-	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.color_picker, gdextension.SizeBool|(gdextension.SizeCallable<<4), &struct{ callback gdextension.Callable }{pointers.Get(gd.InternalCallable(callback))})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.color_picker, gdextension.SizeBool|(gdextension.SizeCallable<<4), &struct{ callback gdextension.Callable }{pointers.Get(gd.InternalCallable(callback))})
 	var ret = r_ret
 	return ret
 }
@@ -5157,7 +5155,7 @@ func (self class) ProcessEvents() { //gd:DisplayServer.process_events
 }
 func (self class) ForceProcessAndDropEvents() { //gd:DisplayServer.force_process_and_drop_events
 	once.Do(singleton)
-	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.force_process_and_drop_events, 0, &struct{}{})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.force_process_and_drop_events, 0, &struct{}{})
 }
 func (self class) SetNativeIcon(filename String.Readable) { //gd:DisplayServer.set_native_icon
 	once.Do(singleton)
@@ -5217,29 +5215,29 @@ func (self class) DeleteStatusIndicator(id int64) { //gd:DisplayServer.delete_st
 }
 func (self class) TabletGetDriverCount() int64 { //gd:DisplayServer.tablet_get_driver_count
 	once.Do(singleton)
-	var r_ret = jumponly.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.tablet_get_driver_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.tablet_get_driver_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) TabletGetDriverName(idx int64) String.Readable { //gd:DisplayServer.tablet_get_driver_name
 	once.Do(singleton)
-	var r_ret = jumponly.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.tablet_get_driver_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.tablet_get_driver_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) TabletGetCurrentDriver() String.Readable { //gd:DisplayServer.tablet_get_current_driver
 	once.Do(singleton)
-	var r_ret = jumponly.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.tablet_get_current_driver, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.tablet_get_current_driver, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) TabletSetCurrentDriver(name String.Readable) { //gd:DisplayServer.tablet_set_current_driver
 	once.Do(singleton)
-	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.tablet_set_current_driver, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.tablet_set_current_driver, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 func (self class) IsWindowTransparencyAvailable() bool { //gd:DisplayServer.is_window_transparency_available
 	once.Do(singleton)
-	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_window_transparency_available, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_window_transparency_available, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

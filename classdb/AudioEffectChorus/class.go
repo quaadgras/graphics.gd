@@ -337,7 +337,7 @@ func (self class) SetWet(amount float64) { //gd:AudioEffectChorus.set_wet
 	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wet, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 func (self class) GetWet() float64 { //gd:AudioEffectChorus.get_wet
-	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_wet, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_wet, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

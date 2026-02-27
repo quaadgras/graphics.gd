@@ -24,7 +24,7 @@ var PtrcallFn uintptr
 func Call[T any](object gdextension.Object, method gdextension.MethodForClass, shape gdextension.Shape, args any) T {
 	var result T
 	// Flush any pending ring buffer entries to maintain ordering.
-	if ring.Main.Pending() && threadcheck.Main() {
+	if threadcheck.Main() && ring.Main.Pending() {
 		if unsafe.Sizeof(result) > 0 {
 			ring.Main.Flush()
 		} else {

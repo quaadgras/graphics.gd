@@ -847,7 +847,7 @@ func (self class) GetSpeedScale() float64 { //gd:GPUParticles2D.get_speed_scale
 	return ret
 }
 func (self class) GetCollisionBaseSize() float64 { //gd:GPUParticles2D.get_collision_base_size
-	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_base_size, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_base_size, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -907,7 +907,7 @@ func (self class) CreateLink(source String.Readable, target String.Readable) Err
 	return ret
 }
 func (self class) IsBundle(path String.Readable) bool { //gd:DirAccess.is_bundle
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_bundle, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_bundle, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = r_ret
 	return ret
 }
@@ -933,7 +933,7 @@ func (self class) GetFilesystemType() String.Readable { //gd:DirAccess.get_files
 	return ret
 }
 func (self class) IsCaseSensitive(path String.Readable) bool { //gd:DirAccess.is_case_sensitive
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_case_sensitive, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_case_sensitive, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = r_ret
 	return ret
 }

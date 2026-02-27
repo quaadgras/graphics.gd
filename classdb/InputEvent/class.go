@@ -521,7 +521,7 @@ func (self class) IsReleased() bool { //gd:InputEvent.is_released
 	return ret
 }
 func (self class) IsEcho() bool { //gd:InputEvent.is_echo
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_echo, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_echo, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -531,7 +531,7 @@ func (self class) AsText() String.Readable { //gd:InputEvent.as_text
 	return ret
 }
 func (self class) IsMatch(event [1]gdclass.InputEvent, exact_match bool) bool { //gd:InputEvent.is_match
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_match, gdextension.SizeBool|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_match, gdextension.SizeBool|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		event       gdextension.Object
 		exact_match bool
 	}{gdextension.Object(gdreference.GetObject(gdclass.GetInputEvent(event[0])[0])), exact_match})
@@ -539,17 +539,17 @@ func (self class) IsMatch(event [1]gdclass.InputEvent, exact_match bool) bool { 
 	return ret
 }
 func (self class) IsActionType() bool { //gd:InputEvent.is_action_type
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_type, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_type, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) Accumulate(with_event [1]gdclass.InputEvent) bool { //gd:InputEvent.accumulate
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.accumulate, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ with_event gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetInputEvent(with_event[0])[0]))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.accumulate, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ with_event gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetInputEvent(with_event[0])[0]))})
 	var ret = r_ret
 	return ret
 }
 func (self class) XformedBy(xform Transform2D.OriginXY, local_ofs Vector2.XY) [1]gdclass.InputEvent { //gd:InputEvent.xformed_by
-	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.xformed_by, gdextension.SizeObject|(gdextension.SizeTransform2D<<4)|(gdextension.SizeVector2<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.xformed_by, gdextension.SizeObject|(gdextension.SizeTransform2D<<4)|(gdextension.SizeVector2<<8), &struct {
 		xform     Transform2D.OriginXY
 		local_ofs Vector2.XY
 	}{xform, local_ofs})

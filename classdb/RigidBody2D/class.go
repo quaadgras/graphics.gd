@@ -955,7 +955,7 @@ func (self class) SetUseCustomIntegrator(enable bool) { //gd:RigidBody2D.set_use
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_custom_integrator, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsUsingCustomIntegrator() bool { //gd:RigidBody2D.is_using_custom_integrator
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_custom_integrator, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_custom_integrator, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

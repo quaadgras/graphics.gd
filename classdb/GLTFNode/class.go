@@ -446,7 +446,7 @@ func (self Instance) SetVisible(value bool) Instance { //gd:GLTFNode.visible
 }
 
 func (self class) GetOriginalName() String.Readable { //gd:GLTFNode.get_original_name
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_name, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

@@ -672,7 +672,7 @@ func (self class) GetBorderColor() Color.RGBA { //gd:OpenXRCompositionLayer.get_
 	return ret
 }
 func (self class) IntersectsRay(origin Vector3.XYZ, direction Vector3.XYZ) Vector2.XY { //gd:OpenXRCompositionLayer.intersects_ray
-	var r_ret = jumponly.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.intersects_ray, gdextension.SizeVector2|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8), &struct {
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.intersects_ray, gdextension.SizeVector2|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8), &struct {
 		origin    Vector3.XYZ
 		direction Vector3.XYZ
 	}{origin, direction})
