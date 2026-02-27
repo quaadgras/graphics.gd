@@ -235,6 +235,9 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 		fmt.Fprint(w, gdtype.Name(argType).CallframeValue(fixReserved(arg.Name)))
 	}
 	fmt.Fprint(w, "})\n")
+	if gdjson.Flushables[class.Name+"."+method.Name] {
+		fmt.Fprint(w, "\tgd.Flush()\n")
+	}
 	if isPtr {
 		_, ok := classDB[strings.TrimPrefix(result, "[1]gdclass.")]
 		if ok || result == "[1]gdreference.Object" {
