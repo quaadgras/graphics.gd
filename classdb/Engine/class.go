@@ -693,7 +693,7 @@ func (self class) SetPhysicsTicksPerSecond(physics_ticks_per_second int64) { //g
 }
 func (self class) GetPhysicsTicksPerSecond() int64 { //gd:Engine.get_physics_ticks_per_second
 	once.Do(singleton)
-	var r_ret = jumponly.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_physics_ticks_per_second, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_physics_ticks_per_second, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -703,23 +703,23 @@ func (self class) SetMaxPhysicsStepsPerFrame(max_physics_steps int64) { //gd:Eng
 }
 func (self class) GetMaxPhysicsStepsPerFrame() int64 { //gd:Engine.get_max_physics_steps_per_frame
 	once.Do(singleton)
-	var r_ret = jumponly.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_max_physics_steps_per_frame, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_max_physics_steps_per_frame, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPhysicsJitterFix(physics_jitter_fix float64) { //gd:Engine.set_physics_jitter_fix
 	once.Do(singleton)
-	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_physics_jitter_fix, 0|(gdextension.SizeFloat<<4), &struct{ physics_jitter_fix float64 }{physics_jitter_fix})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_physics_jitter_fix, 0|(gdextension.SizeFloat<<4), &struct{ physics_jitter_fix float64 }{physics_jitter_fix})
 }
 func (self class) GetPhysicsJitterFix() float64 { //gd:Engine.get_physics_jitter_fix
 	once.Do(singleton)
-	var r_ret = jumponly.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.get_physics_jitter_fix, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.get_physics_jitter_fix, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetPhysicsInterpolationFraction() float64 { //gd:Engine.get_physics_interpolation_fraction
 	once.Do(singleton)
-	var r_ret = jumponly.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.get_physics_interpolation_fraction, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.get_physics_interpolation_fraction, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -729,7 +729,7 @@ func (self class) SetMaxFps(max_fps int64) { //gd:Engine.set_max_fps
 }
 func (self class) GetMaxFps() int64 { //gd:Engine.get_max_fps
 	once.Do(singleton)
-	var r_ret = jumponly.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_max_fps, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_max_fps, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -739,31 +739,31 @@ func (self class) SetTimeScale(time_scale float64) { //gd:Engine.set_time_scale
 }
 func (self class) GetTimeScale() float64 { //gd:Engine.get_time_scale
 	once.Do(singleton)
-	var r_ret = jumponly.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.get_time_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.get_time_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetFramesDrawn() int64 { //gd:Engine.get_frames_drawn
 	once.Do(singleton)
-	var r_ret = jumponly.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_frames_drawn, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_frames_drawn, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetFramesPerSecond() float64 { //gd:Engine.get_frames_per_second
 	once.Do(singleton)
-	var r_ret = jumponly.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.get_frames_per_second, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.get_frames_per_second, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetPhysicsFrames() int64 { //gd:Engine.get_physics_frames
 	once.Do(singleton)
-	var r_ret = jumponly.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_physics_frames, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_physics_frames, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetProcessFrames() int64 { //gd:Engine.get_process_frames
 	once.Do(singleton)
-	var r_ret = jumponly.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_process_frames, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_process_frames, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -805,19 +805,19 @@ func (self class) GetLicenseInfo() Dictionary.Any { //gd:Engine.get_license_info
 }
 func (self class) GetLicenseText() String.Readable { //gd:Engine.get_license_text
 	once.Do(singleton)
-	var r_ret = jumponly.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_license_text, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_license_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetArchitectureName() String.Readable { //gd:Engine.get_architecture_name
 	once.Do(singleton)
-	var r_ret = jumponly.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_architecture_name, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_architecture_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) IsInPhysicsFrame() bool { //gd:Engine.is_in_physics_frame
 	once.Do(singleton)
-	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_in_physics_frame, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_in_physics_frame, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -882,39 +882,39 @@ func (self class) CaptureScriptBacktraces(include_variables bool) Array.Contains
 }
 func (self class) IsEditorHint() bool { //gd:Engine.is_editor_hint
 	once.Do(singleton)
-	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_editor_hint, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_editor_hint, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsEmbeddedInEditor() bool { //gd:Engine.is_embedded_in_editor
 	once.Do(singleton)
-	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_embedded_in_editor, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_embedded_in_editor, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetWriteMoviePath() String.Readable { //gd:Engine.get_write_movie_path
 	once.Do(singleton)
-	var r_ret = jumponly.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_write_movie_path, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_write_movie_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) SetPrintToStdout(enabled bool) { //gd:Engine.set_print_to_stdout
 	once.Do(singleton)
-	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_print_to_stdout, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_print_to_stdout, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsPrintingToStdout() bool { //gd:Engine.is_printing_to_stdout
 	once.Do(singleton)
-	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_printing_to_stdout, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_printing_to_stdout, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPrintErrorMessages(enabled bool) { //gd:Engine.set_print_error_messages
 	once.Do(singleton)
-	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_print_error_messages, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_print_error_messages, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsPrintingErrorMessages() bool { //gd:Engine.is_printing_error_messages
 	once.Do(singleton)
-	var r_ret = jumponly.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_printing_error_messages, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_printing_error_messages, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

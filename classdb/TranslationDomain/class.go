@@ -581,7 +581,7 @@ func (self class) SetPseudolocalizationDoubleVowelsEnabled(enabled bool) { //gd:
 	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_double_vowels_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsPseudolocalizationFakeBidiEnabled() bool { //gd:TranslationDomain.is_pseudolocalization_fake_bidi_enabled
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pseudolocalization_fake_bidi_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pseudolocalization_fake_bidi_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

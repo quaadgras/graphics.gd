@@ -544,7 +544,7 @@ func (self class) SetBlendMode(mode BlendMode) { //gd:Light2D.set_blend_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_mode, 0|(gdextension.SizeInt<<4), &struct{ mode BlendMode }{mode})
 }
 func (self class) GetBlendMode() BlendMode { //gd:Light2D.get_blend_mode
-	var r_ret = jumponly.Call[BlendMode](gd.ObjectChecked(self.AsObject()), methods.get_blend_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[BlendMode](gd.ObjectChecked(self.AsObject()), methods.get_blend_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

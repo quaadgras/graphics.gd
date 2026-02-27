@@ -454,7 +454,7 @@ func (self class) IsRefusingNewConnections() bool { //gd:SceneMultiplayer.is_ref
 	return ret
 }
 func (self class) SetAllowObjectDecoding(enable bool) { //gd:SceneMultiplayer.set_allow_object_decoding
-	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_object_decoding, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_object_decoding, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsObjectDecodingAllowed() bool { //gd:SceneMultiplayer.is_object_decoding_allowed
 	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_object_decoding_allowed, gdextension.SizeBool, &struct{}{})

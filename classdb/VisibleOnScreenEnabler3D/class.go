@@ -205,7 +205,7 @@ func (self class) SetEnableMode(mode EnableMode) { //gd:VisibleOnScreenEnabler3D
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_mode, 0|(gdextension.SizeInt<<4), &struct{ mode EnableMode }{mode})
 }
 func (self class) GetEnableMode() EnableMode { //gd:VisibleOnScreenEnabler3D.get_enable_mode
-	var r_ret = jumponly.Call[EnableMode](gd.ObjectChecked(self.AsObject()), methods.get_enable_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[EnableMode](gd.ObjectChecked(self.AsObject()), methods.get_enable_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

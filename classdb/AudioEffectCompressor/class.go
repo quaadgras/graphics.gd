@@ -285,7 +285,7 @@ func (self class) GetThreshold() float64 { //gd:AudioEffectCompressor.get_thresh
 	return ret
 }
 func (self class) SetRatio(ratio float64) { //gd:AudioEffectCompressor.set_ratio
-	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
 }
 func (self class) GetRatio() float64 { //gd:AudioEffectCompressor.get_ratio
 	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ratio, gdextension.SizeFloat, &struct{}{})

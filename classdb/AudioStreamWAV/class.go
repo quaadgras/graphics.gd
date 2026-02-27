@@ -450,7 +450,7 @@ func (self class) SetTags(tags Dictionary.Any) { //gd:AudioStreamWAV.set_tags
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tags, 0|(gdextension.SizeDictionary<<4), &struct{ tags gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(tags))})
 }
 func (self class) GetTags() Dictionary.Any { //gd:AudioStreamWAV.get_tags
-	var r_ret = jumponly.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_tags, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_tags, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }

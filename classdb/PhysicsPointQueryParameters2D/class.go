@@ -299,7 +299,7 @@ func (self class) GetExclude() Array.Contains[RID.Any] { //gd:PhysicsPointQueryP
 	return ret
 }
 func (self class) SetCollideWithBodies(enable bool) { //gd:PhysicsPointQueryParameters2D.set_collide_with_bodies
-	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_bodies, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_bodies, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsCollideWithBodiesEnabled() bool { //gd:PhysicsPointQueryParameters2D.is_collide_with_bodies_enabled
 	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_bodies_enabled, gdextension.SizeBool, &struct{}{})

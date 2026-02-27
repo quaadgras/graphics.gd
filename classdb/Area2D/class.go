@@ -647,7 +647,7 @@ func (self class) SetAudioBusOverride(enable bool) { //gd:Area2D.set_audio_bus_o
 	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_audio_bus_override, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsOverridingAudioBus() bool { //gd:Area2D.is_overriding_audio_bus
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_overriding_audio_bus, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_overriding_audio_bus, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

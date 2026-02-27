@@ -405,7 +405,7 @@ func (self class) SetSize(size Vector3.XYZ) { //gd:GLTFPhysicsShape.set_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), &struct{ size Vector3.XYZ }{size})
 }
 func (self class) GetRadius() float64 { //gd:GLTFPhysicsShape.get_radius
-	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

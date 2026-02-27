@@ -882,7 +882,7 @@ func (self class) SetLinearVelocity(linear_velocity Vector3.XYZ) { //gd:RigidBod
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_velocity, 0|(gdextension.SizeVector3<<4), &struct{ linear_velocity Vector3.XYZ }{linear_velocity})
 }
 func (self class) GetLinearVelocity() Vector3.XYZ { //gd:RigidBody3D.get_linear_velocity
-	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_linear_velocity, gdextension.SizeVector3, &struct{}{})
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_linear_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -890,7 +890,7 @@ func (self class) SetAngularVelocity(angular_velocity Vector3.XYZ) { //gd:RigidB
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_velocity, 0|(gdextension.SizeVector3<<4), &struct{ angular_velocity Vector3.XYZ }{angular_velocity})
 }
 func (self class) GetAngularVelocity() Vector3.XYZ { //gd:RigidBody3D.get_angular_velocity
-	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_angular_velocity, gdextension.SizeVector3, &struct{}{})
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_angular_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1043,7 +1043,7 @@ func (self class) SetCanSleep(able_to_sleep bool) { //gd:RigidBody3D.set_can_sle
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_can_sleep, 0|(gdextension.SizeBool<<4), &struct{ able_to_sleep bool }{able_to_sleep})
 }
 func (self class) IsAbleToSleep() bool { //gd:RigidBody3D.is_able_to_sleep
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_able_to_sleep, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_able_to_sleep, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -414,7 +414,7 @@ func (self class) GetClickMask() [1]gdclass.BitMap { //gd:TextureButton.get_clic
 	return ret
 }
 func (self class) GetIgnoreTextureSize() bool { //gd:TextureButton.get_ignore_texture_size
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_ignore_texture_size, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_ignore_texture_size, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

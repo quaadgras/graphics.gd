@@ -307,7 +307,7 @@ func (self class) SetDamping(amount float64) { //gd:AudioEffectReverb.set_dampin
 	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_damping, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 func (self class) GetDamping() float64 { //gd:AudioEffectReverb.get_damping
-	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_damping, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_damping, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

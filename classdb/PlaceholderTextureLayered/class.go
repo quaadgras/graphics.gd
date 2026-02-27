@@ -203,7 +203,7 @@ func (self class) GetSize() Vector2i.XY { //gd:PlaceholderTextureLayered.get_siz
 	return ret
 }
 func (self class) SetLayers(layers int64) { //gd:PlaceholderTextureLayered.set_layers
-	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layers, 0|(gdextension.SizeInt<<4), &struct{ layers int64 }{layers})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layers, 0|(gdextension.SizeInt<<4), &struct{ layers int64 }{layers})
 }
 func (o class) AsPlaceholderTextureLayered() Advanced         { return Advanced(o) }
 func (o Instance) AsPlaceholderTextureLayered() Instance      { return o }

@@ -235,7 +235,7 @@ func (self Instance) SetBodyFlags(value BodyFlags) Instance { //gd:XRBodyTracker
 }
 
 func (self class) SetHasTrackingData(has_data bool) { //gd:XRBodyTracker.set_has_tracking_data
-	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_has_tracking_data, 0|(gdextension.SizeBool<<4), &struct{ has_data bool }{has_data})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_has_tracking_data, 0|(gdextension.SizeBool<<4), &struct{ has_data bool }{has_data})
 }
 func (self class) GetHasTrackingData() bool { //gd:XRBodyTracker.get_has_tracking_data
 	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_has_tracking_data, gdextension.SizeBool, &struct{}{})

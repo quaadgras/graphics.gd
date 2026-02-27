@@ -373,7 +373,7 @@ func (self class) GetMieCoefficient() float64 { //gd:PhysicalSkyMaterial.get_mie
 	return ret
 }
 func (self class) SetMieEccentricity(eccentricity float64) { //gd:PhysicalSkyMaterial.set_mie_eccentricity
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mie_eccentricity, 0|(gdextension.SizeFloat<<4), &struct{ eccentricity float64 }{eccentricity})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mie_eccentricity, 0|(gdextension.SizeFloat<<4), &struct{ eccentricity float64 }{eccentricity})
 }
 func (self class) GetMieEccentricity() float64 { //gd:PhysicalSkyMaterial.get_mie_eccentricity
 	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mie_eccentricity, gdextension.SizeFloat, &struct{}{})

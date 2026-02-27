@@ -610,7 +610,7 @@ func (self class) SetIgnoreOcclusionCulling(ignore_culling bool) { //gd:Geometry
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ignore_occlusion_culling, 0|(gdextension.SizeBool<<4), &struct{ ignore_culling bool }{ignore_culling})
 }
 func (self class) IsIgnoringOcclusionCulling() bool { //gd:GeometryInstance3D.is_ignoring_occlusion_culling
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ignoring_occlusion_culling, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ignoring_occlusion_culling, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

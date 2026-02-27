@@ -748,7 +748,7 @@ func (self class) IsPointDisabled(id int64) bool { //gd:AStar2D.is_point_disable
 	return ret
 }
 func (self class) ConnectPoints(id int64, to_id int64, bidirectional bool) { //gd:AStar2D.connect_points
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.connect_points, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.connect_points, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		id            int64
 		to_id         int64
 		bidirectional bool

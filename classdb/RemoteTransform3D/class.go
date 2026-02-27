@@ -253,7 +253,7 @@ func (self class) SetRemoteNode(path Path.ToNode) { //gd:RemoteTransform3D.set_r
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_remote_node, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
 func (self class) GetRemoteNode() Path.ToNode { //gd:RemoteTransform3D.get_remote_node
-	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_remote_node, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_remote_node, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

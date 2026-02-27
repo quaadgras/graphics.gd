@@ -330,7 +330,7 @@ func (self class) GetCollisionDepth() float64 { //gd:PhysicsTestMotionResult2D.g
 	return ret
 }
 func (self class) GetCollisionSafeFraction() float64 { //gd:PhysicsTestMotionResult2D.get_collision_safe_fraction
-	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_safe_fraction, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_safe_fraction, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

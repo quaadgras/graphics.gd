@@ -475,7 +475,7 @@ func (self class) SetSimplifyEpsilon(epsilon float64) { //gd:NavigationPathQuery
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_simplify_epsilon, 0|(gdextension.SizeFloat<<4), &struct{ epsilon float64 }{epsilon})
 }
 func (self class) GetSimplifyEpsilon() float64 { //gd:NavigationPathQueryParameters3D.get_simplify_epsilon
-	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_simplify_epsilon, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_simplify_epsilon, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

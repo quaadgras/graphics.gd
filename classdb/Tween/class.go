@@ -758,7 +758,7 @@ func (self class) GetLoopsLeft() int64 { //gd:Tween.get_loops_left
 	return ret
 }
 func (self class) SetSpeedScale(speed float64) [1]gdclass.Tween { //gd:Tween.set_speed_scale
-	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, gdextension.SizeObject|(gdextension.SizeFloat<<4), &struct{ speed float64 }{speed})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, gdextension.SizeObject|(gdextension.SizeFloat<<4), &struct{ speed float64 }{speed})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

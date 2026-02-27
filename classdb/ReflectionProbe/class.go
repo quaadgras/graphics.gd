@@ -563,7 +563,7 @@ func (self class) SetReflectionMask(layers int64) { //gd:ReflectionProbe.set_ref
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reflection_mask, 0|(gdextension.SizeInt<<4), &struct{ layers int64 }{layers})
 }
 func (self class) GetReflectionMask() int64 { //gd:ReflectionProbe.get_reflection_mask
-	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_reflection_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_reflection_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

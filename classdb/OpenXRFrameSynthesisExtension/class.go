@@ -219,7 +219,7 @@ func (self class) SetEnabled(enable bool) { //gd:OpenXRFrameSynthesisExtension.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) GetRelaxFrameInterval() bool { //gd:OpenXRFrameSynthesisExtension.get_relax_frame_interval
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_relax_frame_interval, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_relax_frame_interval, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

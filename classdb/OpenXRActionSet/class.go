@@ -255,7 +255,7 @@ func (self class) SetActions(actions Array.Any) { //gd:OpenXRActionSet.set_actio
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_actions, 0|(gdextension.SizeArray<<4), &struct{ actions gdextension.Array }{pointers.Get(gd.InternalArray(actions))})
 }
 func (self class) GetActions() Array.Any { //gd:OpenXRActionSet.get_actions
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_actions, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_actions, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

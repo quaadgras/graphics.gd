@@ -244,7 +244,7 @@ func (self class) SetIcon(texture [1]gdclass.Texture2D) { //gd:StatusIndicator.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(texture[0])[0]))})
 }
 func (self class) GetIcon() [1]gdclass.Texture2D { //gd:StatusIndicator.get_icon
-	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_icon, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_icon, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

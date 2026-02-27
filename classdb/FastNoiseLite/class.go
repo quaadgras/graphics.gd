@@ -615,7 +615,7 @@ func (self class) SetDomainWarpFrequency(domain_warp_frequency float64) { //gd:F
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_domain_warp_frequency, 0|(gdextension.SizeFloat<<4), &struct{ domain_warp_frequency float64 }{domain_warp_frequency})
 }
 func (self class) GetDomainWarpFrequency() float64 { //gd:FastNoiseLite.get_domain_warp_frequency
-	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_domain_warp_frequency, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_domain_warp_frequency, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

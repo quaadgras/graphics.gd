@@ -4012,7 +4012,7 @@ func (self class) GetMinimapVisibleLines() int64 { //gd:TextEdit.get_minimap_vis
 	return ret
 }
 func (self class) AddGutter(at int64) { //gd:TextEdit.add_gutter
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_gutter, 0|(gdextension.SizeInt<<4), &struct{ at int64 }{at})
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_gutter, 0|(gdextension.SizeInt<<4), &struct{ at int64 }{at})
 }
 func (self class) RemoveGutter(gutter int64) { //gd:TextEdit.remove_gutter
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_gutter, 0|(gdextension.SizeInt<<4), &struct{ gutter int64 }{gutter})
@@ -4211,7 +4211,7 @@ func (self class) SetHighlightAllOccurrences(enabled bool) { //gd:TextEdit.set_h
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_highlight_all_occurrences, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsHighlightAllOccurrencesEnabled() bool { //gd:TextEdit.is_highlight_all_occurrences_enabled
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_highlight_all_occurrences_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_highlight_all_occurrences_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

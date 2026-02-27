@@ -212,7 +212,7 @@ func (self class) SetSize(size Vector3.XYZ) { //gd:GPUParticlesAttractorVectorFi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), &struct{ size Vector3.XYZ }{size})
 }
 func (self class) GetSize() Vector3.XYZ { //gd:GPUParticlesAttractorVectorField3D.get_size
-	var r_ret = jumponly.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }

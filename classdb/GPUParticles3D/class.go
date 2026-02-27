@@ -873,7 +873,7 @@ func (self class) GetFixedFps() int64 { //gd:GPUParticles3D.get_fixed_fps
 	return ret
 }
 func (self class) GetFractionalDelta() bool { //gd:GPUParticles3D.get_fractional_delta
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_fractional_delta, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_fractional_delta, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

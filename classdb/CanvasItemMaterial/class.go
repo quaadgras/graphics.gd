@@ -298,7 +298,7 @@ func (self class) SetParticlesAnimation(particles_anim bool) { //gd:CanvasItemMa
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_particles_animation, 0|(gdextension.SizeBool<<4), &struct{ particles_anim bool }{particles_anim})
 }
 func (self class) GetParticlesAnimation() bool { //gd:CanvasItemMaterial.get_particles_animation
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_particles_animation, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_particles_animation, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

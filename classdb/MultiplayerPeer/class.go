@@ -18,7 +18,6 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
-import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -54,7 +53,6 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
-var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -340,18 +338,18 @@ func (self Instance) SetTransferChannel(value int) Instance { //gd:MultiplayerPe
 }
 
 func (self class) SetTransferChannel(channel int64) { //gd:MultiplayerPeer.set_transfer_channel
-	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transfer_channel, 0|(gdextension.SizeInt<<4), &struct{ channel int64 }{channel})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transfer_channel, 0|(gdextension.SizeInt<<4), &struct{ channel int64 }{channel})
 }
 func (self class) GetTransferChannel() int64 { //gd:MultiplayerPeer.get_transfer_channel
-	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_transfer_channel, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_transfer_channel, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetTransferMode(mode TransferMode) { //gd:MultiplayerPeer.set_transfer_mode
-	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transfer_mode, 0|(gdextension.SizeInt<<4), &struct{ mode TransferMode }{mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transfer_mode, 0|(gdextension.SizeInt<<4), &struct{ mode TransferMode }{mode})
 }
 func (self class) GetTransferMode() TransferMode { //gd:MultiplayerPeer.get_transfer_mode
-	var r_ret = jumponly.Call[TransferMode](gd.ObjectChecked(self.AsObject()), methods.get_transfer_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[TransferMode](gd.ObjectChecked(self.AsObject()), methods.get_transfer_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -401,15 +399,15 @@ func (self class) GenerateUniqueId() int64 { //gd:MultiplayerPeer.generate_uniqu
 	return ret
 }
 func (self class) SetRefuseNewConnections(enable bool) { //gd:MultiplayerPeer.set_refuse_new_connections
-	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_refuse_new_connections, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_refuse_new_connections, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) IsRefusingNewConnections() bool { //gd:MultiplayerPeer.is_refusing_new_connections
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_refusing_new_connections, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_refusing_new_connections, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsServerRelaySupported() bool { //gd:MultiplayerPeer.is_server_relay_supported
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_server_relay_supported, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_server_relay_supported, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

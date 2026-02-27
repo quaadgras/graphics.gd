@@ -15,7 +15,6 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
-import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -52,7 +51,6 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
-var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -557,10 +555,10 @@ func (class) _get_parameter(impl func(ptr gdclass.Receiver, name String.Name) va
 }
 
 func (self class) SetSamplePlayback(playback_sample [1]gdclass.AudioSamplePlayback) { //gd:AudioStreamPlayback.set_sample_playback
-	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sample_playback, 0|(gdextension.SizeObject<<4), &struct{ playback_sample gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetAudioSamplePlayback(playback_sample[0])[0]))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sample_playback, 0|(gdextension.SizeObject<<4), &struct{ playback_sample gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetAudioSamplePlayback(playback_sample[0])[0]))})
 }
 func (self class) GetSamplePlayback() [1]gdclass.AudioSamplePlayback { //gd:AudioStreamPlayback.get_sample_playback
-	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_sample_playback, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_sample_playback, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.AudioSamplePlayback{gdclass.NewAudioSamplePlayback(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }

@@ -316,7 +316,7 @@ func (self class) SetCastShadowsSetting(shadow_casting_setting GeometryInstance3
 	}{shadow_casting_setting})
 }
 func (self class) GetCastShadowsSetting() GeometryInstance3D.ShadowCastingSetting { //gd:ImporterMeshInstance3D.get_cast_shadows_setting
-	var r_ret = jumponly.Call[GeometryInstance3D.ShadowCastingSetting](gd.ObjectChecked(self.AsObject()), methods.get_cast_shadows_setting, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[GeometryInstance3D.ShadowCastingSetting](gd.ObjectChecked(self.AsObject()), methods.get_cast_shadows_setting, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

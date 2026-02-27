@@ -299,7 +299,7 @@ func (self class) GetBuffer() int64 { //gd:GLTFBufferView.get_buffer
 	return ret
 }
 func (self class) SetBuffer(buffer int64) { //gd:GLTFBufferView.set_buffer
-	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffer, 0|(gdextension.SizeInt<<4), &struct{ buffer int64 }{buffer})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffer, 0|(gdextension.SizeInt<<4), &struct{ buffer int64 }{buffer})
 }
 func (self class) GetByteOffset() int64 { //gd:GLTFBufferView.get_byte_offset
 	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_byte_offset, gdextension.SizeInt, &struct{}{})

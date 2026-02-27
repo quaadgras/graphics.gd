@@ -18,7 +18,6 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
-import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -58,7 +57,6 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
-var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -260,7 +258,7 @@ func (self class) SetCustomSolverBias(bias float64) { //gd:Shape2D.set_custom_so
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_solver_bias, 0|(gdextension.SizeFloat<<4), &struct{ bias float64 }{bias})
 }
 func (self class) GetCustomSolverBias() float64 { //gd:Shape2D.get_custom_solver_bias
-	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_custom_solver_bias, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_custom_solver_bias, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -305,13 +303,13 @@ func (self class) CollideWithMotionAndGetContacts(local_xform Transform2D.Origin
 	return ret
 }
 func (self class) Draw(canvas_item RID.Any, color Color.RGBA) { //gd:Shape2D.draw
-	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
 		canvas_item RID.Any
 		color       Color.RGBA
 	}{canvas_item, color})
 }
 func (self class) GetRect() Rect2.PositionSize { //gd:Shape2D.get_rect
-	var r_ret = jumponly.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_rect, gdextension.SizeRect2, &struct{}{})
+	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

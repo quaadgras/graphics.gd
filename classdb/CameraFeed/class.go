@@ -447,12 +447,12 @@ func (self class) GetDatatype() FeedDataType { //gd:CameraFeed.get_datatype
 	return ret
 }
 func (self class) GetFormats() Array.Any { //gd:CameraFeed.get_formats
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_formats, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_formats, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) SetFormat(index int64, parameters Dictionary.Any) bool { //gd:CameraFeed.set_format
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.set_format, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeDictionary<<8), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.set_format, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeDictionary<<8), &struct {
 		index      int64
 		parameters gdextension.Dictionary
 	}{index, pointers.Get(gd.InternalDictionary(parameters))})

@@ -16,7 +16,6 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
-import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -55,7 +54,6 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
-var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -458,7 +456,7 @@ func (self class) GetSystemInfo() Dictionary.Any { //gd:XRInterface.get_system_i
 	return ret
 }
 func (self class) GetTrackingStatus() TrackingStatus { //gd:XRInterface.get_tracking_status
-	var r_ret = jumponly.Call[TrackingStatus](gd.ObjectChecked(self.AsObject()), methods.get_tracking_status, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[TrackingStatus](gd.ObjectChecked(self.AsObject()), methods.get_tracking_status, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -473,7 +471,7 @@ func (self class) GetViewCount() int64 { //gd:XRInterface.get_view_count
 	return ret
 }
 func (self class) TriggerHapticPulse(action_name String.Readable, tracker_name String.Name, frequency float64, amplitude float64, duration_sec float64, delay_sec float64) { //gd:XRInterface.trigger_haptic_pulse
-	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.trigger_haptic_pulse, 0|(gdextension.SizeString<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.trigger_haptic_pulse, 0|(gdextension.SizeString<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24), &struct {
 		action_name  gdextension.String
 		tracker_name gdextension.StringName
 		frequency    float64
@@ -483,55 +481,55 @@ func (self class) TriggerHapticPulse(action_name String.Readable, tracker_name S
 	}{pointers.Get(gd.InternalString(action_name)), pointers.Get(gd.InternalStringName(tracker_name)), frequency, amplitude, duration_sec, delay_sec})
 }
 func (self class) SupportsPlayAreaMode(mode PlayAreaMode) bool { //gd:XRInterface.supports_play_area_mode
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.supports_play_area_mode, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ mode PlayAreaMode }{mode})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.supports_play_area_mode, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ mode PlayAreaMode }{mode})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetPlayAreaMode() PlayAreaMode { //gd:XRInterface.get_play_area_mode
-	var r_ret = jumponly.Call[PlayAreaMode](gd.ObjectChecked(self.AsObject()), methods.get_play_area_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[PlayAreaMode](gd.ObjectChecked(self.AsObject()), methods.get_play_area_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetPlayAreaMode(mode PlayAreaMode) bool { //gd:XRInterface.set_play_area_mode
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.set_play_area_mode, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ mode PlayAreaMode }{mode})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.set_play_area_mode, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ mode PlayAreaMode }{mode})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetPlayArea() Packed.Array[Vector3.XYZ] { //gd:XRInterface.get_play_area
-	var r_ret = jumponly.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_play_area, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_play_area, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) GetAnchorDetectionIsEnabled() bool { //gd:XRInterface.get_anchor_detection_is_enabled
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_anchor_detection_is_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_anchor_detection_is_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) SetAnchorDetectionIsEnabled(enable bool) { //gd:XRInterface.set_anchor_detection_is_enabled
-	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anchor_detection_is_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anchor_detection_is_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 func (self class) GetCameraFeedId() int64 { //gd:XRInterface.get_camera_feed_id
-	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_camera_feed_id, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_camera_feed_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsPassthroughSupported() bool { //gd:XRInterface.is_passthrough_supported
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_passthrough_supported, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_passthrough_supported, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) IsPassthroughEnabled() bool { //gd:XRInterface.is_passthrough_enabled
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_passthrough_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_passthrough_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) StartPassthrough() bool { //gd:XRInterface.start_passthrough
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.start_passthrough, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.start_passthrough, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 func (self class) StopPassthrough() { //gd:XRInterface.stop_passthrough
-	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop_passthrough, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop_passthrough, 0, &struct{}{})
 }
 func (self class) GetTransformForView(view int64, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin { //gd:XRInterface.get_transform_for_view
 	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_transform_for_view, gdextension.SizeTransform3D|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), &struct {
@@ -552,17 +550,17 @@ func (self class) GetProjectionForView(view int64, aspect float64, near float64,
 	return ret
 }
 func (self class) GetSupportedEnvironmentBlendModes() Array.Any { //gd:XRInterface.get_supported_environment_blend_modes
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_supported_environment_blend_modes, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_supported_environment_blend_modes, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) SetEnvironmentBlendMode(mode EnvironmentBlendMode) bool { //gd:XRInterface.set_environment_blend_mode
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.set_environment_blend_mode, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ mode EnvironmentBlendMode }{mode})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.set_environment_blend_mode, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ mode EnvironmentBlendMode }{mode})
 	var ret = r_ret
 	return ret
 }
 func (self class) GetEnvironmentBlendMode() EnvironmentBlendMode { //gd:XRInterface.get_environment_blend_mode
-	var r_ret = jumponly.Call[EnvironmentBlendMode](gd.ObjectChecked(self.AsObject()), methods.get_environment_blend_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[EnvironmentBlendMode](gd.ObjectChecked(self.AsObject()), methods.get_environment_blend_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

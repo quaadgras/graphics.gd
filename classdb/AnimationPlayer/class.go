@@ -1104,7 +1104,7 @@ func (self class) SetSection(start_time float64, end_time float64) { //gd:Animat
 	}{start_time, end_time})
 }
 func (self class) ResetSection() { //gd:AnimationPlayer.reset_section
-	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_section, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_section, 0, &struct{}{})
 }
 func (self class) GetSectionStartTime() float64 { //gd:AnimationPlayer.get_section_start_time
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_section_start_time, gdextension.SizeFloat, &struct{}{})

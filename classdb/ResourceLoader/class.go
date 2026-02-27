@@ -26,7 +26,6 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
-import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/internal/ie"
@@ -63,7 +62,6 @@ var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
 var _ noescape.Variant
-var _ = jumponly.PtrcallFn
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -432,7 +430,7 @@ func (self class) RemoveResourceFormatLoader(format_loader [1]gdclass.ResourceFo
 }
 func (self class) SetAbortOnMissingResources(abort bool) { //gd:ResourceLoader.set_abort_on_missing_resources
 	once.Do(singleton)
-	jumponly.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_abort_on_missing_resources, 0|(gdextension.SizeBool<<4), &struct{ abort bool }{abort})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_abort_on_missing_resources, 0|(gdextension.SizeBool<<4), &struct{ abort bool }{abort})
 }
 func (self class) GetDependencies(path String.Readable) Packed.Strings { //gd:ResourceLoader.get_dependencies
 	once.Do(singleton)

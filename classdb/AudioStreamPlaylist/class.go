@@ -910,7 +910,7 @@ func (self class) SetLoop(loop bool) { //gd:AudioStreamPlaylist.set_loop
 	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), &struct{ loop bool }{loop})
 }
 func (self class) HasLoop() bool { //gd:AudioStreamPlaylist.has_loop
-	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

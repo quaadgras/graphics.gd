@@ -402,7 +402,7 @@ func (self class) SetAnimation(name String.Name) { //gd:AnimatedSprite3D.set_ani
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_animation, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 func (self class) GetAnimation() String.Name { //gd:AnimatedSprite3D.get_animation
-	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_animation, gdextension.SizeStringName, &struct{}{})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_animation, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
