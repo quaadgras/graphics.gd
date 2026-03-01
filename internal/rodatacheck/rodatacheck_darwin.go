@@ -14,7 +14,7 @@ static const char sentinel[] = "rodatacheck_sentinel";
 static void rodatacheck_init(void) {
 	uint32_t count = _dyld_image_count();
 	for (uint32_t img = 0; img < count; img++) {
-		const struct mach_header_64 *hdr = _dyld_get_image_header(img);
+		const struct mach_header_64 *hdr = (const struct mach_header_64 *)_dyld_get_image_header(img);
 		if (!hdr || hdr->magic != MH_MAGIC_64)
 			continue;
 		intptr_t slide = _dyld_get_image_vmaddr_slide(img);
