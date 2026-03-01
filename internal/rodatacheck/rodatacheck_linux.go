@@ -5,6 +5,7 @@
 package rodatacheck
 
 /*
+#define _GNU_SOURCE
 #include <link.h>
 #include <stdint.h>
 #include <string.h>
