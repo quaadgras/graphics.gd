@@ -119,7 +119,7 @@ type Any interface {
 Returns true if the given 'method' name exists in the JNISingleton's Java methods.
 */
 func (self Instance) HasJavaMethod(method string) bool { //gd:JNISingleton.has_java_method
-	return bool(Advanced(self).HasJavaMethod(String.Name(String.New(method))))
+	return bool(Advanced(self).HasJavaMethod(String.Name(String.From(method))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

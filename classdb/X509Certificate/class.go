@@ -128,14 +128,14 @@ type Any interface {
 Saves a certificate to the given 'path' (should be a "*.crt" file).
 */
 func (self Instance) Save(path string) error { //gd:X509Certificate.save
-	return error(gd.ToError(Advanced(self).Save(String.New(path))))
+	return error(gd.ToError(Advanced(self).Save(String.From(path))))
 }
 
 /*
 Loads a certificate from 'path' ("*.crt" file).
 */
 func (self Instance) Load(path string) error { //gd:X509Certificate.load
-	return error(gd.ToError(Advanced(self).Load(String.New(path))))
+	return error(gd.ToError(Advanced(self).Load(String.From(path))))
 }
 
 /*
@@ -149,7 +149,7 @@ func (self Instance) SaveToString() string { //gd:X509Certificate.save_to_string
 Loads a certificate from the given 'string'.
 */
 func (self Instance) LoadFromString(s string) error { //gd:X509Certificate.load_from_string
-	return error(gd.ToError(Advanced(self).LoadFromString(String.New(s))))
+	return error(gd.ToError(Advanced(self).LoadFromString(String.From(s))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

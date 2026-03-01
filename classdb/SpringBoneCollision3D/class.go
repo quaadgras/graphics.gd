@@ -203,7 +203,7 @@ func (self Instance) BoneName() string { //gd:SpringBoneCollision3D.bone_name
 
 // SetBoneName sets the property returned by [GetBoneName]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetBoneName(value string) Instance { //gd:SpringBoneCollision3D.bone_name
-	class(self).SetBoneName(String.New(value))
+	class(self).SetBoneName(String.From(value))
 	return self
 }
 

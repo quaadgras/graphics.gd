@@ -151,7 +151,7 @@ Adds an [AnimationNode] at the given 'position'. The 'name' is used to identify 
 [AnimationNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationNode
 */
 func (self Instance) AddNode(name string, node AnimationNode.Instance) { //gd:AnimationNodeBlendTree.add_node
-	Advanced(self).AddNode(String.Name(String.New(name)), node, Vector2.XY(gd.Vector2{0, 0}))
+	Advanced(self).AddNode(String.Name(String.From(name)), node, Vector2.XY(gd.Vector2{0, 0}))
 }
 
 /*
@@ -160,35 +160,35 @@ Adds an [AnimationNode] at the given 'position'. The 'name' is used to identify 
 [AnimationNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationNode
 */
 func (self MoreArgs) AddNode(name string, node AnimationNode.Instance, position Vector2.XY) { //gd:AnimationNodeBlendTree.add_node
-	Advanced(self).AddNode(String.Name(String.New(name)), node, Vector2.XY(position))
+	Advanced(self).AddNode(String.Name(String.From(name)), node, Vector2.XY(position))
 }
 
 /*
 Returns the sub animation node with the specified 'name'.
 */
 func (self Instance) GetNode(name string) AnimationNode.Instance { //gd:AnimationNodeBlendTree.get_node
-	return AnimationNode.Instance(Advanced(self).GetNode(String.Name(String.New(name))))
+	return AnimationNode.Instance(Advanced(self).GetNode(String.Name(String.From(name))))
 }
 
 /*
 Removes a sub animation node.
 */
 func (self Instance) RemoveNode(name string) { //gd:AnimationNodeBlendTree.remove_node
-	Advanced(self).RemoveNode(String.Name(String.New(name)))
+	Advanced(self).RemoveNode(String.Name(String.From(name)))
 }
 
 /*
 Changes the name of a sub animation node.
 */
 func (self Instance) RenameNode(name string, new_name string) { //gd:AnimationNodeBlendTree.rename_node
-	Advanced(self).RenameNode(String.Name(String.New(name)), String.Name(String.New(new_name)))
+	Advanced(self).RenameNode(String.Name(String.From(name)), String.Name(String.From(new_name)))
 }
 
 /*
 Returns true if a sub animation node with specified 'name' exists.
 */
 func (self Instance) HasNode(name string) bool { //gd:AnimationNodeBlendTree.has_node
-	return bool(Advanced(self).HasNode(String.Name(String.New(name))))
+	return bool(Advanced(self).HasNode(String.Name(String.From(name))))
 }
 
 /*
@@ -197,14 +197,14 @@ Connects the output of an [AnimationNode] as input for another [AnimationNode], 
 [AnimationNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationNode
 */
 func (self Instance) ConnectNode(input_node string, input_index int, output_node string) { //gd:AnimationNodeBlendTree.connect_node
-	Advanced(self).ConnectNode(String.Name(String.New(input_node)), int64(input_index), String.Name(String.New(output_node)))
+	Advanced(self).ConnectNode(String.Name(String.From(input_node)), int64(input_index), String.Name(String.From(output_node)))
 }
 
 /*
 Disconnects the animation node connected to the specified input.
 */
 func (self Instance) DisconnectNode(input_node string, input_index int) { //gd:AnimationNodeBlendTree.disconnect_node
-	Advanced(self).DisconnectNode(String.Name(String.New(input_node)), int64(input_index))
+	Advanced(self).DisconnectNode(String.Name(String.From(input_node)), int64(input_index))
 }
 
 /*
@@ -220,7 +220,7 @@ Modifies the position of a sub animation node.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetNodePosition(name string, position Vector2.XY) Instance { //gd:AnimationNodeBlendTree.set_node_position
-	Advanced(self).SetNodePosition(String.Name(String.New(name)), Vector2.XY(position))
+	Advanced(self).SetNodePosition(String.Name(String.From(name)), Vector2.XY(position))
 	return self
 }
 
@@ -228,7 +228,7 @@ func (self Instance) SetNodePosition(name string, position Vector2.XY) Instance 
 Returns the position of the sub animation node with the specified 'name'.
 */
 func (self Instance) GetNodePosition(name string) Vector2.XY { //gd:AnimationNodeBlendTree.get_node_position
-	return Vector2.XY(Advanced(self).GetNodePosition(String.Name(String.New(name))))
+	return Vector2.XY(Advanced(self).GetNodePosition(String.Name(String.From(name))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

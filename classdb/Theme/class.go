@@ -207,7 +207,7 @@ Returns 'self' to enable method chaining.
 [ClearIcon]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearIcon
 */
 func (self Instance) SetIcon(name string, theme_type string, texture Texture2D.Instance) Instance { //gd:Theme.set_icon
-	Advanced(self).SetIcon(String.Name(String.New(name)), String.Name(String.New(theme_type)), texture)
+	Advanced(self).SetIcon(String.Name(String.From(name)), String.Name(String.From(theme_type)), texture)
 	return self
 }
 
@@ -220,7 +220,7 @@ Returns the engine fallback icon value if the property doesn't exist (see [Theme
 [ThemeDB.FallbackIcon]: https://pkg.go.dev/graphics.gd/classdb/ThemeDB#FallbackIcon
 */
 func (self Instance) GetIcon(name string, theme_type string) Texture2D.Instance { //gd:Theme.get_icon
-	return Texture2D.Instance(Advanced(self).GetIcon(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return Texture2D.Instance(Advanced(self).GetIcon(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -231,7 +231,7 @@ Returns false if it doesn't exist. Use [SetIcon] to define it.
 [SetIcon]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.SetIcon
 */
 func (self Instance) HasIcon(name string, theme_type string) bool { //gd:Theme.has_icon
-	return bool(Advanced(self).HasIcon(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return bool(Advanced(self).HasIcon(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -243,7 +243,7 @@ Fails if it doesn't exist, or if a similar property with the new name already ex
 [HasIcon]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasIcon
 */
 func (self Instance) RenameIcon(old_name string, name string, theme_type string) { //gd:Theme.rename_icon
-	Advanced(self).RenameIcon(String.Name(String.New(old_name)), String.Name(String.New(name)), String.Name(String.New(theme_type)))
+	Advanced(self).RenameIcon(String.Name(String.From(old_name)), String.Name(String.From(name)), String.Name(String.From(theme_type)))
 }
 
 /*
@@ -254,7 +254,7 @@ Fails if it doesn't exist. Use [HasIcon] to check for existence.
 [HasIcon]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasIcon
 */
 func (self Instance) ClearIcon(name string, theme_type string) { //gd:Theme.clear_icon
-	Advanced(self).ClearIcon(String.Name(String.New(name)), String.Name(String.New(theme_type)))
+	Advanced(self).ClearIcon(String.Name(String.From(name)), String.Name(String.From(theme_type)))
 }
 
 /*
@@ -263,7 +263,7 @@ Returns a list of names for icon properties defined with 'theme_type'. Use [GetI
 [GetIconTypeList]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.GetIconTypeList
 */
 func (self Instance) GetIconList(theme_type string) []string { //gd:Theme.get_icon_list
-	return []string(Advanced(self).GetIconList(String.New(theme_type)).Strings())
+	return []string(Advanced(self).GetIconList(String.From(theme_type)).Strings())
 }
 
 /*
@@ -284,7 +284,7 @@ Returns 'self' to enable method chaining.
 [StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
 */
 func (self Instance) SetStylebox(name string, theme_type string, texture StyleBox.Instance) Instance { //gd:Theme.set_stylebox
-	Advanced(self).SetStylebox(String.Name(String.New(name)), String.Name(String.New(theme_type)), texture)
+	Advanced(self).SetStylebox(String.Name(String.From(name)), String.Name(String.From(theme_type)), texture)
 	return self
 }
 
@@ -298,7 +298,7 @@ Returns the engine fallback stylebox value if the property doesn't exist (see [T
 [ThemeDB.FallbackStylebox]: https://pkg.go.dev/graphics.gd/classdb/ThemeDB#FallbackStylebox
 */
 func (self Instance) GetStylebox(name string, theme_type string) StyleBox.Instance { //gd:Theme.get_stylebox
-	return StyleBox.Instance(Advanced(self).GetStylebox(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return StyleBox.Instance(Advanced(self).GetStylebox(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -310,7 +310,7 @@ Returns false if it doesn't exist. Use [SetStylebox] to define it.
 [StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
 */
 func (self Instance) HasStylebox(name string, theme_type string) bool { //gd:Theme.has_stylebox
-	return bool(Advanced(self).HasStylebox(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return bool(Advanced(self).HasStylebox(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -323,7 +323,7 @@ Fails if it doesn't exist, or if a similar property with the new name already ex
 [StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
 */
 func (self Instance) RenameStylebox(old_name string, name string, theme_type string) { //gd:Theme.rename_stylebox
-	Advanced(self).RenameStylebox(String.Name(String.New(old_name)), String.Name(String.New(name)), String.Name(String.New(theme_type)))
+	Advanced(self).RenameStylebox(String.Name(String.From(old_name)), String.Name(String.From(name)), String.Name(String.From(theme_type)))
 }
 
 /*
@@ -335,7 +335,7 @@ Fails if it doesn't exist. Use [HasStylebox] to check for existence.
 [StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
 */
 func (self Instance) ClearStylebox(name string, theme_type string) { //gd:Theme.clear_stylebox
-	Advanced(self).ClearStylebox(String.Name(String.New(name)), String.Name(String.New(theme_type)))
+	Advanced(self).ClearStylebox(String.Name(String.From(name)), String.Name(String.From(theme_type)))
 }
 
 /*
@@ -345,7 +345,7 @@ Returns a list of names for [StyleBox] properties defined with 'theme_type'. Use
 [StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
 */
 func (self Instance) GetStyleboxList(theme_type string) []string { //gd:Theme.get_stylebox_list
-	return []string(Advanced(self).GetStyleboxList(String.New(theme_type)).Strings())
+	return []string(Advanced(self).GetStyleboxList(String.From(theme_type)).Strings())
 }
 
 /*
@@ -367,7 +367,7 @@ Returns 'self' to enable method chaining.
 [Font]: https://pkg.go.dev/graphics.gd/classdb/Font
 */
 func (self Instance) SetFont(name string, theme_type string, font Font.Instance) Instance { //gd:Theme.set_font
-	Advanced(self).SetFont(String.Name(String.New(name)), String.Name(String.New(theme_type)), font)
+	Advanced(self).SetFont(String.Name(String.From(name)), String.Name(String.From(theme_type)), font)
 	return self
 }
 
@@ -385,7 +385,7 @@ Returns the engine fallback font value, if neither exist (see [ThemeDB.FallbackF
 [ThemeDB.FallbackFont]: https://pkg.go.dev/graphics.gd/classdb/ThemeDB#FallbackFont
 */
 func (self Instance) GetFont(name string, theme_type string) Font.Instance { //gd:Theme.get_font
-	return Font.Instance(Advanced(self).GetFont(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return Font.Instance(Advanced(self).GetFont(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -398,7 +398,7 @@ Returns false if neither exist. Use [SetFont] to define the property.
 [SetFont]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.SetFont
 */
 func (self Instance) HasFont(name string, theme_type string) bool { //gd:Theme.has_font
-	return bool(Advanced(self).HasFont(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return bool(Advanced(self).HasFont(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -411,7 +411,7 @@ Fails if it doesn't exist, or if a similar property with the new name already ex
 [HasFont]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasFont
 */
 func (self Instance) RenameFont(old_name string, name string, theme_type string) { //gd:Theme.rename_font
-	Advanced(self).RenameFont(String.Name(String.New(old_name)), String.Name(String.New(name)), String.Name(String.New(theme_type)))
+	Advanced(self).RenameFont(String.Name(String.From(old_name)), String.Name(String.From(name)), String.Name(String.From(theme_type)))
 }
 
 /*
@@ -423,7 +423,7 @@ Fails if it doesn't exist. Use [HasFont] to check for existence.
 [HasFont]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasFont
 */
 func (self Instance) ClearFont(name string, theme_type string) { //gd:Theme.clear_font
-	Advanced(self).ClearFont(String.Name(String.New(name)), String.Name(String.New(theme_type)))
+	Advanced(self).ClearFont(String.Name(String.From(name)), String.Name(String.From(theme_type)))
 }
 
 /*
@@ -433,7 +433,7 @@ Returns a list of names for [Font] properties defined with 'theme_type'. Use [Ge
 [GetFontTypeList]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.GetFontTypeList
 */
 func (self Instance) GetFontList(theme_type string) []string { //gd:Theme.get_font_list
-	return []string(Advanced(self).GetFontList(String.New(theme_type)).Strings())
+	return []string(Advanced(self).GetFontList(String.From(theme_type)).Strings())
 }
 
 /*
@@ -454,7 +454,7 @@ Returns 'self' to enable method chaining.
 [ClearFontSize]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearFontSize
 */
 func (self Instance) SetFontSize(name string, theme_type string, font_size int) Instance { //gd:Theme.set_font_size
-	Advanced(self).SetFontSize(String.Name(String.New(name)), String.Name(String.New(theme_type)), int64(font_size))
+	Advanced(self).SetFontSize(String.Name(String.From(name)), String.Name(String.From(theme_type)), int64(font_size))
 	return self
 }
 
@@ -471,7 +471,7 @@ Returns the engine fallback font size value, if neither exist (see [ThemeDB.Fall
 [ThemeDB.FallbackFontSize]: https://pkg.go.dev/graphics.gd/classdb/ThemeDB#FallbackFontSize
 */
 func (self Instance) GetFontSize(name string, theme_type string) int { //gd:Theme.get_font_size
-	return int(int(Advanced(self).GetFontSize(String.Name(String.New(name)), String.Name(String.New(theme_type)))))
+	return int(int(Advanced(self).GetFontSize(String.Name(String.From(name)), String.Name(String.From(theme_type)))))
 }
 
 /*
@@ -483,7 +483,7 @@ Returns false if neither exist. Use [SetFontSize] to define the property.
 [SetFontSize]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.SetFontSize
 */
 func (self Instance) HasFontSize(name string, theme_type string) bool { //gd:Theme.has_font_size
-	return bool(Advanced(self).HasFontSize(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return bool(Advanced(self).HasFontSize(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -495,7 +495,7 @@ Fails if it doesn't exist, or if a similar property with the new name already ex
 [HasFontSize]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasFontSize
 */
 func (self Instance) RenameFontSize(old_name string, name string, theme_type string) { //gd:Theme.rename_font_size
-	Advanced(self).RenameFontSize(String.Name(String.New(old_name)), String.Name(String.New(name)), String.Name(String.New(theme_type)))
+	Advanced(self).RenameFontSize(String.Name(String.From(old_name)), String.Name(String.From(name)), String.Name(String.From(theme_type)))
 }
 
 /*
@@ -506,7 +506,7 @@ Fails if it doesn't exist. Use [HasFontSize] to check for existence.
 [HasFontSize]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasFontSize
 */
 func (self Instance) ClearFontSize(name string, theme_type string) { //gd:Theme.clear_font_size
-	Advanced(self).ClearFontSize(String.Name(String.New(name)), String.Name(String.New(theme_type)))
+	Advanced(self).ClearFontSize(String.Name(String.From(name)), String.Name(String.From(theme_type)))
 }
 
 /*
@@ -515,7 +515,7 @@ Returns a list of names for font size properties defined with 'theme_type'. Use 
 [GetFontSizeTypeList]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.GetFontSizeTypeList
 */
 func (self Instance) GetFontSizeList(theme_type string) []string { //gd:Theme.get_font_size_list
-	return []string(Advanced(self).GetFontSizeList(String.New(theme_type)).Strings())
+	return []string(Advanced(self).GetFontSizeList(String.From(theme_type)).Strings())
 }
 
 /*
@@ -536,7 +536,7 @@ Returns 'self' to enable method chaining.
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 */
 func (self Instance) SetColor(name string, theme_type string, color Color.RGBA) Instance { //gd:Theme.set_color
-	Advanced(self).SetColor(String.Name(String.New(name)), String.Name(String.New(theme_type)), Color.RGBA(color))
+	Advanced(self).SetColor(String.Name(String.From(name)), String.Name(String.From(theme_type)), Color.RGBA(color))
 	return self
 }
 
@@ -549,7 +549,7 @@ Returns the default color value if the property doesn't exist. Use [HasColor] to
 [HasColor]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasColor
 */
 func (self Instance) GetColor(name string, theme_type string) Color.RGBA { //gd:Theme.get_color
-	return Color.RGBA(Advanced(self).GetColor(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return Color.RGBA(Advanced(self).GetColor(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -561,7 +561,7 @@ Returns false if it doesn't exist. Use [SetColor] to define it.
 [SetColor]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.SetColor
 */
 func (self Instance) HasColor(name string, theme_type string) bool { //gd:Theme.has_color
-	return bool(Advanced(self).HasColor(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return bool(Advanced(self).HasColor(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -574,7 +574,7 @@ Fails if it doesn't exist, or if a similar property with the new name already ex
 [HasColor]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasColor
 */
 func (self Instance) RenameColor(old_name string, name string, theme_type string) { //gd:Theme.rename_color
-	Advanced(self).RenameColor(String.Name(String.New(old_name)), String.Name(String.New(name)), String.Name(String.New(theme_type)))
+	Advanced(self).RenameColor(String.Name(String.From(old_name)), String.Name(String.From(name)), String.Name(String.From(theme_type)))
 }
 
 /*
@@ -586,7 +586,7 @@ Fails if it doesn't exist. Use [HasColor] to check for existence.
 [HasColor]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasColor
 */
 func (self Instance) ClearColor(name string, theme_type string) { //gd:Theme.clear_color
-	Advanced(self).ClearColor(String.Name(String.New(name)), String.Name(String.New(theme_type)))
+	Advanced(self).ClearColor(String.Name(String.From(name)), String.Name(String.From(theme_type)))
 }
 
 /*
@@ -596,7 +596,7 @@ Returns a list of names for [Color.RGBA] properties defined with 'theme_type'. U
 [GetColorTypeList]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.GetColorTypeList
 */
 func (self Instance) GetColorList(theme_type string) []string { //gd:Theme.get_color_list
-	return []string(Advanced(self).GetColorList(String.New(theme_type)).Strings())
+	return []string(Advanced(self).GetColorList(String.From(theme_type)).Strings())
 }
 
 /*
@@ -617,7 +617,7 @@ Returns 'self' to enable method chaining.
 [ClearConstant]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearConstant
 */
 func (self Instance) SetConstant(name string, theme_type string, constant int) Instance { //gd:Theme.set_constant
-	Advanced(self).SetConstant(String.Name(String.New(name)), String.Name(String.New(theme_type)), int64(constant))
+	Advanced(self).SetConstant(String.Name(String.From(name)), String.Name(String.From(theme_type)), int64(constant))
 	return self
 }
 
@@ -629,7 +629,7 @@ Returns 0 if the property doesn't exist. Use [HasConstant] to check for existenc
 [HasConstant]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasConstant
 */
 func (self Instance) GetConstant(name string, theme_type string) int { //gd:Theme.get_constant
-	return int(int(Advanced(self).GetConstant(String.Name(String.New(name)), String.Name(String.New(theme_type)))))
+	return int(int(Advanced(self).GetConstant(String.Name(String.From(name)), String.Name(String.From(theme_type)))))
 }
 
 /*
@@ -640,7 +640,7 @@ Returns false if it doesn't exist. Use [SetConstant] to define it.
 [SetConstant]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.SetConstant
 */
 func (self Instance) HasConstant(name string, theme_type string) bool { //gd:Theme.has_constant
-	return bool(Advanced(self).HasConstant(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return bool(Advanced(self).HasConstant(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -652,7 +652,7 @@ Fails if it doesn't exist, or if a similar property with the new name already ex
 [HasConstant]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasConstant
 */
 func (self Instance) RenameConstant(old_name string, name string, theme_type string) { //gd:Theme.rename_constant
-	Advanced(self).RenameConstant(String.Name(String.New(old_name)), String.Name(String.New(name)), String.Name(String.New(theme_type)))
+	Advanced(self).RenameConstant(String.Name(String.From(old_name)), String.Name(String.From(name)), String.Name(String.From(theme_type)))
 }
 
 /*
@@ -663,7 +663,7 @@ Fails if it doesn't exist. Use [HasConstant] to check for existence.
 [HasConstant]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasConstant
 */
 func (self Instance) ClearConstant(name string, theme_type string) { //gd:Theme.clear_constant
-	Advanced(self).ClearConstant(String.Name(String.New(name)), String.Name(String.New(theme_type)))
+	Advanced(self).ClearConstant(String.Name(String.From(name)), String.Name(String.From(theme_type)))
 }
 
 /*
@@ -672,7 +672,7 @@ Returns a list of names for constant properties defined with 'theme_type'. Use [
 [GetConstantTypeList]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.GetConstantTypeList
 */
 func (self Instance) GetConstantList(theme_type string) []string { //gd:Theme.get_constant_list
-	return []string(Advanced(self).GetConstantList(String.New(theme_type)).Strings())
+	return []string(Advanced(self).GetConstantList(String.From(theme_type)).Strings())
 }
 
 /*
@@ -729,7 +729,7 @@ Returns 'self' to enable method chaining.
 [ClearThemeItem]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearThemeItem
 */
 func (self Instance) SetThemeItem(data_type DataType, name string, theme_type string, value any) Instance { //gd:Theme.set_theme_item
-	Advanced(self).SetThemeItem(data_type, String.Name(String.New(name)), String.Name(String.New(theme_type)), variant.New(value))
+	Advanced(self).SetThemeItem(data_type, String.Name(String.From(name)), String.Name(String.From(theme_type)), variant.New(value))
 	return self
 }
 
@@ -744,7 +744,7 @@ Note: This method is analogous to calling the corresponding data type specific m
 [ThemeDB]: https://pkg.go.dev/graphics.gd/classdb/ThemeDB
 */
 func (self Instance) GetThemeItem(data_type DataType, name string, theme_type string) any { //gd:Theme.get_theme_item
-	return any(Advanced(self).GetThemeItem(data_type, String.Name(String.New(name)), String.Name(String.New(theme_type))).Interface())
+	return any(Advanced(self).GetThemeItem(data_type, String.Name(String.From(name)), String.Name(String.From(theme_type))).Interface())
 }
 
 /*
@@ -757,7 +757,7 @@ Note: This method is analogous to calling the corresponding data type specific m
 [SetThemeItem]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.SetThemeItem
 */
 func (self Instance) HasThemeItem(data_type DataType, name string, theme_type string) bool { //gd:Theme.has_theme_item
-	return bool(Advanced(self).HasThemeItem(data_type, String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return bool(Advanced(self).HasThemeItem(data_type, String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -771,7 +771,7 @@ Note: This method is analogous to calling the corresponding data type specific m
 [HasThemeItem]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasThemeItem
 */
 func (self Instance) RenameThemeItem(data_type DataType, old_name string, name string, theme_type string) { //gd:Theme.rename_theme_item
-	Advanced(self).RenameThemeItem(data_type, String.Name(String.New(old_name)), String.Name(String.New(name)), String.Name(String.New(theme_type)))
+	Advanced(self).RenameThemeItem(data_type, String.Name(String.From(old_name)), String.Name(String.From(name)), String.Name(String.From(theme_type)))
 }
 
 /*
@@ -784,7 +784,7 @@ Note: This method is analogous to calling the corresponding data type specific m
 [HasThemeItem]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasThemeItem
 */
 func (self Instance) ClearThemeItem(data_type DataType, name string, theme_type string) { //gd:Theme.clear_theme_item
-	Advanced(self).ClearThemeItem(data_type, String.Name(String.New(name)), String.Name(String.New(theme_type)))
+	Advanced(self).ClearThemeItem(data_type, String.Name(String.From(name)), String.Name(String.From(theme_type)))
 }
 
 /*
@@ -795,7 +795,7 @@ Note: This method is analogous to calling the corresponding data type specific m
 [GetThemeItemTypeList]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.GetThemeItemTypeList
 */
 func (self Instance) GetThemeItemList(data_type DataType, theme_type string) []string { //gd:Theme.get_theme_item_list
-	return []string(Advanced(self).GetThemeItemList(data_type, String.New(theme_type)).Strings())
+	return []string(Advanced(self).GetThemeItemList(data_type, String.From(theme_type)).Strings())
 }
 
 /*
@@ -825,7 +825,7 @@ Returns 'self' to enable method chaining.
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func (self Instance) SetTypeVariation(theme_type string, base_type string) Instance { //gd:Theme.set_type_variation
-	Advanced(self).SetTypeVariation(String.Name(String.New(theme_type)), String.Name(String.New(base_type)))
+	Advanced(self).SetTypeVariation(String.Name(String.From(theme_type)), String.Name(String.From(base_type)))
 	return self
 }
 
@@ -833,7 +833,7 @@ func (self Instance) SetTypeVariation(theme_type string, base_type string) Insta
 Returns true if 'theme_type' is marked as a variation of 'base_type'.
 */
 func (self Instance) IsTypeVariation(theme_type string, base_type string) bool { //gd:Theme.is_type_variation
-	return bool(Advanced(self).IsTypeVariation(String.Name(String.New(theme_type)), String.Name(String.New(base_type))))
+	return bool(Advanced(self).IsTypeVariation(String.Name(String.From(theme_type)), String.Name(String.From(base_type))))
 }
 
 /*
@@ -842,21 +842,21 @@ Unmarks 'theme_type' as being a variation of another theme type. See [SetTypeVar
 [SetTypeVariation]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.SetTypeVariation
 */
 func (self Instance) ClearTypeVariation(theme_type string) { //gd:Theme.clear_type_variation
-	Advanced(self).ClearTypeVariation(String.Name(String.New(theme_type)))
+	Advanced(self).ClearTypeVariation(String.Name(String.From(theme_type)))
 }
 
 /*
 Returns the name of the base theme type if 'theme_type' is a valid variation type. Returns an empty string otherwise.
 */
 func (self Instance) GetTypeVariationBase(theme_type string) string { //gd:Theme.get_type_variation_base
-	return string(Advanced(self).GetTypeVariationBase(String.Name(String.New(theme_type))).String())
+	return string(Advanced(self).GetTypeVariationBase(String.Name(String.From(theme_type))).String())
 }
 
 /*
 Returns a list of all type variations for the given 'base_type'.
 */
 func (self Instance) GetTypeVariationList(base_type string) []string { //gd:Theme.get_type_variation_list
-	return []string(Advanced(self).GetTypeVariationList(String.Name(String.New(base_type))).Strings())
+	return []string(Advanced(self).GetTypeVariationList(String.Name(String.From(base_type))).Strings())
 }
 
 /*
@@ -865,14 +865,14 @@ Adds an empty theme type for every valid data type.
 Note: Empty types are not saved with the theme. This method only exists to perform in-memory changes to the resource. Use available set_* methods to add theme items.
 */
 func (self Instance) AddType(theme_type string) { //gd:Theme.add_type
-	Advanced(self).AddType(String.Name(String.New(theme_type)))
+	Advanced(self).AddType(String.Name(String.From(theme_type)))
 }
 
 /*
 Removes the theme type, gracefully discarding defined theme items. If the type is a variation, this information is also erased. If the type is a base for type variations, those variations lose their base.
 */
 func (self Instance) RemoveType(theme_type string) { //gd:Theme.remove_type
-	Advanced(self).RemoveType(String.Name(String.New(theme_type)))
+	Advanced(self).RemoveType(String.Name(String.From(theme_type)))
 }
 
 /*
@@ -881,7 +881,7 @@ Renames the theme type 'old_theme_type' to 'theme_type', if the old type exists 
 Note: Renaming a theme type to an empty name or a variation to a type associated with a built-in class removes type variation connections in a way that cannot be undone by reversing the rename alone.
 */
 func (self Instance) RenameType(old_theme_type string, theme_type string) { //gd:Theme.rename_type
-	Advanced(self).RenameType(String.Name(String.New(old_theme_type)), String.Name(String.New(theme_type)))
+	Advanced(self).RenameType(String.Name(String.From(old_theme_type)), String.Name(String.From(theme_type)))
 }
 
 /*

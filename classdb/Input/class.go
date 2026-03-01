@@ -252,7 +252,7 @@ Note: Due to keyboard ghosting, [IsActionPressed] may return false even if one o
 [InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
 */
 func IsActionPressed(action string, exact_match bool) bool { //gd:Input.is_action_pressed
-	return bool(Advanced().IsActionPressed(String.Name(String.New(action)), exact_match))
+	return bool(Advanced().IsActionPressed(String.Name(String.From(action)), exact_match))
 }
 
 /*
@@ -276,7 +276,7 @@ Note: During input handling (e.g. [Node.Input]), use [InputEvent.IsActionPressed
 [Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
 */
 func IsActionJustPressed(action string, exact_match bool) bool { //gd:Input.is_action_just_pressed
-	return bool(Advanced().IsActionJustPressed(String.Name(String.New(action)), exact_match))
+	return bool(Advanced().IsActionJustPressed(String.Name(String.From(action)), exact_match))
 }
 
 /*
@@ -295,7 +295,7 @@ Note: During input handling (e.g. [Node.Input]), use [InputEvent.IsActionRelease
 [Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
 */
 func IsActionJustReleased(action string, exact_match bool) bool { //gd:Input.is_action_just_released
-	return bool(Advanced().IsActionJustReleased(String.Name(String.New(action)), exact_match))
+	return bool(Advanced().IsActionJustReleased(String.Name(String.From(action)), exact_match))
 }
 
 /*
@@ -316,7 +316,7 @@ Note: Due to keyboard ghosting, [IsActionJustPressed] may return false even if o
 [Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
 */
 func IsActionJustPressedByEvent(action string, event InputEvent.Instance, exact_match bool) bool { //gd:Input.is_action_just_pressed_by_event
-	return bool(Advanced().IsActionJustPressedByEvent(String.Name(String.New(action)), event, exact_match))
+	return bool(Advanced().IsActionJustPressedByEvent(String.Name(String.From(action)), event, exact_match))
 }
 
 /*
@@ -334,7 +334,7 @@ If 'exact_match' is false, it ignores additional input modifiers for [InputEvent
 [Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
 */
 func IsActionJustReleasedByEvent(action string, event InputEvent.Instance, exact_match bool) bool { //gd:Input.is_action_just_released_by_event
-	return bool(Advanced().IsActionJustReleasedByEvent(String.Name(String.New(action)), event, exact_match))
+	return bool(Advanced().IsActionJustReleasedByEvent(String.Name(String.From(action)), event, exact_match))
 }
 
 /*
@@ -347,7 +347,7 @@ If 'exact_match' is false, it ignores additional input modifiers for [InputEvent
 [InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
 */
 func GetActionStrength(action string, exact_match bool) Float.X { //gd:Input.get_action_strength
-	return Float.X(Float.X(Advanced().GetActionStrength(String.Name(String.New(action)), exact_match)))
+	return Float.X(Float.X(Advanced().GetActionStrength(String.Name(String.From(action)), exact_match)))
 }
 
 /*
@@ -360,7 +360,7 @@ If 'exact_match' is false, it ignores additional input modifiers for [InputEvent
 [InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
 */
 func GetActionRawStrength(action string, exact_match bool) Float.X { //gd:Input.get_action_raw_strength
-	return Float.X(Float.X(Advanced().GetActionRawStrength(String.Name(String.New(action)), exact_match)))
+	return Float.X(Float.X(Advanced().GetActionRawStrength(String.Name(String.From(action)), exact_match)))
 }
 
 /*
@@ -369,7 +369,7 @@ Get axis input by specifying two actions, one negative and one positive.
 This is a shorthand for writing Input.get_action_strength("positive_action") - Input.get_action_strength("negative_action").
 */
 func GetAxis(negative_action string, positive_action string) Float.X { //gd:Input.get_axis
-	return Float.X(Float.X(Advanced().GetAxis(String.Name(String.New(negative_action)), String.Name(String.New(positive_action)))))
+	return Float.X(Float.X(Advanced().GetAxis(String.Name(String.From(negative_action)), String.Name(String.From(positive_action)))))
 }
 
 /*
@@ -380,7 +380,7 @@ This method is useful when getting vector input, such as from a joystick, direct
 By default, the deadzone is automatically calculated from the average of the action deadzones. However, you can override the deadzone to be whatever you want (on the range of 0 to 1).
 */
 func GetVector(negative_x string, positive_x string, negative_y string, positive_y string) Vector2.XY { //gd:Input.get_vector
-	return Vector2.XY(Advanced().GetVector(String.Name(String.New(negative_x)), String.Name(String.New(positive_x)), String.Name(String.New(negative_y)), String.Name(String.New(positive_y)), float64(-1.0)))
+	return Vector2.XY(Advanced().GetVector(String.Name(String.From(negative_x)), String.Name(String.From(positive_x)), String.Name(String.From(negative_y)), String.Name(String.From(positive_y)), float64(-1.0)))
 }
 
 /*
@@ -391,14 +391,14 @@ This method is useful when getting vector input, such as from a joystick, direct
 By default, the deadzone is automatically calculated from the average of the action deadzones. However, you can override the deadzone to be whatever you want (on the range of 0 to 1).
 */
 func GetVectorOptions(negative_x string, positive_x string, negative_y string, positive_y string, deadzone Float.X) Vector2.XY { //gd:Input.get_vector
-	return Vector2.XY(Advanced().GetVector(String.Name(String.New(negative_x)), String.Name(String.New(positive_x)), String.Name(String.New(negative_y)), String.Name(String.New(positive_y)), float64(deadzone)))
+	return Vector2.XY(Advanced().GetVector(String.Name(String.From(negative_x)), String.Name(String.From(positive_x)), String.Name(String.From(negative_y)), String.Name(String.From(positive_y)), float64(deadzone)))
 }
 
 /*
 Adds a new mapping entry (in SDL2 format) to the mapping database. Optionally update already connected devices.
 */
 func AddJoyMapping(mapping string, update_existing bool) { //gd:Input.add_joy_mapping
-	Advanced().AddJoyMapping(String.New(mapping), update_existing)
+	Advanced().AddJoyMapping(String.From(mapping), update_existing)
 }
 
 /*
@@ -407,7 +407,7 @@ Removes all mappings from the internal database that match the given GUID. All c
 On Android, Godot will map to an internal fallback mapping.
 */
 func RemoveJoyMapping(guid string) { //gd:Input.remove_joy_mapping
-	Advanced().RemoveJoyMapping(String.New(guid))
+	Advanced().RemoveJoyMapping(String.From(guid))
 }
 
 /*
@@ -710,7 +710,7 @@ Note: This method will not cause any [Node.Input] calls. It is intended to be us
 [Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
 */
 func ActionPress(action string) { //gd:Input.action_press
-	Advanced().ActionPress(String.Name(String.New(action)), float64(1.0))
+	Advanced().ActionPress(String.Name(String.From(action)), float64(1.0))
 }
 
 /*
@@ -723,14 +723,14 @@ Note: This method will not cause any [Node.Input] calls. It is intended to be us
 [Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
 */
 func ActionPressOptions(action string, strength Float.X) { //gd:Input.action_press
-	Advanced().ActionPress(String.Name(String.New(action)), float64(strength))
+	Advanced().ActionPress(String.Name(String.From(action)), float64(strength))
 }
 
 /*
 If the specified action is already pressed, this will release it.
 */
 func ActionRelease(action string) { //gd:Input.action_release
-	Advanced().ActionRelease(String.Name(String.New(action)))
+	Advanced().ActionRelease(String.Name(String.From(action)))
 }
 
 /*

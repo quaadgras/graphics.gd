@@ -173,49 +173,49 @@ type Any interface {
 Adds a new animation node to the graph. The 'position' is used for display in the editor.
 */
 func (self Instance) AddNode(name string, node AnimationNode.Instance) { //gd:AnimationNodeStateMachine.add_node
-	Advanced(self).AddNode(String.Name(String.New(name)), node, Vector2.XY(gd.Vector2{0, 0}))
+	Advanced(self).AddNode(String.Name(String.From(name)), node, Vector2.XY(gd.Vector2{0, 0}))
 }
 
 /*
 Adds a new animation node to the graph. The 'position' is used for display in the editor.
 */
 func (self MoreArgs) AddNode(name string, node AnimationNode.Instance, position Vector2.XY) { //gd:AnimationNodeStateMachine.add_node
-	Advanced(self).AddNode(String.Name(String.New(name)), node, Vector2.XY(position))
+	Advanced(self).AddNode(String.Name(String.From(name)), node, Vector2.XY(position))
 }
 
 /*
 Replaces the given animation node with a new animation node.
 */
 func (self Instance) ReplaceNode(name string, node AnimationNode.Instance) { //gd:AnimationNodeStateMachine.replace_node
-	Advanced(self).ReplaceNode(String.Name(String.New(name)), node)
+	Advanced(self).ReplaceNode(String.Name(String.From(name)), node)
 }
 
 /*
 Returns the animation node with the given name.
 */
 func (self Instance) GetNode(name string) AnimationNode.Instance { //gd:AnimationNodeStateMachine.get_node
-	return AnimationNode.Instance(Advanced(self).GetNode(String.Name(String.New(name))))
+	return AnimationNode.Instance(Advanced(self).GetNode(String.Name(String.From(name))))
 }
 
 /*
 Deletes the given animation node from the graph.
 */
 func (self Instance) RemoveNode(name string) { //gd:AnimationNodeStateMachine.remove_node
-	Advanced(self).RemoveNode(String.Name(String.New(name)))
+	Advanced(self).RemoveNode(String.Name(String.From(name)))
 }
 
 /*
 Renames the given animation node.
 */
 func (self Instance) RenameNode(name string, new_name string) { //gd:AnimationNodeStateMachine.rename_node
-	Advanced(self).RenameNode(String.Name(String.New(name)), String.Name(String.New(new_name)))
+	Advanced(self).RenameNode(String.Name(String.From(name)), String.Name(String.From(new_name)))
 }
 
 /*
 Returns true if the graph contains the given animation node.
 */
 func (self Instance) HasNode(name string) bool { //gd:AnimationNodeStateMachine.has_node
-	return bool(Advanced(self).HasNode(String.Name(String.New(name))))
+	return bool(Advanced(self).HasNode(String.Name(String.From(name))))
 }
 
 /*
@@ -238,7 +238,7 @@ Sets the animation node's coordinates. Used for display in the editor.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetNodePosition(name string, position Vector2.XY) Instance { //gd:AnimationNodeStateMachine.set_node_position
-	Advanced(self).SetNodePosition(String.Name(String.New(name)), Vector2.XY(position))
+	Advanced(self).SetNodePosition(String.Name(String.From(name)), Vector2.XY(position))
 	return self
 }
 
@@ -246,21 +246,21 @@ func (self Instance) SetNodePosition(name string, position Vector2.XY) Instance 
 Returns the given animation node's coordinates. Used for display in the editor.
 */
 func (self Instance) GetNodePosition(name string) Vector2.XY { //gd:AnimationNodeStateMachine.get_node_position
-	return Vector2.XY(Advanced(self).GetNodePosition(String.Name(String.New(name))))
+	return Vector2.XY(Advanced(self).GetNodePosition(String.Name(String.From(name))))
 }
 
 /*
 Returns true if there is a transition between the given animation nodes.
 */
 func (self Instance) HasTransition(from string, to string) bool { //gd:AnimationNodeStateMachine.has_transition
-	return bool(Advanced(self).HasTransition(String.Name(String.New(from)), String.Name(String.New(to))))
+	return bool(Advanced(self).HasTransition(String.Name(String.From(from)), String.Name(String.From(to))))
 }
 
 /*
 Adds a transition between the given animation nodes.
 */
 func (self Instance) AddTransition(from string, to string, transition AnimationNodeStateMachineTransition.Instance) { //gd:AnimationNodeStateMachine.add_transition
-	Advanced(self).AddTransition(String.Name(String.New(from)), String.Name(String.New(to)), transition)
+	Advanced(self).AddTransition(String.Name(String.From(from)), String.Name(String.From(to)), transition)
 }
 
 /*
@@ -302,7 +302,7 @@ func (self Instance) RemoveTransitionByIndex(idx int) { //gd:AnimationNodeStateM
 Deletes the transition between the two specified animation nodes.
 */
 func (self Instance) RemoveTransition(from string, to string) { //gd:AnimationNodeStateMachine.remove_transition
-	Advanced(self).RemoveTransition(String.Name(String.New(from)), String.Name(String.New(to)))
+	Advanced(self).RemoveTransition(String.Name(String.From(from)), String.Name(String.From(to)))
 }
 
 /*

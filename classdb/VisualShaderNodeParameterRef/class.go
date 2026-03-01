@@ -172,7 +172,7 @@ func (self Instance) ParameterName() string { //gd:VisualShaderNodeParameterRef.
 
 // SetParameterName sets the property returned by [GetParameterName]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetParameterName(value string) Instance { //gd:VisualShaderNodeParameterRef.parameter_name
-	class(self).SetParameterName(String.New(value))
+	class(self).SetParameterName(String.From(value))
 	return self
 }
 

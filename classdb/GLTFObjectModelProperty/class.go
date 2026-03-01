@@ -152,7 +152,7 @@ Appends a node path to [NodePaths]. This can be used by [GLTFDocumentExtension] 
 [SetTypes]: https://pkg.go.dev/graphics.gd/classdb/GLTFObjectModelProperty#Instance.SetTypes
 */
 func (self Instance) AppendNodePath(node_path string) { //gd:GLTFObjectModelProperty.append_node_path
-	Advanced(self).AppendNodePath(Path.ToNode(String.New(node_path)))
+	Advanced(self).AppendNodePath(Path.ToNode(String.From(node_path)))
 }
 
 /*
@@ -162,7 +162,7 @@ High-level wrapper over [AppendNodePath] that handles the most common cases. It 
 [SetTypes]: https://pkg.go.dev/graphics.gd/classdb/GLTFObjectModelProperty#Instance.SetTypes
 */
 func (self Instance) AppendPathToProperty(node_path string, prop_name string) { //gd:GLTFObjectModelProperty.append_path_to_property
-	Advanced(self).AppendPathToProperty(Path.ToNode(String.New(node_path)), String.Name(String.New(prop_name)))
+	Advanced(self).AppendPathToProperty(Path.ToNode(String.From(node_path)), String.Name(String.From(prop_name)))
 }
 
 /*

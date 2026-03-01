@@ -144,14 +144,14 @@ type Any interface {
 This method is kept for compatibility and does nothing. As an alternative, you can display another dialog after showing the file dialog.
 */
 func (self Instance) AddSideMenu(menu Control.Instance) { //gd:EditorFileDialog.add_side_menu
-	Advanced(self).AddSideMenu(menu, String.New(""))
+	Advanced(self).AddSideMenu(menu, String.From(""))
 }
 
 /*
 This method is kept for compatibility and does nothing. As an alternative, you can display another dialog after showing the file dialog.
 */
 func (self MoreArgs) AddSideMenu(menu Control.Instance, title string) { //gd:EditorFileDialog.add_side_menu
-	Advanced(self).AddSideMenu(menu, String.New(title))
+	Advanced(self).AddSideMenu(menu, String.From(title))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

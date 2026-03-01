@@ -135,7 +135,7 @@ Execute the string 'code' as JavaScript code within the browser window. This is 
 If 'use_global_execution_context' is true, the code will be evaluated in the global execution context. Otherwise, it is evaluated in the execution context of a function within the engine's runtime environment.
 */
 func Eval(code string, use_global_execution_context bool) any { //gd:JavaScriptBridge.eval
-	return any(Advanced().Eval(String.New(code), use_global_execution_context).Interface())
+	return any(Advanced().Eval(String.From(code), use_global_execution_context).Interface())
 }
 
 /*
@@ -144,7 +144,7 @@ Returns an interface to a JavaScript object that can be used by scripts. The 'in
 [JavaScriptObject]: https://pkg.go.dev/graphics.gd/classdb/JavaScriptObject
 */
 func GetInterface(intf string) JavaScriptObject.Instance { //gd:JavaScriptBridge.get_interface
-	return JavaScriptObject.Instance(Advanced().GetInterface(String.New(intf)))
+	return JavaScriptObject.Instance(Advanced().GetInterface(String.From(intf)))
 }
 
 /*
@@ -188,7 +188,7 @@ func CreateObject(obj string, args ...any) any { //gd:JavaScriptBridge.create_ob
 	for i, arg := range args {
 		converted_variants[i] = gd.NewVariant(arg)
 	}
-	return any(Advanced().CreateObject(String.New(obj), converted_variants...).Interface())
+	return any(Advanced().CreateObject(String.From(obj), converted_variants...).Interface())
 }
 
 /*
@@ -203,7 +203,7 @@ Note: Browsers might ask the user for permission or block the download if multip
 [MIME type]: https://en.wikipedia.org/wiki/Media_type
 */
 func DownloadBuffer(buffer []byte, name string) { //gd:JavaScriptBridge.download_buffer
-	Advanced().DownloadBuffer(Packed.BytesFrom(buffer...), String.New(name), String.New("application/octet-stream"))
+	Advanced().DownloadBuffer(Packed.BytesFrom(buffer...), String.From(name), String.From("application/octet-stream"))
 }
 
 /*
@@ -218,7 +218,7 @@ Note: Browsers might ask the user for permission or block the download if multip
 [MIME type]: https://en.wikipedia.org/wiki/Media_type
 */
 func DownloadBufferOptions(buffer []byte, name string, mime string) { //gd:JavaScriptBridge.download_buffer
-	Advanced().DownloadBuffer(Packed.BytesFrom(buffer...), String.New(name), String.New(mime))
+	Advanced().DownloadBuffer(Packed.BytesFrom(buffer...), String.From(name), String.From(mime))
 }
 
 /*

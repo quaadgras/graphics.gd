@@ -496,7 +496,7 @@ Inserts 'text' at the caret. If the resulting value is longer than [MaxLength], 
 [MaxLength]: https://pkg.go.dev/graphics.gd/classdb/LineEdit#Instance.MaxLength
 */
 func (self Instance) InsertTextAtCaret(text string) { //gd:LineEdit.insert_text_at_caret
-	Advanced(self).InsertTextAtCaret(String.New(text))
+	Advanced(self).InsertTextAtCaret(String.From(text))
 }
 
 /*
@@ -615,7 +615,7 @@ func (self Instance) Text() string { //gd:LineEdit.text
 
 // SetText sets the property returned by [GetText]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetText(value string) Instance { //gd:LineEdit.text
-	class(self).SetText(String.New(value))
+	class(self).SetText(String.From(value))
 	return self
 }
 
@@ -631,7 +631,7 @@ func (self Instance) PlaceholderText() string { //gd:LineEdit.placeholder_text
 
 // SetPlaceholderText sets the property returned by [GetPlaceholder]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetPlaceholderText(value string) Instance { //gd:LineEdit.placeholder_text
-	class(self).SetPlaceholder(String.New(value))
+	class(self).SetPlaceholder(String.From(value))
 	return self
 }
 
@@ -1015,7 +1015,7 @@ func (self Instance) SecretCharacter() string { //gd:LineEdit.secret_character
 
 // SetSecretCharacter sets the property returned by [GetSecretCharacter]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetSecretCharacter(value string) Instance { //gd:LineEdit.secret_character
-	class(self).SetSecretCharacter(String.New(value))
+	class(self).SetSecretCharacter(String.From(value))
 	return self
 }
 
@@ -1041,7 +1041,7 @@ func (self Instance) Language() string { //gd:LineEdit.language
 
 // SetLanguage sets the property returned by [GetLanguage]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetLanguage(value string) Instance { //gd:LineEdit.language
-	class(self).SetLanguage(String.New(value))
+	class(self).SetLanguage(String.From(value))
 	return self
 }
 

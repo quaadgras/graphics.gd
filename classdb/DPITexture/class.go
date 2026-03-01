@@ -151,7 +151,7 @@ func CreateFromString(source string, color_map map[struct {
 	A float32
 }) Instance { //gd:DPITexture.create_from_string
 	self := Instance{}
-	return Instance(Advanced(self).CreateFromString(String.New(source), float64(1.0), float64(1.0), gd.DictionaryFromMap(color_map)))
+	return Instance(Advanced(self).CreateFromString(String.From(source), float64(1.0), float64(1.0), gd.DictionaryFromMap(color_map)))
 }
 
 /*
@@ -171,7 +171,7 @@ func CreateFromStringOptions(source string, scale Float.X, saturation Float.X, c
 	A float32
 }) Instance { //gd:DPITexture.create_from_string
 	self := Instance{}
-	return Instance(Advanced(self).CreateFromString(String.New(source), float64(scale), float64(saturation), gd.DictionaryFromMap(color_map)))
+	return Instance(Advanced(self).CreateFromString(String.From(source), float64(scale), float64(saturation), gd.DictionaryFromMap(color_map)))
 }
 
 /*
@@ -180,7 +180,7 @@ Sets this SVG texture's source code.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetSource(source string) Instance { //gd:DPITexture.set_source
-	Advanced(self).SetSource(String.New(source))
+	Advanced(self).SetSource(String.From(source))
 	return self
 }
 

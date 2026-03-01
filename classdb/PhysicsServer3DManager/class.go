@@ -126,7 +126,7 @@ Register a [PhysicsServer3D] implementation by passing a 'name' and a func that 
 [PhysicsServer3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer3D
 */
 func RegisterServer(name string, create_callback func() PhysicsServer3D.Instance) { //gd:PhysicsServer3DManager.register_server
-	Advanced().RegisterServer(String.New(name), Callable.New(create_callback))
+	Advanced().RegisterServer(String.From(name), Callable.New(create_callback))
 }
 
 /*
@@ -135,7 +135,7 @@ Set the default [PhysicsServer3D] implementation to the one identified by 'name'
 [PhysicsServer3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer3D
 */
 func SetDefaultServer(name string, priority int) { //gd:PhysicsServer3DManager.set_default_server
-	Advanced().SetDefaultServer(String.New(name), int64(priority))
+	Advanced().SetDefaultServer(String.From(name), int64(priority))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

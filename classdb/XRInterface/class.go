@@ -239,7 +239,7 @@ Triggers a haptic pulse on a device associated with this interface.
 'delay_sec' is a delay in seconds before the pulse is given.
 */
 func (self Instance) TriggerHapticPulse(action_name string, tracker_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X) { //gd:XRInterface.trigger_haptic_pulse
-	Advanced(self).TriggerHapticPulse(String.New(action_name), String.Name(String.New(tracker_name)), float64(frequency), float64(amplitude), float64(duration_sec), float64(delay_sec))
+	Advanced(self).TriggerHapticPulse(String.From(action_name), String.Name(String.From(tracker_name)), float64(frequency), float64(amplitude), float64(duration_sec), float64(delay_sec))
 }
 
 /*

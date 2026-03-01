@@ -191,7 +191,7 @@ func (self Instance) Label() string { //gd:EditorSpinSlider.label
 
 // SetLabel sets the property returned by [GetLabel]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetLabel(value string) Instance { //gd:EditorSpinSlider.label
-	class(self).SetLabel(String.New(value))
+	class(self).SetLabel(String.From(value))
 	return self
 }
 
@@ -204,7 +204,7 @@ func (self Instance) Suffix() string { //gd:EditorSpinSlider.suffix
 
 // SetSuffix sets the property returned by [GetSuffix]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetSuffix(value string) Instance { //gd:EditorSpinSlider.suffix
-	class(self).SetSuffix(String.New(value))
+	class(self).SetSuffix(String.From(value))
 	return self
 }
 

@@ -125,7 +125,7 @@ Registers a [NavigationServer3D] implementation by passing a 'name' and a func t
 [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
 */
 func RegisterServer(name string, create_callback func()) { //gd:NavigationServer3DManager.register_server
-	Advanced().RegisterServer(String.New(name), Callable.New(create_callback))
+	Advanced().RegisterServer(String.From(name), Callable.New(create_callback))
 }
 
 /*
@@ -134,7 +134,7 @@ Sets the default [NavigationServer3D] implementation to the one identified by 'n
 [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
 */
 func SetDefaultServer(name string, priority int) { //gd:NavigationServer3DManager.set_default_server
-	Advanced().SetDefaultServer(String.New(name), int64(priority))
+	Advanced().SetDefaultServer(String.From(name), int64(priority))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

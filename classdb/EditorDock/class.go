@@ -350,7 +350,7 @@ func (self Instance) Title() string { //gd:EditorDock.title
 
 // SetTitle sets the property returned by [GetTitle]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetTitle(value string) Instance { //gd:EditorDock.title
-	class(self).SetTitle(String.New(value))
+	class(self).SetTitle(String.From(value))
 	return self
 }
 
@@ -363,7 +363,7 @@ func (self Instance) LayoutKey() string { //gd:EditorDock.layout_key
 
 // SetLayoutKey sets the property returned by [GetLayoutKey]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetLayoutKey(value string) Instance { //gd:EditorDock.layout_key
-	class(self).SetLayoutKey(String.New(value))
+	class(self).SetLayoutKey(String.From(value))
 	return self
 }
 
@@ -425,7 +425,7 @@ func (self Instance) IconName() string { //gd:EditorDock.icon_name
 
 // SetIconName sets the property returned by [GetIconName]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetIconName(value string) Instance { //gd:EditorDock.icon_name
-	class(self).SetIconName(String.Name(String.New(value)))
+	class(self).SetIconName(String.Name(String.From(value)))
 	return self
 }
 

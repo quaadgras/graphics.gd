@@ -175,7 +175,7 @@ Triggers a haptic pulse on a device associated with this interface.
 'delay_sec' is a delay in seconds before the pulse is given.
 */
 func (self Instance) TriggerHapticPulse(action_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X) { //gd:XRNode3D.trigger_haptic_pulse
-	Advanced(self).TriggerHapticPulse(String.New(action_name), float64(frequency), float64(amplitude), float64(duration_sec), float64(delay_sec))
+	Advanced(self).TriggerHapticPulse(String.From(action_name), float64(frequency), float64(amplitude), float64(duration_sec), float64(delay_sec))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -233,7 +233,7 @@ func (self Instance) Tracker() string { //gd:XRNode3D.tracker
 
 // SetTracker sets the property returned by [GetTracker]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetTracker(value string) Instance { //gd:XRNode3D.tracker
-	class(self).SetTracker(String.Name(String.New(value)))
+	class(self).SetTracker(String.Name(String.From(value)))
 	return self
 }
 
@@ -250,7 +250,7 @@ func (self Instance) Pose() string { //gd:XRNode3D.pose
 
 // SetPose sets the property returned by [GetPoseName]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetPose(value string) Instance { //gd:XRNode3D.pose
-	class(self).SetPoseName(String.Name(String.New(value)))
+	class(self).SetPoseName(String.Name(String.From(value)))
 	return self
 }
 

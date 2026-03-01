@@ -169,10 +169,10 @@ func (self Instance) ToDictionary() Structure { //gd:GLTFLight.to_dictionary
 	return Structure(gd.DictionaryAs[Structure](Advanced(self).ToDictionary()))
 }
 func (self Instance) GetAdditionalData(extension_name string) any { //gd:GLTFLight.get_additional_data
-	return any(Advanced(self).GetAdditionalData(String.Name(String.New(extension_name))).Interface())
+	return any(Advanced(self).GetAdditionalData(String.Name(String.From(extension_name))).Interface())
 }
 func (self Instance) SetAdditionalData(extension_name string, additional_data any) Instance { //gd:GLTFLight.set_additional_data
-	Advanced(self).SetAdditionalData(String.Name(String.New(extension_name)), variant.New(additional_data))
+	Advanced(self).SetAdditionalData(String.Name(String.From(extension_name)), variant.New(additional_data))
 	return self
 }
 
@@ -263,7 +263,7 @@ func (self Instance) LightType() string { //gd:GLTFLight.light_type
 
 // SetLightType sets the property returned by [GetLightType]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetLightType(value string) Instance { //gd:GLTFLight.light_type
-	class(self).SetLightType(String.New(value))
+	class(self).SetLightType(String.From(value))
 	return self
 }
 

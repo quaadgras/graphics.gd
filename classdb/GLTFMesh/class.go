@@ -136,7 +136,7 @@ The argument should be the [GLTFDocumentExtension] name (does not have to match 
 [GLTFMesh]: https://pkg.go.dev/graphics.gd/classdb/GLTFMesh
 */
 func (self Instance) GetAdditionalData(extension_name string) any { //gd:GLTFMesh.get_additional_data
-	return any(Advanced(self).GetAdditionalData(String.Name(String.New(extension_name))).Interface())
+	return any(Advanced(self).GetAdditionalData(String.Name(String.From(extension_name))).Interface())
 }
 
 /*
@@ -150,7 +150,7 @@ Returns 'self' to enable method chaining.
 [GLTFMesh]: https://pkg.go.dev/graphics.gd/classdb/GLTFMesh
 */
 func (self Instance) SetAdditionalData(extension_name string, additional_data any) Instance { //gd:GLTFMesh.set_additional_data
-	Advanced(self).SetAdditionalData(String.Name(String.New(extension_name)), variant.New(additional_data))
+	Advanced(self).SetAdditionalData(String.Name(String.From(extension_name)), variant.New(additional_data))
 	return self
 }
 
@@ -206,7 +206,7 @@ func (self Instance) OriginalName() string { //gd:GLTFMesh.original_name
 
 // SetOriginalName sets the property returned by [GetOriginalName]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetOriginalName(value string) Instance { //gd:GLTFMesh.original_name
-	class(self).SetOriginalName(String.New(value))
+	class(self).SetOriginalName(String.From(value))
 	return self
 }
 

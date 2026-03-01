@@ -372,7 +372,7 @@ Returns true if a singleton with the given 'name' exists in the global scope. Se
 Note: Global singletons are not the same as autoloaded nodes, which are configurable in the project settings.
 */
 func HasSingleton(name string) bool { //gd:Engine.has_singleton
-	return bool(Advanced().HasSingleton(String.Name(String.New(name))))
+	return bool(Advanced().HasSingleton(String.Name(String.From(name))))
 }
 
 /*
@@ -381,7 +381,7 @@ Returns the global singleton with the given 'name', or null if it does not exist
 Note: Global singletons are not the same as autoloaded nodes, which are configurable in the project settings.
 */
 func GetSingleton(name string) Object.Instance { //gd:Engine.get_singleton
-	return Object.Instance(Advanced().GetSingleton(String.Name(String.New(name))))
+	return Object.Instance(Advanced().GetSingleton(String.Name(String.From(name))))
 }
 
 /*
@@ -390,14 +390,14 @@ Registers the given [Object] 'instance' as a singleton, available globally under
 [Object]: https://pkg.go.dev/graphics.gd/variant/Object
 */
 func RegisterSingleton(name string, instance Object.Instance) { //gd:Engine.register_singleton
-	Advanced().RegisterSingleton(String.Name(String.New(name)), instance)
+	Advanced().RegisterSingleton(String.Name(String.From(name)), instance)
 }
 
 /*
 Removes the singleton registered under 'name'. The singleton object is not freed. Only works with user-defined singletons registered with [RegisterSingleton].
 */
 func UnregisterSingleton(name string) { //gd:Engine.unregister_singleton
-	Advanced().UnregisterSingleton(String.Name(String.New(name)))
+	Advanced().UnregisterSingleton(String.Name(String.From(name)))
 }
 
 /*

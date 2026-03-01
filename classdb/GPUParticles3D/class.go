@@ -381,7 +381,7 @@ func (self Instance) SubEmitter() string { //gd:GPUParticles3D.sub_emitter
 
 // SetSubEmitter sets the property returned by [GetSubEmitter]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetSubEmitter(value string) Instance { //gd:GPUParticles3D.sub_emitter
-	class(self).SetSubEmitter(Path.ToNode(String.New(value)))
+	class(self).SetSubEmitter(Path.ToNode(String.From(value)))
 	return self
 }
 

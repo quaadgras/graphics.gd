@@ -251,7 +251,7 @@ func (self Instance) Title() string { //gd:FoldableContainer.title
 
 // SetTitle sets the property returned by [GetTitle]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetTitle(value string) Instance { //gd:FoldableContainer.title
-	class(self).SetTitle(String.New(value))
+	class(self).SetTitle(String.From(value))
 	return self
 }
 
@@ -316,7 +316,7 @@ func (self Instance) Language() string { //gd:FoldableContainer.language
 
 // SetLanguage sets the property returned by [GetLanguage]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetLanguage(value string) Instance { //gd:FoldableContainer.language
-	class(self).SetLanguage(String.New(value))
+	class(self).SetLanguage(String.From(value))
 	return self
 }
 

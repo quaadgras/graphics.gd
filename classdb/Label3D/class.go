@@ -492,7 +492,7 @@ func (self Instance) Text() string { //gd:Label3D.text
 
 // SetText sets the property returned by [GetText]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetText(value string) Instance { //gd:Label3D.text
-	class(self).SetText(String.New(value))
+	class(self).SetText(String.From(value))
 	return self
 }
 
@@ -667,7 +667,7 @@ func (self Instance) Language() string { //gd:Label3D.language
 
 // SetLanguage sets the property returned by [GetLanguage]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetLanguage(value string) Instance { //gd:Label3D.language
-	class(self).SetLanguage(String.New(value))
+	class(self).SetLanguage(String.From(value))
 	return self
 }
 

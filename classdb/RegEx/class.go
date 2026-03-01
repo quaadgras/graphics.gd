@@ -244,7 +244,7 @@ Creates and compiles a new [RegEx] object. See also [Compile].
 */
 func CreateFromString(pattern string) Instance { //gd:RegEx.create_from_string
 	self := Instance{}
-	return Instance(Advanced(self).CreateFromString(String.New(pattern), true))
+	return Instance(Advanced(self).CreateFromString(String.From(pattern), true))
 }
 
 /*
@@ -255,7 +255,7 @@ Creates and compiles a new [RegEx] object. See also [Compile].
 */
 func CreateFromStringOptions(pattern string, show_error bool) Instance { //gd:RegEx.create_from_string
 	self := Instance{}
-	return Instance(Advanced(self).CreateFromString(String.New(pattern), show_error))
+	return Instance(Advanced(self).CreateFromString(String.From(pattern), show_error))
 }
 
 /*
@@ -269,14 +269,14 @@ func (self Instance) Clear() { //gd:RegEx.clear
 Compiles and assign the search pattern to use. Returns [Ok] if the compilation is successful. If compilation fails, returns [Failed] and when 'show_error' is true, details are printed to standard output.
 */
 func (self Instance) Compile(pattern string) error { //gd:RegEx.compile
-	return error(gd.ToError(Advanced(self).Compile(String.New(pattern), true)))
+	return error(gd.ToError(Advanced(self).Compile(String.From(pattern), true)))
 }
 
 /*
 Compiles and assign the search pattern to use. Returns [Ok] if the compilation is successful. If compilation fails, returns [Failed] and when 'show_error' is true, details are printed to standard output.
 */
 func (self MoreArgs) Compile(pattern string, show_error bool) error { //gd:RegEx.compile
-	return error(gd.ToError(Advanced(self).Compile(String.New(pattern), show_error)))
+	return error(gd.ToError(Advanced(self).Compile(String.From(pattern), show_error)))
 }
 
 /*
@@ -287,7 +287,7 @@ The region to search within can be specified with 'offset' and 'end'. This is us
 [RegExMatch]: https://pkg.go.dev/graphics.gd/classdb/RegExMatch
 */
 func (self Instance) Search(subject string) RegExMatch.Instance { //gd:RegEx.search
-	return RegExMatch.Instance(Advanced(self).Search(String.New(subject), int64(0), int64(-1)))
+	return RegExMatch.Instance(Advanced(self).Search(String.From(subject), int64(0), int64(-1)))
 }
 
 /*
@@ -298,7 +298,7 @@ The region to search within can be specified with 'offset' and 'end'. This is us
 [RegExMatch]: https://pkg.go.dev/graphics.gd/classdb/RegExMatch
 */
 func (self MoreArgs) Search(subject string, offset int, end int) RegExMatch.Instance { //gd:RegEx.search
-	return RegExMatch.Instance(Advanced(self).Search(String.New(subject), int64(offset), int64(end)))
+	return RegExMatch.Instance(Advanced(self).Search(String.From(subject), int64(offset), int64(end)))
 }
 
 /*
@@ -309,7 +309,7 @@ The region to search within can be specified with 'offset' and 'end'. This is us
 [RegExMatch]: https://pkg.go.dev/graphics.gd/classdb/RegExMatch
 */
 func (self Instance) SearchAll(subject string) []RegExMatch.Instance { //gd:RegEx.search_all
-	return []RegExMatch.Instance(gd.ArrayAs[[]RegExMatch.Instance](gd.InternalArray(Advanced(self).SearchAll(String.New(subject), int64(0), int64(-1)))))
+	return []RegExMatch.Instance(gd.ArrayAs[[]RegExMatch.Instance](gd.InternalArray(Advanced(self).SearchAll(String.From(subject), int64(0), int64(-1)))))
 }
 
 /*
@@ -320,7 +320,7 @@ The region to search within can be specified with 'offset' and 'end'. This is us
 [RegExMatch]: https://pkg.go.dev/graphics.gd/classdb/RegExMatch
 */
 func (self MoreArgs) SearchAll(subject string, offset int, end int) []RegExMatch.Instance { //gd:RegEx.search_all
-	return []RegExMatch.Instance(gd.ArrayAs[[]RegExMatch.Instance](gd.InternalArray(Advanced(self).SearchAll(String.New(subject), int64(offset), int64(end)))))
+	return []RegExMatch.Instance(gd.ArrayAs[[]RegExMatch.Instance](gd.InternalArray(Advanced(self).SearchAll(String.From(subject), int64(offset), int64(end)))))
 }
 
 /*
@@ -329,7 +329,7 @@ Searches the text for the compiled pattern and replaces it with the specified st
 The region to search within can be specified with 'offset' and 'end'. This is useful when searching for another match in the same 'subject' by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor ^ is not affected by 'offset', and the character before 'offset' will be checked for the word boundary \b.
 */
 func (self Instance) Sub(subject string, replacement string) string { //gd:RegEx.sub
-	return string(Advanced(self).Sub(String.New(subject), String.New(replacement), false, int64(0), int64(-1)).String())
+	return string(Advanced(self).Sub(String.From(subject), String.From(replacement), false, int64(0), int64(-1)).String())
 }
 
 /*
@@ -338,7 +338,7 @@ Searches the text for the compiled pattern and replaces it with the specified st
 The region to search within can be specified with 'offset' and 'end'. This is useful when searching for another match in the same 'subject' by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor ^ is not affected by 'offset', and the character before 'offset' will be checked for the word boundary \b.
 */
 func (self MoreArgs) Sub(subject string, replacement string, all bool, offset int, end int) string { //gd:RegEx.sub
-	return string(Advanced(self).Sub(String.New(subject), String.New(replacement), all, int64(offset), int64(end)).String())
+	return string(Advanced(self).Sub(String.From(subject), String.From(replacement), all, int64(offset), int64(end)).String())
 }
 
 /*

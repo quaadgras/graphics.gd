@@ -141,7 +141,7 @@ func CutVariant(v any, cut bool) Variant {
 		case []string:
 			var arg = pointers.Cut(NewPackedStringSlice(value), cut)
 			((*noescape.Variant)(&ret)).LoadNative(gdextension.TypePackedStringArray, gdextension.SizePackedArray, unsafe.Pointer(&arg))
-		case []StringType.Readable:
+		case []StringType.Unicode:
 			var arg = pointers.Cut(NewPackedReadableStringSlice(value), cut)
 			((*noescape.Variant)(&ret)).LoadNative(gdextension.TypePackedStringArray, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case []Vector2:
@@ -182,7 +182,7 @@ func CutVariant(v any, cut bool) Variant {
 			var s = NewStringName(value.String())
 			var arg = pointers.Cut(s, true)
 			((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeStringName, gdextension.SizeStringName, unsafe.Pointer(&arg))
-		case reflect.TypeFor[StringType.Readable]():
+		case reflect.TypeFor[StringType.Unicode]():
 			var s = NewString(value.String())
 			var arg = pointers.Cut(s, true)
 			((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeString, gdextension.SizeString, unsafe.Pointer(&arg))
@@ -238,7 +238,7 @@ func CutVariant(v any, cut bool) Variant {
 		case DictionaryType.Interface:
 			var arg = pointers.Cut(InternalDictionary(val.Any()), cut)
 			((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeDictionary, gdextension.SizeDictionary, unsafe.Pointer(&arg))
-		case StringType.Readable:
+		case StringType.Unicode:
 			var arg = pointers.Cut(InternalString(val), cut)
 			((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeString, gdextension.SizeString, unsafe.Pointer(&arg))
 		case Path.ToNode:

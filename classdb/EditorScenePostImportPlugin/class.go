@@ -320,7 +320,7 @@ func (Instance) _post_process(impl func(ptr gdclass.Receiver, scene Node.Instanc
 Query the value of an option. This function can only be called from those querying visibility, or processing.
 */
 func (self Instance) GetOptionValue(name string) any { //gd:EditorScenePostImportPlugin.get_option_value
-	return any(Advanced(self).GetOptionValue(String.Name(String.New(name))).Interface())
+	return any(Advanced(self).GetOptionValue(String.Name(String.From(name))).Interface())
 }
 
 /*
@@ -330,7 +330,7 @@ Add a specific import option (name and default value only). This function can on
 [GetInternalImportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Interface
 */
 func (self Instance) AddImportOption(name string, value any) { //gd:EditorScenePostImportPlugin.add_import_option
-	Advanced(self).AddImportOption(String.New(name), variant.New(value))
+	Advanced(self).AddImportOption(String.From(name), variant.New(value))
 }
 
 /*
@@ -340,7 +340,7 @@ Add a specific import option. This function can only be called from [GetImportOp
 [GetInternalImportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Interface
 */
 func (self Instance) AddImportOptionAdvanced(atype variant.Type, name string, default_value any) { //gd:EditorScenePostImportPlugin.add_import_option_advanced
-	Advanced(self).AddImportOptionAdvanced(atype, String.New(name), variant.New(default_value), 0, String.New(""), int64(6))
+	Advanced(self).AddImportOptionAdvanced(atype, String.From(name), variant.New(default_value), 0, String.From(""), int64(6))
 }
 
 /*
@@ -350,7 +350,7 @@ Add a specific import option. This function can only be called from [GetImportOp
 [GetInternalImportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Interface
 */
 func (self MoreArgs) AddImportOptionAdvanced(atype variant.Type, name string, default_value any, hint ClassDB.PropertyHint, hint_string string, usage_flags int) { //gd:EditorScenePostImportPlugin.add_import_option_advanced
-	Advanced(self).AddImportOptionAdvanced(atype, String.New(name), variant.New(default_value), hint, String.New(hint_string), int64(usage_flags))
+	Advanced(self).AddImportOptionAdvanced(atype, String.From(name), variant.New(default_value), hint, String.From(hint_string), int64(usage_flags))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -304,7 +304,7 @@ func (self Instance) AdvanceCondition() string { //gd:AnimationNodeStateMachineT
 
 // SetAdvanceCondition sets the property returned by [GetAdvanceCondition]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetAdvanceCondition(value string) Instance { //gd:AnimationNodeStateMachineTransition.advance_condition
-	class(self).SetAdvanceCondition(String.Name(String.New(value)))
+	class(self).SetAdvanceCondition(String.Name(String.From(value)))
 	return self
 }
 
@@ -317,7 +317,7 @@ func (self Instance) AdvanceExpression() string { //gd:AnimationNodeStateMachine
 
 // SetAdvanceExpression sets the property returned by [GetAdvanceExpression]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetAdvanceExpression(value string) Instance { //gd:AnimationNodeStateMachineTransition.advance_expression
-	class(self).SetAdvanceExpression(String.New(value))
+	class(self).SetAdvanceExpression(String.From(value))
 	return self
 }
 

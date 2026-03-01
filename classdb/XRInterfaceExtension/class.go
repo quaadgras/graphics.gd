@@ -317,7 +317,7 @@ func (Instance) _get_name(impl func(ptr gdclass.Receiver) string) (cb gd.Extensi
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalStringName(String.Name(String.New(ret))))
+		ptr, ok := pointers.End(gd.InternalStringName(String.Name(String.From(ret))))
 
 		if !ok {
 			return

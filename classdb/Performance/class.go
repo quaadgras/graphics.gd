@@ -166,28 +166,28 @@ The debugger calls the callable to get the value of custom monitor. The callable
 Callables are called with arguments supplied in argument array.
 */
 func AddCustomMonitor(id string, callable Callable.Function, arguments []any, atype MonitorType) { //gd:Performance.add_custom_monitor
-	Advanced().AddCustomMonitor(String.Name(String.New(id)), Callable.New(callable), gd.EngineArrayFromSlice(arguments), atype)
+	Advanced().AddCustomMonitor(String.Name(String.From(id)), Callable.New(callable), gd.EngineArrayFromSlice(arguments), atype)
 }
 
 /*
 Removes the custom monitor with given 'id'. Prints an error if the given 'id' is already absent.
 */
 func RemoveCustomMonitor(id string) { //gd:Performance.remove_custom_monitor
-	Advanced().RemoveCustomMonitor(String.Name(String.New(id)))
+	Advanced().RemoveCustomMonitor(String.Name(String.From(id)))
 }
 
 /*
 Returns true if custom monitor with the given 'id' is present, false otherwise.
 */
 func HasCustomMonitor(id string) bool { //gd:Performance.has_custom_monitor
-	return bool(Advanced().HasCustomMonitor(String.Name(String.New(id))))
+	return bool(Advanced().HasCustomMonitor(String.Name(String.From(id))))
 }
 
 /*
 Returns the value of custom monitor with given 'id'. The callable is called to get the value of custom monitor. See also [HasCustomMonitor]. Prints an error if the given 'id' is absent.
 */
 func GetCustomMonitor(id string) any { //gd:Performance.get_custom_monitor
-	return any(Advanced().GetCustomMonitor(String.Name(String.New(id))).Interface())
+	return any(Advanced().GetCustomMonitor(String.Name(String.From(id))).Interface())
 }
 
 /*

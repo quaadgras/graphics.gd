@@ -150,7 +150,7 @@ Adds a scene path to spawnable scenes, making it automatically replicated from t
 [SpawnPath]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSpawner#Instance.SpawnPath
 */
 func (self Instance) AddSpawnableScene(path string) { //gd:MultiplayerSpawner.add_spawnable_scene
-	Advanced(self).AddSpawnableScene(String.New(path))
+	Advanced(self).AddSpawnableScene(String.From(path))
 }
 
 /*
@@ -251,7 +251,7 @@ func (self Instance) SpawnPath() string { //gd:MultiplayerSpawner.spawn_path
 
 // SetSpawnPath sets the property returned by [GetSpawnPath]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetSpawnPath(value string) Instance { //gd:MultiplayerSpawner.spawn_path
-	class(self).SetSpawnPath(Path.ToNode(String.New(value)))
+	class(self).SetSpawnPath(Path.ToNode(String.From(value)))
 	return self
 }
 

@@ -29,11 +29,13 @@ import (
 	"graphics.gd/variant/Int"
 )
 
-// Readable string containing human-readable characters in an implementation-specific encoding.
-type Readable Generic
+// Unicode string containing human-readable characters in an implementation-specific encoding.
+type Unicode Generic
 
-// String returns a copy of the Readable as a raw string.
-func (utf Readable) String() string {
+type Readable = Unicode
+
+// String returns a copy of the [Unicode] as a raw string.
+func (utf Unicode) String() string {
 	if utf.api == nil {
 		return ""
 	}
@@ -41,25 +43,25 @@ func (utf Readable) String() string {
 }
 
 // MarshalText implements the [encoding.TextMarshaler] interface.
-func (utf Readable) MarshalText() ([]byte, error) {
+func (utf Unicode) MarshalText() ([]byte, error) {
 	return []byte(utf.String()), nil
 }
 
 // UnmarshalText implements the [encoding.TextUnmarshaler] interface.
-func (utf *Readable) UnmarshalText(text []byte) error {
-	*utf = New(string(text))
+func (utf *Unicode) UnmarshalText(text []byte) error {
+	*utf = From(string(text))
 	return nil
 }
 
 // Size returns the number of bytes of data stored in the Readable.
-func (utf Readable) Size() int {
+func (utf Unicode) Size() int {
 	if utf.api == nil {
 		return 0
 	}
 	return utf.api.Len(utf.buf)
 }
 
-// Generic can be used as a ~T parameter that accept any [Readable]-like type.
+// Generic can be used as a ~T parameter that accept any [Unicode]-like type.
 type Generic = struct {
 	_   [0]func()
 	buf complex128
@@ -69,7 +71,7 @@ type Generic = struct {
 // Comparable string optimized for use as a key, such that comparisons
 // are efficient.
 type Comparable = struct {
-	ptr *Readable
+	ptr *Unicode
 }
 
 // Name will be replaced with [Comparable] in Go 1.24
@@ -77,51 +79,57 @@ type Name Generic
 
 // String implements the [fmt.Stringer] interface.
 func (name Name) String() string {
-	return Readable(name).String()
+	return Unicode(name).String()
 }
 
 func MakeComparable[T Any](s T) Comparable {
 	panic("not implemented")
 }
 
-// New returns a new [Readable] string concatenated from the given values.
-func New(val ...any) Readable { //gd:String() str
-	if len(val) == 0 {
-		return Readable{}
-	}
-	if len(val) == 1 {
-		switch v := val[0].(type) {
-		case Rune:
-			return fromGoString(string(rune(v)))
-		case string:
-			return fromGoString(v)
-		case Readable:
-			return v
-		case []byte:
-			return fromGoString(string(v))
+// New returns a sprint-formatted [Unicode] string from the given values.
+func New(args ...any) Unicode {
+	return From(fmt.Sprint(args...))
+}
+
+// From returns a new [Unicode] string from the given value.
+func From[T Any](val T) Unicode { //gd:String() str
+	switch v := any(val).(type) {
+	case Rune:
+		return fromGoString(string(rune(v)))
+	case string:
+		return fromGoString(v)
+	case Unicode:
+		return v
+	case []byte:
+		return fromGoString(string(v))
+	default:
+		rtype := reflect.TypeOf(val)
+		if rtype.ConvertibleTo(reflect.TypeFor[Unicode]()) {
+			r, _ := reflect.TypeAssert[Unicode](reflect.ValueOf(val).Convert(reflect.TypeFor[Unicode]()))
+			return r
 		}
+		return Unicode{}
 	}
-	return newAs[Readable](val...)
 }
 
 func newAs[T Any](val ...any) T {
 	return As[T](fromGoString(fmt.Sprint(val...))) // FIXME optimise
 }
 
-// API required to implement a [Readable] string.
+// API required to implement a [Unicode] string.
 type API interface {
 	Len(complex128) int
-	Slice(complex128, int, int) Readable
+	Slice(complex128, int, int) Unicode
 	String(complex128) string
 	Index(complex128, int) byte
-	DecodeRune(complex128) (Rune, int, Readable)
-	AppendRune(complex128, Rune) Readable
-	AppendOther(complex128, API, complex128) Readable
-	AppendString(complex128, string) Readable
+	DecodeRune(complex128) (Rune, int, Unicode)
+	AppendRune(complex128, Rune) Unicode
+	AppendOther(complex128, API, complex128) Unicode
+	AppendString(complex128, string) Unicode
 	CompareOther(complex128, API, complex128) int
 }
 
-// Proxy can be used to transform the underlying encoding and implementation of a [Readable]
+// Proxy can be used to transform the underlying encoding and implementation of a [Unicode]
 // string into a specific type. The alloc function should return a new [Implementation] of
 // the desired type, and the internal state. This may be cached in the existing implementation
 // and, if so, will be passed to the check function so that it can decide whether to reuse
@@ -130,7 +138,7 @@ type API interface {
 // The uint64 can be used to avoid unnecessary allocations, such that T can be zero-sized if
 // the implementation does not require more that 64bits of state.
 func Proxy[S ~Generic, T API](s S, reuse func(T, complex128) bool, alloc func() (T, complex128)) (T, complex128) {
-	utf := Readable(s)
+	utf := Unicode(s)
 	if utf.api == nil {
 		return alloc()
 	}
@@ -148,8 +156,8 @@ func Proxy[S ~Generic, T API](s S, reuse func(T, complex128) bool, alloc func() 
 	return b, state
 }
 
-func Via(impl API, state complex128) Readable {
-	return Readable{api: impl, buf: state}
+func Via(impl API, state complex128) Unicode {
+	return Unicode{api: impl, buf: state}
 }
 
 type Rune rune
@@ -159,7 +167,10 @@ type Any interface {
 }
 
 func As[T, S Any](s S) T {
-	uni := New(s)
+	uni := From(s)
+	if uni.api == nil {
+		return [1]T{}[0]
+	}
 	rtype := reflect.TypeFor[T]()
 	switch {
 	case rtype == reflect.TypeFor[string]():
@@ -168,7 +179,7 @@ func As[T, S Any](s S) T {
 	case rtype.Kind() == reflect.Slice && rtype.Elem().Kind() == reflect.Uint8:
 		b := []byte(uni.api.String(uni.buf))
 		return *(*T)(unsafe.Pointer(&b))
-	case rtype.ConvertibleTo(reflect.TypeFor[Readable]()):
+	case rtype.ConvertibleTo(reflect.TypeFor[Unicode]()):
 		u := uni
 		return *(*T)(unsafe.Pointer(&u))
 	case rtype.ConvertibleTo(reflect.TypeFor[Comparable]()):
@@ -181,12 +192,12 @@ func As[T, S Any](s S) T {
 
 // Append returns a new string with the given string appended to the end.
 func Append[S Any, B Any](a S, b B) S { //gd:String.append
-	s1, s2 := New(a), New(b)
+	s1, s2 := From(a), From(b)
 	if s2.api == nil {
 		return a
 	}
 	if s1.api == nil {
-		s1 = Readable{
+		s1 = Unicode{
 			api: goString{},
 		}
 	}
@@ -199,7 +210,7 @@ func Append[S Any, B Any](a S, b B) S { //gd:String.append
 // Index returns the byte at the given index in the string. If the index is out of range, this
 // function will panic. See also [Slice].
 func Index[S Any](s S, i int) byte {
-	utf := New(s)
+	utf := From(s)
 	return utf.api.Index(utf.buf, i)
 }
 
@@ -259,7 +270,7 @@ func Unescape[S Any](s S) S { //gd:String.c_unescape String.xml_unescape
 // Runes returns a sequence of runes in this string and their indices.
 func Runes[S Any](s S) iter.Seq2[int, Rune] { //gd:String.chars
 	return func(yield func(int, Rune) bool) {
-		utf := New(s)
+		utf := From(s)
 		var i int
 		for {
 			r, size, next := utf.api.DecodeRune(utf.buf)
@@ -280,7 +291,7 @@ func Runes[S Any](s S) iter.Seq2[int, Rune] { //gd:String.chars
 
 // firstRune returns the first rune in the string and its width in bytes.
 func firstRune[S Any](s S) (Rune, bool) {
-	utf := New(s)
+	utf := From(s)
 	r, _, _ := utf.api.DecodeRune(utf.buf)
 	return r, r != utf8.RuneError
 }
@@ -311,7 +322,7 @@ func Title[S Any](s S) S {
 // dropped from the string with no replacement.
 func Map[S Any](mapping func(Rune) Rune, s S) S {
 	var (
-		buf Readable = builder()
+		buf Unicode = builder()
 	)
 	for i, c := range Runes(s) {
 		r := mapping(c)
@@ -332,7 +343,7 @@ func Map[S Any](mapping func(Rune) Rune, s S) S {
 	for _, c := range Runes(s) {
 		r := mapping(c)
 		if r >= 0 {
-			buf = Append(buf, New(r))
+			buf = Append(buf, From(r))
 		}
 	}
 	return As[S](buf)
@@ -343,9 +354,9 @@ func Map[S Any](mapping func(Rune) Rune, s S) S {
 // the first one and each one following a space to uppercase.
 func Capitalize[S Any](s S) S { //gd:String.capitalize
 	var (
-		buf      Readable = builder()
-		prev     Rune     = ' '
-		addSpace          = false
+		buf      Unicode = builder()
+		prev     Rune    = ' '
+		addSpace         = false
 	)
 	for _, c := range Runes(s) {
 		if c == '_' {
@@ -918,8 +929,8 @@ func JoinedWith[S, D Any](d D, s ...S) S { //gd:String.join
 	if len(s) == 0 {
 		return [1]S{}[0]
 	}
-	var b Readable = builder()
-	b = Append(b, New(fmt.Sprint(s[0])))
+	var b Unicode = builder()
+	b = Append(b, From(fmt.Sprint(s[0])))
 	for _, v := range s[1:] {
 		b = Append(b, d)
 		b = Append(b, v)
@@ -938,7 +949,7 @@ func First[S Any, I Int.Any](n I, s S) S { //gd:String.left
 
 // Length returns the number of characters in the string.
 func Length[S Any](s S) int { //gd:String.length
-	utf := New(s)
+	utf := From(s)
 	if utf.api == nil {
 		return 0
 	}
@@ -987,9 +998,9 @@ func PadDecimals[S Any](s S, digits int) S { //gd:String.pad_decimals
 	if !IsValidFloat(s) {
 		return s
 	}
-	var result Readable = builder()
-	result = Append(result, New(s))
-	result = Append(result, New(strings.Repeat("0", Length(s)-FindIndex(s, ".")+digits+1)))
+	var result Unicode = builder()
+	result = Append(result, From(s))
+	result = Append(result, From(strings.Repeat("0", Length(s)-FindIndex(s, ".")+digits+1)))
 	return As[S](result)
 }
 
@@ -999,9 +1010,9 @@ func PadZeros[S Any](s S, digits int) S { //gd:String.pad_zeros
 	if !IsValidFloat(s) {
 		return s
 	}
-	var result Readable = builder()
-	result = Append(result, New(strings.Repeat("0", FindIndex(s, ".")-digits)))
-	result = Append(result, New(s))
+	var result Unicode = builder()
+	result = Append(result, From(strings.Repeat("0", FindIndex(s, ".")-digits)))
+	result = Append(result, From(s))
 	return As[S](result)
 }
 
@@ -1054,11 +1065,11 @@ func Replace[S Any, T Any](s S, old, new T) S { //gd:String.replacen
 		} else {
 			j += FindIndex(Slice(s, start, Length(s)), old)
 		}
-		b = Append(b, New(Slice(s, start, j)))
-		b = Append(b, New(new))
+		b = Append(b, From(Slice(s, start, j)))
+		b = Append(b, From(new))
 		start = j + Length(old)
 	}
-	b = Append(b, New(Slice(s, start, Length(s))))
+	b = Append(b, From(Slice(s, start, Length(s))))
 	return As[S](b)
 }
 
@@ -1075,9 +1086,9 @@ func ReplaceRunes[S Any, K Any](s S, keys K, with Rune) S { //gd:String.replace_
 	var replaced = builder()
 	for _, c := range Runes(s) {
 		if strings.ContainsRune(cutset, rune(c)) {
-			replaced = Append(replaced, New(string(with)))
+			replaced = Append(replaced, From(string(with)))
 		} else {
-			replaced = Append(replaced, New(string(c)))
+			replaced = Append(replaced, From(string(c)))
 		}
 	}
 	return As[S](replaced)
@@ -1089,7 +1100,7 @@ func RemoveRune[S Any](s S, what Rune) S { //gd:String.remove_char
 	var replaced = builder()
 	for _, c := range Runes(s) {
 		if c != what {
-			replaced = Append(replaced, New(string(c)))
+			replaced = Append(replaced, From(string(c)))
 		}
 	}
 	return As[S](replaced)
@@ -1101,7 +1112,7 @@ func RemoveRunes[S Any, K Any](s S, what K) S { //gd:String.remove_chars
 	var replaced = builder()
 	for _, c := range Runes(s) {
 		if !strings.ContainsRune(cutset, rune(c)) {
-			replaced = Append(replaced, New(string(c)))
+			replaced = Append(replaced, From(string(c)))
 		}
 	}
 	return As[S](replaced)
@@ -1120,7 +1131,7 @@ func Reverse[S Any](s S) S { //gd:String.reverse
 	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
 		runes[i], runes[j] = runes[j], runes[i]
 	}
-	return As[S](New(runes))
+	return As[S](From(runes))
 }
 
 // FindLastStrict returns the index of the last occurrence of what in this string, or -1 if there are none.
@@ -1219,7 +1230,7 @@ func Splits[S Any, B Any](s S, sep B) iter.Seq[S] { //gd:String.split
 	if Length(sep) == 0 {
 		return func(yield func(S) bool) {
 			for _, char := range As[string](s) {
-				if !yield(As[S](New(string(char)))) {
+				if !yield(As[S](From(string(char)))) {
 					return
 				}
 			}
@@ -1367,7 +1378,7 @@ func ToSnakeCase[S Any](s S) S { //gd:String.to_snake_case
 		var cond_c = is_prev_digit && is_curr_lower && is_next_lower                    // 2aa
 		var cond_d = (is_prev_upper || is_prev_lower) && is_curr_digit                  // A2, a2
 		if cond_a || cond_b || cond_c || cond_d {
-			new_string = JoinedWith("", new_string, Slice(s, start_index, i), As[S](New("_")))
+			new_string = JoinedWith("", new_string, Slice(s, start_index, i), As[S](From("_")))
 			start_index = i
 		}
 	}
@@ -1459,9 +1470,9 @@ func StripFilename[S Any](s S) S { //gd:String.validate_filename
 	var result = builder()
 	for _, r := range Runes(s) {
 		if IsValidFilename(string(r)) {
-			result = Append(result, New(r))
+			result = Append(result, From(r))
 		} else {
-			result = Append(result, New(Rune('_')))
+			result = Append(result, From(Rune('_')))
 		}
 	}
 	return As[S](result)
@@ -1485,7 +1496,7 @@ func StartingFrom[S Any](s S, start int) S { //gd:String.substr
 
 // Slice returns a slice of the string from the start index to the end index.
 func Slice[S Any, A, B Int.Any](s S, start A, close B) S { //gd:String.substrn
-	uni := New(s)
+	uni := From(s)
 	return As[S](uni.api.Slice(uni.buf, int(start), int(close)))
 }
 

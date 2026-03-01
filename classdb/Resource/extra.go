@@ -74,7 +74,7 @@ func Load[T Any, P string | Path.ToResource](path_to_resource P) T {
 		*(*gdreference.Object)(unsafe.Pointer(&placeholder)) = gdreference.NewObject()
 		preloaded_resources = append(preloaded_resources, *(*gd.RefCounted)(unsafe.Pointer(&placeholder)))
 		startup = append(startup, func() {
-			resource := Instance(load(String.Readable(path), String.New(""), 1))
+			resource := Instance(load(String.Unicode(path), String.New(""), 1))
 			if resource == (Instance{}) {
 				return
 			}
@@ -89,7 +89,7 @@ func Load[T Any, P string | Path.ToResource](path_to_resource P) T {
 		})
 		return placeholder
 	}
-	resource := Instance(load(String.Readable(path), String.New(""), 1))
+	resource := Instance(load(String.Unicode(path), String.New(""), 1))
 	if resource == (Instance{}) {
 		return [1]T{}[0]
 	}
@@ -122,7 +122,7 @@ func singleton() {
 	self[0] = gdclass.NewResourceLoader(gdreference.RawObject(gdextension.Host.Objects.Global(loader_sname)))
 }
 
-func load(path String.Readable, type_hint String.Readable, cache_mode int) [1]gdclass.Resource { //gd:ResourceLoader.load
+func load(path String.Unicode, type_hint String.Unicode, cache_mode int) [1]gdclass.Resource { //gd:ResourceLoader.load
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(gd.ObjectChecked(gdclass.GetResourceLoader(self[0]))), loader_methods.load, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		path       gdextension.String

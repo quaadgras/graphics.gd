@@ -218,7 +218,7 @@ Returns null if opening the directory failed. You can use [GetOpenError] to chec
 */
 func Open(path string) Instance { //gd:DirAccess.open
 	self := Instance{}
-	return Instance(Advanced(self).Open(String.New(path)))
+	return Instance(Advanced(self).Open(String.From(path)))
 }
 
 /*
@@ -242,7 +242,7 @@ Returns null if opening the directory failed. You can use [GetOpenError] to chec
 */
 func CreateTemp(prefix string, keep bool) Instance { //gd:DirAccess.create_temp
 	self := Instance{}
-	return Instance(Advanced(self).CreateTemp(String.New(prefix), keep))
+	return Instance(Advanced(self).CreateTemp(String.From(prefix), keep))
 }
 
 /*
@@ -319,7 +319,7 @@ Note: When used on a res:// path in an exported project, only the files included
 */
 func GetFilesAt(path string) []string { //gd:DirAccess.get_files_at
 	self := Instance{}
-	return []string(Advanced(self).GetFilesAt(String.New(path)).Strings())
+	return []string(Advanced(self).GetFilesAt(String.From(path)).Strings())
 }
 
 /*
@@ -347,7 +347,7 @@ Note: The returned directories in the editor and after exporting in the res:// d
 */
 func GetDirectoriesAt(path string) []string { //gd:DirAccess.get_directories_at
 	self := Instance{}
-	return []string(Advanced(self).GetDirectoriesAt(String.New(path)).Strings())
+	return []string(Advanced(self).GetDirectoriesAt(String.From(path)).Strings())
 }
 
 /*
@@ -395,7 +395,7 @@ Returns one of the [Error] code constants ([Ok] on success).
 Note: The new directory must be within the same scope, e.g. when you had opened a directory inside res://, you can't change it to user:// directory. If you need to open a directory in another access scope, use [Open] to create a new instance instead.
 */
 func (self Instance) ChangeDir(to_dir string) error { //gd:DirAccess.change_dir
-	return error(gd.ToError(Advanced(self).ChangeDir(String.New(to_dir))))
+	return error(gd.ToError(Advanced(self).ChangeDir(String.From(to_dir))))
 }
 
 /*
@@ -420,7 +420,7 @@ Returns one of the [Error] code constants ([Ok] on success).
 [MakeDirRecursive]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.MakeDirRecursive
 */
 func (self Instance) MakeDir(path string) error { //gd:DirAccess.make_dir
-	return error(gd.ToError(Advanced(self).MakeDir(String.New(path))))
+	return error(gd.ToError(Advanced(self).MakeDir(String.From(path))))
 }
 
 /*
@@ -430,7 +430,7 @@ Static version of [MakeDir]. Supports only absolute paths.
 */
 func MakeDirAbsolute(path string) error { //gd:DirAccess.make_dir_absolute
 	self := Instance{}
-	return error(gd.ToError(Advanced(self).MakeDirAbsolute(String.New(path))))
+	return error(gd.ToError(Advanced(self).MakeDirAbsolute(String.From(path))))
 }
 
 /*
@@ -441,7 +441,7 @@ Returns one of the [Error] code constants ([Ok] on success).
 [MakeDir]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.MakeDir
 */
 func (self Instance) MakeDirRecursive(path string) error { //gd:DirAccess.make_dir_recursive
-	return error(gd.ToError(Advanced(self).MakeDirRecursive(String.New(path))))
+	return error(gd.ToError(Advanced(self).MakeDirRecursive(String.From(path))))
 }
 
 /*
@@ -451,7 +451,7 @@ Static version of [MakeDirRecursive]. Supports only absolute paths.
 */
 func MakeDirRecursiveAbsolute(path string) error { //gd:DirAccess.make_dir_recursive_absolute
 	self := Instance{}
-	return error(gd.ToError(Advanced(self).MakeDirRecursiveAbsolute(String.New(path))))
+	return error(gd.ToError(Advanced(self).MakeDirRecursiveAbsolute(String.From(path))))
 }
 
 /*
@@ -465,7 +465,7 @@ Note: Many resources types are imported (e.g. textures or sound files), and thei
 [ResourceLoader.Exists]: https://pkg.go.dev/graphics.gd/classdb/ResourceLoader#Exists
 */
 func (self Instance) FileExists(path string) bool { //gd:DirAccess.file_exists
-	return bool(Advanced(self).FileExists(String.New(path)))
+	return bool(Advanced(self).FileExists(String.From(path)))
 }
 
 /*
@@ -474,7 +474,7 @@ Returns whether the target directory exists. The argument can be relative to the
 Note: The returned bool in the editor and after exporting when used on a path in the res:// directory may be different. Some files are converted to engine-specific formats when exported, potentially changing the directory structure.
 */
 func (self Instance) DirExists(path string) bool { //gd:DirAccess.dir_exists
-	return bool(Advanced(self).DirExists(String.New(path)))
+	return bool(Advanced(self).DirExists(String.From(path)))
 }
 
 /*
@@ -486,7 +486,7 @@ Note: The returned bool in the editor and after exporting when used on a path in
 */
 func DirExistsAbsolute(path string) bool { //gd:DirAccess.dir_exists_absolute
 	self := Instance{}
-	return bool(Advanced(self).DirExistsAbsolute(String.New(path)))
+	return bool(Advanced(self).DirExistsAbsolute(String.From(path)))
 }
 
 /*
@@ -504,7 +504,7 @@ If 'chmod_flags' is different than -1, the Unix permissions for the destination 
 Returns one of the [Error] code constants ([Ok] on success).
 */
 func (self Instance) Copy(from string, to string) error { //gd:DirAccess.copy
-	return error(gd.ToError(Advanced(self).Copy(String.New(from), String.New(to), int64(-1))))
+	return error(gd.ToError(Advanced(self).Copy(String.From(from), String.From(to), int64(-1))))
 }
 
 /*
@@ -515,7 +515,7 @@ If 'chmod_flags' is different than -1, the Unix permissions for the destination 
 Returns one of the [Error] code constants ([Ok] on success).
 */
 func (self MoreArgs) Copy(from string, to string, chmod_flags int) error { //gd:DirAccess.copy
-	return error(gd.ToError(Advanced(self).Copy(String.New(from), String.New(to), int64(chmod_flags))))
+	return error(gd.ToError(Advanced(self).Copy(String.From(from), String.From(to), int64(chmod_flags))))
 }
 
 /*
@@ -525,7 +525,7 @@ Static version of [Copy]. Supports only absolute paths.
 */
 func CopyAbsolute(from string, to string) error { //gd:DirAccess.copy_absolute
 	self := Instance{}
-	return error(gd.ToError(Advanced(self).CopyAbsolute(String.New(from), String.New(to), int64(-1))))
+	return error(gd.ToError(Advanced(self).CopyAbsolute(String.From(from), String.From(to), int64(-1))))
 }
 
 /*
@@ -535,7 +535,7 @@ Static version of [Copy]. Supports only absolute paths.
 */
 func CopyAbsoluteOptions(from string, to string, chmod_flags int) error { //gd:DirAccess.copy_absolute
 	self := Instance{}
-	return error(gd.ToError(Advanced(self).CopyAbsolute(String.New(from), String.New(to), int64(chmod_flags))))
+	return error(gd.ToError(Advanced(self).CopyAbsolute(String.From(from), String.From(to), int64(chmod_flags))))
 }
 
 /*
@@ -544,7 +544,7 @@ Renames (move) the 'from' file or directory to the 'to' destination. Both argume
 Returns one of the [Error] code constants ([Ok] on success).
 */
 func (self Instance) Rename(from string, to string) error { //gd:DirAccess.rename
-	return error(gd.ToError(Advanced(self).Rename(String.New(from), String.New(to))))
+	return error(gd.ToError(Advanced(self).Rename(String.From(from), String.From(to))))
 }
 
 /*
@@ -554,7 +554,7 @@ Static version of [Rename]. Supports only absolute paths.
 */
 func RenameAbsolute(from string, to string) error { //gd:DirAccess.rename_absolute
 	self := Instance{}
-	return error(gd.ToError(Advanced(self).RenameAbsolute(String.New(from), String.New(to))))
+	return error(gd.ToError(Advanced(self).RenameAbsolute(String.From(from), String.From(to))))
 }
 
 /*
@@ -567,7 +567,7 @@ Returns one of the [Error] code constants ([Ok] on success).
 [OS.MoveToTrash]: https://pkg.go.dev/graphics.gd/classdb/OS#MoveToTrash
 */
 func (self Instance) Remove(path string) error { //gd:DirAccess.remove
-	return error(gd.ToError(Advanced(self).Remove(String.New(path))))
+	return error(gd.ToError(Advanced(self).Remove(String.From(path))))
 }
 
 /*
@@ -577,7 +577,7 @@ Static version of [Remove]. Supports only absolute paths.
 */
 func RemoveAbsolute(path string) error { //gd:DirAccess.remove_absolute
 	self := Instance{}
-	return error(gd.ToError(Advanced(self).RemoveAbsolute(String.New(path))))
+	return error(gd.ToError(Advanced(self).RemoveAbsolute(String.From(path))))
 }
 
 /*
@@ -586,7 +586,7 @@ Returns true if the file or directory is a symbolic link, directory junction, or
 Note: This method is implemented on macOS, Linux, and Windows.
 */
 func (self Instance) IsLink(path string) bool { //gd:DirAccess.is_link
-	return bool(Advanced(self).IsLink(String.New(path)))
+	return bool(Advanced(self).IsLink(String.From(path)))
 }
 
 /*
@@ -595,7 +595,7 @@ Returns target of the symbolic link.
 Note: This method is implemented on macOS, Linux, and Windows.
 */
 func (self Instance) ReadLink(path string) string { //gd:DirAccess.read_link
-	return string(Advanced(self).ReadLink(String.New(path)).String())
+	return string(Advanced(self).ReadLink(String.From(path)).String())
 }
 
 /*
@@ -606,7 +606,7 @@ Note: On Windows, this method works only if the application is running with elev
 Note: This method is implemented on macOS, Linux, and Windows.
 */
 func (self Instance) CreateLink(source string, target string) error { //gd:DirAccess.create_link
-	return error(gd.ToError(Advanced(self).CreateLink(String.New(source), String.New(target))))
+	return error(gd.ToError(Advanced(self).CreateLink(String.From(source), String.From(target))))
 }
 
 /*
@@ -615,7 +615,7 @@ Returns true if the directory is a macOS bundle.
 Note: This method is implemented on macOS.
 */
 func (self Instance) IsBundle(path string) bool { //gd:DirAccess.is_bundle
-	return bool(Advanced(self).IsBundle(String.New(path)))
+	return bool(Advanced(self).IsBundle(String.From(path)))
 }
 
 /*
@@ -633,14 +633,14 @@ Returns true if the file system or directory use case sensitive file names.
 Note: This method is implemented on macOS, Linux (for EXT4 and F2FS filesystems only) and Windows. On other platforms, it always returns true.
 */
 func (self Instance) IsCaseSensitive(path string) bool { //gd:DirAccess.is_case_sensitive
-	return bool(Advanced(self).IsCaseSensitive(String.New(path)))
+	return bool(Advanced(self).IsCaseSensitive(String.From(path)))
 }
 
 /*
 Returns true if paths 'path_a' and 'path_b' resolve to the same file system object. Returns false otherwise, even if the files are bit-for-bit identical (e.g., identical copies of the file that are not symbolic links).
 */
 func (self Instance) IsEquivalent(path_a string, path_b string) bool { //gd:DirAccess.is_equivalent
-	return bool(Advanced(self).IsEquivalent(String.New(path_a), String.New(path_b)))
+	return bool(Advanced(self).IsEquivalent(String.From(path_a), String.From(path_b)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

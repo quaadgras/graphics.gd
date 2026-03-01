@@ -138,7 +138,7 @@ Note: When the project is running, any generated UID associated with the resourc
 [ResourceSaver]: https://pkg.go.dev/graphics.gd/classdb/ResourceSaver
 */
 func Save(resource Resource.Instance, path string, flags SaverFlags) error { //gd:ResourceSaver.save
-	return error(gd.ToError(Advanced().Save(resource, String.New(path), flags)))
+	return error(gd.ToError(Advanced().Save(resource, String.From(path), flags)))
 }
 
 /*
@@ -149,7 +149,7 @@ Since resources will normally get a UID automatically, this method is only usefu
 [ResourceUID.CreateId]: https://pkg.go.dev/graphics.gd/classdb/ResourceUID#CreateId
 */
 func SetUid(resource string, uid int) error { //gd:ResourceSaver.set_uid
-	return error(gd.ToError(Advanced().SetUid(String.New(resource), int64(uid))))
+	return error(gd.ToError(Advanced().SetUid(String.From(resource), int64(uid))))
 }
 
 /*
@@ -183,7 +183,7 @@ func RemoveResourceFormatSaver(format_saver ResourceFormatSaver.Instance) { //gd
 Returns the resource ID for the given path. If 'generate' is true, a new resource ID will be generated if one for the path is not found. If 'generate' is false and the path is not found, [Resourceuid.InvalidId] is returned.
 */
 func GetResourceIdForPath(path string, generate bool) int { //gd:ResourceSaver.get_resource_id_for_path
-	return int(int(Advanced().GetResourceIdForPath(String.New(path), generate)))
+	return int(int(Advanced().GetResourceIdForPath(String.From(path), generate)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

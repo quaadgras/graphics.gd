@@ -173,7 +173,7 @@ If 'mark_unsaved' is false, the action will not mark the history as unsaved. Thi
 [CommitAction]: https://pkg.go.dev/graphics.gd/classdb/EditorUndoRedoManager#Instance.CommitAction
 */
 func (self Instance) CreateAction(name string) { //gd:EditorUndoRedoManager.create_action
-	Advanced(self).CreateAction(String.New(name), 0, [1]Object.Instance{}[0], false, true)
+	Advanced(self).CreateAction(String.From(name), 0, [1]Object.Instance{}[0], false, true)
 }
 
 /*
@@ -194,7 +194,7 @@ If 'mark_unsaved' is false, the action will not mark the history as unsaved. Thi
 [CommitAction]: https://pkg.go.dev/graphics.gd/classdb/EditorUndoRedoManager#Instance.CommitAction
 */
 func (self MoreArgs) CreateAction(name string, merge_mode UndoRedo.MergeMode, custom_context Object.Instance, backward_undo_ops bool, mark_unsaved bool) { //gd:EditorUndoRedoManager.create_action
-	Advanced(self).CreateAction(String.New(name), merge_mode, custom_context, backward_undo_ops, mark_unsaved)
+	Advanced(self).CreateAction(String.From(name), merge_mode, custom_context, backward_undo_ops, mark_unsaved)
 }
 
 /*
@@ -243,7 +243,7 @@ func (self Instance) AddDoMethod(obj Object.Instance, method string, args ...any
 	for i, arg := range args {
 		converted_variants[i] = gd.NewVariant(arg)
 	}
-	Advanced(self).AddDoMethod(obj, String.Name(String.New(method)), converted_variants...)
+	Advanced(self).AddDoMethod(obj, String.Name(String.From(method)), converted_variants...)
 }
 
 /*
@@ -256,7 +256,7 @@ func (self Instance) AddUndoMethod(obj Object.Instance, method string, args ...a
 	for i, arg := range args {
 		converted_variants[i] = gd.NewVariant(arg)
 	}
-	Advanced(self).AddUndoMethod(obj, String.Name(String.New(method)), converted_variants...)
+	Advanced(self).AddUndoMethod(obj, String.Name(String.From(method)), converted_variants...)
 }
 
 /*
@@ -265,7 +265,7 @@ Register a property value change for "do".
 If this is the first operation, the 'object' will be used to deduce target undo history.
 */
 func (self Instance) AddDoProperty(obj Object.Instance, property string, value any) { //gd:EditorUndoRedoManager.add_do_property
-	Advanced(self).AddDoProperty(obj, String.Name(String.New(property)), variant.New(value))
+	Advanced(self).AddDoProperty(obj, String.Name(String.From(property)), variant.New(value))
 }
 
 /*
@@ -274,7 +274,7 @@ Register a property value change for "undo".
 If this is the first operation, the 'object' will be used to deduce target undo history.
 */
 func (self Instance) AddUndoProperty(obj Object.Instance, property string, value any) { //gd:EditorUndoRedoManager.add_undo_property
-	Advanced(self).AddUndoProperty(obj, String.Name(String.New(property)), variant.New(value))
+	Advanced(self).AddUndoProperty(obj, String.Name(String.From(property)), variant.New(value))
 }
 
 /*

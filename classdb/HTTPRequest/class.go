@@ -265,7 +265,7 @@ Note: It's recommended to use transport encryption (TLS) and to avoid sending se
 [String.UriEncode]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.UriEncode
 */
 func (self Instance) Request(url string) error { //gd:HTTPRequest.request
-	return error(gd.ToError(Advanced(self).Request(String.New(url), Packed.MakeStrings([1][]string{}[0]...), 0, String.New(""))))
+	return error(gd.ToError(Advanced(self).Request(String.From(url), Packed.MakeStrings([1][]string{}[0]...), 0, String.From(""))))
 }
 
 /*
@@ -284,7 +284,7 @@ Note: It's recommended to use transport encryption (TLS) and to avoid sending se
 [String.UriEncode]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.UriEncode
 */
 func (self MoreArgs) Request(url string, custom_headers []string, method HTTPClient.Method, request_data string) error { //gd:HTTPRequest.request
-	return error(gd.ToError(Advanced(self).Request(String.New(url), Packed.MakeStrings(custom_headers...), method, String.New(request_data))))
+	return error(gd.ToError(Advanced(self).Request(String.From(url), Packed.MakeStrings(custom_headers...), method, String.From(request_data))))
 }
 
 /*
@@ -297,7 +297,7 @@ Returns [Ok] if request is successfully created. (Does not imply that the server
 [HTTPClient.Request]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient#Instance.Request
 */
 func (self Instance) RequestRaw(url string) error { //gd:HTTPRequest.request_raw
-	return error(gd.ToError(Advanced(self).RequestRaw(String.New(url), Packed.MakeStrings([1][]string{}[0]...), 0, Packed.BytesFrom([1][]byte{}[0]...))))
+	return error(gd.ToError(Advanced(self).RequestRaw(String.From(url), Packed.MakeStrings([1][]string{}[0]...), 0, Packed.BytesFrom([1][]byte{}[0]...))))
 }
 
 /*
@@ -310,7 +310,7 @@ Returns [Ok] if request is successfully created. (Does not imply that the server
 [HTTPClient.Request]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient#Instance.Request
 */
 func (self MoreArgs) RequestRaw(url string, custom_headers []string, method HTTPClient.Method, request_data_raw []byte) error { //gd:HTTPRequest.request_raw
-	return error(gd.ToError(Advanced(self).RequestRaw(String.New(url), Packed.MakeStrings(custom_headers...), method, Packed.BytesFrom(request_data_raw...))))
+	return error(gd.ToError(Advanced(self).RequestRaw(String.From(url), Packed.MakeStrings(custom_headers...), method, Packed.BytesFrom(request_data_raw...))))
 }
 
 /*
@@ -366,7 +366,7 @@ The proxy server is unset if 'host' is empty or 'port' is -1.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetHttpProxy(host string, port int) Instance { //gd:HTTPRequest.set_http_proxy
-	Advanced(self).SetHttpProxy(String.New(host), int64(port))
+	Advanced(self).SetHttpProxy(String.From(host), int64(port))
 	return self
 }
 
@@ -378,7 +378,7 @@ The proxy server is unset if 'host' is empty or 'port' is -1.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetHttpsProxy(host string, port int) Instance { //gd:HTTPRequest.set_https_proxy
-	Advanced(self).SetHttpsProxy(String.New(host), int64(port))
+	Advanced(self).SetHttpsProxy(String.From(host), int64(port))
 	return self
 }
 
@@ -433,7 +433,7 @@ func (self Instance) DownloadFile() string { //gd:HTTPRequest.download_file
 
 // SetDownloadFile sets the property returned by [GetDownloadFile]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetDownloadFile(value string) Instance { //gd:HTTPRequest.download_file
-	class(self).SetDownloadFile(String.New(value))
+	class(self).SetDownloadFile(String.From(value))
 	return self
 }
 

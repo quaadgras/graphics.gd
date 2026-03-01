@@ -220,7 +220,7 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 			return reflect.ValueOf(value.String()).Convert(rtype), nil
 		case Path.ToNode:
 			return reflect.ValueOf(value.String()).Convert(rtype), nil
-		case StringType.Readable:
+		case StringType.Unicode:
 			return reflect.ValueOf(value.String()).Convert(rtype), nil
 		case StringType.Name:
 			return reflect.ValueOf(value.String()).Convert(rtype), nil
@@ -327,7 +327,7 @@ func convertToGoStruct(rtype reflect.Type, engineValue any) (reflect.Value, erro
 			return obj.Elem(), nil
 		}
 		return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
-	case StringType.Readable:
+	case StringType.Unicode:
 		if rtype.Kind() == reflect.String {
 			return reflect.ValueOf(value.String()), nil
 		}
@@ -343,17 +343,17 @@ func convertToGoStruct(rtype reflect.Type, engineValue any) (reflect.Value, erro
 		}
 		return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 	case String:
-		if rtype.ConvertibleTo(reflect.TypeFor[StringType.Readable]()) {
+		if rtype.ConvertibleTo(reflect.TypeFor[StringType.Unicode]()) {
 			return reflect.ValueOf(StringType.New(value.String())).Convert(rtype), nil
 		}
 		return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 	case StringName:
-		if reflect.TypeFor[StringType.Readable]().ConvertibleTo(rtype) {
+		if reflect.TypeFor[StringType.Unicode]().ConvertibleTo(rtype) {
 			return reflect.ValueOf(StringType.Via(StringNameProxy{}, pointers.Pack(value))).Convert(rtype), nil
 		}
 		return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 	case NodePath:
-		if reflect.TypeFor[StringType.Readable]().ConvertibleTo(rtype) {
+		if reflect.TypeFor[StringType.Unicode]().ConvertibleTo(rtype) {
 			return reflect.ValueOf(StringType.Via(NodePathProxy{}, pointers.Pack(value))).Convert(rtype), nil
 		}
 		return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))

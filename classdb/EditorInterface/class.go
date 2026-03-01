@@ -323,14 +323,14 @@ func MakeMeshPreviews(meshes []Mesh.Instance, preview_size int) []Texture2D.Inst
 Sets the enabled status of a plugin. The plugin name is the same as its directory name.
 */
 func SetPluginEnabled(plugin string, enabled bool) { //gd:EditorInterface.set_plugin_enabled
-	Advanced().SetPluginEnabled(String.New(plugin), enabled)
+	Advanced().SetPluginEnabled(String.From(plugin), enabled)
 }
 
 /*
 Returns true if the specified 'plugin' is enabled. The plugin name is the same as its directory name.
 */
 func IsPluginEnabled(plugin string) bool { //gd:EditorInterface.is_plugin_enabled
-	return bool(Advanced().IsPluginEnabled(String.New(plugin)))
+	return bool(Advanced().IsPluginEnabled(String.From(plugin)))
 }
 
 /*
@@ -404,7 +404,7 @@ func GetEditorViewport3d(idx int) SubViewport.Instance { //gd:EditorInterface.ge
 Sets the editor's current main screen to the one specified in 'name'. 'name' must match the title of the tab in question exactly (e.g. 2D, 3D, Script, Game, or AssetLib for default tabs).
 */
 func SetMainScreenEditor(name string) { //gd:EditorInterface.set_main_screen_editor
-	Advanced().SetMainScreenEditor(String.New(name))
+	Advanced().SetMainScreenEditor(String.From(name))
 }
 
 /*
@@ -568,7 +568,7 @@ Note: The feature profile that gets activated must be located in the feature_pro
 [EditorPaths.GetConfigDir]: https://pkg.go.dev/graphics.gd/classdb/EditorPaths#Instance.GetConfigDir
 */
 func SetCurrentFeatureProfile(profile_name string) { //gd:EditorInterface.set_current_feature_profile
-	Advanced().SetCurrentFeatureProfile(String.New(profile_name))
+	Advanced().SetCurrentFeatureProfile(String.From(profile_name))
 }
 
 /*
@@ -588,14 +588,14 @@ Pops up an editor dialog for selecting properties from 'object'. The 'callback' 
 [NodePath.GetAsPropertyPath]: https://pkg.go.dev/graphics.gd/classdb/NodePath#Instance.GetAsPropertyPath
 */
 func PopupPropertySelector(obj Object.Instance, callback func(selected string), type_filter []int32, current_value string) { //gd:EditorInterface.popup_property_selector
-	Advanced().PopupPropertySelector(obj, Callable.New(callback), Packed.New(type_filter...), String.New(current_value))
+	Advanced().PopupPropertySelector(obj, Callable.New(callback), Packed.New(type_filter...), String.From(current_value))
 }
 
 /*
 Pops up an editor dialog for selecting a method from 'object'. The 'callback' must take a single argument of type string which will contain the name of the selected method or be empty if the dialog is canceled. If 'current_value' is provided, the method will be selected automatically in the method list, if it exists.
 */
 func PopupMethodSelector(obj Object.Instance, callback func(selected string), current_value string) { //gd:EditorInterface.popup_method_selector
-	Advanced().PopupMethodSelector(obj, Callable.New(callback), String.New(current_value))
+	Advanced().PopupMethodSelector(obj, Callable.New(callback), String.From(current_value))
 }
 
 /*
@@ -625,7 +625,7 @@ Note: Trying to list the base type in the 'type_blocklist' will hide all types d
 [Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
 */
 func PopupCreateDialog(callback func(selected string), base_type string, current_type string, dialog_title string, type_blocklist []string) { //gd:EditorInterface.popup_create_dialog
-	Advanced().PopupCreateDialog(Callable.New(callback), String.Name(String.New(base_type)), String.New(current_type), String.New(dialog_title), gd.ArrayFromSlice[Array.Contains[String.Name]](type_blocklist))
+	Advanced().PopupCreateDialog(Callable.New(callback), String.Name(String.From(base_type)), String.From(current_type), String.From(dialog_title), gd.ArrayFromSlice[Array.Contains[String.Name]](type_blocklist))
 }
 
 /*
@@ -643,7 +643,7 @@ func GetFileSystemDock() FileSystemDock.Instance { //gd:EditorInterface.get_file
 Selects the file, with the path provided by 'file', in the FileSystem dock.
 */
 func SelectFile(file string) { //gd:EditorInterface.select_file
-	Advanced().SelectFile(String.New(file))
+	Advanced().SelectFile(String.From(file))
 }
 
 /*
@@ -689,7 +689,7 @@ func GetInspector() EditorInspector.Instance { //gd:EditorInterface.get_inspecto
 Shows the given property on the given 'object' in the editor's Inspector dock. If 'inspector_only' is true, plugins will not attempt to edit 'object'.
 */
 func InspectObject(obj Object.Instance, for_property string, inspector_only bool) { //gd:EditorInterface.inspect_object
-	Advanced().InspectObject(obj, String.New(for_property), inspector_only)
+	Advanced().InspectObject(obj, String.From(for_property), inspector_only)
 }
 
 /*
@@ -733,14 +733,14 @@ func EditScriptOptions(script Script.Instance, line int, column int, grab_focus 
 Opens the scene at the given path. If 'set_inherited' is true, creates a new inherited scene.
 */
 func OpenSceneFromPath(scene_filepath string, set_inherited bool) { //gd:EditorInterface.open_scene_from_path
-	Advanced().OpenSceneFromPath(String.New(scene_filepath), set_inherited)
+	Advanced().OpenSceneFromPath(String.From(scene_filepath), set_inherited)
 }
 
 /*
 Reloads the scene at the given path.
 */
 func ReloadSceneFromPath(scene_filepath string) { //gd:EditorInterface.reload_scene_from_path
-	Advanced().ReloadSceneFromPath(String.New(scene_filepath))
+	Advanced().ReloadSceneFromPath(String.From(scene_filepath))
 }
 
 /*
@@ -804,14 +804,14 @@ func SaveScene() error { //gd:EditorInterface.save_scene
 Saves the currently active scene as a file at 'path'.
 */
 func SaveSceneAs(path string) { //gd:EditorInterface.save_scene_as
-	Advanced().SaveSceneAs(String.New(path), true)
+	Advanced().SaveSceneAs(String.From(path), true)
 }
 
 /*
 Saves the currently active scene as a file at 'path'.
 */
 func SaveSceneAsOptions(path string, with_preview bool) { //gd:EditorInterface.save_scene_as
-	Advanced().SaveSceneAs(String.New(path), with_preview)
+	Advanced().SaveSceneAs(String.From(path), with_preview)
 }
 
 /*
@@ -853,7 +853,7 @@ func PlayCurrentScene() { //gd:EditorInterface.play_current_scene
 Plays the scene specified by its filepath.
 */
 func PlayCustomScene(scene_filepath string) { //gd:EditorInterface.play_custom_scene
-	Advanced().PlayCustomScene(String.New(scene_filepath))
+	Advanced().PlayCustomScene(String.From(scene_filepath))
 }
 
 /*

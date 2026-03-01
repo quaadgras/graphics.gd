@@ -190,7 +190,7 @@ If 'bind_address' is set to any valid address (e.g. "192.168.1.101", "::1", etc.
 [PacketPeerUDP]: https://pkg.go.dev/graphics.gd/classdb/PacketPeerUDP
 */
 func (self Instance) Bind(port int) error { //gd:PacketPeerUDP.bind
-	return error(gd.ToError(Advanced(self).Bind(int64(port), String.New("*"), int64(65536))))
+	return error(gd.ToError(Advanced(self).Bind(int64(port), String.From("*"), int64(65536))))
 }
 
 /*
@@ -205,7 +205,7 @@ If 'bind_address' is set to any valid address (e.g. "192.168.1.101", "::1", etc.
 [PacketPeerUDP]: https://pkg.go.dev/graphics.gd/classdb/PacketPeerUDP
 */
 func (self MoreArgs) Bind(port int, bind_address string, recv_buf_size int) error { //gd:PacketPeerUDP.bind
-	return error(gd.ToError(Advanced(self).Bind(int64(port), String.New(bind_address), int64(recv_buf_size))))
+	return error(gd.ToError(Advanced(self).Bind(int64(port), String.From(bind_address), int64(recv_buf_size))))
 }
 
 /*
@@ -249,7 +249,7 @@ Note: Connecting to the remote peer does not help to protect from malicious atta
 [UDPServer]: https://pkg.go.dev/graphics.gd/classdb/UDPServer
 */
 func (self Instance) ConnectToHost(host string, port int) error { //gd:PacketPeerUDP.connect_to_host
-	return error(gd.ToError(Advanced(self).ConnectToHost(String.New(host), int64(port))))
+	return error(gd.ToError(Advanced(self).ConnectToHost(String.From(host), int64(port))))
 }
 
 /*
@@ -296,7 +296,7 @@ Note: [SetBroadcastEnabled] must be enabled before sending packets to a broadcas
 [SetBroadcastEnabled]: https://pkg.go.dev/graphics.gd/classdb/PacketPeerUDP#Instance.SetBroadcastEnabled
 */
 func (self Instance) SetDestAddress(host string, port int) error { //gd:PacketPeerUDP.set_dest_address
-	return error(gd.ToError(Advanced(self).SetDestAddress(String.New(host), int64(port))))
+	return error(gd.ToError(Advanced(self).SetDestAddress(String.From(host), int64(port))))
 }
 
 /*
@@ -321,14 +321,14 @@ Note: Some Android devices might require the CHANGE_WIFI_MULTICAST_STATE permiss
 [IP.GetLocalInterfaces]: https://pkg.go.dev/graphics.gd/classdb/IP#GetLocalInterfaces
 */
 func (self Instance) JoinMulticastGroup(multicast_address string, interface_name string) error { //gd:PacketPeerUDP.join_multicast_group
-	return error(gd.ToError(Advanced(self).JoinMulticastGroup(String.New(multicast_address), String.New(interface_name))))
+	return error(gd.ToError(Advanced(self).JoinMulticastGroup(String.From(multicast_address), String.From(interface_name))))
 }
 
 /*
 Removes the interface identified by 'interface_name' from the multicast group specified by 'multicast_address'.
 */
 func (self Instance) LeaveMulticastGroup(multicast_address string, interface_name string) error { //gd:PacketPeerUDP.leave_multicast_group
-	return error(gd.ToError(Advanced(self).LeaveMulticastGroup(String.New(multicast_address), String.New(interface_name))))
+	return error(gd.ToError(Advanced(self).LeaveMulticastGroup(String.From(multicast_address), String.From(interface_name))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -234,7 +234,7 @@ Sets the root bone name of the bone chain.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetRootBoneName(index int, bone_name string) Instance { //gd:SpringBoneSimulator3D.set_root_bone_name
-	Advanced(self).SetRootBoneName(int64(index), String.New(bone_name))
+	Advanced(self).SetRootBoneName(int64(index), String.From(bone_name))
 	return self
 }
 
@@ -272,7 +272,7 @@ Returns 'self' to enable method chaining.
 [SetExtendEndBone]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.SetExtendEndBone
 */
 func (self Instance) SetEndBoneName(index int, bone_name string) Instance { //gd:SpringBoneSimulator3D.set_end_bone_name
-	Advanced(self).SetEndBoneName(int64(index), String.New(bone_name))
+	Advanced(self).SetEndBoneName(int64(index), String.From(bone_name))
 	return self
 }
 
@@ -392,7 +392,7 @@ Sets the center node path of the bone chain.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetCenterNode(index int, node_path string) Instance { //gd:SpringBoneSimulator3D.set_center_node
-	Advanced(self).SetCenterNode(int64(index), Path.ToNode(String.New(node_path)))
+	Advanced(self).SetCenterNode(int64(index), Path.ToNode(String.From(node_path)))
 	return self
 }
 
@@ -409,7 +409,7 @@ Sets the center bone name of the bone chain.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetCenterBoneName(index int, bone_name string) Instance { //gd:SpringBoneSimulator3D.set_center_bone_name
-	Advanced(self).SetCenterBoneName(int64(index), String.New(bone_name))
+	Advanced(self).SetCenterBoneName(int64(index), String.From(bone_name))
 	return self
 }
 
@@ -889,7 +889,7 @@ Returns 'self' to enable method chaining.
 [SpringBoneCollision3D]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneCollision3D
 */
 func (self Instance) SetExcludeCollisionPath(index int, collision int, node_path string) Instance { //gd:SpringBoneSimulator3D.set_exclude_collision_path
-	Advanced(self).SetExcludeCollisionPath(int64(index), int64(collision), Path.ToNode(String.New(node_path)))
+	Advanced(self).SetExcludeCollisionPath(int64(index), int64(collision), Path.ToNode(String.From(node_path)))
 	return self
 }
 
@@ -942,7 +942,7 @@ Returns 'self' to enable method chaining.
 [SpringBoneCollision3D]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneCollision3D
 */
 func (self Instance) SetCollisionPath(index int, collision int, node_path string) Instance { //gd:SpringBoneSimulator3D.set_collision_path
-	Advanced(self).SetCollisionPath(int64(index), int64(collision), Path.ToNode(String.New(node_path)))
+	Advanced(self).SetCollisionPath(int64(index), int64(collision), Path.ToNode(String.From(node_path)))
 	return self
 }
 

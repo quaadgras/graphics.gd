@@ -147,49 +147,49 @@ type Any interface {
 Creates a new PCK file at the file path 'pck_path'. The .pck file extension isn't added automatically, so it should be part of 'pck_path' (even though it's not required).
 */
 func (self Instance) PckStart(pck_path string) error { //gd:PCKPacker.pck_start
-	return error(gd.ToError(Advanced(self).PckStart(String.New(pck_path), int64(32), String.New("0000000000000000000000000000000000000000000000000000000000000000"), false)))
+	return error(gd.ToError(Advanced(self).PckStart(String.From(pck_path), int64(32), String.From("0000000000000000000000000000000000000000000000000000000000000000"), false)))
 }
 
 /*
 Creates a new PCK file at the file path 'pck_path'. The .pck file extension isn't added automatically, so it should be part of 'pck_path' (even though it's not required).
 */
 func (self MoreArgs) PckStart(pck_path string, alignment int, key string, encrypt_directory bool) error { //gd:PCKPacker.pck_start
-	return error(gd.ToError(Advanced(self).PckStart(String.New(pck_path), int64(alignment), String.New(key), encrypt_directory)))
+	return error(gd.ToError(Advanced(self).PckStart(String.From(pck_path), int64(alignment), String.From(key), encrypt_directory)))
 }
 
 /*
 Adds the 'source_path' file to the current PCK package at the 'target_path' internal path. The res:// prefix for 'target_path' is optional and stripped internally. File content is immediately written to the PCK.
 */
 func (self Instance) AddFile(target_path string, source_path string) error { //gd:PCKPacker.add_file
-	return error(gd.ToError(Advanced(self).AddFile(String.New(target_path), String.New(source_path), false)))
+	return error(gd.ToError(Advanced(self).AddFile(String.From(target_path), String.From(source_path), false)))
 }
 
 /*
 Adds the 'source_path' file to the current PCK package at the 'target_path' internal path. The res:// prefix for 'target_path' is optional and stripped internally. File content is immediately written to the PCK.
 */
 func (self MoreArgs) AddFile(target_path string, source_path string, encrypt bool) error { //gd:PCKPacker.add_file
-	return error(gd.ToError(Advanced(self).AddFile(String.New(target_path), String.New(source_path), encrypt)))
+	return error(gd.ToError(Advanced(self).AddFile(String.From(target_path), String.From(source_path), encrypt)))
 }
 
 /*
 Adds the 'data' to the current PCK package at the 'target_path' internal path. The res:// prefix for 'target_path' is optional and stripped internally. File content is immediately written to the PCK.
 */
 func (self Instance) AddFileFromBuffer(target_path string, data []byte) error { //gd:PCKPacker.add_file_from_buffer
-	return error(gd.ToError(Advanced(self).AddFileFromBuffer(String.New(target_path), Packed.BytesFrom(data...), false)))
+	return error(gd.ToError(Advanced(self).AddFileFromBuffer(String.From(target_path), Packed.BytesFrom(data...), false)))
 }
 
 /*
 Adds the 'data' to the current PCK package at the 'target_path' internal path. The res:// prefix for 'target_path' is optional and stripped internally. File content is immediately written to the PCK.
 */
 func (self MoreArgs) AddFileFromBuffer(target_path string, data []byte, encrypt bool) error { //gd:PCKPacker.add_file_from_buffer
-	return error(gd.ToError(Advanced(self).AddFileFromBuffer(String.New(target_path), Packed.BytesFrom(data...), encrypt)))
+	return error(gd.ToError(Advanced(self).AddFileFromBuffer(String.From(target_path), Packed.BytesFrom(data...), encrypt)))
 }
 
 /*
 Registers a file removal of the 'target_path' internal path to the PCK. This is mainly used for patches. If the file at this path has been loaded from a previous PCK, it will be removed. The res:// prefix for 'target_path' is optional and stripped internally.
 */
 func (self Instance) AddFileRemoval(target_path string) error { //gd:PCKPacker.add_file_removal
-	return error(gd.ToError(Advanced(self).AddFileRemoval(String.New(target_path))))
+	return error(gd.ToError(Advanced(self).AddFileRemoval(String.From(target_path))))
 }
 
 /*

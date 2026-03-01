@@ -142,7 +142,7 @@ Returns 'self' to enable method chaining.
 [Skeleton2D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton2D
 */
 func (self Instance) SetPhysicalBoneNode(joint_idx int, physicalbone2d_node string) Instance { //gd:SkeletonModification2DPhysicalBones.set_physical_bone_node
-	Advanced(self).SetPhysicalBoneNode(int64(joint_idx), Path.ToNode(String.New(physicalbone2d_node)))
+	Advanced(self).SetPhysicalBoneNode(int64(joint_idx), Path.ToNode(String.From(physicalbone2d_node)))
 	return self
 }
 

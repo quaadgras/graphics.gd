@@ -127,14 +127,14 @@ This method is generally not needed, and only used to force the subsequent call 
 [ConnectToHost]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerUDS#Instance.ConnectToHost
 */
 func (self Instance) Bind(path string) error { //gd:StreamPeerUDS.bind
-	return error(gd.ToError(Advanced(self).Bind(String.New(path))))
+	return error(gd.ToError(Advanced(self).Bind(String.From(path))))
 }
 
 /*
 Connects to the specified UNIX Domain Socket path. Returns [Ok] on success.
 */
 func (self Instance) ConnectToHost(path string) error { //gd:StreamPeerUDS.connect_to_host
-	return error(gd.ToError(Advanced(self).ConnectToHost(String.New(path))))
+	return error(gd.ToError(Advanced(self).ConnectToHost(String.From(path))))
 }
 
 /*

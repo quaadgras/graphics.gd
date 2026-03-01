@@ -220,7 +220,7 @@ Note: To avoid mixed content warnings or errors in Web, you may have to use a 'u
 [TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
 */
 func (self Instance) ConnectToUrl(url string) error { //gd:WebSocketPeer.connect_to_url
-	return error(gd.ToError(Advanced(self).ConnectToUrl(String.New(url), [1]TLSOptions.Instance{}[0])))
+	return error(gd.ToError(Advanced(self).ConnectToUrl(String.From(url), [1]TLSOptions.Instance{}[0])))
 }
 
 /*
@@ -237,7 +237,7 @@ Note: To avoid mixed content warnings or errors in Web, you may have to use a 'u
 [TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
 */
 func (self MoreArgs) ConnectToUrl(url string, tls_client_options TLSOptions.Instance) error { //gd:WebSocketPeer.connect_to_url
-	return error(gd.ToError(Advanced(self).ConnectToUrl(String.New(url), tls_client_options)))
+	return error(gd.ToError(Advanced(self).ConnectToUrl(String.From(url), tls_client_options)))
 }
 
 /*
@@ -277,7 +277,7 @@ Sends the given 'message' using WebSocket text mode. Prefer this method over [Pa
 [PacketPeer.PutPacket]: https://pkg.go.dev/graphics.gd/classdb/PacketPeer#Instance.PutPacket
 */
 func (self Instance) SendText(message string) error { //gd:WebSocketPeer.send_text
-	return error(gd.ToError(Advanced(self).SendText(String.New(message))))
+	return error(gd.ToError(Advanced(self).SendText(String.From(message))))
 }
 
 /*
@@ -308,7 +308,7 @@ Note: The Web export might not support all status codes. Please refer to browser
 [RFC 6455 section 7.4]: https://datatracker.ietf.org/doc/html/rfc6455#section-7.4.1
 */
 func (self Instance) Close() { //gd:WebSocketPeer.close
-	Advanced(self).Close(int64(1000), String.New(""))
+	Advanced(self).Close(int64(1000), String.From(""))
 }
 
 /*
@@ -325,7 +325,7 @@ Note: The Web export might not support all status codes. Please refer to browser
 [RFC 6455 section 7.4]: https://datatracker.ietf.org/doc/html/rfc6455#section-7.4.1
 */
 func (self MoreArgs) Close(code int, reason string) { //gd:WebSocketPeer.close
-	Advanced(self).Close(int64(code), String.New(reason))
+	Advanced(self).Close(int64(code), String.From(reason))
 }
 
 /*

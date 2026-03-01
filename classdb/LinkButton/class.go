@@ -192,7 +192,7 @@ func (self Instance) Text() string { //gd:LinkButton.text
 
 // SetText sets the property returned by [GetText]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetText(value string) Instance { //gd:LinkButton.text
-	class(self).SetText(String.New(value))
+	class(self).SetText(String.From(value))
 	return self
 }
 
@@ -222,7 +222,7 @@ func (self Instance) Uri() string { //gd:LinkButton.uri
 
 // SetUri sets the property returned by [GetUri]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetUri(value string) Instance { //gd:LinkButton.uri
-	class(self).SetUri(String.New(value))
+	class(self).SetUri(String.From(value))
 	return self
 }
 
@@ -248,7 +248,7 @@ func (self Instance) EllipsisChar() string { //gd:LinkButton.ellipsis_char
 
 // SetEllipsisChar sets the property returned by [GetEllipsisChar]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetEllipsisChar(value string) Instance { //gd:LinkButton.ellipsis_char
-	class(self).SetEllipsisChar(String.New(value))
+	class(self).SetEllipsisChar(String.From(value))
 	return self
 }
 
@@ -274,7 +274,7 @@ func (self Instance) Language() string { //gd:LinkButton.language
 
 // SetLanguage sets the property returned by [GetLanguage]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetLanguage(value string) Instance { //gd:LinkButton.language
-	class(self).SetLanguage(String.New(value))
+	class(self).SetLanguage(String.From(value))
 	return self
 }
 

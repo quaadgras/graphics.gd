@@ -304,7 +304,7 @@ func (self Instance) GetParsedText() string { //gd:RichTextLabel.get_parsed_text
 Adds raw non-BBCode-parsed text to the tag stack.
 */
 func (self Instance) AddText(text string) { //gd:RichTextLabel.add_text
-	Advanced(self).AddText(String.New(text))
+	Advanced(self).AddText(String.From(text))
 }
 
 /*
@@ -349,7 +349,7 @@ If 'height_in_percent' is set, 'height' values are percentages of the control wi
 [UpdateImage]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.UpdateImage
 */
 func (self Instance) AddImage(image Texture2D.Instance) { //gd:RichTextLabel.add_image
-	Advanced(self).AddImage(image, int64(0), int64(0), Color.RGBA(gd.Color{1, 1, 1, 1}), 5, Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), variant.New([1]any{}[0]), false, String.New(""), false, false, String.New(""))
+	Advanced(self).AddImage(image, int64(0), int64(0), Color.RGBA(gd.Color{1, 1, 1, 1}), 5, Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), variant.New([1]any{}[0]), false, String.From(""), false, false, String.From(""))
 }
 
 /*
@@ -372,7 +372,7 @@ If 'height_in_percent' is set, 'height' values are percentages of the control wi
 [UpdateImage]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.UpdateImage
 */
 func (self MoreArgs) AddImage(image Texture2D.Instance, width int, height int, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, key any, pad bool, tooltip string, width_in_percent bool, height_in_percent bool, alt_text string) { //gd:RichTextLabel.add_image
-	Advanced(self).AddImage(image, int64(width), int64(height), Color.RGBA(color), inline_align, Rect2.PositionSize(region), variant.New(key), pad, String.New(tooltip), width_in_percent, height_in_percent, String.New(alt_text))
+	Advanced(self).AddImage(image, int64(width), int64(height), Color.RGBA(color), inline_align, Rect2.PositionSize(region), variant.New(key), pad, String.From(tooltip), width_in_percent, height_in_percent, String.From(alt_text))
 }
 
 /*
@@ -381,7 +381,7 @@ Updates the existing images with the key 'key'. Only properties specified by 'ma
 [AddImage]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.AddImage
 */
 func (self Instance) UpdateImage(key any, mask ImageUpdateMask, image Texture2D.Instance) { //gd:RichTextLabel.update_image
-	Advanced(self).UpdateImage(variant.New(key), mask, image, int64(0), int64(0), Color.RGBA(gd.Color{1, 1, 1, 1}), 5, Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), false, String.New(""), false, false)
+	Advanced(self).UpdateImage(variant.New(key), mask, image, int64(0), int64(0), Color.RGBA(gd.Color{1, 1, 1, 1}), 5, Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), false, String.From(""), false, false)
 }
 
 /*
@@ -390,7 +390,7 @@ Updates the existing images with the key 'key'. Only properties specified by 'ma
 [AddImage]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.AddImage
 */
 func (self MoreArgs) UpdateImage(key any, mask ImageUpdateMask, image Texture2D.Instance, width int, height int, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, pad bool, tooltip string, width_in_percent bool, height_in_percent bool) { //gd:RichTextLabel.update_image
-	Advanced(self).UpdateImage(variant.New(key), mask, image, int64(width), int64(height), Color.RGBA(color), inline_align, Rect2.PositionSize(region), pad, String.New(tooltip), width_in_percent, height_in_percent)
+	Advanced(self).UpdateImage(variant.New(key), mask, image, int64(width), int64(height), Color.RGBA(color), inline_align, Rect2.PositionSize(region), pad, String.From(tooltip), width_in_percent, height_in_percent)
 }
 
 /*
@@ -518,14 +518,14 @@ func (self Instance) PushOutlineColor(color Color.RGBA) { //gd:RichTextLabel.pus
 Adds a [p] tag to the tag stack.
 */
 func (self Instance) PushParagraph(alignment GUI.HorizontalAlignment) { //gd:RichTextLabel.push_paragraph
-	Advanced(self).PushParagraph(alignment, 0, String.New(""), 0, 163, Packed.New([1][]float32{}[0]...))
+	Advanced(self).PushParagraph(alignment, 0, String.From(""), 0, 163, Packed.New([1][]float32{}[0]...))
 }
 
 /*
 Adds a [p] tag to the tag stack.
 */
 func (self MoreArgs) PushParagraph(alignment GUI.HorizontalAlignment, base_direction Control.TextDirection, language string, st_parser TextServer.StructuredTextParser, justification_flags TextServer.JustificationFlag, tab_stops []float32) { //gd:RichTextLabel.push_paragraph
-	Advanced(self).PushParagraph(alignment, base_direction, String.New(language), st_parser, justification_flags, Packed.New(tab_stops...))
+	Advanced(self).PushParagraph(alignment, base_direction, String.From(language), st_parser, justification_flags, Packed.New(tab_stops...))
 }
 
 /*
@@ -543,7 +543,7 @@ Adds [ol] or [ul] tag to the tag stack. Multiplies 'level' by current [TabSize] 
 [TabSize]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.TabSize
 */
 func (self Instance) PushList(level int, atype ListType, capitalize bool) { //gd:RichTextLabel.push_list
-	Advanced(self).PushList(int64(level), atype, capitalize, String.New("•"))
+	Advanced(self).PushList(int64(level), atype, capitalize, String.From("•"))
 }
 
 /*
@@ -552,7 +552,7 @@ Adds [ol] or [ul] tag to the tag stack. Multiplies 'level' by current [TabSize] 
 [TabSize]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.TabSize
 */
 func (self MoreArgs) PushList(level int, atype ListType, capitalize bool, bullet string) { //gd:RichTextLabel.push_list
-	Advanced(self).PushList(int64(level), atype, capitalize, String.New(bullet))
+	Advanced(self).PushList(int64(level), atype, capitalize, String.From(bullet))
 }
 
 /*
@@ -566,7 +566,7 @@ Note: Meta tags do nothing by default when clicked. To assign behavior when clic
 [OnMetaClicked]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.OnMetaClicked
 */
 func (self Instance) PushMeta(data any) { //gd:RichTextLabel.push_meta
-	Advanced(self).PushMeta(variant.New(data), 1, String.New(""))
+	Advanced(self).PushMeta(variant.New(data), 1, String.From(""))
 }
 
 /*
@@ -580,21 +580,21 @@ Note: Meta tags do nothing by default when clicked. To assign behavior when clic
 [OnMetaClicked]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.OnMetaClicked
 */
 func (self MoreArgs) PushMeta(data any, underline_mode MetaUnderline, tooltip string) { //gd:RichTextLabel.push_meta
-	Advanced(self).PushMeta(variant.New(data), underline_mode, String.New(tooltip))
+	Advanced(self).PushMeta(variant.New(data), underline_mode, String.From(tooltip))
 }
 
 /*
 Adds a [hint] tag to the tag stack. Same as BBCode [hint=something]{text}[/hint].
 */
 func (self Instance) PushHint(description string) { //gd:RichTextLabel.push_hint
-	Advanced(self).PushHint(String.New(description))
+	Advanced(self).PushHint(String.From(description))
 }
 
 /*
 Adds language code used for text shaping algorithm and Open-Type font features.
 */
 func (self Instance) PushLanguage(language string) { //gd:RichTextLabel.push_language
-	Advanced(self).PushLanguage(String.New(language))
+	Advanced(self).PushLanguage(String.From(language))
 }
 
 /*
@@ -632,7 +632,7 @@ Adds a [table=columns,inline_align] tag to the tag stack. Use [SetTableColumnExp
 [SetTableColumnExpand]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.SetTableColumnExpand
 */
 func (self Instance) PushTable(columns int) { //gd:RichTextLabel.push_table
-	Advanced(self).PushTable(int64(columns), 0, int64(-1), String.New(""))
+	Advanced(self).PushTable(int64(columns), 0, int64(-1), String.From(""))
 }
 
 /*
@@ -642,21 +642,21 @@ Adds a [table=columns,inline_align] tag to the tag stack. Use [SetTableColumnExp
 [SetTableColumnExpand]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.SetTableColumnExpand
 */
 func (self MoreArgs) PushTable(columns int, inline_align GUI.InlineAlignment, align_to_row int, name string) { //gd:RichTextLabel.push_table
-	Advanced(self).PushTable(int64(columns), inline_align, int64(align_to_row), String.New(name))
+	Advanced(self).PushTable(int64(columns), inline_align, int64(align_to_row), String.From(name))
 }
 
 /*
 Adds a [dropcap] tag to the tag stack. Drop cap (dropped capital) is a decorative element at the beginning of a paragraph that is larger than the rest of the text.
 */
 func (self Instance) PushDropcap(s string, font Font.Instance, size int) { //gd:RichTextLabel.push_dropcap
-	Advanced(self).PushDropcap(String.New(s), font, int64(size), Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), Color.RGBA(gd.Color{1, 1, 1, 1}), int64(0), Color.RGBA(gd.Color{0, 0, 0, 0}))
+	Advanced(self).PushDropcap(String.From(s), font, int64(size), Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), Color.RGBA(gd.Color{1, 1, 1, 1}), int64(0), Color.RGBA(gd.Color{0, 0, 0, 0}))
 }
 
 /*
 Adds a [dropcap] tag to the tag stack. Drop cap (dropped capital) is a decorative element at the beginning of a paragraph that is larger than the rest of the text.
 */
 func (self MoreArgs) PushDropcap(s string, font Font.Instance, size int, dropcap_margins Rect2.PositionSize, color Color.RGBA, outline_size int, outline_color Color.RGBA) { //gd:RichTextLabel.push_dropcap
-	Advanced(self).PushDropcap(String.New(s), font, int64(size), Rect2.PositionSize(dropcap_margins), Color.RGBA(color), int64(outline_size), Color.RGBA(outline_color))
+	Advanced(self).PushDropcap(String.From(s), font, int64(size), Rect2.PositionSize(dropcap_margins), Color.RGBA(color), int64(outline_size), Color.RGBA(outline_color))
 }
 
 /*
@@ -693,7 +693,7 @@ Sets table column name for assistive apps.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetTableColumnName(column int, name string) Instance { //gd:RichTextLabel.set_table_column_name
-	Advanced(self).SetTableColumnName(int64(column), String.New(name))
+	Advanced(self).SetTableColumnName(int64(column), String.From(name))
 	return self
 }
 
@@ -905,7 +905,7 @@ The assignment version of [AppendText]. Clears the tag stack and inserts the new
 [AppendText]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.AppendText
 */
 func (self Instance) ParseBbcode(bbcode string) { //gd:RichTextLabel.parse_bbcode
-	Advanced(self).ParseBbcode(String.New(bbcode))
+	Advanced(self).ParseBbcode(String.From(bbcode))
 }
 
 /*
@@ -917,7 +917,7 @@ Note: Using this method, you can't close a tag that was opened in a previous [Ap
 [Text]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.Text
 */
 func (self Instance) AppendText(bbcode string) { //gd:RichTextLabel.append_text
-	Advanced(self).AppendText(String.New(bbcode))
+	Advanced(self).AppendText(String.From(bbcode))
 }
 
 /*
@@ -1317,7 +1317,7 @@ func (self Instance) Text() string { //gd:RichTextLabel.text
 
 // SetText sets the property returned by [GetText]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetText(value string) Instance { //gd:RichTextLabel.text
-	class(self).SetText(String.New(value))
+	class(self).SetText(String.From(value))
 	return self
 }
 
@@ -1687,7 +1687,7 @@ func (self Instance) Language() string { //gd:RichTextLabel.language
 
 // SetLanguage sets the property returned by [GetLanguage]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetLanguage(value string) Instance { //gd:RichTextLabel.language
-	class(self).SetLanguage(String.New(value))
+	class(self).SetLanguage(String.From(value))
 	return self
 }
 

@@ -292,7 +292,7 @@ func (self Instance) Bone2dNode() string { //gd:SkeletonModification2DLookAt.bon
 
 // SetBone2dNode sets the property returned by [GetBone2dNode]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetBone2dNode(value string) Instance { //gd:SkeletonModification2DLookAt.bone2d_node
-	class(self).SetBone2dNode(Path.ToNode(String.New(value)))
+	class(self).SetBone2dNode(Path.ToNode(String.From(value)))
 	return self
 }
 
@@ -307,7 +307,7 @@ func (self Instance) TargetNodepath() string { //gd:SkeletonModification2DLookAt
 
 // SetTargetNodepath sets the property returned by [GetTargetNode]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetTargetNodepath(value string) Instance { //gd:SkeletonModification2DLookAt.target_nodepath
-	class(self).SetTargetNode(Path.ToNode(String.New(value)))
+	class(self).SetTargetNode(Path.ToNode(String.From(value)))
 	return self
 }
 

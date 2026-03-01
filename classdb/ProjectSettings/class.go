@@ -148,7 +148,7 @@ Returns true if a configuration value is present.
 Note: In order to be be detected, custom settings have to be either defined with [SetSetting], or exist in the project.godot file. This is especially relevant when using [SetInitialValue].
 */
 func HasSetting(name string) bool { //gd:ProjectSettings.has_setting
-	return bool(Advanced().HasSetting(String.New(name)))
+	return bool(Advanced().HasSetting(String.From(name)))
 }
 
 /*
@@ -159,7 +159,7 @@ Sets the value of a setting.
 This can also be used to erase custom project settings. To do this change the setting value to null.
 */
 func SetSetting(name string, value any) { //gd:ProjectSettings.set_setting
-	Advanced().SetSetting(String.New(name), variant.New(value))
+	Advanced().SetSetting(String.From(name), variant.New(value))
 }
 
 /*
@@ -173,7 +173,7 @@ Note: This method doesn't take potential feature overrides into account automati
 See also [HasSetting] to check whether a setting exists.
 */
 func GetSetting(name string, default_value any) any { //gd:ProjectSettings.get_setting
-	return any(Advanced().GetSetting(String.New(name), variant.New(default_value)).Interface())
+	return any(Advanced().GetSetting(String.From(name), variant.New(default_value)).Interface())
 }
 
 /*
@@ -184,7 +184,7 @@ Example: If the setting override "application/config/name.windows" exists, and t
 	fmt.Println(ProjectSettings.GetSettingWithOverride("application/config/name"))
 */
 func GetSettingWithOverride(name string) any { //gd:ProjectSettings.get_setting_with_override
-	return any(Advanced().GetSettingWithOverride(String.Name(String.New(name))).Interface())
+	return any(Advanced().GetSettingWithOverride(String.Name(String.From(name))).Interface())
 }
 
 /*
@@ -210,21 +210,21 @@ func GetGlobalClassList() []GlobalClass { //gd:ProjectSettings.get_global_class_
 Similar to [GetSettingWithOverride], but applies feature tag overrides instead of current OS features.
 */
 func GetSettingWithOverrideAndCustomFeatures(name string, features []string) any { //gd:ProjectSettings.get_setting_with_override_and_custom_features
-	return any(Advanced().GetSettingWithOverrideAndCustomFeatures(String.Name(String.New(name)), Packed.MakeStrings(features...)).Interface())
+	return any(Advanced().GetSettingWithOverrideAndCustomFeatures(String.Name(String.From(name)), Packed.MakeStrings(features...)).Interface())
 }
 
 /*
 Sets the order of a configuration value (influences when saved to the config file).
 */
 func SetOrder(name string, position int) { //gd:ProjectSettings.set_order
-	Advanced().SetOrder(String.New(name), int64(position))
+	Advanced().SetOrder(String.From(name), int64(position))
 }
 
 /*
 Returns the order of a configuration value (influences when saved to the config file).
 */
 func GetOrder(name string) int { //gd:ProjectSettings.get_order
-	return int(int(Advanced().GetOrder(String.New(name))))
+	return int(int(Advanced().GetOrder(String.From(name))))
 }
 
 /*
@@ -243,21 +243,21 @@ If you have a project setting defined by an [EditorPlugin], but want to use it i
 [EditorPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin
 */
 func SetInitialValue(name string, value any) { //gd:ProjectSettings.set_initial_value
-	Advanced().SetInitialValue(String.New(name), variant.New(value))
+	Advanced().SetInitialValue(String.From(name), variant.New(value))
 }
 
 /*
 Defines if the specified setting is considered basic or advanced. Basic settings will always be shown in the project settings. Advanced settings will only be shown if the user enables the "Advanced Settings" option.
 */
 func SetAsBasic(name string, basic bool) { //gd:ProjectSettings.set_as_basic
-	Advanced().SetAsBasic(String.New(name), basic)
+	Advanced().SetAsBasic(String.From(name), basic)
 }
 
 /*
 Defines if the specified setting is considered internal. An internal setting won't show up in the Project Settings dialog. This is mostly useful for addons that need to store their own internal settings without exposing them directly to the user.
 */
 func SetAsInternal(name string, internal_ bool) { //gd:ProjectSettings.set_as_internal
-	Advanced().SetAsInternal(String.New(name), internal_)
+	Advanced().SetAsInternal(String.From(name), internal_)
 }
 
 /*
@@ -289,21 +289,21 @@ Sets whether a setting requires restarting the editor to properly take effect.
 Note: This is just a hint to display to the user that the editor must be restarted for changes to take effect. Enabling [SetRestartIfChanged] does not delay the setting being set when changed.
 */
 func SetRestartIfChanged(name string, restart bool) { //gd:ProjectSettings.set_restart_if_changed
-	Advanced().SetRestartIfChanged(String.New(name), restart)
+	Advanced().SetRestartIfChanged(String.From(name), restart)
 }
 
 /*
 Clears the whole configuration (not recommended, may break things).
 */
 func Clear(name string) { //gd:ProjectSettings.clear
-	Advanced().Clear(String.New(name))
+	Advanced().Clear(String.From(name))
 }
 
 /*
 Returns the localized path (starting with res://) corresponding to the absolute, native OS 'path'. See also [GlobalizePath].
 */
 func LocalizePath(path string) string { //gd:ProjectSettings.localize_path
-	return string(Advanced().LocalizePath(String.New(path)).String())
+	return string(Advanced().LocalizePath(String.From(path)).String())
 }
 
 /*
@@ -327,7 +327,7 @@ Note: [GlobalizePath] with res:// will not work in an exported project. Instead,
 [File paths in Godot projects]: https://docs.godotengine.org/tutorials/io/data_paths.html
 */
 func GlobalizePath(path string) string { //gd:ProjectSettings.globalize_path
-	return string(Advanced().GlobalizePath(String.New(path)).String())
+	return string(Advanced().GlobalizePath(String.From(path)).String())
 }
 
 /*
@@ -353,7 +353,7 @@ Note: [DirAccess] will not show changes made to the contents of res:// after cal
 [DirAccess]: https://pkg.go.dev/graphics.gd/classdb/DirAccess
 */
 func LoadResourcePack(pack string, offset int) bool { //gd:ProjectSettings.load_resource_pack
-	return bool(Advanced().LoadResourcePack(String.New(pack), true, int64(offset)))
+	return bool(Advanced().LoadResourcePack(String.From(pack), true, int64(offset)))
 }
 
 /*
@@ -368,7 +368,7 @@ Note: [DirAccess] will not show changes made to the contents of res:// after cal
 [DirAccess]: https://pkg.go.dev/graphics.gd/classdb/DirAccess
 */
 func LoadResourcePackOptions(pack string, replace_files bool, offset int) bool { //gd:ProjectSettings.load_resource_pack
-	return bool(Advanced().LoadResourcePack(String.New(pack), replace_files, int64(offset)))
+	return bool(Advanced().LoadResourcePack(String.From(pack), replace_files, int64(offset)))
 }
 
 /*
@@ -377,7 +377,7 @@ Saves the configuration to a custom file. The file extension must be .godot (to 
 [ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
 */
 func SaveCustom(file string) error { //gd:ProjectSettings.save_custom
-	return error(gd.ToError(Advanced().SaveCustom(String.New(file))))
+	return error(gd.ToError(Advanced().SaveCustom(String.From(file))))
 }
 
 /*
@@ -391,7 +391,7 @@ func GetChangedSettings() []string { //gd:ProjectSettings.get_changed_settings
 Checks if any settings with the prefix 'setting_prefix' exist in the set of changed settings. See also [GetChangedSettings].
 */
 func CheckChangedSettingsInGroup(setting_prefix string) bool { //gd:ProjectSettings.check_changed_settings_in_group
-	return bool(Advanced().CheckChangedSettingsInGroup(String.New(setting_prefix)))
+	return bool(Advanced().CheckChangedSettingsInGroup(String.From(setting_prefix)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -169,7 +169,7 @@ Returns 'self' to enable method chaining.
 [per-instance uniform]: https://docs.godotengine.org/tutorials/shaders/shader_reference/shading_language.html#per-instance-uniforms
 */
 func (self Instance) SetInstanceShaderParameter(name string, value any) Instance { //gd:GeometryInstance3D.set_instance_shader_parameter
-	Advanced(self).SetInstanceShaderParameter(String.Name(String.New(name)), variant.New(value))
+	Advanced(self).SetInstanceShaderParameter(String.Name(String.From(name)), variant.New(value))
 	return self
 }
 
@@ -177,7 +177,7 @@ func (self Instance) SetInstanceShaderParameter(name string, value any) Instance
 Get the value of a shader parameter as set on this instance.
 */
 func (self Instance) GetInstanceShaderParameter(name string) any { //gd:GeometryInstance3D.get_instance_shader_parameter
-	return any(Advanced(self).GetInstanceShaderParameter(String.Name(String.New(name))).Interface())
+	return any(Advanced(self).GetInstanceShaderParameter(String.Name(String.From(name))).Interface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

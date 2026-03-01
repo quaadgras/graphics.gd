@@ -129,35 +129,35 @@ type Any interface {
 Adds a resource to the preloader with the given 'name'. If a resource with the given 'name' already exists, the new resource will be renamed to "'name' N" where N is an incrementing number starting from 2.
 */
 func (self Instance) AddResource(name string, resource Resource.Instance) { //gd:ResourcePreloader.add_resource
-	Advanced(self).AddResource(String.Name(String.New(name)), resource)
+	Advanced(self).AddResource(String.Name(String.From(name)), resource)
 }
 
 /*
 Removes the resource associated to 'name' from the preloader.
 */
 func (self Instance) RemoveResource(name string) { //gd:ResourcePreloader.remove_resource
-	Advanced(self).RemoveResource(String.Name(String.New(name)))
+	Advanced(self).RemoveResource(String.Name(String.From(name)))
 }
 
 /*
 Renames a resource inside the preloader from 'name' to 'newname'.
 */
 func (self Instance) RenameResource(name string, newname string) { //gd:ResourcePreloader.rename_resource
-	Advanced(self).RenameResource(String.Name(String.New(name)), String.Name(String.New(newname)))
+	Advanced(self).RenameResource(String.Name(String.From(name)), String.Name(String.From(newname)))
 }
 
 /*
 Returns true if the preloader contains a resource associated to 'name'.
 */
 func (self Instance) HasResource(name string) bool { //gd:ResourcePreloader.has_resource
-	return bool(Advanced(self).HasResource(String.Name(String.New(name))))
+	return bool(Advanced(self).HasResource(String.Name(String.From(name))))
 }
 
 /*
 Returns the resource associated to 'name'.
 */
 func (self Instance) GetResource(name string) Resource.Instance { //gd:ResourcePreloader.get_resource
-	return Resource.Instance(Advanced(self).GetResource(String.Name(String.New(name))))
+	return Resource.Instance(Advanced(self).GetResource(String.Name(String.From(name))))
 }
 
 /*

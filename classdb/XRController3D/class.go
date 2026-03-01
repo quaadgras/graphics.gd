@@ -139,7 +139,7 @@ Note: The current [XRInterface] defines the 'name' for each input. In the case o
 [XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
 */
 func (self Instance) IsButtonPressed(name string) bool { //gd:XRController3D.is_button_pressed
-	return bool(Advanced(self).IsButtonPressed(String.Name(String.New(name))))
+	return bool(Advanced(self).IsButtonPressed(String.Name(String.From(name))))
 }
 
 /*
@@ -150,7 +150,7 @@ Note: The current [XRInterface] defines the 'name' for each input. In the case o
 [XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
 */
 func (self Instance) GetInput(name string) any { //gd:XRController3D.get_input
-	return any(Advanced(self).GetInput(String.Name(String.New(name))).Interface())
+	return any(Advanced(self).GetInput(String.Name(String.From(name))).Interface())
 }
 
 /*
@@ -161,7 +161,7 @@ Note: The current [XRInterface] defines the 'name' for each input. In the case o
 [XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
 */
 func (self Instance) GetFloat(name string) Float.X { //gd:XRController3D.get_float
-	return Float.X(Float.X(Advanced(self).GetFloat(String.Name(String.New(name)))))
+	return Float.X(Float.X(Advanced(self).GetFloat(String.Name(String.From(name)))))
 }
 
 /*
@@ -173,7 +173,7 @@ Note: The current [XRInterface] defines the 'name' for each input. In the case o
 [XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
 */
 func (self Instance) GetVector2(name string) Vector2.XY { //gd:XRController3D.get_vector2
-	return Vector2.XY(Advanced(self).GetVector2(String.Name(String.New(name))))
+	return Vector2.XY(Advanced(self).GetVector2(String.Name(String.From(name))))
 }
 
 /*

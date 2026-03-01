@@ -155,7 +155,7 @@ Note: It is recommended to specify the scheme part of the URL, i.e. the 'url' sh
 [TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
 */
 func (self Instance) CreateClient(url string) error { //gd:WebSocketMultiplayerPeer.create_client
-	return error(gd.ToError(Advanced(self).CreateClient(String.New(url), [1]TLSOptions.Instance{}[0])))
+	return error(gd.ToError(Advanced(self).CreateClient(String.From(url), [1]TLSOptions.Instance{}[0])))
 }
 
 /*
@@ -167,7 +167,7 @@ Note: It is recommended to specify the scheme part of the URL, i.e. the 'url' sh
 [TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
 */
 func (self MoreArgs) CreateClient(url string, tls_client_options TLSOptions.Instance) error { //gd:WebSocketMultiplayerPeer.create_client
-	return error(gd.ToError(Advanced(self).CreateClient(String.New(url), tls_client_options)))
+	return error(gd.ToError(Advanced(self).CreateClient(String.From(url), tls_client_options)))
 }
 
 /*
@@ -176,7 +176,7 @@ Starts a new multiplayer server listening on the given 'port'. You can optionall
 [TLSOptions.Server]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Server
 */
 func (self Instance) CreateServer(port int) error { //gd:WebSocketMultiplayerPeer.create_server
-	return error(gd.ToError(Advanced(self).CreateServer(int64(port), String.New("*"), [1]TLSOptions.Instance{}[0])))
+	return error(gd.ToError(Advanced(self).CreateServer(int64(port), String.From("*"), [1]TLSOptions.Instance{}[0])))
 }
 
 /*
@@ -185,7 +185,7 @@ Starts a new multiplayer server listening on the given 'port'. You can optionall
 [TLSOptions.Server]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Server
 */
 func (self MoreArgs) CreateServer(port int, bind_address string, tls_server_options TLSOptions.Instance) error { //gd:WebSocketMultiplayerPeer.create_server
-	return error(gd.ToError(Advanced(self).CreateServer(int64(port), String.New(bind_address), tls_server_options)))
+	return error(gd.ToError(Advanced(self).CreateServer(int64(port), String.From(bind_address), tls_server_options)))
 }
 
 /*

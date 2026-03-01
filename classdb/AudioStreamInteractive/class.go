@@ -159,7 +159,7 @@ Set the name of the current clip (for easier identification).
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetClipName(clip_index Clip, name string) Instance { //gd:AudioStreamInteractive.set_clip_name
-	Advanced(self).SetClipName(int64(clip_index), String.Name(String.New(name)))
+	Advanced(self).SetClipName(int64(clip_index), String.Name(String.From(name)))
 	return self
 }
 

@@ -199,7 +199,7 @@ A small example to generate an RSA key and an X509 self-signed certificate.
 [X509Certificate]: https://pkg.go.dev/graphics.gd/classdb/X509Certificate
 */
 func (self Instance) GenerateSelfSignedCertificate(key CryptoKey.Instance) X509Certificate.Instance { //gd:Crypto.generate_self_signed_certificate
-	return X509Certificate.Instance(Advanced(self).GenerateSelfSignedCertificate(key, String.New("CN=myserver,O=myorganisation,C=IT"), String.New("20140101000000"), String.New("20340101000000")))
+	return X509Certificate.Instance(Advanced(self).GenerateSelfSignedCertificate(key, String.From("CN=myserver,O=myorganisation,C=IT"), String.From("20140101000000"), String.From("20340101000000")))
 }
 
 /*
@@ -211,7 +211,7 @@ A small example to generate an RSA key and an X509 self-signed certificate.
 [X509Certificate]: https://pkg.go.dev/graphics.gd/classdb/X509Certificate
 */
 func (self MoreArgs) GenerateSelfSignedCertificate(key CryptoKey.Instance, issuer_name string, not_before string, not_after string) X509Certificate.Instance { //gd:Crypto.generate_self_signed_certificate
-	return X509Certificate.Instance(Advanced(self).GenerateSelfSignedCertificate(key, String.New(issuer_name), String.New(not_before), String.New(not_after)))
+	return X509Certificate.Instance(Advanced(self).GenerateSelfSignedCertificate(key, String.From(issuer_name), String.From(not_before), String.From(not_after)))
 }
 
 /*

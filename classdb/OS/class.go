@@ -270,14 +270,14 @@ func CloseMidiInputs() { //gd:OS.close_midi_inputs
 Displays a modal dialog box using the host platform's implementation. The engine execution is blocked until the dialog is closed.
 */
 func Alert(text string) { //gd:OS.alert
-	Advanced().Alert(String.New(text), String.New("Alert!"))
+	Advanced().Alert(String.From(text), String.From("Alert!"))
 }
 
 /*
 Displays a modal dialog box using the host platform's implementation. The engine execution is blocked until the dialog is closed.
 */
 func AlertOptions(text string, title string) { //gd:OS.alert
-	Advanced().Alert(String.New(text), String.New(title))
+	Advanced().Alert(String.From(text), String.From(title))
 }
 
 /*
@@ -289,7 +289,7 @@ Note: This method should only be used for testing the system's crash handler, no
 [@GlobalScope.PushError]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.PushError
 */
 func Crash(message string) { //gd:OS.crash
-	Advanced().Crash(String.New(message))
+	Advanced().Crash(String.From(message))
 }
 
 /*
@@ -327,7 +327,7 @@ Note: Returned font might have different style if the requested style is not ava
 Note: This method is implemented on Android, iOS, Linux, macOS and Windows.
 */
 func GetSystemFontPath(font_name string, italic bool) string { //gd:OS.get_system_font_path
-	return string(Advanced().GetSystemFontPath(String.New(font_name), int64(400), int64(100), italic).String())
+	return string(Advanced().GetSystemFontPath(String.From(font_name), int64(400), int64(100), italic).String())
 }
 
 /*
@@ -340,7 +340,7 @@ Note: Returned font might have different style if the requested style is not ava
 Note: This method is implemented on Android, iOS, Linux, macOS and Windows.
 */
 func GetSystemFontPathOptions(font_name string, weight int, stretch int, italic bool) string { //gd:OS.get_system_font_path
-	return string(Advanced().GetSystemFontPath(String.New(font_name), int64(weight), int64(stretch), italic).String())
+	return string(Advanced().GetSystemFontPath(String.From(font_name), int64(weight), int64(stretch), italic).String())
 }
 
 /*
@@ -355,7 +355,7 @@ Note: Returned fonts might have different style if the requested style is not av
 Note: This method is implemented on Android, iOS, Linux, macOS and Windows.
 */
 func GetSystemFontPathForText(font_name string, text string, locale string, script string, italic bool) []string { //gd:OS.get_system_font_path_for_text
-	return []string(Advanced().GetSystemFontPathForText(String.New(font_name), String.New(text), String.New(locale), String.New(script), int64(400), int64(100), italic).Strings())
+	return []string(Advanced().GetSystemFontPathForText(String.From(font_name), String.From(text), String.From(locale), String.From(script), int64(400), int64(100), italic).Strings())
 }
 
 /*
@@ -370,7 +370,7 @@ Note: Returned fonts might have different style if the requested style is not av
 Note: This method is implemented on Android, iOS, Linux, macOS and Windows.
 */
 func GetSystemFontPathForTextOptions(font_name string, text string, locale string, script string, weight int, stretch int, italic bool) []string { //gd:OS.get_system_font_path_for_text
-	return []string(Advanced().GetSystemFontPathForText(String.New(font_name), String.New(text), String.New(locale), String.New(script), int64(weight), int64(stretch), italic).Strings())
+	return []string(Advanced().GetSystemFontPathForText(String.From(font_name), String.From(text), String.From(locale), String.From(script), int64(weight), int64(stretch), italic).Strings())
 }
 
 /*
@@ -516,7 +516,7 @@ Note: On Android, system commands such as dumpsys can only be run on a rooted de
 */
 func Execute(path string, arguments []string, read_stderr bool, open_console bool) ([]string, int) { //gd:OS.execute
 	var returns_output = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(gd.NewArray()))
-	results := Advanced().Execute(String.New(path), Packed.MakeStrings(arguments...), returns_output, read_stderr, open_console)
+	results := Advanced().Execute(String.From(path), Packed.MakeStrings(arguments...), returns_output, read_stderr, open_console)
 	return gd.ArrayAs[[]string](gd.InternalArray(returns_output)), int(results)
 }
 
@@ -547,7 +547,7 @@ Note: On macOS, sandboxed applications are limited to run only embedded helper e
 [FileAccess.GetError]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.GetError
 */
 func ExecuteWithPipe(path string, arguments []string) Pipe { //gd:OS.execute_with_pipe
-	return Pipe(gd.DictionaryAs[Pipe](Advanced().ExecuteWithPipe(String.New(path), Packed.MakeStrings(arguments...), true)))
+	return Pipe(gd.DictionaryAs[Pipe](Advanced().ExecuteWithPipe(String.From(path), Packed.MakeStrings(arguments...), true)))
 }
 
 /*
@@ -577,7 +577,7 @@ Note: On macOS, sandboxed applications are limited to run only embedded helper e
 [FileAccess.GetError]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.GetError
 */
 func ExecuteWithPipeOptions(path string, arguments []string, blocking bool) Pipe { //gd:OS.execute_with_pipe
-	return Pipe(gd.DictionaryAs[Pipe](Advanced().ExecuteWithPipe(String.New(path), Packed.MakeStrings(arguments...), blocking)))
+	return Pipe(gd.DictionaryAs[Pipe](Advanced().ExecuteWithPipe(String.From(path), Packed.MakeStrings(arguments...), blocking)))
 }
 
 /*
@@ -598,7 +598,7 @@ Note: This method is implemented on Android, Linux, macOS, and Windows.
 Note: On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
 */
 func CreateProcess(path string, arguments []string, open_console bool) int { //gd:OS.create_process
-	return int(int(Advanced().CreateProcess(String.New(path), Packed.MakeStrings(arguments...), open_console)))
+	return int(int(Advanced().CreateProcess(String.From(path), Packed.MakeStrings(arguments...), open_console)))
 }
 
 /*
@@ -622,7 +622,7 @@ Note: This method is mostly only relevant for macOS, where opening files using [
 Note: On macOS, 'program_path' should ideally be the path to a .app bundle.
 */
 func OpenWithProgram(program_path string, paths []string) error { //gd:OS.open_with_program
-	return error(gd.ToError(Advanced().OpenWithProgram(String.New(program_path), Packed.MakeStrings(paths...))))
+	return error(gd.ToError(Advanced().OpenWithProgram(String.From(program_path), Packed.MakeStrings(paths...))))
 }
 
 /*
@@ -659,7 +659,7 @@ Note: This method is implemented on Android, iOS, Web, Linux, macOS and Windows.
 [RFC 2368 - The [code]mailto[/code] URL scheme]: https://datatracker.ietf.org/doc/html/rfc2368
 */
 func ShellOpen(uri string) error { //gd:OS.shell_open
-	return error(gd.ToError(Advanced().ShellOpen(String.New(uri))))
+	return error(gd.ToError(Advanced().ShellOpen(String.From(uri))))
 }
 
 /*
@@ -674,7 +674,7 @@ Note: This method is currently only implemented on Windows and macOS. On other p
 [ProjectSettings.GlobalizePath]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings#GlobalizePath
 */
 func ShellShowInFileManager(file_or_dir_path string) error { //gd:OS.shell_show_in_file_manager
-	return error(gd.ToError(Advanced().ShellShowInFileManager(String.New(file_or_dir_path), true)))
+	return error(gd.ToError(Advanced().ShellShowInFileManager(String.From(file_or_dir_path), true)))
 }
 
 /*
@@ -689,7 +689,7 @@ Note: This method is currently only implemented on Windows and macOS. On other p
 [ProjectSettings.GlobalizePath]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings#GlobalizePath
 */
 func ShellShowInFileManagerOptions(file_or_dir_path string, open_folder bool) error { //gd:OS.shell_show_in_file_manager
-	return error(gd.ToError(Advanced().ShellShowInFileManager(String.New(file_or_dir_path), open_folder)))
+	return error(gd.ToError(Advanced().ShellShowInFileManager(String.From(file_or_dir_path), open_folder)))
 }
 
 /*
@@ -729,7 +729,7 @@ Returns true if the environment variable with the name 'variable' exists.
 Note: Double-check the casing of 'variable'. Environment variable names are case-sensitive on all platforms except Windows.
 */
 func HasEnvironment(variable string) bool { //gd:OS.has_environment
-	return bool(Advanced().HasEnvironment(String.New(variable)))
+	return bool(Advanced().HasEnvironment(String.From(variable)))
 }
 
 /*
@@ -740,7 +740,7 @@ Note: Double-check the casing of 'variable'. Environment variable names are case
 Note: On macOS, applications do not have access to shell environment variables.
 */
 func GetEnvironment(variable string) string { //gd:OS.get_environment
-	return string(Advanced().GetEnvironment(String.New(variable)).String())
+	return string(Advanced().GetEnvironment(String.From(variable)).String())
 }
 
 /*
@@ -749,7 +749,7 @@ Sets the value of the environment variable 'variable' to 'value'. The environmen
 Note: Environment variable names are case-sensitive on all platforms except Windows. The 'variable' name cannot be empty or include the = character. On Windows, there is a 32767 characters limit for the combined length of 'variable', 'value', and the = and null terminator characters that will be registered in the environment block.
 */
 func SetEnvironment(variable string, value string) { //gd:OS.set_environment
-	Advanced().SetEnvironment(String.New(variable), String.New(value))
+	Advanced().SetEnvironment(String.From(variable), String.From(value))
 }
 
 /*
@@ -758,7 +758,7 @@ Removes the given environment variable from the current environment, if it exist
 Note: Environment variable names are case-sensitive on all platforms except Windows.
 */
 func UnsetEnvironment(variable string) { //gd:OS.unset_environment
-	Advanced().UnsetEnvironment(String.New(variable))
+	Advanced().UnsetEnvironment(String.From(variable))
 }
 
 /*
@@ -1089,7 +1089,7 @@ Note: If the user has disabled the recycle bin on their system, the file will be
 [ProjectSettings.GlobalizePath]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings#GlobalizePath
 */
 func MoveToTrash(path string) error { //gd:OS.move_to_trash
-	return error(gd.ToError(Advanced().MoveToTrash(String.New(path))))
+	return error(gd.ToError(Advanced().MoveToTrash(String.From(path))))
 }
 
 /*
@@ -1233,7 +1233,7 @@ Finds the keycode for the given string. The returned values are equivalent to th
 See also [GetKeycodeString].
 */
 func FindKeycodeFromString(s string) Input.Key { //gd:OS.find_keycode_from_string
-	return Input.Key(Advanced().FindKeycodeFromString(String.New(s)))
+	return Input.Key(Advanced().FindKeycodeFromString(String.From(s)))
 }
 
 /*
@@ -1249,7 +1249,7 @@ func SetUseFileAccessSaveAndSwap(enabled bool) { //gd:OS.set_use_file_access_sav
 Assigns the given name to the current thread. Returns [ErrUnavailable] if unavailable on the current platform.
 */
 func SetThreadName(name string) error { //gd:OS.set_thread_name
-	return error(gd.ToError(Advanced().SetThreadName(String.New(name))))
+	return error(gd.ToError(Advanced().SetThreadName(String.From(name))))
 }
 
 /*
@@ -1280,7 +1280,7 @@ Note: On the Web platform, one of the following additional tags is defined to in
 [Feature Tags]: https://docs.godotengine.org/tutorials/export/feature_tags.html
 */
 func HasFeature(tag_name string) bool { //gd:OS.has_feature
-	return bool(Advanced().HasFeature(String.New(tag_name)))
+	return bool(Advanced().HasFeature(String.From(tag_name)))
 }
 
 /*
@@ -1310,7 +1310,7 @@ Note: On Android, permission must be checked during export.
 Note: This method is implemented on Android, macOS, and visionOS platforms.
 */
 func RequestPermission(name string) bool { //gd:OS.request_permission
-	return bool(Advanced().RequestPermission(String.New(name)))
+	return bool(Advanced().RequestPermission(String.From(name)))
 }
 
 /*

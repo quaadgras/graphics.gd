@@ -480,7 +480,7 @@ func (Instance) _get_export_option_warning(impl func(ptr gdclass.Receiver, prese
 		defer pointers.End(gd.InternalStringName(option))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, option.String())
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -496,7 +496,7 @@ func (Instance) _get_os_name(impl func(ptr gdclass.Receiver) string) (cb gd.Exte
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -512,7 +512,7 @@ func (Instance) _get_name(impl func(ptr gdclass.Receiver) string) (cb gd.Extensi
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -568,7 +568,7 @@ func (Instance) _get_options_tooltip(impl func(ptr gdclass.Receiver) string) (cb
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -604,7 +604,7 @@ func (Instance) _get_option_label(impl func(ptr gdclass.Receiver, device int) st
 		var device = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(device))
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -621,7 +621,7 @@ func (Instance) _get_option_tooltip(impl func(ptr gdclass.Receiver, device int) 
 		var device = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(device))
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -638,7 +638,7 @@ func (Instance) _get_device_architecture(impl func(ptr gdclass.Receiver, device 
 		var device = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(device))
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -930,7 +930,7 @@ func (Instance) _get_debug_protocol(impl func(ptr gdclass.Receiver) string) (cb 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -959,7 +959,7 @@ Returns 'self' to enable method chaining.
 [HasValidProjectConfiguration]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatformExtension#Interface
 */
 func (self Instance) SetConfigError(error_text string) Instance { //gd:EditorExportPlatformExtension.set_config_error
-	Advanced(self).SetConfigError(String.New(error_text))
+	Advanced(self).SetConfigError(String.From(error_text))
 	return self
 }
 

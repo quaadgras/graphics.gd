@@ -214,7 +214,7 @@ func (self Instance) File() string { //gd:VideoStream.file
 
 // SetFile sets the property returned by [GetFile]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetFile(value string) Instance { //gd:VideoStream.file
-	class(self).SetFile(String.New(value))
+	class(self).SetFile(String.From(value))
 	return self
 }
 func (class) _instantiate_playback(impl func(ptr gdclass.Receiver) [1]gdclass.VideoStreamPlayback) (cb gd.ExtensionClassCallVirtualFunc) {

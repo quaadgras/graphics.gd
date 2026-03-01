@@ -41,12 +41,12 @@ func test_dictionary_string_fields() -> String:
 		script.SetSourceCode(source)
 		script.Reload()
 		Object.Instance(runner.AsObject()).SetScript(script)
-		engine := Object.Call(runner, "test_dictionary_string_fields").(String.Readable)
+		engine := Object.Call(runner, "test_dictionary_string_fields").(String.Unicode)
 		if engine.String() != "Hello world!" {
 			t.Fatalf("Expected 'Hello world!', got '%s'", engine)
 		}
 
-		engine = Object.Call(runner, "test_dictionary_string_fields").(String.Readable)
+		engine = Object.Call(runner, "test_dictionary_string_fields").(String.Unicode)
 		if engine.String() != "Hello world!" {
 			t.Fatalf("Expected 'Hello world!', got '%s'", engine)
 		}

@@ -148,7 +148,7 @@ Connects a 'packet_peer' beginning the DTLS handshake using the underlying [Pack
 [TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
 */
 func (self Instance) ConnectToPeer(packet_peer PacketPeerUDP.Instance, hostname string) error { //gd:PacketPeerDTLS.connect_to_peer
-	return error(gd.ToError(Advanced(self).ConnectToPeer(packet_peer, String.New(hostname), [1]TLSOptions.Instance{}[0])))
+	return error(gd.ToError(Advanced(self).ConnectToPeer(packet_peer, String.From(hostname), [1]TLSOptions.Instance{}[0])))
 }
 
 /*
@@ -160,7 +160,7 @@ Connects a 'packet_peer' beginning the DTLS handshake using the underlying [Pack
 [TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
 */
 func (self MoreArgs) ConnectToPeer(packet_peer PacketPeerUDP.Instance, hostname string, client_options TLSOptions.Instance) error { //gd:PacketPeerDTLS.connect_to_peer
-	return error(gd.ToError(Advanced(self).ConnectToPeer(packet_peer, String.New(hostname), client_options)))
+	return error(gd.ToError(Advanced(self).ConnectToPeer(packet_peer, String.From(hostname), client_options)))
 }
 
 /*

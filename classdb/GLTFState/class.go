@@ -219,7 +219,7 @@ Appends an extension to the list of extensions used by this glTF file during ser
 [GLTFDocumentExtension.ExportPost]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocumentExtension#Instance.ExportPost
 */
 func (self Instance) AddUsedExtension(extension_name string, required bool) { //gd:GLTFState.add_used_extension
-	Advanced(self).AddUsedExtension(String.New(extension_name), required)
+	Advanced(self).AddUsedExtension(String.From(extension_name), required)
 }
 
 /*
@@ -299,7 +299,7 @@ The argument should be the [GLTFDocumentExtension] name (does not have to match 
 [GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
 */
 func (self Instance) GetAdditionalData(extension_name string) any { //gd:GLTFState.get_additional_data
-	return any(Advanced(self).GetAdditionalData(String.Name(String.New(extension_name))).Interface())
+	return any(Advanced(self).GetAdditionalData(String.Name(String.From(extension_name))).Interface())
 }
 
 /*
@@ -313,7 +313,7 @@ Returns 'self' to enable method chaining.
 [GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
 */
 func (self Instance) SetAdditionalData(extension_name string, additional_data any) Instance { //gd:GLTFState.set_additional_data
-	Advanced(self).SetAdditionalData(String.Name(String.New(extension_name)), variant.New(additional_data))
+	Advanced(self).SetAdditionalData(String.Name(String.From(extension_name)), variant.New(additional_data))
 	return self
 }
 
@@ -425,7 +425,7 @@ func (self Instance) Copyright() string { //gd:GLTFState.copyright
 
 // SetCopyright sets the property returned by [GetCopyright]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetCopyright(value string) Instance { //gd:GLTFState.copyright
-	class(self).SetCopyright(String.New(value))
+	class(self).SetCopyright(String.From(value))
 	return self
 }
 
@@ -521,7 +521,7 @@ func (self Instance) SceneName() string { //gd:GLTFState.scene_name
 
 // SetSceneName sets the property returned by [GetSceneName]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetSceneName(value string) Instance { //gd:GLTFState.scene_name
-	class(self).SetSceneName(String.New(value))
+	class(self).SetSceneName(String.From(value))
 	return self
 }
 
@@ -534,7 +534,7 @@ func (self Instance) BasePath() string { //gd:GLTFState.base_path
 
 // SetBasePath sets the property returned by [GetBasePath]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetBasePath(value string) Instance { //gd:GLTFState.base_path
-	class(self).SetBasePath(String.New(value))
+	class(self).SetBasePath(String.From(value))
 	return self
 }
 
@@ -547,7 +547,7 @@ func (self Instance) Filename() string { //gd:GLTFState.filename
 
 // SetFilename sets the property returned by [GetFilename]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetFilename(value string) Instance { //gd:GLTFState.filename
-	class(self).SetFilename(String.New(value))
+	class(self).SetFilename(String.From(value))
 	return self
 }
 

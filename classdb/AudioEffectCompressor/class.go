@@ -272,7 +272,7 @@ func (self Instance) Sidechain() string { //gd:AudioEffectCompressor.sidechain
 
 // SetSidechain sets the property returned by [GetSidechain]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetSidechain(value string) Instance { //gd:AudioEffectCompressor.sidechain
-	class(self).SetSidechain(String.Name(String.New(value)))
+	class(self).SetSidechain(String.Name(String.From(value)))
 	return self
 }
 

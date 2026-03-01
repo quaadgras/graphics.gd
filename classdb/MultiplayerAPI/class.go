@@ -208,7 +208,7 @@ Note: Prefer using [Node.Rpc], [Node.RpcId], or my_method.rpc(peer, arg1, arg2, 
 [Node.RpcId]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RpcId
 */
 func (self Instance) Rpc(peer int, obj Object.Instance, method string) error { //gd:MultiplayerAPI.rpc
-	return error(gd.ToError(Advanced(self).Rpc(int64(peer), obj, String.Name(String.New(method)), Array.Nil)))
+	return error(gd.ToError(Advanced(self).Rpc(int64(peer), obj, String.Name(String.From(method)), Array.Nil)))
 }
 
 /*
@@ -222,7 +222,7 @@ Note: Prefer using [Node.Rpc], [Node.RpcId], or my_method.rpc(peer, arg1, arg2, 
 [Node.RpcId]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RpcId
 */
 func (self MoreArgs) Rpc(peer int, obj Object.Instance, method string, arguments []any) error { //gd:MultiplayerAPI.rpc
-	return error(gd.ToError(Advanced(self).Rpc(int64(peer), obj, String.Name(String.New(method)), gd.EngineArrayFromSlice(arguments))))
+	return error(gd.ToError(Advanced(self).Rpc(int64(peer), obj, String.Name(String.From(method)), gd.EngineArrayFromSlice(arguments))))
 }
 
 /*
@@ -267,7 +267,7 @@ Sets the default MultiplayerAPI implementation class. This method can be used by
 */
 func SetDefaultInterface(interface_name string) { //gd:MultiplayerAPI.set_default_interface
 	self := Instance{}
-	Advanced(self).SetDefaultInterface(String.Name(String.New(interface_name)))
+	Advanced(self).SetDefaultInterface(String.Name(String.From(interface_name)))
 }
 
 /*

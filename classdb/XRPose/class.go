@@ -216,7 +216,7 @@ func (self Instance) Name() string { //gd:XRPose.name
 
 // SetName sets the property returned by [GetName]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetName(value string) Instance { //gd:XRPose.name
-	class(self).SetName(String.Name(String.New(value)))
+	class(self).SetName(String.Name(String.From(value)))
 	return self
 }
 

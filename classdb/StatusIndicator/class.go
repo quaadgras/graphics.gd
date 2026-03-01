@@ -184,7 +184,7 @@ func (self Instance) Tooltip() string { //gd:StatusIndicator.tooltip
 
 // SetTooltip sets the property returned by [GetTooltip]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetTooltip(value string) Instance { //gd:StatusIndicator.tooltip
-	class(self).SetTooltip(String.New(value))
+	class(self).SetTooltip(String.From(value))
 	return self
 }
 
@@ -215,7 +215,7 @@ func (self Instance) Menu() string { //gd:StatusIndicator.menu
 
 // SetMenu sets the property returned by [GetMenu]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetMenu(value string) Instance { //gd:StatusIndicator.menu
-	class(self).SetMenu(Path.ToNode(String.New(value)))
+	class(self).SetMenu(Path.ToNode(String.From(value)))
 	return self
 }
 

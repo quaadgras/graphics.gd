@@ -281,7 +281,7 @@ Sets the text of the system menu item.
 Note: This method is implemented on macOS.
 */
 func SetSystemMenuText(menu_id SystemMenus, name string) { //gd:NativeMenu.set_system_menu_text
-	Advanced().SetSystemMenuText(menu_id, String.New(name))
+	Advanced().SetSystemMenuText(menu_id, String.From(name))
 }
 
 /*
@@ -413,7 +413,7 @@ Returns index of the inserted item, it's not guaranteed to be the same as 'index
 Note: This method is implemented on macOS and Windows.
 */
 func AddSubmenuItem(rid RID.NativeMenu, label string, submenu_rid RID.NativeMenu, tag any) int { //gd:NativeMenu.add_submenu_item
-	return int(int(Advanced().AddSubmenuItem(RID.Any(rid), String.New(label), RID.Any(submenu_rid), variant.New(tag), int64(-1))))
+	return int(int(Advanced().AddSubmenuItem(RID.Any(rid), String.From(label), RID.Any(submenu_rid), variant.New(tag), int64(-1))))
 }
 
 /*
@@ -424,7 +424,7 @@ Returns index of the inserted item, it's not guaranteed to be the same as 'index
 Note: This method is implemented on macOS and Windows.
 */
 func AddSubmenuItemOptions(rid RID.NativeMenu, label string, submenu_rid RID.NativeMenu, tag any, index int) int { //gd:NativeMenu.add_submenu_item
-	return int(int(Advanced().AddSubmenuItem(RID.Any(rid), String.New(label), RID.Any(submenu_rid), variant.New(tag), int64(index))))
+	return int(int(Advanced().AddSubmenuItem(RID.Any(rid), String.From(label), RID.Any(submenu_rid), variant.New(tag), int64(index))))
 }
 
 /*
@@ -441,7 +441,7 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddItem(rid RID.NativeMenu, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:NativeMenu.add_item
-	return int(int(Advanced().AddItem(RID.Any(rid), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
+	return int(int(Advanced().AddItem(RID.Any(rid), String.From(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
 
 /*
@@ -458,7 +458,7 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddItemOptions(rid RID.NativeMenu, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:NativeMenu.add_item
-	return int(int(Advanced().AddItem(RID.Any(rid), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
+	return int(int(Advanced().AddItem(RID.Any(rid), String.From(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
 /*
@@ -475,7 +475,7 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddCheckItem(rid RID.NativeMenu, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:NativeMenu.add_check_item
-	return int(int(Advanced().AddCheckItem(RID.Any(rid), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
+	return int(int(Advanced().AddCheckItem(RID.Any(rid), String.From(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
 
 /*
@@ -492,7 +492,7 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddCheckItemOptions(rid RID.NativeMenu, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:NativeMenu.add_check_item
-	return int(int(Advanced().AddCheckItem(RID.Any(rid), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
+	return int(int(Advanced().AddCheckItem(RID.Any(rid), String.From(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
 /*
@@ -509,7 +509,7 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddIconItem(rid RID.NativeMenu, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:NativeMenu.add_icon_item
-	return int(int(Advanced().AddIconItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
+	return int(int(Advanced().AddIconItem(RID.Any(rid), icon, String.From(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
 
 /*
@@ -526,7 +526,7 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddIconItemOptions(rid RID.NativeMenu, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:NativeMenu.add_icon_item
-	return int(int(Advanced().AddIconItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
+	return int(int(Advanced().AddIconItem(RID.Any(rid), icon, String.From(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
 /*
@@ -543,7 +543,7 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddIconCheckItem(rid RID.NativeMenu, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:NativeMenu.add_icon_check_item
-	return int(int(Advanced().AddIconCheckItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
+	return int(int(Advanced().AddIconCheckItem(RID.Any(rid), icon, String.From(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
 
 /*
@@ -560,7 +560,7 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddIconCheckItemOptions(rid RID.NativeMenu, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:NativeMenu.add_icon_check_item
-	return int(int(Advanced().AddIconCheckItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
+	return int(int(Advanced().AddIconCheckItem(RID.Any(rid), icon, String.From(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
 /*
@@ -579,7 +579,7 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddRadioCheckItem(rid RID.NativeMenu, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:NativeMenu.add_radio_check_item
-	return int(int(Advanced().AddRadioCheckItem(RID.Any(rid), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
+	return int(int(Advanced().AddRadioCheckItem(RID.Any(rid), String.From(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
 
 /*
@@ -598,7 +598,7 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddRadioCheckItemOptions(rid RID.NativeMenu, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:NativeMenu.add_radio_check_item
-	return int(int(Advanced().AddRadioCheckItem(RID.Any(rid), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
+	return int(int(Advanced().AddRadioCheckItem(RID.Any(rid), String.From(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
 /*
@@ -617,7 +617,7 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddIconRadioCheckItem(rid RID.NativeMenu, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:NativeMenu.add_icon_radio_check_item
-	return int(int(Advanced().AddIconRadioCheckItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
+	return int(int(Advanced().AddIconRadioCheckItem(RID.Any(rid), icon, String.From(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
 
 /*
@@ -636,7 +636,7 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddIconRadioCheckItemOptions(rid RID.NativeMenu, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:NativeMenu.add_icon_radio_check_item
-	return int(int(Advanced().AddIconRadioCheckItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
+	return int(int(Advanced().AddIconRadioCheckItem(RID.Any(rid), icon, String.From(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
 /*
@@ -657,7 +657,7 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddMultistateItem(rid RID.NativeMenu, label string, max_states int, default_state int, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:NativeMenu.add_multistate_item
-	return int(int(Advanced().AddMultistateItem(RID.Any(rid), String.New(label), int64(max_states), int64(default_state), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
+	return int(int(Advanced().AddMultistateItem(RID.Any(rid), String.From(label), int64(max_states), int64(default_state), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
 
 /*
@@ -678,7 +678,7 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddMultistateItemOptions(rid RID.NativeMenu, label string, max_states int, default_state int, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:NativeMenu.add_multistate_item
-	return int(int(Advanced().AddMultistateItem(RID.Any(rid), String.New(label), int64(max_states), int64(default_state), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
+	return int(int(Advanced().AddMultistateItem(RID.Any(rid), String.From(label), int64(max_states), int64(default_state), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
 /*
@@ -709,7 +709,7 @@ Returns the index of the item with the specified 'text'. Indices are automatical
 Note: This method is implemented on macOS and Windows.
 */
 func FindItemIndexWithText(rid RID.NativeMenu, text string) int { //gd:NativeMenu.find_item_index_with_text
-	return int(int(Advanced().FindItemIndexWithText(RID.Any(rid), String.New(text))))
+	return int(int(Advanced().FindItemIndexWithText(RID.Any(rid), String.From(text))))
 }
 
 /*
@@ -957,7 +957,7 @@ Sets the text of the item at index 'idx'.
 Note: This method is implemented on macOS and Windows.
 */
 func SetItemText(rid RID.NativeMenu, idx int, text string) { //gd:NativeMenu.set_item_text
-	Advanced().SetItemText(RID.Any(rid), int64(idx), String.New(text))
+	Advanced().SetItemText(RID.Any(rid), int64(idx), String.From(text))
 }
 
 /*
@@ -1002,7 +1002,7 @@ Sets the string tooltip of the item at the specified index 'idx'.
 Note: This method is implemented only on macOS.
 */
 func SetItemTooltip(rid RID.NativeMenu, idx int, tooltip string) { //gd:NativeMenu.set_item_tooltip
-	Advanced().SetItemTooltip(RID.Any(rid), int64(idx), String.New(tooltip))
+	Advanced().SetItemTooltip(RID.Any(rid), int64(idx), String.From(tooltip))
 }
 
 /*

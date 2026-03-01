@@ -367,7 +367,7 @@ func (self Instance) GeometrySourceGroupName() string { //gd:NavigationMesh.geom
 
 // SetGeometrySourceGroupName sets the property returned by [GetSourceGroupName]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetGeometrySourceGroupName(value string) Instance { //gd:NavigationMesh.geometry_source_group_name
-	class(self).SetSourceGroupName(String.Name(String.New(value)))
+	class(self).SetSourceGroupName(String.Name(String.From(value)))
 	return self
 }
 

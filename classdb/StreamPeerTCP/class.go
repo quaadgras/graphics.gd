@@ -137,7 +137,7 @@ This method is generally not needed, and only used to force the subsequent call 
 [ConnectToHost]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTCP#Instance.ConnectToHost
 */
 func (self Instance) Bind(port int) error { //gd:StreamPeerTCP.bind
-	return error(gd.ToError(Advanced(self).Bind(int64(port), String.New("*"))))
+	return error(gd.ToError(Advanced(self).Bind(int64(port), String.From("*"))))
 }
 
 /*
@@ -148,14 +148,14 @@ This method is generally not needed, and only used to force the subsequent call 
 [ConnectToHost]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTCP#Instance.ConnectToHost
 */
 func (self MoreArgs) Bind(port int, host string) error { //gd:StreamPeerTCP.bind
-	return error(gd.ToError(Advanced(self).Bind(int64(port), String.New(host))))
+	return error(gd.ToError(Advanced(self).Bind(int64(port), String.From(host))))
 }
 
 /*
 Connects to the specified host:port pair. A hostname will be resolved if valid. Returns [Ok] on success.
 */
 func (self Instance) ConnectToHost(host string, port int) error { //gd:StreamPeerTCP.connect_to_host
-	return error(gd.ToError(Advanced(self).ConnectToHost(String.New(host), int64(port))))
+	return error(gd.ToError(Advanced(self).ConnectToHost(String.From(host), int64(port))))
 }
 
 /*

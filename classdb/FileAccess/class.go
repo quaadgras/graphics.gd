@@ -237,7 +237,7 @@ Returns null if opening the file failed. You can use [GetOpenError] to check the
 */
 func Open(path string, flags ModeFlags) Instance { //gd:FileAccess.open
 	self := Instance{}
-	return Instance(Advanced(self).Open(String.New(path), flags))
+	return Instance(Advanced(self).Open(String.From(path), flags))
 }
 
 /*
@@ -251,7 +251,7 @@ Returns null if opening the file failed. You can use [GetOpenError] to check the
 */
 func OpenEncrypted(path string, mode_flags ModeFlags, key []byte, iv []byte) Instance { //gd:FileAccess.open_encrypted
 	self := Instance{}
-	return Instance(Advanced(self).OpenEncrypted(String.New(path), mode_flags, Packed.BytesFrom(key...), Packed.BytesFrom(iv...)))
+	return Instance(Advanced(self).OpenEncrypted(String.From(path), mode_flags, Packed.BytesFrom(key...), Packed.BytesFrom(iv...)))
 }
 
 /*
@@ -263,7 +263,7 @@ Returns null if opening the file failed. You can use [GetOpenError] to check the
 */
 func OpenEncryptedWithPass(path string, mode_flags ModeFlags, pass string) Instance { //gd:FileAccess.open_encrypted_with_pass
 	self := Instance{}
-	return Instance(Advanced(self).OpenEncryptedWithPass(String.New(path), mode_flags, String.New(pass)))
+	return Instance(Advanced(self).OpenEncryptedWithPass(String.From(path), mode_flags, String.From(pass)))
 }
 
 /*
@@ -278,7 +278,7 @@ Returns null if opening the file failed. You can use [GetOpenError] to check the
 */
 func OpenCompressed(path string, mode_flags ModeFlags, compression_mode CompressionMode) Instance { //gd:FileAccess.open_compressed
 	self := Instance{}
-	return Instance(Advanced(self).OpenCompressed(String.New(path), mode_flags, compression_mode))
+	return Instance(Advanced(self).OpenCompressed(String.From(path), mode_flags, compression_mode))
 }
 
 /*
@@ -304,7 +304,7 @@ Returns null if opening the file failed. You can use [GetOpenError] to check the
 */
 func CreateTemp(mode_flags ModeFlags, prefix string, extension string, keep bool) Instance { //gd:FileAccess.create_temp
 	self := Instance{}
-	return Instance(Advanced(self).CreateTemp(mode_flags, String.New(prefix), String.New(extension), keep))
+	return Instance(Advanced(self).CreateTemp(mode_flags, String.From(prefix), String.From(extension), keep))
 }
 
 /*
@@ -314,7 +314,7 @@ Returns an empty []byte if an error occurred while opening the file. You can use
 */
 func GetFileAsBytes(path string) []byte { //gd:FileAccess.get_file_as_bytes
 	self := Instance{}
-	return []byte(Advanced(self).GetFileAsBytes(String.New(path)).Bytes())
+	return []byte(Advanced(self).GetFileAsBytes(String.From(path)).Bytes())
 }
 
 /*
@@ -324,7 +324,7 @@ Returns an empty string if an error occurred while opening the file. You can use
 */
 func GetFileAsString(path string) string { //gd:FileAccess.get_file_as_string
 	self := Instance{}
-	return string(Advanced(self).GetFileAsString(String.New(path)).String())
+	return string(Advanced(self).GetFileAsString(String.From(path)).String())
 }
 
 /*
@@ -515,7 +515,7 @@ For example, the following CSV lines are valid and will be properly parsed as tw
 Note how the second line can omit the enclosing quotes as it does not include the delimiter. However it could very well use quotes, it was only written without for demonstration purposes. The third line must use "" for each quotation mark that needs to be interpreted as such instead of the end of a text value.
 */
 func (self Instance) GetCsvLine() []string { //gd:FileAccess.get_csv_line
-	return []string(Advanced(self).GetCsvLine(String.New(",")).Strings())
+	return []string(Advanced(self).GetCsvLine(String.From(",")).Strings())
 }
 
 /*
@@ -528,7 +528,7 @@ For example, the following CSV lines are valid and will be properly parsed as tw
 Note how the second line can omit the enclosing quotes as it does not include the delimiter. However it could very well use quotes, it was only written without for demonstration purposes. The third line must use "" for each quotation mark that needs to be interpreted as such instead of the end of a text value.
 */
 func (self MoreArgs) GetCsvLine(delim string) []string { //gd:FileAccess.get_csv_line
-	return []string(Advanced(self).GetCsvLine(String.New(delim)).Strings())
+	return []string(Advanced(self).GetCsvLine(String.From(delim)).Strings())
 }
 
 /*
@@ -543,7 +543,7 @@ Returns an MD5 String representing the file at the given path or an empty string
 */
 func GetMd5(path string) string { //gd:FileAccess.get_md5
 	self := Instance{}
-	return string(Advanced(self).GetMd5(String.New(path)).String())
+	return string(Advanced(self).GetMd5(String.From(path)).String())
 }
 
 /*
@@ -551,7 +551,7 @@ Returns an SHA-256 string representing the file at the given path or an empty st
 */
 func GetSha256(path string) string { //gd:FileAccess.get_sha256
 	self := Instance{}
-	return string(Advanced(self).GetSha256(String.New(path)).String())
+	return string(Advanced(self).GetSha256(String.From(path)).String())
 }
 
 /*
@@ -702,7 +702,7 @@ Note: If an error occurs, the resulting value of the file position indicator is 
 [String.Length]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.Length
 */
 func (self Instance) StoreLine(line string) bool { //gd:FileAccess.store_line
-	return bool(Advanced(self).StoreLine(String.New(line)))
+	return bool(Advanced(self).StoreLine(String.From(line)))
 }
 
 /*
@@ -713,7 +713,7 @@ Text will be encoded as UTF-8. Returns true if the operation is successful.
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Instance) StoreCsvLine(values []string) bool { //gd:FileAccess.store_csv_line
-	return bool(Advanced(self).StoreCsvLine(Packed.MakeStrings(values...), String.New(",")))
+	return bool(Advanced(self).StoreCsvLine(Packed.MakeStrings(values...), String.From(",")))
 }
 
 /*
@@ -724,7 +724,7 @@ Text will be encoded as UTF-8. Returns true if the operation is successful.
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self MoreArgs) StoreCsvLine(values []string, delim string) bool { //gd:FileAccess.store_csv_line
-	return bool(Advanced(self).StoreCsvLine(Packed.MakeStrings(values...), String.New(delim)))
+	return bool(Advanced(self).StoreCsvLine(Packed.MakeStrings(values...), String.From(delim)))
 }
 
 /*
@@ -739,7 +739,7 @@ Note: If an error occurs, the resulting value of the file position indicator is 
 [String.Length]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.Length
 */
 func (self Instance) StoreString(s string) bool { //gd:FileAccess.store_string
-	return bool(Advanced(self).StoreString(String.New(s)))
+	return bool(Advanced(self).StoreString(String.From(s)))
 }
 
 /*
@@ -784,7 +784,7 @@ Note: If an error occurs, the resulting value of the file position indicator is 
 [String.Length]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.Length
 */
 func (self Instance) StorePascalString(s string) bool { //gd:FileAccess.store_pascal_string
-	return bool(Advanced(self).StorePascalString(String.New(s)))
+	return bool(Advanced(self).StorePascalString(String.From(s)))
 }
 
 /*
@@ -810,7 +810,7 @@ For a non-static, relative equivalent, use [DirAccess.FileExists].
 */
 func FileExists(path string) bool { //gd:FileAccess.file_exists
 	self := Instance{}
-	return bool(Advanced(self).FileExists(String.New(path)))
+	return bool(Advanced(self).FileExists(String.From(path)))
 }
 
 /*
@@ -820,7 +820,7 @@ Returns the last time the 'file' was modified in Unix timestamp format, or 0 on 
 */
 func GetModifiedTime(file string) int { //gd:FileAccess.get_modified_time
 	self := Instance{}
-	return int(int(Advanced(self).GetModifiedTime(String.New(file))))
+	return int(int(Advanced(self).GetModifiedTime(String.From(file))))
 }
 
 /*
@@ -830,7 +830,7 @@ Returns the last time the 'file' was accessed in Unix timestamp format, or 0 on 
 */
 func GetAccessTime(file string) int { //gd:FileAccess.get_access_time
 	self := Instance{}
-	return int(int(Advanced(self).GetAccessTime(String.New(file))))
+	return int(int(Advanced(self).GetAccessTime(String.From(file))))
 }
 
 /*
@@ -838,7 +838,7 @@ Returns the size of the file at the given path, in bytes, or -1 on error.
 */
 func GetSize(file string) int { //gd:FileAccess.get_size
 	self := Instance{}
-	return int(int(Advanced(self).GetSize(String.New(file))))
+	return int(int(Advanced(self).GetSize(String.From(file))))
 }
 
 /*
@@ -848,7 +848,7 @@ Note: This method is implemented on iOS, Linux/BSD, and macOS.
 */
 func GetUnixPermissions(file string) UnixPermissionFlags { //gd:FileAccess.get_unix_permissions
 	self := Instance{}
-	return UnixPermissionFlags(Advanced(self).GetUnixPermissions(String.New(file)))
+	return UnixPermissionFlags(Advanced(self).GetUnixPermissions(String.From(file)))
 }
 
 /*
@@ -858,7 +858,7 @@ Note: This method is implemented on iOS, Linux/BSD, and macOS.
 */
 func SetUnixPermissions(file string, permissions UnixPermissionFlags) error { //gd:FileAccess.set_unix_permissions
 	self := Instance{}
-	return error(gd.ToError(Advanced(self).SetUnixPermissions(String.New(file), permissions)))
+	return error(gd.ToError(Advanced(self).SetUnixPermissions(String.From(file), permissions)))
 }
 
 /*
@@ -868,7 +868,7 @@ Note: This method is implemented on iOS, BSD, macOS, and Windows.
 */
 func GetHiddenAttribute(file string) bool { //gd:FileAccess.get_hidden_attribute
 	self := Instance{}
-	return bool(Advanced(self).GetHiddenAttribute(String.New(file)))
+	return bool(Advanced(self).GetHiddenAttribute(String.From(file)))
 }
 
 /*
@@ -878,7 +878,7 @@ Note: This method is implemented on iOS, BSD, macOS, and Windows.
 */
 func SetHiddenAttribute(file string, hidden bool) error { //gd:FileAccess.set_hidden_attribute
 	self := Instance{}
-	return error(gd.ToError(Advanced(self).SetHiddenAttribute(String.New(file), hidden)))
+	return error(gd.ToError(Advanced(self).SetHiddenAttribute(String.From(file), hidden)))
 }
 
 /*
@@ -888,7 +888,7 @@ Note: This method is implemented on iOS, BSD, macOS, and Windows.
 */
 func SetReadOnlyAttribute(file string, ro bool) error { //gd:FileAccess.set_read_only_attribute
 	self := Instance{}
-	return error(gd.ToError(Advanced(self).SetReadOnlyAttribute(String.New(file), ro)))
+	return error(gd.ToError(Advanced(self).SetReadOnlyAttribute(String.From(file), ro)))
 }
 
 /*
@@ -898,7 +898,7 @@ Note: This method is implemented on iOS, BSD, macOS, and Windows.
 */
 func GetReadOnlyAttribute(file string) bool { //gd:FileAccess.get_read_only_attribute
 	self := Instance{}
-	return bool(Advanced(self).GetReadOnlyAttribute(String.New(file)))
+	return bool(Advanced(self).GetReadOnlyAttribute(String.From(file)))
 }
 
 /*
@@ -914,7 +914,7 @@ Note: On Windows, alternate data streams are used to store extended attributes.
 */
 func GetExtendedAttribute(file string, attribute_name string) []byte { //gd:FileAccess.get_extended_attribute
 	self := Instance{}
-	return []byte(Advanced(self).GetExtendedAttribute(String.New(file), String.New(attribute_name)).Bytes())
+	return []byte(Advanced(self).GetExtendedAttribute(String.From(file), String.From(attribute_name)).Bytes())
 }
 
 /*
@@ -930,7 +930,7 @@ Note: On Windows, alternate data streams are used to store extended attributes.
 */
 func GetExtendedAttributeString(file string, attribute_name string) string { //gd:FileAccess.get_extended_attribute_string
 	self := Instance{}
-	return string(Advanced(self).GetExtendedAttributeString(String.New(file), String.New(attribute_name)).String())
+	return string(Advanced(self).GetExtendedAttributeString(String.From(file), String.From(attribute_name)).String())
 }
 
 /*
@@ -946,7 +946,7 @@ Note: On Windows, alternate data streams are used to store extended attributes.
 */
 func SetExtendedAttribute(file string, attribute_name string, data []byte) error { //gd:FileAccess.set_extended_attribute
 	self := Instance{}
-	return error(gd.ToError(Advanced(self).SetExtendedAttribute(String.New(file), String.New(attribute_name), Packed.BytesFrom(data...))))
+	return error(gd.ToError(Advanced(self).SetExtendedAttribute(String.From(file), String.From(attribute_name), Packed.BytesFrom(data...))))
 }
 
 /*
@@ -962,7 +962,7 @@ Note: On Windows, alternate data streams are used to store extended attributes.
 */
 func SetExtendedAttributeString(file string, attribute_name string, data string) error { //gd:FileAccess.set_extended_attribute_string
 	self := Instance{}
-	return error(gd.ToError(Advanced(self).SetExtendedAttributeString(String.New(file), String.New(attribute_name), String.New(data))))
+	return error(gd.ToError(Advanced(self).SetExtendedAttributeString(String.From(file), String.From(attribute_name), String.From(data))))
 }
 
 /*
@@ -978,7 +978,7 @@ Note: On Windows, alternate data streams are used to store extended attributes.
 */
 func RemoveExtendedAttribute(file string, attribute_name string) error { //gd:FileAccess.remove_extended_attribute
 	self := Instance{}
-	return error(gd.ToError(Advanced(self).RemoveExtendedAttribute(String.New(file), String.New(attribute_name))))
+	return error(gd.ToError(Advanced(self).RemoveExtendedAttribute(String.From(file), String.From(attribute_name))))
 }
 
 /*
@@ -994,7 +994,7 @@ Note: On Windows, alternate data streams are used to store extended attributes.
 */
 func GetExtendedAttributesList(file string) []string { //gd:FileAccess.get_extended_attributes_list
 	self := Instance{}
-	return []string(Advanced(self).GetExtendedAttributesList(String.New(file)).Strings())
+	return []string(Advanced(self).GetExtendedAttributesList(String.From(file)).Strings())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

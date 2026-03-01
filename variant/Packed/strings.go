@@ -9,7 +9,7 @@ import (
 )
 
 // Strings is a packed array of readable strings.
-type Strings GenericArray.Contains[String.Readable]
+type Strings GenericArray.Contains[String.Unicode]
 
 // MakeStrings creates a new array of strings with the given values.
 func MakeStrings(values ...string) Strings {
@@ -21,30 +21,30 @@ func MakeStrings(values ...string) Strings {
 }
 
 // Iter returns an iterator for the array.
-func (array Strings) Iter() iter.Seq2[int, String.Readable] {
-	return (GenericArray.Contains[String.Readable])(array).Iter()
+func (array Strings) Iter() iter.Seq2[int, String.Unicode] {
+	return (GenericArray.Contains[String.Unicode])(array).Iter()
 }
 
 // Index returns the element at the given index.
-func (array Strings) Index(idx int) String.Readable { //gd:PackedStringArray.get
-	return (GenericArray.Contains[String.Readable])(array).Index(idx)
+func (array Strings) Index(idx int) String.Unicode { //gd:PackedStringArray.get
+	return (GenericArray.Contains[String.Unicode])(array).Index(idx)
 }
 
 // Append an element to the end of the array.
-func (array *Strings) Append(value String.Readable) { //gd:PackedStringArray.push_back PackedStringArray.append
-	(*GenericArray.Contains[String.Readable])(array).Append(value)
+func (array *Strings) Append(value String.Unicode) { //gd:PackedStringArray.push_back PackedStringArray.append
+	(*GenericArray.Contains[String.Unicode])(array).Append(value)
 }
 
 // AppendArray appends all elements of another array to the end of this array.
 func (array *Strings) AppendArray(other Strings) { //gd:PackedStringArray.append_array
-	(*GenericArray.Contains[String.Readable])(array).AppendArray((GenericArray.Contains[String.Readable])(other))
+	(*GenericArray.Contains[String.Unicode])(array).AppendArray((GenericArray.Contains[String.Unicode])(other))
 }
 
 // Clear clears the array. String.Readablehis is equivalent to using resize with a size of 0.
-func (array Strings) Clear() { GenericArray.Clear((GenericArray.Contains[String.Readable])(array)) } //gd:PackedStringArray.clear
+func (array Strings) Clear() { GenericArray.Clear((GenericArray.Contains[String.Unicode])(array)) } //gd:PackedStringArray.clear
 
 // Count returns the number of times an element is in the array.
-func (array Strings) Count(value String.Readable) int { //gd:PackedStringArray.count
+func (array Strings) Count(value String.Unicode) int { //gd:PackedStringArray.count
 	var count int
 	for i := range array.Len() {
 		if String.Comparison(array.Index(i), value) == 0 {
@@ -56,17 +56,17 @@ func (array Strings) Count(value String.Readable) int { //gd:PackedStringArray.c
 
 // Duplicate creates a copy of the array, and returns it.
 func (array Strings) Duplicate() Strings { //gd:PackedStringArray.duplicate
-	return (Strings)(GenericArray.Duplicate((GenericArray.Contains[String.Readable])(array)))
+	return (Strings)(GenericArray.Duplicate((GenericArray.Contains[String.Unicode])(array)))
 }
 
 // Fill assigns the given value to all elements in the array. String.Readablehis can typically be used
 // together with resize to create an array with a given size and initialized elements.
-func (array Strings) Fill(value String.Readable) { //gd:PackedStringArray.fill
-	GenericArray.Fill((GenericArray.Contains[String.Readable])(array), value)
+func (array Strings) Fill(value String.Unicode) { //gd:PackedStringArray.fill
+	GenericArray.Fill((GenericArray.Contains[String.Unicode])(array), value)
 }
 
 // Find searches the array for a value and returns its index or -1 if not found.
-func (array Strings) Find(value String.Readable) int { //gd:PackedStringArray.find
+func (array Strings) Find(value String.Unicode) int { //gd:PackedStringArray.find
 	for i := range array.Len() {
 		if String.Comparison(array.Index(i), value) == 0 {
 			return i
@@ -76,13 +76,13 @@ func (array Strings) Find(value String.Readable) int { //gd:PackedStringArray.fi
 }
 
 // Has returns true if the array contains the given value.
-func (array Strings) Has(value String.Readable) bool { //gd:PackedStringArray.has
+func (array Strings) Has(value String.Unicode) bool { //gd:PackedStringArray.has
 	return array.Find(value) != -1
 }
 
 // Erase Removes the first occurrence of a value from the array and returns true. If the value does not exist in the array, nothing
 // happens and false is returned. To remove an element by index, use [Array.RemoveAt] instead.
-func (array Strings) Erase(value String.Readable) bool { //gd:PackedStringArray.erase
+func (array Strings) Erase(value String.Unicode) bool { //gd:PackedStringArray.erase
 	for i := 0; i < array.Len(); i++ {
 		if String.Comparison(array.Index(i), value) == 0 {
 			array.RemoveAt(i)
@@ -94,30 +94,30 @@ func (array Strings) Erase(value String.Readable) bool { //gd:PackedStringArray.
 
 // Insert inserts a new element at a given position in the array. String.Readablehe position must be
 // valid, or at the end of the array (idx == size()).
-func (array *Strings) Insert(idx int, value String.Readable) { //gd:PackedStringArray.insert
-	(*GenericArray.Contains[String.Readable])(array).Insert(idx, value)
+func (array *Strings) Insert(idx int, value String.Unicode) { //gd:PackedStringArray.insert
+	(*GenericArray.Contains[String.Unicode])(array).Insert(idx, value)
 }
 
 // IsEmpty Returns true if the array is empty.
 func (array Strings) IsEmpty() bool { //gd:PackedStringArray.is_empty
-	return GenericArray.IsEmpty((GenericArray.Contains[String.Readable])(array))
+	return GenericArray.IsEmpty((GenericArray.Contains[String.Unicode])(array))
 }
 
 // RemoveAt removes an element from the array by index.
 func (array Strings) RemoveAt(idx int) { //gd:PackedStringArray.remove_at
-	GenericArray.Remove((GenericArray.Contains[String.Readable])(array), idx)
+	GenericArray.Remove((GenericArray.Contains[String.Unicode])(array), idx)
 }
 
 // Resize sets the size of the array. If the array is grown, reserves elements at the end of the array.
 // If the array is shrunk, truncates the array to the new size. Calling resize once and assigning the
 // new values is faster than adding new elements one by one.
-func (array *Strings) Resize(size int) { (*GenericArray.Contains[String.Readable])(array).Resize(size) } //gd:PackedStringArray.resize
+func (array *Strings) Resize(size int) { (*GenericArray.Contains[String.Unicode])(array).Resize(size) } //gd:PackedStringArray.resize
 
 // Reverse reverses the order of the elements in the array.
-func (array Strings) Reverse() { GenericArray.Reverse((GenericArray.Contains[String.Readable])(array)) } //gd:PackedStringArray.reverse
+func (array Strings) Reverse() { GenericArray.Reverse((GenericArray.Contains[String.Unicode])(array)) } //gd:PackedStringArray.reverse
 
 // FindLast searches the array in reverse order for a value and returns its index or -1 if not found.
-func (array Strings) FindLast(value String.Readable) int { //gd:PackedStringArray.rfind
+func (array Strings) FindLast(value String.Unicode) int { //gd:PackedStringArray.rfind
 	for i := array.Len() - 1; i >= 0; i-- {
 		if String.Comparison(array.Index(i), value) == 0 {
 			return i
@@ -127,16 +127,16 @@ func (array Strings) FindLast(value String.Readable) int { //gd:PackedStringArra
 }
 
 // SetIndex sets the value of the element at the given index.
-func (array *Strings) SetIndex(idx int, value String.Readable) { //gd:PackedStringArray.set
-	(*GenericArray.Contains[String.Readable])(array).SetIndex(idx, value)
+func (array *Strings) SetIndex(idx int, value String.Unicode) { //gd:PackedStringArray.set
+	(*GenericArray.Contains[String.Unicode])(array).SetIndex(idx, value)
 }
 
 // Len returns the number of elements in the array.
-func (array Strings) Len() int { return (GenericArray.Contains[String.Readable])(array).Len() } //gd:PackedStringArray.size
+func (array Strings) Len() int { return (GenericArray.Contains[String.Unicode])(array).Len() } //gd:PackedStringArray.size
 
 // Slice returns a slice of the array from the given begin index to the given end index.
 func (array Strings) Slice(begin, end int) Strings { //gd:PackedStringArray.slice
-	return (Strings)(GenericArray.Slice((GenericArray.Contains[String.Readable])(array), begin, end))
+	return (Strings)(GenericArray.Slice((GenericArray.Contains[String.Unicode])(array), begin, end))
 }
 
 // Strings returns a slice of strings from the array.
@@ -174,11 +174,11 @@ func (array Strings) Sort() { //gd:PackedStringArray.sort
 //
 // Note: Calling BinarySearch on an unsorted array will result in unexpected behavior. Use [Sort] before calling
 // this method.
-func (array Strings) BinarySearch(value String.Readable, before bool) int { //gd:PackedStringArray.bsearch
-	less := func(a, b String.Readable) bool {
+func (array Strings) BinarySearch(value String.Unicode, before bool) int { //gd:PackedStringArray.bsearch
+	less := func(a, b String.Unicode) bool {
 		return String.Comparison(a, b) < 0
 	}
-	return GenericArray.Contains[String.Readable](array).BinarySearchFunc(less, value, before)
+	return GenericArray.Contains[String.Unicode](array).BinarySearchFunc(less, value, before)
 }
 
 // Bytes returns a Bytes array containing zero-byte seperated strings.

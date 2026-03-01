@@ -190,7 +190,7 @@ func (self Instance) MakeLocalToPose() string { //gd:OpenXRRenderModelManager.ma
 
 // SetMakeLocalToPose sets the property returned by [GetMakeLocalToPose]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetMakeLocalToPose(value string) Instance { //gd:OpenXRRenderModelManager.make_local_to_pose
-	class(self).SetMakeLocalToPose(String.New(value))
+	class(self).SetMakeLocalToPose(String.From(value))
 	return self
 }
 

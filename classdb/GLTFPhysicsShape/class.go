@@ -269,7 +269,7 @@ func (self Instance) ShapeType() string { //gd:GLTFPhysicsShape.shape_type
 
 // SetShapeType sets the property returned by [GetShapeType]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetShapeType(value string) Instance { //gd:GLTFPhysicsShape.shape_type
-	class(self).SetShapeType(String.New(value))
+	class(self).SetShapeType(String.From(value))
 	return self
 }
 

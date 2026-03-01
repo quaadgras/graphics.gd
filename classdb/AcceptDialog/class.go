@@ -188,7 +188,7 @@ You can use [RemoveButton] method to remove a button created with this method fr
 [RemoveButton]: https://pkg.go.dev/graphics.gd/classdb/AcceptDialog#Instance.RemoveButton
 */
 func (self Instance) AddButton(text string) Button.Instance { //gd:AcceptDialog.add_button
-	return Button.Instance(Advanced(self).AddButton(String.New(text), false, String.New("")))
+	return Button.Instance(Advanced(self).AddButton(String.From(text), false, String.From("")))
 }
 
 /*
@@ -204,7 +204,7 @@ You can use [RemoveButton] method to remove a button created with this method fr
 [RemoveButton]: https://pkg.go.dev/graphics.gd/classdb/AcceptDialog#Instance.RemoveButton
 */
 func (self MoreArgs) AddButton(text string, right bool, action string) Button.Instance { //gd:AcceptDialog.add_button
-	return Button.Instance(Advanced(self).AddButton(String.New(text), right, String.New(action)))
+	return Button.Instance(Advanced(self).AddButton(String.From(text), right, String.From(action)))
 }
 
 /*
@@ -215,7 +215,7 @@ You can use [RemoveButton] method to remove a button created with this method fr
 [RemoveButton]: https://pkg.go.dev/graphics.gd/classdb/AcceptDialog#Instance.RemoveButton
 */
 func (self Instance) AddCancelButton(name string) Button.Instance { //gd:AcceptDialog.add_cancel_button
-	return Button.Instance(Advanced(self).AddCancelButton(String.New(name)))
+	return Button.Instance(Advanced(self).AddCancelButton(String.From(name)))
 }
 
 /*
@@ -293,7 +293,7 @@ func (self Instance) OkButtonText() string { //gd:AcceptDialog.ok_button_text
 
 // SetOkButtonText sets the property returned by [GetOkButtonText]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetOkButtonText(value string) Instance { //gd:AcceptDialog.ok_button_text
-	class(self).SetOkButtonText(String.New(value))
+	class(self).SetOkButtonText(String.From(value))
 	return self
 }
 
@@ -306,7 +306,7 @@ func (self Instance) DialogText() string { //gd:AcceptDialog.dialog_text
 
 // SetDialogText sets the property returned by [GetText]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetDialogText(value string) Instance { //gd:AcceptDialog.dialog_text
-	class(self).SetText(String.New(value))
+	class(self).SetText(String.From(value))
 	return self
 }
 

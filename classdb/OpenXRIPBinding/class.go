@@ -160,21 +160,21 @@ func (self Instance) GetPathCount() int { //gd:OpenXRIPBinding.get_path_count
 Returns true if this input/output path is part of this binding.
 */
 func (self Instance) HasPath(path string) bool { //gd:OpenXRIPBinding.has_path
-	return bool(Advanced(self).HasPath(String.New(path)))
+	return bool(Advanced(self).HasPath(String.From(path)))
 }
 
 /*
 Add an input/output path to this binding.
 */
 func (self Instance) AddPath(path string) { //gd:OpenXRIPBinding.add_path
-	Advanced(self).AddPath(String.New(path))
+	Advanced(self).AddPath(String.From(path))
 }
 
 /*
 Removes this input/output path from this binding.
 */
 func (self Instance) RemovePath(path string) { //gd:OpenXRIPBinding.remove_path
-	Advanced(self).RemovePath(String.New(path))
+	Advanced(self).RemovePath(String.From(path))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -249,7 +249,7 @@ func (self Instance) BindingPath() string { //gd:OpenXRIPBinding.binding_path
 
 // SetBindingPath sets the property returned by [GetBindingPath]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetBindingPath(value string) Instance { //gd:OpenXRIPBinding.binding_path
-	class(self).SetBindingPath(String.New(value))
+	class(self).SetBindingPath(String.From(value))
 	return self
 }
 

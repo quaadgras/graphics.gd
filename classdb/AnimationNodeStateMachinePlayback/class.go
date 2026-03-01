@@ -160,7 +160,7 @@ If the path does not connect from the current state, the animation will play aft
 If 'reset_on_teleport' is true, the animation is played from the beginning when the travel cause a teleportation.
 */
 func (self Instance) Travel(to_node string) { //gd:AnimationNodeStateMachinePlayback.travel
-	Advanced(self).Travel(String.Name(String.New(to_node)), true)
+	Advanced(self).Travel(String.Name(String.From(to_node)), true)
 }
 
 /*
@@ -171,7 +171,7 @@ If the path does not connect from the current state, the animation will play aft
 If 'reset_on_teleport' is true, the animation is played from the beginning when the travel cause a teleportation.
 */
 func (self MoreArgs) Travel(to_node string, reset_on_teleport bool) { //gd:AnimationNodeStateMachinePlayback.travel
-	Advanced(self).Travel(String.Name(String.New(to_node)), reset_on_teleport)
+	Advanced(self).Travel(String.Name(String.From(to_node)), reset_on_teleport)
 }
 
 /*
@@ -180,7 +180,7 @@ Starts playing the given animation.
 If 'reset' is true, the animation is played from the beginning.
 */
 func (self Instance) Start(node string) { //gd:AnimationNodeStateMachinePlayback.start
-	Advanced(self).Start(String.Name(String.New(node)), true)
+	Advanced(self).Start(String.Name(String.From(node)), true)
 }
 
 /*
@@ -189,7 +189,7 @@ Starts playing the given animation.
 If 'reset' is true, the animation is played from the beginning.
 */
 func (self MoreArgs) Start(node string, reset bool) { //gd:AnimationNodeStateMachinePlayback.start
-	Advanced(self).Start(String.Name(String.New(node)), reset)
+	Advanced(self).Start(String.Name(String.From(node)), reset)
 }
 
 /*

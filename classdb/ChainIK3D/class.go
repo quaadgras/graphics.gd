@@ -141,7 +141,7 @@ Sets the root bone name of the bone chain.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetRootBoneName(index int, bone_name string) Instance { //gd:ChainIK3D.set_root_bone_name
-	Advanced(self).SetRootBoneName(int64(index), String.New(bone_name))
+	Advanced(self).SetRootBoneName(int64(index), String.From(bone_name))
 	return self
 }
 
@@ -179,7 +179,7 @@ Returns 'self' to enable method chaining.
 [SetExtendEndBone]: https://pkg.go.dev/graphics.gd/classdb/ChainIK3D#Instance.SetExtendEndBone
 */
 func (self Instance) SetEndBoneName(index int, bone_name string) Instance { //gd:ChainIK3D.set_end_bone_name
-	Advanced(self).SetEndBoneName(int64(index), String.New(bone_name))
+	Advanced(self).SetEndBoneName(int64(index), String.From(bone_name))
 	return self
 }
 

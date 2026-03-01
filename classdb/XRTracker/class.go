@@ -206,7 +206,7 @@ func (self Instance) Name() string { //gd:XRTracker.name
 
 // SetName sets the property returned by [GetTrackerName]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetName(value string) Instance { //gd:XRTracker.name
-	class(self).SetTrackerName(String.Name(String.New(value)))
+	class(self).SetTrackerName(String.Name(String.From(value)))
 	return self
 }
 
@@ -219,7 +219,7 @@ func (self Instance) Description() string { //gd:XRTracker.description
 
 // SetDescription sets the property returned by [GetTrackerDesc]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetDescription(value string) Instance { //gd:XRTracker.description
-	class(self).SetTrackerDesc(String.New(value))
+	class(self).SetTrackerDesc(String.From(value))
 	return self
 }
 

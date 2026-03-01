@@ -27,17 +27,17 @@ import (
 //	":Position:X"         // Points to this items's position in the x axis.
 //	"Camera3D:Rotation:Y" // Points to the child Camera3D and its y rotation.
 //	"/root:Size:X"        // Points to the root Window and its width.
-type ToNode String.Readable
+type ToNode String.Unicode
 
 // AsNode returns the given path as a node path.
 func AsNode[T String.Any](path T) ToNode {
 	return ToNode(String.New(path))
 }
 
-func (s ToNode) String() string               { return String.Readable(s).String() }
-func (s ToNode) MarshalText() ([]byte, error) { return String.Readable(s).MarshalText() }
+func (s ToNode) String() string               { return String.Unicode(s).String() }
+func (s ToNode) MarshalText() ([]byte, error) { return String.Unicode(s).MarshalText() }
 func (s *ToNode) UnmarshalText(text []byte) error {
-	return (*String.Readable)(s).UnmarshalText(text)
+	return (*String.Unicode)(s).UnmarshalText(text)
 }
 
 // PrefixedWithSelector returns a copy of this path with a period character (.) prefixed,
@@ -54,17 +54,17 @@ func (s ToNode) WithoutSelector() ToNode { //gd:NodePath.get_concatenated_names
 }
 
 // Selector returns the selector in the path.
-func (s ToNode) Selector() String.Readable { //gd:NodePath.get_concatenated_subnames
+func (s ToNode) Selector() String.Unicode { //gd:NodePath.get_concatenated_subnames
 	index := String.FindLast(s, ".")
 	if index == -1 {
-		return String.New()
+		return String.New("")
 	}
-	return String.Readable(String.Slice(s, index, String.Length(s)))
+	return String.Unicode(String.Slice(s, index, String.Length(s)))
 }
 
 // Element returns the element indicated by idx, starting from 0.
-func (s ToNode) Element(i int) String.Readable { //gd:NodePath.get_name
-	return String.Readable(slices.Collect(String.Splits(s, "/"))[i])
+func (s ToNode) Element(i int) String.Unicode { //gd:NodePath.get_name
+	return String.Unicode(slices.Collect(String.Splits(s, "/"))[i])
 }
 
 // NumElement returns the number of elements in the path.
@@ -73,8 +73,8 @@ func (s ToNode) NumElement() int { //gd:NodePath.get_name_count
 }
 
 // Name returns the sub-selector indicated by idx, starting from 0.
-func (s ToNode) Name(i int) String.Readable { //gd:NodePath.get_subname
-	return String.Readable(slices.Collect(String.Splits(s.Selector(), "."))[i])
+func (s ToNode) Name(i int) String.Unicode { //gd:NodePath.get_subname
+	return String.Unicode(slices.Collect(String.Splits(s.Selector(), "."))[i])
 }
 
 // NumName returns the number of sub-selectors in the path.

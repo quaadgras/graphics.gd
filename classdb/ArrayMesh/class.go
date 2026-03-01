@@ -201,7 +201,7 @@ Adds name for a blend shape that will be added with [AddSurfaceFromArrays]. Must
 [AddSurfaceFromArrays]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh#Instance.AddSurfaceFromArrays
 */
 func (self Instance) AddBlendShape(name string) { //gd:ArrayMesh.add_blend_shape
-	Advanced(self).AddBlendShape(String.Name(String.New(name)))
+	Advanced(self).AddBlendShape(String.Name(String.From(name)))
 }
 
 /*
@@ -226,7 +226,7 @@ Sets the name of the blend shape at this index.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetBlendShapeName(index int, name string) Instance { //gd:ArrayMesh.set_blend_shape_name
-	Advanced(self).SetBlendShapeName(int64(index), String.Name(String.New(name)))
+	Advanced(self).SetBlendShapeName(int64(index), String.Name(String.From(name)))
 	return self
 }
 
@@ -350,14 +350,14 @@ Returns the index of the first surface with this name held within this [ArrayMes
 [ArrayMesh]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh
 */
 func (self Instance) SurfaceFindByName(name string) int { //gd:ArrayMesh.surface_find_by_name
-	return int(int(Advanced(self).SurfaceFindByName(String.New(name))))
+	return int(int(Advanced(self).SurfaceFindByName(String.From(name))))
 }
 
 /*
 Sets a name for a given surface.
 */
 func (self Instance) SurfaceSetName(surf_idx int, name string) { //gd:ArrayMesh.surface_set_name
-	Advanced(self).SurfaceSetName(int64(surf_idx), String.New(name))
+	Advanced(self).SurfaceSetName(int64(surf_idx), String.From(name))
 }
 
 /*

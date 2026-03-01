@@ -210,7 +210,7 @@ func MoveBus(index Bus, to_index Bus) { //gd:AudioServer.move_bus
 Sets the name of the bus at index 'bus_idx' to 'name'.
 */
 func SetBusName(bus_idx Bus, name string) { //gd:AudioServer.set_bus_name
-	Advanced().SetBusName(int64(bus_idx), String.New(name))
+	Advanced().SetBusName(int64(bus_idx), String.From(name))
 }
 
 /*
@@ -224,7 +224,7 @@ func GetBusName(bus_idx Bus) string { //gd:AudioServer.get_bus_name
 Returns the index of the bus with the name 'bus_name'. Returns -1 if no bus with the specified name exist.
 */
 func GetBusIndex(bus_name string) int { //gd:AudioServer.get_bus_index
-	return int(int(Advanced().GetBusIndex(String.Name(String.New(bus_name)))))
+	return int(int(Advanced().GetBusIndex(String.Name(String.From(bus_name)))))
 }
 
 /*
@@ -274,7 +274,7 @@ func GetBusVolumeLinear(bus_idx Bus) Float.X { //gd:AudioServer.get_bus_volume_l
 Connects the output of the bus at 'bus_idx' to the bus named 'send'.
 */
 func SetBusSend(bus_idx Bus, send string) { //gd:AudioServer.set_bus_send
-	Advanced().SetBusSend(int64(bus_idx), String.Name(String.New(send)))
+	Advanced().SetBusSend(int64(bus_idx), String.Name(String.From(send)))
 }
 
 /*
@@ -637,7 +637,7 @@ func OutputDevice() string { //gd:AudioServer.output_device
 // SetOutputDevice sets the property returned by [GetOutputDevice].
 func SetOutputDevice(value string) { //gd:AudioServer.output_device
 	once.Do(singleton)
-	class(self).SetOutputDevice(String.New(value))
+	class(self).SetOutputDevice(String.From(value))
 }
 
 /*
@@ -655,7 +655,7 @@ func InputDevice() string { //gd:AudioServer.input_device
 // SetInputDevice sets the property returned by [GetInputDevice].
 func SetInputDevice(value string) { //gd:AudioServer.input_device
 	once.Do(singleton)
-	class(self).SetInputDevice(String.New(value))
+	class(self).SetInputDevice(String.From(value))
 }
 
 /*

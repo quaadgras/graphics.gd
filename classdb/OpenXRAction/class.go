@@ -181,7 +181,7 @@ func (self Instance) LocalizedName() string { //gd:OpenXRAction.localized_name
 
 // SetLocalizedName sets the property returned by [GetLocalizedName]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetLocalizedName(value string) Instance { //gd:OpenXRAction.localized_name
-	class(self).SetLocalizedName(String.New(value))
+	class(self).SetLocalizedName(String.From(value))
 	return self
 }
 

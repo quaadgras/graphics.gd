@@ -558,7 +558,7 @@ Creates a vertex array from the specified blend shape of an existing [Mesh]. Thi
 [Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
 */
 func (self Instance) CreateFromBlendShape(existing Mesh.Instance, surface int, blend_shape string) { //gd:SurfaceTool.create_from_blend_shape
-	Advanced(self).CreateFromBlendShape(existing, int64(surface), String.New(blend_shape))
+	Advanced(self).CreateFromBlendShape(existing, int64(surface), String.From(blend_shape))
 }
 
 /*

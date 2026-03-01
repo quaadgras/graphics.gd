@@ -178,7 +178,7 @@ func (self Instance) SourceVertex() string { //gd:RDShaderSource.source_vertex
 
 // SetSourceVertex sets the property returned by [GetStageSource]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetSourceVertex(value string) Instance { //gd:RDShaderSource.source_vertex
-	class(self).SetStageSource(0, String.New(value))
+	class(self).SetStageSource(0, String.From(value))
 	return self
 }
 
@@ -191,7 +191,7 @@ func (self Instance) SourceFragment() string { //gd:RDShaderSource.source_fragme
 
 // SetSourceFragment sets the property returned by [GetStageSource]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetSourceFragment(value string) Instance { //gd:RDShaderSource.source_fragment
-	class(self).SetStageSource(1, String.New(value))
+	class(self).SetStageSource(1, String.From(value))
 	return self
 }
 
@@ -204,7 +204,7 @@ func (self Instance) SourceTesselationControl() string { //gd:RDShaderSource.sou
 
 // SetSourceTesselationControl sets the property returned by [GetStageSource]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetSourceTesselationControl(value string) Instance { //gd:RDShaderSource.source_tesselation_control
-	class(self).SetStageSource(2, String.New(value))
+	class(self).SetStageSource(2, String.From(value))
 	return self
 }
 
@@ -217,7 +217,7 @@ func (self Instance) SourceTesselationEvaluation() string { //gd:RDShaderSource.
 
 // SetSourceTesselationEvaluation sets the property returned by [GetStageSource]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetSourceTesselationEvaluation(value string) Instance { //gd:RDShaderSource.source_tesselation_evaluation
-	class(self).SetStageSource(3, String.New(value))
+	class(self).SetStageSource(3, String.From(value))
 	return self
 }
 
@@ -230,7 +230,7 @@ func (self Instance) SourceCompute() string { //gd:RDShaderSource.source_compute
 
 // SetSourceCompute sets the property returned by [GetStageSource]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetSourceCompute(value string) Instance { //gd:RDShaderSource.source_compute
-	class(self).SetStageSource(4, String.New(value))
+	class(self).SetStageSource(4, String.From(value))
 	return self
 }
 

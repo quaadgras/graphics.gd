@@ -89,11 +89,11 @@ func (signal Any) Consumers() iter.Seq[Consumer] { //gd:Signal.get_connections
 }
 
 // Name returns the name of this signal.
-func (signal Any) Name() String.Readable { //gd:Signal.get_name
+func (signal Any) Name() String.Unicode { //gd:Signal.get_name
 	if signal.proxy != nil {
 		return signal.proxy.Name(signal.state)
 	}
-	return String.New()
+	return String.New("")
 }
 
 // Emitter returns the originater associated with this signal.

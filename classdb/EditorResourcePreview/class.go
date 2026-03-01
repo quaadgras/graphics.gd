@@ -132,7 +132,7 @@ Note: If it was not possible to create the preview the 'receiver_func' will stil
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
 func (self Instance) QueueResourcePreview(path string, receiver Object.Instance, receiver_func string, userdata any) { //gd:EditorResourcePreview.queue_resource_preview
-	Advanced(self).QueueResourcePreview(String.New(path), receiver, String.Name(String.New(receiver_func)), variant.New(userdata))
+	Advanced(self).QueueResourcePreview(String.From(path), receiver, String.Name(String.From(receiver_func)), variant.New(userdata))
 }
 
 /*
@@ -143,7 +143,7 @@ Note: If it was not possible to create the preview the 'receiver_func' will stil
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
 func (self Instance) QueueEditedResourcePreview(resource Resource.Instance, receiver Object.Instance, receiver_func string, userdata any) { //gd:EditorResourcePreview.queue_edited_resource_preview
-	Advanced(self).QueueEditedResourcePreview(resource, receiver, String.Name(String.New(receiver_func)), variant.New(userdata))
+	Advanced(self).QueueEditedResourcePreview(resource, receiver, String.Name(String.From(receiver_func)), variant.New(userdata))
 }
 
 /*
@@ -164,7 +164,7 @@ func (self Instance) RemovePreviewGenerator(generator EditorResourcePreviewGener
 Check if the resource changed, if so, it will be invalidated and the corresponding signal emitted.
 */
 func (self Instance) CheckForInvalidation(path string) { //gd:EditorResourcePreview.check_for_invalidation
-	Advanced(self).CheckForInvalidation(String.New(path))
+	Advanced(self).CheckForInvalidation(String.From(path))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -216,14 +216,14 @@ func (self Instance) GetParent() Instance { //gd:EditorFileSystemDirectory.get_p
 Returns the index of the file with name 'name' or -1 if not found.
 */
 func (self Instance) FindFileIndex(name string) int { //gd:EditorFileSystemDirectory.find_file_index
-	return int(int(Advanced(self).FindFileIndex(String.New(name))))
+	return int(int(Advanced(self).FindFileIndex(String.From(name))))
 }
 
 /*
 Returns the index of the directory with name 'name' or -1 if not found.
 */
 func (self Instance) FindDirIndex(name string) int { //gd:EditorFileSystemDirectory.find_dir_index
-	return int(int(Advanced(self).FindDirIndex(String.New(name))))
+	return int(int(Advanced(self).FindDirIndex(String.From(name))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

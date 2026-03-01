@@ -138,7 +138,7 @@ Saves a key to the given 'path'. If 'public_only' is true, only the public key w
 Note: 'path' should be a "*.pub" file if 'public_only' is true, a "*.key" file otherwise.
 */
 func (self Instance) Save(path string) error { //gd:CryptoKey.save
-	return error(gd.ToError(Advanced(self).Save(String.New(path), false)))
+	return error(gd.ToError(Advanced(self).Save(String.From(path), false)))
 }
 
 /*
@@ -147,7 +147,7 @@ Saves a key to the given 'path'. If 'public_only' is true, only the public key w
 Note: 'path' should be a "*.pub" file if 'public_only' is true, a "*.key" file otherwise.
 */
 func (self MoreArgs) Save(path string, public_only bool) error { //gd:CryptoKey.save
-	return error(gd.ToError(Advanced(self).Save(String.New(path), public_only)))
+	return error(gd.ToError(Advanced(self).Save(String.From(path), public_only)))
 }
 
 /*
@@ -156,7 +156,7 @@ Loads a key from 'path'. If 'public_only' is true, only the public key will be l
 Note: 'path' should be a "*.pub" file if 'public_only' is true, a "*.key" file otherwise.
 */
 func (self Instance) Load(path string) error { //gd:CryptoKey.load
-	return error(gd.ToError(Advanced(self).Load(String.New(path), false)))
+	return error(gd.ToError(Advanced(self).Load(String.From(path), false)))
 }
 
 /*
@@ -165,7 +165,7 @@ Loads a key from 'path'. If 'public_only' is true, only the public key will be l
 Note: 'path' should be a "*.pub" file if 'public_only' is true, a "*.key" file otherwise.
 */
 func (self MoreArgs) Load(path string, public_only bool) error { //gd:CryptoKey.load
-	return error(gd.ToError(Advanced(self).Load(String.New(path), public_only)))
+	return error(gd.ToError(Advanced(self).Load(String.From(path), public_only)))
 }
 
 /*
@@ -193,14 +193,14 @@ func (self MoreArgs) SaveToString(public_only bool) string { //gd:CryptoKey.save
 Loads a key from the given 'string_key'. If 'public_only' is true, only the public key will be loaded.
 */
 func (self Instance) LoadFromString(string_key string) error { //gd:CryptoKey.load_from_string
-	return error(gd.ToError(Advanced(self).LoadFromString(String.New(string_key), false)))
+	return error(gd.ToError(Advanced(self).LoadFromString(String.From(string_key), false)))
 }
 
 /*
 Loads a key from the given 'string_key'. If 'public_only' is true, only the public key will be loaded.
 */
 func (self MoreArgs) LoadFromString(string_key string, public_only bool) error { //gd:CryptoKey.load_from_string
-	return error(gd.ToError(Advanced(self).LoadFromString(String.New(string_key), public_only)))
+	return error(gd.ToError(Advanced(self).LoadFromString(String.From(string_key), public_only)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

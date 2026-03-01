@@ -224,21 +224,21 @@ func (self Instance) GetAttributeValue(idx int) string { //gd:XMLParser.get_attr
 Returns true if the currently parsed element has an attribute with the 'name'.
 */
 func (self Instance) HasAttribute(name string) bool { //gd:XMLParser.has_attribute
-	return bool(Advanced(self).HasAttribute(String.New(name)))
+	return bool(Advanced(self).HasAttribute(String.From(name)))
 }
 
 /*
 Returns the value of an attribute of the currently parsed element, specified by its 'name'. This method will raise an error if the element has no such attribute.
 */
 func (self Instance) GetNamedAttributeValue(name string) string { //gd:XMLParser.get_named_attribute_value
-	return string(Advanced(self).GetNamedAttributeValue(String.New(name)).String())
+	return string(Advanced(self).GetNamedAttributeValue(String.From(name)).String())
 }
 
 /*
 Returns the value of an attribute of the currently parsed element, specified by its 'name'. This method will return an empty string if the element has no such attribute.
 */
 func (self Instance) GetNamedAttributeValueSafe(name string) string { //gd:XMLParser.get_named_attribute_value_safe
-	return string(Advanced(self).GetNamedAttributeValueSafe(String.New(name)).String())
+	return string(Advanced(self).GetNamedAttributeValueSafe(String.From(name)).String())
 }
 
 /*
@@ -273,7 +273,7 @@ func (self Instance) SeekTo(position int) error { //gd:XMLParser.seek
 Opens an XML 'file' for parsing. This method returns an error code.
 */
 func (self Instance) Open(file string) error { //gd:XMLParser.open
-	return error(gd.ToError(Advanced(self).Open(String.New(file))))
+	return error(gd.ToError(Advanced(self).Open(String.From(file))))
 }
 
 /*

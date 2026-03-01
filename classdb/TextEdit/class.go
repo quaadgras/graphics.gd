@@ -597,7 +597,7 @@ Carets on the line will attempt to keep their visual x position.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetLine(line int, new_text string) Instance { //gd:TextEdit.set_line
-	Advanced(self).SetLine(int64(line), String.New(new_text))
+	Advanced(self).SetLine(int64(line), String.From(new_text))
 	return self
 }
 
@@ -665,7 +665,7 @@ func (self Instance) SwapLines(from_line int, to_line int) { //gd:TextEdit.swap_
 Inserts a new line with 'text' at 'line'.
 */
 func (self Instance) InsertLineAt(line int, text string) { //gd:TextEdit.insert_line_at
-	Advanced(self).InsertLineAt(int64(line), String.New(text))
+	Advanced(self).InsertLineAt(int64(line), String.From(text))
 }
 
 /*
@@ -690,14 +690,14 @@ func (self MoreArgs) RemoveLineAt(line int, move_carets_down bool) { //gd:TextEd
 Insert the specified text at the caret position.
 */
 func (self Instance) InsertTextAtCaret(text string) { //gd:TextEdit.insert_text_at_caret
-	Advanced(self).InsertTextAtCaret(String.New(text), int64(-1))
+	Advanced(self).InsertTextAtCaret(String.From(text), int64(-1))
 }
 
 /*
 Insert the specified text at the caret position.
 */
 func (self MoreArgs) InsertTextAtCaret(text string, caret_index int) { //gd:TextEdit.insert_text_at_caret
-	Advanced(self).InsertTextAtCaret(String.New(text), int64(caret_index))
+	Advanced(self).InsertTextAtCaret(String.From(text), int64(caret_index))
 }
 
 /*
@@ -708,7 +708,7 @@ If 'before_selection_begin' is true, carets and selections that begin at 'line' 
 If 'before_selection_end' is true, selections that end at 'line' and 'column' will be extended to the end of the inserted text. These parameters can be used to insert text inside of or outside of selections.
 */
 func (self Instance) InsertText(text string, line int, column int) { //gd:TextEdit.insert_text
-	Advanced(self).InsertText(String.New(text), int64(line), int64(column), true, false)
+	Advanced(self).InsertText(String.From(text), int64(line), int64(column), true, false)
 }
 
 /*
@@ -719,7 +719,7 @@ If 'before_selection_begin' is true, carets and selections that begin at 'line' 
 If 'before_selection_end' is true, selections that end at 'line' and 'column' will be extended to the end of the inserted text. These parameters can be used to insert text inside of or outside of selections.
 */
 func (self MoreArgs) InsertText(text string, line int, column int, before_selection_begin bool, before_selection_end bool) { //gd:TextEdit.insert_text
-	Advanced(self).InsertText(String.New(text), int64(line), int64(column), before_selection_begin, before_selection_end)
+	Advanced(self).InsertText(String.From(text), int64(line), int64(column), before_selection_begin, before_selection_end)
 }
 
 /*
@@ -950,7 +950,7 @@ Returns 'self' to enable method chaining.
 [SetSearchFlags]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.SetSearchFlags
 */
 func (self Instance) SetSearchText(search_text string) Instance { //gd:TextEdit.set_search_text
-	Advanced(self).SetSearchText(String.New(search_text))
+	Advanced(self).SetSearchText(String.From(search_text))
 	return self
 }
 
@@ -974,7 +974,7 @@ In the returned vector, x is the column, y is the line. If no results are found,
 	line, column := textEdit.Search("print", TextEdit.SearchWholeWords, 0, 0)
 */
 func (self Instance) Search(text string, flags SearchFlags, from_line int, from_column int) (int, int) { //gd:TextEdit.search
-	results := Advanced(self).Search(String.New(text), int64(flags), int64(from_line), int64(from_column))
+	results := Advanced(self).Search(String.From(text), int64(flags), int64(from_line), int64(from_column))
 	return int(results.X), int(results.Y)
 }
 
@@ -2012,7 +2012,7 @@ Sets the name of the gutter at the given index.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetGutterName(gutter int, name string) Instance { //gd:TextEdit.set_gutter_name
-	Advanced(self).SetGutterName(int64(gutter), String.New(name))
+	Advanced(self).SetGutterName(int64(gutter), String.From(name))
 	return self
 }
 
@@ -2177,7 +2177,7 @@ Returns 'self' to enable method chaining.
 [SetGutterType]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.SetGutterType
 */
 func (self Instance) SetLineGutterText(line int, gutter int, text string) Instance { //gd:TextEdit.set_line_gutter_text
-	Advanced(self).SetLineGutterText(int64(line), int64(gutter), String.New(text))
+	Advanced(self).SetLineGutterText(int64(line), int64(gutter), String.From(text))
 	return self
 }
 
@@ -2410,7 +2410,7 @@ func (self Instance) Text() string { //gd:TextEdit.text
 
 // SetText sets the property returned by [GetText]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetText(value string) Instance { //gd:TextEdit.text
-	class(self).SetText(String.New(value))
+	class(self).SetText(String.From(value))
 	return self
 }
 
@@ -2426,7 +2426,7 @@ func (self Instance) PlaceholderText() string { //gd:TextEdit.placeholder_text
 
 // SetPlaceholderText sets the property returned by [GetPlaceholder]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetPlaceholderText(value string) Instance { //gd:TextEdit.placeholder_text
-	class(self).SetPlaceholder(String.New(value))
+	class(self).SetPlaceholder(String.From(value))
 	return self
 }
 
@@ -2917,7 +2917,7 @@ func (self Instance) CustomWordSeparators() string { //gd:TextEdit.custom_word_s
 
 // SetCustomWordSeparators sets the property returned by [GetCustomWordSeparators]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetCustomWordSeparators(value string) Instance { //gd:TextEdit.custom_word_separators
-	class(self).SetCustomWordSeparators(String.New(value))
+	class(self).SetCustomWordSeparators(String.From(value))
 	return self
 }
 
@@ -3008,7 +3008,7 @@ func (self Instance) Language() string { //gd:TextEdit.language
 
 // SetLanguage sets the property returned by [GetLanguage]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetLanguage(value string) Instance { //gd:TextEdit.language
-	class(self).SetLanguage(String.New(value))
+	class(self).SetLanguage(String.From(value))
 	return self
 }
 

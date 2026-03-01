@@ -151,7 +151,7 @@ If 'exact_match' is false, it ignores additional input modifiers for [InputEvent
 [InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
 */
 func (self Instance) IsAction(action string) bool { //gd:InputEvent.is_action
-	return bool(Advanced(self).IsAction(String.Name(String.New(action)), false))
+	return bool(Advanced(self).IsAction(String.Name(String.From(action)), false))
 }
 
 /*
@@ -164,7 +164,7 @@ If 'exact_match' is false, it ignores additional input modifiers for [InputEvent
 [InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
 */
 func (self MoreArgs) IsAction(action string, exact_match bool) bool { //gd:InputEvent.is_action
-	return bool(Advanced(self).IsAction(String.Name(String.New(action)), exact_match))
+	return bool(Advanced(self).IsAction(String.Name(String.From(action)), exact_match))
 }
 
 /*
@@ -183,7 +183,7 @@ Note: Due to keyboard ghosting, [IsActionPressed] may return false even if one o
 [IsActionPressed]: https://pkg.go.dev/graphics.gd/classdb/InputEvent#Instance.IsActionPressed
 */
 func (self Instance) IsActionPressed(action string) bool { //gd:InputEvent.is_action_pressed
-	return bool(Advanced(self).IsActionPressed(String.Name(String.New(action)), false, false))
+	return bool(Advanced(self).IsActionPressed(String.Name(String.From(action)), false, false))
 }
 
 /*
@@ -202,7 +202,7 @@ Note: Due to keyboard ghosting, [IsActionPressed] may return false even if one o
 [IsActionPressed]: https://pkg.go.dev/graphics.gd/classdb/InputEvent#Instance.IsActionPressed
 */
 func (self MoreArgs) IsActionPressed(action string, allow_echo bool, exact_match bool) bool { //gd:InputEvent.is_action_pressed
-	return bool(Advanced(self).IsActionPressed(String.Name(String.New(action)), allow_echo, exact_match))
+	return bool(Advanced(self).IsActionPressed(String.Name(String.From(action)), allow_echo, exact_match))
 }
 
 /*
@@ -217,7 +217,7 @@ If 'exact_match' is false, it ignores additional input modifiers for [InputEvent
 [InputEventScreenDrag]: https://pkg.go.dev/graphics.gd/classdb/InputEventScreenDrag
 */
 func (self Instance) IsActionReleased(action string) bool { //gd:InputEvent.is_action_released
-	return bool(Advanced(self).IsActionReleased(String.Name(String.New(action)), false))
+	return bool(Advanced(self).IsActionReleased(String.Name(String.From(action)), false))
 }
 
 /*
@@ -232,7 +232,7 @@ If 'exact_match' is false, it ignores additional input modifiers for [InputEvent
 [InputEventScreenDrag]: https://pkg.go.dev/graphics.gd/classdb/InputEventScreenDrag
 */
 func (self MoreArgs) IsActionReleased(action string, exact_match bool) bool { //gd:InputEvent.is_action_released
-	return bool(Advanced(self).IsActionReleased(String.Name(String.New(action)), exact_match))
+	return bool(Advanced(self).IsActionReleased(String.Name(String.From(action)), exact_match))
 }
 
 /*
@@ -245,7 +245,7 @@ If 'exact_match' is false, it ignores additional input modifiers for [InputEvent
 [InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
 */
 func (self Instance) GetActionStrength(action string) Float.X { //gd:InputEvent.get_action_strength
-	return Float.X(Float.X(Advanced(self).GetActionStrength(String.Name(String.New(action)), false)))
+	return Float.X(Float.X(Advanced(self).GetActionStrength(String.Name(String.From(action)), false)))
 }
 
 /*
@@ -258,7 +258,7 @@ If 'exact_match' is false, it ignores additional input modifiers for [InputEvent
 [InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
 */
 func (self MoreArgs) GetActionStrength(action string, exact_match bool) Float.X { //gd:InputEvent.get_action_strength
-	return Float.X(Float.X(Advanced(self).GetActionStrength(String.Name(String.New(action)), exact_match)))
+	return Float.X(Float.X(Advanced(self).GetActionStrength(String.Name(String.From(action)), exact_match)))
 }
 
 /*

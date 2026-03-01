@@ -213,7 +213,7 @@ func (self Instance) InteractionProfilePath() string { //gd:OpenXRInteractionPro
 
 // SetInteractionProfilePath sets the property returned by [GetInteractionProfilePath]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetInteractionProfilePath(value string) Instance { //gd:OpenXRInteractionProfile.interaction_profile_path
-	class(self).SetInteractionProfilePath(String.New(value))
+	class(self).SetInteractionProfilePath(String.From(value))
 	return self
 }
 

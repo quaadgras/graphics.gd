@@ -214,7 +214,7 @@ func (self Instance) HandSkeleton() string { //gd:OpenXRHand.hand_skeleton
 
 // SetHandSkeleton sets the property returned by [GetHandSkeleton]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetHandSkeleton(value string) Instance { //gd:OpenXRHand.hand_skeleton
-	class(self).SetHandSkeleton(Path.ToNode(String.New(value)))
+	class(self).SetHandSkeleton(Path.ToNode(String.From(value)))
 	return self
 }
 

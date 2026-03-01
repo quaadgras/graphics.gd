@@ -153,7 +153,7 @@ Note: On the Web platform, TLS verification is always enforced against the CA li
 */
 func Client(trusted_chain X509Certificate.Instance, common_name_override string) Instance { //gd:TLSOptions.client
 	self := Instance{}
-	return Instance(Advanced(self).Client(trusted_chain, String.New(common_name_override)))
+	return Instance(Advanced(self).Client(trusted_chain, String.From(common_name_override)))
 }
 
 /*

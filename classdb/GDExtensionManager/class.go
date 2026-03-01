@@ -130,14 +130,14 @@ Loads an extension by absolute file path. The 'path' needs to point to a valid [
 [GDExtension]: https://pkg.go.dev/graphics.gd/classdb/GDExtension
 */
 func LoadExtension(path string) LoadStatus { //gd:GDExtensionManager.load_extension
-	return LoadStatus(Advanced().LoadExtension(String.New(path)))
+	return LoadStatus(Advanced().LoadExtension(String.From(path)))
 }
 
 /*
 Loads the extension already in address space via the given path and initialization function. The 'path' needs to be unique and start with "libgodot://". Returns [LoadStatusOk] if successful.
 */
 func LoadExtensionFromFunction(path string, init_func *GDExtensionInitializationFunction) LoadStatus { //gd:GDExtensionManager.load_extension_from_function
-	return LoadStatus(Advanced().LoadExtensionFromFunction(String.New(path), init_func))
+	return LoadStatus(Advanced().LoadExtensionFromFunction(String.From(path), init_func))
 }
 
 /*
@@ -148,7 +148,7 @@ Note: You can only reload extensions in the editor. In release builds, this meth
 [GDExtension]: https://pkg.go.dev/graphics.gd/classdb/GDExtension
 */
 func ReloadExtension(path string) LoadStatus { //gd:GDExtensionManager.reload_extension
-	return LoadStatus(Advanced().ReloadExtension(String.New(path)))
+	return LoadStatus(Advanced().ReloadExtension(String.From(path)))
 }
 
 /*
@@ -157,14 +157,14 @@ Unloads an extension by file path. The 'path' needs to point to an already loade
 [GDExtension]: https://pkg.go.dev/graphics.gd/classdb/GDExtension
 */
 func UnloadExtension(path string) LoadStatus { //gd:GDExtensionManager.unload_extension
-	return LoadStatus(Advanced().UnloadExtension(String.New(path)))
+	return LoadStatus(Advanced().UnloadExtension(String.From(path)))
 }
 
 /*
 Returns true if the extension at the given file 'path' has already been loaded successfully. See also [GetLoadedExtensions].
 */
 func IsExtensionLoaded(path string) bool { //gd:GDExtensionManager.is_extension_loaded
-	return bool(Advanced().IsExtensionLoaded(String.New(path)))
+	return bool(Advanced().IsExtensionLoaded(String.From(path)))
 }
 
 /*
@@ -180,7 +180,7 @@ Returns the [GDExtension] at the given file 'path', or null if it has not been l
 [GDExtension]: https://pkg.go.dev/graphics.gd/classdb/GDExtension
 */
 func GetExtension(path string) GDExtension.Instance { //gd:GDExtensionManager.get_extension
-	return GDExtension.Instance(Advanced().GetExtension(String.New(path)))
+	return GDExtension.Instance(Advanced().GetExtension(String.From(path)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

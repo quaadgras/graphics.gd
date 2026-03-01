@@ -184,7 +184,7 @@ If you want to assign shortcut to the menu item, use [AddContextMenuItemFromShor
 [AddContextMenuItemFromShortcut]: https://pkg.go.dev/graphics.gd/classdb/EditorContextMenuPlugin#Instance.AddContextMenuItemFromShortcut
 */
 func (self Instance) AddContextMenuItem(name string, callback func(array []any)) { //gd:EditorContextMenuPlugin.add_context_menu_item
-	Advanced(self).AddContextMenuItem(String.New(name), Callable.New(callback), [1]Texture2D.Instance{}[0])
+	Advanced(self).AddContextMenuItem(String.From(name), Callable.New(callback), [1]Texture2D.Instance{}[0])
 }
 
 /*
@@ -197,7 +197,7 @@ If you want to assign shortcut to the menu item, use [AddContextMenuItemFromShor
 [AddContextMenuItemFromShortcut]: https://pkg.go.dev/graphics.gd/classdb/EditorContextMenuPlugin#Instance.AddContextMenuItemFromShortcut
 */
 func (self MoreArgs) AddContextMenuItem(name string, callback func(array []any), icon Texture2D.Instance) { //gd:EditorContextMenuPlugin.add_context_menu_item
-	Advanced(self).AddContextMenuItem(String.New(name), Callable.New(callback), icon)
+	Advanced(self).AddContextMenuItem(String.From(name), Callable.New(callback), icon)
 }
 
 /*
@@ -209,7 +209,7 @@ Add custom option to the context menu of the plugin's specified slot. The option
 [AddMenuShortcut]: https://pkg.go.dev/graphics.gd/classdb/EditorContextMenuPlugin#Instance.AddMenuShortcut
 */
 func (self Instance) AddContextMenuItemFromShortcut(name string, shortcut Shortcut.Instance) { //gd:EditorContextMenuPlugin.add_context_menu_item_from_shortcut
-	Advanced(self).AddContextMenuItemFromShortcut(String.New(name), shortcut, [1]Texture2D.Instance{}[0])
+	Advanced(self).AddContextMenuItemFromShortcut(String.From(name), shortcut, [1]Texture2D.Instance{}[0])
 }
 
 /*
@@ -221,7 +221,7 @@ Add custom option to the context menu of the plugin's specified slot. The option
 [AddMenuShortcut]: https://pkg.go.dev/graphics.gd/classdb/EditorContextMenuPlugin#Instance.AddMenuShortcut
 */
 func (self MoreArgs) AddContextMenuItemFromShortcut(name string, shortcut Shortcut.Instance, icon Texture2D.Instance) { //gd:EditorContextMenuPlugin.add_context_menu_item_from_shortcut
-	Advanced(self).AddContextMenuItemFromShortcut(String.New(name), shortcut, icon)
+	Advanced(self).AddContextMenuItemFromShortcut(String.From(name), shortcut, icon)
 }
 
 /*
@@ -236,7 +236,7 @@ Add a submenu to the context menu of the plugin's specified slot. The submenu is
 [PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
 */
 func (self Instance) AddContextSubmenuItem(name string, menu PopupMenu.Instance) { //gd:EditorContextMenuPlugin.add_context_submenu_item
-	Advanced(self).AddContextSubmenuItem(String.New(name), menu, [1]Texture2D.Instance{}[0])
+	Advanced(self).AddContextSubmenuItem(String.From(name), menu, [1]Texture2D.Instance{}[0])
 }
 
 /*
@@ -251,7 +251,7 @@ Add a submenu to the context menu of the plugin's specified slot. The submenu is
 [PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
 */
 func (self MoreArgs) AddContextSubmenuItem(name string, menu PopupMenu.Instance, icon Texture2D.Instance) { //gd:EditorContextMenuPlugin.add_context_submenu_item
-	Advanced(self).AddContextSubmenuItem(String.New(name), menu, icon)
+	Advanced(self).AddContextSubmenuItem(String.From(name), menu, icon)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

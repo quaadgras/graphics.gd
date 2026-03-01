@@ -185,7 +185,7 @@ func (self Instance) BodyTracker() string { //gd:XRBodyModifier3D.body_tracker
 
 // SetBodyTracker sets the property returned by [GetBodyTracker]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetBodyTracker(value string) Instance { //gd:XRBodyModifier3D.body_tracker
-	class(self).SetBodyTracker(String.Name(String.New(value)))
+	class(self).SetBodyTracker(String.Name(String.From(value)))
 	return self
 }
 

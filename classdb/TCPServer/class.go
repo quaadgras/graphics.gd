@@ -138,7 +138,7 @@ If 'bind_address' is set as "0.0.0.0" (for IPv4) or "::" (for IPv6), the server 
 If 'bind_address' is set to any valid address (e.g. "192.168.1.101", "::1", etc.), the server will only listen on the interface with that address (or fail if no interface with the given address exists).
 */
 func (self Instance) Listen(port int) error { //gd:TCPServer.listen
-	return error(gd.ToError(Advanced(self).Listen(int64(port), String.New("*"))))
+	return error(gd.ToError(Advanced(self).Listen(int64(port), String.From("*"))))
 }
 
 /*
@@ -151,7 +151,7 @@ If 'bind_address' is set as "0.0.0.0" (for IPv4) or "::" (for IPv6), the server 
 If 'bind_address' is set to any valid address (e.g. "192.168.1.101", "::1", etc.), the server will only listen on the interface with that address (or fail if no interface with the given address exists).
 */
 func (self MoreArgs) Listen(port int, bind_address string) error { //gd:TCPServer.listen
-	return error(gd.ToError(Advanced(self).Listen(int64(port), String.New(bind_address))))
+	return error(gd.ToError(Advanced(self).Listen(int64(port), String.From(bind_address))))
 }
 
 /*

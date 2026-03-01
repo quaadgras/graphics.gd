@@ -164,7 +164,7 @@ Adds name for a blend shape that will be added with [AddSurface]. Must be called
 [AddSurface]: https://pkg.go.dev/graphics.gd/classdb/ImporterMesh#Instance.AddSurface
 */
 func (self Instance) AddBlendShape(name string) { //gd:ImporterMesh.add_blend_shape
-	Advanced(self).AddBlendShape(String.New(name))
+	Advanced(self).AddBlendShape(String.From(name))
 }
 
 /*
@@ -217,7 +217,7 @@ Note: When using indices, it is recommended to only use points, lines, or triang
 [Mesh.GetSurfaceCount]: https://pkg.go.dev/graphics.gd/classdb/Mesh#Instance.GetSurfaceCount
 */
 func (self Instance) AddSurface(primitive Mesh.PrimitiveType, arrays []any) { //gd:ImporterMesh.add_surface
-	Advanced(self).AddSurface(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]]([1][][]any{}[0]), Dictionary.Nil, [1]Material.Instance{}[0], String.New(""), int64(0))
+	Advanced(self).AddSurface(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]]([1][][]any{}[0]), Dictionary.Nil, [1]Material.Instance{}[0], String.From(""), int64(0))
 }
 
 /*
@@ -239,7 +239,7 @@ Note: When using indices, it is recommended to only use points, lines, or triang
 [Mesh.GetSurfaceCount]: https://pkg.go.dev/graphics.gd/classdb/Mesh#Instance.GetSurfaceCount
 */
 func (self MoreArgs) AddSurface(primitive Mesh.PrimitiveType, arrays []any, blend_shapes [][][]any, lods map[float32][]int32, material Material.Instance, name string, flags int) { //gd:ImporterMesh.add_surface
-	Advanced(self).AddSurface(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]](blend_shapes), gd.DictionaryFromMap(lods), material, String.New(name), int64(flags))
+	Advanced(self).AddSurface(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]](blend_shapes), gd.DictionaryFromMap(lods), material, String.From(name), int64(flags))
 }
 
 /*
@@ -324,7 +324,7 @@ Sets a name for a given surface.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetSurfaceName(surface_idx int, name string) Instance { //gd:ImporterMesh.set_surface_name
-	Advanced(self).SetSurfaceName(int64(surface_idx), String.New(name))
+	Advanced(self).SetSurfaceName(int64(surface_idx), String.From(name))
 	return self
 }
 

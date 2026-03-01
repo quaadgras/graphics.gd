@@ -154,7 +154,7 @@ Sets the target node that the end bone is trying to reach.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetTargetNode(index int, target_node string) Instance { //gd:IterateIK3D.set_target_node
-	Advanced(self).SetTargetNode(int64(index), Path.ToNode(String.New(target_node)))
+	Advanced(self).SetTargetNode(int64(index), Path.ToNode(String.From(target_node)))
 	return self
 }
 

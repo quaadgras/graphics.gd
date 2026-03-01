@@ -145,7 +145,7 @@ Returns 'self' to enable method chaining.
 [ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
 */
 func (self Instance) SetShaderParameter(param string, value any) Instance { //gd:ShaderMaterial.set_shader_parameter
-	Advanced(self).SetShaderParameter(String.Name(String.New(param)), variant.New(value))
+	Advanced(self).SetShaderParameter(String.Name(String.From(param)), variant.New(value))
 	return self
 }
 
@@ -153,7 +153,7 @@ func (self Instance) SetShaderParameter(param string, value any) Instance { //gd
 Returns the current value set for this material of a uniform in the shader.
 */
 func (self Instance) GetShaderParameter(param string) any { //gd:ShaderMaterial.get_shader_parameter
-	return any(Advanced(self).GetShaderParameter(String.Name(String.New(param))).Interface())
+	return any(Advanced(self).GetShaderParameter(String.Name(String.From(param))).Interface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -1026,7 +1026,7 @@ func (self Instance) VisibilityParent() string { //gd:Node3D.visibility_parent
 
 // SetVisibilityParent sets the property returned by [GetVisibilityParent]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetVisibilityParent(value string) Instance { //gd:Node3D.visibility_parent
-	class(self).SetVisibilityParent(Path.ToNode(String.New(value)))
+	class(self).SetVisibilityParent(Path.ToNode(String.From(value)))
 	return self
 }
 

@@ -270,7 +270,7 @@ Loads an AngelCode BMFont (.fnt, .font) bitmap font from file 'path'.
 Warning: This method should only be used in the editor or in cases when you need to load external fonts at run-time, such as fonts located at the user:// directory.
 */
 func (self Instance) LoadBitmapFont(path string) error { //gd:FontFile.load_bitmap_font
-	return error(gd.ToError(Advanced(self).LoadBitmapFont(String.New(path))))
+	return error(gd.ToError(Advanced(self).LoadBitmapFont(String.From(path))))
 }
 
 /*
@@ -279,7 +279,7 @@ Loads a TrueType (.ttf), OpenType (.otf), WOFF (.woff), WOFF2 (.woff2) or Type 1
 Warning: This method should only be used in the editor or in cases when you need to load external fonts at run-time, such as fonts located at the user:// directory.
 */
 func (self Instance) LoadDynamicFont(path string) error { //gd:FontFile.load_dynamic_font
-	return error(gd.ToError(Advanced(self).LoadDynamicFont(String.New(path))))
+	return error(gd.ToError(Advanced(self).LoadDynamicFont(String.From(path))))
 }
 
 /*
@@ -758,7 +758,7 @@ Returns 'self' to enable method chaining.
 [Font.IsLanguageSupported]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.IsLanguageSupported
 */
 func (self Instance) SetLanguageSupportOverride(language string, supported bool) Instance { //gd:FontFile.set_language_support_override
-	Advanced(self).SetLanguageSupportOverride(String.New(language), supported)
+	Advanced(self).SetLanguageSupportOverride(String.From(language), supported)
 	return self
 }
 
@@ -766,14 +766,14 @@ func (self Instance) SetLanguageSupportOverride(language string, supported bool)
 Returns true if support override is enabled for the 'language'.
 */
 func (self Instance) GetLanguageSupportOverride(language string) bool { //gd:FontFile.get_language_support_override
-	return bool(Advanced(self).GetLanguageSupportOverride(String.New(language)))
+	return bool(Advanced(self).GetLanguageSupportOverride(String.From(language)))
 }
 
 /*
 Remove language support override.
 */
 func (self Instance) RemoveLanguageSupportOverride(language string) { //gd:FontFile.remove_language_support_override
-	Advanced(self).RemoveLanguageSupportOverride(String.New(language))
+	Advanced(self).RemoveLanguageSupportOverride(String.From(language))
 }
 
 /*
@@ -791,7 +791,7 @@ Returns 'self' to enable method chaining.
 [Font.IsScriptSupported]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.IsScriptSupported
 */
 func (self Instance) SetScriptSupportOverride(script string, supported bool) Instance { //gd:FontFile.set_script_support_override
-	Advanced(self).SetScriptSupportOverride(String.New(script), supported)
+	Advanced(self).SetScriptSupportOverride(String.From(script), supported)
 	return self
 }
 
@@ -799,14 +799,14 @@ func (self Instance) SetScriptSupportOverride(script string, supported bool) Ins
 Returns true if support override is enabled for the 'script'.
 */
 func (self Instance) GetScriptSupportOverride(script string) bool { //gd:FontFile.get_script_support_override
-	return bool(Advanced(self).GetScriptSupportOverride(String.New(script)))
+	return bool(Advanced(self).GetScriptSupportOverride(String.From(script)))
 }
 
 /*
 Removes script support override.
 */
 func (self Instance) RemoveScriptSupportOverride(script string) { //gd:FontFile.remove_script_support_override
-	Advanced(self).RemoveScriptSupportOverride(String.New(script))
+	Advanced(self).RemoveScriptSupportOverride(String.From(script))
 }
 
 /*
@@ -932,7 +932,7 @@ Font family name.
 Returns the instance, so that property settings can be chained.
 */
 func (self Instance) SetFontName(value string) Instance { //gd:FontFile.font_name
-	class(self).SetFontName(String.New(value))
+	class(self).SetFontName(String.From(value))
 	return self
 }
 
@@ -941,7 +941,7 @@ Font style name.
 Returns the instance, so that property settings can be chained.
 */
 func (self Instance) SetStyleName(value string) Instance { //gd:FontFile.style_name
-	class(self).SetFontStyleName(String.New(value))
+	class(self).SetFontStyleName(String.From(value))
 	return self
 }
 

@@ -175,7 +175,7 @@ func (self Instance) LoadPath() string { //gd:CompressedTextureLayered.load_path
 
 // SetLoadPath sets the property returned by [GetLoadPath]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetLoadPath(value string) Instance { //gd:CompressedTextureLayered.load_path
-	class(self).Load(String.New(value))
+	class(self).Load(String.From(value))
 	return self
 }
 

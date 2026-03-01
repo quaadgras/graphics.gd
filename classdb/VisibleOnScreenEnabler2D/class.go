@@ -197,7 +197,7 @@ func (self Instance) EnableNodePath() string { //gd:VisibleOnScreenEnabler2D.ena
 
 // SetEnableNodePath sets the property returned by [GetEnableNodePath]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetEnableNodePath(value string) Instance { //gd:VisibleOnScreenEnabler2D.enable_node_path
-	class(self).SetEnableNodePath(Path.ToNode(String.New(value)))
+	class(self).SetEnableNodePath(Path.ToNode(String.From(value)))
 	return self
 }
 

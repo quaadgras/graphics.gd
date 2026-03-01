@@ -252,7 +252,7 @@ This method returns nothing, instead it emits the [OnSessionSupported] signal wi
 [WebXR's XRSessionMode]: https://developer.mozilla.org/en-US/docs/Web/API/XRSessionMode
 */
 func (self Instance) IsSessionSupported(session_mode string) { //gd:WebXRInterface.is_session_supported
-	Advanced(self).IsSessionSupported(String.New(session_mode))
+	Advanced(self).IsSessionSupported(String.From(session_mode))
 }
 
 /*
@@ -391,7 +391,7 @@ func (self Instance) SessionMode() string { //gd:WebXRInterface.session_mode
 
 // SetSessionMode sets the property returned by [GetSessionMode]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetSessionMode(value string) Instance { //gd:WebXRInterface.session_mode
-	class(self).SetSessionMode(String.New(value))
+	class(self).SetSessionMode(String.From(value))
 	return self
 }
 
@@ -414,7 +414,7 @@ func (self Instance) RequiredFeatures() string { //gd:WebXRInterface.required_fe
 
 // SetRequiredFeatures sets the property returned by [GetRequiredFeatures]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetRequiredFeatures(value string) Instance { //gd:WebXRInterface.required_features
-	class(self).SetRequiredFeatures(String.New(value))
+	class(self).SetRequiredFeatures(String.From(value))
 	return self
 }
 
@@ -436,7 +436,7 @@ func (self Instance) OptionalFeatures() string { //gd:WebXRInterface.optional_fe
 
 // SetOptionalFeatures sets the property returned by [GetOptionalFeatures]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetOptionalFeatures(value string) Instance { //gd:WebXRInterface.optional_features
-	class(self).SetOptionalFeatures(String.New(value))
+	class(self).SetOptionalFeatures(String.From(value))
 	return self
 }
 
@@ -461,7 +461,7 @@ func (self Instance) RequestedReferenceSpaceTypes() string { //gd:WebXRInterface
 
 // SetRequestedReferenceSpaceTypes sets the property returned by [GetRequestedReferenceSpaceTypes]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetRequestedReferenceSpaceTypes(value string) Instance { //gd:WebXRInterface.requested_reference_space_types
-	class(self).SetRequestedReferenceSpaceTypes(String.New(value))
+	class(self).SetRequestedReferenceSpaceTypes(String.From(value))
 	return self
 }
 

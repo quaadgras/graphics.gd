@@ -155,7 +155,7 @@ Note: This method only works on Android. On every other platform, this method do
 [Object]: https://pkg.go.dev/graphics.gd/variant/Object
 */
 func Wrap(name string) JavaClass.Instance { //gd:JavaClassWrapper.wrap
-	return JavaClass.Instance(Advanced().Wrap(String.New(name)))
+	return JavaClass.Instance(Advanced().Wrap(String.From(name)))
 }
 
 /*

@@ -8,17 +8,17 @@ import (
 
 // ToDirectory semantically represents a path to what is expected to be a directory/folder
 // on the filesystem.
-type ToDirectory String.Readable
+type ToDirectory String.Unicode
 
 // AsDirectory returns the given path as a directory.
 func AsDirectory[T String.Any](path T) ToDirectory {
 	return ToDirectory(String.New(path))
 }
 
-func (s ToDirectory) String() string               { return String.Readable(s).String() }
-func (s ToDirectory) MarshalText() ([]byte, error) { return String.Readable(s).MarshalText() }
+func (s ToDirectory) String() string               { return String.Unicode(s).String() }
+func (s ToDirectory) MarshalText() ([]byte, error) { return String.Unicode(s).MarshalText() }
 func (s *ToDirectory) UnmarshalText(text []byte) error {
-	return (*String.Readable)(s).UnmarshalText(text)
+	return (*String.Unicode)(s).UnmarshalText(text)
 }
 
 // Parent returns the parent directory if the directory is valid.

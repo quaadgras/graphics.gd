@@ -178,7 +178,7 @@ Sets menu item title.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetMenuTitle(menu int, title string) Instance { //gd:MenuBar.set_menu_title
-	Advanced(self).SetMenuTitle(int64(menu), String.New(title))
+	Advanced(self).SetMenuTitle(int64(menu), String.From(title))
 	return self
 }
 
@@ -195,7 +195,7 @@ Sets menu item tooltip.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetMenuTooltip(menu int, tooltip string) Instance { //gd:MenuBar.set_menu_tooltip
-	Advanced(self).SetMenuTooltip(int64(menu), String.New(tooltip))
+	Advanced(self).SetMenuTooltip(int64(menu), String.From(tooltip))
 	return self
 }
 
@@ -380,7 +380,7 @@ func (self Instance) Language() string { //gd:MenuBar.language
 
 // SetLanguage sets the property returned by [GetLanguage]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetLanguage(value string) Instance { //gd:MenuBar.language
-	class(self).SetLanguage(String.New(value))
+	class(self).SetLanguage(String.From(value))
 	return self
 }
 

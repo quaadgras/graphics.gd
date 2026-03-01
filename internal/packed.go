@@ -308,7 +308,7 @@ func NewPackedStringSlice(data []string) PackedStringArray {
 	return array
 }
 
-func NewPackedReadableStringSlice(data []StringType.Readable) PackedStringArray {
+func NewPackedReadableStringSlice(data []StringType.Unicode) PackedStringArray {
 	var array = NewPackedStringArray()
 	array.Resize(Int(len(data)))
 	for i, str := range data {

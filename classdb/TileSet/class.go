@@ -590,7 +590,7 @@ Sets a terrain's name.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetTerrainName(terrain_set int, terrain_index int, name string) Instance { //gd:TileSet.set_terrain_name
-	Advanced(self).SetTerrainName(int64(terrain_set), int64(terrain_index), String.New(name))
+	Advanced(self).SetTerrainName(int64(terrain_set), int64(terrain_index), String.From(name))
 	return self
 }
 
@@ -734,7 +734,7 @@ func (self Instance) RemoveCustomDataLayer(layer_index int) { //gd:TileSet.remov
 Returns the index of the custom data layer identified by the given name.
 */
 func (self Instance) GetCustomDataLayerByName(layer_name string) int { //gd:TileSet.get_custom_data_layer_by_name
-	return int(int(Advanced(self).GetCustomDataLayerByName(String.New(layer_name))))
+	return int(int(Advanced(self).GetCustomDataLayerByName(String.From(layer_name))))
 }
 
 /*
@@ -743,7 +743,7 @@ Sets the name of the custom data layer identified by the given index. Names are 
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetCustomDataLayerName(layer_index int, layer_name string) Instance { //gd:TileSet.set_custom_data_layer_name
-	Advanced(self).SetCustomDataLayerName(int64(layer_index), String.New(layer_name))
+	Advanced(self).SetCustomDataLayerName(int64(layer_index), String.From(layer_name))
 	return self
 }
 
@@ -751,7 +751,7 @@ func (self Instance) SetCustomDataLayerName(layer_index int, layer_name string) 
 Returns if there is a custom data layer named 'layer_name'.
 */
 func (self Instance) HasCustomDataLayerByName(layer_name string) bool { //gd:TileSet.has_custom_data_layer_by_name
-	return bool(Advanced(self).HasCustomDataLayerByName(String.New(layer_name)))
+	return bool(Advanced(self).HasCustomDataLayerByName(String.From(layer_name)))
 }
 
 /*

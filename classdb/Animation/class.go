@@ -284,14 +284,14 @@ For example, "character/skeleton:ankle" or "character/mesh:transform/local".
 [AnimationMixer.RootNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.RootNode
 */
 func (self Instance) TrackSetPath(track_idx int, path string) { //gd:Animation.track_set_path
-	Advanced(self).TrackSetPath(int64(track_idx), Path.ToNode(String.New(path)))
+	Advanced(self).TrackSetPath(int64(track_idx), Path.ToNode(String.From(path)))
 }
 
 /*
 Returns the index of the specified track. If the track is not found, return -1.
 */
 func (self Instance) FindTrack(path string, atype TrackType) int { //gd:Animation.find_track
-	return int(int(Advanced(self).FindTrack(Path.ToNode(String.New(path)), atype)))
+	return int(int(Advanced(self).FindTrack(Path.ToNode(String.From(path)), atype)))
 }
 
 /*
@@ -795,14 +795,14 @@ func (self Instance) AudioTrackIsUseBlend(track_idx int) bool { //gd:Animation.a
 Inserts a key with value 'animation' at the given 'time' (in seconds). The 'track_idx' must be the index of an Animation Track.
 */
 func (self Instance) AnimationTrackInsertKey(track_idx int, time Float.X, animation string) int { //gd:Animation.animation_track_insert_key
-	return int(int(Advanced(self).AnimationTrackInsertKey(int64(track_idx), float64(time), String.Name(String.New(animation)))))
+	return int(int(Advanced(self).AnimationTrackInsertKey(int64(track_idx), float64(time), String.Name(String.From(animation)))))
 }
 
 /*
 Sets the key identified by 'key_idx' to value 'animation'. The 'track_idx' must be the index of an Animation Track.
 */
 func (self Instance) AnimationTrackSetKeyAnimation(track_idx int, key_idx int, animation string) { //gd:Animation.animation_track_set_key_animation
-	Advanced(self).AnimationTrackSetKeyAnimation(int64(track_idx), int64(key_idx), String.Name(String.New(animation)))
+	Advanced(self).AnimationTrackSetKeyAnimation(int64(track_idx), int64(key_idx), String.Name(String.From(animation)))
 }
 
 /*
@@ -816,21 +816,21 @@ func (self Instance) AnimationTrackGetKeyAnimation(track_idx int, key_idx int) s
 Adds a marker to this Animation.
 */
 func (self Instance) AddMarker(name string, time Float.X) { //gd:Animation.add_marker
-	Advanced(self).AddMarker(String.Name(String.New(name)), float64(time))
+	Advanced(self).AddMarker(String.Name(String.From(name)), float64(time))
 }
 
 /*
 Removes the marker with the given name from this Animation.
 */
 func (self Instance) RemoveMarker(name string) { //gd:Animation.remove_marker
-	Advanced(self).RemoveMarker(String.Name(String.New(name)))
+	Advanced(self).RemoveMarker(String.Name(String.From(name)))
 }
 
 /*
 Returns true if this Animation contains a marker with the given name.
 */
 func (self Instance) HasMarker(name string) bool { //gd:Animation.has_marker
-	return bool(Advanced(self).HasMarker(String.Name(String.New(name))))
+	return bool(Advanced(self).HasMarker(String.Name(String.From(name))))
 }
 
 /*
@@ -858,7 +858,7 @@ func (self Instance) GetPrevMarker(time Float.X) string { //gd:Animation.get_pre
 Returns the given marker's time.
 */
 func (self Instance) GetMarkerTime(name string) Float.X { //gd:Animation.get_marker_time
-	return Float.X(Float.X(Advanced(self).GetMarkerTime(String.Name(String.New(name)))))
+	return Float.X(Float.X(Advanced(self).GetMarkerTime(String.Name(String.From(name)))))
 }
 
 /*
@@ -872,7 +872,7 @@ func (self Instance) GetMarkerNames() []string { //gd:Animation.get_marker_names
 Returns the given marker's color.
 */
 func (self Instance) GetMarkerColor(name string) Color.RGBA { //gd:Animation.get_marker_color
-	return Color.RGBA(Advanced(self).GetMarkerColor(String.Name(String.New(name))))
+	return Color.RGBA(Advanced(self).GetMarkerColor(String.Name(String.From(name))))
 }
 
 /*
@@ -881,7 +881,7 @@ Sets the given marker's color.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetMarkerColor(name string, color Color.RGBA) Instance { //gd:Animation.set_marker_color
-	Advanced(self).SetMarkerColor(String.Name(String.New(name)), Color.RGBA(color))
+	Advanced(self).SetMarkerColor(String.Name(String.From(name)), Color.RGBA(color))
 	return self
 }
 

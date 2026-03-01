@@ -169,7 +169,7 @@ func GetInterfaces() []map[int]string { //gd:TextServerManager.get_interfaces
 Finds an interface by its 'name'.
 */
 func FindInterface(name string) TextServer.Instance { //gd:TextServerManager.find_interface
-	return TextServer.Instance(Advanced().FindInterface(String.New(name)))
+	return TextServer.Instance(Advanced().FindInterface(String.From(name)))
 }
 
 /*

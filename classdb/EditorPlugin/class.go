@@ -988,7 +988,7 @@ func (Instance) _get_plugin_name(impl func(ptr gdclass.Receiver) string) (cb gd.
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -1225,7 +1225,7 @@ func (Instance) _get_unsaved_status(impl func(ptr gdclass.Receiver, for_scene st
 		defer pointers.End(gd.InternalString(for_scene))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, for_scene.String())
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -1433,7 +1433,7 @@ func (self Instance) RemoveControlFromContainer(container CustomControlContainer
 Adds a custom menu item to Project > Tools named 'name'. When clicked, the provided 'callable' will be called.
 */
 func (self Instance) AddToolMenuItem(name string, callable func()) { //gd:EditorPlugin.add_tool_menu_item
-	Advanced(self).AddToolMenuItem(String.New(name), Callable.New(callable))
+	Advanced(self).AddToolMenuItem(String.From(name), Callable.New(callable))
 }
 
 /*
@@ -1443,14 +1443,14 @@ Adds a custom [PopupMenu] submenu under Project > Tools > 'name'. Use [RemoveToo
 [RemoveToolMenuItem]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.RemoveToolMenuItem
 */
 func (self Instance) AddToolSubmenuItem(name string, submenu PopupMenu.Instance) { //gd:EditorPlugin.add_tool_submenu_item
-	Advanced(self).AddToolSubmenuItem(String.New(name), submenu)
+	Advanced(self).AddToolSubmenuItem(String.From(name), submenu)
 }
 
 /*
 Removes a menu 'name' from Project > Tools.
 */
 func (self Instance) RemoveToolMenuItem(name string) { //gd:EditorPlugin.remove_tool_menu_item
-	Advanced(self).RemoveToolMenuItem(String.New(name))
+	Advanced(self).RemoveToolMenuItem(String.From(name))
 }
 
 /*
@@ -1478,7 +1478,7 @@ Note: Custom types added this way are not true classes. They are just a helper t
 [Handles]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
 */
 func (self Instance) AddCustomType(atype string, base string, script Script.Instance, icon Texture2D.Instance) { //gd:EditorPlugin.add_custom_type
-	Advanced(self).AddCustomType(String.New(atype), String.New(base), script, icon)
+	Advanced(self).AddCustomType(String.From(atype), String.From(base), script, icon)
 }
 
 /*
@@ -1487,7 +1487,7 @@ Removes a custom type added by [AddCustomType].
 [AddCustomType]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.AddCustomType
 */
 func (self Instance) RemoveCustomType(atype string) { //gd:EditorPlugin.remove_custom_type
-	Advanced(self).RemoveCustomType(String.New(atype))
+	Advanced(self).RemoveCustomType(String.From(atype))
 }
 
 /*
@@ -1552,7 +1552,7 @@ Note See the default editor bottom panel shortcuts in the Editor Settings for in
 [RemoveControlFromBottomPanel]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.RemoveControlFromBottomPanel
 */
 func (self Instance) AddControlToBottomPanel(control Control.Instance, title string) Button.Instance { //gd:EditorPlugin.add_control_to_bottom_panel
-	return Button.Instance(Advanced(self).AddControlToBottomPanel(control, String.New(title), [1]Shortcut.Instance{}[0]))
+	return Button.Instance(Advanced(self).AddControlToBottomPanel(control, String.From(title), [1]Shortcut.Instance{}[0]))
 }
 
 /*
@@ -1566,7 +1566,7 @@ Note See the default editor bottom panel shortcuts in the Editor Settings for in
 [RemoveControlFromBottomPanel]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.RemoveControlFromBottomPanel
 */
 func (self MoreArgs) AddControlToBottomPanel(control Control.Instance, title string, shortcut Shortcut.Instance) Button.Instance { //gd:EditorPlugin.add_control_to_bottom_panel
-	return Button.Instance(Advanced(self).AddControlToBottomPanel(control, String.New(title), shortcut))
+	return Button.Instance(Advanced(self).AddControlToBottomPanel(control, String.From(title), shortcut))
 }
 
 /*
@@ -1582,14 +1582,14 @@ func (self Instance) RemoveControlFromBottomPanel(control Control.Instance) { //
 Adds a script at 'path' to the Autoload list as 'name'.
 */
 func (self Instance) AddAutoloadSingleton(name string, path string) { //gd:EditorPlugin.add_autoload_singleton
-	Advanced(self).AddAutoloadSingleton(String.New(name), String.New(path))
+	Advanced(self).AddAutoloadSingleton(String.From(name), String.From(path))
 }
 
 /*
 Removes an Autoload 'name' from the list.
 */
 func (self Instance) RemoveAutoloadSingleton(name string) { //gd:EditorPlugin.remove_autoload_singleton
-	Advanced(self).RemoveAutoloadSingleton(String.New(name))
+	Advanced(self).RemoveAutoloadSingleton(String.From(name))
 }
 
 /*

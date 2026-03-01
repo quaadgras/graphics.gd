@@ -213,7 +213,7 @@ func (self Instance) GetGlobalName() string { //gd:Script.get_global_name
 Returns true if the script, or a base class, defines a signal with the given name.
 */
 func (self Instance) HasScriptSignal(signal_name string) bool { //gd:Script.has_script_signal
-	return bool(Advanced(self).HasScriptSignal(String.Name(String.New(signal_name))))
+	return bool(Advanced(self).HasScriptSignal(String.Name(String.From(signal_name))))
 }
 
 /*
@@ -263,7 +263,7 @@ func (self Instance) GetScriptConstantMap() map[string]any { //gd:Script.get_scr
 Returns the default value of the specified property.
 */
 func (self Instance) GetPropertyDefaultValue(property string) any { //gd:Script.get_property_default_value
-	return any(Advanced(self).GetPropertyDefaultValue(String.Name(String.New(property))).Interface())
+	return any(Advanced(self).GetPropertyDefaultValue(String.Name(String.From(property))).Interface())
 }
 
 /*
@@ -339,7 +339,7 @@ func (self Instance) SourceCode() string { //gd:Script.source_code
 
 // SetSourceCode sets the property returned by [GetSourceCode]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetSourceCode(value string) Instance { //gd:Script.source_code
-	class(self).SetSourceCode(String.New(value))
+	class(self).SetSourceCode(String.From(value))
 	return self
 }
 

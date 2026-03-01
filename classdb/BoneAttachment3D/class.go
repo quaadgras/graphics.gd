@@ -202,7 +202,7 @@ func (self Instance) BoneName() string { //gd:BoneAttachment3D.bone_name
 
 // SetBoneName sets the property returned by [GetBoneName]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetBoneName(value string) Instance { //gd:BoneAttachment3D.bone_name
-	class(self).SetBoneName(String.New(value))
+	class(self).SetBoneName(String.From(value))
 	return self
 }
 
@@ -265,7 +265,7 @@ func (self Instance) ExternalSkeleton() string { //gd:BoneAttachment3D.external_
 
 // SetExternalSkeleton sets the property returned by [GetExternalSkeleton]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetExternalSkeleton(value string) Instance { //gd:BoneAttachment3D.external_skeleton
-	class(self).SetExternalSkeleton(Path.ToNode(String.New(value)))
+	class(self).SetExternalSkeleton(Path.ToNode(String.From(value)))
 	return self
 }
 

@@ -153,7 +153,7 @@ Creates a new [AudioStreamOggVorbis] instance from the given file path. The file
 */
 func LoadFromFile(path string) Instance { //gd:AudioStreamOggVorbis.load_from_file
 	self := Instance{}
-	return Instance(Advanced(self).LoadFromFile(String.New(path)))
+	return Instance(Advanced(self).LoadFromFile(String.From(path)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

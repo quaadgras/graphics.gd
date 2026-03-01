@@ -364,7 +364,7 @@ Note: Real height of the string is context-dependent and can be significantly di
 [GetStringSize]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.GetStringSize
 */
 func (self Instance) GetStringSize(text string) Vector2.XY { //gd:Font.get_string_size
-	return Vector2.XY(Advanced(self).GetStringSize(String.New(text), 0, float64(-1), int64(16), 3, 0, 0))
+	return Vector2.XY(Advanced(self).GetStringSize(String.From(text), 0, float64(-1), int64(16), 3, 0, 0))
 }
 
 /*
@@ -385,7 +385,7 @@ Note: Real height of the string is context-dependent and can be significantly di
 [GetStringSize]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.GetStringSize
 */
 func (self MoreArgs) GetStringSize(text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) Vector2.XY { //gd:Font.get_string_size
-	return Vector2.XY(Advanced(self).GetStringSize(String.New(text), alignment, float64(width), int64(font_size), justification_flags, direction, orientation))
+	return Vector2.XY(Advanced(self).GetStringSize(String.From(text), alignment, float64(width), int64(font_size), justification_flags, direction, orientation))
 }
 
 /*
@@ -396,7 +396,7 @@ See also [DrawMultilineString].
 [DrawMultilineString]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.DrawMultilineString
 */
 func (self Instance) GetMultilineStringSize(text string) Vector2.XY { //gd:Font.get_multiline_string_size
-	return Vector2.XY(Advanced(self).GetMultilineStringSize(String.New(text), 0, float64(-1), int64(16), int64(-1), 3, 3, 0, 0))
+	return Vector2.XY(Advanced(self).GetMultilineStringSize(String.From(text), 0, float64(-1), int64(16), int64(-1), 3, 3, 0, 0))
 }
 
 /*
@@ -407,7 +407,7 @@ See also [DrawMultilineString].
 [DrawMultilineString]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.DrawMultilineString
 */
 func (self MoreArgs) GetMultilineStringSize(text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, max_lines int, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) Vector2.XY { //gd:Font.get_multiline_string_size
-	return Vector2.XY(Advanced(self).GetMultilineStringSize(String.New(text), alignment, float64(width), int64(font_size), int64(max_lines), brk_flags, justification_flags, direction, orientation))
+	return Vector2.XY(Advanced(self).GetMultilineStringSize(String.From(text), alignment, float64(width), int64(font_size), int64(max_lines), brk_flags, justification_flags, direction, orientation))
 }
 
 /*
@@ -418,7 +418,7 @@ See also [CanvasItem.DrawString].
 [CanvasItem.DrawString]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawString
 */
 func (self Instance) DrawString(canvas_item RID.CanvasItem, pos Vector2.XY, text string) { //gd:Font.draw_string
-	Advanced(self).DrawString(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 0, 0, float64(0.0))
+	Advanced(self).DrawString(RID.Any(canvas_item), Vector2.XY(pos), String.From(text), 0, float64(-1), int64(16), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 0, 0, float64(0.0))
 }
 
 /*
@@ -429,7 +429,7 @@ See also [CanvasItem.DrawString].
 [CanvasItem.DrawString]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawString
 */
 func (self MoreArgs) DrawString(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling Float.X) { //gd:Font.draw_string
-	Advanced(self).DrawString(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), Color.RGBA(modulate), justification_flags, direction, orientation, float64(oversampling))
+	Advanced(self).DrawString(RID.Any(canvas_item), Vector2.XY(pos), String.From(text), alignment, float64(width), int64(font_size), Color.RGBA(modulate), justification_flags, direction, orientation, float64(oversampling))
 }
 
 /*
@@ -440,7 +440,7 @@ See also [CanvasItem.DrawMultilineString].
 [CanvasItem.DrawMultilineString]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultilineString
 */
 func (self Instance) DrawMultilineString(canvas_item RID.CanvasItem, pos Vector2.XY, text string) { //gd:Font.draw_multiline_string
-	Advanced(self).DrawMultilineString(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(-1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0, float64(0.0))
+	Advanced(self).DrawMultilineString(RID.Any(canvas_item), Vector2.XY(pos), String.From(text), 0, float64(-1), int64(16), int64(-1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0, float64(0.0))
 }
 
 /*
@@ -451,7 +451,7 @@ See also [CanvasItem.DrawMultilineString].
 [CanvasItem.DrawMultilineString]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultilineString
 */
 func (self MoreArgs) DrawMultilineString(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, max_lines int, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling Float.X) { //gd:Font.draw_multiline_string
-	Advanced(self).DrawMultilineString(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(max_lines), Color.RGBA(modulate), brk_flags, justification_flags, direction, orientation, float64(oversampling))
+	Advanced(self).DrawMultilineString(RID.Any(canvas_item), Vector2.XY(pos), String.From(text), alignment, float64(width), int64(font_size), int64(max_lines), Color.RGBA(modulate), brk_flags, justification_flags, direction, orientation, float64(oversampling))
 }
 
 /*
@@ -462,7 +462,7 @@ See also [CanvasItem.DrawStringOutline].
 [CanvasItem.DrawStringOutline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawStringOutline
 */
 func (self Instance) DrawStringOutline(canvas_item RID.CanvasItem, pos Vector2.XY, text string) { //gd:Font.draw_string_outline
-	Advanced(self).DrawStringOutline(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 0, 0, float64(0.0))
+	Advanced(self).DrawStringOutline(RID.Any(canvas_item), Vector2.XY(pos), String.From(text), 0, float64(-1), int64(16), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 0, 0, float64(0.0))
 }
 
 /*
@@ -473,7 +473,7 @@ See also [CanvasItem.DrawStringOutline].
 [CanvasItem.DrawStringOutline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawStringOutline
 */
 func (self MoreArgs) DrawStringOutline(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, size int, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling Float.X) { //gd:Font.draw_string_outline
-	Advanced(self).DrawStringOutline(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(size), Color.RGBA(modulate), justification_flags, direction, orientation, float64(oversampling))
+	Advanced(self).DrawStringOutline(RID.Any(canvas_item), Vector2.XY(pos), String.From(text), alignment, float64(width), int64(font_size), int64(size), Color.RGBA(modulate), justification_flags, direction, orientation, float64(oversampling))
 }
 
 /*
@@ -484,7 +484,7 @@ See also [CanvasItem.DrawMultilineStringOutline].
 [CanvasItem.DrawMultilineStringOutline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultilineStringOutline
 */
 func (self Instance) DrawMultilineStringOutline(canvas_item RID.CanvasItem, pos Vector2.XY, text string) { //gd:Font.draw_multiline_string_outline
-	Advanced(self).DrawMultilineStringOutline(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(-1), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0, float64(0.0))
+	Advanced(self).DrawMultilineStringOutline(RID.Any(canvas_item), Vector2.XY(pos), String.From(text), 0, float64(-1), int64(16), int64(-1), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0, float64(0.0))
 }
 
 /*
@@ -495,7 +495,7 @@ See also [CanvasItem.DrawMultilineStringOutline].
 [CanvasItem.DrawMultilineStringOutline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultilineStringOutline
 */
 func (self MoreArgs) DrawMultilineStringOutline(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, max_lines int, size int, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling Float.X) { //gd:Font.draw_multiline_string_outline
-	Advanced(self).DrawMultilineStringOutline(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(max_lines), int64(size), Color.RGBA(modulate), brk_flags, justification_flags, direction, orientation, float64(oversampling))
+	Advanced(self).DrawMultilineStringOutline(RID.Any(canvas_item), Vector2.XY(pos), String.From(text), alignment, float64(width), int64(font_size), int64(max_lines), int64(size), Color.RGBA(modulate), brk_flags, justification_flags, direction, orientation, float64(oversampling))
 }
 
 /*
@@ -581,7 +581,7 @@ Returns true if the font supports the given language (as a [ISO 639] code).
 [ISO 639]: https://en.wikipedia.org/wiki/ISO_639-1
 */
 func (self Instance) IsLanguageSupported(language string) bool { //gd:Font.is_language_supported
-	return bool(Advanced(self).IsLanguageSupported(String.New(language)))
+	return bool(Advanced(self).IsLanguageSupported(String.From(language)))
 }
 
 /*
@@ -590,7 +590,7 @@ Returns true if the font supports the given script (as a [ISO 15924] code).
 [ISO 15924]: https://en.wikipedia.org/wiki/ISO_15924
 */
 func (self Instance) IsScriptSupported(script string) bool { //gd:Font.is_script_supported
-	return bool(Advanced(self).IsScriptSupported(String.New(script)))
+	return bool(Advanced(self).IsScriptSupported(String.From(script)))
 }
 
 /*

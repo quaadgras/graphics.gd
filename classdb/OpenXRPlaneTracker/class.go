@@ -273,7 +273,7 @@ func (self Instance) PlaneLabel() string { //gd:OpenXRPlaneTracker.plane_label
 
 // SetPlaneLabel sets the property returned by [GetPlaneLabel]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetPlaneLabel(value string) Instance { //gd:OpenXRPlaneTracker.plane_label
-	class(self).SetPlaneLabel(String.New(value))
+	class(self).SetPlaneLabel(String.From(value))
 	return self
 }
 

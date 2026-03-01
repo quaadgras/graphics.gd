@@ -298,7 +298,7 @@ Returns 'self' to enable method chaining.
 [Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
 */
 func (self Instance) SetPointPinned(point_index int, pinned bool) Instance { //gd:SoftBody3D.set_point_pinned
-	Advanced(self).SetPointPinned(int64(point_index), pinned, Path.ToNode(String.New("")), int64(-1))
+	Advanced(self).SetPointPinned(int64(point_index), pinned, Path.ToNode(String.From("")), int64(-1))
 	return self
 }
 
@@ -310,7 +310,7 @@ Returns 'self' to enable method chaining.
 [Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
 */
 func (self MoreArgs) SetPointPinned(point_index int, pinned bool, attachment_path string, insert_at int) MoreArgs { //gd:SoftBody3D.set_point_pinned
-	Advanced(self).SetPointPinned(int64(point_index), pinned, Path.ToNode(String.New(attachment_path)), int64(insert_at))
+	Advanced(self).SetPointPinned(int64(point_index), pinned, Path.ToNode(String.From(attachment_path)), int64(insert_at))
 	return self
 }
 
@@ -410,7 +410,7 @@ func (self Instance) ParentCollisionIgnore() string { //gd:SoftBody3D.parent_col
 
 // SetParentCollisionIgnore sets the property returned by [GetParentCollisionIgnore]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetParentCollisionIgnore(value string) Instance { //gd:SoftBody3D.parent_collision_ignore
-	class(self).SetParentCollisionIgnore(Path.ToNode(String.New(value)))
+	class(self).SetParentCollisionIgnore(Path.ToNode(String.From(value)))
 	return self
 }
 

@@ -1315,7 +1315,7 @@ func (Instance) _get_name(impl func(ptr gdclass.Receiver) string) (cb gd.Extensi
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -1380,7 +1380,7 @@ func (Instance) _get_support_data_filename(impl func(ptr gdclass.Receiver) strin
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -1396,7 +1396,7 @@ func (Instance) _get_support_data_info(impl func(ptr gdclass.Receiver) string) (
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -1481,7 +1481,7 @@ func (Instance) _tag_to_name(impl func(ptr gdclass.Receiver, tag int) string) (c
 		var tag = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(tag))
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -1622,7 +1622,7 @@ func (Instance) _font_get_name(impl func(ptr gdclass.Receiver, font_rid RID.Font
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, RID.Font(font_rid))
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -1669,7 +1669,7 @@ func (Instance) _font_get_style_name(impl func(ptr gdclass.Receiver, font_rid RI
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, RID.Font(font_rid))
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -2875,7 +2875,7 @@ func (Instance) _font_get_supported_chars(impl func(ptr gdclass.Receiver, font_r
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, RID.Font(font_rid))
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -3365,7 +3365,7 @@ func (Instance) _shaped_text_get_custom_punctuation(impl func(ptr gdclass.Receiv
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, RID.TextBuffer(shaped))
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -3576,7 +3576,7 @@ func (Instance) _shaped_get_text(impl func(ptr gdclass.Receiver, shaped RID.Text
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, RID.TextBuffer(shaped))
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -3645,7 +3645,7 @@ func (Instance) _shaped_get_span_text(impl func(ptr gdclass.Receiver, shaped RID
 		var index = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, RID.TextBuffer(shaped), int(index))
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -3710,7 +3710,7 @@ func (Instance) _shaped_get_run_text(impl func(ptr gdclass.Receiver, shaped RID.
 		var index = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, RID.TextBuffer(shaped), int(index))
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -3767,7 +3767,7 @@ func (Instance) _shaped_get_run_language(impl func(ptr gdclass.Receiver, shaped 
 		var index = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, RID.TextBuffer(shaped), int(index))
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -4425,7 +4425,7 @@ func (Instance) _format_number(impl func(ptr gdclass.Receiver, number string, la
 		defer pointers.End(gd.InternalString(language))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, number.String(), language.String())
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -4447,7 +4447,7 @@ func (Instance) _parse_number(impl func(ptr gdclass.Receiver, number string, lan
 		defer pointers.End(gd.InternalString(language))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, number.String(), language.String())
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -4465,7 +4465,7 @@ func (Instance) _percent_sign(impl func(ptr gdclass.Receiver, language string) s
 		defer pointers.End(gd.InternalString(language))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, language.String())
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -4483,7 +4483,7 @@ func (Instance) _strip_diacritics(impl func(ptr gdclass.Receiver, s string) stri
 		defer pointers.End(gd.InternalString(s))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, s.String())
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -4593,7 +4593,7 @@ func (Instance) _string_to_upper(impl func(ptr gdclass.Receiver, s string, langu
 		defer pointers.End(gd.InternalString(language))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, s.String(), language.String())
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -4613,7 +4613,7 @@ func (Instance) _string_to_lower(impl func(ptr gdclass.Receiver, s string, langu
 		defer pointers.End(gd.InternalString(language))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, s.String(), language.String())
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -4633,7 +4633,7 @@ func (Instance) _string_to_title(impl func(ptr gdclass.Receiver, s string, langu
 		defer pointers.End(gd.InternalString(language))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, s.String(), language.String())
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return

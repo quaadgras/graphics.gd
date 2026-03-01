@@ -192,7 +192,7 @@ func (self Instance) Animation() string { //gd:AnimationNodeAnimation.animation
 
 // SetAnimation sets the property returned by [GetAnimation]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetAnimation(value string) Instance { //gd:AnimationNodeAnimation.animation
-	class(self).SetAnimation(String.Name(String.New(value)))
+	class(self).SetAnimation(String.Name(String.From(value)))
 	return self
 }
 

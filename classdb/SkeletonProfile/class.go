@@ -173,7 +173,7 @@ Returns 'self' to enable method chaining.
 [BoneMap]: https://pkg.go.dev/graphics.gd/classdb/BoneMap
 */
 func (self Instance) SetGroupName(group_idx int, group_name string) Instance { //gd:SkeletonProfile.set_group_name
-	Advanced(self).SetGroupName(int64(group_idx), String.Name(String.New(group_name)))
+	Advanced(self).SetGroupName(int64(group_idx), String.Name(String.From(group_name)))
 	return self
 }
 
@@ -202,7 +202,7 @@ func (self Instance) SetTexture(group_idx int, texture Texture2D.Instance) Insta
 Returns the bone index that matches 'bone_name' as its name.
 */
 func (self Instance) FindBone(bone_name string) int { //gd:SkeletonProfile.find_bone
-	return int(int(Advanced(self).FindBone(String.Name(String.New(bone_name)))))
+	return int(int(Advanced(self).FindBone(String.Name(String.From(bone_name)))))
 }
 
 /*
@@ -226,7 +226,7 @@ Returns 'self' to enable method chaining.
 [BoneMap]: https://pkg.go.dev/graphics.gd/classdb/BoneMap
 */
 func (self Instance) SetBoneName(bone_idx int, bone_name string) Instance { //gd:SkeletonProfile.set_bone_name
-	Advanced(self).SetBoneName(int64(bone_idx), String.Name(String.New(bone_name)))
+	Advanced(self).SetBoneName(int64(bone_idx), String.Name(String.From(bone_name)))
 	return self
 }
 
@@ -243,7 +243,7 @@ Sets the bone with name 'bone_parent' as the parent of the bone at 'bone_idx'. I
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetBoneParent(bone_idx int, bone_parent string) Instance { //gd:SkeletonProfile.set_bone_parent
-	Advanced(self).SetBoneParent(int64(bone_idx), String.Name(String.New(bone_parent)))
+	Advanced(self).SetBoneParent(int64(bone_idx), String.Name(String.From(bone_parent)))
 	return self
 }
 
@@ -279,7 +279,7 @@ Sets the bone with name 'bone_tail' as the tail of the bone at 'bone_idx'.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetBoneTail(bone_idx int, bone_tail string) Instance { //gd:SkeletonProfile.set_bone_tail
-	Advanced(self).SetBoneTail(int64(bone_idx), String.Name(String.New(bone_tail)))
+	Advanced(self).SetBoneTail(int64(bone_idx), String.Name(String.From(bone_tail)))
 	return self
 }
 
@@ -338,7 +338,7 @@ Sets the group of the bone at 'bone_idx'.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetGroup(bone_idx int, group string) Instance { //gd:SkeletonProfile.set_group
-	Advanced(self).SetGroup(int64(bone_idx), String.Name(String.New(group)))
+	Advanced(self).SetGroup(int64(bone_idx), String.Name(String.From(group)))
 	return self
 }
 
@@ -415,7 +415,7 @@ func (self Instance) RootBone() string { //gd:SkeletonProfile.root_bone
 
 // SetRootBone sets the property returned by [GetRootBone]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetRootBone(value string) Instance { //gd:SkeletonProfile.root_bone
-	class(self).SetRootBone(String.Name(String.New(value)))
+	class(self).SetRootBone(String.Name(String.From(value)))
 	return self
 }
 
@@ -430,7 +430,7 @@ func (self Instance) ScaleBaseBone() string { //gd:SkeletonProfile.scale_base_bo
 
 // SetScaleBaseBone sets the property returned by [GetScaleBaseBone]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetScaleBaseBone(value string) Instance { //gd:SkeletonProfile.scale_base_bone
-	class(self).SetScaleBaseBone(String.Name(String.New(value)))
+	class(self).SetScaleBaseBone(String.Name(String.From(value)))
 	return self
 }
 

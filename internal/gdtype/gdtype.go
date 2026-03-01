@@ -104,11 +104,11 @@ func (name Name) ConvertToSimple(val, simple string) string {
 		}
 		return fmt.Sprintf("gd.DictionaryFromMap(%v)", val)
 	case "String.Readable":
-		return fmt.Sprintf("String.New(%v)", val)
+		return fmt.Sprintf("String.From(%v)", val)
 	case "Path.ToNode":
-		return fmt.Sprintf("Path.ToNode(String.New(%v))", val)
+		return fmt.Sprintf("Path.ToNode(String.From(%v))", val)
 	case "String.Name":
-		return fmt.Sprintf("String.Name(String.New(%v))", val)
+		return fmt.Sprintf("String.Name(String.From(%v))", val)
 	case "int64", "float64", "Vector2.XY", "Vector2i.XY", "Rect2.PositionSize", "Rect2i.PositionSize",
 		"Vector3.XYZ", "Vector3i.XYZ", "Transform2D.OriginXY", "Quaternion.IJKL",
 		"AABB.PositionSize", "Color.RGBA", "Plane.NormalD", "Basis.XYZ", "Transform3D.BasisOrigin",

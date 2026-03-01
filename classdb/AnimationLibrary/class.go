@@ -127,7 +127,7 @@ type Any interface {
 Adds the 'animation' to the library, accessible by the key 'name'.
 */
 func (self Instance) AddAnimation(name string, animation Animation.Instance) error { //gd:AnimationLibrary.add_animation
-	return error(gd.ToError(Advanced(self).AddAnimation(String.Name(String.New(name)), animation)))
+	return error(gd.ToError(Advanced(self).AddAnimation(String.Name(String.From(name)), animation)))
 }
 
 /*
@@ -136,7 +136,7 @@ Removes the [Animation] with the key 'name'.
 [Animation]: https://pkg.go.dev/graphics.gd/classdb/Animation
 */
 func (self Instance) RemoveAnimation(name string) { //gd:AnimationLibrary.remove_animation
-	Advanced(self).RemoveAnimation(String.Name(String.New(name)))
+	Advanced(self).RemoveAnimation(String.Name(String.From(name)))
 }
 
 /*
@@ -145,7 +145,7 @@ Changes the key of the [Animation] associated with the key 'name' to 'newname'.
 [Animation]: https://pkg.go.dev/graphics.gd/classdb/Animation
 */
 func (self Instance) RenameAnimation(name string, newname string) { //gd:AnimationLibrary.rename_animation
-	Advanced(self).RenameAnimation(String.Name(String.New(name)), String.Name(String.New(newname)))
+	Advanced(self).RenameAnimation(String.Name(String.From(name)), String.Name(String.From(newname)))
 }
 
 /*
@@ -154,7 +154,7 @@ Returns true if the library stores an [Animation] with 'name' as the key.
 [Animation]: https://pkg.go.dev/graphics.gd/classdb/Animation
 */
 func (self Instance) HasAnimation(name string) bool { //gd:AnimationLibrary.has_animation
-	return bool(Advanced(self).HasAnimation(String.Name(String.New(name))))
+	return bool(Advanced(self).HasAnimation(String.Name(String.From(name))))
 }
 
 /*
@@ -163,7 +163,7 @@ Returns the [Animation] with the key 'name'. If the animation does not exist, nu
 [Animation]: https://pkg.go.dev/graphics.gd/classdb/Animation
 */
 func (self Instance) GetAnimation(name string) Animation.Instance { //gd:AnimationLibrary.get_animation
-	return Animation.Instance(Advanced(self).GetAnimation(String.Name(String.New(name))))
+	return Animation.Instance(Advanced(self).GetAnimation(String.Name(String.From(name))))
 }
 
 /*

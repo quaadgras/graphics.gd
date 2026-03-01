@@ -510,7 +510,7 @@ See also [GetThemeIcon].
 [RemoveThemeIconOverride]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.RemoveThemeIconOverride
 */
 func (self Instance) AddThemeIconOverride(name string, texture Texture2D.Instance) { //gd:Window.add_theme_icon_override
-	Advanced(self).AddThemeIconOverride(String.Name(String.New(name)), texture)
+	Advanced(self).AddThemeIconOverride(String.Name(String.From(name)), texture)
 }
 
 /*
@@ -524,7 +524,7 @@ See also [GetThemeStylebox] and [Control.AddThemeStyleboxOverride] for more deta
 [StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
 */
 func (self Instance) AddThemeStyleboxOverride(name string, stylebox StyleBox.Instance) { //gd:Window.add_theme_stylebox_override
-	Advanced(self).AddThemeStyleboxOverride(String.Name(String.New(name)), stylebox)
+	Advanced(self).AddThemeStyleboxOverride(String.Name(String.From(name)), stylebox)
 }
 
 /*
@@ -537,7 +537,7 @@ See also [GetThemeFont].
 [RemoveThemeFontOverride]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.RemoveThemeFontOverride
 */
 func (self Instance) AddThemeFontOverride(name string, font Font.Instance) { //gd:Window.add_theme_font_override
-	Advanced(self).AddThemeFontOverride(String.Name(String.New(name)), font)
+	Advanced(self).AddThemeFontOverride(String.Name(String.From(name)), font)
 }
 
 /*
@@ -549,7 +549,7 @@ See also [GetThemeFontSize].
 [RemoveThemeFontSizeOverride]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.RemoveThemeFontSizeOverride
 */
 func (self Instance) AddThemeFontSizeOverride(name string, font_size int) { //gd:Window.add_theme_font_size_override
-	Advanced(self).AddThemeFontSizeOverride(String.Name(String.New(name)), int64(font_size))
+	Advanced(self).AddThemeFontSizeOverride(String.Name(String.From(name)), int64(font_size))
 }
 
 /*
@@ -563,7 +563,7 @@ See also [GetThemeColor] and [Control.AddThemeColorOverride] for more details.
 [RemoveThemeColorOverride]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.RemoveThemeColorOverride
 */
 func (self Instance) AddThemeColorOverride(name string, color Color.RGBA) { //gd:Window.add_theme_color_override
-	Advanced(self).AddThemeColorOverride(String.Name(String.New(name)), Color.RGBA(color))
+	Advanced(self).AddThemeColorOverride(String.Name(String.From(name)), Color.RGBA(color))
 }
 
 /*
@@ -575,7 +575,7 @@ See also [GetThemeConstant].
 [RemoveThemeConstantOverride]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.RemoveThemeConstantOverride
 */
 func (self Instance) AddThemeConstantOverride(name string, constant int) { //gd:Window.add_theme_constant_override
-	Advanced(self).AddThemeConstantOverride(String.Name(String.New(name)), int64(constant))
+	Advanced(self).AddThemeConstantOverride(String.Name(String.From(name)), int64(constant))
 }
 
 /*
@@ -584,7 +584,7 @@ Removes a local override for a theme icon with the specified 'name' previously a
 [AddThemeIconOverride]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.AddThemeIconOverride
 */
 func (self Instance) RemoveThemeIconOverride(name string) { //gd:Window.remove_theme_icon_override
-	Advanced(self).RemoveThemeIconOverride(String.Name(String.New(name)))
+	Advanced(self).RemoveThemeIconOverride(String.Name(String.From(name)))
 }
 
 /*
@@ -594,7 +594,7 @@ Removes a local override for a theme [StyleBox] with the specified 'name' previo
 [StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
 */
 func (self Instance) RemoveThemeStyleboxOverride(name string) { //gd:Window.remove_theme_stylebox_override
-	Advanced(self).RemoveThemeStyleboxOverride(String.Name(String.New(name)))
+	Advanced(self).RemoveThemeStyleboxOverride(String.Name(String.From(name)))
 }
 
 /*
@@ -604,7 +604,7 @@ Removes a local override for a theme [Font] with the specified 'name' previously
 [Font]: https://pkg.go.dev/graphics.gd/classdb/Font
 */
 func (self Instance) RemoveThemeFontOverride(name string) { //gd:Window.remove_theme_font_override
-	Advanced(self).RemoveThemeFontOverride(String.Name(String.New(name)))
+	Advanced(self).RemoveThemeFontOverride(String.Name(String.From(name)))
 }
 
 /*
@@ -613,7 +613,7 @@ Removes a local override for a theme font size with the specified 'name' previou
 [AddThemeFontSizeOverride]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.AddThemeFontSizeOverride
 */
 func (self Instance) RemoveThemeFontSizeOverride(name string) { //gd:Window.remove_theme_font_size_override
-	Advanced(self).RemoveThemeFontSizeOverride(String.Name(String.New(name)))
+	Advanced(self).RemoveThemeFontSizeOverride(String.Name(String.From(name)))
 }
 
 /*
@@ -623,7 +623,7 @@ Removes a local override for a theme [Color.RGBA] with the specified 'name' prev
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 */
 func (self Instance) RemoveThemeColorOverride(name string) { //gd:Window.remove_theme_color_override
-	Advanced(self).RemoveThemeColorOverride(String.Name(String.New(name)))
+	Advanced(self).RemoveThemeColorOverride(String.Name(String.From(name)))
 }
 
 /*
@@ -632,7 +632,7 @@ Removes a local override for a theme constant with the specified 'name' previous
 [AddThemeConstantOverride]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.AddThemeConstantOverride
 */
 func (self Instance) RemoveThemeConstantOverride(name string) { //gd:Window.remove_theme_constant_override
-	Advanced(self).RemoveThemeConstantOverride(String.Name(String.New(name)))
+	Advanced(self).RemoveThemeConstantOverride(String.Name(String.From(name)))
 }
 
 /*
@@ -644,7 +644,7 @@ See [Control.GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self Instance) GetThemeIcon(name string) Texture2D.Instance { //gd:Window.get_theme_icon
-	return Texture2D.Instance(Advanced(self).GetThemeIcon(String.Name(String.New(name)), String.Name(String.New(""))))
+	return Texture2D.Instance(Advanced(self).GetThemeIcon(String.Name(String.From(name)), String.Name(String.From(""))))
 }
 
 /*
@@ -656,7 +656,7 @@ See [Control.GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self MoreArgs) GetThemeIcon(name string, theme_type string) Texture2D.Instance { //gd:Window.get_theme_icon
-	return Texture2D.Instance(Advanced(self).GetThemeIcon(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return Texture2D.Instance(Advanced(self).GetThemeIcon(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -669,7 +669,7 @@ See [Control.GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self Instance) GetThemeStylebox(name string) StyleBox.Instance { //gd:Window.get_theme_stylebox
-	return StyleBox.Instance(Advanced(self).GetThemeStylebox(String.Name(String.New(name)), String.Name(String.New(""))))
+	return StyleBox.Instance(Advanced(self).GetThemeStylebox(String.Name(String.From(name)), String.Name(String.From(""))))
 }
 
 /*
@@ -682,7 +682,7 @@ See [Control.GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self MoreArgs) GetThemeStylebox(name string, theme_type string) StyleBox.Instance { //gd:Window.get_theme_stylebox
-	return StyleBox.Instance(Advanced(self).GetThemeStylebox(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return StyleBox.Instance(Advanced(self).GetThemeStylebox(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -695,7 +695,7 @@ See [Control.GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self Instance) GetThemeFont(name string) Font.Instance { //gd:Window.get_theme_font
-	return Font.Instance(Advanced(self).GetThemeFont(String.Name(String.New(name)), String.Name(String.New(""))))
+	return Font.Instance(Advanced(self).GetThemeFont(String.Name(String.From(name)), String.Name(String.From(""))))
 }
 
 /*
@@ -708,7 +708,7 @@ See [Control.GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self MoreArgs) GetThemeFont(name string, theme_type string) Font.Instance { //gd:Window.get_theme_font
-	return Font.Instance(Advanced(self).GetThemeFont(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return Font.Instance(Advanced(self).GetThemeFont(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -720,7 +720,7 @@ See [Control.GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self Instance) GetThemeFontSize(name string) int { //gd:Window.get_theme_font_size
-	return int(int(Advanced(self).GetThemeFontSize(String.Name(String.New(name)), String.Name(String.New("")))))
+	return int(int(Advanced(self).GetThemeFontSize(String.Name(String.From(name)), String.Name(String.From("")))))
 }
 
 /*
@@ -732,7 +732,7 @@ See [Control.GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self MoreArgs) GetThemeFontSize(name string, theme_type string) int { //gd:Window.get_theme_font_size
-	return int(int(Advanced(self).GetThemeFontSize(String.Name(String.New(name)), String.Name(String.New(theme_type)))))
+	return int(int(Advanced(self).GetThemeFontSize(String.Name(String.From(name)), String.Name(String.From(theme_type)))))
 }
 
 /*
@@ -745,7 +745,7 @@ See [Control.GetThemeColor] for more details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self Instance) GetThemeColor(name string) Color.RGBA { //gd:Window.get_theme_color
-	return Color.RGBA(Advanced(self).GetThemeColor(String.Name(String.New(name)), String.Name(String.New(""))))
+	return Color.RGBA(Advanced(self).GetThemeColor(String.Name(String.From(name)), String.Name(String.From(""))))
 }
 
 /*
@@ -758,7 +758,7 @@ See [Control.GetThemeColor] for more details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self MoreArgs) GetThemeColor(name string, theme_type string) Color.RGBA { //gd:Window.get_theme_color
-	return Color.RGBA(Advanced(self).GetThemeColor(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return Color.RGBA(Advanced(self).GetThemeColor(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -770,7 +770,7 @@ See [Control.GetThemeColor] for more details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self Instance) GetThemeConstant(name string) int { //gd:Window.get_theme_constant
-	return int(int(Advanced(self).GetThemeConstant(String.Name(String.New(name)), String.Name(String.New("")))))
+	return int(int(Advanced(self).GetThemeConstant(String.Name(String.From(name)), String.Name(String.From("")))))
 }
 
 /*
@@ -782,7 +782,7 @@ See [Control.GetThemeColor] for more details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self MoreArgs) GetThemeConstant(name string, theme_type string) int { //gd:Window.get_theme_constant
-	return int(int(Advanced(self).GetThemeConstant(String.Name(String.New(name)), String.Name(String.New(theme_type)))))
+	return int(int(Advanced(self).GetThemeConstant(String.Name(String.From(name)), String.Name(String.From(theme_type)))))
 }
 
 /*
@@ -794,7 +794,7 @@ See [AddThemeIconOverride].
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 */
 func (self Instance) HasThemeIconOverride(name string) bool { //gd:Window.has_theme_icon_override
-	return bool(Advanced(self).HasThemeIconOverride(String.Name(String.New(name))))
+	return bool(Advanced(self).HasThemeIconOverride(String.Name(String.From(name))))
 }
 
 /*
@@ -807,7 +807,7 @@ See [AddThemeStyleboxOverride].
 [StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
 */
 func (self Instance) HasThemeStyleboxOverride(name string) bool { //gd:Window.has_theme_stylebox_override
-	return bool(Advanced(self).HasThemeStyleboxOverride(String.Name(String.New(name))))
+	return bool(Advanced(self).HasThemeStyleboxOverride(String.Name(String.From(name))))
 }
 
 /*
@@ -820,7 +820,7 @@ See [AddThemeFontOverride].
 [Font]: https://pkg.go.dev/graphics.gd/classdb/Font
 */
 func (self Instance) HasThemeFontOverride(name string) bool { //gd:Window.has_theme_font_override
-	return bool(Advanced(self).HasThemeFontOverride(String.Name(String.New(name))))
+	return bool(Advanced(self).HasThemeFontOverride(String.Name(String.From(name))))
 }
 
 /*
@@ -832,7 +832,7 @@ See [AddThemeFontSizeOverride].
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 */
 func (self Instance) HasThemeFontSizeOverride(name string) bool { //gd:Window.has_theme_font_size_override
-	return bool(Advanced(self).HasThemeFontSizeOverride(String.Name(String.New(name))))
+	return bool(Advanced(self).HasThemeFontSizeOverride(String.Name(String.From(name))))
 }
 
 /*
@@ -845,7 +845,7 @@ See [AddThemeColorOverride].
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 */
 func (self Instance) HasThemeColorOverride(name string) bool { //gd:Window.has_theme_color_override
-	return bool(Advanced(self).HasThemeColorOverride(String.Name(String.New(name))))
+	return bool(Advanced(self).HasThemeColorOverride(String.Name(String.From(name))))
 }
 
 /*
@@ -857,7 +857,7 @@ See [AddThemeConstantOverride].
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 */
 func (self Instance) HasThemeConstantOverride(name string) bool { //gd:Window.has_theme_constant_override
-	return bool(Advanced(self).HasThemeConstantOverride(String.Name(String.New(name))))
+	return bool(Advanced(self).HasThemeConstantOverride(String.Name(String.From(name))))
 }
 
 /*
@@ -869,7 +869,7 @@ See [Control.GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self Instance) HasThemeIcon(name string) bool { //gd:Window.has_theme_icon
-	return bool(Advanced(self).HasThemeIcon(String.Name(String.New(name)), String.Name(String.New(""))))
+	return bool(Advanced(self).HasThemeIcon(String.Name(String.From(name)), String.Name(String.From(""))))
 }
 
 /*
@@ -881,7 +881,7 @@ See [Control.GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self MoreArgs) HasThemeIcon(name string, theme_type string) bool { //gd:Window.has_theme_icon
-	return bool(Advanced(self).HasThemeIcon(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return bool(Advanced(self).HasThemeIcon(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -893,7 +893,7 @@ See [Control.GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self Instance) HasThemeStylebox(name string) bool { //gd:Window.has_theme_stylebox
-	return bool(Advanced(self).HasThemeStylebox(String.Name(String.New(name)), String.Name(String.New(""))))
+	return bool(Advanced(self).HasThemeStylebox(String.Name(String.From(name)), String.Name(String.From(""))))
 }
 
 /*
@@ -905,7 +905,7 @@ See [Control.GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self MoreArgs) HasThemeStylebox(name string, theme_type string) bool { //gd:Window.has_theme_stylebox
-	return bool(Advanced(self).HasThemeStylebox(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return bool(Advanced(self).HasThemeStylebox(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -917,7 +917,7 @@ See [Control.GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self Instance) HasThemeFont(name string) bool { //gd:Window.has_theme_font
-	return bool(Advanced(self).HasThemeFont(String.Name(String.New(name)), String.Name(String.New(""))))
+	return bool(Advanced(self).HasThemeFont(String.Name(String.From(name)), String.Name(String.From(""))))
 }
 
 /*
@@ -929,7 +929,7 @@ See [Control.GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self MoreArgs) HasThemeFont(name string, theme_type string) bool { //gd:Window.has_theme_font
-	return bool(Advanced(self).HasThemeFont(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return bool(Advanced(self).HasThemeFont(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -941,7 +941,7 @@ See [Control.GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self Instance) HasThemeFontSize(name string) bool { //gd:Window.has_theme_font_size
-	return bool(Advanced(self).HasThemeFontSize(String.Name(String.New(name)), String.Name(String.New(""))))
+	return bool(Advanced(self).HasThemeFontSize(String.Name(String.From(name)), String.Name(String.From(""))))
 }
 
 /*
@@ -953,7 +953,7 @@ See [Control.GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self MoreArgs) HasThemeFontSize(name string, theme_type string) bool { //gd:Window.has_theme_font_size
-	return bool(Advanced(self).HasThemeFontSize(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return bool(Advanced(self).HasThemeFontSize(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -965,7 +965,7 @@ See [Control.GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self Instance) HasThemeColor(name string) bool { //gd:Window.has_theme_color
-	return bool(Advanced(self).HasThemeColor(String.Name(String.New(name)), String.Name(String.New(""))))
+	return bool(Advanced(self).HasThemeColor(String.Name(String.From(name)), String.Name(String.From(""))))
 }
 
 /*
@@ -977,7 +977,7 @@ See [Control.GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self MoreArgs) HasThemeColor(name string, theme_type string) bool { //gd:Window.has_theme_color
-	return bool(Advanced(self).HasThemeColor(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return bool(Advanced(self).HasThemeColor(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -989,7 +989,7 @@ See [Control.GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self Instance) HasThemeConstant(name string) bool { //gd:Window.has_theme_constant
-	return bool(Advanced(self).HasThemeConstant(String.Name(String.New(name)), String.Name(String.New(""))))
+	return bool(Advanced(self).HasThemeConstant(String.Name(String.From(name)), String.Name(String.From(""))))
 }
 
 /*
@@ -1001,7 +1001,7 @@ See [Control.GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self MoreArgs) HasThemeConstant(name string, theme_type string) bool { //gd:Window.has_theme_constant
-	return bool(Advanced(self).HasThemeConstant(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return bool(Advanced(self).HasThemeConstant(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -1430,7 +1430,7 @@ func (self Instance) Title() string { //gd:Window.title
 
 // SetTitle sets the property returned by [GetTitle]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetTitle(value string) Instance { //gd:Window.title
-	class(self).SetTitle(String.New(value))
+	class(self).SetTitle(String.From(value))
 	return self
 }
 
@@ -2019,7 +2019,7 @@ func (self Instance) AccessibilityName() string { //gd:Window.accessibility_name
 
 // SetAccessibilityName sets the property returned by [GetAccessibilityName]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetAccessibilityName(value string) Instance { //gd:Window.accessibility_name
-	class(self).SetAccessibilityName(String.New(value))
+	class(self).SetAccessibilityName(String.From(value))
 	return self
 }
 
@@ -2032,7 +2032,7 @@ func (self Instance) AccessibilityDescription() string { //gd:Window.accessibili
 
 // SetAccessibilityDescription sets the property returned by [GetAccessibilityDescription]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetAccessibilityDescription(value string) Instance { //gd:Window.accessibility_description
-	class(self).SetAccessibilityDescription(String.New(value))
+	class(self).SetAccessibilityDescription(String.From(value))
 	return self
 }
 
@@ -2067,7 +2067,7 @@ func (self Instance) ThemeTypeVariation() string { //gd:Window.theme_type_variat
 
 // SetThemeTypeVariation sets the property returned by [GetThemeTypeVariation]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetThemeTypeVariation(value string) Instance { //gd:Window.theme_type_variation
-	class(self).SetThemeTypeVariation(String.Name(String.New(value)))
+	class(self).SetThemeTypeVariation(String.Name(String.From(value)))
 	return self
 }
 func (class) _get_contents_minimum_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {

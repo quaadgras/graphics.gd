@@ -160,7 +160,7 @@ Adds a port mapping to forward the given external port on this [UPNPDevice] for 
 [UPNPDevice]: https://pkg.go.dev/graphics.gd/classdb/UPNPDevice
 */
 func (self Instance) AddPortMapping(port int) int { //gd:UPNPDevice.add_port_mapping
-	return int(int(Advanced(self).AddPortMapping(int64(port), int64(0), String.New(""), String.New("UDP"), int64(0))))
+	return int(int(Advanced(self).AddPortMapping(int64(port), int64(0), String.From(""), String.From("UDP"), int64(0))))
 }
 
 /*
@@ -170,7 +170,7 @@ Adds a port mapping to forward the given external port on this [UPNPDevice] for 
 [UPNPDevice]: https://pkg.go.dev/graphics.gd/classdb/UPNPDevice
 */
 func (self MoreArgs) AddPortMapping(port int, port_internal int, desc string, proto string, duration int) int { //gd:UPNPDevice.add_port_mapping
-	return int(int(Advanced(self).AddPortMapping(int64(port), int64(port_internal), String.New(desc), String.New(proto), int64(duration))))
+	return int(int(Advanced(self).AddPortMapping(int64(port), int64(port_internal), String.From(desc), String.From(proto), int64(duration))))
 }
 
 /*
@@ -179,7 +179,7 @@ Deletes the port mapping identified by the given port and protocol combination o
 [UPNP.DeletePortMapping]: https://pkg.go.dev/graphics.gd/classdb/UPNP#Instance.DeletePortMapping
 */
 func (self Instance) DeletePortMapping(port int) int { //gd:UPNPDevice.delete_port_mapping
-	return int(int(Advanced(self).DeletePortMapping(int64(port), String.New("UDP"))))
+	return int(int(Advanced(self).DeletePortMapping(int64(port), String.From("UDP"))))
 }
 
 /*
@@ -188,7 +188,7 @@ Deletes the port mapping identified by the given port and protocol combination o
 [UPNP.DeletePortMapping]: https://pkg.go.dev/graphics.gd/classdb/UPNP#Instance.DeletePortMapping
 */
 func (self MoreArgs) DeletePortMapping(port int, proto string) int { //gd:UPNPDevice.delete_port_mapping
-	return int(int(Advanced(self).DeletePortMapping(int64(port), String.New(proto))))
+	return int(int(Advanced(self).DeletePortMapping(int64(port), String.From(proto))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -243,7 +243,7 @@ func (self Instance) DescriptionUrl() string { //gd:UPNPDevice.description_url
 
 // SetDescriptionUrl sets the property returned by [GetDescriptionUrl]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetDescriptionUrl(value string) Instance { //gd:UPNPDevice.description_url
-	class(self).SetDescriptionUrl(String.New(value))
+	class(self).SetDescriptionUrl(String.From(value))
 	return self
 }
 
@@ -256,7 +256,7 @@ func (self Instance) ServiceType() string { //gd:UPNPDevice.service_type
 
 // SetServiceType sets the property returned by [GetServiceType]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetServiceType(value string) Instance { //gd:UPNPDevice.service_type
-	class(self).SetServiceType(String.New(value))
+	class(self).SetServiceType(String.From(value))
 	return self
 }
 
@@ -269,7 +269,7 @@ func (self Instance) IgdControlUrl() string { //gd:UPNPDevice.igd_control_url
 
 // SetIgdControlUrl sets the property returned by [GetIgdControlUrl]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetIgdControlUrl(value string) Instance { //gd:UPNPDevice.igd_control_url
-	class(self).SetIgdControlUrl(String.New(value))
+	class(self).SetIgdControlUrl(String.From(value))
 	return self
 }
 
@@ -282,7 +282,7 @@ func (self Instance) IgdServiceType() string { //gd:UPNPDevice.igd_service_type
 
 // SetIgdServiceType sets the property returned by [GetIgdServiceType]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetIgdServiceType(value string) Instance { //gd:UPNPDevice.igd_service_type
-	class(self).SetIgdServiceType(String.New(value))
+	class(self).SetIgdServiceType(String.From(value))
 	return self
 }
 
@@ -297,7 +297,7 @@ func (self Instance) IgdOurAddr() string { //gd:UPNPDevice.igd_our_addr
 
 // SetIgdOurAddr sets the property returned by [GetIgdOurAddr]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetIgdOurAddr(value string) Instance { //gd:UPNPDevice.igd_our_addr
-	class(self).SetIgdOurAddr(String.New(value))
+	class(self).SetIgdOurAddr(String.From(value))
 	return self
 }
 

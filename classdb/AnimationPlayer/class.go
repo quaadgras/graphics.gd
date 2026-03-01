@@ -192,14 +192,14 @@ type Any interface {
 Triggers the 'animation_to' animation when the 'animation_from' animation completes.
 */
 func (self Instance) AnimationSetNext(animation_from string, animation_to string) { //gd:AnimationPlayer.animation_set_next
-	Advanced(self).AnimationSetNext(String.Name(String.New(animation_from)), String.Name(String.New(animation_to)))
+	Advanced(self).AnimationSetNext(String.Name(String.From(animation_from)), String.Name(String.From(animation_to)))
 }
 
 /*
 Returns the key of the animation which is queued to play after the 'animation_from' animation.
 */
 func (self Instance) AnimationGetNext(animation_from string) string { //gd:AnimationPlayer.animation_get_next
-	return string(Advanced(self).AnimationGetNext(String.Name(String.New(animation_from))).String())
+	return string(Advanced(self).AnimationGetNext(String.Name(String.From(animation_from))).String())
 }
 
 /*
@@ -208,7 +208,7 @@ Specifies a blend time (in seconds) between two animations, referenced by their 
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetBlendTime(animation_from string, animation_to string, sec Float.X) Instance { //gd:AnimationPlayer.set_blend_time
-	Advanced(self).SetBlendTime(String.Name(String.New(animation_from)), String.Name(String.New(animation_to)), float64(sec))
+	Advanced(self).SetBlendTime(String.Name(String.From(animation_from)), String.Name(String.From(animation_to)), float64(sec))
 	return self
 }
 
@@ -216,7 +216,7 @@ func (self Instance) SetBlendTime(animation_from string, animation_to string, se
 Returns the blend time (in seconds) between two animations, referenced by their keys.
 */
 func (self Instance) GetBlendTime(animation_from string, animation_to string) Float.X { //gd:AnimationPlayer.get_blend_time
-	return Float.X(Float.X(Advanced(self).GetBlendTime(String.Name(String.New(animation_from)), String.Name(String.New(animation_to)))))
+	return Float.X(Float.X(Advanced(self).GetBlendTime(String.Name(String.From(animation_from)), String.Name(String.From(animation_to)))))
 }
 
 /*
@@ -233,7 +233,7 @@ Note: The animation will be updated the next time the [AnimationPlayer] is proce
 [PlayBackwards]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlayBackwards
 */
 func (self Instance) Play() { //gd:AnimationPlayer.play
-	Advanced(self).Play(String.Name(String.New("")), float64(-1), float64(1.0), false)
+	Advanced(self).Play(String.Name(String.From("")), float64(-1), float64(1.0), false)
 }
 
 /*
@@ -250,7 +250,7 @@ Note: The animation will be updated the next time the [AnimationPlayer] is proce
 [PlayBackwards]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlayBackwards
 */
 func (self MoreArgs) Play(name string, custom_blend Float.X, custom_speed Float.X, from_end bool) { //gd:AnimationPlayer.play
-	Advanced(self).Play(String.Name(String.New(name)), float64(custom_blend), float64(custom_speed), from_end)
+	Advanced(self).Play(String.Name(String.From(name)), float64(custom_blend), float64(custom_speed), from_end)
 }
 
 /*
@@ -261,7 +261,7 @@ If the start marker is empty, the section starts from the beginning of the anima
 [Play]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.Play
 */
 func (self Instance) PlaySectionWithMarkers() { //gd:AnimationPlayer.play_section_with_markers
-	Advanced(self).PlaySectionWithMarkers(String.Name(String.New("")), String.Name(String.New("")), String.Name(String.New("")), float64(-1), float64(1.0), false)
+	Advanced(self).PlaySectionWithMarkers(String.Name(String.From("")), String.Name(String.From("")), String.Name(String.From("")), float64(-1), float64(1.0), false)
 }
 
 /*
@@ -272,7 +272,7 @@ If the start marker is empty, the section starts from the beginning of the anima
 [Play]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.Play
 */
 func (self MoreArgs) PlaySectionWithMarkers(name string, start_marker string, end_marker string, custom_blend Float.X, custom_speed Float.X, from_end bool) { //gd:AnimationPlayer.play_section_with_markers
-	Advanced(self).PlaySectionWithMarkers(String.Name(String.New(name)), String.Name(String.New(start_marker)), String.Name(String.New(end_marker)), float64(custom_blend), float64(custom_speed), from_end)
+	Advanced(self).PlaySectionWithMarkers(String.Name(String.From(name)), String.Name(String.From(start_marker)), String.Name(String.From(end_marker)), float64(custom_blend), float64(custom_speed), from_end)
 }
 
 /*
@@ -283,7 +283,7 @@ Setting 'start_time' to a value outside the range of the animation means the sta
 [Play]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.Play
 */
 func (self Instance) PlaySection() { //gd:AnimationPlayer.play_section
-	Advanced(self).PlaySection(String.Name(String.New("")), float64(-1), float64(-1), float64(-1), float64(1.0), false)
+	Advanced(self).PlaySection(String.Name(String.From("")), float64(-1), float64(-1), float64(-1), float64(1.0), false)
 }
 
 /*
@@ -294,7 +294,7 @@ Setting 'start_time' to a value outside the range of the animation means the sta
 [Play]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.Play
 */
 func (self MoreArgs) PlaySection(name string, start_time Float.X, end_time Float.X, custom_blend Float.X, custom_speed Float.X, from_end bool) { //gd:AnimationPlayer.play_section
-	Advanced(self).PlaySection(String.Name(String.New(name)), float64(start_time), float64(end_time), float64(custom_blend), float64(custom_speed), from_end)
+	Advanced(self).PlaySection(String.Name(String.From(name)), float64(start_time), float64(end_time), float64(custom_blend), float64(custom_speed), from_end)
 }
 
 /*
@@ -305,7 +305,7 @@ This method is a shorthand for [Play] with custom_speed = -1.0 and from_end = tr
 [Play]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.Play
 */
 func (self Instance) PlayBackwards() { //gd:AnimationPlayer.play_backwards
-	Advanced(self).PlayBackwards(String.Name(String.New("")), float64(-1))
+	Advanced(self).PlayBackwards(String.Name(String.From("")), float64(-1))
 }
 
 /*
@@ -316,7 +316,7 @@ This method is a shorthand for [Play] with custom_speed = -1.0 and from_end = tr
 [Play]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.Play
 */
 func (self MoreArgs) PlayBackwards(name string, custom_blend Float.X) { //gd:AnimationPlayer.play_backwards
-	Advanced(self).PlayBackwards(String.Name(String.New(name)), float64(custom_blend))
+	Advanced(self).PlayBackwards(String.Name(String.From(name)), float64(custom_blend))
 }
 
 /*
@@ -327,7 +327,7 @@ This method is a shorthand for [PlaySectionWithMarkers] with custom_speed = -1.0
 [PlaySectionWithMarkers]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlaySectionWithMarkers
 */
 func (self Instance) PlaySectionWithMarkersBackwards() { //gd:AnimationPlayer.play_section_with_markers_backwards
-	Advanced(self).PlaySectionWithMarkersBackwards(String.Name(String.New("")), String.Name(String.New("")), String.Name(String.New("")), float64(-1))
+	Advanced(self).PlaySectionWithMarkersBackwards(String.Name(String.From("")), String.Name(String.From("")), String.Name(String.From("")), float64(-1))
 }
 
 /*
@@ -338,7 +338,7 @@ This method is a shorthand for [PlaySectionWithMarkers] with custom_speed = -1.0
 [PlaySectionWithMarkers]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlaySectionWithMarkers
 */
 func (self MoreArgs) PlaySectionWithMarkersBackwards(name string, start_marker string, end_marker string, custom_blend Float.X) { //gd:AnimationPlayer.play_section_with_markers_backwards
-	Advanced(self).PlaySectionWithMarkersBackwards(String.Name(String.New(name)), String.Name(String.New(start_marker)), String.Name(String.New(end_marker)), float64(custom_blend))
+	Advanced(self).PlaySectionWithMarkersBackwards(String.Name(String.From(name)), String.Name(String.From(start_marker)), String.Name(String.From(end_marker)), float64(custom_blend))
 }
 
 /*
@@ -349,7 +349,7 @@ This method is a shorthand for [PlaySection] with custom_speed = -1.0 and from_e
 [PlaySection]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlaySection
 */
 func (self Instance) PlaySectionBackwards() { //gd:AnimationPlayer.play_section_backwards
-	Advanced(self).PlaySectionBackwards(String.Name(String.New("")), float64(-1), float64(-1), float64(-1))
+	Advanced(self).PlaySectionBackwards(String.Name(String.From("")), float64(-1), float64(-1), float64(-1))
 }
 
 /*
@@ -360,7 +360,7 @@ This method is a shorthand for [PlaySection] with custom_speed = -1.0 and from_e
 [PlaySection]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlaySection
 */
 func (self MoreArgs) PlaySectionBackwards(name string, start_time Float.X, end_time Float.X, custom_blend Float.X) { //gd:AnimationPlayer.play_section_backwards
-	Advanced(self).PlaySectionBackwards(String.Name(String.New(name)), float64(start_time), float64(end_time), float64(custom_blend))
+	Advanced(self).PlaySectionBackwards(String.Name(String.From(name)), float64(start_time), float64(end_time), float64(custom_blend))
 }
 
 /*
@@ -383,7 +383,7 @@ Note: The 'duration' takes [SpeedScale] into account, but 'custom_speed' does no
 [SpeedScale]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.SpeedScale
 */
 func (self Instance) PlayWithCapture() { //gd:AnimationPlayer.play_with_capture
-	Advanced(self).PlayWithCapture(String.Name(String.New("")), float64(-1.0), float64(-1), float64(1.0), false, 0, 0)
+	Advanced(self).PlayWithCapture(String.Name(String.From("")), float64(-1.0), float64(-1), float64(1.0), false, 0, 0)
 }
 
 /*
@@ -406,7 +406,7 @@ Note: The 'duration' takes [SpeedScale] into account, but 'custom_speed' does no
 [SpeedScale]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.SpeedScale
 */
 func (self MoreArgs) PlayWithCapture(name string, duration Float.X, custom_blend Float.X, custom_speed Float.X, from_end bool, trans_type Tween.TransitionType, ease_type Tween.EaseType) { //gd:AnimationPlayer.play_with_capture
-	Advanced(self).PlayWithCapture(String.Name(String.New(name)), float64(duration), float64(custom_blend), float64(custom_speed), from_end, trans_type, ease_type)
+	Advanced(self).PlayWithCapture(String.Name(String.From(name)), float64(duration), float64(custom_blend), float64(custom_speed), from_end, trans_type, ease_type)
 }
 
 /*
@@ -480,7 +480,7 @@ Queues an animation for playback once the current animation and all previously q
 Note: If a looped animation is currently playing, the queued animation will never play unless the looped animation is stopped somehow.
 */
 func (self Instance) Queue(name string) { //gd:AnimationPlayer.queue
-	Advanced(self).Queue(String.Name(String.New(name)))
+	Advanced(self).Queue(String.Name(String.From(name)))
 }
 
 /*
@@ -519,7 +519,7 @@ Returns 'self' to enable method chaining.
 [PlaySectionWithMarkers]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlaySectionWithMarkers
 */
 func (self Instance) SetSectionWithMarkers() Instance { //gd:AnimationPlayer.set_section_with_markers
-	Advanced(self).SetSectionWithMarkers(String.Name(String.New("")), String.Name(String.New("")))
+	Advanced(self).SetSectionWithMarkers(String.Name(String.From("")), String.Name(String.From("")))
 	return self
 }
 
@@ -533,7 +533,7 @@ Returns 'self' to enable method chaining.
 [PlaySectionWithMarkers]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlaySectionWithMarkers
 */
 func (self MoreArgs) SetSectionWithMarkers(start_marker string, end_marker string) MoreArgs { //gd:AnimationPlayer.set_section_with_markers
-	Advanced(self).SetSectionWithMarkers(String.Name(String.New(start_marker)), String.Name(String.New(end_marker)))
+	Advanced(self).SetSectionWithMarkers(String.Name(String.From(start_marker)), String.Name(String.From(end_marker)))
 	return self
 }
 
@@ -657,7 +657,7 @@ Sets the node which node path references will travel from.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetRoot(path string) Instance { //gd:AnimationPlayer.set_root
-	Advanced(self).SetRoot(Path.ToNode(String.New(path)))
+	Advanced(self).SetRoot(Path.ToNode(String.From(path)))
 	return self
 }
 
@@ -724,7 +724,7 @@ func (self Instance) CurrentAnimation() string { //gd:AnimationPlayer.current_an
 
 // SetCurrentAnimation sets the property returned by [GetCurrentAnimation]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetCurrentAnimation(value string) Instance { //gd:AnimationPlayer.current_animation
-	class(self).SetCurrentAnimation(String.Name(String.New(value)))
+	class(self).SetCurrentAnimation(String.Name(String.From(value)))
 	return self
 }
 
@@ -739,7 +739,7 @@ func (self Instance) AssignedAnimation() string { //gd:AnimationPlayer.assigned_
 
 // SetAssignedAnimation sets the property returned by [GetAssignedAnimation]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetAssignedAnimation(value string) Instance { //gd:AnimationPlayer.assigned_animation
-	class(self).SetAssignedAnimation(String.Name(String.New(value)))
+	class(self).SetAssignedAnimation(String.Name(String.From(value)))
 	return self
 }
 
@@ -752,7 +752,7 @@ func (self Instance) Autoplay() string { //gd:AnimationPlayer.autoplay
 
 // SetAutoplay sets the property returned by [GetAutoplay]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetAutoplay(value string) Instance { //gd:AnimationPlayer.autoplay
-	class(self).SetAutoplay(String.Name(String.New(value)))
+	class(self).SetAutoplay(String.Name(String.From(value)))
 	return self
 }
 

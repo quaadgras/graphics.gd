@@ -379,28 +379,28 @@ Adds a brace pair.
 Both the start and end keys must be symbols. Only the start key has to be unique.
 */
 func (self Instance) AddAutoBraceCompletionPair(start_key string, end_key string) { //gd:CodeEdit.add_auto_brace_completion_pair
-	Advanced(self).AddAutoBraceCompletionPair(String.New(start_key), String.New(end_key))
+	Advanced(self).AddAutoBraceCompletionPair(String.From(start_key), String.From(end_key))
 }
 
 /*
 Returns true if open key 'open_key' exists.
 */
 func (self Instance) HasAutoBraceCompletionOpenKey(open_key string) bool { //gd:CodeEdit.has_auto_brace_completion_open_key
-	return bool(Advanced(self).HasAutoBraceCompletionOpenKey(String.New(open_key)))
+	return bool(Advanced(self).HasAutoBraceCompletionOpenKey(String.From(open_key)))
 }
 
 /*
 Returns true if close key 'close_key' exists.
 */
 func (self Instance) HasAutoBraceCompletionCloseKey(close_key string) bool { //gd:CodeEdit.has_auto_brace_completion_close_key
-	return bool(Advanced(self).HasAutoBraceCompletionCloseKey(String.New(close_key)))
+	return bool(Advanced(self).HasAutoBraceCompletionCloseKey(String.From(close_key)))
 }
 
 /*
 Gets the matching auto brace close key for 'open_key'.
 */
 func (self Instance) GetAutoBraceCompletionCloseKey(open_key string) string { //gd:CodeEdit.get_auto_brace_completion_close_key
-	return string(Advanced(self).GetAutoBraceCompletionCloseKey(String.New(open_key)).String())
+	return string(Advanced(self).GetAutoBraceCompletionCloseKey(String.From(open_key)).String())
 }
 
 /*
@@ -622,7 +622,7 @@ Sets the code region start and end tags (without comment delimiter).
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetCodeRegionTags() Instance { //gd:CodeEdit.set_code_region_tags
-	Advanced(self).SetCodeRegionTags(String.New("region"), String.New("endregion"))
+	Advanced(self).SetCodeRegionTags(String.From("region"), String.From("endregion"))
 	return self
 }
 
@@ -632,7 +632,7 @@ Sets the code region start and end tags (without comment delimiter).
 Returns 'self' to enable method chaining.
 */
 func (self MoreArgs) SetCodeRegionTags(start string, end string) MoreArgs { //gd:CodeEdit.set_code_region_tags
-	Advanced(self).SetCodeRegionTags(String.New(start), String.New(end))
+	Advanced(self).SetCodeRegionTags(String.From(start), String.From(end))
 	return self
 }
 
@@ -660,7 +660,7 @@ Defines a string delimiter from 'start_key' to 'end_key'. Both keys should be sy
 If 'line_only' is true or 'end_key' is an empty string, the region does not carry over to the next line.
 */
 func (self Instance) AddStringDelimiter(start_key string, end_key string) { //gd:CodeEdit.add_string_delimiter
-	Advanced(self).AddStringDelimiter(String.New(start_key), String.New(end_key), false)
+	Advanced(self).AddStringDelimiter(String.From(start_key), String.From(end_key), false)
 }
 
 /*
@@ -669,21 +669,21 @@ Defines a string delimiter from 'start_key' to 'end_key'. Both keys should be sy
 If 'line_only' is true or 'end_key' is an empty string, the region does not carry over to the next line.
 */
 func (self MoreArgs) AddStringDelimiter(start_key string, end_key string, line_only bool) { //gd:CodeEdit.add_string_delimiter
-	Advanced(self).AddStringDelimiter(String.New(start_key), String.New(end_key), line_only)
+	Advanced(self).AddStringDelimiter(String.From(start_key), String.From(end_key), line_only)
 }
 
 /*
 Removes the string delimiter with 'start_key'.
 */
 func (self Instance) RemoveStringDelimiter(start_key string) { //gd:CodeEdit.remove_string_delimiter
-	Advanced(self).RemoveStringDelimiter(String.New(start_key))
+	Advanced(self).RemoveStringDelimiter(String.From(start_key))
 }
 
 /*
 Returns true if string 'start_key' exists.
 */
 func (self Instance) HasStringDelimiter(start_key string) bool { //gd:CodeEdit.has_string_delimiter
-	return bool(Advanced(self).HasStringDelimiter(String.New(start_key)))
+	return bool(Advanced(self).HasStringDelimiter(String.From(start_key)))
 }
 
 /*
@@ -713,7 +713,7 @@ Adds a comment delimiter from 'start_key' to 'end_key'. Both keys should be symb
 If 'line_only' is true or 'end_key' is an empty string, the region does not carry over to the next line.
 */
 func (self Instance) AddCommentDelimiter(start_key string, end_key string) { //gd:CodeEdit.add_comment_delimiter
-	Advanced(self).AddCommentDelimiter(String.New(start_key), String.New(end_key), false)
+	Advanced(self).AddCommentDelimiter(String.From(start_key), String.From(end_key), false)
 }
 
 /*
@@ -722,21 +722,21 @@ Adds a comment delimiter from 'start_key' to 'end_key'. Both keys should be symb
 If 'line_only' is true or 'end_key' is an empty string, the region does not carry over to the next line.
 */
 func (self MoreArgs) AddCommentDelimiter(start_key string, end_key string, line_only bool) { //gd:CodeEdit.add_comment_delimiter
-	Advanced(self).AddCommentDelimiter(String.New(start_key), String.New(end_key), line_only)
+	Advanced(self).AddCommentDelimiter(String.From(start_key), String.From(end_key), line_only)
 }
 
 /*
 Removes the comment delimiter with 'start_key'.
 */
 func (self Instance) RemoveCommentDelimiter(start_key string) { //gd:CodeEdit.remove_comment_delimiter
-	Advanced(self).RemoveCommentDelimiter(String.New(start_key))
+	Advanced(self).RemoveCommentDelimiter(String.From(start_key))
 }
 
 /*
 Returns true if comment 'start_key' exists.
 */
 func (self Instance) HasCommentDelimiter(start_key string) bool { //gd:CodeEdit.has_comment_delimiter
-	return bool(Advanced(self).HasCommentDelimiter(String.New(start_key)))
+	return bool(Advanced(self).HasCommentDelimiter(String.From(start_key)))
 }
 
 /*
@@ -798,7 +798,7 @@ Sets the code hint text. Pass an empty string to clear.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetCodeHint(code_hint string) Instance { //gd:CodeEdit.set_code_hint
-	Advanced(self).SetCodeHint(String.New(code_hint))
+	Advanced(self).SetCodeHint(String.From(code_hint))
 	return self
 }
 
@@ -849,7 +849,7 @@ Note: This list will replace all current candidates.
 [UpdateCodeCompletionOptions]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.UpdateCodeCompletionOptions
 */
 func (self Instance) AddCodeCompletionOption(atype CodeCompletionKind, display_text string, insert_text string) { //gd:CodeEdit.add_code_completion_option
-	Advanced(self).AddCodeCompletionOption(atype, String.New(display_text), String.New(insert_text), Color.RGBA(gd.Color{1, 1, 1, 1}), [1]Resource.Instance{}[0], variant.New([1]any{}[0]), int64(1024))
+	Advanced(self).AddCodeCompletionOption(atype, String.From(display_text), String.From(insert_text), Color.RGBA(gd.Color{1, 1, 1, 1}), [1]Resource.Instance{}[0], variant.New([1]any{}[0]), int64(1024))
 }
 
 /*
@@ -862,7 +862,7 @@ Note: This list will replace all current candidates.
 [UpdateCodeCompletionOptions]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.UpdateCodeCompletionOptions
 */
 func (self MoreArgs) AddCodeCompletionOption(atype CodeCompletionKind, display_text string, insert_text string, text_color Color.RGBA, icon Resource.Instance, value any, location int) { //gd:CodeEdit.add_code_completion_option
-	Advanced(self).AddCodeCompletionOption(atype, String.New(display_text), String.New(insert_text), Color.RGBA(text_color), icon, variant.New(value), int64(location))
+	Advanced(self).AddCodeCompletionOption(atype, String.From(display_text), String.From(insert_text), Color.RGBA(text_color), icon, variant.New(value), int64(location))
 }
 
 /*

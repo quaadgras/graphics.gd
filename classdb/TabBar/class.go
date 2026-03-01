@@ -216,7 +216,7 @@ Sets a 'title' for the tab at index 'tab_idx'.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetTabTitle(tab_idx int, title string) Instance { //gd:TabBar.set_tab_title
-	Advanced(self).SetTabTitle(int64(tab_idx), String.New(title))
+	Advanced(self).SetTabTitle(int64(tab_idx), String.From(title))
 	return self
 }
 
@@ -235,7 +235,7 @@ Note: By default, if the 'tooltip' is empty and the tab text is truncated (not a
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetTabTooltip(tab_idx int, tooltip string) Instance { //gd:TabBar.set_tab_tooltip
-	Advanced(self).SetTabTooltip(int64(tab_idx), String.New(tooltip))
+	Advanced(self).SetTabTooltip(int64(tab_idx), String.From(tooltip))
 	return self
 }
 
@@ -269,7 +269,7 @@ Sets the language code of the title for the tab at index 'tab_idx' to 'language'
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetTabLanguage(tab_idx int, language string) Instance { //gd:TabBar.set_tab_language
-	Advanced(self).SetTabLanguage(int64(tab_idx), String.New(language))
+	Advanced(self).SetTabLanguage(int64(tab_idx), String.From(language))
 	return self
 }
 
@@ -399,14 +399,14 @@ func (self Instance) RemoveTab(tab_idx int) { //gd:TabBar.remove_tab
 Adds a new tab.
 */
 func (self Instance) AddTab() { //gd:TabBar.add_tab
-	Advanced(self).AddTab(String.New(""), [1]Texture2D.Instance{}[0])
+	Advanced(self).AddTab(String.From(""), [1]Texture2D.Instance{}[0])
 }
 
 /*
 Adds a new tab.
 */
 func (self MoreArgs) AddTab(title string, icon Texture2D.Instance) { //gd:TabBar.add_tab
-	Advanced(self).AddTab(String.New(title), icon)
+	Advanced(self).AddTab(String.From(title), icon)
 }
 
 /*

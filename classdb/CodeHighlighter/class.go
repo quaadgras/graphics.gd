@@ -160,28 +160,28 @@ Sets the color for a keyword.
 The keyword cannot contain any symbols except '_'.
 */
 func (self Instance) AddKeywordColor(keyword string, color Color.RGBA) { //gd:CodeHighlighter.add_keyword_color
-	Advanced(self).AddKeywordColor(String.New(keyword), Color.RGBA(color))
+	Advanced(self).AddKeywordColor(String.From(keyword), Color.RGBA(color))
 }
 
 /*
 Removes the keyword.
 */
 func (self Instance) RemoveKeywordColor(keyword string) { //gd:CodeHighlighter.remove_keyword_color
-	Advanced(self).RemoveKeywordColor(String.New(keyword))
+	Advanced(self).RemoveKeywordColor(String.From(keyword))
 }
 
 /*
 Returns true if the keyword exists, else false.
 */
 func (self Instance) HasKeywordColor(keyword string) bool { //gd:CodeHighlighter.has_keyword_color
-	return bool(Advanced(self).HasKeywordColor(String.New(keyword)))
+	return bool(Advanced(self).HasKeywordColor(String.From(keyword)))
 }
 
 /*
 Returns the color for a keyword.
 */
 func (self Instance) GetKeywordColor(keyword string) Color.RGBA { //gd:CodeHighlighter.get_keyword_color
-	return Color.RGBA(Advanced(self).GetKeywordColor(String.New(keyword)))
+	return Color.RGBA(Advanced(self).GetKeywordColor(String.From(keyword)))
 }
 
 /*
@@ -199,28 +199,28 @@ The member keyword cannot contain any symbols except '_'.
 It will not be highlighted if preceded by a '.'.
 */
 func (self Instance) AddMemberKeywordColor(member_keyword string, color Color.RGBA) { //gd:CodeHighlighter.add_member_keyword_color
-	Advanced(self).AddMemberKeywordColor(String.New(member_keyword), Color.RGBA(color))
+	Advanced(self).AddMemberKeywordColor(String.From(member_keyword), Color.RGBA(color))
 }
 
 /*
 Removes the member keyword.
 */
 func (self Instance) RemoveMemberKeywordColor(member_keyword string) { //gd:CodeHighlighter.remove_member_keyword_color
-	Advanced(self).RemoveMemberKeywordColor(String.New(member_keyword))
+	Advanced(self).RemoveMemberKeywordColor(String.From(member_keyword))
 }
 
 /*
 Returns true if the member keyword exists, else false.
 */
 func (self Instance) HasMemberKeywordColor(member_keyword string) bool { //gd:CodeHighlighter.has_member_keyword_color
-	return bool(Advanced(self).HasMemberKeywordColor(String.New(member_keyword)))
+	return bool(Advanced(self).HasMemberKeywordColor(String.From(member_keyword)))
 }
 
 /*
 Returns the color for a member keyword.
 */
 func (self Instance) GetMemberKeywordColor(member_keyword string) Color.RGBA { //gd:CodeHighlighter.get_member_keyword_color
-	return Color.RGBA(Advanced(self).GetMemberKeywordColor(String.New(member_keyword)))
+	return Color.RGBA(Advanced(self).GetMemberKeywordColor(String.From(member_keyword)))
 }
 
 /*
@@ -236,7 +236,7 @@ Adds a color region (such as for comments or strings) from 'start_key' to 'end_k
 If 'line_only' is true or 'end_key' is an empty string, the region does not carry over to the next line.
 */
 func (self Instance) AddColorRegion(start_key string, end_key string, color Color.RGBA) { //gd:CodeHighlighter.add_color_region
-	Advanced(self).AddColorRegion(String.New(start_key), String.New(end_key), Color.RGBA(color), false)
+	Advanced(self).AddColorRegion(String.From(start_key), String.From(end_key), Color.RGBA(color), false)
 }
 
 /*
@@ -245,21 +245,21 @@ Adds a color region (such as for comments or strings) from 'start_key' to 'end_k
 If 'line_only' is true or 'end_key' is an empty string, the region does not carry over to the next line.
 */
 func (self MoreArgs) AddColorRegion(start_key string, end_key string, color Color.RGBA, line_only bool) { //gd:CodeHighlighter.add_color_region
-	Advanced(self).AddColorRegion(String.New(start_key), String.New(end_key), Color.RGBA(color), line_only)
+	Advanced(self).AddColorRegion(String.From(start_key), String.From(end_key), Color.RGBA(color), line_only)
 }
 
 /*
 Removes the color region that uses that start key.
 */
 func (self Instance) RemoveColorRegion(start_key string) { //gd:CodeHighlighter.remove_color_region
-	Advanced(self).RemoveColorRegion(String.New(start_key))
+	Advanced(self).RemoveColorRegion(String.From(start_key))
 }
 
 /*
 Returns true if the start key exists, else false.
 */
 func (self Instance) HasColorRegion(start_key string) bool { //gd:CodeHighlighter.has_color_region
-	return bool(Advanced(self).HasColorRegion(String.New(start_key)))
+	return bool(Advanced(self).HasColorRegion(String.From(start_key)))
 }
 
 /*

@@ -162,7 +162,7 @@ Returns a task ID that can be used by other methods.
 Warning: Every task must be waited for completion using [WaitForTaskCompletion] or [WaitForGroupTaskCompletion] at some point so that any allocated resources inside the task can be cleaned up.
 */
 func AddTask(action func(int), high_priority bool, description string) int { //gd:WorkerThreadPool.add_task
-	return int(int(Advanced().AddTask(Callable.New(action), high_priority, String.New(description))))
+	return int(int(Advanced().AddTask(Callable.New(action), high_priority, String.From(description))))
 }
 
 /*
@@ -208,7 +208,7 @@ Returns a group task ID that can be used by other methods.
 Warning: Every task must be waited for completion using [WaitForTaskCompletion] or [WaitForGroupTaskCompletion] at some point so that any allocated resources inside the task can be cleaned up.
 */
 func AddGroupTask(action func(int), elements int, high_priority bool, description string) int { //gd:WorkerThreadPool.add_group_task
-	return int(int(Advanced().AddGroupTask(Callable.New(action), int64(elements), int64(-1), high_priority, String.New(description))))
+	return int(int(Advanced().AddGroupTask(Callable.New(action), int64(elements), int64(-1), high_priority, String.From(description))))
 }
 
 /*
@@ -221,7 +221,7 @@ Returns a group task ID that can be used by other methods.
 Warning: Every task must be waited for completion using [WaitForTaskCompletion] or [WaitForGroupTaskCompletion] at some point so that any allocated resources inside the task can be cleaned up.
 */
 func AddGroupTaskOptions(action func(int), elements int, tasks_needed int, high_priority bool, description string) int { //gd:WorkerThreadPool.add_group_task
-	return int(int(Advanced().AddGroupTask(Callable.New(action), int64(elements), int64(tasks_needed), high_priority, String.New(description))))
+	return int(int(Advanced().AddGroupTask(Callable.New(action), int64(elements), int64(tasks_needed), high_priority, String.From(description))))
 }
 
 /*

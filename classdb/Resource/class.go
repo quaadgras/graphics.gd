@@ -284,7 +284,7 @@ Sets the [ResourcePath] to 'path', potentially overriding an existing cache entr
 [ResourcePath]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.ResourcePath
 */
 func (self Instance) TakeOverPath(path string) { //gd:Resource.take_over_path
-	Advanced(self).TakeOverPath(String.New(path))
+	Advanced(self).TakeOverPath(String.From(path))
 }
 
 /*
@@ -296,7 +296,7 @@ Returns 'self' to enable method chaining.
 [ResourceFormatSaver]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatSaver
 */
 func (self Instance) SetPathCache(path string) Instance { //gd:Resource.set_path_cache
-	Advanced(self).SetPathCache(String.New(path))
+	Advanced(self).SetPathCache(String.From(path))
 	return self
 }
 
@@ -346,7 +346,7 @@ Returns 'self' to enable method chaining.
 [ResourceFormatSaver]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatSaver
 */
 func (self Instance) SetIdForPath(path string, id string) Instance { //gd:Resource.set_id_for_path
-	Advanced(self).SetIdForPath(String.New(path), String.New(id))
+	Advanced(self).SetIdForPath(String.From(path), String.From(id))
 	return self
 }
 
@@ -359,7 +359,7 @@ Note: This method is only implemented when running in an editor context. At runt
 [ResourceFormatSaver]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatSaver
 */
 func (self Instance) GetIdForPath(path string) string { //gd:Resource.get_id_for_path
-	return string(Advanced(self).GetIdForPath(String.New(path)).String())
+	return string(Advanced(self).GetIdForPath(String.From(path)).String())
 }
 
 /*
@@ -551,7 +551,7 @@ func (self Instance) ResourcePath() string { //gd:Resource.resource_path
 
 // SetResourcePath sets the property returned by [GetPath]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetResourcePath(value string) Instance { //gd:Resource.resource_path
-	class(self).SetPath(String.New(value))
+	class(self).SetPath(String.From(value))
 	return self
 }
 
@@ -566,7 +566,7 @@ func (self Instance) ResourceName() string { //gd:Resource.resource_name
 
 // SetResourceName sets the property returned by [GetName]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetResourceName(value string) Instance { //gd:Resource.resource_name
-	class(self).SetName(String.New(value))
+	class(self).SetName(String.From(value))
 	return self
 }
 
@@ -588,7 +588,7 @@ func (self Instance) ResourceSceneUniqueId() string { //gd:Resource.resource_sce
 
 // SetResourceSceneUniqueId sets the property returned by [GetSceneUniqueId]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetResourceSceneUniqueId(value string) Instance { //gd:Resource.resource_scene_unique_id
-	class(self).SetSceneUniqueId(String.New(value))
+	class(self).SetSceneUniqueId(String.From(value))
 	return self
 }
 func (class) _setup_local_to_scene(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {

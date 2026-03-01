@@ -218,7 +218,7 @@ func GetInterfaces() []map[int]string { //gd:XRServer.get_interfaces
 Finds an interface by its 'name'. For example, if your project uses capabilities of an AR/VR platform, you can find the interface for that platform by name and initialize it.
 */
 func FindInterface(name string) XRInterface.Instance { //gd:XRServer.find_interface
-	return XRInterface.Instance(Advanced().FindInterface(String.New(name)))
+	return XRInterface.Instance(Advanced().FindInterface(String.From(name)))
 }
 
 /*
@@ -248,7 +248,7 @@ func GetTrackers(tracker_types int) map[any]any { //gd:XRServer.get_trackers
 Returns the positional tracker with the given 'tracker_name'.
 */
 func GetTracker(tracker_name string) XRTracker.Instance { //gd:XRServer.get_tracker
-	return XRTracker.Instance(Advanced().GetTracker(String.Name(String.New(tracker_name))))
+	return XRTracker.Instance(Advanced().GetTracker(String.Name(String.From(tracker_name))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

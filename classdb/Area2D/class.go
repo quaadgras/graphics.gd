@@ -497,7 +497,7 @@ func (self Instance) AudioBusName() string { //gd:Area2D.audio_bus_name
 
 // SetAudioBusName sets the property returned by [GetAudioBusName]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetAudioBusName(value string) Instance { //gd:Area2D.audio_bus_name
-	class(self).SetAudioBusName(String.Name(String.New(value)))
+	class(self).SetAudioBusName(String.Name(String.From(value)))
 	return self
 }
 

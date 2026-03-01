@@ -159,7 +159,7 @@ Sets the apply bone of the setting at 'index' to 'bone_name'. This bone will be 
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetApplyBoneName(index int, bone_name string) Instance { //gd:BoneConstraint3D.set_apply_bone_name
-	Advanced(self).SetApplyBoneName(int64(index), String.New(bone_name))
+	Advanced(self).SetApplyBoneName(int64(index), String.From(bone_name))
 	return self
 }
 
@@ -212,7 +212,7 @@ This bone will be only referenced and not modified by this modifier.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetReferenceBoneName(index int, bone_name string) Instance { //gd:BoneConstraint3D.set_reference_bone_name
-	Advanced(self).SetReferenceBoneName(int64(index), String.New(bone_name))
+	Advanced(self).SetReferenceBoneName(int64(index), String.From(bone_name))
 	return self
 }
 
@@ -254,7 +254,7 @@ This node will be only referenced and not modified by this modifier.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetReferenceNode(index int, node string) Instance { //gd:BoneConstraint3D.set_reference_node
-	Advanced(self).SetReferenceNode(int64(index), Path.ToNode(String.New(node)))
+	Advanced(self).SetReferenceNode(int64(index), Path.ToNode(String.From(node)))
 	return self
 }
 

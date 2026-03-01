@@ -175,7 +175,7 @@ func (self Instance) OriginalClass() string { //gd:MissingResource.original_clas
 
 // SetOriginalClass sets the property returned by [GetOriginalClass]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetOriginalClass(value string) Instance { //gd:MissingResource.original_class
-	class(self).SetOriginalClass(String.New(value))
+	class(self).SetOriginalClass(String.From(value))
 	return self
 }
 

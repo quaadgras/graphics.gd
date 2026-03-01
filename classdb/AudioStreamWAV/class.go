@@ -197,7 +197,7 @@ Example: Load the first file dropped as a WAV and play it:
 */
 func LoadFromFile(path string, options Options) Instance { //gd:AudioStreamWAV.load_from_file
 	self := Instance{}
-	return Instance(Advanced(self).LoadFromFile(String.New(path), gd.DictionaryFromMap(options)))
+	return Instance(Advanced(self).LoadFromFile(String.From(path), gd.DictionaryFromMap(options)))
 }
 
 /*
@@ -206,7 +206,7 @@ Saves the AudioStreamWAV as a WAV file to 'path'. Samples with IMA ADPCM or Quit
 Note: A .wav extension is automatically appended to 'path' if it is missing.
 */
 func (self Instance) SaveToWav(path string) error { //gd:AudioStreamWAV.save_to_wav
-	return error(gd.ToError(Advanced(self).SaveToWav(String.New(path))))
+	return error(gd.ToError(Advanced(self).SaveToWav(String.From(path))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -438,7 +438,7 @@ func HelpSetSearchCallbacks(search_callback func(search_string string, result_li
 Registers callables to emit when the menu is respectively about to show or closed. Callback methods should have zero arguments.
 */
 func GlobalMenuSetPopupCallbacks(menu_root string, open_callback func(), close_callback func()) { //gd:DisplayServer.global_menu_set_popup_callbacks
-	Advanced().GlobalMenuSetPopupCallbacks(String.New(menu_root), Callable.New(open_callback), Callable.New(close_callback))
+	Advanced().GlobalMenuSetPopupCallbacks(String.From(menu_root), Callable.New(open_callback), Callable.New(close_callback))
 }
 
 /*
@@ -451,7 +451,7 @@ Note: This method is implemented only on macOS.
 Supported system menu IDs:
 */
 func GlobalMenuAddSubmenuItem(menu_root string, label string, submenu string) int { //gd:DisplayServer.global_menu_add_submenu_item
-	return int(int(Advanced().GlobalMenuAddSubmenuItem(String.New(menu_root), String.New(label), String.New(submenu), int64(-1))))
+	return int(int(Advanced().GlobalMenuAddSubmenuItem(String.From(menu_root), String.From(label), String.From(submenu), int64(-1))))
 }
 
 /*
@@ -464,7 +464,7 @@ Note: This method is implemented only on macOS.
 Supported system menu IDs:
 */
 func GlobalMenuAddSubmenuItemOptions(menu_root string, label string, submenu string, index int) int { //gd:DisplayServer.global_menu_add_submenu_item
-	return int(int(Advanced().GlobalMenuAddSubmenuItem(String.New(menu_root), String.New(label), String.New(submenu), int64(index))))
+	return int(int(Advanced().GlobalMenuAddSubmenuItem(String.From(menu_root), String.From(label), String.From(submenu), int64(index))))
 }
 
 /*
@@ -481,7 +481,7 @@ Note: This method is implemented only on macOS.
 Supported system menu IDs:
 */
 func GlobalMenuAddItem(menu_root string, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:DisplayServer.global_menu_add_item
-	return int(int(Advanced().GlobalMenuAddItem(String.New(menu_root), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
+	return int(int(Advanced().GlobalMenuAddItem(String.From(menu_root), String.From(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
 
 /*
@@ -498,7 +498,7 @@ Note: This method is implemented only on macOS.
 Supported system menu IDs:
 */
 func GlobalMenuAddItemOptions(menu_root string, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:DisplayServer.global_menu_add_item
-	return int(int(Advanced().GlobalMenuAddItem(String.New(menu_root), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
+	return int(int(Advanced().GlobalMenuAddItem(String.From(menu_root), String.From(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
 /*
@@ -515,7 +515,7 @@ Note: This method is implemented only on macOS.
 Supported system menu IDs:
 */
 func GlobalMenuAddCheckItem(menu_root string, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:DisplayServer.global_menu_add_check_item
-	return int(int(Advanced().GlobalMenuAddCheckItem(String.New(menu_root), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
+	return int(int(Advanced().GlobalMenuAddCheckItem(String.From(menu_root), String.From(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
 
 /*
@@ -532,7 +532,7 @@ Note: This method is implemented only on macOS.
 Supported system menu IDs:
 */
 func GlobalMenuAddCheckItemOptions(menu_root string, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:DisplayServer.global_menu_add_check_item
-	return int(int(Advanced().GlobalMenuAddCheckItem(String.New(menu_root), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
+	return int(int(Advanced().GlobalMenuAddCheckItem(String.From(menu_root), String.From(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
 /*
@@ -549,7 +549,7 @@ Note: This method is implemented only on macOS.
 Supported system menu IDs:
 */
 func GlobalMenuAddIconItem(menu_root string, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:DisplayServer.global_menu_add_icon_item
-	return int(int(Advanced().GlobalMenuAddIconItem(String.New(menu_root), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
+	return int(int(Advanced().GlobalMenuAddIconItem(String.From(menu_root), icon, String.From(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
 
 /*
@@ -566,7 +566,7 @@ Note: This method is implemented only on macOS.
 Supported system menu IDs:
 */
 func GlobalMenuAddIconItemOptions(menu_root string, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:DisplayServer.global_menu_add_icon_item
-	return int(int(Advanced().GlobalMenuAddIconItem(String.New(menu_root), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
+	return int(int(Advanced().GlobalMenuAddIconItem(String.From(menu_root), icon, String.From(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
 /*
@@ -583,7 +583,7 @@ Note: This method is implemented only on macOS.
 Supported system menu IDs:
 */
 func GlobalMenuAddIconCheckItem(menu_root string, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:DisplayServer.global_menu_add_icon_check_item
-	return int(int(Advanced().GlobalMenuAddIconCheckItem(String.New(menu_root), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
+	return int(int(Advanced().GlobalMenuAddIconCheckItem(String.From(menu_root), icon, String.From(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
 
 /*
@@ -600,7 +600,7 @@ Note: This method is implemented only on macOS.
 Supported system menu IDs:
 */
 func GlobalMenuAddIconCheckItemOptions(menu_root string, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:DisplayServer.global_menu_add_icon_check_item
-	return int(int(Advanced().GlobalMenuAddIconCheckItem(String.New(menu_root), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
+	return int(int(Advanced().GlobalMenuAddIconCheckItem(String.From(menu_root), icon, String.From(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
 /*
@@ -619,7 +619,7 @@ Note: This method is implemented only on macOS.
 Supported system menu IDs:
 */
 func GlobalMenuAddRadioCheckItem(menu_root string, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:DisplayServer.global_menu_add_radio_check_item
-	return int(int(Advanced().GlobalMenuAddRadioCheckItem(String.New(menu_root), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
+	return int(int(Advanced().GlobalMenuAddRadioCheckItem(String.From(menu_root), String.From(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
 
 /*
@@ -638,7 +638,7 @@ Note: This method is implemented only on macOS.
 Supported system menu IDs:
 */
 func GlobalMenuAddRadioCheckItemOptions(menu_root string, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:DisplayServer.global_menu_add_radio_check_item
-	return int(int(Advanced().GlobalMenuAddRadioCheckItem(String.New(menu_root), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
+	return int(int(Advanced().GlobalMenuAddRadioCheckItem(String.From(menu_root), String.From(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
 /*
@@ -657,7 +657,7 @@ Note: This method is implemented only on macOS.
 Supported system menu IDs:
 */
 func GlobalMenuAddIconRadioCheckItem(menu_root string, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:DisplayServer.global_menu_add_icon_radio_check_item
-	return int(int(Advanced().GlobalMenuAddIconRadioCheckItem(String.New(menu_root), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
+	return int(int(Advanced().GlobalMenuAddIconRadioCheckItem(String.From(menu_root), icon, String.From(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
 
 /*
@@ -676,7 +676,7 @@ Note: This method is implemented only on macOS.
 Supported system menu IDs:
 */
 func GlobalMenuAddIconRadioCheckItemOptions(menu_root string, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:DisplayServer.global_menu_add_icon_radio_check_item
-	return int(int(Advanced().GlobalMenuAddIconRadioCheckItem(String.New(menu_root), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
+	return int(int(Advanced().GlobalMenuAddIconRadioCheckItem(String.From(menu_root), icon, String.From(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
 /*
@@ -697,7 +697,7 @@ Note: This method is implemented only on macOS.
 Supported system menu IDs:
 */
 func GlobalMenuAddMultistateItem(menu_root string, label string, max_states int, default_state int, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:DisplayServer.global_menu_add_multistate_item
-	return int(int(Advanced().GlobalMenuAddMultistateItem(String.New(menu_root), String.New(label), int64(max_states), int64(default_state), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
+	return int(int(Advanced().GlobalMenuAddMultistateItem(String.From(menu_root), String.From(label), int64(max_states), int64(default_state), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
 
 /*
@@ -718,7 +718,7 @@ Note: This method is implemented only on macOS.
 Supported system menu IDs:
 */
 func GlobalMenuAddMultistateItemOptions(menu_root string, label string, max_states int, default_state int, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:DisplayServer.global_menu_add_multistate_item
-	return int(int(Advanced().GlobalMenuAddMultistateItem(String.New(menu_root), String.New(label), int64(max_states), int64(default_state), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
+	return int(int(Advanced().GlobalMenuAddMultistateItem(String.From(menu_root), String.From(label), int64(max_states), int64(default_state), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
 /*
@@ -731,7 +731,7 @@ Note: This method is implemented only on macOS.
 Supported system menu IDs:
 */
 func GlobalMenuAddSeparator(menu_root string) int { //gd:DisplayServer.global_menu_add_separator
-	return int(int(Advanced().GlobalMenuAddSeparator(String.New(menu_root), int64(-1))))
+	return int(int(Advanced().GlobalMenuAddSeparator(String.From(menu_root), int64(-1))))
 }
 
 /*
@@ -744,7 +744,7 @@ Note: This method is implemented only on macOS.
 Supported system menu IDs:
 */
 func GlobalMenuAddSeparatorOptions(menu_root string, index int) int { //gd:DisplayServer.global_menu_add_separator
-	return int(int(Advanced().GlobalMenuAddSeparator(String.New(menu_root), int64(index))))
+	return int(int(Advanced().GlobalMenuAddSeparator(String.From(menu_root), int64(index))))
 }
 
 /*
@@ -753,7 +753,7 @@ Returns the index of the item with the specified 'text'. Indices are automatical
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuGetItemIndexFromText(menu_root string, text string) int { //gd:DisplayServer.global_menu_get_item_index_from_text
-	return int(int(Advanced().GlobalMenuGetItemIndexFromText(String.New(menu_root), String.New(text))))
+	return int(int(Advanced().GlobalMenuGetItemIndexFromText(String.From(menu_root), String.From(text))))
 }
 
 /*
@@ -762,7 +762,7 @@ Returns the index of the item with the specified 'tag'. Indices are automaticall
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuGetItemIndexFromTag(menu_root string, tag any) int { //gd:DisplayServer.global_menu_get_item_index_from_tag
-	return int(int(Advanced().GlobalMenuGetItemIndexFromTag(String.New(menu_root), variant.New(tag))))
+	return int(int(Advanced().GlobalMenuGetItemIndexFromTag(String.From(menu_root), variant.New(tag))))
 }
 
 /*
@@ -771,7 +771,7 @@ Returns true if the item at index 'idx' is checked.
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuIsItemChecked(menu_root string, idx int) bool { //gd:DisplayServer.global_menu_is_item_checked
-	return bool(Advanced().GlobalMenuIsItemChecked(String.New(menu_root), int64(idx)))
+	return bool(Advanced().GlobalMenuIsItemChecked(String.From(menu_root), int64(idx)))
 }
 
 /*
@@ -780,7 +780,7 @@ Returns true if the item at index 'idx' is checkable in some way, i.e. if it has
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuIsItemCheckable(menu_root string, idx int) bool { //gd:DisplayServer.global_menu_is_item_checkable
-	return bool(Advanced().GlobalMenuIsItemCheckable(String.New(menu_root), int64(idx)))
+	return bool(Advanced().GlobalMenuIsItemCheckable(String.From(menu_root), int64(idx)))
 }
 
 /*
@@ -791,7 +791,7 @@ Note: This is purely cosmetic; you must add the logic for checking/unchecking it
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuIsItemRadioCheckable(menu_root string, idx int) bool { //gd:DisplayServer.global_menu_is_item_radio_checkable
-	return bool(Advanced().GlobalMenuIsItemRadioCheckable(String.New(menu_root), int64(idx)))
+	return bool(Advanced().GlobalMenuIsItemRadioCheckable(String.From(menu_root), int64(idx)))
 }
 
 /*
@@ -800,7 +800,7 @@ Returns the callback of the item at index 'idx'.
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuGetItemCallback(menu_root string, idx int) Callable.Function { //gd:DisplayServer.global_menu_get_item_callback
-	return Callable.Function(gd.CallableAs[Callable.Function](gd.InternalCallable(Advanced().GlobalMenuGetItemCallback(String.New(menu_root), int64(idx)))))
+	return Callable.Function(gd.CallableAs[Callable.Function](gd.InternalCallable(Advanced().GlobalMenuGetItemCallback(String.From(menu_root), int64(idx)))))
 }
 
 /*
@@ -809,7 +809,7 @@ Returns the callback of the item accelerator at index 'idx'.
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuGetItemKeyCallback(menu_root string, idx int) Callable.Function { //gd:DisplayServer.global_menu_get_item_key_callback
-	return Callable.Function(gd.CallableAs[Callable.Function](gd.InternalCallable(Advanced().GlobalMenuGetItemKeyCallback(String.New(menu_root), int64(idx)))))
+	return Callable.Function(gd.CallableAs[Callable.Function](gd.InternalCallable(Advanced().GlobalMenuGetItemKeyCallback(String.From(menu_root), int64(idx)))))
 }
 
 /*
@@ -818,7 +818,7 @@ Returns the metadata of the specified item, which might be of any type. You can 
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuGetItemTag(menu_root string, idx int) any { //gd:DisplayServer.global_menu_get_item_tag
-	return any(Advanced().GlobalMenuGetItemTag(String.New(menu_root), int64(idx)).Interface())
+	return any(Advanced().GlobalMenuGetItemTag(String.From(menu_root), int64(idx)).Interface())
 }
 
 /*
@@ -827,7 +827,7 @@ Returns the text of the item at index 'idx'.
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuGetItemText(menu_root string, idx int) string { //gd:DisplayServer.global_menu_get_item_text
-	return string(Advanced().GlobalMenuGetItemText(String.New(menu_root), int64(idx)).String())
+	return string(Advanced().GlobalMenuGetItemText(String.From(menu_root), int64(idx)).String())
 }
 
 /*
@@ -836,7 +836,7 @@ Returns the submenu ID of the item at index 'idx'. See [GlobalMenuAddSubmenuItem
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuGetItemSubmenu(menu_root string, idx int) string { //gd:DisplayServer.global_menu_get_item_submenu
-	return string(Advanced().GlobalMenuGetItemSubmenu(String.New(menu_root), int64(idx)).String())
+	return string(Advanced().GlobalMenuGetItemSubmenu(String.From(menu_root), int64(idx)).String())
 }
 
 /*
@@ -845,7 +845,7 @@ Returns the accelerator of the item at index 'idx'. Accelerators are special com
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuGetItemAccelerator(menu_root string, idx int) Input.Key { //gd:DisplayServer.global_menu_get_item_accelerator
-	return Input.Key(Advanced().GlobalMenuGetItemAccelerator(String.New(menu_root), int64(idx)))
+	return Input.Key(Advanced().GlobalMenuGetItemAccelerator(String.From(menu_root), int64(idx)))
 }
 
 /*
@@ -856,7 +856,7 @@ See [GlobalMenuSetItemDisabled] for more info on how to disable an item.
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuIsItemDisabled(menu_root string, idx int) bool { //gd:DisplayServer.global_menu_is_item_disabled
-	return bool(Advanced().GlobalMenuIsItemDisabled(String.New(menu_root), int64(idx)))
+	return bool(Advanced().GlobalMenuIsItemDisabled(String.From(menu_root), int64(idx)))
 }
 
 /*
@@ -867,7 +867,7 @@ See [GlobalMenuSetItemHidden] for more info on how to hide an item.
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuIsItemHidden(menu_root string, idx int) bool { //gd:DisplayServer.global_menu_is_item_hidden
-	return bool(Advanced().GlobalMenuIsItemHidden(String.New(menu_root), int64(idx)))
+	return bool(Advanced().GlobalMenuIsItemHidden(String.From(menu_root), int64(idx)))
 }
 
 /*
@@ -876,7 +876,7 @@ Returns the tooltip associated with the specified index 'idx'.
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuGetItemTooltip(menu_root string, idx int) string { //gd:DisplayServer.global_menu_get_item_tooltip
-	return string(Advanced().GlobalMenuGetItemTooltip(String.New(menu_root), int64(idx)).String())
+	return string(Advanced().GlobalMenuGetItemTooltip(String.From(menu_root), int64(idx)).String())
 }
 
 /*
@@ -885,7 +885,7 @@ Returns the state of a multistate item. See [GlobalMenuAddMultistateItem] for de
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuGetItemState(menu_root string, idx int) int { //gd:DisplayServer.global_menu_get_item_state
-	return int(int(Advanced().GlobalMenuGetItemState(String.New(menu_root), int64(idx))))
+	return int(int(Advanced().GlobalMenuGetItemState(String.From(menu_root), int64(idx))))
 }
 
 /*
@@ -894,7 +894,7 @@ Returns number of states of a multistate item. See [GlobalMenuAddMultistateItem]
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuGetItemMaxStates(menu_root string, idx int) int { //gd:DisplayServer.global_menu_get_item_max_states
-	return int(int(Advanced().GlobalMenuGetItemMaxStates(String.New(menu_root), int64(idx))))
+	return int(int(Advanced().GlobalMenuGetItemMaxStates(String.From(menu_root), int64(idx))))
 }
 
 /*
@@ -903,7 +903,7 @@ Returns the icon of the item at index 'idx'.
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuGetItemIcon(menu_root string, idx int) Texture2D.Instance { //gd:DisplayServer.global_menu_get_item_icon
-	return Texture2D.Instance(Advanced().GlobalMenuGetItemIcon(String.New(menu_root), int64(idx)))
+	return Texture2D.Instance(Advanced().GlobalMenuGetItemIcon(String.From(menu_root), int64(idx)))
 }
 
 /*
@@ -912,7 +912,7 @@ Returns the horizontal offset of the item at the given 'idx'.
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuGetItemIndentationLevel(menu_root string, idx int) int { //gd:DisplayServer.global_menu_get_item_indentation_level
-	return int(int(Advanced().GlobalMenuGetItemIndentationLevel(String.New(menu_root), int64(idx))))
+	return int(int(Advanced().GlobalMenuGetItemIndentationLevel(String.From(menu_root), int64(idx))))
 }
 
 /*
@@ -921,7 +921,7 @@ Sets the checkstate status of the item at index 'idx'.
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuSetItemChecked(menu_root string, idx int, checked bool) { //gd:DisplayServer.global_menu_set_item_checked
-	Advanced().GlobalMenuSetItemChecked(String.New(menu_root), int64(idx), checked)
+	Advanced().GlobalMenuSetItemChecked(String.From(menu_root), int64(idx), checked)
 }
 
 /*
@@ -930,7 +930,7 @@ Sets whether the item at index 'idx' has a checkbox. If false, sets the type of 
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuSetItemCheckable(menu_root string, idx int, checkable bool) { //gd:DisplayServer.global_menu_set_item_checkable
-	Advanced().GlobalMenuSetItemCheckable(String.New(menu_root), int64(idx), checkable)
+	Advanced().GlobalMenuSetItemCheckable(String.From(menu_root), int64(idx), checkable)
 }
 
 /*
@@ -941,7 +941,7 @@ Note: This is purely cosmetic; you must add the logic for checking/unchecking it
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuSetItemRadioCheckable(menu_root string, idx int, checkable bool) { //gd:DisplayServer.global_menu_set_item_radio_checkable
-	Advanced().GlobalMenuSetItemRadioCheckable(String.New(menu_root), int64(idx), checkable)
+	Advanced().GlobalMenuSetItemRadioCheckable(String.From(menu_root), int64(idx), checkable)
 }
 
 /*
@@ -952,7 +952,7 @@ Note: The 'callback' Callable needs to accept exactly one Variant parameter, the
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuSetItemCallback(menu_root string, idx int, callback func(tag any)) { //gd:DisplayServer.global_menu_set_item_callback
-	Advanced().GlobalMenuSetItemCallback(String.New(menu_root), int64(idx), Callable.New(callback))
+	Advanced().GlobalMenuSetItemCallback(String.From(menu_root), int64(idx), Callable.New(callback))
 }
 
 /*
@@ -963,7 +963,7 @@ Note: The 'callback' Callable needs to accept exactly one Variant parameter, the
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuSetItemHoverCallbacks(menu_root string, idx int, callback func(tag any)) { //gd:DisplayServer.global_menu_set_item_hover_callbacks
-	Advanced().GlobalMenuSetItemHoverCallbacks(String.New(menu_root), int64(idx), Callable.New(callback))
+	Advanced().GlobalMenuSetItemHoverCallbacks(String.From(menu_root), int64(idx), Callable.New(callback))
 }
 
 /*
@@ -974,7 +974,7 @@ Note: The 'key_callback' Callable needs to accept exactly one Variant parameter,
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuSetItemKeyCallback(menu_root string, idx int, key_callback func(tag any)) { //gd:DisplayServer.global_menu_set_item_key_callback
-	Advanced().GlobalMenuSetItemKeyCallback(String.New(menu_root), int64(idx), Callable.New(key_callback))
+	Advanced().GlobalMenuSetItemKeyCallback(String.From(menu_root), int64(idx), Callable.New(key_callback))
 }
 
 /*
@@ -983,7 +983,7 @@ Sets the metadata of an item, which may be of any type. You can later get it wit
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuSetItemTag(menu_root string, idx int, tag any) { //gd:DisplayServer.global_menu_set_item_tag
-	Advanced().GlobalMenuSetItemTag(String.New(menu_root), int64(idx), variant.New(tag))
+	Advanced().GlobalMenuSetItemTag(String.From(menu_root), int64(idx), variant.New(tag))
 }
 
 /*
@@ -992,7 +992,7 @@ Sets the text of the item at index 'idx'.
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuSetItemText(menu_root string, idx int, text string) { //gd:DisplayServer.global_menu_set_item_text
-	Advanced().GlobalMenuSetItemText(String.New(menu_root), int64(idx), String.New(text))
+	Advanced().GlobalMenuSetItemText(String.From(menu_root), int64(idx), String.From(text))
 }
 
 /*
@@ -1001,7 +1001,7 @@ Sets the submenu of the item at index 'idx'. The submenu is the ID of a global m
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuSetItemSubmenu(menu_root string, idx int, submenu string) { //gd:DisplayServer.global_menu_set_item_submenu
-	Advanced().GlobalMenuSetItemSubmenu(String.New(menu_root), int64(idx), String.New(submenu))
+	Advanced().GlobalMenuSetItemSubmenu(String.From(menu_root), int64(idx), String.From(submenu))
 }
 
 /*
@@ -1010,7 +1010,7 @@ Sets the accelerator of the item at index 'idx'. 'keycode' can be a single [Key]
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuSetItemAccelerator(menu_root string, idx int, keycode Input.Key) { //gd:DisplayServer.global_menu_set_item_accelerator
-	Advanced().GlobalMenuSetItemAccelerator(String.New(menu_root), int64(idx), keycode)
+	Advanced().GlobalMenuSetItemAccelerator(String.From(menu_root), int64(idx), keycode)
 }
 
 /*
@@ -1019,7 +1019,7 @@ Enables/disables the item at index 'idx'. When it is disabled, it can't be selec
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuSetItemDisabled(menu_root string, idx int, disabled bool) { //gd:DisplayServer.global_menu_set_item_disabled
-	Advanced().GlobalMenuSetItemDisabled(String.New(menu_root), int64(idx), disabled)
+	Advanced().GlobalMenuSetItemDisabled(String.From(menu_root), int64(idx), disabled)
 }
 
 /*
@@ -1028,7 +1028,7 @@ Hides/shows the item at index 'idx'. When it is hidden, an item does not appear 
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuSetItemHidden(menu_root string, idx int, hidden bool) { //gd:DisplayServer.global_menu_set_item_hidden
-	Advanced().GlobalMenuSetItemHidden(String.New(menu_root), int64(idx), hidden)
+	Advanced().GlobalMenuSetItemHidden(String.From(menu_root), int64(idx), hidden)
 }
 
 /*
@@ -1037,7 +1037,7 @@ Sets the string tooltip of the item at the specified index 'idx'.
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuSetItemTooltip(menu_root string, idx int, tooltip string) { //gd:DisplayServer.global_menu_set_item_tooltip
-	Advanced().GlobalMenuSetItemTooltip(String.New(menu_root), int64(idx), String.New(tooltip))
+	Advanced().GlobalMenuSetItemTooltip(String.From(menu_root), int64(idx), String.From(tooltip))
 }
 
 /*
@@ -1046,7 +1046,7 @@ Sets the state of a multistate item. See [GlobalMenuAddMultistateItem] for detai
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuSetItemState(menu_root string, idx int, state int) { //gd:DisplayServer.global_menu_set_item_state
-	Advanced().GlobalMenuSetItemState(String.New(menu_root), int64(idx), int64(state))
+	Advanced().GlobalMenuSetItemState(String.From(menu_root), int64(idx), int64(state))
 }
 
 /*
@@ -1055,7 +1055,7 @@ Sets number of state of a multistate item. See [GlobalMenuAddMultistateItem] for
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuSetItemMaxStates(menu_root string, idx int, max_states int) { //gd:DisplayServer.global_menu_set_item_max_states
-	Advanced().GlobalMenuSetItemMaxStates(String.New(menu_root), int64(idx), int64(max_states))
+	Advanced().GlobalMenuSetItemMaxStates(String.From(menu_root), int64(idx), int64(max_states))
 }
 
 /*
@@ -1068,7 +1068,7 @@ Note: This method is not supported by macOS "_dock" menu items.
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
 func GlobalMenuSetItemIcon(menu_root string, idx int, icon Texture2D.Instance) { //gd:DisplayServer.global_menu_set_item_icon
-	Advanced().GlobalMenuSetItemIcon(String.New(menu_root), int64(idx), icon)
+	Advanced().GlobalMenuSetItemIcon(String.From(menu_root), int64(idx), icon)
 }
 
 /*
@@ -1077,7 +1077,7 @@ Sets the horizontal offset of the item at the given 'idx'.
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuSetItemIndentationLevel(menu_root string, idx int, level int) { //gd:DisplayServer.global_menu_set_item_indentation_level
-	Advanced().GlobalMenuSetItemIndentationLevel(String.New(menu_root), int64(idx), int64(level))
+	Advanced().GlobalMenuSetItemIndentationLevel(String.From(menu_root), int64(idx), int64(level))
 }
 
 /*
@@ -1086,7 +1086,7 @@ Returns number of items in the global menu with ID 'menu_root'.
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuGetItemCount(menu_root string) int { //gd:DisplayServer.global_menu_get_item_count
-	return int(int(Advanced().GlobalMenuGetItemCount(String.New(menu_root))))
+	return int(int(Advanced().GlobalMenuGetItemCount(String.From(menu_root))))
 }
 
 /*
@@ -1097,7 +1097,7 @@ Note: The indices of items after the removed item will be shifted by one.
 Note: This method is implemented only on macOS.
 */
 func GlobalMenuRemoveItem(menu_root string, idx int) { //gd:DisplayServer.global_menu_remove_item
-	Advanced().GlobalMenuRemoveItem(String.New(menu_root), int64(idx))
+	Advanced().GlobalMenuRemoveItem(String.From(menu_root), int64(idx))
 }
 
 /*
@@ -1108,7 +1108,7 @@ Note: This method is implemented only on macOS.
 Supported system menu IDs:
 */
 func GlobalMenuClear(menu_root string) { //gd:DisplayServer.global_menu_clear
-	Advanced().GlobalMenuClear(String.New(menu_root))
+	Advanced().GlobalMenuClear(String.From(menu_root))
 }
 
 /*
@@ -1163,7 +1163,7 @@ Returns a []string of voice identifiers for the 'language'.
 Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
 */
 func TtsGetVoicesForLanguage(language string) []string { //gd:DisplayServer.tts_get_voices_for_language
-	return []string(Advanced().TtsGetVoicesForLanguage(String.New(language)).Strings())
+	return []string(Advanced().TtsGetVoicesForLanguage(String.From(language)).Strings())
 }
 
 /*
@@ -1186,7 +1186,7 @@ Note: The granularity of pitch, rate, and volume is engine and voice dependent. 
 Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
 */
 func TtsSpeak(text string, voice string, utterance_id int, interrupt bool) { //gd:DisplayServer.tts_speak
-	Advanced().TtsSpeak(String.New(text), String.New(voice), int64(50), float64(1.0), float64(1.0), int64(utterance_id), interrupt)
+	Advanced().TtsSpeak(String.From(text), String.From(voice), int64(50), float64(1.0), float64(1.0), int64(utterance_id), interrupt)
 }
 
 /*
@@ -1209,7 +1209,7 @@ Note: The granularity of pitch, rate, and volume is engine and voice dependent. 
 Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
 */
 func TtsSpeakOptions(text string, voice string, volume int, pitch Float.X, rate Float.X, utterance_id int, interrupt bool) { //gd:DisplayServer.tts_speak
-	Advanced().TtsSpeak(String.New(text), String.New(voice), int64(volume), float64(pitch), float64(rate), int64(utterance_id), interrupt)
+	Advanced().TtsSpeak(String.From(text), String.From(voice), int64(volume), float64(pitch), float64(rate), int64(utterance_id), interrupt)
 }
 
 /*
@@ -1342,7 +1342,7 @@ func MouseGetButtonState() Input.MouseButtonMask { //gd:DisplayServer.mouse_get_
 Sets the user's clipboard content to the given string.
 */
 func ClipboardSet(clipboard string) { //gd:DisplayServer.clipboard_set
-	Advanced().ClipboardSet(String.New(clipboard))
+	Advanced().ClipboardSet(String.From(clipboard))
 }
 
 /*
@@ -1383,7 +1383,7 @@ Note: This method is only implemented on Linux (X11/Wayland).
 [primary]: https://unix.stackexchange.com/questions/139191/whats-the-difference-between-primary-selection-and-clipboard-buffer
 */
 func ClipboardSetPrimary(clipboard_primary string) { //gd:DisplayServer.clipboard_set_primary
-	Advanced().ClipboardSetPrimary(String.New(clipboard_primary))
+	Advanced().ClipboardSetPrimary(String.From(clipboard_primary))
 }
 
 /*
@@ -1809,7 +1809,7 @@ Note: Avoid changing the window title every frame, as this can cause performance
 [Window.Title]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Title
 */
 func WindowSetTitle(title string, window_id Window) { //gd:DisplayServer.window_set_title
-	Advanced().WindowSetTitle(String.New(title), int64(window_id))
+	Advanced().WindowSetTitle(String.From(title), int64(window_id))
 }
 
 /*
@@ -1818,7 +1818,7 @@ Returns the estimated window title bar size (including text and window buttons) 
 Note: This method is implemented on macOS and Windows.
 */
 func WindowGetTitleSize(title string, window_id Window) Vector2i.XY { //gd:DisplayServer.window_get_title_size
-	return Vector2i.XY(Advanced().WindowGetTitleSize(String.New(title), int64(window_id)))
+	return Vector2i.XY(Advanced().WindowGetTitleSize(String.From(title), int64(window_id)))
 }
 
 /*
@@ -2383,35 +2383,35 @@ func AccessibilityUpdateSetRole(id RID.AccessibilityElement, role AccessibilityR
 Sets element accessibility name.
 */
 func AccessibilityUpdateSetName(id RID.AccessibilityElement, name string) { //gd:DisplayServer.accessibility_update_set_name
-	Advanced().AccessibilityUpdateSetName(RID.Any(id), String.New(name))
+	Advanced().AccessibilityUpdateSetName(RID.Any(id), String.From(name))
 }
 
 /*
 Sets element accessibility extra information added to the element name.
 */
 func AccessibilityUpdateSetExtraInfo(id RID.AccessibilityElement, name string) { //gd:DisplayServer.accessibility_update_set_extra_info
-	Advanced().AccessibilityUpdateSetExtraInfo(RID.Any(id), String.New(name))
+	Advanced().AccessibilityUpdateSetExtraInfo(RID.Any(id), String.From(name))
 }
 
 /*
 Sets element accessibility description.
 */
 func AccessibilityUpdateSetDescription(id RID.AccessibilityElement, description string) { //gd:DisplayServer.accessibility_update_set_description
-	Advanced().AccessibilityUpdateSetDescription(RID.Any(id), String.New(description))
+	Advanced().AccessibilityUpdateSetDescription(RID.Any(id), String.From(description))
 }
 
 /*
 Sets element text value.
 */
 func AccessibilityUpdateSetValue(id RID.AccessibilityElement, value string) { //gd:DisplayServer.accessibility_update_set_value
-	Advanced().AccessibilityUpdateSetValue(RID.Any(id), String.New(value))
+	Advanced().AccessibilityUpdateSetValue(RID.Any(id), String.From(value))
 }
 
 /*
 Sets tooltip text.
 */
 func AccessibilityUpdateSetTooltip(id RID.AccessibilityElement, tooltip string) { //gd:DisplayServer.accessibility_update_set_tooltip
-	Advanced().AccessibilityUpdateSetTooltip(RID.Any(id), String.New(tooltip))
+	Advanced().AccessibilityUpdateSetTooltip(RID.Any(id), String.From(tooltip))
 }
 
 /*
@@ -2543,7 +2543,7 @@ func AccessibilityUpdateAddAction(id RID.AccessibilityElement, action Accessibil
 Adds support for a custom accessibility action. 'action_id' is passed as an argument to the callback of [ActionCustom] action.
 */
 func AccessibilityUpdateAddCustomAction(id RID.AccessibilityElement, action_id int, action_description string) { //gd:DisplayServer.accessibility_update_add_custom_action
-	Advanced().AccessibilityUpdateAddCustomAction(RID.Any(id), int64(action_id), String.New(action_description))
+	Advanced().AccessibilityUpdateAddCustomAction(RID.Any(id), int64(action_id), String.From(action_description))
 }
 
 /*
@@ -2725,21 +2725,21 @@ func AccessibilityUpdateSetFlag(id RID.AccessibilityElement, flag AccessibilityF
 Sets element class name.
 */
 func AccessibilityUpdateSetClassname(id RID.AccessibilityElement, classname string) { //gd:DisplayServer.accessibility_update_set_classname
-	Advanced().AccessibilityUpdateSetClassname(RID.Any(id), String.New(classname))
+	Advanced().AccessibilityUpdateSetClassname(RID.Any(id), String.From(classname))
 }
 
 /*
 Sets placeholder text.
 */
 func AccessibilityUpdateSetPlaceholder(id RID.AccessibilityElement, placeholder string) { //gd:DisplayServer.accessibility_update_set_placeholder
-	Advanced().AccessibilityUpdateSetPlaceholder(RID.Any(id), String.New(placeholder))
+	Advanced().AccessibilityUpdateSetPlaceholder(RID.Any(id), String.From(placeholder))
 }
 
 /*
 Sets element text language.
 */
 func AccessibilityUpdateSetLanguage(id RID.AccessibilityElement, language string) { //gd:DisplayServer.accessibility_update_set_language
-	Advanced().AccessibilityUpdateSetLanguage(RID.Any(id), String.New(language))
+	Advanced().AccessibilityUpdateSetLanguage(RID.Any(id), String.From(language))
 }
 
 /*
@@ -2760,28 +2760,28 @@ func AccessibilityUpdateSetListOrientation(id RID.AccessibilityElement, vertical
 Sets the list of keyboard shortcuts used by element.
 */
 func AccessibilityUpdateSetShortcut(id RID.AccessibilityElement, shortcut string) { //gd:DisplayServer.accessibility_update_set_shortcut
-	Advanced().AccessibilityUpdateSetShortcut(RID.Any(id), String.New(shortcut))
+	Advanced().AccessibilityUpdateSetShortcut(RID.Any(id), String.From(shortcut))
 }
 
 /*
 Sets link URL.
 */
 func AccessibilityUpdateSetUrl(id RID.AccessibilityElement, url string) { //gd:DisplayServer.accessibility_update_set_url
-	Advanced().AccessibilityUpdateSetUrl(RID.Any(id), String.New(url))
+	Advanced().AccessibilityUpdateSetUrl(RID.Any(id), String.From(url))
 }
 
 /*
 Sets element accessibility role description text.
 */
 func AccessibilityUpdateSetRoleDescription(id RID.AccessibilityElement, description string) { //gd:DisplayServer.accessibility_update_set_role_description
-	Advanced().AccessibilityUpdateSetRoleDescription(RID.Any(id), String.New(description))
+	Advanced().AccessibilityUpdateSetRoleDescription(RID.Any(id), String.From(description))
 }
 
 /*
 Sets human-readable description of the current checked state.
 */
 func AccessibilityUpdateSetStateDescription(id RID.AccessibilityElement, description string) { //gd:DisplayServer.accessibility_update_set_state_description
-	Advanced().AccessibilityUpdateSetStateDescription(RID.Any(id), String.New(description))
+	Advanced().AccessibilityUpdateSetStateDescription(RID.Any(id), String.From(description))
 }
 
 /*
@@ -2850,7 +2850,7 @@ Note: This method is implemented on Android, iOS and Web.
 [TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
 */
 func VirtualKeyboardShow(existing_text string, position Rect2.PositionSize, atype VirtualKeyboardType) { //gd:DisplayServer.virtual_keyboard_show
-	Advanced().VirtualKeyboardShow(String.New(existing_text), Rect2.PositionSize(position), atype, int64(-1), int64(-1), int64(-1))
+	Advanced().VirtualKeyboardShow(String.From(existing_text), Rect2.PositionSize(position), atype, int64(-1), int64(-1), int64(-1))
 }
 
 /*
@@ -2875,7 +2875,7 @@ Note: This method is implemented on Android, iOS and Web.
 [TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
 */
 func VirtualKeyboardShowOptions(existing_text string, position Rect2.PositionSize, atype VirtualKeyboardType, max_length int, cursor_start int, cursor_end int) { //gd:DisplayServer.virtual_keyboard_show
-	Advanced().VirtualKeyboardShow(String.New(existing_text), Rect2.PositionSize(position), atype, int64(max_length), int64(cursor_start), int64(cursor_end))
+	Advanced().VirtualKeyboardShow(String.From(existing_text), Rect2.PositionSize(position), atype, int64(max_length), int64(cursor_start), int64(cursor_end))
 }
 
 /*
@@ -2967,7 +2967,7 @@ Shows a text dialog which uses the operating system's native look-and-feel. 'cal
 Note: This method is implemented if the display server has the [FeatureNativeDialog] feature. Supported platforms include macOS, Windows, and Android.
 */
 func DialogShow(title string, description string, buttons []string, callback func(button int)) error { //gd:DisplayServer.dialog_show
-	return error(gd.ToError(Advanced().DialogShow(String.New(title), String.New(description), Packed.MakeStrings(buttons...), Callable.New(callback))))
+	return error(gd.ToError(Advanced().DialogShow(String.From(title), String.From(description), Packed.MakeStrings(buttons...), Callable.New(callback))))
 }
 
 /*
@@ -2976,7 +2976,7 @@ Shows a text input dialog which uses the operating system's native look-and-feel
 Note: This method is implemented if the display server has the [FeatureNativeDialogInput] feature. Supported platforms include macOS, Windows, and Android.
 */
 func DialogInputText(title string, description string, existing_text string, callback func(text string)) error { //gd:DisplayServer.dialog_input_text
-	return error(gd.ToError(Advanced().DialogInputText(String.New(title), String.New(description), String.New(existing_text), Callable.New(callback))))
+	return error(gd.ToError(Advanced().DialogInputText(String.From(title), String.From(description), String.From(existing_text), Callable.New(callback))))
 }
 
 /*
@@ -3018,7 +3018,7 @@ The persistable URI permission remains valid across app restarts as long as the 
 [OS.GetGrantedPermissions]: https://pkg.go.dev/graphics.gd/classdb/OS#GetGrantedPermissions
 */
 func FileDialogShow(title string, current_directory string, filename string, show_hidden bool, mode FileDialogMode, filters []string, callback func(status bool, selected_paths []string, selected_filter_index int), parent_window_id Window) error { //gd:DisplayServer.file_dialog_show
-	return error(gd.ToError(Advanced().FileDialogShow(String.New(title), String.New(current_directory), String.New(filename), show_hidden, mode, Packed.MakeStrings(filters...), Callable.New(callback), int64(parent_window_id))))
+	return error(gd.ToError(Advanced().FileDialogShow(String.From(title), String.From(current_directory), String.From(filename), show_hidden, mode, Packed.MakeStrings(filters...), Callable.New(callback), int64(parent_window_id))))
 }
 
 /*
@@ -3052,7 +3052,7 @@ Note: On macOS, sandboxed apps will save security-scoped bookmarks to retain acc
 [OS.GetGrantedPermissions]: https://pkg.go.dev/graphics.gd/classdb/OS#GetGrantedPermissions
 */
 func FileDialogWithOptionsShow(title string, current_directory string, root string, filename string, show_hidden bool, mode FileDialogMode, filters []string, options []FileDialogOption, callback func(status bool, selected_paths []string, selected_filter_index int, selected_option map[any]any), parent_window_id Window) error { //gd:DisplayServer.file_dialog_with_options_show
-	return error(gd.ToError(Advanced().FileDialogWithOptionsShow(String.New(title), String.New(current_directory), String.New(root), String.New(filename), show_hidden, mode, Packed.MakeStrings(filters...), gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](options), Callable.New(callback), int64(parent_window_id))))
+	return error(gd.ToError(Advanced().FileDialogWithOptionsShow(String.From(title), String.From(current_directory), String.From(root), String.From(filename), show_hidden, mode, Packed.MakeStrings(filters...), gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](options), Callable.New(callback), int64(parent_window_id))))
 }
 
 /*
@@ -3176,7 +3176,7 @@ Sets the window icon (usually displayed in the top-left corner) in the operating
 Note: Requires support for [FeatureNativeIcon].
 */
 func SetNativeIcon(filename string) { //gd:DisplayServer.set_native_icon
-	Advanced().SetNativeIcon(String.New(filename))
+	Advanced().SetNativeIcon(String.From(filename))
 }
 
 /*
@@ -3198,7 +3198,7 @@ Creates a new application status indicator with the specified icon, tooltip, and
 [Vector2i.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2i#XY
 */
 func CreateStatusIndicator(icon Texture2D.Instance, tooltip string, callback func(button Input.MouseButton, click_position Vector2i.XY)) StatusIndicator { //gd:DisplayServer.create_status_indicator
-	return StatusIndicator(StatusIndicator(Advanced().CreateStatusIndicator(icon, String.New(tooltip), Callable.New(callback))))
+	return StatusIndicator(StatusIndicator(Advanced().CreateStatusIndicator(icon, String.From(tooltip), Callable.New(callback))))
 }
 
 /*
@@ -3216,7 +3216,7 @@ Sets the application status indicator tooltip.
 Note: This method is implemented on macOS and Windows.
 */
 func StatusIndicatorSetTooltip(id StatusIndicator, tooltip string) { //gd:DisplayServer.status_indicator_set_tooltip
-	Advanced().StatusIndicatorSetTooltip(int64(id), String.New(tooltip))
+	Advanced().StatusIndicatorSetTooltip(int64(id), String.From(tooltip))
 }
 
 /*
@@ -3304,7 +3304,7 @@ Supported drivers:
 Note: This method is implemented only on Windows.
 */
 func TabletSetCurrentDriver(name string) { //gd:DisplayServer.tablet_set_current_driver
-	Advanced().TabletSetCurrentDriver(String.New(name))
+	Advanced().TabletSetCurrentDriver(String.From(name))
 }
 
 /*

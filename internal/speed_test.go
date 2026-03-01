@@ -10,6 +10,7 @@ import (
 	"graphics.gd/classdb/Control"
 	"graphics.gd/classdb/Engine"
 	"graphics.gd/classdb/GDScript"
+	"graphics.gd/classdb/Input"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/threadcheck"
 	"graphics.gd/variant/Object"
@@ -131,5 +132,14 @@ func bench(c):
 		B.ResetTimer()
 		result, _ = gd.ObjectCall(obj[0], bench, array...)
 		gd.ObjectFree(obj[0])
+	})
+}
+
+func BenchmarkMethodBindCallWithString(t *testing.B) {
+	benchOnMain(t, func(B *channelB) {
+		B.ReportAllocs()
+		for B.Loop() {
+			Input.IsActionPressed("ui_left", false)
+		}
 	})
 }
