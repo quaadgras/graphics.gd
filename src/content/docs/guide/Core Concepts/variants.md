@@ -21,7 +21,7 @@ coupling or overhead when making calls to the engine. You can import these packa
 | bool               | `bool`                    | `bool`                          |
 | int                | `int`                     | `int64`                         |
 | float              | `Float.X`                 | `float64`                       |
-| String             | `string`                  | `String.Readable`               |
+| String             | `string`                  | `String.Unicode`                |
 | Vector2            | `Vector2.XY`              | `Vector2.XY`                    |
 | Vector2i           | `Vector2i.XY`             | `Vector2i.XY`                   |
 | Rect2              | `Rect2.PositionSize`      | `Rect2.PositionSize`            |

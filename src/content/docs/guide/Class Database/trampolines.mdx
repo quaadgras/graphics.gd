@@ -1,8 +1,29 @@
 ---
-title: Trampolines
-slug: guide/classdb/trampolines
+title: Performance Tips
+slug: guide/classdb/performance
 ---
 import { Aside } from '@astrojs/starlight/components';
+
+`graphics.gd` implements many performance optimisations, primarily intended to avoid allocations and
+reduce cgo overhead. Here are some general performance tips:
+
+1. Due to internal pipelining and batching, calling engine functions that don't return any values
+is faster than having to wait for a values to be returned by the engine.
+2. Constant strings are only allocated once in the engine, use them where possible, otherwise they'll 
+need to be copied over for each call.
+3. Use the advanced variant types and methods when you need more control of allocations. Initialise 
+them up front and reuse them wherever possible.
+4. The main thread is faster (and safer) than goroutines. Most builtin optimisations are intended for 
+accelerating engine calls made on the main thread.
+
+### Benchmarks
+
+The [spitebench](https://github.com/timklge/spritebench) project maintains benchmarks measuring the
+FFI overhead for different Godot languages.
+
+![Benchmarks](https://raw.githubusercontent.com/timklge/spritebench/master/csv/benchmark_results.svg)
+
+### Trampolines
 
 <Aside type="caution">
     The API for this feature is complete and you can write code for it today, however, you may \
