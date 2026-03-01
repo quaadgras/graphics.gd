@@ -306,7 +306,7 @@ func (Instance) _get_global_name(impl func(ptr gdclass.Receiver) string) (cb gd.
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalStringName(String.Name(String.New(ret))))
+		ptr, ok := pointers.End(gd.InternalStringName(String.Name(String.From(ret))))
 
 		if !ok {
 			return
@@ -328,7 +328,7 @@ func (Instance) _get_instance_base_type(impl func(ptr gdclass.Receiver) string) 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalStringName(String.Name(String.New(ret))))
+		ptr, ok := pointers.End(gd.InternalStringName(String.Name(String.From(ret))))
 
 		if !ok {
 			return
@@ -374,7 +374,7 @@ func (Instance) _get_source_code(impl func(ptr gdclass.Receiver) string) (cb gd.
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -407,7 +407,7 @@ func (Instance) _get_doc_class_name(impl func(ptr gdclass.Receiver) string) (cb 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalStringName(String.Name(String.New(ret))))
+		ptr, ok := pointers.End(gd.InternalStringName(String.Name(String.From(ret))))
 
 		if !ok {
 			return
@@ -431,7 +431,7 @@ func (Instance) _get_class_icon_path(impl func(ptr gdclass.Receiver) string) (cb
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return

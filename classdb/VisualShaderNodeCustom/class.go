@@ -317,7 +317,7 @@ func (Instance) _get_name(impl func(ptr gdclass.Receiver) string) (cb gd.Extensi
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -335,7 +335,7 @@ func (Instance) _get_description(impl func(ptr gdclass.Receiver) string) (cb gd.
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -353,7 +353,7 @@ func (Instance) _get_category(impl func(ptr gdclass.Receiver) string) (cb gd.Ext
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -414,7 +414,7 @@ func (Instance) _get_input_port_name(impl func(ptr gdclass.Receiver, port int) s
 		var port = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(port))
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -497,7 +497,7 @@ func (Instance) _get_output_port_name(impl func(ptr gdclass.Receiver, port int) 
 		var port = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(port))
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -529,7 +529,7 @@ func (Instance) _get_property_name(impl func(ptr gdclass.Receiver, index int) st
 		var index = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(index))
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -592,7 +592,7 @@ func (Instance) _get_code(impl func(ptr gdclass.Receiver, input_vars []string, o
 		var atype = gd.UnsafeGet[VisualShader.Type](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, gd.ArrayAs[[]string](gd.InternalArray(input_vars)), gd.ArrayAs[[]string](gd.InternalArray(output_vars)), mode, atype)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -616,7 +616,7 @@ func (Instance) _get_func_code(impl func(ptr gdclass.Receiver, mode Shader.Mode,
 		var atype = gd.UnsafeGet[VisualShader.Type](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, mode, atype)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -639,7 +639,7 @@ func (Instance) _get_global_code(impl func(ptr gdclass.Receiver, mode Shader.Mod
 		var mode = gd.UnsafeGet[Shader.Mode](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, mode)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return

@@ -192,7 +192,7 @@ func (self Instance) NodeA() string { //gd:Joint2D.node_a
 
 // SetNodeA sets the property returned by [GetNodeA]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetNodeA(value string) Instance { //gd:Joint2D.node_a
-	class(self).SetNodeA(Path.ToNode(String.New(value)))
+	class(self).SetNodeA(Path.ToNode(String.From(value)))
 	return self
 }
 
@@ -207,7 +207,7 @@ func (self Instance) NodeB() string { //gd:Joint2D.node_b
 
 // SetNodeB sets the property returned by [GetNodeB]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetNodeB(value string) Instance { //gd:Joint2D.node_b
-	class(self).SetNodeB(Path.ToNode(String.New(value)))
+	class(self).SetNodeB(Path.ToNode(String.From(value)))
 	return self
 }
 

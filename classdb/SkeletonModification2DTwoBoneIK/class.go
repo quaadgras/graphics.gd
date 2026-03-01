@@ -145,7 +145,7 @@ Returns 'self' to enable method chaining.
 [Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
 */
 func (self Instance) SetJointOneBone2dNode(bone2d_node string) Instance { //gd:SkeletonModification2DTwoBoneIK.set_joint_one_bone2d_node
-	Advanced(self).SetJointOneBone2dNode(Path.ToNode(String.New(bone2d_node)))
+	Advanced(self).SetJointOneBone2dNode(Path.ToNode(String.From(bone2d_node)))
 	return self
 }
 
@@ -187,7 +187,7 @@ Returns 'self' to enable method chaining.
 [Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
 */
 func (self Instance) SetJointTwoBone2dNode(bone2d_node string) Instance { //gd:SkeletonModification2DTwoBoneIK.set_joint_two_bone2d_node
-	Advanced(self).SetJointTwoBone2dNode(Path.ToNode(String.New(bone2d_node)))
+	Advanced(self).SetJointTwoBone2dNode(Path.ToNode(String.From(bone2d_node)))
 	return self
 }
 
@@ -275,7 +275,7 @@ func (self Instance) TargetNodepath() string { //gd:SkeletonModification2DTwoBon
 
 // SetTargetNodepath sets the property returned by [GetTargetNode]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetTargetNodepath(value string) Instance { //gd:SkeletonModification2DTwoBoneIK.target_nodepath
-	class(self).SetTargetNode(Path.ToNode(String.New(value)))
+	class(self).SetTargetNode(Path.ToNode(String.From(value)))
 	return self
 }
 

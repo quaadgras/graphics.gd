@@ -774,7 +774,7 @@ func (Instance) _get_tooltip(impl func(ptr gdclass.Receiver, at_position Vector2
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, at_position)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -921,7 +921,7 @@ func (Instance) _accessibility_get_contextual_info(impl func(ptr gdclass.Receive
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -942,7 +942,7 @@ func (Instance) _get_accessibility_container_name(impl func(ptr gdclass.Receiver
 		defer gdreference.EndObject(gdclass.GetNode(node[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, node)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -1523,7 +1523,7 @@ See also [GetThemeIcon].
 [RemoveThemeIconOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.RemoveThemeIconOverride
 */
 func (self Instance) AddThemeIconOverride(name string, texture Texture2D.Instance) { //gd:Control.add_theme_icon_override
-	Advanced(self).AddThemeIconOverride(String.Name(String.New(name)), texture)
+	Advanced(self).AddThemeIconOverride(String.Name(String.From(name)), texture)
 }
 
 /*
@@ -1548,7 +1548,7 @@ Example: Modify a property in a [StyleBox] by duplicating it:
 [StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
 */
 func (self Instance) AddThemeStyleboxOverride(name string, stylebox StyleBox.Instance) { //gd:Control.add_theme_stylebox_override
-	Advanced(self).AddThemeStyleboxOverride(String.Name(String.New(name)), stylebox)
+	Advanced(self).AddThemeStyleboxOverride(String.Name(String.From(name)), stylebox)
 }
 
 /*
@@ -1561,7 +1561,7 @@ See also [GetThemeFont].
 [RemoveThemeFontOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.RemoveThemeFontOverride
 */
 func (self Instance) AddThemeFontOverride(name string, font Font.Instance) { //gd:Control.add_theme_font_override
-	Advanced(self).AddThemeFontOverride(String.Name(String.New(name)), font)
+	Advanced(self).AddThemeFontOverride(String.Name(String.From(name)), font)
 }
 
 /*
@@ -1573,7 +1573,7 @@ See also [GetThemeFontSize].
 [RemoveThemeFontSizeOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.RemoveThemeFontSizeOverride
 */
 func (self Instance) AddThemeFontSizeOverride(name string, font_size int) { //gd:Control.add_theme_font_size_override
-	Advanced(self).AddThemeFontSizeOverride(String.Name(String.New(name)), int64(font_size))
+	Advanced(self).AddThemeFontSizeOverride(String.Name(String.From(name)), int64(font_size))
 }
 
 /*
@@ -1596,7 +1596,7 @@ Example: Override a [Label]'s color and reset it later:
 [RemoveThemeColorOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.RemoveThemeColorOverride
 */
 func (self Instance) AddThemeColorOverride(name string, color Color.RGBA) { //gd:Control.add_theme_color_override
-	Advanced(self).AddThemeColorOverride(String.Name(String.New(name)), Color.RGBA(color))
+	Advanced(self).AddThemeColorOverride(String.Name(String.From(name)), Color.RGBA(color))
 }
 
 /*
@@ -1608,7 +1608,7 @@ See also [GetThemeConstant].
 [RemoveThemeConstantOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.RemoveThemeConstantOverride
 */
 func (self Instance) AddThemeConstantOverride(name string, constant int) { //gd:Control.add_theme_constant_override
-	Advanced(self).AddThemeConstantOverride(String.Name(String.New(name)), int64(constant))
+	Advanced(self).AddThemeConstantOverride(String.Name(String.From(name)), int64(constant))
 }
 
 /*
@@ -1617,7 +1617,7 @@ Removes a local override for a theme icon with the specified 'name' previously a
 [AddThemeIconOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AddThemeIconOverride
 */
 func (self Instance) RemoveThemeIconOverride(name string) { //gd:Control.remove_theme_icon_override
-	Advanced(self).RemoveThemeIconOverride(String.Name(String.New(name)))
+	Advanced(self).RemoveThemeIconOverride(String.Name(String.From(name)))
 }
 
 /*
@@ -1627,7 +1627,7 @@ Removes a local override for a theme [StyleBox] with the specified 'name' previo
 [StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
 */
 func (self Instance) RemoveThemeStyleboxOverride(name string) { //gd:Control.remove_theme_stylebox_override
-	Advanced(self).RemoveThemeStyleboxOverride(String.Name(String.New(name)))
+	Advanced(self).RemoveThemeStyleboxOverride(String.Name(String.From(name)))
 }
 
 /*
@@ -1637,7 +1637,7 @@ Removes a local override for a theme [Font] with the specified 'name' previously
 [Font]: https://pkg.go.dev/graphics.gd/classdb/Font
 */
 func (self Instance) RemoveThemeFontOverride(name string) { //gd:Control.remove_theme_font_override
-	Advanced(self).RemoveThemeFontOverride(String.Name(String.New(name)))
+	Advanced(self).RemoveThemeFontOverride(String.Name(String.From(name)))
 }
 
 /*
@@ -1646,7 +1646,7 @@ Removes a local override for a theme font size with the specified 'name' previou
 [AddThemeFontSizeOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AddThemeFontSizeOverride
 */
 func (self Instance) RemoveThemeFontSizeOverride(name string) { //gd:Control.remove_theme_font_size_override
-	Advanced(self).RemoveThemeFontSizeOverride(String.Name(String.New(name)))
+	Advanced(self).RemoveThemeFontSizeOverride(String.Name(String.From(name)))
 }
 
 /*
@@ -1656,7 +1656,7 @@ Removes a local override for a theme [Color.RGBA] with the specified 'name' prev
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 */
 func (self Instance) RemoveThemeColorOverride(name string) { //gd:Control.remove_theme_color_override
-	Advanced(self).RemoveThemeColorOverride(String.Name(String.New(name)))
+	Advanced(self).RemoveThemeColorOverride(String.Name(String.From(name)))
 }
 
 /*
@@ -1665,7 +1665,7 @@ Removes a local override for a theme constant with the specified 'name' previous
 [AddThemeConstantOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AddThemeConstantOverride
 */
 func (self Instance) RemoveThemeConstantOverride(name string) { //gd:Control.remove_theme_constant_override
-	Advanced(self).RemoveThemeConstantOverride(String.Name(String.New(name)))
+	Advanced(self).RemoveThemeConstantOverride(String.Name(String.From(name)))
 }
 
 /*
@@ -1677,7 +1677,7 @@ See [GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self Instance) GetThemeIcon(name string) Texture2D.Instance { //gd:Control.get_theme_icon
-	return Texture2D.Instance(Advanced(self).GetThemeIcon(String.Name(String.New(name)), String.Name(String.New(""))))
+	return Texture2D.Instance(Advanced(self).GetThemeIcon(String.Name(String.From(name)), String.Name(String.From(""))))
 }
 
 /*
@@ -1689,7 +1689,7 @@ See [GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self MoreArgs) GetThemeIcon(name string, theme_type string) Texture2D.Instance { //gd:Control.get_theme_icon
-	return Texture2D.Instance(Advanced(self).GetThemeIcon(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return Texture2D.Instance(Advanced(self).GetThemeIcon(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -1702,7 +1702,7 @@ See [GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self Instance) GetThemeStylebox(name string) StyleBox.Instance { //gd:Control.get_theme_stylebox
-	return StyleBox.Instance(Advanced(self).GetThemeStylebox(String.Name(String.New(name)), String.Name(String.New(""))))
+	return StyleBox.Instance(Advanced(self).GetThemeStylebox(String.Name(String.From(name)), String.Name(String.From(""))))
 }
 
 /*
@@ -1715,7 +1715,7 @@ See [GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self MoreArgs) GetThemeStylebox(name string, theme_type string) StyleBox.Instance { //gd:Control.get_theme_stylebox
-	return StyleBox.Instance(Advanced(self).GetThemeStylebox(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return StyleBox.Instance(Advanced(self).GetThemeStylebox(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -1728,7 +1728,7 @@ See [GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self Instance) GetThemeFont(name string) Font.Instance { //gd:Control.get_theme_font
-	return Font.Instance(Advanced(self).GetThemeFont(String.Name(String.New(name)), String.Name(String.New(""))))
+	return Font.Instance(Advanced(self).GetThemeFont(String.Name(String.From(name)), String.Name(String.From(""))))
 }
 
 /*
@@ -1741,7 +1741,7 @@ See [GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self MoreArgs) GetThemeFont(name string, theme_type string) Font.Instance { //gd:Control.get_theme_font
-	return Font.Instance(Advanced(self).GetThemeFont(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return Font.Instance(Advanced(self).GetThemeFont(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -1753,7 +1753,7 @@ See [GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self Instance) GetThemeFontSize(name string) int { //gd:Control.get_theme_font_size
-	return int(int(Advanced(self).GetThemeFontSize(String.Name(String.New(name)), String.Name(String.New("")))))
+	return int(int(Advanced(self).GetThemeFontSize(String.Name(String.From(name)), String.Name(String.From("")))))
 }
 
 /*
@@ -1765,7 +1765,7 @@ See [GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self MoreArgs) GetThemeFontSize(name string, theme_type string) int { //gd:Control.get_theme_font_size
-	return int(int(Advanced(self).GetThemeFontSize(String.Name(String.New(name)), String.Name(String.New(theme_type)))))
+	return int(int(Advanced(self).GetThemeFontSize(String.Name(String.From(name)), String.Name(String.From(theme_type)))))
 }
 
 /*
@@ -1786,7 +1786,7 @@ For the current control its local overrides are considered first (see [AddThemeC
 [ThemeTypeVariation]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.ThemeTypeVariation
 */
 func (self Instance) GetThemeColor(name string) Color.RGBA { //gd:Control.get_theme_color
-	return Color.RGBA(Advanced(self).GetThemeColor(String.Name(String.New(name)), String.Name(String.New(""))))
+	return Color.RGBA(Advanced(self).GetThemeColor(String.Name(String.From(name)), String.Name(String.From(""))))
 }
 
 /*
@@ -1807,7 +1807,7 @@ For the current control its local overrides are considered first (see [AddThemeC
 [ThemeTypeVariation]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.ThemeTypeVariation
 */
 func (self MoreArgs) GetThemeColor(name string, theme_type string) Color.RGBA { //gd:Control.get_theme_color
-	return Color.RGBA(Advanced(self).GetThemeColor(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return Color.RGBA(Advanced(self).GetThemeColor(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -1819,7 +1819,7 @@ See [GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self Instance) GetThemeConstant(name string) int { //gd:Control.get_theme_constant
-	return int(int(Advanced(self).GetThemeConstant(String.Name(String.New(name)), String.Name(String.New("")))))
+	return int(int(Advanced(self).GetThemeConstant(String.Name(String.From(name)), String.Name(String.From("")))))
 }
 
 /*
@@ -1831,7 +1831,7 @@ See [GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self MoreArgs) GetThemeConstant(name string, theme_type string) int { //gd:Control.get_theme_constant
-	return int(int(Advanced(self).GetThemeConstant(String.Name(String.New(name)), String.Name(String.New(theme_type)))))
+	return int(int(Advanced(self).GetThemeConstant(String.Name(String.From(name)), String.Name(String.From(theme_type)))))
 }
 
 /*
@@ -1843,7 +1843,7 @@ See [AddThemeIconOverride].
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 */
 func (self Instance) HasThemeIconOverride(name string) bool { //gd:Control.has_theme_icon_override
-	return bool(Advanced(self).HasThemeIconOverride(String.Name(String.New(name))))
+	return bool(Advanced(self).HasThemeIconOverride(String.Name(String.From(name))))
 }
 
 /*
@@ -1856,7 +1856,7 @@ See [AddThemeStyleboxOverride].
 [StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
 */
 func (self Instance) HasThemeStyleboxOverride(name string) bool { //gd:Control.has_theme_stylebox_override
-	return bool(Advanced(self).HasThemeStyleboxOverride(String.Name(String.New(name))))
+	return bool(Advanced(self).HasThemeStyleboxOverride(String.Name(String.From(name))))
 }
 
 /*
@@ -1869,7 +1869,7 @@ See [AddThemeFontOverride].
 [Font]: https://pkg.go.dev/graphics.gd/classdb/Font
 */
 func (self Instance) HasThemeFontOverride(name string) bool { //gd:Control.has_theme_font_override
-	return bool(Advanced(self).HasThemeFontOverride(String.Name(String.New(name))))
+	return bool(Advanced(self).HasThemeFontOverride(String.Name(String.From(name))))
 }
 
 /*
@@ -1881,7 +1881,7 @@ See [AddThemeFontSizeOverride].
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 */
 func (self Instance) HasThemeFontSizeOverride(name string) bool { //gd:Control.has_theme_font_size_override
-	return bool(Advanced(self).HasThemeFontSizeOverride(String.Name(String.New(name))))
+	return bool(Advanced(self).HasThemeFontSizeOverride(String.Name(String.From(name))))
 }
 
 /*
@@ -1894,7 +1894,7 @@ See [AddThemeColorOverride].
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 */
 func (self Instance) HasThemeColorOverride(name string) bool { //gd:Control.has_theme_color_override
-	return bool(Advanced(self).HasThemeColorOverride(String.Name(String.New(name))))
+	return bool(Advanced(self).HasThemeColorOverride(String.Name(String.From(name))))
 }
 
 /*
@@ -1906,7 +1906,7 @@ See [AddThemeConstantOverride].
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 */
 func (self Instance) HasThemeConstantOverride(name string) bool { //gd:Control.has_theme_constant_override
-	return bool(Advanced(self).HasThemeConstantOverride(String.Name(String.New(name))))
+	return bool(Advanced(self).HasThemeConstantOverride(String.Name(String.From(name))))
 }
 
 /*
@@ -1918,7 +1918,7 @@ See [GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self Instance) HasThemeIcon(name string) bool { //gd:Control.has_theme_icon
-	return bool(Advanced(self).HasThemeIcon(String.Name(String.New(name)), String.Name(String.New(""))))
+	return bool(Advanced(self).HasThemeIcon(String.Name(String.From(name)), String.Name(String.From(""))))
 }
 
 /*
@@ -1930,7 +1930,7 @@ See [GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self MoreArgs) HasThemeIcon(name string, theme_type string) bool { //gd:Control.has_theme_icon
-	return bool(Advanced(self).HasThemeIcon(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return bool(Advanced(self).HasThemeIcon(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -1942,7 +1942,7 @@ See [GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self Instance) HasThemeStylebox(name string) bool { //gd:Control.has_theme_stylebox
-	return bool(Advanced(self).HasThemeStylebox(String.Name(String.New(name)), String.Name(String.New(""))))
+	return bool(Advanced(self).HasThemeStylebox(String.Name(String.From(name)), String.Name(String.From(""))))
 }
 
 /*
@@ -1954,7 +1954,7 @@ See [GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self MoreArgs) HasThemeStylebox(name string, theme_type string) bool { //gd:Control.has_theme_stylebox
-	return bool(Advanced(self).HasThemeStylebox(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return bool(Advanced(self).HasThemeStylebox(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -1966,7 +1966,7 @@ See [GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self Instance) HasThemeFont(name string) bool { //gd:Control.has_theme_font
-	return bool(Advanced(self).HasThemeFont(String.Name(String.New(name)), String.Name(String.New(""))))
+	return bool(Advanced(self).HasThemeFont(String.Name(String.From(name)), String.Name(String.From(""))))
 }
 
 /*
@@ -1978,7 +1978,7 @@ See [GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self MoreArgs) HasThemeFont(name string, theme_type string) bool { //gd:Control.has_theme_font
-	return bool(Advanced(self).HasThemeFont(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return bool(Advanced(self).HasThemeFont(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -1990,7 +1990,7 @@ See [GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self Instance) HasThemeFontSize(name string) bool { //gd:Control.has_theme_font_size
-	return bool(Advanced(self).HasThemeFontSize(String.Name(String.New(name)), String.Name(String.New(""))))
+	return bool(Advanced(self).HasThemeFontSize(String.Name(String.From(name)), String.Name(String.From(""))))
 }
 
 /*
@@ -2002,7 +2002,7 @@ See [GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self MoreArgs) HasThemeFontSize(name string, theme_type string) bool { //gd:Control.has_theme_font_size
-	return bool(Advanced(self).HasThemeFontSize(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return bool(Advanced(self).HasThemeFontSize(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -2014,7 +2014,7 @@ See [GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self Instance) HasThemeColor(name string) bool { //gd:Control.has_theme_color
-	return bool(Advanced(self).HasThemeColor(String.Name(String.New(name)), String.Name(String.New(""))))
+	return bool(Advanced(self).HasThemeColor(String.Name(String.From(name)), String.Name(String.From(""))))
 }
 
 /*
@@ -2026,7 +2026,7 @@ See [GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self MoreArgs) HasThemeColor(name string, theme_type string) bool { //gd:Control.has_theme_color
-	return bool(Advanced(self).HasThemeColor(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return bool(Advanced(self).HasThemeColor(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -2038,7 +2038,7 @@ See [GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self Instance) HasThemeConstant(name string) bool { //gd:Control.has_theme_constant
-	return bool(Advanced(self).HasThemeConstant(String.Name(String.New(name)), String.Name(String.New(""))))
+	return bool(Advanced(self).HasThemeConstant(String.Name(String.From(name)), String.Name(String.From(""))))
 }
 
 /*
@@ -2050,7 +2050,7 @@ See [GetThemeColor] for details.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func (self MoreArgs) HasThemeConstant(name string, theme_type string) bool { //gd:Control.has_theme_constant
-	return bool(Advanced(self).HasThemeConstant(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+	return bool(Advanced(self).HasThemeConstant(String.Name(String.From(name)), String.Name(String.From(theme_type))))
 }
 
 /*
@@ -2721,7 +2721,7 @@ func (self Instance) TooltipText() string { //gd:Control.tooltip_text
 
 // SetTooltipText sets the property returned by [GetTooltipText]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetTooltipText(value string) Instance { //gd:Control.tooltip_text
-	class(self).SetTooltipText(String.New(value))
+	class(self).SetTooltipText(String.From(value))
 	return self
 }
 
@@ -2754,7 +2754,7 @@ func (self Instance) FocusNeighborLeft() string { //gd:Control.focus_neighbor_le
 
 // SetFocusNeighborLeft sets the property returned by [GetFocusNeighbor]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetFocusNeighborLeft(value string) Instance { //gd:Control.focus_neighbor_left
-	class(self).SetFocusNeighbor(0, Path.ToNode(String.New(value)))
+	class(self).SetFocusNeighbor(0, Path.ToNode(String.From(value)))
 	return self
 }
 
@@ -2770,7 +2770,7 @@ func (self Instance) FocusNeighborTop() string { //gd:Control.focus_neighbor_top
 
 // SetFocusNeighborTop sets the property returned by [GetFocusNeighbor]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetFocusNeighborTop(value string) Instance { //gd:Control.focus_neighbor_top
-	class(self).SetFocusNeighbor(1, Path.ToNode(String.New(value)))
+	class(self).SetFocusNeighbor(1, Path.ToNode(String.From(value)))
 	return self
 }
 
@@ -2786,7 +2786,7 @@ func (self Instance) FocusNeighborRight() string { //gd:Control.focus_neighbor_r
 
 // SetFocusNeighborRight sets the property returned by [GetFocusNeighbor]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetFocusNeighborRight(value string) Instance { //gd:Control.focus_neighbor_right
-	class(self).SetFocusNeighbor(2, Path.ToNode(String.New(value)))
+	class(self).SetFocusNeighbor(2, Path.ToNode(String.From(value)))
 	return self
 }
 
@@ -2802,7 +2802,7 @@ func (self Instance) FocusNeighborBottom() string { //gd:Control.focus_neighbor_
 
 // SetFocusNeighborBottom sets the property returned by [GetFocusNeighbor]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetFocusNeighborBottom(value string) Instance { //gd:Control.focus_neighbor_bottom
-	class(self).SetFocusNeighbor(3, Path.ToNode(String.New(value)))
+	class(self).SetFocusNeighbor(3, Path.ToNode(String.From(value)))
 	return self
 }
 
@@ -2819,7 +2819,7 @@ func (self Instance) FocusNext() string { //gd:Control.focus_next
 
 // SetFocusNext sets the property returned by [GetFocusNext]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetFocusNext(value string) Instance { //gd:Control.focus_next
-	class(self).SetFocusNext(Path.ToNode(String.New(value)))
+	class(self).SetFocusNext(Path.ToNode(String.From(value)))
 	return self
 }
 
@@ -2836,7 +2836,7 @@ func (self Instance) FocusPrevious() string { //gd:Control.focus_previous
 
 // SetFocusPrevious sets the property returned by [GetFocusPrevious]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetFocusPrevious(value string) Instance { //gd:Control.focus_previous
-	class(self).SetFocusPrevious(Path.ToNode(String.New(value)))
+	class(self).SetFocusPrevious(Path.ToNode(String.From(value)))
 	return self
 }
 
@@ -2970,7 +2970,7 @@ func (self Instance) AccessibilityName() string { //gd:Control.accessibility_nam
 
 // SetAccessibilityName sets the property returned by [GetAccessibilityName]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetAccessibilityName(value string) Instance { //gd:Control.accessibility_name
-	class(self).SetAccessibilityName(String.New(value))
+	class(self).SetAccessibilityName(String.From(value))
 	return self
 }
 
@@ -2983,7 +2983,7 @@ func (self Instance) AccessibilityDescription() string { //gd:Control.accessibil
 
 // SetAccessibilityDescription sets the property returned by [GetAccessibilityDescription]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetAccessibilityDescription(value string) Instance { //gd:Control.accessibility_description
-	class(self).SetAccessibilityDescription(String.New(value))
+	class(self).SetAccessibilityDescription(String.From(value))
 	return self
 }
 
@@ -3093,7 +3093,7 @@ func (self Instance) ThemeTypeVariation() string { //gd:Control.theme_type_varia
 
 // SetThemeTypeVariation sets the property returned by [GetThemeTypeVariation]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetThemeTypeVariation(value string) Instance { //gd:Control.theme_type_variation
-	class(self).SetThemeTypeVariation(String.Name(String.New(value)))
+	class(self).SetThemeTypeVariation(String.Name(String.From(value)))
 	return self
 }
 func (class) _has_point(impl func(ptr gdclass.Receiver, point Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {

@@ -383,7 +383,7 @@ Sets the given column's text value.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetText(column int, text string) Instance { //gd:TreeItem.set_text
-	Advanced(self).SetText(int64(column), String.New(text))
+	Advanced(self).SetText(int64(column), String.From(text))
 	return self
 }
 
@@ -400,7 +400,7 @@ Sets the given column's description for assistive apps.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetDescription(column int, description string) Instance { //gd:TreeItem.set_description
-	Advanced(self).SetDescription(int64(column), String.New(description))
+	Advanced(self).SetDescription(int64(column), String.From(description))
 	return self
 }
 
@@ -502,7 +502,7 @@ Sets the language code of the given 'column”s text to 'language'. This is used
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetLanguage(column int, language string) Instance { //gd:TreeItem.set_language
-	Advanced(self).SetLanguage(int64(column), String.New(language))
+	Advanced(self).SetLanguage(int64(column), String.From(language))
 	return self
 }
 
@@ -519,7 +519,7 @@ Sets a string to be shown after a column's value (for example, a unit abbreviati
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetSuffix(column int, text string) Instance { //gd:TreeItem.set_suffix
-	Advanced(self).SetSuffix(int64(column), String.New(text))
+	Advanced(self).SetSuffix(int64(column), String.From(text))
 	return self
 }
 
@@ -712,7 +712,7 @@ Returns 'self' to enable method chaining.
 [TreeItem]: https://pkg.go.dev/graphics.gd/classdb/TreeItem
 */
 func (self Instance) SetCustomDraw(column int, obj Object.Instance, callback string) Instance { //gd:TreeItem.set_custom_draw
-	Advanced(self).SetCustomDraw(int64(column), obj, String.Name(String.New(callback)))
+	Advanced(self).SetCustomDraw(int64(column), obj, String.Name(String.From(callback)))
 	return self
 }
 
@@ -1004,7 +1004,7 @@ Adds a button with [Texture2D] 'button' to the end of the cell at column 'column
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
 func (self Instance) AddButton(column int, button Texture2D.Instance) { //gd:TreeItem.add_button
-	Advanced(self).AddButton(int64(column), button, int64(-1), false, String.New(""), String.New(""))
+	Advanced(self).AddButton(int64(column), button, int64(-1), false, String.From(""), String.From(""))
 }
 
 /*
@@ -1015,7 +1015,7 @@ Adds a button with [Texture2D] 'button' to the end of the cell at column 'column
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
 func (self MoreArgs) AddButton(column int, button Texture2D.Instance, id int, disabled bool, tooltip_text string, description string) { //gd:TreeItem.add_button
-	Advanced(self).AddButton(int64(column), button, int64(id), disabled, String.New(tooltip_text), String.New(description))
+	Advanced(self).AddButton(int64(column), button, int64(id), disabled, String.From(tooltip_text), String.From(description))
 }
 
 /*
@@ -1068,7 +1068,7 @@ Sets the tooltip text for the button at index 'button_index' in the given 'colum
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetButtonTooltipText(column int, button_index int, tooltip string) Instance { //gd:TreeItem.set_button_tooltip_text
-	Advanced(self).SetButtonTooltipText(int64(column), int64(button_index), String.New(tooltip))
+	Advanced(self).SetButtonTooltipText(int64(column), int64(button_index), String.From(tooltip))
 	return self
 }
 
@@ -1097,7 +1097,7 @@ Sets the given column's button description at index 'button_index' for assistive
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetButtonDescription(column int, button_index int, description string) Instance { //gd:TreeItem.set_button_description
-	Advanced(self).SetButtonDescription(int64(column), int64(button_index), String.New(description))
+	Advanced(self).SetButtonDescription(int64(column), int64(button_index), String.From(description))
 	return self
 }
 
@@ -1134,7 +1134,7 @@ Sets the given column's tooltip text.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetTooltipText(column int, tooltip string) Instance { //gd:TreeItem.set_tooltip_text
-	Advanced(self).SetTooltipText(int64(column), String.New(tooltip))
+	Advanced(self).SetTooltipText(int64(column), String.From(tooltip))
 	return self
 }
 
@@ -1385,7 +1385,7 @@ func (self Instance) CallRecursive(method string, args ...any) { //gd:TreeItem.c
 	for i, arg := range args {
 		converted_variants[i] = gd.NewVariant(arg)
 	}
-	Advanced(self).CallRecursive(String.Name(String.New(method)), converted_variants...)
+	Advanced(self).CallRecursive(String.Name(String.From(method)), converted_variants...)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

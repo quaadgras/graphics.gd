@@ -269,7 +269,7 @@ func (self Instance) BaseType() string { //gd:EditorResourcePicker.base_type
 
 // SetBaseType sets the property returned by [GetBaseType]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetBaseType(value string) Instance { //gd:EditorResourcePicker.base_type
-	class(self).SetBaseType(String.New(value))
+	class(self).SetBaseType(String.From(value))
 	return self
 }
 

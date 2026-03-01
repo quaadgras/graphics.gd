@@ -178,7 +178,7 @@ func (self Instance) OriginalClass() string { //gd:MissingNode.original_class
 
 // SetOriginalClass sets the property returned by [GetOriginalClass]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetOriginalClass(value string) Instance { //gd:MissingNode.original_class
-	class(self).SetOriginalClass(String.New(value))
+	class(self).SetOriginalClass(String.From(value))
 	return self
 }
 
@@ -191,7 +191,7 @@ func (self Instance) OriginalScene() string { //gd:MissingNode.original_scene
 
 // SetOriginalScene sets the property returned by [GetOriginalScene]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetOriginalScene(value string) Instance { //gd:MissingNode.original_scene
-	class(self).SetOriginalScene(String.New(value))
+	class(self).SetOriginalScene(String.From(value))
 	return self
 }
 

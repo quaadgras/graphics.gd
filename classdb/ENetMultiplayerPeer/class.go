@@ -165,7 +165,7 @@ Create client that connects to a server at 'address' using specified 'port'. The
 [MultiplayerPeer.Close]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerPeer#Instance.Close
 */
 func (self Instance) CreateClient(address string, port int) error { //gd:ENetMultiplayerPeer.create_client
-	return error(gd.ToError(Advanced(self).CreateClient(String.New(address), int64(port), int64(0), int64(0), int64(0), int64(0))))
+	return error(gd.ToError(Advanced(self).CreateClient(String.From(address), int64(port), int64(0), int64(0), int64(0), int64(0))))
 }
 
 /*
@@ -174,7 +174,7 @@ Create client that connects to a server at 'address' using specified 'port'. The
 [MultiplayerPeer.Close]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerPeer#Instance.Close
 */
 func (self MoreArgs) CreateClient(address string, port int, channel_count int, in_bandwidth int, out_bandwidth int, local_port int) error { //gd:ENetMultiplayerPeer.create_client
-	return error(gd.ToError(Advanced(self).CreateClient(String.New(address), int64(port), int64(channel_count), int64(in_bandwidth), int64(out_bandwidth), int64(local_port))))
+	return error(gd.ToError(Advanced(self).CreateClient(String.From(address), int64(port), int64(channel_count), int64(in_bandwidth), int64(out_bandwidth), int64(local_port))))
 }
 
 /*
@@ -204,7 +204,7 @@ The IP used when creating a server. This is set to the wildcard "*" by default, 
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetBindIp(ip string) Instance { //gd:ENetMultiplayerPeer.set_bind_ip
-	Advanced(self).SetBindIp(String.New(ip))
+	Advanced(self).SetBindIp(String.From(ip))
 	return self
 }
 

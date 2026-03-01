@@ -133,7 +133,7 @@ type API interface {
 	AssignableTo(complex128, reflect.Type) bool
 	ConvertibleTo(complex128, reflect.Type) bool
 	Calculate(complex128, Operator, complex128) Any
-	Call(complex128, String.Readable, ...Any) Any
+	Call(complex128, String.Unicode, ...Any) Any
 	Has(complex128, Any) bool
 	Set(complex128, Any, Any) bool
 	Get(complex128, Any) (Any, bool)

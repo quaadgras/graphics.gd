@@ -130,42 +130,42 @@ func singleton() {
 Returns a given hostname's IPv4 or IPv6 address when resolved (blocking-type method). The address type returned depends on the [Type] constant given as 'ip_type'.
 */
 func ResolveHostname(host string) string { //gd:IP.resolve_hostname
-	return string(Advanced().ResolveHostname(String.New(host), 3).String())
+	return string(Advanced().ResolveHostname(String.From(host), 3).String())
 }
 
 /*
 Returns a given hostname's IPv4 or IPv6 address when resolved (blocking-type method). The address type returned depends on the [Type] constant given as 'ip_type'.
 */
 func ResolveHostnameOptions(host string, ip_type Type) string { //gd:IP.resolve_hostname
-	return string(Advanced().ResolveHostname(String.New(host), ip_type).String())
+	return string(Advanced().ResolveHostname(String.From(host), ip_type).String())
 }
 
 /*
 Resolves a given hostname in a blocking way. Addresses are returned as an slice of IPv4 or IPv6 addresses depending on 'ip_type'.
 */
 func ResolveHostnameAddresses(host string) []string { //gd:IP.resolve_hostname_addresses
-	return []string(Advanced().ResolveHostnameAddresses(String.New(host), 3).Strings())
+	return []string(Advanced().ResolveHostnameAddresses(String.From(host), 3).Strings())
 }
 
 /*
 Resolves a given hostname in a blocking way. Addresses are returned as an slice of IPv4 or IPv6 addresses depending on 'ip_type'.
 */
 func ResolveHostnameAddressesOptions(host string, ip_type Type) []string { //gd:IP.resolve_hostname_addresses
-	return []string(Advanced().ResolveHostnameAddresses(String.New(host), ip_type).Strings())
+	return []string(Advanced().ResolveHostnameAddresses(String.From(host), ip_type).Strings())
 }
 
 /*
 Creates a queue item to resolve a hostname to an IPv4 or IPv6 address depending on the [Type] constant given as 'ip_type'. Returns the queue ID if successful, or [ResolverInvalidId] on error.
 */
 func ResolveHostnameQueueItem(host string) int { //gd:IP.resolve_hostname_queue_item
-	return int(int(Advanced().ResolveHostnameQueueItem(String.New(host), 3)))
+	return int(int(Advanced().ResolveHostnameQueueItem(String.From(host), 3)))
 }
 
 /*
 Creates a queue item to resolve a hostname to an IPv4 or IPv6 address depending on the [Type] constant given as 'ip_type'. Returns the queue ID if successful, or [ResolverInvalidId] on error.
 */
 func ResolveHostnameQueueItemOptions(host string, ip_type Type) int { //gd:IP.resolve_hostname_queue_item
-	return int(int(Advanced().ResolveHostnameQueueItem(String.New(host), ip_type)))
+	return int(int(Advanced().ResolveHostnameQueueItem(String.From(host), ip_type)))
 }
 
 /*
@@ -223,7 +223,7 @@ func GetLocalInterfaces() []LocalInterface { //gd:IP.get_local_interfaces
 Removes all of a 'hostname”s cached references. If no 'hostname' is given, all cached IP addresses are removed.
 */
 func ClearCache(hostname string) { //gd:IP.clear_cache
-	Advanced().ClearCache(String.New(hostname))
+	Advanced().ClearCache(String.From(hostname))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -145,7 +145,7 @@ Creates an ENetHost bound to the given 'bind_address' and 'bind_port' that allow
 Note: It is necessary to create a host in both client and server in order to establish a connection.
 */
 func (self Instance) CreateHostBound(bind_address string, bind_port int) error { //gd:ENetConnection.create_host_bound
-	return error(gd.ToError(Advanced(self).CreateHostBound(String.New(bind_address), int64(bind_port), int64(32), int64(0), int64(0), int64(0))))
+	return error(gd.ToError(Advanced(self).CreateHostBound(String.From(bind_address), int64(bind_port), int64(32), int64(0), int64(0), int64(0))))
 }
 
 /*
@@ -154,7 +154,7 @@ Creates an ENetHost bound to the given 'bind_address' and 'bind_port' that allow
 Note: It is necessary to create a host in both client and server in order to establish a connection.
 */
 func (self MoreArgs) CreateHostBound(bind_address string, bind_port int, max_peers int, max_channels int, in_bandwidth int, out_bandwidth int) error { //gd:ENetConnection.create_host_bound
-	return error(gd.ToError(Advanced(self).CreateHostBound(String.New(bind_address), int64(bind_port), int64(max_peers), int64(max_channels), int64(in_bandwidth), int64(out_bandwidth))))
+	return error(gd.ToError(Advanced(self).CreateHostBound(String.From(bind_address), int64(bind_port), int64(max_peers), int64(max_channels), int64(in_bandwidth), int64(out_bandwidth))))
 }
 
 /*
@@ -199,7 +199,7 @@ Note: You must call either [CreateHost] or [CreateHostBound] on both ends before
 [CreateHostBound]: https://pkg.go.dev/graphics.gd/classdb/ENetConnection#Instance.CreateHostBound
 */
 func (self Instance) ConnectToHost(address string, port int) ENetPacketPeer.Instance { //gd:ENetConnection.connect_to_host
-	return ENetPacketPeer.Instance(Advanced(self).ConnectToHost(String.New(address), int64(port), int64(0), int64(0)))
+	return ENetPacketPeer.Instance(Advanced(self).ConnectToHost(String.From(address), int64(port), int64(0), int64(0)))
 }
 
 /*
@@ -211,7 +211,7 @@ Note: You must call either [CreateHost] or [CreateHostBound] on both ends before
 [CreateHostBound]: https://pkg.go.dev/graphics.gd/classdb/ENetConnection#Instance.CreateHostBound
 */
 func (self MoreArgs) ConnectToHost(address string, port int, channels int, data int) ENetPacketPeer.Instance { //gd:ENetConnection.connect_to_host
-	return ENetPacketPeer.Instance(Advanced(self).ConnectToHost(String.New(address), int64(port), int64(channels), int64(data)))
+	return ENetPacketPeer.Instance(Advanced(self).ConnectToHost(String.From(address), int64(port), int64(channels), int64(data)))
 }
 
 /*
@@ -308,7 +308,7 @@ Configure this ENetHost to use the custom Godot extension allowing DTLS encrypti
 [TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
 */
 func (self Instance) DtlsClientSetup(hostname string) error { //gd:ENetConnection.dtls_client_setup
-	return error(gd.ToError(Advanced(self).DtlsClientSetup(String.New(hostname), [1]TLSOptions.Instance{}[0])))
+	return error(gd.ToError(Advanced(self).DtlsClientSetup(String.From(hostname), [1]TLSOptions.Instance{}[0])))
 }
 
 /*
@@ -319,7 +319,7 @@ Configure this ENetHost to use the custom Godot extension allowing DTLS encrypti
 [TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
 */
 func (self MoreArgs) DtlsClientSetup(hostname string, client_options TLSOptions.Instance) error { //gd:ENetConnection.dtls_client_setup
-	return error(gd.ToError(Advanced(self).DtlsClientSetup(String.New(hostname), client_options)))
+	return error(gd.ToError(Advanced(self).DtlsClientSetup(String.From(hostname), client_options)))
 }
 
 /*
@@ -373,7 +373,7 @@ This requires forward knowledge of a prospective client's address and communicat
 [STUN]: https://en.wikipedia.org/wiki/STUN
 */
 func (self Instance) SocketSend(destination_address string, destination_port int, packet []byte) { //gd:ENetConnection.socket_send
-	Advanced(self).SocketSend(String.New(destination_address), int64(destination_port), Packed.BytesFrom(packet...))
+	Advanced(self).SocketSend(String.From(destination_address), int64(destination_port), Packed.BytesFrom(packet...))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

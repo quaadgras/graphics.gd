@@ -372,7 +372,7 @@ func (Instance) _get_caption(impl func(ptr gdclass.Receiver) string) (cb gd.Exte
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -400,7 +400,7 @@ Adds an input to the animation node. This is only useful for animation nodes cre
 [AnimationNodeBlendTree]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendTree
 */
 func (self Instance) AddInput(name string) bool { //gd:AnimationNode.add_input
-	return bool(Advanced(self).AddInput(String.New(name)))
+	return bool(Advanced(self).AddInput(String.From(name)))
 }
 
 /*
@@ -414,7 +414,7 @@ func (self Instance) RemoveInput(index int) { //gd:AnimationNode.remove_input
 Sets the name of the input at the given 'input' index. If the setting fails, returns false.
 */
 func (self Instance) SetInputName(input int, name string) bool { //gd:AnimationNode.set_input_name
-	return bool(Advanced(self).SetInputName(int64(input), String.New(name)))
+	return bool(Advanced(self).SetInputName(int64(input), String.From(name)))
 }
 
 /*
@@ -437,7 +437,7 @@ func (self Instance) GetInputCount() int { //gd:AnimationNode.get_input_count
 Returns the input index which corresponds to 'name'. If not found, returns -1.
 */
 func (self Instance) FindInput(name string) int { //gd:AnimationNode.find_input
-	return int(int(Advanced(self).FindInput(String.New(name))))
+	return int(int(Advanced(self).FindInput(String.From(name))))
 }
 
 /*
@@ -446,7 +446,7 @@ Adds or removes a path for the filter.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetFilterPath(path string, enable bool) Instance { //gd:AnimationNode.set_filter_path
-	Advanced(self).SetFilterPath(Path.ToNode(String.New(path)), enable)
+	Advanced(self).SetFilterPath(Path.ToNode(String.From(path)), enable)
 	return self
 }
 
@@ -454,7 +454,7 @@ func (self Instance) SetFilterPath(path string, enable bool) Instance { //gd:Ani
 Returns true if the given path is filtered.
 */
 func (self Instance) IsPathFiltered(path string) bool { //gd:AnimationNode.is_path_filtered
-	return bool(Advanced(self).IsPathFiltered(Path.ToNode(String.New(path))))
+	return bool(Advanced(self).IsPathFiltered(Path.ToNode(String.From(path))))
 }
 
 /*
@@ -484,7 +484,7 @@ A 'looped_flag' is used by internal processing immediately after the loop.
 [AnimationPlayer]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer
 */
 func (self Instance) BlendAnimation(animation string, time Float.X, delta Float.X, seeked bool, is_external_seeking bool, blend Float.X) { //gd:AnimationNode.blend_animation
-	Advanced(self).BlendAnimation(String.Name(String.New(animation)), float64(time), float64(delta), seeked, is_external_seeking, float64(blend), 0)
+	Advanced(self).BlendAnimation(String.Name(String.From(animation)), float64(time), float64(delta), seeked, is_external_seeking, float64(blend), 0)
 }
 
 /*
@@ -495,7 +495,7 @@ A 'looped_flag' is used by internal processing immediately after the loop.
 [AnimationPlayer]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer
 */
 func (self MoreArgs) BlendAnimation(animation string, time Float.X, delta Float.X, seeked bool, is_external_seeking bool, blend Float.X, looped_flag Animation.LoopedFlag) { //gd:AnimationNode.blend_animation
-	Advanced(self).BlendAnimation(String.Name(String.New(animation)), float64(time), float64(delta), seeked, is_external_seeking, float64(blend), looped_flag)
+	Advanced(self).BlendAnimation(String.Name(String.From(animation)), float64(time), float64(delta), seeked, is_external_seeking, float64(blend), looped_flag)
 }
 
 /*
@@ -504,7 +504,7 @@ Blend another animation node (in case this animation node contains child animati
 [AnimationRootNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationRootNode
 */
 func (self Instance) BlendNode(name string, node Instance, time Float.X, seek bool, is_external_seeking bool, blend Float.X) Float.X { //gd:AnimationNode.blend_node
-	return Float.X(Float.X(Advanced(self).BlendNode(String.Name(String.New(name)), node, float64(time), seek, is_external_seeking, float64(blend), 0, true, false)))
+	return Float.X(Float.X(Advanced(self).BlendNode(String.Name(String.From(name)), node, float64(time), seek, is_external_seeking, float64(blend), 0, true, false)))
 }
 
 /*
@@ -513,7 +513,7 @@ Blend another animation node (in case this animation node contains child animati
 [AnimationRootNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationRootNode
 */
 func (self MoreArgs) BlendNode(name string, node Instance, time Float.X, seek bool, is_external_seeking bool, blend Float.X, filter FilterAction, sync bool, test_only bool) Float.X { //gd:AnimationNode.blend_node
-	return Float.X(Float.X(Advanced(self).BlendNode(String.Name(String.New(name)), node, float64(time), seek, is_external_seeking, float64(blend), filter, sync, test_only)))
+	return Float.X(Float.X(Advanced(self).BlendNode(String.Name(String.From(name)), node, float64(time), seek, is_external_seeking, float64(blend), filter, sync, test_only)))
 }
 
 /*
@@ -540,7 +540,7 @@ Sets a custom parameter. These are used as local memory, because resources can b
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetParameter(name string, value any) Instance { //gd:AnimationNode.set_parameter
-	Advanced(self).SetParameter(String.Name(String.New(name)), variant.New(value))
+	Advanced(self).SetParameter(String.Name(String.From(name)), variant.New(value))
 	return self
 }
 
@@ -548,7 +548,7 @@ func (self Instance) SetParameter(name string, value any) Instance { //gd:Animat
 Gets the value of a parameter. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
 */
 func (self Instance) GetParameter(name string) any { //gd:AnimationNode.get_parameter
-	return any(Advanced(self).GetParameter(String.Name(String.New(name))).Interface())
+	return any(Advanced(self).GetParameter(String.Name(String.From(name))).Interface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

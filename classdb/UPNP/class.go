@@ -302,7 +302,7 @@ See [UPNPResult] for possible return values.
 [UPNPDevice]: https://pkg.go.dev/graphics.gd/classdb/UPNPDevice
 */
 func (self Instance) Discover() int { //gd:UPNP.discover
-	return int(int(Advanced(self).Discover(int64(2000), int64(2), String.New("InternetGatewayDevice"))))
+	return int(int(Advanced(self).Discover(int64(2000), int64(2), String.From("InternetGatewayDevice"))))
 }
 
 /*
@@ -315,7 +315,7 @@ See [UPNPResult] for possible return values.
 [UPNPDevice]: https://pkg.go.dev/graphics.gd/classdb/UPNPDevice
 */
 func (self MoreArgs) Discover(timeout int, ttl int, device_filter string) int { //gd:UPNP.discover
-	return int(int(Advanced(self).Discover(int64(timeout), int64(ttl), String.New(device_filter))))
+	return int(int(Advanced(self).Discover(int64(timeout), int64(ttl), String.From(device_filter))))
 }
 
 /*
@@ -345,7 +345,7 @@ See [UPNPResult] for possible return values.
 [GetGateway]: https://pkg.go.dev/graphics.gd/classdb/UPNP#Instance.GetGateway
 */
 func (self Instance) AddPortMapping(port int) int { //gd:UPNP.add_port_mapping
-	return int(int(Advanced(self).AddPortMapping(int64(port), int64(0), String.New(""), String.New("UDP"), int64(0))))
+	return int(int(Advanced(self).AddPortMapping(int64(port), int64(0), String.From(""), String.From("UDP"), int64(0))))
 }
 
 /*
@@ -365,7 +365,7 @@ See [UPNPResult] for possible return values.
 [GetGateway]: https://pkg.go.dev/graphics.gd/classdb/UPNP#Instance.GetGateway
 */
 func (self MoreArgs) AddPortMapping(port int, port_internal int, desc string, proto string, duration int) int { //gd:UPNP.add_port_mapping
-	return int(int(Advanced(self).AddPortMapping(int64(port), int64(port_internal), String.New(desc), String.New(proto), int64(duration))))
+	return int(int(Advanced(self).AddPortMapping(int64(port), int64(port_internal), String.From(desc), String.From(proto), int64(duration))))
 }
 
 /*
@@ -374,7 +374,7 @@ Deletes the port mapping for the given port and protocol combination on the defa
 [GetGateway]: https://pkg.go.dev/graphics.gd/classdb/UPNP#Instance.GetGateway
 */
 func (self Instance) DeletePortMapping(port int) int { //gd:UPNP.delete_port_mapping
-	return int(int(Advanced(self).DeletePortMapping(int64(port), String.New("UDP"))))
+	return int(int(Advanced(self).DeletePortMapping(int64(port), String.From("UDP"))))
 }
 
 /*
@@ -383,7 +383,7 @@ Deletes the port mapping for the given port and protocol combination on the defa
 [GetGateway]: https://pkg.go.dev/graphics.gd/classdb/UPNP#Instance.GetGateway
 */
 func (self MoreArgs) DeletePortMapping(port int, proto string) int { //gd:UPNP.delete_port_mapping
-	return int(int(Advanced(self).DeletePortMapping(int64(port), String.New(proto))))
+	return int(int(Advanced(self).DeletePortMapping(int64(port), String.From(proto))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -438,7 +438,7 @@ func (self Instance) DiscoverMulticastIf() string { //gd:UPNP.discover_multicast
 
 // SetDiscoverMulticastIf sets the property returned by [GetDiscoverMulticastIf]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetDiscoverMulticastIf(value string) Instance { //gd:UPNP.discover_multicast_if
-	class(self).SetDiscoverMulticastIf(String.New(value))
+	class(self).SetDiscoverMulticastIf(String.From(value))
 	return self
 }
 

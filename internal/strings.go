@@ -9,10 +9,31 @@ import (
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/internal/rodatacheck"
 	"graphics.gd/internal/threadcheck"
 	"graphics.gd/variant/Path"
 	StringType "graphics.gd/variant/String"
 )
+
+var (
+	static_string_names = make(map[string]gdextension.StringName)
+	static_strings      = make(map[string]gdextension.String)
+	static_nodepaths    = make(map[string]gdextension.NodePath)
+)
+
+func init() {
+	RegisterCleanup(func() {
+		for _, name := range static_string_names {
+			noescape.Free(gdextension.TypeStringName, &name)
+		}
+		for _, name := range static_strings {
+			noescape.Free(gdextension.TypeString, &name)
+		}
+		for _, name := range static_nodepaths {
+			noescape.Free(gdextension.TypeNodePath, &name)
+		}
+	})
+}
 
 func (s String) StringName() StringName {
 	var arg = pointers.Get(s)
@@ -104,7 +125,15 @@ func (n NodePath) Free() {
 	noescape.Free(gdextension.TypeNodePath, &ptr)
 }
 
-func InternalString(s StringType.Readable) String {
+func InternalString(s StringType.Unicode) String {
+	if str := s.String(); rodatacheck.String(str) && threadcheck.Main() {
+		if name, ok := static_strings[str]; ok {
+			return pointers.Raw[String](name)
+		}
+		name := gdextension.Host.Strings.Decode.UTF8(str)
+		static_strings[str] = name
+		return pointers.Raw[String](name)
+	}
 	_, ptr := StringType.Proxy(s, StringCacheCheck, NewStringProxy)
 	return pointers.Load[String](ptr)
 }
@@ -132,7 +161,7 @@ func (proxy StringProxy) Len(raw complex128) int {
 	}
 	return pointers.Load[String](raw).Len()
 }
-func (proxy StringProxy) Slice(raw complex128, index int, close int) StringType.Readable {
+func (proxy StringProxy) Slice(raw complex128, index int, close int) StringType.Unicode {
 	if proxy.indirect != nil {
 		return StringProxy{}.Slice(pointers.Pack(*proxy.indirect), index, close)
 	}
@@ -152,7 +181,7 @@ func (proxy StringProxy) Index(raw complex128, n int) byte {
 	}
 	return byte(gdextension.Host.Strings.Access(pointers.Get(pointers.Load[String](raw)), n))
 }
-func (proxy StringProxy) DecodeRune(raw complex128) (StringType.Rune, int, StringType.Readable) {
+func (proxy StringProxy) DecodeRune(raw complex128) (StringType.Rune, int, StringType.Unicode) {
 	if proxy.indirect != nil {
 		return StringProxy{}.DecodeRune(pointers.Pack(*proxy.indirect))
 	}
@@ -160,7 +189,7 @@ func (proxy StringProxy) DecodeRune(raw complex128) (StringType.Rune, int, Strin
 	next := s.Substr(0, s.Length())
 	return StringType.Rune(gdextension.Host.Strings.Access(pointers.Get(pointers.Load[String](raw)), 0)), 0, StringType.Via(StringProxy{}, pointers.Pack(next))
 }
-func (proxy StringProxy) AppendRune(raw complex128, r StringType.Rune) StringType.Readable {
+func (proxy StringProxy) AppendRune(raw complex128, r StringType.Rune) StringType.Unicode {
 	if proxy.indirect != nil {
 		return StringProxy{}.AppendRune(pointers.Pack(*proxy.indirect), r)
 	}
@@ -169,7 +198,7 @@ func (proxy StringProxy) AppendRune(raw complex128, r StringType.Rune) StringTyp
 	pointers.Set(str, gdextension.Host.Strings.Append.Rune(pointers.Get(str), rune(r)))
 	return StringType.Via(StringProxy{}, pointers.Pack(str))
 }
-func (proxy StringProxy) AppendOther(raw complex128, api StringType.API, raw2 complex128) StringType.Readable {
+func (proxy StringProxy) AppendOther(raw complex128, api StringType.API, raw2 complex128) StringType.Unicode {
 	if proxy.indirect != nil {
 		return StringProxy{}.AppendOther(pointers.Pack(*proxy.indirect), api, raw2)
 	}
@@ -179,7 +208,7 @@ func (proxy StringProxy) AppendOther(raw complex128, api StringType.API, raw2 co
 	pointers.Set(sub, gdextension.Host.Strings.Append.String(pointers.Get(sub), pointers.Get(s2)))
 	return StringType.Via(StringProxy{}, pointers.Pack(sub))
 }
-func (proxy StringProxy) AppendString(raw complex128, str string) StringType.Readable {
+func (proxy StringProxy) AppendString(raw complex128, str string) StringType.Unicode {
 	if proxy.indirect != nil {
 		return StringProxy{}.AppendString(pointers.Pack(*proxy.indirect), str)
 	}
@@ -196,6 +225,16 @@ func (proxy StringProxy) CompareOther(raw complex128, other_api StringType.API, 
 }
 
 func InternalNodePath(s Path.ToNode) NodePath {
+	if str := s.String(); rodatacheck.String(str) && threadcheck.Main() {
+		if name, ok := static_nodepaths[str]; ok {
+			return pointers.Raw[NodePath](name)
+		}
+		name := gdextension.Host.Strings.Decode.UTF8(str)
+		path := noescape.Make[gdextension.NodePath](builtin.creation.NodePath[2], gdextension.SizeString<<4, unsafe.Pointer(&name))
+		static_nodepaths[str] = path
+		noescape.Free(gdextension.TypeString, &name)
+		return pointers.Raw[NodePath](path)
+	}
 	_, ptr := StringType.Proxy(s, NodePathCheck, NewNodePathProxy)
 	return pointers.Load[NodePath](ptr)
 }
@@ -211,7 +250,7 @@ type NodePathProxy struct{}
 func (NodePathProxy) Len(raw complex128) int {
 	return pointers.Load[NodePath](raw).InternalString().Len()
 }
-func (NodePathProxy) Slice(raw complex128, index int, close int) StringType.Readable {
+func (NodePathProxy) Slice(raw complex128, index int, close int) StringType.Unicode {
 	s := pointers.Load[NodePath](raw)
 	s = s.InternalString().Substr(Int(index), Int(close)).NodePath()
 	return StringType.Via(StringProxy{}, pointers.Pack(s))
@@ -222,26 +261,26 @@ func (NodePathProxy) String(raw complex128) string {
 func (NodePathProxy) Index(raw complex128, n int) byte {
 	return byte(gdextension.Host.Strings.Access(pointers.Get(pointers.Load[NodePath](raw).InternalString()), n))
 }
-func (NodePathProxy) DecodeRune(raw complex128) (StringType.Rune, int, StringType.Readable) {
+func (NodePathProxy) DecodeRune(raw complex128) (StringType.Rune, int, StringType.Unicode) {
 	s := pointers.Load[NodePath](raw)
 	str := s.InternalString()
 	next := str.Substr(0, 1).NodePath()
 	return StringType.Rune(gdextension.Host.Strings.Access(pointers.Get(str), 0)), 0, StringType.Via(StringProxy{}, pointers.Pack(next))
 }
-func (NodePathProxy) AppendRune(raw complex128, r StringType.Rune) StringType.Readable {
+func (NodePathProxy) AppendRune(raw complex128, r StringType.Rune) StringType.Unicode {
 	s := pointers.Load[NodePath](raw)
 	str := s.InternalString()
 	pointers.Set(str, gdextension.Host.Strings.Append.Rune(pointers.Get(str), rune(r)))
 	return StringType.Via(NodePathProxy{}, pointers.Pack(str.NodePath()))
 }
-func (NodePathProxy) AppendOther(raw complex128, api StringType.API, raw2 complex128) StringType.Readable {
+func (NodePathProxy) AppendOther(raw complex128, api StringType.API, raw2 complex128) StringType.Unicode {
 	s := pointers.Load[NodePath](raw)
 	s2 := pointers.Load[NodePath](raw2)
 	sub := s.InternalString()
 	pointers.Set(sub, gdextension.Host.Strings.Append.String(pointers.Get(sub), pointers.Get(s2.InternalString())))
 	return StringType.Via(StringNameProxy{}, pointers.Pack(sub.NodePath()))
 }
-func (NodePathProxy) AppendString(raw complex128, str string) StringType.Readable {
+func (NodePathProxy) AppendString(raw complex128, str string) StringType.Unicode {
 	s := pointers.Load[NodePath](raw)
 	sub := s.InternalString()
 	pointers.Set(sub, gdextension.Host.Strings.Append.String(pointers.Get(sub), pointers.Get(NewString(str))))
@@ -252,6 +291,14 @@ func (NodePathProxy) CompareOther(raw complex128, other_api StringType.API, raw2
 }
 
 func InternalStringName(s StringType.Name) StringName {
+	if str := s.String(); rodatacheck.String(str) && threadcheck.Main() {
+		if name, ok := static_string_names[str]; ok {
+			return pointers.Raw[StringName](name)
+		}
+		name := gdextension.Host.Strings.Intern.UTF8(str)
+		static_string_names[str] = name
+		return pointers.Raw[StringName](name)
+	}
 	_, ptr := StringType.Proxy(s, StringNameCheck, NewStringNameProxy)
 	return pointers.Load[StringName](ptr)
 }
@@ -267,7 +314,7 @@ type StringNameProxy struct{}
 func (StringNameProxy) Len(raw complex128) int {
 	return int(pointers.Load[StringName](raw).Length())
 }
-func (StringNameProxy) Slice(raw complex128, index int, close int) StringType.Readable {
+func (StringNameProxy) Slice(raw complex128, index int, close int) StringType.Unicode {
 	s := pointers.Load[StringName](raw)
 	s = s.Substr(Int(index), Int(close)).StringName()
 	return StringType.Via(StringNameProxy{}, pointers.Pack(s))
@@ -280,25 +327,25 @@ func (StringNameProxy) Index(raw complex128, n int) byte {
 	s := name.Substr(0, name.Length())
 	return byte(gdextension.Host.Strings.Access(pointers.Get(s), n))
 }
-func (StringNameProxy) DecodeRune(raw complex128) (StringType.Rune, int, StringType.Readable) {
+func (StringNameProxy) DecodeRune(raw complex128) (StringType.Rune, int, StringType.Unicode) {
 	s := pointers.Load[StringName](raw)
 	next := s.Substr(0, 1).StringName()
 	return StringType.Rune(gdextension.Host.Strings.Access(pointers.Get(s.Substr(0, s.Length())), 0)), 0, StringType.Via(StringNameProxy{}, pointers.Pack(next))
 }
-func (StringNameProxy) AppendRune(raw complex128, r StringType.Rune) StringType.Readable {
+func (StringNameProxy) AppendRune(raw complex128, r StringType.Rune) StringType.Unicode {
 	s := pointers.Load[StringName](raw)
 	str := s.Substr(0, s.Length())
 	pointers.Set(str, gdextension.Host.Strings.Append.Rune(pointers.Get(str), rune(r)))
 	return StringType.Via(StringNameProxy{}, pointers.Pack(str.StringName()))
 }
-func (StringNameProxy) AppendOther(raw complex128, api StringType.API, raw2 complex128) StringType.Readable {
+func (StringNameProxy) AppendOther(raw complex128, api StringType.API, raw2 complex128) StringType.Unicode {
 	s := pointers.Load[StringName](raw)
 	s2 := pointers.Load[StringName](raw2).String()
 	sub := s.Substr(0, s.Length())
 	pointers.Set(sub, gdextension.Host.Strings.Append.String(pointers.Get(sub), pointers.Get(NewString(s2))))
 	return StringType.Via(StringNameProxy{}, pointers.Pack(sub.StringName()))
 }
-func (StringNameProxy) AppendString(raw complex128, str string) StringType.Readable {
+func (StringNameProxy) AppendString(raw complex128, str string) StringType.Unicode {
 	s := pointers.Load[StringName](raw)
 	sub := s.Substr(0, s.Length())
 	pointers.Set(sub, gdextension.Host.Strings.Append.String(pointers.Get(sub), pointers.Get(NewString(str))))

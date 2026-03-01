@@ -296,7 +296,7 @@ Note: The provided 'id' is used only in [OnIdPressed] and [OnIdFocused] signals.
 [SetItemChecked]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.SetItemChecked
 */
 func (self Instance) AddItem(label string) { //gd:PopupMenu.add_item
-	Advanced(self).AddItem(String.New(label), int64(-1), 0)
+	Advanced(self).AddItem(String.From(label), int64(-1), 0)
 }
 
 /*
@@ -312,7 +312,7 @@ Note: The provided 'id' is used only in [OnIdPressed] and [OnIdFocused] signals.
 [SetItemChecked]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.SetItemChecked
 */
 func (self MoreArgs) AddItem(label string, id int, accel Input.Key) { //gd:PopupMenu.add_item
-	Advanced(self).AddItem(String.New(label), int64(id), accel)
+	Advanced(self).AddItem(String.From(label), int64(id), accel)
 }
 
 /*
@@ -323,7 +323,7 @@ An 'id' can optionally be provided, as well as an accelerator ('accel'). If no '
 [GetItemAccelerator]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.GetItemAccelerator
 */
 func (self Instance) AddIconItem(texture Texture2D.Instance, label string) { //gd:PopupMenu.add_icon_item
-	Advanced(self).AddIconItem(texture, String.New(label), int64(-1), 0)
+	Advanced(self).AddIconItem(texture, String.From(label), int64(-1), 0)
 }
 
 /*
@@ -334,7 +334,7 @@ An 'id' can optionally be provided, as well as an accelerator ('accel'). If no '
 [GetItemAccelerator]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.GetItemAccelerator
 */
 func (self MoreArgs) AddIconItem(texture Texture2D.Instance, label string, id int, accel Input.Key) { //gd:PopupMenu.add_icon_item
-	Advanced(self).AddIconItem(texture, String.New(label), int64(id), accel)
+	Advanced(self).AddIconItem(texture, String.From(label), int64(id), accel)
 }
 
 /*
@@ -348,7 +348,7 @@ Note: Checkable items just display a checkmark, but don't have any built-in chec
 [SetItemChecked]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.SetItemChecked
 */
 func (self Instance) AddCheckItem(label string) { //gd:PopupMenu.add_check_item
-	Advanced(self).AddCheckItem(String.New(label), int64(-1), 0)
+	Advanced(self).AddCheckItem(String.From(label), int64(-1), 0)
 }
 
 /*
@@ -362,7 +362,7 @@ Note: Checkable items just display a checkmark, but don't have any built-in chec
 [SetItemChecked]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.SetItemChecked
 */
 func (self MoreArgs) AddCheckItem(label string, id int, accel Input.Key) { //gd:PopupMenu.add_check_item
-	Advanced(self).AddCheckItem(String.New(label), int64(id), accel)
+	Advanced(self).AddCheckItem(String.From(label), int64(id), accel)
 }
 
 /*
@@ -376,7 +376,7 @@ Note: Checkable items just display a checkmark, but don't have any built-in chec
 [SetItemChecked]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.SetItemChecked
 */
 func (self Instance) AddIconCheckItem(texture Texture2D.Instance, label string) { //gd:PopupMenu.add_icon_check_item
-	Advanced(self).AddIconCheckItem(texture, String.New(label), int64(-1), 0)
+	Advanced(self).AddIconCheckItem(texture, String.From(label), int64(-1), 0)
 }
 
 /*
@@ -390,7 +390,7 @@ Note: Checkable items just display a checkmark, but don't have any built-in chec
 [SetItemChecked]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.SetItemChecked
 */
 func (self MoreArgs) AddIconCheckItem(texture Texture2D.Instance, label string, id int, accel Input.Key) { //gd:PopupMenu.add_icon_check_item
-	Advanced(self).AddIconCheckItem(texture, String.New(label), int64(id), accel)
+	Advanced(self).AddIconCheckItem(texture, String.From(label), int64(id), accel)
 }
 
 /*
@@ -404,7 +404,7 @@ Note: Checkable items just display a checkmark, but don't have any built-in chec
 [SetItemChecked]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.SetItemChecked
 */
 func (self Instance) AddRadioCheckItem(label string) { //gd:PopupMenu.add_radio_check_item
-	Advanced(self).AddRadioCheckItem(String.New(label), int64(-1), 0)
+	Advanced(self).AddRadioCheckItem(String.From(label), int64(-1), 0)
 }
 
 /*
@@ -418,7 +418,7 @@ Note: Checkable items just display a checkmark, but don't have any built-in chec
 [SetItemChecked]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.SetItemChecked
 */
 func (self MoreArgs) AddRadioCheckItem(label string, id int, accel Input.Key) { //gd:PopupMenu.add_radio_check_item
-	Advanced(self).AddRadioCheckItem(String.New(label), int64(id), accel)
+	Advanced(self).AddRadioCheckItem(String.From(label), int64(id), accel)
 }
 
 /*
@@ -427,7 +427,7 @@ Same as [AddIconCheckItem], but uses a radio check button.
 [AddIconCheckItem]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.AddIconCheckItem
 */
 func (self Instance) AddIconRadioCheckItem(texture Texture2D.Instance, label string) { //gd:PopupMenu.add_icon_radio_check_item
-	Advanced(self).AddIconRadioCheckItem(texture, String.New(label), int64(-1), 0)
+	Advanced(self).AddIconRadioCheckItem(texture, String.From(label), int64(-1), 0)
 }
 
 /*
@@ -436,7 +436,7 @@ Same as [AddIconCheckItem], but uses a radio check button.
 [AddIconCheckItem]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.AddIconCheckItem
 */
 func (self MoreArgs) AddIconRadioCheckItem(texture Texture2D.Instance, label string, id int, accel Input.Key) { //gd:PopupMenu.add_icon_radio_check_item
-	Advanced(self).AddIconRadioCheckItem(texture, String.New(label), int64(id), accel)
+	Advanced(self).AddIconRadioCheckItem(texture, String.From(label), int64(id), accel)
 }
 
 /*
@@ -467,7 +467,7 @@ Note: Multistate items don't update their state automatically and must be done m
 [ToggleItemMultistate]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.ToggleItemMultistate
 */
 func (self Instance) AddMultistateItem(label string, max_states int) { //gd:PopupMenu.add_multistate_item
-	Advanced(self).AddMultistateItem(String.New(label), int64(max_states), int64(0), int64(-1), 0)
+	Advanced(self).AddMultistateItem(String.From(label), int64(max_states), int64(0), int64(-1), 0)
 }
 
 /*
@@ -498,7 +498,7 @@ Note: Multistate items don't update their state automatically and must be done m
 [ToggleItemMultistate]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.ToggleItemMultistate
 */
 func (self MoreArgs) AddMultistateItem(label string, max_states int, default_state int, id int, accel Input.Key) { //gd:PopupMenu.add_multistate_item
-	Advanced(self).AddMultistateItem(String.New(label), int64(max_states), int64(default_state), int64(id), accel)
+	Advanced(self).AddMultistateItem(String.From(label), int64(max_states), int64(default_state), int64(id), accel)
 }
 
 /*
@@ -663,7 +663,7 @@ An 'id' can optionally be provided. If no 'id' is provided, one will be created 
 [PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
 */
 func (self Instance) AddSubmenuItem(label string, submenu string) { //gd:PopupMenu.add_submenu_item
-	Advanced(self).AddSubmenuItem(String.New(label), String.New(submenu), int64(-1))
+	Advanced(self).AddSubmenuItem(String.From(label), String.From(submenu), int64(-1))
 }
 
 /*
@@ -674,7 +674,7 @@ An 'id' can optionally be provided. If no 'id' is provided, one will be created 
 [PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
 */
 func (self MoreArgs) AddSubmenuItem(label string, submenu string, id int) { //gd:PopupMenu.add_submenu_item
-	Advanced(self).AddSubmenuItem(String.New(label), String.New(submenu), int64(id))
+	Advanced(self).AddSubmenuItem(String.From(label), String.From(submenu), int64(id))
 }
 
 /*
@@ -687,7 +687,7 @@ An 'id' can optionally be provided. If no 'id' is provided, one will be created 
 [PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
 */
 func (self Instance) AddSubmenuNodeItem(label string, submenu Instance) { //gd:PopupMenu.add_submenu_node_item
-	Advanced(self).AddSubmenuNodeItem(String.New(label), submenu, int64(-1))
+	Advanced(self).AddSubmenuNodeItem(String.From(label), submenu, int64(-1))
 }
 
 /*
@@ -700,7 +700,7 @@ An 'id' can optionally be provided. If no 'id' is provided, one will be created 
 [PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
 */
 func (self MoreArgs) AddSubmenuNodeItem(label string, submenu Instance, id int) { //gd:PopupMenu.add_submenu_node_item
-	Advanced(self).AddSubmenuNodeItem(String.New(label), submenu, int64(id))
+	Advanced(self).AddSubmenuNodeItem(String.From(label), submenu, int64(id))
 }
 
 /*
@@ -709,7 +709,7 @@ Sets the text of the item at the given 'index'.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetItemText(index int, text string) Instance { //gd:PopupMenu.set_item_text
-	Advanced(self).SetItemText(int64(index), String.New(text))
+	Advanced(self).SetItemText(int64(index), String.From(text))
 	return self
 }
 
@@ -729,7 +729,7 @@ Sets the language code of the text for the item at the given index to 'language'
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetItemLanguage(index int, language string) Instance { //gd:PopupMenu.set_item_language
-	Advanced(self).SetItemLanguage(int64(index), String.New(language))
+	Advanced(self).SetItemLanguage(int64(index), String.From(language))
 	return self
 }
 
@@ -846,7 +846,7 @@ Returns 'self' to enable method chaining.
 [PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
 */
 func (self Instance) SetItemSubmenu(index int, submenu string) Instance { //gd:PopupMenu.set_item_submenu
-	Advanced(self).SetItemSubmenu(int64(index), String.New(submenu))
+	Advanced(self).SetItemSubmenu(int64(index), String.From(submenu))
 	return self
 }
 
@@ -900,7 +900,7 @@ Sets the string tooltip of the item at the given 'index'.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetItemTooltip(index int, tooltip string) Instance { //gd:PopupMenu.set_item_tooltip
-	Advanced(self).SetItemTooltip(int64(index), String.New(tooltip))
+	Advanced(self).SetItemTooltip(int64(index), String.From(tooltip))
 	return self
 }
 
@@ -1221,7 +1221,7 @@ Adds a separator between items. Separators also occupy an index, which you can s
 A 'label' can optionally be provided, which will appear at the center of the separator.
 */
 func (self Instance) AddSeparator() { //gd:PopupMenu.add_separator
-	Advanced(self).AddSeparator(String.New(""), int64(-1))
+	Advanced(self).AddSeparator(String.From(""), int64(-1))
 }
 
 /*
@@ -1230,7 +1230,7 @@ Adds a separator between items. Separators also occupy an index, which you can s
 A 'label' can optionally be provided, which will appear at the center of the separator.
 */
 func (self MoreArgs) AddSeparator(label string, id int) { //gd:PopupMenu.add_separator
-	Advanced(self).AddSeparator(String.New(label), int64(id))
+	Advanced(self).AddSeparator(String.From(label), int64(id))
 }
 
 /*

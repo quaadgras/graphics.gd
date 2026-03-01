@@ -155,7 +155,7 @@ Connects to a peer using an underlying [StreamPeer] 'stream' and verifying the r
 [TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
 */
 func (self Instance) ConnectToStream(stream StreamPeer.Instance, common_name string) error { //gd:StreamPeerTLS.connect_to_stream
-	return error(gd.ToError(Advanced(self).ConnectToStream(stream, String.New(common_name), [1]TLSOptions.Instance{}[0])))
+	return error(gd.ToError(Advanced(self).ConnectToStream(stream, String.From(common_name), [1]TLSOptions.Instance{}[0])))
 }
 
 /*
@@ -166,7 +166,7 @@ Connects to a peer using an underlying [StreamPeer] 'stream' and verifying the r
 [TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
 */
 func (self MoreArgs) ConnectToStream(stream StreamPeer.Instance, common_name string, client_options TLSOptions.Instance) error { //gd:StreamPeerTLS.connect_to_stream
-	return error(gd.ToError(Advanced(self).ConnectToStream(stream, String.New(common_name), client_options)))
+	return error(gd.ToError(Advanced(self).ConnectToStream(stream, String.From(common_name), client_options)))
 }
 
 /*

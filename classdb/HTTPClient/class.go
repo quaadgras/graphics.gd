@@ -178,7 +178,7 @@ If no 'port' is specified (or -1 is used), it is automatically set to 80 for HTT
 [TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
 */
 func (self Instance) ConnectToHost(host string) error { //gd:HTTPClient.connect_to_host
-	return error(gd.ToError(Advanced(self).ConnectToHost(String.New(host), int64(-1), [1]TLSOptions.Instance{}[0])))
+	return error(gd.ToError(Advanced(self).ConnectToHost(String.From(host), int64(-1), [1]TLSOptions.Instance{}[0])))
 }
 
 /*
@@ -190,7 +190,7 @@ If no 'port' is specified (or -1 is used), it is automatically set to 80 for HTT
 [TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
 */
 func (self MoreArgs) ConnectToHost(host string, port int, tls_options TLSOptions.Instance) error { //gd:HTTPClient.connect_to_host
-	return error(gd.ToError(Advanced(self).ConnectToHost(String.New(host), int64(port), tls_options)))
+	return error(gd.ToError(Advanced(self).ConnectToHost(String.From(host), int64(port), tls_options)))
 }
 
 /*
@@ -203,7 +203,7 @@ The URL parameter is usually just the part after the host, so for https://exampl
 Sends the body data raw, as a byte array and does not encode it in any way.
 */
 func (self Instance) RequestRaw(method Method, url string, headers []string, body []byte) error { //gd:HTTPClient.request_raw
-	return error(gd.ToError(Advanced(self).RequestRaw(method, String.New(url), Packed.MakeStrings(headers...), Packed.BytesFrom(body...))))
+	return error(gd.ToError(Advanced(self).RequestRaw(method, String.From(url), Packed.MakeStrings(headers...), Packed.BytesFrom(body...))))
 }
 
 /*
@@ -225,7 +225,7 @@ Note: The 'body' parameter is ignored if 'method' is [Httpclient.MethodGet]. Thi
 [String.UriEncode]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.UriEncode
 */
 func (self Instance) Request(method Method, url string, headers []string) error { //gd:HTTPClient.request
-	return error(gd.ToError(Advanced(self).Request(method, String.New(url), Packed.MakeStrings(headers...), String.New(""))))
+	return error(gd.ToError(Advanced(self).Request(method, String.From(url), Packed.MakeStrings(headers...), String.From(""))))
 }
 
 /*
@@ -247,7 +247,7 @@ Note: The 'body' parameter is ignored if 'method' is [Httpclient.MethodGet]. Thi
 [String.UriEncode]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.UriEncode
 */
 func (self MoreArgs) Request(method Method, url string, headers []string, body string) error { //gd:HTTPClient.request
-	return error(gd.ToError(Advanced(self).Request(method, String.New(url), Packed.MakeStrings(headers...), String.New(body))))
+	return error(gd.ToError(Advanced(self).Request(method, String.From(url), Packed.MakeStrings(headers...), String.From(body))))
 }
 
 /*
@@ -347,7 +347,7 @@ The proxy server is unset if 'host' is empty or 'port' is -1.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetHttpProxy(host string, port int) Instance { //gd:HTTPClient.set_http_proxy
-	Advanced(self).SetHttpProxy(String.New(host), int64(port))
+	Advanced(self).SetHttpProxy(String.From(host), int64(port))
 	return self
 }
 
@@ -359,7 +359,7 @@ The proxy server is unset if 'host' is empty or 'port' is -1.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetHttpsProxy(host string, port int) Instance { //gd:HTTPClient.set_https_proxy
-	Advanced(self).SetHttpsProxy(String.New(host), int64(port))
+	Advanced(self).SetHttpsProxy(String.From(host), int64(port))
 	return self
 }
 

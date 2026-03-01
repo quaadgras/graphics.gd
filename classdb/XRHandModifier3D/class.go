@@ -183,7 +183,7 @@ func (self Instance) HandTracker() string { //gd:XRHandModifier3D.hand_tracker
 
 // SetHandTracker sets the property returned by [GetHandTracker]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetHandTracker(value string) Instance { //gd:XRHandModifier3D.hand_tracker
-	class(self).SetHandTracker(String.Name(String.New(value)))
+	class(self).SetHandTracker(String.Name(String.From(value)))
 	return self
 }
 

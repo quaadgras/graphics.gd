@@ -139,7 +139,7 @@ func (self Instance) GetJavaClass() JavaClass.Instance { //gd:JavaObject.get_jav
 Returns true if the given 'method' name exists in the object's Java methods.
 */
 func (self Instance) HasJavaMethod(method string) bool { //gd:JavaObject.has_java_method
-	return bool(Advanced(self).HasJavaMethod(String.Name(String.New(method))))
+	return bool(Advanced(self).HasJavaMethod(String.Name(String.From(method))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

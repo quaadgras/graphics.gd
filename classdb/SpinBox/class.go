@@ -301,7 +301,7 @@ func (self Instance) Prefix() string { //gd:SpinBox.prefix
 
 // SetPrefix sets the property returned by [GetPrefix]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetPrefix(value string) Instance { //gd:SpinBox.prefix
-	class(self).SetPrefix(String.New(value))
+	class(self).SetPrefix(String.From(value))
 	return self
 }
 
@@ -316,7 +316,7 @@ func (self Instance) Suffix() string { //gd:SpinBox.suffix
 
 // SetSuffix sets the property returned by [GetSuffix]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetSuffix(value string) Instance { //gd:SpinBox.suffix
-	class(self).SetSuffix(String.New(value))
+	class(self).SetSuffix(String.From(value))
 	return self
 }
 

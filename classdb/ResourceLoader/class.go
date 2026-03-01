@@ -147,7 +147,7 @@ Loads the resource using threads. If 'use_sub_threads' is true, multiple threads
 The 'cache_mode' parameter defines whether and how the cache should be used or updated when loading the resource.
 */
 func LoadThreadedRequest(path string, type_hint string, use_sub_threads bool) error { //gd:ResourceLoader.load_threaded_request
-	return error(gd.ToError(Advanced().LoadThreadedRequest(String.New(path), String.New(type_hint), use_sub_threads, 1)))
+	return error(gd.ToError(Advanced().LoadThreadedRequest(String.From(path), String.From(type_hint), use_sub_threads, 1)))
 }
 
 /*
@@ -156,7 +156,7 @@ Loads the resource using threads. If 'use_sub_threads' is true, multiple threads
 The 'cache_mode' parameter defines whether and how the cache should be used or updated when loading the resource.
 */
 func LoadThreadedRequestOptions(path string, type_hint string, use_sub_threads bool, cache_mode CacheMode) error { //gd:ResourceLoader.load_threaded_request
-	return error(gd.ToError(Advanced().LoadThreadedRequest(String.New(path), String.New(type_hint), use_sub_threads, cache_mode)))
+	return error(gd.ToError(Advanced().LoadThreadedRequest(String.From(path), String.From(type_hint), use_sub_threads, cache_mode)))
 }
 
 /*
@@ -170,7 +170,7 @@ Note: The recommended way of using this method is to call it during different fr
 */
 func LoadThreadedGetStatus(path string) (float32, ThreadLoadStatus) { //gd:ResourceLoader.load_threaded_get_status
 	var returns_progress = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(gd.NewArray()))
-	results := Advanced().LoadThreadedGetStatus(String.New(path), returns_progress)
+	results := Advanced().LoadThreadedGetStatus(String.From(path), returns_progress)
 	return gd.VariantAs[float32](gd.InternalArray(returns_progress).Index(0)), results
 }
 
@@ -180,7 +180,7 @@ Returns the resource loaded by [LoadThreadedRequest].
 If this is called before the loading thread is done (i.e. [LoadThreadedGetStatus] is not [ThreadLoadLoaded]), the calling thread will be blocked until the resource has finished loading. However, it's recommended to use [LoadThreadedGetStatus] to known when the load has actually completed.
 */
 func LoadThreadedGet(path string) Resource.Instance { //gd:ResourceLoader.load_threaded_get
-	return Resource.Instance(Advanced().LoadThreadedGet(String.New(path)))
+	return Resource.Instance(Advanced().LoadThreadedGet(String.From(path)))
 }
 
 /*
@@ -208,7 +208,7 @@ Note: Relative paths will be prefixed with "res://" before loading, to avoid une
 [ResourceLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceLoader
 */
 func Load(path string, type_hint string) Resource.Instance { //gd:ResourceLoader.load
-	return Resource.Instance(Advanced().Load(String.New(path), String.New(type_hint), 1))
+	return Resource.Instance(Advanced().Load(String.From(path), String.From(type_hint), 1))
 }
 
 /*
@@ -236,14 +236,14 @@ Note: Relative paths will be prefixed with "res://" before loading, to avoid une
 [ResourceLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceLoader
 */
 func LoadOptions(path string, type_hint string, cache_mode CacheMode) Resource.Instance { //gd:ResourceLoader.load
-	return Resource.Instance(Advanced().Load(String.New(path), String.New(type_hint), cache_mode))
+	return Resource.Instance(Advanced().Load(String.From(path), String.From(type_hint), cache_mode))
 }
 
 /*
 Returns the list of recognized extensions for a resource type.
 */
 func GetRecognizedExtensionsForType(atype string) []string { //gd:ResourceLoader.get_recognized_extensions_for_type
-	return []string(Advanced().GetRecognizedExtensionsForType(String.New(atype)).Strings())
+	return []string(Advanced().GetRecognizedExtensionsForType(String.From(atype)).Strings())
 }
 
 /*
@@ -288,7 +288,7 @@ Each dependency is a string that can be divided into sections by ::. There can b
 	}
 */
 func GetDependencies(path string) []string { //gd:ResourceLoader.get_dependencies
-	return []string(Advanced().GetDependencies(String.New(path)).Strings())
+	return []string(Advanced().GetDependencies(String.From(path)).Strings())
 }
 
 /*
@@ -299,7 +299,7 @@ Once a resource has been loaded by the engine, it is cached in memory for faster
 [Resource.TakeOverPath]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.TakeOverPath
 */
 func HasCached(path string) bool { //gd:ResourceLoader.has_cached
-	return bool(Advanced().HasCached(String.New(path)))
+	return bool(Advanced().HasCached(String.From(path)))
 }
 
 /*
@@ -310,7 +310,7 @@ Note: If the resource is not cached, the returned [Resource] will be invalid.
 [Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
 */
 func GetCachedRef(path string) Resource.Instance { //gd:ResourceLoader.get_cached_ref
-	return Resource.Instance(Advanced().GetCachedRef(String.New(path)))
+	return Resource.Instance(Advanced().GetCachedRef(String.From(path)))
 }
 
 /*
@@ -326,14 +326,14 @@ Note: If you use [Resource.TakeOverPath], this method will return true for the t
 [ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
 */
 func Exists(path string, type_hint string) bool { //gd:ResourceLoader.exists
-	return bool(Advanced().Exists(String.New(path), String.New(type_hint)))
+	return bool(Advanced().Exists(String.From(path), String.From(type_hint)))
 }
 
 /*
 Returns the ID associated with a given resource path, or -1 when no such ID exists.
 */
 func GetResourceUid(path string) int { //gd:ResourceLoader.get_resource_uid
-	return int(int(Advanced().GetResourceUid(String.New(path))))
+	return int(int(Advanced().GetResourceUid(String.From(path))))
 }
 
 /*
@@ -349,7 +349,7 @@ Note: To normally traverse the filesystem, see [DirAccess].
 [DirAccess]: https://pkg.go.dev/graphics.gd/classdb/DirAccess
 */
 func ListDirectory(directory_path string) []string { //gd:ResourceLoader.list_directory
-	return []string(Advanced().ListDirectory(String.New(directory_path)).Strings())
+	return []string(Advanced().ListDirectory(String.From(directory_path)).Strings())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

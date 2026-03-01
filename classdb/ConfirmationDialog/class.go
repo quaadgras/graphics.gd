@@ -202,7 +202,7 @@ func (self Instance) CancelButtonText() string { //gd:ConfirmationDialog.cancel_
 
 // SetCancelButtonText sets the property returned by [GetCancelButtonText]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetCancelButtonText(value string) Instance { //gd:ConfirmationDialog.cancel_button_text
-	class(self).SetCancelButtonText(String.New(value))
+	class(self).SetCancelButtonText(String.From(value))
 	return self
 }
 

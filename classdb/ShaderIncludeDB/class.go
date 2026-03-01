@@ -128,7 +128,7 @@ Returns true if an include file with this name exists.
 */
 func HasBuiltInIncludeFile(filename string) bool { //gd:ShaderIncludeDB.has_built_in_include_file
 	self := Instance{}
-	return bool(Advanced(self).HasBuiltInIncludeFile(String.New(filename)))
+	return bool(Advanced(self).HasBuiltInIncludeFile(String.From(filename)))
 }
 
 /*
@@ -136,7 +136,7 @@ Returns the code for the built-in shader fragment. You can also access this in y
 */
 func GetBuiltInIncludeFile(filename string) string { //gd:ShaderIncludeDB.get_built_in_include_file
 	self := Instance{}
-	return string(Advanced(self).GetBuiltInIncludeFile(String.New(filename)).String())
+	return string(Advanced(self).GetBuiltInIncludeFile(String.From(filename)).String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

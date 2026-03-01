@@ -174,7 +174,7 @@ func (self Instance) IsFoveationSupported() bool { //gd:OpenXRInterface.is_fovea
 Returns true if the given action set is active.
 */
 func (self Instance) IsActionSetActive(name string) bool { //gd:OpenXRInterface.is_action_set_active
-	return bool(Advanced(self).IsActionSetActive(String.New(name)))
+	return bool(Advanced(self).IsActionSetActive(String.From(name)))
 }
 
 /*
@@ -183,7 +183,7 @@ Sets the given action set as active or inactive.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetActionSetActive(name string, active bool) Instance { //gd:OpenXRInterface.set_action_set_active
-	Advanced(self).SetActionSetActive(String.New(name), active)
+	Advanced(self).SetActionSetActive(String.From(name), active)
 	return self
 }
 

@@ -226,7 +226,7 @@ func (VariantProxy) ConvertibleTo(complex128, reflect.Type) bool          { retu
 func (VariantProxy) Calculate(complex128, VariantPkg.Operator, complex128) VariantPkg.Any {
 	panic("not implemented")
 }
-func (VariantProxy) Call(complex128, StringType.Readable, ...VariantPkg.Any) VariantPkg.Any {
+func (VariantProxy) Call(complex128, StringType.Unicode, ...VariantPkg.Any) VariantPkg.Any {
 	panic("not implemented")
 }
 func (VariantProxy) Has(complex128, VariantPkg.Any) bool {

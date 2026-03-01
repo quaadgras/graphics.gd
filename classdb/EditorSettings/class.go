@@ -175,7 +175,7 @@ type Any interface {
 Returns true if the setting specified by 'name' exists, false otherwise.
 */
 func (self Instance) HasSetting(name string) bool { //gd:EditorSettings.has_setting
-	return bool(Advanced(self).HasSetting(String.New(name)))
+	return bool(Advanced(self).HasSetting(String.From(name)))
 }
 
 /*
@@ -186,7 +186,7 @@ Returns 'self' to enable method chaining.
 [Object.Set]: https://pkg.go.dev/graphics.gd/variant/Object#Set
 */
 func (self Instance) SetSetting(name string, value any) Instance { //gd:EditorSettings.set_setting
-	Advanced(self).SetSetting(String.New(name), variant.New(value))
+	Advanced(self).SetSetting(String.From(name), variant.New(value))
 	return self
 }
 
@@ -196,14 +196,14 @@ Returns the value of the setting specified by 'name'. This is equivalent to usin
 [Object.Get]: https://pkg.go.dev/graphics.gd/variant/Object#Get
 */
 func (self Instance) GetSetting(name string) any { //gd:EditorSettings.get_setting
-	return any(Advanced(self).GetSetting(String.New(name)).Interface())
+	return any(Advanced(self).GetSetting(String.From(name)).Interface())
 }
 
 /*
 Erases the setting whose name is specified by 'property'.
 */
 func (self Instance) Erase(property string) { //gd:EditorSettings.erase
-	Advanced(self).Erase(String.New(property))
+	Advanced(self).Erase(String.From(property))
 }
 
 /*
@@ -212,7 +212,7 @@ Sets the initial value of the setting specified by 'name' to 'value'. This is us
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetInitialValue(name string, value any, update_current bool) Instance { //gd:EditorSettings.set_initial_value
-	Advanced(self).SetInitialValue(String.Name(String.New(name)), variant.New(value), update_current)
+	Advanced(self).SetInitialValue(String.Name(String.From(name)), variant.New(value), update_current)
 	return self
 }
 
@@ -237,7 +237,7 @@ Returns 'self' to enable method chaining.
 [GetProjectMetadata]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings#Instance.GetProjectMetadata
 */
 func (self Instance) SetProjectMetadata(section string, key string, data any) Instance { //gd:EditorSettings.set_project_metadata
-	Advanced(self).SetProjectMetadata(String.New(section), String.New(key), variant.New(data))
+	Advanced(self).SetProjectMetadata(String.From(section), String.From(key), variant.New(data))
 	return self
 }
 
@@ -247,7 +247,7 @@ Returns project-specific metadata for the 'section' and 'key' specified. If the 
 [SetProjectMetadata]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings#Instance.SetProjectMetadata
 */
 func (self Instance) GetProjectMetadata(section string, key string) any { //gd:EditorSettings.get_project_metadata
-	return any(Advanced(self).GetProjectMetadata(String.New(section), String.New(key), variant.New([1]any{}[0])).Interface())
+	return any(Advanced(self).GetProjectMetadata(String.From(section), String.From(key), variant.New([1]any{}[0])).Interface())
 }
 
 /*
@@ -256,7 +256,7 @@ Returns project-specific metadata for the 'section' and 'key' specified. If the 
 [SetProjectMetadata]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings#Instance.SetProjectMetadata
 */
 func (self MoreArgs) GetProjectMetadata(section string, key string, def any) any { //gd:EditorSettings.get_project_metadata
-	return any(Advanced(self).GetProjectMetadata(String.New(section), String.New(key), variant.New(def)).Interface())
+	return any(Advanced(self).GetProjectMetadata(String.From(section), String.From(key), variant.New(def)).Interface())
 }
 
 /*
@@ -299,7 +299,7 @@ Overrides the built-in editor action 'name' with the input actions defined in 'a
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetBuiltinActionOverride(name string, actions_list []InputEvent.Instance) Instance { //gd:EditorSettings.set_builtin_action_override
-	Advanced(self).SetBuiltinActionOverride(String.New(name), gd.ArrayFromSlice[Array.Contains[[1]gdclass.InputEvent]](actions_list))
+	Advanced(self).SetBuiltinActionOverride(String.From(name), gd.ArrayFromSlice[Array.Contains[[1]gdclass.InputEvent]](actions_list))
 	return self
 }
 
@@ -317,35 +317,35 @@ The 'path' determines how the shortcut is organized and displayed in the editor'
 Note: Shortcuts are only saved to the editor settings if they differ from their original/default state. This means empty shortcuts that were originally empty will not persist between editor sessions and must be re-added. If a shortcut with the same 'path' already exists, this method will update it with the new 'shortcut' instead of creating a duplicate.
 */
 func (self Instance) AddShortcut(path string, shortcut Shortcut.Instance) { //gd:EditorSettings.add_shortcut
-	Advanced(self).AddShortcut(String.New(path), shortcut)
+	Advanced(self).AddShortcut(String.From(path), shortcut)
 }
 
 /*
 Removes the shortcut specified by 'path'.
 */
 func (self Instance) RemoveShortcut(path string) { //gd:EditorSettings.remove_shortcut
-	Advanced(self).RemoveShortcut(String.New(path))
+	Advanced(self).RemoveShortcut(String.From(path))
 }
 
 /*
 Returns true if the shortcut specified by 'path' matches the event specified by 'event', false otherwise.
 */
 func (self Instance) IsShortcut(path string, event InputEvent.Instance) bool { //gd:EditorSettings.is_shortcut
-	return bool(Advanced(self).IsShortcut(String.New(path), event))
+	return bool(Advanced(self).IsShortcut(String.From(path), event))
 }
 
 /*
 Returns true if the shortcut specified by 'path' exists, false otherwise.
 */
 func (self Instance) HasShortcut(path string) bool { //gd:EditorSettings.has_shortcut
-	return bool(Advanced(self).HasShortcut(String.New(path)))
+	return bool(Advanced(self).HasShortcut(String.From(path)))
 }
 
 /*
 Returns the shortcut specified by 'path'. Tries to find a built-in action if no shortcut with the provided path is found in the shortcut list. If found, adds it to the list and returns it, otherwise returns null.
 */
 func (self Instance) GetShortcut(path string) Shortcut.Instance { //gd:EditorSettings.get_shortcut
-	return Shortcut.Instance(Advanced(self).GetShortcut(String.New(path)))
+	return Shortcut.Instance(Advanced(self).GetShortcut(String.From(path)))
 }
 
 /*
@@ -361,7 +361,7 @@ Checks if any settings with the prefix 'setting_prefix' exist in the set of chan
 [GetChangedSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings#Instance.GetChangedSettings
 */
 func (self Instance) CheckChangedSettingsInGroup(setting_prefix string) bool { //gd:EditorSettings.check_changed_settings_in_group
-	return bool(Advanced(self).CheckChangedSettingsInGroup(String.New(setting_prefix)))
+	return bool(Advanced(self).CheckChangedSettingsInGroup(String.From(setting_prefix)))
 }
 
 /*
@@ -378,7 +378,7 @@ Marks the passed editor setting as being changed, see [GetChangedSettings]. Only
 [HasSetting]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings#Instance.HasSetting
 */
 func (self Instance) MarkSettingChanged(setting string) { //gd:EditorSettings.mark_setting_changed
-	Advanced(self).MarkSettingChanged(String.New(setting))
+	Advanced(self).MarkSettingChanged(String.From(setting))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

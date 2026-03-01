@@ -140,7 +140,7 @@ func IdToText(id Resource.UID) string { //gd:ResourceUID.id_to_text
 Extracts the UID value from the given uid:// string.
 */
 func TextToId(text_id string) int { //gd:ResourceUID.text_to_id
-	return int(int(Advanced().TextToId(String.New(text_id))))
+	return int(int(Advanced().TextToId(String.From(text_id))))
 }
 
 /*
@@ -156,7 +156,7 @@ func CreateId() int { //gd:ResourceUID.create_id
 Like [CreateId], but the UID is seeded with the provided 'path' and project name. UIDs generated for that path will be always the same within the current project.
 */
 func CreateIdForPath(path string) int { //gd:ResourceUID.create_id_for_path
-	return int(int(Advanced().CreateIdForPath(String.New(path))))
+	return int(int(Advanced().CreateIdForPath(String.From(path))))
 }
 
 /*
@@ -172,7 +172,7 @@ Adds a new UID value which is mapped to the given resource path.
 Fails with an error if the UID already exists, so be sure to check [HasId] beforehand, or use [SetId] instead.
 */
 func AddId(id Resource.UID, path string) { //gd:ResourceUID.add_id
-	Advanced().AddId(int64(id), String.New(path))
+	Advanced().AddId(int64(id), String.From(path))
 }
 
 /*
@@ -181,7 +181,7 @@ Updates the resource path of an existing UID.
 Fails with an error if the UID does not exist, so be sure to check [HasId] beforehand, or use [AddId] instead.
 */
 func SetId(id Resource.UID, path string) { //gd:ResourceUID.set_id
-	Advanced().SetId(int64(id), String.New(path))
+	Advanced().SetId(int64(id), String.From(path))
 }
 
 /*
@@ -206,21 +206,21 @@ func RemoveId(id Resource.UID) { //gd:ResourceUID.remove_id
 Converts the provided 'uid' to a path. Prints an error if the UID is invalid.
 */
 func UidToPath(uid string) string { //gd:ResourceUID.uid_to_path
-	return string(Advanced().UidToPath(String.New(uid)).String())
+	return string(Advanced().UidToPath(String.From(uid)).String())
 }
 
 /*
 Converts the provided resource 'path' to a UID. Returns the unchanged path if it has no associated UID.
 */
 func PathToUid(path string) string { //gd:ResourceUID.path_to_uid
-	return string(Advanced().PathToUid(String.New(path)).String())
+	return string(Advanced().PathToUid(String.From(path)).String())
 }
 
 /*
 Returns a path, converting 'path_or_uid' if necessary. Fails and returns an empty string if an invalid UID is provided.
 */
 func EnsurePath(path_or_uid string) string { //gd:ResourceUID.ensure_path
-	return string(Advanced().EnsurePath(String.New(path_or_uid)).String())
+	return string(Advanced().EnsurePath(String.From(path_or_uid)).String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

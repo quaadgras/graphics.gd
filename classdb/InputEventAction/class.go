@@ -186,7 +186,7 @@ func (self Instance) Action() string { //gd:InputEventAction.action
 
 // SetAction sets the property returned by [GetAction]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetAction(value string) Instance { //gd:InputEventAction.action
-	class(self).SetAction(String.Name(String.New(value)))
+	class(self).SetAction(String.Name(String.From(value)))
 	return self
 }
 

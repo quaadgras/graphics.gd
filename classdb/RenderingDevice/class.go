@@ -809,7 +809,7 @@ Compiles a binary shader from 'spirv_data' and returns the compiled binary data 
 [ShaderCompileSpirvFromSource]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.ShaderCompileSpirvFromSource
 */
 func (self Instance) ShaderCompileBinaryFromSpirv(spirv_data RDShaderSPIRV.Instance) []byte { //gd:RenderingDevice.shader_compile_binary_from_spirv
-	return []byte(Advanced(self).ShaderCompileBinaryFromSpirv(spirv_data, String.New("")).Bytes())
+	return []byte(Advanced(self).ShaderCompileBinaryFromSpirv(spirv_data, String.From("")).Bytes())
 }
 
 /*
@@ -820,7 +820,7 @@ Compiles a binary shader from 'spirv_data' and returns the compiled binary data 
 [ShaderCompileSpirvFromSource]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.ShaderCompileSpirvFromSource
 */
 func (self MoreArgs) ShaderCompileBinaryFromSpirv(spirv_data RDShaderSPIRV.Instance, name string) []byte { //gd:RenderingDevice.shader_compile_binary_from_spirv
-	return []byte(Advanced(self).ShaderCompileBinaryFromSpirv(spirv_data, String.New(name)).Bytes())
+	return []byte(Advanced(self).ShaderCompileBinaryFromSpirv(spirv_data, String.From(name)).Bytes())
 }
 
 /*
@@ -833,7 +833,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 [ShaderCreateFromBytecode]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.ShaderCreateFromBytecode
 */
 func (self Instance) ShaderCreateFromSpirv(spirv_data RDShaderSPIRV.Instance) RID.Shader { //gd:RenderingDevice.shader_create_from_spirv
-	return RID.Shader(RID.Shader(Advanced(self).ShaderCreateFromSpirv(spirv_data, String.New(""))))
+	return RID.Shader(RID.Shader(Advanced(self).ShaderCreateFromSpirv(spirv_data, String.From(""))))
 }
 
 /*
@@ -846,7 +846,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 [ShaderCreateFromBytecode]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.ShaderCreateFromBytecode
 */
 func (self MoreArgs) ShaderCreateFromSpirv(spirv_data RDShaderSPIRV.Instance, name string) RID.Shader { //gd:RenderingDevice.shader_create_from_spirv
-	return RID.Shader(RID.Shader(Advanced(self).ShaderCreateFromSpirv(spirv_data, String.New(name))))
+	return RID.Shader(RID.Shader(Advanced(self).ShaderCreateFromSpirv(spirv_data, String.From(name))))
 }
 
 /*
@@ -1582,7 +1582,7 @@ Creates a timestamp marker with the specified 'name'. This is used for performan
 [GetCapturedTimestampName]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.GetCapturedTimestampName
 */
 func (self Instance) CaptureTimestamp(name string) { //gd:RenderingDevice.capture_timestamp
-	Advanced(self).CaptureTimestamp(String.New(name))
+	Advanced(self).CaptureTimestamp(String.From(name))
 }
 
 /*
@@ -1723,7 +1723,7 @@ Returns 'self' to enable method chaining.
 [RenderDoc]: https://renderdoc.org/
 */
 func (self Instance) SetResourceName(id RID.Any, name string) Instance { //gd:RenderingDevice.set_resource_name
-	Advanced(self).SetResourceName(RID.Any(id), String.New(name))
+	Advanced(self).SetResourceName(RID.Any(id), String.From(name))
 	return self
 }
 
@@ -1737,14 +1737,14 @@ The VK_EXT_DEBUG_UTILS_EXTENSION_NAME Vulkan extension must be available and ena
 [RenderDoc]: https://renderdoc.org/
 */
 func (self Instance) DrawCommandBeginLabel(name string, color Color.RGBA) { //gd:RenderingDevice.draw_command_begin_label
-	Advanced(self).DrawCommandBeginLabel(String.New(name), Color.RGBA(color))
+	Advanced(self).DrawCommandBeginLabel(String.From(name), Color.RGBA(color))
 }
 
 /*
 This method does nothing.
 */
 func (self Instance) DrawCommandInsertLabel(name string, color Color.RGBA) { //gd:RenderingDevice.draw_command_insert_label
-	Advanced(self).DrawCommandInsertLabel(String.New(name), Color.RGBA(color))
+	Advanced(self).DrawCommandInsertLabel(String.From(name), Color.RGBA(color))
 }
 
 /*

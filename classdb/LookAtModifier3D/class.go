@@ -270,7 +270,7 @@ func (self Instance) TargetNode() string { //gd:LookAtModifier3D.target_node
 
 // SetTargetNode sets the property returned by [GetTargetNode]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetTargetNode(value string) Instance { //gd:LookAtModifier3D.target_node
-	class(self).SetTargetNode(Path.ToNode(String.New(value)))
+	class(self).SetTargetNode(Path.ToNode(String.From(value)))
 	return self
 }
 
@@ -285,7 +285,7 @@ func (self Instance) BoneName() string { //gd:LookAtModifier3D.bone_name
 
 // SetBoneName sets the property returned by [GetBoneName]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetBoneName(value string) Instance { //gd:LookAtModifier3D.bone_name
-	class(self).SetBoneName(String.New(value))
+	class(self).SetBoneName(String.From(value))
 	return self
 }
 
@@ -394,7 +394,7 @@ func (self Instance) OriginBoneName() string { //gd:LookAtModifier3D.origin_bone
 
 // SetOriginBoneName sets the property returned by [GetOriginBoneName]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetOriginBoneName(value string) Instance { //gd:LookAtModifier3D.origin_bone_name
-	class(self).SetOriginBoneName(String.New(value))
+	class(self).SetOriginBoneName(String.From(value))
 	return self
 }
 
@@ -426,7 +426,7 @@ func (self Instance) OriginExternalNode() string { //gd:LookAtModifier3D.origin_
 
 // SetOriginExternalNode sets the property returned by [GetOriginExternalNode]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetOriginExternalNode(value string) Instance { //gd:LookAtModifier3D.origin_external_node
-	class(self).SetOriginExternalNode(Path.ToNode(String.New(value)))
+	class(self).SetOriginExternalNode(Path.ToNode(String.From(value)))
 	return self
 }
 

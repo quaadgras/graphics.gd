@@ -206,7 +206,7 @@ Assigns a value to the specified key of the specified section. If either the sec
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetValue(section string, key string, value any) Instance { //gd:ConfigFile.set_value
-	Advanced(self).SetValue(String.New(section), String.New(key), variant.New(value))
+	Advanced(self).SetValue(String.From(section), String.From(key), variant.New(value))
 	return self
 }
 
@@ -214,28 +214,28 @@ func (self Instance) SetValue(section string, key string, value any) Instance { 
 Returns the current value for the specified section and key. If either the section or the key do not exist, the method returns the fallback 'default' value. If 'default' is not specified or set to null, an error is also raised.
 */
 func (self Instance) GetValue(section string, key string) any { //gd:ConfigFile.get_value
-	return any(Advanced(self).GetValue(String.New(section), String.New(key), variant.New([1]any{}[0])).Interface())
+	return any(Advanced(self).GetValue(String.From(section), String.From(key), variant.New([1]any{}[0])).Interface())
 }
 
 /*
 Returns the current value for the specified section and key. If either the section or the key do not exist, the method returns the fallback 'default' value. If 'default' is not specified or set to null, an error is also raised.
 */
 func (self MoreArgs) GetValue(section string, key string, def any) any { //gd:ConfigFile.get_value
-	return any(Advanced(self).GetValue(String.New(section), String.New(key), variant.New(def)).Interface())
+	return any(Advanced(self).GetValue(String.From(section), String.From(key), variant.New(def)).Interface())
 }
 
 /*
 Returns true if the specified section exists.
 */
 func (self Instance) HasSection(section string) bool { //gd:ConfigFile.has_section
-	return bool(Advanced(self).HasSection(String.New(section)))
+	return bool(Advanced(self).HasSection(String.From(section)))
 }
 
 /*
 Returns true if the specified section-key pair exists.
 */
 func (self Instance) HasSectionKey(section string, key string) bool { //gd:ConfigFile.has_section_key
-	return bool(Advanced(self).HasSectionKey(String.New(section), String.New(key)))
+	return bool(Advanced(self).HasSectionKey(String.From(section), String.From(key)))
 }
 
 /*
@@ -249,21 +249,21 @@ func (self Instance) GetSections() []string { //gd:ConfigFile.get_sections
 Returns an array of all defined key identifiers in the specified section. Raises an error and returns an empty array if the section does not exist.
 */
 func (self Instance) GetSectionKeys(section string) []string { //gd:ConfigFile.get_section_keys
-	return []string(Advanced(self).GetSectionKeys(String.New(section)).Strings())
+	return []string(Advanced(self).GetSectionKeys(String.From(section)).Strings())
 }
 
 /*
 Deletes the specified section along with all the key-value pairs inside. Raises an error if the section does not exist.
 */
 func (self Instance) EraseSection(section string) { //gd:ConfigFile.erase_section
-	Advanced(self).EraseSection(String.New(section))
+	Advanced(self).EraseSection(String.From(section))
 }
 
 /*
 Deletes the specified key in a section. Raises an error if either the section or the key do not exist.
 */
 func (self Instance) EraseSectionKey(section string, key string) { //gd:ConfigFile.erase_section_key
-	Advanced(self).EraseSectionKey(String.New(section), String.New(key))
+	Advanced(self).EraseSectionKey(String.From(section), String.From(key))
 }
 
 /*
@@ -274,7 +274,7 @@ Returns [Ok] on success, or one of the other [Error] values if the operation fai
 [ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
 */
 func (self Instance) Load(path string) error { //gd:ConfigFile.load
-	return error(gd.ToError(Advanced(self).Load(String.New(path))))
+	return error(gd.ToError(Advanced(self).Load(String.From(path))))
 }
 
 /*
@@ -283,7 +283,7 @@ Parses the passed string as the contents of a config file. The string is parsed 
 Returns [Ok] on success, or one of the other [Error] values if the operation failed.
 */
 func (self Instance) Parse(data string) error { //gd:ConfigFile.parse
-	return error(gd.ToError(Advanced(self).Parse(String.New(data))))
+	return error(gd.ToError(Advanced(self).Parse(String.From(data))))
 }
 
 /*
@@ -294,7 +294,7 @@ Returns [Ok] on success, or one of the other [Error] values if the operation fai
 [ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
 */
 func (self Instance) Save(path string) error { //gd:ConfigFile.save
-	return error(gd.ToError(Advanced(self).Save(String.New(path))))
+	return error(gd.ToError(Advanced(self).Save(String.From(path))))
 }
 
 /*
@@ -312,7 +312,7 @@ Returns [Ok] on success, or one of the other [Error] values if the operation fai
 [ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
 */
 func (self Instance) LoadEncrypted(path string, key []byte) error { //gd:ConfigFile.load_encrypted
-	return error(gd.ToError(Advanced(self).LoadEncrypted(String.New(path), Packed.BytesFrom(key...))))
+	return error(gd.ToError(Advanced(self).LoadEncrypted(String.From(path), Packed.BytesFrom(key...))))
 }
 
 /*
@@ -323,7 +323,7 @@ Returns [Ok] on success, or one of the other [Error] values if the operation fai
 [ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
 */
 func (self Instance) LoadEncryptedPass(path string, password string) error { //gd:ConfigFile.load_encrypted_pass
-	return error(gd.ToError(Advanced(self).LoadEncryptedPass(String.New(path), String.New(password))))
+	return error(gd.ToError(Advanced(self).LoadEncryptedPass(String.From(path), String.From(password))))
 }
 
 /*
@@ -334,7 +334,7 @@ Returns [Ok] on success, or one of the other [Error] values if the operation fai
 [ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
 */
 func (self Instance) SaveEncrypted(path string, key []byte) error { //gd:ConfigFile.save_encrypted
-	return error(gd.ToError(Advanced(self).SaveEncrypted(String.New(path), Packed.BytesFrom(key...))))
+	return error(gd.ToError(Advanced(self).SaveEncrypted(String.From(path), Packed.BytesFrom(key...))))
 }
 
 /*
@@ -345,7 +345,7 @@ Returns [Ok] on success, or one of the other [Error] values if the operation fai
 [ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
 */
 func (self Instance) SaveEncryptedPass(path string, password string) error { //gd:ConfigFile.save_encrypted_pass
-	return error(gd.ToError(Advanced(self).SaveEncryptedPass(String.New(path), String.New(password))))
+	return error(gd.ToError(Advanced(self).SaveEncryptedPass(String.From(path), String.From(password))))
 }
 
 /*

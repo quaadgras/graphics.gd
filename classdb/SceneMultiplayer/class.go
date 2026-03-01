@@ -282,7 +282,7 @@ func (self Instance) RootPath() string { //gd:SceneMultiplayer.root_path
 
 // SetRootPath sets the property returned by [GetRootPath]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetRootPath(value string) Instance { //gd:SceneMultiplayer.root_path
-	class(self).SetRootPath(Path.ToNode(String.New(value)))
+	class(self).SetRootPath(Path.ToNode(String.From(value)))
 	return self
 }
 

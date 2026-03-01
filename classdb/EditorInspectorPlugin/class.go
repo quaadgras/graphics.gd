@@ -291,7 +291,7 @@ There can be multiple property editors for a property. If 'add_to_end' is true, 
 [Sprite2D.RegionRect]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.RegionRect
 */
 func (self Instance) AddPropertyEditor(property string, editor Control.Instance) { //gd:EditorInspectorPlugin.add_property_editor
-	Advanced(self).AddPropertyEditor(String.New(property), editor, false, String.New(""))
+	Advanced(self).AddPropertyEditor(String.From(property), editor, false, String.From(""))
 }
 
 /*
@@ -306,7 +306,7 @@ There can be multiple property editors for a property. If 'add_to_end' is true, 
 [Sprite2D.RegionRect]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.RegionRect
 */
 func (self MoreArgs) AddPropertyEditor(property string, editor Control.Instance, add_to_end bool, label string) { //gd:EditorInspectorPlugin.add_property_editor
-	Advanced(self).AddPropertyEditor(String.New(property), editor, add_to_end, String.New(label))
+	Advanced(self).AddPropertyEditor(String.From(property), editor, add_to_end, String.From(label))
 }
 
 /*
@@ -315,7 +315,7 @@ Adds an editor that allows modifying multiple properties. The 'editor' control m
 [EditorProperty]: https://pkg.go.dev/graphics.gd/classdb/EditorProperty
 */
 func (self Instance) AddPropertyEditorForMultipleProperties(label string, properties []string, editor Control.Instance) { //gd:EditorInspectorPlugin.add_property_editor_for_multiple_properties
-	Advanced(self).AddPropertyEditorForMultipleProperties(String.New(label), Packed.MakeStrings(properties...), editor)
+	Advanced(self).AddPropertyEditorForMultipleProperties(String.From(label), Packed.MakeStrings(properties...), editor)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

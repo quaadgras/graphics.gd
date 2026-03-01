@@ -131,7 +131,7 @@ If 'disable' is true, disables the class specified by 'class_name'. When disable
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetDisableClass(class_name string, disable bool) Instance { //gd:EditorFeatureProfile.set_disable_class
-	Advanced(self).SetDisableClass(String.Name(String.New(class_name)), disable)
+	Advanced(self).SetDisableClass(String.Name(String.From(class_name)), disable)
 	return self
 }
 
@@ -139,7 +139,7 @@ func (self Instance) SetDisableClass(class_name string, disable bool) Instance {
 Returns true if the class specified by 'class_name' is disabled. When disabled, the class won't appear in the Create New Node dialog.
 */
 func (self Instance) IsClassDisabled(class_name string) bool { //gd:EditorFeatureProfile.is_class_disabled
-	return bool(Advanced(self).IsClassDisabled(String.Name(String.New(class_name))))
+	return bool(Advanced(self).IsClassDisabled(String.Name(String.From(class_name))))
 }
 
 /*
@@ -148,7 +148,7 @@ If 'disable' is true, disables editing for the class specified by 'class_name'. 
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetDisableClassEditor(class_name string, disable bool) Instance { //gd:EditorFeatureProfile.set_disable_class_editor
-	Advanced(self).SetDisableClassEditor(String.Name(String.New(class_name)), disable)
+	Advanced(self).SetDisableClassEditor(String.Name(String.From(class_name)), disable)
 	return self
 }
 
@@ -156,7 +156,7 @@ func (self Instance) SetDisableClassEditor(class_name string, disable bool) Inst
 Returns true if editing for the class specified by 'class_name' is disabled. When disabled, the class will still appear in the Create New Node dialog but the Inspector will be read-only when selecting a node that extends the class.
 */
 func (self Instance) IsClassEditorDisabled(class_name string) bool { //gd:EditorFeatureProfile.is_class_editor_disabled
-	return bool(Advanced(self).IsClassEditorDisabled(String.Name(String.New(class_name))))
+	return bool(Advanced(self).IsClassEditorDisabled(String.Name(String.From(class_name))))
 }
 
 /*
@@ -165,7 +165,7 @@ If 'disable' is true, disables editing for 'property' in the class specified by 
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetDisableClassProperty(class_name string, property string, disable bool) Instance { //gd:EditorFeatureProfile.set_disable_class_property
-	Advanced(self).SetDisableClassProperty(String.Name(String.New(class_name)), String.Name(String.New(property)), disable)
+	Advanced(self).SetDisableClassProperty(String.Name(String.From(class_name)), String.Name(String.From(property)), disable)
 	return self
 }
 
@@ -173,7 +173,7 @@ func (self Instance) SetDisableClassProperty(class_name string, property string,
 Returns true if 'property' is disabled in the class specified by 'class_name'. When a property is disabled, it won't appear in the Inspector when selecting a node that extends the class specified by 'class_name'.
 */
 func (self Instance) IsClassPropertyDisabled(class_name string, property string) bool { //gd:EditorFeatureProfile.is_class_property_disabled
-	return bool(Advanced(self).IsClassPropertyDisabled(String.Name(String.New(class_name)), String.Name(String.New(property))))
+	return bool(Advanced(self).IsClassPropertyDisabled(String.Name(String.From(class_name)), String.Name(String.From(property))))
 }
 
 /*
@@ -209,7 +209,7 @@ Note: Feature profiles created via the user interface are saved in the feature_p
 [LoadFromFile]: https://pkg.go.dev/graphics.gd/classdb/EditorFeatureProfile#Instance.LoadFromFile
 */
 func (self Instance) SaveToFile(path string) error { //gd:EditorFeatureProfile.save_to_file
-	return error(gd.ToError(Advanced(self).SaveToFile(String.New(path))))
+	return error(gd.ToError(Advanced(self).SaveToFile(String.From(path))))
 }
 
 /*
@@ -221,7 +221,7 @@ Note: Feature profiles created via the user interface are loaded from the featur
 [SaveToFile]: https://pkg.go.dev/graphics.gd/classdb/EditorFeatureProfile#Instance.SaveToFile
 */
 func (self Instance) LoadFromFile(path string) error { //gd:EditorFeatureProfile.load_from_file
-	return error(gd.ToError(Advanced(self).LoadFromFile(String.New(path))))
+	return error(gd.ToError(Advanced(self).LoadFromFile(String.From(path))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

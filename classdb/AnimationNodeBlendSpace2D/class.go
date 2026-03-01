@@ -377,7 +377,7 @@ func (self Instance) XLabel() string { //gd:AnimationNodeBlendSpace2D.x_label
 
 // SetXLabel sets the property returned by [GetXLabel]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetXLabel(value string) Instance { //gd:AnimationNodeBlendSpace2D.x_label
-	class(self).SetXLabel(String.New(value))
+	class(self).SetXLabel(String.From(value))
 	return self
 }
 
@@ -390,7 +390,7 @@ func (self Instance) YLabel() string { //gd:AnimationNodeBlendSpace2D.y_label
 
 // SetYLabel sets the property returned by [GetYLabel]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetYLabel(value string) Instance { //gd:AnimationNodeBlendSpace2D.y_label
-	class(self).SetYLabel(String.New(value))
+	class(self).SetYLabel(String.From(value))
 	return self
 }
 

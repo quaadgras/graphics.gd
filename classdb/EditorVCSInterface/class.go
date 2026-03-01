@@ -390,7 +390,7 @@ func (Instance) _get_vcs_name(impl func(ptr gdclass.Receiver) string) (cb gd.Ext
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -507,7 +507,7 @@ func (Instance) _get_current_branch_name(impl func(ptr gdclass.Receiver) string)
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -592,7 +592,7 @@ func (Instance) _get_line_diff(impl func(ptr gdclass.Receiver, file_path string,
 Helper function to create a data structure for storing a line diff. 'new_line_no' is the line number in the new file (can be -1 if the line is deleted). 'old_line_no' is the line number in the old file (can be -1 if the line is added). 'content' is the diff text. 'status' is a single character string which stores the line origin.
 */
 func (self Instance) CreateDiffLine(new_line_no int, old_line_no int, content string, status string) DiffLine { //gd:EditorVCSInterface.create_diff_line
-	return DiffLine(gd.DictionaryAs[DiffLine](Advanced(self).CreateDiffLine(int64(new_line_no), int64(old_line_no), String.New(content), String.New(status))))
+	return DiffLine(gd.DictionaryAs[DiffLine](Advanced(self).CreateDiffLine(int64(new_line_no), int64(old_line_no), String.From(content), String.From(status))))
 }
 
 /*
@@ -606,21 +606,21 @@ func (self Instance) CreateDiffHunk(old_start int, new_start int, old_lines int,
 Helper function to create a data structure for storing old and new diff file paths.
 */
 func (self Instance) CreateDiffFile(new_file string, old_file string) DiffFile { //gd:EditorVCSInterface.create_diff_file
-	return DiffFile(gd.DictionaryAs[DiffFile](Advanced(self).CreateDiffFile(String.New(new_file), String.New(old_file))))
+	return DiffFile(gd.DictionaryAs[DiffFile](Advanced(self).CreateDiffFile(String.From(new_file), String.From(old_file))))
 }
 
 /*
 Helper function to create a commit data structure item. 'msg' is the commit message of the commit. 'author' is a single human-readable string containing all the author's details, e.g. the email and name configured in the VCS. 'id' is the identifier of the commit, in whichever format your VCS may provide an identifier to commits. 'unix_timestamp' is the UTC Unix timestamp of when the commit was created. 'offset_minutes' is the timezone offset in minutes, recorded from the system timezone where the commit was created.
 */
 func (self Instance) CreateCommit(msg string, author string, id string, unix_timestamp int, offset_minutes int) Commit { //gd:EditorVCSInterface.create_commit
-	return Commit(gd.DictionaryAs[Commit](Advanced(self).CreateCommit(String.New(msg), String.New(author), String.New(id), int64(unix_timestamp), int64(offset_minutes))))
+	return Commit(gd.DictionaryAs[Commit](Advanced(self).CreateCommit(String.From(msg), String.From(author), String.From(id), int64(unix_timestamp), int64(offset_minutes))))
 }
 
 /*
 Helper function to create a data structure used by editor to read the status of a file.
 */
 func (self Instance) CreateStatusFile(file_path string, change_type ChangeType, area TreeArea) StatusFile { //gd:EditorVCSInterface.create_status_file
-	return StatusFile(gd.DictionaryAs[StatusFile](Advanced(self).CreateStatusFile(String.New(file_path), change_type, area)))
+	return StatusFile(gd.DictionaryAs[StatusFile](Advanced(self).CreateStatusFile(String.From(file_path), change_type, area)))
 }
 
 /*
@@ -641,7 +641,7 @@ func (self Instance) AddLineDiffsIntoDiffHunk(diff_hunk DiffHunk, line_diffs []D
 Pops up an error message in the editor which is shown as coming from the underlying VCS. Use this to show VCS specific error messages.
 */
 func (self Instance) PopupError(msg string) { //gd:EditorVCSInterface.popup_error
-	Advanced(self).PopupError(String.New(msg))
+	Advanced(self).PopupError(String.From(msg))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

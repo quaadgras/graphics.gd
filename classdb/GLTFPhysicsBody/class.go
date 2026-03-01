@@ -231,7 +231,7 @@ func (self Instance) BodyType() string { //gd:GLTFPhysicsBody.body_type
 
 // SetBodyType sets the property returned by [GetBodyType]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetBodyType(value string) Instance { //gd:GLTFPhysicsBody.body_type
-	class(self).SetBodyType(String.New(value))
+	class(self).SetBodyType(String.From(value))
 	return self
 }
 

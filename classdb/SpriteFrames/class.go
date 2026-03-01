@@ -146,35 +146,35 @@ type Any interface {
 Adds a new 'anim' animation to the library.
 */
 func (self Instance) AddAnimation(anim string) { //gd:SpriteFrames.add_animation
-	Advanced(self).AddAnimation(String.Name(String.New(anim)))
+	Advanced(self).AddAnimation(String.Name(String.From(anim)))
 }
 
 /*
 Returns true if the 'anim' animation exists.
 */
 func (self Instance) HasAnimation(anim string) bool { //gd:SpriteFrames.has_animation
-	return bool(Advanced(self).HasAnimation(String.Name(String.New(anim))))
+	return bool(Advanced(self).HasAnimation(String.Name(String.From(anim))))
 }
 
 /*
 Duplicates the animation 'anim_from' to a new animation named 'anim_to'. Fails if 'anim_to' already exists, or if 'anim_from' does not exist.
 */
 func (self Instance) DuplicateAnimation(anim_from string, anim_to string) { //gd:SpriteFrames.duplicate_animation
-	Advanced(self).DuplicateAnimation(String.Name(String.New(anim_from)), String.Name(String.New(anim_to)))
+	Advanced(self).DuplicateAnimation(String.Name(String.From(anim_from)), String.Name(String.From(anim_to)))
 }
 
 /*
 Removes the 'anim' animation.
 */
 func (self Instance) RemoveAnimation(anim string) { //gd:SpriteFrames.remove_animation
-	Advanced(self).RemoveAnimation(String.Name(String.New(anim)))
+	Advanced(self).RemoveAnimation(String.Name(String.From(anim)))
 }
 
 /*
 Changes the 'anim' animation's name to 'newname'.
 */
 func (self Instance) RenameAnimation(anim string, newname string) { //gd:SpriteFrames.rename_animation
-	Advanced(self).RenameAnimation(String.Name(String.New(anim)), String.Name(String.New(newname)))
+	Advanced(self).RenameAnimation(String.Name(String.From(anim)), String.Name(String.From(newname)))
 }
 
 /*
@@ -190,7 +190,7 @@ Sets the speed for the 'anim' animation in frames per second.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetAnimationSpeed(anim string, fps Float.X) Instance { //gd:SpriteFrames.set_animation_speed
-	Advanced(self).SetAnimationSpeed(String.Name(String.New(anim)), float64(fps))
+	Advanced(self).SetAnimationSpeed(String.Name(String.From(anim)), float64(fps))
 	return self
 }
 
@@ -198,7 +198,7 @@ func (self Instance) SetAnimationSpeed(anim string, fps Float.X) Instance { //gd
 Returns the speed in frames per second for the 'anim' animation.
 */
 func (self Instance) GetAnimationSpeed(anim string) Float.X { //gd:SpriteFrames.get_animation_speed
-	return Float.X(Float.X(Advanced(self).GetAnimationSpeed(String.Name(String.New(anim)))))
+	return Float.X(Float.X(Advanced(self).GetAnimationSpeed(String.Name(String.From(anim)))))
 }
 
 /*
@@ -207,7 +207,7 @@ If 'loop' is true, the 'anim' animation will loop when it reaches the end, or th
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetAnimationLoop(anim string, loop bool) Instance { //gd:SpriteFrames.set_animation_loop
-	Advanced(self).SetAnimationLoop(String.Name(String.New(anim)), loop)
+	Advanced(self).SetAnimationLoop(String.Name(String.From(anim)), loop)
 	return self
 }
 
@@ -215,7 +215,7 @@ func (self Instance) SetAnimationLoop(anim string, loop bool) Instance { //gd:Sp
 Returns true if the given animation is configured to loop when it finishes playing. Otherwise, returns false.
 */
 func (self Instance) GetAnimationLoop(anim string) bool { //gd:SpriteFrames.get_animation_loop
-	return bool(Advanced(self).GetAnimationLoop(String.Name(String.New(anim))))
+	return bool(Advanced(self).GetAnimationLoop(String.Name(String.From(anim))))
 }
 
 /*
@@ -224,7 +224,7 @@ Adds a frame to the 'anim' animation. If 'at_position' is -1, the frame will be 
 [GetFrameDuration]: https://pkg.go.dev/graphics.gd/classdb/SpriteFrames#Instance.GetFrameDuration
 */
 func (self Instance) AddFrame(anim string, texture Texture2D.Instance) { //gd:SpriteFrames.add_frame
-	Advanced(self).AddFrame(String.Name(String.New(anim)), texture, float64(1.0), int64(-1))
+	Advanced(self).AddFrame(String.Name(String.From(anim)), texture, float64(1.0), int64(-1))
 }
 
 /*
@@ -233,7 +233,7 @@ Adds a frame to the 'anim' animation. If 'at_position' is -1, the frame will be 
 [GetFrameDuration]: https://pkg.go.dev/graphics.gd/classdb/SpriteFrames#Instance.GetFrameDuration
 */
 func (self MoreArgs) AddFrame(anim string, texture Texture2D.Instance, duration Float.X, at_position int) { //gd:SpriteFrames.add_frame
-	Advanced(self).AddFrame(String.Name(String.New(anim)), texture, float64(duration), int64(at_position))
+	Advanced(self).AddFrame(String.Name(String.From(anim)), texture, float64(duration), int64(at_position))
 }
 
 /*
@@ -244,7 +244,7 @@ Returns 'self' to enable method chaining.
 [GetFrameDuration]: https://pkg.go.dev/graphics.gd/classdb/SpriteFrames#Instance.GetFrameDuration
 */
 func (self Instance) SetFrame(anim string, idx int, texture Texture2D.Instance) Instance { //gd:SpriteFrames.set_frame
-	Advanced(self).SetFrame(String.Name(String.New(anim)), int64(idx), texture, float64(1.0))
+	Advanced(self).SetFrame(String.Name(String.From(anim)), int64(idx), texture, float64(1.0))
 	return self
 }
 
@@ -256,7 +256,7 @@ Returns 'self' to enable method chaining.
 [GetFrameDuration]: https://pkg.go.dev/graphics.gd/classdb/SpriteFrames#Instance.GetFrameDuration
 */
 func (self MoreArgs) SetFrame(anim string, idx int, texture Texture2D.Instance, duration Float.X) MoreArgs { //gd:SpriteFrames.set_frame
-	Advanced(self).SetFrame(String.Name(String.New(anim)), int64(idx), texture, float64(duration))
+	Advanced(self).SetFrame(String.Name(String.From(anim)), int64(idx), texture, float64(duration))
 	return self
 }
 
@@ -264,21 +264,21 @@ func (self MoreArgs) SetFrame(anim string, idx int, texture Texture2D.Instance, 
 Removes the 'anim' animation's frame 'idx'.
 */
 func (self Instance) RemoveFrame(anim string, idx int) { //gd:SpriteFrames.remove_frame
-	Advanced(self).RemoveFrame(String.Name(String.New(anim)), int64(idx))
+	Advanced(self).RemoveFrame(String.Name(String.From(anim)), int64(idx))
 }
 
 /*
 Returns the number of frames for the 'anim' animation.
 */
 func (self Instance) GetFrameCount(anim string) int { //gd:SpriteFrames.get_frame_count
-	return int(int(Advanced(self).GetFrameCount(String.Name(String.New(anim)))))
+	return int(int(Advanced(self).GetFrameCount(String.Name(String.From(anim)))))
 }
 
 /*
 Returns the texture of the frame 'idx' in the 'anim' animation.
 */
 func (self Instance) GetFrameTexture(anim string, idx int) Texture2D.Instance { //gd:SpriteFrames.get_frame_texture
-	return Texture2D.Instance(Advanced(self).GetFrameTexture(String.Name(String.New(anim)), int64(idx)))
+	return Texture2D.Instance(Advanced(self).GetFrameTexture(String.Name(String.From(anim)), int64(idx)))
 }
 
 /*
@@ -292,14 +292,14 @@ In this example, playing_speed refers to either [AnimatedSprite2D.GetPlayingSpee
 [AnimatedSprite3D.GetPlayingSpeed]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite3D#Instance.GetPlayingSpeed
 */
 func (self Instance) GetFrameDuration(anim string, idx int) Float.X { //gd:SpriteFrames.get_frame_duration
-	return Float.X(Float.X(Advanced(self).GetFrameDuration(String.Name(String.New(anim)), int64(idx))))
+	return Float.X(Float.X(Advanced(self).GetFrameDuration(String.Name(String.From(anim)), int64(idx))))
 }
 
 /*
 Removes all frames from the 'anim' animation.
 */
 func (self Instance) Clear(anim string) { //gd:SpriteFrames.clear
-	Advanced(self).Clear(String.Name(String.New(anim)))
+	Advanced(self).Clear(String.Name(String.From(anim)))
 }
 
 /*

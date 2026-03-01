@@ -241,7 +241,7 @@ Sets a custom title for the tab at index 'tab_idx' (tab titles default to the na
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetTabTitle(tab_idx int, title string) Instance { //gd:TabContainer.set_tab_title
-	Advanced(self).SetTabTitle(int64(tab_idx), String.New(title))
+	Advanced(self).SetTabTitle(int64(tab_idx), String.From(title))
 	return self
 }
 
@@ -262,7 +262,7 @@ Note: By default, if the 'tooltip' is empty and the tab text is truncated (not a
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetTabTooltip(tab_idx int, tooltip string) Instance { //gd:TabContainer.set_tab_tooltip
-	Advanced(self).SetTabTooltip(int64(tab_idx), String.New(tooltip))
+	Advanced(self).SetTabTooltip(int64(tab_idx), String.From(tooltip))
 	return self
 }
 

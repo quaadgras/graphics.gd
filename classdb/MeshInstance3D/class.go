@@ -298,7 +298,7 @@ Returns the index of the blend shape with the given 'name'. Returns -1 if no ble
 [Mesh]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D#Instance.Mesh
 */
 func (self Instance) FindBlendShapeByName(name string) int { //gd:MeshInstance3D.find_blend_shape_by_name
-	return int(int(Advanced(self).FindBlendShapeByName(String.Name(String.New(name)))))
+	return int(int(Advanced(self).FindBlendShapeByName(String.Name(String.From(name)))))
 }
 
 /*
@@ -469,7 +469,7 @@ func (self Instance) Skeleton() string { //gd:MeshInstance3D.skeleton
 
 // SetSkeleton sets the property returned by [GetSkeletonPath]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetSkeleton(value string) Instance { //gd:MeshInstance3D.skeleton
-	class(self).SetSkeletonPath(Path.ToNode(String.New(value)))
+	class(self).SetSkeletonPath(Path.ToNode(String.From(value)))
 	return self
 }
 

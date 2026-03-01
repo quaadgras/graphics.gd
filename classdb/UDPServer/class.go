@@ -217,7 +217,7 @@ Starts the server by opening a UDP socket listening on the given 'port'. You can
 [PacketPeerUDP.Bind]: https://pkg.go.dev/graphics.gd/classdb/PacketPeerUDP#Instance.Bind
 */
 func (self Instance) Listen(port int) error { //gd:UDPServer.listen
-	return error(gd.ToError(Advanced(self).Listen(int64(port), String.New("*"))))
+	return error(gd.ToError(Advanced(self).Listen(int64(port), String.From("*"))))
 }
 
 /*
@@ -226,7 +226,7 @@ Starts the server by opening a UDP socket listening on the given 'port'. You can
 [PacketPeerUDP.Bind]: https://pkg.go.dev/graphics.gd/classdb/PacketPeerUDP#Instance.Bind
 */
 func (self MoreArgs) Listen(port int, bind_address string) error { //gd:UDPServer.listen
-	return error(gd.ToError(Advanced(self).Listen(int64(port), String.New(bind_address))))
+	return error(gd.ToError(Advanced(self).Listen(int64(port), String.From(bind_address))))
 }
 
 /*

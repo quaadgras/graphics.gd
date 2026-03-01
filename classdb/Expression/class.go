@@ -167,7 +167,7 @@ Parses the expression and returns an [Error] code.
 You can optionally specify names of variables that may appear in the expression with 'input_names', so that you can bind them when it gets executed.
 */
 func (self Instance) Parse(expression string) error { //gd:Expression.parse
-	return error(gd.ToError(Advanced(self).Parse(String.New(expression), Packed.MakeStrings([1][]string{}[0]...))))
+	return error(gd.ToError(Advanced(self).Parse(String.From(expression), Packed.MakeStrings([1][]string{}[0]...))))
 }
 
 /*
@@ -176,7 +176,7 @@ Parses the expression and returns an [Error] code.
 You can optionally specify names of variables that may appear in the expression with 'input_names', so that you can bind them when it gets executed.
 */
 func (self MoreArgs) Parse(expression string, input_names []string) error { //gd:Expression.parse
-	return error(gd.ToError(Advanced(self).Parse(String.New(expression), Packed.MakeStrings(input_names...))))
+	return error(gd.ToError(Advanced(self).Parse(String.From(expression), Packed.MakeStrings(input_names...))))
 }
 
 /*

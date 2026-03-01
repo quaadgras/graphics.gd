@@ -214,7 +214,7 @@ The way undo operation are ordered in actions is dictated by 'backward_undo_ops'
 [CommitAction]: https://pkg.go.dev/graphics.gd/classdb/UndoRedo#Instance.CommitAction
 */
 func (self Instance) CreateAction(name string) { //gd:UndoRedo.create_action
-	Advanced(self).CreateAction(String.New(name), 0, false)
+	Advanced(self).CreateAction(String.From(name), 0, false)
 }
 
 /*
@@ -231,7 +231,7 @@ The way undo operation are ordered in actions is dictated by 'backward_undo_ops'
 [CommitAction]: https://pkg.go.dev/graphics.gd/classdb/UndoRedo#Instance.CommitAction
 */
 func (self MoreArgs) CreateAction(name string, merge_mode MergeMode, backward_undo_ops bool) { //gd:UndoRedo.create_action
-	Advanced(self).CreateAction(String.New(name), merge_mode, backward_undo_ops)
+	Advanced(self).CreateAction(String.From(name), merge_mode, backward_undo_ops)
 }
 
 /*
@@ -276,14 +276,14 @@ func (self Instance) AddUndoMethod(callable func()) { //gd:UndoRedo.add_undo_met
 Register a 'property' that would change its value to 'value' when the action is committed.
 */
 func (self Instance) AddDoProperty(obj Object.Instance, property string, value any) { //gd:UndoRedo.add_do_property
-	Advanced(self).AddDoProperty(obj, String.Name(String.New(property)), variant.New(value))
+	Advanced(self).AddDoProperty(obj, String.Name(String.From(property)), variant.New(value))
 }
 
 /*
 Register a 'property' that would change its value to 'value' when the action is undone.
 */
 func (self Instance) AddUndoProperty(obj Object.Instance, property string, value any) { //gd:UndoRedo.add_undo_property
-	Advanced(self).AddUndoProperty(obj, String.Name(String.New(property)), variant.New(value))
+	Advanced(self).AddUndoProperty(obj, String.Name(String.From(property)), variant.New(value))
 }
 
 /*

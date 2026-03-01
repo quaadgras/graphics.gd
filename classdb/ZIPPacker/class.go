@@ -154,7 +154,7 @@ Opens a zip file for writing at the given path using the specified write mode.
 This must be called before everything else.
 */
 func (self Instance) Open(path string) error { //gd:ZIPPacker.open
-	return error(gd.ToError(Advanced(self).Open(String.New(path), 0)))
+	return error(gd.ToError(Advanced(self).Open(String.From(path), 0)))
 }
 
 /*
@@ -163,7 +163,7 @@ Opens a zip file for writing at the given path using the specified write mode.
 This must be called before everything else.
 */
 func (self MoreArgs) Open(path string, append ZipAppend) error { //gd:ZIPPacker.open
-	return error(gd.ToError(Advanced(self).Open(String.New(path), append)))
+	return error(gd.ToError(Advanced(self).Open(String.From(path), append)))
 }
 
 /*
@@ -174,7 +174,7 @@ Must be called after [Open].
 [Open]: https://pkg.go.dev/graphics.gd/classdb/ZIPPacker#Instance.Open
 */
 func (self Instance) StartFile(path string) error { //gd:ZIPPacker.start_file
-	return error(gd.ToError(Advanced(self).StartFile(String.New(path))))
+	return error(gd.ToError(Advanced(self).StartFile(String.From(path))))
 }
 
 /*

@@ -456,7 +456,7 @@ func (self Instance) SourceGeometryGroupName() string { //gd:NavigationPolygon.s
 
 // SetSourceGeometryGroupName sets the property returned by [GetSourceGeometryGroupName]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetSourceGeometryGroupName(value string) Instance { //gd:NavigationPolygon.source_geometry_group_name
-	class(self).SetSourceGeometryGroupName(String.Name(String.New(value)))
+	class(self).SetSourceGeometryGroupName(String.Name(String.From(value)))
 	return self
 }
 

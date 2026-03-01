@@ -180,7 +180,7 @@ func (self Instance) InputName() string { //gd:VisualShaderNodeInput.input_name
 
 // SetInputName sets the property returned by [GetInputName]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetInputName(value string) Instance { //gd:VisualShaderNodeInput.input_name
-	class(self).SetInputName(String.New(value))
+	class(self).SetInputName(String.From(value))
 	return self
 }
 

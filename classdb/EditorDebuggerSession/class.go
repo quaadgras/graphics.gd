@@ -142,7 +142,7 @@ Sends the given 'message' to the attached remote instance, optionally passing ad
 [EngineDebugger]: https://pkg.go.dev/graphics.gd/classdb/EngineDebugger
 */
 func (self Instance) SendMessage(message string) { //gd:EditorDebuggerSession.send_message
-	Advanced(self).SendMessage(String.New(message), Array.Nil)
+	Advanced(self).SendMessage(String.From(message), Array.Nil)
 }
 
 /*
@@ -151,7 +151,7 @@ Sends the given 'message' to the attached remote instance, optionally passing ad
 [EngineDebugger]: https://pkg.go.dev/graphics.gd/classdb/EngineDebugger
 */
 func (self MoreArgs) SendMessage(message string, data []any) { //gd:EditorDebuggerSession.send_message
-	Advanced(self).SendMessage(String.New(message), gd.EngineArrayFromSlice(data))
+	Advanced(self).SendMessage(String.From(message), gd.EngineArrayFromSlice(data))
 }
 
 /*
@@ -160,7 +160,7 @@ Toggle the given 'profiler' on the attached remote instance, optionally passing 
 [EngineProfiler]: https://pkg.go.dev/graphics.gd/classdb/EngineProfiler
 */
 func (self Instance) ToggleProfiler(profiler string, enable bool) { //gd:EditorDebuggerSession.toggle_profiler
-	Advanced(self).ToggleProfiler(String.New(profiler), enable, Array.Nil)
+	Advanced(self).ToggleProfiler(String.From(profiler), enable, Array.Nil)
 }
 
 /*
@@ -169,7 +169,7 @@ Toggle the given 'profiler' on the attached remote instance, optionally passing 
 [EngineProfiler]: https://pkg.go.dev/graphics.gd/classdb/EngineProfiler
 */
 func (self MoreArgs) ToggleProfiler(profiler string, enable bool, data []any) { //gd:EditorDebuggerSession.toggle_profiler
-	Advanced(self).ToggleProfiler(String.New(profiler), enable, gd.EngineArrayFromSlice(data))
+	Advanced(self).ToggleProfiler(String.From(profiler), enable, gd.EngineArrayFromSlice(data))
 }
 
 /*
@@ -213,7 +213,7 @@ Enables or disables a specific breakpoint based on 'enabled', updating the Edito
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetBreakpoint(path string, line int, enabled bool) Instance { //gd:EditorDebuggerSession.set_breakpoint
-	Advanced(self).SetBreakpoint(String.New(path), int64(line), enabled)
+	Advanced(self).SetBreakpoint(String.From(path), int64(line), enabled)
 	return self
 }
 

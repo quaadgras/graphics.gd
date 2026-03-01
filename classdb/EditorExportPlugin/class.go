@@ -761,7 +761,7 @@ func (Instance) _get_export_option_warning(impl func(ptr gdclass.Receiver, platf
 		defer pointers.End(gd.InternalString(option))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, platform, option.String())
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -799,7 +799,7 @@ func (Instance) _get_name(impl func(ptr gdclass.Receiver) string) (cb gd.Extensi
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -919,7 +919,7 @@ func (Instance) _get_android_manifest_activity_element_contents(impl func(ptr gd
 		var debug = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, platform, debug)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -943,7 +943,7 @@ func (Instance) _get_android_manifest_application_element_contents(impl func(ptr
 		var debug = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, platform, debug)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -967,7 +967,7 @@ func (Instance) _get_android_manifest_element_contents(impl func(ptr gdclass.Rec
 		var debug = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, platform, debug)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -1009,7 +1009,7 @@ Note: In case of macOS exports, those shared objects will be added to Frameworks
 In case of a directory code-sign will error if you place non code object in directory.
 */
 func (self Instance) AddSharedObject(path string, tags []string, target string) { //gd:EditorExportPlugin.add_shared_object
-	Advanced(self).AddSharedObject(String.New(path), Packed.MakeStrings(tags...), String.New(target))
+	Advanced(self).AddSharedObject(String.From(path), Packed.MakeStrings(tags...), String.From(target))
 }
 
 /*
@@ -1023,21 +1023,21 @@ When called inside [ExportFile] and 'remap' is true, the current file will not b
 [ExportFile]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Interface
 */
 func (self Instance) AddFile(path string, file []byte, remap bool) { //gd:EditorExportPlugin.add_file
-	Advanced(self).AddFile(String.New(path), Packed.BytesFrom(file...), remap)
+	Advanced(self).AddFile(String.From(path), Packed.BytesFrom(file...), remap)
 }
 
 /*
 Adds a static library from the given 'path' to the Apple embedded platform project.
 */
 func (self Instance) AddAppleEmbeddedPlatformProjectStaticLib(path string) { //gd:EditorExportPlugin.add_apple_embedded_platform_project_static_lib
-	Advanced(self).AddAppleEmbeddedPlatformProjectStaticLib(String.New(path))
+	Advanced(self).AddAppleEmbeddedPlatformProjectStaticLib(String.From(path))
 }
 
 /*
 Adds a static library (*.a) or a dynamic library (*.dylib, *.framework) to the Linking Phase to the Apple embedded platform's Xcode project.
 */
 func (self Instance) AddAppleEmbeddedPlatformFramework(path string) { //gd:EditorExportPlugin.add_apple_embedded_platform_framework
-	Advanced(self).AddAppleEmbeddedPlatformFramework(String.New(path))
+	Advanced(self).AddAppleEmbeddedPlatformFramework(String.From(path))
 }
 
 /*
@@ -1050,49 +1050,49 @@ Note: This method should not be used for System libraries as they are already pr
 [AddAppleEmbeddedPlatformFramework]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Instance.AddAppleEmbeddedPlatformFramework
 */
 func (self Instance) AddAppleEmbeddedPlatformEmbeddedFramework(path string) { //gd:EditorExportPlugin.add_apple_embedded_platform_embedded_framework
-	Advanced(self).AddAppleEmbeddedPlatformEmbeddedFramework(String.New(path))
+	Advanced(self).AddAppleEmbeddedPlatformEmbeddedFramework(String.From(path))
 }
 
 /*
 Adds additional fields to the Apple embedded platform's project Info.plist file.
 */
 func (self Instance) AddAppleEmbeddedPlatformPlistContent(plist_content string) { //gd:EditorExportPlugin.add_apple_embedded_platform_plist_content
-	Advanced(self).AddAppleEmbeddedPlatformPlistContent(String.New(plist_content))
+	Advanced(self).AddAppleEmbeddedPlatformPlistContent(String.From(plist_content))
 }
 
 /*
 Adds linker flags for the Apple embedded platform export.
 */
 func (self Instance) AddAppleEmbeddedPlatformLinkerFlags(flags string) { //gd:EditorExportPlugin.add_apple_embedded_platform_linker_flags
-	Advanced(self).AddAppleEmbeddedPlatformLinkerFlags(String.New(flags))
+	Advanced(self).AddAppleEmbeddedPlatformLinkerFlags(String.From(flags))
 }
 
 /*
 Adds an Apple embedded platform bundle file from the given 'path' to the exported project.
 */
 func (self Instance) AddAppleEmbeddedPlatformBundleFile(path string) { //gd:EditorExportPlugin.add_apple_embedded_platform_bundle_file
-	Advanced(self).AddAppleEmbeddedPlatformBundleFile(String.New(path))
+	Advanced(self).AddAppleEmbeddedPlatformBundleFile(String.From(path))
 }
 
 /*
 Adds C++ code to the Apple embedded platform export. The final code is created from the code appended by each active export plugin.
 */
 func (self Instance) AddAppleEmbeddedPlatformCppCode(code string) { //gd:EditorExportPlugin.add_apple_embedded_platform_cpp_code
-	Advanced(self).AddAppleEmbeddedPlatformCppCode(String.New(code))
+	Advanced(self).AddAppleEmbeddedPlatformCppCode(String.From(code))
 }
 
 /*
 Adds a static library from the given 'path' to the iOS project.
 */
 func (self Instance) AddIosProjectStaticLib(path string) { //gd:EditorExportPlugin.add_ios_project_static_lib
-	Advanced(self).AddIosProjectStaticLib(String.New(path))
+	Advanced(self).AddIosProjectStaticLib(String.From(path))
 }
 
 /*
 Adds a static library (*.a) or a dynamic library (*.dylib, *.framework) to the Linking Phase to the iOS Xcode project.
 */
 func (self Instance) AddIosFramework(path string) { //gd:EditorExportPlugin.add_ios_framework
-	Advanced(self).AddIosFramework(String.New(path))
+	Advanced(self).AddIosFramework(String.From(path))
 }
 
 /*
@@ -1105,35 +1105,35 @@ Note: This method should not be used for System libraries as they are already pr
 [AddAppleEmbeddedPlatformFramework]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Instance.AddAppleEmbeddedPlatformFramework
 */
 func (self Instance) AddIosEmbeddedFramework(path string) { //gd:EditorExportPlugin.add_ios_embedded_framework
-	Advanced(self).AddIosEmbeddedFramework(String.New(path))
+	Advanced(self).AddIosEmbeddedFramework(String.From(path))
 }
 
 /*
 Adds additional fields to the iOS project Info.plist file.
 */
 func (self Instance) AddIosPlistContent(plist_content string) { //gd:EditorExportPlugin.add_ios_plist_content
-	Advanced(self).AddIosPlistContent(String.New(plist_content))
+	Advanced(self).AddIosPlistContent(String.From(plist_content))
 }
 
 /*
 Adds linker flags for the iOS export.
 */
 func (self Instance) AddIosLinkerFlags(flags string) { //gd:EditorExportPlugin.add_ios_linker_flags
-	Advanced(self).AddIosLinkerFlags(String.New(flags))
+	Advanced(self).AddIosLinkerFlags(String.From(flags))
 }
 
 /*
 Adds an iOS bundle file from the given 'path' to the exported project.
 */
 func (self Instance) AddIosBundleFile(path string) { //gd:EditorExportPlugin.add_ios_bundle_file
-	Advanced(self).AddIosBundleFile(String.New(path))
+	Advanced(self).AddIosBundleFile(String.From(path))
 }
 
 /*
 Adds C++ code to the iOS export. The final code is created from the code appended by each active export plugin.
 */
 func (self Instance) AddIosCppCode(code string) { //gd:EditorExportPlugin.add_ios_cpp_code
-	Advanced(self).AddIosCppCode(String.New(code))
+	Advanced(self).AddIosCppCode(String.From(code))
 }
 
 /*
@@ -1142,7 +1142,7 @@ Adds file or directory matching 'path' to PlugIns directory of macOS app bundle.
 Note: This is useful only for macOS exports.
 */
 func (self Instance) AddMacosPluginFile(path string) { //gd:EditorExportPlugin.add_macos_plugin_file
-	Advanced(self).AddMacosPluginFile(String.New(path))
+	Advanced(self).AddMacosPluginFile(String.From(path))
 }
 
 /*
@@ -1160,7 +1160,7 @@ Returns the current value of an export option supplied by [GetExportOptions].
 [GetExportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Interface
 */
 func (self Instance) GetOption(name string) any { //gd:EditorExportPlugin.get_option
-	return any(Advanced(self).GetOption(String.Name(String.New(name))).Interface())
+	return any(Advanced(self).GetOption(String.Name(String.From(name))).Interface())
 }
 
 /*

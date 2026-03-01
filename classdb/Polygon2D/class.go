@@ -162,7 +162,7 @@ type Any interface {
 Adds a bone with the specified 'path' and 'weights'.
 */
 func (self Instance) AddBone(path string, weights []float32) { //gd:Polygon2D.add_bone
-	Advanced(self).AddBone(Path.ToNode(String.New(path)), Packed.New(weights...))
+	Advanced(self).AddBone(Path.ToNode(String.From(path)), Packed.New(weights...))
 }
 
 /*
@@ -212,7 +212,7 @@ Sets the path to the node associated with the specified bone.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetBonePath(index int, path string) Instance { //gd:Polygon2D.set_bone_path
-	Advanced(self).SetBonePath(int64(index), Path.ToNode(String.New(path)))
+	Advanced(self).SetBonePath(int64(index), Path.ToNode(String.From(path)))
 	return self
 }
 
@@ -380,7 +380,7 @@ func (self Instance) Skeleton() string { //gd:Polygon2D.skeleton
 
 // SetSkeleton sets the property returned by [GetSkeleton]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetSkeleton(value string) Instance { //gd:Polygon2D.skeleton
-	class(self).SetSkeleton(Path.ToNode(String.New(value)))
+	class(self).SetSkeleton(Path.ToNode(String.From(value)))
 	return self
 }
 

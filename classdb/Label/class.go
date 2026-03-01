@@ -286,7 +286,7 @@ func (self Instance) Text() string { //gd:Label.text
 
 // SetText sets the property returned by [GetText]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetText(value string) Instance { //gd:Label.text
-	class(self).SetText(String.New(value))
+	class(self).SetText(String.From(value))
 	return self
 }
 
@@ -380,7 +380,7 @@ func (self Instance) ParagraphSeparator() string { //gd:Label.paragraph_separato
 
 // SetParagraphSeparator sets the property returned by [GetParagraphSeparator]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetParagraphSeparator(value string) Instance { //gd:Label.paragraph_separator
-	class(self).SetParagraphSeparator(String.New(value))
+	class(self).SetParagraphSeparator(String.From(value))
 	return self
 }
 
@@ -419,7 +419,7 @@ func (self Instance) EllipsisChar() string { //gd:Label.ellipsis_char
 
 // SetEllipsisChar sets the property returned by [GetEllipsisChar]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetEllipsisChar(value string) Instance { //gd:Label.ellipsis_char
-	class(self).SetEllipsisChar(String.New(value))
+	class(self).SetEllipsisChar(String.From(value))
 	return self
 }
 
@@ -552,7 +552,7 @@ func (self Instance) Language() string { //gd:Label.language
 
 // SetLanguage sets the property returned by [GetLanguage]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetLanguage(value string) Instance { //gd:Label.language
-	class(self).SetLanguage(String.New(value))
+	class(self).SetLanguage(String.From(value))
 	return self
 }
 

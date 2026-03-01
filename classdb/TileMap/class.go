@@ -353,7 +353,7 @@ If 'layer' is negative, the layers are accessed from the last one.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetLayerName(layer int, name string) Instance { //gd:TileMap.set_layer_name
-	Advanced(self).SetLayerName(int64(layer), String.New(name))
+	Advanced(self).SetLayerName(int64(layer), String.From(name))
 	return self
 }
 

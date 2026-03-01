@@ -208,7 +208,7 @@ func (self Instance) InputPath() string { //gd:OpenXRDpadBindingModifier.input_p
 
 // SetInputPath sets the property returned by [GetInputPath]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetInputPath(value string) Instance { //gd:OpenXRDpadBindingModifier.input_path
-	class(self).SetInputPath(String.New(value))
+	class(self).SetInputPath(String.From(value))
 	return self
 }
 

@@ -167,7 +167,7 @@ Returns the [Translation] instance that best matches 'locale'. Returns null if t
 [Translation]: https://pkg.go.dev/graphics.gd/classdb/Translation
 */
 func (self Instance) GetTranslationObject(locale string) Translation.Instance { //gd:TranslationDomain.get_translation_object
-	return Translation.Instance(Advanced(self).GetTranslationObject(String.New(locale)))
+	return Translation.Instance(Advanced(self).GetTranslationObject(String.From(locale)))
 }
 
 /*
@@ -208,7 +208,7 @@ Returns true if there are any [Translation] instances that match 'locale' (see [
 [TranslationServer.CompareLocales]: https://pkg.go.dev/graphics.gd/classdb/TranslationServer#CompareLocales
 */
 func (self Instance) HasTranslationForLocale(locale string, exact bool) bool { //gd:TranslationDomain.has_translation_for_locale
-	return bool(Advanced(self).HasTranslationForLocale(String.New(locale), exact))
+	return bool(Advanced(self).HasTranslationForLocale(String.From(locale), exact))
 }
 
 /*
@@ -225,21 +225,21 @@ Returns the [Translation] instances that match 'locale' (see [TranslationServer.
 [TranslationServer.CompareLocales]: https://pkg.go.dev/graphics.gd/classdb/TranslationServer#CompareLocales
 */
 func (self Instance) FindTranslations(locale string, exact bool) []Translation.Instance { //gd:TranslationDomain.find_translations
-	return []Translation.Instance(gd.ArrayAs[[]Translation.Instance](gd.InternalArray(Advanced(self).FindTranslations(String.New(locale), exact))))
+	return []Translation.Instance(gd.ArrayAs[[]Translation.Instance](gd.InternalArray(Advanced(self).FindTranslations(String.From(locale), exact))))
 }
 
 /*
 Returns the current locale's translation for the given message and context.
 */
 func (self Instance) Translate(message string) string { //gd:TranslationDomain.translate
-	return string(Advanced(self).Translate(String.Name(String.New(message)), String.Name(String.New(""))).String())
+	return string(Advanced(self).Translate(String.Name(String.From(message)), String.Name(String.From(""))).String())
 }
 
 /*
 Returns the current locale's translation for the given message and context.
 */
 func (self MoreArgs) Translate(message string, context string) string { //gd:TranslationDomain.translate
-	return string(Advanced(self).Translate(String.Name(String.New(message)), String.Name(String.New(context))).String())
+	return string(Advanced(self).Translate(String.Name(String.From(message)), String.Name(String.From(context))).String())
 }
 
 /*
@@ -248,7 +248,7 @@ Returns the current locale's translation for the given message, plural message a
 The number 'n' is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
 */
 func (self Instance) TranslatePlural(message string, message_plural string, n int) string { //gd:TranslationDomain.translate_plural
-	return string(Advanced(self).TranslatePlural(String.Name(String.New(message)), String.Name(String.New(message_plural)), int64(n), String.Name(String.New(""))).String())
+	return string(Advanced(self).TranslatePlural(String.Name(String.From(message)), String.Name(String.From(message_plural)), int64(n), String.Name(String.From(""))).String())
 }
 
 /*
@@ -257,7 +257,7 @@ Returns the current locale's translation for the given message, plural message a
 The number 'n' is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
 */
 func (self MoreArgs) TranslatePlural(message string, message_plural string, n int, context string) string { //gd:TranslationDomain.translate_plural
-	return string(Advanced(self).TranslatePlural(String.Name(String.New(message)), String.Name(String.New(message_plural)), int64(n), String.Name(String.New(context))).String())
+	return string(Advanced(self).TranslatePlural(String.Name(String.From(message)), String.Name(String.From(message_plural)), int64(n), String.Name(String.From(context))).String())
 }
 
 /*
@@ -277,7 +277,7 @@ Note: Calling this method does not automatically update texts in the scene tree.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetLocaleOverride(locale string) Instance { //gd:TranslationDomain.set_locale_override
-	Advanced(self).SetLocaleOverride(String.New(locale))
+	Advanced(self).SetLocaleOverride(String.From(locale))
 	return self
 }
 
@@ -285,7 +285,7 @@ func (self Instance) SetLocaleOverride(locale string) Instance { //gd:Translatio
 Returns the pseudolocalized string based on the 'message' passed in.
 */
 func (self Instance) Pseudolocalize(message string) string { //gd:TranslationDomain.pseudolocalize
-	return string(Advanced(self).Pseudolocalize(String.Name(String.New(message))).String())
+	return string(Advanced(self).Pseudolocalize(String.Name(String.From(message))).String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -463,7 +463,7 @@ func (self Instance) PseudolocalizationPrefix() string { //gd:TranslationDomain.
 
 // SetPseudolocalizationPrefix sets the property returned by [GetPseudolocalizationPrefix]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetPseudolocalizationPrefix(value string) Instance { //gd:TranslationDomain.pseudolocalization_prefix
-	class(self).SetPseudolocalizationPrefix(String.New(value))
+	class(self).SetPseudolocalizationPrefix(String.From(value))
 	return self
 }
 
@@ -478,7 +478,7 @@ func (self Instance) PseudolocalizationSuffix() string { //gd:TranslationDomain.
 
 // SetPseudolocalizationSuffix sets the property returned by [GetPseudolocalizationSuffix]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetPseudolocalizationSuffix(value string) Instance { //gd:TranslationDomain.pseudolocalization_suffix
-	class(self).SetPseudolocalizationSuffix(String.New(value))
+	class(self).SetPseudolocalizationSuffix(String.From(value))
 	return self
 }
 

@@ -139,7 +139,7 @@ Registers a callback for the given method name.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetMethod(name string, callback Callable.Function) Instance { //gd:JSONRPC.set_method
-	Advanced(self).SetMethod(String.New(name), Callable.New(callback))
+	Advanced(self).SetMethod(String.From(name), Callable.New(callback))
 	return self
 }
 
@@ -169,7 +169,7 @@ func (self MoreArgs) ProcessAction(action any, recurse bool) any { //gd:JSONRPC.
 	return any(Advanced(self).ProcessAction(variant.New(action), recurse).Interface())
 }
 func (self Instance) ProcessString(action string) string { //gd:JSONRPC.process_string
-	return string(Advanced(self).ProcessString(String.New(action)).String())
+	return string(Advanced(self).ProcessString(String.From(action)).String())
 }
 
 /*
@@ -182,7 +182,7 @@ Returns a dictionary in the form of a JSON-RPC request. Requests are sent to a s
 - 'id': Uniquely identifies this request. The server is expected to send a response with the same ID.
 */
 func (self Instance) MakeRequest(method string, params any, id any) Request { //gd:JSONRPC.make_request
-	return Request(gd.DictionaryAs[Request](Advanced(self).MakeRequest(String.New(method), variant.New(params), variant.New(id))))
+	return Request(gd.DictionaryAs[Request](Advanced(self).MakeRequest(String.From(method), variant.New(params), variant.New(id))))
 }
 
 /*
@@ -204,7 +204,7 @@ Returns a dictionary in the form of a JSON-RPC notification. Notifications are o
 - 'params': An array or dictionary of parameters being passed to the method.
 */
 func (self Instance) MakeNotification(method string, params any) Notification { //gd:JSONRPC.make_notification
-	return Notification(gd.DictionaryAs[Notification](Advanced(self).MakeNotification(String.New(method), variant.New(params))))
+	return Notification(gd.DictionaryAs[Notification](Advanced(self).MakeNotification(String.From(method), variant.New(params))))
 }
 
 /*
@@ -217,7 +217,7 @@ Creates a response which indicates a previous reply has failed in some way.
 - 'id': The request this error is a response to.
 */
 func (self Instance) MakeResponseError(code int, message string) ResponseError { //gd:JSONRPC.make_response_error
-	return ResponseError(gd.DictionaryAs[ResponseError](Advanced(self).MakeResponseError(int64(code), String.New(message), variant.New([1]any{}[0]))))
+	return ResponseError(gd.DictionaryAs[ResponseError](Advanced(self).MakeResponseError(int64(code), String.From(message), variant.New([1]any{}[0]))))
 }
 
 /*
@@ -230,7 +230,7 @@ Creates a response which indicates a previous reply has failed in some way.
 - 'id': The request this error is a response to.
 */
 func (self MoreArgs) MakeResponseError(code int, message string, id any) ResponseError { //gd:JSONRPC.make_response_error
-	return ResponseError(gd.DictionaryAs[ResponseError](Advanced(self).MakeResponseError(int64(code), String.New(message), variant.New(id))))
+	return ResponseError(gd.DictionaryAs[ResponseError](Advanced(self).MakeResponseError(int64(code), String.From(message), variant.New(id))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

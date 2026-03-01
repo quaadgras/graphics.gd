@@ -186,7 +186,7 @@ func (self Instance) AnimationPath() string { //gd:RootMotionView.animation_path
 
 // SetAnimationPath sets the property returned by [GetAnimationPath]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetAnimationPath(value string) Instance { //gd:RootMotionView.animation_path
-	class(self).SetAnimationPath(Path.ToNode(String.New(value)))
+	class(self).SetAnimationPath(Path.ToNode(String.From(value)))
 	return self
 }
 

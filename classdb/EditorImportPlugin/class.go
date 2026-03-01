@@ -338,7 +338,7 @@ func (Instance) _get_importer_name(impl func(ptr gdclass.Receiver) string) (cb g
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -354,7 +354,7 @@ func (Instance) _get_visible_name(impl func(ptr gdclass.Receiver) string) (cb gd
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -387,7 +387,7 @@ func (Instance) _get_preset_name(impl func(ptr gdclass.Receiver, preset_index in
 		var preset_index = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(preset_index))
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -446,7 +446,7 @@ func (Instance) _get_save_extension(impl func(ptr gdclass.Receiver) string) (cb 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -462,7 +462,7 @@ func (Instance) _get_resource_type(impl func(ptr gdclass.Receiver) string) (cb g
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -578,7 +578,7 @@ This function can only be called during the [Import] callback and it allows manu
 [Import]: https://pkg.go.dev/graphics.gd/classdb/EditorImportPlugin#Interface
 */
 func (self Instance) AppendImportExternalResource(path string) error { //gd:EditorImportPlugin.append_import_external_resource
-	return error(gd.ToError(Advanced(self).AppendImportExternalResource(String.New(path), Dictionary.Nil, String.New(""), variant.New([1]any{}[0]))))
+	return error(gd.ToError(Advanced(self).AppendImportExternalResource(String.From(path), Dictionary.Nil, String.From(""), variant.New([1]any{}[0]))))
 }
 
 /*
@@ -587,7 +587,7 @@ This function can only be called during the [Import] callback and it allows manu
 [Import]: https://pkg.go.dev/graphics.gd/classdb/EditorImportPlugin#Interface
 */
 func (self MoreArgs) AppendImportExternalResource(path string, custom_options map[string]any, custom_importer string, generator_parameters any) error { //gd:EditorImportPlugin.append_import_external_resource
-	return error(gd.ToError(Advanced(self).AppendImportExternalResource(String.New(path), gd.DictionaryFromMap(custom_options), String.New(custom_importer), variant.New(generator_parameters))))
+	return error(gd.ToError(Advanced(self).AppendImportExternalResource(String.From(path), gd.DictionaryFromMap(custom_options), String.From(custom_importer), variant.New(generator_parameters))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

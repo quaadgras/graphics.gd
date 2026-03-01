@@ -173,7 +173,7 @@ func (self Instance) VaryingName() string { //gd:VisualShaderNodeVarying.varying
 
 // SetVaryingName sets the property returned by [GetVaryingName]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetVaryingName(value string) Instance { //gd:VisualShaderNodeVarying.varying_name
-	class(self).SetVaryingName(String.New(value))
+	class(self).SetVaryingName(String.From(value))
 	return self
 }
 

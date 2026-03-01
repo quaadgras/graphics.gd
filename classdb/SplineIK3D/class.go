@@ -150,7 +150,7 @@ Returns 'self' to enable method chaining.
 [Path3D]: https://pkg.go.dev/graphics.gd/classdb/Path3D
 */
 func (self Instance) SetPath3d(index int, path_3d string) Instance { //gd:SplineIK3D.set_path_3d
-	Advanced(self).SetPath3d(int64(index), Path.ToNode(String.New(path_3d)))
+	Advanced(self).SetPath3d(int64(index), Path.ToNode(String.From(path_3d)))
 	return self
 }
 

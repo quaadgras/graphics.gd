@@ -401,7 +401,7 @@ func (self Instance) Bus() string { //gd:VideoStreamPlayer.bus
 
 // SetBus sets the property returned by [GetBus]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetBus(value string) Instance { //gd:VideoStreamPlayer.bus
-	class(self).SetBus(String.Name(String.New(value)))
+	class(self).SetBus(String.Name(String.From(value)))
 	return self
 }
 

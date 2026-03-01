@@ -135,7 +135,7 @@ func (self Instance) AddBind(bone int, pose Transform3D.BasisOrigin) { //gd:Skin
 	Advanced(self).AddBind(int64(bone), Transform3D.BasisOrigin(pose))
 }
 func (self Instance) AddNamedBind(name string, pose Transform3D.BasisOrigin) { //gd:Skin.add_named_bind
-	Advanced(self).AddNamedBind(String.New(name), Transform3D.BasisOrigin(pose))
+	Advanced(self).AddNamedBind(String.From(name), Transform3D.BasisOrigin(pose))
 }
 func (self Instance) SetBindPose(bind_index int, pose Transform3D.BasisOrigin) Instance { //gd:Skin.set_bind_pose
 	Advanced(self).SetBindPose(int64(bind_index), Transform3D.BasisOrigin(pose))
@@ -145,7 +145,7 @@ func (self Instance) GetBindPose(bind_index int) Transform3D.BasisOrigin { //gd:
 	return Transform3D.BasisOrigin(Advanced(self).GetBindPose(int64(bind_index)))
 }
 func (self Instance) SetBindName(bind_index int, name string) Instance { //gd:Skin.set_bind_name
-	Advanced(self).SetBindName(int64(bind_index), String.Name(String.New(name)))
+	Advanced(self).SetBindName(int64(bind_index), String.Name(String.From(name)))
 	return self
 }
 func (self Instance) GetBindName(bind_index int) string { //gd:Skin.get_bind_name

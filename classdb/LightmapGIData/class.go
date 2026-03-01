@@ -138,7 +138,7 @@ Adds an object that is considered baked within this [LightmapGIData].
 [LightmapGIData]: https://pkg.go.dev/graphics.gd/classdb/LightmapGIData
 */
 func (self Instance) AddUser(path string, uv_scale Rect2.PositionSize, slice_index int, sub_instance int) { //gd:LightmapGIData.add_user
-	Advanced(self).AddUser(Path.ToNode(String.New(path)), Rect2.PositionSize(uv_scale), int64(slice_index), int64(sub_instance))
+	Advanced(self).AddUser(Path.ToNode(String.From(path)), Rect2.PositionSize(uv_scale), int64(slice_index), int64(sub_instance))
 }
 
 /*

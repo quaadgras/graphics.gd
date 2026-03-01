@@ -156,7 +156,7 @@ Adds a custom command to EditorCommandPalette.
 - 'shortcut_text': string (Shortcut text of the Command if available.)
 */
 func (self Instance) AddCommand(command_name string, key_name string, binded_callable func()) { //gd:EditorCommandPalette.add_command
-	Advanced(self).AddCommand(String.New(command_name), String.New(key_name), Callable.New(binded_callable), String.New("None"))
+	Advanced(self).AddCommand(String.From(command_name), String.From(key_name), Callable.New(binded_callable), String.From("None"))
 }
 
 /*
@@ -171,7 +171,7 @@ Adds a custom command to EditorCommandPalette.
 - 'shortcut_text': string (Shortcut text of the Command if available.)
 */
 func (self MoreArgs) AddCommand(command_name string, key_name string, binded_callable func(), shortcut_text string) { //gd:EditorCommandPalette.add_command
-	Advanced(self).AddCommand(String.New(command_name), String.New(key_name), Callable.New(binded_callable), String.New(shortcut_text))
+	Advanced(self).AddCommand(String.From(command_name), String.From(key_name), Callable.New(binded_callable), String.From(shortcut_text))
 }
 
 /*
@@ -180,7 +180,7 @@ Removes the custom command from EditorCommandPalette.
 - 'key_name': string (Name of the key for a particular Command.)
 */
 func (self Instance) RemoveCommand(key_name string) { //gd:EditorCommandPalette.remove_command
-	Advanced(self).RemoveCommand(String.New(key_name))
+	Advanced(self).RemoveCommand(String.From(key_name))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

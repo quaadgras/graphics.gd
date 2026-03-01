@@ -296,7 +296,7 @@ func (self Instance) PathNode() string { //gd:CSGPolygon3D.path_node
 
 // SetPathNode sets the property returned by [GetPathNode]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetPathNode(value string) Instance { //gd:CSGPolygon3D.path_node
-	class(self).SetPathNode(Path.ToNode(String.New(value)))
+	class(self).SetPathNode(Path.ToNode(String.From(value)))
 	return self
 }
 

@@ -542,7 +542,7 @@ func (self Instance) WindSourcePath() string { //gd:Area3D.wind_source_path
 
 // SetWindSourcePath sets the property returned by [GetWindSourcePath]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetWindSourcePath(value string) Instance { //gd:Area3D.wind_source_path
-	class(self).SetWindSourcePath(Path.ToNode(String.New(value)))
+	class(self).SetWindSourcePath(Path.ToNode(String.From(value)))
 	return self
 }
 
@@ -568,7 +568,7 @@ func (self Instance) AudioBusName() string { //gd:Area3D.audio_bus_name
 
 // SetAudioBusName sets the property returned by [GetAudioBusName]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetAudioBusName(value string) Instance { //gd:Area3D.audio_bus_name
-	class(self).SetAudioBusName(String.Name(String.New(value)))
+	class(self).SetAudioBusName(String.Name(String.From(value)))
 	return self
 }
 
@@ -594,7 +594,7 @@ func (self Instance) ReverbBusName() string { //gd:Area3D.reverb_bus_name
 
 // SetReverbBusName sets the property returned by [GetReverbBusName]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetReverbBusName(value string) Instance { //gd:Area3D.reverb_bus_name
-	class(self).SetReverbBusName(String.Name(String.New(value)))
+	class(self).SetReverbBusName(String.Name(String.From(value)))
 	return self
 }
 

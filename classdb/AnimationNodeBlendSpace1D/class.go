@@ -315,7 +315,7 @@ func (self Instance) ValueLabel() string { //gd:AnimationNodeBlendSpace1D.value_
 
 // SetValueLabel sets the property returned by [GetValueLabel]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetValueLabel(value string) Instance { //gd:AnimationNodeBlendSpace1D.value_label
-	class(self).SetValueLabel(String.New(value))
+	class(self).SetValueLabel(String.From(value))
 	return self
 }
 

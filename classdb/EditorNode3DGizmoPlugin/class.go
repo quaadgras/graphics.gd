@@ -335,7 +335,7 @@ func (Instance) _get_gizmo_name(impl func(ptr gdclass.Receiver) string) (cb gd.E
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -408,7 +408,7 @@ func (Instance) _get_handle_name(impl func(ptr gdclass.Receiver, gizmo EditorNod
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, gizmo, int(handle_id), secondary)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return
@@ -643,7 +643,7 @@ Creates an unshaded material with its variants (selected and/or editable) and ad
 [GetMaterial]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmoPlugin#Instance.GetMaterial
 */
 func (self Instance) CreateMaterial(name string, color Color.RGBA) { //gd:EditorNode3DGizmoPlugin.create_material
-	Advanced(self).CreateMaterial(String.New(name), Color.RGBA(color), false, false, false)
+	Advanced(self).CreateMaterial(String.From(name), Color.RGBA(color), false, false, false)
 }
 
 /*
@@ -654,7 +654,7 @@ Creates an unshaded material with its variants (selected and/or editable) and ad
 [GetMaterial]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmoPlugin#Instance.GetMaterial
 */
 func (self MoreArgs) CreateMaterial(name string, color Color.RGBA, billboard bool, on_top bool, use_vertex_color bool) { //gd:EditorNode3DGizmoPlugin.create_material
-	Advanced(self).CreateMaterial(String.New(name), Color.RGBA(color), billboard, on_top, use_vertex_color)
+	Advanced(self).CreateMaterial(String.From(name), Color.RGBA(color), billboard, on_top, use_vertex_color)
 }
 
 /*
@@ -664,7 +664,7 @@ Creates an icon material with its variants (selected and/or editable) and adds t
 [GetMaterial]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmoPlugin#Instance.GetMaterial
 */
 func (self Instance) CreateIconMaterial(name string, texture Texture2D.Instance) { //gd:EditorNode3DGizmoPlugin.create_icon_material
-	Advanced(self).CreateIconMaterial(String.New(name), texture, false, Color.RGBA(gd.Color{1, 1, 1, 1}))
+	Advanced(self).CreateIconMaterial(String.From(name), texture, false, Color.RGBA(gd.Color{1, 1, 1, 1}))
 }
 
 /*
@@ -674,7 +674,7 @@ Creates an icon material with its variants (selected and/or editable) and adds t
 [GetMaterial]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmoPlugin#Instance.GetMaterial
 */
 func (self MoreArgs) CreateIconMaterial(name string, texture Texture2D.Instance, on_top bool, color Color.RGBA) { //gd:EditorNode3DGizmoPlugin.create_icon_material
-	Advanced(self).CreateIconMaterial(String.New(name), texture, on_top, Color.RGBA(color))
+	Advanced(self).CreateIconMaterial(String.From(name), texture, on_top, Color.RGBA(color))
 }
 
 /*
@@ -686,7 +686,7 @@ You can optionally provide a texture to use instead of the default icon.
 [GetMaterial]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmoPlugin#Instance.GetMaterial
 */
 func (self Instance) CreateHandleMaterial(name string) { //gd:EditorNode3DGizmoPlugin.create_handle_material
-	Advanced(self).CreateHandleMaterial(String.New(name), false, [1]Texture2D.Instance{}[0])
+	Advanced(self).CreateHandleMaterial(String.From(name), false, [1]Texture2D.Instance{}[0])
 }
 
 /*
@@ -698,7 +698,7 @@ You can optionally provide a texture to use instead of the default icon.
 [GetMaterial]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmoPlugin#Instance.GetMaterial
 */
 func (self MoreArgs) CreateHandleMaterial(name string, billboard bool, texture Texture2D.Instance) { //gd:EditorNode3DGizmoPlugin.create_handle_material
-	Advanced(self).CreateHandleMaterial(String.New(name), billboard, texture)
+	Advanced(self).CreateHandleMaterial(String.From(name), billboard, texture)
 }
 
 /*
@@ -707,7 +707,7 @@ Adds a new material to the internal material list for the plugin. It can then be
 [GetMaterial]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmoPlugin#Instance.GetMaterial
 */
 func (self Instance) AddMaterial(name string, material StandardMaterial3D.Instance) { //gd:EditorNode3DGizmoPlugin.add_material
-	Advanced(self).AddMaterial(String.New(name), material)
+	Advanced(self).AddMaterial(String.From(name), material)
 }
 
 /*
@@ -716,7 +716,7 @@ Gets material from the internal list of materials. If an [EditorNode3DGizmo] is 
 [EditorNode3DGizmo]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmo
 */
 func (self Instance) GetMaterial(name string) StandardMaterial3D.Instance { //gd:EditorNode3DGizmoPlugin.get_material
-	return StandardMaterial3D.Instance(Advanced(self).GetMaterial(String.New(name), [1]EditorNode3DGizmo.Instance{}[0]))
+	return StandardMaterial3D.Instance(Advanced(self).GetMaterial(String.From(name), [1]EditorNode3DGizmo.Instance{}[0]))
 }
 
 /*
@@ -725,7 +725,7 @@ Gets material from the internal list of materials. If an [EditorNode3DGizmo] is 
 [EditorNode3DGizmo]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmo
 */
 func (self MoreArgs) GetMaterial(name string, gizmo EditorNode3DGizmo.Instance) StandardMaterial3D.Instance { //gd:EditorNode3DGizmoPlugin.get_material
-	return StandardMaterial3D.Instance(Advanced(self).GetMaterial(String.New(name), gizmo))
+	return StandardMaterial3D.Instance(Advanced(self).GetMaterial(String.From(name), gizmo))
 }
 
 /*

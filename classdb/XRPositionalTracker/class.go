@@ -142,7 +142,7 @@ type Any interface {
 Returns true if the tracker is available and is currently tracking the bound 'name' pose.
 */
 func (self Instance) HasPose(name string) bool { //gd:XRPositionalTracker.has_pose
-	return bool(Advanced(self).HasPose(String.Name(String.New(name))))
+	return bool(Advanced(self).HasPose(String.Name(String.From(name))))
 }
 
 /*
@@ -151,14 +151,14 @@ Returns the current [XRPose] state object for the bound 'name' pose.
 [XRPose]: https://pkg.go.dev/graphics.gd/classdb/XRPose
 */
 func (self Instance) GetPose(name string) XRPose.Instance { //gd:XRPositionalTracker.get_pose
-	return XRPose.Instance(Advanced(self).GetPose(String.Name(String.New(name))))
+	return XRPose.Instance(Advanced(self).GetPose(String.Name(String.From(name))))
 }
 
 /*
 Marks this pose as invalid, we don't clear the last reported state but it allows users to decide if trackers need to be hidden if we lose tracking or just remain at their last known position.
 */
 func (self Instance) InvalidatePose(name string) { //gd:XRPositionalTracker.invalidate_pose
-	Advanced(self).InvalidatePose(String.Name(String.New(name)))
+	Advanced(self).InvalidatePose(String.Name(String.From(name)))
 }
 
 /*
@@ -169,7 +169,7 @@ Returns 'self' to enable method chaining.
 [XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
 */
 func (self Instance) SetPose(name string, transform Transform3D.BasisOrigin, linear_velocity Vector3.XYZ, angular_velocity Vector3.XYZ, tracking_confidence XRPose.TrackingConfidence) Instance { //gd:XRPositionalTracker.set_pose
-	Advanced(self).SetPose(String.Name(String.New(name)), Transform3D.BasisOrigin(transform), Vector3.XYZ(linear_velocity), Vector3.XYZ(angular_velocity), tracking_confidence)
+	Advanced(self).SetPose(String.Name(String.From(name)), Transform3D.BasisOrigin(transform), Vector3.XYZ(linear_velocity), Vector3.XYZ(angular_velocity), tracking_confidence)
 	return self
 }
 
@@ -179,7 +179,7 @@ Returns an input for this tracker. It can return a boolean, float or [Vector2.XY
 [Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 */
 func (self Instance) GetInput(name string) any { //gd:XRPositionalTracker.get_input
-	return any(Advanced(self).GetInput(String.Name(String.New(name))).Interface())
+	return any(Advanced(self).GetInput(String.Name(String.From(name))).Interface())
 }
 
 /*
@@ -190,7 +190,7 @@ Returns 'self' to enable method chaining.
 [XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
 */
 func (self Instance) SetInput(name string, value any) Instance { //gd:XRPositionalTracker.set_input
-	Advanced(self).SetInput(String.Name(String.New(name)), variant.New(value))
+	Advanced(self).SetInput(String.Name(String.From(name)), variant.New(value))
 	return self
 }
 
@@ -246,7 +246,7 @@ func (self Instance) Profile() string { //gd:XRPositionalTracker.profile
 
 // SetProfile sets the property returned by [GetTrackerProfile]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetProfile(value string) Instance { //gd:XRPositionalTracker.profile
-	class(self).SetTrackerProfile(String.New(value))
+	class(self).SetTrackerProfile(String.From(value))
 	return self
 }
 

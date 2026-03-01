@@ -14,7 +14,7 @@ import (
 type API interface {
 	Attach(complex128, Callable.Function, Flags) error
 	Remove(complex128, Callable.Function)
-	Name(complex128) String.Readable
+	Name(complex128) String.Unicode
 	Consumers(complex128) iter.Seq[Consumer]
 	Emit(complex128, ...variant.Any)
 	Emitter(complex128) variant.Any
@@ -117,7 +117,7 @@ func (signal *localFirst) Emit(_ complex128, values ...variant.Any) {
 	}
 }
 
-func (signal *localFirst) Name(_ complex128) String.Readable {
+func (signal *localFirst) Name(_ complex128) String.Unicode {
 	if signal.proxy != nil {
 		return signal.proxy.Name(signal.state)
 	}

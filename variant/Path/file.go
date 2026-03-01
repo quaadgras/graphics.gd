@@ -23,17 +23,17 @@ import (
 //	"../C"  			  // Points to the sibling element C.
 //	"../.." 		      // Points to the grandparent element.
 //	"/root"     		  // Points to the root element.
-type ToFile String.Readable
+type ToFile String.Unicode
 
 // AsFile returns the given path as a directory.
 func AsFile[T String.Any](path T) ToFile {
 	return ToFile(String.New(path))
 }
 
-func (s ToFile) String() string               { return String.Readable(s).String() }
-func (s ToFile) MarshalText() ([]byte, error) { return String.Readable(s).MarshalText() }
+func (s ToFile) String() string               { return String.Unicode(s).String() }
+func (s ToFile) MarshalText() ([]byte, error) { return String.Unicode(s).MarshalText() }
 func (s *ToFile) UnmarshalText(text []byte) error {
-	return (*String.Readable)(s).UnmarshalText(text)
+	return (*String.Unicode)(s).UnmarshalText(text)
 }
 
 // FileName returns the file name, including the extension, if the string is a valid file path,
@@ -69,10 +69,10 @@ func (s ToFile) Directory() ToDirectory { //gd:String.get_base_dir
 
 // FileExtension returns the file extension without the leading period (.) if the string is a
 // valid file name or path. Otherwise, returns an empty string.
-func (s ToFile) FileExtension() String.Readable { //gd:String.get_extension
+func (s ToFile) FileExtension() String.Unicode { //gd:String.get_extension
 	ext := filepath.Ext(s.String())
 	if ext != "" {
 		return String.New(String.Slice(ext, 1, String.Length(ext)))
 	}
-	return String.New()
+	return String.New("")
 }

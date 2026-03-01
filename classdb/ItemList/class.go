@@ -238,7 +238,7 @@ Specify an 'icon', or use null as the 'icon' for a list item with no icon.
 If 'selectable' is true, the list item will be selectable.
 */
 func (self Instance) AddItem(text string) int { //gd:ItemList.add_item
-	return int(int(Advanced(self).AddItem(String.New(text), [1]Texture2D.Instance{}[0], true)))
+	return int(int(Advanced(self).AddItem(String.From(text), [1]Texture2D.Instance{}[0], true)))
 }
 
 /*
@@ -249,7 +249,7 @@ Specify an 'icon', or use null as the 'icon' for a list item with no icon.
 If 'selectable' is true, the list item will be selectable.
 */
 func (self MoreArgs) AddItem(text string, icon Texture2D.Instance, selectable bool) int { //gd:ItemList.add_item
-	return int(int(Advanced(self).AddItem(String.New(text), icon, selectable)))
+	return int(int(Advanced(self).AddItem(String.From(text), icon, selectable)))
 }
 
 /*
@@ -272,7 +272,7 @@ Sets text of the item associated with the specified index.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetItemText(idx int, text string) Instance { //gd:ItemList.set_item_text
-	Advanced(self).SetItemText(int64(idx), String.New(text))
+	Advanced(self).SetItemText(int64(idx), String.From(text))
 	return self
 }
 
@@ -325,7 +325,7 @@ Sets the language code of the text for the item at the given index to 'language'
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetItemLanguage(idx int, language string) Instance { //gd:ItemList.set_item_language
-	Advanced(self).SetItemLanguage(int64(idx), String.New(language))
+	Advanced(self).SetItemLanguage(int64(idx), String.From(language))
 	return self
 }
 
@@ -548,7 +548,7 @@ Sets the tooltip hint for the item associated with the specified index.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetItemTooltip(idx int, tooltip string) Instance { //gd:ItemList.set_item_tooltip
-	Advanced(self).SetItemTooltip(int64(idx), String.New(tooltip))
+	Advanced(self).SetItemTooltip(int64(idx), String.From(tooltip))
 	return self
 }
 

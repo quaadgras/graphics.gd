@@ -285,7 +285,7 @@ Note: To put an ASCII string without prepending its size, you can use [PutData]:
 [PutData]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.PutData
 */
 func (self Instance) PutString(value string) { //gd:StreamPeer.put_string
-	Advanced(self).PutString(String.New(value))
+	Advanced(self).PutString(String.From(value))
 }
 
 /*
@@ -298,7 +298,7 @@ Note: To put a UTF-8 string without prepending its size, you can use [PutData]:
 [PutData]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.PutData
 */
 func (self Instance) PutUtf8String(value string) { //gd:StreamPeer.put_utf8_string
-	Advanced(self).PutUtf8String(String.New(value))
+	Advanced(self).PutUtf8String(String.From(value))
 }
 
 /*

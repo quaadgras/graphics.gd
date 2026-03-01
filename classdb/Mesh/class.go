@@ -437,7 +437,7 @@ func (Instance) _get_blend_shape_name(impl func(ptr gdclass.Receiver, index int)
 		var index = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(index))
-		ptr, ok := pointers.End(gd.InternalStringName(String.Name(String.New(ret))))
+		ptr, ok := pointers.End(gd.InternalStringName(String.Name(String.From(ret))))
 
 		if !ok {
 			return

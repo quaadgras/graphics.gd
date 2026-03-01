@@ -141,7 +141,7 @@ Sets the SPIR-V 'bytecode' that will be compiled for the specified 'version'.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetBytecode(bytecode RDShaderSPIRV.Instance) Instance { //gd:RDShaderFile.set_bytecode
-	Advanced(self).SetBytecode(bytecode, String.Name(String.New("")))
+	Advanced(self).SetBytecode(bytecode, String.Name(String.From("")))
 	return self
 }
 
@@ -151,7 +151,7 @@ Sets the SPIR-V 'bytecode' that will be compiled for the specified 'version'.
 Returns 'self' to enable method chaining.
 */
 func (self MoreArgs) SetBytecode(bytecode RDShaderSPIRV.Instance, version string) MoreArgs { //gd:RDShaderFile.set_bytecode
-	Advanced(self).SetBytecode(bytecode, String.Name(String.New(version)))
+	Advanced(self).SetBytecode(bytecode, String.Name(String.From(version)))
 	return self
 }
 
@@ -159,14 +159,14 @@ func (self MoreArgs) SetBytecode(bytecode RDShaderSPIRV.Instance, version string
 Returns the SPIR-V intermediate representation for the specified shader 'version'.
 */
 func (self Instance) GetSpirv() RDShaderSPIRV.Instance { //gd:RDShaderFile.get_spirv
-	return RDShaderSPIRV.Instance(Advanced(self).GetSpirv(String.Name(String.New(""))))
+	return RDShaderSPIRV.Instance(Advanced(self).GetSpirv(String.Name(String.From(""))))
 }
 
 /*
 Returns the SPIR-V intermediate representation for the specified shader 'version'.
 */
 func (self MoreArgs) GetSpirv(version string) RDShaderSPIRV.Instance { //gd:RDShaderFile.get_spirv
-	return RDShaderSPIRV.Instance(Advanced(self).GetSpirv(String.Name(String.New(version))))
+	return RDShaderSPIRV.Instance(Advanced(self).GetSpirv(String.Name(String.From(version))))
 }
 
 /*
@@ -230,7 +230,7 @@ func (self Instance) BaseError() string { //gd:RDShaderFile.base_error
 
 // SetBaseError sets the property returned by [GetBaseError]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetBaseError(value string) Instance { //gd:RDShaderFile.base_error
-	class(self).SetBaseError(String.New(value))
+	class(self).SetBaseError(String.From(value))
 	return self
 }
 

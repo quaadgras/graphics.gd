@@ -242,7 +242,7 @@ func (self Instance) CompileErrorVertex() string { //gd:RDShaderSPIRV.compile_er
 
 // SetCompileErrorVertex sets the property returned by [GetStageCompileError]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetCompileErrorVertex(value string) Instance { //gd:RDShaderSPIRV.compile_error_vertex
-	class(self).SetStageCompileError(0, String.New(value))
+	class(self).SetStageCompileError(0, String.From(value))
 	return self
 }
 
@@ -255,7 +255,7 @@ func (self Instance) CompileErrorFragment() string { //gd:RDShaderSPIRV.compile_
 
 // SetCompileErrorFragment sets the property returned by [GetStageCompileError]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetCompileErrorFragment(value string) Instance { //gd:RDShaderSPIRV.compile_error_fragment
-	class(self).SetStageCompileError(1, String.New(value))
+	class(self).SetStageCompileError(1, String.From(value))
 	return self
 }
 
@@ -268,7 +268,7 @@ func (self Instance) CompileErrorTesselationControl() string { //gd:RDShaderSPIR
 
 // SetCompileErrorTesselationControl sets the property returned by [GetStageCompileError]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetCompileErrorTesselationControl(value string) Instance { //gd:RDShaderSPIRV.compile_error_tesselation_control
-	class(self).SetStageCompileError(2, String.New(value))
+	class(self).SetStageCompileError(2, String.From(value))
 	return self
 }
 
@@ -281,7 +281,7 @@ func (self Instance) CompileErrorTesselationEvaluation() string { //gd:RDShaderS
 
 // SetCompileErrorTesselationEvaluation sets the property returned by [GetStageCompileError]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetCompileErrorTesselationEvaluation(value string) Instance { //gd:RDShaderSPIRV.compile_error_tesselation_evaluation
-	class(self).SetStageCompileError(3, String.New(value))
+	class(self).SetStageCompileError(3, String.From(value))
 	return self
 }
 
@@ -294,7 +294,7 @@ func (self Instance) CompileErrorCompute() string { //gd:RDShaderSPIRV.compile_e
 
 // SetCompileErrorCompute sets the property returned by [GetStageCompileError]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetCompileErrorCompute(value string) Instance { //gd:RDShaderSPIRV.compile_error_compute
-	class(self).SetStageCompileError(4, String.New(value))
+	class(self).SetStageCompileError(4, String.From(value))
 	return self
 }
 

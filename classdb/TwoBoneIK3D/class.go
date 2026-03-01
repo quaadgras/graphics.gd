@@ -155,7 +155,7 @@ Sets the target node that the end bone is trying to reach.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetTargetNode(index int, target_node string) Instance { //gd:TwoBoneIK3D.set_target_node
-	Advanced(self).SetTargetNode(int64(index), Path.ToNode(String.New(target_node)))
+	Advanced(self).SetTargetNode(int64(index), Path.ToNode(String.From(target_node)))
 	return self
 }
 
@@ -172,7 +172,7 @@ Sets the pole target node that constructs a plane which the joints are all on an
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetPoleNode(index int, pole_node string) Instance { //gd:TwoBoneIK3D.set_pole_node
-	Advanced(self).SetPoleNode(int64(index), Path.ToNode(String.New(pole_node)))
+	Advanced(self).SetPoleNode(int64(index), Path.ToNode(String.From(pole_node)))
 	return self
 }
 
@@ -189,7 +189,7 @@ Sets the root bone name.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetRootBoneName(index int, bone_name string) Instance { //gd:TwoBoneIK3D.set_root_bone_name
-	Advanced(self).SetRootBoneName(int64(index), String.New(bone_name))
+	Advanced(self).SetRootBoneName(int64(index), String.From(bone_name))
 	return self
 }
 
@@ -225,7 +225,7 @@ Note: The middle bone must be a child of the root bone.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetMiddleBoneName(index int, bone_name string) Instance { //gd:TwoBoneIK3D.set_middle_bone_name
-	Advanced(self).SetMiddleBoneName(int64(index), String.New(bone_name))
+	Advanced(self).SetMiddleBoneName(int64(index), String.From(bone_name))
 	return self
 }
 
@@ -309,7 +309,7 @@ Note: The end bone must be a child of the middle bone.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetEndBoneName(index int, bone_name string) Instance { //gd:TwoBoneIK3D.set_end_bone_name
-	Advanced(self).SetEndBoneName(int64(index), String.New(bone_name))
+	Advanced(self).SetEndBoneName(int64(index), String.From(bone_name))
 	return self
 }
 

@@ -133,7 +133,7 @@ type Any interface {
 Sets the given 'path' as currently selected, ensuring that the selected file/directory is visible.
 */
 func (self Instance) NavigateToPath(path string) { //gd:FileSystemDock.navigate_to_path
-	Advanced(self).NavigateToPath(String.New(path))
+	Advanced(self).NavigateToPath(String.From(path))
 }
 
 /*

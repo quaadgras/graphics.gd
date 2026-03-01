@@ -219,7 +219,7 @@ func (self Instance) AdvanceExpressionBaseNode() string { //gd:AnimationTree.adv
 
 // SetAdvanceExpressionBaseNode sets the property returned by [GetAdvanceExpressionBaseNode]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetAdvanceExpressionBaseNode(value string) Instance { //gd:AnimationTree.advance_expression_base_node
-	class(self).SetAdvanceExpressionBaseNode(Path.ToNode(String.New(value)))
+	class(self).SetAdvanceExpressionBaseNode(Path.ToNode(String.From(value)))
 	return self
 }
 
@@ -234,7 +234,7 @@ func (self Instance) AnimPlayer() string { //gd:AnimationTree.anim_player
 
 // SetAnimPlayer sets the property returned by [GetAnimationPlayer]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetAnimPlayer(value string) Instance { //gd:AnimationTree.anim_player
-	class(self).SetAnimationPlayer(Path.ToNode(String.New(value)))
+	class(self).SetAnimationPlayer(Path.ToNode(String.From(value)))
 	return self
 }
 

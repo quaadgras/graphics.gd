@@ -1106,7 +1106,7 @@ Returns true if the 'path' points to a valid node. See also [GetNode].
 [GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
 */
 func (self Instance) HasNode(path string) bool { //gd:Node.has_node
-	return bool(Advanced(self).HasNode(Path.ToNode(String.New(path))))
+	return bool(Advanced(self).HasNode(Path.ToNode(String.From(path))))
 }
 
 /*
@@ -1127,7 +1127,7 @@ The following calls will return a valid node:
 [SceneTree.Root]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Root
 */
 func (self Instance) GetNode(path string) Instance { //gd:Node.get_node
-	return Instance(Advanced(self).GetNode(Path.ToNode(String.New(path))))
+	return Instance(Advanced(self).GetNode(Path.ToNode(String.From(path))))
 }
 
 /*
@@ -1136,7 +1136,7 @@ Fetches a node by node path. Similar to [GetNode], but does not generate an erro
 [GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
 */
 func (self Instance) GetNodeOrNull(path string) Instance { //gd:Node.get_node_or_null
-	return Instance(Advanced(self).GetNodeOrNull(Path.ToNode(String.New(path))))
+	return Instance(Advanced(self).GetNodeOrNull(Path.ToNode(String.From(path))))
 }
 
 /*
@@ -1166,7 +1166,7 @@ Note: To find all descendant nodes matching a pattern or a class type, see [Find
 [UniqueNameInOwner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UniqueNameInOwner
 */
 func (self Instance) FindChild(pattern string) Instance { //gd:Node.find_child
-	return Instance(Advanced(self).FindChild(String.New(pattern), true, true))
+	return Instance(Advanced(self).FindChild(String.From(pattern), true, true))
 }
 
 /*
@@ -1189,7 +1189,7 @@ Note: To find all descendant nodes matching a pattern or a class type, see [Find
 [UniqueNameInOwner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UniqueNameInOwner
 */
 func (self MoreArgs) FindChild(pattern string, recursive bool, owned bool) Instance { //gd:Node.find_child
-	return Instance(Advanced(self).FindChild(String.New(pattern), recursive, owned))
+	return Instance(Advanced(self).FindChild(String.From(pattern), recursive, owned))
 }
 
 /*
@@ -1212,7 +1212,7 @@ Note: To find a single descendant node matching a pattern, see [FindChild].
 [String.Match]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.Match
 */
 func (self Instance) FindChildren(pattern string) []Instance { //gd:Node.find_children
-	return []Instance(gd.ArrayAs[[]Instance](gd.InternalArray(Advanced(self).FindChildren(String.New(pattern), String.New(""), true, true))))
+	return []Instance(gd.ArrayAs[[]Instance](gd.InternalArray(Advanced(self).FindChildren(String.From(pattern), String.From(""), true, true))))
 }
 
 /*
@@ -1235,7 +1235,7 @@ Note: To find a single descendant node matching a pattern, see [FindChild].
 [String.Match]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.Match
 */
 func (self MoreArgs) FindChildren(pattern string, atype string, recursive bool, owned bool) []Instance { //gd:Node.find_children
-	return []Instance(gd.ArrayAs[[]Instance](gd.InternalArray(Advanced(self).FindChildren(String.New(pattern), String.New(atype), recursive, owned))))
+	return []Instance(gd.ArrayAs[[]Instance](gd.InternalArray(Advanced(self).FindChildren(String.From(pattern), String.From(atype), recursive, owned))))
 }
 
 /*
@@ -1251,7 +1251,7 @@ Note: As this method walks upwards in the scene tree, it can be slow in large, d
 [UniqueNameInOwner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UniqueNameInOwner
 */
 func (self Instance) FindParent(pattern string) Instance { //gd:Node.find_parent
-	return Instance(Advanced(self).FindParent(String.New(pattern)))
+	return Instance(Advanced(self).FindParent(String.From(pattern)))
 }
 
 /*
@@ -1261,7 +1261,7 @@ Returns true if 'path' points to a valid node and its subnames point to a valid 
 [Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
 */
 func (self Instance) HasNodeAndResource(path string) bool { //gd:Node.has_node_and_resource
-	return bool(Advanced(self).HasNodeAndResource(Path.ToNode(String.New(path))))
+	return bool(Advanced(self).HasNodeAndResource(Path.ToNode(String.From(path))))
 }
 
 /*
@@ -1297,7 +1297,7 @@ Example: Assume that the child's [Sprite2D.Texture] has been assigned an [AtlasT
 [Sprite2D.Texture]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Texture
 */
 func (self Instance) GetNodeAndResource(path string) (Instance, Resource.Instance, string) { //gd:Node.get_node_and_resource
-	results := gd.InternalArray(Advanced(self).GetNodeAndResource(Path.ToNode(String.New(path))))
+	results := gd.InternalArray(Advanced(self).GetNodeAndResource(Path.ToNode(String.From(path))))
 	return gd.VariantAs[Instance](results.Index(0)), gd.VariantAs[Resource.Instance](results.Index(1)), gd.VariantAs[string](results.Index(2))
 }
 
@@ -1383,7 +1383,7 @@ Note: [SceneTree]'s group methods will not work on this node if not inside the t
 [SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
 func (self Instance) AddToGroup(group string) { //gd:Node.add_to_group
-	Advanced(self).AddToGroup(String.Name(String.New(group)), false)
+	Advanced(self).AddToGroup(String.Name(String.From(group)), false)
 }
 
 /*
@@ -1400,7 +1400,7 @@ Note: [SceneTree]'s group methods will not work on this node if not inside the t
 [SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
 func (self MoreArgs) AddToGroup(group string, persistent bool) { //gd:Node.add_to_group
-	Advanced(self).AddToGroup(String.Name(String.New(group)), persistent)
+	Advanced(self).AddToGroup(String.Name(String.From(group)), persistent)
 }
 
 /*
@@ -1409,7 +1409,7 @@ Removes the node from the given 'group'. Does nothing if the node is not in the 
 [SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
 func (self Instance) RemoveFromGroup(group string) { //gd:Node.remove_from_group
-	Advanced(self).RemoveFromGroup(String.Name(String.New(group)))
+	Advanced(self).RemoveFromGroup(String.Name(String.From(group)))
 }
 
 /*
@@ -1420,7 +1420,7 @@ Returns true if this node has been added to the given 'group'. See [AddToGroup] 
 [SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
 func (self Instance) IsInGroup(group string) bool { //gd:Node.is_in_group
-	return bool(Advanced(self).IsInGroup(String.Name(String.New(group))))
+	return bool(Advanced(self).IsInGroup(String.Name(String.From(group))))
 }
 
 /*
@@ -1543,7 +1543,7 @@ Calls the given 'method' name, passing 'args' as arguments, on this node and all
 If 'parent_first' is true, the method is called on this node first, then on all of its children. If false, the children's methods are called first.
 */
 func (self Instance) PropagateCall(method string) { //gd:Node.propagate_call
-	Advanced(self).PropagateCall(String.Name(String.New(method)), Array.Nil, false)
+	Advanced(self).PropagateCall(String.Name(String.From(method)), Array.Nil, false)
 }
 
 /*
@@ -1552,7 +1552,7 @@ Calls the given 'method' name, passing 'args' as arguments, on this node and all
 If 'parent_first' is true, the method is called on this node first, then on all of its children. If false, the children's methods are called first.
 */
 func (self MoreArgs) PropagateCall(method string, args []any, parent_first bool) { //gd:Node.propagate_call
-	Advanced(self).PropagateCall(String.Name(String.New(method)), gd.EngineArrayFromSlice(args), parent_first)
+	Advanced(self).PropagateCall(String.Name(String.From(method)), gd.EngineArrayFromSlice(args), parent_first)
 }
 
 /*
@@ -2149,7 +2149,7 @@ Note: In GDScript, this method corresponds to the  annotation, with various para
 [high-level multiplayer]: https://docs.godotengine.org/tutorials/networking/high_level_multiplayer.html
 */
 func (self Instance) RpcConfig(method string, config any) { //gd:Node.rpc_config
-	Advanced(self).RpcConfig(String.Name(String.New(method)), variant.New(config))
+	Advanced(self).RpcConfig(String.Name(String.From(method)), variant.New(config))
 }
 
 /*
@@ -2182,7 +2182,7 @@ For detailed examples, see [Internationalizing games].
 [Object.Tr]: https://pkg.go.dev/graphics.gd/variant/Object#Tr
 */
 func (self Instance) Atr(message string) string { //gd:Node.atr
-	return string(Advanced(self).Atr(String.New(message), String.Name(String.New(""))).String())
+	return string(Advanced(self).Atr(String.From(message), String.Name(String.From(""))).String())
 }
 
 /*
@@ -2202,7 +2202,7 @@ For detailed examples, see [Internationalizing games].
 [Object.Tr]: https://pkg.go.dev/graphics.gd/variant/Object#Tr
 */
 func (self MoreArgs) Atr(message string, context string) string { //gd:Node.atr
-	return string(Advanced(self).Atr(String.New(message), String.Name(String.New(context))).String())
+	return string(Advanced(self).Atr(String.From(message), String.Name(String.From(context))).String())
 }
 
 /*
@@ -2227,7 +2227,7 @@ Note: Negative and [Float.X] numbers may not properly apply to some countable su
 [Object.TrN]: https://pkg.go.dev/graphics.gd/variant/Object#TrN
 */
 func (self Instance) AtrN(message string, plural_message string, n int) string { //gd:Node.atr_n
-	return string(Advanced(self).AtrN(String.New(message), String.Name(String.New(plural_message)), int64(n), String.Name(String.New(""))).String())
+	return string(Advanced(self).AtrN(String.From(message), String.Name(String.From(plural_message)), int64(n), String.Name(String.From(""))).String())
 }
 
 /*
@@ -2252,7 +2252,7 @@ Note: Negative and [Float.X] numbers may not properly apply to some countable su
 [Object.TrN]: https://pkg.go.dev/graphics.gd/variant/Object#TrN
 */
 func (self MoreArgs) AtrN(message string, plural_message string, n int, context string) string { //gd:Node.atr_n
-	return string(Advanced(self).AtrN(String.New(message), String.Name(String.New(plural_message)), int64(n), String.Name(String.New(context))).String())
+	return string(Advanced(self).AtrN(String.From(message), String.Name(String.From(plural_message)), int64(n), String.Name(String.From(context))).String())
 }
 
 /*
@@ -2278,7 +2278,7 @@ func (self Instance) Rpc(method string, args ...any) error { //gd:Node.rpc
 	for i, arg := range args {
 		converted_variants[i] = gd.NewVariant(arg)
 	}
-	return error(gd.ToError(Advanced(self).Rpc(String.Name(String.New(method)), converted_variants...)))
+	return error(gd.ToError(Advanced(self).Rpc(String.Name(String.From(method)), converted_variants...)))
 }
 
 /*
@@ -2295,7 +2295,7 @@ func (self Instance) RpcId(peer_id int, method string, args ...any) error { //gd
 	for i, arg := range args {
 		converted_variants[i] = gd.NewVariant(arg)
 	}
-	return error(gd.ToError(Advanced(self).RpcId(int64(peer_id), String.Name(String.New(method)), converted_variants...)))
+	return error(gd.ToError(Advanced(self).RpcId(int64(peer_id), String.Name(String.From(method)), converted_variants...)))
 }
 
 /*
@@ -2319,7 +2319,7 @@ func (self Instance) CallDeferredThreadGroup(method string, args ...any) any { /
 	for i, arg := range args {
 		converted_variants[i] = gd.NewVariant(arg)
 	}
-	return any(Advanced(self).CallDeferredThreadGroup(String.Name(String.New(method)), converted_variants...).Interface())
+	return any(Advanced(self).CallDeferredThreadGroup(String.Name(String.From(method)), converted_variants...).Interface())
 }
 
 /*
@@ -2330,7 +2330,7 @@ Returns 'self' to enable method chaining.
 [CallDeferredThreadGroup]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.CallDeferredThreadGroup
 */
 func (self Instance) SetDeferredThreadGroup(property string, value any) Instance { //gd:Node.set_deferred_thread_group
-	Advanced(self).SetDeferredThreadGroup(String.Name(String.New(property)), variant.New(value))
+	Advanced(self).SetDeferredThreadGroup(String.Name(String.From(property)), variant.New(value))
 	return self
 }
 
@@ -2351,7 +2351,7 @@ func (self Instance) CallThreadSafe(method string, args ...any) any { //gd:Node.
 	for i, arg := range args {
 		converted_variants[i] = gd.NewVariant(arg)
 	}
-	return any(Advanced(self).CallThreadSafe(String.Name(String.New(method)), converted_variants...).Interface())
+	return any(Advanced(self).CallThreadSafe(String.Name(String.From(method)), converted_variants...).Interface())
 }
 
 /*
@@ -2362,7 +2362,7 @@ Returns 'self' to enable method chaining.
 [CallThreadSafe]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.CallThreadSafe
 */
 func (self Instance) SetThreadSafe(property string, value any) Instance { //gd:Node.set_thread_safe
-	Advanced(self).SetThreadSafe(String.Name(String.New(property)), variant.New(value))
+	Advanced(self).SetThreadSafe(String.Name(String.From(property)), variant.New(value))
 	return self
 }
 
@@ -2445,7 +2445,7 @@ func (self Instance) Name() string { //gd:Node.name
 
 // SetName sets the property returned by [GetName]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetName(value string) Instance { //gd:Node.name
-	class(self).SetName(String.Name(String.New(value)))
+	class(self).SetName(String.Name(String.From(value)))
 	return self
 }
 
@@ -2479,7 +2479,7 @@ func (self Instance) SceneFilePath() string { //gd:Node.scene_file_path
 
 // SetSceneFilePath sets the property returned by [GetSceneFilePath]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetSceneFilePath(value string) Instance { //gd:Node.scene_file_path
-	class(self).SetSceneFilePath(String.New(value))
+	class(self).SetSceneFilePath(String.From(value))
 	return self
 }
 
@@ -2670,7 +2670,7 @@ func (self Instance) EditorDescription() string { //gd:Node.editor_description
 
 // SetEditorDescription sets the property returned by [GetEditorDescription]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetEditorDescription(value string) Instance { //gd:Node.editor_description
-	class(self).SetEditorDescription(String.New(value))
+	class(self).SetEditorDescription(String.From(value))
 	return self
 }
 func (class) _process(impl func(ptr gdclass.Receiver, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {

@@ -864,7 +864,7 @@ func TextureSetSizeOverride(texture RID.Texture, width int, height int) { //gd:R
 	Advanced().TextureSetSizeOverride(RID.Any(texture), int64(width), int64(height))
 }
 func TextureSetPath(texture RID.Texture, path string) { //gd:RenderingServer.texture_set_path
-	Advanced().TextureSetPath(RID.Any(texture), String.New(path))
+	Advanced().TextureSetPath(RID.Any(texture), String.From(path))
 }
 func TextureGetPath(texture RID.Texture) string { //gd:RenderingServer.texture_get_path
 	return string(Advanced().TextureGetPath(RID.Any(texture)).String())
@@ -934,7 +934,7 @@ func ShaderCreate() RID.Shader { //gd:RenderingServer.shader_create
 Sets the shader's source code (which triggers recompilation after being changed).
 */
 func ShaderSetCode(shader RID.Shader, code string) { //gd:RenderingServer.shader_set_code
-	Advanced().ShaderSetCode(RID.Any(shader), String.New(code))
+	Advanced().ShaderSetCode(RID.Any(shader), String.From(code))
 }
 
 /*
@@ -944,7 +944,7 @@ Sets the path hint for the specified shader. This should generally match the [Sh
 [Shader]: https://pkg.go.dev/graphics.gd/classdb/Shader
 */
 func ShaderSetPathHint(shader RID.Shader, path string) { //gd:RenderingServer.shader_set_path_hint
-	Advanced().ShaderSetPathHint(RID.Any(shader), String.New(path))
+	Advanced().ShaderSetPathHint(RID.Any(shader), String.From(path))
 }
 
 /*
@@ -965,7 +965,7 @@ func GetShaderParameterList(shader RID.Shader) []map[string]any { //gd:Rendering
 Returns the default value for the specified shader uniform. This is usually the value written in the shader source code.
 */
 func ShaderGetParameterDefault(shader RID.Shader, name string) any { //gd:RenderingServer.shader_get_parameter_default
-	return any(Advanced().ShaderGetParameterDefault(RID.Any(shader), String.Name(String.New(name))).Interface())
+	return any(Advanced().ShaderGetParameterDefault(RID.Any(shader), String.Name(String.From(name))).Interface())
 }
 
 /*
@@ -974,7 +974,7 @@ Sets a shader's default texture. Overwrites the texture given by name.
 Note: If the sampler array is used use 'index' to access the specified texture.
 */
 func ShaderSetDefaultTextureParameter(shader RID.Shader, name string, texture RID.Texture, index int) { //gd:RenderingServer.shader_set_default_texture_parameter
-	Advanced().ShaderSetDefaultTextureParameter(RID.Any(shader), String.Name(String.New(name)), RID.Any(texture), int64(index))
+	Advanced().ShaderSetDefaultTextureParameter(RID.Any(shader), String.Name(String.From(name)), RID.Any(texture), int64(index))
 }
 
 /*
@@ -983,7 +983,7 @@ Returns a default texture from a shader searched by name.
 Note: If the sampler array is used use 'index' to access the specified texture.
 */
 func ShaderGetDefaultTextureParameter(shader RID.Shader, name string, index int) RID.Texture { //gd:RenderingServer.shader_get_default_texture_parameter
-	return RID.Texture(RID.Texture(Advanced().ShaderGetDefaultTextureParameter(RID.Any(shader), String.Name(String.New(name)), int64(index))))
+	return RID.Texture(RID.Texture(Advanced().ShaderGetDefaultTextureParameter(RID.Any(shader), String.Name(String.From(name)), int64(index))))
 }
 
 /*
@@ -1010,14 +1010,14 @@ func MaterialSetShader(shader_material RID.Material, shader RID.Shader) { //gd:R
 Sets a material's parameter.
 */
 func MaterialSetParam(material RID.Material, parameter string, value any) { //gd:RenderingServer.material_set_param
-	Advanced().MaterialSetParam(RID.Any(material), String.Name(String.New(parameter)), variant.New(value))
+	Advanced().MaterialSetParam(RID.Any(material), String.Name(String.From(parameter)), variant.New(value))
 }
 
 /*
 Returns the value of a certain material's parameter.
 */
 func MaterialGetParam(material RID.Material, parameter string) any { //gd:RenderingServer.material_get_param
-	return any(Advanced().MaterialGetParam(RID.Any(material), String.Name(String.New(parameter))).Interface())
+	return any(Advanced().MaterialGetParam(RID.Any(material), String.Name(String.From(parameter))).Interface())
 }
 
 /*
@@ -3980,7 +3980,7 @@ Sets the per-instance shader uniform on the specified 3D geometry instance. Equi
 [GeometryInstance3D.SetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.SetInstanceShaderParameter
 */
 func InstanceGeometrySetShaderParameter(instance RID.VisualInstance, parameter string, value any) { //gd:RenderingServer.instance_geometry_set_shader_parameter
-	Advanced().InstanceGeometrySetShaderParameter(RID.Any(instance), String.Name(String.New(parameter)), variant.New(value))
+	Advanced().InstanceGeometrySetShaderParameter(RID.Any(instance), String.Name(String.From(parameter)), variant.New(value))
 }
 
 /*
@@ -3991,7 +3991,7 @@ Note: Per-instance shader parameter names are case-sensitive.
 [GeometryInstance3D.GetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.GetInstanceShaderParameter
 */
 func InstanceGeometryGetShaderParameter(instance RID.VisualInstance, parameter string) any { //gd:RenderingServer.instance_geometry_get_shader_parameter
-	return any(Advanced().InstanceGeometryGetShaderParameter(RID.Any(instance), String.Name(String.New(parameter))).Interface())
+	return any(Advanced().InstanceGeometryGetShaderParameter(RID.Any(instance), String.Name(String.From(parameter))).Interface())
 }
 
 /*
@@ -4000,7 +4000,7 @@ Returns the default value of the per-instance shader uniform from the specified 
 [GeometryInstance3D.GetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.GetInstanceShaderParameter
 */
 func InstanceGeometryGetShaderParameterDefaultValue(instance RID.VisualInstance, parameter string) any { //gd:RenderingServer.instance_geometry_get_shader_parameter_default_value
-	return any(Advanced().InstanceGeometryGetShaderParameterDefaultValue(RID.Any(instance), String.Name(String.New(parameter))).Interface())
+	return any(Advanced().InstanceGeometryGetShaderParameterDefaultValue(RID.Any(instance), String.Name(String.From(parameter))).Interface())
 }
 
 /*
@@ -4714,7 +4714,7 @@ Sets the per-instance shader uniform on the specified canvas item instance. Equi
 [CanvasItem.SetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.SetInstanceShaderParameter
 */
 func CanvasItemSetInstanceShaderParameter(instance RID.CanvasItem, parameter string, value any) { //gd:RenderingServer.canvas_item_set_instance_shader_parameter
-	Advanced().CanvasItemSetInstanceShaderParameter(RID.Any(instance), String.Name(String.New(parameter)), variant.New(value))
+	Advanced().CanvasItemSetInstanceShaderParameter(RID.Any(instance), String.Name(String.From(parameter)), variant.New(value))
 }
 
 /*
@@ -4723,7 +4723,7 @@ Returns the value of the per-instance shader uniform from the specified canvas i
 [CanvasItem.GetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.GetInstanceShaderParameter
 */
 func CanvasItemGetInstanceShaderParameter(instance RID.CanvasItem, parameter string) any { //gd:RenderingServer.canvas_item_get_instance_shader_parameter
-	return any(Advanced().CanvasItemGetInstanceShaderParameter(RID.Any(instance), String.Name(String.New(parameter))).Interface())
+	return any(Advanced().CanvasItemGetInstanceShaderParameter(RID.Any(instance), String.Name(String.From(parameter))).Interface())
 }
 
 /*
@@ -4732,7 +4732,7 @@ Returns the default value of the per-instance shader uniform from the specified 
 [CanvasItem.GetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.GetInstanceShaderParameter
 */
 func CanvasItemGetInstanceShaderParameterDefaultValue(instance RID.CanvasItem, parameter string) any { //gd:RenderingServer.canvas_item_get_instance_shader_parameter_default_value
-	return any(Advanced().CanvasItemGetInstanceShaderParameterDefaultValue(RID.Any(instance), String.Name(String.New(parameter))).Interface())
+	return any(Advanced().CanvasItemGetInstanceShaderParameterDefaultValue(RID.Any(instance), String.Name(String.From(parameter))).Interface())
 }
 
 /*
@@ -5105,14 +5105,14 @@ Creates a new global shader uniform.
 Note: Global shader parameter names are case-sensitive.
 */
 func GlobalShaderParameterAdd(name string, atype GlobalShaderParameterType, default_value any) { //gd:RenderingServer.global_shader_parameter_add
-	Advanced().GlobalShaderParameterAdd(String.Name(String.New(name)), atype, variant.New(default_value))
+	Advanced().GlobalShaderParameterAdd(String.Name(String.From(name)), atype, variant.New(default_value))
 }
 
 /*
 Removes the global shader uniform specified by 'name'.
 */
 func GlobalShaderParameterRemove(name string) { //gd:RenderingServer.global_shader_parameter_remove
-	Advanced().GlobalShaderParameterRemove(String.Name(String.New(name)))
+	Advanced().GlobalShaderParameterRemove(String.Name(String.From(name)))
 }
 
 /*
@@ -5128,7 +5128,7 @@ func GlobalShaderParameterGetList() []string { //gd:RenderingServer.global_shade
 Sets the global shader uniform 'name' to 'value'.
 */
 func GlobalShaderParameterSet(name string, value any) { //gd:RenderingServer.global_shader_parameter_set
-	Advanced().GlobalShaderParameterSet(String.Name(String.New(name)), variant.New(value))
+	Advanced().GlobalShaderParameterSet(String.Name(String.From(name)), variant.New(value))
 }
 
 /*
@@ -5137,7 +5137,7 @@ Overrides the global shader uniform 'name' with 'value'. Equivalent to the [Shad
 [ShaderGlobalsOverride]: https://pkg.go.dev/graphics.gd/classdb/ShaderGlobalsOverride
 */
 func GlobalShaderParameterSetOverride(name string, value any) { //gd:RenderingServer.global_shader_parameter_set_override
-	Advanced().GlobalShaderParameterSetOverride(String.Name(String.New(name)), variant.New(value))
+	Advanced().GlobalShaderParameterSetOverride(String.Name(String.From(name)), variant.New(value))
 }
 
 /*
@@ -5146,7 +5146,7 @@ Returns the value of the global shader uniform specified by 'name'.
 Note: [GlobalShaderParameterGet] has a large performance penalty as the rendering thread needs to synchronize with the calling thread, which is slow. Do not use this method during gameplay to avoid stuttering. If you need to read values in a script after setting them, consider creating an autoload where you store the values you need to query at the same time you're setting them as global parameters.
 */
 func GlobalShaderParameterGet(name string) any { //gd:RenderingServer.global_shader_parameter_get
-	return any(Advanced().GlobalShaderParameterGet(String.Name(String.New(name))).Interface())
+	return any(Advanced().GlobalShaderParameterGet(String.Name(String.From(name))).Interface())
 }
 
 /*
@@ -5155,7 +5155,7 @@ Returns the type associated to the global shader uniform specified by 'name'.
 Note: [GlobalShaderParameterGet] has a large performance penalty as the rendering thread needs to synchronize with the calling thread, which is slow. Do not use this method during gameplay to avoid stuttering. If you need to read values in a script after setting them, consider creating an autoload where you store the values you need to query at the same time you're setting them as global parameters.
 */
 func GlobalShaderParameterGetType(name string) GlobalShaderParameterType { //gd:RenderingServer.global_shader_parameter_get_type
-	return GlobalShaderParameterType(Advanced().GlobalShaderParameterGetType(String.Name(String.New(name))))
+	return GlobalShaderParameterType(Advanced().GlobalShaderParameterGetType(String.Name(String.From(name))))
 }
 
 /*
@@ -5350,7 +5350,7 @@ func SetDefaultClearColor(color Color.RGBA) { //gd:RenderingServer.set_default_c
 Returns true if the OS supports a certain 'feature'. Features might be s3tc, etc, and etc2.
 */
 func HasOsFeature(feature string) bool { //gd:RenderingServer.has_os_feature
-	return bool(Advanced().HasOsFeature(String.New(feature)))
+	return bool(Advanced().HasOsFeature(String.From(feature)))
 }
 
 /*

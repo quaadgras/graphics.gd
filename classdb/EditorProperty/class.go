@@ -289,7 +289,7 @@ Assigns object and property to edit.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetObjectAndProperty(obj Object.Instance, property string) Instance { //gd:EditorProperty.set_object_and_property
-	Advanced(self).SetObjectAndProperty(obj, String.Name(String.New(property)))
+	Advanced(self).SetObjectAndProperty(obj, String.Name(String.From(property)))
 	return self
 }
 
@@ -307,14 +307,14 @@ func (self Instance) SetLabelReference(control Control.Instance) Instance { //gd
 If one or several properties have changed, this must be called. 'field' is used in case your editor can modify fields separately (as an example, Vector3.x). The 'changing' argument avoids the editor requesting this property to be refreshed (leave as false if unsure).
 */
 func (self Instance) EmitChanged(property string, value any) { //gd:EditorProperty.emit_changed
-	Advanced(self).EmitChanged(String.Name(String.New(property)), variant.New(value), String.Name(String.New("")), false)
+	Advanced(self).EmitChanged(String.Name(String.From(property)), variant.New(value), String.Name(String.From("")), false)
 }
 
 /*
 If one or several properties have changed, this must be called. 'field' is used in case your editor can modify fields separately (as an example, Vector3.x). The 'changing' argument avoids the editor requesting this property to be refreshed (leave as false if unsure).
 */
 func (self MoreArgs) EmitChanged(property string, value any, field string, changing bool) { //gd:EditorProperty.emit_changed
-	Advanced(self).EmitChanged(String.Name(String.New(property)), variant.New(value), String.Name(String.New(field)), changing)
+	Advanced(self).EmitChanged(String.Name(String.From(property)), variant.New(value), String.Name(String.From(field)), changing)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -368,7 +368,7 @@ func (self Instance) Label() string { //gd:EditorProperty.label
 
 // SetLabel sets the property returned by [GetLabel]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetLabel(value string) Instance { //gd:EditorProperty.label
-	class(self).SetLabel(String.New(value))
+	class(self).SetLabel(String.From(value))
 	return self
 }
 

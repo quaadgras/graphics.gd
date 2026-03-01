@@ -146,7 +146,7 @@ Returns 'self' to enable method chaining.
 [AddInputPort]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeGroupBase#Instance.AddInputPort
 */
 func (self Instance) SetInputs(inputs string) Instance { //gd:VisualShaderNodeGroupBase.set_inputs
-	Advanced(self).SetInputs(String.New(inputs))
+	Advanced(self).SetInputs(String.From(inputs))
 	return self
 }
 
@@ -167,7 +167,7 @@ Returns 'self' to enable method chaining.
 [AddOutputPort]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeGroupBase#Instance.AddOutputPort
 */
 func (self Instance) SetOutputs(outputs string) Instance { //gd:VisualShaderNodeGroupBase.set_outputs
-	Advanced(self).SetOutputs(String.New(outputs))
+	Advanced(self).SetOutputs(String.From(outputs))
 	return self
 }
 
@@ -184,14 +184,14 @@ func (self Instance) GetOutputs() string { //gd:VisualShaderNodeGroupBase.get_ou
 Returns true if the specified port name does not override an existed port name and is valid within the shader.
 */
 func (self Instance) IsValidPortName(name string) bool { //gd:VisualShaderNodeGroupBase.is_valid_port_name
-	return bool(Advanced(self).IsValidPortName(String.New(name)))
+	return bool(Advanced(self).IsValidPortName(String.From(name)))
 }
 
 /*
 Adds an input port with the specified 'type' (see [VisualShaderNode.PortType]) and 'name'.
 */
 func (self Instance) AddInputPort(id int, atype int, name string) { //gd:VisualShaderNodeGroupBase.add_input_port
-	Advanced(self).AddInputPort(int64(id), int64(atype), String.New(name))
+	Advanced(self).AddInputPort(int64(id), int64(atype), String.From(name))
 }
 
 /*
@@ -228,7 +228,7 @@ func (self Instance) ClearInputPorts() { //gd:VisualShaderNodeGroupBase.clear_in
 Adds an output port with the specified 'type' (see [VisualShaderNode.PortType]) and 'name'.
 */
 func (self Instance) AddOutputPort(id int, atype int, name string) { //gd:VisualShaderNodeGroupBase.add_output_port
-	Advanced(self).AddOutputPort(int64(id), int64(atype), String.New(name))
+	Advanced(self).AddOutputPort(int64(id), int64(atype), String.From(name))
 }
 
 /*
@@ -267,7 +267,7 @@ Renames the specified input port.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetInputPortName(id int, name string) Instance { //gd:VisualShaderNodeGroupBase.set_input_port_name
-	Advanced(self).SetInputPortName(int64(id), String.New(name))
+	Advanced(self).SetInputPortName(int64(id), String.From(name))
 	return self
 }
 
@@ -287,7 +287,7 @@ Renames the specified output port.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetOutputPortName(id int, name string) Instance { //gd:VisualShaderNodeGroupBase.set_output_port_name
-	Advanced(self).SetOutputPortName(int64(id), String.New(name))
+	Advanced(self).SetOutputPortName(int64(id), String.From(name))
 	return self
 }
 

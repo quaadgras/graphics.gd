@@ -208,7 +208,7 @@ func (self Instance) RemoveNode(atype Type, id int) { //gd:VisualShader.remove_n
 Replaces the specified node with a node of new class type.
 */
 func (self Instance) ReplaceNode(atype Type, id int, new_class string) { //gd:VisualShader.replace_node
-	Advanced(self).ReplaceNode(atype, int64(id), String.Name(String.New(new_class)))
+	Advanced(self).ReplaceNode(atype, int64(id), String.Name(String.From(new_class)))
 }
 
 /*
@@ -271,21 +271,21 @@ func (self Instance) DetachNodeFromFrame(atype Type, id int) { //gd:VisualShader
 Adds a new varying value node to the shader.
 */
 func (self Instance) AddVarying(name string, mode VaryingMode, atype VaryingType) { //gd:VisualShader.add_varying
-	Advanced(self).AddVarying(String.New(name), mode, atype)
+	Advanced(self).AddVarying(String.From(name), mode, atype)
 }
 
 /*
 Removes a varying value node with the given 'name'. Prints an error if a node with this name is not found.
 */
 func (self Instance) RemoveVarying(name string) { //gd:VisualShader.remove_varying
-	Advanced(self).RemoveVarying(String.New(name))
+	Advanced(self).RemoveVarying(String.From(name))
 }
 
 /*
 Returns true if the shader has a varying with the given 'name'.
 */
 func (self Instance) HasVarying(name string) bool { //gd:VisualShader.has_varying
-	return bool(Advanced(self).HasVarying(String.New(name)))
+	return bool(Advanced(self).HasVarying(String.From(name)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

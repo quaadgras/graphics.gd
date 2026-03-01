@@ -240,7 +240,7 @@ tween.TweenProperty(GetNode("Sprite"), "position", Vector2.Right * 300.0f, 1.0f)
 [/codeblocks]
 */
 func Make(peer Tween.Instance, obj Object.Instance, property string, final_val any, duration Float.X) Instance { //gd:Tween.tween_property
-	return Instance(Tween.Advanced(peer).TweenProperty(obj, Path.ToNode(String.New(property)), variant.New(final_val), float64(duration)))
+	return Instance(Tween.Advanced(peer).TweenProperty(obj, Path.ToNode(String.From(property)), variant.New(final_val), float64(duration)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

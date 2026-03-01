@@ -176,7 +176,7 @@ func (self Instance) Expression() string { //gd:VisualShaderNodeExpression.expre
 
 // SetExpression sets the property returned by [GetExpression]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetExpression(value string) Instance { //gd:VisualShaderNodeExpression.expression
-	class(self).SetExpression(String.New(value))
+	class(self).SetExpression(String.From(value))
 	return self
 }
 

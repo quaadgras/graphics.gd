@@ -277,7 +277,7 @@ func (self Instance) RootBone() string { //gd:SkeletonIK3D.root_bone
 
 // SetRootBone sets the property returned by [GetRootBone]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetRootBone(value string) Instance { //gd:SkeletonIK3D.root_bone
-	class(self).SetRootBone(String.Name(String.New(value)))
+	class(self).SetRootBone(String.Name(String.From(value)))
 	return self
 }
 
@@ -293,7 +293,7 @@ func (self Instance) TipBone() string { //gd:SkeletonIK3D.tip_bone
 
 // SetTipBone sets the property returned by [GetTipBone]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetTipBone(value string) Instance { //gd:SkeletonIK3D.tip_bone
-	class(self).SetTipBone(String.Name(String.New(value)))
+	class(self).SetTipBone(String.Name(String.From(value)))
 	return self
 }
 
@@ -370,7 +370,7 @@ func (self Instance) TargetNode() string { //gd:SkeletonIK3D.target_node
 
 // SetTargetNode sets the property returned by [GetTargetNode]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetTargetNode(value string) Instance { //gd:SkeletonIK3D.target_node
-	class(self).SetTargetNode(Path.ToNode(String.New(value)))
+	class(self).SetTargetNode(Path.ToNode(String.From(value)))
 	return self
 }
 

@@ -204,7 +204,7 @@ func (self Instance) SkeletonPath() string { //gd:ImporterMeshInstance3D.skeleto
 
 // SetSkeletonPath sets the property returned by [GetSkeletonPath]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetSkeletonPath(value string) Instance { //gd:ImporterMeshInstance3D.skeleton_path
-	class(self).SetSkeletonPath(Path.ToNode(String.New(value)))
+	class(self).SetSkeletonPath(Path.ToNode(String.From(value)))
 	return self
 }
 

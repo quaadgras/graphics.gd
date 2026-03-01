@@ -175,7 +175,7 @@ func (self Instance) Description() string { //gd:VisualShaderNodeComment.descrip
 
 // SetDescription sets the property returned by [GetDescription]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetDescription(value string) Instance { //gd:VisualShaderNodeComment.description
-	class(self).SetDescription(String.New(value))
+	class(self).SetDescription(String.From(value))
 	return self
 }
 

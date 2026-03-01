@@ -221,7 +221,7 @@ Returns true if the provided [XrResult] (cast to an integer) is successful. Othe
 [XrResult]: https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html
 */
 func (self Instance) XrResult(result int, format string, args []any) bool { //gd:OpenXRAPIExtension.xr_result
-	return bool(Advanced(self).XrResult(int64(result), String.New(format), gd.EngineArrayFromSlice(args)))
+	return bool(Advanced(self).XrResult(int64(result), String.From(format), gd.EngineArrayFromSlice(args)))
 }
 
 /*
@@ -238,7 +238,7 @@ Returns the function pointer of the OpenXR function with the specified name, cas
 Note: openxr/util.h contains utility macros for acquiring OpenXR functions, e.g. GDEXTENSION_INIT_XR_FUNC_V(xrCreateAction).
 */
 func (self Instance) GetInstanceProcAddr(name string) int { //gd:OpenXRAPIExtension.get_instance_proc_addr
-	return int(int(Advanced(self).GetInstanceProcAddr(String.New(name))))
+	return int(int(Advanced(self).GetInstanceProcAddr(String.From(name))))
 }
 
 /*
@@ -263,7 +263,7 @@ Set the object name of an OpenXR object, used for debug output. 'object_type' mu
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetObjectName(object_type int, object_handle int, object_name string) Instance { //gd:OpenXRAPIExtension.set_object_name
-	Advanced(self).SetObjectName(int64(object_type), int64(object_handle), String.New(object_name))
+	Advanced(self).SetObjectName(int64(object_type), int64(object_handle), String.From(object_name))
 	return self
 }
 
@@ -273,7 +273,7 @@ Begins a new debug label region, this label will be reported in debug messages f
 [EndDebugLabelRegion]: https://pkg.go.dev/graphics.gd/classdb/OpenXRAPIExtension#Instance.EndDebugLabelRegion
 */
 func (self Instance) BeginDebugLabelRegion(label_name string) { //gd:OpenXRAPIExtension.begin_debug_label_region
-	Advanced(self).BeginDebugLabelRegion(String.New(label_name))
+	Advanced(self).BeginDebugLabelRegion(String.From(label_name))
 }
 
 /*
@@ -293,7 +293,7 @@ Inserts a debug label, this label is reported in any debug message resulting fro
 [InsertDebugLabel]: https://pkg.go.dev/graphics.gd/classdb/OpenXRAPIExtension#Instance.InsertDebugLabel
 */
 func (self Instance) InsertDebugLabel(label_name string) { //gd:OpenXRAPIExtension.insert_debug_label
-	Advanced(self).InsertDebugLabel(String.New(label_name))
+	Advanced(self).InsertDebugLabel(String.From(label_name))
 }
 
 /*
@@ -360,7 +360,7 @@ Returns the [Resource.ID] corresponding to an Action of a matching name, optiona
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func (self Instance) FindAction(name string, action_set RID.ActionSet) RID.Action { //gd:OpenXRAPIExtension.find_action
-	return RID.Action(RID.Action(Advanced(self).FindAction(String.New(name), RID.Any(action_set))))
+	return RID.Action(RID.Action(Advanced(self).FindAction(String.From(name), RID.Any(action_set))))
 }
 
 /*

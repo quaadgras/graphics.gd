@@ -947,7 +947,7 @@ See also [Font.DrawString].
 [Font.DrawString]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.DrawString
 */
 func (self Instance) DrawString(font Font.Instance, pos Vector2.XY, text string) { //gd:CanvasItem.draw_string
-	Advanced(self).DrawString(font, Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 0, 0, float64(0.0))
+	Advanced(self).DrawString(font, Vector2.XY(pos), String.From(text), 0, float64(-1), int64(16), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 0, 0, float64(0.0))
 }
 
 /*
@@ -963,77 +963,77 @@ See also [Font.DrawString].
 [Font.DrawString]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.DrawString
 */
 func (self MoreArgs) DrawString(font Font.Instance, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling Float.X) { //gd:CanvasItem.draw_string
-	Advanced(self).DrawString(font, Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), Color.RGBA(modulate), justification_flags, direction, orientation, float64(oversampling))
+	Advanced(self).DrawString(font, Vector2.XY(pos), String.From(text), alignment, float64(width), int64(font_size), Color.RGBA(modulate), justification_flags, direction, orientation, float64(oversampling))
 }
 
 /*
 Breaks 'text' into lines and draws it using the specified 'font' at the 'pos' in local space (top-left corner). The text will have its color multiplied by 'modulate'. If 'width' is greater than or equal to 0, the text will be clipped if it exceeds the specified width. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
 func (self Instance) DrawMultilineString(font Font.Instance, pos Vector2.XY, text string) { //gd:CanvasItem.draw_multiline_string
-	Advanced(self).DrawMultilineString(font, Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(-1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0, float64(0.0))
+	Advanced(self).DrawMultilineString(font, Vector2.XY(pos), String.From(text), 0, float64(-1), int64(16), int64(-1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0, float64(0.0))
 }
 
 /*
 Breaks 'text' into lines and draws it using the specified 'font' at the 'pos' in local space (top-left corner). The text will have its color multiplied by 'modulate'. If 'width' is greater than or equal to 0, the text will be clipped if it exceeds the specified width. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
 func (self MoreArgs) DrawMultilineString(font Font.Instance, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, max_lines int, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling Float.X) { //gd:CanvasItem.draw_multiline_string
-	Advanced(self).DrawMultilineString(font, Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(max_lines), Color.RGBA(modulate), brk_flags, justification_flags, direction, orientation, float64(oversampling))
+	Advanced(self).DrawMultilineString(font, Vector2.XY(pos), String.From(text), alignment, float64(width), int64(font_size), int64(max_lines), Color.RGBA(modulate), brk_flags, justification_flags, direction, orientation, float64(oversampling))
 }
 
 /*
 Draws 'text' outline using the specified 'font' at the 'pos' in local space (bottom-left corner using the baseline of the font). The text will have its color multiplied by 'modulate'. If 'width' is greater than or equal to 0, the text will be clipped if it exceeds the specified width. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
 func (self Instance) DrawStringOutline(font Font.Instance, pos Vector2.XY, text string) { //gd:CanvasItem.draw_string_outline
-	Advanced(self).DrawStringOutline(font, Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 0, 0, float64(0.0))
+	Advanced(self).DrawStringOutline(font, Vector2.XY(pos), String.From(text), 0, float64(-1), int64(16), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 0, 0, float64(0.0))
 }
 
 /*
 Draws 'text' outline using the specified 'font' at the 'pos' in local space (bottom-left corner using the baseline of the font). The text will have its color multiplied by 'modulate'. If 'width' is greater than or equal to 0, the text will be clipped if it exceeds the specified width. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
 func (self MoreArgs) DrawStringOutline(font Font.Instance, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, size int, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling Float.X) { //gd:CanvasItem.draw_string_outline
-	Advanced(self).DrawStringOutline(font, Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(size), Color.RGBA(modulate), justification_flags, direction, orientation, float64(oversampling))
+	Advanced(self).DrawStringOutline(font, Vector2.XY(pos), String.From(text), alignment, float64(width), int64(font_size), int64(size), Color.RGBA(modulate), justification_flags, direction, orientation, float64(oversampling))
 }
 
 /*
 Breaks 'text' to the lines and draws text outline using the specified 'font' at the 'pos' in local space (top-left corner). The text will have its color multiplied by 'modulate'. If 'width' is greater than or equal to 0, the text will be clipped if it exceeds the specified width. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
 func (self Instance) DrawMultilineStringOutline(font Font.Instance, pos Vector2.XY, text string) { //gd:CanvasItem.draw_multiline_string_outline
-	Advanced(self).DrawMultilineStringOutline(font, Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(-1), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0, float64(0.0))
+	Advanced(self).DrawMultilineStringOutline(font, Vector2.XY(pos), String.From(text), 0, float64(-1), int64(16), int64(-1), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0, float64(0.0))
 }
 
 /*
 Breaks 'text' to the lines and draws text outline using the specified 'font' at the 'pos' in local space (top-left corner). The text will have its color multiplied by 'modulate'. If 'width' is greater than or equal to 0, the text will be clipped if it exceeds the specified width. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
 func (self MoreArgs) DrawMultilineStringOutline(font Font.Instance, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, max_lines int, size int, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling Float.X) { //gd:CanvasItem.draw_multiline_string_outline
-	Advanced(self).DrawMultilineStringOutline(font, Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(max_lines), int64(size), Color.RGBA(modulate), brk_flags, justification_flags, direction, orientation, float64(oversampling))
+	Advanced(self).DrawMultilineStringOutline(font, Vector2.XY(pos), String.From(text), alignment, float64(width), int64(font_size), int64(max_lines), int64(size), Color.RGBA(modulate), brk_flags, justification_flags, direction, orientation, float64(oversampling))
 }
 
 /*
 Draws a string first character using a custom font. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used. 'pos' is defined in local space.
 */
 func (self Instance) DrawChar(font Font.Instance, pos Vector2.XY, char string) { //gd:CanvasItem.draw_char
-	Advanced(self).DrawChar(font, Vector2.XY(pos), String.New(char), int64(16), Color.RGBA(gd.Color{1, 1, 1, 1}), float64(0.0))
+	Advanced(self).DrawChar(font, Vector2.XY(pos), String.From(char), int64(16), Color.RGBA(gd.Color{1, 1, 1, 1}), float64(0.0))
 }
 
 /*
 Draws a string first character using a custom font. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used. 'pos' is defined in local space.
 */
 func (self MoreArgs) DrawChar(font Font.Instance, pos Vector2.XY, char string, font_size int, modulate Color.RGBA, oversampling Float.X) { //gd:CanvasItem.draw_char
-	Advanced(self).DrawChar(font, Vector2.XY(pos), String.New(char), int64(font_size), Color.RGBA(modulate), float64(oversampling))
+	Advanced(self).DrawChar(font, Vector2.XY(pos), String.From(char), int64(font_size), Color.RGBA(modulate), float64(oversampling))
 }
 
 /*
 Draws a string first character outline using a custom font. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used. 'pos' is defined in local space.
 */
 func (self Instance) DrawCharOutline(font Font.Instance, pos Vector2.XY, char string) { //gd:CanvasItem.draw_char_outline
-	Advanced(self).DrawCharOutline(font, Vector2.XY(pos), String.New(char), int64(16), int64(-1), Color.RGBA(gd.Color{1, 1, 1, 1}), float64(0.0))
+	Advanced(self).DrawCharOutline(font, Vector2.XY(pos), String.From(char), int64(16), int64(-1), Color.RGBA(gd.Color{1, 1, 1, 1}), float64(0.0))
 }
 
 /*
 Draws a string first character outline using a custom font. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used. 'pos' is defined in local space.
 */
 func (self MoreArgs) DrawCharOutline(font Font.Instance, pos Vector2.XY, char string, font_size int, size int, modulate Color.RGBA, oversampling Float.X) { //gd:CanvasItem.draw_char_outline
-	Advanced(self).DrawCharOutline(font, Vector2.XY(pos), String.New(char), int64(font_size), int64(size), Color.RGBA(modulate), float64(oversampling))
+	Advanced(self).DrawCharOutline(font, Vector2.XY(pos), String.From(char), int64(font_size), int64(size), Color.RGBA(modulate), float64(oversampling))
 }
 
 /*
@@ -1268,7 +1268,7 @@ Returns 'self' to enable method chaining.
 [per-instance uniform]: https://docs.godotengine.org/tutorials/shaders/shader_reference/shading_language.html#per-instance-uniforms
 */
 func (self Instance) SetInstanceShaderParameter(name string, value any) Instance { //gd:CanvasItem.set_instance_shader_parameter
-	Advanced(self).SetInstanceShaderParameter(String.Name(String.New(name)), variant.New(value))
+	Advanced(self).SetInstanceShaderParameter(String.Name(String.From(name)), variant.New(value))
 	return self
 }
 
@@ -1276,7 +1276,7 @@ func (self Instance) SetInstanceShaderParameter(name string, value any) Instance
 Get the value of a shader parameter as set on this instance.
 */
 func (self Instance) GetInstanceShaderParameter(name string) any { //gd:CanvasItem.get_instance_shader_parameter
-	return any(Advanced(self).GetInstanceShaderParameter(String.Name(String.New(name))).Interface())
+	return any(Advanced(self).GetInstanceShaderParameter(String.Name(String.From(name))).Interface())
 }
 
 /*

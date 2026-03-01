@@ -194,7 +194,7 @@ func (self Instance) RemotePath() string { //gd:RemoteTransform2D.remote_path
 
 // SetRemotePath sets the property returned by [GetRemoteNode]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetRemotePath(value string) Instance { //gd:RemoteTransform2D.remote_path
-	class(self).SetRemoteNode(Path.ToNode(String.New(value)))
+	class(self).SetRemoteNode(Path.ToNode(String.From(value)))
 	return self
 }
 

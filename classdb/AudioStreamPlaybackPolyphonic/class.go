@@ -150,7 +150,7 @@ This function returns [InvalidId] if the amount of streams currently playing equ
 [StopStream]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlaybackPolyphonic#Instance.StopStream
 */
 func (self Instance) PlayStream(stream AudioStream.Instance) int { //gd:AudioStreamPlaybackPolyphonic.play_stream
-	return int(int(Advanced(self).PlayStream(stream, float64(0), float64(0), float64(1.0), 0, String.Name(String.New("Master")))))
+	return int(int(Advanced(self).PlayStream(stream, float64(0), float64(0), float64(1.0), 0, String.Name(String.From("Master")))))
 }
 
 /*
@@ -168,7 +168,7 @@ This function returns [InvalidId] if the amount of streams currently playing equ
 [StopStream]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlaybackPolyphonic#Instance.StopStream
 */
 func (self MoreArgs) PlayStream(stream AudioStream.Instance, from_offset Float.X, volume_db Float.X, pitch_scale Float.X, playback_type AudioServer.PlaybackType, bus string) int { //gd:AudioStreamPlaybackPolyphonic.play_stream
-	return int(int(Advanced(self).PlayStream(stream, float64(from_offset), float64(volume_db), float64(pitch_scale), playback_type, String.Name(String.New(bus)))))
+	return int(int(Advanced(self).PlayStream(stream, float64(from_offset), float64(volume_db), float64(pitch_scale), playback_type, String.Name(String.From(bus)))))
 }
 
 /*

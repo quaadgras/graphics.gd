@@ -126,7 +126,7 @@ Listens on the socket at 'path'. The socket file will be created at the specifie
 Note: The socket file must not already exist at the specified path. You may need to remove any existing socket file before calling this method.
 */
 func (self Instance) Listen(path string) error { //gd:UDSServer.listen
-	return error(gd.ToError(Advanced(self).Listen(String.New(path))))
+	return error(gd.ToError(Advanced(self).Listen(String.From(path))))
 }
 
 /*

@@ -206,7 +206,7 @@ Example output:
 */
 func Stringify(data any, indent string, full_precision bool) string { //gd:JSON.stringify
 	self := Instance{}
-	return string(Advanced(self).Stringify(variant.New(data), String.New(indent), true, full_precision).String())
+	return string(Advanced(self).Stringify(variant.New(data), String.From(indent), true, full_precision).String())
 }
 
 /*
@@ -226,7 +226,7 @@ Example output:
 */
 func StringifyOptions(data any, indent string, sort_keys bool, full_precision bool) string { //gd:JSON.stringify
 	self := Instance{}
-	return string(Advanced(self).Stringify(variant.New(data), String.New(indent), sort_keys, full_precision).String())
+	return string(Advanced(self).Stringify(variant.New(data), String.From(indent), sort_keys, full_precision).String())
 }
 
 /*
@@ -234,7 +234,7 @@ Attempts to parse the 'json_string' provided and returns the parsed data. Return
 */
 func ParseString(json_string string) any { //gd:JSON.parse_string
 	self := Instance{}
-	return any(Advanced(self).ParseString(String.New(json_string)).Interface())
+	return any(Advanced(self).ParseString(String.From(json_string)).Interface())
 }
 
 /*
@@ -252,7 +252,7 @@ The optional 'keep_text' argument instructs the parser to keep a copy of the ori
 [GetParsedText]: https://pkg.go.dev/graphics.gd/classdb/JSON#Instance.GetParsedText
 */
 func (self Instance) Parse(json_text string) error { //gd:JSON.parse
-	return error(gd.ToError(Advanced(self).Parse(String.New(json_text), false)))
+	return error(gd.ToError(Advanced(self).Parse(String.From(json_text), false)))
 }
 
 /*
@@ -270,7 +270,7 @@ The optional 'keep_text' argument instructs the parser to keep a copy of the ori
 [GetParsedText]: https://pkg.go.dev/graphics.gd/classdb/JSON#Instance.GetParsedText
 */
 func (self MoreArgs) Parse(json_text string, keep_text bool) error { //gd:JSON.parse
-	return error(gd.ToError(Advanced(self).Parse(String.New(json_text), keep_text)))
+	return error(gd.ToError(Advanced(self).Parse(String.From(json_text), keep_text)))
 }
 
 /*

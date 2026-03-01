@@ -19,7 +19,7 @@ import (
 func editorSetup() {
 	// Setup Faux SDKs
 	settings := EditorInterface.GetEditorSettings()
-	if settings.GetSetting("export/android/java_sdk_path").(String.Readable).String() == "" {
+	if settings.GetSetting("export/android/java_sdk_path").(String.Unicode).String() == "" {
 		my, err := user.Current()
 		if err == nil {
 			HOME := my.HomeDir
@@ -31,7 +31,7 @@ func editorSetup() {
 		}
 	}
 	// work around godot bug on windows
-	android_sdk_path := settings.GetSetting("export/android/android_sdk_path").(String.Readable).String()
+	android_sdk_path := settings.GetSetting("export/android/android_sdk_path").(String.Unicode).String()
 	if runtime.GOOS == "windows" && android_sdk_path == os.Getenv("LOCALAPPDATA")+"/Android/Sdk" {
 		settings.SetSetting("export/android/java_sdk_path", filepath.Join(os.Getenv("LOCALAPPDATA"), "Android", "Sdk"))
 	}

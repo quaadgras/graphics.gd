@@ -416,7 +416,7 @@ func slowCall(hasContext bool, method reflect.Value, p_args, p_ret gdextension.P
 			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(val))
 		case gd.PackedColorArray:
 			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(val))
-		case String.Readable:
+		case String.Unicode:
 			in := gd.InternalString(val)
 			raw, ok := pointers.End(in)
 			if ok {

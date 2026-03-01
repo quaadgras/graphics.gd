@@ -181,7 +181,7 @@ Adds an item, with text 'label' and (optionally) 'id'. If no 'id' is passed, the
 Note: The item will be selected if there are no other items.
 */
 func (self Instance) AddItem(label string) { //gd:OptionButton.add_item
-	Advanced(self).AddItem(String.New(label), int64(-1))
+	Advanced(self).AddItem(String.From(label), int64(-1))
 }
 
 /*
@@ -190,7 +190,7 @@ Adds an item, with text 'label' and (optionally) 'id'. If no 'id' is passed, the
 Note: The item will be selected if there are no other items.
 */
 func (self MoreArgs) AddItem(label string, id int) { //gd:OptionButton.add_item
-	Advanced(self).AddItem(String.New(label), int64(id))
+	Advanced(self).AddItem(String.From(label), int64(id))
 }
 
 /*
@@ -199,7 +199,7 @@ Adds an item, with a 'texture' icon, text 'label' and (optionally) 'id'. If no '
 Note: The item will be selected if there are no other items.
 */
 func (self Instance) AddIconItem(texture Texture2D.Instance, label string) { //gd:OptionButton.add_icon_item
-	Advanced(self).AddIconItem(texture, String.New(label), int64(-1))
+	Advanced(self).AddIconItem(texture, String.From(label), int64(-1))
 }
 
 /*
@@ -208,7 +208,7 @@ Adds an item, with a 'texture' icon, text 'label' and (optionally) 'id'. If no '
 Note: The item will be selected if there are no other items.
 */
 func (self MoreArgs) AddIconItem(texture Texture2D.Instance, label string, id int) { //gd:OptionButton.add_icon_item
-	Advanced(self).AddIconItem(texture, String.New(label), int64(id))
+	Advanced(self).AddIconItem(texture, String.From(label), int64(id))
 }
 
 /*
@@ -217,7 +217,7 @@ Sets the text of the item at index 'idx'.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetItemText(idx int, text string) Instance { //gd:OptionButton.set_item_text
-	Advanced(self).SetItemText(int64(idx), String.New(text))
+	Advanced(self).SetItemText(int64(idx), String.From(text))
 	return self
 }
 
@@ -269,7 +269,7 @@ Sets the tooltip of the item at index 'idx'.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetItemTooltip(idx int, tooltip string) Instance { //gd:OptionButton.set_item_tooltip
-	Advanced(self).SetItemTooltip(int64(idx), String.New(tooltip))
+	Advanced(self).SetItemTooltip(int64(idx), String.From(tooltip))
 	return self
 }
 
@@ -354,14 +354,14 @@ func (self Instance) IsItemSeparator(idx int) bool { //gd:OptionButton.is_item_s
 Adds a separator to the list of items. Separators help to group items, and can optionally be given a 'text' header. A separator also gets an index assigned, and is appended at the end of the item list.
 */
 func (self Instance) AddSeparator() { //gd:OptionButton.add_separator
-	Advanced(self).AddSeparator(String.New(""))
+	Advanced(self).AddSeparator(String.From(""))
 }
 
 /*
 Adds a separator to the list of items. Separators help to group items, and can optionally be given a 'text' header. A separator also gets an index assigned, and is appended at the end of the item list.
 */
 func (self MoreArgs) AddSeparator(text string) { //gd:OptionButton.add_separator
-	Advanced(self).AddSeparator(String.New(text))
+	Advanced(self).AddSeparator(String.From(text))
 }
 
 /*

@@ -152,42 +152,42 @@ Registers a profiler with the given 'name'. See [EngineProfiler] for more inform
 [EngineProfiler]: https://pkg.go.dev/graphics.gd/classdb/EngineProfiler
 */
 func RegisterProfiler(name string, profiler EngineProfiler.Instance) { //gd:EngineDebugger.register_profiler
-	Advanced().RegisterProfiler(String.Name(String.New(name)), profiler)
+	Advanced().RegisterProfiler(String.Name(String.From(name)), profiler)
 }
 
 /*
 Unregisters a profiler with given 'name'.
 */
 func UnregisterProfiler(name string) { //gd:EngineDebugger.unregister_profiler
-	Advanced().UnregisterProfiler(String.Name(String.New(name)))
+	Advanced().UnregisterProfiler(String.Name(String.From(name)))
 }
 
 /*
 Returns true if a profiler with the given name is present and active otherwise false.
 */
 func IsProfiling(name string) bool { //gd:EngineDebugger.is_profiling
-	return bool(Advanced().IsProfiling(String.Name(String.New(name))))
+	return bool(Advanced().IsProfiling(String.Name(String.From(name))))
 }
 
 /*
 Returns true if a profiler with the given name is present otherwise false.
 */
 func HasProfiler(name string) bool { //gd:EngineDebugger.has_profiler
-	return bool(Advanced().HasProfiler(String.Name(String.New(name))))
+	return bool(Advanced().HasProfiler(String.Name(String.From(name))))
 }
 
 /*
 Calls the add callable of the profiler with given 'name' and 'data'.
 */
 func ProfilerAddFrameData(name string, data []any) { //gd:EngineDebugger.profiler_add_frame_data
-	Advanced().ProfilerAddFrameData(String.Name(String.New(name)), gd.EngineArrayFromSlice(data))
+	Advanced().ProfilerAddFrameData(String.Name(String.From(name)), gd.EngineArrayFromSlice(data))
 }
 
 /*
 Calls the toggle callable of the profiler with given 'name' and 'arguments'. Enables/Disables the same profiler depending on 'enable' argument.
 */
 func ProfilerEnable(name string, enable bool, arguments []any) { //gd:EngineDebugger.profiler_enable
-	Advanced().ProfilerEnable(String.Name(String.New(name)), enable, gd.EngineArrayFromSlice(arguments))
+	Advanced().ProfilerEnable(String.Name(String.From(name)), enable, gd.EngineArrayFromSlice(arguments))
 }
 
 /*
@@ -201,21 +201,21 @@ Note: The callable will receive the message with the prefix stripped, unlike [Ed
 [EditorDebuggerPlugin.Capture]: https://pkg.go.dev/graphics.gd/classdb/EditorDebuggerPlugin#Instance.Capture
 */
 func RegisterMessageCapture(name string, callable func(message string, data []any) bool) { //gd:EngineDebugger.register_message_capture
-	Advanced().RegisterMessageCapture(String.Name(String.New(name)), Callable.New(callable))
+	Advanced().RegisterMessageCapture(String.Name(String.From(name)), Callable.New(callable))
 }
 
 /*
 Unregisters the message capture with given 'name'.
 */
 func UnregisterMessageCapture(name string) { //gd:EngineDebugger.unregister_message_capture
-	Advanced().UnregisterMessageCapture(String.Name(String.New(name)))
+	Advanced().UnregisterMessageCapture(String.Name(String.From(name)))
 }
 
 /*
 Returns true if a capture with the given name is present otherwise false.
 */
 func HasCapture(name string) bool { //gd:EngineDebugger.has_capture
-	return bool(Advanced().HasCapture(String.Name(String.New(name))))
+	return bool(Advanced().HasCapture(String.Name(String.From(name))))
 }
 
 /*
@@ -229,7 +229,7 @@ func LinePoll() { //gd:EngineDebugger.line_poll
 Sends a message with given 'message' and 'data' array.
 */
 func SendMessage(message string, data []any) { //gd:EngineDebugger.send_message
-	Advanced().SendMessage(String.New(message), gd.EngineArrayFromSlice(data))
+	Advanced().SendMessage(String.From(message), gd.EngineArrayFromSlice(data))
 }
 
 /*
@@ -292,7 +292,7 @@ func GetDepth() int { //gd:EngineDebugger.get_depth
 Returns true if the given 'source' and 'line' represent an existing breakpoint.
 */
 func IsBreakpoint(line int, source string) bool { //gd:EngineDebugger.is_breakpoint
-	return bool(Advanced().IsBreakpoint(int64(line), String.Name(String.New(source))))
+	return bool(Advanced().IsBreakpoint(int64(line), String.Name(String.From(source))))
 }
 
 /*
@@ -306,14 +306,14 @@ func IsSkippingBreakpoints() bool { //gd:EngineDebugger.is_skipping_breakpoints
 Inserts a new breakpoint with the given 'source' and 'line'.
 */
 func InsertBreakpoint(line int, source string) { //gd:EngineDebugger.insert_breakpoint
-	Advanced().InsertBreakpoint(int64(line), String.Name(String.New(source)))
+	Advanced().InsertBreakpoint(int64(line), String.Name(String.From(source)))
 }
 
 /*
 Removes a breakpoint with the given 'source' and 'line'.
 */
 func RemoveBreakpoint(line int, source string) { //gd:EngineDebugger.remove_breakpoint
-	Advanced().RemoveBreakpoint(int64(line), String.Name(String.New(source)))
+	Advanced().RemoveBreakpoint(int64(line), String.Name(String.From(source)))
 }
 
 /*

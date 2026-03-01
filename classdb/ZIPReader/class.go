@@ -182,7 +182,7 @@ type Any interface {
 Opens the zip archive at the given 'path' and reads its file index.
 */
 func (self Instance) Open(path string) error { //gd:ZIPReader.open
-	return error(gd.ToError(Advanced(self).Open(String.New(path))))
+	return error(gd.ToError(Advanced(self).Open(String.From(path))))
 }
 
 /*
@@ -211,7 +211,7 @@ Must be called after [Open].
 [Open]: https://pkg.go.dev/graphics.gd/classdb/ZIPReader#Instance.Open
 */
 func (self Instance) ReadFile(path string) []byte { //gd:ZIPReader.read_file
-	return []byte(Advanced(self).ReadFile(String.New(path), true).Bytes())
+	return []byte(Advanced(self).ReadFile(String.From(path), true).Bytes())
 }
 
 /*
@@ -222,7 +222,7 @@ Must be called after [Open].
 [Open]: https://pkg.go.dev/graphics.gd/classdb/ZIPReader#Instance.Open
 */
 func (self MoreArgs) ReadFile(path string, case_sensitive bool) []byte { //gd:ZIPReader.read_file
-	return []byte(Advanced(self).ReadFile(String.New(path), case_sensitive).Bytes())
+	return []byte(Advanced(self).ReadFile(String.From(path), case_sensitive).Bytes())
 }
 
 /*
@@ -233,7 +233,7 @@ Must be called after [Open].
 [Open]: https://pkg.go.dev/graphics.gd/classdb/ZIPReader#Instance.Open
 */
 func (self Instance) FileExists(path string) bool { //gd:ZIPReader.file_exists
-	return bool(Advanced(self).FileExists(String.New(path), true))
+	return bool(Advanced(self).FileExists(String.From(path), true))
 }
 
 /*
@@ -244,7 +244,7 @@ Must be called after [Open].
 [Open]: https://pkg.go.dev/graphics.gd/classdb/ZIPReader#Instance.Open
 */
 func (self MoreArgs) FileExists(path string, case_sensitive bool) bool { //gd:ZIPReader.file_exists
-	return bool(Advanced(self).FileExists(String.New(path), case_sensitive))
+	return bool(Advanced(self).FileExists(String.From(path), case_sensitive))
 }
 
 /*
@@ -253,7 +253,7 @@ Returns the compression level of the file in the loaded zip archive. Returns -1 
 [Open]: https://pkg.go.dev/graphics.gd/classdb/ZIPReader#Instance.Open
 */
 func (self Instance) GetCompressionLevel(path string) int { //gd:ZIPReader.get_compression_level
-	return int(int(Advanced(self).GetCompressionLevel(String.New(path), true)))
+	return int(int(Advanced(self).GetCompressionLevel(String.From(path), true)))
 }
 
 /*
@@ -262,7 +262,7 @@ Returns the compression level of the file in the loaded zip archive. Returns -1 
 [Open]: https://pkg.go.dev/graphics.gd/classdb/ZIPReader#Instance.Open
 */
 func (self MoreArgs) GetCompressionLevel(path string, case_sensitive bool) int { //gd:ZIPReader.get_compression_level
-	return int(int(Advanced(self).GetCompressionLevel(String.New(path), case_sensitive)))
+	return int(int(Advanced(self).GetCompressionLevel(String.From(path), case_sensitive)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

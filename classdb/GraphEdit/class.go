@@ -428,7 +428,7 @@ Connections with 'keep_alive' set to false may be deleted automatically if inval
 [GraphNode]: https://pkg.go.dev/graphics.gd/classdb/GraphNode
 */
 func (self Instance) ConnectNode(from_node string, from_port int, to_node string, to_port int) error { //gd:GraphEdit.connect_node
-	return error(gd.ToError(Advanced(self).ConnectNode(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port), false)))
+	return error(gd.ToError(Advanced(self).ConnectNode(String.Name(String.From(from_node)), int64(from_port), String.Name(String.From(to_node)), int64(to_port), false)))
 }
 
 /*
@@ -439,7 +439,7 @@ Connections with 'keep_alive' set to false may be deleted automatically if inval
 [GraphNode]: https://pkg.go.dev/graphics.gd/classdb/GraphNode
 */
 func (self MoreArgs) ConnectNode(from_node string, from_port int, to_node string, to_port int, keep_alive bool) error { //gd:GraphEdit.connect_node
-	return error(gd.ToError(Advanced(self).ConnectNode(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port), keep_alive)))
+	return error(gd.ToError(Advanced(self).ConnectNode(String.Name(String.From(from_node)), int64(from_port), String.Name(String.From(to_node)), int64(to_port), keep_alive)))
 }
 
 /*
@@ -448,7 +448,7 @@ Returns true if the 'from_port' of the 'from_node' [GraphNode] is connected to t
 [GraphNode]: https://pkg.go.dev/graphics.gd/classdb/GraphNode
 */
 func (self Instance) IsNodeConnected(from_node string, from_port int, to_node string, to_port int) bool { //gd:GraphEdit.is_node_connected
-	return bool(Advanced(self).IsNodeConnected(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port)))
+	return bool(Advanced(self).IsNodeConnected(String.Name(String.From(from_node)), int64(from_port), String.Name(String.From(to_node)), int64(to_port)))
 }
 
 /*
@@ -457,7 +457,7 @@ Removes the connection between the 'from_port' of the 'from_node' [GraphNode] an
 [GraphNode]: https://pkg.go.dev/graphics.gd/classdb/GraphNode
 */
 func (self Instance) DisconnectNode(from_node string, from_port int, to_node string, to_port int) { //gd:GraphEdit.disconnect_node
-	Advanced(self).DisconnectNode(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port))
+	Advanced(self).DisconnectNode(String.Name(String.From(from_node)), int64(from_port), String.Name(String.From(to_node)), int64(to_port))
 }
 
 /*
@@ -466,7 +466,7 @@ Sets the coloration of the connection between 'from_node”s 'from_port' and 'to
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetConnectionActivity(from_node string, from_port int, to_node string, to_port int, amount Float.X) Instance { //gd:GraphEdit.set_connection_activity
-	Advanced(self).SetConnectionActivity(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port), float64(amount))
+	Advanced(self).SetConnectionActivity(String.Name(String.From(from_node)), int64(from_port), String.Name(String.From(to_node)), int64(to_port), float64(amount))
 	return self
 }
 
@@ -474,7 +474,7 @@ func (self Instance) SetConnectionActivity(from_node string, from_port int, to_n
 Returns the number of connections from 'from_port' of 'from_node'.
 */
 func (self Instance) GetConnectionCount(from_node string, from_port int) int { //gd:GraphEdit.get_connection_count
-	return int(int(Advanced(self).GetConnectionCount(String.Name(String.New(from_node)), int64(from_port))))
+	return int(int(Advanced(self).GetConnectionCount(String.Name(String.From(from_node)), int64(from_port))))
 }
 
 /*
@@ -531,7 +531,7 @@ A connection is represented as a data structure in the form of:
 Example: Get all connections on a specific port:
 */
 func (self Instance) GetConnectionListFromNode(node string) [][]Connection { //gd:GraphEdit.get_connection_list_from_node
-	return [][]Connection(gd.ArrayAs[[][]Connection](gd.InternalArray(Advanced(self).GetConnectionListFromNode(String.Name(String.New(node))))))
+	return [][]Connection(gd.ArrayAs[[][]Connection](gd.InternalArray(Advanced(self).GetConnectionListFromNode(String.Name(String.From(node))))))
 }
 
 /*
@@ -667,7 +667,7 @@ Attaches the 'element' [GraphElement] to the 'frame' [GraphFrame].
 [GraphFrame]: https://pkg.go.dev/graphics.gd/classdb/GraphFrame
 */
 func (self Instance) AttachGraphElementToFrame(element string, frame_ string) { //gd:GraphEdit.attach_graph_element_to_frame
-	Advanced(self).AttachGraphElementToFrame(String.Name(String.New(element)), String.Name(String.New(frame_)))
+	Advanced(self).AttachGraphElementToFrame(String.Name(String.From(element)), String.Name(String.From(frame_)))
 }
 
 /*
@@ -677,7 +677,7 @@ Detaches the 'element' [GraphElement] from the [GraphFrame] it is currently atta
 [GraphFrame]: https://pkg.go.dev/graphics.gd/classdb/GraphFrame
 */
 func (self Instance) DetachGraphElementFromFrame(element string) { //gd:GraphEdit.detach_graph_element_from_frame
-	Advanced(self).DetachGraphElementFromFrame(String.Name(String.New(element)))
+	Advanced(self).DetachGraphElementFromFrame(String.Name(String.From(element)))
 }
 
 /*
@@ -687,7 +687,7 @@ Returns the [GraphFrame] that contains the [GraphElement] with the given name.
 [GraphFrame]: https://pkg.go.dev/graphics.gd/classdb/GraphFrame
 */
 func (self Instance) GetElementFrame(element string) GraphFrame.Instance { //gd:GraphEdit.get_element_frame
-	return GraphFrame.Instance(Advanced(self).GetElementFrame(String.Name(String.New(element))))
+	return GraphFrame.Instance(Advanced(self).GetElementFrame(String.Name(String.From(element))))
 }
 
 /*
@@ -696,7 +696,7 @@ Returns an array of node names that are attached to the [GraphFrame] with the gi
 [GraphFrame]: https://pkg.go.dev/graphics.gd/classdb/GraphFrame
 */
 func (self Instance) GetAttachedNodesOfFrame(frame_ string) []string { //gd:GraphEdit.get_attached_nodes_of_frame
-	return []string(gd.ArrayAs[[]string](gd.InternalArray(Advanced(self).GetAttachedNodesOfFrame(String.Name(String.New(frame_))))))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(Advanced(self).GetAttachedNodesOfFrame(String.Name(String.From(frame_))))))
 }
 
 /*

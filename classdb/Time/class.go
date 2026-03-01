@@ -197,7 +197,7 @@ If 'weekday' is false, then the weekday entry is excluded (the calculation is re
 Note: Any decimal fraction in the time string will be ignored silently.
 */
 func GetDatetimeDictFromDatetimeString(datetime string, weekday bool) Date { //gd:Time.get_datetime_dict_from_datetime_string
-	return Date(gd.DictionaryAs[Date](Advanced().GetDatetimeDictFromDatetimeString(String.New(datetime), weekday)))
+	return Date(gd.DictionaryAs[Date](Advanced().GetDatetimeDictFromDatetimeString(String.From(datetime), weekday)))
 }
 
 /*
@@ -236,7 +236,7 @@ Note: Unix timestamps are often in UTC. This method does not do any timezone con
 Note: Any decimal fraction in the time string will be ignored silently.
 */
 func GetUnixTimeFromDatetimeString(datetime string) int { //gd:Time.get_unix_time_from_datetime_string
-	return int(int(Advanced().GetUnixTimeFromDatetimeString(String.New(datetime))))
+	return int(int(Advanced().GetUnixTimeFromDatetimeString(String.From(datetime))))
 }
 
 /*

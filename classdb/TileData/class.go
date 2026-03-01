@@ -451,7 +451,7 @@ Sets the tile's custom data value for the TileSet custom data layer with name 'l
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetCustomData(layer_name string, value any) Instance { //gd:TileData.set_custom_data
-	Advanced(self).SetCustomData(String.New(layer_name), variant.New(value))
+	Advanced(self).SetCustomData(String.From(layer_name), variant.New(value))
 	return self
 }
 
@@ -461,14 +461,14 @@ Returns the custom data value for custom data layer named 'layer_name'. To check
 [HasCustomData]: https://pkg.go.dev/graphics.gd/classdb/TileData#Instance.HasCustomData
 */
 func (self Instance) GetCustomData(layer_name string) any { //gd:TileData.get_custom_data
-	return any(Advanced(self).GetCustomData(String.New(layer_name)).Interface())
+	return any(Advanced(self).GetCustomData(String.From(layer_name)).Interface())
 }
 
 /*
 Returns whether there exists a custom data layer named 'layer_name'.
 */
 func (self Instance) HasCustomData(layer_name string) bool { //gd:TileData.has_custom_data
-	return bool(Advanced(self).HasCustomData(String.New(layer_name)))
+	return bool(Advanced(self).HasCustomData(String.From(layer_name)))
 }
 
 /*

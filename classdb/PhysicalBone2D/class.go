@@ -218,7 +218,7 @@ func (self Instance) Bone2dNodepath() string { //gd:PhysicalBone2D.bone2d_nodepa
 
 // SetBone2dNodepath sets the property returned by [GetBone2dNodepath]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetBone2dNodepath(value string) Instance { //gd:PhysicalBone2D.bone2d_nodepath
-	class(self).SetBone2dNodepath(Path.ToNode(String.New(value)))
+	class(self).SetBone2dNodepath(Path.ToNode(String.From(value)))
 	return self
 }
 

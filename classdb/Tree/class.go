@@ -535,7 +535,7 @@ Sets the title of a column.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetColumnTitle(column int, title string) Instance { //gd:Tree.set_column_title
-	Advanced(self).SetColumnTitle(int64(column), String.New(title))
+	Advanced(self).SetColumnTitle(int64(column), String.From(title))
 	return self
 }
 
@@ -552,7 +552,7 @@ Sets the column title's tooltip text.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetColumnTitleTooltipText(column int, tooltip_text string) Instance { //gd:Tree.set_column_title_tooltip_text
-	Advanced(self).SetColumnTitleTooltipText(int64(column), String.New(tooltip_text))
+	Advanced(self).SetColumnTitleTooltipText(int64(column), String.From(tooltip_text))
 	return self
 }
 
@@ -603,7 +603,7 @@ Sets the language code of the given 'column”s title to 'language'. This is use
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetColumnTitleLanguage(column int, language string) Instance { //gd:Tree.set_column_title_language
-	Advanced(self).SetColumnTitleLanguage(int64(column), String.New(language))
+	Advanced(self).SetColumnTitleLanguage(int64(column), String.From(language))
 	return self
 }
 

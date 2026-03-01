@@ -214,7 +214,7 @@ func (self Instance) ViewportPath() string { //gd:ViewportTexture.viewport_path
 
 // SetViewportPath sets the property returned by [GetViewportPathInScene]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetViewportPath(value string) Instance { //gd:ViewportTexture.viewport_path
-	class(self).SetViewportPathInScene(Path.ToNode(String.New(value)))
+	class(self).SetViewportPathInScene(Path.ToNode(String.From(value)))
 	return self
 }
 

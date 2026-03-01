@@ -242,7 +242,7 @@ Requests a thumbnail for the given [TextureRect]. The thumbnail is created async
 [TextureRect]: https://pkg.go.dev/graphics.gd/classdb/TextureRect
 */
 func (self Instance) RequestThumbnail(path string, control TextureRect.Instance) { //gd:EditorResourceTooltipPlugin.request_thumbnail
-	Advanced(self).RequestThumbnail(String.New(path), control)
+	Advanced(self).RequestThumbnail(String.From(path), control)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

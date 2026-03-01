@@ -212,7 +212,7 @@ func (self Instance) GetOpenScripts() []Script.Instance { //gd:ScriptEditor.get_
 Opens the script create dialog. The script will extend 'base_name'. The file extension can be omitted from 'base_path'. It will be added based on the selected scripting language.
 */
 func (self Instance) OpenScriptCreateDialog(base_name string, base_path string) { //gd:ScriptEditor.open_script_create_dialog
-	Advanced(self).OpenScriptCreateDialog(String.New(base_name), String.New(base_path))
+	Advanced(self).OpenScriptCreateDialog(String.From(base_name), String.From(base_path))
 }
 
 /*
@@ -245,7 +245,7 @@ The supported 'topic' formats include class_name:class, class_method:class:metho
 	}
 */
 func (self Instance) GotoHelp(topic string) { //gd:ScriptEditor.goto_help
-	Advanced(self).GotoHelp(String.New(topic))
+	Advanced(self).GotoHelp(String.From(topic))
 }
 
 /*

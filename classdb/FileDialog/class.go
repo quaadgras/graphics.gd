@@ -206,7 +206,7 @@ Note: Embedded file dialogs and Windows file dialogs support only file extension
 [FileDialog]: https://pkg.go.dev/graphics.gd/classdb/FileDialog
 */
 func (self Instance) AddFilter(filter string) { //gd:FileDialog.add_filter
-	Advanced(self).AddFilter(String.New(filter), String.New(""), String.New(""))
+	Advanced(self).AddFilter(String.From(filter), String.From(""), String.From(""))
 }
 
 /*
@@ -221,7 +221,7 @@ Note: Embedded file dialogs and Windows file dialogs support only file extension
 [FileDialog]: https://pkg.go.dev/graphics.gd/classdb/FileDialog
 */
 func (self MoreArgs) AddFilter(filter string, description string, mime_type string) { //gd:FileDialog.add_filter
-	Advanced(self).AddFilter(String.New(filter), String.New(description), String.New(mime_type))
+	Advanced(self).AddFilter(String.From(filter), String.From(description), String.From(mime_type))
 }
 
 /*
@@ -269,7 +269,7 @@ Returns 'self' to enable method chaining.
 [OptionButton]: https://pkg.go.dev/graphics.gd/classdb/OptionButton
 */
 func (self Instance) SetOptionName(option int, name string) Instance { //gd:FileDialog.set_option_name
-	Advanced(self).SetOptionName(int64(option), String.New(name))
+	Advanced(self).SetOptionName(int64(option), String.From(name))
 	return self
 }
 
@@ -307,7 +307,7 @@ Adds an additional [OptionButton] to the file dialog. If 'values' is empty, a [C
 [OptionButton]: https://pkg.go.dev/graphics.gd/classdb/OptionButton
 */
 func (self Instance) AddOption(name string, values []string, default_value_index int) { //gd:FileDialog.add_option
-	Advanced(self).AddOption(String.New(name), Packed.MakeStrings(values...), int64(default_value_index))
+	Advanced(self).AddOption(String.From(name), Packed.MakeStrings(values...), int64(default_value_index))
 }
 
 /*
@@ -576,7 +576,7 @@ func (self Instance) RootSubfolder() string { //gd:FileDialog.root_subfolder
 
 // SetRootSubfolder sets the property returned by [GetRootSubfolder]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetRootSubfolder(value string) Instance { //gd:FileDialog.root_subfolder
-	class(self).SetRootSubfolder(String.New(value))
+	class(self).SetRootSubfolder(String.From(value))
 	return self
 }
 
@@ -609,7 +609,7 @@ func (self Instance) FilenameFilter() string { //gd:FileDialog.filename_filter
 
 // SetFilenameFilter sets the property returned by [GetFilenameFilter]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetFilenameFilter(value string) Instance { //gd:FileDialog.filename_filter
-	class(self).SetFilenameFilter(String.New(value))
+	class(self).SetFilenameFilter(String.From(value))
 	return self
 }
 
@@ -801,7 +801,7 @@ func (self Instance) CurrentDir() string { //gd:FileDialog.current_dir
 
 // SetCurrentDir sets the property returned by [GetCurrentDir]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetCurrentDir(value string) Instance { //gd:FileDialog.current_dir
-	class(self).SetCurrentDir(String.New(value))
+	class(self).SetCurrentDir(String.From(value))
 	return self
 }
 
@@ -814,7 +814,7 @@ func (self Instance) CurrentFile() string { //gd:FileDialog.current_file
 
 // SetCurrentFile sets the property returned by [GetCurrentFile]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetCurrentFile(value string) Instance { //gd:FileDialog.current_file
-	class(self).SetCurrentFile(String.New(value))
+	class(self).SetCurrentFile(String.From(value))
 	return self
 }
 
@@ -827,7 +827,7 @@ func (self Instance) CurrentPath() string { //gd:FileDialog.current_path
 
 // SetCurrentPath sets the property returned by [GetCurrentPath]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetCurrentPath(value string) Instance { //gd:FileDialog.current_path
-	class(self).SetCurrentPath(String.New(value))
+	class(self).SetCurrentPath(String.From(value))
 	return self
 }
 

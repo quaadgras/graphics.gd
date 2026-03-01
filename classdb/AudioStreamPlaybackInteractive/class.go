@@ -125,7 +125,7 @@ type Any interface {
 Switch to a clip (by name).
 */
 func (self Instance) SwitchToClipByName(clip_name string) { //gd:AudioStreamPlaybackInteractive.switch_to_clip_by_name
-	Advanced(self).SwitchToClipByName(String.Name(String.New(clip_name)))
+	Advanced(self).SwitchToClipByName(String.Name(String.From(clip_name)))
 }
 
 /*

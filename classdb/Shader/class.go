@@ -151,7 +151,7 @@ Returns 'self' to enable method chaining.
 [ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
 */
 func (self Instance) SetDefaultTextureParameter(name string, texture Texture.Instance) Instance { //gd:Shader.set_default_texture_parameter
-	Advanced(self).SetDefaultTextureParameter(String.Name(String.New(name)), texture, int64(0))
+	Advanced(self).SetDefaultTextureParameter(String.Name(String.From(name)), texture, int64(0))
 	return self
 }
 
@@ -167,7 +167,7 @@ Returns 'self' to enable method chaining.
 [ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
 */
 func (self MoreArgs) SetDefaultTextureParameter(name string, texture Texture.Instance, index int) MoreArgs { //gd:Shader.set_default_texture_parameter
-	Advanced(self).SetDefaultTextureParameter(String.Name(String.New(name)), texture, int64(index))
+	Advanced(self).SetDefaultTextureParameter(String.Name(String.From(name)), texture, int64(index))
 	return self
 }
 
@@ -179,7 +179,7 @@ Note: 'name' must match the name of the uniform in the code exactly.
 Note: If the sampler array is used use 'index' to access the specified texture.
 */
 func (self Instance) GetDefaultTextureParameter(name string) Texture.Instance { //gd:Shader.get_default_texture_parameter
-	return Texture.Instance(Advanced(self).GetDefaultTextureParameter(String.Name(String.New(name)), int64(0)))
+	return Texture.Instance(Advanced(self).GetDefaultTextureParameter(String.Name(String.From(name)), int64(0)))
 }
 
 /*
@@ -190,7 +190,7 @@ Note: 'name' must match the name of the uniform in the code exactly.
 Note: If the sampler array is used use 'index' to access the specified texture.
 */
 func (self MoreArgs) GetDefaultTextureParameter(name string, index int) Texture.Instance { //gd:Shader.get_default_texture_parameter
-	return Texture.Instance(Advanced(self).GetDefaultTextureParameter(String.Name(String.New(name)), int64(index)))
+	return Texture.Instance(Advanced(self).GetDefaultTextureParameter(String.Name(String.From(name)), int64(index)))
 }
 
 /*
@@ -282,7 +282,7 @@ func (self Instance) Code() string { //gd:Shader.code
 
 // SetCode sets the property returned by [GetCode]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetCode(value string) Instance { //gd:Shader.code
-	class(self).SetCode(String.New(value))
+	class(self).SetCode(String.From(value))
 	return self
 }
 

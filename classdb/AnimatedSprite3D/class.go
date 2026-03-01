@@ -167,7 +167,7 @@ If this method is called with that same animation 'name', or with no 'name' para
 [PlayBackwards]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite3D#Instance.PlayBackwards
 */
 func (self Instance) Play() { //gd:AnimatedSprite3D.play
-	Advanced(self).Play(String.Name(String.New("")), float64(1.0), false)
+	Advanced(self).Play(String.Name(String.From("")), float64(1.0), false)
 }
 
 /*
@@ -178,7 +178,7 @@ If this method is called with that same animation 'name', or with no 'name' para
 [PlayBackwards]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite3D#Instance.PlayBackwards
 */
 func (self MoreArgs) Play(name string, custom_speed Float.X, from_end bool) { //gd:AnimatedSprite3D.play
-	Advanced(self).Play(String.Name(String.New(name)), float64(custom_speed), from_end)
+	Advanced(self).Play(String.Name(String.From(name)), float64(custom_speed), from_end)
 }
 
 /*
@@ -189,7 +189,7 @@ This method is a shorthand for [Play] with custom_speed = -1.0 and from_end = tr
 [Play]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite3D#Instance.Play
 */
 func (self Instance) PlayBackwards() { //gd:AnimatedSprite3D.play_backwards
-	Advanced(self).PlayBackwards(String.Name(String.New("")))
+	Advanced(self).PlayBackwards(String.Name(String.From("")))
 }
 
 /*
@@ -200,7 +200,7 @@ This method is a shorthand for [Play] with custom_speed = -1.0 and from_end = tr
 [Play]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite3D#Instance.Play
 */
 func (self MoreArgs) PlayBackwards(name string) { //gd:AnimatedSprite3D.play_backwards
-	Advanced(self).PlayBackwards(String.Name(String.New(name)))
+	Advanced(self).PlayBackwards(String.Name(String.From(name)))
 }
 
 /*
@@ -329,7 +329,7 @@ func (self Instance) Animation() string { //gd:AnimatedSprite3D.animation
 
 // SetAnimation sets the property returned by [GetAnimation]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetAnimation(value string) Instance { //gd:AnimatedSprite3D.animation
-	class(self).SetAnimation(String.Name(String.New(value)))
+	class(self).SetAnimation(String.Name(String.From(value)))
 	return self
 }
 
@@ -342,7 +342,7 @@ func (self Instance) Autoplay() string { //gd:AnimatedSprite3D.autoplay
 
 // SetAutoplay sets the property returned by [GetAutoplay]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetAutoplay(value string) Instance { //gd:AnimatedSprite3D.autoplay
-	class(self).SetAutoplay(String.New(value))
+	class(self).SetAutoplay(String.From(value))
 	return self
 }
 

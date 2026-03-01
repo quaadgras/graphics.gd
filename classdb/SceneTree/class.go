@@ -186,7 +186,7 @@ type Any interface {
 Returns true if a node added to the given group 'name' exists in the tree.
 */
 func (self Instance) HasGroup(name string) bool { //gd:SceneTree.has_group
-	return bool(Advanced(self).HasGroup(String.Name(String.New(name))))
+	return bool(Advanced(self).HasGroup(String.Name(String.From(name))))
 }
 
 /*
@@ -352,7 +352,7 @@ func (self Instance) CallGroupFlags(flags GroupCallFlags, group string, method s
 	for i, arg := range args {
 		converted_variants[i] = gd.NewVariant(arg)
 	}
-	Advanced(self).CallGroupFlags(int64(flags), String.Name(String.New(group)), String.Name(String.New(method)), converted_variants...)
+	Advanced(self).CallGroupFlags(int64(flags), String.Name(String.From(group)), String.Name(String.From(method)), converted_variants...)
 }
 
 /*
@@ -361,7 +361,7 @@ Calls [Object.Notification] with the given 'notification' to all nodes inside th
 [Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
 */
 func (self Instance) NotifyGroupFlags(call_flags int, group string, notification int) { //gd:SceneTree.notify_group_flags
-	Advanced(self).NotifyGroupFlags(int64(call_flags), String.Name(String.New(group)), int64(notification))
+	Advanced(self).NotifyGroupFlags(int64(call_flags), String.Name(String.From(group)), int64(notification))
 }
 
 /*
@@ -372,7 +372,7 @@ Note: In C#, 'property' must be in snake_case when referring to built-in Godot p
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetGroupFlags(call_flags int, group string, property string, value any) Instance { //gd:SceneTree.set_group_flags
-	Advanced(self).SetGroupFlags(int64(call_flags), String.Name(String.New(group)), String.New(property), variant.New(value))
+	Advanced(self).SetGroupFlags(int64(call_flags), String.Name(String.From(group)), String.From(property), variant.New(value))
 	return self
 }
 
@@ -391,7 +391,7 @@ func (self Instance) CallGroup(group string, method string, args ...any) { //gd:
 	for i, arg := range args {
 		converted_variants[i] = gd.NewVariant(arg)
 	}
-	Advanced(self).CallGroup(String.Name(String.New(group)), String.Name(String.New(method)), converted_variants...)
+	Advanced(self).CallGroup(String.Name(String.From(group)), String.Name(String.From(method)), converted_variants...)
 }
 
 /*
@@ -405,7 +405,7 @@ Note: This method acts immediately on all selected nodes at once, which may caus
 [SetGroup]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.SetGroup
 */
 func (self Instance) NotifyGroup(group string, notification int) { //gd:SceneTree.notify_group
-	Advanced(self).NotifyGroup(String.Name(String.New(group)), int64(notification))
+	Advanced(self).NotifyGroup(String.Name(String.From(group)), int64(notification))
 }
 
 /*
@@ -421,7 +421,7 @@ Returns 'self' to enable method chaining.
 [NotifyGroup]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.NotifyGroup
 */
 func (self Instance) SetGroup(group string, property string, value any) Instance { //gd:SceneTree.set_group
-	Advanced(self).SetGroup(String.Name(String.New(group)), String.New(property), variant.New(value))
+	Advanced(self).SetGroup(String.Name(String.From(group)), String.From(property), variant.New(value))
 	return self
 }
 
@@ -429,7 +429,7 @@ func (self Instance) SetGroup(group string, property string, value any) Instance
 Returns an slice containing all nodes inside this tree, that have been added to the given 'group', in scene hierarchy order.
 */
 func (self Instance) GetNodesInGroup(group string) []Node.Instance { //gd:SceneTree.get_nodes_in_group
-	return []Node.Instance(gd.ArrayAs[[]Node.Instance](gd.InternalArray(Advanced(self).GetNodesInGroup(String.Name(String.New(group))))))
+	return []Node.Instance(gd.ArrayAs[[]Node.Instance](gd.InternalArray(Advanced(self).GetNodesInGroup(String.Name(String.From(group))))))
 }
 
 /*
@@ -439,14 +439,14 @@ Returns the first [Node] found inside the tree, that has been added to the given
 [Node]: https://pkg.go.dev/graphics.gd/classdb/Node
 */
 func (self Instance) GetFirstNodeInGroup(group string) Node.Instance { //gd:SceneTree.get_first_node_in_group
-	return Node.Instance(Advanced(self).GetFirstNodeInGroup(String.Name(String.New(group))))
+	return Node.Instance(Advanced(self).GetFirstNodeInGroup(String.Name(String.From(group))))
 }
 
 /*
 Returns the number of nodes assigned to the given group.
 */
 func (self Instance) GetNodeCountInGroup(group string) int { //gd:SceneTree.get_node_count_in_group
-	return int(int(Advanced(self).GetNodeCountInGroup(String.Name(String.New(group)))))
+	return int(int(Advanced(self).GetNodeCountInGroup(String.Name(String.From(group)))))
 }
 
 /*
@@ -460,7 +460,7 @@ Note: See [ChangeSceneToNode] for details on the order of operations.
 [PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
 */
 func (self Instance) ChangeSceneToFile(path string) error { //gd:SceneTree.change_scene_to_file
-	return error(gd.ToError(Advanced(self).ChangeSceneToFile(String.New(path))))
+	return error(gd.ToError(Advanced(self).ChangeSceneToFile(String.From(path))))
 }
 
 /*
@@ -540,7 +540,7 @@ Returns 'self' to enable method chaining.
 [SetMultiplayer]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.SetMultiplayer
 */
 func (self Instance) SetMultiplayer(multiplayer MultiplayerAPI.Instance) Instance { //gd:SceneTree.set_multiplayer
-	Advanced(self).SetMultiplayer(multiplayer, Path.ToNode(String.New("")))
+	Advanced(self).SetMultiplayer(multiplayer, Path.ToNode(String.From("")))
 	return self
 }
 
@@ -559,7 +559,7 @@ Returns 'self' to enable method chaining.
 [SetMultiplayer]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.SetMultiplayer
 */
 func (self MoreArgs) SetMultiplayer(multiplayer MultiplayerAPI.Instance, root_path string) MoreArgs { //gd:SceneTree.set_multiplayer
-	Advanced(self).SetMultiplayer(multiplayer, Path.ToNode(String.New(root_path)))
+	Advanced(self).SetMultiplayer(multiplayer, Path.ToNode(String.From(root_path)))
 	return self
 }
 
@@ -570,7 +570,7 @@ Searches for the [MultiplayerAPI] configured for the given path, if one does not
 [SetMultiplayer]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.SetMultiplayer
 */
 func (self Instance) GetMultiplayer() MultiplayerAPI.Instance { //gd:SceneTree.get_multiplayer
-	return MultiplayerAPI.Instance(Advanced(self).GetMultiplayer(Path.ToNode(String.New(""))))
+	return MultiplayerAPI.Instance(Advanced(self).GetMultiplayer(Path.ToNode(String.From(""))))
 }
 
 /*
@@ -580,7 +580,7 @@ Searches for the [MultiplayerAPI] configured for the given path, if one does not
 [SetMultiplayer]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.SetMultiplayer
 */
 func (self MoreArgs) GetMultiplayer(for_path string) MultiplayerAPI.Instance { //gd:SceneTree.get_multiplayer
-	return MultiplayerAPI.Instance(Advanced(self).GetMultiplayer(Path.ToNode(String.New(for_path))))
+	return MultiplayerAPI.Instance(Advanced(self).GetMultiplayer(Path.ToNode(String.From(for_path))))
 }
 
 /*

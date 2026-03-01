@@ -153,7 +153,7 @@ type Any interface {
 Returns true if the preset has the property named 'property'.
 */
 func (self Instance) Has(property string) bool { //gd:EditorExportPreset.has
-	return bool(Advanced(self).Has(String.Name(String.New(property))))
+	return bool(Advanced(self).Has(String.Name(String.From(property))))
 }
 
 /*
@@ -183,28 +183,28 @@ func (self Instance) GetCustomizedFilesCount() int { //gd:EditorExportPreset.get
 Returns true if the file at the specified 'path' will be exported.
 */
 func (self Instance) HasExportFile(path string) bool { //gd:EditorExportPreset.has_export_file
-	return bool(Advanced(self).HasExportFile(String.New(path)))
+	return bool(Advanced(self).HasExportFile(String.From(path)))
 }
 
 /*
 Returns file export mode for the specified file.
 */
 func (self Instance) GetFileExportMode(path string) FileExportMode { //gd:EditorExportPreset.get_file_export_mode
-	return FileExportMode(Advanced(self).GetFileExportMode(String.New(path), 0))
+	return FileExportMode(Advanced(self).GetFileExportMode(String.From(path), 0))
 }
 
 /*
 Returns file export mode for the specified file.
 */
 func (self MoreArgs) GetFileExportMode(path string, def FileExportMode) FileExportMode { //gd:EditorExportPreset.get_file_export_mode
-	return FileExportMode(Advanced(self).GetFileExportMode(String.New(path), def))
+	return FileExportMode(Advanced(self).GetFileExportMode(String.From(path), def))
 }
 
 /*
 Returns the value of the setting identified by 'name' using export preset feature tag overrides instead of current OS features.
 */
 func (self Instance) GetProjectSetting(name string) any { //gd:EditorExportPreset.get_project_setting
-	return any(Advanced(self).GetProjectSetting(String.Name(String.New(name))).Interface())
+	return any(Advanced(self).GetProjectSetting(String.Name(String.From(name))).Interface())
 }
 
 /*
@@ -325,7 +325,7 @@ func (self Instance) GetScriptExportMode() ScriptExportMode { //gd:EditorExportP
 Returns export option value or value of environment variable if it is set.
 */
 func (self Instance) GetOrEnv(name string, env_var string) any { //gd:EditorExportPreset.get_or_env
-	return any(Advanced(self).GetOrEnv(String.Name(String.New(name)), String.New(env_var)).Interface())
+	return any(Advanced(self).GetOrEnv(String.Name(String.From(name)), String.From(env_var)).Interface())
 }
 
 /*
@@ -336,7 +336,7 @@ If 'windows_version' is true, formats the returned version number to be compatib
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func (self Instance) GetVersion(name string, windows_version bool) string { //gd:EditorExportPreset.get_version
-	return string(Advanced(self).GetVersion(String.Name(String.New(name)), windows_version).String())
+	return string(Advanced(self).GetVersion(String.Name(String.From(name)), windows_version).String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

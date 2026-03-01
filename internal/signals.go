@@ -58,9 +58,9 @@ func (SignalProxy) Remove(raw complex128, fn CallableType.Function) {
 	sig := pointers.Load[Signal](raw)
 	sig.Disconnect(InternalCallable(fn))
 }
-func (SignalProxy) Name(raw complex128) StringType.Readable {
+func (SignalProxy) Name(raw complex128) StringType.Unicode {
 	sig := pointers.Load[Signal](raw)
-	return StringType.New(sig.GetName())
+	return StringType.New(sig.GetName().String())
 }
 func (SignalProxy) Consumers(raw complex128) iter.Seq[SignalType.Consumer] {
 	sig := pointers.Load[Signal](raw)

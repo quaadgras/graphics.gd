@@ -433,7 +433,7 @@ See also [ImageTexture] description for usage examples.
 [Supported image formats]: https://docs.godotengine.org/tutorials/assets_pipeline/importing_images.html#supported-image-formats
 */
 func (self Instance) Load(path string) error { //gd:Image.load
-	return error(gd.ToError(Advanced(self).Load(String.New(path))))
+	return error(gd.ToError(Advanced(self).Load(String.From(path))))
 }
 
 /*
@@ -443,14 +443,14 @@ Creates a new [Image] and loads data from the specified file.
 */
 func LoadFromFile(path string) Instance { //gd:Image.load_from_file
 	self := Instance{}
-	return Instance(Advanced(self).LoadFromFile(String.New(path)))
+	return Instance(Advanced(self).LoadFromFile(String.From(path)))
 }
 
 /*
 Saves the image as a PNG file to the file at 'path'.
 */
 func (self Instance) SavePng(path string) error { //gd:Image.save_png
-	return error(gd.ToError(Advanced(self).SavePng(String.New(path))))
+	return error(gd.ToError(Advanced(self).SavePng(String.From(path))))
 }
 
 /*
@@ -468,7 +468,7 @@ Note: JPEG does not save an alpha channel. If the [Image] contains an alpha chan
 [Image]: https://pkg.go.dev/graphics.gd/classdb/Image
 */
 func (self Instance) SaveJpg(path string) error { //gd:Image.save_jpg
-	return error(gd.ToError(Advanced(self).SaveJpg(String.New(path), float64(0.75))))
+	return error(gd.ToError(Advanced(self).SaveJpg(String.From(path), float64(0.75))))
 }
 
 /*
@@ -479,7 +479,7 @@ Note: JPEG does not save an alpha channel. If the [Image] contains an alpha chan
 [Image]: https://pkg.go.dev/graphics.gd/classdb/Image
 */
 func (self MoreArgs) SaveJpg(path string, quality Float.X) error { //gd:Image.save_jpg
-	return error(gd.ToError(Advanced(self).SaveJpg(String.New(path), float64(quality))))
+	return error(gd.ToError(Advanced(self).SaveJpg(String.From(path), float64(quality))))
 }
 
 /*
@@ -508,14 +508,14 @@ func (self MoreArgs) SaveJpgToBuffer(quality Float.X) []byte { //gd:Image.save_j
 Saves the image as an EXR file to 'path'. If 'grayscale' is true and the image has only one channel, it will be saved explicitly as monochrome rather than one red channel. This function will return [ErrUnavailable] if Godot was compiled without the TinyEXR module.
 */
 func (self Instance) SaveExr(path string) error { //gd:Image.save_exr
-	return error(gd.ToError(Advanced(self).SaveExr(String.New(path), false)))
+	return error(gd.ToError(Advanced(self).SaveExr(String.From(path), false)))
 }
 
 /*
 Saves the image as an EXR file to 'path'. If 'grayscale' is true and the image has only one channel, it will be saved explicitly as monochrome rather than one red channel. This function will return [ErrUnavailable] if Godot was compiled without the TinyEXR module.
 */
 func (self MoreArgs) SaveExr(path string, grayscale bool) error { //gd:Image.save_exr
-	return error(gd.ToError(Advanced(self).SaveExr(String.New(path), grayscale)))
+	return error(gd.ToError(Advanced(self).SaveExr(String.From(path), grayscale)))
 }
 
 /*
@@ -540,7 +540,7 @@ Note: The DDS module may be disabled in certain builds, which means [SaveDds] wi
 [SaveDds]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.SaveDds
 */
 func (self Instance) SaveDds(path string) error { //gd:Image.save_dds
-	return error(gd.ToError(Advanced(self).SaveDds(String.New(path))))
+	return error(gd.ToError(Advanced(self).SaveDds(String.From(path))))
 }
 
 /*
@@ -560,7 +560,7 @@ Saves the image as a WebP (Web Picture) file to the file at 'path'. By default i
 Note: The WebP format is limited to a size of 16383×16383 pixels, while PNG can save larger images.
 */
 func (self Instance) SaveWebp(path string) error { //gd:Image.save_webp
-	return error(gd.ToError(Advanced(self).SaveWebp(String.New(path), false, float64(0.75))))
+	return error(gd.ToError(Advanced(self).SaveWebp(String.From(path), false, float64(0.75))))
 }
 
 /*
@@ -569,7 +569,7 @@ Saves the image as a WebP (Web Picture) file to the file at 'path'. By default i
 Note: The WebP format is limited to a size of 16383×16383 pixels, while PNG can save larger images.
 */
 func (self MoreArgs) SaveWebp(path string, lossy bool, quality Float.X) error { //gd:Image.save_webp
-	return error(gd.ToError(Advanced(self).SaveWebp(String.New(path), lossy, float64(quality))))
+	return error(gd.ToError(Advanced(self).SaveWebp(String.From(path), lossy, float64(quality))))
 }
 
 /*
@@ -1033,7 +1033,7 @@ Loads an image from the string contents of an SVG file (.svg).
 Note: This method is only available in engine builds with the SVG module enabled. By default, the SVG module is enabled, but it can be disabled at build-time using the module_svg_enabled=no SCons option.
 */
 func (self Instance) LoadSvgFromString(svg_str string) error { //gd:Image.load_svg_from_string
-	return error(gd.ToError(Advanced(self).LoadSvgFromString(String.New(svg_str), float64(1.0))))
+	return error(gd.ToError(Advanced(self).LoadSvgFromString(String.From(svg_str), float64(1.0))))
 }
 
 /*
@@ -1042,7 +1042,7 @@ Loads an image from the string contents of an SVG file (.svg).
 Note: This method is only available in engine builds with the SVG module enabled. By default, the SVG module is enabled, but it can be disabled at build-time using the module_svg_enabled=no SCons option.
 */
 func (self MoreArgs) LoadSvgFromString(svg_str string, scale Float.X) error { //gd:Image.load_svg_from_string
-	return error(gd.ToError(Advanced(self).LoadSvgFromString(String.New(svg_str), float64(scale))))
+	return error(gd.ToError(Advanced(self).LoadSvgFromString(String.From(svg_str), float64(scale))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -222,7 +222,7 @@ AnimationMixer has a global library by default with an empty string as key. For 
 	global_library.AddAnimation("animation_name", animation_resource)
 */
 func (self Instance) AddAnimationLibrary(name string, library AnimationLibrary.Instance) error { //gd:AnimationMixer.add_animation_library
-	return error(gd.ToError(Advanced(self).AddAnimationLibrary(String.Name(String.New(name)), library)))
+	return error(gd.ToError(Advanced(self).AddAnimationLibrary(String.Name(String.From(name)), library)))
 }
 
 /*
@@ -231,7 +231,7 @@ Removes the [AnimationLibrary] associated with the key 'name'.
 [AnimationLibrary]: https://pkg.go.dev/graphics.gd/classdb/AnimationLibrary
 */
 func (self Instance) RemoveAnimationLibrary(name string) { //gd:AnimationMixer.remove_animation_library
-	Advanced(self).RemoveAnimationLibrary(String.Name(String.New(name)))
+	Advanced(self).RemoveAnimationLibrary(String.Name(String.From(name)))
 }
 
 /*
@@ -240,7 +240,7 @@ Moves the [AnimationLibrary] associated with the key 'name' to the key 'newname'
 [AnimationLibrary]: https://pkg.go.dev/graphics.gd/classdb/AnimationLibrary
 */
 func (self Instance) RenameAnimationLibrary(name string, newname string) { //gd:AnimationMixer.rename_animation_library
-	Advanced(self).RenameAnimationLibrary(String.Name(String.New(name)), String.Name(String.New(newname)))
+	Advanced(self).RenameAnimationLibrary(String.Name(String.From(name)), String.Name(String.From(newname)))
 }
 
 /*
@@ -250,7 +250,7 @@ Returns true if the [AnimationMixer] stores an [AnimationLibrary] with key 'name
 [AnimationMixer]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer
 */
 func (self Instance) HasAnimationLibrary(name string) bool { //gd:AnimationMixer.has_animation_library
-	return bool(Advanced(self).HasAnimationLibrary(String.Name(String.New(name))))
+	return bool(Advanced(self).HasAnimationLibrary(String.Name(String.From(name))))
 }
 
 /*
@@ -262,7 +262,7 @@ To get the [AnimationMixer]'s global animation library, use get_animation_librar
 [AnimationMixer]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer
 */
 func (self Instance) GetAnimationLibrary(name string) AnimationLibrary.Instance { //gd:AnimationMixer.get_animation_library
-	return AnimationLibrary.Instance(Advanced(self).GetAnimationLibrary(String.Name(String.New(name))))
+	return AnimationLibrary.Instance(Advanced(self).GetAnimationLibrary(String.Name(String.From(name))))
 }
 
 /*
@@ -279,7 +279,7 @@ Returns true if the [AnimationMixer] stores an [Animation] with key 'name'.
 [AnimationMixer]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer
 */
 func (self Instance) HasAnimation(name string) bool { //gd:AnimationMixer.has_animation
-	return bool(Advanced(self).HasAnimation(String.Name(String.New(name))))
+	return bool(Advanced(self).HasAnimation(String.Name(String.From(name))))
 }
 
 /*
@@ -288,7 +288,7 @@ Returns the [Animation] with the key 'name'. If the animation does not exist, nu
 [Animation]: https://pkg.go.dev/graphics.gd/classdb/Animation
 */
 func (self Instance) GetAnimation(name string) Animation.Instance { //gd:AnimationMixer.get_animation
-	return Animation.Instance(Advanced(self).GetAnimation(String.Name(String.New(name))))
+	return Animation.Instance(Advanced(self).GetAnimation(String.Name(String.From(name))))
 }
 
 /*
@@ -493,7 +493,7 @@ After this it will interpolate with current animation blending result during the
 You can specify 'trans_type' as the curve for the interpolation. For better results, it may be appropriate to specify [Tween.TransLinear] for cases where the first key of the track begins with a non-zero value or where the key value does not change, and [Tween.TransQuad] for cases where the key value changes linearly.
 */
 func (self Instance) Capture(name string, duration Float.X) { //gd:AnimationMixer.capture
-	Advanced(self).Capture(String.Name(String.New(name)), float64(duration), 0, 0)
+	Advanced(self).Capture(String.Name(String.From(name)), float64(duration), 0, 0)
 }
 
 /*
@@ -504,7 +504,7 @@ After this it will interpolate with current animation blending result during the
 You can specify 'trans_type' as the curve for the interpolation. For better results, it may be appropriate to specify [Tween.TransLinear] for cases where the first key of the track begins with a non-zero value or where the key value does not change, and [Tween.TransQuad] for cases where the key value changes linearly.
 */
 func (self MoreArgs) Capture(name string, duration Float.X, trans_type Tween.TransitionType, ease_type Tween.EaseType) { //gd:AnimationMixer.capture
-	Advanced(self).Capture(String.Name(String.New(name)), float64(duration), trans_type, ease_type)
+	Advanced(self).Capture(String.Name(String.From(name)), float64(duration), trans_type, ease_type)
 }
 
 /*
@@ -633,7 +633,7 @@ func (self Instance) RootNode() string { //gd:AnimationMixer.root_node
 
 // SetRootNode sets the property returned by [GetRootNode]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetRootNode(value string) Instance { //gd:AnimationMixer.root_node
-	class(self).SetRootNode(Path.ToNode(String.New(value)))
+	class(self).SetRootNode(Path.ToNode(String.From(value)))
 	return self
 }
 
@@ -655,7 +655,7 @@ func (self Instance) RootMotionTrack() string { //gd:AnimationMixer.root_motion_
 
 // SetRootMotionTrack sets the property returned by [GetRootMotionTrack]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetRootMotionTrack(value string) Instance { //gd:AnimationMixer.root_motion_track
-	class(self).SetRootMotionTrack(Path.ToNode(String.New(value)))
+	class(self).SetRootMotionTrack(Path.ToNode(String.From(value)))
 	return self
 }
 

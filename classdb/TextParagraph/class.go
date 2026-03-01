@@ -231,14 +231,14 @@ func (self Instance) SetBidiOverride(override []any) Instance { //gd:TextParagra
 Sets drop cap, overrides previously set drop cap. Drop cap (dropped capital) is a decorative element at the beginning of a paragraph that is larger than the rest of the text.
 */
 func (self Instance) SetDropcap(text string, font Font.Instance, font_size int) bool { //gd:TextParagraph.set_dropcap
-	return bool(Advanced(self).SetDropcap(String.New(text), font, int64(font_size), Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), String.New("")))
+	return bool(Advanced(self).SetDropcap(String.From(text), font, int64(font_size), Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), String.From("")))
 }
 
 /*
 Sets drop cap, overrides previously set drop cap. Drop cap (dropped capital) is a decorative element at the beginning of a paragraph that is larger than the rest of the text.
 */
 func (self MoreArgs) SetDropcap(text string, font Font.Instance, font_size int, dropcap_margins Rect2.PositionSize, language string) bool { //gd:TextParagraph.set_dropcap
-	return bool(Advanced(self).SetDropcap(String.New(text), font, int64(font_size), Rect2.PositionSize(dropcap_margins), String.New(language)))
+	return bool(Advanced(self).SetDropcap(String.From(text), font, int64(font_size), Rect2.PositionSize(dropcap_margins), String.From(language)))
 }
 
 /*
@@ -252,14 +252,14 @@ func (self Instance) ClearDropcap() { //gd:TextParagraph.clear_dropcap
 Adds text span and font to draw it.
 */
 func (self Instance) AddString(text string, font Font.Instance, font_size int) bool { //gd:TextParagraph.add_string
-	return bool(Advanced(self).AddString(String.New(text), font, int64(font_size), String.New(""), variant.New([1]any{}[0])))
+	return bool(Advanced(self).AddString(String.From(text), font, int64(font_size), String.From(""), variant.New([1]any{}[0])))
 }
 
 /*
 Adds text span and font to draw it.
 */
 func (self MoreArgs) AddString(text string, font Font.Instance, font_size int, language string, meta any) bool { //gd:TextParagraph.add_string
-	return bool(Advanced(self).AddString(String.New(text), font, int64(font_size), String.New(language), variant.New(meta)))
+	return bool(Advanced(self).AddString(String.From(text), font, int64(font_size), String.From(language), variant.New(meta)))
 }
 
 /*
@@ -586,7 +586,7 @@ func (self Instance) CustomPunctuation() string { //gd:TextParagraph.custom_punc
 
 // SetCustomPunctuation sets the property returned by [GetCustomPunctuation]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetCustomPunctuation(value string) Instance { //gd:TextParagraph.custom_punctuation
-	class(self).SetCustomPunctuation(String.New(value))
+	class(self).SetCustomPunctuation(String.From(value))
 	return self
 }
 
@@ -692,7 +692,7 @@ func (self Instance) EllipsisChar() string { //gd:TextParagraph.ellipsis_char
 
 // SetEllipsisChar sets the property returned by [GetEllipsisChar]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetEllipsisChar(value string) Instance { //gd:TextParagraph.ellipsis_char
-	class(self).SetEllipsisChar(String.New(value))
+	class(self).SetEllipsisChar(String.From(value))
 	return self
 }
 

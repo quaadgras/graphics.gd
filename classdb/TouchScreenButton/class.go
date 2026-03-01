@@ -304,7 +304,7 @@ func (self Instance) Action() string { //gd:TouchScreenButton.action
 
 // SetAction sets the property returned by [GetAction]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetAction(value string) Instance { //gd:TouchScreenButton.action
-	class(self).SetAction(String.New(value))
+	class(self).SetAction(String.From(value))
 	return self
 }
 

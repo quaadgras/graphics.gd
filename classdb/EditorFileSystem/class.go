@@ -173,21 +173,21 @@ This will not import the file. To reimport, call [ReimportFiles] or [Scan] metho
 [Scan]: https://pkg.go.dev/graphics.gd/classdb/EditorFileSystem#Instance.Scan
 */
 func (self Instance) UpdateFile(path string) { //gd:EditorFileSystem.update_file
-	Advanced(self).UpdateFile(String.New(path))
+	Advanced(self).UpdateFile(String.From(path))
 }
 
 /*
 Returns a view into the filesystem at 'path'.
 */
 func (self Instance) GetFilesystemPath(path string) EditorFileSystemDirectory.Instance { //gd:EditorFileSystem.get_filesystem_path
-	return EditorFileSystemDirectory.Instance(Advanced(self).GetFilesystemPath(String.New(path)))
+	return EditorFileSystemDirectory.Instance(Advanced(self).GetFilesystemPath(String.From(path)))
 }
 
 /*
 Returns the resource type of the file, given the full path. This returns a string such as "Resource" or "GDScript", not a file extension such as ".gd".
 */
 func (self Instance) GetFileType(path string) string { //gd:EditorFileSystem.get_file_type
-	return string(Advanced(self).GetFileType(String.New(path)).String())
+	return string(Advanced(self).GetFileType(String.From(path)).String())
 }
 
 /*

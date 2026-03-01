@@ -374,7 +374,7 @@ Helper method which calls the set_text() method on the currently focused [Contro
 [LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
 */
 func (self Instance) PushTextInput(text string) { //gd:Viewport.push_text_input
-	Advanced(self).PushTextInput(String.New(text))
+	Advanced(self).PushTextInput(String.From(text))
 }
 
 /*
@@ -620,7 +620,7 @@ func (self Instance) GuiGetDragDescription() string { //gd:Viewport.gui_get_drag
 Sets the human-readable description of the drag data to 'description', used for assistive apps.
 */
 func (self Instance) GuiSetDragDescription(description string) { //gd:Viewport.gui_set_drag_description
-	Advanced(self).GuiSetDragDescription(String.New(description))
+	Advanced(self).GuiSetDragDescription(String.From(description))
 }
 
 /*

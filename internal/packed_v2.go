@@ -40,7 +40,7 @@ func InternalPacked[P Packed[P, V], V gdextension.Packable](array PackedType.Arr
 }
 
 func InternalPackedStrings(array PackedType.Strings) PackedStringArray {
-	_, state := ArrayVariant.As(ArrayType.Contains[StringType.Readable](array), NewPackedStringProxy)
+	_, state := ArrayVariant.As(ArrayType.Contains[StringType.Unicode](array), NewPackedStringProxy)
 	return pointers.Load[PackedStringArray](state)
 }
 
@@ -83,11 +83,11 @@ func (PackedStringArrayProxy) Any(raw complex128) ArrayType.Any {
 func (PackedStringArrayProxy) Resize(raw complex128, n int) {
 	pointers.Load[PackedStringArray](raw).Resize(Int(n))
 }
-func (PackedStringArrayProxy) Index(raw complex128, i int) StringType.Readable {
+func (PackedStringArrayProxy) Index(raw complex128, i int) StringType.Unicode {
 	s := pointers.Load[PackedStringArray](raw).Index(Int(i))
 	return StringType.Via(StringProxy{}, pointers.Pack(s))
 }
-func (PackedStringArrayProxy) SetIndex(raw complex128, i int, v StringType.Readable) {
+func (PackedStringArrayProxy) SetIndex(raw complex128, i int, v StringType.Unicode) {
 	_, s := StringType.Proxy(v, StringCacheCheck, NewStringProxy)
 	pointers.Load[PackedStringArray](raw).SetIndex(Int(i), pointers.Load[String](s))
 }

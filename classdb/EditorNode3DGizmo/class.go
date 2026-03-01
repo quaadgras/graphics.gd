@@ -284,7 +284,7 @@ func (Instance) _get_handle_name(impl func(ptr gdclass.Receiver, id int, seconda
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(id), secondary)
-		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
 
 		if !ok {
 			return

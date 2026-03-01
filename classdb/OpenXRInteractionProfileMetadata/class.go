@@ -122,14 +122,14 @@ type Any interface {
 Allows for renaming old interaction profile paths to new paths in order to load and process older action maps.
 */
 func (self Instance) RegisterProfileRename(old_name string, new_name string) { //gd:OpenXRInteractionProfileMetadata.register_profile_rename
-	Advanced(self).RegisterProfileRename(String.New(old_name), String.New(new_name))
+	Advanced(self).RegisterProfileRename(String.From(old_name), String.From(new_name))
 }
 
 /*
 Allows for renaming old input/output paths to new paths in order to load and process older action maps.
 */
 func (self Instance) RegisterPathRename(old_name string, new_name string) { //gd:OpenXRInteractionProfileMetadata.register_path_rename
-	Advanced(self).RegisterPathRename(String.New(old_name), String.New(new_name))
+	Advanced(self).RegisterPathRename(String.From(old_name), String.From(new_name))
 }
 
 /*
@@ -142,7 +142,7 @@ When a top level path ends up being bound by OpenXR, an [XRPositionalTracker] is
 [XRPositionalTracker]: https://pkg.go.dev/graphics.gd/classdb/XRPositionalTracker
 */
 func (self Instance) RegisterTopLevelPath(display_name string, openxr_path string, openxr_extension_names string) { //gd:OpenXRInteractionProfileMetadata.register_top_level_path
-	Advanced(self).RegisterTopLevelPath(String.New(display_name), String.New(openxr_path), String.New(openxr_extension_names))
+	Advanced(self).RegisterTopLevelPath(String.From(display_name), String.From(openxr_path), String.From(openxr_extension_names))
 }
 
 /*
@@ -151,7 +151,7 @@ Registers an interaction profile using its OpenXR designation (e.g. /interaction
 'display_name' is the description shown to the user. 'openxr_path' is the interaction profile path being registered. 'openxr_extension_names' optionally restricts this profile to the given extension being enabled/available. If the extension is not available, the profile and all related entries used in an action map are filtered out.
 */
 func (self Instance) RegisterInteractionProfile(display_name string, openxr_path string, openxr_extension_names string) { //gd:OpenXRInteractionProfileMetadata.register_interaction_profile
-	Advanced(self).RegisterInteractionProfile(String.New(display_name), String.New(openxr_path), String.New(openxr_extension_names))
+	Advanced(self).RegisterInteractionProfile(String.From(display_name), String.From(openxr_path), String.From(openxr_extension_names))
 }
 
 /*
@@ -160,7 +160,7 @@ Registers an input/output path for the given 'interaction_profile'. The profile 
 [RegisterInteractionProfile]: https://pkg.go.dev/graphics.gd/classdb/OpenXRInteractionProfileMetadata#Instance.RegisterInteractionProfile
 */
 func (self Instance) RegisterIoPath(interaction_profile string, display_name string, toplevel_path string, openxr_path string, openxr_extension_names string, action_type OpenXRAction.ActionType) { //gd:OpenXRInteractionProfileMetadata.register_io_path
-	Advanced(self).RegisterIoPath(String.New(interaction_profile), String.New(display_name), String.New(toplevel_path), String.New(openxr_path), String.New(openxr_extension_names), action_type)
+	Advanced(self).RegisterIoPath(String.From(interaction_profile), String.From(display_name), String.From(toplevel_path), String.From(openxr_path), String.From(openxr_extension_names), action_type)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

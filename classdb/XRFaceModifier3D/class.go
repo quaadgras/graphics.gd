@@ -181,7 +181,7 @@ func (self Instance) FaceTracker() string { //gd:XRFaceModifier3D.face_tracker
 
 // SetFaceTracker sets the property returned by [GetFaceTracker]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetFaceTracker(value string) Instance { //gd:XRFaceModifier3D.face_tracker
-	class(self).SetFaceTracker(String.Name(String.New(value)))
+	class(self).SetFaceTracker(String.Name(String.From(value)))
 	return self
 }
 
@@ -196,7 +196,7 @@ func (self Instance) Target() string { //gd:XRFaceModifier3D.target
 
 // SetTarget sets the property returned by [GetTarget]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetTarget(value string) Instance { //gd:XRFaceModifier3D.target
-	class(self).SetTarget(Path.ToNode(String.New(value)))
+	class(self).SetTarget(Path.ToNode(String.From(value)))
 	return self
 }
 

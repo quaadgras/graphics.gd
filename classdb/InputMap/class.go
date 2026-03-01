@@ -136,7 +136,7 @@ Returns true if the [InputMap] has a registered action with the given name.
 [InputMap]: https://pkg.go.dev/graphics.gd/classdb/InputMap
 */
 func HasAction(action string) bool { //gd:InputMap.has_action
-	return bool(Advanced().HasAction(String.Name(String.New(action))))
+	return bool(Advanced().HasAction(String.Name(String.From(action))))
 }
 
 /*
@@ -157,7 +157,7 @@ An [InputEvent] can then be added to this action with [ActionAddEvent].
 [InputMap]: https://pkg.go.dev/graphics.gd/classdb/InputMap
 */
 func AddAction(action string) { //gd:InputMap.add_action
-	Advanced().AddAction(String.Name(String.New(action)), float64(0.2))
+	Advanced().AddAction(String.Name(String.From(action)), float64(0.2))
 }
 
 /*
@@ -169,7 +169,7 @@ An [InputEvent] can then be added to this action with [ActionAddEvent].
 [InputMap]: https://pkg.go.dev/graphics.gd/classdb/InputMap
 */
 func AddActionOptions(action string, deadzone Float.X) { //gd:InputMap.add_action
-	Advanced().AddAction(String.Name(String.New(action)), float64(deadzone))
+	Advanced().AddAction(String.Name(String.From(action)), float64(deadzone))
 }
 
 /*
@@ -178,28 +178,28 @@ Removes an action from the [InputMap].
 [InputMap]: https://pkg.go.dev/graphics.gd/classdb/InputMap
 */
 func EraseAction(action string) { //gd:InputMap.erase_action
-	Advanced().EraseAction(String.Name(String.New(action)))
+	Advanced().EraseAction(String.Name(String.From(action)))
 }
 
 /*
 Returns the human-readable description of the given action.
 */
 func GetActionDescription(action string) string { //gd:InputMap.get_action_description
-	return string(Advanced().GetActionDescription(String.Name(String.New(action))).String())
+	return string(Advanced().GetActionDescription(String.Name(String.From(action))).String())
 }
 
 /*
 Sets a deadzone value for the action.
 */
 func ActionSetDeadzone(action string, deadzone Float.X) { //gd:InputMap.action_set_deadzone
-	Advanced().ActionSetDeadzone(String.Name(String.New(action)), float64(deadzone))
+	Advanced().ActionSetDeadzone(String.Name(String.From(action)), float64(deadzone))
 }
 
 /*
 Returns a deadzone value for the action.
 */
 func ActionGetDeadzone(action string) Float.X { //gd:InputMap.action_get_deadzone
-	return Float.X(Float.X(Advanced().ActionGetDeadzone(String.Name(String.New(action)))))
+	return Float.X(Float.X(Advanced().ActionGetDeadzone(String.Name(String.From(action)))))
 }
 
 /*
@@ -208,7 +208,7 @@ Adds an [InputEvent] to an action. This [InputEvent] will trigger the action.
 [InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
 */
 func ActionAddEvent(action string, event InputEvent.Instance) { //gd:InputMap.action_add_event
-	Advanced().ActionAddEvent(String.Name(String.New(action)), event)
+	Advanced().ActionAddEvent(String.Name(String.From(action)), event)
 }
 
 /*
@@ -217,7 +217,7 @@ Returns true if the action has the given [InputEvent] associated with it.
 [InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
 */
 func ActionHasEvent(action string, event InputEvent.Instance) bool { //gd:InputMap.action_has_event
-	return bool(Advanced().ActionHasEvent(String.Name(String.New(action)), event))
+	return bool(Advanced().ActionHasEvent(String.Name(String.From(action)), event))
 }
 
 /*
@@ -226,14 +226,14 @@ Removes an [InputEvent] from an action.
 [InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
 */
 func ActionEraseEvent(action string, event InputEvent.Instance) { //gd:InputMap.action_erase_event
-	Advanced().ActionEraseEvent(String.Name(String.New(action)), event)
+	Advanced().ActionEraseEvent(String.Name(String.From(action)), event)
 }
 
 /*
 Removes all events from an action.
 */
 func ActionEraseEvents(action string) { //gd:InputMap.action_erase_events
-	Advanced().ActionEraseEvents(String.Name(String.New(action)))
+	Advanced().ActionEraseEvents(String.Name(String.From(action)))
 }
 
 /*
@@ -246,7 +246,7 @@ Note: When used in the editor (e.g. a tool script or [EditorPlugin]), this metho
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func ActionGetEvents(action string) []InputEvent.Instance { //gd:InputMap.action_get_events
-	return []InputEvent.Instance(gd.ArrayAs[[]InputEvent.Instance](gd.InternalArray(Advanced().ActionGetEvents(String.Name(String.New(action))))))
+	return []InputEvent.Instance(gd.ArrayAs[[]InputEvent.Instance](gd.InternalArray(Advanced().ActionGetEvents(String.Name(String.From(action))))))
 }
 
 /*
@@ -260,7 +260,7 @@ If 'exact_match' is false, it ignores additional input modifiers for [InputEvent
 [InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
 */
 func EventIsAction(event InputEvent.Instance, action string, exact_match bool) bool { //gd:InputMap.event_is_action
-	return bool(Advanced().EventIsAction(event, String.Name(String.New(action)), exact_match))
+	return bool(Advanced().EventIsAction(event, String.Name(String.From(action)), exact_match))
 }
 
 /*

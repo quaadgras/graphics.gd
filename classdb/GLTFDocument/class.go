@@ -165,7 +165,7 @@ Note: The 'base_path' tells [AppendFromFile] where to find dependencies and can 
 [GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
 */
 func (self Instance) AppendFromFile(path string, state GLTFState.Instance) error { //gd:GLTFDocument.append_from_file
-	return error(gd.ToError(Advanced(self).AppendFromFile(String.New(path), state, int64(0), String.New(""))))
+	return error(gd.ToError(Advanced(self).AppendFromFile(String.From(path), state, int64(0), String.From(""))))
 }
 
 /*
@@ -177,7 +177,7 @@ Note: The 'base_path' tells [AppendFromFile] where to find dependencies and can 
 [GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
 */
 func (self MoreArgs) AppendFromFile(path string, state GLTFState.Instance, flags int, base_path string) error { //gd:GLTFDocument.append_from_file
-	return error(gd.ToError(Advanced(self).AppendFromFile(String.New(path), state, int64(flags), String.New(base_path))))
+	return error(gd.ToError(Advanced(self).AppendFromFile(String.From(path), state, int64(flags), String.From(base_path))))
 }
 
 /*
@@ -189,7 +189,7 @@ Note: The 'base_path' tells [AppendFromBuffer] where to find dependencies and ca
 [GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
 */
 func (self Instance) AppendFromBuffer(bytes []byte, base_path string, state GLTFState.Instance) error { //gd:GLTFDocument.append_from_buffer
-	return error(gd.ToError(Advanced(self).AppendFromBuffer(Packed.BytesFrom(bytes...), String.New(base_path), state, int64(0))))
+	return error(gd.ToError(Advanced(self).AppendFromBuffer(Packed.BytesFrom(bytes...), String.From(base_path), state, int64(0))))
 }
 
 /*
@@ -201,7 +201,7 @@ Note: The 'base_path' tells [AppendFromBuffer] where to find dependencies and ca
 [GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
 */
 func (self MoreArgs) AppendFromBuffer(bytes []byte, base_path string, state GLTFState.Instance, flags int) error { //gd:GLTFDocument.append_from_buffer
-	return error(gd.ToError(Advanced(self).AppendFromBuffer(Packed.BytesFrom(bytes...), String.New(base_path), state, int64(flags))))
+	return error(gd.ToError(Advanced(self).AppendFromBuffer(Packed.BytesFrom(bytes...), String.From(base_path), state, int64(flags))))
 }
 
 /*
@@ -261,7 +261,7 @@ Note: The extension of the glTF file determines if it is a .glb binary file or a
 [GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
 */
 func (self Instance) WriteToFilesystem(state GLTFState.Instance, path string) error { //gd:GLTFDocument.write_to_filesystem
-	return error(gd.ToError(Advanced(self).WriteToFilesystem(state, String.New(path))))
+	return error(gd.ToError(Advanced(self).WriteToFilesystem(state, String.From(path))))
 }
 
 /*
@@ -272,7 +272,7 @@ Determines a mapping between the given glTF Object Model 'json_pointer' and the 
 */
 func ImportObjectModelProperty(state GLTFState.Instance, json_pointer string) GLTFObjectModelProperty.Instance { //gd:GLTFDocument.import_object_model_property
 	self := Instance{}
-	return GLTFObjectModelProperty.Instance(Advanced(self).ImportObjectModelProperty(state, String.New(json_pointer)))
+	return GLTFObjectModelProperty.Instance(Advanced(self).ImportObjectModelProperty(state, String.From(json_pointer)))
 }
 
 /*
@@ -283,7 +283,7 @@ Determines a mapping between the given Godot 'node_path' and the corresponding g
 */
 func ExportObjectModelProperty(state GLTFState.Instance, node_path string, godot_node Node.Instance, gltf_node_index int) GLTFObjectModelProperty.Instance { //gd:GLTFDocument.export_object_model_property
 	self := Instance{}
-	return GLTFObjectModelProperty.Instance(Advanced(self).ExportObjectModelProperty(state, Path.ToNode(String.New(node_path)), godot_node, int64(gltf_node_index)))
+	return GLTFObjectModelProperty.Instance(Advanced(self).ExportObjectModelProperty(state, Path.ToNode(String.From(node_path)), godot_node, int64(gltf_node_index)))
 }
 
 /*
@@ -378,7 +378,7 @@ func (self Instance) ImageFormat() string { //gd:GLTFDocument.image_format
 
 // SetImageFormat sets the property returned by [GetImageFormat]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetImageFormat(value string) Instance { //gd:GLTFDocument.image_format
-	class(self).SetImageFormat(String.New(value))
+	class(self).SetImageFormat(String.From(value))
 	return self
 }
 
@@ -411,7 +411,7 @@ func (self Instance) FallbackImageFormat() string { //gd:GLTFDocument.fallback_i
 
 // SetFallbackImageFormat sets the property returned by [GetFallbackImageFormat]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetFallbackImageFormat(value string) Instance { //gd:GLTFDocument.fallback_image_format
-	class(self).SetFallbackImageFormat(String.New(value))
+	class(self).SetFallbackImageFormat(String.From(value))
 	return self
 }
 

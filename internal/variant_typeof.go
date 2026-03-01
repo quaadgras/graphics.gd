@@ -195,7 +195,7 @@ func VariantTypeOf(rtype reflect.Type) (vtype gdextension.VariantType, ok bool) 
 			return gdextension.TypePackedVector4Array, true
 		case reflect.TypeFor[ArrayType.Any]():
 			return gdextension.TypeArray, true
-		case reflect.TypeFor[StringType.Readable]():
+		case reflect.TypeFor[StringType.Unicode]():
 			return gdextension.TypeString, true
 		case reflect.TypeFor[Path.ToNode]():
 			return gdextension.TypeNodePath, true

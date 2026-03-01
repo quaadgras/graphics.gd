@@ -139,7 +139,7 @@ Warning: Deserialized objects can contain code which gets executed. Do not use t
 [@GlobalScope.BytesToVar]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.BytesToVar
 */
 func Base64ToVariant(base64_str string, allow_objects bool) any { //gd:Marshalls.base64_to_variant
-	return any(Advanced().Base64ToVariant(String.New(base64_str), allow_objects).Interface())
+	return any(Advanced().Base64ToVariant(String.From(base64_str), allow_objects).Interface())
 }
 
 /*
@@ -153,21 +153,21 @@ func RawToBase64(array []byte) string { //gd:Marshalls.raw_to_base64
 Returns a decoded []byte corresponding to the Base64-encoded string 'base64_str'.
 */
 func Base64ToRaw(base64_str string) []byte { //gd:Marshalls.base64_to_raw
-	return []byte(Advanced().Base64ToRaw(String.New(base64_str)).Bytes())
+	return []byte(Advanced().Base64ToRaw(String.From(base64_str)).Bytes())
 }
 
 /*
 Returns a Base64-encoded string of the UTF-8 string 'utf8_str'.
 */
 func Utf8ToBase64(utf8_str string) string { //gd:Marshalls.utf8_to_base64
-	return string(Advanced().Utf8ToBase64(String.New(utf8_str)).String())
+	return string(Advanced().Utf8ToBase64(String.From(utf8_str)).String())
 }
 
 /*
 Returns a decoded string corresponding to the Base64-encoded string 'base64_str'.
 */
 func Base64ToUtf8(base64_str string) string { //gd:Marshalls.base64_to_utf8
-	return string(Advanced().Base64ToUtf8(String.New(base64_str)).String())
+	return string(Advanced().Base64ToUtf8(String.From(base64_str)).String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -408,7 +408,7 @@ Loads optional TextServer database (e.g. ICU break iterators and dictionaries).
 Note: This function should be called before any other TextServer functions used, otherwise it won't have any effect.
 */
 func (self Instance) LoadSupportData(filename string) bool { //gd:TextServer.load_support_data
-	return bool(Advanced(self).LoadSupportData(String.New(filename)))
+	return bool(Advanced(self).LoadSupportData(String.From(filename)))
 }
 
 /*
@@ -431,7 +431,7 @@ Saves optional TextServer database (e.g. ICU break iterators and dictionaries) t
 Note: This function is used by during project export, to include TextServer database.
 */
 func (self Instance) SaveSupportData(filename string) bool { //gd:TextServer.save_support_data
-	return bool(Advanced(self).SaveSupportData(String.New(filename)))
+	return bool(Advanced(self).SaveSupportData(String.From(filename)))
 }
 
 /*
@@ -445,21 +445,21 @@ func (self Instance) GetSupportData() []byte { //gd:TextServer.get_support_data
 Returns true if the locale requires text server support data for line/word breaking.
 */
 func (self Instance) IsLocaleUsingSupportData(locale string) bool { //gd:TextServer.is_locale_using_support_data
-	return bool(Advanced(self).IsLocaleUsingSupportData(String.New(locale)))
+	return bool(Advanced(self).IsLocaleUsingSupportData(String.From(locale)))
 }
 
 /*
 Returns true if locale is right-to-left.
 */
 func (self Instance) IsLocaleRightToLeft(locale string) bool { //gd:TextServer.is_locale_right_to_left
-	return bool(Advanced(self).IsLocaleRightToLeft(String.New(locale)))
+	return bool(Advanced(self).IsLocaleRightToLeft(String.From(locale)))
 }
 
 /*
 Converts the given readable name of a feature, variation, script, or language to an OpenType tag.
 */
 func (self Instance) NameToTag(name string) int { //gd:TextServer.name_to_tag
-	return int(int(Advanced(self).NameToTag(String.New(name))))
+	return int(int(Advanced(self).NameToTag(String.From(name))))
 }
 
 /*
@@ -556,7 +556,7 @@ func (self Instance) FontGetStyle(font_rid RID.Font) FontStyle { //gd:TextServer
 Sets the font family name.
 */
 func (self Instance) FontSetName(font_rid RID.Font, name string) { //gd:TextServer.font_set_name
-	Advanced(self).FontSetName(RID.Any(font_rid), String.New(name))
+	Advanced(self).FontSetName(RID.Any(font_rid), String.From(name))
 }
 
 /*
@@ -577,7 +577,7 @@ func (self Instance) FontGetOtNameStrings(font_rid RID.Font) map[string]map[stri
 Sets the font style name.
 */
 func (self Instance) FontSetStyleName(font_rid RID.Font, name string) { //gd:TextServer.font_set_style_name
-	Advanced(self).FontSetStyleName(RID.Any(font_rid), String.New(name))
+	Advanced(self).FontSetStyleName(RID.Any(font_rid), String.From(name))
 }
 
 /*
@@ -1379,7 +1379,7 @@ Returns true if the font supports the given language (as a [ISO 639] code).
 [ISO 639]: https://en.wikipedia.org/wiki/ISO_639-1
 */
 func (self Instance) FontIsLanguageSupported(font_rid RID.Font, language string) bool { //gd:TextServer.font_is_language_supported
-	return bool(Advanced(self).FontIsLanguageSupported(RID.Any(font_rid), String.New(language)))
+	return bool(Advanced(self).FontIsLanguageSupported(RID.Any(font_rid), String.From(language)))
 }
 
 /*
@@ -1388,21 +1388,21 @@ Adds override for [FontIsLanguageSupported].
 [FontIsLanguageSupported]: https://pkg.go.dev/graphics.gd/classdb/TextServer#Instance.FontIsLanguageSupported
 */
 func (self Instance) FontSetLanguageSupportOverride(font_rid RID.Font, language string, supported bool) { //gd:TextServer.font_set_language_support_override
-	Advanced(self).FontSetLanguageSupportOverride(RID.Any(font_rid), String.New(language), supported)
+	Advanced(self).FontSetLanguageSupportOverride(RID.Any(font_rid), String.From(language), supported)
 }
 
 /*
 Returns true if support override is enabled for the 'language'.
 */
 func (self Instance) FontGetLanguageSupportOverride(font_rid RID.Font, language string) bool { //gd:TextServer.font_get_language_support_override
-	return bool(Advanced(self).FontGetLanguageSupportOverride(RID.Any(font_rid), String.New(language)))
+	return bool(Advanced(self).FontGetLanguageSupportOverride(RID.Any(font_rid), String.From(language)))
 }
 
 /*
 Remove language support override.
 */
 func (self Instance) FontRemoveLanguageSupportOverride(font_rid RID.Font, language string) { //gd:TextServer.font_remove_language_support_override
-	Advanced(self).FontRemoveLanguageSupportOverride(RID.Any(font_rid), String.New(language))
+	Advanced(self).FontRemoveLanguageSupportOverride(RID.Any(font_rid), String.From(language))
 }
 
 /*
@@ -1418,7 +1418,7 @@ Returns true if the font supports the given script (as a [ISO 15924] code).
 [ISO 15924]: https://en.wikipedia.org/wiki/ISO_15924
 */
 func (self Instance) FontIsScriptSupported(font_rid RID.Font, script string) bool { //gd:TextServer.font_is_script_supported
-	return bool(Advanced(self).FontIsScriptSupported(RID.Any(font_rid), String.New(script)))
+	return bool(Advanced(self).FontIsScriptSupported(RID.Any(font_rid), String.From(script)))
 }
 
 /*
@@ -1427,21 +1427,21 @@ Adds override for [FontIsScriptSupported].
 [FontIsScriptSupported]: https://pkg.go.dev/graphics.gd/classdb/TextServer#Instance.FontIsScriptSupported
 */
 func (self Instance) FontSetScriptSupportOverride(font_rid RID.Font, script string, supported bool) { //gd:TextServer.font_set_script_support_override
-	Advanced(self).FontSetScriptSupportOverride(RID.Any(font_rid), String.New(script), supported)
+	Advanced(self).FontSetScriptSupportOverride(RID.Any(font_rid), String.From(script), supported)
 }
 
 /*
 Returns true if support override is enabled for the 'script'.
 */
 func (self Instance) FontGetScriptSupportOverride(font_rid RID.Font, script string) bool { //gd:TextServer.font_get_script_support_override
-	return bool(Advanced(self).FontGetScriptSupportOverride(RID.Any(font_rid), String.New(script)))
+	return bool(Advanced(self).FontGetScriptSupportOverride(RID.Any(font_rid), String.From(script)))
 }
 
 /*
 Removes script support override.
 */
 func (self Instance) FontRemoveScriptSupportOverride(font_rid RID.Font, script string) { //gd:TextServer.font_remove_script_support_override
-	Advanced(self).FontRemoveScriptSupportOverride(RID.Any(font_rid), String.New(script))
+	Advanced(self).FontRemoveScriptSupportOverride(RID.Any(font_rid), String.From(script))
 }
 
 /*
@@ -1610,7 +1610,7 @@ func (self Instance) ShapedTextSetBidiOverride(shaped RID.TextBuffer, override [
 Sets custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
 */
 func (self Instance) ShapedTextSetCustomPunctuation(shaped RID.TextBuffer, punct string) { //gd:TextServer.shaped_text_set_custom_punctuation
-	Advanced(self).ShapedTextSetCustomPunctuation(RID.Any(shaped), String.New(punct))
+	Advanced(self).ShapedTextSetCustomPunctuation(RID.Any(shaped), String.From(punct))
 }
 
 /*
@@ -1711,14 +1711,14 @@ func (self Instance) ShapedTextGetSpacing(shaped RID.TextBuffer, spacing Spacing
 Adds text span and font to draw it to the text buffer.
 */
 func (self Instance) ShapedTextAddString(shaped RID.TextBuffer, text string, fonts []RID.TextBuffer, size int) bool { //gd:TextServer.shaped_text_add_string
-	return bool(Advanced(self).ShapedTextAddString(RID.Any(shaped), String.New(text), gd.ArrayFromSlice[Array.Contains[RID.Any]](fonts), int64(size), Dictionary.Nil, String.New(""), variant.New([1]any{}[0])))
+	return bool(Advanced(self).ShapedTextAddString(RID.Any(shaped), String.From(text), gd.ArrayFromSlice[Array.Contains[RID.Any]](fonts), int64(size), Dictionary.Nil, String.From(""), variant.New([1]any{}[0])))
 }
 
 /*
 Adds text span and font to draw it to the text buffer.
 */
 func (self MoreArgs) ShapedTextAddString(shaped RID.TextBuffer, text string, fonts []RID.TextBuffer, size int, opentype_features map[string]uint32, language string, meta any) bool { //gd:TextServer.shaped_text_add_string
-	return bool(Advanced(self).ShapedTextAddString(RID.Any(shaped), String.New(text), gd.ArrayFromSlice[Array.Contains[RID.Any]](fonts), int64(size), gd.DictionaryFromMap(opentype_features), String.New(language), variant.New(meta)))
+	return bool(Advanced(self).ShapedTextAddString(RID.Any(shaped), String.From(text), gd.ArrayFromSlice[Array.Contains[RID.Any]](fonts), int64(size), gd.DictionaryFromMap(opentype_features), String.From(language), variant.New(meta)))
 }
 
 /*
@@ -2241,7 +2241,7 @@ Converts a number from Western Arabic (0..9) to the numeral system used in the g
 If 'language' is an empty string, the active locale will be used.
 */
 func (self Instance) FormatNumber(number string) string { //gd:TextServer.format_number
-	return string(Advanced(self).FormatNumber(String.New(number), String.New("")).String())
+	return string(Advanced(self).FormatNumber(String.From(number), String.From("")).String())
 }
 
 /*
@@ -2250,7 +2250,7 @@ Converts a number from Western Arabic (0..9) to the numeral system used in the g
 If 'language' is an empty string, the active locale will be used.
 */
 func (self MoreArgs) FormatNumber(number string, language string) string { //gd:TextServer.format_number
-	return string(Advanced(self).FormatNumber(String.New(number), String.New(language)).String())
+	return string(Advanced(self).FormatNumber(String.From(number), String.From(language)).String())
 }
 
 /*
@@ -2259,7 +2259,7 @@ Converts 'number' from the numeral system used in the given 'language' to Wester
 If 'language' is an empty string, the active locale will be used.
 */
 func (self Instance) ParseNumber(number string) string { //gd:TextServer.parse_number
-	return string(Advanced(self).ParseNumber(String.New(number), String.New("")).String())
+	return string(Advanced(self).ParseNumber(String.From(number), String.From("")).String())
 }
 
 /*
@@ -2268,7 +2268,7 @@ Converts 'number' from the numeral system used in the given 'language' to Wester
 If 'language' is an empty string, the active locale will be used.
 */
 func (self MoreArgs) ParseNumber(number string, language string) string { //gd:TextServer.parse_number
-	return string(Advanced(self).ParseNumber(String.New(number), String.New(language)).String())
+	return string(Advanced(self).ParseNumber(String.From(number), String.From(language)).String())
 }
 
 /*
@@ -2277,7 +2277,7 @@ Returns the percent sign used in the given 'language'.
 If 'language' is an empty string, the active locale will be used.
 */
 func (self Instance) PercentSign() string { //gd:TextServer.percent_sign
-	return string(Advanced(self).PercentSign(String.New("")).String())
+	return string(Advanced(self).PercentSign(String.From("")).String())
 }
 
 /*
@@ -2286,7 +2286,7 @@ Returns the percent sign used in the given 'language'.
 If 'language' is an empty string, the active locale will be used.
 */
 func (self MoreArgs) PercentSign(language string) string { //gd:TextServer.percent_sign
-	return string(Advanced(self).PercentSign(String.New(language)).String())
+	return string(Advanced(self).PercentSign(String.From(language)).String())
 }
 
 /*
@@ -2295,7 +2295,7 @@ Returns an array of the word break boundaries. Elements in the returned array ar
 When 'chars_per_line' is greater than zero, line break boundaries are returned instead.
 */
 func (self Instance) StringGetWordBreaks(s string) []int32 { //gd:TextServer.string_get_word_breaks
-	return []int32(slices.Collect(Advanced(self).StringGetWordBreaks(String.New(s), String.New(""), int64(0)).Values()))
+	return []int32(slices.Collect(Advanced(self).StringGetWordBreaks(String.From(s), String.From(""), int64(0)).Values()))
 }
 
 /*
@@ -2304,21 +2304,21 @@ Returns an array of the word break boundaries. Elements in the returned array ar
 When 'chars_per_line' is greater than zero, line break boundaries are returned instead.
 */
 func (self MoreArgs) StringGetWordBreaks(s string, language string, chars_per_line int) []int32 { //gd:TextServer.string_get_word_breaks
-	return []int32(slices.Collect(Advanced(self).StringGetWordBreaks(String.New(s), String.New(language), int64(chars_per_line)).Values()))
+	return []int32(slices.Collect(Advanced(self).StringGetWordBreaks(String.From(s), String.From(language), int64(chars_per_line)).Values()))
 }
 
 /*
 Returns array of the composite character boundaries.
 */
 func (self Instance) StringGetCharacterBreaks(s string) []int32 { //gd:TextServer.string_get_character_breaks
-	return []int32(slices.Collect(Advanced(self).StringGetCharacterBreaks(String.New(s), String.New("")).Values()))
+	return []int32(slices.Collect(Advanced(self).StringGetCharacterBreaks(String.From(s), String.From("")).Values()))
 }
 
 /*
 Returns array of the composite character boundaries.
 */
 func (self MoreArgs) StringGetCharacterBreaks(s string, language string) []int32 { //gd:TextServer.string_get_character_breaks
-	return []int32(slices.Collect(Advanced(self).StringGetCharacterBreaks(String.New(s), String.New(language)).Values()))
+	return []int32(slices.Collect(Advanced(self).StringGetCharacterBreaks(String.From(s), String.From(language)).Values()))
 }
 
 /*
@@ -2331,7 +2331,7 @@ Note: Always returns -1 if the server does not support the [FeatureUnicodeSecuri
 [SpoofCheck]: https://pkg.go.dev/graphics.gd/classdb/TextServer#Instance.SpoofCheck
 */
 func (self Instance) IsConfusable(s string, dict []string) int { //gd:TextServer.is_confusable
-	return int(int(Advanced(self).IsConfusable(String.New(s), Packed.MakeStrings(dict...))))
+	return int(int(Advanced(self).IsConfusable(String.From(s), Packed.MakeStrings(dict...))))
 }
 
 /*
@@ -2340,7 +2340,7 @@ Returns true if 'string' is likely to be an attempt at confusing the reader.
 Note: Always returns false if the server does not support the [FeatureUnicodeSecurity] feature.
 */
 func (self Instance) SpoofCheck(s string) bool { //gd:TextServer.spoof_check
-	return bool(Advanced(self).SpoofCheck(String.New(s)))
+	return bool(Advanced(self).SpoofCheck(String.From(s)))
 }
 
 /*
@@ -2349,7 +2349,7 @@ Strips diacritics from the string.
 Note: The result may be longer or shorter than the original.
 */
 func (self Instance) StripDiacritics(s string) string { //gd:TextServer.strip_diacritics
-	return string(Advanced(self).StripDiacritics(String.New(s)).String())
+	return string(Advanced(self).StripDiacritics(String.From(s)).String())
 }
 
 /*
@@ -2372,7 +2372,7 @@ If the [FeatureUnicodeIdentifiers] feature is not supported, a valid identifier 
 - May contain Unicode characters of class XID_Continue in the other positions.
 */
 func (self Instance) IsValidIdentifier(s string) bool { //gd:TextServer.is_valid_identifier
-	return bool(Advanced(self).IsValidIdentifier(String.New(s)))
+	return bool(Advanced(self).IsValidIdentifier(String.From(s)))
 }
 
 /*
@@ -2392,7 +2392,7 @@ Note: The result may be longer or shorter than the original.
 [TextServerAdvanced]: https://pkg.go.dev/graphics.gd/classdb/TextServerAdvanced
 */
 func (self Instance) StringToUpper(s string) string { //gd:TextServer.string_to_upper
-	return string(Advanced(self).StringToUpper(String.New(s), String.New("")).String())
+	return string(Advanced(self).StringToUpper(String.From(s), String.From("")).String())
 }
 
 /*
@@ -2405,7 +2405,7 @@ Note: The result may be longer or shorter than the original.
 [TextServerAdvanced]: https://pkg.go.dev/graphics.gd/classdb/TextServerAdvanced
 */
 func (self MoreArgs) StringToUpper(s string, language string) string { //gd:TextServer.string_to_upper
-	return string(Advanced(self).StringToUpper(String.New(s), String.New(language)).String())
+	return string(Advanced(self).StringToUpper(String.From(s), String.From(language)).String())
 }
 
 /*
@@ -2418,7 +2418,7 @@ Note: The result may be longer or shorter than the original.
 [TextServerAdvanced]: https://pkg.go.dev/graphics.gd/classdb/TextServerAdvanced
 */
 func (self Instance) StringToLower(s string) string { //gd:TextServer.string_to_lower
-	return string(Advanced(self).StringToLower(String.New(s), String.New("")).String())
+	return string(Advanced(self).StringToLower(String.From(s), String.From("")).String())
 }
 
 /*
@@ -2431,7 +2431,7 @@ Note: The result may be longer or shorter than the original.
 [TextServerAdvanced]: https://pkg.go.dev/graphics.gd/classdb/TextServerAdvanced
 */
 func (self MoreArgs) StringToLower(s string, language string) string { //gd:TextServer.string_to_lower
-	return string(Advanced(self).StringToLower(String.New(s), String.New(language)).String())
+	return string(Advanced(self).StringToLower(String.From(s), String.From(language)).String())
 }
 
 /*
@@ -2444,7 +2444,7 @@ Note: The result may be longer or shorter than the original.
 [TextServerAdvanced]: https://pkg.go.dev/graphics.gd/classdb/TextServerAdvanced
 */
 func (self Instance) StringToTitle(s string) string { //gd:TextServer.string_to_title
-	return string(Advanced(self).StringToTitle(String.New(s), String.New("")).String())
+	return string(Advanced(self).StringToTitle(String.From(s), String.From("")).String())
 }
 
 /*
@@ -2457,14 +2457,14 @@ Note: The result may be longer or shorter than the original.
 [TextServerAdvanced]: https://pkg.go.dev/graphics.gd/classdb/TextServerAdvanced
 */
 func (self MoreArgs) StringToTitle(s string, language string) string { //gd:TextServer.string_to_title
-	return string(Advanced(self).StringToTitle(String.New(s), String.New(language)).String())
+	return string(Advanced(self).StringToTitle(String.From(s), String.From(language)).String())
 }
 
 /*
 Default implementation of the BiDi algorithm override function.
 */
 func (self Instance) ParseStructuredText(parser_type StructuredTextParser, args []any, text string) []Vector3i.XYZ { //gd:TextServer.parse_structured_text
-	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](gd.InternalArray(Advanced(self).ParseStructuredText(parser_type, gd.EngineArrayFromSlice(args), String.New(text)))))
+	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](gd.InternalArray(Advanced(self).ParseStructuredText(parser_type, gd.EngineArrayFromSlice(args), String.From(text)))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

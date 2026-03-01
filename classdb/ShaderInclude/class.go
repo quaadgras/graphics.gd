@@ -171,7 +171,7 @@ func (self Instance) Code() string { //gd:ShaderInclude.code
 
 // SetCode sets the property returned by [GetCode]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetCode(value string) Instance { //gd:ShaderInclude.code
-	class(self).SetCode(String.New(value))
+	class(self).SetCode(String.From(value))
 	return self
 }
 

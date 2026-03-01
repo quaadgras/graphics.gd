@@ -207,14 +207,14 @@ func (self Instance) SetBidiOverride(override []any) Instance { //gd:TextLine.se
 Adds text span and font to draw it.
 */
 func (self Instance) AddString(text string, font Font.Instance, font_size int) bool { //gd:TextLine.add_string
-	return bool(Advanced(self).AddString(String.New(text), font, int64(font_size), String.New(""), variant.New([1]any{}[0])))
+	return bool(Advanced(self).AddString(String.From(text), font, int64(font_size), String.From(""), variant.New([1]any{}[0])))
 }
 
 /*
 Adds text span and font to draw it.
 */
 func (self MoreArgs) AddString(text string, font Font.Instance, font_size int, language string, meta any) bool { //gd:TextLine.add_string
-	return bool(Advanced(self).AddString(String.New(text), font, int64(font_size), String.New(language), variant.New(meta)))
+	return bool(Advanced(self).AddString(String.From(text), font, int64(font_size), String.From(language), variant.New(meta)))
 }
 
 /*
@@ -515,7 +515,7 @@ func (self Instance) EllipsisChar() string { //gd:TextLine.ellipsis_char
 
 // SetEllipsisChar sets the property returned by [GetEllipsisChar]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetEllipsisChar(value string) Instance { //gd:TextLine.ellipsis_char
-	class(self).SetEllipsisChar(String.New(value))
+	class(self).SetEllipsisChar(String.From(value))
 	return self
 }
 

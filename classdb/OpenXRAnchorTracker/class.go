@@ -179,7 +179,7 @@ func (self Instance) Uuid() string { //gd:OpenXRAnchorTracker.uuid
 
 // SetUuid sets the property returned by [GetUuid]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetUuid(value string) Instance { //gd:OpenXRAnchorTracker.uuid
-	class(self).SetUuid(String.New(value))
+	class(self).SetUuid(String.From(value))
 	return self
 }
 

@@ -147,7 +147,7 @@ func (self Instance) GetActionSetCount() int { //gd:OpenXRActionMap.get_action_s
 Retrieve an action set by name.
 */
 func (self Instance) FindActionSet(name string) OpenXRActionSet.Instance { //gd:OpenXRActionMap.find_action_set
-	return OpenXRActionSet.Instance(Advanced(self).FindActionSet(String.New(name)))
+	return OpenXRActionSet.Instance(Advanced(self).FindActionSet(String.From(name)))
 }
 
 /*
@@ -182,7 +182,7 @@ func (self Instance) GetInteractionProfileCount() int { //gd:OpenXRActionMap.get
 Find an interaction profile by its name (path).
 */
 func (self Instance) FindInteractionProfile(name string) OpenXRInteractionProfile.Instance { //gd:OpenXRActionMap.find_interaction_profile
-	return OpenXRInteractionProfile.Instance(Advanced(self).FindInteractionProfile(String.New(name)))
+	return OpenXRInteractionProfile.Instance(Advanced(self).FindInteractionProfile(String.From(name)))
 }
 
 /*

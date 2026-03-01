@@ -167,7 +167,7 @@ Returns 'self' to enable method chaining.
 [FindItemByName]: https://pkg.go.dev/graphics.gd/classdb/MeshLibrary#Instance.FindItemByName
 */
 func (self Instance) SetItemName(id int, name string) Instance { //gd:MeshLibrary.set_item_name
-	Advanced(self).SetItemName(int64(id), String.New(name))
+	Advanced(self).SetItemName(int64(id), String.From(name))
 	return self
 }
 
@@ -338,7 +338,7 @@ func (self Instance) RemoveItem(id int) { //gd:MeshLibrary.remove_item
 Returns the first item with the given name, or -1 if no item is found.
 */
 func (self Instance) FindItemByName(name string) int { //gd:MeshLibrary.find_item_by_name
-	return int(int(Advanced(self).FindItemByName(String.New(name))))
+	return int(int(Advanced(self).FindItemByName(String.From(name))))
 }
 
 /*

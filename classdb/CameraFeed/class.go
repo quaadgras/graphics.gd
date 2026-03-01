@@ -202,7 +202,7 @@ Sets the camera's name.
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetName(name string) Instance { //gd:CameraFeed.set_name
-	Advanced(self).SetName(String.New(name))
+	Advanced(self).SetName(String.From(name))
 	return self
 }
 

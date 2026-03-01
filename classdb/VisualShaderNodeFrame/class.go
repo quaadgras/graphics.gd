@@ -204,7 +204,7 @@ func (self Instance) Title() string { //gd:VisualShaderNodeFrame.title
 
 // SetTitle sets the property returned by [GetTitle]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetTitle(value string) Instance { //gd:VisualShaderNodeFrame.title
-	class(self).SetTitle(String.New(value))
+	class(self).SetTitle(String.From(value))
 	return self
 }
 

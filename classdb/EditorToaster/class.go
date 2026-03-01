@@ -134,14 +134,14 @@ type Any interface {
 Pushes a toast notification to the editor for display.
 */
 func (self Instance) PushToast(message string) { //gd:EditorToaster.push_toast
-	Advanced(self).PushToast(String.New(message), 0, String.New(""))
+	Advanced(self).PushToast(String.From(message), 0, String.From(""))
 }
 
 /*
 Pushes a toast notification to the editor for display.
 */
 func (self MoreArgs) PushToast(message string, severity Severity, tooltip string) { //gd:EditorToaster.push_toast
-	Advanced(self).PushToast(String.New(message), severity, String.New(tooltip))
+	Advanced(self).PushToast(String.From(message), severity, String.From(tooltip))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
