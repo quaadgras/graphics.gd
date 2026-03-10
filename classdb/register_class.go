@@ -174,6 +174,9 @@ func Register[T Class](exports ...any) {
 			panic("classdb.Register: Class type must be a named struct")
 		}
 		var rename = nameOf(classType) // support 'gd' tag for renaming the class within Godot.
+		if embedded_name == "Singleton" {
+			rename = "GoSingleton" + rename
+		}
 		var tool = false
 		switch super.(type) {
 		case interface{ AsScript() Script.Instance },
