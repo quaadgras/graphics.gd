@@ -122,17 +122,28 @@ func (ios IOS) BuildMain(args ...string) error {
 		return xray.New(err)
 	}
 
-	// if the Xcode project already exists, we don't want to overwrite any configuration, in this case,
-	// just copy over the new go.xcframework
-	if _, err := os.Stat(filepath.Join(project.ReleasesDirectory, "ios", "arm64", project.Name+".xcodeproj")); os.IsNotExist(err) {
-		if err := os.Chdir(project.GraphicsDirectory); err != nil {
-			return xray.New(err)
-		}
-		tooling.Godot.Exec("--headless", "--export-release", "iOS")
+	// Check if this is a first build or subsequent build
+	xcode_path := filepath.Join(project.ReleasesDirectory, "ios", "arm64", project.Name+".xcodeproj")
+	existing_project := false
+	if _, err := os.Stat(xcode_path); err == nil {
+		existing_project = true
+	}
+
+	if err := os.Chdir(project.GraphicsDirectory); err != nil {
+		return xray.New(err)
+	}
+
+	if existing_project {
+		// Subsequent build: only export .pck, preserve Xcode project
+		tooling.Godot.Exec("--headless", "--export-pack", "iOS", filepath.Join(project.ReleasesDirectory, "ios", "arm64", "shader.pck"))
 	} else {
-		if err := project.CopyDir(filepath.Join(project.GraphicsDirectory, "go.xcframework"), filepath.Join(project.ReleasesDirectory, "ios", "arm64", project.Name, "dylibs", "go.xcframework")); err != nil {
-			return xray.New(err)
-		}
+		// First build: full export
+		tooling.Godot.Exec("--headless", "--export-release", "iOS")
+	}
+
+	// Copy the new go.xcframework
+	if err := project.CopyDir(filepath.Join(project.GraphicsDirectory, "go.xcframework"), filepath.Join(project.ReleasesDirectory, "ios", "arm64", project.Name, "dylibs", "go.xcframework")); err != nil {
+		return xray.New(err)
 	}
 
 	GDPATH := os.Getenv("GOPATH")
