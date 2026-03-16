@@ -521,6 +521,9 @@ func (variant Variant) Interface() any {
 		return variantAsValueType[RID](variant, vtype)
 	case gdextension.TypeObject:
 		var obj = VariantAsObject(variant)
+		if gdreference.BadObject(obj) {
+			return nil
+		}
 		return ObjectAs(ObjectGetClass(obj).String(), obj)
 	case gdextension.TypeCallable:
 		callable := variantAsPointerType[Callable](variant, vtype)
