@@ -1093,30 +1093,60 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		}
 		return
 	}
-	var node = Node.Advanced(parent).GetNode(path)
+	var node = Node.Instance(Node.Advanced(parent).GetNode(path))
 	native := gd.ExtensionInstanceLookup(gdreference.GetObject(gdclass.GetNode(node[0])[0]))
 	if native != nil {
-		if reflect.ValueOf(native).Type() != rvalue.Elem().Type() {
-			fmt.Printf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name)
-			panic(fmt.Sprintf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name))
+		if reflect.ValueOf(native).Type() == rvalue.Elem().Type() {
+			rvalue.Elem().Set(reflect.ValueOf(native))
+			gdreference.EndObject(gdclass.GetNode(node[0])[0])
+			return
 		}
-		rvalue.Elem().Set(reflect.ValueOf(native))
-		gdreference.EndObject(gdclass.GetNode(node[0])[0])
 	} else {
 		castable, ok := class.(gd.IsClassCastable)
-		if !ok {
-			panic(fmt.Sprintf(
-				"gd.Register: Node %s.%s (%s) does not implement gd.IsClassCastable (concrete type: %T)",
-				rvalue.Type().Name(),
-				field.Name,
-				name,
-				class,
-			))
+		if ok && castable.SetObject([1]gdreference.Object{gdreference.RawObject(gdreference.GetObject(gdclass.GetNode(node[0])[0]))}) {
+			gdreference.EndObject(gdclass.GetNode(node[0])[0])
+			return
 		}
-		if !castable.SetObject([1]gdreference.Object{gdreference.RawObject(gdreference.GetObject(gdclass.GetNode(node[0])[0]))}) {
-			fmt.Printf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name)
-			panic(fmt.Sprintf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name))
+	}
+	// Node exists but has the wrong type, replace it with the correct type.
+	Engine.RaiseWarning("graphics.gd DeclarativeChildren[" + nameOf(instance.Type) + "]: converting " + string(Node.Advanced(parent).GetPath().String()) + "/" + field.Name +
+		" into " + nameOf(field.Type) + " (previously " + Object.Instance(node.AsObject()).ClassName() + ")")
+	if not_initialised {
+		child := [1]gdreference.Object{gdreference.OwnObject(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName(nameOf(field.Type)))), gd.Free)}
+		gd.ObjectNotification(child[0], 0, false)
+		defer gdreference.EndObject(child[0])
+		native := gd.ExtensionInstanceLookup(gdreference.GetObject(child[0]))
+		if native != nil {
+			rvalue.Elem().Set(reflect.ValueOf(native))
+			class = native.(isNode)
+		} else {
+			class.(gd.IsClassCastable).SetObject([1]gdreference.Object{gdreference.RawObject(gdreference.GetObject(child[0]))})
 		}
-		gdreference.EndObject(gdclass.GetNode(node[0])[0])
+	}
+	Node.Advanced(class.AsNode()).SetName(String.Name(String.New(field.Name)))
+	// Copy compatible storable properties from the old node to the replacement.
+	newProps := make(map[string]struct{})
+	for _, p := range Object.GetPropertyList(class.AsNode()) {
+		if p.Usage&int(PropertyUsageStorage) != 0 {
+			newProps[p.Name] = struct{}{}
+		}
+	}
+	for _, p := range Object.GetPropertyList(node) {
+		if p.Usage&int(PropertyUsageStorage) == 0 {
+			continue
+		}
+		if _, ok := newProps[p.Name]; !ok {
+			continue
+		}
+		val := Object.Get(node, p.Name)
+		if val == nil {
+			continue
+		}
+		Object.Set(class.AsNode(), p.Name, val)
+	}
+	Node.Advanced(node).ReplaceBy(class.AsNode(), true)
+	Node.Advanced(node).QueueFree()
+	if Engine.IsEditorHint() {
+		Node.Advanced(class.AsNode()).SetOwner(EditorInterface.GetEditedSceneRoot())
 	}
 }
