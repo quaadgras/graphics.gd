@@ -458,9 +458,13 @@ func orderVariables(expr dsl.Evaluator, counts map[*byte]int, seen map[*byte]boo
 	}
 	orderChildren(resolved, counts, seen, vars, nextVar)
 	if id != nil && counts[id] > 1 && !isSimpleExpr(resolved) {
+		rtype := reflect.TypeOf(expr)
+		if rtype == reflect.TypeFor[gpu.Expression]() {
+			return // untyped expression, cannot extract as a variable.
+		}
 		name := fmt.Sprintf("_v%d", *nextVar)
 		*nextVar++
-		*vars = append(*vars, varInfo{name: name, typ: glslTypeFor(reflect.TypeOf(expr)), expr: expr})
+		*vars = append(*vars, varInfo{name: name, typ: glslTypeFor(rtype), expr: expr})
 	}
 }
 
