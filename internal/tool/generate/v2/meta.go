@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"graphics.gd/internal/gdjson"
-	"graphics.gd/internal/gdtype"
+	"graphics.gd/internal/tool/generate/gdtype"
 	"graphics.gd/variant/RID"
 )
 

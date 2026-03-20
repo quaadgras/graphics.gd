@@ -5,7 +5,7 @@ import (
 	"io"
 
 	"graphics.gd/internal/gdjson"
-	"graphics.gd/internal/gdtype"
+	"graphics.gd/internal/tool/generate/gdtype"
 )
 
 func (classDB ClassDB) new(file io.Writer, class gdjson.Class) {

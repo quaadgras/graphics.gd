@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"graphics.gd/internal/gdjson"
-	"graphics.gd/internal/gdtype"
+	"graphics.gd/internal/tool/generate/gdtype"
 )
 
 func (classDB ClassDB) signalCall(w io.Writer, class gdjson.Class, signal gdjson.Signal, singleton bool) {
