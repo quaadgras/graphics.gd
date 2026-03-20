@@ -1,144 +1,115 @@
 package golang
 
-/*type GoScript struct {
-	gd.Class[GoScript, ScriptExtension.GD] `gd:"GoScript"`
+import (
+	"graphics.gd/classdb/Script"
+	"graphics.gd/classdb/ScriptExtension"
+	"graphics.gd/classdb/ScriptLanguage"
+	"graphics.gd/internal/gdextension"
+	"graphics.gd/variant/Object"
+)
+
+type GoScript struct {
+	ScriptExtension.Extension[GoScript] `gd:"GoScript"`
 }
 
-func (script *GoScript) CanInstantiate() gd.Bool {
+func (script *GoScript) EditorCanReloadFromFile() bool                     { return true }
+func (script *GoScript) PlaceholderErased(placeholder gdextension.Pointer) {}
+func (script *GoScript) CanInstantiate() bool                              { return false }
+func (script *GoScript) GetBaseScript() Script.Instance                    { return script.AsScript() }
+func (script *GoScript) GetGlobalName() string                             { return "gdscript" }
+func (script *GoScript) InheritsScript(parent Script.Instance) bool        { return false }
+func (script *GoScript) GetInstanceBaseType() string {
+	return "Node"
+}
+func (script *GoScript) InstanceCreate(obj Object.Instance) gdextension.Pointer {
+	return 0
+}
+func (script *GoScript) PlaceholderInstanceCreate(for_object Object.Instance) gdextension.Pointer {
+	return 0
+}
+func (script *GoScript) InstanceHas(obj Object.Instance) bool {
+	return false
+}
+func (script *GoScript) HasSourceCode() bool {
+	return false
+}
+func (script *GoScript) GetSourceCode() string {
+	return ""
+}
+func (script *GoScript) SetSourceCode(code string) {
+
+}
+func (script *GoScript) Reload(keep_state bool) error {
+	return nil
+}
+func (script *GoScript) GetDocClassName() string {
+	return ""
+}
+func (script *GoScript) GetDocumentation() [][]ScriptExtension.ClassDoc {
+	return nil
+}
+func (script *GoScript) GetClassIconPath() string {
+	return "res://icon.png"
+}
+func (script *GoScript) HasMethod(method string) bool {
+	return false
+}
+func (script *GoScript) HasStaticMethod(method string) bool {
 	return false
 }
 
-func (script *GoScript) EditorCanReloadFromFile() gd.Bool {
+// Return the expected argument count for the given 'method', or null if it can't be determined (which will then fall back to the default behavior).
+func (script *GoScript) GetScriptMethodArgumentCount(method string) any {
+	return nil
+}
+func (script *GoScript) GetMethodInfo(method string) Object.MethodInfo {
+	return Object.MethodInfo{}
+}
+func (script *GoScript) IsTool() bool {
+	return false
+}
+func (script *GoScript) IsValid() bool {
 	return true
 }
 
-func (script *GoScript) GetBaseScript() Script.GD {
-	return script.Super().AsScript()
+// Returns true if the script is an abstract script. Abstract scripts cannot be instantiated directly, instead other scripts should inherit them. Abstract scripts will be either unselectable or hidden in the Create New Node dialog (unselectable if there are non-abstract classes inheriting it, otherwise hidden).
+func (script *GoScript) IsAbstract() bool {
+	return false
 }
-
-func (script *GoScript) GetClassIconPath() gd.String {
-	return script.Temporary.String("res://icon.png")
+func (script *GoScript) GetLanguage() ScriptLanguage.Instance {
+	return ScriptLanguage.Nil
 }
-
-func (script *GoScript) GetConstants() gd.Dictionary {
-	return script.Temporary.Dictionary()
+func (script *GoScript) HasScriptSignal(signal string) bool {
+	return false
 }
-
-func (script *GoScript) GetDocumentation() gd.ArrayOf[gd.Dictionary] {
+func (script *GoScript) GetScriptSignalList() [][]struct{} {
 	return nil
 }
-
-func (script *GoScript) GetGlobalName() gd.StringName {
-	return script.Temporary.StringName("gdscript")
+func (script *GoScript) HasPropertyDefaultValue(property string) bool {
+	return false
 }
-
-func (script *GoScript) GetInstanceBaseType() gd.StringName {
-	return script.Temporary.StringName("Node")
-}
-
-func (script *GoScript) GetLanguage() ScriptLanguage.GD {
-	return ScriptLanguage.GD{}
-}
-
-func (script *GoScript) GetMemberLine(member gd.StringName) gd.Int {
-	return 0
-}
-
-func (script *GoScript) GetMembers() gd.ArrayOf[gd.StringName] {
+func (script *GoScript) GetPropertyDefaultValue(property string) any {
 	return nil
 }
-
-func (script *GoScript) GetMethodInfo() gd.Dictionary {
-	return script.Temporary.Dictionary()
-}
-
-func (script *GoScript) GetPropertyDefaultValue(property gd.StringName) gd.Variant {
-	return gd.Variant{}
-}
-
-func (script *GoScript) GetRpcConfig() gd.Variant {
-	return gd.Variant{}
-}
-
-func (script *GoScript) GetScriptMethodList() gd.ArrayOf[gd.Dictionary] {
-	return nil
-}
-
-func (script *GoScript) GetScriptPropertyList() gd.ArrayOf[gd.Dictionary] {
-	return nil
-}
-
-func (script *GoScript) GetScriptSignalList() gd.ArrayOf[gd.Dictionary] {
-	return nil
-}
-
-func (script *GoScript) GetSourceCode() gd.String {
-	return script.Temporary.String("")
-}
-
-func (script *GoScript) HasMethod(method gd.StringName) gd.Bool {
-	return false
-}
-
-func (script *GoScript) HasPropertyDefaultValue(property gd.StringName) gd.Bool {
-	return false
-}
-
-func (script *GoScript) HasScriptSignal(signal gd.StringName) gd.Bool {
-	return false
-}
-
-func (script *GoScript) HasSourceCode() gd.Bool {
-	return false
-}
-
-func (script *GoScript) HasStaticMethod(method gd.StringName) gd.Bool {
-	return false
-}
-
-func (script *GoScript) InheritsScript(parent GoScript) gd.Bool {
-	return false
-}
-
-func (script *GoScript) InstanceCreate(obj gd.Object) unsafe.Pointer {
-	return nil
-}
-
-func (script *GoScript) InstanceHas(obj gd.Object) gd.Bool {
-	return false
-}
-
-func (script *GoScript) IsAbstract() gd.Bool {
-	return false
-}
-
-func (script *GoScript) IsPlaceholderFallbackEnabled() gd.Bool {
-	return false
-}
-
-func (script *GoScript) IsTool() gd.Bool {
-	return false
-}
-
-func (script *GoScript) IsValid() gd.Bool {
-	return true
-}
-
-func (script *GoScript) PlaceholderErased(placeholder unsafe.Pointer) unsafe.Pointer {
-	return nil
-}
-
-func (script *GoScript) PlaceholderInstanceCraete(obj gd.Object) unsafe.Pointer {
-	return nil
-}
-
-func (script *GoScript) Reload(keep_state bool) gd.Int {
-	return 0
-}
-
-func (script *GoScript) SetSourceCode(code gd.String) {
-
-}
-
 func (script *GoScript) UpdateExports() {}
-*/
+func (script *GoScript) GetScriptMethodList() [][]struct{} {
+	return nil
+}
+func (script *GoScript) GetScriptPropertyList() [][]struct{} {
+	return nil
+}
+func (script *GoScript) GetMemberLine(member string) int {
+	return 0
+}
+func (script *GoScript) GetConstants() map[string]any {
+	return nil
+}
+func (script *GoScript) GetMembers() []string {
+	return nil
+}
+func (script *GoScript) IsPlaceholderFallbackEnabled() bool {
+	return false
+}
+func (script *GoScript) GetRpcConfig() any {
+	return nil
+}
