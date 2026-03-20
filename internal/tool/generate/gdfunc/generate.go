@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"graphics.gd/internal/gdjson"
-	"graphics.gd/internal/gdtype"
+	"graphics.gd/internal/tool/generate/gdtype"
 )
 
 // TrivialMethods maps class name → set of method names that are trivial
