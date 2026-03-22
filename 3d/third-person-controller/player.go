@@ -246,7 +246,7 @@ func (p *DemoPlayer) shoot() {
 	var aim_direction = Vector3.Normalized(Vector3.Sub(aim_target, origin))
 	bullet.Velocity = Vector3.MulX(aim_direction, p.BulletSpeed)
 	bullet.DistanceLimit = 14
-	p.AsNode().AddChild(bullet.AsNode())
+	p.AsNode().GetParent().AddChild(bullet.AsNode())
 	bullet.AsNode3D().SetGlobalPosition(origin)
 }
 

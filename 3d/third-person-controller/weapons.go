@@ -65,7 +65,7 @@ type Bullet struct {
 	Velocity Vector3.XYZ
 	Shooter  Node.ID
 
-	Area3D  Area3D.Instance `gd:"Area3D"`
+	Area3D  Area3D.Instance `gd:"Area3d"`
 	Visuals Node3D.Instance `gd:"Bullet"`
 
 	ProjectileSound AudioStreamPlayer3D.Instance `gd:"ProjectileSound"`
@@ -89,7 +89,7 @@ func (b *Bullet) Ready() {
 			var impact_point = Vector3.Sub(b.Visuals.GlobalPosition(), body.GlobalPosition())
 			Object.Call(body, "damage", impact_point, b.Velocity)
 		}
-		body.AsNode().QueueFree()
+		b.AsNode().QueueFree()
 	})
 	b.AsNode3D().LookAt(Vector3.Add(b.AsNode3D().GlobalPosition(), b.Velocity))
 	b.AliveLimit = b.DistanceLimit / Vector3.Length(b.Velocity)
