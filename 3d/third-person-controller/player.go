@@ -208,7 +208,7 @@ func (p *DemoPlayer) PhysicsProcess(delta Float.X) {
 	}
 	if is_just_jumping {
 		p.CharacterSkin.Jump()
-	} else if is_just_on_floor && velocity.Y < 0 {
+	} else if !p.AsCharacterBody3D().IsOnFloor() && velocity.Y < 0 {
 		p.CharacterSkin.Fall()
 	} else if p.AsCharacterBody3D().IsOnFloor() {
 		var xz_velocity = Vector3.New(velocity.X, 0, velocity.Z)
