@@ -147,7 +147,7 @@ func (p *DemoPlayer) PhysicsProcess(delta Float.X) {
 	}
 	var is_attacking = Input.IsActionPressed("attack", false) && !p.AttackAnimationPlayer.IsPlaying()
 	var is_just_attacking = Input.IsActionJustPressed("attack", false)
-	var is_just_jumping = Input.IsActionJustPressed("jump", false)
+	var is_just_jumping = Input.IsActionJustPressed("jump", false) && p.AsCharacterBody3D().IsOnFloor()
 	var is_aiming = Input.IsActionPressed("aim", false) && p.AsCharacterBody3D().IsOnFloor()
 	var is_air_boosting = Input.IsActionPressed("jump", false) && !p.AsCharacterBody3D().IsOnFloor() && p.AsCharacterBody3D().Velocity().Y > 0
 	var is_just_on_floor = p.AsCharacterBody3D().IsOnFloor() && !p.isOnFloorBuffer
