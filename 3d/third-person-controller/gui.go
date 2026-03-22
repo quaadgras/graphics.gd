@@ -149,7 +149,7 @@ func (icon *Icone) SetState(state bool) {
 		from, to = to, from
 	}
 	var tween = icon.AsNode().CreateTween()
-	PropertyTweener.Make(tween, icon.AsObject(), "modulate", to, 0.3).From(from)
+	PropertyTweener.Make(tween, icon.AsObject(), "modulate", from, 0.3).From(to)
 }
 
 type WeaponUI struct {
