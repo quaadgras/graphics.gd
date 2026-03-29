@@ -465,9 +465,17 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 			fmt.Fprintf(w, "\t\tdefer %s\n", gdtype.Name(expert).EndPointer(fixReserved(arg.Name)))
 		}
 	}
-	// Second pass: construct ArrayContains values using named count params.
+	// Second pass: construct packed/array values using named count params.
 	for _, s := range sliceables {
-		fmt.Fprintf(w, "\t\tvar %s = gdmemory.ArrayContains[%s](%s_ptr, int(%s))\n", s.varName, s.elem, s.varName, s.count)
+		switch s.elem {
+		case "byte":
+			fmt.Fprintf(w, "\t\tvar %s = Packed.Bytes{Array: Packed.Array[byte](gdmemory.ArrayContains[byte](%s_ptr, int(%s)))}\n", s.varName, s.varName, s.count)
+		case "int32", "int64", "float32", "float64",
+			"Vector2.XY", "Vector3.XYZ", "Vector4.XYZW", "Color.RGBA":
+			fmt.Fprintf(w, "\t\tvar %s = Packed.Array[%s](gdmemory.ArrayContains[%s](%s_ptr, int(%s)))\n", s.varName, s.elem, s.elem, s.varName, s.count)
+		default:
+			fmt.Fprintf(w, "\t\tvar %s = gdmemory.ArrayContains[%s](%s_ptr, int(%s))\n", s.varName, s.elem, s.varName, s.count)
+		}
 	}
 	fmt.Fprintf(w, "\t\tself := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())\n")
 	if resultSimple != "" {

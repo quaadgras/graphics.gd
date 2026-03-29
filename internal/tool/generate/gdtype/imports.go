@@ -175,9 +175,16 @@ func importsForEngineType(class gdjson.Class, identifier, s string) iter.Seq[str
 		}
 		// Check Addressables/Sliceables for any pointer-typed param (AudioFrame*, void*, float*, etc.)
 		if identifier != "" {
-			if _, ok := gdjson.Sliceables[identifier]; ok {
+			if s, ok := gdjson.Sliceables[identifier]; ok {
 				if !yield("graphics.gd/internal/gdmemory") {
 					return
+				}
+				switch s.Elem {
+				case "byte", "int32", "int64", "float32", "float64",
+					"Vector2.XY", "Vector3.XYZ", "Vector4.XYZW", "Color.RGBA":
+					if !yield("graphics.gd/variant/Packed") {
+						return
+					}
 				}
 			}
 			if mapped, ok := gdjson.Addressables[identifier]; ok {

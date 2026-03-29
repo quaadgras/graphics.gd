@@ -116,7 +116,7 @@ type Any interface {
 
 type Interface interface {
 	GetPacket(r_buffer Engine.Pointer[Engine.Pointer[byte]], r_buffer_size Engine.Pointer[int32]) error
-	PutPacket(p_buffer Array.Contains[byte]) error
+	PutPacket(p_buffer Packed.Bytes) error
 	GetAvailablePacketCount() int
 	GetMaxPacketSize() int
 }
@@ -129,7 +129,7 @@ type implementation struct{}
 func (self implementation) GetPacket(r_buffer Engine.Pointer[Engine.Pointer[byte]], r_buffer_size Engine.Pointer[int32]) (_ error) {
 	return
 }
-func (self implementation) PutPacket(p_buffer Array.Contains[byte]) (_ error) {
+func (self implementation) PutPacket(p_buffer Packed.Bytes) (_ error) {
 	return
 }
 func (self implementation) GetAvailablePacketCount() (_ int) {
@@ -154,11 +154,11 @@ func (Instance) _get_packet(impl func(ptr gdclass.Receiver, r_buffer Engine.Poin
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _put_packet(impl func(ptr gdclass.Receiver, p_buffer Array.Contains[byte]) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _put_packet(impl func(ptr gdclass.Receiver, p_buffer Packed.Bytes) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var p_buffer_ptr = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var p_buffer_size = gd.UnsafeGet[int64](p_args, 1)
-		var p_buffer = gdmemory.ArrayContains[byte](p_buffer_ptr, int(p_buffer_size))
+		var p_buffer = Packed.Bytes{Array: Packed.Array[byte](gdmemory.ArrayContains[byte](p_buffer_ptr, int(p_buffer_size)))}
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, p_buffer)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))

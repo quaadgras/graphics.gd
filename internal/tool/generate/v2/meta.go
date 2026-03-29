@@ -72,9 +72,9 @@ func fixReserved(name string) string {
 var StructablesInThisPackageGlobalHack = make(map[reflect.Type]bool)
 
 func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string, gdType string) string {
-	// Sliceables take priority: a sliceable param becomes Array.Contains[Elem].
+	// Sliceables take priority: a sliceable param becomes the appropriate packed or array type.
 	if s, ok := gdjson.Sliceables[lookup]; ok {
-		return "Array.Contains[" + s.Elem + "]"
+		return gdtype.SliceableType(s.Elem)
 	}
 	// Check Addressables for pointer params — returns mapped type directly.
 	if mapped, ok := gdjson.Addressables[lookup]; ok {

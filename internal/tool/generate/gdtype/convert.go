@@ -23,14 +23,30 @@ func EnumNameOf(class, enum_name string) (string, string) {
 	return rename, original
 }
 
+// SliceableType returns the Go type for a sliceable element. For packed-compatible
+// elements (byte, int32, int64, float32, float64, Vector2.XY, Vector3.XYZ,
+// Vector4.XYZW, Color.RGBA) it returns Packed.Bytes or Packed.Array[T],
+// otherwise Array.Contains[T].
+func SliceableType(elem string) string {
+	switch elem {
+	case "byte":
+		return "Packed.Bytes"
+	case "int32", "int64", "float32", "float64",
+		"Vector2.XY", "Vector3.XYZ", "Vector4.XYZW", "Color.RGBA":
+		return "Packed.Array[" + elem + "]"
+	default:
+		return "Array.Contains[" + elem + "]"
+	}
+}
+
 // EngineTypeAsGoTypeContext looks up the Sliceables and Addressables maps
 // using className.methodName.paramName (or className.methodName. for returns),
 // falling back to [EngineTypeAsGoType] if there is no mapping.
-// Sliceables take priority: a sliceable param becomes Array.Contains[Elem].
+// Sliceables take priority: a sliceable param becomes the appropriate packed or array type.
 func EngineTypeAsGoTypeContext(className, methodName, paramName, meta, gdType string) string {
 	key := className + "." + methodName + "." + paramName
 	if s, ok := gdjson.Sliceables[key]; ok {
-		return "Array.Contains[" + s.Elem + "]"
+		return SliceableType(s.Elem)
 	}
 	return EngineTypeAsAddressable(className, methodName, paramName, meta, gdType)
 }
