@@ -160,7 +160,7 @@ func (lang *Language) DebugGetCurrentStackInfo() []ScriptLanguageExtension.Stack
 	return nil
 }
 
-func (lang *Language) ReloadAllScripts()
+func (lang *Language) ReloadAllScripts()                                          {}
 func (lang *Language) ReloadScripts(scripts []Script.Instance, soft_reload bool)  {}
 func (lang *Language) ReloadToolScript(scripts Script.Instance, soft_reload bool) {}
 

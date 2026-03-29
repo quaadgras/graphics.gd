@@ -34,3 +34,14 @@ func LoadSlice[T gdextension.Packable](ptr gdextension.Pointer, slice []T) {
 func IndexVariants(ptr gdextension.Accepts[gdextension.Variant], len, idx int) gdextension.Variant {
 	return *(unsafe.Slice((**gdextension.Variant)(ptr), len)[idx])
 }
+
+// UnsafePointer returns the underlying [unsafe.Pointer] for
+// the Pointer[T] and true if the result is valid.
+func (ptr *Pointer[T]) UnsafePointer() (unsafe.Pointer, bool) {
+	return ptrconv(ptr.raw), true
+}
+
+//go:nosplit
+func ptrconv(ptr gdextension.Pointer) unsafe.Pointer {
+	return *(*unsafe.Pointer)(unsafe.Pointer(&ptr))
+}

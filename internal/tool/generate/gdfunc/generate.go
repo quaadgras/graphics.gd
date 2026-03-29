@@ -70,9 +70,9 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 		"RID", "Projection", "Color":
 		return
 	}
-	result := gdtype.EngineTypeAsGoType(class.Name, method.ReturnValue.Meta, method.ReturnValue.Type)
+	result := gdtype.EngineTypeAsAddressable(class.Name, method.Name, "", method.ReturnValue.Meta, method.ReturnValue.Type)
 	if method.ReturnType != "" {
-		result = gdtype.EngineTypeAsGoType(class.Name, "", method.ReturnType)
+		result = gdtype.EngineTypeAsAddressable(class.Name, method.Name, "", "", method.ReturnType)
 	}
 	ptrKind, isPtr := gdtype.Name(result).IsPointer()
 
@@ -84,12 +84,13 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 		fmt.Fprintf(w, "func (class) %s(impl func(ptr gdclass.Receiver", method.Name)
 		for _, arg := range method.Arguments {
 			fmt.Fprint(w, ", ")
-			fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type))
+			fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), gdtype.EngineTypeAsAddressable(class.Name, method.Name, arg.Name, arg.Meta, arg.Type))
 		}
 		fmt.Fprintf(w, ") %v) (cb "+prefix+"ExtensionClassCallVirtualFunc) {\n", result)
 		fmt.Fprint(w, "\treturn func(class any, p_args, p_back gdextension.Pointer) {\n")
+		var hasPointerBarrier bool
 		for i, arg := range method.Arguments {
-			var argType = gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)
+			var argType = gdtype.EngineTypeAsAddressable(class.Name, method.Name, arg.Name, arg.Meta, arg.Type)
 			pointerKind, argIsPtr := gdtype.Name(argType).IsPointer()
 			if !argIsPtr {
 				pointerKind = argType
@@ -98,7 +99,12 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 				fmt.Sprintf("gd.UnsafeGet[%v](p_args,%d)", pointerKind, i),
 			))
 			if argIsPtr {
-				fmt.Fprintf(w, "\t\tdefer %s\n", gdtype.Name(argType).EndPointer(fixReserved(arg.Name)))
+				if strings.HasPrefix(string(argType), "Engine.Pointer[") && !hasPointerBarrier {
+					fmt.Fprintf(w, "\t\tdefer %s\n", gdtype.Name(argType).EndPointer(fixReserved(arg.Name)))
+					hasPointerBarrier = true
+				} else if !strings.HasPrefix(string(argType), "Engine.Pointer[") {
+					fmt.Fprintf(w, "\t\tdefer %s\n", gdtype.Name(argType).EndPointer(fixReserved(arg.Name)))
+				}
 			}
 		}
 		fmt.Fprintf(w, "\t\tself := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())\n")
@@ -113,14 +119,18 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 		fmt.Fprintf(w, ")\n")
 		if result != "" {
 			ret := gdtype.Name(result).ToUnderlying("ret")
-			if isPtr {
+			if strings.HasPrefix(result, "Engine.Pointer[") {
+				// Engine.Pointer returns are unwrapped back to gdextension.Pointer.
+				fmt.Fprintf(w, "\t\t"+prefix+"UnsafeSet(p_back, %s)\n", gdtype.Name(result).CallframeValue(ret))
+			} else if isPtr {
 				fmt.Fprintf(w, "ptr, ok := %s\n", gdtype.Name(result).EndPointer(ret))
 				fmt.Fprintf(w, "\n\t\tif !ok {\n")
 				fmt.Fprintf(w, "\t\t\treturn\n")
 				fmt.Fprintf(w, "\t\t}\n")
-				ret = "ptr"
+				fmt.Fprintf(w, "\t\t%sUnsafeSet(p_back, ptr)\n", prefix)
+			} else {
+				fmt.Fprintf(w, "\t\t"+prefix+"UnsafeSet(p_back, %s)\n", ret)
 			}
-			fmt.Fprintf(w, "\t\t"+prefix+"UnsafeSet(p_back, %s)\n", ret)
 		}
 		fmt.Fprintf(w, "\t}\n")
 		fmt.Fprintf(w, "}\n")
@@ -143,7 +153,7 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 		if i > 0 {
 			fmt.Fprint(w, ", ")
 		}
-		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type))
+		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), gdtype.EngineTypeAsAddressable(class.Name, method.Name, arg.Name, arg.Meta, arg.Type))
 	}
 	if method.IsVararg {
 		if len(method.Arguments) > 0 {
@@ -209,7 +219,7 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 		if i > 0 {
 			fmt.Fprint(w, "; ")
 		}
-		argType := gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)
+		argType := gdtype.EngineTypeAsAddressable(class.Name, method.Name, arg.Name, arg.Meta, arg.Type)
 		fmt.Fprintf(w, "%s %s", fixReserved(arg.Name), gdtype.Name(argType).CallframeType())
 	}
 	fmt.Fprint(w, "}{")
@@ -231,7 +241,7 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 			}
 			continue
 		}
-		argType := gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)
+		argType := gdtype.EngineTypeAsAddressable(class.Name, method.Name, arg.Name, arg.Meta, arg.Type)
 		fmt.Fprint(w, gdtype.Name(argType).CallframeValue(fixReserved(arg.Name)))
 	}
 	fmt.Fprint(w, "})\n")

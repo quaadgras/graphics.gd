@@ -23,6 +23,29 @@ func EnumNameOf(class, enum_name string) (string, string) {
 	return rename, original
 }
 
+// EngineTypeAsGoTypeContext looks up the Sliceables and Addressables maps
+// using className.methodName.paramName (or className.methodName. for returns),
+// falling back to [EngineTypeAsGoType] if there is no mapping.
+// Sliceables take priority: a sliceable param becomes Array.Contains[Elem].
+func EngineTypeAsGoTypeContext(className, methodName, paramName, meta, gdType string) string {
+	key := className + "." + methodName + "." + paramName
+	if s, ok := gdjson.Sliceables[key]; ok {
+		return "Array.Contains[" + s.Elem + "]"
+	}
+	return EngineTypeAsAddressable(className, methodName, paramName, meta, gdType)
+}
+
+// EngineTypeAsAddressable looks up only the Addressables map (not Sliceables),
+// falling back to [EngineTypeAsGoType]. Use this for low-level callbacks where
+// pointer params should remain as Engine.Pointer[T] with an explicit length argument.
+func EngineTypeAsAddressable(className, methodName, paramName, meta, gdType string) string {
+	key := className + "." + methodName + "." + paramName
+	if mapped, ok := gdjson.Addressables[key]; ok {
+		return mapped
+	}
+	return EngineTypeAsGoType(className, meta, gdType)
+}
+
 func EngineTypeAsGoType(pkg, meta string, gdType string) string {
 	maybeInternal := func(name string) string {
 		return "gd." + name

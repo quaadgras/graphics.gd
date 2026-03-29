@@ -123,3 +123,9 @@ func IndexVariants(addr gdextension.Accepts[gdextension.Variant], len, idx int) 
 	}
 	return Get[gdextension.Variant](gdextension.Pointer(ptr))
 }
+
+// UnsafePointer returns the underlying [unsafe.Pointer] for
+// the Pointer[T] and true if the result is valid.
+func (ptr *Pointer[T]) UnsafePointer() (unsafe.Pointer, bool) {
+	return nil, false
+}

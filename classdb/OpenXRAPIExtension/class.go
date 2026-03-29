@@ -25,7 +25,10 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
+import "graphics.gd/classdb/Engine"
+import "graphics.gd/classdb/OpenXR"
 import "graphics.gd/classdb/OpenXRExtensionWrapper"
+import "graphics.gd/internal/gdmemory"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -211,7 +214,7 @@ Creates a [Transform3D.BasisOrigin] from an [XrPosef].
 [Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 [XrPosef]: https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrPosef.html
 */
-func (self Instance) TransformFromPose(pose gdextension.Pointer) Transform3D.BasisOrigin { //gd:OpenXRAPIExtension.transform_from_pose
+func (self Instance) TransformFromPose(pose Engine.Pointer[OpenXR.Posef]) Transform3D.BasisOrigin { //gd:OpenXRAPIExtension.transform_from_pose
 	return Transform3D.BasisOrigin(Advanced(self).TransformFromPose(pose))
 }
 
@@ -319,7 +322,7 @@ Returns 'self' to enable method chaining.
 
 [XrSpace]: https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSpace.html
 */
-func (self Instance) SetCustomPlaySpace(space gdextension.Pointer) Instance { //gd:OpenXRAPIExtension.set_custom_play_space
+func (self Instance) SetCustomPlaySpace(space uintptr) Instance { //gd:OpenXRAPIExtension.set_custom_play_space
 	Advanced(self).SetCustomPlaySpace(space)
 	return self
 }
@@ -650,8 +653,8 @@ func (self class) GetSession() int64 { //gd:OpenXRAPIExtension.get_session
 	var ret = r_ret
 	return ret
 }
-func (self class) TransformFromPose(pose gdextension.Pointer) Transform3D.BasisOrigin { //gd:OpenXRAPIExtension.transform_from_pose
-	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.transform_from_pose, gdextension.SizeTransform3D|(gdextension.SizePointer<<4), &struct{ pose gdextension.Pointer }{pose})
+func (self class) TransformFromPose(pose Engine.Pointer[OpenXR.Posef]) Transform3D.BasisOrigin { //gd:OpenXRAPIExtension.transform_from_pose
+	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.transform_from_pose, gdextension.SizeTransform3D|(gdextension.SizePointer<<4), &struct{ pose gdextension.Pointer }{gdmemory.UnwrapPointer[OpenXR.Posef](pose)})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -710,8 +713,8 @@ func (self class) IsRunning() bool { //gd:OpenXRAPIExtension.is_running
 	var ret = r_ret
 	return ret
 }
-func (self class) SetCustomPlaySpace(space gdextension.Pointer) { //gd:OpenXRAPIExtension.set_custom_play_space
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_play_space, 0|(gdextension.SizePointer<<4), &struct{ space gdextension.Pointer }{space})
+func (self class) SetCustomPlaySpace(space uintptr) { //gd:OpenXRAPIExtension.set_custom_play_space
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_play_space, 0|(gdextension.SizePointer<<4), &struct{ space gdextension.Pointer }{gdextension.Pointer(space)})
 }
 func (self class) GetPlaySpace() int64 { //gd:OpenXRAPIExtension.get_play_space
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_play_space, gdextension.SizeInt, &struct{}{})

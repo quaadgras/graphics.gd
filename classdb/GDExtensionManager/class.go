@@ -136,7 +136,7 @@ func LoadExtension(path string) LoadStatus { //gd:GDExtensionManager.load_extens
 /*
 Loads the extension already in address space via the given path and initialization function. The 'path' needs to be unique and start with "libgodot://". Returns [LoadStatusOk] if successful.
 */
-func LoadExtensionFromFunction(path string, init_func *GDExtensionInitializationFunction) LoadStatus { //gd:GDExtensionManager.load_extension_from_function
+func LoadExtensionFromFunction(path string, init_func uintptr) LoadStatus { //gd:GDExtensionManager.load_extension_from_function
 	return LoadStatus(Advanced().LoadExtensionFromFunction(String.From(path), init_func))
 }
 
@@ -212,12 +212,12 @@ func (self class) LoadExtension(path String.Readable) LoadStatus { //gd:GDExtens
 	var ret = r_ret
 	return ret
 }
-func (self class) LoadExtensionFromFunction(path String.Readable, init_func *GDExtensionInitializationFunction) LoadStatus { //gd:GDExtensionManager.load_extension_from_function
+func (self class) LoadExtensionFromFunction(path String.Readable, init_func uintptr) LoadStatus { //gd:GDExtensionManager.load_extension_from_function
 	once.Do(singleton)
 	var r_ret = noescape.Call[LoadStatus](gdreference.GetObject(self.AsObject()[0]), methods.load_extension_from_function, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
 		path      gdextension.String
-		init_func *GDExtensionInitializationFunction
-	}{pointers.Get(gd.InternalString(path)), init_func})
+		init_func gdextension.Pointer
+	}{pointers.Get(gd.InternalString(path)), gdextension.Pointer(init_func)})
 	var ret = r_ret
 	return ret
 }

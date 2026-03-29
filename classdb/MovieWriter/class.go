@@ -47,7 +47,9 @@ import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/AudioServer"
+import "graphics.gd/classdb/Engine"
 import "graphics.gd/classdb/Image"
+import "graphics.gd/internal/gdmemory"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -176,7 +178,7 @@ type Interface interface {
 	// [command line argument]: https://docs.godotengine.org/tutorials/editor/command_line_tutorial.html
 	WriteBegin(movie_size Vector2i.XY, fps int, base_path string) error
 	// Called at the end of every rendered frame. The 'frame_image' and 'audio_frame_block' function arguments should be written to.
-	WriteFrame(frame_image Image.Instance, audio_frame_block gdextension.Pointer) error
+	WriteFrame(frame_image Image.Instance, audio_frame_block Engine.Pointer[int32]) error
 	// Called when the engine finishes writing. This occurs when the engine quits by pressing the window manager's close button, or when [SceneTree.Quit] is called.
 	//
 	// Note: Pressing Ctrl + C on the terminal running the editor/project does not result in [WriteEnd] being called.
@@ -203,7 +205,7 @@ func (self implementation) HandlesFile(path string) (_ bool) {
 func (self implementation) WriteBegin(movie_size Vector2i.XY, fps int, base_path string) (_ error) {
 	return
 }
-func (self implementation) WriteFrame(frame_image Image.Instance, audio_frame_block gdextension.Pointer) (_ error) {
+func (self implementation) WriteFrame(frame_image Image.Instance, audio_frame_block Engine.Pointer[int32]) (_ error) {
 	return
 }
 func (self implementation) WriteEnd() {
@@ -280,12 +282,13 @@ func (Instance) _write_begin(impl func(ptr gdclass.Receiver, movie_size Vector2i
 /*
 Called at the end of every rendered frame. The 'frame_image' and 'audio_frame_block' function arguments should be written to.
 */
-func (Instance) _write_frame(impl func(ptr gdclass.Receiver, frame_image Image.Instance, audio_frame_block gdextension.Pointer) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _write_frame(impl func(ptr gdclass.Receiver, frame_image Image.Instance, audio_frame_block Engine.Pointer[int32]) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var frame_image = [1]gdclass.Image{gdclass.NewImage(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
 		defer gdreference.EndObject(gdclass.GetImage(frame_image[0])[0])
-		var audio_frame_block = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
+		var audio_frame_block = gdmemory.WrapPointer[int32](gd.UnsafeGet[gdextension.Pointer](p_args, 1))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, frame_image, audio_frame_block)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -404,12 +407,13 @@ func (class) _write_begin(impl func(ptr gdclass.Receiver, movie_size Vector2i.XY
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (class) _write_frame(impl func(ptr gdclass.Receiver, frame_image [1]gdclass.Image, audio_frame_block gdextension.Pointer) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _write_frame(impl func(ptr gdclass.Receiver, frame_image [1]gdclass.Image, audio_frame_block Engine.Pointer[int32]) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var frame_image = [1]gdclass.Image{gdclass.NewImage(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
 		defer gdreference.EndObject(gdclass.GetImage(frame_image[0])[0])
-		var audio_frame_block = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
+		var audio_frame_block = gdmemory.WrapPointer[int32](gd.UnsafeGet[gdextension.Pointer](p_args, 1))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, frame_image, audio_frame_block)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)

@@ -173,5 +173,33 @@ func importsForEngineType(class gdjson.Class, identifier, s string) iter.Seq[str
 				}
 			}
 		}
+		// Check Addressables/Sliceables for any pointer-typed param (AudioFrame*, void*, float*, etc.)
+		if identifier != "" {
+			if _, ok := gdjson.Sliceables[identifier]; ok {
+				if !yield("graphics.gd/internal/gdmemory") {
+					return
+				}
+			}
+			if mapped, ok := gdjson.Addressables[identifier]; ok {
+				if strings.HasPrefix(mapped, "Engine.Pointer[") {
+					if !yield("graphics.gd/classdb/Engine") {
+						return
+					}
+					if !yield("graphics.gd/internal/gdmemory") {
+						return
+					}
+					// Extract the inner type and check if it needs a classdb import.
+					inner := strings.TrimPrefix(mapped, "Engine.Pointer[")
+					inner = strings.TrimSuffix(inner, "]")
+					if pkg, _, ok := strings.Cut(inner, "."); ok && pkg != class.Name {
+						if _, exists := ClassDB[pkg]; exists || pkg == "OpenXR" {
+							if !yield("graphics.gd/classdb/" + pkg) {
+								return
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }

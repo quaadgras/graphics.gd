@@ -31,7 +31,7 @@ func CopyArguments[T any](shape gdextension.Shape, args gdextension.CallAccepts[
 	if args == nil {
 		return 0
 	}
-	return copyIntoEngine(shape, unsafe.Pointer(args), arguments)
+	return copyIntoEngine(shape.SizeArguments(), unsafe.Pointer(args), arguments)
 }
 
 // CopyReceiver copies the receiver into the receiver buffer, respecting Go's alignment rules.
@@ -40,14 +40,14 @@ func CopyReceiver[T any](shape gdextension.Shape, self gdextension.CallMutates[T
 	if self == nil {
 		return 0
 	}
-	return copyIntoEngine((shape & 0b11110000), unsafe.Pointer(self), receiver)
+	return copyIntoEngine((shape & 0b11110000).SizeArguments(), unsafe.Pointer(self), receiver)
 }
 
-func copyIntoEngine(shape gdextension.Shape, args unsafe.Pointer, into gdextension.Pointer) gdextension.Pointer {
+func copyIntoEngine(bytes int, args unsafe.Pointer, into gdextension.Pointer) gdextension.Pointer {
 	if into == 0 {
 		panic("nil pointer dereference")
 	}
-	buf := unsafe.Slice((*byte)(args), shape.SizeArguments())
+	buf := unsafe.Slice((*byte)(args), bytes)
 	ptr := into
 	off := gdextension.Pointer(0)
 	for len(buf) > 0 {

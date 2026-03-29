@@ -615,6 +615,18 @@ func generateStructables(file io.Writer) {
 	clear(StructablesInThisPackageGlobalHack)
 }
 
+// isSliceableCount returns true if the argument named argName is the count
+// companion of any Sliceable entry for the given class and method.
+func isSliceableCount(className, methodName string, args []gdjson.Argument, argName string) bool {
+	for _, other := range args {
+		key := className + "." + methodName + "." + other.Name
+		if s, ok := gdjson.Sliceables[key]; ok && s.Count == argName {
+			return true
+		}
+	}
+	return false
+}
+
 func generateInterface(file io.Writer, classDB ClassDB, class gdjson.Class, impl bool) {
 	fmt.Fprintf(file, "\ntype Interface interface {\n")
 	for _, method := range class.Methods {
@@ -627,10 +639,15 @@ func generateInterface(file io.Writer, classDB ClassDB, class gdjson.Class, impl
 				fmt.Fprintln(file, "\t\t// "+description)
 			}
 			fmt.Fprintf(file, "\t%s(", convertName(method.Name))
-			for i, arg := range method.Arguments {
-				if i > 0 {
+			first := true
+			for _, arg := range method.Arguments {
+				if isSliceableCount(class.Name, method.Name, method.Arguments, arg.Name) {
+					continue
+				}
+				if !first {
 					fmt.Fprint(file, ", ")
 				}
+				first = false
 				fmt.Fprint(file, fixReserved(arg.Name), " ", classDB.convertTypeSimple(class, class.Name+"."+method.Name+"."+arg.Name, arg.Meta, arg.Type))
 			}
 			fmt.Fprint(file, ") ", classDB.convertTypeSimple(class, class.Name+"."+method.Name+".", method.ReturnValue.Meta, method.ReturnValue.Type))
@@ -650,10 +667,15 @@ func generateInterface(file io.Writer, classDB ClassDB, class gdjson.Class, impl
 	for _, method := range class.Methods {
 		if method.IsVirtual {
 			fmt.Fprintf(file, "func (self implementation) %[1]v(", convertName(method.Name))
-			for i, arg := range method.Arguments {
-				if i > 0 {
+			first := true
+			for _, arg := range method.Arguments {
+				if isSliceableCount(class.Name, method.Name, method.Arguments, arg.Name) {
+					continue
+				}
+				if !first {
 					fmt.Fprint(file, ", ")
 				}
+				first = false
 				fmt.Fprint(file, fixReserved(arg.Name), " ", classDB.convertTypeSimple(class, class.Name+"."+method.Name+"."+arg.Name, arg.Meta, arg.Type))
 			}
 			fmt.Fprint(file, ")")
