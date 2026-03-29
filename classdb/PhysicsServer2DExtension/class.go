@@ -192,7 +192,7 @@ type Interface interface {
 	//
 	// [PhysicsDirectSpaceState2D.CollideShape]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectSpaceState2D#Instance.CollideShape
 	// [PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
-	ShapeCollide(shape_A RID.Shape2D, xform_A Transform2D.OriginXY, motion_A Vector2.XY, shape_B RID.Shape2D, xform_B Transform2D.OriginXY, motion_B Vector2.XY, results Array.Contains[Vector2.XY], result_count Engine.Pointer[int32]) bool
+	ShapeCollide(shape_A RID.Shape2D, xform_A Transform2D.OriginXY, motion_A Vector2.XY, shape_B RID.Shape2D, xform_B Transform2D.OriginXY, motion_B Vector2.XY, results Packed.Array[Vector2.XY], result_count Engine.Pointer[int32]) bool
 	// Overridable version of [PhysicsServer2D.SpaceCreate].
 	//
 	// [PhysicsServer2D.SpaceCreate]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#SpaceCreate
@@ -605,7 +605,7 @@ type Interface interface {
 	//
 	// [PhysicsDirectSpaceState2D.CollideShape]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectSpaceState2D#Instance.CollideShape
 	// [PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
-	BodyCollideShape(body RID.Body2D, body_shape int, shape RID.Shape2D, shape_xform Transform2D.OriginXY, motion Vector2.XY, results Array.Contains[Vector2.XY], result_count Engine.Pointer[int32]) bool
+	BodyCollideShape(body RID.Body2D, body_shape int, shape RID.Shape2D, shape_xform Transform2D.OriginXY, motion Vector2.XY, results Packed.Array[Vector2.XY], result_count Engine.Pointer[int32]) bool
 	// If set to true, allows the body with the given [Resource.ID] to detect mouse inputs when the mouse cursor is hovering on it.
 	//
 	// Overridable version of [PhysicsServer2D]'s internal body_set_pickable method. Corresponds to [CollisionObject2D.InputPickable].
@@ -794,7 +794,7 @@ func (self implementation) ShapeGetData(shape RID.Shape2D) (_ any) {
 func (self implementation) ShapeGetCustomSolverBias(shape RID.Shape2D) (_ Float.X) {
 	return
 }
-func (self implementation) ShapeCollide(shape_A RID.Shape2D, xform_A Transform2D.OriginXY, motion_A Vector2.XY, shape_B RID.Shape2D, xform_B Transform2D.OriginXY, motion_B Vector2.XY, results Array.Contains[Vector2.XY], result_count Engine.Pointer[int32]) (_ bool) {
+func (self implementation) ShapeCollide(shape_A RID.Shape2D, xform_A Transform2D.OriginXY, motion_A Vector2.XY, shape_B RID.Shape2D, xform_B Transform2D.OriginXY, motion_B Vector2.XY, results Packed.Array[Vector2.XY], result_count Engine.Pointer[int32]) (_ bool) {
 	return
 }
 func (self implementation) SpaceCreate() (_ RID.Space2D) {
@@ -1022,7 +1022,7 @@ func (self implementation) BodySetStateSyncCallback(body RID.Body2D, callable fu
 }
 func (self implementation) BodySetForceIntegrationCallback(body RID.Body2D, callable func(state PhysicsDirectBodyState2D.Instance, userdata any), userdata any) {
 }
-func (self implementation) BodyCollideShape(body RID.Body2D, body_shape int, shape RID.Shape2D, shape_xform Transform2D.OriginXY, motion Vector2.XY, results Array.Contains[Vector2.XY], result_count Engine.Pointer[int32]) (_ bool) {
+func (self implementation) BodyCollideShape(body RID.Body2D, body_shape int, shape RID.Shape2D, shape_xform Transform2D.OriginXY, motion Vector2.XY, results Packed.Array[Vector2.XY], result_count Engine.Pointer[int32]) (_ bool) {
 	return
 }
 func (self implementation) BodySetPickable(body RID.Body2D, pickable bool) {
@@ -1289,7 +1289,7 @@ Overridable version of [PhysicsServer2D]'s internal shape_collide method. Corres
 [PhysicsDirectSpaceState2D.CollideShape]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectSpaceState2D#Instance.CollideShape
 [PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
 */
-func (Instance) _shape_collide(impl func(ptr gdclass.Receiver, shape_A RID.Shape2D, xform_A Transform2D.OriginXY, motion_A Vector2.XY, shape_B RID.Shape2D, xform_B Transform2D.OriginXY, motion_B Vector2.XY, results Array.Contains[Vector2.XY], result_count Engine.Pointer[int32]) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shape_collide(impl func(ptr gdclass.Receiver, shape_A RID.Shape2D, xform_A Transform2D.OriginXY, motion_A Vector2.XY, shape_B RID.Shape2D, xform_B Transform2D.OriginXY, motion_B Vector2.XY, results Packed.Array[Vector2.XY], result_count Engine.Pointer[int32]) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape_A = gd.UnsafeGet[RID.Any](p_args, 0)
 		var xform_A = gd.UnsafeGet[Transform2D.OriginXY](p_args, 1)
@@ -1301,7 +1301,7 @@ func (Instance) _shape_collide(impl func(ptr gdclass.Receiver, shape_A RID.Shape
 		var result_max = gd.UnsafeGet[int64](p_args, 7)
 		var result_count = gdmemory.WrapPointer[int32](gd.UnsafeGet[gdextension.Pointer](p_args, 8))
 		defer gdmemory.Barrier()
-		var results = gdmemory.ArrayContains[Vector2.XY](results_ptr, int(result_max))
+		var results = Packed.Array[Vector2.XY](gdmemory.ArrayContains[Vector2.XY](results_ptr, int(result_max)))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, RID.Shape2D(shape_A), xform_A, motion_A, RID.Shape2D(shape_B), xform_B, motion_B, results, result_count)
 		gd.UnsafeSet(p_back, ret)
@@ -2722,7 +2722,7 @@ Overridable version of [PhysicsServer2D]'s internal shape_collide method. Corres
 [PhysicsDirectSpaceState2D.CollideShape]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectSpaceState2D#Instance.CollideShape
 [PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
 */
-func (Instance) _body_collide_shape(impl func(ptr gdclass.Receiver, body RID.Body2D, body_shape int, shape RID.Shape2D, shape_xform Transform2D.OriginXY, motion Vector2.XY, results Array.Contains[Vector2.XY], result_count Engine.Pointer[int32]) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_collide_shape(impl func(ptr gdclass.Receiver, body RID.Body2D, body_shape int, shape RID.Shape2D, shape_xform Transform2D.OriginXY, motion Vector2.XY, results Packed.Array[Vector2.XY], result_count Engine.Pointer[int32]) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var body_shape = gd.UnsafeGet[int64](p_args, 1)
@@ -2733,7 +2733,7 @@ func (Instance) _body_collide_shape(impl func(ptr gdclass.Receiver, body RID.Bod
 		var result_max = gd.UnsafeGet[int64](p_args, 6)
 		var result_count = gdmemory.WrapPointer[int32](gd.UnsafeGet[gdextension.Pointer](p_args, 7))
 		defer gdmemory.Barrier()
-		var results = gdmemory.ArrayContains[Vector2.XY](results_ptr, int(result_max))
+		var results = Packed.Array[Vector2.XY](gdmemory.ArrayContains[Vector2.XY](results_ptr, int(result_max)))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, RID.Body2D(body), int(body_shape), RID.Shape2D(shape), shape_xform, motion, results, result_count)
 		gd.UnsafeSet(p_back, ret)

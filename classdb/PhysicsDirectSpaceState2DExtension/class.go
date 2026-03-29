@@ -129,7 +129,7 @@ type Interface interface {
 	IntersectPoint(position Vector2.XY, canvas_instance_id int, collision_mask int, collide_with_bodies bool, collide_with_areas bool, results Array.Contains[ShapeResult]) int
 	IntersectShape(shape_rid RID.Shape2D, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, result Array.Contains[ShapeResult]) int
 	CastMotion(shape_rid RID.Shape2D, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, closest_safe Engine.Pointer[float32], closest_unsafe Engine.Pointer[float32]) bool
-	CollideShape(shape_rid RID.Shape2D, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, results Array.Contains[Vector2.XY], result_count Engine.Pointer[int32]) bool
+	CollideShape(shape_rid RID.Shape2D, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, results Packed.Array[Vector2.XY], result_count Engine.Pointer[int32]) bool
 	RestInfo(shape_rid RID.Shape2D, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, rest_info Engine.Pointer[ShapeRestInfo]) bool
 }
 
@@ -150,7 +150,7 @@ func (self implementation) IntersectShape(shape_rid RID.Shape2D, transform Trans
 func (self implementation) CastMotion(shape_rid RID.Shape2D, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, closest_safe Engine.Pointer[float32], closest_unsafe Engine.Pointer[float32]) (_ bool) {
 	return
 }
-func (self implementation) CollideShape(shape_rid RID.Shape2D, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, results Array.Contains[Vector2.XY], result_count Engine.Pointer[int32]) (_ bool) {
+func (self implementation) CollideShape(shape_rid RID.Shape2D, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, results Packed.Array[Vector2.XY], result_count Engine.Pointer[int32]) (_ bool) {
 	return
 }
 func (self implementation) RestInfo(shape_rid RID.Shape2D, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, rest_info Engine.Pointer[ShapeRestInfo]) (_ bool) {
@@ -221,7 +221,7 @@ func (Instance) _cast_motion(impl func(ptr gdclass.Receiver, shape_rid RID.Shape
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _collide_shape(impl func(ptr gdclass.Receiver, shape_rid RID.Shape2D, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, results Array.Contains[Vector2.XY], result_count Engine.Pointer[int32]) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _collide_shape(impl func(ptr gdclass.Receiver, shape_rid RID.Shape2D, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, results Packed.Array[Vector2.XY], result_count Engine.Pointer[int32]) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var transform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 1)
@@ -234,7 +234,7 @@ func (Instance) _collide_shape(impl func(ptr gdclass.Receiver, shape_rid RID.Sha
 		var max_results = gd.UnsafeGet[int64](p_args, 8)
 		var result_count = gdmemory.WrapPointer[int32](gd.UnsafeGet[gdextension.Pointer](p_args, 9))
 		defer gdmemory.Barrier()
-		var results = gdmemory.ArrayContains[Vector2.XY](results_ptr, int(max_results))
+		var results = Packed.Array[Vector2.XY](gdmemory.ArrayContains[Vector2.XY](results_ptr, int(max_results)))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, RID.Shape2D(shape_rid), transform, motion, Float.X(margin), int(collision_mask), collide_with_bodies, collide_with_areas, results, result_count)
 		gd.UnsafeSet(p_back, ret)

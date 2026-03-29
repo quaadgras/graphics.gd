@@ -128,7 +128,7 @@ type Interface interface {
 	// Called when a packet needs to be sent by the [MultiplayerAPI], with 'p_buffer_size' being the size of the binary 'p_buffer' in bytes.
 	//
 	// [MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
-	PutPacket(p_buffer Array.Contains[byte]) error
+	PutPacket(p_buffer Packed.Bytes) error
 	// Called when the available packet count is internally requested by the [MultiplayerAPI].
 	//
 	// [MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
@@ -237,7 +237,7 @@ type implementation struct{}
 func (self implementation) GetPacket(r_buffer Engine.Pointer[Engine.Pointer[byte]], r_buffer_size Engine.Pointer[int32]) (_ error) {
 	return
 }
-func (self implementation) PutPacket(p_buffer Array.Contains[byte]) (_ error) {
+func (self implementation) PutPacket(p_buffer Packed.Bytes) (_ error) {
 	return
 }
 func (self implementation) GetAvailablePacketCount() (_ int) {
@@ -324,11 +324,11 @@ Called when a packet needs to be sent by the [MultiplayerAPI], with 'p_buffer_si
 
 [MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
 */
-func (Instance) _put_packet(impl func(ptr gdclass.Receiver, p_buffer Array.Contains[byte]) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _put_packet(impl func(ptr gdclass.Receiver, p_buffer Packed.Bytes) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var p_buffer_ptr = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var p_buffer_size = gd.UnsafeGet[int64](p_args, 1)
-		var p_buffer = gdmemory.ArrayContains[byte](p_buffer_ptr, int(p_buffer_size))
+		var p_buffer = Packed.Bytes{Array: Packed.Array[byte](gdmemory.ArrayContains[byte](p_buffer_ptr, int(p_buffer_size)))}
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, p_buffer)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))

@@ -167,7 +167,7 @@ type Interface interface {
 	// Sets font source data, e.g contents of the dynamic font source file.
 	FontSetData(font_rid RID.Font, data []byte)
 	// Sets pointer to the font source data, e.g contents of the dynamic font source file.
-	FontSetDataPtr(font_rid RID.Font, data_ptr Array.Contains[byte])
+	FontSetDataPtr(font_rid RID.Font, data_ptr Packed.Bytes)
 	// Sets an active face index in the TrueType / OpenType collection.
 	FontSetFaceIndex(font_rid RID.Font, face_index int)
 	// Returns an active face index in the TrueType / OpenType collection.
@@ -698,7 +698,7 @@ func (self implementation) CreateFontLinkedVariation(font_rid RID.Font) (_ RID.F
 }
 func (self implementation) FontSetData(font_rid RID.Font, data []byte) {
 }
-func (self implementation) FontSetDataPtr(font_rid RID.Font, data_ptr Array.Contains[byte]) {
+func (self implementation) FontSetDataPtr(font_rid RID.Font, data_ptr Packed.Bytes) {
 }
 func (self implementation) FontSetFaceIndex(font_rid RID.Font, face_index int) {
 }
@@ -1533,12 +1533,12 @@ func (Instance) _font_set_data(impl func(ptr gdclass.Receiver, font_rid RID.Font
 /*
 Sets pointer to the font source data, e.g contents of the dynamic font source file.
 */
-func (Instance) _font_set_data_ptr(impl func(ptr gdclass.Receiver, font_rid RID.Font, data_ptr Array.Contains[byte])) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_data_ptr(impl func(ptr gdclass.Receiver, font_rid RID.Font, data_ptr Packed.Bytes)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var data_ptr_ptr = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
 		var data_size = gd.UnsafeGet[int64](p_args, 2)
-		var data_ptr = gdmemory.ArrayContains[byte](data_ptr_ptr, int(data_size))
+		var data_ptr = Packed.Bytes{Array: Packed.Array[byte](gdmemory.ArrayContains[byte](data_ptr_ptr, int(data_size)))}
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, RID.Font(font_rid), data_ptr)
 	}
