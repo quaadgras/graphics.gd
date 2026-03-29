@@ -6,8 +6,22 @@ import (
 
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/gdmemory"
 	"graphics.gd/internal/pointers"
 )
+
+// Pointer is a typed pointer to a value of type T in engine memory.
+// The pointer is valid until the next barrier (typically end of frame).
+type Pointer[T any] = gdmemory.Pointer[T]
+
+// Allocate a value of type T, must not contain pointers or channels.
+//
+// Please be aware that the pointer returned from Allocate is not freed
+// automatically. As such, be aware of possible memory leaks and/or cache
+// and reuse Pointer[T] values.
+func Allocate[T comparable](val T) Pointer[T] {
+	return gdmemory.New(val)
+}
 
 // Version returns the version of the Engine.
 func Version() string {

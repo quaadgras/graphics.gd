@@ -423,20 +423,37 @@ func (classDB ClassDB) simpleRelocatedCall(w io.Writer, class gdjson.Class, meth
 
 func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method gdjson.Method) {
 	resultSimple := classDB.convertTypeSimple(class, class.Name+"."+method.Name+".", method.ReturnValue.Meta, method.ReturnValue.Type)
-	resultExpert := gdtype.EngineTypeAsGoType(class.Name, method.ReturnValue.Meta, method.ReturnValue.Type)
+	resultExpert := gdtype.EngineTypeAsGoTypeContext(class.Name, method.Name, "", method.ReturnValue.Meta, method.ReturnValue.Type)
 	_, needsLifetime := gdtype.Name(resultExpert).IsPointer()
 	if method.IsStatic {
 		needsLifetime = true
 	}
 	fmt.Fprintf(w, "func (Instance) %s(impl func(ptr gdclass.Receiver", method.Name)
 	for _, arg := range method.Arguments {
+		if isSliceableCount(class.Name, method.Name, method.Arguments, arg.Name) {
+			continue
+		}
 		fmt.Fprint(w, ", ")
 		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(class, class.Name+"."+method.Name+"."+arg.Name, arg.Meta, arg.Type))
 	}
 	fmt.Fprintf(w, ") %v) (cb gd.ExtensionClassCallVirtualFunc) {\n", resultSimple)
 	fmt.Fprintf(w, "\treturn func(class any, p_args, p_back gdextension.Pointer) {\n")
+	// First pass: extract all raw values from the callframe.
+	type deferredSliceable struct {
+		varName string
+		elem    string
+		count   string
+	}
+	var sliceables []deferredSliceable
 	for i, arg := range method.Arguments {
-		var expert = gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)
+		key := class.Name + "." + method.Name + "." + arg.Name
+		if s, ok := gdjson.Sliceables[key]; ok {
+			// Extract raw pointer now, defer ArrayContains construction.
+			fmt.Fprintf(w, "\t\tvar %v_ptr = gd.UnsafeGet[gdextension.Pointer](p_args,%d)\n", fixReserved(arg.Name), i)
+			sliceables = append(sliceables, deferredSliceable{fixReserved(arg.Name), s.Elem, fixReserved(s.Count)})
+			continue
+		}
+		var expert = gdtype.EngineTypeAsGoTypeContext(class.Name, method.Name, arg.Name, arg.Meta, arg.Type)
 		pointerKind, argIsPtr := gdtype.Name(expert).IsPointer()
 		if !argIsPtr {
 			pointerKind = expert
@@ -448,32 +465,58 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 			fmt.Fprintf(w, "\t\tdefer %s\n", gdtype.Name(expert).EndPointer(fixReserved(arg.Name)))
 		}
 	}
+	// Second pass: construct ArrayContains values using named count params.
+	for _, s := range sliceables {
+		fmt.Fprintf(w, "\t\tvar %s = gdmemory.ArrayContains[%s](%s_ptr, int(%s))\n", s.varName, s.elem, s.varName, s.count)
+	}
 	fmt.Fprintf(w, "\t\tself := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())\n")
 	if resultSimple != "" {
 		fmt.Fprintf(w, "\t\tret := ")
 	}
 	fmt.Fprintf(w, "impl(self")
 	for _, arg := range method.Arguments {
-		simple := classDB.convertTypeSimple(class, class.Name+"."+method.Name+"."+arg.Name, arg.Meta, arg.Type)
+		if isSliceableCount(class.Name, method.Name, method.Arguments, arg.Name) {
+			continue
+		}
 		fmt.Fprint(w, ", ")
-		fmt.Fprintf(w, "%v", gdtype.Name(gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)).ConvertToGo(fixReserved(arg.Name), simple))
+		key := class.Name + "." + method.Name + "." + arg.Name
+		if _, ok := gdjson.Sliceables[key]; ok {
+			// Already the right type from gdmemory.ArrayContains.
+			fmt.Fprint(w, fixReserved(arg.Name))
+		} else {
+			simple := classDB.convertTypeSimple(class, key, arg.Meta, arg.Type)
+			fmt.Fprintf(w, "%v", gdtype.Name(gdtype.EngineTypeAsGoTypeContext(class.Name, method.Name, arg.Name, arg.Meta, arg.Type)).ConvertToGo(fixReserved(arg.Name), simple))
+		}
 	}
 	fmt.Fprintf(w, ")\n")
 	if resultSimple != "" {
 		simple := classDB.convertTypeSimple(class, class.Name+"."+method.Name+".", method.ReturnValue.Meta, method.ReturnValue.Type)
 		ret := gdtype.Name(resultExpert).ToUnderlying(gdtype.Name(resultExpert).ConvertToSimple("ret", simple))
-		if needsLifetime {
+		if strings.HasPrefix(resultExpert, "Engine.Pointer[") {
+			// Engine.Pointer returns are unwrapped back to gdextension.Pointer.
+			fmt.Fprintf(w, "\t\tgd.UnsafeSet(p_back, %s)\n", gdtype.Name(resultExpert).CallframeValue(ret))
+		} else if needsLifetime {
 			fmt.Fprintf(w, "ptr, ok := %s\n", gdtype.Name(resultExpert).EndPointer(ret))
 			fmt.Fprintf(w, "\n\t\tif !ok {\n")
 			fmt.Fprintf(w, "\t\t\treturn\n")
 			fmt.Fprintf(w, "\t\t}\n")
-			ret = "ptr"
+			fmt.Fprintf(w, "\t\tgd.UnsafeSet(p_back, ptr)\n")
+		} else {
+			fmt.Fprintf(w, "\t\tgd.UnsafeSet(p_back, %s)\n", ret)
 		}
-		fmt.Fprintf(w, "\t\tgd.UnsafeSet(p_back, %s)\n", ret)
 	}
 	if gdjson.Flushables[class.Name+"."+method.Name] {
 		fmt.Fprintf(w, "\t\tgd.Flush()\n")
 	}
 	fmt.Fprintf(w, "\t}\n")
 	fmt.Fprintf(w, "}\n")
+}
+
+func argIndexByName(args []gdjson.Argument, name string) int {
+	for i, a := range args {
+		if a.Name == name {
+			return i
+		}
+	}
+	return -1
 }

@@ -16,8 +16,10 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
+import "graphics.gd/classdb/Engine"
 import "graphics.gd/classdb/Script"
 import "graphics.gd/classdb/ScriptLanguage"
+import "graphics.gd/internal/gdmemory"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -157,7 +159,7 @@ type Interface interface {
 	DebugGetStackLevelSource(level int) string
 	DebugGetStackLevelLocals(level int, max_subitems int, max_depth int) StackLevelLocals
 	DebugGetStackLevelMembers(level int, max_subitems int, max_depth int) StackLevelMembers
-	DebugGetStackLevelInstance(level int) gdextension.Pointer
+	DebugGetStackLevelInstance(level int) uintptr
 	DebugGetGlobals(max_subitems int, max_depth int) Globals
 	DebugParseStackLevelExpression(level int, expression string, max_subitems int, max_depth int) string
 	DebugGetCurrentStackInfo() []StackInfo
@@ -171,8 +173,8 @@ type Interface interface {
 	ProfilingStart()
 	ProfilingStop()
 	ProfilingSetSaveNativeCalls(enable bool)
-	ProfilingGetAccumulatedData(info_array *ProfilingInfo, info_max int) int
-	ProfilingGetFrameData(info_array *ProfilingInfo, info_max int) int
+	ProfilingGetAccumulatedData(info_array Array.Contains[ProfilingInfo]) int
+	ProfilingGetFrameData(info_array Array.Contains[ProfilingInfo]) int
 	Frame()
 	HandlesGlobalClassType(atype string) bool
 	GetGlobalClassName(path string) ClassName
@@ -299,7 +301,7 @@ func (self implementation) DebugGetStackLevelLocals(level int, max_subitems int,
 func (self implementation) DebugGetStackLevelMembers(level int, max_subitems int, max_depth int) (_ StackLevelMembers) {
 	return
 }
-func (self implementation) DebugGetStackLevelInstance(level int) (_ gdextension.Pointer) {
+func (self implementation) DebugGetStackLevelInstance(level int) (_ uintptr) {
 	return
 }
 func (self implementation) DebugGetGlobals(max_subitems int, max_depth int) (_ Globals) {
@@ -335,10 +337,10 @@ func (self implementation) ProfilingStop() {
 }
 func (self implementation) ProfilingSetSaveNativeCalls(enable bool) {
 }
-func (self implementation) ProfilingGetAccumulatedData(info_array *ProfilingInfo, info_max int) (_ int) {
+func (self implementation) ProfilingGetAccumulatedData(info_array Array.Contains[ProfilingInfo]) (_ int) {
 	return
 }
-func (self implementation) ProfilingGetFrameData(info_array *ProfilingInfo, info_max int) (_ int) {
+func (self implementation) ProfilingGetFrameData(info_array Array.Contains[ProfilingInfo]) (_ int) {
 	return
 }
 func (self implementation) Frame() {
@@ -819,12 +821,17 @@ func (Instance) _debug_get_stack_level_members(impl func(ptr gdclass.Receiver, l
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _debug_get_stack_level_instance(impl func(ptr gdclass.Receiver, level int) gdextension.Pointer) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _debug_get_stack_level_instance(impl func(ptr gdclass.Receiver, level int) uintptr) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var level = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(level))
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(uintptr) (uintptr, bool) { return 0, true }(ret)
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 func (Instance) _debug_get_globals(impl func(ptr gdclass.Receiver, max_subitems int, max_depth int) Globals) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -962,21 +969,23 @@ func (Instance) _profiling_set_save_native_calls(impl func(ptr gdclass.Receiver,
 		impl(self, enable)
 	}
 }
-func (Instance) _profiling_get_accumulated_data(impl func(ptr gdclass.Receiver, info_array *ProfilingInfo, info_max int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _profiling_get_accumulated_data(impl func(ptr gdclass.Receiver, info_array Array.Contains[ProfilingInfo]) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var info_array = gd.UnsafeGet[*ProfilingInfo](p_args, 0)
+		var info_array_ptr = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var info_max = gd.UnsafeGet[int64](p_args, 1)
+		var info_array = gdmemory.ArrayContains[ProfilingInfo](info_array_ptr, int(info_max))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, info_array, int(info_max))
+		ret := impl(self, info_array)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
-func (Instance) _profiling_get_frame_data(impl func(ptr gdclass.Receiver, info_array *ProfilingInfo, info_max int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _profiling_get_frame_data(impl func(ptr gdclass.Receiver, info_array Array.Contains[ProfilingInfo]) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var info_array = gd.UnsafeGet[*ProfilingInfo](p_args, 0)
+		var info_array_ptr = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var info_max = gd.UnsafeGet[int64](p_args, 1)
+		var info_array = gdmemory.ArrayContains[ProfilingInfo](info_array_ptr, int(info_max))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, info_array, int(info_max))
+		ret := impl(self, info_array)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -1513,12 +1522,17 @@ func (class) _debug_get_stack_level_members(impl func(ptr gdclass.Receiver, leve
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (class) _debug_get_stack_level_instance(impl func(ptr gdclass.Receiver, level int64) gdextension.Pointer) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _debug_get_stack_level_instance(impl func(ptr gdclass.Receiver, level int64) uintptr) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var level = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, level)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(uintptr) (uintptr, bool) { return 0, true }(ret)
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 func (class) _debug_get_globals(impl func(ptr gdclass.Receiver, max_subitems int64, max_depth int64) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1656,18 +1670,20 @@ func (class) _profiling_set_save_native_calls(impl func(ptr gdclass.Receiver, en
 		impl(self, enable)
 	}
 }
-func (class) _profiling_get_accumulated_data(impl func(ptr gdclass.Receiver, info_array *ProfilingInfo, info_max int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _profiling_get_accumulated_data(impl func(ptr gdclass.Receiver, info_array Engine.Pointer[ProfilingInfo], info_max int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var info_array = gd.UnsafeGet[*ProfilingInfo](p_args, 0)
+		var info_array = gdmemory.WrapPointer[ProfilingInfo](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
 		var info_max = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, info_array, info_max)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (class) _profiling_get_frame_data(impl func(ptr gdclass.Receiver, info_array *ProfilingInfo, info_max int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _profiling_get_frame_data(impl func(ptr gdclass.Receiver, info_array Engine.Pointer[ProfilingInfo], info_max int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var info_array = gd.UnsafeGet[*ProfilingInfo](p_args, 0)
+		var info_array = gdmemory.WrapPointer[ProfilingInfo](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
 		var info_max = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, info_array, info_max)

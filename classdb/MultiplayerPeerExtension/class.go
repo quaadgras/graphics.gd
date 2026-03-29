@@ -21,8 +21,10 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
+import "graphics.gd/classdb/Engine"
 import "graphics.gd/classdb/MultiplayerPeer"
 import "graphics.gd/classdb/PacketPeer"
+import "graphics.gd/internal/gdmemory"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -122,11 +124,11 @@ type Interface interface {
 	// Called when a packet needs to be received by the [MultiplayerAPI], with 'r_buffer_size' being the size of the binary 'r_buffer' in bytes.
 	//
 	// [MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
-	GetPacket(r_buffer gdextension.Pointer, r_buffer_size *int32) error
+	GetPacket(r_buffer Engine.Pointer[Engine.Pointer[byte]], r_buffer_size Engine.Pointer[int32]) error
 	// Called when a packet needs to be sent by the [MultiplayerAPI], with 'p_buffer_size' being the size of the binary 'p_buffer' in bytes.
 	//
 	// [MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
-	PutPacket(p_buffer gdextension.Pointer, p_buffer_size int) error
+	PutPacket(p_buffer Array.Contains[byte]) error
 	// Called when the available packet count is internally requested by the [MultiplayerAPI].
 	//
 	// [MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
@@ -232,10 +234,10 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetPacket(r_buffer gdextension.Pointer, r_buffer_size *int32) (_ error) {
+func (self implementation) GetPacket(r_buffer Engine.Pointer[Engine.Pointer[byte]], r_buffer_size Engine.Pointer[int32]) (_ error) {
 	return
 }
-func (self implementation) PutPacket(p_buffer gdextension.Pointer, p_buffer_size int) (_ error) {
+func (self implementation) PutPacket(p_buffer Array.Contains[byte]) (_ error) {
 	return
 }
 func (self implementation) GetAvailablePacketCount() (_ int) {
@@ -300,10 +302,12 @@ Called when a packet needs to be received by the [MultiplayerAPI], with 'r_buffe
 
 [MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
 */
-func (Instance) _get_packet(impl func(ptr gdclass.Receiver, r_buffer gdextension.Pointer, r_buffer_size *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_packet(impl func(ptr gdclass.Receiver, r_buffer Engine.Pointer[Engine.Pointer[byte]], r_buffer_size Engine.Pointer[int32]) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var r_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
-		var r_buffer_size = gd.UnsafeGet[*int32](p_args, 1)
+		var r_buffer = gdmemory.WrapPointer[Engine.Pointer[byte]](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
+		var r_buffer_size = gdmemory.WrapPointer[int32](gd.UnsafeGet[gdextension.Pointer](p_args, 1))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, r_buffer, r_buffer_size)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -320,12 +324,13 @@ Called when a packet needs to be sent by the [MultiplayerAPI], with 'p_buffer_si
 
 [MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
 */
-func (Instance) _put_packet(impl func(ptr gdclass.Receiver, p_buffer gdextension.Pointer, p_buffer_size int) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _put_packet(impl func(ptr gdclass.Receiver, p_buffer Array.Contains[byte]) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var p_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
+		var p_buffer_ptr = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var p_buffer_size = gd.UnsafeGet[int64](p_args, 1)
+		var p_buffer = gdmemory.ArrayContains[byte](p_buffer_ptr, int(p_buffer_size))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, p_buffer, int(p_buffer_size))
+		ret := impl(self, p_buffer)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
 		if !ok {
@@ -675,10 +680,11 @@ func New() Instance {
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
-func (class) _get_packet(impl func(ptr gdclass.Receiver, r_buffer gdextension.Pointer, r_buffer_size *int32) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_packet(impl func(ptr gdclass.Receiver, r_buffer Engine.Pointer[Engine.Pointer[byte]], r_buffer_size Engine.Pointer[int32]) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var r_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
-		var r_buffer_size = gd.UnsafeGet[*int32](p_args, 1)
+		var r_buffer = gdmemory.WrapPointer[Engine.Pointer[byte]](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
+		var r_buffer_size = gdmemory.WrapPointer[int32](gd.UnsafeGet[gdextension.Pointer](p_args, 1))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, r_buffer, r_buffer_size)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -689,9 +695,10 @@ func (class) _get_packet(impl func(ptr gdclass.Receiver, r_buffer gdextension.Po
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (class) _put_packet(impl func(ptr gdclass.Receiver, p_buffer gdextension.Pointer, p_buffer_size int64) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _put_packet(impl func(ptr gdclass.Receiver, p_buffer Engine.Pointer[byte], p_buffer_size int64) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var p_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
+		var p_buffer = gdmemory.WrapPointer[byte](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
 		var p_buffer_size = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, p_buffer, p_buffer_size)

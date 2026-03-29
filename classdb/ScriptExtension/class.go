@@ -116,14 +116,14 @@ type Any interface {
 
 type Interface interface {
 	EditorCanReloadFromFile() bool
-	PlaceholderErased(placeholder gdextension.Pointer)
+	PlaceholderErased(placeholder uintptr)
 	CanInstantiate() bool
 	GetBaseScript() Script.Instance
 	GetGlobalName() string
 	InheritsScript(script Script.Instance) bool
 	GetInstanceBaseType() string
-	InstanceCreate(for_object Object.Instance) gdextension.Pointer
-	PlaceholderInstanceCreate(for_object Object.Instance) gdextension.Pointer
+	InstanceCreate(for_object Object.Instance) uintptr
+	PlaceholderInstanceCreate(for_object Object.Instance) uintptr
 	InstanceHas(obj Object.Instance) bool
 	HasSourceCode() bool
 	GetSourceCode() string
@@ -164,7 +164,7 @@ type implementation struct{}
 func (self implementation) EditorCanReloadFromFile() (_ bool) {
 	return
 }
-func (self implementation) PlaceholderErased(placeholder gdextension.Pointer) {
+func (self implementation) PlaceholderErased(placeholder uintptr) {
 }
 func (self implementation) CanInstantiate() (_ bool) {
 	return
@@ -181,10 +181,10 @@ func (self implementation) InheritsScript(script Script.Instance) (_ bool) {
 func (self implementation) GetInstanceBaseType() (_ string) {
 	return
 }
-func (self implementation) InstanceCreate(for_object Object.Instance) (_ gdextension.Pointer) {
+func (self implementation) InstanceCreate(for_object Object.Instance) (_ uintptr) {
 	return
 }
-func (self implementation) PlaceholderInstanceCreate(for_object Object.Instance) (_ gdextension.Pointer) {
+func (self implementation) PlaceholderInstanceCreate(for_object Object.Instance) (_ uintptr) {
 	return
 }
 func (self implementation) InstanceHas(obj Object.Instance) (_ bool) {
@@ -276,9 +276,10 @@ func (Instance) _editor_can_reload_from_file(impl func(ptr gdclass.Receiver) boo
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _placeholder_erased(impl func(ptr gdclass.Receiver, placeholder gdextension.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _placeholder_erased(impl func(ptr gdclass.Receiver, placeholder uintptr)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var placeholder = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
+		var placeholder = uintptr(gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer func(uintptr) (uintptr, bool) { return 0, true }(placeholder)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, placeholder)
 	}
@@ -336,22 +337,32 @@ func (Instance) _get_instance_base_type(impl func(ptr gdclass.Receiver) string) 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _instance_create(impl func(ptr gdclass.Receiver, for_object Object.Instance) gdextension.Pointer) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _instance_create(impl func(ptr gdclass.Receiver, for_object Object.Instance) uintptr) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var for_object = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
 		defer gdreference.EndObject(for_object[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, for_object)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(uintptr) (uintptr, bool) { return 0, true }(ret)
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _placeholder_instance_create(impl func(ptr gdclass.Receiver, for_object Object.Instance) gdextension.Pointer) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _placeholder_instance_create(impl func(ptr gdclass.Receiver, for_object Object.Instance) uintptr) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var for_object = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
 		defer gdreference.EndObject(for_object[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, for_object)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(uintptr) (uintptr, bool) { return 0, true }(ret)
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 func (Instance) _instance_has(impl func(ptr gdclass.Receiver, obj Object.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -702,9 +713,10 @@ func (class) _editor_can_reload_from_file(impl func(ptr gdclass.Receiver) bool) 
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (class) _placeholder_erased(impl func(ptr gdclass.Receiver, placeholder gdextension.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _placeholder_erased(impl func(ptr gdclass.Receiver, placeholder uintptr)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var placeholder = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
+		var placeholder = uintptr(gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer func(uintptr) (uintptr, bool) { return 0, true }(placeholder)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, placeholder)
 	}
@@ -762,22 +774,32 @@ func (class) _get_instance_base_type(impl func(ptr gdclass.Receiver) String.Name
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (class) _instance_create(impl func(ptr gdclass.Receiver, for_object [1]gdreference.Object) gdextension.Pointer) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _instance_create(impl func(ptr gdclass.Receiver, for_object [1]gdreference.Object) uintptr) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var for_object = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
 		defer gdreference.EndObject(for_object[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, for_object)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(uintptr) (uintptr, bool) { return 0, true }(ret)
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (class) _placeholder_instance_create(impl func(ptr gdclass.Receiver, for_object [1]gdreference.Object) gdextension.Pointer) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _placeholder_instance_create(impl func(ptr gdclass.Receiver, for_object [1]gdreference.Object) uintptr) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var for_object = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
 		defer gdreference.EndObject(for_object[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, for_object)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := func(uintptr) (uintptr, bool) { return 0, true }(ret)
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 func (class) _instance_has(impl func(ptr gdclass.Receiver, obj [1]gdreference.Object) bool) (cb gd.ExtensionClassCallVirtualFunc) {

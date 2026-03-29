@@ -2,7 +2,7 @@ package PhysicsDirectSpaceState3DExtension
 
 import gd "graphics.gd/internal"
 
-type PhysicsServer3DExtensionRayResult = gd.PhysicsServer3DExtensionRayResult
-type PhysicsServer3DExtensionShapeResult = gd.PhysicsServer3DExtensionShapeResult
-type PhysicsServer3DExtensionShapeRestInfo = gd.PhysicsServer3DExtensionShapeRestInfo
-type PhysicsServer3DExtensionMotionResult = gd.PhysicsServer3DExtensionMotionResult
+type RayResult = gd.PhysicsServer3DExtensionRayResult
+type ShapeResult = gd.PhysicsServer3DExtensionShapeResult
+type ShapeRestInfo = gd.PhysicsServer3DExtensionShapeRestInfo
+type MotionResult = gd.PhysicsServer3DExtensionMotionResult

@@ -23,6 +23,8 @@ import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/AudioSamplePlayback"
+import "graphics.gd/classdb/Engine"
+import "graphics.gd/internal/gdmemory"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -157,7 +159,7 @@ type Interface interface {
 	// Override this method to customize how the audio stream is mixed. This method is called even if the playback is not active.
 	//
 	// Note: It is not useful to override this method in GDScript or C#. Only GDExtension can take advantage of it.
-	Mix(buffer *AudioFrame, rate_scale Float.X, frames int) int
+	Mix(buffer Array.Contains[AudioFrame], rate_scale Float.X) int
 	// Overridable method. Called whenever the audio stream is mixed if the playback is active and [AudioServer.SetEnableTaggingUsedAudioStreams] has been set to true. Editor plugins may use this method to "tag" the current position along the audio stream and display it in a preview.
 	//
 	// [AudioServer.SetEnableTaggingUsedAudioStreams]: https://pkg.go.dev/graphics.gd/classdb/AudioServer#SetEnableTaggingUsedAudioStreams
@@ -192,7 +194,7 @@ func (self implementation) GetPlaybackPosition() (_ Float.X) {
 }
 func (self implementation) Seek(position Float.X) {
 }
-func (self implementation) Mix(buffer *AudioFrame, rate_scale Float.X, frames int) (_ int) {
+func (self implementation) Mix(buffer Array.Contains[AudioFrame], rate_scale Float.X) (_ int) {
 	return
 }
 func (self implementation) TagUsedStreams() {
@@ -279,13 +281,14 @@ Override this method to customize how the audio stream is mixed. This method is 
 
 Note: It is not useful to override this method in GDScript or C#. Only GDExtension can take advantage of it.
 */
-func (Instance) _mix(impl func(ptr gdclass.Receiver, buffer *AudioFrame, rate_scale Float.X, frames int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _mix(impl func(ptr gdclass.Receiver, buffer Array.Contains[AudioFrame], rate_scale Float.X) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
+		var buffer_ptr = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var rate_scale = gd.UnsafeGet[float64](p_args, 1)
 		var frames = gd.UnsafeGet[int64](p_args, 2)
+		var buffer = gdmemory.ArrayContains[AudioFrame](buffer_ptr, int(frames))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, buffer, Float.X(rate_scale), int(frames))
+		ret := impl(self, buffer, Float.X(rate_scale))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -513,9 +516,10 @@ func (class) _seek(impl func(ptr gdclass.Receiver, position float64)) (cb gd.Ext
 		impl(self, position)
 	}
 }
-func (class) _mix(impl func(ptr gdclass.Receiver, buffer *AudioFrame, rate_scale float64, frames int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _mix(impl func(ptr gdclass.Receiver, buffer Engine.Pointer[AudioFrame], rate_scale float64, frames int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
+		var buffer = gdmemory.WrapPointer[AudioFrame](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
 		var rate_scale = gd.UnsafeGet[float64](p_args, 1)
 		var frames = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())

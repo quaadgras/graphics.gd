@@ -21,9 +21,11 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
+import "graphics.gd/classdb/Engine"
 import "graphics.gd/classdb/GUI"
 import "graphics.gd/classdb/Image"
 import "graphics.gd/classdb/TextServer"
+import "graphics.gd/internal/gdmemory"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -165,7 +167,7 @@ type Interface interface {
 	// Sets font source data, e.g contents of the dynamic font source file.
 	FontSetData(font_rid RID.Font, data []byte)
 	// Sets pointer to the font source data, e.g contents of the dynamic font source file.
-	FontSetDataPtr(font_rid RID.Font, data_ptr gdextension.Pointer, data_size int)
+	FontSetDataPtr(font_rid RID.Font, data_ptr Array.Contains[byte])
 	// Sets an active face index in the TrueType / OpenType collection.
 	FontSetFaceIndex(font_rid RID.Font, face_index int)
 	// Returns an active face index in the TrueType / OpenType collection.
@@ -536,9 +538,9 @@ type Interface interface {
 	// Returns true if buffer is successfully shaped.
 	ShapedTextIsReady(shaped RID.TextBuffer) bool
 	// Returns an array of glyphs in the visual order.
-	ShapedTextGetGlyphs(shaped RID.TextBuffer) *Glyph
+	ShapedTextGetGlyphs(shaped RID.TextBuffer) Engine.Pointer[Glyph]
 	// Returns text glyphs in the logical order.
-	ShapedTextSortLogical(shaped RID.TextBuffer) *Glyph
+	ShapedTextSortLogical(shaped RID.TextBuffer) Engine.Pointer[Glyph]
 	// Returns number of glyphs in the buffer.
 	ShapedTextGetGlyphCount(shaped RID.TextBuffer) int
 	// Returns substring buffer character range in the parent buffer.
@@ -556,7 +558,7 @@ type Interface interface {
 	// Returns number of glyphs in the ellipsis.
 	ShapedTextGetEllipsisGlyphCount(shaped RID.TextBuffer) int
 	// Returns array of the glyphs in the ellipsis.
-	ShapedTextGetEllipsisGlyphs(shaped RID.TextBuffer) *Glyph
+	ShapedTextGetEllipsisGlyphs(shaped RID.TextBuffer) Engine.Pointer[Glyph]
 	// Trims text if it exceeds the given width.
 	ShapedTextOverrunTrimToWidth(shaped RID.TextBuffer, width Float.X, trim_flags TextServer.TextOverrunFlag)
 	// Returns array of inline objects.
@@ -582,7 +584,7 @@ type Interface interface {
 	// Returns dominant direction of in the range of text.
 	ShapedTextGetDominantDirectionInRange(shaped RID.TextBuffer, start int, end int) int
 	// Returns shapes of the carets corresponding to the character offset 'position' in the text. Returned caret shape is 1 pixel wide rectangle.
-	ShapedTextGetCarets(shaped RID.TextBuffer, position int, caret *CaretInfo)
+	ShapedTextGetCarets(shaped RID.TextBuffer, position int, caret Engine.Pointer[CaretInfo])
 	// Returns selection rectangles for the specified character range.
 	ShapedTextGetSelection(shaped RID.TextBuffer, start int, end int) []Vector2.XY
 	// Returns grapheme index at the specified pixel offset at the baseline, or -1 if none is found.
@@ -696,7 +698,7 @@ func (self implementation) CreateFontLinkedVariation(font_rid RID.Font) (_ RID.F
 }
 func (self implementation) FontSetData(font_rid RID.Font, data []byte) {
 }
-func (self implementation) FontSetDataPtr(font_rid RID.Font, data_ptr gdextension.Pointer, data_size int) {
+func (self implementation) FontSetDataPtr(font_rid RID.Font, data_ptr Array.Contains[byte]) {
 }
 func (self implementation) FontSetFaceIndex(font_rid RID.Font, face_index int) {
 }
@@ -1147,10 +1149,10 @@ func (self implementation) ShapedTextUpdateJustificationOps(shaped RID.TextBuffe
 func (self implementation) ShapedTextIsReady(shaped RID.TextBuffer) (_ bool) {
 	return
 }
-func (self implementation) ShapedTextGetGlyphs(shaped RID.TextBuffer) (_ *Glyph) {
+func (self implementation) ShapedTextGetGlyphs(shaped RID.TextBuffer) (_ Engine.Pointer[Glyph]) {
 	return
 }
-func (self implementation) ShapedTextSortLogical(shaped RID.TextBuffer) (_ *Glyph) {
+func (self implementation) ShapedTextSortLogical(shaped RID.TextBuffer) (_ Engine.Pointer[Glyph]) {
 	return
 }
 func (self implementation) ShapedTextGetGlyphCount(shaped RID.TextBuffer) (_ int) {
@@ -1177,7 +1179,7 @@ func (self implementation) ShapedTextGetEllipsisPos(shaped RID.TextBuffer) (_ in
 func (self implementation) ShapedTextGetEllipsisGlyphCount(shaped RID.TextBuffer) (_ int) {
 	return
 }
-func (self implementation) ShapedTextGetEllipsisGlyphs(shaped RID.TextBuffer) (_ *Glyph) {
+func (self implementation) ShapedTextGetEllipsisGlyphs(shaped RID.TextBuffer) (_ Engine.Pointer[Glyph]) {
 	return
 }
 func (self implementation) ShapedTextOverrunTrimToWidth(shaped RID.TextBuffer, width Float.X, trim_flags TextServer.TextOverrunFlag) {
@@ -1215,7 +1217,7 @@ func (self implementation) ShapedTextGetUnderlineThickness(shaped RID.TextBuffer
 func (self implementation) ShapedTextGetDominantDirectionInRange(shaped RID.TextBuffer, start int, end int) (_ int) {
 	return
 }
-func (self implementation) ShapedTextGetCarets(shaped RID.TextBuffer, position int, caret *CaretInfo) {
+func (self implementation) ShapedTextGetCarets(shaped RID.TextBuffer, position int, caret Engine.Pointer[CaretInfo]) {
 }
 func (self implementation) ShapedTextGetSelection(shaped RID.TextBuffer, start int, end int) (_ []Vector2.XY) {
 	return
@@ -1531,13 +1533,14 @@ func (Instance) _font_set_data(impl func(ptr gdclass.Receiver, font_rid RID.Font
 /*
 Sets pointer to the font source data, e.g contents of the dynamic font source file.
 */
-func (Instance) _font_set_data_ptr(impl func(ptr gdclass.Receiver, font_rid RID.Font, data_ptr gdextension.Pointer, data_size int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_data_ptr(impl func(ptr gdclass.Receiver, font_rid RID.Font, data_ptr Array.Contains[byte])) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		var data_ptr = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
+		var data_ptr_ptr = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
 		var data_size = gd.UnsafeGet[int64](p_args, 2)
+		var data_ptr = gdmemory.ArrayContains[byte](data_ptr_ptr, int(data_size))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, RID.Font(font_rid), data_ptr, int(data_size))
+		impl(self, RID.Font(font_rid), data_ptr)
 	}
 }
 
@@ -3912,24 +3915,24 @@ func (Instance) _shaped_text_is_ready(impl func(ptr gdclass.Receiver, shaped RID
 /*
 Returns an array of glyphs in the visual order.
 */
-func (Instance) _shaped_text_get_glyphs(impl func(ptr gdclass.Receiver, shaped RID.TextBuffer) *Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_glyphs(impl func(ptr gdclass.Receiver, shaped RID.TextBuffer) Engine.Pointer[Glyph]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, RID.TextBuffer(shaped))
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gdmemory.UnwrapPointer[Glyph](ret))
 	}
 }
 
 /*
 Returns text glyphs in the logical order.
 */
-func (Instance) _shaped_text_sort_logical(impl func(ptr gdclass.Receiver, shaped RID.TextBuffer) *Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_sort_logical(impl func(ptr gdclass.Receiver, shaped RID.TextBuffer) Engine.Pointer[Glyph]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, RID.TextBuffer(shaped))
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gdmemory.UnwrapPointer[Glyph](ret))
 	}
 }
 
@@ -4057,12 +4060,12 @@ func (Instance) _shaped_text_get_ellipsis_glyph_count(impl func(ptr gdclass.Rece
 /*
 Returns array of the glyphs in the ellipsis.
 */
-func (Instance) _shaped_text_get_ellipsis_glyphs(impl func(ptr gdclass.Receiver, shaped RID.TextBuffer) *Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_ellipsis_glyphs(impl func(ptr gdclass.Receiver, shaped RID.TextBuffer) Engine.Pointer[Glyph]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, RID.TextBuffer(shaped))
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gdmemory.UnwrapPointer[Glyph](ret))
 	}
 }
 
@@ -4227,11 +4230,12 @@ func (Instance) _shaped_text_get_dominant_direction_in_range(impl func(ptr gdcla
 /*
 Returns shapes of the carets corresponding to the character offset 'position' in the text. Returned caret shape is 1 pixel wide rectangle.
 */
-func (Instance) _shaped_text_get_carets(impl func(ptr gdclass.Receiver, shaped RID.TextBuffer, position int, caret *CaretInfo)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_carets(impl func(ptr gdclass.Receiver, shaped RID.TextBuffer, position int, caret Engine.Pointer[CaretInfo])) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var position = gd.UnsafeGet[int64](p_args, 1)
-		var caret = gd.UnsafeGet[*CaretInfo](p_args, 2)
+		var caret = gdmemory.WrapPointer[CaretInfo](gd.UnsafeGet[gdextension.Pointer](p_args, 2))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, RID.TextBuffer(shaped), int(position), caret)
 	}
@@ -4875,10 +4879,11 @@ func (class) _font_set_data(impl func(ptr gdclass.Receiver, font_rid RID.Any, da
 		impl(self, font_rid, data)
 	}
 }
-func (class) _font_set_data_ptr(impl func(ptr gdclass.Receiver, font_rid RID.Any, data_ptr gdextension.Pointer, data_size int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_data_ptr(impl func(ptr gdclass.Receiver, font_rid RID.Any, data_ptr Engine.Pointer[byte], data_size int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		var data_ptr = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
+		var data_ptr = gdmemory.WrapPointer[byte](gd.UnsafeGet[gdextension.Pointer](p_args, 1))
+		defer gdmemory.Barrier()
 		var data_size = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, data_ptr, data_size)
@@ -6539,20 +6544,20 @@ func (class) _shaped_text_is_ready(impl func(ptr gdclass.Receiver, shaped RID.An
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (class) _shaped_text_get_glyphs(impl func(ptr gdclass.Receiver, shaped RID.Any) *Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_glyphs(impl func(ptr gdclass.Receiver, shaped RID.Any) Engine.Pointer[Glyph]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gdmemory.UnwrapPointer[Glyph](ret))
 	}
 }
-func (class) _shaped_text_sort_logical(impl func(ptr gdclass.Receiver, shaped RID.Any) *Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_sort_logical(impl func(ptr gdclass.Receiver, shaped RID.Any) Engine.Pointer[Glyph]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gdmemory.UnwrapPointer[Glyph](ret))
 	}
 }
 func (class) _shaped_text_get_glyph_count(impl func(ptr gdclass.Receiver, shaped RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -6644,12 +6649,12 @@ func (class) _shaped_text_get_ellipsis_glyph_count(impl func(ptr gdclass.Receive
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (class) _shaped_text_get_ellipsis_glyphs(impl func(ptr gdclass.Receiver, shaped RID.Any) *Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_ellipsis_glyphs(impl func(ptr gdclass.Receiver, shaped RID.Any) Engine.Pointer[Glyph]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gdmemory.UnwrapPointer[Glyph](ret))
 	}
 }
 func (class) _shaped_text_overrun_trim_to_width(impl func(ptr gdclass.Receiver, shaped RID.Any, width float64, trim_flags TextServer.TextOverrunFlag)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -6762,11 +6767,12 @@ func (class) _shaped_text_get_dominant_direction_in_range(impl func(ptr gdclass.
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (class) _shaped_text_get_carets(impl func(ptr gdclass.Receiver, shaped RID.Any, position int64, caret *CaretInfo)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_carets(impl func(ptr gdclass.Receiver, shaped RID.Any, position int64, caret Engine.Pointer[CaretInfo])) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var position = gd.UnsafeGet[int64](p_args, 1)
-		var caret = gd.UnsafeGet[*CaretInfo](p_args, 2)
+		var caret = gdmemory.WrapPointer[CaretInfo](gd.UnsafeGet[gdextension.Pointer](p_args, 2))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, position, caret)
 	}

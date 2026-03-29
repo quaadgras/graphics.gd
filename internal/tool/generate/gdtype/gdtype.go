@@ -80,6 +80,9 @@ func (name Name) ToUnderlying(val string) string {
 }
 
 func (name Name) ConvertToSimple(val, simple string) string {
+	if strings.HasPrefix(string(name), "Engine.Pointer[") || name == "uintptr" {
+		return val
+	}
 	if after, ok := strings.CutPrefix(val, "("); ok {
 		val = after
 		val = strings.TrimSuffix(val, ")")
@@ -139,6 +142,9 @@ func (name Name) ConvertToSimple(val, simple string) string {
 }
 
 func (name Name) ConvertToGo(val string, simple string) string {
+	if strings.HasPrefix(string(name), "Engine.Pointer[") || name == "uintptr" {
+		return val
+	}
 	if strings.HasPrefix(string(name), "Array.Contains[") {
 		return fmt.Sprintf("gd.ArrayAs[%s](gd.InternalArray(%s))", simple, val)
 	}
@@ -190,6 +196,14 @@ func (name Name) ConvertToGo(val string, simple string) string {
 }
 
 func (name Name) LoadFromRawPointerValue(val string) string {
+	if strings.HasPrefix(string(name), "Engine.Pointer[") {
+		elem := strings.TrimPrefix(string(name), "Engine.Pointer[")
+		elem = strings.TrimSuffix(elem, "]")
+		return fmt.Sprintf("gdmemory.WrapPointer[%s](%s)", elem, val)
+	}
+	if name == "uintptr" {
+		return fmt.Sprintf("uintptr(%s)", val)
+	}
 	if strings.HasPrefix(string(name), "Array.Contains[") {
 		_, elem, _ := strings.Cut(string(name), "Array.Contains[")
 		elem = strings.TrimSuffix(elem, "]")
@@ -251,6 +265,12 @@ func (name Name) LoadFromRawPointerValue(val string) string {
 }
 
 func (name Name) EndPointer(val string) string {
+	if strings.HasPrefix(string(name), "Engine.Pointer[") {
+		return "gdmemory.Barrier()"
+	}
+	if name == "uintptr" {
+		return fmt.Sprintf("func(uintptr)(uintptr,bool){return 0,true}(%s)", val)
+	}
 	if strings.HasPrefix(string(name), "Array.Contains[") {
 		return fmt.Sprintf("pointers.End(gd.InternalArray(%v))", val)
 	}
@@ -299,6 +319,14 @@ func (name Name) EndPointer(val string) string {
 }
 
 func (name Name) LoadOntoCallFrame(val string) string {
+	if strings.HasPrefix(string(name), "Engine.Pointer[") {
+		elem := strings.TrimPrefix(string(name), "Engine.Pointer[")
+		elem = strings.TrimSuffix(elem, "]")
+		return fmt.Sprintf("\tcallframe.Arg(frame, gdmemory.UnwrapPointer[%s](%s))\n", elem, val)
+	}
+	if name == "uintptr" {
+		return fmt.Sprintf("\tcallframe.Arg(frame, gdextension.Pointer(%s))\n", val)
+	}
 	if strings.HasPrefix(string(name), "Array.Contains[") {
 		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalArray(%v)))\n", val)
 	}
@@ -351,6 +379,12 @@ func (name Name) IsPointer() (string, bool) {
 	t = strings.TrimPrefix(t, "gd.")
 	t = strings.TrimPrefix(t, "gdclass.")
 	t = strings.TrimPrefix(t, "[1]gdclass.")
+	if strings.HasPrefix(t, "Engine.Pointer[") {
+		return "gdextension.Pointer", true
+	}
+	if t == "uintptr" {
+		return "gdextension.Pointer", true
+	}
 	if strings.HasPrefix(t, "Array.Contains[") {
 		return "gdextension.Array", true
 	}
@@ -399,6 +433,12 @@ func (name Name) IsPointer() (string, bool) {
 }
 
 func (name Name) CallframeType() string {
+	if strings.HasPrefix(string(name), "Engine.Pointer[") {
+		return "gdextension.Pointer"
+	}
+	if name == "uintptr" {
+		return "gdextension.Pointer"
+	}
 	if strings.HasPrefix(string(name), "Array.Contains[") {
 		return "gdextension.Array"
 	}
@@ -458,6 +498,14 @@ func (name Name) CallframeType() string {
 }
 
 func (name Name) CallframeValue(val string) string {
+	if strings.HasPrefix(string(name), "Engine.Pointer[") {
+		elem := strings.TrimPrefix(string(name), "Engine.Pointer[")
+		elem = strings.TrimSuffix(elem, "]")
+		return fmt.Sprintf("gdmemory.UnwrapPointer[%s](%s)", elem, val)
+	}
+	if name == "uintptr" {
+		return fmt.Sprintf("gdextension.Pointer(%s)", val)
+	}
 	if strings.HasPrefix(string(name), "Array.Contains[") {
 		return fmt.Sprintf("pointers.Get(gd.InternalArray(%v))", val)
 	}

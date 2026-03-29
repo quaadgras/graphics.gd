@@ -37,6 +37,9 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
+import "graphics.gd/classdb/Engine"
+import "graphics.gd/classdb/OpenXR"
+import "graphics.gd/internal/gdmemory"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -142,21 +145,21 @@ type Interface interface {
 	// - If the bool * points to a boolean, the boolean will be updated to true if the extension is enabled.
 	GetRequestedExtensions(xr_version int) map[string]*bool
 	// Add additional data structures when querying OpenXR system abilities.
-	SetSystemPropertiesAndGetNextPointer(next_pointer gdextension.Pointer) int
+	SetSystemPropertiesAndGetNextPointer(next_pointer Engine.Pointer[OpenXR.Extension]) int
 	// Add additional data structures when the OpenXR instance is created. 'xr_version' specifies the OpenXR version we're instantiating.
-	SetInstanceCreateInfoAndGetNextPointer(xr_version int, next_pointer gdextension.Pointer) int
+	SetInstanceCreateInfoAndGetNextPointer(xr_version int, next_pointer Engine.Pointer[OpenXR.Extension]) int
 	// Add additional data structures when the OpenXR session is created.
-	SetSessionCreateAndGetNextPointer(next_pointer gdextension.Pointer) int
+	SetSessionCreateAndGetNextPointer(next_pointer Engine.Pointer[OpenXR.Extension]) int
 	// Add additional data structures when creating OpenXR swapchains.
-	SetSwapchainCreateInfoAndGetNextPointer(next_pointer gdextension.Pointer) int
+	SetSwapchainCreateInfoAndGetNextPointer(next_pointer Engine.Pointer[OpenXR.Extension]) int
 	// Add additional data structures when each hand tracker is created.
-	SetHandJointLocationsAndGetNextPointer(hand_index int, next_pointer gdextension.Pointer) int
+	SetHandJointLocationsAndGetNextPointer(hand_index int, next_pointer Engine.Pointer[OpenXR.Extension]) int
 	// Add additional data structures to the projection view of the given 'view_index'.
 	//
 	// Note: This virtual method will be called on the render thread. Additionally, the data it returns will be used shortly after this method is called, so it needs to remain valid until the next time [OnPreRender] runs.
 	//
 	// [OnPreRender]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Interface
-	SetProjectionViewsAndGetNextPointer(view_index int, next_pointer gdextension.Pointer) int
+	SetProjectionViewsAndGetNextPointer(view_index int, next_pointer Engine.Pointer[OpenXR.Extension]) int
 	// Add additional data structures to XrFrameWaitInfo.
 	//
 	// This will only be called if the extension previously registered itself with [OpenXRAPIExtension.RegisterFrameInfoExtension].
@@ -164,7 +167,7 @@ type Interface interface {
 	// Note: This virtual method will be called on the render thread.
 	//
 	// [OpenXRAPIExtension.RegisterFrameInfoExtension]: https://pkg.go.dev/graphics.gd/classdb/OpenXRAPIExtension#Instance.RegisterFrameInfoExtension
-	SetFrameWaitInfoAndGetNextPointer(next_pointer gdextension.Pointer) int
+	SetFrameWaitInfoAndGetNextPointer(next_pointer Engine.Pointer[OpenXR.Extension]) int
 	// Add additional data structures to XrFrameEndInfo.
 	//
 	// This will only be called if the extension previously registered itself with [OpenXRAPIExtension.RegisterFrameInfoExtension].
@@ -173,7 +176,7 @@ type Interface interface {
 	//
 	// [OnPreRender]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Interface
 	// [OpenXRAPIExtension.RegisterFrameInfoExtension]: https://pkg.go.dev/graphics.gd/classdb/OpenXRAPIExtension#Instance.RegisterFrameInfoExtension
-	SetFrameEndInfoAndGetNextPointer(next_pointer gdextension.Pointer) int
+	SetFrameEndInfoAndGetNextPointer(next_pointer Engine.Pointer[OpenXR.Extension]) int
 	// Add additional data structures to XrViewLocateInfo.
 	//
 	// This will only be called if the extension previously registered itself with [OpenXRAPIExtension.RegisterFrameInfoExtension].
@@ -182,15 +185,15 @@ type Interface interface {
 	//
 	// [OnPreRender]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Interface
 	// [OpenXRAPIExtension.RegisterFrameInfoExtension]: https://pkg.go.dev/graphics.gd/classdb/OpenXRAPIExtension#Instance.RegisterFrameInfoExtension
-	SetViewLocateInfoAndGetNextPointer(next_pointer gdextension.Pointer) int
+	SetViewLocateInfoAndGetNextPointer(next_pointer Engine.Pointer[OpenXR.Extension]) int
 	// Add additional data structures to XrReferenceSpaceCreateInfo.
-	SetReferenceSpaceCreateInfoAndGetNextPointer(reference_space_type int, next_pointer gdextension.Pointer) int
+	SetReferenceSpaceCreateInfoAndGetNextPointer(reference_space_type int, next_pointer Engine.Pointer[OpenXR.Extension]) int
 	// Called before [SetViewConfigurationAndGetNextPointer] to allow the extension to reserve data for the given number of views.
 	//
 	// [SetViewConfigurationAndGetNextPointer]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Interface
 	PrepareViewConfiguration(view_count int)
 	// Add additional data structures when querying OpenXR view configuration.
-	SetViewConfigurationAndGetNextPointer(view int, next_pointer gdextension.Pointer) int
+	SetViewConfigurationAndGetNextPointer(view int, next_pointer Engine.Pointer[OpenXR.Extension]) int
 	// Called to allow an extension to print additional information about its view configuration, if applicable. This will only be called if verbose output is enabled.
 	PrintViewConfigurationInfo(view int)
 	// Returns the number of composition layers this extension wrapper provides via [GetCompositionLayer].
@@ -287,7 +290,7 @@ type Interface interface {
 	// Called when the OpenXR session state is changed to exiting.
 	OnStateExiting()
 	// Called when there is an OpenXR event to process. When implementing, return true if the event was handled, return false otherwise.
-	OnEventPolled(event gdextension.Pointer) bool
+	OnEventPolled(event Engine.Pointer[OpenXR.EventDataBuffer]) bool
 	// Add additional data structures to composition layers created by [OpenXRCompositionLayer].
 	//
 	// 'property_values' contains the values of the properties returned by [GetViewportCompositionLayerExtensionProperties].
@@ -299,7 +302,7 @@ type Interface interface {
 	// [GetViewportCompositionLayerExtensionProperties]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Interface
 	// [OnPreRender]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Interface
 	// [OpenXRCompositionLayer]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayer
-	SetViewportCompositionLayerAndGetNextPointer(layer gdextension.Pointer, property_values Object.PropertyInfo, next_pointer gdextension.Pointer) int
+	SetViewportCompositionLayerAndGetNextPointer(layer Engine.Pointer[OpenXR.CompositionLayer], property_values Object.PropertyInfo, next_pointer Engine.Pointer[OpenXR.Extension]) int
 	// Gets an array of data structures that represent properties, just like [Object.GetPropertyList], that will be added to [OpenXRCompositionLayer] nodes.
 	//
 	// Note: This virtual method will be called on the render thread.
@@ -316,7 +319,7 @@ type Interface interface {
 	// 'layer' is a pointer to an XrCompositionLayerBaseHeader struct.
 	//
 	// [OpenXRCompositionLayer]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayer
-	OnViewportCompositionLayerDestroyed(layer gdextension.Pointer)
+	OnViewportCompositionLayerDestroyed(layer Engine.Pointer[OpenXR.CompositionLayer])
 	// Add additional data structures to Android surface swapchains created by [OpenXRCompositionLayer].
 	//
 	// 'property_values' contains the values of the properties returned by [GetViewportCompositionLayerExtensionProperties].
@@ -325,7 +328,7 @@ type Interface interface {
 	//
 	// [GetViewportCompositionLayerExtensionProperties]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Interface
 	// [OpenXRCompositionLayer]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayer
-	SetAndroidSurfaceSwapchainCreateInfoAndGetNextPointer(property_values Object.PropertyInfo, next_pointer gdextension.Pointer) int
+	SetAndroidSurfaceSwapchainCreateInfoAndGetNextPointer(property_values Object.PropertyInfo, next_pointer Engine.Pointer[OpenXR.Extension]) int
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -336,39 +339,39 @@ type implementation struct{}
 func (self implementation) GetRequestedExtensions(xr_version int) (_ map[string]*bool) {
 	return
 }
-func (self implementation) SetSystemPropertiesAndGetNextPointer(next_pointer gdextension.Pointer) (_ int) {
+func (self implementation) SetSystemPropertiesAndGetNextPointer(next_pointer Engine.Pointer[OpenXR.Extension]) (_ int) {
 	return
 }
-func (self implementation) SetInstanceCreateInfoAndGetNextPointer(xr_version int, next_pointer gdextension.Pointer) (_ int) {
+func (self implementation) SetInstanceCreateInfoAndGetNextPointer(xr_version int, next_pointer Engine.Pointer[OpenXR.Extension]) (_ int) {
 	return
 }
-func (self implementation) SetSessionCreateAndGetNextPointer(next_pointer gdextension.Pointer) (_ int) {
+func (self implementation) SetSessionCreateAndGetNextPointer(next_pointer Engine.Pointer[OpenXR.Extension]) (_ int) {
 	return
 }
-func (self implementation) SetSwapchainCreateInfoAndGetNextPointer(next_pointer gdextension.Pointer) (_ int) {
+func (self implementation) SetSwapchainCreateInfoAndGetNextPointer(next_pointer Engine.Pointer[OpenXR.Extension]) (_ int) {
 	return
 }
-func (self implementation) SetHandJointLocationsAndGetNextPointer(hand_index int, next_pointer gdextension.Pointer) (_ int) {
+func (self implementation) SetHandJointLocationsAndGetNextPointer(hand_index int, next_pointer Engine.Pointer[OpenXR.Extension]) (_ int) {
 	return
 }
-func (self implementation) SetProjectionViewsAndGetNextPointer(view_index int, next_pointer gdextension.Pointer) (_ int) {
+func (self implementation) SetProjectionViewsAndGetNextPointer(view_index int, next_pointer Engine.Pointer[OpenXR.Extension]) (_ int) {
 	return
 }
-func (self implementation) SetFrameWaitInfoAndGetNextPointer(next_pointer gdextension.Pointer) (_ int) {
+func (self implementation) SetFrameWaitInfoAndGetNextPointer(next_pointer Engine.Pointer[OpenXR.Extension]) (_ int) {
 	return
 }
-func (self implementation) SetFrameEndInfoAndGetNextPointer(next_pointer gdextension.Pointer) (_ int) {
+func (self implementation) SetFrameEndInfoAndGetNextPointer(next_pointer Engine.Pointer[OpenXR.Extension]) (_ int) {
 	return
 }
-func (self implementation) SetViewLocateInfoAndGetNextPointer(next_pointer gdextension.Pointer) (_ int) {
+func (self implementation) SetViewLocateInfoAndGetNextPointer(next_pointer Engine.Pointer[OpenXR.Extension]) (_ int) {
 	return
 }
-func (self implementation) SetReferenceSpaceCreateInfoAndGetNextPointer(reference_space_type int, next_pointer gdextension.Pointer) (_ int) {
+func (self implementation) SetReferenceSpaceCreateInfoAndGetNextPointer(reference_space_type int, next_pointer Engine.Pointer[OpenXR.Extension]) (_ int) {
 	return
 }
 func (self implementation) PrepareViewConfiguration(view_count int) {
 }
-func (self implementation) SetViewConfigurationAndGetNextPointer(view int, next_pointer gdextension.Pointer) (_ int) {
+func (self implementation) SetViewConfigurationAndGetNextPointer(view int, next_pointer Engine.Pointer[OpenXR.Extension]) (_ int) {
 	return
 }
 func (self implementation) PrintViewConfigurationInfo(view int) {
@@ -425,10 +428,10 @@ func (self implementation) OnStateLossPending() {
 }
 func (self implementation) OnStateExiting() {
 }
-func (self implementation) OnEventPolled(event gdextension.Pointer) (_ bool) {
+func (self implementation) OnEventPolled(event Engine.Pointer[OpenXR.EventDataBuffer]) (_ bool) {
 	return
 }
-func (self implementation) SetViewportCompositionLayerAndGetNextPointer(layer gdextension.Pointer, property_values Object.PropertyInfo, next_pointer gdextension.Pointer) (_ int) {
+func (self implementation) SetViewportCompositionLayerAndGetNextPointer(layer Engine.Pointer[OpenXR.CompositionLayer], property_values Object.PropertyInfo, next_pointer Engine.Pointer[OpenXR.Extension]) (_ int) {
 	return
 }
 func (self implementation) GetViewportCompositionLayerExtensionProperties() (_ [][]struct{}) {
@@ -437,9 +440,9 @@ func (self implementation) GetViewportCompositionLayerExtensionProperties() (_ [
 func (self implementation) GetViewportCompositionLayerExtensionPropertyDefaults() (_ map[string]any) {
 	return
 }
-func (self implementation) OnViewportCompositionLayerDestroyed(layer gdextension.Pointer) {
+func (self implementation) OnViewportCompositionLayerDestroyed(layer Engine.Pointer[OpenXR.CompositionLayer]) {
 }
-func (self implementation) SetAndroidSurfaceSwapchainCreateInfoAndGetNextPointer(property_values Object.PropertyInfo, next_pointer gdextension.Pointer) (_ int) {
+func (self implementation) SetAndroidSurfaceSwapchainCreateInfoAndGetNextPointer(property_values Object.PropertyInfo, next_pointer Engine.Pointer[OpenXR.Extension]) (_ int) {
 	return
 }
 
@@ -467,9 +470,10 @@ func (Instance) _get_requested_extensions(impl func(ptr gdclass.Receiver, xr_ver
 /*
 Add additional data structures when querying OpenXR system abilities.
 */
-func (Instance) _set_system_properties_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer gdextension.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_system_properties_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer Engine.Pointer[OpenXR.Extension]) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -479,10 +483,11 @@ func (Instance) _set_system_properties_and_get_next_pointer(impl func(ptr gdclas
 /*
 Add additional data structures when the OpenXR instance is created. 'xr_version' specifies the OpenXR version we're instantiating.
 */
-func (Instance) _set_instance_create_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, xr_version int, next_pointer gdextension.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_instance_create_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, xr_version int, next_pointer Engine.Pointer[OpenXR.Extension]) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var xr_version = gd.UnsafeGet[int64](p_args, 0)
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 1))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(xr_version), next_pointer)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -492,9 +497,10 @@ func (Instance) _set_instance_create_info_and_get_next_pointer(impl func(ptr gdc
 /*
 Add additional data structures when the OpenXR session is created.
 */
-func (Instance) _set_session_create_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer gdextension.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_session_create_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer Engine.Pointer[OpenXR.Extension]) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -504,9 +510,10 @@ func (Instance) _set_session_create_and_get_next_pointer(impl func(ptr gdclass.R
 /*
 Add additional data structures when creating OpenXR swapchains.
 */
-func (Instance) _set_swapchain_create_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer gdextension.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_swapchain_create_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer Engine.Pointer[OpenXR.Extension]) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -516,10 +523,11 @@ func (Instance) _set_swapchain_create_info_and_get_next_pointer(impl func(ptr gd
 /*
 Add additional data structures when each hand tracker is created.
 */
-func (Instance) _set_hand_joint_locations_and_get_next_pointer(impl func(ptr gdclass.Receiver, hand_index int, next_pointer gdextension.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_hand_joint_locations_and_get_next_pointer(impl func(ptr gdclass.Receiver, hand_index int, next_pointer Engine.Pointer[OpenXR.Extension]) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var hand_index = gd.UnsafeGet[int64](p_args, 0)
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 1))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(hand_index), next_pointer)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -533,10 +541,11 @@ Note: This virtual method will be called on the render thread. Additionally, the
 
 [OnPreRender]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Interface
 */
-func (Instance) _set_projection_views_and_get_next_pointer(impl func(ptr gdclass.Receiver, view_index int, next_pointer gdextension.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_projection_views_and_get_next_pointer(impl func(ptr gdclass.Receiver, view_index int, next_pointer Engine.Pointer[OpenXR.Extension]) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var view_index = gd.UnsafeGet[int64](p_args, 0)
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 1))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(view_index), next_pointer)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -552,9 +561,10 @@ Note: This virtual method will be called on the render thread.
 
 [OpenXRAPIExtension.RegisterFrameInfoExtension]: https://pkg.go.dev/graphics.gd/classdb/OpenXRAPIExtension#Instance.RegisterFrameInfoExtension
 */
-func (Instance) _set_frame_wait_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer gdextension.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_frame_wait_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer Engine.Pointer[OpenXR.Extension]) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -571,9 +581,10 @@ Note: This virtual method will be called on the render thread. Additionally, the
 [OnPreRender]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Interface
 [OpenXRAPIExtension.RegisterFrameInfoExtension]: https://pkg.go.dev/graphics.gd/classdb/OpenXRAPIExtension#Instance.RegisterFrameInfoExtension
 */
-func (Instance) _set_frame_end_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer gdextension.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_frame_end_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer Engine.Pointer[OpenXR.Extension]) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -590,9 +601,10 @@ Note: This virtual method will be called on the render thread. Additionally, the
 [OnPreRender]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Interface
 [OpenXRAPIExtension.RegisterFrameInfoExtension]: https://pkg.go.dev/graphics.gd/classdb/OpenXRAPIExtension#Instance.RegisterFrameInfoExtension
 */
-func (Instance) _set_view_locate_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer gdextension.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_view_locate_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer Engine.Pointer[OpenXR.Extension]) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -602,10 +614,11 @@ func (Instance) _set_view_locate_info_and_get_next_pointer(impl func(ptr gdclass
 /*
 Add additional data structures to XrReferenceSpaceCreateInfo.
 */
-func (Instance) _set_reference_space_create_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, reference_space_type int, next_pointer gdextension.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_reference_space_create_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, reference_space_type int, next_pointer Engine.Pointer[OpenXR.Extension]) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var reference_space_type = gd.UnsafeGet[int64](p_args, 0)
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 1))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(reference_space_type), next_pointer)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -628,10 +641,11 @@ func (Instance) _prepare_view_configuration(impl func(ptr gdclass.Receiver, view
 /*
 Add additional data structures when querying OpenXR view configuration.
 */
-func (Instance) _set_view_configuration_and_get_next_pointer(impl func(ptr gdclass.Receiver, view int, next_pointer gdextension.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_view_configuration_and_get_next_pointer(impl func(ptr gdclass.Receiver, view int, next_pointer Engine.Pointer[OpenXR.Extension]) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var view = gd.UnsafeGet[int64](p_args, 0)
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 1))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(view), next_pointer)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -952,9 +966,10 @@ func (Instance) _on_state_exiting(impl func(ptr gdclass.Receiver)) (cb gd.Extens
 /*
 Called when there is an OpenXR event to process. When implementing, return true if the event was handled, return false otherwise.
 */
-func (Instance) _on_event_polled(impl func(ptr gdclass.Receiver, event gdextension.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _on_event_polled(impl func(ptr gdclass.Receiver, event Engine.Pointer[OpenXR.EventDataBuffer]) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var event = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
+		var event = gdmemory.WrapPointer[OpenXR.EventDataBuffer](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, event)
 		gd.UnsafeSet(p_back, ret)
@@ -974,12 +989,14 @@ Note: This virtual method will be called on the render thread. Additionally, the
 [OnPreRender]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Interface
 [OpenXRCompositionLayer]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayer
 */
-func (Instance) _set_viewport_composition_layer_and_get_next_pointer(impl func(ptr gdclass.Receiver, layer gdextension.Pointer, property_values Object.PropertyInfo, next_pointer gdextension.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_viewport_composition_layer_and_get_next_pointer(impl func(ptr gdclass.Receiver, layer Engine.Pointer[OpenXR.CompositionLayer], property_values Object.PropertyInfo, next_pointer Engine.Pointer[OpenXR.Extension]) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var layer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
+		var layer = gdmemory.WrapPointer[OpenXR.CompositionLayer](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
 		var property_values = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1))))
 		defer pointers.End(gd.InternalDictionary(property_values))
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 2)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 2))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, layer, gd.DictionaryAs[Object.PropertyInfo](property_values), next_pointer)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -1032,9 +1049,10 @@ Called when a composition layer created via [OpenXRCompositionLayer] is destroye
 
 [OpenXRCompositionLayer]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayer
 */
-func (Instance) _on_viewport_composition_layer_destroyed(impl func(ptr gdclass.Receiver, layer gdextension.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _on_viewport_composition_layer_destroyed(impl func(ptr gdclass.Receiver, layer Engine.Pointer[OpenXR.CompositionLayer])) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var layer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
+		var layer = gdmemory.WrapPointer[OpenXR.CompositionLayer](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, layer)
 	}
@@ -1050,11 +1068,12 @@ Note: This virtual method will be called on the render thread.
 [GetViewportCompositionLayerExtensionProperties]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Interface
 [OpenXRCompositionLayer]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayer
 */
-func (Instance) _set_android_surface_swapchain_create_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, property_values Object.PropertyInfo, next_pointer gdextension.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_android_surface_swapchain_create_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, property_values Object.PropertyInfo, next_pointer Engine.Pointer[OpenXR.Extension]) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var property_values = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 0))))
 		defer pointers.End(gd.InternalDictionary(property_values))
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 1))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, gd.DictionaryAs[Object.PropertyInfo](property_values), next_pointer)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -1124,85 +1143,95 @@ func (class) _get_requested_extensions(impl func(ptr gdclass.Receiver, xr_versio
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (class) _set_system_properties_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer gdextension.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_system_properties_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer Engine.Pointer[OpenXR.Extension]) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (class) _set_instance_create_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, xr_version int64, next_pointer gdextension.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_instance_create_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, xr_version int64, next_pointer Engine.Pointer[OpenXR.Extension]) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var xr_version = gd.UnsafeGet[int64](p_args, 0)
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 1))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, xr_version, next_pointer)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (class) _set_session_create_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer gdextension.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_session_create_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer Engine.Pointer[OpenXR.Extension]) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (class) _set_swapchain_create_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer gdextension.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_swapchain_create_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer Engine.Pointer[OpenXR.Extension]) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (class) _set_hand_joint_locations_and_get_next_pointer(impl func(ptr gdclass.Receiver, hand_index int64, next_pointer gdextension.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_hand_joint_locations_and_get_next_pointer(impl func(ptr gdclass.Receiver, hand_index int64, next_pointer Engine.Pointer[OpenXR.Extension]) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var hand_index = gd.UnsafeGet[int64](p_args, 0)
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 1))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, hand_index, next_pointer)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (class) _set_projection_views_and_get_next_pointer(impl func(ptr gdclass.Receiver, view_index int64, next_pointer gdextension.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_projection_views_and_get_next_pointer(impl func(ptr gdclass.Receiver, view_index int64, next_pointer Engine.Pointer[OpenXR.Extension]) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var view_index = gd.UnsafeGet[int64](p_args, 0)
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 1))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, view_index, next_pointer)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (class) _set_frame_wait_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer gdextension.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_frame_wait_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer Engine.Pointer[OpenXR.Extension]) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (class) _set_frame_end_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer gdextension.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_frame_end_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer Engine.Pointer[OpenXR.Extension]) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (class) _set_view_locate_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer gdextension.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_view_locate_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer Engine.Pointer[OpenXR.Extension]) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (class) _set_reference_space_create_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, reference_space_type int64, next_pointer gdextension.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_reference_space_create_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, reference_space_type int64, next_pointer Engine.Pointer[OpenXR.Extension]) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var reference_space_type = gd.UnsafeGet[int64](p_args, 0)
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 1))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, reference_space_type, next_pointer)
 		gd.UnsafeSet(p_back, ret)
@@ -1215,10 +1244,11 @@ func (class) _prepare_view_configuration(impl func(ptr gdclass.Receiver, view_co
 		impl(self, view_count)
 	}
 }
-func (class) _set_view_configuration_and_get_next_pointer(impl func(ptr gdclass.Receiver, view int64, next_pointer gdextension.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_view_configuration_and_get_next_pointer(impl func(ptr gdclass.Receiver, view int64, next_pointer Engine.Pointer[OpenXR.Extension]) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var view = gd.UnsafeGet[int64](p_args, 0)
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 1))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, view, next_pointer)
 		gd.UnsafeSet(p_back, ret)
@@ -1390,20 +1420,22 @@ func (class) _on_state_exiting(impl func(ptr gdclass.Receiver)) (cb gd.Extension
 		impl(self)
 	}
 }
-func (class) _on_event_polled(impl func(ptr gdclass.Receiver, event gdextension.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _on_event_polled(impl func(ptr gdclass.Receiver, event Engine.Pointer[OpenXR.EventDataBuffer]) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var event = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
+		var event = gdmemory.WrapPointer[OpenXR.EventDataBuffer](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, event)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (class) _set_viewport_composition_layer_and_get_next_pointer(impl func(ptr gdclass.Receiver, layer gdextension.Pointer, property_values Dictionary.Any, next_pointer gdextension.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_viewport_composition_layer_and_get_next_pointer(impl func(ptr gdclass.Receiver, layer Engine.Pointer[OpenXR.CompositionLayer], property_values Dictionary.Any, next_pointer Engine.Pointer[OpenXR.Extension]) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var layer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
+		var layer = gdmemory.WrapPointer[OpenXR.CompositionLayer](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
 		var property_values = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1))))
 		defer pointers.End(gd.InternalDictionary(property_values))
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 2)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 2))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, layer, property_values, next_pointer)
 		gd.UnsafeSet(p_back, ret)
@@ -1433,18 +1465,20 @@ func (class) _get_viewport_composition_layer_extension_property_defaults(impl fu
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (class) _on_viewport_composition_layer_destroyed(impl func(ptr gdclass.Receiver, layer gdextension.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _on_viewport_composition_layer_destroyed(impl func(ptr gdclass.Receiver, layer Engine.Pointer[OpenXR.CompositionLayer])) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var layer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
+		var layer = gdmemory.WrapPointer[OpenXR.CompositionLayer](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, layer)
 	}
 }
-func (class) _set_android_surface_swapchain_create_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, property_values Dictionary.Any, next_pointer gdextension.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_android_surface_swapchain_create_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, property_values Dictionary.Any, next_pointer Engine.Pointer[OpenXR.Extension]) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var property_values = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 0))))
 		defer pointers.End(gd.InternalDictionary(property_values))
-		var next_pointer = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 1))
+		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, property_values, next_pointer)
 		gd.UnsafeSet(p_back, ret)
