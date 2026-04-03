@@ -16,6 +16,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"runtime/debug"
 	"slices"
 	"strings"
 
@@ -29,6 +30,24 @@ import (
 )
 
 func main() {
+	if info, ok := debug.ReadBuildInfo(); ok && info.Main.Version != "(devel)" && info.Main.Version != "" {
+		if dir, goModPath, ok := findProjectGoMod(); ok {
+			if required := readGoModGraphicsVersion(goModPath); required != "" && required != info.Main.Version {
+				if goPath, err := exec.LookPath("go"); err == nil {
+					ensureGoToolGd(goPath, dir, goModPath)
+					cmd := exec.Command(goPath, append([]string{"tool", "gd"}, os.Args[1:]...)...)
+					cmd.Stdin, cmd.Stdout, cmd.Stderr = os.Stdin, os.Stdout, os.Stderr
+					if err := cmd.Run(); err != nil {
+						if exitErr, ok := err.(*exec.ExitError); ok {
+							os.Exit(exitErr.ExitCode())
+						}
+						os.Exit(1)
+					}
+					os.Exit(0)
+				}
+			}
+		}
+	}
 	if err := gd(os.Args[1:]...); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		fmt.Fprintln(os.Stderr, "\nis this error unexpected? open an issue! https://github.com/quaadgras/graphics.gd/issues/new/choose")
@@ -106,6 +125,21 @@ func testArgs(args ...string) []string {
 }
 
 func gd(args ...string) error {
+	// Pass through go commands that don't need project setup.
+	if len(args) > 0 && !strings.HasPrefix(args[0], "-") {
+		switch args[0] {
+		case "version":
+			version := "(devel)"
+			if info, ok := debug.ReadBuildInfo(); ok && info.Main.Version != "" {
+				version = info.Main.Version
+			}
+			fmt.Println("gd version", version)
+			return tooling.Go.Exec(args...)
+		case "doc", "build", "run", "test":
+		default:
+			return tooling.Go.Exec(args...)
+		}
+	}
 	var GOARCH = runtime.GOARCH
 	var GOOS = runtime.GOOS
 	if goos := os.Getenv("GOOS"); goos != "" {
@@ -247,8 +281,56 @@ func gd(args ...string) error {
 				return errors.New("cannot run 'gd test' on a project that does not include Go code")
 			}
 			return platform.Test(testArgs(args[1:]...)...)
-		default:
-			return tooling.Go.Exec(args...)
 		}
 	}
+	return nil
+}
+
+// findProjectGoMod walks up from the current working directory looking for a go.mod file.
+// Returns the directory containing go.mod, the full path to go.mod, and whether one was found.
+func findProjectGoMod() (dir string, goModPath string, ok bool) {
+	wd, err := os.Getwd()
+	if err != nil {
+		return "", "", false
+	}
+	for last := ""; last != wd; last, wd = wd, filepath.Dir(wd) {
+		path := filepath.Join(wd, "go.mod")
+		if _, err := os.Stat(path); err == nil {
+			return wd, path, true
+		}
+	}
+	return "", "", false
+}
+
+// readGoModGraphicsVersion reads a go.mod file and returns the required version of graphics.gd,
+// or an empty string if graphics.gd is not a dependency.
+func readGoModGraphicsVersion(goModPath string) string {
+	data, err := os.ReadFile(goModPath)
+	if err != nil {
+		return ""
+	}
+	for _, line := range strings.Split(string(data), "\n") {
+		line = strings.TrimSpace(line)
+		if strings.HasPrefix(line, "graphics.gd ") {
+			return strings.TrimSpace(strings.TrimPrefix(line, "graphics.gd "))
+		}
+	}
+	return ""
+}
+
+// ensureGoToolGd checks if graphics.gd/cmd/gd is registered as a tool in go.mod,
+// and if not, runs "go get -tool graphics.gd/cmd/gd" to add it.
+func ensureGoToolGd(goPath, dir, goModPath string) {
+	data, err := os.ReadFile(goModPath)
+	if err != nil {
+		return
+	}
+	if strings.Contains(string(data), "graphics.gd/cmd/gd") {
+		return
+	}
+	cmd := exec.Command(goPath, "get", "-tool", "graphics.gd/cmd/gd")
+	cmd.Dir = dir
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Run()
 }
