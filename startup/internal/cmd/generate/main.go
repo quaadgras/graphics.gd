@@ -59,8 +59,8 @@ func generate_startup_cgo() error {
 	fmt.Fprint(f, "package startup\n\n")
 	fmt.Fprint(f, "import \"unsafe\"\n")
 	fmt.Fprint(f, "import \"graphics.gd/internal/gdextension\"\n\n")
-	fmt.Fprint(f, "// #include \"gdextension_interface.h\"\n")
-	fmt.Fprint(f, "// #include \"startup_cgo_v2.h\"\n")
+	fmt.Fprint(f, "// #include \"../gdextension_interface.h\"\n")
+	fmt.Fprint(f, "// #include \"../gd.h\"\n")
 	fmt.Fprint(f, "// #include <stdlib.h>\n")
 	fmt.Fprint(f, "// #include <stdbool.h>\n")
 	fmt.Fprint(f, "import \"C\"\n\n")
@@ -449,7 +449,6 @@ func ctypeOf(rtype reflect.Type) string {
 
 func main() {
 	if err := errors.Join(
-		generate_header_file(),
 		generate_startup_js(),
 		generate_startup_cgo(),
 		generate_gdextension_web_cgo_callbacks(),

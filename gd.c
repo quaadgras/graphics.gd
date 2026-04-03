@@ -5,7 +5,7 @@
 #else
     #include "gdextension_interface.h"
 #endif
-#include "startup_cgo_v2.h"
+#include "gd.h"
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdbool.h>
