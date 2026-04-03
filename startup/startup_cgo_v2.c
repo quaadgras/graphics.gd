@@ -51,24 +51,36 @@
 
 #define LOAD_PROC_ADDRESS(m_name, m_type) gdextension_##m_name = (m_type)p_get_proc_address(#m_name);
 
-GDExtensionClassLibraryPtr cgo_library = NULL;
-GDExtensionGodotVersion2 cgo_cached_godot_version = {};
+static GDExtensionClassLibraryPtr gd_library = NULL;
+static GDExtensionGodotVersion2 gd_godot_version_cached = {};
 
 typedef struct { uint64_t part[2]; } result_16;
 typedef struct { uint64_t part[3]; } result_24;
 typedef struct { uint64_t part[4]; } result_32;
 typedef struct { uint64_t part[8]; } result_64;
 
-void cgo_deinitialize(void *ignore, GDExtensionInitializationLevel level) { gd_on_engine_exit(level); }
-void cgo_callable_call_func(void *callable_userdata, const GDExtensionConstVariantPtr *p_args, GDExtensionInt p_argument_count, GDExtensionVariantPtr r_return, GDExtensionCallError *r_error) {
+static void engine_exit(void *ignore, GDExtensionInitializationLevel level) {
+    gd_on_engine_exit(level);
+}
+static void callable_call(void *callable_userdata, const GDExtensionConstVariantPtr *p_args, GDExtensionInt p_argument_count, GDExtensionVariantPtr r_return, GDExtensionCallError *r_error) {
     gd_on_callable_call((uintptr_t)callable_userdata, r_return, p_argument_count, (void *)p_args, r_error);
 }
-GDExtensionBool cgo_callable_is_valid_func(void *callable_userdata) {return gd_on_callable_validation((uintptr_t)callable_userdata);}
-void cgo_callable_free_func(void *callable_userdata) { gd_on_callable_free((uintptr_t)callable_userdata); }
-uint32_t cgo_callable_hash_func(void *callable_userdata) {return gd_on_callable_hash((uintptr_t)callable_userdata);}
-GDExtensionBool cgo_callable_equal_func(void *callable_userdata, void *other_userdata) {return gd_on_callable_compare((uintptr_t)callable_userdata, (uintptr_t)other_userdata);}
-GDExtensionBool cgo_callable_less_than_func(void *callable_userdata, void *other_userdata) {return gd_on_callable_less_than((uintptr_t)callable_userdata, (uintptr_t)other_userdata);}
-void cgo_callable_to_string_func(void *callable_userdata, GDExtensionBool *r_is_valid, GDExtensionStringPtr r_out) {
+static GDExtensionBool callable_validation(void *callable_userdata) {
+    return gd_on_callable_validation((uintptr_t)callable_userdata);
+}
+static void callable_free(void *callable_userdata) {
+    gd_on_callable_free((uintptr_t)callable_userdata);
+}
+static uint32_t callable_hash(void *callable_userdata) {
+    return gd_on_callable_hash((uintptr_t)callable_userdata);
+}
+static GDExtensionBool callable_compare(void *callable_userdata, void *other_userdata) {
+    return gd_on_callable_compare((uintptr_t)callable_userdata, (uintptr_t)other_userdata);
+}
+static GDExtensionBool callable_less_than(void *callable_userdata, void *other_userdata) {
+    return gd_on_callable_less_than((uintptr_t)callable_userdata, (uintptr_t)other_userdata);
+}
+static void callable_stringify(void *callable_userdata, GDExtensionBool *r_is_valid, GDExtensionStringPtr r_out) {
     uint64_t invalid = 0;
     uintptr_t s = gd_on_callable_stringify((uintptr_t)callable_userdata, &invalid);
     *r_is_valid = !(GDExtensionBool)invalid;
@@ -78,37 +90,32 @@ void cgo_callable_to_string_func(void *callable_userdata, GDExtensionBool *r_is_
         *((uintptr_t*)r_out) = s;
     }
 }
-GDExtensionInt cgo_callable_get_argument_count_func(void *callable_userdata, GDExtensionBool *r_is_valid) {
+static GDExtensionInt callable_get_argument_count(void *callable_userdata, GDExtensionBool *r_is_valid) {
     uint64_t invalid = 0;
     int64_t count = gd_on_callable_get_argument_count((uintptr_t)callable_userdata, &invalid);
     *r_is_valid = !(GDExtensionBool)invalid;
     if (invalid) return -1;
     return (GDExtensionInt)count;
 }
-
-void cgo_method_call_func(void *method_userdata, GDExtensionClassInstancePtr p_instance, const GDExtensionConstVariantPtr *p_args, GDExtensionInt p_argument_count, GDExtensionVariantPtr r_return, GDExtensionCallError *r_error) {
+static void extension_instance_dynamic_call(void *method_userdata, GDExtensionClassInstancePtr p_instance, const GDExtensionConstVariantPtr *p_args, GDExtensionInt p_argument_count, GDExtensionVariantPtr r_return, GDExtensionCallError *r_error) {
     gd_on_extension_instance_dynamic_call((uintptr_t)p_instance, (uintptr_t)method_userdata, r_return, p_argument_count, (void *)p_args, r_error);
 }
-void cgo_method_ptrcall_func(void *method_userdata, GDExtensionClassInstancePtr p_instance, const GDExtensionConstTypePtr *p_args, GDExtensionTypePtr r_ret) {
+static void extension_instance_checked_call(void *method_userdata, GDExtensionClassInstancePtr p_instance, const GDExtensionConstTypePtr *p_args, GDExtensionTypePtr r_ret) {
     gd_on_extension_instance_checked_call((uintptr_t)p_instance, (uintptr_t)method_userdata, r_ret, (void *)p_args);
 }
-
-void *cgo_instance_binding_create_func(void *p_token, void *p_instance) {
+static void *extension_binding_created(void *p_token, void *p_instance) {
     return (void *)gd_on_extension_binding_created((uintptr_t)p_instance);
 }
-
-void cgo_instance_binding_free_func(void *p_token, void *p_instance, void *p_binding) {
+static void extension_binding_removed(void *p_token, void *p_instance, void *p_binding) {
     gd_on_extension_binding_removed((uintptr_t)p_instance, (uintptr_t)p_binding);
 }
-
-GDExtensionBool cgo_instance_binding_reference_func(void *p_token, void *p_binding, GDExtensionBool p_reference) {
+static GDExtensionBool extension_binding_reference(void *p_token, void *p_binding, GDExtensionBool p_reference) {
     return gd_on_extension_binding_reference((uintptr_t)p_binding, p_reference);
 }
-
 GDExtensionInstanceBindingCallbacks instance_binding_callbacks = {
-    .create_callback = cgo_instance_binding_create_func,
-    .free_callback = cgo_instance_binding_free_func,
-   // .reference_callback = cgo_instance_binding_reference_func
+    .create_callback = extension_binding_created,
+    .free_callback = extension_binding_removed,
+   // .reference_callback = extension_binding_reference
 };
 
 GDExtensionTypeFromVariantConstructorFunc type_from_variant_constructors[GDEXTENSION_VARIANT_TYPE_VARIANT_MAX];
@@ -287,14 +294,12 @@ GDExtensionObjectPtr OS = NULL;
 GDExtensionMethodBindPtr OS_get_thread_caller_id = NULL;
 GDExtensionMethodBindPtr OS_get_main_thread_id = NULL;
 uint64_t main_thread_id = 0;
-
 uint64_t get_thread_caller_id() {
     uint64_t thread_id = 0;
     gdextension_object_method_bind_ptrcall(OS_get_thread_caller_id, OS, NULL, &thread_id);
     return thread_id;
 }
-
-void cgo_initialize(void *ignore, GDExtensionInitializationLevel level) {
+static void engine_init(void *ignore, GDExtensionInitializationLevel level) {
     if (level == GDEXTENSION_INITIALIZATION_CORE) {
         uintptr_t string_name_OS;
         gdextension_string_name_new_with_latin1_chars(&string_name_OS, "OS", true);
@@ -309,11 +314,9 @@ void cgo_initialize(void *ignore, GDExtensionInitializationLevel level) {
     }
     gd_on_engine_init(level);
 }
-
 bool gd_thread_is_main() {
     return get_thread_caller_id() == main_thread_id;
 }
-
 EXPORT GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc_address, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization) {
     LOAD_PROC_ADDRESS(mem_alloc, GDExtensionInterfaceMemAlloc);
 	LOAD_PROC_ADDRESS(mem_realloc, GDExtensionInterfaceMemRealloc);
@@ -476,20 +479,18 @@ EXPORT GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_g
 	LOAD_PROC_ADDRESS(image_ptrw, GDExtensionInterfaceImagePtrw);
 	LOAD_PROC_ADDRESS(image_ptr, GDExtensionInterfaceImagePtr);
 	LOAD_PROC_ADDRESS(register_main_loop_callbacks, GDExtensionInterfaceRegisterMainLoopCallbacks);
-    cgo_library = p_library;
+    gd_library = p_library;
     r_initialization->userdata = 0;
     r_initialization->minimum_initialization_level = GDEXTENSION_INITIALIZATION_CORE;
-    r_initialization->initialize = cgo_initialize;
-    r_initialization->deinitialize = cgo_deinitialize;
-
-    gdextension_get_godot_version2(&cgo_cached_godot_version);
+    r_initialization->initialize = engine_init;
+    r_initialization->deinitialize = engine_exit;
+    gdextension_get_godot_version2(&gd_godot_version_cached);
     GDExtensionMainLoopCallbacks callbacks = {
     	.startup_func = gd_on_first_frame,
     	.shutdown_func = gd_on_final_frame,
     	.frame_func = gd_on_every_frame,
     };
     gdextension_register_main_loop_callbacks(p_library, &callbacks);
-
     for (int i = 1; i < GDEXTENSION_VARIANT_TYPE_VARIANT_MAX; i++) {
     	GDExtensionVariantType v = (GDExtensionVariantType)i;
         variant_from_type_constructors[i] = gdextension_get_variant_from_type_constructor(v);
@@ -506,7 +507,6 @@ EXPORT GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_g
     #endif
     return true;
 }
-
 void prepare_variants(void **frame, uint32_t argc, ANY args) {
     uint8_t *head = (uint8_t*)args;
     for (int i = 0; i < argc; i++) {
@@ -516,7 +516,6 @@ void prepare_variants(void **frame, uint32_t argc, ANY args) {
 }
 // Helper macro to align a value to the next multiple of 'align'
 #define ALIGN_UP(value, align) (((value) + ((align) - 1)) & ~((align) - 1))
-
 typedef enum {
     ShapeEmpty,
     ShapeBytes1,
@@ -533,7 +532,6 @@ typedef enum {
 	ShapeBytes4x12,
 	ShapeBytes4x16
 } Shape;
-
 uint8_t prepare_callframe(int skip, void **frame, uint64_t shape, ANY args) {
     uint8_t *head = (uint8_t *)args;
     ptrdiff_t offset = 0; // Track current offset in the frame
@@ -564,70 +562,59 @@ uint8_t prepare_callframe(int skip, void **frame, uint64_t shape, ANY args) {
     }
     return 16-skip;
 }
-
 uintptr_t gd_builtin_name(uintptr_t name, INT64(hash)) { return (uintptr_t)gdextension_variant_get_ptr_utility_function((GDExtensionConstStringNamePtr)&name, INT64_FROM(hash));}
 void gd_builtin_call(uintptr_t fn, ANY result, UINT64(shape), ANY args) {
     void *points[16]; uint8_t argc = prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
     ((GDExtensionPtrUtilityFunction)fn)((GDExtensionTypePtr)result, (GDExtensionConstTypePtr*)&points[0], argc);
 }
-
 void gd_callable_create(uintptr_t id, UINT64(object), ANY result) {
     GDExtensionCallableCustomInfo2 info = {
         .callable_userdata = (void *)id,
-        .token = cgo_library,
+        .token = gd_library,
         .object_id = UINT64_FROM(object),
-        .call_func = cgo_callable_call_func,
-        .is_valid_func = cgo_callable_is_valid_func,
-        .free_func = cgo_callable_free_func,
-        .hash_func = cgo_callable_hash_func,
-        .equal_func = cgo_callable_equal_func,
-        .less_than_func = cgo_callable_less_than_func,
-        .to_string_func = cgo_callable_to_string_func,
-        .get_argument_count_func = cgo_callable_get_argument_count_func,
+        .call_func = callable_call,
+        .is_valid_func = callable_validation,
+        .free_func = callable_free,
+        .hash_func = callable_hash,
+        .equal_func = callable_compare,
+        .less_than_func = callable_less_than,
+        .to_string_func = callable_stringify,
+        .get_argument_count_func = callable_get_argument_count,
     };
     gdextension_callable_custom_create2((uint64_t *)result, &info);
 }
-
 uintptr_t gd_library_location() {
     uintptr_t s;
-    gdextension_get_library_path(cgo_library, &s);
+    gdextension_get_library_path(gd_library, &s);
     return s;
 }
-
 uintptr_t gd_callable_lookup(UINT64(a), UINT64(b)) {
     uint64_t callable[2] = {UINT64_FROM(a), UINT64_FROM(b)};
-    return (uintptr_t)gdextension_callable_custom_get_userdata(&callable, cgo_library);
+    return (uintptr_t)gdextension_callable_custom_get_userdata(&callable, gd_library);
 };
-
 void gd_classdb_FileAccess_write(uintptr_t FileAccess, BUFFER buf, INT len) {
     gdextension_file_access_store_buffer((GDExtensionObjectPtr)FileAccess, (const uint8_t *)BUFFER_POINTER(buf), len);
 };
-
 INT gd_classdb_FileAccess_read(uintptr_t FileAccess, BUFFER buf, INT len) {
     return gdextension_file_access_get_buffer((GDExtensionObjectPtr)FileAccess, (uint8_t *)BUFFER_POINTER(buf), len);
 };
-
 uintptr_t gd_classdb_Image_unsafe(uintptr_t Image) {
     return (uintptr_t)gdextension_image_ptrw((GDExtensionObjectPtr)Image);
 };
-
 uint8_t gd_classdb_Image_access(uintptr_t Image, INT offset) {
     return gdextension_image_ptr((GDExtensionObjectPtr)Image)[offset];
 };
-
 typedef struct {
     int32_t push;
     int32_t size;
     GDExtensionClassMethodInfo *info;
 } method_list;
-
 typedef struct {
     int32_t push;
     int32_t size;
     GDExtensionPropertyInfo *info;
     GDExtensionClassMethodArgumentMetadata *meta;
 } property_list;
-
 uintptr_t gd_method_list_make(INT length) {
     method_list *list = (method_list *)gdextension_mem_alloc(sizeof(method_list));
     list->push = 0;
@@ -635,7 +622,6 @@ uintptr_t gd_method_list_make(INT length) {
     list->info = (GDExtensionClassMethodInfo*)gdextension_mem_alloc(sizeof(GDExtensionClassMethodInfo) * length);
     return (uintptr_t)list;
 };
-
 void gd_method_list_push(uintptr_t list_p, uintptr_t name, uintptr_t method, uint32_t method_flags, uintptr_t return_value_info, uintptr_t arguments_info, INT default_argument_count, ANY default_arguments) {
     method_list *list = (method_list *)list_p;
     if (list->push >= list->size) return;
@@ -646,8 +632,8 @@ void gd_method_list_push(uintptr_t list_p, uintptr_t name, uintptr_t method, uin
     *name_allocated = name;
     info->name = (GDExtensionStringNamePtr)name_allocated;
     info->method_userdata = (void *)method;
-    info->call_func = cgo_method_call_func;
-    info->ptrcall_func = cgo_method_ptrcall_func;
+    info->call_func = extension_instance_dynamic_call;
+    info->ptrcall_func = extension_instance_checked_call;
     info->method_flags = method_flags;
     if (return_value && return_value->push > 0) {
         info->has_return_value = true;
@@ -672,7 +658,6 @@ void gd_method_list_push(uintptr_t list_p, uintptr_t name, uintptr_t method, uin
     info->default_argument_count = default_argument_count;
     info->default_arguments = points;
 };
-
 void gd_method_list_free(uintptr_t list_p) {
     method_list *list = (method_list *)list_p;
     for (int i = 0; i < list->push; i++) {
@@ -683,7 +668,6 @@ void gd_method_list_free(uintptr_t list_p) {
     }
     gdextension_mem_free(list->info); gdextension_mem_free(list);
 };
-
 uintptr_t gd_property_list_make(INT length) {
     property_list *list = (property_list*)gdextension_mem_alloc(sizeof(property_list));
     list->push = 0;
@@ -692,7 +676,6 @@ uintptr_t gd_property_list_make(INT length) {
     list->meta = (GDExtensionClassMethodArgumentMetadata*)gdextension_mem_alloc(sizeof(GDExtensionClassMethodArgumentMetadata) * length);
     return (uintptr_t)list;
 };
-
 void gd_property_list_push(uintptr_t list_p, uint32_t vtype, uintptr_t name, uintptr_t class_name, uint32_t hint, uintptr_t hint_string, uint32_t usage, uint32_t meta) {
     property_list *list = (property_list *)list_p;
     if (list->push >= list->size) return;
@@ -712,7 +695,6 @@ void gd_property_list_push(uintptr_t list_p, uint32_t vtype, uintptr_t name, uin
     info->usage = usage;
     *meta_info = (GDExtensionClassMethodArgumentMetadata)meta;
 };
-
 void gd_property_list_free(uintptr_t list_p) {
     property_list *list = (property_list *)list_p;
     for (int i = 0; i < list->push; i++) {
@@ -724,53 +706,44 @@ void gd_property_list_free(uintptr_t list_p) {
     gdextension_mem_free(list->meta);
     gdextension_mem_free(list);
 };
-
 uint32_t gd_property_info_type(uintptr_t list_p) {
     property_list *list = (property_list *)list_p;
     return list->info[list->push-1].type;
 };
-
 uintptr_t gd_property_info_name(uintptr_t list_p) {
     property_list *list = (property_list *)list_p;
     return (uintptr_t)list->info[list->push-1].name;
 };
-
 uintptr_t gd_property_info_class_name(uintptr_t list_p) {
     property_list *list = (property_list *)list_p;
     return (uintptr_t)list->info[list->push-1].class_name;
 };
-
 uint32_t gd_property_info_hint(uintptr_t list_p) {
     property_list *list = (property_list *)list_p;
     return list->info[list->push-1].hint;
 };
-
 uintptr_t gd_property_info_hint_string(uintptr_t list_p) {
     property_list *list = (property_list *)list_p;
     return (uintptr_t)list->info[list->push-1].hint_string;
 };
-
 uint32_t gd_property_info_usage(uintptr_t list_p) {
     property_list *list = (property_list *)list_p;
     return list->info[list->push-1].usage;
 };
-
-GDExtensionBool cgo_class_set_func(GDExtensionClassInstancePtr instance, GDExtensionConstStringNamePtr field, GDExtensionConstVariantPtr value) {
+static GDExtensionBool extension_instance_set(GDExtensionClassInstancePtr instance, GDExtensionConstStringNamePtr field, GDExtensionConstVariantPtr value) {
     uint64_t *v = (uint64_t *)value;
     return gd_on_extension_instance_set((uintptr_t)instance, *(uintptr_t*)field, UINT64_MAKE(v[0]), UINT64_MAKE(v[1]), UINT64_MAKE(v[2]));
 }
-
-GDExtensionBool cgo_class_get_func(GDExtensionClassInstancePtr instance, GDExtensionConstStringNamePtr field, GDExtensionVariantPtr value) {
+static GDExtensionBool extension_instance_get(GDExtensionClassInstancePtr instance, GDExtensionConstStringNamePtr field, GDExtensionVariantPtr value) {
     return gd_on_extension_instance_get((uintptr_t)instance, *(uintptr_t*)field, value);
 }
-GDExtensionBool cgo_class_property_can_revert_func(GDExtensionClassInstancePtr instance, GDExtensionConstStringNamePtr field) {
+static GDExtensionBool extension_instance_property_has_default(GDExtensionClassInstancePtr instance, GDExtensionConstStringNamePtr field) {
     return gd_on_extension_instance_property_has_default((uintptr_t)instance, *(uintptr_t*)field);
 }
-GDExtensionBool cgo_class_property_get_revert_func(GDExtensionClassInstancePtr instance, GDExtensionConstStringNamePtr field, GDExtensionVariantPtr value) {
+static GDExtensionBool extension_instance_property_get_default(GDExtensionClassInstancePtr instance, GDExtensionConstStringNamePtr field, GDExtensionVariantPtr value) {
     return gd_on_extension_instance_property_get_default((uintptr_t)instance, *(uintptr_t*)field, value);
 }
-
-const GDExtensionPropertyInfo *cgo_class_get_property_list_func(GDExtensionClassInstancePtr instance, uint32_t *count) {
+static const GDExtensionPropertyInfo *extension_instance_property_list(GDExtensionClassInstancePtr instance, uint32_t *count) {
     property_list *list = (property_list*)gd_on_extension_instance_property_list((uintptr_t)instance);
     GDExtensionPropertyInfo *info = list ? list->info : NULL;
     *count = list ? list->push : 0;
@@ -779,12 +752,10 @@ const GDExtensionPropertyInfo *cgo_class_get_property_list_func(GDExtensionClass
     }
     return info;
 }
-
-void cgo_class_free_property_list_func(GDExtensionClassInstancePtr instance, const GDExtensionPropertyInfo *list, uint32_t count) {
+static void class_free_property_list_func(GDExtensionClassInstancePtr instance, const GDExtensionPropertyInfo *list, uint32_t count) {
    if (list) gdextension_mem_free((void*)list);
 }
-
-GDExtensionBool cgo_class_validate_property_func(GDExtensionClassInstancePtr instance, GDExtensionPropertyInfo *field) {
+static GDExtensionBool extension_instance_property_validation(GDExtensionClassInstancePtr instance, GDExtensionPropertyInfo *field) {
     property_list list = {
         .push = 1,
         .size = 1,
@@ -793,8 +764,7 @@ GDExtensionBool cgo_class_validate_property_func(GDExtensionClassInstancePtr ins
     };
     return gd_on_extension_instance_property_validation((uintptr_t)instance, (uintptr_t)&list);
 }
-
-void cgo_class_to_string_func(GDExtensionClassInstancePtr instance, GDExtensionBool *ok, GDExtensionStringPtr s) {
+static void extension_instance_stringify(GDExtensionClassInstancePtr instance, GDExtensionBool *ok, GDExtensionStringPtr s) {
     uint32_t result = gd_on_extension_instance_stringify((uintptr_t)instance);
     if (result) {
         *(uint32_t*)s = result;
@@ -804,31 +774,24 @@ void cgo_class_to_string_func(GDExtensionClassInstancePtr instance, GDExtensionB
         *ok = false;
     }
 }
-
-void cgo_class_reference_func(GDExtensionClassInstancePtr instance) {
+static void extension_instance_reference(GDExtensionClassInstancePtr instance) {
     gd_on_extension_instance_reference((uintptr_t)instance, true);
 }
-
-GDExtensionBool cgo_class_unreference_func(GDExtensionClassInstancePtr instance) {
+static GDExtensionBool extension_instance_unreference(GDExtensionClassInstancePtr instance) {
     return gd_on_extension_instance_reference((uintptr_t)instance, false);
 }
-
-GDExtensionObjectPtr cgo_class_create_instance_func(void *user_data, GDExtensionBool notify_postinitialize) {
+static GDExtensionObjectPtr extension_class_create(void *user_data, GDExtensionBool notify_postinitialize) {
     return (GDExtensionObjectPtr)gd_on_extension_class_create((uintptr_t)user_data, notify_postinitialize);
 }
-
-void *cgo_class_get_virtual_call_data_func(void *user_data, GDExtensionConstStringNamePtr name, uint32_t hash) {
+static void *extension_class_caller(void *user_data, GDExtensionConstStringNamePtr name, uint32_t hash) {
     return (void*)gd_on_extension_class_caller((uintptr_t)user_data, *(uintptr_t*)name, hash);
 }
-
-void cgo_class_call_virtual_with_data_func(GDExtensionClassInstancePtr p_instance, GDExtensionConstStringNamePtr p_name, void *p_virtual_call_userdata, const GDExtensionConstTypePtr *p_args, GDExtensionTypePtr r_ret) {
+static void extension_instance_called(GDExtensionClassInstancePtr p_instance, GDExtensionConstStringNamePtr p_name, void *p_virtual_call_userdata, const GDExtensionConstTypePtr *p_args, GDExtensionTypePtr r_ret) {
     gd_on_extension_instance_called((uintptr_t)p_instance, (uintptr_t)p_virtual_call_userdata, r_ret, (void *)p_args);
 }
-
-void cgo_class_free_instance_func(void *p_class_userdata, GDExtensionClassInstancePtr p_instance) {
+static void extension_instance_free(void *p_class_userdata, GDExtensionClassInstancePtr p_instance) {
     gd_on_extension_instance_free((uintptr_t)p_instance);
 }
-
 void gd_classdb_register(uintptr_t class_name, uintptr_t parent, uintptr_t id, bool is_virtual, bool abstract, bool exposed, bool runtime, uintptr_t icon_path) {
     GDExtensionClassCreationInfo5 info = {
         .is_virtual = is_virtual,
@@ -836,77 +799,65 @@ void gd_classdb_register(uintptr_t class_name, uintptr_t parent, uintptr_t id, b
         .is_exposed = exposed,
         .is_runtime = runtime,
         .icon_path = (GDExtensionConstStringNamePtr)&icon_path,
-        .set_func = cgo_class_set_func,
-        .get_func = cgo_class_get_func,
-        .get_property_list_func = cgo_class_get_property_list_func,
-        .free_property_list_func = cgo_class_free_property_list_func,
-        .property_can_revert_func = cgo_class_property_can_revert_func,
-        .property_get_revert_func = cgo_class_property_get_revert_func,
-        .validate_property_func = cgo_class_validate_property_func,
+        .set_func = extension_instance_set,
+        .get_func = extension_instance_get,
+        .get_property_list_func = extension_instance_property_list,
+        .free_property_list_func = class_free_property_list_func,
+        .property_can_revert_func = extension_instance_property_has_default,
+        .property_get_revert_func = extension_instance_property_get_default,
+        .validate_property_func = extension_instance_property_validation,
         .notification_func = (GDExtensionClassNotification2)gd_on_extension_instance_notification,
-        .to_string_func = cgo_class_to_string_func,
+        .to_string_func = extension_instance_stringify,
         //.reference_func = (GDExtensionClassReference)cgo_class_reference_func, // FIXME JavaScript error: null function or function signature mismatch
         //.unreference_func = (GDExtensionClassUnreference)cgo_class_unreference_func, // FIXME JavaScript error: null function or function signature mismatch
-        .create_instance_func = cgo_class_create_instance_func,
-        .free_instance_func = cgo_class_free_instance_func,
-        .get_virtual_call_data_func = cgo_class_get_virtual_call_data_func,
-        .call_virtual_with_data_func = cgo_class_call_virtual_with_data_func,
+        .create_instance_func = extension_class_create,
+        .free_instance_func = extension_instance_free,
+        .get_virtual_call_data_func = extension_class_caller,
+        .call_virtual_with_data_func = extension_instance_called,
         .class_userdata = (void *)id,
     };
-    gdextension_classdb_register_extension_class5(cgo_library, (GDExtensionConstStringNamePtr)&class_name, (GDExtensionConstStringNamePtr)&parent, &info);
+    gdextension_classdb_register_extension_class5(gd_library, (GDExtensionConstStringNamePtr)&class_name, (GDExtensionConstStringNamePtr)&parent, &info);
 };
-
 void gd_classdb_register_methods(uintptr_t class_name, uintptr_t methods) {
     method_list *list = (method_list *)methods;
     for (int i = 0; i < list->push; i++) {
         GDExtensionClassMethodInfo *info = &list->info[i];
-        gdextension_classdb_register_extension_class_method(cgo_library, (GDExtensionConstStringNamePtr)&class_name, info);
+        gdextension_classdb_register_extension_class_method(gd_library, (GDExtensionConstStringNamePtr)&class_name, info);
     }
 };
-
 void gd_classdb_register_constant(uintptr_t class_name, uintptr_t enum_name, uintptr_t name, INT64(value), bool bitfield) {
-    gdextension_classdb_register_extension_class_integer_constant(cgo_library, (GDExtensionConstStringNamePtr)&class_name, (GDExtensionConstStringNamePtr)&enum_name, (GDExtensionConstStringNamePtr)&name, INT64_FROM(value), bitfield);
+    gdextension_classdb_register_extension_class_integer_constant(gd_library, (GDExtensionConstStringNamePtr)&class_name, (GDExtensionConstStringNamePtr)&enum_name, (GDExtensionConstStringNamePtr)&name, INT64_FROM(value), bitfield);
 };
-
 void gd_classdb_register_property(uintptr_t class_name, uintptr_t info, uintptr_t setter, uintptr_t getter) {
     property_list *list = (property_list *)info;
-    gdextension_classdb_register_extension_class_property(cgo_library, (GDExtensionConstStringNamePtr)&class_name, list->info, (GDExtensionConstStringNamePtr)&setter, (GDExtensionConstStringNamePtr)&getter);
+    gdextension_classdb_register_extension_class_property(gd_library, (GDExtensionConstStringNamePtr)&class_name, list->info, (GDExtensionConstStringNamePtr)&setter, (GDExtensionConstStringNamePtr)&getter);
 };
-
 void gd_classdb_register_property_indexed(uintptr_t class_name, uintptr_t info, uintptr_t setter, uintptr_t getter, INT64(index)) {
     property_list *list = (property_list *)info;
-    gdextension_classdb_register_extension_class_property_indexed(cgo_library, (GDExtensionConstStringNamePtr)&class_name, list->info, (GDExtensionConstStringNamePtr)&setter, (GDExtensionConstStringNamePtr)&getter, INT64_FROM(index));
+    gdextension_classdb_register_extension_class_property_indexed(gd_library, (GDExtensionConstStringNamePtr)&class_name, list->info, (GDExtensionConstStringNamePtr)&setter, (GDExtensionConstStringNamePtr)&getter, INT64_FROM(index));
 };
-
 void gd_classdb_register_property_group(uintptr_t class_name, uintptr_t group, uintptr_t prefix) {
-    gdextension_classdb_register_extension_class_property_group(cgo_library, (GDExtensionConstStringNamePtr)&class_name, (GDExtensionConstStringNamePtr)&group, (GDExtensionConstStringPtr)&prefix);
+    gdextension_classdb_register_extension_class_property_group(gd_library, (GDExtensionConstStringNamePtr)&class_name, (GDExtensionConstStringNamePtr)&group, (GDExtensionConstStringPtr)&prefix);
 };
-
 void gd_classdb_register_property_sub_group(uintptr_t class_name, uintptr_t subgroup, uintptr_t prefix) {
-    gdextension_classdb_register_extension_class_property_subgroup(cgo_library, (GDExtensionConstStringNamePtr)&class_name, (GDExtensionConstStringNamePtr)&subgroup, (GDExtensionConstStringPtr)&prefix);
+    gdextension_classdb_register_extension_class_property_subgroup(gd_library, (GDExtensionConstStringNamePtr)&class_name, (GDExtensionConstStringNamePtr)&subgroup, (GDExtensionConstStringPtr)&prefix);
 };
-
 void gd_classdb_register_signal(uintptr_t class_name, uintptr_t name, uintptr_t args) {
     property_list *list = (property_list *)args;
-    gdextension_classdb_register_extension_class_signal(cgo_library, (GDExtensionConstStringNamePtr)&class_name, (GDExtensionConstStringNamePtr)&name, list->info, list->push);
+    gdextension_classdb_register_extension_class_signal(gd_library, (GDExtensionConstStringNamePtr)&class_name, (GDExtensionConstStringNamePtr)&name, list->info, list->push);
 };
-
 void gd_classdb_register_removal(uintptr_t class_name) {
-    gdextension_classdb_unregister_extension_class(cgo_library, (GDExtensionConstStringNamePtr)&class_name);
+    gdextension_classdb_unregister_extension_class(gd_library, (GDExtensionConstStringNamePtr)&class_name);
 };
-
 void gd_classdb_WorkerThreadPool_add_task(uintptr_t WorkerPool, uintptr_t task_id, bool priority, uintptr_t description) {
     gdextension_worker_thread_pool_add_native_task((GDExtensionObjectPtr)WorkerPool, (GDExtensionWorkerThreadPoolTask)gd_on_worker_thread_pool_task, (void *)task_id, priority, (GDExtensionConstStringNamePtr)&description);
 };
-
 void gd_classdb_WorkerThreadPool_add_group_task(uintptr_t WorkerPool, uintptr_t task_id, int32_t elements, int32_t tasks, bool priority, uintptr_t description) {
     gdextension_worker_thread_pool_add_native_group_task((GDExtensionObjectPtr)WorkerPool, (GDExtensionWorkerThreadPoolGroupTask)gd_on_worker_thread_pool_group_task, (void *)task_id, elements, tasks, priority, (GDExtensionConstStringNamePtr)&description);
 };
-
 INT gd_classdb_XMLParser_load(uintptr_t XMLParser, BUFFER buf, INT len) {
     return gdextension_xml_parser_open_buffer((GDExtensionObjectPtr)XMLParser, (const uint8_t *)BUFFER_POINTER(buf), len);
 };
-
 void gd_packed_dictionary_access(uintptr_t dict, UINT64(k1), UINT64(k2), UINT64(k3), ANY args) {
     uint64_t key[3] = {UINT64_FROM(k1), UINT64_FROM(k2), UINT64_FROM(k3)};
     uint64_t *value = (uint64_t*)gdextension_dictionary_operator_index_const((GDExtensionTypePtr)&dict, &key[0]);
@@ -916,7 +867,6 @@ void gd_packed_dictionary_access(uintptr_t dict, UINT64(k1), UINT64(k2), UINT64(
     result[1] = value[1];
     result[2] = value[2];
 };
-
 void gd_packed_dictionary_modify(uintptr_t dict, UINT64(k1), UINT64(k2), UINT64(k3), UINT64(v1), UINT64(v2), UINT64(v3)) {
     uint64_t key[3] = {UINT64_FROM(k1), UINT64_FROM(k2), UINT64_FROM(k3)};
     uint64_t *value = (uint64_t*)gdextension_dictionary_operator_index((GDExtensionTypePtr)&dict, (GDExtensionVariantPtr)&key[0]);
@@ -924,19 +874,15 @@ void gd_packed_dictionary_modify(uintptr_t dict, UINT64(k1), UINT64(k2), UINT64(
     value[1] = UINT64_FROM(v2);
     value[2] = UINT64_FROM(v3);
 };
-
 void gd_editor_add_documentation(STRING xml, INT len) {
     gdextension_editor_help_load_xml_from_utf8_chars_and_len(STRING_POINTER(xml), len);
 };
-
 void gd_editor_add_plugin(uintptr_t class_name) {
     gdextension_editor_add_plugin((GDExtensionConstStringNamePtr)&class_name);
 };
-
 void gd_editor_end_plugin(uintptr_t class_name) {
     gdextension_editor_remove_plugin((GDExtensionConstStringNamePtr)&class_name);
 };
-
 void gd_iterator_make(UINT64(v1), UINT64(v2), UINT64(v3), ANY result, ANY err) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     GDExtensionBool valid = true;
@@ -944,7 +890,6 @@ void gd_iterator_make(UINT64(v1), UINT64(v2), UINT64(v3), ANY result, ANY err) {
     if (valid) return;
     ((GDExtensionCallError*)err)->error = GDEXTENSION_CALL_ERROR_INVALID_ARGUMENT;
 };
-
 bool gd_iterator_next(UINT64(v1), UINT64(v2), UINT64(v3), ANY iter, ANY err) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     GDExtensionBool valid = false;
@@ -955,7 +900,6 @@ bool gd_iterator_next(UINT64(v1), UINT64(v2), UINT64(v3), ANY iter, ANY err) {
     ((GDExtensionCallError*)err)->error = GDEXTENSION_CALL_ERROR_INVALID_ARGUMENT;
     return false;
 };
-
 void gd_iterator_load(UINT64(v1), UINT64(v2), UINT64(v3), UINT64(i1), UINT64(i2), UINT64(i3), ANY result, ANY err) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     uint64_t iter[3] = {UINT64_FROM(i1), UINT64_FROM(i2), UINT64_FROM(i3)};
@@ -965,7 +909,6 @@ void gd_iterator_load(UINT64(v1), UINT64(v2), UINT64(v3), UINT64(i1), UINT64(i2)
     if (ok) return;
     ((GDExtensionCallError*)err)->error = GDEXTENSION_CALL_ERROR_INVALID_ARGUMENT;
 };
-
 const char *fit_string(const char *str, uint64_t len, char *buf, size_t buf_size) {
     if (len == 0 || str == NULL) {
         return NULL;
@@ -977,7 +920,6 @@ const char *fit_string(const char *str, uint64_t len, char *buf, size_t buf_size
     buf[len] = '\0'; // null-terminate the string
     return buf;
 }
-
 void gd_log_error(
     STRING text, INT text_len,
     STRING code, INT code_len,
@@ -995,7 +937,6 @@ void gd_log_error(
     if (func_ptr && func_ptr != func_buf) gdextension_mem_free((void *)func_ptr);
     if (file_ptr && file_ptr != file_buf) gdextension_mem_free((void *)file_ptr);
 };
-
 void gd_log_warning(
     STRING text, INT text_len,
     STRING code, INT code_len,
@@ -1013,28 +954,22 @@ void gd_log_warning(
     if (func_ptr && func_ptr != func_buf) gdextension_mem_free((void *)func_ptr);
     if (file_ptr && file_ptr != file_buf) gdextension_mem_free((void *)file_ptr);
 };
-
 uintptr_t gd_memory_malloc(INT size) {
     return (uintptr_t)gdextension_mem_alloc(size);
 };
-
 INT gd_memory_sizeof(uintptr_t name) {
     return gdextension_get_native_struct_size((GDExtensionConstStringNamePtr)&name);
 };
-
 uintptr_t gd_memory_resize(uintptr_t addr, INT size) {
     return (uintptr_t)gdextension_mem_realloc((void *)addr, size);
 };
-
 void gd_memory_free(uintptr_t addr) {
     gdextension_mem_free((void *)addr);
 };
-
 void gd_memory_clear(uintptr_t addr, INT size) {
     if (size <= 0) return;
     memset((void *)addr, 0, size);
 };
-
 void gd_memory_edit_byte(uintptr_t addr, uint8_t b) { *(uint8_t *)addr = b; };
 void gd_memory_edit_u16(uintptr_t addr, uint16_t b) { *(uint16_t *)addr = b; };
 void gd_memory_edit_u32(uintptr_t addr, uint32_t b) { *(uint32_t *)addr = b; };
@@ -1052,84 +987,72 @@ void gd_memory_edit_512(uintptr_t addr, UINT64(a), UINT64(b), UINT64(c), UINT64(
     ptr[0] = UINT64_FROM(a); ptr[1] = UINT64_FROM(b); ptr[2] = UINT64_FROM(c); ptr[3] = UINT64_FROM(d);
     ptr[4] = UINT64_FROM(e); ptr[5] = UINT64_FROM(f); ptr[6] = UINT64_FROM(g); ptr[7] = UINT64_FROM(h);
 };
-
-uint8_t gd_memory_load_byte(uintptr_t addr) { return *(uint8_t *)addr; };
-uint16_t gd_memory_load_u16(uintptr_t addr) { return *(uint16_t *)addr; };
-uint32_t gd_memory_load_u32(uintptr_t addr) { return *(uint32_t *)addr; };
-
+uint8_t gd_memory_load_byte(uintptr_t addr) {
+    return *(uint8_t *)addr;
+};
+uint16_t gd_memory_load_u16(uintptr_t addr) {
+    return *(uint16_t *)addr;
+};
+uint32_t gd_memory_load_u32(uintptr_t addr) {
+    return *(uint32_t *)addr;
+};
 uintptr_t gd_object_make(uintptr_t name) {
     return (uintptr_t)gdextension_classdb_construct_object2((GDExtensionConstStringNamePtr)&name);
 };
-
 void gd_object_call(uintptr_t obj, uintptr_t fn, ANY result, INT argc, ANY args, ANY err) {
     void *points[16]; prepare_variants(&points[0], argc, args);
     gdextension_object_method_bind_call((GDExtensionMethodBindPtr)fn, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)result, (GDExtensionCallError*)err);
 };
-
 result_24 gd_object_call_24(uintptr_t obj, uintptr_t fn, INT argc, ANY args, ANY err) {
     void *points[16]; prepare_variants(&points[0], argc, args);
     result_24 result = {};
     gdextension_object_method_bind_call((GDExtensionMethodBindPtr)fn, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)&result, (GDExtensionCallError*)err);
     return result;
 };
-
 void gd_object_unsafe_free(uintptr_t obj) {
     gdextension_object_destroy((GDExtensionObjectPtr)obj);
 };
-
 uintptr_t gd_object_name(uintptr_t obj) {
     uintptr_t name = 0;
-    gdextension_object_get_class_name((GDExtensionObjectPtr)obj, cgo_library, (GDExtensionUninitializedStringNamePtr)&name);
+    gdextension_object_get_class_name((GDExtensionObjectPtr)obj, gd_library, (GDExtensionUninitializedStringNamePtr)&name);
     return name;
 };
-
 uintptr_t gd_object_type(uintptr_t name) {
     return (uintptr_t)gdextension_classdb_get_class_tag((GDExtensionConstStringNamePtr)&name);
 };
-
 uintptr_t gd_object_cast(uintptr_t obj, uintptr_t tag) {
     return (uintptr_t)gdextension_object_cast_to((GDExtensionObjectPtr)obj, (void *)tag);
 };
-
 uintptr_t gd_object_lookup(UINT64(id)) {
     return (uintptr_t)gdextension_object_get_instance_from_id((GDObjectInstanceID)UINT64_FROM(id));
 };
-
 uintptr_t gd_object_global(uintptr_t name) {
     return (uintptr_t)gdextension_global_get_singleton((GDExtensionConstStringNamePtr)&name);
 };
-
 void gd_object_extension_setup(uintptr_t obj, uintptr_t name, uintptr_t instance) {
     gdextension_object_set_instance((GDExtensionObjectPtr)obj, (GDExtensionConstStringNamePtr)&name, (GDExtensionClassInstancePtr)instance);
-    gdextension_object_set_instance_binding((GDExtensionObjectPtr)obj, cgo_library, (void *)instance, &instance_binding_callbacks);
+    gdextension_object_set_instance_binding((GDExtensionObjectPtr)obj, gd_library, (void *)instance, &instance_binding_callbacks);
 };
-
 uintptr_t gd_object_extension_fetch(uintptr_t obj) {
-    return (uintptr_t)gdextension_object_get_instance_binding((GDExtensionObjectPtr)obj, cgo_library, &instance_binding_callbacks);
+    return (uintptr_t)gdextension_object_get_instance_binding((GDExtensionObjectPtr)obj, gd_library, &instance_binding_callbacks);
 };
-
 void gd_object_extension_close(uintptr_t obj) {
-    gdextension_object_free_instance_binding((GDExtensionObjectPtr)obj, cgo_library);
+    gdextension_object_free_instance_binding((GDExtensionObjectPtr)obj, gd_library);
 };
-
 void gd_object_id(uintptr_t obj, ANY id) {
      *((uint64_t*)id) = gdextension_object_get_instance_id((GDExtensionObjectPtr)obj);
 };
-
 void gd_object_id_inside_variant(UINT64(v1), UINT64(v2), UINT64(v3), ANY id) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     *(uint64_t*)id = gdextension_variant_get_object_instance_id(&self);
 };
-
 uintptr_t gd_object_method_lookup(uintptr_t class_name, uintptr_t method, INT64(hash)) {
     return (uintptr_t)gdextension_classdb_get_method_bind((GDExtensionConstStringNamePtr)&class_name, (GDExtensionConstStringNamePtr)&method, INT64_FROM(hash));
 };
-
 void gd_object_unsafe_call(uintptr_t obj, uintptr_t method, ANY result, UINT64(shape), ANY args) {
     void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
     gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)result);
 };
-
 typedef struct {
     uintptr_t object;
     uintptr_t method;
@@ -1140,7 +1063,6 @@ typedef struct {
     uintptr_t owner;
     uintptr_t pc;
 } ring_entry;
-
 void gd_ring_flush(void *entries, uint32_t tail, uint32_t head, uint32_t *crash_index) {
     ring_entry *ring = (ring_entry *)entries;
     for (uint32_t i = tail; i != head; i++) {
@@ -1157,331 +1079,270 @@ void gd_ring_flush(void *entries, uint32_t tail, uint32_t head, uint32_t *crash_
     }
     *crash_index = 0xFFFFFFFF;
 }
-
 uint64_t gd_object_unsafe_call_8(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args) {
     void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
     uint64_t result = 0;
     gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result);
     return result;
 };
-
 result_16 gd_object_unsafe_call_16(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args) {
     void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
     result_16 result = {};
     gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result);
     return result;
 };
-
 result_32 gd_object_unsafe_call_32(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args) {
     void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
     result_32 result = {};
     gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result);
     return result;
 };
-
 result_64 gd_object_unsafe_call_64(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args) {
     void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
     result_64 result = {};
     gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result);
     return result;
 };
-
 uintptr_t gd_ptrcall_fn_addr() {
     return (uintptr_t)gdextension_object_method_bind_ptrcall;
 }
-
-GDExtensionBool cgo_class_get_category_func(GDExtensionScriptInstanceDataPtr instance, GDExtensionPropertyInfo *info) {
+static GDExtensionBool extension_script_categorization(GDExtensionScriptInstanceDataPtr instance, GDExtensionPropertyInfo *info) {
     property_list list = { .info = info };
     return gd_on_extension_script_categorization((uintptr_t)instance, (uintptr_t)&list);
 }
-
-GDExtensionObjectPtr cgo_class_get_owner_func(GDExtensionScriptInstanceDataPtr instance) {
+static GDExtensionObjectPtr extension_script_get_owner(GDExtensionScriptInstanceDataPtr instance) {
     return (GDExtensionObjectPtr)gd_on_extension_script_get_owner((uintptr_t)instance);
 }
-
 void gd_object_script_property_state_add(uintptr_t fn, uintptr_t arg, uintptr_t name, UINT64(s1), UINT64(s2), UINT64(s3)) {
     uint64_t state[3] = {UINT64_FROM(s1), UINT64_FROM(s2), UINT64_FROM(s3)};
     ((GDExtensionScriptInstancePropertyStateAdd)fn)(&name, &state, (void *)arg);
 }
-
-
-void cgo_class_get_property_state_func(GDExtensionScriptInstanceDataPtr p_instance, GDExtensionScriptInstancePropertyStateAdd p_add_func, void *p_userdata) {
+static void extension_script_get_property_state(GDExtensionScriptInstanceDataPtr p_instance, GDExtensionScriptInstancePropertyStateAdd p_add_func, void *p_userdata) {
     gd_on_extension_script_get_property_state((uintptr_t)p_instance, (uintptr_t)p_add_func, (uintptr_t)p_userdata);
 }
-
-GDExtensionBool cgo_class_has_method_func(GDExtensionScriptInstanceDataPtr instance, GDExtensionConstStringNamePtr method) {
+static GDExtensionBool extension_script_has_method(GDExtensionScriptInstanceDataPtr instance, GDExtensionConstStringNamePtr method) {
     return gd_on_extension_script_has_method((uintptr_t)instance, *(uintptr_t*)method);
 }
 
-GDExtensionInt cgo_class_get_method_argument_count_func(GDExtensionScriptInstanceDataPtr instance, GDExtensionConstStringNamePtr method, GDExtensionBool *valid) {
+static GDExtensionInt extension_script_get_method_argument_count(GDExtensionScriptInstanceDataPtr instance, GDExtensionConstStringNamePtr method, GDExtensionBool *valid) {
     *valid = 1;
     return gd_on_extension_script_get_method_argument_count((uintptr_t)instance, *(uintptr_t*)method);
 }
-
-GDExtensionObjectPtr cgo_class_get_script_func(GDExtensionScriptInstanceDataPtr instance) {
+static GDExtensionObjectPtr extension_script_get(GDExtensionScriptInstanceDataPtr instance) {
     return (GDExtensionObjectPtr)gd_on_extension_script_get((uintptr_t)instance);
 }
-
-GDExtensionBool cgo_class_is_placeholder_func(GDExtensionScriptInstanceDataPtr instance) {
+static GDExtensionBool extension_script_is_placeholder(GDExtensionScriptInstanceDataPtr instance) {
     return gd_on_extension_script_is_placeholder((uintptr_t)instance);
 }
-
-GDExtensionObjectPtr cgo_class_get_language_func(GDExtensionScriptInstanceDataPtr instance) {
+static GDExtensionObjectPtr extension_script_get_language(GDExtensionScriptInstanceDataPtr instance) {
     return (GDExtensionObjectPtr)gd_on_extension_script_get_language((uintptr_t)instance);
 }
-
 uintptr_t gd_object_script_make(uintptr_t instance) {
     GDExtensionScriptInstanceInfo3 info = {
-        .set_func = cgo_class_set_func,
-        .get_func = cgo_class_get_func,
-        .get_property_list_func = cgo_class_get_property_list_func,
-        .free_property_list_func = cgo_class_free_property_list_func,
-        .get_class_category_func = cgo_class_get_category_func,
-        .property_can_revert_func = cgo_class_property_can_revert_func,
-        .property_get_revert_func = cgo_class_property_get_revert_func,
-        .get_owner_func = cgo_class_get_owner_func,
-        .get_property_state_func = cgo_class_get_property_state_func,
-        .validate_property_func = cgo_class_validate_property_func,
-        .has_method_func = cgo_class_has_method_func,
-        .get_method_argument_count_func = cgo_class_get_method_argument_count_func,
-        .call_func = (GDExtensionScriptInstanceCall)cgo_method_call_func,
+        .set_func = extension_instance_set,
+        .get_func = extension_instance_get,
+        .get_property_list_func = extension_instance_property_list,
+        .free_property_list_func = class_free_property_list_func,
+        .get_class_category_func = extension_script_categorization,
+        .property_can_revert_func = extension_instance_property_has_default,
+        .property_get_revert_func = extension_instance_property_get_default,
+        .get_owner_func = extension_script_get_owner,
+        .get_property_state_func = extension_script_get_property_state,
+        .validate_property_func = extension_instance_property_validation,
+        .has_method_func = extension_script_has_method,
+        .get_method_argument_count_func = extension_script_get_method_argument_count,
+        .call_func = (GDExtensionScriptInstanceCall)extension_instance_dynamic_call,
         .notification_func = (GDExtensionClassNotification2)gd_on_extension_instance_notification,
-        .to_string_func = cgo_class_to_string_func,
+        .to_string_func = extension_instance_stringify,
         //.refcount_incremented_func = cgo_class_reference_func,
         //.refcount_decremented_func = cgo_class_unreference_func,
-        .get_script_func = cgo_class_get_script_func,
-        .is_placeholder_func = cgo_class_is_placeholder_func,
-        .get_language_func = cgo_class_get_language_func,
+        .get_script_func = extension_script_get,
+        .is_placeholder_func = extension_script_is_placeholder,
+        .get_language_func = extension_script_get_language,
         .free_func = (GDExtensionScriptInstanceFree)gd_on_extension_instance_free,
     };
     return (uintptr_t)gdextension_script_instance_create3(&info, (GDExtensionScriptInstanceDataPtr)&instance);
 };
-
 void gd_object_script_call(uintptr_t obj, uintptr_t method, ANY result, INT argc, ANY args, ANY err) {
     void *points[16]; points[1] = 0; prepare_variants(&points[0], argc, args);
     gdextension_object_call_script_method((GDExtensionObjectPtr)obj, (GDExtensionConstStringNamePtr)&method, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)result, (GDExtensionCallError*)err);
 };
-
 void gd_object_script_setup(uintptr_t obj, uintptr_t instance) {
     gdextension_object_set_script_instance((GDExtensionScriptInstanceDataPtr)obj, (GDExtensionClassInstancePtr)instance);
 };
-
 uintptr_t gd_object_script_fetch(uintptr_t obj, uintptr_t language) {
     return (uintptr_t)gdextension_object_get_script_instance((GDExtensionScriptInstanceDataPtr)obj, (GDExtensionClassInstancePtr)language);
 };
-
 bool gd_object_script_defines_method(uintptr_t obj, uintptr_t method) {
     return gdextension_object_has_script_method((GDExtensionScriptInstanceDataPtr)obj, (GDExtensionConstStringNamePtr)&method);
 };
-
 uintptr_t gd_object_script_placeholder_create(uintptr_t language, uintptr_t script, uintptr_t owner) {
     return (uintptr_t)gdextension_placeholder_script_instance_create((GDExtensionScriptInstanceDataPtr)language, (GDExtensionObjectPtr)script, (GDExtensionObjectPtr)owner);
 };
-
 void gd_object_script_placeholder_update(uintptr_t p_placeholder, uintptr_t p_properties, uintptr_t p_values) {
     gdextension_placeholder_script_instance_update((GDExtensionScriptInstanceDataPtr)p_placeholder, (GDExtensionConstTypePtr)&p_properties, (GDExtensionConstTypePtr)&p_values);
 };
-
 uintptr_t gd_packed_byte_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
     return (uintptr_t)gdextension_packed_byte_array_operator_index(&packed_array[0], 0);
 };
-
 uint8_t gd_packed_byte_array_access(UINT a1, UINT a2, INT i) {
     uintptr_t packed_array[2] = {a1, a2};
     return *(uint8_t *)gdextension_packed_byte_array_operator_index_const(&packed_array[0], i);
 };
-
 uintptr_t gd_packed_color_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
     return (uintptr_t)gdextension_packed_color_array_operator_index(&packed_array[0], 0);
 };
-
 void gd_packed_color_array_access(UINT a1, UINT a2, INT i, ANY result) {
     uintptr_t packed_array[2] = {a1, a2};
     const float *color = (float *)gdextension_packed_color_array_operator_index_const(&packed_array[0], i);
     memcpy((float*)result, color, sizeof(float)*4);
 };
-
 uintptr_t gd_packed_float32_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
     return (uintptr_t)gdextension_packed_float32_array_operator_index(&packed_array[0], 0);
 };
-
 float gd_packed_float32_array_access(UINT a1, UINT a2, INT i) {
     uintptr_t packed_array[2] = {a1, a2};
     return *(float *)gdextension_packed_float32_array_operator_index_const(&packed_array[0], i);
 };
-
 uintptr_t gd_packed_float64_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
     return (uintptr_t)gdextension_packed_float64_array_operator_index(&packed_array[0], 0);
 };
-
 double gd_packed_float64_array_access(UINT a1, UINT a2, INT i) {
     uintptr_t packed_array[2] = {a1, a2};
     return *(double *)gdextension_packed_float64_array_operator_index_const(&packed_array[0], i);
 };
-
 uintptr_t gd_packed_int32_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
     return (uintptr_t)gdextension_packed_int32_array_operator_index(&packed_array[0], 0);
 };
-
 int32_t gd_packed_int32_array_access(UINT a1, UINT a2, INT i) {
     uintptr_t packed_array[2] = {a1, a2};
     return *(int32_t *)gdextension_packed_int32_array_operator_index_const(&packed_array[0], i);
 };
-
 uintptr_t gd_packed_int64_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
     return (uintptr_t)gdextension_packed_int64_array_operator_index(&packed_array[0], 0);
 };
-
 void gd_packed_int64_array_access(UINT a1, UINT a2, INT i, ANY value) {
     uintptr_t packed_array[2] = {a1, a2};
     *(int64_t *)value = *(int64_t *)gdextension_packed_int64_array_operator_index_const(&packed_array[0], i);
 };
-
 uintptr_t gd_packed_string_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
     return (uintptr_t)gdextension_packed_string_array_operator_index(&packed_array[0], 0);
 };
-
 uintptr_t gd_packed_string_array_access(UINT a1, UINT a2, INT i) {
     uintptr_t packed_array[2] = {a1, a2};
     return *(uintptr_t*)gdextension_packed_string_array_operator_index_const(&packed_array[0], i);
 };
-
 void gd_array_set(uintptr_t a, INT i, UINT64(v1), UINT64(v2), UINT64(v3)) {
     uint64_t *variant = (uint64_t*)gdextension_array_operator_index(&a, i);
     variant[0] = UINT64_FROM(v1);
     variant[1] = UINT64_FROM(v2);
     variant[2] = UINT64_FROM(v3);
 };
-
 void gd_array_get(uintptr_t a, INT i, ANY result) {
     uint64_t *packed = (uint64_t*)gdextension_array_operator_index_const(&a, i);
     memcpy((uint64_t*)result, packed, sizeof(uint64_t)*3);
 };
-
 uintptr_t gd_packed_vector2_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
     return (uintptr_t)gdextension_packed_vector2_array_operator_index(&packed_array[0], 0);
 };
-
 void gd_packed_vector2_array_access(UINT a1, UINT a2, INT i, ANY result) {
     uintptr_t packed_array[2] = {a1, a2};
     const float *vector = (const float *)gdextension_packed_vector2_array_operator_index_const(&packed_array[0], i);
     memcpy((float*)result, vector, sizeof(float)*2);
 };
-
 uintptr_t gd_packed_vector3_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
     return (uintptr_t)gdextension_packed_vector3_array_operator_index(&packed_array[0], 0);
 };
-
 void gd_packed_vector3_array_access(UINT a1, UINT a2, INT i, ANY result) {
     uintptr_t packed_array[2] = {a1, a2};
     const float *vector = (const float *)gdextension_packed_vector3_array_operator_index_const(&packed_array[0], i);
     memcpy((float*)result, vector, sizeof(float)*3);
 };
-
 uintptr_t gd_packed_vector4_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
     return (uintptr_t)gdextension_packed_vector4_array_operator_index(&packed_array[0], 0);
 };
-
 void gd_packed_vector4_array_access(UINT a1, UINT a2, INT i, ANY result) {
     uintptr_t packed_array[2] = {a1, a2};
     const float *vector = (const float *)gdextension_packed_vector4_array_operator_index_const(&packed_array[0], i);
     memcpy((float *)result, vector, sizeof(float)*4);
 };
-
 uintptr_t gd_ref_get_object(uintptr_t ref) {
     return (uintptr_t)gdextension_ref_get_object((GDExtensionObjectPtr)ref);
 };
-
 void gd_ref_set_object(uintptr_t ref, uintptr_t obj) {
     gdextension_ref_set_object((GDExtensionObjectPtr)ref, (GDExtensionObjectPtr)obj);
 };
-
 int32_t gd_string_access(uintptr_t s, INT i) {
     return *(int32_t *)gdextension_string_operator_index_const((GDExtensionStringPtr)s, i);
 };
-
 uintptr_t gd_string_resize(uintptr_t s, INT size) {
     uintptr_t ptr = s;
     gdextension_string_resize((GDExtensionStringPtr)&ptr, size);
     return ptr;
 };
-
 uintptr_t gd_string_unsafe(uintptr_t s) {
     return (uintptr_t)gdextension_string_operator_index((GDExtensionStringPtr)s, 0);
 };
-
 uintptr_t gd_string_append(uintptr_t s, uintptr_t other) {
     uintptr_t ptr = s;
     gdextension_string_operator_plus_eq_string((GDExtensionStringPtr)&ptr, (GDExtensionConstStringPtr)&other);
     return ptr;
 };
-
 uintptr_t gd_string_append_rune(uintptr_t s, int32_t rune) {
     uintptr_t ptr = s;
     gdextension_string_operator_plus_eq_char((GDExtensionStringPtr)&ptr, rune);
     return ptr;
 };
-
 uintptr_t gd_string_decode_latin1(STRING s, INT len) {
     uintptr_t ptr = 0;
     gdextension_string_new_with_latin1_chars_and_len((GDExtensionUninitializedStringPtr)&ptr, STRING_POINTER(s), len);
     return ptr;
 };
-
 uintptr_t gd_string_decode_utf8(STRING s, INT len) {
     uintptr_t ptr = 0;
     gdextension_string_new_with_utf8_chars_and_len((GDExtensionUninitializedStringPtr)&ptr, STRING_POINTER(s), len);
     return ptr;
 };
-
 uintptr_t gd_string_decode_utf16(STRING s, INT len, bool le) {
     uintptr_t ptr = 0;
     gdextension_string_new_with_utf16_chars_and_len2((GDExtensionUninitializedStringPtr)&ptr, (const char16_t *)STRING_POINTER(s), len, le);
     return ptr;
 };
-
 uintptr_t gd_string_decode_utf32(STRING s, INT len) {
     uintptr_t ptr = 0;
     gdextension_string_new_with_utf32_chars_and_len((GDExtensionUninitializedStringPtr)&ptr, (const char32_t *)STRING_POINTER(s), len);
     return ptr;
 };
-
 uintptr_t gd_string_decode_wide(STRING s, INT len) {
     uintptr_t ptr = 0;
     gdextension_string_new_with_wide_chars_and_len((GDExtensionUninitializedStringPtr)&ptr, (const wchar_t *)STRING_POINTER(s), len);
     return ptr;
 };
-
 INT gd_string_encode_latin1(uintptr_t s, BUFFER addr, INT len) {
     return gdextension_string_to_latin1_chars((GDExtensionStringPtr)&s, BUFFER_POINTER(addr), len);
 };
-
 INT gd_string_encode_utf8(uintptr_t s, BUFFER addr, INT len) {
     return gdextension_string_to_utf8_chars((GDExtensionStringPtr)&s, BUFFER_POINTER(addr), len);
 };
-
 INT gd_string_encode_utf16(uintptr_t s, BUFFER addr, INT len) {
     return gdextension_string_to_utf16_chars((GDExtensionStringPtr)&s, (char16_t *)BUFFER_POINTER(addr), len/2);
 };
-
 INT gd_string_encode_utf32(uintptr_t s, BUFFER addr, INT len) {
     return gdextension_string_to_utf32_chars((GDExtensionStringPtr)&s, (char32_t *)BUFFER_POINTER(addr), len/4);
 };
-
 INT gd_string_encode_wide(uintptr_t s, BUFFER addr, INT len) {
     return gdextension_string_to_wide_chars((GDExtensionStringPtr)&s, (wchar_t *)BUFFER_POINTER(addr), len/sizeof(wchar_t));
 };
-
 uintptr_t gd_string_intern_latin1(STRING s, INT len) {
     char buf[256]; const char *s_ptr = fit_string(STRING_POINTER(s), len, &buf[0], 256);
     uintptr_t ptr = 0;
@@ -1489,35 +1350,29 @@ uintptr_t gd_string_intern_latin1(STRING s, INT len) {
     if (s_ptr != &buf[0]) gdextension_mem_free((void *)s_ptr); // Free the buffer if it was allocated
     return ptr;
 };
-
 uintptr_t gd_string_intern_utf8(STRING s, INT len) {
     uintptr_t ptr = 0;
     gdextension_string_name_new_with_utf8_chars_and_len((GDExtensionUninitializedStringNamePtr)&ptr, STRING_POINTER(s), len);
     return ptr;
 };
-
 uintptr_t gd_variant_type_name(uint32_t vtype) {
     uintptr_t name = 0;
     gdextension_variant_get_type_name((GDExtensionVariantType)vtype, &name);
     return name;
 };
-
 void gd_variant_unsafe_make_native(uint32_t vtype, UINT64(v1), UINT64(v2), UINT64(v3), UINT64(shape), ANY args) {
     void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
     uint64_t self[4] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     type_from_variant_constructors[vtype](points[0], &self[0]);
 };
-
 void gd_variant_unsafe_from_native(uint32_t vtype, ANY result, UINT64(shape), ANY args) {
     void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
     variant_from_type_constructors[vtype]((GDExtensionUninitializedVariantPtr)result, points[0]);
 };
-
 void gd_variant_type_call(uint32_t vtype, uintptr_t name, ANY result, INT argc, ANY args, ANY err) {
     void *points[16]; prepare_variants(&points[0], argc, args);
     gdextension_variant_call_static((GDExtensionVariantType)vtype, (GDExtensionConstStringNamePtr)&name, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)result, (GDExtensionCallError*)err);
 };
-
 bool gd_variant_type_convertable(uint32_t a, uint32_t b, bool strict) {
     if (strict) {
         return gdextension_variant_can_convert_strict((GDExtensionVariantType)a, (GDExtensionVariantType)b);
@@ -1525,51 +1380,41 @@ bool gd_variant_type_convertable(uint32_t a, uint32_t b, bool strict) {
         return gdextension_variant_can_convert((GDExtensionVariantType)a, (GDExtensionVariantType)b);
     }
 };
-
 void gd_variant_type_setup_array(uintptr_t array, uint32_t vtype, uintptr_t class_name, UINT64(s1), UINT64(s2), UINT64(s3)) {
     uint64_t script[3] = {UINT64_FROM(s1), UINT64_FROM(s2), UINT64_FROM(s3)};
     gdextension_array_set_typed(&array, (GDExtensionVariantType)vtype, &class_name, &script[0]);
 };
-
 void gd_variant_type_setup_dictionary(uintptr_t dict, uint32_t ktype, uintptr_t kclass_name, UINT64(ks1), UINT64(ks2), UINT64(ks3), uint32_t vtype, uintptr_t vclass_name, UINT64(vs1), UINT64(vs2), UINT64(vs3)) {
     uint64_t k_script[3] = {UINT64_FROM(ks1), UINT64_FROM(ks2), UINT64_FROM(ks3)};
     uint64_t v_script[3] = {UINT64_FROM(vs1), UINT64_FROM(vs2), UINT64_FROM(vs3)};
     gdextension_dictionary_set_typed(&dict, (GDExtensionVariantType)ktype, &kclass_name, &k_script[0], (GDExtensionVariantType)vtype, &vclass_name, &v_script[0]);
 };
-
 void gd_variant_type_fetch_constant(uint32_t vtype, uintptr_t name, ANY result) {
     void *points[16]; prepare_variants(&points[0], 1, result);
     gdextension_variant_get_constant_value((GDExtensionVariantType)vtype, (GDExtensionConstStringNamePtr)&name, (GDExtensionTypePtr)points[0]);
 };
-
 uintptr_t gd_variant_type_builtin_method(uint32_t vtype, uintptr_t name, INT64(hash)) {
     return (uintptr_t)gdextension_variant_get_ptr_builtin_method((GDExtensionVariantType)vtype, (GDExtensionConstStringNamePtr)&name, INT64_FROM(hash));
 };
-
 uintptr_t gd_variant_type_unsafe_constructor(uint32_t vtype, INT n) {
     return (uintptr_t)gdextension_variant_get_ptr_constructor((GDExtensionVariantType)vtype, n);
 };
-
 void gd_variant_type_unsafe_free(uint32_t vtype, UINT64(shape), ANY args) {
     void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
     variant_ptr_destructors[vtype](points[0]);
 };
-
 void gd_variant_zero(ANY result) {
     gdextension_variant_new_nil((GDExtensionUninitializedVariantPtr)result);
 };
-
 void gd_variant_copy(UINT64(v1), UINT64(v2), UINT64(v3), ANY result) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     gdextension_variant_new_copy((GDExtensionUninitializedVariantPtr)result, &self);
 };
-
 void gd_variant_call(UINT64(v1), UINT64(v2), UINT64(v3), uintptr_t name, ANY result, INT argc, ANY args, ANY err) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     void *points[16]; prepare_variants(&points[0], argc, args);
     gdextension_variant_call(&self, (GDExtensionConstStringNamePtr)&name, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)result, (GDExtensionCallError*)err);
 };
-
 bool gd_variant_eval(uint32_t op, UINT64(a1), UINT64(a2), UINT64(a3), UINT64(b1), UINT64(b2), UINT64(b3), ANY result) {
     uint64_t a[3] = {UINT64_FROM(a1), UINT64_FROM(a2), UINT64_FROM(a3)};
     uint64_t b[3] = {UINT64_FROM(b1), UINT64_FROM(b2), UINT64_FROM(b3)};
@@ -1577,39 +1422,32 @@ bool gd_variant_eval(uint32_t op, UINT64(a1), UINT64(a2), UINT64(a3), UINT64(b1)
     gdextension_variant_evaluate((GDExtensionVariantOperator)op, &a[0], &b[0], (GDExtensionUninitializedVariantPtr)result, &valid);
     return valid;
 };
-
 void gd_variant_hash(UINT64(v1), UINT64(v2), UINT64(v3), void *hash) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     *(int64_t*)hash = gdextension_variant_hash(&self);
 };
-
 bool gd_variant_bool(UINT64(v1), UINT64(v2), UINT64(v3)) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     return gdextension_variant_booleanize(&self);
 };
-
 uintptr_t gd_variant_text(UINT64(v1), UINT64(v2), UINT64(v3)) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     uintptr_t text = 0;
     gdextension_variant_stringify(&self, &text);
     return text;
 };
-
 uint32_t gd_variant_type(UINT64(v1), UINT64(v2), UINT64(v3)) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     return gdextension_variant_get_type(&self);
 };
-
 void gd_variant_deep_copy(UINT64(v1), UINT64(v2), UINT64(v3), ANY result) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     gdextension_variant_duplicate(&self, (GDExtensionVariantPtr)result, true);
 };
-
 void gd_variant_deep_hash(UINT64(v1), UINT64(v2), UINT64(v3), INT recursion, void *hash) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     *(int64_t*)hash = gdextension_variant_recursive_hash(&self, recursion);
 };
-
 bool gd_variant_get_index(UINT64(v1), UINT64(v2), UINT64(v3), UINT64(i1), UINT64(i2), UINT64(i3), ANY result) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     uint64_t index[3] = {UINT64_FROM(i1), UINT64_FROM(i2), UINT64_FROM(i3)};
@@ -1617,7 +1455,6 @@ bool gd_variant_get_index(UINT64(v1), UINT64(v2), UINT64(v3), UINT64(i1), UINT64
     gdextension_variant_get_keyed(&self, &index[0], (GDExtensionUninitializedVariantPtr)result, &valid);
     return valid;
 };
-
 bool gd_variant_get_array(UINT64(v1), UINT64(v2), UINT64(v3), INT i, ANY result, ANY err) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     GDExtensionBool valid = false;
@@ -1626,18 +1463,15 @@ bool gd_variant_get_array(UINT64(v1), UINT64(v2), UINT64(v3), INT i, ANY result,
     if (oob) ((GDExtensionCallError*)err)->error = GDEXTENSION_CALL_ERROR_INVALID_ARGUMENT;
     return valid;
 };
-
 bool gd_variant_get_field(UINT64(v1), UINT64(v2), UINT64(v3), uintptr_t name, ANY result) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     GDExtensionBool valid = false;
     gdextension_variant_get_named(&self, (GDExtensionConstStringNamePtr)&name, (GDExtensionUninitializedVariantPtr)result, &valid);
     return valid;
 };
-
 bool gd_variant_type_has_property(uint32_t vtype, uintptr_t name) {
     return gdextension_variant_has_member((GDExtensionVariantType)vtype, (GDExtensionConstStringNamePtr)&name);
 };
-
 bool gd_variant_has_index(UINT64(v1), UINT64(v2), UINT64(v3), UINT64(i1), UINT64(i2), UINT64(i3)) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     uint64_t index[3] = {UINT64_FROM(i1), UINT64_FROM(i2), UINT64_FROM(i3)};
@@ -1645,12 +1479,10 @@ bool gd_variant_has_index(UINT64(v1), UINT64(v2), UINT64(v3), UINT64(i1), UINT64
     gdextension_variant_has_key(&self, &index[0], &valid);
     return valid;
 };
-
 bool gd_variant_has_method(UINT64(v1), UINT64(v2), UINT64(v3), uintptr_t name) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     return gdextension_variant_has_method(&self, (GDExtensionConstStringNamePtr)&name);
 };
-
 bool gd_variant_set_index(UINT64(v1), UINT64(v2), UINT64(v3), UINT64(i1), UINT64(i2), UINT64(i3), UINT64(v1_set), UINT64(v2_set), UINT64(v3_set)) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     uint64_t index[3] = {UINT64_FROM(i1), UINT64_FROM(i2), UINT64_FROM(i3)};
@@ -1659,7 +1491,6 @@ bool gd_variant_set_index(UINT64(v1), UINT64(v2), UINT64(v3), UINT64(i1), UINT64
     gdextension_variant_set_keyed(&self, &index[0], &value[0], &valid);
     return valid;
 };
-
 bool gd_variant_set_array(UINT64(v1), UINT64(v2), UINT64(v3), INT i, UINT64(v1_set), UINT64(v2_set), UINT64(v3_set), ANY err) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     uint64_t value[3] = {UINT64_FROM(v1_set), UINT64_FROM(v2_set), UINT64_FROM(v3_set)};
@@ -1669,7 +1500,6 @@ bool gd_variant_set_array(UINT64(v1), UINT64(v2), UINT64(v3), INT i, UINT64(v1_s
     if (oob) ((GDExtensionCallError*)err)->error = GDEXTENSION_CALL_ERROR_INVALID_ARGUMENT;
     return valid;
 };
-
 bool gd_variant_set_field(UINT64(v1), UINT64(v2), UINT64(v3), uintptr_t name, UINT64(v1_set), UINT64(v2_set), UINT64(v3_set)) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     uint64_t value[3] = {UINT64_FROM(v1_set), UINT64_FROM(v2_set), UINT64_FROM(v3_set)};
@@ -1677,110 +1507,93 @@ bool gd_variant_set_field(UINT64(v1), UINT64(v2), UINT64(v3), uintptr_t name, UI
     gdextension_variant_set_named(&self, (GDExtensionConstStringNamePtr)&name, &value[0], &valid);
     return valid;
 };
-
 void gd_variant_unsafe_eval(uintptr_t fn, ANY result, UINT64(shape), ANY args) {
     void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
     ((GDExtensionPtrOperatorEvaluator)fn)(points[0], points[1], (GDExtensionTypePtr)result);
 };
-
 void gd_variant_unsafe_call(uintptr_t fn, ANY result, UINT64(shape), ANY args) {
     void *points[16]; uint8_t argc = prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
     ((GDExtensionPtrBuiltInMethod)fn)((GDExtensionTypePtr*)points[0], (const GDExtensionConstTypePtr*)&points[1], (GDExtensionTypePtr)result, argc);
 };
-
 void gd_variant_unsafe_free(UINT64(v1), UINT64(v2), UINT64(v3)) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     gdextension_variant_destroy(&self);
 };
-
 uintptr_t gd_variant_unsafe_internal_pointer(uint32_t vtype, UINT64(v1), UINT64(v2), UINT64(v3)) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     return (uintptr_t)variant_internal_ptr_funcs[vtype](&self);
 };
-
 void gd_variant_unsafe_get_field(uintptr_t getter, ANY result, UINT64(shape), ANY args) {
     void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
     ((GDExtensionPtrGetter)getter)(points[0], &result);
-
 };
-
 void gd_variant_unsafe_get_array(uint32_t vtype, INT i, ANY result, UINT64(shape), ANY args) {
     void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
     variant_ptr_indexed_getters[vtype]((GDExtensionConstTypePtr)result, i, points[0]);
 };
-
 void gd_variant_unsafe_get_index(uint32_t vtype, ANY result, UINT64(shape), ANY args) {
     void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
     variant_ptr_keyed_getters[vtype](points[0], points[1], (GDExtensionTypePtr)result);
 };
-
 void gd_variant_unsafe_set_field(uintptr_t setter, UINT64(shape), ANY args) {
     void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
     ((GDExtensionPtrSetter)setter)(points[1], points[2]);
 };
-
 void gd_variant_unsafe_set_array(uint32_t vtype, INT i, UINT64(shape), ANY args) {
     void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
     variant_ptr_indexed_setters[vtype](points[0], i, points[1]);
 };
-
 void gd_variant_unsafe_set_index(uint32_t vtype, UINT64(shape), ANY args) {
     void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
     variant_ptr_keyed_setters[vtype](points[0], points[1], points[2]);
 };
-
 uintptr_t gd_variant_type_setter(uint32_t vtype, uintptr_t name) {
     return (uintptr_t)gdextension_variant_get_ptr_setter((GDExtensionVariantType)vtype, (GDExtensionConstStringNamePtr)&name);
 }
-
 uintptr_t gd_variant_type_getter(uint32_t vtype, uintptr_t name) {
     return (uintptr_t)gdextension_variant_get_ptr_getter((GDExtensionVariantType)vtype, (GDExtensionConstStringNamePtr)&name);
 }
-
 void gd_variant_type_unsafe_make(uintptr_t fn, ANY result, UINT64(shape), ANY args) {
     void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
     ((GDExtensionPtrConstructor)fn)((GDExtensionUninitializedTypePtr)result, (const GDExtensionConstTypePtr *)&points[0]);
 }
-
 void gd_variant_type_make(uint32_t vtype, ANY result, INT argc, ANY args, ANY err) {
     void *points[16]; prepare_variants(&points[0], argc, args);
     gdextension_variant_construct((GDExtensionVariantType)vtype, (GDExtensionUninitializedVariantPtr)result, (const GDExtensionConstVariantPtr *)&points[0], argc, (GDExtensionCallError*)err);
 }
-
 void gd_variant_type_unsafe_call(ANY self, uintptr_t fn, ANY result, UINT64(shape), ANY args) {
     void *points[16]; uint8_t argc = prepare_callframe(2, &points[0], UINT64_FROM(shape), args);
     ((GDExtensionPtrBuiltInMethod)fn)((GDExtensionTypePtr*)self, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)result, argc);
 }
-
 uintptr_t gd_variant_type_evaluator(uint32_t op, uint32_t a, uint32_t b) {
     return (uintptr_t)gdextension_variant_get_ptr_operator_evaluator((GDExtensionVariantOperator)op, (GDExtensionVariantType)a, (GDExtensionVariantType)b);
 }
 
-uint32_t gd_version_major() {return cgo_cached_godot_version.major;};
-uint32_t gd_version_minor() {return cgo_cached_godot_version.minor;};
-uint32_t gd_version_patch() {return cgo_cached_godot_version.patch;};
-uint32_t gd_version_hex() {return cgo_cached_godot_version.hex;};
+uint32_t gd_version_major() {return gd_godot_version_cached.major;};
+uint32_t gd_version_minor() {return gd_godot_version_cached.minor;};
+uint32_t gd_version_patch() {return gd_godot_version_cached.patch;};
+uint32_t gd_version_hex() {return gd_godot_version_cached.hex;};
 uintptr_t gd_version_status() {
     uintptr_t s;
-    gdextension_string_new_with_latin1_chars(&s, cgo_cached_godot_version.status);
+    gdextension_string_new_with_latin1_chars(&s, gd_godot_version_cached.status);
     return s;
 };
 uintptr_t gd_version_build() {
     uintptr_t s;
-    gdextension_string_new_with_latin1_chars(&s, cgo_cached_godot_version.build);
+    gdextension_string_new_with_latin1_chars(&s, gd_godot_version_cached.build);
     return s;
 };
 uintptr_t gd_version_hash() {
     uintptr_t s;
-    gdextension_string_new_with_latin1_chars(&s, cgo_cached_godot_version.hash);
+    gdextension_string_new_with_latin1_chars(&s, gd_godot_version_cached.hash);
     return s;
 };
 void gd_version_timestamp(ANY time) {
-    *(uint64_t*)time = cgo_cached_godot_version.timestamp;
+    *(uint64_t*)time = gd_godot_version_cached.timestamp;
 };
 uintptr_t gd_version_string() {
     uintptr_t s;
-    gdextension_string_new_with_latin1_chars(&s, cgo_cached_godot_version.string);
+    gdextension_string_new_with_latin1_chars(&s, gd_godot_version_cached.string);
     return s;
 };
 
