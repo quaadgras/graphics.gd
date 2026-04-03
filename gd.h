@@ -1,4 +1,4 @@
-#include <stdlib.h>
+#include <stdint.h>
 #include <stdbool.h>
 
 extern void gd_on_callable_call(uintptr_t p0, void* p1, int64_t p2, void* p3, void* p4);
