@@ -1,12 +1,11 @@
 #ifdef __EMSCRIPTEN__
     #include "core/extension/gdextension_interface.h"
-    #include "gdextension_web_cgo_callbacks.cpp"
     #include <emscripten/bind.h>
     #include <bit>
 #else
     #include "gdextension_interface.h"
-    #include "_cgo_export.h"
 #endif
+#include "startup_cgo_v2.h"
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdbool.h>
