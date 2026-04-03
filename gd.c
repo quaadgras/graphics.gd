@@ -501,9 +501,6 @@ EXPORT GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_g
         variant_ptr_keyed_setters[i] = gdextension_variant_get_ptr_keyed_setter(v);
         variant_ptr_keyed_getters[i] = gdextension_variant_get_ptr_keyed_getter(v);
     }
-    #ifdef __EMSCRIPTEN__
-    	Go = emscripten::val::global("GO");
-    #endif
     return true;
 }
 void prepare_variants(void **frame, uint32_t argc, ANY args) {
@@ -1068,7 +1065,7 @@ void gd_ring_flush(void *entries, uint32_t tail, uint32_t head, uint32_t *crash_
         ring_entry *e = &ring[i & 0xFF];
         *crash_index = i & 0xFF;
         void *points[16];
-        prepare_callframe(1, &points[0], e->shape, e->args);
+        prepare_callframe(1, &points[0], e->shape, (ANY)e->args);
         gdextension_object_method_bind_ptrcall(
             (GDExtensionMethodBindPtr)e->method,
             (GDExtensionObjectPtr)e->object,
@@ -1597,6 +1594,77 @@ uintptr_t gd_version_string() {
 };
 
 #ifdef __EMSCRIPTEN__
+
+// Raw WASM exports for direct WASM-to-WASM calls (bypassing embind JS trampolines).
+// These use native types (real uint64_t instead of split uint32 pairs).
+#include <emscripten/emscripten.h>
+extern "C" {
+    EMSCRIPTEN_KEEPALIVE uint32_t wasm_gd_memory_malloc(uint32_t size) { return (uint32_t)gdextension_mem_alloc(size); }
+    EMSCRIPTEN_KEEPALIVE uint32_t wasm_gd_memory_resize(uint32_t addr, uint32_t size) { return (uint32_t)gdextension_mem_realloc((void *)(uintptr_t)addr, size); }
+    EMSCRIPTEN_KEEPALIVE void wasm_gd_memory_clear(uint32_t addr, uint32_t size) { if (size <= 0) return; memset((void *)(uintptr_t)addr, 0, size); }
+    EMSCRIPTEN_KEEPALIVE void wasm_gd_memory_free(uint32_t addr) { gdextension_mem_free((void *)(uintptr_t)addr); }
+    EMSCRIPTEN_KEEPALIVE uint32_t wasm_gd_memory_load_byte(uint32_t addr) { return *(uint8_t *)(uintptr_t)addr; }
+    EMSCRIPTEN_KEEPALIVE uint32_t wasm_gd_memory_load_u16(uint32_t addr) { return *(uint16_t *)(uintptr_t)addr; }
+    EMSCRIPTEN_KEEPALIVE uint32_t wasm_gd_memory_load_u32(uint32_t addr) { return *(uint32_t *)(uintptr_t)addr; }
+    EMSCRIPTEN_KEEPALIVE void wasm_gd_memory_edit_byte(uint32_t addr, uint32_t b) { *(uint8_t *)(uintptr_t)addr = (uint8_t)b; }
+    EMSCRIPTEN_KEEPALIVE void wasm_gd_memory_edit_u16(uint32_t addr, uint32_t b) { *(uint16_t *)(uintptr_t)addr = (uint16_t)b; }
+    EMSCRIPTEN_KEEPALIVE void wasm_gd_memory_edit_u32(uint32_t addr, uint32_t b) { *(uint32_t *)(uintptr_t)addr = b; }
+    EMSCRIPTEN_KEEPALIVE void wasm_gd_memory_edit_u64(uint32_t addr, uint32_t b_hi, uint32_t b_lo) {
+        *(uint64_t *)(uintptr_t)addr = ((uint64_t)b_hi << 32) | (uint64_t)b_lo;
+    }
+    EMSCRIPTEN_KEEPALIVE void wasm_gd_memory_edit_128(uint32_t addr, uint32_t a_hi, uint32_t a_lo, uint32_t b_hi, uint32_t b_lo) {
+        uint64_t *ptr = (uint64_t *)(uintptr_t)addr;
+        ptr[0] = ((uint64_t)a_hi << 32) | (uint64_t)a_lo;
+        ptr[1] = ((uint64_t)b_hi << 32) | (uint64_t)b_lo;
+    }
+    EMSCRIPTEN_KEEPALIVE void wasm_gd_memory_edit_256(uint32_t addr,
+        uint32_t a_hi, uint32_t a_lo, uint32_t b_hi, uint32_t b_lo,
+        uint32_t c_hi, uint32_t c_lo, uint32_t d_hi, uint32_t d_lo) {
+        uint64_t *ptr = (uint64_t *)(uintptr_t)addr;
+        ptr[0] = ((uint64_t)a_hi << 32) | (uint64_t)a_lo;
+        ptr[1] = ((uint64_t)b_hi << 32) | (uint64_t)b_lo;
+        ptr[2] = ((uint64_t)c_hi << 32) | (uint64_t)c_lo;
+        ptr[3] = ((uint64_t)d_hi << 32) | (uint64_t)d_lo;
+    }
+    EMSCRIPTEN_KEEPALIVE void wasm_gd_memory_edit_512(uint32_t addr,
+        uint32_t a_hi, uint32_t a_lo, uint32_t b_hi, uint32_t b_lo,
+        uint32_t c_hi, uint32_t c_lo, uint32_t d_hi, uint32_t d_lo,
+        uint32_t e_hi, uint32_t e_lo, uint32_t f_hi, uint32_t f_lo,
+        uint32_t g_hi, uint32_t g_lo, uint32_t h_hi, uint32_t h_lo) {
+        uint64_t *ptr = (uint64_t *)(uintptr_t)addr;
+        ptr[0] = ((uint64_t)a_hi << 32) | (uint64_t)a_lo;
+        ptr[1] = ((uint64_t)b_hi << 32) | (uint64_t)b_lo;
+        ptr[2] = ((uint64_t)c_hi << 32) | (uint64_t)c_lo;
+        ptr[3] = ((uint64_t)d_hi << 32) | (uint64_t)d_lo;
+        ptr[4] = ((uint64_t)e_hi << 32) | (uint64_t)e_lo;
+        ptr[5] = ((uint64_t)f_hi << 32) | (uint64_t)f_lo;
+        ptr[6] = ((uint64_t)g_hi << 32) | (uint64_t)g_lo;
+        ptr[7] = ((uint64_t)h_hi << 32) | (uint64_t)h_lo;
+    }
+    EMSCRIPTEN_KEEPALIVE void wasm_gd_object_unsafe_call(uint32_t obj, uint32_t method, uint32_t result, uint32_t shape_hi, uint32_t shape_lo, uint32_t args) {
+        uint64_t shape = ((uint64_t)shape_hi << 32) | (uint64_t)shape_lo;
+        void *points[16]; prepare_callframe(1, &points[0], shape, args);
+        gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)(uintptr_t)method, (GDExtensionObjectPtr)(uintptr_t)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)(uintptr_t)result);
+    }
+    // Go WASM uses 8-byte uintptr: Object(0,8) Method(8,8) Shape(16,8) Args(24,256)
+    EMSCRIPTEN_KEEPALIVE void wasm_gd_ring_flush(uint32_t ring_base, uint32_t entry_stride, uint32_t tail, uint32_t head) {
+        for (uint32_t i = tail; i != head; i++) {
+            uint8_t *entry = (uint8_t *)(uintptr_t)(ring_base + (i & 0xFF) * entry_stride);
+            uint32_t object = *(uint32_t *)(entry + 0);
+            uint32_t method = *(uint32_t *)(entry + 8);
+            uint64_t shape = *(uint64_t *)(entry + 16);
+            uint32_t args = (uint32_t)(uintptr_t)(entry + 24);
+            void *points[16];
+            prepare_callframe(1, &points[0], shape, args);
+            gdextension_object_method_bind_ptrcall(
+                (GDExtensionMethodBindPtr)(uintptr_t)method,
+                (GDExtensionObjectPtr)(uintptr_t)object,
+                (const GDExtensionConstTypePtr*)&points[0],
+                NULL);
+        }
+    }
+}
+
 using namespace emscripten;
 EMSCRIPTEN_BINDINGS(my_module) {
 	function("gd_builtin_name", &gd_builtin_name, allow_raw_pointers());
