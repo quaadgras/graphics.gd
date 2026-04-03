@@ -4,7 +4,7 @@ package startup
 
 /*
 #include <windows.h>
-#include <gdextension_interface.h>
+#include "../gdextension_interface.h"
 
 GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc_address, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization);
 

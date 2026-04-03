@@ -8,6 +8,8 @@ import (
 	"time"
 )
 
+import "C"
+
 // just a placeholder for functions that don't need to be implemented
 // as they are already available in the Go standard library.
 

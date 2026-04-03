@@ -14,6 +14,8 @@ import (
 	"slices"
 	"testing"
 
+	_ "graphics.gd"
+
 	"graphics.gd/classdb"
 	EngineClass "graphics.gd/classdb/Engine"
 	"graphics.gd/classdb/SceneTree"
