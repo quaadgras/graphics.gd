@@ -4,10 +4,6 @@
 //go:generate go fmt .
 package startup
 
-/*
-
-#include "startup_cgo.h"
-*/
 import "C"
 
 import (
