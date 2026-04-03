@@ -1646,7 +1646,7 @@ extern "C" {
         void *points[16]; prepare_callframe(1, &points[0], shape, args);
         gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)(uintptr_t)method, (GDExtensionObjectPtr)(uintptr_t)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)(uintptr_t)result);
     }
-    // Go WASM uses 8-byte uintptr: Object(0,8) Method(8,8) Shape(16,8) Args(24,256)
+    // WASM uses 8-byte uintptr: Object(0,8) Method(8,8) Shape(16,8) Args(24,256)
     EMSCRIPTEN_KEEPALIVE void wasm_gd_ring_flush(uint32_t ring_base, uint32_t entry_stride, uint32_t tail, uint32_t head) {
         for (uint32_t i = tail; i != head; i++) {
             uint8_t *entry = (uint8_t *)(uintptr_t)(ring_base + (i & 0xFF) * entry_stride);
