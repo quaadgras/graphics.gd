@@ -316,7 +316,7 @@ static void engine_init(void *ignore, GDExtensionInitializationLevel level) {
 bool gd_thread_is_main() {
     return get_thread_caller_id() == main_thread_id;
 }
-EXPORT GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc_address, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization) {
+EXPORT GDExtensionBool gd_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc_address, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization) {
     LOAD_PROC_ADDRESS(mem_alloc, GDExtensionInterfaceMemAlloc);
 	LOAD_PROC_ADDRESS(mem_realloc, GDExtensionInterfaceMemRealloc);
 	LOAD_PROC_ADDRESS(mem_free, GDExtensionInterfaceMemFree);
@@ -804,8 +804,8 @@ void gd_classdb_register(uintptr_t class_name, uintptr_t parent, uintptr_t id, b
         .validate_property_func = extension_instance_property_validation,
         .notification_func = (GDExtensionClassNotification2)gd_on_extension_instance_notification,
         .to_string_func = extension_instance_stringify,
-        //.reference_func = (GDExtensionClassReference)cgo_class_reference_func, // FIXME JavaScript error: null function or function signature mismatch
-        //.unreference_func = (GDExtensionClassUnreference)cgo_class_unreference_func, // FIXME JavaScript error: null function or function signature mismatch
+        //.reference_func = (GDExtensionClassReference)class_reference, // FIXME JavaScript error: null function or function signature mismatch
+        //.unreference_func = (GDExtensionClassUnreference)class_unreference, // FIXME JavaScript error: null function or function signature mismatch
         .create_instance_func = extension_class_create,
         .free_instance_func = extension_instance_free,
         .get_virtual_call_data_func = extension_class_caller,
@@ -1150,8 +1150,8 @@ uintptr_t gd_object_script_make(uintptr_t instance) {
         .call_func = (GDExtensionScriptInstanceCall)extension_instance_dynamic_call,
         .notification_func = (GDExtensionClassNotification2)gd_on_extension_instance_notification,
         .to_string_func = extension_instance_stringify,
-        //.refcount_incremented_func = cgo_class_reference_func,
-        //.refcount_decremented_func = cgo_class_unreference_func,
+        //.refcount_incremented_func = class_reference,
+        //.refcount_decremented_func = class_unreference,
         .get_script_func = extension_script_get,
         .is_placeholder_func = extension_script_is_placeholder,
         .get_language_func = extension_script_get_language,
