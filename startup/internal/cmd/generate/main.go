@@ -67,7 +67,7 @@ func generate_startup_cgo() error {
 
 	for fn := range api.StructureOf(&gdextension.On).Iter() {
 		name := fn.Tags.Get("gd")
-		fmt.Fprintf(f, "//export go_%s\nfunc go_%[1]s", name)
+		fmt.Fprintf(f, "//export gd_%s\nfunc gd_%[1]s", name)
 		writeGoFunctionArguments(f, fn, true, cgoTypeOf)
 		var out = ""
 		if result := getReturn(fn.Type); result != nil {
