@@ -422,9 +422,9 @@ func CutVariant(v any, cut bool) Variant {
 		panic("gd.Variant: unsupported type " + reflect.TypeOf(v).String())
 	}
 	if cut {
-		return pointers.Let[Variant]([3]uint64(ret))
+		return pointers.Let[Variant](ret)
 	} else {
-		return pointers.New[Variant]([3]uint64(ret))
+		return pointers.New[Variant](ret)
 	}
 }
 
@@ -456,7 +456,7 @@ func newArray(val reflect.Value) Array {
 		panic("gd.Variant: unsupported array element type " + val.Type().Elem().String())
 	}
 	var array = NewArray()
-	gdextension.Host.Builtin.Types.SetupArray(pointers.Get(array), vtype, gdextension.StringName{}, [3]uint64{})
+	gdextension.Host.Builtin.Types.SetupArray(pointers.Get(array), vtype, gdextension.StringName{}, gdextension.Variant{})
 	array.Resize(Int(val.Len()))
 	for i := 0; i < val.Len(); i++ {
 		array.SetIndex(Int(i), NewVariant(val.Index(i).Interface()))

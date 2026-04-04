@@ -26,17 +26,17 @@ import (
 var Host API
 
 type API struct {
-	Version struct {
-		Major     func() uint32             `gd:"version_major"`
-		Minor     func() uint32             `gd:"version_minor"`
-		Patch     func() uint32             `gd:"version_patch"`
-		Hex       func() uint32             `gd:"version_hex"`
-		Status    func() String             `gd:"version_status"`
-		Build     func() String             `gd:"version_build"`
-		Hash      func() String             `gd:"version_hash"`
-		Timestamp func(CallReturns[uint64]) `gd:"version_timestamp"`
-		String    func() String             `gd:"version_string"`
-	}
+	/*Version struct {
+	Major     func() uint32             `gd:"version_major"`
+	Minor     func() uint32             `gd:"version_minor"`
+	Patch     func() uint32             `gd:"version_patch"`
+	Hex       func() uint32             `gd:"version_hex"`
+	Status    func() String             `gd:"version_status"`
+	Build     func() String             `gd:"version_build"`
+	Hash      func() String             `gd:"version_hash"`
+	Timestamp func(CallReturns[uint64]) `gd:"version_timestamp"`
+	String    func() String             `gd:"version_string"`
+	}*/
 	Library struct {
 		Location func() String `gd:"library_location"`
 	}
@@ -222,8 +222,8 @@ type API struct {
 		}
 	}
 	Array struct {
-		Get func(p Array, idx int, result CallReturns[Variant]) `gd:"array_get"`
-		Set func(p Array, idx int, value Variant)               `gd:"array_set"`
+		//Get func(p Array, idx int, result CallReturns[Variant]) `gd:"array_get"`
+		//Set func(p Array, idx int, value Variant)               `gd:"array_set"`
 	}
 	Dictionaries struct {
 		Get func(dict Dictionary, index Variant, result CallReturns[Variant]) `gd:"packed_dictionary_access"`
@@ -378,7 +378,7 @@ type RefCounted Pointer
 type Variant [3]uint64
 type VariantOperator uint32
 
-type Iterator [3]uint64
+type Iterator Variant
 
 type ClassLibrary Pointer
 
@@ -670,6 +670,8 @@ const (
 	SizeRID         Shape = ShapeBytes8
 	SizeCallable    Shape = ShapeBytes8x2
 	SizeSignal      Shape = ShapeBytes8x2
+
+	SizeCallError Shape = ShapeBytes4x3
 )
 
 func init() {

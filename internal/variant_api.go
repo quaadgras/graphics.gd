@@ -12,7 +12,7 @@ import (
 
 // Copy returns a copy of the variant that will belong to the provided context.
 func (variant Variant) Copy() Variant {
-	var raw [3]uint64
+	var raw gdextension.Variant
 	gdextension.Host.Variants.Copy(pointers.Get(variant), gdextension.CallReturns[gdextension.Variant](&raw))
 	return pointers.New[Variant](raw)
 }
@@ -26,7 +26,7 @@ func (variant Variant) Type() gdextension.VariantType {
 // Get returns the value specified by the given key variant and a boolean
 // indiciating whether the get operation was valid.
 func (variant Variant) Get(key Variant) (val Variant, ok bool) {
-	var raw [3]uint64
+	var raw gdextension.Variant
 	ok = gdextension.Host.Variants.Get.Index(pointers.Get(variant), pointers.Get(key), gdextension.CallReturns[gdextension.Variant](&raw))
 	return pointers.New[Variant](raw), ok
 }
@@ -39,7 +39,7 @@ func (variant Variant) Set(key, val Variant) bool {
 
 // Call calls a method on the variant dynamically.
 func (variant Variant) Call(method StringName, args ...Variant) (Variant, error) {
-	var raw [3]uint64
+	var raw gdextension.Variant
 	var converted []gdextension.Variant
 	for i := range args {
 		converted = append(converted, gdextension.Variant(pointers.Get(args[i])))

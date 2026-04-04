@@ -1,14 +1,18 @@
 //go:generate go run ./internal/tool/generate
 //go:generate go run ./internal/tool/generate/v2
 //go:generate go fmt ./...
-package gd
+package gdunsafe
 
 import (
 	"math/rand"
 	"time"
+
+	"graphics.gd/internal/gdextension"
 )
 
-import "C"
+type Int = int64
+type Variant = gdextension.Variant
+type CallError = gdextension.CallError
 
 // just a placeholder for functions that don't need to be implemented
 // as they are already available in the Go standard library.

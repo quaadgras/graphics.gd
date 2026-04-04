@@ -10,9 +10,6 @@ import "graphics.gd/internal/gdmemory"
 //go:wasmimport gd array_get
 func gd_array_get(p0 uintptr, p1 int32, p2 uintptr)
 
-//go:wasmimport gd array_set
-func gd_array_set(p0 uintptr, p1 int32, p2 uint64, p3 uint64, p4 uint64)
-
 //go:wasmimport gd builtin_name
 func gd_builtin_name(p0 uintptr, p1 int64) uintptr
 
@@ -781,10 +778,6 @@ func init() {
 		mem2 := gdmemory.MakeResult(gdextension.SizeVariant)
 		gd_array_get(uintptr(p0[0]), int32(p1), uintptr(mem2))
 		gdmemory.LoadResult(gdextension.SizeVariant, p2, mem2)
-		return
-	}
-	gdextension.Host.Array.Set = func(p0 gdextension.Array, p1 int, p2 gdextension.Variant) {
-		gd_array_set(uintptr(p0[0]), int32(p1), uint64(p2[0]), uint64(p2[1]), uint64(p2[2]))
 		return
 	}
 	gdextension.Host.Builtin.Functions.Name = func(p0 gdextension.StringName, p1 int64) (result gdextension.FunctionID) {

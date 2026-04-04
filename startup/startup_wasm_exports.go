@@ -3,7 +3,10 @@
 
 package startup
 
-import "graphics.gd/internal/gdextension"
+import (
+	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/gdmemory"
+)
 
 //go:wasmexport gd_on_callable_call
 func gd_on_callable_call(p0 uint32, p1 uint32, p2 int32, p3 uint32, p4 uint32) {
@@ -167,7 +170,7 @@ func gd_on_extension_instance_reference(p0 uint32, p1 uint32) uint32 {
 
 //go:wasmexport gd_on_extension_instance_rid
 func gd_on_extension_instance_rid(p0 uint32, p1 uint32) {
-	gdextension.On.Extension.Instance.RID(gdextension.ExtensionInstanceID(p0), gdextension.Returns[uint64](p1))
+	gdmemory.Set[uint64](gdextension.Pointer(p1), gdextension.On.Extension.Instance.RID(gdextension.ExtensionInstanceID(p0)))
 }
 
 //go:wasmexport gd_on_extension_instance_checked_call

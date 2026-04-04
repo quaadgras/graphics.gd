@@ -84,7 +84,7 @@ func MakeResult(shape gdextension.Shape) gdextension.Pointer {
 	return results[current]
 }
 
-func LoadResult[T ~unsafe.Pointer](shape gdextension.Shape, result T, from gdextension.Pointer) {
+func LoadResult[T ~unsafe.Pointer | *gdextension.Variant](shape gdextension.Shape, result T, from gdextension.Pointer) {
 	setup()
 	if from == 0 {
 		panic("nil pointer dereference")
@@ -116,7 +116,7 @@ func LoadResult[T ~unsafe.Pointer](shape gdextension.Shape, result T, from gdext
 	}
 }
 
-func CopyVariants[T any](args gdextension.CallAccepts[T], n int) gdextension.Pointer {
+func CopyVariants[T ~unsafe.Pointer | *gdextension.Variant](args T, n int) gdextension.Pointer {
 	setup()
 	var offset int
 	var data = unsafe.Pointer(args)

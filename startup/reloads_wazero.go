@@ -57,7 +57,6 @@ func init() {
 	var fn = newWasmRuntime()
 	Wazero.NewHostModuleBuilder("gdextension").
 		NewFunctionBuilder().WithGoModuleFunction(FUN(fn.array_get), ARG{I32, I32, I32}, RET{}).Export("array_get").
-		NewFunctionBuilder().WithGoModuleFunction(FUN(fn.array_set), ARG{I32, I32, I64, I64, I64}, RET{}).Export("array_set").
 		NewFunctionBuilder().WithGoModuleFunction(FUN(fn.builtin_name), ARG{I32, I64}, RET{I32}).Export("builtin_name").
 		NewFunctionBuilder().WithGoModuleFunction(FUN(fn.builtin_call), ARG{I32, I32, I64, I32}, RET{}).Export("builtin_call").
 		NewFunctionBuilder().WithGoModuleFunction(FUN(fn.variant_type_name), ARG{I32}, RET{I32}).Export("variant_type_name").
@@ -297,14 +296,6 @@ func (wasm *wasmRuntime) array_get(ctx context.Context, m api.Module, stack []ui
 	// TODO: handle arg type int
 	// TODO: handle arg type gdextension.CallReturns[graphics.gd/internal/gdextension.Variant]
 	result := wasm.engine.Array.Get(arg0, arg1, arg2)
-}
-
-func (wasm *wasmRuntime) array_set(ctx context.Context, m api.Module, stack []uint64) {
-	// Call gdextension.Host.Host.Array.Set
-	// TODO: handle arg type gdextension.Array
-	// TODO: handle arg type int
-	arg2 := wasm.variant(stack[0:3])
-	result := wasm.engine.Array.Set(arg0, arg1, arg2)
 }
 
 func (wasm *wasmRuntime) builtin_name(ctx context.Context, m api.Module, stack []uint64) {

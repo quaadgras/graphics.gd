@@ -395,6 +395,9 @@ func cgoTypeOf(rtype reflect.Type) string {
 			return "*C.PackedStringArray"
 		}
 		if ok && internal != "interface {}]" {
+			if strings.HasPrefix(rtype.Name(), "Accepts[graphics.gd/internal/gdextension.Variant") {
+				return "C.VariantArguments"
+			}
 			return "*C" + strings.TrimRight(path.Ext(internal), "]")
 		}
 		return "*C.void"

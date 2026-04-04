@@ -4,6 +4,7 @@ import (
 	"runtime"
 	"sync"
 
+	gdunsafe "graphics.gd"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdmemory"
@@ -25,7 +26,7 @@ func Allocate[T comparable](val T) Pointer[T] {
 
 // Version returns the version of the Engine.
 func Version() string {
-	return pointers.New[gd.String](gdextension.Host.Version.String()).String()
+	return pointers.New[gd.String](gdextension.String{gdextension.Pointer(gdunsafe.VersionString())}).String()
 }
 
 var (

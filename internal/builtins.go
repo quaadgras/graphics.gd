@@ -158,15 +158,15 @@ func (c Callable) Call(args ...Variant) Variant {
 		array.SetIndex(int64(i), arg)
 	}
 	defer array.Free()
-	return pointers.New[Variant]([3]uint64(callBuiltinMethod[gdextension.Variant](unsafe.Pointer(&ptr), builtin.Callable.callv, gdextension.SizeVariant|gdextension.SizeCallable<<4|gdextension.SizeArray<<8, unsafe.Pointer(&struct {
+	return pointers.New[Variant](callBuiltinMethod[gdextension.Variant](unsafe.Pointer(&ptr), builtin.Callable.callv, gdextension.SizeVariant|gdextension.SizeCallable<<4|gdextension.SizeArray<<8, unsafe.Pointer(&struct {
 		gdextension.Array
 	}{
 		pointers.Get(array),
-	}))))
+	})))
 }
 func (c Callable) CallDeferred() Variant {
 	var ptr = gdextension.Callable(pointers.Get(c))
-	return pointers.New[Variant]([3]uint64(callBuiltinMethod[gdextension.Variant](unsafe.Pointer(&ptr), builtin.Callable.call_deferred, gdextension.SizeVariant|gdextension.SizeCallable<<4, nil)))
+	return pointers.New[Variant](callBuiltinMethod[gdextension.Variant](unsafe.Pointer(&ptr), builtin.Callable.call_deferred, gdextension.SizeVariant|gdextension.SizeCallable<<4, nil))
 }
 func (c Callable) Bind(args ...Variant) Callable {
 	var ptr = gdextension.Callable(pointers.Get(c))
@@ -176,11 +176,11 @@ func (c Callable) Bind(args ...Variant) Callable {
 		array.SetIndex(int64(i), arg)
 	}
 	defer array.Free()
-	return pointers.New[Callable]([2]uint64(callBuiltinMethod[gdextension.Callable](unsafe.Pointer(&ptr), builtin.Callable.bindv, gdextension.SizeCallable|gdextension.SizeCallable<<4|gdextension.SizeArray<<8, unsafe.Pointer(&struct {
+	return pointers.New[Callable](callBuiltinMethod[gdextension.Callable](unsafe.Pointer(&ptr), builtin.Callable.bindv, gdextension.SizeCallable|gdextension.SizeCallable<<4|gdextension.SizeArray<<8, unsafe.Pointer(&struct {
 		gdextension.Array
 	}{
 		pointers.Get(array),
-	}))))
+	})))
 }
 
 func (d Dictionary) Keys() Array {
@@ -504,11 +504,11 @@ var refcounted_methods struct {
 }
 
 func ObjectGet(o gdreference.Object, name StringName) Variant {
-	return pointers.New[Variant]([3]uint64(noescape.Call[gdextension.Variant](gdreference.GetObject(o), object_methods.get, gdextension.SizeVariant|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
+	return pointers.New[Variant](noescape.Call[gdextension.Variant](gdreference.GetObject(o), object_methods.get, gdextension.SizeVariant|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
 		Name gdextension.StringName
 	}{
 		pointers.Get(name),
-	}))))
+	})))
 }
 func ObjectSet(o gdreference.Object, name StringName, value Variant) {
 	noescape.Call[struct{}](gdreference.GetObject(o), object_methods.set, 0|gdextension.SizeStringName<<4|gdextension.SizeVariant<<8, unsafe.Pointer(&struct {
@@ -520,11 +520,11 @@ func ObjectSet(o gdreference.Object, name StringName, value Variant) {
 }
 
 func ObjectGetMeta(o gdreference.Object, name StringName) Variant {
-	return pointers.New[Variant]([3]uint64(noescape.Call[gdextension.Variant](gdreference.GetObject(o), object_methods.get_meta, gdextension.SizeVariant|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
+	return pointers.New[Variant](noescape.Call[gdextension.Variant](gdreference.GetObject(o), object_methods.get_meta, gdextension.SizeVariant|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
 		Name gdextension.StringName
 	}{
 		pointers.Get(name),
-	}))))
+	})))
 }
 func ObjectSetMeta(o gdreference.Object, name StringName, value Variant) {
 	noescape.Call[struct{}](gdreference.GetObject(o), object_methods.set_meta, 0|gdextension.SizeStringName<<4|gdextension.SizeVariant<<8, unsafe.Pointer(&struct {
@@ -559,7 +559,7 @@ func ObjectCall(o gdreference.Object, method StringName, args ...Variant) (Varia
 			gdextension.CallAccepts[gdextension.Variant](unsafe.SliceData(converted)),
 			gdextension.CallReturns[gdextension.CallError](&err),
 		)
-		return pointers.New[Variant]([3]uint64(result)), err.Err()
+		return pointers.New[Variant](result), err.Err()
 	}
 	return NewVariant(o).Call(method, args...) // FIXME is this ok?
 }
@@ -568,7 +568,7 @@ func ObjectCanTranslateMessages(o gdreference.Object) bool {
 	return jumponly.Call[bool](gdreference.GetObject(o), object_methods.can_translate_messages, gdextension.SizeBool, nil)
 }
 func ObjectGetScript(o gdreference.Object) Variant {
-	return pointers.New[Variant]([3]uint64(noescape.Call[gdextension.Variant](gdreference.GetObject(o), object_methods.get_script, gdextension.SizeVariant, nil)))
+	return pointers.New[Variant](noescape.Call[gdextension.Variant](gdreference.GetObject(o), object_methods.get_script, gdextension.SizeVariant, nil))
 }
 func ObjectNotifyPropertyListChanged(o gdreference.Object) {
 	noescape.Call[struct{}](gdreference.GetObject(o), object_methods.notify_property_list_changed, 0, nil)
@@ -671,11 +671,11 @@ func ObjectSetIndex(o gdreference.Object, i int, v Variant) {
 }
 
 func ObjectGetIndex(o gdreference.Object, i int) Variant {
-	return pointers.New[Variant]([3]uint64(noescape.Call[gdextension.Variant](gdreference.GetObject(o), object_methods.get_indexed, gdextension.SizeVariant|gdextension.SizeInt<<4, unsafe.Pointer(&struct {
+	return pointers.New[Variant](noescape.Call[gdextension.Variant](gdreference.GetObject(o), object_methods.get_indexed, gdextension.SizeVariant|gdextension.SizeInt<<4, unsafe.Pointer(&struct {
 		Index int64
 	}{
 		int64(i),
-	}))))
+	})))
 }
 
 func (rc RefCounted) Reference() {

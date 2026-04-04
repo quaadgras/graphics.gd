@@ -6,6 +6,7 @@ import (
 	"testing"
 	"unsafe"
 
+	gdunsafe "graphics.gd"
 	"graphics.gd/classdb"
 	"graphics.gd/classdb/AudioEffectInstance"
 	"graphics.gd/classdb/Resource"
@@ -37,13 +38,13 @@ func TestThreadCheck(t *testing.T) {
 
 func TestGetGodotVersion(t *testing.T) {
 	runOnMain(t, func(t testing.TB) {
-		if gdextension.Host.Version.Major() != 4 {
+		if gdunsafe.VersionMajor() != 4 {
 			t.Fail()
 		}
-		if gdextension.Host.Version.Major() < 3 {
+		if gdunsafe.VersionMajor() < 3 {
 			t.Fail()
 		}
-		if gdextension.Host.Version.String() == (gdextension.String{}) {
+		if gdunsafe.VersionString() == (gdunsafe.String(0)) {
 			t.Fail()
 		}
 	})

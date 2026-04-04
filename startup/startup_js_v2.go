@@ -3,19 +3,18 @@
 
 package startup
 
-import "graphics.gd/internal/gdextension"
+import (
+	"sync"
+	"syscall/js"
+	"unsafe"
 
-import "graphics.gd/internal/gdmemory"
-import "syscall/js"
-
-import "unsafe"
-import "sync"
+	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/gdmemory"
+)
 
 func init() {
 	js.Global().Set("ON", js.Global().Get("Object").New())
 	var (
-		gd_array_get                               js.Value
-		gd_array_set                               js.Value
 		gd_builtin_name                            js.Value
 		gd_builtin_call                            js.Value
 		gd_variant_type_name                       js.Value
@@ -183,20 +182,9 @@ func init() {
 		gd_variant_unsafe_set_field                js.Value
 		gd_variant_unsafe_set_array                js.Value
 		gd_variant_unsafe_set_index                js.Value
-		gd_version_major                           js.Value
-		gd_version_minor                           js.Value
-		gd_version_patch                           js.Value
-		gd_version_hex                             js.Value
-		gd_version_status                          js.Value
-		gd_version_build                           js.Value
-		gd_version_hash                            js.Value
-		gd_version_timestamp                       js.Value
-		gd_version_string                          js.Value
 	)
 	setup := sync.OnceFunc(func() {
 		GD := js.Global().Get("GD")
-		gd_array_get = GD.Get("array_get")
-		gd_array_set = GD.Get("array_set")
 		gd_builtin_name = GD.Get("builtin_name")
 		gd_builtin_call = GD.Get("builtin_call")
 		gd_variant_type_name = GD.Get("variant_type_name")
@@ -364,28 +352,7 @@ func init() {
 		gd_variant_unsafe_set_field = GD.Get("variant_unsafe_set_field")
 		gd_variant_unsafe_set_array = GD.Get("variant_unsafe_set_array")
 		gd_variant_unsafe_set_index = GD.Get("variant_unsafe_set_index")
-		gd_version_major = GD.Get("version_major")
-		gd_version_minor = GD.Get("version_minor")
-		gd_version_patch = GD.Get("version_patch")
-		gd_version_hex = GD.Get("version_hex")
-		gd_version_status = GD.Get("version_status")
-		gd_version_build = GD.Get("version_build")
-		gd_version_hash = GD.Get("version_hash")
-		gd_version_timestamp = GD.Get("version_timestamp")
-		gd_version_string = GD.Get("version_string")
 	})
-	gdextension.Host.Array.Get = func(p0 gdextension.Array, p1 int, p2 gdextension.CallReturns[gdextension.Variant]) {
-		setup()
-		mem2 := gdmemory.MakeResult(gdextension.SizeVariant)
-		gd_array_get.Invoke(uint32(p0[0]), p1, uint32(mem2))
-		gdmemory.LoadResult(gdextension.SizeVariant, p2, mem2)
-		return
-	}
-	gdextension.Host.Array.Set = func(p0 gdextension.Array, p1 int, p2 gdextension.Variant) {
-		setup()
-		gd_array_set.Invoke(uint32(p0[0]), p1, uint32(p2[0]>>32), uint32(p2[0]&0xFFFFFFFF), uint32(p2[1]>>32), uint32(p2[1]&0xFFFFFFFF), uint32(p2[2]>>32), uint32(p2[2]&0xFFFFFFFF))
-		return
-	}
 	gdextension.Host.Builtin.Functions.Name = func(p0 gdextension.StringName, p1 int64) (result gdextension.FunctionID) {
 		setup()
 		result = gdextension.FunctionID(gd_builtin_name.Invoke(uint32(p0[0]), uint32(*(*uint64)(unsafe.Pointer(&p1))>>32), uint32(*(*uint64)(unsafe.Pointer(&p1))&0xFFFFFFFF)).Int())
@@ -952,7 +919,12 @@ func init() {
 		G float32
 		B float32
 		A float32
-	}]) (result gdextension.Pointer) { setup(); pak0 := p0.JS(); result = gdextension.Pointer(gd_packed_color_array_unsafe.Invoke(pak0[0], pak0[1]).Int()); return }
+	}]) (result gdextension.Pointer) {
+		setup()
+		pak0 := p0.JS()
+		result = gdextension.Pointer(gd_packed_color_array_unsafe.Invoke(pak0[0], pak0[1]).Int())
+		return
+	}
 	gdextension.Host.Packed.Colors.Access = func(p0 gdextension.PackedArray[struct {
 		R float32
 		G float32
@@ -963,7 +935,14 @@ func init() {
 		G float32
 		B float32
 		A float32
-	}]) { setup(); pak0 := p0.JS(); mem2 := gdmemory.MakeResult(gdextension.SizeColor); gd_packed_color_array_access.Invoke(pak0[0], pak0[1], p1, uint32(mem2)); gdmemory.LoadResult(gdextension.SizeColor, p2, mem2); return }
+	}]) {
+		setup()
+		pak0 := p0.JS()
+		mem2 := gdmemory.MakeResult(gdextension.SizeColor)
+		gd_packed_color_array_access.Invoke(pak0[0], pak0[1], p1, uint32(mem2))
+		gdmemory.LoadResult(gdextension.SizeColor, p2, mem2)
+		return
+	}
 	gdextension.Host.Packed.Float32s.Unsafe = func(p0 gdextension.PackedArray[float32]) (result gdextension.Pointer) {
 		setup()
 		pak0 := p0.JS()
@@ -1029,19 +1008,36 @@ func init() {
 	gdextension.Host.Packed.Vector2s.Unsafe = func(p0 gdextension.PackedArray[struct {
 		X float32
 		Y float32
-	}]) (result gdextension.Pointer) { setup(); pak0 := p0.JS(); result = gdextension.Pointer(gd_packed_vector2_array_unsafe.Invoke(pak0[0], pak0[1]).Int()); return }
+	}]) (result gdextension.Pointer) {
+		setup()
+		pak0 := p0.JS()
+		result = gdextension.Pointer(gd_packed_vector2_array_unsafe.Invoke(pak0[0], pak0[1]).Int())
+		return
+	}
 	gdextension.Host.Packed.Vector2s.Access = func(p0 gdextension.PackedArray[struct {
 		X float32
 		Y float32
 	}], p1 int, p2 gdextension.CallReturns[struct {
 		X float32
 		Y float32
-	}]) { setup(); pak0 := p0.JS(); mem2 := gdmemory.MakeResult(gdextension.SizeVector2); gd_packed_vector2_array_access.Invoke(pak0[0], pak0[1], p1, uint32(mem2)); gdmemory.LoadResult(gdextension.SizeVector2, p2, mem2); return }
+	}]) {
+		setup()
+		pak0 := p0.JS()
+		mem2 := gdmemory.MakeResult(gdextension.SizeVector2)
+		gd_packed_vector2_array_access.Invoke(pak0[0], pak0[1], p1, uint32(mem2))
+		gdmemory.LoadResult(gdextension.SizeVector2, p2, mem2)
+		return
+	}
 	gdextension.Host.Packed.Vector3s.Unsafe = func(p0 gdextension.PackedArray[struct {
 		X float32
 		Y float32
 		Z float32
-	}]) (result gdextension.Pointer) { setup(); pak0 := p0.JS(); result = gdextension.Pointer(gd_packed_vector3_array_unsafe.Invoke(pak0[0], pak0[1]).Int()); return }
+	}]) (result gdextension.Pointer) {
+		setup()
+		pak0 := p0.JS()
+		result = gdextension.Pointer(gd_packed_vector3_array_unsafe.Invoke(pak0[0], pak0[1]).Int())
+		return
+	}
 	gdextension.Host.Packed.Vector3s.Access = func(p0 gdextension.PackedArray[struct {
 		X float32
 		Y float32
@@ -1050,13 +1046,25 @@ func init() {
 		X float32
 		Y float32
 		Z float32
-	}]) { setup(); pak0 := p0.JS(); mem2 := gdmemory.MakeResult(gdextension.SizeVariant); gd_packed_vector3_array_access.Invoke(pak0[0], pak0[1], p1, uint32(mem2)); gdmemory.LoadResult(gdextension.SizeVector3, p2, mem2); return }
+	}]) {
+		setup()
+		pak0 := p0.JS()
+		mem2 := gdmemory.MakeResult(gdextension.SizeVariant)
+		gd_packed_vector3_array_access.Invoke(pak0[0], pak0[1], p1, uint32(mem2))
+		gdmemory.LoadResult(gdextension.SizeVector3, p2, mem2)
+		return
+	}
 	gdextension.Host.Packed.Vector4s.Unsafe = func(p0 gdextension.PackedArray[struct {
 		X float32
 		Y float32
 		Z float32
 		W float32
-	}]) (result gdextension.Pointer) { setup(); pak0 := p0.JS(); result = gdextension.Pointer(gd_packed_vector4_array_unsafe.Invoke(pak0[0], pak0[1]).Int()); return }
+	}]) (result gdextension.Pointer) {
+		setup()
+		pak0 := p0.JS()
+		result = gdextension.Pointer(gd_packed_vector4_array_unsafe.Invoke(pak0[0], pak0[1]).Int())
+		return
+	}
 	gdextension.Host.Packed.Vector4s.Access = func(p0 gdextension.PackedArray[struct {
 		X float32
 		Y float32
@@ -1067,7 +1075,14 @@ func init() {
 		Y float32
 		Z float32
 		W float32
-	}]) { setup(); pak0 := p0.JS(); mem2 := gdmemory.MakeResult(gdextension.SizeVector4); gd_packed_vector4_array_access.Invoke(pak0[0], pak0[1], p1, uint32(mem2)); gdmemory.LoadResult(gdextension.SizeVector4, p2, mem2); return }
+	}]) {
+		setup()
+		pak0 := p0.JS()
+		mem2 := gdmemory.MakeResult(gdextension.SizeVector4)
+		gd_packed_vector4_array_access.Invoke(pak0[0], pak0[1], p1, uint32(mem2))
+		gdmemory.LoadResult(gdextension.SizeVector4, p2, mem2)
+		return
+	}
 	gdextension.Host.RefCounted.Get = func(p0 gdextension.RefCounted) (result gdextension.Object) {
 		setup()
 		result = gdextension.Object(gd_ref_get_object.Invoke(uint32(p0)).Int())
@@ -1376,53 +1391,6 @@ func init() {
 		setup()
 		mem2 := gdmemory.CopyArguments(shape, p2)
 		gd_variant_unsafe_set_index.Invoke(uint32(p0), uint32(shape>>32), uint32(shape&0xFFFFFFFF), uint32(mem2))
-		return
-	}
-	gdextension.Host.Version.Major = func() (result uint32) {
-		setup()
-		result = uint32(gd_version_major.Invoke().Int())
-		return
-	}
-	gdextension.Host.Version.Minor = func() (result uint32) {
-		setup()
-		result = uint32(gd_version_minor.Invoke().Int())
-		return
-	}
-	gdextension.Host.Version.Patch = func() (result uint32) {
-		setup()
-		result = uint32(gd_version_patch.Invoke().Int())
-		return
-	}
-	gdextension.Host.Version.Hex = func() (result uint32) {
-		setup()
-		result = uint32(gd_version_hex.Invoke().Int())
-		return
-	}
-	gdextension.Host.Version.Status = func() (result gdextension.String) {
-		setup()
-		result = gdextension.String{gdextension.Pointer(gd_version_status.Invoke().Int())}
-		return
-	}
-	gdextension.Host.Version.Build = func() (result gdextension.String) {
-		setup()
-		result = gdextension.String{gdextension.Pointer(gd_version_build.Invoke().Int())}
-		return
-	}
-	gdextension.Host.Version.Hash = func() (result gdextension.String) {
-		setup()
-		result = gdextension.String{gdextension.Pointer(gd_version_hash.Invoke().Int())}
-		return
-	}
-	gdextension.Host.Version.Timestamp = func(p0 gdextension.CallReturns[uint64]) {
-		setup()
-		mem0 := gdmemory.MakeResult(gdextension.SizeRID)
-		gd_version_timestamp.Invoke(uint32(mem0))
-		gdmemory.LoadResult(gdextension.SizeInt, p0, mem0)
-		return
-	}
-	gdextension.Host.Version.String = func() (result gdextension.String) {
-		setup()
-		result = gdextension.String{gdextension.Pointer(gd_version_string.Invoke().Int())}
 		return
 	}
 }

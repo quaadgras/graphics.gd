@@ -99,7 +99,7 @@ func (iter Iterator) Value() Variant {
 	if err.Type != 0 {
 		panic("failed to get iterator value")
 	}
-	return pointers.New[Variant]([3]uint64(raw))
+	return pointers.New[Variant](raw)
 }
 
 func variantTypeFromName(s string) (gdextension.VariantType, reflect.Type) {

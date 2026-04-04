@@ -16,6 +16,7 @@ type RefCounted gdreference.Object
 
 type enginePointer = EnginePointer
 type packedPointers = PackedPointers
+
 type VariantPointers = [3]uint64
 
 type Variant pointers.Type[Variant, gdextension.Variant]

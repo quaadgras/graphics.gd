@@ -139,8 +139,8 @@ func init() {
 				}
 				return instances.Get(instance).Unreference()
 			},
-			RID: func(instance gdextension.ExtensionInstanceID, rid gdextension.Returns[uint64]) {
-				gdmemory.Set(gdextension.Pointer(rid), uint64(0))
+			RID: func(instance gdextension.ExtensionInstanceID) uint64 {
+				return 0
 			},
 			Notification: func(instance gdextension.ExtensionInstanceID, what int32, reverse bool) {
 				instances.Get(instance).Notification(Object.Notification(what), reverse)

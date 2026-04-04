@@ -13,7 +13,7 @@ import (
 )
 
 func (d Dictionary) Index(key Variant) Variant {
-	var raw [3]uint64
+	var raw gdextension.Variant
 	gdextension.Host.Dictionaries.Get(pointers.Get(d), pointers.Get(key), gdextension.CallReturns[gdextension.Variant](&raw))
 	return pointers.Raw[Variant](raw).Copy()
 }

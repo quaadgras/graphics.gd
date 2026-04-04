@@ -5,6 +5,8 @@ import (
 	"iter"
 	"reflect"
 
+	gdunsafe "graphics.gd"
+
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
@@ -21,14 +23,12 @@ func IntsCollectAs[T, S ~int | ~int64 | ~int32](seq iter.Seq[S]) []T {
 }
 
 func (a Array) Index(index int64) Variant {
-	var raw [3]uint64
-	gdextension.Host.Array.Get(pointers.Get(a), int(index), gdextension.CallReturns[gdextension.Variant](&raw[0]))
-	return pointers.Raw[Variant](raw).Copy()
+	return pointers.Raw[Variant](gdunsafe.Array(pointers.Get(a)[0]).Get(gdunsafe.Int(index))).Copy()
 }
 
 func (a Array) SetIndex(index int64, value Variant) {
 	raw, _ := pointers.End(value.Copy())
-	gdextension.Host.Array.Set(pointers.Get(a), int(index), raw)
+	gdunsafe.Array(pointers.Get(a)[0]).Set(gdunsafe.Int(index), raw)
 }
 
 func (a Array) Free() {
