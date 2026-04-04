@@ -13,7 +13,7 @@ import "graphics.gd/internal/gdextension"
 import "C"
 
 //export gd_on_callable_call
-func gd_on_callable_call(p0 C.uintptr_t, p1 *C.void, p2 C.int64_t, p3 *C.void, p4 *C.void) {
+func gd_on_callable_call(p0 C.uintptr_t, p1 *C.Variant, p2 C.int64_t, p3 *C.Variant, p4 *C.CallError) {
 	gdextension.On.Callables.Call(gdextension.FunctionID(p0), gdextension.Returns[gdextension.Variant](p1), int(p2), gdextension.Accepts[gdextension.Variant](p3), gdextension.Returns[gdextension.CallError](p4))
 }
 
@@ -43,17 +43,17 @@ func gd_on_callable_less_than(p0 C.uintptr_t, p1 C.uintptr_t) C.bool {
 }
 
 //export gd_on_callable_stringify
-func gd_on_callable_stringify(p0 C.uintptr_t, p1 *C.void) C.uintptr_t {
+func gd_on_callable_stringify(p0 C.uintptr_t, p1 *C.CallError) C.uintptr_t {
 	return C.uintptr_t(gdextension.On.Callables.Stringify(gdextension.FunctionID(p0), gdextension.Returns[gdextension.CallError](p1))[0])
 }
 
 //export gd_on_callable_get_argument_count
-func gd_on_callable_get_argument_count(p0 C.uintptr_t, p1 *C.void) C.int64_t {
+func gd_on_callable_get_argument_count(p0 C.uintptr_t, p1 *C.CallError) C.int64_t {
 	return C.int64_t(gdextension.On.Callables.ArgumentCount(gdextension.FunctionID(p0), gdextension.Returns[gdextension.CallError](p1)))
 }
 
 //export gd_on_editor_class_in_use_detection
-func gd_on_editor_class_in_use_detection(p0 C.uint64_t, p1 C.uint64_t, p2 *C.void) {
+func gd_on_editor_class_in_use_detection(p0 C.uint64_t, p1 C.uint64_t, p2 *C.PackedStringArray) {
 	gdextension.On.Editor.ClassInUseDetection(gdextension.PackedArray[gdextension.String]{uint64(p0), uint64(p1)}, gdextension.Returns[gdextension.PackedArray[gdextension.String]](p2))
 }
 
@@ -103,7 +103,7 @@ func gd_on_extension_instance_set(p0 C.uintptr_t, p1 C.uintptr_t, p2 C.uint64_t,
 }
 
 //export gd_on_extension_instance_get
-func gd_on_extension_instance_get(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.void) C.bool {
+func gd_on_extension_instance_get(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.Variant) C.bool {
 	return C.bool(gdextension.On.Extension.Instance.Get(gdextension.ExtensionInstanceID(p0), gdextension.StringName{gdextension.Pointer(p1)}, gdextension.Returns[gdextension.Variant](p2)))
 }
 
@@ -118,7 +118,7 @@ func gd_on_extension_instance_property_has_default(p0 C.uintptr_t, p1 C.uintptr_
 }
 
 //export gd_on_extension_instance_property_get_default
-func gd_on_extension_instance_property_get_default(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.void) C.bool {
+func gd_on_extension_instance_property_get_default(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.Variant) C.bool {
 	return C.bool(gdextension.On.Extension.Instance.PropertyGetDefault(gdextension.ExtensionInstanceID(p0), gdextension.StringName{gdextension.Pointer(p1)}, gdextension.Returns[gdextension.Variant](p2)))
 }
 
@@ -143,7 +143,7 @@ func gd_on_extension_instance_reference(p0 C.uintptr_t, p1 C.bool) C.bool {
 }
 
 //export gd_on_extension_instance_rid
-func gd_on_extension_instance_rid(p0 C.uintptr_t, p1 *C.void) {
+func gd_on_extension_instance_rid(p0 C.uintptr_t, p1 *C.uint64_t) {
 	gdextension.On.Extension.Instance.RID(gdextension.ExtensionInstanceID(p0), gdextension.Returns[uint64](p1))
 }
 
@@ -158,12 +158,12 @@ func gd_on_extension_instance_called(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.void,
 }
 
 //export gd_on_extension_instance_variant_call
-func gd_on_extension_instance_variant_call(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.void, p3 *C.void) {
+func gd_on_extension_instance_variant_call(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.Variant, p3 *C.Variant) {
 	gdextension.On.Extension.Instance.VariantCall(gdextension.ExtensionInstanceID(p0), gdextension.FunctionID(p1), gdextension.Returns[gdextension.Variant](p2), gdextension.Accepts[gdextension.Variant](p3))
 }
 
 //export gd_on_extension_instance_dynamic_call
-func gd_on_extension_instance_dynamic_call(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.void, p3 C.int64_t, p4 *C.void, p5 *C.void) {
+func gd_on_extension_instance_dynamic_call(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.Variant, p3 C.int64_t, p4 *C.Variant, p5 *C.CallError) {
 	gdextension.On.Extension.Instance.DynamicCall(gdextension.ExtensionInstanceID(p0), gdextension.FunctionID(p1), gdextension.Returns[gdextension.Variant](p2), int(p3), gdextension.Accepts[gdextension.Variant](p4), gdextension.Returns[gdextension.CallError](p5))
 }
 
@@ -178,7 +178,7 @@ func gd_on_extension_script_categorization(p0 C.uintptr_t, p1 C.uintptr_t) C.boo
 }
 
 //export gd_on_extension_script_get_property_type
-func gd_on_extension_script_get_property_type(p0 C.uintptr_t, p1 *C.void) C.uint32_t {
+func gd_on_extension_script_get_property_type(p0 C.uintptr_t, p1 *C.CallError) C.uint32_t {
 	return C.uint32_t(gdextension.On.Extension.Script.PropertyType(gdextension.StringName{gdextension.Pointer(p0)}, gdextension.Returns[gdextension.CallError](p1)))
 }
 
