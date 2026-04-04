@@ -62,7 +62,7 @@ static void engine_exit(void *ignore, GDExtensionInitializationLevel level) {
     gd_on_engine_exit(level);
 }
 static void callable_call(void *callable_userdata, const GDExtensionConstVariantPtr *p_args, GDExtensionInt p_argument_count, GDExtensionVariantPtr r_return, GDExtensionCallError *r_error) {
-    gd_on_callable_call((uintptr_t)callable_userdata, r_return, p_argument_count, (void *)p_args, r_error);
+    gd_on_callable_call((uintptr_t)callable_userdata, r_return, p_argument_count, (void *)p_args, (CallError*)r_error);
 }
 static GDExtensionBool callable_validation(void *callable_userdata) {
     return gd_on_callable_validation((uintptr_t)callable_userdata);
@@ -81,7 +81,7 @@ static GDExtensionBool callable_less_than(void *callable_userdata, void *other_u
 }
 static void callable_stringify(void *callable_userdata, GDExtensionBool *r_is_valid, GDExtensionStringPtr r_out) {
     uint64_t invalid = 0;
-    uintptr_t s = gd_on_callable_stringify((uintptr_t)callable_userdata, &invalid);
+    uintptr_t s = gd_on_callable_stringify((uintptr_t)callable_userdata, (CallError*)&invalid);
     *r_is_valid = !(GDExtensionBool)invalid;
     if (invalid) {
         *((uintptr_t*)r_out) = 0;
@@ -91,13 +91,13 @@ static void callable_stringify(void *callable_userdata, GDExtensionBool *r_is_va
 }
 static GDExtensionInt callable_get_argument_count(void *callable_userdata, GDExtensionBool *r_is_valid) {
     uint64_t invalid = 0;
-    int64_t count = gd_on_callable_get_argument_count((uintptr_t)callable_userdata, &invalid);
+    int64_t count = gd_on_callable_get_argument_count((uintptr_t)callable_userdata, (CallError*)&invalid);
     *r_is_valid = !(GDExtensionBool)invalid;
     if (invalid) return -1;
     return (GDExtensionInt)count;
 }
 static void extension_instance_dynamic_call(void *method_userdata, GDExtensionClassInstancePtr p_instance, const GDExtensionConstVariantPtr *p_args, GDExtensionInt p_argument_count, GDExtensionVariantPtr r_return, GDExtensionCallError *r_error) {
-    gd_on_extension_instance_dynamic_call((uintptr_t)p_instance, (uintptr_t)method_userdata, r_return, p_argument_count, (void *)p_args, r_error);
+    gd_on_extension_instance_dynamic_call((uintptr_t)p_instance, (uintptr_t)method_userdata, r_return, p_argument_count, (void *)p_args, (CallError*)r_error);
 }
 static void extension_instance_checked_call(void *method_userdata, GDExtensionClassInstancePtr p_instance, const GDExtensionConstTypePtr *p_args, GDExtensionTypePtr r_ret) {
     gd_on_extension_instance_checked_call((uintptr_t)p_instance, (uintptr_t)method_userdata, r_ret, (void *)p_args);
@@ -512,22 +512,6 @@ void prepare_variants(void **frame, uint32_t argc, ANY args) {
 }
 // Helper macro to align a value to the next multiple of 'align'
 #define ALIGN_UP(value, align) (((value) + ((align) - 1)) & ~((align) - 1))
-typedef enum {
-    ShapeEmpty,
-    ShapeBytes1,
-	ShapeBytes2,
-	ShapeBytes4,
-	ShapeBytes8,
-	ShapeBytes4x2,
-	ShapeBytes4x3,
-	ShapeBytes8x2,
-	ShapeBytes4x4,
-	ShapeBytes8x3,
-	ShapeBytes4x6,
-	ShapeBytes4x9,
-	ShapeBytes4x12,
-	ShapeBytes4x16
-} Shape;
 uint8_t prepare_callframe(int skip, void **frame, uint64_t shape, ANY args) {
     uint8_t *head = (uint8_t *)args;
     ptrdiff_t offset = 0; // Track current offset in the frame

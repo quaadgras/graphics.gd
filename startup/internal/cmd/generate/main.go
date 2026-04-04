@@ -6,6 +6,7 @@ import (
 	"io"
 	"iter"
 	"os"
+	"path"
 	"reflect"
 	"strings"
 
@@ -386,6 +387,16 @@ func cgoTypeOf(rtype reflect.Type) string {
 	case reflect.String:
 		return "*C.char"
 	case reflect.UnsafePointer:
+		_, internal, ok := strings.Cut(rtype.Name(), "[")
+		if internal == "uint64]" {
+			return "*C.uint64_t"
+		}
+		if internal == "graphics.gd/internal/gdextension.PackedArray[graphics.gd/internal/gdextension.String]]" {
+			return "*C.PackedStringArray"
+		}
+		if ok && internal != "interface {}]" {
+			return "*C" + strings.TrimRight(path.Ext(internal), "]")
+		}
 		return "*C.void"
 	case reflect.Uintptr:
 		return "C.uintptr_t"
