@@ -9,7 +9,7 @@ package noescape
 // typedef struct { uint64_t part[4]; } result_32;
 // typedef struct { uint64_t part[8]; } result_64;
 //
-// extern void gd_object_unsafe_call(uintptr_t obj, uintptr_t method, void *result, uint64_t shape, void *args);
+// extern void gd_object_shaped_call(uintptr_t obj, uintptr_t method, void *result, uint64_t shape, void *args);
 //
 // extern uint64_t gd_object_unsafe_call_8(uintptr_t obj, uintptr_t method, uint64_t shape, void *args);
 // extern result_16 gd_object_unsafe_call_16(uintptr_t obj, uintptr_t method, uint64_t shape, void *args);
@@ -72,7 +72,7 @@ func call_noescape(object gdextension.Object, method gdextension.MethodForClass,
 //go:linkname call graphics.gd/internal/noescape.call_noescape
 //go:nosplit
 func call(object gdextension.Object, method gdextension.MethodForClass, result unsafe.Pointer, shape gdextension.Shape, args unsafe.Pointer) {
-	C.gd_object_unsafe_call(C.uintptr_t(object), C.uintptr_t(method), result, C.uint64_t(shape), args)
+	C.gd_object_shaped_call(C.uintptr_t(object), C.uintptr_t(method), result, C.uint64_t(shape), args)
 }
 
 //go:noescape

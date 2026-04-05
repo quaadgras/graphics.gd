@@ -65,12 +65,12 @@ static const Shape ShapeBytes4x12 = 12;
 static const Shape ShapeBytes4x16 = 13;
 
 typedef uint8_t StringEncoding;
-static const StringEncoding EncodingLatin1  = 0;
-static const StringEncoding EncodingUTF8    = 1;
-static const StringEncoding EncodingUTF16LE = 2;
-static const StringEncoding EncodingUTF16BE = 3;
-static const StringEncoding EncodingUTF32   = 4;
-static const StringEncoding EncodingWide    = 5;
+static const StringEncoding Latin1  = 0;
+static const StringEncoding UTF8    = 1;
+static const StringEncoding UTF16LE = 2;
+static const StringEncoding UTF16BE = 3;
+static const StringEncoding UTF32   = 4;
+static const StringEncoding Wide    = 5;
 
 typedef uint32_t InitializationLevel;
 typedef uint32_t VariantType;
@@ -365,7 +365,7 @@ void gd_object_script_property_state_add(FunctionID fn, uintptr_t arg, StringNam
 ScriptInstance gd_object_script_placeholder_create(Object language, Object script, Object owner);
 void           gd_object_script_placeholder_update(ScriptInstance script, Array array, Dictionary dict);
 
-void gd_object_unsafe_call(Object obj, MethodForClass fn, UnsafePointer result, uint64_t shape, UnsafePointer args);
+void gd_object_shaped_call(Object obj, MethodForClass fn, UnsafePointer result, uint64_t shape, UnsafePointer args);
 void gd_object_unsafe_free(Object obj);
 
 UnsafePointer gd_packed_array_access(VariantType type, PACKED_ARRAY_ARG(pa), Int idx);

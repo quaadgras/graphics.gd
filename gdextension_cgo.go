@@ -320,8 +320,8 @@ func (obj Object) Call(method MethodForClass, args ...Variant) (Variant, CallErr
 	C.gd_object_call(C.Object(obj), C.MethodForClass(method), &ret, C.int64_t(len(args)), (*C.Variant)(unsafe.Pointer(unsafe.SliceData(args))), &err)
 	return toVariant(ret), toCallError(err)
 }
-func (obj Object) UnsafeCall(fn MethodForClass, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
-	C.gd_object_unsafe_call(C.Object(obj), C.MethodForClass(fn), C.UnsafePointer(result), C.uint64_t(shape), C.UnsafePointer(args))
+func (obj Object) ShapedCall(fn MethodForClass, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
+	C.gd_object_shaped_call(C.Object(obj), C.MethodForClass(fn), C.UnsafePointer(result), C.uint64_t(shape), C.UnsafePointer(args))
 }
 
 // Extension instance management

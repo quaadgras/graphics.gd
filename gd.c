@@ -815,7 +815,7 @@ EXPORT ObjectID gd_object_id_inside_variant(VARIANT_ARG(v)) {
 EXPORT MethodForClass gd_object_method_lookup(StringName class_name, StringName method, int64_t hash) {
     return (MethodForClass)gdextension_classdb_get_method_bind((GDExtensionConstStringNamePtr)&class_name, (GDExtensionConstStringNamePtr)&method, hash);
 };
-EXPORT void gd_object_unsafe_call(Object obj, MethodForClass fn, UnsafePointer result, uint64_t shape, UnsafePointer args) {
+EXPORT void gd_object_shaped_call(Object obj, MethodForClass fn, UnsafePointer result, uint64_t shape, UnsafePointer args) {
     void *points[16]; prepare_callframe(1, &points[0], shape, (ANY)args);
     gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)fn, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)result);
 };

@@ -791,13 +791,13 @@ func (obj Object) Call(method MethodForClass, args ...Variant) (Variant, CallErr
 	return result, errResult
 }
 
-//go:wasmimport gd object_unsafe_call
-func gd_object_unsafe_call(obj Object, fn MethodForClass, result Pointer, shape uint64, args Pointer)
+//go:wasmimport gd object_shaped_call
+func gd_object_shaped_call(obj Object, fn MethodForClass, result Pointer, shape uint64, args Pointer)
 
 func (obj Object) UnsafeCall(fn MethodForClass, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
 	mem_result := makeResult(Shape(shape))
 	mem_args := copyArguments(Shape(shape), args)
-	gd_object_unsafe_call(obj, fn, Pointer(mem_result), shape, Pointer(mem_args))
+	gd_object_shaped_call(obj, fn, Pointer(mem_result), shape, Pointer(mem_args))
 	loadResult(Shape(shape), result, mem_result)
 }
 
