@@ -5,6 +5,7 @@ package gd_test
 import (
 	"testing"
 
+	gdunsafe "graphics.gd"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
@@ -17,7 +18,7 @@ func TestStrings(t *testing.T) {
 		if str.String() != "Hello, World!" {
 			t.Fail()
 		}
-		pointers.Set(str, gdextension.Host.Strings.Append.String(pointers.Get(str), pointers.Get(gd.NewString(" from Go!"))))
+		pointers.Set(str, gdextension.String{gdextension.Pointer(gdunsafe.String(pointers.Get(str)[0]).Append(gdunsafe.String(pointers.Get(gd.NewString(" from Go!"))[0])))})
 		if str.String() != "Hello, World! from Go!" {
 			t.Fail()
 		}

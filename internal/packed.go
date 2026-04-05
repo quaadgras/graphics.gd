@@ -2,8 +2,8 @@ package gd
 
 import (
 	"strings"
-	"unsafe"
 
+	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdmemory"
 	"graphics.gd/internal/noescape"
@@ -22,28 +22,28 @@ func (p *PackedVector3Array) Pointer() *PackedVector3Array { return p }
 func (p *PackedVector4Array) Pointer() *PackedVector4Array { return p }
 
 func (p PackedInt32Array) AsSlice() []int32 {
-	return gdmemory.IntoSlice[int32](gdextension.Host.Packed.Int32s.Unsafe(pointers.Get(p)), int(p.Size()))
+	return gdmemory.IntoSlice[int32](gdunsafe.PackedArray[int32](pointers.Get(p)).Access(0), int(p.Size()))
 }
 func (p PackedInt64Array) AsSlice() []int64 {
-	return gdmemory.IntoSlice[int64](gdextension.Host.Packed.Int64s.Unsafe(pointers.Get(p)), int(p.Size()))
+	return gdmemory.IntoSlice[int64](gdunsafe.PackedArray[int64](pointers.Get(p)).Access(0), int(p.Size()))
 }
 func (p PackedFloat32Array) AsSlice() []float32 {
-	return gdmemory.IntoSlice[float32](gdextension.Host.Packed.Float32s.Unsafe(pointers.Get(p)), int(p.Size()))
+	return gdmemory.IntoSlice[float32](gdunsafe.PackedArray[float32](pointers.Get(p)).Access(0), int(p.Size()))
 }
 func (p PackedFloat64Array) AsSlice() []float64 {
-	return gdmemory.IntoSlice[float64](gdextension.Host.Packed.Float64s.Unsafe(pointers.Get(p)), int(p.Size()))
+	return gdmemory.IntoSlice[float64](gdunsafe.PackedArray[float64](pointers.Get(p)).Access(0), int(p.Size()))
 }
 func (p PackedVector2Array) AsSlice() []Vector2 {
-	return gdmemory.IntoSlice[Vector2](gdextension.Host.Packed.Vector2s.Unsafe(pointers.Get(p)), int(p.Size()))
+	return gdmemory.IntoSlice[Vector2](gdunsafe.PackedArray[Vector2](pointers.Get(p)).Access(0), int(p.Size()))
 }
 func (p PackedVector3Array) AsSlice() []Vector3 {
-	return gdmemory.IntoSlice[Vector3](gdextension.Host.Packed.Vector3s.Unsafe(pointers.Get(p)), int(p.Size()))
+	return gdmemory.IntoSlice[Vector3](gdunsafe.PackedArray[Vector3](pointers.Get(p)).Access(0), int(p.Size()))
 }
 func (p PackedVector4Array) AsSlice() []Vector4 {
-	return gdmemory.IntoSlice[Vector4](gdextension.Host.Packed.Vector4s.Unsafe(pointers.Get(p)), int(p.Size()))
+	return gdmemory.IntoSlice[Vector4](gdunsafe.PackedArray[Vector4](pointers.Get(p)).Access(0), int(p.Size()))
 }
 func (p PackedColorArray) AsSlice() []Color {
-	return gdmemory.IntoSlice[Color](gdextension.Host.Packed.Colors.Unsafe(pointers.Get(p)), int(p.Size()))
+	return gdmemory.IntoSlice[Color](gdunsafe.PackedArray[Color](pointers.Get(p)).Access(0), int(p.Size()))
 }
 func (p PackedStringArray) Strings() []string {
 	var s = make([]string, p.Size())
@@ -54,16 +54,16 @@ func (p PackedStringArray) Strings() []string {
 }
 
 func (p PackedByteArray) Index(idx Int) byte {
-	return gdextension.Host.Packed.Bytes.Access(pointers.Get(p), int(idx))
+	return gdunsafe.PackedArray[byte](pointers.Get(p)).Access(idx).Get()
 }
 func (p PackedByteArray) ToByteArray() PackedByteArray { return p.Duplicate() }
 func (p PackedByteArray) SetIndex(idx Int, value byte) {
-	gdmemory.Set[byte](gdextension.Host.Packed.Bytes.Unsafe(pointers.Get(p))+gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(value)), value)
+	gdunsafe.PackedArray[byte](pointers.Get(p)).Modify(idx).Set(value)
 }
 
 // Bytes returns a copy of the byte array as a byte slice.
 func (p PackedByteArray) Bytes() []byte {
-	return gdmemory.IntoSlice[byte](gdextension.Host.Packed.Bytes.Unsafe(pointers.Get(p)), int(p.Size()))
+	return gdmemory.IntoSlice[byte](gdunsafe.PackedArray[byte](pointers.Get(p)).Access(0), int(p.Size()))
 }
 
 func (p PackedByteArray) Len() int { return int(p.Size()) }
@@ -76,10 +76,10 @@ func (p PackedByteArray) Free() {
 }
 
 func (p PackedInt32Array) Index(idx Int) int32 {
-	return gdextension.Host.Packed.Int32s.Access(pointers.Get(p), int(idx))
+	return gdunsafe.PackedArray[int32](pointers.Get(p)).Access(idx).Get()
 }
 func (p PackedInt32Array) SetIndex(idx Int, value int32) {
-	gdmemory.Set[int32](gdextension.Host.Packed.Int32s.Unsafe(pointers.Get(p))+gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(value)), value)
+	gdunsafe.PackedArray[int32](pointers.Get(p)).Modify(idx).Set(value)
 }
 
 func (p PackedInt32Array) Free() {
@@ -92,13 +92,11 @@ func (p PackedInt32Array) Len() int { return int(p.Size()) }
 func (p PackedInt32Array) Cap() int { return int(p.Size()) }
 
 func (p PackedInt64Array) Index(idx Int) int64 {
-	var i64 int64
-	gdextension.Host.Packed.Int64s.Access(pointers.Get(p), int(idx), gdextension.CallReturns[int64](unsafe.Pointer(&i64)))
-	return i64
+	return gdunsafe.PackedArray[int64](pointers.Get(p)).Access(idx).Get()
 }
 
 func (p PackedInt64Array) SetIndex(idx Int, value int64) {
-	gdmemory.Set[int64](gdextension.Host.Packed.Int64s.Unsafe(pointers.Get(p))+gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(value)), value)
+	gdunsafe.PackedArray[int64](pointers.Get(p)).Modify(idx).Set(value)
 }
 
 func (p PackedInt64Array) Free() {
@@ -111,11 +109,11 @@ func (p PackedInt64Array) Len() int { return int(p.Size()) }
 func (p PackedInt64Array) Cap() int { return int(p.Size()) }
 
 func (p PackedFloat32Array) Index(idx Int) float32 {
-	return gdextension.Host.Packed.Float32s.Access(pointers.Get(p), int(idx))
+	return gdunsafe.PackedArray[float32](pointers.Get(p)).Access(idx).Get()
 }
 
 func (p PackedFloat32Array) SetIndex(idx Int, value float32) {
-	gdmemory.Set[float32](gdextension.Host.Packed.Float32s.Unsafe(pointers.Get(p))+gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(value)), value)
+	gdunsafe.PackedArray[float32](pointers.Get(p)).Modify(idx).Set(value)
 }
 
 func (p PackedFloat32Array) Free() {
@@ -128,11 +126,11 @@ func (p PackedFloat32Array) Len() int { return int(p.Size()) }
 func (p PackedFloat32Array) Cap() int { return int(p.Size()) }
 
 func (p PackedFloat64Array) Index(idx Int) float64 {
-	return gdextension.Host.Packed.Float64s.Access(pointers.Get(p), int(idx))
+	return gdunsafe.PackedArray[float64](pointers.Get(p)).Access(idx).Get()
 }
 
 func (p PackedFloat64Array) SetIndex(idx Int, value float64) {
-	gdmemory.Set[float64](gdextension.Host.Packed.Float64s.Unsafe(pointers.Get(p))+gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(value)), value)
+	gdunsafe.PackedArray[float64](pointers.Get(p)).Modify(idx).Set(value)
 }
 
 func (p PackedFloat64Array) Free() {
@@ -159,19 +157,19 @@ func (p PackedStringArray) String() string {
 }
 
 func (p PackedStringArray) Index(idx Int) String {
-	return pointers.Raw[String](gdextension.Host.Packed.Strings.Access(pointers.Get(p), int(idx))).Copy()
+	return pointers.Raw[String](gdextension.String{gdextension.Pointer(gdunsafe.PackedArray[gdunsafe.String](pointers.Get(p)).Access(idx).Get())}).Copy()
 }
 
 func (p PackedStringArray) SetIndex(idx Int, value String) {
 	raw, _ := pointers.End(value.Copy())
-	gdmemory.Set[gdextension.String](gdextension.Host.Packed.Strings.Unsafe(pointers.Get(p))+gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(gdextension.String{})), raw)
+	gdunsafe.PackedArray[gdunsafe.String](pointers.Get(p)).Modify(idx).Set(gdunsafe.String(raw[0]))
 }
 
 func (p PackedStringArray) AsSlice() []String {
-	var ptr = gdextension.Host.Packed.Strings.Unsafe(pointers.Get(p))
+	var ptr = gdunsafe.PackedArray[gdunsafe.String](pointers.Get(p))
 	var slice = make([]String, p.Size())
 	for i := range slice {
-		slice[i] = pointers.Raw[String](gdmemory.Get[gdextension.String](ptr + gdextension.Pointer(i)*gdextension.Pointer(unsafe.Sizeof([1]gdextension.String{}[0])))).Copy()
+		slice[i] = pointers.Raw[String](gdextension.String{gdextension.Pointer(ptr.Access(Int(i)).Get())}).Copy()
 	}
 	return slice
 }
@@ -183,11 +181,11 @@ func (p PackedStringArray) Free() {
 }
 
 func (p PackedVector2Array) Index(idx Int) Vector2 {
-	return noescape.IndexPacked(gdextension.Host.Packed.Vector2s.Access, pointers.Get(p), int(idx))
+	return gdunsafe.PackedArray[Vector2](pointers.Get(p)).Access(idx).Get()
 }
 
 func (p PackedVector2Array) SetIndex(idx Int, value Vector2) {
-	gdmemory.Set[Vector2](gdextension.Host.Packed.Vector2s.Unsafe(pointers.Get(p))+gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(value)), value)
+	gdunsafe.PackedArray[Vector2](pointers.Get(p)).Modify(idx).Set(value)
 }
 
 func (p PackedVector2Array) Free() {
@@ -200,11 +198,11 @@ func (p PackedVector2Array) Len() int { return int(p.Size()) }
 func (p PackedVector2Array) Cap() int { return int(p.Size()) }
 
 func (p PackedVector3Array) Index(idx Int) Vector3 {
-	return noescape.IndexPacked(gdextension.Host.Packed.Vector3s.Access, pointers.Get(p), int(idx))
+	return gdunsafe.PackedArray[Vector3](pointers.Get(p)).Access(idx).Get()
 }
 
 func (p PackedVector3Array) SetIndex(idx Int, value Vector3) {
-	gdmemory.Set[Vector3](gdextension.Host.Packed.Vector3s.Unsafe(pointers.Get(p))+gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(value)), value)
+	gdunsafe.PackedArray[Vector3](pointers.Get(p)).Modify(idx).Set(value)
 }
 
 func (p PackedVector3Array) Free() {
@@ -217,11 +215,11 @@ func (p PackedVector3Array) Len() int { return int(p.Size()) }
 func (p PackedVector3Array) Cap() int { return int(p.Size()) }
 
 func (p PackedVector4Array) Index(idx Int) Vector4 {
-	return noescape.IndexPacked(gdextension.Host.Packed.Vector4s.Access, pointers.Get(p), int(idx))
+	return gdunsafe.PackedArray[Vector4](pointers.Get(p)).Access(idx).Get()
 }
 
 func (p PackedVector4Array) SetIndex(idx Int, value Vector4) {
-	gdmemory.Set[Vector4](gdextension.Host.Packed.Vector4s.Unsafe(pointers.Get(p))+gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(value)), value)
+	gdunsafe.PackedArray[Vector4](pointers.Get(p)).Modify(idx).Set(value)
 }
 
 func (p PackedVector4Array) Free() {
@@ -234,11 +232,11 @@ func (p PackedVector4Array) Len() int { return int(p.Size()) }
 func (p PackedVector4Array) Cap() int { return int(p.Size()) }
 
 func (p PackedColorArray) Index(idx Int) Color {
-	return noescape.IndexPacked(gdextension.Host.Packed.Colors.Access, pointers.Get(p), int(idx))
+	return gdunsafe.PackedArray[Color](pointers.Get(p)).Access(idx).Get()
 }
 
 func (p PackedColorArray) SetIndex(idx Int, value Color) {
-	gdmemory.Set[Color](gdextension.Host.Packed.Colors.Unsafe(pointers.Get(p))+gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(value)), value)
+	gdunsafe.PackedArray[Color](pointers.Get(p)).Modify(idx).Set(value)
 }
 
 func (p PackedColorArray) Free() {
@@ -258,7 +256,7 @@ func NewPackedByteArray() PackedByteArray {
 func NewPackedByteSlice(data []byte) PackedByteArray {
 	var array = NewPackedByteArray()
 	array.Resize(Int(len(data)))
-	gdmemory.LoadSlice[byte](gdextension.Host.Packed.Bytes.Unsafe(pointers.Get(array)), data)
+	gdmemory.LoadSlice[byte](gdunsafe.PackedArray[byte](pointers.Get(array)).Modify(0), data)
 	return array
 }
 
@@ -269,7 +267,7 @@ func NewPackedColorArray() PackedColorArray {
 func NewPackedColorSlice(data []Color) PackedColorArray {
 	var array = NewPackedColorArray()
 	array.Resize(Int(len(data)))
-	gdmemory.LoadSlice[Color](gdextension.Host.Packed.Colors.Unsafe(pointers.Get(array)), data)
+	gdmemory.LoadSlice[Color](gdunsafe.PackedArray[Color](pointers.Get(array)).Modify(0), data)
 	return array
 }
 
@@ -280,7 +278,7 @@ func NewPackedFloat32Array() PackedFloat32Array {
 func NewPackedFloat32Slice(data []float32) PackedFloat32Array {
 	var array = NewPackedFloat32Array()
 	array.Resize(Int(len(data)))
-	gdmemory.LoadSlice[float32](gdextension.Host.Packed.Float32s.Unsafe(pointers.Get(array)), data)
+	gdmemory.LoadSlice[float32](gdunsafe.PackedArray[float32](pointers.Get(array)).Modify(0), data)
 	return array
 }
 
@@ -291,7 +289,7 @@ func NewPackedInt32Array() PackedInt32Array {
 func NewPackedInt32Slice(data []int32) PackedInt32Array {
 	var array = NewPackedInt32Array()
 	array.Resize(Int(len(data)))
-	gdmemory.LoadSlice[int32](gdextension.Host.Packed.Int32s.Unsafe(pointers.Get(array)), data)
+	gdmemory.LoadSlice[int32](gdunsafe.PackedArray[int32](pointers.Get(array)).Modify(0), data)
 	return array
 }
 
@@ -325,7 +323,7 @@ func NewPackedVector2Array() PackedVector2Array {
 func NewPackedVector2Slice(data []Vector2) PackedVector2Array {
 	var array = NewPackedVector2Array()
 	array.Resize(Int(len(data)))
-	gdmemory.LoadSlice[Vector2](gdextension.Host.Packed.Vector2s.Unsafe(pointers.Get(array)), data)
+	gdmemory.LoadSlice[Vector2](gdunsafe.PackedArray[Vector2](pointers.Get(array)).Modify(0), data)
 	return array
 }
 
@@ -336,7 +334,7 @@ func NewPackedVector3Array() PackedVector3Array {
 func NewPackedVector3Slice(data []Vector3) PackedVector3Array {
 	var array = NewPackedVector3Array()
 	array.Resize(Int(len(data)))
-	gdmemory.LoadSlice[Vector3](gdextension.Host.Packed.Vector3s.Unsafe(pointers.Get(array)), data)
+	gdmemory.LoadSlice[Vector3](gdunsafe.PackedArray[Vector3](pointers.Get(array)).Modify(0), data)
 	return array
 }
 
@@ -347,7 +345,7 @@ func NewPackedVector4Array() PackedVector4Array {
 func NewPackedVector4Slice(data []Vector4) PackedVector4Array {
 	var array = NewPackedVector4Array()
 	array.Resize(Int(len(data)))
-	gdmemory.LoadSlice[Vector4](gdextension.Host.Packed.Vector4s.Unsafe(pointers.Get(array)), data)
+	gdmemory.LoadSlice[Vector4](gdunsafe.PackedArray[Vector4](pointers.Get(array)).Modify(0), data)
 	return array
 }
 
@@ -358,7 +356,7 @@ func NewPackedInt64Array() PackedInt64Array {
 func NewPackedInt64Slice(data []int64) PackedInt64Array {
 	var array = NewPackedInt64Array()
 	array.Resize(Int(len(data)))
-	gdmemory.LoadSlice[int64](gdextension.Host.Packed.Int64s.Unsafe(pointers.Get(array)), data)
+	gdmemory.LoadSlice[int64](gdunsafe.PackedArray[int64](pointers.Get(array)).Modify(0), data)
 	return array
 }
 
@@ -369,6 +367,6 @@ func NewPackedFloat64Array() PackedFloat64Array {
 func NewPackedFloat64Slice(data []float64) PackedFloat64Array {
 	var array = NewPackedFloat64Array()
 	array.Resize(Int(len(data)))
-	gdmemory.LoadSlice[float64](gdextension.Host.Packed.Float64s.Unsafe(pointers.Get(array)), data)
+	gdmemory.LoadSlice[float64](gdunsafe.PackedArray[float64](pointers.Get(array)).Modify(0), data)
 	return array
 }

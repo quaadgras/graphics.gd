@@ -11,7 +11,6 @@ import (
 	"graphics.gd/classdb/AudioEffectInstance"
 	"graphics.gd/classdb/Resource"
 	gd "graphics.gd/internal"
-	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/internal/threadcheck"
 
@@ -86,7 +85,7 @@ func TestNativeStructSize(t *testing.T) {
 
 func TestLog(t *testing.T) {
 	runOnMain(t, func(t testing.TB) {
-		gdextension.Host.Log.Error("This is a test error message", "go", "gd_test.TestLog", "gd_test.go", 42, true)
-		gdextension.Host.Log.Warning("This is a test warning message", "go", "gd_test.TestLog", "gd_test.go", 43, true)
+		gdunsafe.Log(gdunsafe.LogError, "This is a test error message", "go", "gd_test.TestLog", "gd_test.go", 42, true)
+		gdunsafe.Log(gdunsafe.LogWarning, "This is a test warning message", "go", "gd_test.TestLog", "gd_test.go", 43, true)
 	})
 }

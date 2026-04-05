@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"reflect"
 
+	gdunsafe "graphics.gd"
 	"graphics.gd/classdb/Engine"
 	"graphics.gd/classdb/Node"
 	"graphics.gd/classdb/Resource"
-	gdunsafe "graphics.gd"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdreference"
@@ -20,7 +20,7 @@ import (
 	"graphics.gd/variant/String"
 )
 
-func propertyOf(class gd.StringName, field reflect.StructField, push_into gdextension.PropertyList) bool {
+func propertyOf(class gd.StringName, field reflect.StructField, push_into gdunsafe.PropertyList) bool {
 	var name = String.ToSnakeCase(field.Name)
 	tag, ok := field.Tag.Lookup("gd")
 	if ok {
@@ -102,12 +102,12 @@ func propertyOf(class gd.StringName, field reflect.StructField, push_into gdexte
 		hint |= PropertyHintRange
 		hintString = rangeHint
 	}
-	gdextension.Host.ClassDB.PropertyList.Push(push_into,
-		vtype,
-		pointers.Get(gd.NewStringName(name)),
-		pointers.Get(gd.NewStringName(className)),
+	push_into.Push(
+		gdunsafe.VariantType(vtype),
+		gdunsafe.StringName(pointers.Get(gd.NewStringName(name))[0]),
+		gdunsafe.StringName(pointers.Get(gd.NewStringName(className))[0]),
 		uint32(hint),
-		pointers.Get(gd.NewString(hintString)),
+		gdunsafe.String(pointers.Get(gd.NewString(hintString))[0]),
 		uint32(usage),
 		0,
 	)
@@ -270,20 +270,20 @@ func (instance *instanceImplementation) GetPropertyList() gdextension.PropertyLi
 		GetPropertyList() []Object.PropertyInfo
 	}); ok {
 		var list = impl.GetPropertyList()
-		var results = gdextension.Host.ClassDB.PropertyList.Make(len(list))
+		var results = gdunsafe.MakePropertyList(int64(len(list)))
 		for _, info := range list {
 			vtype, _ := gd.VariantTypeOf(info.Type)
-			gdextension.Host.ClassDB.PropertyList.Push(results,
-				vtype,
-				pointers.Get(gd.NewStringName(info.Name)),
-				pointers.Get(gd.NewStringName(info.ClassName)),
+			results.Push(
+				gdunsafe.VariantType(vtype),
+				gdunsafe.StringName(pointers.Get(gd.NewStringName(info.Name))[0]),
+				gdunsafe.StringName(pointers.Get(gd.NewStringName(info.ClassName))[0]),
 				uint32(info.Hint),
-				pointers.Get(gd.NewString(info.HintString)),
+				gdunsafe.String(pointers.Get(gd.NewString(info.HintString))[0]),
 				uint32(info.Usage),
 				0,
 			)
 		}
-		return results
+		return gdextension.PropertyList(results)
 	}
 	return 0
 }
@@ -361,13 +361,14 @@ func (instance *instanceImplementation) ValidateProperty(list gdextension.Proper
 	case interface {
 		ValidateProperty(Object.PropertyInfo) bool
 	}:
+		pl := gdunsafe.PropertyList(list)
 		return bool(validate.ValidateProperty(Object.PropertyInfo{
-			ClassName:  pointers.Raw[gd.StringName](gdextension.Host.ClassDB.PropertyList.Info.ClassName(list)).String(),
-			Usage:      int(gdextension.Host.ClassDB.PropertyList.Info.Usage(list)),
-			Type:       gd.ConvieniantGoTypeOf(gdextension.Host.ClassDB.PropertyList.Info.Type(list)),
-			HintString: pointers.Raw[gd.String](gdextension.Host.ClassDB.PropertyList.Info.HinString(list)).String(),
-			Hint:       int(gdextension.Host.ClassDB.PropertyList.Info.Hint(list)),
-			Name:       pointers.Raw[gd.StringName](gdextension.Host.ClassDB.PropertyList.Info.Name(list)).String(),
+			ClassName:  pointers.Raw[gd.StringName](gdextension.StringName{gdextension.Pointer(pl.InfoClassName())}).String(),
+			Usage:      int(pl.InfoUsage()),
+			Type:       gd.ConvieniantGoTypeOf(gdextension.VariantType(pl.InfoType())),
+			HintString: pointers.Raw[gd.String](gdextension.String{gdextension.Pointer(pl.InfoHintString())}).String(),
+			Hint:       int(pl.InfoHint()),
+			Name:       pointers.Raw[gd.StringName](gdextension.StringName{gdextension.Pointer(pl.InfoName())}).String(),
 		}))
 	}
 	return true

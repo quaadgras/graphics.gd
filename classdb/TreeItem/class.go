@@ -239,7 +239,7 @@ var methods struct {
 
 func init() {
 	gd.Links = append(gd.Links, func() {
-		sname = gdextension.Host.Strings.Intern.UTF8("TreeItem")
+		sname = gdextension.StringName{gdextension.Pointer(gdunsafe.UTF8.Intern("TreeItem"))}
 		otype = gdunsafe.ObjectTypeTag(gdunsafe.StringName(sname[0]))
 		gd.LinkMethods(sname, &methods, false)
 	})

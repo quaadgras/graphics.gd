@@ -190,7 +190,7 @@ var methods struct {
 
 func init() {
 	gd.Links = append(gd.Links, func() {
-		sname = gdextension.Host.Strings.Intern.UTF8("GLTFState")
+		sname = gdextension.StringName{gdextension.Pointer(gdunsafe.UTF8.Intern("GLTFState"))}
 		otype = gdunsafe.ObjectTypeTag(gdunsafe.StringName(sname[0]))
 		gd.LinkMethods(sname, &methods, false)
 	})

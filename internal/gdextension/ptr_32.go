@@ -1,4 +1,4 @@
-//go:build arm || i386
+//go:build i386
 
 package gdextension
 

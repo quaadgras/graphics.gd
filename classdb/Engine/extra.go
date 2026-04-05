@@ -120,7 +120,7 @@ func Raise(err error) { //gd:push_error
 	pc, file, line, ok := runtime.Caller(1)
 	if ok {
 		name := runtime.FuncForPC(pc).Name()
-		gdextension.Host.Log.Error(err.Error(), "", name, file, int32(line), false)
+		gdunsafe.Log(gdunsafe.LogError, err.Error(), "", name, file, int32(line), false)
 	} else {
 		print_setup()
 		var variants []gdextension.Variant

@@ -5,6 +5,7 @@ package gdmemory
 import (
 	"unsafe"
 
+	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdextension"
 )
 
@@ -18,13 +19,13 @@ func Set[T gdextension.AnyVariant](frame gdextension.Pointer, value T) {
 	*(*T)(ptr) = value
 }
 
-func IntoSlice[T gdextension.Packable](ptr gdextension.Pointer, len int) []T {
+func IntoSlice[T gdextension.Packable](ptr gdunsafe.PointerTo[T], len int) []T {
 	var slice = make([]T, len)
 	copy(slice, unsafe.Slice(*(**T)(unsafe.Pointer(&ptr)), len))
 	return slice
 }
 
-func LoadSlice[T gdextension.Packable](ptr gdextension.Pointer, slice []T) {
+func LoadSlice[T gdextension.Packable](ptr gdunsafe.PointerTo[T], slice []T) {
 	if len(slice) == 0 {
 		return
 	}

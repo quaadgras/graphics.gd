@@ -19,7 +19,6 @@
     #define UINT64_FROM(v) ((uint64_t)(v##_1) << 32) | ((uint64_t)(v##_2))
     #define UINT64_MAKE(v) (uint32_t)(v >> 32), (uint32_t)(v & 0xFFFFFFFF)
     #define INT64_FROM(v) std::__bit_cast<int64_t>(((uint64_t)(v##_1) << 32) | ((uint64_t)(v##_2)))
-    #define STRING_POINTER(s) (s).c_str()
     #define BUFFER_POINTER(s) (char*)(s)
     #define EXPORT EMSCRIPTEN_KEEPALIVE
     #define RETURN(T, v) *(T*)result = v; return
@@ -33,12 +32,13 @@
     #define UINT64_FROM(v) (v)
     #define UINT64_MAKE(v) (v)
     #define INT64_FROM(v) (v)
-    #define STRING_POINTER(s) (s)
     #define BUFFER_POINTER(s) (s)
     #define RETURN(T, v) return v
 #endif
 
 #define VARIANT_ARG_GET(n) (Variant){n##_1, {n##_2, n##_3}}
+#define VARIANT_ARG_PUT(v) v.tag, v.payload[0], v.payload[1]
+#define PACKED_ARRAY_ARG_GET(n) (PackedArray){n##_1, n##_2}
 
 // X-macro list: each entry is X(snake_name, GDExtensionInterfaceType)
 // Declares variables and loads proc addresses from a single source of truth.
@@ -225,7 +225,7 @@ static void extension_instance_dynamic_call(void *method_userdata, GDExtensionCl
     gd_on_extension_instance_dynamic_call((uintptr_t)p_instance, (uintptr_t)method_userdata, (Variant*)r_return, p_argument_count, (VariadicVariants)p_args, (CallError*)r_error);
 }
 static void extension_instance_checked_call(void *method_userdata, GDExtensionClassInstancePtr p_instance, const GDExtensionConstTypePtr *p_args, GDExtensionTypePtr r_ret) {
-    gd_on_extension_instance_checked_call((uintptr_t)p_instance, (uintptr_t)method_userdata, r_ret, (void *)p_args);
+    gd_on_extension_instance_checked_call((ExtensionInstanceID)p_instance, (FunctionID)method_userdata, (UnsafePointer)r_ret, (UnsafePointer)p_args);
 }
 static void *extension_binding_created(void *p_token, void *p_instance) {
     return (void *)gd_on_extension_binding_created((uintptr_t)p_instance);
@@ -251,33 +251,10 @@ GDExtensionPtrIndexedGetter variant_ptr_indexed_getters[GDEXTENSION_VARIANT_TYPE
 GDExtensionPtrKeyedSetter variant_ptr_keyed_setters[GDEXTENSION_VARIANT_TYPE_VARIANT_MAX];
 GDExtensionPtrKeyedGetter variant_ptr_keyed_getters[GDEXTENSION_VARIANT_TYPE_VARIANT_MAX];
 
-GDExtensionObjectPtr OS = NULL;
-GDExtensionMethodBindPtr OS_get_thread_caller_id = NULL;
-GDExtensionMethodBindPtr OS_get_main_thread_id = NULL;
-static uint64_t main_thread_id = 0;
-EXPORT uint64_t get_thread_caller_id() {
-    uint64_t thread_id = 0;
-    gdextension_object_method_bind_ptrcall(OS_get_thread_caller_id, OS, NULL, &thread_id);
-    return thread_id;
-}
 static void engine_init(void *ignore, GDExtensionInitializationLevel level) {
-    if (level == GDEXTENSION_INITIALIZATION_CORE) {
-        uintptr_t string_name_OS;
-        gdextension_string_name_new_with_latin1_chars(&string_name_OS, "OS", true);
-        OS = gdextension_global_get_singleton(&string_name_OS);
-        uintptr_t string_name_get_thread_caller_id;
-        gdextension_string_name_new_with_latin1_chars(&string_name_get_thread_caller_id, "get_thread_caller_id", true);
-        OS_get_thread_caller_id = gdextension_classdb_get_method_bind(&string_name_OS, &string_name_get_thread_caller_id, 3905245786);
-        uintptr_t string_name_get_main_thread_id;
-        gdextension_string_name_new_with_latin1_chars(&string_name_get_main_thread_id, "get_main_thread_id", true);
-        OS_get_main_thread_id = gdextension_classdb_get_method_bind(&string_name_OS, &string_name_get_main_thread_id, 3905245786);
-        gdextension_object_method_bind_ptrcall(OS_get_main_thread_id, OS, NULL, &main_thread_id);
-    }
     gd_on_engine_init(level);
 }
-EXPORT bool gd_thread_is_main() {
-    return get_thread_caller_id() == main_thread_id;
-}
+
 EXPORT GDExtensionBool gd_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc_address, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization) {
     #define LOAD_PROC(name, type) gdextension_##name = (type)p_get_proc_address(#name);
     GD_PROC_LIST(LOAD_PROC)
@@ -405,16 +382,16 @@ EXPORT uintptr_t gd_library_location() {
     gdextension_get_library_path(gd_library, &s);
     return s;
 }
-EXPORT void gd_classdb_FileAccess_write(uintptr_t FileAccess, BUFFER buf, INT len) {
+EXPORT void gd_classdb_FileAccess_write(Object FileAccess, char* buf, Int len) {
     gdextension_file_access_store_buffer((GDExtensionObjectPtr)FileAccess, (const uint8_t *)BUFFER_POINTER(buf), len);
 };
-EXPORT INT gd_classdb_FileAccess_read(uintptr_t FileAccess, BUFFER buf, INT len) {
+EXPORT Int gd_classdb_FileAccess_read(Object FileAccess, char* buf, Int len) {
     return gdextension_file_access_get_buffer((GDExtensionObjectPtr)FileAccess, (uint8_t *)BUFFER_POINTER(buf), len);
 };
-EXPORT uintptr_t gd_classdb_Image_unsafe(uintptr_t Image) {
-    return (uintptr_t)gdextension_image_ptrw((GDExtensionObjectPtr)Image);
+EXPORT UnsafePointer gd_classdb_Image_unsafe(Object Image) {
+    return (UnsafePointer)gdextension_image_ptrw((GDExtensionObjectPtr)Image);
 };
-EXPORT uint8_t gd_classdb_Image_access(uintptr_t Image, INT offset) {
+EXPORT uint8_t gd_classdb_Image_access(Object Image, Int offset) {
     return gdextension_image_ptr((GDExtensionObjectPtr)Image)[offset];
 };
 typedef struct {
@@ -428,14 +405,14 @@ typedef struct {
     GDExtensionPropertyInfo *info;
     GDExtensionClassMethodArgumentMetadata *meta;
 } property_list;
-EXPORT uintptr_t gd_method_list_make(INT length) {
+EXPORT uintptr_t gd_method_list_make(Int length) {
     method_list *list = (method_list *)gdextension_mem_alloc(sizeof(method_list));
     list->push = 0;
     list->size = length;
     list->info = (GDExtensionClassMethodInfo*)gdextension_mem_alloc(sizeof(GDExtensionClassMethodInfo) * length);
     return (uintptr_t)list;
 };
-EXPORT void gd_method_list_push(uintptr_t list_p, uintptr_t name, uintptr_t method, uint32_t method_flags, uintptr_t return_value_info, uintptr_t arguments_info, INT default_argument_count, ANY default_arguments) {
+EXPORT void gd_method_list_push(uintptr_t list_p, uintptr_t name, uintptr_t method, uint32_t method_flags, uintptr_t return_value_info, uintptr_t arguments_info, Int default_argument_count, ANY default_arguments) {
     method_list *list = (method_list *)list_p;
     if (list->push >= list->size) return;
     GDExtensionClassMethodInfo *info = &list->info[list->push++];
@@ -481,7 +458,7 @@ EXPORT void gd_method_list_free(uintptr_t list_p) {
     }
     gdextension_mem_free(list->info); gdextension_mem_free(list);
 };
-EXPORT uintptr_t gd_property_list_make(INT length) {
+EXPORT uintptr_t gd_property_list_make(Int length) {
     property_list *list = (property_list*)gdextension_mem_alloc(sizeof(property_list));
     list->push = 0;
     list->size = length;
@@ -544,8 +521,8 @@ EXPORT uint32_t gd_property_info_usage(uintptr_t list_p) {
     return list->info[list->push-1].usage;
 };
 static GDExtensionBool extension_instance_set(GDExtensionClassInstancePtr instance, GDExtensionConstStringNamePtr field, GDExtensionConstVariantPtr value) {
-    uint64_t *v = (uint64_t *)value;
-    return gd_on_extension_instance_set((uintptr_t)instance, *(uintptr_t*)field, UINT64_MAKE(v[0]), UINT64_MAKE(v[1]), UINT64_MAKE(v[2]));
+    Variant v = *(Variant*)value;
+    return gd_on_extension_instance_set((ExtensionInstanceID)instance, *(StringName*)field, VARIANT_ARG_PUT(v));
 }
 static GDExtensionBool extension_instance_get(GDExtensionClassInstancePtr instance, GDExtensionConstStringNamePtr field, GDExtensionVariantPtr value) {
     return gd_on_extension_instance_get((uintptr_t)instance, *(uintptr_t*)field, (Variant*)value);
@@ -600,7 +577,7 @@ static void *extension_class_caller(void *user_data, GDExtensionConstStringNameP
     return (void*)gd_on_extension_class_caller((uintptr_t)user_data, *(uintptr_t*)name, hash);
 }
 static void extension_instance_called(GDExtensionClassInstancePtr p_instance, GDExtensionConstStringNamePtr p_name, void *p_virtual_call_userdata, const GDExtensionConstTypePtr *p_args, GDExtensionTypePtr r_ret) {
-    gd_on_extension_instance_called((uintptr_t)p_instance, (uintptr_t)p_virtual_call_userdata, r_ret, (void *)p_args);
+    gd_on_extension_instance_called((ExtensionInstanceID)p_instance, (FunctionID)p_virtual_call_userdata, (UnsafePointer)r_ret, (UnsafePointer)p_args);
 }
 static void extension_instance_free(void *p_class_userdata, GDExtensionClassInstancePtr p_instance) {
     gd_on_extension_instance_free((uintptr_t)p_instance);
@@ -668,27 +645,22 @@ EXPORT void gd_classdb_WorkerThreadPool_add_task(uintptr_t WorkerPool, uintptr_t
 EXPORT void gd_classdb_WorkerThreadPool_add_group_task(uintptr_t WorkerPool, uintptr_t task_id, int32_t elements, int32_t tasks, bool priority, uintptr_t description) {
     gdextension_worker_thread_pool_add_native_group_task((GDExtensionObjectPtr)WorkerPool, (GDExtensionWorkerThreadPoolGroupTask)gd_on_worker_thread_pool_group_task, (void *)task_id, elements, tasks, priority, (GDExtensionConstStringNamePtr)&description);
 };
-EXPORT INT gd_classdb_XMLParser_load(uintptr_t XMLParser, BUFFER buf, INT len) {
+EXPORT Int gd_classdb_XMLParser_load(uintptr_t XMLParser, char* buf, Int len) {
     return gdextension_xml_parser_open_buffer((GDExtensionObjectPtr)XMLParser, (const uint8_t *)BUFFER_POINTER(buf), len);
 };
-EXPORT void gd_packed_dictionary_access(uintptr_t dict, UINT64(k1), UINT64(k2), UINT64(k3), ANY args) {
-    uint64_t key[3] = {UINT64_FROM(k1), UINT64_FROM(k2), UINT64_FROM(k3)};
-    uint64_t *value = (uint64_t*)gdextension_dictionary_operator_index_const((GDExtensionTypePtr)&dict, &key[0]);
+EXPORT void gd_packed_dictionary_access(Dictionary dict, VARIANT_ARG(k), Variant* result) {
+    Variant key = VARIANT_ARG_GET(k);
+    Variant* value = (Variant*)gdextension_dictionary_operator_index_const((GDExtensionTypePtr)&dict, &key);
     if (!value) return;
-    uint64_t * result = (uint64_t*)args;
-    result[0] = value[0];
-    result[1] = value[1];
-    result[2] = value[2];
+    *result = *value;
 };
-EXPORT void gd_packed_dictionary_modify(uintptr_t dict, UINT64(k1), UINT64(k2), UINT64(k3), UINT64(v1), UINT64(v2), UINT64(v3)) {
-    uint64_t key[3] = {UINT64_FROM(k1), UINT64_FROM(k2), UINT64_FROM(k3)};
-    uint64_t *value = (uint64_t*)gdextension_dictionary_operator_index((GDExtensionTypePtr)&dict, (GDExtensionVariantPtr)&key[0]);
-    value[0] = UINT64_FROM(v1);
-    value[1] = UINT64_FROM(v2);
-    value[2] = UINT64_FROM(v3);
+EXPORT void gd_packed_dictionary_modify(Dictionary dict, VARIANT_ARG(k), VARIANT_ARG(v)) {
+    Variant key = VARIANT_ARG_GET(k);
+    Variant *value = (Variant*)gdextension_dictionary_operator_index((GDExtensionTypePtr)&dict, (GDExtensionVariantPtr)&key);
+    *value = VARIANT_ARG_GET(v);
 };
-EXPORT void gd_editor_add_documentation(STRING xml, INT len) {
-    gdextension_editor_help_load_xml_from_utf8_chars_and_len(STRING_POINTER(xml), len);
+EXPORT void gd_editor_add_documentation(const char* xml, uint32_t len) {
+    gdextension_editor_help_load_xml_from_utf8_chars_and_len(xml, len);
 };
 EXPORT void gd_editor_add_plugin(uintptr_t class_name) {
     gdextension_editor_add_plugin((GDExtensionConstStringNamePtr)&class_name);
@@ -733,35 +705,21 @@ static const char *fit_string(const char *str, uint64_t len, char *buf, size_t b
     buf[len] = '\0'; // null-terminate the string
     return buf;
 }
-EXPORT void gd_log_error(
-    STRING text, INT text_len,
-    STRING code, INT code_len,
-    STRING func, INT func_len,
-    STRING file, INT file_len,
+EXPORT void gd_log(LogLevel level,
+    const char* text, uint32_t text_len,
+    const char* code, uint32_t code_len,
+    const char* func, uint32_t func_len,
+    const char* file, uint32_t file_len,
     int32_t line, bool notify_editor
 ) {
-    char text_buf[256]; const char *text_ptr = fit_string(STRING_POINTER(text), text_len, &text_buf[0], 256);
-    char code_buf[100]; const char *code_ptr = fit_string(STRING_POINTER(code), code_len, &code_buf[0], 100);
-    char func_buf[100]; const char *func_ptr = fit_string(STRING_POINTER(func), func_len, &func_buf[0], 100);
-    char file_buf[100]; const char *file_ptr = fit_string(STRING_POINTER(file), file_len, &file_buf[0], 100);
-    gdextension_print_error_with_message(code_ptr, text_ptr, func_ptr, file_ptr, line, notify_editor);
-    if (text_ptr && text_ptr != text_buf) gdextension_mem_free((void *)text_ptr);
-    if (code_ptr && code_ptr != code_buf) gdextension_mem_free((void *)code_ptr);
-    if (func_ptr && func_ptr != func_buf) gdextension_mem_free((void *)func_ptr);
-    if (file_ptr && file_ptr != file_buf) gdextension_mem_free((void *)file_ptr);
-};
-EXPORT void gd_log_warning(
-    STRING text, INT text_len,
-    STRING code, INT code_len,
-    STRING func, INT func_len,
-    STRING file, INT file_len,
-    int32_t line, bool notify_editor
-) {
-    char text_buf[256]; const char *text_ptr = fit_string(STRING_POINTER(text), text_len, &text_buf[0], 256);
-    char code_buf[100]; const char *code_ptr = fit_string(STRING_POINTER(code), code_len, &code_buf[0], 100);
-    char func_buf[100]; const char *func_ptr = fit_string(STRING_POINTER(func), func_len, &func_buf[0], 100);
-    char file_buf[100]; const char *file_ptr = fit_string(STRING_POINTER(file), file_len, &file_buf[0], 100);
-    gdextension_print_warning_with_message(code_ptr, text_ptr, func_ptr, file_ptr, line, notify_editor);
+    char text_buf[256]; const char *text_ptr = fit_string(text, text_len, &text_buf[0], 256);
+    char code_buf[100]; const char *code_ptr = fit_string(code, code_len, &code_buf[0], 100);
+    char func_buf[100]; const char *func_ptr = fit_string(func, func_len, &func_buf[0], 100);
+    char file_buf[100]; const char *file_ptr = fit_string(file, file_len, &file_buf[0], 100);
+    switch (level) {
+    case 0: gdextension_print_error_with_message(code_ptr, text_ptr, func_ptr, file_ptr, line, notify_editor); break;
+    case 1: gdextension_print_warning_with_message(code_ptr, text_ptr, func_ptr, file_ptr, line, notify_editor); break;
+    }
     if (text_ptr && text_ptr != text_buf) gdextension_mem_free((void *)text_ptr);
     if (code_ptr && code_ptr != code_buf) gdextension_mem_free((void *)code_ptr);
     if (func_ptr && func_ptr != func_buf) gdextension_mem_free((void *)func_ptr);
@@ -811,7 +769,7 @@ EXPORT void gd_object_call(Object obj, MethodForClass fn, Variant* result, Int a
     void *points[16]; prepare_variants(&points[0], (uint32_t)argc, (ANY)args);
     gdextension_object_method_bind_call((GDExtensionMethodBindPtr)fn, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)result, (GDExtensionCallError*)err);
 };
-EXPORT result_24 gd_object_call_24(uintptr_t obj, uintptr_t fn, INT argc, ANY args, ANY err) {
+EXPORT result_24 gd_object_call_24(uintptr_t obj, uintptr_t fn, Int argc, ANY args, ANY err) {
     void *points[16]; prepare_variants(&points[0], argc, args);
     result_24 result = {};
     gdextension_object_method_bind_call((GDExtensionMethodBindPtr)fn, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)&result, (GDExtensionCallError*)err);
@@ -990,95 +948,43 @@ EXPORT uintptr_t gd_object_script_placeholder_create(uintptr_t language, uintptr
 EXPORT void gd_object_script_placeholder_update(uintptr_t p_placeholder, uintptr_t p_properties, uintptr_t p_values) {
     gdextension_placeholder_script_instance_update((GDExtensionScriptInstanceDataPtr)p_placeholder, (GDExtensionConstTypePtr)&p_properties, (GDExtensionConstTypePtr)&p_values);
 };
-EXPORT uintptr_t gd_packed_byte_array_unsafe(UINT a1, UINT a2) {
-    uintptr_t packed_array[2] = {a1, a2};
-    return (uintptr_t)gdextension_packed_byte_array_operator_index(&packed_array[0], 0);
+EXPORT UnsafePointer gd_packed_array_access(uint32_t type, PACKED_ARRAY_ARG(pa), Int i) {
+    PackedArray pa = PACKED_ARRAY_ARG_GET(pa);
+    switch (type) {
+    case 29: return (UnsafePointer)gdextension_packed_byte_array_operator_index_const(&pa, i);
+    case 30: return (UnsafePointer)gdextension_packed_int32_array_operator_index_const(&pa, i);
+    case 31: return (UnsafePointer)gdextension_packed_int64_array_operator_index_const(&pa, i);
+    case 32: return (UnsafePointer)gdextension_packed_float32_array_operator_index_const(&pa, i);
+    case 33: return (UnsafePointer)gdextension_packed_float64_array_operator_index_const(&pa, i);
+    case 34: return (UnsafePointer)gdextension_packed_string_array_operator_index_const(&pa, i);
+    case 35: return (UnsafePointer)gdextension_packed_vector2_array_operator_index_const(&pa, i);
+    case 36: return (UnsafePointer)gdextension_packed_vector3_array_operator_index_const(&pa, i);
+    case 37: return (UnsafePointer)gdextension_packed_color_array_operator_index_const(&pa, i);
+    case 38: return (UnsafePointer)gdextension_packed_vector4_array_operator_index_const(&pa, i);
+    }
+    return 0;
 };
-EXPORT uint8_t gd_packed_byte_array_access(UINT a1, UINT a2, INT i) {
-    uintptr_t packed_array[2] = {a1, a2};
-    return *(uint8_t *)gdextension_packed_byte_array_operator_index_const(&packed_array[0], i);
-};
-EXPORT uintptr_t gd_packed_color_array_unsafe(UINT a1, UINT a2) {
-    uintptr_t packed_array[2] = {a1, a2};
-    return (uintptr_t)gdextension_packed_color_array_operator_index(&packed_array[0], 0);
-};
-EXPORT void gd_packed_color_array_access(UINT a1, UINT a2, INT i, ANY result) {
-    uintptr_t packed_array[2] = {a1, a2};
-    const float *color = (float *)gdextension_packed_color_array_operator_index_const(&packed_array[0], i);
-    memcpy((float*)result, color, sizeof(float)*4);
-};
-EXPORT uintptr_t gd_packed_float32_array_unsafe(UINT a1, UINT a2) {
-    uintptr_t packed_array[2] = {a1, a2};
-    return (uintptr_t)gdextension_packed_float32_array_operator_index(&packed_array[0], 0);
-};
-EXPORT float gd_packed_float32_array_access(UINT a1, UINT a2, INT i) {
-    uintptr_t packed_array[2] = {a1, a2};
-    return *(float *)gdextension_packed_float32_array_operator_index_const(&packed_array[0], i);
-};
-EXPORT uintptr_t gd_packed_float64_array_unsafe(UINT a1, UINT a2) {
-    uintptr_t packed_array[2] = {a1, a2};
-    return (uintptr_t)gdextension_packed_float64_array_operator_index(&packed_array[0], 0);
-};
-EXPORT double gd_packed_float64_array_access(UINT a1, UINT a2, INT i) {
-    uintptr_t packed_array[2] = {a1, a2};
-    return *(double *)gdextension_packed_float64_array_operator_index_const(&packed_array[0], i);
-};
-EXPORT uintptr_t gd_packed_int32_array_unsafe(UINT a1, UINT a2) {
-    uintptr_t packed_array[2] = {a1, a2};
-    return (uintptr_t)gdextension_packed_int32_array_operator_index(&packed_array[0], 0);
-};
-EXPORT int32_t gd_packed_int32_array_access(UINT a1, UINT a2, INT i) {
-    uintptr_t packed_array[2] = {a1, a2};
-    return *(int32_t *)gdextension_packed_int32_array_operator_index_const(&packed_array[0], i);
-};
-EXPORT uintptr_t gd_packed_int64_array_unsafe(UINT a1, UINT a2) {
-    uintptr_t packed_array[2] = {a1, a2};
-    return (uintptr_t)gdextension_packed_int64_array_operator_index(&packed_array[0], 0);
-};
-EXPORT void gd_packed_int64_array_access(UINT a1, UINT a2, INT i, ANY value) {
-    uintptr_t packed_array[2] = {a1, a2};
-    *(int64_t *)value = *(int64_t *)gdextension_packed_int64_array_operator_index_const(&packed_array[0], i);
-};
-EXPORT uintptr_t gd_packed_string_array_unsafe(UINT a1, UINT a2) {
-    uintptr_t packed_array[2] = {a1, a2};
-    return (uintptr_t)gdextension_packed_string_array_operator_index(&packed_array[0], 0);
-};
-EXPORT uintptr_t gd_packed_string_array_access(UINT a1, UINT a2, INT i) {
-    uintptr_t packed_array[2] = {a1, a2};
-    return *(uintptr_t*)gdextension_packed_string_array_operator_index_const(&packed_array[0], i);
+EXPORT UnsafePointer gd_packed_array_modify(uint32_t type, PACKED_ARRAY_ARG(pa), Int i) {
+    PackedArray pa = PACKED_ARRAY_ARG_GET(pa);
+    switch (type) {
+    case 29: return (UnsafePointer)gdextension_packed_byte_array_operator_index(&pa, i);
+    case 30: return (UnsafePointer)gdextension_packed_int32_array_operator_index(&pa, i);
+    case 31: return (UnsafePointer)gdextension_packed_int64_array_operator_index(&pa, i);
+    case 32: return (UnsafePointer)gdextension_packed_float32_array_operator_index(&pa, i);
+    case 33: return (UnsafePointer)gdextension_packed_float64_array_operator_index(&pa, i);
+    case 34: return (UnsafePointer)gdextension_packed_string_array_operator_index(&pa, i);
+    case 35: return (UnsafePointer)gdextension_packed_vector2_array_operator_index(&pa, i);
+    case 36: return (UnsafePointer)gdextension_packed_vector3_array_operator_index(&pa, i);
+    case 37: return (UnsafePointer)gdextension_packed_color_array_operator_index(&pa, i);
+    case 38: return (UnsafePointer)gdextension_packed_vector4_array_operator_index(&pa, i);
+    }
+    return 0;
 };
 EXPORT void gd_array_set(Array a, Int i, VARIANT_ARG(v)) {
     *((Variant*)gdextension_array_operator_index(&a, i)) = VARIANT_ARG_GET(v);
 };
-EXPORT RETURNS(Variant) gd_array_get(Array a, Int i RESULT_POINTER) {
-    RETURN(Variant, *(Variant*)gdextension_array_operator_index_const(&a, i));
-};
-EXPORT uintptr_t gd_packed_vector2_array_unsafe(UINT a1, UINT a2) {
-    uintptr_t packed_array[2] = {a1, a2};
-    return (uintptr_t)gdextension_packed_vector2_array_operator_index(&packed_array[0], 0);
-};
-EXPORT void gd_packed_vector2_array_access(UINT a1, UINT a2, INT i, ANY result) {
-    uintptr_t packed_array[2] = {a1, a2};
-    const float *vector = (const float *)gdextension_packed_vector2_array_operator_index_const(&packed_array[0], i);
-    memcpy((float*)result, vector, sizeof(float)*2);
-};
-EXPORT uintptr_t gd_packed_vector3_array_unsafe(UINT a1, UINT a2) {
-    uintptr_t packed_array[2] = {a1, a2};
-    return (uintptr_t)gdextension_packed_vector3_array_operator_index(&packed_array[0], 0);
-};
-EXPORT void gd_packed_vector3_array_access(UINT a1, UINT a2, INT i, ANY result) {
-    uintptr_t packed_array[2] = {a1, a2};
-    const float *vector = (const float *)gdextension_packed_vector3_array_operator_index_const(&packed_array[0], i);
-    memcpy((float*)result, vector, sizeof(float)*3);
-};
-EXPORT uintptr_t gd_packed_vector4_array_unsafe(UINT a1, UINT a2) {
-    uintptr_t packed_array[2] = {a1, a2};
-    return (uintptr_t)gdextension_packed_vector4_array_operator_index(&packed_array[0], 0);
-};
-EXPORT void gd_packed_vector4_array_access(UINT a1, UINT a2, INT i, ANY result) {
-    uintptr_t packed_array[2] = {a1, a2};
-    const float *vector = (const float *)gdextension_packed_vector4_array_operator_index_const(&packed_array[0], i);
-    memcpy((float *)result, vector, sizeof(float)*4);
+EXPORT void gd_array_get(Array a, Int i, Variant* result) {
+    *result = *(Variant*)gdextension_array_operator_index_const(&a, i);
 };
 EXPORT uintptr_t gd_ref_get_object(uintptr_t ref) {
     return (uintptr_t)gdextension_ref_get_object((GDExtensionObjectPtr)ref);
@@ -1086,81 +992,83 @@ EXPORT uintptr_t gd_ref_get_object(uintptr_t ref) {
 EXPORT void gd_ref_set_object(uintptr_t ref, uintptr_t obj) {
     gdextension_ref_set_object((GDExtensionObjectPtr)ref, (GDExtensionObjectPtr)obj);
 };
-EXPORT int32_t gd_string_access(uintptr_t s, INT i) {
+EXPORT int32_t gd_string_access(String s, Int i) {
     return *(int32_t *)gdextension_string_operator_index_const((GDExtensionStringPtr)s, i);
 };
-EXPORT uintptr_t gd_string_resize(uintptr_t s, INT size) {
-    uintptr_t ptr = s;
+EXPORT String gd_string_resize(String s, Int size) {
+    String ptr = s;
     gdextension_string_resize((GDExtensionStringPtr)&ptr, size);
     return ptr;
 };
-EXPORT uintptr_t gd_string_unsafe(uintptr_t s) {
-    return (uintptr_t)gdextension_string_operator_index((GDExtensionStringPtr)s, 0);
+EXPORT UnsafePointer gd_string_unsafe(String s) {
+    return (UnsafePointer)gdextension_string_operator_index((GDExtensionStringPtr)s, 0);
 };
-EXPORT uintptr_t gd_string_append(uintptr_t s, uintptr_t other) {
-    uintptr_t ptr = s;
+EXPORT String gd_string_append(String s, String other) {
+    String ptr = s;
     gdextension_string_operator_plus_eq_string((GDExtensionStringPtr)&ptr, (GDExtensionConstStringPtr)&other);
     return ptr;
 };
-EXPORT uintptr_t gd_string_append_rune(uintptr_t s, int32_t rune) {
-    uintptr_t ptr = s;
+EXPORT String gd_string_append_rune(String s, int32_t rune) {
+    String ptr = s;
     gdextension_string_operator_plus_eq_char((GDExtensionStringPtr)&ptr, rune);
     return ptr;
 };
-EXPORT uintptr_t gd_string_decode_latin1(STRING s, INT len) {
-    uintptr_t ptr = 0;
-    gdextension_string_new_with_latin1_chars_and_len((GDExtensionUninitializedStringPtr)&ptr, STRING_POINTER(s), len);
+EXPORT String gd_string_decode(uint8_t enc, const char* s, Int len) {
+    String ptr = 0;
+    switch (enc) {
+    case 0: // Latin1
+        gdextension_string_new_with_latin1_chars_and_len((GDExtensionUninitializedStringPtr)&ptr, s, len);
+        break;
+    case 1: // UTF8
+        gdextension_string_new_with_utf8_chars_and_len((GDExtensionUninitializedStringPtr)&ptr, s, len);
+        break;
+    case 2: // UTF16LE
+        gdextension_string_new_with_utf16_chars_and_len2((GDExtensionUninitializedStringPtr)&ptr, (const char16_t *)s, len, true);
+        break;
+    case 3: // UTF16BE
+        gdextension_string_new_with_utf16_chars_and_len2((GDExtensionUninitializedStringPtr)&ptr, (const char16_t *)s, len, false);
+        break;
+    case 4: // UTF32
+        gdextension_string_new_with_utf32_chars_and_len((GDExtensionUninitializedStringPtr)&ptr, (const char32_t *)s, len);
+        break;
+    case 5: // Wide
+        gdextension_string_new_with_wide_chars_and_len((GDExtensionUninitializedStringPtr)&ptr, (const wchar_t *)s, len);
+        break;
+    }
     return ptr;
 };
-EXPORT uintptr_t gd_string_decode_utf8(STRING s, INT len) {
-    uintptr_t ptr = 0;
-    gdextension_string_new_with_utf8_chars_and_len((GDExtensionUninitializedStringPtr)&ptr, STRING_POINTER(s), len);
+EXPORT Int gd_string_encode(uint8_t enc, String s, char* addr, Int len) {
+    switch (enc) {
+    case 0: // Latin1
+        return gdextension_string_to_latin1_chars((GDExtensionStringPtr)&s, addr, len);
+    case 1: // UTF8
+        return gdextension_string_to_utf8_chars((GDExtensionStringPtr)&s, addr, len);
+    case 2: case 3: // UTF16LE, UTF16BE
+        return gdextension_string_to_utf16_chars((GDExtensionStringPtr)&s, (char16_t *)addr, len/2);
+    case 4: // UTF32
+        return gdextension_string_to_utf32_chars((GDExtensionStringPtr)&s, (char32_t *)addr, len/4);
+    case 5: // Wide
+        return gdextension_string_to_wide_chars((GDExtensionStringPtr)&s, (wchar_t *)addr, len/sizeof(wchar_t));
+    }
+    return 0;
+};
+EXPORT StringName gd_string_intern(uint8_t enc, const char* s, Int len) {
+    StringName ptr = 0;
+    switch (enc) {
+    case 0: { // Latin1
+        char buf[256]; const char *s_ptr = fit_string(s, len, &buf[0], 256);
+        gdextension_string_name_new_with_latin1_chars((GDExtensionUninitializedStringNamePtr)&ptr, s_ptr, false);
+        if (s_ptr != &buf[0]) gdextension_mem_free((void *)s_ptr);
+        break;
+    }
+    case 1: // UTF8
+        gdextension_string_name_new_with_utf8_chars_and_len((GDExtensionUninitializedStringNamePtr)&ptr, s, len);
+        break;
+    }
     return ptr;
 };
-EXPORT uintptr_t gd_string_decode_utf16(STRING s, INT len, bool le) {
-    uintptr_t ptr = 0;
-    gdextension_string_new_with_utf16_chars_and_len2((GDExtensionUninitializedStringPtr)&ptr, (const char16_t *)STRING_POINTER(s), len, le);
-    return ptr;
-};
-EXPORT uintptr_t gd_string_decode_utf32(STRING s, INT len) {
-    uintptr_t ptr = 0;
-    gdextension_string_new_with_utf32_chars_and_len((GDExtensionUninitializedStringPtr)&ptr, (const char32_t *)STRING_POINTER(s), len);
-    return ptr;
-};
-EXPORT uintptr_t gd_string_decode_wide(STRING s, INT len) {
-    uintptr_t ptr = 0;
-    gdextension_string_new_with_wide_chars_and_len((GDExtensionUninitializedStringPtr)&ptr, (const wchar_t *)STRING_POINTER(s), len);
-    return ptr;
-};
-EXPORT INT gd_string_encode_latin1(uintptr_t s, BUFFER addr, INT len) {
-    return gdextension_string_to_latin1_chars((GDExtensionStringPtr)&s, BUFFER_POINTER(addr), len);
-};
-EXPORT INT gd_string_encode_utf8(uintptr_t s, BUFFER addr, INT len) {
-    return gdextension_string_to_utf8_chars((GDExtensionStringPtr)&s, BUFFER_POINTER(addr), len);
-};
-EXPORT INT gd_string_encode_utf16(uintptr_t s, BUFFER addr, INT len) {
-    return gdextension_string_to_utf16_chars((GDExtensionStringPtr)&s, (char16_t *)BUFFER_POINTER(addr), len/2);
-};
-EXPORT INT gd_string_encode_utf32(uintptr_t s, BUFFER addr, INT len) {
-    return gdextension_string_to_utf32_chars((GDExtensionStringPtr)&s, (char32_t *)BUFFER_POINTER(addr), len/4);
-};
-EXPORT INT gd_string_encode_wide(uintptr_t s, BUFFER addr, INT len) {
-    return gdextension_string_to_wide_chars((GDExtensionStringPtr)&s, (wchar_t *)BUFFER_POINTER(addr), len/sizeof(wchar_t));
-};
-EXPORT uintptr_t gd_string_intern_latin1(STRING s, INT len) {
-    char buf[256]; const char *s_ptr = fit_string(STRING_POINTER(s), len, &buf[0], 256);
-    uintptr_t ptr = 0;
-    gdextension_string_name_new_with_latin1_chars((GDExtensionUninitializedStringNamePtr)&ptr, s_ptr, false);
-    if (s_ptr != &buf[0]) gdextension_mem_free((void *)s_ptr); // Free the buffer if it was allocated
-    return ptr;
-};
-EXPORT uintptr_t gd_string_intern_utf8(STRING s, INT len) {
-    uintptr_t ptr = 0;
-    gdextension_string_name_new_with_utf8_chars_and_len((GDExtensionUninitializedStringNamePtr)&ptr, STRING_POINTER(s), len);
-    return ptr;
-};
-EXPORT uintptr_t gd_variant_type_name(uint32_t vtype) {
-    uintptr_t name = 0;
+EXPORT String gd_variant_type_name(uint32_t vtype) {
+    String name = 0;
     gdextension_variant_get_type_name((GDExtensionVariantType)vtype, &name);
     return name;
 };
@@ -1427,22 +1335,6 @@ extern "C" {
 
 using namespace emscripten;
 EMSCRIPTEN_BINDINGS(my_module) {
-	function("gd_classdb_FileAccess_write", &gd_classdb_FileAccess_write, allow_raw_pointers());
-	function("gd_classdb_FileAccess_read", &gd_classdb_FileAccess_read, allow_raw_pointers());
-	function("gd_classdb_Image_unsafe", &gd_classdb_Image_unsafe, allow_raw_pointers());
-	function("gd_classdb_Image_access", &gd_classdb_Image_access, allow_raw_pointers());
-	function("gd_method_list_make", &gd_method_list_make, allow_raw_pointers());
-	function("gd_method_list_push", &gd_method_list_push, allow_raw_pointers());
-	function("gd_method_list_free", &gd_method_list_free, allow_raw_pointers());
-	function("gd_property_list_make", &gd_property_list_make, allow_raw_pointers());
-	function("gd_property_list_push", &gd_property_list_push, allow_raw_pointers());
-	function("gd_property_list_free", &gd_property_list_free, allow_raw_pointers());
-	function("gd_property_info_type", &gd_property_info_type, allow_raw_pointers());
-	function("gd_property_info_name", &gd_property_info_name, allow_raw_pointers());
-	function("gd_property_info_class_name", &gd_property_info_class_name, allow_raw_pointers());
-	function("gd_property_info_hint", &gd_property_info_hint, allow_raw_pointers());
-	function("gd_property_info_hint_string", &gd_property_info_hint_string, allow_raw_pointers());
-	function("gd_property_info_usage", &gd_property_info_usage, allow_raw_pointers());
 	function("gd_classdb_register", &gd_classdb_register, allow_raw_pointers());
 	function("gd_classdb_register_methods", &gd_classdb_register_methods, allow_raw_pointers());
 	function("gd_classdb_register_constant", &gd_classdb_register_constant, allow_raw_pointers());
@@ -1452,57 +1344,6 @@ EMSCRIPTEN_BINDINGS(my_module) {
 	function("gd_classdb_register_property_sub_group", &gd_classdb_register_property_sub_group, allow_raw_pointers());
 	function("gd_classdb_register_signal", &gd_classdb_register_signal, allow_raw_pointers());
 	function("gd_classdb_register_removal", &gd_classdb_register_removal, allow_raw_pointers());
-	function("gd_classdb_WorkerThreadPool_add_task", &gd_classdb_WorkerThreadPool_add_task, allow_raw_pointers());
-	function("gd_classdb_WorkerThreadPool_add_group_task", &gd_classdb_WorkerThreadPool_add_group_task, allow_raw_pointers());
-	function("gd_classdb_XMLParser_load", &gd_classdb_XMLParser_load, allow_raw_pointers());
-	function("gd_packed_dictionary_access", &gd_packed_dictionary_access, allow_raw_pointers());
-	function("gd_packed_dictionary_modify", &gd_packed_dictionary_modify, allow_raw_pointers());
-	function("gd_editor_add_documentation", &gd_editor_add_documentation, allow_raw_pointers());
-	function("gd_editor_add_plugin", &gd_editor_add_plugin, allow_raw_pointers());
-	function("gd_editor_end_plugin", &gd_editor_end_plugin, allow_raw_pointers());
-	function("gd_log_error", &gd_log_error, allow_raw_pointers());
-	function("gd_log_warning", &gd_log_warning, allow_raw_pointers());
-	function("gd_packed_byte_array_unsafe", &gd_packed_byte_array_unsafe, allow_raw_pointers());
-	function("gd_packed_byte_array_access", &gd_packed_byte_array_access, allow_raw_pointers());
-	function("gd_packed_color_array_unsafe", &gd_packed_color_array_unsafe, allow_raw_pointers());
-	function("gd_packed_color_array_access", &gd_packed_color_array_access, allow_raw_pointers());
-	function("gd_packed_float32_array_unsafe", &gd_packed_float32_array_unsafe, allow_raw_pointers());
-	function("gd_packed_float32_array_access", &gd_packed_float32_array_access, allow_raw_pointers());
-	function("gd_packed_float64_array_unsafe", &gd_packed_float64_array_unsafe, allow_raw_pointers());
-	function("gd_packed_float64_array_access", &gd_packed_float64_array_access, allow_raw_pointers());
-	function("gd_packed_int32_array_unsafe", &gd_packed_int32_array_unsafe, allow_raw_pointers());
-	function("gd_packed_int32_array_access", &gd_packed_int32_array_access, allow_raw_pointers());
-	function("gd_packed_int64_array_unsafe", &gd_packed_int64_array_unsafe, allow_raw_pointers());
-	function("gd_packed_int64_array_access", &gd_packed_int64_array_access, allow_raw_pointers());
-	function("gd_packed_string_array_unsafe", &gd_packed_string_array_unsafe, allow_raw_pointers());
-	function("gd_packed_string_array_access", &gd_packed_string_array_access, allow_raw_pointers());
-	function("gd_array_set", &gd_array_set, allow_raw_pointers());
-	function("gd_array_get", &gd_array_get, allow_raw_pointers());
-	function("gd_packed_vector2_array_unsafe", &gd_packed_vector2_array_unsafe, allow_raw_pointers());
-	function("gd_packed_vector2_array_access", &gd_packed_vector2_array_access, allow_raw_pointers());
-	function("gd_packed_vector3_array_unsafe", &gd_packed_vector3_array_unsafe, allow_raw_pointers());
-	function("gd_packed_vector3_array_access", &gd_packed_vector3_array_access, allow_raw_pointers());
-	function("gd_packed_vector4_array_unsafe", &gd_packed_vector4_array_unsafe, allow_raw_pointers());
-	function("gd_packed_vector4_array_access", &gd_packed_vector4_array_access, allow_raw_pointers());
-	function("gd_ref_get_object", &gd_ref_get_object, allow_raw_pointers());
-	function("gd_ref_set_object", &gd_ref_set_object, allow_raw_pointers());
-	function("gd_string_access", &gd_string_access, allow_raw_pointers());
-	function("gd_string_resize", &gd_string_resize, allow_raw_pointers());
-	function("gd_string_unsafe", &gd_string_unsafe, allow_raw_pointers());
-	function("gd_string_append", &gd_string_append, allow_raw_pointers());
-	function("gd_string_append_rune", &gd_string_append_rune, allow_raw_pointers());
-	function("gd_string_decode_latin1", &gd_string_decode_latin1, allow_raw_pointers());
-	function("gd_string_decode_utf8", &gd_string_decode_utf8, allow_raw_pointers());
-	function("gd_string_decode_utf16", &gd_string_decode_utf16, allow_raw_pointers());
-	function("gd_string_decode_utf32", &gd_string_decode_utf32, allow_raw_pointers());
-	function("gd_string_decode_wide", &gd_string_decode_wide, allow_raw_pointers());
-	function("gd_string_encode_latin1", &gd_string_encode_latin1, allow_raw_pointers());
-	function("gd_string_encode_utf8", &gd_string_encode_utf8, allow_raw_pointers());
-	function("gd_string_encode_utf16", &gd_string_encode_utf16, allow_raw_pointers());
-	function("gd_string_encode_utf32", &gd_string_encode_utf32, allow_raw_pointers());
-	function("gd_string_encode_wide", &gd_string_encode_wide, allow_raw_pointers());
-	function("gd_string_intern_latin1", &gd_string_intern_latin1, allow_raw_pointers());
-	function("gd_string_intern_utf8", &gd_string_intern_utf8, allow_raw_pointers());
 }
 
 #endif // __EMSCRIPTEN__

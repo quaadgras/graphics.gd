@@ -325,7 +325,7 @@ func Register[T Class](exports ...any) {
 		if Engine.IsEditorHint() {
 			switch super.(type) {
 			case EditorPlugin.Any:
-				gdextension.Host.Editor.AddPlugin(pointers.Get(className))
+				gdunsafe.EditorAddPlugin(gdunsafe.StringName(pointers.Get(className)[0]))
 			}
 		}
 		if embedded_name == "Singleton" {
@@ -486,8 +486,7 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 			class.Signals = append(class.Signals, signal)
 			return
 		}
-		var ptype gdextension.PropertyList
-		ptype = gdextension.Host.ClassDB.PropertyList.Make(1)
+		var ptype = gdunsafe.MakePropertyList(1)
 		if propertyOf(className, field, ptype) {
 			var exists bool
 			var member = new(docgen.Member)
@@ -508,13 +507,13 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 			if docs, ok := docs[member.Name]; ok {
 				member.Description = extractDoc(docs)
 			}
-			member.Type = gdextension.Host.ClassDB.PropertyList.Info.Type(ptype).String()
+			member.Type = gdextension.VariantType(ptype.InfoType()).String()
 			if !exists {
 				class.Members = append(class.Members, *member)
 			}
-			gdextension.Host.ClassDB.Register.Property(pointers.Get(className), ptype, pointers.Get(gd.NewStringName("")), pointers.Get(gd.NewStringName("")))
+			gdextension.Host.ClassDB.Register.Property(pointers.Get(className), gdextension.PropertyList(ptype), pointers.Get(gd.NewStringName("")), pointers.Get(gd.NewStringName("")))
 		}
-		gdextension.Host.ClassDB.PropertyList.Free(ptype)
+		ptype.Free()
 	}
 	for _, field := range ungroupedFields {
 		registerField(field)
@@ -558,7 +557,7 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 	gd.NewCallable(func() {
 		if Engine.IsEditorHint() {
 			docs, _ := xml.Marshal(class)
-			gdextension.Host.Editor.AddDocumentation(string(docs))
+			gdunsafe.EditorAddDocumentation(string(docs))
 		}
 	}).CallDeferred()
 }

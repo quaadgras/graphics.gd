@@ -5,11 +5,16 @@ package gdunsafe
 
 import (
 	"math/rand"
+	"reflect"
 	"structs"
 	"time"
 	"unsafe"
 
 	"graphics.gd/internal/threadsafe"
+	"graphics.gd/variant/Color"
+	"graphics.gd/variant/Vector2"
+	"graphics.gd/variant/Vector3"
+	"graphics.gd/variant/Vector4"
 )
 
 type Int = int64
@@ -202,6 +207,26 @@ func (err CallError) Error() string {
 	}
 }
 
+// LogLevel identifies the severity of a log message.
+type LogLevel uint32
+
+const (
+	LogError   LogLevel = 0
+	LogWarning LogLevel = 1
+)
+
+// StringEncoding identifies a string encoding for Decode, Encode, and Intern operations.
+type StringEncoding uint8
+
+const (
+	Latin1  StringEncoding = iota // ISO 8859-1
+	UTF8                          // UTF-8
+	UTF16LE                       // UTF-16 little-endian
+	UTF16BE                       // UTF-16 big-endian
+	UTF32                         // UTF-32
+	Wide                          // platform-native wide characters (wchar_t)
+)
+
 // ALIGN_UP aligns a value to the next multiple of align.
 func alignUp(value, align uint32) uint32 {
 	return (value + (align - 1)) & ^(align - 1)
@@ -236,4 +261,73 @@ func (shape Shape) SizeArguments() (size int) {
 		}
 	}
 	return
+}
+
+const (
+	TypeNil                VariantType = 0
+	TypeBool               VariantType = 1
+	TypeInt                VariantType = 2
+	TypeFloat              VariantType = 3
+	TypeString             VariantType = 4
+	TypeVector2            VariantType = 5
+	TypeVector2i           VariantType = 6
+	TypeRect2              VariantType = 7
+	TypeRect2i             VariantType = 8
+	TypeVector3            VariantType = 9
+	TypeVector3i           VariantType = 10
+	TypeTransform2D        VariantType = 11
+	TypeVector4            VariantType = 12
+	TypeVector4i           VariantType = 13
+	TypePlane              VariantType = 14
+	TypeQuaternion         VariantType = 15
+	TypeAABB               VariantType = 16
+	TypeBasis              VariantType = 17
+	TypeTransform3D        VariantType = 18
+	TypeProjection         VariantType = 19
+	TypeColor              VariantType = 20
+	TypeStringName         VariantType = 21
+	TypeNodePath           VariantType = 22
+	TypeRID                VariantType = 23
+	TypeObject             VariantType = 24
+	TypeCallable           VariantType = 25
+	TypeSignal             VariantType = 26
+	TypeDictionary         VariantType = 27
+	TypeArray              VariantType = 28
+	TypePackedByteArray    VariantType = 29
+	TypePackedInt32Array   VariantType = 30
+	TypePackedInt64Array   VariantType = 31
+	TypePackedFloat32Array VariantType = 32
+	TypePackedFloat64Array VariantType = 33
+	TypePackedStringArray  VariantType = 34
+	TypePackedVector2Array VariantType = 35
+	TypePackedVector3Array VariantType = 36
+	TypePackedColorArray   VariantType = 37
+	TypePackedVector4Array VariantType = 38
+)
+
+func (p PackedArray[T]) Type() VariantType {
+	switch reflect.TypeFor[T]() {
+	case reflect.TypeFor[byte]():
+		return TypePackedByteArray
+	case reflect.TypeFor[int32]():
+		return TypePackedInt32Array
+	case reflect.TypeFor[int64]():
+		return TypePackedInt64Array
+	case reflect.TypeFor[float32]():
+		return TypePackedFloat32Array
+	case reflect.TypeFor[float64]():
+		return TypePackedFloat64Array
+	case reflect.TypeFor[String]():
+		return TypePackedStringArray
+	case reflect.TypeFor[Vector2.XY]():
+		return TypePackedVector2Array
+	case reflect.TypeFor[Vector3.XYZ]():
+		return TypePackedVector3Array
+	case reflect.TypeFor[Color.RGBA]():
+		return TypePackedColorArray
+	case reflect.TypeFor[Vector4.XYZW]():
+		return TypePackedVector4Array
+	default:
+		return 0
+	}
 }

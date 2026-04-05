@@ -5,6 +5,7 @@ import (
 	"iter"
 	"reflect"
 
+	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
@@ -13,13 +14,12 @@ import (
 )
 
 func (d Dictionary) Index(key Variant) Variant {
-	var raw gdextension.Variant
-	gdextension.Host.Dictionaries.Get(pointers.Get(d), pointers.Get(key), gdextension.CallReturns[gdextension.Variant](&raw))
+	raw := gdunsafe.Dictionary(pointers.Get(d)[0]).Access(pointers.Get(key))
 	return pointers.Raw[Variant](raw).Copy()
 }
 
 func (d Dictionary) SetIndex(key Variant, value Variant) {
-	gdextension.Host.Dictionaries.Set(pointers.Get(d), pointers.Get(key), pointers.Cut(value.Copy(), true))
+	gdunsafe.Dictionary(pointers.Get(d)[0]).Modify(pointers.Get(key), pointers.Cut(value.Copy(), true))
 }
 
 func (d Dictionary) Free() {

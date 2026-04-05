@@ -10,7 +10,7 @@ import (
 type gdptr uint32
 
 type EnginePointer = uint32
-type PackedPointers = [1]uint64
+type PackedPointers = [2]uint32
 
 func UnsafeGet[T any](frame gdextension.Pointer, index int) T {
 	// frame is a list of pointers, so we need to get the pointer at the index

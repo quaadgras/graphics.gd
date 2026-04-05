@@ -108,7 +108,7 @@ var loader_methods struct {
 
 func init() {
 	gd.Links = append(gd.Links, func() {
-		loader_sname = gdextension.Host.Strings.Intern.UTF8("ResourceLoader")
+		loader_sname = gdextension.StringName{gdextension.Pointer(gdunsafe.UTF8.Intern("ResourceLoader"))}
 		gd.LinkMethods(loader_sname, &loader_methods, false)
 	})
 	gd.RegisterCleanup(func() {

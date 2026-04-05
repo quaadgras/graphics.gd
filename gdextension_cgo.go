@@ -6,6 +6,11 @@ package gdunsafe
 import "C"
 import (
 	"unsafe"
+
+	"graphics.gd/variant/Color"
+	"graphics.gd/variant/Vector2"
+	"graphics.gd/variant/Vector3"
+	"graphics.gd/variant/Vector4"
 )
 
 type (
@@ -14,6 +19,8 @@ type (
 	Array      uintptr
 	Dictionary uintptr
 	Pointer    uintptr
+
+	PackedArray[T byte | int32 | int64 | float32 | float64 | Color.RGBA | Vector2.XY | Vector3.XYZ | Vector4.XYZW | String] [2]uint64
 
 	VariantType uint32
 
@@ -49,8 +56,9 @@ func (array Array) Set(index Int, value Variant) {
 }
 
 func (array Array) Get(index Int) Variant {
-	r := C.gd_array_get(C.Array(array), C.int64_t(index))
-	return Variant{uint64(r.tag), uint64(r.payload[0]), uint64(r.payload[1])}
+	var r C.Variant
+	C.gd_array_get(C.Array(array), C.int64_t(index), &r)
+	return toVariant(r)
 }
 
 func VersionMajor() uint32     { return uint32(C.gd_version_major()) }
@@ -96,11 +104,57 @@ func (ptr Pointer) SetBits512(val [8]uint64) {
 
 func (ptr Pointer) Free() { C.gd_memory_free(C.UnsafePointer(ptr)) }
 
-func LogError(text, code, fn, file string, line int32, notify_editor bool) {
-	C.gd_log_error((*C.char)(unsafe.Pointer(unsafe.StringData(text))), C.int64_t(len(text)), (*C.char)(unsafe.Pointer(unsafe.StringData(code))), C.int64_t(len(code)), (*C.char)(unsafe.Pointer(unsafe.StringData(fn))), C.int64_t(len(fn)), (*C.char)(unsafe.Pointer(unsafe.StringData(file))), C.int64_t(len(file)), C.int32_t(line), C._Bool(notify_editor))
+// String operations
+
+func (s String) Access(idx Int) int32 {
+	return int32(C.gd_string_access(C.uintptr_t(s), C.int64_t(idx)))
 }
-func LogWarning(text, code, fn, file string, line int32, notify_editor bool) {
-	C.gd_log_warning((*C.char)(unsafe.Pointer(unsafe.StringData(text))), C.int64_t(len(text)), (*C.char)(unsafe.Pointer(unsafe.StringData(code))), C.int64_t(len(code)), (*C.char)(unsafe.Pointer(unsafe.StringData(fn))), C.int64_t(len(fn)), (*C.char)(unsafe.Pointer(unsafe.StringData(file))), C.int64_t(len(file)), C.int32_t(line), C._Bool(notify_editor))
+func (s String) Resize(size Int) String {
+	return String(C.gd_string_resize(C.uintptr_t(s), C.int64_t(size)))
+}
+func (s String) UnsafePtr() Pointer {
+	return Pointer(C.gd_string_unsafe(C.uintptr_t(s)))
+}
+func (s String) Append(other String) String {
+	return String(C.gd_string_append(C.uintptr_t(s), C.uintptr_t(other)))
+}
+func (s String) AppendRune(ch int32) String {
+	return String(C.gd_string_append_rune(C.uintptr_t(s), C.int32_t(ch)))
+}
+
+func (enc StringEncoding) String(s string) String {
+	return String(C.gd_string_decode(C.uint8_t(enc),
+		(*C.char)(unsafe.Pointer(unsafe.StringData(s))), C.int64_t(len(s))))
+}
+
+func (s String) Encode(enc StringEncoding, buf []byte) Int {
+	return Int(C.gd_string_encode(C.uint8_t(enc), C.uintptr_t(s),
+		(*C.char)(unsafe.Pointer(unsafe.SliceData(buf))), C.int64_t(len(buf))))
+}
+
+func (enc StringEncoding) Intern(s string) StringName {
+	return StringName(C.gd_string_intern(C.uint8_t(enc),
+		(*C.char)(unsafe.Pointer(unsafe.StringData(s))), C.int64_t(len(s))))
+}
+
+func Log(level LogLevel, text, code, fn, file string, line int32, notify_editor bool) {
+	C.gd_log(C.uint32_t(level),
+		(*C.char)(unsafe.Pointer(unsafe.StringData(text))), C.uint32_t(len(text)),
+		(*C.char)(unsafe.Pointer(unsafe.StringData(code))), C.uint32_t(len(code)),
+		(*C.char)(unsafe.Pointer(unsafe.StringData(fn))), C.uint32_t(len(fn)),
+		(*C.char)(unsafe.Pointer(unsafe.StringData(file))), C.uint32_t(len(file)),
+		C.int32_t(line), C._Bool(notify_editor))
+}
+
+func (ptr PointerTo[T]) Get() T  { return *(*T)(unsafe.Pointer(ptr)) }
+func (ptr PointerTo[T]) Set(v T) { *(*T)(unsafe.Pointer(ptr)) = v }
+
+func (p PackedArray[T]) Access(idx Int) PointerTo[T] {
+	return PointerTo[T](C.gd_packed_array_access(C.uint32_t(p.Type()), C.uint64_t(p[0]), C.uint64_t(p[1]), C.int64_t(idx)))
+}
+
+func (p PackedArray[T]) Modify(idx Int) PointerTo[T] {
+	return PointerTo[T](C.gd_packed_array_modify(C.uint32_t(p.Type()), C.uint64_t(p[0]), C.uint64_t(p[1]), C.int64_t(idx)))
 }
 
 func (t VariantType) Name() String {
@@ -435,6 +489,124 @@ func VariantUnsafeGetArray(vtype VariantType, idx Int, result unsafe.Pointer, sh
 }
 func VariantUnsafeGetIndex(vtype VariantType, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
 	C.gd_variant_unsafe_get_index(C.uint32_t(vtype), C.UnsafePointer(result), C.uint64_t(shape), C.UnsafePointer(args))
+}
+
+// Dictionary operations
+
+func (d Dictionary) Access(key Variant) Variant {
+	var result C.Variant
+	C.gd_packed_dictionary_access(C.uintptr_t(d), C.uint64_t(key[0]), C.uint64_t(key[1]), C.uint64_t(key[2]), &result)
+	return toVariant(result)
+}
+
+func (d Dictionary) Modify(key, val Variant) {
+	C.gd_packed_dictionary_modify(C.uintptr_t(d), C.uint64_t(key[0]), C.uint64_t(key[1]), C.uint64_t(key[2]), C.uint64_t(val[0]), C.uint64_t(val[1]), C.uint64_t(val[2]))
+}
+
+// RefCounted operations
+
+func RefGet(ref Pointer) Object {
+	return Object(C.gd_ref_get_object(C.uintptr_t(ref)))
+}
+
+func RefSet(ref Pointer, obj Object) {
+	C.gd_ref_set_object(C.uintptr_t(ref), C.uintptr_t(obj))
+}
+
+// Editor operations
+
+func EditorAddDocumentation(xml string) {
+	C.gd_editor_add_documentation((*C.char)(unsafe.Pointer(unsafe.StringData(xml))), C.uint32_t(len(xml)))
+}
+
+func EditorAddPlugin(name StringName) {
+	C.gd_editor_add_plugin(C.uintptr_t(name))
+}
+
+func EditorEndPlugin(name StringName) {
+	C.gd_editor_end_plugin(C.uintptr_t(name))
+}
+
+// PropertyList operations
+
+func MakePropertyList(n Int) PropertyList {
+	return PropertyList(C.gd_property_list_make(C.int64_t(n)))
+}
+
+func (p PropertyList) Push(vtype VariantType, name StringName, className StringName, hint uint32, hintString String, usage uint32, meta uint32) {
+	C.gd_property_list_push(C.uintptr_t(p), C.uint32_t(vtype), C.uintptr_t(name), C.uintptr_t(className), C.uint32_t(hint), C.uintptr_t(hintString), C.uint32_t(usage), C.uint32_t(meta))
+}
+
+func (p PropertyList) Free() {
+	C.gd_property_list_free(C.uintptr_t(p))
+}
+
+func (p PropertyList) InfoType() VariantType {
+	return VariantType(C.gd_property_info_type(C.uintptr_t(p)))
+}
+
+func (p PropertyList) InfoName() StringName {
+	return StringName(C.gd_property_info_name(C.uintptr_t(p)))
+}
+
+func (p PropertyList) InfoClassName() StringName {
+	return StringName(C.gd_property_info_class_name(C.uintptr_t(p)))
+}
+
+func (p PropertyList) InfoHint() uint32 {
+	return uint32(C.gd_property_info_hint(C.uintptr_t(p)))
+}
+
+func (p PropertyList) InfoHintString() String {
+	return String(C.gd_property_info_hint_string(C.uintptr_t(p)))
+}
+
+func (p PropertyList) InfoUsage() uint32 {
+	return uint32(C.gd_property_info_usage(C.uintptr_t(p)))
+}
+
+// MethodList operations
+
+func MakeMethodList(n Int) MethodList {
+	return MethodList(C.gd_method_list_make(C.int64_t(n)))
+}
+
+func (m MethodList) Push(name StringName, call FunctionID, flags uint32, returnInfo PropertyList, argsInfo PropertyList, count Int, defaults unsafe.Pointer) {
+	C.gd_method_list_push(C.uintptr_t(m), C.uintptr_t(name), C.uintptr_t(call), C.uint32_t(flags), C.uintptr_t(returnInfo), C.uintptr_t(argsInfo), C.int64_t(count), defaults)
+}
+
+func (m MethodList) Free() {
+	C.gd_method_list_free(C.uintptr_t(m))
+}
+
+// ClassDB sub-API operations
+
+func FileAccessWrite(file Object, buf []byte) {
+	C.gd_classdb_FileAccess_write(C.uintptr_t(file), (*C.char)(unsafe.Pointer(unsafe.SliceData(buf))), C.int64_t(len(buf)))
+}
+
+func FileAccessRead(file Object, buf []byte) int {
+	return int(C.gd_classdb_FileAccess_read(C.uintptr_t(file), (*C.char)(unsafe.Pointer(unsafe.SliceData(buf))), C.int64_t(len(buf))))
+}
+
+func ImageUnsafe(img Object) Pointer {
+	return Pointer(C.gd_classdb_Image_unsafe(C.uintptr_t(img)))
+}
+
+func ImageAccess(img Object, offset Int) byte {
+	return byte(C.gd_classdb_Image_access(C.uintptr_t(img), C.int64_t(offset)))
+}
+
+func XMLParserLoad(parser Object, buf []byte) int {
+	return int(C.gd_classdb_XMLParser_load(C.uintptr_t(parser), (*C.char)(unsafe.Pointer(unsafe.SliceData(buf))), C.int64_t(len(buf))))
+}
+
+func WorkerThreadPoolAddTask(pool Object, task Pointer, priority bool, description String) {
+	C.gd_classdb_WorkerThreadPool_add_task(C.uintptr_t(pool), C.uintptr_t(task), C._Bool(priority), C.uintptr_t(description))
+}
+
+func WorkerThreadPoolAddGroupTask(pool Object, task Pointer, elements, arg int32, priority bool, description String) {
+	C.gd_classdb_WorkerThreadPool_add_group_task(C.uintptr_t(pool), C.uintptr_t(task), C.int32_t(elements), C.int32_t(arg), C._Bool(priority), C.uintptr_t(description))
 }
 
 // Iterator operations

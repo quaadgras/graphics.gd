@@ -5,6 +5,11 @@ package gdunsafe
 import (
 	"sync"
 	"unsafe"
+
+	"graphics.gd/variant/Color"
+	"graphics.gd/variant/Vector2"
+	"graphics.gd/variant/Vector3"
+	"graphics.gd/variant/Vector4"
 )
 
 type (
@@ -13,6 +18,8 @@ type (
 	Array      uint32
 	Dictionary uint32
 	Pointer    uint32
+
+	PackedArray[T byte | int32 | int64 | float32 | float64 | Color.RGBA | Vector2.XY | Vector3.XYZ | Vector4.XYZW | String] [2]uint32
 
 	VariantType uint32
 
@@ -140,11 +147,210 @@ func (ptr Pointer) SetBits512(val [8]uint64) {
 //go:wasmimport gd memory_free
 func (ptr Pointer) Free()
 
-//go:wasmimport gd log_error
-func LogError(text, code, fn, file string, line int32, notify_editor bool)
+// String operations — buffer copy helpers
 
-//go:wasmimport gd log_warning
-func LogWarning(text, code, fn, file string, line int32, notify_editor bool)
+func copyBufToEngine(buf []byte) Pointer {
+	ptr := Malloc(Int(len(buf)))
+	off := Pointer(0)
+	for len(buf) > 0 {
+		switch {
+		case len(buf) >= 8:
+			Pointer(ptr + off).SetUint64(*(*uint64)(unsafe.Pointer(&buf[0])))
+			buf = buf[8:]
+			off += 8
+		case len(buf) >= 4:
+			Pointer(ptr + off).SetUint32(*(*uint32)(unsafe.Pointer(&buf[0])))
+			buf = buf[4:]
+			off += 4
+		case len(buf) >= 2:
+			Pointer(ptr + off).SetUint16(*(*uint16)(unsafe.Pointer(&buf[0])))
+			buf = buf[2:]
+			off += 2
+		default:
+			Pointer(ptr + off).SetByte(buf[0])
+			buf = buf[1:]
+			off += 1
+		}
+	}
+	return ptr
+}
+
+func copyBufToGo(ptr Pointer, buf []byte) {
+	off := 0
+	for len(buf) > 0 {
+		switch {
+		case len(buf) >= 4:
+			*(*uint32)(unsafe.Pointer(&buf[0])) = Pointer(ptr + Pointer(off)).Uint32()
+			buf = buf[4:]
+			off += 4
+		case len(buf) >= 2:
+			*(*uint16)(unsafe.Pointer(&buf[0])) = Pointer(ptr + Pointer(off)).Uint16()
+			buf = buf[2:]
+			off += 2
+		default:
+			buf[0] = Pointer(ptr + Pointer(off)).Byte()
+			buf = buf[1:]
+			off += 1
+		}
+	}
+	ptr.Free()
+}
+
+// String basic operations
+
+//go:wasmimport gd string_access
+func gd_string_access_wasm(s uint32, idx int64) int32
+
+func (s String) Access(idx Int) int32 {
+	return gd_string_access_wasm(uint32(s), int64(idx))
+}
+
+//go:wasmimport gd string_resize
+func gd_string_resize_wasm(s uint32, size int64) uint32
+
+func (s String) Resize(size Int) String {
+	return String(gd_string_resize_wasm(uint32(s), int64(size)))
+}
+
+//go:wasmimport gd string_unsafe
+func gd_string_unsafe_wasm(s uint32) uint32
+
+func (s String) UnsafePtr() Pointer {
+	return Pointer(gd_string_unsafe_wasm(uint32(s)))
+}
+
+//go:wasmimport gd string_append
+func gd_string_append_wasm(s uint32, other uint32) uint32
+
+func (s String) Append(other String) String {
+	return String(gd_string_append_wasm(uint32(s), uint32(other)))
+}
+
+//go:wasmimport gd string_append_rune
+func gd_string_append_rune_wasm(s uint32, ch int32) uint32
+
+func (s String) AppendRune(ch int32) String {
+	return String(gd_string_append_rune_wasm(uint32(s), ch))
+}
+
+//go:wasmimport gd string_decode
+func gd_string_decode_wasm(enc uint32, s uint32, length int64) uint32
+
+//go:wasmimport gd string_encode
+func gd_string_encode_wasm(enc uint32, s uint32, buf uint32, cap int64) int64
+
+//go:wasmimport gd string_intern
+func gd_string_intern_wasm(enc uint32, s uint32, length int64) uint32
+
+func (enc StringEncoding) String(s string) String {
+	buf := copyBufToEngine(unsafe.Slice(unsafe.StringData(s), len(s)))
+	result := String(gd_string_decode_wasm(uint32(enc), uint32(buf), int64(len(s))))
+	buf.Free()
+	return result
+}
+
+func (s String) Encode(enc StringEncoding, buf []byte) Int {
+	ebuf := copyBufToEngine(buf)
+	n := Int(gd_string_encode_wasm(uint32(enc), uint32(s), uint32(ebuf), int64(len(buf))))
+	copyBufToGo(ebuf, buf)
+	return n
+}
+
+func (enc StringEncoding) Intern(s string) StringName {
+	buf := copyBufToEngine(unsafe.Slice(unsafe.StringData(s), len(s)))
+	result := StringName(gd_string_intern_wasm(uint32(enc), uint32(buf), int64(len(s))))
+	buf.Free()
+	return result
+}
+
+//go:wasmimport gd log
+func gd_log_wasm(level uint32, text uint32, text_len int32, code uint32, code_len int32, fn uint32, fn_len int32, file uint32, file_len int32, line int32, notify_editor uint32)
+
+func Log(level LogLevel, text, code, fn, file string, line int32, notify_editor bool) {
+	etext := copyBufToEngine(unsafe.Slice(unsafe.StringData(text), len(text)))
+	ecode := copyBufToEngine(unsafe.Slice(unsafe.StringData(code), len(code)))
+	efn := copyBufToEngine(unsafe.Slice(unsafe.StringData(fn), len(fn)))
+	efile := copyBufToEngine(unsafe.Slice(unsafe.StringData(file), len(file)))
+	var ne uint32
+	if notify_editor {
+		ne = 1
+	}
+	gd_log_wasm(uint32(level), uint32(etext), int32(len(text)), uint32(ecode), int32(len(code)), uint32(efn), int32(len(fn)), uint32(efile), int32(len(file)), line, ne)
+	etext.Free()
+	ecode.Free()
+	efn.Free()
+	efile.Free()
+}
+
+//go:wasmimport gd packed_array_access
+func gd_packed_array_access(t uint32, a1, a2 uint32, idx int64) uint32
+
+//go:wasmimport gd packed_array_modify
+func gd_packed_array_modify(t uint32, a1, a2 uint32, idx int64) uint32
+
+func (p PackedArray[T]) Access(idx Int) PointerTo[T] {
+	return PointerTo[T](gd_packed_array_access(uint32(p.Type()), p[0], p[1], int64(idx)))
+}
+
+func (p PackedArray[T]) Modify(idx Int) PointerTo[T] {
+	return PointerTo[T](gd_packed_array_modify(uint32(p.Type()), p[0], p[1], int64(idx)))
+}
+
+func (ptr PointerTo[T]) Get() T {
+	var v T
+	buf := unsafe.Slice((*byte)(unsafe.Pointer(&v)), unsafe.Sizeof(v))
+	copyBufToGo2(Pointer(ptr), buf)
+	return v
+}
+
+func (ptr PointerTo[T]) Set(v T) {
+	buf := unsafe.Slice((*byte)(unsafe.Pointer(&v)), unsafe.Sizeof(v))
+	copyBufToEngine2(Pointer(ptr), buf)
+}
+
+func copyBufToGo2(ptr Pointer, buf []byte) {
+	off := 0
+	for len(buf) > 0 {
+		switch {
+		case len(buf) >= 4:
+			*(*uint32)(unsafe.Pointer(&buf[0])) = Pointer(ptr + Pointer(off)).Uint32()
+			buf = buf[4:]
+			off += 4
+		case len(buf) >= 2:
+			*(*uint16)(unsafe.Pointer(&buf[0])) = Pointer(ptr + Pointer(off)).Uint16()
+			buf = buf[2:]
+			off += 2
+		default:
+			buf[0] = Pointer(ptr + Pointer(off)).Byte()
+			buf = buf[1:]
+			off += 1
+		}
+	}
+}
+
+func copyBufToEngine2(ptr Pointer, buf []byte) {
+	off := Pointer(0)
+	for len(buf) > 0 {
+		switch {
+		case len(buf) >= 8:
+			Pointer(ptr + off).SetUint64(*(*uint64)(unsafe.Pointer(&buf[0])))
+			buf = buf[8:]
+			off += 8
+		case len(buf) >= 4:
+			Pointer(ptr + off).SetUint32(*(*uint32)(unsafe.Pointer(&buf[0])))
+			buf = buf[4:]
+			off += 4
+		case len(buf) >= 2:
+			Pointer(ptr + off).SetUint16(*(*uint16)(unsafe.Pointer(&buf[0])))
+			buf = buf[2:]
+			off += 2
+		default:
+			Pointer(ptr + off).SetByte(buf[0])
+			buf = buf[1:]
+			off += 1
+		}
+	}
+}
 
 //go:wasmimport gd variant_type_name
 func (t VariantType) Name() String
@@ -272,11 +478,12 @@ func VariantTypeMethod(vtype VariantType, method StringName, hash int64) Functio
 func gd_variant_type_unsafe_call_wasm(self Pointer, fn FunctionID, result Pointer, shape uint64, args Pointer)
 
 func VariantTypeUnsafeCall(self unsafe.Pointer, fn FunctionID, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
-	mem_self := copyArguments(Shape(shape)>>4, self)
+	selfShape := Shape(shape) >> 4
+	mem_self := copySelf(selfShape, self)
 	mem_result := makeResult(Shape(shape))
-	mem_args := copyArguments(Shape(shape), args)
+	mem_args := copyArguments(selfShape, args)
 	gd_variant_type_unsafe_call_wasm(Pointer(mem_self), fn, Pointer(mem_result), shape, Pointer(mem_args))
-	loadResult(Shape(shape)>>4, self, mem_self)
+	loadResult(selfShape, self, mem_self)
 	loadResult(Shape(shape), result, mem_result)
 }
 
@@ -370,9 +577,11 @@ func gd_on_callable_length(c CallableID) int64 {
 var wasmResultBufs [2]Pointer
 var wasmResultIdx int
 var wasmArgBuf Pointer
+var wasmSelfBuf Pointer
 
 var wasmSetup = sync.OnceFunc(func() {
 	wasmArgBuf = Malloc(64 * 64)
+	wasmSelfBuf = Malloc(64)
 	for i := range wasmResultBufs {
 		wasmResultBufs[i] = Malloc(64 * 64)
 		Clear(wasmResultBufs[i], 64*64)
@@ -427,36 +636,75 @@ func copyVariants[T ~unsafe.Pointer | *Variant](args T, n int) Pointer {
 	return wasmArgBuf
 }
 
-func copyArguments(shape Shape, args unsafe.Pointer) Pointer {
+// copySelf copies self data to wasmSelfBuf. Uses SizeResult() because the
+// self type is at nibble 0 of the (already shifted) shape.
+func copySelf(selfShape Shape, self unsafe.Pointer) Pointer {
 	wasmSetup()
+	if self == nil {
+		return 0
+	}
+	size := selfShape.SizeResult()
+	if size == 0 {
+		return 0
+	}
+	buf := unsafe.Slice((*byte)(self), size)
+	off := Pointer(0)
+	for len(buf) > 0 {
+		switch {
+		case len(buf) >= 8:
+			Pointer(wasmSelfBuf + off).SetUint64(*(*uint64)(unsafe.Pointer(&buf[0])))
+			buf = buf[8:]
+			off += 8
+		case len(buf) >= 4:
+			Pointer(wasmSelfBuf + off).SetUint32(*(*uint32)(unsafe.Pointer(&buf[0])))
+			buf = buf[4:]
+			off += 4
+		case len(buf) >= 2:
+			Pointer(wasmSelfBuf + off).SetUint16(*(*uint16)(unsafe.Pointer(&buf[0])))
+			buf = buf[2:]
+			off += 2
+		default:
+			Pointer(wasmSelfBuf + off).SetByte(*(*uint8)(unsafe.Pointer(&buf[0])))
+			buf = buf[1:]
+			off += 1
+		}
+	}
+	return wasmSelfBuf
+}
+
+func copyArgumentsTo(shape Shape, args unsafe.Pointer, target Pointer) Pointer {
 	if args == nil {
 		return 0
 	}
 	bytes := shape.SizeArguments()
 	buf := unsafe.Slice((*byte)(args), bytes)
-	ptr := wasmArgBuf
 	off := Pointer(0)
 	for len(buf) > 0 {
 		switch {
 		case len(buf) >= 8:
-			Pointer(ptr + off).SetUint64(*(*uint64)(unsafe.Pointer(&buf[0])))
+			Pointer(target + off).SetUint64(*(*uint64)(unsafe.Pointer(&buf[0])))
 			buf = buf[8:]
 			off += 8
 		case len(buf) >= 4:
-			Pointer(ptr + off).SetUint32(*(*uint32)(unsafe.Pointer(&buf[0])))
+			Pointer(target + off).SetUint32(*(*uint32)(unsafe.Pointer(&buf[0])))
 			buf = buf[4:]
 			off += 4
 		case len(buf) >= 2:
-			Pointer(ptr + off).SetUint16(*(*uint16)(unsafe.Pointer(&buf[0])))
+			Pointer(target + off).SetUint16(*(*uint16)(unsafe.Pointer(&buf[0])))
 			buf = buf[2:]
 			off += 2
 		default:
-			Pointer(ptr + off).SetByte(*(*uint8)(unsafe.Pointer(&buf[0])))
+			Pointer(target + off).SetByte(*(*uint8)(unsafe.Pointer(&buf[0])))
 			buf = buf[1:]
 			off += 1
 		}
 	}
-	return ptr
+	return target
+}
+
+func copyArguments(shape Shape, args unsafe.Pointer) Pointer {
+	wasmSetup()
+	return copyArgumentsTo(shape, args, wasmArgBuf)
 }
 
 func readVariant(addr Pointer) Variant {
@@ -957,4 +1205,182 @@ func (v Variant) IteratorLoad(iter Variant, result unsafe.Pointer, err unsafe.Po
 	gd_iterator_load(v[0], v[1], v[2], iter[0], iter[1], iter[2], Pointer(mem_result), Pointer(mem_err))
 	loadResult(SizeVariant, result, mem_result)
 	loadResult(SizeCallError, err, mem_err)
+}
+
+// Dictionary operations
+
+//go:wasmimport gd packed_dictionary_access
+func gd_packed_dictionary_access(d Dictionary, k1, k2, k3 uint64, result Pointer)
+
+func (d Dictionary) Access(key Variant) Variant {
+	mem := makeResult(SizeVariant)
+	gd_packed_dictionary_access(d, key[0], key[1], key[2], Pointer(mem))
+	var result Variant
+	loadResult(SizeVariant, &result, mem)
+	return result
+}
+
+//go:wasmimport gd packed_dictionary_modify
+func gd_packed_dictionary_modify(d Dictionary, k1, k2, k3, v1, v2, v3 uint64)
+
+func (d Dictionary) Modify(key, val Variant) {
+	gd_packed_dictionary_modify(d, key[0], key[1], key[2], val[0], val[1], val[2])
+}
+
+// RefCounted operations
+
+//go:wasmimport gd ref_get_object
+func gd_ref_get_object(ref Pointer) Object
+
+func RefGet(ref Pointer) Object { return gd_ref_get_object(ref) }
+
+//go:wasmimport gd ref_set_object
+func gd_ref_set_object(ref Pointer, obj Object)
+
+func RefSet(ref Pointer, obj Object) { gd_ref_set_object(ref, obj) }
+
+// Editor operations
+
+//go:wasmimport gd editor_add_documentation
+func EditorAddDocumentation(xml string)
+
+//go:wasmimport gd editor_add_plugin
+func EditorAddPlugin(name StringName)
+
+//go:wasmimport gd editor_end_plugin
+func EditorEndPlugin(name StringName)
+
+// PropertyList operations
+
+//go:wasmimport gd property_list_make
+func MakePropertyList(n Int) PropertyList
+
+//go:wasmimport gd property_list_push
+func gd_property_list_push(list PropertyList, vtype VariantType, name StringName, className StringName, hint uint32, hintString String, usage uint32, meta uint32)
+
+func (p PropertyList) Push(vtype VariantType, name StringName, className StringName, hint uint32, hintString String, usage uint32, meta uint32) {
+	gd_property_list_push(p, vtype, name, className, hint, hintString, usage, meta)
+}
+
+//go:wasmimport gd property_list_free
+func gd_property_list_free(list PropertyList)
+
+func (p PropertyList) Free() { gd_property_list_free(p) }
+
+//go:wasmimport gd property_info_type
+func gd_property_info_type(info PropertyList) VariantType
+
+func (p PropertyList) InfoType() VariantType { return gd_property_info_type(p) }
+
+//go:wasmimport gd property_info_name
+func gd_property_info_name(info PropertyList) StringName
+
+func (p PropertyList) InfoName() StringName { return gd_property_info_name(p) }
+
+//go:wasmimport gd property_info_class_name
+func gd_property_info_class_name(info PropertyList) StringName
+
+func (p PropertyList) InfoClassName() StringName { return gd_property_info_class_name(p) }
+
+//go:wasmimport gd property_info_hint
+func gd_property_info_hint(info PropertyList) uint32
+
+func (p PropertyList) InfoHint() uint32 { return gd_property_info_hint(p) }
+
+//go:wasmimport gd property_info_hint_string
+func gd_property_info_hint_string(info PropertyList) String
+
+func (p PropertyList) InfoHintString() String { return gd_property_info_hint_string(p) }
+
+//go:wasmimport gd property_info_usage
+func gd_property_info_usage(info PropertyList) uint32
+
+func (p PropertyList) InfoUsage() uint32 { return gd_property_info_usage(p) }
+
+// MethodList operations
+
+//go:wasmimport gd method_list_make
+func gd_method_list_make(n int64) MethodList
+
+func MakeMethodList(n Int) MethodList { return gd_method_list_make(int64(n)) }
+
+//go:wasmimport gd method_list_push
+func gd_method_list_push(list MethodList, name StringName, call FunctionID, flags uint32, returnInfo PropertyList, argsInfo PropertyList, count int64, defaults Pointer)
+
+func (m MethodList) Push(name StringName, call FunctionID, flags uint32, returnInfo PropertyList, argsInfo PropertyList, count Int, defaults unsafe.Pointer) {
+	var def Pointer
+	if defaults != nil {
+		def = Pointer(*(*uint32)(defaults))
+	}
+	gd_method_list_push(m, name, call, flags, returnInfo, argsInfo, int64(count), def)
+}
+
+//go:wasmimport gd method_list_free
+func gd_method_list_free(list MethodList)
+
+func (m MethodList) Free() { gd_method_list_free(m) }
+
+// ClassDB sub-API operations
+
+//go:wasmimport gd classdb_FileAccess_write
+func gd_classdb_FileAccess_write(file Object, buf Pointer, length int64)
+
+func FileAccessWrite(file Object, buf []byte) {
+	ebuf := copyBufToEngine(buf)
+	gd_classdb_FileAccess_write(file, ebuf, int64(len(buf)))
+	ebuf.Free()
+}
+
+//go:wasmimport gd classdb_FileAccess_read
+func gd_classdb_FileAccess_read(file Object, buf Pointer, cap int64) int64
+
+func FileAccessRead(file Object, buf []byte) int {
+	ebuf := copyBufToEngine(buf)
+	n := int(gd_classdb_FileAccess_read(file, ebuf, int64(len(buf))))
+	copyBufToGo(ebuf, buf)
+	return n
+}
+
+//go:wasmimport gd classdb_Image_unsafe
+func gd_classdb_Image_unsafe(img Object) Pointer
+
+func ImageUnsafe(img Object) Pointer { return gd_classdb_Image_unsafe(img) }
+
+//go:wasmimport gd classdb_Image_access
+func gd_classdb_Image_access(img Object, offset int64) uint32
+
+func ImageAccess(img Object, offset Int) byte {
+	return byte(gd_classdb_Image_access(img, int64(offset)))
+}
+
+//go:wasmimport gd classdb_XMLParser_load
+func gd_classdb_XMLParser_load(parser Object, buf Pointer, cap int64) int64
+
+func XMLParserLoad(parser Object, buf []byte) int {
+	ebuf := copyBufToEngine(buf)
+	n := int(gd_classdb_XMLParser_load(parser, ebuf, int64(len(buf))))
+	copyBufToGo(ebuf, buf)
+	return n
+}
+
+//go:wasmimport gd classdb_WorkerThreadPool_add_task
+func gd_classdb_WorkerThreadPool_add_task(pool Object, task Pointer, priority uint32, description String)
+
+func WorkerThreadPoolAddTask(pool Object, task Pointer, priority bool, description String) {
+	var p uint32
+	if priority {
+		p = 1
+	}
+	gd_classdb_WorkerThreadPool_add_task(pool, task, p, description)
+}
+
+//go:wasmimport gd classdb_WorkerThreadPool_add_group_task
+func gd_classdb_WorkerThreadPool_add_group_task(pool Object, task Pointer, elements int32, arg int32, priority uint32, description String)
+
+func WorkerThreadPoolAddGroupTask(pool Object, task Pointer, elements, arg int32, priority bool, description String) {
+	var p uint32
+	if priority {
+		p = 1
+	}
+	gd_classdb_WorkerThreadPool_add_group_task(pool, task, elements, arg, p, description)
 }

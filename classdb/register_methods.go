@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+	"unsafe"
 
+	gdunsafe "graphics.gd"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdreference"
@@ -47,7 +49,7 @@ func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintpt
 		}
 		elligible = append(elligible, method)
 	}
-	var minfo = gdextension.Host.ClassDB.MethodList.Make(len(elligible))
+	var minfo = gdunsafe.MakeMethodList(int64(len(elligible)))
 	for _, method := range elligible {
 		if name, ok := renames[method.Func.Pointer()]; ok {
 			method.Name = name
@@ -55,22 +57,22 @@ func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintpt
 			method.Name = String.ToSnakeCase(method.Name)
 		}
 		var offset = 0
-		var arguments = gdextension.Host.ClassDB.PropertyList.Make(method.Type.NumIn() - 1 - offset)
+		var arguments = gdunsafe.MakePropertyList(int64(method.Type.NumIn() - 1 - offset))
 		for i := 1 + offset; i < method.Type.NumIn(); i++ {
 			if !propertyOf(class, reflect.StructField{Name: "arg" + fmt.Sprint(i), Type: method.Type.In(i)}, arguments) {
 				panic(fmt.Sprintf("gdextension: method %s has an argument of unsupported type %v", method.Name, method.Type.In(i)))
 			}
 		}
-		var returns = gdextension.Host.ClassDB.PropertyList.Make(method.Type.NumOut())
+		var returns = gdunsafe.MakePropertyList(int64(method.Type.NumOut()))
 		if method.Type.NumOut() > 0 {
 			if !propertyOf(class, reflect.StructField{Name: "result", Type: method.Type.Out(0)}, returns) {
 				panic(fmt.Sprintf("gdextension: method %s has a return value of unsupported type %v", method.Name, method.Type.Out(0)))
 			}
 		}
 		call := variantCall(method)
-		gdextension.Host.ClassDB.MethodList.Push(minfo,
-			pointers.Get(gd.NewStringName(method.Name)),
-			methods.New(&methodImplementation{
+		minfo.Push(
+			gdunsafe.StringName(pointers.Get(gd.NewStringName(method.Name))[0]),
+			gdunsafe.FunctionID(methods.New(&methodImplementation{
 				arg_count: method.Type.NumIn(),
 				dynamic:   call,
 				checked: func(instance *instanceImplementation, args, ret gdextension.Pointer) {
@@ -84,39 +86,39 @@ func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintpt
 					result, _ := call(instance, v...)
 					return result
 				},
-			}),
+			})),
 			0,
 			returns,
 			arguments,
 			0,
-			nil,
+			unsafe.Pointer(nil),
 		)
-		defer gdextension.Host.ClassDB.PropertyList.Free(arguments)
-		defer gdextension.Host.ClassDB.PropertyList.Free(returns)
+		defer arguments.Free()
+		defer returns.Free()
 	}
-	gdextension.Host.ClassDB.Register.Methods(pointers.Get(class), minfo)
-	gdextension.Host.ClassDB.MethodList.Free(minfo)
+	gdextension.Host.ClassDB.Register.Methods(pointers.Get(class), gdextension.MethodList(minfo))
+	minfo.Free()
 }
 
 func registerStaticMethod(class gd.StringName, name string, fn reflect.Value) {
 	ftype := fn.Type()
-	var arguments = gdextension.Host.ClassDB.PropertyList.Make(ftype.NumIn())
+	var arguments = gdunsafe.MakePropertyList(int64(ftype.NumIn()))
 	for i := 0; i < ftype.NumIn(); i++ {
 		if !propertyOf(class, reflect.StructField{Name: "arg" + fmt.Sprint(i), Type: ftype.In(i)}, arguments) {
 			panic(fmt.Sprintf("gdextension: method %s has an argument of unsupported type %v", name, ftype.In(i)))
 		}
 	}
-	var returns = gdextension.Host.ClassDB.PropertyList.Make(ftype.NumOut())
+	var returns = gdunsafe.MakePropertyList(int64(ftype.NumOut()))
 	if ftype.NumOut() > 0 {
 		if !propertyOf(class, reflect.StructField{Name: "result", Type: ftype.Out(0)}, returns) {
 			panic(fmt.Sprintf("gdextension: method %s has a return value of unsupported type %v", name, ftype.Out(0)))
 		}
 	}
-	var method = gdextension.Host.ClassDB.MethodList.Make(1)
+	var method = gdunsafe.MakeMethodList(1)
 	var call = variantCallStatic(fn)
-	gdextension.Host.ClassDB.MethodList.Push(method,
-		pointers.Get(gd.NewStringName(name)),
-		methods.New(&methodImplementation{
+	method.Push(
+		gdunsafe.StringName(pointers.Get(gd.NewStringName(name))[0]),
+		gdunsafe.FunctionID(methods.New(&methodImplementation{
 			arg_count: ftype.NumIn(),
 			dynamic:   call,
 			checked: func(instance *instanceImplementation, args, ret gdextension.Pointer) {
@@ -126,17 +128,17 @@ func registerStaticMethod(class gd.StringName, name string, fn reflect.Value) {
 				result, _ := call(instance, v...)
 				return result
 			},
-		}),
-		gdextension.MethodFlagStatic,
+		})),
+		uint32(gdextension.MethodFlagStatic),
 		returns,
 		arguments,
 		0,
-		nil,
+		unsafe.Pointer(nil),
 	)
-	gdextension.Host.ClassDB.Register.Methods(pointers.Get(class), method)
-	gdextension.Host.ClassDB.MethodList.Free(method)
-	gdextension.Host.ClassDB.PropertyList.Free(arguments)
-	gdextension.Host.ClassDB.PropertyList.Free(returns)
+	gdextension.Host.ClassDB.Register.Methods(pointers.Get(class), gdextension.MethodList(method))
+	method.Free()
+	arguments.Free()
+	returns.Free()
 }
 
 type methodImplementation struct {

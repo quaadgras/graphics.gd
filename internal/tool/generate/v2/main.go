@@ -272,7 +272,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprintf(file, "func init() {\n")
 		if class.Name != "Startup" {
 			fmt.Fprintf(file, "\tgd.Links = append(gd.Links, func() {\n")
-			fmt.Fprintf(file, "\t\tsname = gdextension.Host.Strings.Intern.UTF8(%q)\n", class.Name)
+			fmt.Fprintf(file, "\t\tsname = gdextension.StringName{gdextension.Pointer(gdunsafe.UTF8.Intern(%q))}\n", class.Name)
 			fmt.Fprintf(file, "\t\totype = gdunsafe.ObjectTypeTag(gdunsafe.StringName(sname[0]))\n")
 			fmt.Fprintf(file, "\t\tgd.LinkMethods(sname, &methods, %v)\n", class.APIType == "editor")
 			fmt.Fprintf(file, "\t\t})\n")

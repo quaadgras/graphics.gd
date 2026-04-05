@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"strings"
 
+	gdunsafe "graphics.gd"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdreference"
@@ -43,7 +44,7 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 				panic(fmt.Sprintf("gdextension.RegisterClass: %v.%v must not return any values",
 					rtype.Name(), name))
 			}
-			var args = gdextension.Host.ClassDB.PropertyList.Make(ftype.NumIn() - 1)
+			var args = gdunsafe.MakePropertyList(int64(ftype.NumIn() - 1))
 			for i := 1; i < ftype.NumIn(); i++ {
 				vtype, ok := gd.VariantTypeOf(ftype.In(i))
 				if ok {
@@ -51,25 +52,25 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 					if i-1 < len(argNames) {
 						name = argNames[i-1]
 					}
-					gdextension.Host.ClassDB.PropertyList.Push(args,
-						vtype,
-						pointers.Get(gd.NewStringName(name)),
-						pointers.Get(gd.NewStringName(nameOf(ftype.In(i)))),
+					args.Push(
+						gdunsafe.VariantType(vtype),
+						gdunsafe.StringName(pointers.Get(gd.NewStringName(name))[0]),
+						gdunsafe.StringName(pointers.Get(gd.NewStringName(nameOf(ftype.In(i))))[0]),
 						0,
-						pointers.Get(gd.NewString("")),
+						gdunsafe.String(pointers.Get(gd.NewString(""))[0]),
 						0,
 						0,
 					)
 				}
 			}
-			gdextension.Host.ClassDB.Register.Signal(pointers.Get(class), pointers.Get(signalName), args)
-			gdextension.Host.ClassDB.PropertyList.Free(args)
+			gdextension.Host.ClassDB.Register.Signal(pointers.Get(class), pointers.Get(signalName), gdextension.PropertyList(args))
+			args.Free()
 		}
 		if field.Type.Kind() == reflect.Chan && field.Type.ChanDir() == reflect.SendDir {
 			var signalName = gd.NewStringName(name)
 			var etype = field.Type.Elem()
 			if etype.Kind() == reflect.Func {
-				var args = gdextension.Host.ClassDB.PropertyList.Make(etype.NumOut())
+				var args = gdunsafe.MakePropertyList(int64(etype.NumOut()))
 				for i := 0; i < etype.NumOut(); i++ {
 					arg := etype.Out(i)
 					vtype, ok := gd.VariantTypeOf(arg)
@@ -78,43 +79,43 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 						if i < len(argNames) {
 							name = argNames[i]
 						}
-						gdextension.Host.ClassDB.PropertyList.Push(args,
-							vtype,
-							pointers.Get(gd.NewStringName(name)),
-							pointers.Get(gd.NewStringName(nameOf(arg))),
+						args.Push(
+							gdunsafe.VariantType(vtype),
+							gdunsafe.StringName(pointers.Get(gd.NewStringName(name))[0]),
+							gdunsafe.StringName(pointers.Get(gd.NewStringName(nameOf(arg)))[0]),
 							0,
-							pointers.Get(gd.NewString("")),
+							gdunsafe.String(pointers.Get(gd.NewString(""))[0]),
 							0,
 							0,
 						)
 					}
 				}
-				gdextension.Host.ClassDB.Register.Signal(pointers.Get(class), pointers.Get(signalName), args)
-				gdextension.Host.ClassDB.PropertyList.Free(args)
+				gdextension.Host.ClassDB.Register.Signal(pointers.Get(class), pointers.Get(signalName), gdextension.PropertyList(args))
+				args.Free()
 			} else if !(etype.Kind() == reflect.Struct && etype.NumField() == 0) {
-				var args = gdextension.Host.ClassDB.PropertyList.Make(1)
+				var args = gdunsafe.MakePropertyList(1)
 				vtype, ok := gd.VariantTypeOf(etype)
 				if ok {
 					name := "event"
 					if len(argNames) > 0 {
 						name = argNames[0]
 					}
-					gdextension.Host.ClassDB.PropertyList.Push(args,
-						vtype,
-						pointers.Get(gd.NewStringName(name)),
-						pointers.Get(gd.NewStringName(nameOf(etype))),
+					args.Push(
+						gdunsafe.VariantType(vtype),
+						gdunsafe.StringName(pointers.Get(gd.NewStringName(name))[0]),
+						gdunsafe.StringName(pointers.Get(gd.NewStringName(nameOf(etype)))[0]),
 						0,
-						pointers.Get(gd.NewString("")),
+						gdunsafe.String(pointers.Get(gd.NewString(""))[0]),
 						0,
 						0,
 					)
 				}
-				gdextension.Host.ClassDB.Register.Signal(pointers.Get(class), pointers.Get(signalName), args)
-				gdextension.Host.ClassDB.PropertyList.Free(args)
+				gdextension.Host.ClassDB.Register.Signal(pointers.Get(class), pointers.Get(signalName), gdextension.PropertyList(args))
+				args.Free()
 			} else {
-				var args = gdextension.Host.ClassDB.PropertyList.Make(0)
-				gdextension.Host.ClassDB.Register.Signal(pointers.Get(class), pointers.Get(signalName), args)
-				gdextension.Host.ClassDB.PropertyList.Free(args)
+				var args = gdunsafe.MakePropertyList(0)
+				gdextension.Host.ClassDB.Register.Signal(pointers.Get(class), pointers.Get(signalName), gdextension.PropertyList(args))
+				args.Free()
 			}
 		}
 	}

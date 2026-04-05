@@ -10,7 +10,7 @@ import (
 
 //go:wasmexport gd_on_editor_class_in_use_detection
 func gd_on_editor_class_in_use_detection(p0 uint32, p1 uint32, p2 uint32) {
-	gdextension.On.Editor.ClassInUseDetection(gdextension.PackedArray[gdextension.String]{uint64(uint64(uint64(p0)<<32) | uint64(p1))}, gdextension.Returns[gdextension.PackedArray[gdextension.String]](p2))
+	gdextension.On.Editor.ClassInUseDetection(gdextension.PackedArray[gdextension.String]{p0, p1}, gdextension.Returns[gdextension.PackedArray[gdextension.String]](p2))
 }
 
 //go:wasmexport gd_on_engine_init

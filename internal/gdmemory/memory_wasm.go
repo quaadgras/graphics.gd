@@ -72,25 +72,25 @@ func Set[T gdextension.AnyVariant | gdextension.CallError](frame gdextension.Poi
 	}
 }
 
-func IntoSlice[T gdextension.Packable](ptr gdextension.Pointer, len int) []T {
+func IntoSlice[T gdextension.Packable](ptr gdunsafe.PointerTo[T], len int) []T {
 	if ptr == 0 {
 		panic("nil pointer dereference")
 	}
 	var slice = make([]T, len)
 	for i := range slice {
-		slice[i] = Get[T](ptr + gdextension.Pointer(i)*gdextension.Pointer(unsafe.Sizeof([1]T{}[0])))
+		slice[i] = Get[T](gdextension.Pointer(ptr) + gdextension.Pointer(i)*gdextension.Pointer(unsafe.Sizeof([1]T{}[0])))
 	}
 	return slice
 }
 
-func LoadSlice[T gdextension.Packable](ptr gdextension.Pointer, slice []T) {
+func LoadSlice[T gdextension.Packable](ptr gdunsafe.PointerTo[T], slice []T) {
 	if ptr == 0 {
 		panic("nil pointer dereference")
 	}
 	if len(slice) == 0 {
 		return
 	}
-	off := gdextension.Pointer(0)
+	off := gdunsafe.PointerTo[T](0)
 	buf := unsafe.Slice((*byte)(unsafe.Pointer(&slice[0])), len(slice)*int(unsafe.Sizeof([1]T{}[0])))
 	for len(buf) > 0 {
 		switch {

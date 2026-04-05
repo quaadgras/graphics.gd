@@ -66,10 +66,10 @@ type API struct {
 	/*Threads struct {
 		Main func() bool `gd:"thread_is_main"`
 	}*/
-	Log struct {
+	/*Log struct {
 		Error   func(text, code, fn, file string, line int32, notify_editor bool) `gd:"log_error"`
 		Warning func(text, code, fn, file string, line int32, notify_editor bool) `gd:"log_warning"`
-	}
+	}*/
 	/*Builtin struct {
 		Types struct {
 			Name            func(vtype VariantType) String                                                                                                                                  `gd:"variant_type_name"`
@@ -150,7 +150,7 @@ type API struct {
 		Make func(v Variant, result CallReturns[Iterator], err CallReturns[CallError])               `gd:"iterator_make"`
 		Next func(v Variant, iter CallMutates[Iterator], err CallReturns[CallError]) bool            `gd:"iterator_next"`
 		Load func(v Variant, iter Iterator, result CallReturns[Variant], err CallReturns[CallError]) `gd:"iterator_load"`
-	}*/
+	}
 	Strings struct {
 		Access func(s String, idx int) rune    `gd:"string_access"`
 		Resize func(s String, size int) String `gd:"string_resize"`
@@ -178,8 +178,8 @@ type API struct {
 			Latin1 func(s string) StringName `gd:"string_intern_latin1"`
 			UTF8   func(s string) StringName `gd:"string_intern_utf8"`
 		}
-	}
-	Packed struct {
+	}*/
+	/*Packed struct {
 		Bytes struct {
 			Unsafe func(p PackedArray[byte]) Pointer       `gd:"packed_byte_array_unsafe"`
 			Access func(p PackedArray[byte], idx int) byte `gd:"packed_byte_array_access"`
@@ -220,15 +220,15 @@ type API struct {
 			Unsafe func(p PackedArray[Color.RGBA]) Pointer                                  `gd:"packed_color_array_unsafe"`
 			Access func(p PackedArray[Color.RGBA], idx int, result CallReturns[Color.RGBA]) `gd:"packed_color_array_access"`
 		}
-	}
-	Array struct {
-		//Get func(p Array, idx int, result CallReturns[Variant]) `gd:"array_get"`
-		//Set func(p Array, idx int, value Variant)               `gd:"array_set"`
-	}
-	Dictionaries struct {
+	}*/
+	/*Array struct {
+		Get func(p Array, idx int, result CallReturns[Variant]) `gd:"array_get"`
+		Set func(p Array, idx int, value Variant)               `gd:"array_set"`
+	}*/
+	/*Dictionaries struct {
 		Get func(dict Dictionary, index Variant, result CallReturns[Variant]) `gd:"packed_dictionary_access"`
 		Set func(dict Dictionary, index, value Variant)                       `gd:"packed_dictionary_modify"`
-	}
+	}*/
 	/*Callables struct {
 		Create func(id FunctionID, object ObjectID, result CallReturns[Callable]) `gd:"callable_create"`
 		Lookup func(Callable) FunctionID                                          `gd:"callable_lookup"`
@@ -275,17 +275,17 @@ type API struct {
 			Close func(obj Object)                                             `gd:"object_extension_close"`
 		}
 	}*/
-	RefCounted struct {
+	/*RefCounted struct {
 		Get func(ref RefCounted) Object      `gd:"ref_get_object"`
 		Set func(ref RefCounted, obj Object) `gd:"ref_set_object"`
-	}
-	Editor struct {
+	}*/
+	/*Editor struct {
 		AddDocumentation func(xml string)      `gd:"editor_add_documentation"`
 		AddPlugin        func(name StringName) `gd:"editor_add_plugin"`
 		EndPlugin        func(name StringName) `gd:"editor_end_plugin"`
-	}
+	}*/
 	ClassDB struct {
-		PropertyList struct {
+		/*PropertyList struct {
 			Make func(length int) PropertyList `gd:"property_list_make"`
 			Push func(info PropertyList,
 				vtype VariantType,
@@ -305,8 +305,8 @@ type API struct {
 				Usage     func(info PropertyList) uint32      `gd:"property_info_usage"`
 			}
 			Free func(info PropertyList) `gd:"property_list_free"`
-		}
-		MethodList struct {
+		}*/
+		/*MethodList struct {
 			Make func(length int) MethodList `gd:"method_list_make"`
 			Push func(info MethodList,
 				name StringName,
@@ -318,7 +318,7 @@ type API struct {
 				default_arguments CallAccepts[Variant],
 			) `gd:"method_list_push"`
 			Free func(info MethodList) `gd:"method_list_free"`
-		}
+		}*/
 		Register struct {
 			Class            func(class, parent_class StringName, id ExtensionClassID, virtual, abstract, exposed, runtime bool, icon_path String) `gd:"classdb_register"`
 			Methods          func(class StringName, methods MethodList)                                                                            `gd:"classdb_register_methods"`
@@ -330,21 +330,21 @@ type API struct {
 			Signal           func(class, signal StringName, args PropertyList)                                                                     `gd:"classdb_register_signal"`
 			Removal          func(class StringName)                                                                                                `gd:"classdb_register_removal"`
 		}
-		Image struct {
+		/*Image struct {
 			Unsafe func(img Object) Pointer       `gd:"classdb_Image_unsafe"`
 			Access func(img Object, idx int) byte `gd:"classdb_Image_access"`
-		}
-		XMLParser struct {
+		}*/
+		/*XMLParser struct {
 			Load func(parser Object, buf []byte) int `gd:"classdb_XMLParser_load"`
-		}
-		FileAccess struct {
+		}*/
+		/*FileAccess struct {
 			Write func(file Object, buf []byte)     `gd:"classdb_FileAccess_write"`
 			Read  func(file Object, buf []byte) int `gd:"classdb_FileAccess_read"`
-		}
-		WorkerThreadPool struct {
+		}*/
+		/*WorkerThreadPool struct {
 			AddTask      func(pool Object, fn TaskID, priority bool, description String)                             `gd:"classdb_WorkerThreadPool_add_task"`
 			AddGroupTask func(pool Object, fn TaskID, elements int32, task int32, priority bool, description String) `gd:"classdb_WorkerThreadPool_add_group_task"`
-		}
+		}*/
 	}
 }
 
@@ -511,7 +511,7 @@ type VariantType uint32
 func (vtype VariantType) String() string {
 	name := String{Pointer(gdunsafe.VariantType(vtype).Name())}
 	var buf = make([]byte, 32)
-	n := Host.Strings.Encode.UTF8(name, buf)
+	n := int(gdunsafe.String(name[0]).Encode(gdunsafe.UTF8, buf))
 	return unsafe.String(&buf[0], min(n, len(buf)))
 }
 

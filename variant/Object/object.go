@@ -78,7 +78,7 @@ var otype gdextension.ObjectType
 
 func init() {
 	gd.Links = append(gd.Links, func() {
-		sname := gdextension.Host.Strings.Intern.UTF8("Object")
+		sname := gdextension.StringName{gdextension.Pointer(gdunsafe.UTF8.Intern("Object"))}
 		otype = gdextension.ObjectType(gdunsafe.ObjectTypeTag(gdunsafe.StringName(sname[0])))
 		noescape.Free(gdextension.TypeStringName, &sname)
 	})
