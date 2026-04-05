@@ -1,11 +1,5 @@
 package gdextension
 
-func (op VariantOperator) Eval(a, b Variant) (Variant, bool) {
-	var raw Variant
-	ok := Host.Variants.Eval(op, a, b, CallReturns[Variant](&raw))
-	return raw, ok
-}
-
 // Call a static method on a variant type.
 func (variant VariantType) Call(method StringName, args ...Variant) (Variant, error) {
 	var err CallError

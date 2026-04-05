@@ -3,6 +3,7 @@ package noescape
 import (
 	"unsafe"
 
+	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdextension"
 )
 
@@ -19,7 +20,7 @@ func variant_from_native_noescape(vtype gdextension.VariantType, result *gdexten
 
 //go:linkname variant_from_native graphics.gd/internal/noescape.variant_from_native_noescape
 func variant_from_native(vtype gdextension.VariantType, result *gdextension.Variant, size gdextension.Shape, ptr unsafe.Pointer) {
-	gdextension.Host.Variants.Unsafe.FromNative(vtype, gdextension.CallReturns[gdextension.Variant](result), gdextension.SizeVariant|size<<4, gdextension.CallAccepts[any](ptr))
+	*result = gdunsafe.VariantUnsafeFromNative(gdunsafe.VariantType(vtype), uint64(gdextension.SizeVariant|size<<4), ptr)
 }
 
 func LoadNative[T gdextension.AnyVariant](vtype gdextension.VariantType, variant gdextension.Variant) T {
@@ -33,7 +34,7 @@ func variant_into_native_noescape(vtype gdextension.VariantType, variant gdexten
 
 //go:linkname variant_into_native graphics.gd/internal/noescape.variant_into_native_noescape
 func variant_into_native(vtype gdextension.VariantType, variant gdextension.Variant, ptr unsafe.Pointer, size gdextension.Shape) {
-	gdextension.Host.Variants.Unsafe.MakeNative(vtype, variant, size|gdextension.SizeVariant<<4, gdextension.CallReturns[any](ptr))
+	gdunsafe.VariantUnsafeMakeNative(gdunsafe.VariantType(vtype), gdunsafe.Variant(variant), uint64(size|gdextension.SizeVariant<<4), ptr)
 }
 
 func Free[T gdextension.AnyVariant](vtype gdextension.VariantType, val *T) {

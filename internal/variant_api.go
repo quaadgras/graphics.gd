@@ -3,49 +3,44 @@
 package gd
 
 import (
+	"unsafe"
+
+	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 )
 
-// FIXME/TODO move this into gdextension package?
-//
-
 // Copy returns a copy of the variant that will belong to the provided context.
 func (variant Variant) Copy() Variant {
-	var raw gdextension.Variant
-	gdextension.Host.Variants.Copy(pointers.Get(variant), gdextension.CallReturns[gdextension.Variant](&raw))
-	return pointers.New[Variant](raw)
+	return pointers.New[Variant](gdunsafe.Variant(pointers.Get(variant)).Copy())
 }
 
 // Type returns the variant's type, similar to [reflect.Kind] but for a variant
 // value.
 func (variant Variant) Type() gdextension.VariantType {
-	return gdextension.Host.Variants.Type(pointers.Get(variant))
+	return gdextension.VariantType(gdunsafe.Variant(pointers.Get(variant)).Type())
 }
 
 // Get returns the value specified by the given key variant and a boolean
 // indiciating whether the get operation was valid.
 func (variant Variant) Get(key Variant) (val Variant, ok bool) {
-	var raw gdextension.Variant
-	ok = gdextension.Host.Variants.Get.Index(pointers.Get(variant), pointers.Get(key), gdextension.CallReturns[gdextension.Variant](&raw))
+	raw, ok := gdunsafe.Variant(pointers.Get(variant)).GetIndex(gdunsafe.Variant(pointers.Get(key)))
 	return pointers.New[Variant](raw), ok
 }
 
 // Set sets the value specified by the given key variant to the given value
 // variant. Returns true if the set operation was valid.
 func (variant Variant) Set(key, val Variant) bool {
-	return gdextension.Host.Variants.Set.Index(pointers.Get(variant), pointers.Get(key), pointers.Get(val))
+	return gdunsafe.Variant(pointers.Get(variant)).SetIndex(gdunsafe.Variant(pointers.Get(key)), gdunsafe.Variant(pointers.Get(val)))
 }
 
 // Call calls a method on the variant dynamically.
 func (variant Variant) Call(method StringName, args ...Variant) (Variant, error) {
-	var raw gdextension.Variant
-	var converted []gdextension.Variant
+	var converted []gdunsafe.Variant
 	for i := range args {
-		converted = append(converted, gdextension.Variant(pointers.Get(args[i])))
+		converted = append(converted, gdunsafe.Variant(pointers.Get(args[i])))
 	}
-	var err gdextension.CallError
-	gdextension.Host.Variants.Call(pointers.Get(variant), pointers.Get(method), gdextension.CallReturns[gdextension.Variant](&raw), len(args), gdextension.CallAccepts[gdextension.Variant](&converted[0]), gdextension.CallReturns[gdextension.CallError](&err))
+	raw, err := gdunsafe.Variant(pointers.Get(variant)).VariantCall(gdunsafe.StringName(pointers.Get(method)[0]), converted...)
 	return pointers.New[Variant](raw), err.Err()
 }
 
@@ -53,7 +48,7 @@ func (variant Variant) Call(method StringName, args ...Variant) (Variant, error)
 func (variant Variant) Iterator() Iterator {
 	var err gdextension.CallError
 	var raw gdextension.Iterator
-	gdextension.Host.Iterators.Make(pointers.Get(variant), gdextension.CallReturns[gdextension.Iterator](&raw), gdextension.CallReturns[gdextension.CallError](&err))
+	gdunsafe.Variant(pointers.Get(variant)).IteratorMake(unsafe.Pointer(&raw), unsafe.Pointer(&err))
 	if err.Type != 0 {
 		panic("failed to initialize iterator")
 	}
@@ -64,15 +59,15 @@ func (variant Variant) Iterator() Iterator {
 }
 
 // Hash returns the hash value of the variant.
-func (variant Variant) Hash() Int {
-	var hash int64
-	gdextension.Host.Variants.Hash(pointers.Get(variant), gdextension.CallReturns[int64](&hash))
-	return hash
-}
+func (variant Variant) Hash() Int { return Int(gdunsafe.Variant(pointers.Get(variant)).Hash()) }
 
 // RecursiveHash returns the hash value of the variant recursively.
 func (variant Variant) RecursiveHash(count Int) Int {
-	var hash int64
-	gdextension.Host.Variants.Deep.Hash(pointers.Get(variant), count, gdextension.CallReturns[int64](&hash))
-	return hash
+	return Int(gdunsafe.Variant(pointers.Get(variant)).DeepHash(gdunsafe.Int(count)))
+}
+
+// Eval evaluates a binary operator between two variants.
+func VariantEval(op gdextension.VariantOperator, a, b gdextension.Variant) (gdextension.Variant, bool) {
+	raw, ok := gdunsafe.VariantEval(gdunsafe.VariantOperator(op), gdunsafe.Variant(a), gdunsafe.Variant(b))
+	return raw, ok
 }

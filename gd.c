@@ -696,15 +696,15 @@ EXPORT void gd_editor_add_plugin(uintptr_t class_name) {
 EXPORT void gd_editor_end_plugin(uintptr_t class_name) {
     gdextension_editor_remove_plugin((GDExtensionConstStringNamePtr)&class_name);
 };
-EXPORT void gd_iterator_make(UINT64(v1), UINT64(v2), UINT64(v3), ANY result, ANY err) {
-    uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
+EXPORT void gd_iterator_make(VARIANT_ARG(v), UnsafePointer result, UnsafePointer err) {
+    Variant self = VARIANT_ARG_GET(v);
     GDExtensionBool valid = true;
     valid = valid && gdextension_variant_iter_init(&self, (void*)result, &valid);
     if (valid) return;
     ((GDExtensionCallError*)err)->error = GDEXTENSION_CALL_ERROR_INVALID_ARGUMENT;
 };
-EXPORT bool gd_iterator_next(UINT64(v1), UINT64(v2), UINT64(v3), ANY iter, ANY err) {
-    uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
+EXPORT bool gd_iterator_next(VARIANT_ARG(v), UnsafePointer iter, UnsafePointer err) {
+    Variant self = VARIANT_ARG_GET(v);
     GDExtensionBool valid = false;
     GDExtensionBool ok = gdextension_variant_iter_next(&self, (GDExtensionVariantPtr)iter, &valid);
     if (ok) {
@@ -713,10 +713,10 @@ EXPORT bool gd_iterator_next(UINT64(v1), UINT64(v2), UINT64(v3), ANY iter, ANY e
     ((GDExtensionCallError*)err)->error = GDEXTENSION_CALL_ERROR_INVALID_ARGUMENT;
     return false;
 };
-EXPORT void gd_iterator_load(UINT64(v1), UINT64(v2), UINT64(v3), UINT64(i1), UINT64(i2), UINT64(i3), ANY result, ANY err) {
-    uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
-    uint64_t iter[3] = {UINT64_FROM(i1), UINT64_FROM(i2), UINT64_FROM(i3)};
-    void *points[16]; prepare_variants(&points[0], 1, result);
+EXPORT void gd_iterator_load(VARIANT_ARG(v), VARIANT_ARG(i), UnsafePointer result, UnsafePointer err) {
+    Variant self = VARIANT_ARG_GET(v);
+    uint64_t iter[3] = {i_1, i_2, i_3};
+    void *points[16]; prepare_variants(&points[0], 1, (ANY)result);
     GDExtensionBool ok = false;
     gdextension_variant_iter_get(&self, &iter, (GDExtensionUninitializedVariantPtr)points[0], &ok);
     if (ok) return;
@@ -807,7 +807,7 @@ EXPORT uint64_t gd_memory_load_u64(UnsafePointer addr) { return *(uint64_t *)add
 EXPORT uintptr_t gd_object_make(uintptr_t name) {
     return (uintptr_t)gdextension_classdb_construct_object2((GDExtensionConstStringNamePtr)&name);
 };
-EXPORT void gd_object_call(Object obj, MethodForClass fn, UnsafePointer result, Int argc, UnsafePointer args, UnsafePointer err) {
+EXPORT void gd_object_call(Object obj, MethodForClass fn, Variant* result, Int argc, Variant args[], CallError* err) {
     void *points[16]; prepare_variants(&points[0], (uint32_t)argc, (ANY)args);
     gdextension_object_method_bind_call((GDExtensionMethodBindPtr)fn, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)result, (GDExtensionCallError*)err);
 };
@@ -851,7 +851,7 @@ EXPORT ObjectID gd_object_id(Object obj) {
     return gdextension_object_get_instance_id((GDExtensionObjectPtr)obj);
 };
 EXPORT ObjectID gd_object_id_inside_variant(VARIANT_ARG(v)) {
-    uint64_t self[3] = {v_1, v_2, v_3};
+    Variant self = VARIANT_ARG_GET(v);
     return gdextension_variant_get_object_instance_id(&self);
 };
 EXPORT MethodForClass gd_object_method_lookup(StringName class_name, StringName method, int64_t hash) {
@@ -971,7 +971,7 @@ uintptr_t gd_object_script_make(uintptr_t instance) {
     };
     return (uintptr_t)gdextension_script_instance_create3(&info, (GDExtensionScriptInstanceDataPtr)&instance);
 };
-EXPORT void gd_object_script_call(Object obj, StringName method, UnsafePointer result, Int argc, UnsafePointer args, UnsafePointer err) {
+EXPORT void gd_object_script_call(Object obj, StringName method, Variant* result, Int argc, Variant args[], CallError* err) {
     void *points[16]; points[1] = 0; prepare_variants(&points[0], (uint32_t)argc, (ANY)args);
     gdextension_object_call_script_method((GDExtensionObjectPtr)obj, (GDExtensionConstStringNamePtr)&method, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)result, (GDExtensionCallError*)err);
 };
@@ -1164,17 +1164,17 @@ EXPORT uintptr_t gd_variant_type_name(uint32_t vtype) {
     gdextension_variant_get_type_name((GDExtensionVariantType)vtype, &name);
     return name;
 };
-EXPORT void gd_variant_unsafe_make_native(uint32_t vtype, UINT64(v1), UINT64(v2), UINT64(v3), UINT64(shape), ANY args) {
-    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
-    uint64_t self[4] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
+EXPORT void gd_variant_unsafe_make_native(uint32_t vtype, VARIANT_ARG(v), uint64_t shape, UnsafePointer result) {
+    void *points[16]; prepare_callframe(1, &points[0], shape, (ANY)result);
+    uint64_t self[4] = {v_1, v_2, v_3};
     type_from_variant_constructors[vtype](points[0], &self[0]);
 };
-EXPORT void gd_variant_unsafe_from_native(uint32_t vtype, ANY result, UINT64(shape), ANY args) {
-    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+EXPORT void gd_variant_unsafe_from_native(uint32_t vtype, Variant* result, uint64_t shape, UnsafePointer args) {
+    void *points[16]; prepare_callframe(1, &points[0], shape, (ANY)args);
     variant_from_type_constructors[vtype]((GDExtensionUninitializedVariantPtr)result, points[0]);
 };
-EXPORT void gd_variant_type_call(uint32_t vtype, uintptr_t name, ANY result, INT argc, ANY args, ANY err) {
-    void *points[16]; prepare_variants(&points[0], argc, args);
+EXPORT void gd_variant_type_call(uint32_t vtype, uintptr_t name, Variant* result, Int argc, Variant args[], CallError* err) {
+    void *points[16]; prepare_variants(&points[0], argc, (ANY)args);
     gdextension_variant_call_static((GDExtensionVariantType)vtype, (GDExtensionConstStringNamePtr)&name, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)result, (GDExtensionCallError*)err);
 };
 EXPORT bool gd_variant_type_convertable(uint32_t a, uint32_t b, bool strict) {
@@ -1207,68 +1207,68 @@ EXPORT void gd_variant_type_unsafe_free(uint32_t vtype, UINT64(shape), ANY args)
     void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
     variant_ptr_destructors[vtype](points[0]);
 };
-EXPORT void gd_variant_zero(ANY result) {
+EXPORT void gd_variant_zero(Variant* result) {
     gdextension_variant_new_nil((GDExtensionUninitializedVariantPtr)result);
 };
-EXPORT void gd_variant_copy(UINT64(v1), UINT64(v2), UINT64(v3), ANY result) {
-    uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
+EXPORT void gd_variant_copy(VARIANT_ARG(v), Variant* result) {
+    Variant self = VARIANT_ARG_GET(v);
     gdextension_variant_new_copy((GDExtensionUninitializedVariantPtr)result, &self);
 };
-EXPORT void gd_variant_call(UINT64(v1), UINT64(v2), UINT64(v3), uintptr_t name, ANY result, INT argc, ANY args, ANY err) {
-    uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
-    void *points[16]; prepare_variants(&points[0], argc, args);
+EXPORT void gd_variant_call(VARIANT_ARG(v), uintptr_t name, Variant* result, Int argc, Variant args[], CallError* err) {
+    Variant self = VARIANT_ARG_GET(v);
+    void *points[16]; prepare_variants(&points[0], argc, (ANY)args);
     gdextension_variant_call(&self, (GDExtensionConstStringNamePtr)&name, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)result, (GDExtensionCallError*)err);
 };
-EXPORT bool gd_variant_eval(uint32_t op, UINT64(a1), UINT64(a2), UINT64(a3), UINT64(b1), UINT64(b2), UINT64(b3), ANY result) {
-    uint64_t a[3] = {UINT64_FROM(a1), UINT64_FROM(a2), UINT64_FROM(a3)};
-    uint64_t b[3] = {UINT64_FROM(b1), UINT64_FROM(b2), UINT64_FROM(b3)};
+EXPORT bool gd_variant_eval(uint32_t op, VARIANT_ARG(a), VARIANT_ARG(b), Variant* result) {
+    uint64_t a[3] = {a_1, a_2, a_3};
+    uint64_t b[3] = {b_1, b_2, b_3};
     GDExtensionBool valid = false;
     gdextension_variant_evaluate((GDExtensionVariantOperator)op, &a[0], &b[0], (GDExtensionUninitializedVariantPtr)result, &valid);
     return valid;
 };
-EXPORT void gd_variant_hash(UINT64(v1), UINT64(v2), UINT64(v3), ANY hash) {
-    uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
-    *(int64_t*)hash = gdextension_variant_hash(&self);
+EXPORT Int gd_variant_hash(VARIANT_ARG(v)) {
+    Variant self = VARIANT_ARG_GET(v);
+    return gdextension_variant_hash(&self);
 };
-EXPORT bool gd_variant_bool(UINT64(v1), UINT64(v2), UINT64(v3)) {
-    uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
+EXPORT bool gd_variant_bool(VARIANT_ARG(v)) {
+    Variant self = VARIANT_ARG_GET(v);
     return gdextension_variant_booleanize(&self);
 };
-EXPORT uintptr_t gd_variant_text(UINT64(v1), UINT64(v2), UINT64(v3)) {
-    uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
+EXPORT uintptr_t gd_variant_text(VARIANT_ARG(v)) {
+    Variant self = VARIANT_ARG_GET(v);
     uintptr_t text = 0;
     gdextension_variant_stringify(&self, &text);
     return text;
 };
-EXPORT uint32_t gd_variant_type(UINT64(v1), UINT64(v2), UINT64(v3)) {
-    uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
+EXPORT uint32_t gd_variant_type(VARIANT_ARG(v)) {
+    Variant self = VARIANT_ARG_GET(v);
     return gdextension_variant_get_type(&self);
 };
-EXPORT void gd_variant_deep_copy(UINT64(v1), UINT64(v2), UINT64(v3), ANY result) {
-    uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
+EXPORT void gd_variant_deep_copy(VARIANT_ARG(v), Variant* result) {
+    Variant self = VARIANT_ARG_GET(v);
     gdextension_variant_duplicate(&self, (GDExtensionVariantPtr)result, true);
 };
-EXPORT void gd_variant_deep_hash(UINT64(v1), UINT64(v2), UINT64(v3), INT recursion, ANY hash) {
-    uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
-    *(int64_t*)hash = gdextension_variant_recursive_hash(&self, recursion);
+EXPORT Int gd_variant_deep_hash(VARIANT_ARG(v), Int recursion) {
+    Variant self = VARIANT_ARG_GET(v);
+    return gdextension_variant_recursive_hash(&self, recursion);
 };
-EXPORT bool gd_variant_get_index(UINT64(v1), UINT64(v2), UINT64(v3), UINT64(i1), UINT64(i2), UINT64(i3), ANY result) {
-    uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
-    uint64_t index[3] = {UINT64_FROM(i1), UINT64_FROM(i2), UINT64_FROM(i3)};
+EXPORT bool gd_variant_get_index(VARIANT_ARG(v), VARIANT_ARG(key), Variant* result) {
+    Variant self = VARIANT_ARG_GET(v);
+    Variant index = VARIANT_ARG_GET(key);
     GDExtensionBool valid = false;
-    gdextension_variant_get_keyed(&self, &index[0], (GDExtensionUninitializedVariantPtr)result, &valid);
+    gdextension_variant_get_keyed(&self, &index, (GDExtensionUninitializedVariantPtr)result, &valid);
     return valid;
 };
-EXPORT bool gd_variant_get_array(UINT64(v1), UINT64(v2), UINT64(v3), INT i, ANY result, ANY err) {
-    uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
+EXPORT bool gd_variant_get_array(VARIANT_ARG(v), Int i, Variant* result, CallError* err) {
+    Variant self = VARIANT_ARG_GET(v);
     GDExtensionBool valid = false;
     GDExtensionBool oob = false;
     gdextension_variant_get_indexed(&self, i, (GDExtensionUninitializedVariantPtr)result, &valid, &oob);
     if (oob) ((GDExtensionCallError*)err)->error = GDEXTENSION_CALL_ERROR_INVALID_ARGUMENT;
     return valid;
 };
-EXPORT bool gd_variant_get_field(UINT64(v1), UINT64(v2), UINT64(v3), uintptr_t name, ANY result) {
-    uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
+EXPORT bool gd_variant_get_field(VARIANT_ARG(v), uintptr_t name, Variant* result) {
+    Variant self = VARIANT_ARG_GET(v);
     GDExtensionBool valid = false;
     gdextension_variant_get_named(&self, (GDExtensionConstStringNamePtr)&name, (GDExtensionUninitializedVariantPtr)result, &valid);
     return valid;
@@ -1276,79 +1276,79 @@ EXPORT bool gd_variant_get_field(UINT64(v1), UINT64(v2), UINT64(v3), uintptr_t n
 EXPORT bool gd_variant_type_has_property(uint32_t vtype, uintptr_t name) {
     return gdextension_variant_has_member((GDExtensionVariantType)vtype, (GDExtensionConstStringNamePtr)&name);
 };
-EXPORT bool gd_variant_has_index(UINT64(v1), UINT64(v2), UINT64(v3), UINT64(i1), UINT64(i2), UINT64(i3)) {
-    uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
-    uint64_t index[3] = {UINT64_FROM(i1), UINT64_FROM(i2), UINT64_FROM(i3)};
+EXPORT bool gd_variant_has_index(VARIANT_ARG(v), VARIANT_ARG(idx)) {
+    Variant self = VARIANT_ARG_GET(v);
+    Variant index = VARIANT_ARG_GET(idx);
     GDExtensionBool valid = false;
-    gdextension_variant_has_key(&self, &index[0], &valid);
+    gdextension_variant_has_key(&self, &index, &valid);
     return valid;
 };
-EXPORT bool gd_variant_has_method(UINT64(v1), UINT64(v2), UINT64(v3), uintptr_t name) {
-    uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
+EXPORT bool gd_variant_has_method(VARIANT_ARG(v), uintptr_t name) {
+    Variant self = VARIANT_ARG_GET(v);
     return gdextension_variant_has_method(&self, (GDExtensionConstStringNamePtr)&name);
 };
-EXPORT bool gd_variant_set_index(UINT64(v1), UINT64(v2), UINT64(v3), UINT64(i1), UINT64(i2), UINT64(i3), UINT64(v1_set), UINT64(v2_set), UINT64(v3_set)) {
-    uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
-    uint64_t index[3] = {UINT64_FROM(i1), UINT64_FROM(i2), UINT64_FROM(i3)};
-    uint64_t value[3] = {UINT64_FROM(v1_set), UINT64_FROM(v2_set), UINT64_FROM(v3_set)};
+EXPORT bool gd_variant_set_index(VARIANT_ARG(v), VARIANT_ARG(key), VARIANT_ARG(val)) {
+    Variant self = VARIANT_ARG_GET(v);
+    Variant index = VARIANT_ARG_GET(key);
+    Variant value = VARIANT_ARG_GET(val);
     GDExtensionBool valid = false;
-    gdextension_variant_set_keyed(&self, &index[0], &value[0], &valid);
+    gdextension_variant_set_keyed(&self, &index, &value, &valid);
     return valid;
 };
-EXPORT bool gd_variant_set_array(UINT64(v1), UINT64(v2), UINT64(v3), INT i, UINT64(v1_set), UINT64(v2_set), UINT64(v3_set), ANY err) {
-    uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
-    uint64_t value[3] = {UINT64_FROM(v1_set), UINT64_FROM(v2_set), UINT64_FROM(v3_set)};
+EXPORT bool gd_variant_set_array(VARIANT_ARG(v), Int i, VARIANT_ARG(val), UnsafePointer err) {
+    Variant self = VARIANT_ARG_GET(v);
+    Variant value = VARIANT_ARG_GET(val);
     GDExtensionBool valid = false;
     GDExtensionBool oob = false;
-    gdextension_variant_set_indexed(&self, i, &value[0], &valid, &oob);
+    gdextension_variant_set_indexed(&self, i, &value, &valid, &oob);
     if (oob) ((GDExtensionCallError*)err)->error = GDEXTENSION_CALL_ERROR_INVALID_ARGUMENT;
     return valid;
 };
-EXPORT bool gd_variant_set_field(UINT64(v1), UINT64(v2), UINT64(v3), uintptr_t name, UINT64(v1_set), UINT64(v2_set), UINT64(v3_set)) {
-    uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
-    uint64_t value[3] = {UINT64_FROM(v1_set), UINT64_FROM(v2_set), UINT64_FROM(v3_set)};
+EXPORT bool gd_variant_set_field(VARIANT_ARG(v), uintptr_t name, VARIANT_ARG(val)) {
+    Variant self = VARIANT_ARG_GET(v);
+    Variant value = VARIANT_ARG_GET(val);
     GDExtensionBool valid = false;
-    gdextension_variant_set_named(&self, (GDExtensionConstStringNamePtr)&name, &value[0], &valid);
+    gdextension_variant_set_named(&self, (GDExtensionConstStringNamePtr)&name, &value, &valid);
     return valid;
 };
-EXPORT void gd_variant_unsafe_eval(uintptr_t fn, ANY result, UINT64(shape), ANY args) {
-    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+EXPORT void gd_variant_unsafe_eval(uintptr_t fn, UnsafePointer result, uint64_t shape, UnsafePointer args) {
+    void *points[16]; prepare_callframe(1, &points[0], shape, (ANY)args);
     ((GDExtensionPtrOperatorEvaluator)fn)(points[0], points[1], (GDExtensionTypePtr)result);
 };
-EXPORT void gd_variant_unsafe_call(uintptr_t fn, ANY result, UINT64(shape), ANY args) {
-    void *points[16]; uint8_t argc = prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+EXPORT void gd_variant_unsafe_call(uintptr_t fn, UnsafePointer result, uint64_t shape, UnsafePointer args) {
+    void *points[16]; uint8_t argc = prepare_callframe(1, &points[0], shape, (ANY)args);
     ((GDExtensionPtrBuiltInMethod)fn)((GDExtensionTypePtr*)points[0], (const GDExtensionConstTypePtr*)&points[1], (GDExtensionTypePtr)result, argc);
 };
-EXPORT void gd_variant_unsafe_free(UINT64(v1), UINT64(v2), UINT64(v3)) {
-    uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
+EXPORT void gd_variant_unsafe_free(VARIANT_ARG(v)) {
+    Variant self = VARIANT_ARG_GET(v);
     gdextension_variant_destroy(&self);
 };
-EXPORT uintptr_t gd_variant_unsafe_internal_pointer(uint32_t vtype, UINT64(v1), UINT64(v2), UINT64(v3)) {
-    uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
+EXPORT uintptr_t gd_variant_unsafe_internal_pointer(uint32_t vtype, VARIANT_ARG(v)) {
+    Variant self = VARIANT_ARG_GET(v);
     return (uintptr_t)variant_internal_ptr_funcs[vtype](&self);
 };
-EXPORT void gd_variant_unsafe_get_field(uintptr_t getter, ANY result, UINT64(shape), ANY args) {
-    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
-    ((GDExtensionPtrGetter)getter)(points[0], &result);
+EXPORT void gd_variant_unsafe_get_field(uintptr_t getter, UnsafePointer result, uint64_t shape, UnsafePointer args) {
+    void *points[16]; prepare_callframe(1, &points[0], shape, (ANY)args);
+    ((GDExtensionPtrGetter)getter)(points[0], (void*)&result);
 };
-EXPORT void gd_variant_unsafe_get_array(uint32_t vtype, INT i, ANY result, UINT64(shape), ANY args) {
-    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+EXPORT void gd_variant_unsafe_get_array(uint32_t vtype, Int i, UnsafePointer result, uint64_t shape, UnsafePointer args) {
+    void *points[16]; prepare_callframe(1, &points[0], shape, (ANY)args);
     variant_ptr_indexed_getters[vtype]((GDExtensionConstTypePtr)result, i, points[0]);
 };
-EXPORT void gd_variant_unsafe_get_index(uint32_t vtype, ANY result, UINT64(shape), ANY args) {
-    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+EXPORT void gd_variant_unsafe_get_index(uint32_t vtype, UnsafePointer result, uint64_t shape, UnsafePointer args) {
+    void *points[16]; prepare_callframe(1, &points[0], shape, (ANY)args);
     variant_ptr_keyed_getters[vtype](points[0], points[1], (GDExtensionTypePtr)result);
 };
-EXPORT void gd_variant_unsafe_set_field(uintptr_t setter, UINT64(shape), ANY args) {
-    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+EXPORT void gd_variant_unsafe_set_field(uintptr_t setter, uint64_t shape, UnsafePointer args) {
+    void *points[16]; prepare_callframe(1, &points[0], shape, (ANY)args);
     ((GDExtensionPtrSetter)setter)(points[1], points[2]);
 };
-EXPORT void gd_variant_unsafe_set_array(uint32_t vtype, INT i, UINT64(shape), ANY args) {
-    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+EXPORT void gd_variant_unsafe_set_array(uint32_t vtype, Int i, uint64_t shape, UnsafePointer args) {
+    void *points[16]; prepare_callframe(1, &points[0], shape, (ANY)args);
     variant_ptr_indexed_setters[vtype](points[0], i, points[1]);
 };
-EXPORT void gd_variant_unsafe_set_index(uint32_t vtype, UINT64(shape), ANY args) {
-    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+EXPORT void gd_variant_unsafe_set_index(uint32_t vtype, uint64_t shape, UnsafePointer args) {
+    void *points[16]; prepare_callframe(1, &points[0], shape, (ANY)args);
     variant_ptr_keyed_setters[vtype](points[0], points[1], points[2]);
 };
 EXPORT uintptr_t gd_variant_type_setter(uint32_t vtype, uintptr_t name) {
@@ -1361,8 +1361,8 @@ EXPORT void gd_variant_type_unsafe_make(uintptr_t fn, ANY result, UINT64(shape),
     void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
     ((GDExtensionPtrConstructor)fn)((GDExtensionUninitializedTypePtr)result, (const GDExtensionConstTypePtr *)&points[0]);
 }
-EXPORT void gd_variant_type_make(uint32_t vtype, ANY result, INT argc, ANY args, ANY err) {
-    void *points[16]; prepare_variants(&points[0], argc, args);
+EXPORT void gd_variant_type_make(uint32_t vtype, Variant* result, Int argc, Variant args[], CallError* err) {
+    void *points[16]; prepare_variants(&points[0], argc, (ANY)args);
     gdextension_variant_construct((GDExtensionVariantType)vtype, (GDExtensionUninitializedVariantPtr)result, (const GDExtensionConstVariantPtr *)&points[0], argc, (GDExtensionCallError*)err);
 }
 EXPORT void gd_variant_type_unsafe_call(ANY self, uintptr_t fn, ANY result, UINT64(shape), ANY args) {
@@ -1462,9 +1462,6 @@ EMSCRIPTEN_BINDINGS(my_module) {
 	function("gd_editor_add_documentation", &gd_editor_add_documentation, allow_raw_pointers());
 	function("gd_editor_add_plugin", &gd_editor_add_plugin, allow_raw_pointers());
 	function("gd_editor_end_plugin", &gd_editor_end_plugin, allow_raw_pointers());
-	function("gd_iterator_make", &gd_iterator_make, allow_raw_pointers());
-	function("gd_iterator_next", &gd_iterator_next, allow_raw_pointers());
-	function("gd_iterator_load", &gd_iterator_load, allow_raw_pointers());
 	function("gd_log_error", &gd_log_error, allow_raw_pointers());
 	function("gd_log_warning", &gd_log_warning, allow_raw_pointers());
 	function("gd_packed_byte_array_unsafe", &gd_packed_byte_array_unsafe, allow_raw_pointers());
@@ -1509,8 +1506,6 @@ EMSCRIPTEN_BINDINGS(my_module) {
 	function("gd_string_intern_latin1", &gd_string_intern_latin1, allow_raw_pointers());
 	function("gd_string_intern_utf8", &gd_string_intern_utf8, allow_raw_pointers());
 	function("gd_variant_type_name", &gd_variant_type_name, allow_raw_pointers());
-	function("gd_variant_type_make", &gd_variant_type_make, allow_raw_pointers());
-	function("gd_variant_type_call", &gd_variant_type_call, allow_raw_pointers());
 	function("gd_variant_type_convertable", &gd_variant_type_convertable, allow_raw_pointers());
 	function("gd_variant_type_setup_array", &gd_variant_type_setup_array, allow_raw_pointers());
 	function("gd_variant_type_setup_dictionary", &gd_variant_type_setup_dictionary, allow_raw_pointers());
@@ -1524,36 +1519,6 @@ EMSCRIPTEN_BINDINGS(my_module) {
 	function("gd_variant_type_unsafe_call", &gd_variant_type_unsafe_call, allow_raw_pointers());
 	function("gd_variant_type_unsafe_make", &gd_variant_type_unsafe_make, allow_raw_pointers());
 	function("gd_variant_type_unsafe_free", &gd_variant_type_unsafe_free, allow_raw_pointers());
-	function("gd_variant_zero", &gd_variant_zero, allow_raw_pointers());
-	function("gd_variant_copy", &gd_variant_copy, allow_raw_pointers());
-	function("gd_variant_call", &gd_variant_call, allow_raw_pointers());
-	function("gd_variant_eval", &gd_variant_eval, allow_raw_pointers());
-	function("gd_variant_hash", &gd_variant_hash, allow_raw_pointers());
-	function("gd_variant_bool", &gd_variant_bool, allow_raw_pointers());
-	function("gd_variant_text", &gd_variant_text, allow_raw_pointers());
-	function("gd_variant_type", &gd_variant_type, allow_raw_pointers());
-	function("gd_variant_deep_copy", &gd_variant_deep_copy, allow_raw_pointers());
-	function("gd_variant_deep_hash", &gd_variant_deep_hash, allow_raw_pointers());
-	function("gd_variant_get_index", &gd_variant_get_index, allow_raw_pointers());
-	function("gd_variant_get_array", &gd_variant_get_array, allow_raw_pointers());
-	function("gd_variant_get_field", &gd_variant_get_field, allow_raw_pointers());
-	function("gd_variant_has_index", &gd_variant_has_index, allow_raw_pointers());
-	function("gd_variant_has_method", &gd_variant_has_method, allow_raw_pointers());
-	function("gd_variant_set_index", &gd_variant_set_index, allow_raw_pointers());
-	function("gd_variant_set_array", &gd_variant_set_array, allow_raw_pointers());
-	function("gd_variant_set_field", &gd_variant_set_field, allow_raw_pointers());
-	function("gd_variant_unsafe_call", &gd_variant_unsafe_call, allow_raw_pointers());
-	function("gd_variant_unsafe_eval", &gd_variant_unsafe_eval, allow_raw_pointers());
-	function("gd_variant_unsafe_free", &gd_variant_unsafe_free, allow_raw_pointers());
-	function("gd_variant_unsafe_make_native", &gd_variant_unsafe_make_native, allow_raw_pointers());
-	function("gd_variant_unsafe_from_native", &gd_variant_unsafe_from_native, allow_raw_pointers());
-	function("gd_variant_unsafe_internal_pointer", &gd_variant_unsafe_internal_pointer, allow_raw_pointers());
-	function("gd_variant_unsafe_get_field", &gd_variant_unsafe_get_field, allow_raw_pointers());
-	function("gd_variant_unsafe_get_array", &gd_variant_unsafe_get_array, allow_raw_pointers());
-	function("gd_variant_unsafe_get_index", &gd_variant_unsafe_get_index, allow_raw_pointers());
-	function("gd_variant_unsafe_set_field", &gd_variant_unsafe_set_field, allow_raw_pointers());
-	function("gd_variant_unsafe_set_array", &gd_variant_unsafe_set_array, allow_raw_pointers());
-	function("gd_variant_unsafe_set_index", &gd_variant_unsafe_set_index, allow_raw_pointers());
 	function("gd_version_major", &gd_version_major, allow_raw_pointers());
 	function("gd_version_minor", &gd_version_minor, allow_raw_pointers());
 	function("gd_version_patch", &gd_version_patch, allow_raw_pointers());

@@ -223,8 +223,8 @@ FunctionID gd_builtin_name(StringName utility, INT64(hash));
 void gd_builtin_call(FunctionID utility, ANY result, SHAPE(shape), ANY args);
 
 String gd_variant_type_name(VariantType t);
-void gd_variant_type_make(VariantType t, ANY result, INT arg_count, ANY args, ANY err);
-void gd_variant_type_call(VariantType t, StringName static_method_name, ANY result, INT arg_count, ANY args, ANY err);
+void gd_variant_type_make(VariantType t, Variant* result, Int arg_count, Variant args[], CallError* err);
+void gd_variant_type_call(VariantType t, StringName static_method_name, Variant* result, Int arg_count, Variant args[], CallError* err);
 bool gd_variant_type_convertable(VariantType t, VariantType to, bool strict);
 void gd_variant_type_setup_array(Array a, VariantType elem, StringName class_name, VARIANT_ARG_OLD(v));
 void gd_variant_type_setup_dictionary(Dictionary d,
@@ -299,9 +299,17 @@ void gd_editor_add_documentation(STRING xml, INT len);
 void gd_editor_add_plugin(StringName class_name);
 void gd_editor_end_plugin(StringName class_name);
 
-void gd_iterator_make(VARIANT_ARG_OLD(v), ANY result_iter, ANY err);
-bool gd_iterator_next(VARIANT_ARG_OLD(v), ANY iter, ANY err);
-void gd_iterator_load(VARIANT_ARG_OLD(v), VARIANT_ARG_OLD(i), ANY result, ANY err);
+// gd_iterator_make initializes an iterator for the given variant. Writes the iterator state into
+// 'result_iter'. If the variant does not support iteration, writes an error into 'err'.
+void gd_iterator_make(VARIANT_ARG(v), UnsafePointer result_iter, UnsafePointer err);
+
+// gd_iterator_next advances the iterator to the next element. Returns true if there is a next
+// element, false otherwise. The 'iter' pointer is updated in place. On failure, writes into 'err'.
+bool gd_iterator_next(VARIANT_ARG(v), UnsafePointer iter, UnsafePointer err);
+
+// gd_iterator_load reads the current value of the iterator 'i' from variant 'v' into 'result'.
+// On failure, writes an error into 'err'.
+void gd_iterator_load(VARIANT_ARG(v), VARIANT_ARG(i), UnsafePointer result, UnsafePointer err);
 
 String gd_library_location();
 
@@ -374,7 +382,7 @@ uint64_t gd_memory_load_u64(UnsafePointer addr);
 Object gd_object_make(StringName name);
 
 // gd_object_call calls a checked method on an object with variant arguments.
-void gd_object_call(Object obj, MethodForClass method, UnsafePointer result, Int arg_count, UnsafePointer args, UnsafePointer err);
+void gd_object_call(Object obj, MethodForClass method, Variant* result, Int arg_count, Variant args[], CallError* err);
 
 // gd_object_name returns the class name of the given object.
 StringName gd_object_name(Object obj);
@@ -413,7 +421,7 @@ MethodForClass gd_object_method_lookup(StringName class_name, StringName method,
 ScriptInstance gd_object_script_make(ExtensionInstanceID fn);
 
 // gd_object_script_call calls a script method on an object.
-void gd_object_script_call(Object obj, StringName name, UnsafePointer result, Int arg_count, UnsafePointer args, UnsafePointer err);
+void gd_object_script_call(Object obj, StringName name, Variant* result, Int arg_count, Variant args[], CallError* err);
 
 // gd_object_script_setup attaches a script instance to an object.
 void gd_object_script_setup(Object obj, ScriptInstance script);
@@ -483,36 +491,97 @@ StringName gd_string_intern_utf8(STRING s, INT len);
 
 bool gd_thread_is_main();
 
-void gd_variant_zero(ANY result);
-void gd_variant_copy(VARIANT_ARG_OLD(v), ANY result);
-void gd_variant_call(VARIANT_ARG_OLD(v), StringName method, ANY result, INT arg_count, ANY args, ANY err);
-bool gd_variant_eval(VariantOperator op, VARIANT_ARG_OLD(a), VARIANT_ARG_OLD(b), ANY result);
-void gd_variant_hash(VARIANT_ARG_OLD(v), ANY hash);
-bool gd_variant_bool(VARIANT_ARG_OLD(v));
-String gd_variant_text(VARIANT_ARG_OLD(v));
-VariantType gd_variant_type(VARIANT_ARG_OLD(v));
-void gd_variant_deep_copy(VARIANT_ARG_OLD(v), ANY result);
-void gd_variant_deep_hash(VARIANT_ARG_OLD(v), INT recursion_count, ANY hash);
-bool gd_variant_get_index(VARIANT_ARG_OLD(v), VARIANT_ARG_OLD(key), ANY result);
-bool gd_variant_get_array(VARIANT_ARG_OLD(v), INT idx, ANY result, ANY err);
-bool gd_variant_get_field(VARIANT_ARG_OLD(v), StringName field, ANY result);
-bool gd_variant_has_index(VARIANT_ARG_OLD(v), VARIANT_ARG_OLD(idx));
-bool gd_variant_has_method(VARIANT_ARG_OLD(v), StringName method);
-bool gd_variant_set_index(VARIANT_ARG_OLD(v), VARIANT_ARG_OLD(key), VARIANT_ARG_OLD(val));
-bool gd_variant_set_array(VARIANT_ARG_OLD(v), INT idx, VARIANT_ARG_OLD(val), ANY err);
-bool gd_variant_set_field(VARIANT_ARG_OLD(v), StringName field, VARIANT_ARG_OLD(val));
-void gd_variant_unsafe_call(FunctionID fn, ANY result, SHAPE(shape), ANY args);
-void gd_variant_unsafe_eval(FunctionID fn, ANY result, SHAPE(shape), ANY args);
-void gd_variant_unsafe_free(VARIANT_ARG_OLD(v));
-void gd_variant_unsafe_make_native(VariantType vtype, VARIANT_ARG_OLD(v), SHAPE(shape), ANY result);
-void gd_variant_unsafe_from_native(VariantType vtype, ANY result, SHAPE(shape), ANY args);
-uintptr_t gd_variant_unsafe_internal_pointer(VariantType vtype, VARIANT_ARG_OLD(v));
-void gd_variant_unsafe_get_field(FunctionID getter, ANY result, SHAPE(shape), ANY args);
-void gd_variant_unsafe_get_array(VariantType vtype, INT idx, ANY result, SHAPE(shape), ANY args);
-void gd_variant_unsafe_get_index(VariantType vtype, ANY result, SHAPE(shape), ANY args);
-void gd_variant_unsafe_set_field(FunctionID setter, SHAPE(shape), ANY args);
-void gd_variant_unsafe_set_array(VariantType vtype, INT idx, SHAPE(shape), ANY args);
-void gd_variant_unsafe_set_index(VariantType vtype, SHAPE(shape), ANY args);
+// gd_variant_zero initializes a nil variant at the given result pointer.
+void gd_variant_zero(Variant* result);
+
+// gd_variant_copy creates a copy of variant 'v' and writes it into 'result'.
+void gd_variant_copy(VARIANT_ARG(v), Variant* result);
+
+// gd_variant_call calls 'method' on variant 'v' with the given arguments. The result is written
+// into 'result' and any call error is written into 'err'.
+void gd_variant_call(VARIANT_ARG(v), StringName method, Variant* result, Int arg_count, Variant args[], CallError* err);
+
+// gd_variant_eval evaluates a binary operator 'op' between variants 'a' and 'b'. The result is
+// written into 'result'. Returns true if the evaluation was valid.
+bool gd_variant_eval(VariantOperator op, VARIANT_ARG(a), VARIANT_ARG(b), Variant* result);
+
+// gd_variant_hash computes the hash of variant 'v' and writes it as int64 into 'hash'.
+Int gd_variant_hash(VARIANT_ARG(v));
+
+// gd_variant_bool returns the boolean value of variant 'v'.
+bool gd_variant_bool(VARIANT_ARG(v));
+
+// gd_variant_text converts variant 'v' to its string representation.
+String gd_variant_text(VARIANT_ARG(v));
+
+// gd_variant_type returns the type tag of variant 'v'.
+VariantType gd_variant_type(VARIANT_ARG(v));
+
+// gd_variant_deep_copy creates a deep (recursive) copy of variant 'v' into 'result'.
+void gd_variant_deep_copy(VARIANT_ARG(v), Variant* result);
+
+// gd_variant_deep_hash computes a recursive hash of variant 'v' up to 'recursion_count' depth.
+Int gd_variant_deep_hash(VARIANT_ARG(v), Int recursion_count);
+
+// gd_variant_get_index looks up a keyed value in variant 'v' using 'key'. Returns true if valid.
+bool gd_variant_get_index(VARIANT_ARG(v), VARIANT_ARG(key), Variant* result);
+
+// gd_variant_get_array gets the element at integer index 'idx' from variant 'v'.
+bool gd_variant_get_array(VARIANT_ARG(v), Int idx, Variant* result, CallError* err);
+
+// gd_variant_get_field gets a named field from variant 'v'. Returns true if valid.
+bool gd_variant_get_field(VARIANT_ARG(v), StringName field, Variant* result);
+
+// gd_variant_has_index checks if variant 'v' contains the given key 'idx'.
+bool gd_variant_has_index(VARIANT_ARG(v), VARIANT_ARG(idx));
+
+// gd_variant_has_method checks if variant 'v' has a method with the given name.
+bool gd_variant_has_method(VARIANT_ARG(v), StringName method);
+
+// gd_variant_set_index sets a keyed value in variant 'v'. Returns true if valid.
+bool gd_variant_set_index(VARIANT_ARG(v), VARIANT_ARG(key), VARIANT_ARG(val));
+
+// gd_variant_set_array sets the element at integer index 'idx' in variant 'v'.
+bool gd_variant_set_array(VARIANT_ARG(v), Int idx, VARIANT_ARG(val), UnsafePointer err);
+
+// gd_variant_set_field sets a named field on variant 'v'. Returns true if valid.
+bool gd_variant_set_field(VARIANT_ARG(v), StringName field, VARIANT_ARG(val));
+
+// gd_variant_unsafe_call calls a builtin method via function pointer using the ptrcall convention.
+void gd_variant_unsafe_call(FunctionID fn, UnsafePointer result, uint64_t shape, UnsafePointer args);
+
+// gd_variant_unsafe_eval evaluates an operator via function pointer using the ptrcall convention.
+void gd_variant_unsafe_eval(FunctionID fn, UnsafePointer result, uint64_t shape, UnsafePointer args);
+
+// gd_variant_unsafe_free destroys the variant 'v', freeing any internal resources.
+void gd_variant_unsafe_free(VARIANT_ARG(v));
+
+// gd_variant_unsafe_make_native extracts native data from variant 'v' of the given type.
+void gd_variant_unsafe_make_native(VariantType vtype, VARIANT_ARG(v), uint64_t shape, UnsafePointer result);
+
+// gd_variant_unsafe_from_native constructs a variant of the given type from native data.
+void gd_variant_unsafe_from_native(VariantType vtype, Variant* result, uint64_t shape, UnsafePointer args);
+
+// gd_variant_unsafe_internal_pointer returns an internal pointer to the variant's data.
+uintptr_t gd_variant_unsafe_internal_pointer(VariantType vtype, VARIANT_ARG(v));
+
+// gd_variant_unsafe_get_field reads a field from a builtin type using a getter function pointer.
+void gd_variant_unsafe_get_field(FunctionID getter, UnsafePointer result, uint64_t shape, UnsafePointer args);
+
+// gd_variant_unsafe_get_array reads an indexed element from a builtin type.
+void gd_variant_unsafe_get_array(VariantType vtype, Int idx, UnsafePointer result, uint64_t shape, UnsafePointer args);
+
+// gd_variant_unsafe_get_index reads a keyed element from a builtin type.
+void gd_variant_unsafe_get_index(VariantType vtype, UnsafePointer result, uint64_t shape, UnsafePointer args);
+
+// gd_variant_unsafe_set_field writes a field on a builtin type using a setter function pointer.
+void gd_variant_unsafe_set_field(FunctionID setter, uint64_t shape, UnsafePointer args);
+
+// gd_variant_unsafe_set_array writes an indexed element on a builtin type.
+void gd_variant_unsafe_set_array(VariantType vtype, Int idx, uint64_t shape, UnsafePointer args);
+
+// gd_variant_unsafe_set_index writes a keyed element on a builtin type.
+void gd_variant_unsafe_set_index(VariantType vtype, uint64_t shape, UnsafePointer args);
 
 uint32_t gd_version_major(void);
 uint32_t gd_version_minor(void);

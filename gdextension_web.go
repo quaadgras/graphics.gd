@@ -5,8 +5,6 @@ package gdunsafe
 import (
 	"sync"
 	"unsafe"
-
-	"graphics.gd/internal/gdextension"
 )
 
 type (
@@ -42,9 +40,9 @@ func gd_array_get(array Array, index Int, result uint32)
 
 func (array Array) Get(index Int) Variant {
 	var value Variant
-	result := makeResult(gdextension.SizeVariant)
+	result := makeResult(SizeVariant)
 	gd_array_get(array, index, uint32(result))
-	loadResult(gdextension.SizeVariant, &value, result)
+	loadResult(SizeVariant, &value, result)
 	return value
 }
 
@@ -156,11 +154,11 @@ func gd_variant_type_make(t VariantType, result Pointer, arg_count Int, args, er
 
 func (t VariantType) Make(args ...Variant) (value Variant, err CallError) {
 	var param = copyVariants(unsafe.SliceData(args), len(args))
-	result := makeResult(gdextension.SizeVariant)
-	result_err := makeResult(gdextension.SizeCallError)
+	result := makeResult(SizeVariant)
+	result_err := makeResult(SizeCallError)
 	gd_variant_type_make(t, Pointer(result), Int(len(args)), Pointer(param), Pointer(result_err))
-	loadResult(gdextension.SizeVariant, &value, result)
-	loadResult(gdextension.SizeCallError, &value, result_err)
+	loadResult(SizeVariant, &value, result)
+	loadResult(SizeCallError, &value, result_err)
 	return value, err
 }
 
@@ -170,11 +168,11 @@ func (args VariadicVariants) Index(i int) Variant {
 	}
 	// args.First points to an engine-side array of pointers-to-Variant.
 	// Read the i-th pointer, then read the Variant it points to.
-	ptr := Pointer(gdextension.Pointer(args.First) + gdextension.Pointer(i)*gdextension.Pointer(4)).Uint32()
+	ptr := Pointer(Pointer(args.First) + Pointer(i)*Pointer(4)).Uint32()
 	if ptr == 0 {
 		return Variant{}
 	}
-	return readVariant(gdextension.Pointer(ptr))
+	return readVariant(Pointer(ptr))
 }
 
 type (
@@ -186,10 +184,10 @@ type (
 func gd_callable_create(id CallableID, object ObjectID, result Pointer)
 
 func MakeCallable(impl CallableImplementation, obj ObjectID) Callable {
-	result := makeResult(gdextension.SizeCallable)
+	result := makeResult(SizeCallable)
 	gd_callable_create(callables.New(impl), obj, Pointer(result))
 	var c Callable
-	loadResult(gdextension.SizeCallable, unsafe.Pointer(&c), result)
+	loadResult(SizeCallable, unsafe.Pointer(&c), result)
 	return c
 }
 
@@ -233,25 +231,25 @@ func gd_on_callable_length(c CallableID) int64 {
 
 // Cross-memory helpers for transferring data between Go and engine address spaces.
 
-var wasmResultBufs [2]gdextension.Pointer
+var wasmResultBufs [2]Pointer
 var wasmResultIdx int
-var wasmArgBuf gdextension.Pointer
+var wasmArgBuf Pointer
 
 var wasmSetup = sync.OnceFunc(func() {
-	wasmArgBuf = gdextension.Pointer(Malloc(64 * 64))
+	wasmArgBuf = Malloc(64 * 64)
 	for i := range wasmResultBufs {
-		wasmResultBufs[i] = gdextension.Pointer(Malloc(64 * 64))
-		Clear(Pointer(wasmResultBufs[i]), 64*64)
+		wasmResultBufs[i] = Malloc(64 * 64)
+		Clear(wasmResultBufs[i], 64*64)
 	}
 })
 
-func makeResult(shape gdextension.Shape) gdextension.Pointer {
+func makeResult(shape Shape) Pointer {
 	wasmSetup()
 	wasmResultIdx ^= 1
 	return wasmResultBufs[wasmResultIdx]
 }
 
-func loadResult[T ~unsafe.Pointer | *gdextension.Variant](shape gdextension.Shape, result T, from gdextension.Pointer) {
+func loadResult[T ~unsafe.Pointer | *Variant | *CallError](shape Shape, result T, from Pointer) {
 	wasmSetup()
 	if from == 0 {
 		panic("nil pointer dereference")
@@ -266,34 +264,34 @@ func loadResult[T ~unsafe.Pointer | *gdextension.Variant](shape gdextension.Shap
 	for size > 0 {
 		switch {
 		case size >= 4:
-			*(*uint32)(unsafe.Add(data, done)) = Pointer(from + gdextension.Pointer(done)).Uint32()
+			*(*uint32)(unsafe.Add(data, done)) = Pointer(from + Pointer(done)).Uint32()
 			done += 4
 			size -= 4
 		case size >= 2:
-			*(*uint16)(unsafe.Add(data, done)) = Pointer(from + gdextension.Pointer(done)).Uint16()
+			*(*uint16)(unsafe.Add(data, done)) = Pointer(from + Pointer(done)).Uint16()
 			done += 2
 			size -= 2
 		default:
-			*(*uint8)(unsafe.Add(data, done)) = Pointer(from + gdextension.Pointer(done)).Byte()
+			*(*uint8)(unsafe.Add(data, done)) = Pointer(from + Pointer(done)).Byte()
 			done += 1
 			size -= 1
 		}
 	}
 }
 
-func copyVariants[T ~unsafe.Pointer | *gdextension.Variant](args T, n int) gdextension.Pointer {
+func copyVariants[T ~unsafe.Pointer | *Variant](args T, n int) Pointer {
 	wasmSetup()
 	var offset int
 	var data = unsafe.Pointer(args)
 	for i := range n {
-		Pointer(wasmArgBuf + gdextension.Pointer(offset)).SetBits128(*(*[2]uint64)(unsafe.Add(data, uintptr(i*24))))
-		Pointer(wasmArgBuf + gdextension.Pointer(offset+16)).SetUint64(*(*uint64)(unsafe.Add(data, uintptr(i*24+16))))
+		Pointer(wasmArgBuf + Pointer(offset)).SetBits128(*(*[2]uint64)(unsafe.Add(data, uintptr(i*24))))
+		Pointer(wasmArgBuf + Pointer(offset+16)).SetUint64(*(*uint64)(unsafe.Add(data, uintptr(i*24+16))))
 		offset += 24
 	}
 	return wasmArgBuf
 }
 
-func copyArguments(shape gdextension.Shape, args unsafe.Pointer) gdextension.Pointer {
+func copyArguments(shape Shape, args unsafe.Pointer) Pointer {
 	wasmSetup()
 	if args == nil {
 		return 0
@@ -301,7 +299,7 @@ func copyArguments(shape gdextension.Shape, args unsafe.Pointer) gdextension.Poi
 	bytes := shape.SizeArguments()
 	buf := unsafe.Slice((*byte)(args), bytes)
 	ptr := wasmArgBuf
-	off := gdextension.Pointer(0)
+	off := Pointer(0)
 	for len(buf) > 0 {
 		switch {
 		case len(buf) >= 8:
@@ -325,7 +323,7 @@ func copyArguments(shape gdextension.Shape, args unsafe.Pointer) gdextension.Poi
 	return ptr
 }
 
-func readVariant(addr gdextension.Pointer) Variant {
+func readVariant(addr Pointer) Variant {
 	if addr == 0 {
 		panic("nil pointer dereference")
 	}
@@ -397,23 +395,26 @@ func MethodLookup(class, method StringName, hash int64) MethodForClass {
 //go:wasmimport gd object_call
 func gd_object_call(obj Object, method MethodForClass, result Pointer, argc Int, args Pointer, err Pointer)
 
-func (obj Object) Call(method MethodForClass, result unsafe.Pointer, argc Int, args unsafe.Pointer, err unsafe.Pointer) {
-	mem_result := makeResult(gdextension.SizeVariant)
-	mem_args := copyVariants(args, int(argc))
-	mem_err := makeResult(gdextension.SizeCallError)
-	gd_object_call(obj, method, Pointer(mem_result), argc, Pointer(mem_args), Pointer(mem_err))
-	loadResult(gdextension.SizeVariant, result, mem_result)
-	loadResult(gdextension.SizeCallError, err, mem_err)
+func (obj Object) Call(method MethodForClass, args ...Variant) (Variant, CallError) {
+	mem_result := makeResult(SizeVariant)
+	mem_args := copyVariants(unsafe.SliceData(args), len(args))
+	mem_err := makeResult(SizeCallError)
+	gd_object_call(obj, method, Pointer(mem_result), Int(len(args)), Pointer(mem_args), Pointer(mem_err))
+	var result Variant
+	var errResult CallError
+	loadResult(SizeVariant, &result, mem_result)
+	loadResult(SizeCallError, &errResult, mem_err)
+	return result, errResult
 }
 
 //go:wasmimport gd object_unsafe_call
 func gd_object_unsafe_call(obj Object, fn MethodForClass, result Pointer, shape uint64, args Pointer)
 
 func (obj Object) UnsafeCall(fn MethodForClass, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
-	mem_result := makeResult(gdextension.Shape(shape))
-	mem_args := copyArguments(gdextension.Shape(shape), args)
+	mem_result := makeResult(Shape(shape))
+	mem_args := copyArguments(Shape(shape), args)
 	gd_object_unsafe_call(obj, fn, Pointer(mem_result), shape, Pointer(mem_args))
-	loadResult(gdextension.Shape(shape), result, mem_result)
+	loadResult(Shape(shape), result, mem_result)
 }
 
 // Extension instance management
@@ -445,13 +446,16 @@ func ScriptMake(fn ExtensionInstanceID) ScriptInstance { return gd_object_script
 //go:wasmimport gd object_script_call
 func gd_object_script_call(obj Object, name StringName, result Pointer, argc Int, args Pointer, err Pointer)
 
-func (obj Object) ScriptCall(name StringName, result unsafe.Pointer, argc Int, args unsafe.Pointer, err unsafe.Pointer) {
-	mem_result := makeResult(gdextension.SizeVariant)
-	mem_args := copyVariants(args, int(argc))
-	mem_err := makeResult(gdextension.SizeCallError)
-	gd_object_script_call(obj, name, Pointer(mem_result), argc, Pointer(mem_args), Pointer(mem_err))
-	loadResult(gdextension.SizeVariant, result, mem_result)
-	loadResult(gdextension.SizeCallError, err, mem_err)
+func (obj Object) ScriptCall(name StringName, args ...Variant) (Variant, CallError) {
+	mem_result := makeResult(SizeVariant)
+	mem_args := copyVariants(unsafe.SliceData(args), len(args))
+	mem_err := makeResult(SizeCallError)
+	gd_object_script_call(obj, name, Pointer(mem_result), Int(len(args)), Pointer(mem_args), Pointer(mem_err))
+	var result Variant
+	var err CallError
+	loadResult(SizeVariant, &result, mem_result)
+	loadResult(SizeCallError, &err, mem_err)
+	return result, err
 }
 
 //go:wasmimport gd object_script_setup
@@ -492,4 +496,329 @@ func gd_object_script_placeholder_update(script ScriptInstance, array Array, dic
 
 func ScriptPlaceholderUpdate(script ScriptInstance, array Array, dict Dictionary) {
 	gd_object_script_placeholder_update(script, array, dict)
+}
+
+// Variant operations
+
+type VariantOperator = uint32
+
+//go:wasmimport gd variant_zero
+func gd_variant_zero(result Pointer)
+
+func ZeroVariant() Variant {
+	mem := makeResult(SizeVariant)
+	gd_variant_zero(Pointer(mem))
+	var result Variant
+	loadResult(SizeVariant, &result, mem)
+	return result
+}
+
+//go:wasmimport gd variant_copy
+func gd_variant_copy(v1, v2, v3 uint64, result Pointer)
+
+func (v Variant) Copy() Variant {
+	mem := makeResult(SizeVariant)
+	gd_variant_copy(v[0], v[1], v[2], Pointer(mem))
+	var result Variant
+	loadResult(SizeVariant, &result, mem)
+	return result
+}
+
+//go:wasmimport gd variant_call
+func gd_variant_call(v1, v2, v3 uint64, method StringName, result Pointer, argc Int, args Pointer, err Pointer)
+
+func (v Variant) VariantCall(method StringName, args ...Variant) (Variant, CallError) {
+	mem_result := makeResult(SizeVariant)
+	mem_args := copyVariants(unsafe.SliceData(args), len(args))
+	mem_err := makeResult(SizeCallError)
+	gd_variant_call(v[0], v[1], v[2], method, Pointer(mem_result), Int(len(args)), Pointer(mem_args), Pointer(mem_err))
+	var result Variant
+	var err CallError
+	loadResult(SizeVariant, &result, mem_result)
+	loadResult(SizeCallError, &err, mem_err)
+	return result, err
+}
+
+//go:wasmimport gd variant_eval
+func gd_variant_eval(op uint32, a1, a2, a3, b1, b2, b3 uint64, result Pointer) uint32
+
+func VariantEval(op VariantOperator, a, b Variant) (Variant, bool) {
+	mem := makeResult(SizeVariant)
+	r := gd_variant_eval(op, a[0], a[1], a[2], b[0], b[1], b[2], Pointer(mem))
+	var result Variant
+	loadResult(SizeVariant, &result, mem)
+	return result, r != 0
+}
+
+//go:wasmimport gd variant_hash
+func gd_variant_hash(v1, v2, v3 uint64) int64
+
+func (v Variant) Hash() Int { return gd_variant_hash(v[0], v[1], v[2]) }
+
+//go:wasmimport gd variant_bool
+func gd_variant_bool(v1, v2, v3 uint64) uint32
+
+func (v Variant) Bool() bool {
+	return gd_variant_bool(v[0], v[1], v[2]) != 0
+}
+
+//go:wasmimport gd variant_text
+func gd_variant_text(v1, v2, v3 uint64) String
+
+func (v Variant) Text() String {
+	return gd_variant_text(v[0], v[1], v[2])
+}
+
+//go:wasmimport gd variant_type
+func gd_variant_type(v1, v2, v3 uint64) VariantType
+
+func (v Variant) Type() VariantType {
+	return gd_variant_type(v[0], v[1], v[2])
+}
+
+// Deep variant operations
+
+//go:wasmimport gd variant_deep_copy
+func gd_variant_deep_copy(v1, v2, v3 uint64, result Pointer)
+
+func (v Variant) DeepCopy() Variant {
+	mem := makeResult(SizeVariant)
+	gd_variant_deep_copy(v[0], v[1], v[2], Pointer(mem))
+	var result Variant
+	loadResult(SizeVariant, &result, mem)
+	return result
+}
+
+//go:wasmimport gd variant_deep_hash
+func gd_variant_deep_hash(v1, v2, v3 uint64, recursion Int) Int
+
+func (v Variant) DeepHash(recursion Int) Int {
+	return gd_variant_deep_hash(v[0], v[1], v[2], recursion)
+}
+
+// Variant get/set/has
+
+//go:wasmimport gd variant_get_index
+func gd_variant_get_index(v1, v2, v3, k1, k2, k3 uint64, result Pointer) uint32
+
+func (v Variant) GetIndex(key Variant) (Variant, bool) {
+	mem := makeResult(SizeVariant)
+	r := gd_variant_get_index(v[0], v[1], v[2], key[0], key[1], key[2], Pointer(mem))
+	var result Variant
+	loadResult(SizeVariant, &result, mem)
+	return result, r != 0
+}
+
+//go:wasmimport gd variant_get_array
+func gd_variant_get_array(v1, v2, v3 uint64, idx Int, result Pointer, err Pointer) uint32
+
+func (v Variant) GetArray(idx Int) (Variant, bool, CallError) {
+	mem_result := makeResult(SizeVariant)
+	mem_err := makeResult(SizeCallError)
+	r := gd_variant_get_array(v[0], v[1], v[2], idx, Pointer(mem_result), Pointer(mem_err))
+	var result Variant
+	var callErr CallError
+	loadResult(SizeVariant, &result, mem_result)
+	loadResult(SizeCallError, &callErr, mem_err)
+	return result, r != 0, callErr
+}
+
+//go:wasmimport gd variant_get_field
+func gd_variant_get_field(v1, v2, v3 uint64, field StringName, result Pointer) uint32
+
+func (v Variant) GetField(field StringName) (Variant, bool) {
+	mem := makeResult(SizeVariant)
+	r := gd_variant_get_field(v[0], v[1], v[2], field, Pointer(mem))
+	var result Variant
+	loadResult(SizeVariant, &result, mem)
+	return result, r != 0
+}
+
+//go:wasmimport gd variant_set_index
+func gd_variant_set_index(v1, v2, v3, k1, k2, k3, val1, val2, val3 uint64) uint32
+
+func (v Variant) SetIndex(key, val Variant) bool {
+	return gd_variant_set_index(v[0], v[1], v[2], key[0], key[1], key[2], val[0], val[1], val[2]) != 0
+}
+
+//go:wasmimport gd variant_set_array
+func gd_variant_set_array(v1, v2, v3 uint64, idx Int, val1, val2, val3 uint64, err Pointer) uint32
+
+func (v Variant) SetArray(idx Int, val Variant) (bool, CallError) {
+	mem_err := makeResult(SizeCallError)
+	r := gd_variant_set_array(v[0], v[1], v[2], idx, val[0], val[1], val[2], Pointer(mem_err))
+	var callErr CallError
+	loadResult(SizeCallError, &callErr, mem_err)
+	return r != 0, callErr
+}
+
+//go:wasmimport gd variant_set_field
+func gd_variant_set_field(v1, v2, v3 uint64, field StringName, val1, val2, val3 uint64) uint32
+
+func (v Variant) SetField(field StringName, value Variant) bool {
+	return gd_variant_set_field(v[0], v[1], v[2], field, value[0], value[1], value[2]) != 0
+}
+
+//go:wasmimport gd variant_has_index
+func gd_variant_has_index(v1, v2, v3, i1, i2, i3 uint64) uint32
+
+func (v Variant) HasIndex(index Variant) bool {
+	return gd_variant_has_index(v[0], v[1], v[2], index[0], index[1], index[2]) != 0
+}
+
+//go:wasmimport gd variant_has_method
+func gd_variant_has_method(v1, v2, v3 uint64, method StringName) uint32
+
+func (v Variant) HasMethod(method StringName) bool {
+	return gd_variant_has_method(v[0], v[1], v[2], method) != 0
+}
+
+// Unsafe variant operations
+
+//go:wasmimport gd variant_unsafe_call
+func gd_variant_unsafe_call(fn FunctionID, result Pointer, shape uint64, args Pointer)
+
+func VariantUnsafeCall(fn FunctionID, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
+	mem_result := makeResult(Shape(shape))
+	mem_args := copyArguments(Shape(shape), args)
+	gd_variant_unsafe_call(fn, Pointer(mem_result), shape, Pointer(mem_args))
+	loadResult(Shape(shape), result, mem_result)
+}
+
+//go:wasmimport gd variant_unsafe_eval
+func gd_variant_unsafe_eval(fn FunctionID, result Pointer, shape uint64, args Pointer)
+
+func VariantUnsafeEval(fn FunctionID, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
+	mem_result := makeResult(Shape(shape))
+	mem_args := copyArguments(Shape(shape), args)
+	gd_variant_unsafe_eval(fn, Pointer(mem_result), shape, Pointer(mem_args))
+	loadResult(Shape(shape), result, mem_result)
+}
+
+//go:wasmimport gd variant_unsafe_free
+func gd_variant_unsafe_free(v1, v2, v3 uint64)
+
+func (v Variant) UnsafeFree() {
+	gd_variant_unsafe_free(v[0], v[1], v[2])
+}
+
+//go:wasmimport gd variant_unsafe_make_native
+func gd_variant_unsafe_make_native(vtype VariantType, v1, v2, v3 uint64, shape uint64, result Pointer)
+
+func VariantUnsafeMakeNative(vtype VariantType, v Variant, shape uint64, result unsafe.Pointer) {
+	mem := makeResult(Shape(shape))
+	gd_variant_unsafe_make_native(vtype, v[0], v[1], v[2], shape, Pointer(mem))
+	loadResult(Shape(shape), result, mem)
+}
+
+//go:wasmimport gd variant_unsafe_from_native
+func gd_variant_unsafe_from_native(vtype VariantType, result Pointer, shape uint64, args Pointer)
+
+func VariantUnsafeFromNative(vtype VariantType, shape uint64, args unsafe.Pointer) Variant {
+	mem_result := makeResult(SizeVariant)
+	mem_args := copyArguments(Shape(shape), args)
+	gd_variant_unsafe_from_native(vtype, Pointer(mem_result), shape, Pointer(mem_args))
+	var result Variant
+	loadResult(SizeVariant, &result, mem_result)
+	return result
+}
+
+//go:wasmimport gd variant_unsafe_internal_pointer
+func gd_variant_unsafe_internal_pointer(vtype VariantType, v1, v2, v3 uint64) Pointer
+
+func VariantUnsafeInternalPointer(vtype VariantType, v Variant) Pointer {
+	return gd_variant_unsafe_internal_pointer(vtype, v[0], v[1], v[2])
+}
+
+//go:wasmimport gd variant_unsafe_set_field
+func gd_variant_unsafe_set_field(setter FunctionID, shape uint64, args Pointer)
+
+func VariantUnsafeSetField(setter FunctionID, shape uint64, args unsafe.Pointer) {
+	mem_args := copyArguments(Shape(shape), args)
+	gd_variant_unsafe_set_field(setter, shape, Pointer(mem_args))
+}
+
+//go:wasmimport gd variant_unsafe_set_array
+func gd_variant_unsafe_set_array(vtype VariantType, idx Int, shape uint64, args Pointer)
+
+func VariantUnsafeSetArray(vtype VariantType, idx Int, shape uint64, args unsafe.Pointer) {
+	mem_args := copyArguments(Shape(shape), args)
+	gd_variant_unsafe_set_array(vtype, idx, shape, Pointer(mem_args))
+}
+
+//go:wasmimport gd variant_unsafe_set_index
+func gd_variant_unsafe_set_index(vtype VariantType, shape uint64, args Pointer)
+
+func VariantUnsafeSetIndex(vtype VariantType, shape uint64, args unsafe.Pointer) {
+	mem_args := copyArguments(Shape(shape), args)
+	gd_variant_unsafe_set_index(vtype, shape, Pointer(mem_args))
+}
+
+//go:wasmimport gd variant_unsafe_get_field
+func gd_variant_unsafe_get_field(getter FunctionID, result Pointer, shape uint64, args Pointer)
+
+func VariantUnsafeGetField(getter FunctionID, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
+	mem_result := makeResult(Shape(shape))
+	mem_args := copyArguments(Shape(shape), args)
+	gd_variant_unsafe_get_field(getter, Pointer(mem_result), shape, Pointer(mem_args))
+	loadResult(Shape(shape), result, mem_result)
+}
+
+//go:wasmimport gd variant_unsafe_get_array
+func gd_variant_unsafe_get_array(vtype VariantType, idx Int, result Pointer, shape uint64, args Pointer)
+
+func VariantUnsafeGetArray(vtype VariantType, idx Int, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
+	mem_result := makeResult(Shape(shape))
+	mem_args := copyArguments(Shape(shape), args)
+	gd_variant_unsafe_get_array(vtype, idx, Pointer(mem_result), shape, Pointer(mem_args))
+	loadResult(Shape(shape), result, mem_result)
+}
+
+//go:wasmimport gd variant_unsafe_get_index
+func gd_variant_unsafe_get_index(vtype VariantType, result Pointer, shape uint64, args Pointer)
+
+func VariantUnsafeGetIndex(vtype VariantType, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
+	mem_result := makeResult(Shape(shape))
+	mem_args := copyArguments(Shape(shape), args)
+	gd_variant_unsafe_get_index(vtype, Pointer(mem_result), shape, Pointer(mem_args))
+	loadResult(Shape(shape), result, mem_result)
+}
+
+// Iterator operations
+
+//go:wasmimport gd iterator_make
+func gd_iterator_make(v1, v2, v3 uint64, result Pointer, err Pointer)
+
+func (v Variant) IteratorMake(result unsafe.Pointer, err unsafe.Pointer) {
+	mem_result := makeResult(SizeVariant)
+	mem_err := makeResult(SizeCallError)
+	gd_iterator_make(v[0], v[1], v[2], Pointer(mem_result), Pointer(mem_err))
+	loadResult(SizeVariant, result, mem_result)
+	loadResult(SizeCallError, err, mem_err)
+}
+
+//go:wasmimport gd iterator_next
+func gd_iterator_next(v1, v2, v3 uint64, iter Pointer, err Pointer) uint32
+
+func (v Variant) IteratorNext(iter unsafe.Pointer, err unsafe.Pointer) bool {
+	mem_iter := makeResult(SizeVariant)
+	// Copy iter into engine memory, call, then copy back.
+	mem_args := copyArguments(SizeVariant, iter)
+	mem_err := makeResult(SizeCallError)
+	r := gd_iterator_next(v[0], v[1], v[2], Pointer(mem_args), Pointer(mem_err))
+	loadResult(SizeVariant, iter, mem_args)
+	_ = mem_iter
+	loadResult(SizeCallError, err, mem_err)
+	return r != 0
+}
+
+//go:wasmimport gd iterator_load
+func gd_iterator_load(v1, v2, v3, i1, i2, i3 uint64, result Pointer, err Pointer)
+
+func (v Variant) IteratorLoad(iter Variant, result unsafe.Pointer, err unsafe.Pointer) {
+	mem_result := makeResult(SizeVariant)
+	mem_err := makeResult(SizeCallError)
+	gd_iterator_load(v[0], v[1], v[2], iter[0], iter[1], iter[2], Pointer(mem_result), Pointer(mem_err))
+	loadResult(SizeVariant, result, mem_result)
+	loadResult(SizeCallError, err, mem_err)
 }

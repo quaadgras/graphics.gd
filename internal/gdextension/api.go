@@ -2,9 +2,9 @@
 package gdextension
 
 import (
-	"structs"
 	"unsafe"
 
+	gdunsafe "graphics.gd"
 	"graphics.gd/variant/AABB"
 	"graphics.gd/variant/Basis"
 	"graphics.gd/variant/Color"
@@ -37,9 +37,9 @@ type API struct {
 	Timestamp func(CallReturns[uint64]) `gd:"version_timestamp"`
 	String    func() String             `gd:"version_string"`
 	}*/
-	Library struct {
+	/*Library struct {
 		Location func() String `gd:"library_location"`
-	}
+	}*/
 	/*Memory struct {
 		Malloc func(size int) Pointer               `gd:"memory_malloc"`
 		Sizeof func(name StringName) int            `gd:"memory_sizeof"`
@@ -98,7 +98,7 @@ type API struct {
 			Call func(fn FunctionID, result CallReturns[any], shape Shape, args CallAccepts[any]) `gd:"builtin_call"`
 		}
 	}
-	Variants struct {
+	/*Variants struct {
 		Zero func(result CallReturns[Variant])                                                                                                     `gd:"variant_zero"`
 		Copy func(v Variant, result CallReturns[Variant])                                                                                          `gd:"variant_copy"`
 		Call func(v Variant, method StringName, result CallReturns[Variant], arg_count int, args CallAccepts[Variant], err CallReturns[CallError]) `gd:"variant_call"`
@@ -150,7 +150,7 @@ type API struct {
 		Make func(v Variant, result CallReturns[Iterator], err CallReturns[CallError])               `gd:"iterator_make"`
 		Next func(v Variant, iter CallMutates[Iterator], err CallReturns[CallError]) bool            `gd:"iterator_next"`
 		Load func(v Variant, iter Iterator, result CallReturns[Variant], err CallReturns[CallError]) `gd:"iterator_load"`
-	}
+	}*/
 	Strings struct {
 		Access func(s String, idx int) rune    `gd:"string_access"`
 		Resize func(s String, size int) String `gd:"string_resize"`
@@ -370,12 +370,12 @@ type MethodForClass Pointer
 
 type MethodForBuiltinType Pointer
 
-type Object Pointer
-type ObjectType Pointer
-type ObjectID uint64
+type Object = gdunsafe.Object
+type ObjectType = gdunsafe.ObjectType
+type ObjectID gdunsafe.ObjectID
 type RefCounted Pointer
 
-type Variant [3]uint64
+type Variant = gdunsafe.Variant
 type VariantOperator uint32
 
 type Iterator Variant
@@ -459,7 +459,7 @@ const (
 	MethodFlagsDefault MethodFlags = MethodFlagNormal
 )
 
-type CallErrorType uint32
+type CallErrorType = gdunsafe.CallErrorType
 
 const (
 	CallOK               CallErrorType = iota
@@ -472,7 +472,7 @@ const (
 )
 
 // Shape is used to correctly transfer data for unsafe calls into the engine.
-type Shape uint64
+type Shape = gdunsafe.Shape
 
 const (
 	ShapeEmpty Shape = iota
@@ -504,77 +504,6 @@ func ShapeVariants(count int) Shape {
 		shape |= SizeVariant << ((i + 1) * 4)
 	}
 	return shape
-}
-
-// ALIGN_UP aligns a value to the next multiple of align.
-func alignUp(value, align uint32) uint32 {
-	return (value + (align - 1)) & ^(align - 1)
-}
-
-func (shape Shape) SizeResult() (size int) {
-	switch shape & 0xF {
-	case ShapeEmpty:
-		return 0
-	case ShapeBytes1:
-		return 1
-	case ShapeBytes2:
-		return 2
-	case ShapeBytes4:
-		return 4
-	case ShapeBytes8:
-		return 8
-	case ShapeBytes4x2:
-		return 4 * 2
-	case ShapeBytes4x3:
-		return 4 * 3
-	case ShapeBytes8x2:
-		return 8 * 2
-	case ShapeBytes4x4:
-		return 4 * 4
-	case ShapeBytes8x3:
-		return 8 * 3
-	case ShapeBytes4x6:
-		return 4 * 6
-	case ShapeBytes4x9:
-		return 4 * 9
-	case ShapeBytes4x12:
-		return 4 * 12
-	case ShapeBytes4x16:
-		return 4 * 16
-	default:
-		panic("Shape.SizeResult: invalid shape")
-	}
-}
-
-func (shape Shape) Alignment() int {
-	switch shape {
-	case ShapeEmpty:
-		return 0
-	case ShapeBytes1:
-		return 1
-	case ShapeBytes2:
-		return 2
-	case ShapeBytes4, ShapeBytes4x2, ShapeBytes4x3, ShapeBytes4x4, ShapeBytes4x6, ShapeBytes4x9, ShapeBytes4x12, ShapeBytes4x16:
-		return 4
-	case ShapeBytes8, ShapeBytes8x2, ShapeBytes8x3:
-		return 8
-	default:
-		panic("Shape.Alignment: invalid shape")
-	}
-}
-
-func (shape Shape) SizeArguments() (size int) {
-	for i := 1; i < 16; i++ {
-		var current = (shape >> (i * 4)) & 0xF
-		switch current {
-		case ShapeEmpty:
-			return size
-		default:
-			size += current.SizeResult()
-			size = int(alignUp(uint32(size), uint32(current.Alignment())))
-		}
-	}
-	return
 }
 
 type VariantType uint32
@@ -767,39 +696,7 @@ func init() {
 	}
 }
 
-type CallError struct {
-	_ structs.HostLayout
-
-	Type     CallErrorType
-	Argument int32
-	Expected int32
-}
-
-func (err CallError) Err() error {
-	if err.Type == CallOK {
-		return nil
-	}
-	return err
-}
-
-func (err CallError) Error() string {
-	switch err.Type {
-	case CallInvalidMethod:
-		return "Call Invalid Method"
-	case CallInvalidArguments:
-		return "Call Invalid Arguments"
-	case CallTooManyArguments:
-		return "Call Too Many Arguments"
-	case CallTooFewArguments:
-		return "Call Too Few Arguments"
-	case CallInstanceIsNull:
-		return "Call Instance Is Null"
-	case CallMethodNotConst:
-		return "Call Method Not Const"
-	default:
-		return "Unknown Call Error"
-	}
-}
+type CallError = gdunsafe.CallError
 
 type Packable interface {
 	byte | int32 | int64 | float32 | float64 | Color.RGBA | Vector2.XY | Vector3.XYZ | Vector4.XYZW | String

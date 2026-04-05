@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"unsafe"
 
+	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
@@ -251,7 +252,7 @@ func (VariantProxy) Type(raw complex128) VariantPkg.Type {
 	return VariantPkg.Type(pointers.Load[Variant](raw).Type())
 }
 func (VariantProxy) String(raw complex128) string {
-	return pointers.New[String](gdextension.Host.Variants.Text(pointers.Get(pointers.Load[Variant](raw)))).String()
+	return pointers.New[String](gdextension.String{gdextension.Pointer(gdunsafe.Variant(pointers.Get(pointers.Load[Variant](raw))).Text())}).String()
 }
 
 func (VariantProxy) KeepAlive(val complex128) bool {

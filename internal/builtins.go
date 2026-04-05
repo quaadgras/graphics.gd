@@ -548,17 +548,12 @@ func ObjectCall(o gdreference.Object, method StringName, args ...Variant) (Varia
 	self := gdreference.GetObject(o)
 	name := pointers.Get(method)
 	if gdunsafe.Object(self).ScriptDefinesMethod(gdunsafe.StringName(name[0])) {
-		var converted []gdextension.Variant
+		var converted []gdunsafe.Variant
 		for _, arg := range args {
-			converted = append(converted, gdextension.Variant(pointers.Get(arg)))
+			converted = append(converted, gdunsafe.Variant(pointers.Get(arg)))
 		}
-		var err gdextension.CallError
-		var result gdextension.Variant
-		gdunsafe.Object(self).ScriptCall(gdunsafe.StringName(name[0]),
-			unsafe.Pointer(&result),
-			gdunsafe.Int(len(args)),
-			unsafe.Pointer(unsafe.SliceData(converted)),
-			unsafe.Pointer(&err),
+		result, err := gdunsafe.Object(self).ScriptCall(gdunsafe.StringName(name[0]),
+			converted...,
 		)
 		return pointers.New[Variant](result), err.Err()
 	}

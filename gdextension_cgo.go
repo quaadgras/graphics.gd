@@ -29,6 +29,13 @@ type (
 	MethodList          uintptr
 )
 
+func toVariant(v C.Variant) Variant {
+	return Variant{uint64(v.tag), uint64(v.payload[0]), uint64(v.payload[1])}
+}
+func toCallError(cerr C.CallError) CallError {
+	return CallError{Type: CallErrorType(cerr.error), Expected: int32(cerr.expected), Argument: int32(cerr.argument)}
+}
+
 func (args VariadicVariants) Index(i int) Variant {
 	if i >= args.Count || i < 0 {
 		panic("index out of range")
@@ -100,15 +107,11 @@ func (t VariantType) Name() String {
 	return String(C.gd_variant_type_name(C.uint32_t(t)))
 }
 
-func (t VariantType) Make(args ...Variant) (value Variant, err CallError) {
-	var result Variant
-	var cerr CallError
-	var argsPtr unsafe.Pointer
-	if len(args) > 0 {
-		argsPtr = unsafe.Pointer(&args[0])
-	}
-	C.gd_variant_type_make(C.uint32_t(t), unsafe.Pointer(&result), C.int64_t(len(args)), argsPtr, unsafe.Pointer(&cerr))
-	return result, cerr
+func (t VariantType) Make(args ...Variant) (Variant, CallError) {
+	var value C.Variant
+	var err C.CallError
+	C.gd_variant_type_make(C.uint32_t(t), &value, C.int64_t(len(args)), (*C.Variant)(unsafe.Pointer(unsafe.SliceData(args))), &err)
+	return toVariant(value), toCallError(err)
 }
 
 type (
@@ -190,8 +193,11 @@ func (obj Object) Free() {
 func MethodLookup(class, method StringName, hash int64) MethodForClass {
 	return MethodForClass(C.gd_object_method_lookup(C.StringName(class), C.StringName(method), C.int64_t(hash)))
 }
-func (obj Object) Call(method MethodForClass, result unsafe.Pointer, argc Int, args unsafe.Pointer, err unsafe.Pointer) {
-	C.gd_object_call(C.Object(obj), C.MethodForClass(method), C.UnsafePointer(result), C.int64_t(argc), C.UnsafePointer(args), C.UnsafePointer(err))
+func (obj Object) Call(method MethodForClass, args ...Variant) (Variant, CallError) {
+	var ret C.Variant
+	var err C.CallError
+	C.gd_object_call(C.Object(obj), C.MethodForClass(method), &ret, C.int64_t(len(args)), (*C.Variant)(unsafe.Pointer(unsafe.SliceData(args))), &err)
+	return toVariant(ret), toCallError(err)
 }
 func (obj Object) UnsafeCall(fn MethodForClass, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
 	C.gd_object_unsafe_call(C.Object(obj), C.MethodForClass(fn), C.UnsafePointer(result), C.uint64_t(shape), C.UnsafePointer(args))
@@ -214,8 +220,11 @@ func (obj Object) ExtensionClose() {
 func ScriptMake(fn ExtensionInstanceID) ScriptInstance {
 	return ScriptInstance(C.gd_object_script_make(C.ExtensionInstanceID(fn)))
 }
-func (obj Object) ScriptCall(name StringName, result unsafe.Pointer, argc Int, args unsafe.Pointer, err unsafe.Pointer) {
-	C.gd_object_script_call(C.Object(obj), C.StringName(name), C.UnsafePointer(result), C.int64_t(argc), C.UnsafePointer(args), C.UnsafePointer(err))
+func (obj Object) ScriptCall(name StringName, args ...Variant) (Variant, CallError) {
+	var ret C.Variant
+	var err C.CallError
+	C.gd_object_script_call(C.Object(obj), C.StringName(name), &ret, C.int64_t(len(args)), (*C.Variant)(C.UnsafePointer(unsafe.SliceData(args))), &err)
+	return toVariant(ret), toCallError(err)
 }
 func (obj Object) ScriptSetup(script ScriptInstance) {
 	C.gd_object_script_setup(C.Object(obj), C.ScriptInstance(script))
@@ -234,4 +243,141 @@ func ScriptPlaceholderCreate(language, script, owner Object) ScriptInstance {
 }
 func ScriptPlaceholderUpdate(script ScriptInstance, array Array, dict Dictionary) {
 	C.gd_object_script_placeholder_update(C.ScriptInstance(script), C.Array(array), C.Dictionary(dict))
+}
+
+// Variant operations
+
+type VariantOperator = uint32
+
+func ZeroVariant() Variant {
+	var zero C.Variant
+	C.gd_variant_zero(&zero)
+	return toVariant(zero)
+}
+
+func (v Variant) Copy() Variant {
+	var result C.Variant
+	C.gd_variant_copy(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), &result)
+	return toVariant(result)
+}
+func (v Variant) VariantCall(method StringName, args ...Variant) (Variant, CallError) {
+	var result C.Variant
+	var err C.CallError
+	C.gd_variant_call(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.StringName(method), &result, C.int64_t(len(args)), (*C.Variant)(unsafe.Pointer(unsafe.SliceData(args))), &err)
+	return toVariant(result), toCallError(err)
+}
+func VariantEval(op VariantOperator, a, b Variant) (Variant, bool) {
+	var result C.Variant
+	ok := bool(C.gd_variant_eval(C.uint32_t(op), C.uint64_t(a[0]), C.uint64_t(a[1]), C.uint64_t(a[2]), C.uint64_t(b[0]), C.uint64_t(b[1]), C.uint64_t(b[2]), &result))
+	return toVariant(result), ok
+}
+func (v Variant) Hash() Int {
+	return Int(C.gd_variant_hash(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2])))
+}
+func (v Variant) Bool() bool {
+	return bool(C.gd_variant_bool(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2])))
+}
+func (v Variant) Text() String {
+	return String(C.gd_variant_text(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2])))
+}
+func (v Variant) Type() VariantType {
+	return VariantType(C.gd_variant_type(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2])))
+}
+
+// Deep variant operations
+
+func (v Variant) DeepCopy() Variant {
+	var result C.Variant
+	C.gd_variant_deep_copy(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), &result)
+	return toVariant(result)
+}
+func (v Variant) DeepHash(recursion Int) Int {
+	return Int(C.gd_variant_deep_hash(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.int64_t(recursion)))
+}
+
+// Variant get/set/has
+
+func (v Variant) GetIndex(key Variant) (Variant, bool) {
+	var result C.Variant
+	ok := bool(C.gd_variant_get_index(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.uint64_t(key[0]), C.uint64_t(key[1]), C.uint64_t(key[2]), &result))
+	return toVariant(result), ok
+}
+func (v Variant) GetArray(idx Int) (Variant, bool, CallError) {
+	var result C.Variant
+	var err C.CallError
+	ok := bool(C.gd_variant_get_array(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.int64_t(idx), &result, &err))
+	return toVariant(result), ok, toCallError(err)
+}
+func (v Variant) GetField(field StringName) (Variant, bool) {
+	var result C.Variant
+	ok := bool(C.gd_variant_get_field(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.StringName(field), &result))
+	return toVariant(result), ok
+}
+func (v Variant) SetIndex(key, val Variant) bool {
+	return bool(C.gd_variant_set_index(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.uint64_t(key[0]), C.uint64_t(key[1]), C.uint64_t(key[2]), C.uint64_t(val[0]), C.uint64_t(val[1]), C.uint64_t(val[2])))
+}
+func (v Variant) SetArray(idx Int, val Variant, err unsafe.Pointer) bool {
+	return bool(C.gd_variant_set_array(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.int64_t(idx), C.uint64_t(val[0]), C.uint64_t(val[1]), C.uint64_t(val[2]), C.UnsafePointer(err)))
+}
+func (v Variant) SetField(field StringName, value Variant) bool {
+	return bool(C.gd_variant_set_field(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.StringName(field), C.uint64_t(value[0]), C.uint64_t(value[1]), C.uint64_t(value[2])))
+}
+func (v Variant) HasIndex(index Variant) bool {
+	return bool(C.gd_variant_has_index(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.uint64_t(index[0]), C.uint64_t(index[1]), C.uint64_t(index[2])))
+}
+func (v Variant) HasMethod(method StringName) bool {
+	return bool(C.gd_variant_has_method(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.StringName(method)))
+}
+
+// Unsafe variant operations
+
+func VariantUnsafeCall(fn FunctionID, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
+	C.gd_variant_unsafe_call(C.FunctionID(fn), C.UnsafePointer(result), C.uint64_t(shape), C.UnsafePointer(args))
+}
+func VariantUnsafeEval(fn FunctionID, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
+	C.gd_variant_unsafe_eval(C.FunctionID(fn), C.UnsafePointer(result), C.uint64_t(shape), C.UnsafePointer(args))
+}
+func (v Variant) UnsafeFree() {
+	C.gd_variant_unsafe_free(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]))
+}
+func VariantUnsafeMakeNative(vtype VariantType, v Variant, shape uint64, result unsafe.Pointer) {
+	C.gd_variant_unsafe_make_native(C.uint32_t(vtype), C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.uint64_t(shape), C.UnsafePointer(result))
+}
+func VariantUnsafeFromNative(vtype VariantType, shape uint64, args unsafe.Pointer) Variant {
+	var result C.Variant
+	C.gd_variant_unsafe_from_native(C.uint32_t(vtype), &result, C.uint64_t(shape), C.UnsafePointer(args))
+	return toVariant(result)
+}
+func VariantUnsafeInternalPointer(vtype VariantType, v Variant) Pointer {
+	return Pointer(C.gd_variant_unsafe_internal_pointer(C.uint32_t(vtype), C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2])))
+}
+func VariantUnsafeSetField(setter FunctionID, shape uint64, args unsafe.Pointer) {
+	C.gd_variant_unsafe_set_field(C.FunctionID(setter), C.uint64_t(shape), C.UnsafePointer(args))
+}
+func VariantUnsafeSetArray(vtype VariantType, idx Int, shape uint64, args unsafe.Pointer) {
+	C.gd_variant_unsafe_set_array(C.uint32_t(vtype), C.int64_t(idx), C.uint64_t(shape), C.UnsafePointer(args))
+}
+func VariantUnsafeSetIndex(vtype VariantType, shape uint64, args unsafe.Pointer) {
+	C.gd_variant_unsafe_set_index(C.uint32_t(vtype), C.uint64_t(shape), C.UnsafePointer(args))
+}
+func VariantUnsafeGetField(getter FunctionID, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
+	C.gd_variant_unsafe_get_field(C.FunctionID(getter), C.UnsafePointer(result), C.uint64_t(shape), C.UnsafePointer(args))
+}
+func VariantUnsafeGetArray(vtype VariantType, idx Int, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
+	C.gd_variant_unsafe_get_array(C.uint32_t(vtype), C.int64_t(idx), C.UnsafePointer(result), C.uint64_t(shape), C.UnsafePointer(args))
+}
+func VariantUnsafeGetIndex(vtype VariantType, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
+	C.gd_variant_unsafe_get_index(C.uint32_t(vtype), C.UnsafePointer(result), C.uint64_t(shape), C.UnsafePointer(args))
+}
+
+// Iterator operations
+
+func (v Variant) IteratorMake(result unsafe.Pointer, err unsafe.Pointer) {
+	C.gd_iterator_make(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.UnsafePointer(result), C.UnsafePointer(err))
+}
+func (v Variant) IteratorNext(iter unsafe.Pointer, err unsafe.Pointer) bool {
+	return bool(C.gd_iterator_next(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.UnsafePointer(iter), C.UnsafePointer(err)))
+}
+func (v Variant) IteratorLoad(iter Variant, result unsafe.Pointer, err unsafe.Pointer) {
+	C.gd_iterator_load(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.uint64_t(iter[0]), C.uint64_t(iter[1]), C.uint64_t(iter[2]), C.UnsafePointer(result), C.UnsafePointer(err))
 }

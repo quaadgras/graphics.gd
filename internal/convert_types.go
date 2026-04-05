@@ -38,7 +38,7 @@ func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.V
 	}
 	switch rtype.Kind() {
 	case reflect.Bool:
-		return reflect.ValueOf(gdextension.Host.Variants.Bool(pointers.Get(value))).Convert(rtype), nil
+		return reflect.ValueOf(gdunsafe.Variant(pointers.Get(value)).Bool()).Convert(rtype), nil
 	case reflect.Array:
 		if reflect.PointerTo(rtype).Implements(reflect.TypeFor[IsClassCastable]()) {
 			if value.Type() != gdextension.TypeObject {

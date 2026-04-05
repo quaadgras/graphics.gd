@@ -23,6 +23,7 @@ import (
 	"graphics.gd/classdb/EditorInterface"
 	"graphics.gd/classdb/EditorPlugin"
 	"graphics.gd/classdb/Engine"
+	"graphics.gd/classdb/GDExtension"
 	"graphics.gd/classdb/MainLoop"
 	"graphics.gd/classdb/Node"
 	"graphics.gd/classdb/SceneTree"
@@ -398,8 +399,8 @@ var preloaded_documentation = make(map[string]docgen.Class)
 func init() {
 	gd.StartupFunctions = append(gd.StartupFunctions, func() {
 		if Engine.IsEditorHint() {
-			path := pointers.New[gd.String](gdextension.Host.Library.Location())
-			data, err := os.Open(filepath.Join(filepath.Dir(path.String()), "library_documentation.xml"))
+			path := GDExtension.LibraryPath()
+			data, err := os.Open(filepath.Join(filepath.Dir(path), "library_documentation.xml"))
 			if err != nil {
 				if errors.Is(err, os.ErrNotExist) {
 					return
