@@ -28,7 +28,7 @@ type UID int
 var (
 	rid_allocate_id       gdextension.FunctionID
 	rid_allocate_id_setup = sync.OnceFunc(func() {
-		rid_allocate_id = gdextension.Host.Builtin.Functions.Name(pointers.Get(gd.NewStringName("rid_allocate_id")), 701202648)
+		rid_allocate_id = gdextension.FunctionID(gdunsafe.BuiltinName(gdunsafe.StringName(pointers.Get(gd.NewStringName("rid_allocate_id"))[0]), 701202648))
 	})
 )
 
@@ -37,7 +37,7 @@ var (
 func AllocateID() ID { //gd:rid_allocate_id
 	rid_allocate_id_setup()
 	var id int64
-	gdextension.Host.Builtin.Functions.Call(rid_allocate_id, gdextension.CallReturns[any](&id), gdextension.SizeInt, nil)
+	gdunsafe.BuiltinCall(gdunsafe.FunctionID(rid_allocate_id), unsafe.Pointer(&id), uint64(gdextension.SizeInt), nil)
 	return Int64(id)
 }
 

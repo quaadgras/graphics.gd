@@ -219,28 +219,83 @@ extern void gd_on_worker_thread_pool_group_task(TaskID task, uint32_t n);
 RETURNS(Variant) gd_array_get(Array a, Int i RESULT_POINTER);
 void gd_array_set(Array a, Int i, VARIANT_ARG(v));
 
-FunctionID gd_builtin_name(StringName utility, INT64(hash));
-void gd_builtin_call(FunctionID utility, ANY result, SHAPE(shape), ANY args);
+// gd_builtin_name returns a [FunctionID] for the engine utility function identified by 'utility'
+// and validated against the expected API 'hash'. The returned ID is used with [gd_builtin_call].
+FunctionID gd_builtin_name(StringName utility, int64_t hash);
 
+// gd_builtin_call calls the engine utility function identified by 'fn'. The 'shape' encodes
+// the number and sizes of packed arguments in 'args'. If the function returns a value, it is
+// written into 'result' (may be NULL for void functions).
+void gd_builtin_call(FunctionID fn, UnsafePointer result, uint64_t shape, UnsafePointer args);
+
+// gd_variant_type_name returns the human-readable name of a [VariantType] as a [String].
 String gd_variant_type_name(VariantType t);
+
+// gd_variant_type_make constructs a new variant of the given type from the provided arguments.
+// The result is written into 'result'. If construction fails, the error is written into 'err'.
 void gd_variant_type_make(VariantType t, Variant* result, Int arg_count, Variant args[], CallError* err);
+
+// gd_variant_type_call calls a static method on a variant type by name. The result is written
+// into 'result'. If the call fails, the error is written into 'err'.
 void gd_variant_type_call(VariantType t, StringName static_method_name, Variant* result, Int arg_count, Variant args[], CallError* err);
+
+// gd_variant_type_convertable returns true if a value of type 't' can be converted to type 'to'.
+// When 'strict' is true, only lossless conversions are considered valid.
 bool gd_variant_type_convertable(VariantType t, VariantType to, bool strict);
-void gd_variant_type_setup_array(Array a, VariantType elem, StringName class_name, VARIANT_ARG_OLD(v));
+
+// gd_variant_type_setup_array configures a typed array with the given element type, class name,
+// and script. The script variant is passed as a [VARIANT_ARG].
+void gd_variant_type_setup_array(Array a, VariantType elem, StringName class_name, VARIANT_ARG(v));
+
+// gd_variant_type_setup_dictionary configures a typed dictionary with separate key and value
+// types, class names, and scripts. Each script variant is passed as a [VARIANT_ARG].
 void gd_variant_type_setup_dictionary(Dictionary d,
-    VariantType key, StringName key_class_name, VARIANT_ARG_OLD(key_script),
-    VariantType val, StringName val_class_name, VARIANT_ARG_OLD(val_script)
+    VariantType key, StringName key_class_name, VARIANT_ARG(key_script),
+    VariantType val, StringName val_class_name, VARIANT_ARG(val_script)
 );
-void gd_variant_type_fetch_constant(VariantType t, StringName constant, ANY result);
-FunctionID gd_variant_type_unsafe_constructor(VariantType t, INT n);
+
+// gd_variant_type_fetch_constant reads the value of a named constant for the given variant type
+// into the memory pointed to by 'result'.
+void gd_variant_type_fetch_constant(VariantType t, StringName constant, UnsafePointer result);
+
+// gd_variant_type_unsafe_constructor returns the nth constructor [FunctionID] for the given
+// variant type. The returned ID is used with [gd_variant_type_unsafe_make].
+FunctionID gd_variant_type_unsafe_constructor(VariantType t, Int n);
+
+// gd_variant_type_evaluator returns a [FunctionID] for the operator that evaluates 'op' between
+// variant types 'a' and 'b'. Returns zero if the operator is not supported for the given types.
 FunctionID gd_variant_type_evaluator(VariantOperator op, VariantType a, VariantType b);
+
+// gd_variant_type_setter returns a [FunctionID] for setting the named property on values of
+// the given variant type.
 FunctionID gd_variant_type_setter(VariantType t, StringName property);
+
+// gd_variant_type_getter returns a [FunctionID] for getting the named property from values of
+// the given variant type.
 FunctionID gd_variant_type_getter(VariantType t, StringName property);
+
+// gd_variant_type_has_property returns true if the given variant type has a property with the
+// specified name.
 bool gd_variant_type_has_property(VariantType t, StringName property);
-FunctionID gd_variant_type_builtin_method(VariantType t, StringName method, INT64(hash));
-void gd_variant_type_unsafe_call(ANY self, FunctionID fn, ANY result, SHAPE(shape), ANY args);
-void gd_variant_type_unsafe_make(FunctionID constructor, ANY result, SHAPE(shape), ANY args);
-void gd_variant_type_unsafe_free(VariantType t, SHAPE(shape), ANY args);
+
+// gd_variant_type_builtin_method returns a [FunctionID] for the named method on the given
+// variant type, validated against the expected API 'hash'. The returned ID is used with
+// [gd_variant_type_unsafe_call].
+FunctionID gd_variant_type_builtin_method(VariantType t, StringName method, int64_t hash);
+
+// gd_variant_type_unsafe_call calls a builtin method on a variant value. 'self' points to the
+// receiver, 'fn' identifies the method (from [gd_variant_type_builtin_method]), 'shape' encodes
+// the number and sizes of packed arguments in 'args', and the return value is written into 'result'.
+void gd_variant_type_unsafe_call(UnsafePointer self, FunctionID fn, UnsafePointer result, uint64_t shape, UnsafePointer args);
+
+// gd_variant_type_unsafe_make constructs a new variant value using the given constructor
+// (from [gd_variant_type_unsafe_constructor]). The 'shape' encodes the packed arguments in
+// 'args', and the constructed value is written into 'result'.
+void gd_variant_type_unsafe_make(FunctionID constructor, UnsafePointer result, uint64_t shape, UnsafePointer args);
+
+// gd_variant_type_unsafe_free destroys a variant value of the given type. The 'shape' encodes
+// the value layout in 'args' which points to the value to be freed.
+void gd_variant_type_unsafe_free(VariantType t, uint64_t shape, UnsafePointer args);
 
 void gd_classdb_FileAccess_write(Object file, BUFFER buf, INT len);
 INT gd_classdb_FileAccess_read(Object file, BUFFER buf, INT cap);

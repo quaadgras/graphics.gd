@@ -24,7 +24,7 @@ func call_builtin_noescape(self unsafe.Pointer, method gdextension.MethodForBuil
 
 //go:linkname call_builtin graphics.gd/internal.call_builtin_noescape
 func call_builtin(self unsafe.Pointer, method gdextension.MethodForBuiltinType, result unsafe.Pointer, shape gdextension.Shape, args unsafe.Pointer) {
-	gdextension.Host.Builtin.Types.Unsafe.Call(gdextension.CallMutates[any](self), method, gdextension.CallReturns[any](result), shape, gdextension.CallAccepts[any](args))
+	gdunsafe.VariantTypeUnsafeCall(self, gdunsafe.FunctionID(method), result, uint64(shape), args)
 }
 
 // builtin methods that are strictly required for graphics.gd to function.

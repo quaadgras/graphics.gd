@@ -46,7 +46,7 @@ func free_noescape(vtype gdextension.VariantType, size gdextension.Shape, ptr un
 
 //go:linkname free graphics.gd/internal/noescape.free_noescape
 func free(vtype gdextension.VariantType, size gdextension.Shape, ptr unsafe.Pointer) {
-	gdextension.Host.Builtin.Types.Unsafe.Free(vtype, size<<4, gdextension.CallAccepts[any](ptr))
+	gdunsafe.VariantTypeUnsafeFree(gdunsafe.VariantType(vtype), uint64(size<<4), ptr)
 }
 
 func Make[T gdextension.AnyVariant](constructor gdextension.FunctionID, size gdextension.Shape, ptr unsafe.Pointer) T {
@@ -60,7 +60,7 @@ func make_native_noescape(constructor gdextension.FunctionID, result unsafe.Poin
 
 //go:linkname make_native graphics.gd/internal/noescape.make_native_noescape
 func make_native(constructor gdextension.FunctionID, result unsafe.Pointer, shape gdextension.Shape, ptr unsafe.Pointer) {
-	gdextension.Host.Builtin.Types.Unsafe.Make(constructor, gdextension.CallReturns[any](unsafe.Pointer(result)), shape, gdextension.CallAccepts[any](ptr))
+	gdunsafe.VariantTypeUnsafeMake(gdunsafe.FunctionID(constructor), result, uint64(shape), ptr)
 }
 
 func IndexPacked[T gdextension.Packable](access func(p gdextension.PackedArray[T], idx int, result gdextension.CallReturns[T]), arr gdextension.PackedArray[T], index int) T {

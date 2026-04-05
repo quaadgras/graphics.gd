@@ -8,6 +8,7 @@ import (
 	"time"
 	"unsafe"
 
+	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/noescape"
@@ -456,7 +457,7 @@ func newArray(val reflect.Value) Array {
 		panic("gd.Variant: unsupported array element type " + val.Type().Elem().String())
 	}
 	var array = NewArray()
-	gdextension.Host.Builtin.Types.SetupArray(pointers.Get(array), vtype, gdextension.StringName{}, gdextension.Variant{})
+	gdunsafe.VariantTypeSetupArray(gdunsafe.Array(pointers.Get(array)[0]), gdunsafe.VariantType(vtype), 0, gdunsafe.Variant{})
 	array.Resize(Int(val.Len()))
 	for i := 0; i < val.Len(); i++ {
 		array.SetIndex(Int(i), NewVariant(val.Index(i).Interface()))

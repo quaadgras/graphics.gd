@@ -114,6 +114,73 @@ func (t VariantType) Make(args ...Variant) (Variant, CallError) {
 	return toVariant(value), toCallError(err)
 }
 
+func (t VariantType) StaticCall(method StringName, args ...Variant) (Variant, CallError) {
+	var value C.Variant
+	var err C.CallError
+	C.gd_variant_type_call(C.uint32_t(t), C.uintptr_t(method), &value, C.int64_t(len(args)), (*C.Variant)(unsafe.Pointer(unsafe.SliceData(args))), &err)
+	return toVariant(value), toCallError(err)
+}
+
+func (t VariantType) Convertable(to VariantType, strict bool) bool {
+	return bool(C.gd_variant_type_convertable(C.uint32_t(t), C.uint32_t(to), C.bool(strict)))
+}
+
+func BuiltinName(utility StringName, hash int64) FunctionID {
+	return FunctionID(C.gd_builtin_name(C.uintptr_t(utility), C.int64_t(hash)))
+}
+
+func BuiltinCall(fn FunctionID, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
+	C.gd_builtin_call(C.uintptr_t(fn), C.UnsafePointer(result), C.uint64_t(shape), C.UnsafePointer(args))
+}
+
+func VariantTypeSetupArray(array Array, vtype VariantType, className StringName, script Variant) {
+	C.gd_variant_type_setup_array(C.uintptr_t(array), C.uint32_t(vtype), C.uintptr_t(className), C.uint64_t(script[0]), C.uint64_t(script[1]), C.uint64_t(script[2]))
+}
+
+func VariantTypeSetupDictionary(dict Dictionary, keyType VariantType, keyClassName StringName, keyScript Variant, valType VariantType, valClassName StringName, valScript Variant) {
+	C.gd_variant_type_setup_dictionary(C.uintptr_t(dict), C.uint32_t(keyType), C.uintptr_t(keyClassName), C.uint64_t(keyScript[0]), C.uint64_t(keyScript[1]), C.uint64_t(keyScript[2]), C.uint32_t(valType), C.uintptr_t(valClassName), C.uint64_t(valScript[0]), C.uint64_t(valScript[1]), C.uint64_t(valScript[2]))
+}
+
+func VariantTypeFetchConstant(vtype VariantType, constant StringName, result unsafe.Pointer) {
+	C.gd_variant_type_fetch_constant(C.uint32_t(vtype), C.uintptr_t(constant), C.UnsafePointer(result))
+}
+
+func VariantTypeConstructor(vtype VariantType, n Int) FunctionID {
+	return FunctionID(C.gd_variant_type_unsafe_constructor(C.uint32_t(vtype), C.int64_t(n)))
+}
+
+func VariantTypeEvaluator(op VariantOperator, a, b VariantType) FunctionID {
+	return FunctionID(C.gd_variant_type_evaluator(C.uint32_t(op), C.uint32_t(a), C.uint32_t(b)))
+}
+
+func VariantTypeSetter(vtype VariantType, property StringName) FunctionID {
+	return FunctionID(C.gd_variant_type_setter(C.uint32_t(vtype), C.uintptr_t(property)))
+}
+
+func VariantTypeGetter(vtype VariantType, property StringName) FunctionID {
+	return FunctionID(C.gd_variant_type_getter(C.uint32_t(vtype), C.uintptr_t(property)))
+}
+
+func VariantTypeHasProperty(vtype VariantType, property StringName) bool {
+	return bool(C.gd_variant_type_has_property(C.uint32_t(vtype), C.uintptr_t(property)))
+}
+
+func VariantTypeMethod(vtype VariantType, method StringName, hash int64) FunctionID {
+	return FunctionID(C.gd_variant_type_builtin_method(C.uint32_t(vtype), C.uintptr_t(method), C.int64_t(hash)))
+}
+
+func VariantTypeUnsafeCall(self unsafe.Pointer, fn FunctionID, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
+	C.gd_variant_type_unsafe_call(C.UnsafePointer(self), C.uintptr_t(fn), C.UnsafePointer(result), C.uint64_t(shape), C.UnsafePointer(args))
+}
+
+func VariantTypeUnsafeMake(constructor FunctionID, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
+	C.gd_variant_type_unsafe_make(C.uintptr_t(constructor), C.UnsafePointer(result), C.uint64_t(shape), C.UnsafePointer(args))
+}
+
+func VariantTypeUnsafeFree(vtype VariantType, shape uint64, args unsafe.Pointer) {
+	C.gd_variant_type_unsafe_free(C.uint32_t(vtype), C.uint64_t(shape), C.UnsafePointer(args))
+}
+
 type (
 	Callable   [2]uint64
 	CallableID uintptr

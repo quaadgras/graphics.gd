@@ -3,6 +3,7 @@ package Engine
 import (
 	"runtime"
 	"sync"
+	"unsafe"
 
 	gdunsafe "graphics.gd"
 	gd "graphics.gd/internal"
@@ -37,12 +38,12 @@ var (
 	push_error_fn,
 	push_warning_fn gdextension.FunctionID
 	print_setup = sync.OnceFunc(func() {
-		print_fn = gdextension.Host.Builtin.Functions.Name(pointers.Get(gd.NewStringName("print")), 2648703342)
-		print_rich_fn = gdextension.Host.Builtin.Functions.Name(pointers.Get(gd.NewStringName("print_rich")), 2648703342)
-		print_err_fn = gdextension.Host.Builtin.Functions.Name(pointers.Get(gd.NewStringName("printerr")), 2648703342)
-		print_verbose_fn = gdextension.Host.Builtin.Functions.Name(pointers.Get(gd.NewStringName("print_verbose")), 2648703342)
-		push_error_fn = gdextension.Host.Builtin.Functions.Name(pointers.Get(gd.NewStringName("push_error")), 2648703342)
-		push_warning_fn = gdextension.Host.Builtin.Functions.Name(pointers.Get(gd.NewStringName("push_warning")), 2648703342)
+		print_fn = gdextension.FunctionID(gdunsafe.BuiltinName(gdunsafe.StringName(pointers.Get(gd.NewStringName("print"))[0]), 2648703342))
+		print_rich_fn = gdextension.FunctionID(gdunsafe.BuiltinName(gdunsafe.StringName(pointers.Get(gd.NewStringName("print_rich"))[0]), 2648703342))
+		print_err_fn = gdextension.FunctionID(gdunsafe.BuiltinName(gdunsafe.StringName(pointers.Get(gd.NewStringName("printerr"))[0]), 2648703342))
+		print_verbose_fn = gdextension.FunctionID(gdunsafe.BuiltinName(gdunsafe.StringName(pointers.Get(gd.NewStringName("print_verbose"))[0]), 2648703342))
+		push_error_fn = gdextension.FunctionID(gdunsafe.BuiltinName(gdunsafe.StringName(pointers.Get(gd.NewStringName("push_error"))[0]), 2648703342))
+		push_warning_fn = gdextension.FunctionID(gdunsafe.BuiltinName(gdunsafe.StringName(pointers.Get(gd.NewStringName("push_warning"))[0]), 2648703342))
 	})
 )
 
@@ -54,7 +55,7 @@ func Println(v ...any) { //gd:print
 	for _, value := range v {
 		variants = append(variants, gdextension.Variant(pointers.Get(gd.NewVariant(value))))
 	}
-	gdextension.Host.Builtin.Functions.Call(print_fn, nil, gdextension.ShapeVariants(len(variants)), gdextension.CallAccepts[any](&variants[0]))
+	gdunsafe.BuiltinCall(gdunsafe.FunctionID(print_fn), nil, uint64(gdextension.ShapeVariants(len(variants))), unsafe.Pointer(&variants[0]))
 }
 
 // PrintRich converts one or more arguments of any type to string in the best way possible
@@ -79,7 +80,7 @@ func PrintRich(v ...any) { //gd:print_rich
 	for _, value := range v {
 		variants = append(variants, gdextension.Variant(pointers.Get(gd.NewVariant(value))))
 	}
-	gdextension.Host.Builtin.Functions.Call(print_rich_fn, nil, gdextension.ShapeVariants(len(variants)), gdextension.CallAccepts[any](&variants[0]))
+	gdunsafe.BuiltinCall(gdunsafe.FunctionID(print_rich_fn), nil, uint64(gdextension.ShapeVariants(len(variants))), unsafe.Pointer(&variants[0]))
 }
 
 // Log prints one or more arguments to strings in the best way possible to standard error line
@@ -89,7 +90,7 @@ func Log(v ...any) { //gd:printerr
 	for _, value := range v {
 		variants = append(variants, gdextension.Variant(pointers.Get(gd.NewVariant(value))))
 	}
-	gdextension.Host.Builtin.Functions.Call(print_err_fn, nil, gdextension.ShapeVariants(len(variants)), gdextension.CallAccepts[any](&variants[0]))
+	gdunsafe.BuiltinCall(gdunsafe.FunctionID(print_err_fn), nil, uint64(gdextension.ShapeVariants(len(variants))), unsafe.Pointer(&variants[0]))
 }
 
 // Logv prints if verbose mode is enabled (OS.is_stdout_verbose returning true), converts one or
@@ -100,7 +101,7 @@ func Logv(v ...any) { //gd:print_verbose
 	for _, value := range v {
 		variants = append(variants, gdextension.Variant(pointers.Get(gd.NewVariant(value))))
 	}
-	gdextension.Host.Builtin.Functions.Call(print_verbose_fn, nil, gdextension.ShapeVariants(len(variants)), gdextension.CallAccepts[any](&variants[0]))
+	gdunsafe.BuiltinCall(gdunsafe.FunctionID(print_verbose_fn), nil, uint64(gdextension.ShapeVariants(len(variants))), unsafe.Pointer(&variants[0]))
 }
 
 // Print prints one or more arguments to strings in the best way possible to the OS terminal.
@@ -111,7 +112,7 @@ func Print(v ...any) { //gd:prints printraw printt
 	for _, value := range v {
 		variants = append(variants, gdextension.Variant(pointers.Get(gd.NewVariant(value))))
 	}
-	gdextension.Host.Builtin.Functions.Call(print_fn, nil, gdextension.ShapeVariants(len(variants)), gdextension.CallAccepts[any](&variants[0]))
+	gdunsafe.BuiltinCall(gdunsafe.FunctionID(print_fn), nil, uint64(gdextension.ShapeVariants(len(variants))), unsafe.Pointer(&variants[0]))
 }
 
 // Raise pushes an error message to Godot's built-in debugger and to the OS terminal.
@@ -124,7 +125,7 @@ func Raise(err error) { //gd:push_error
 		print_setup()
 		var variants []gdextension.Variant
 		variants = append(variants, gdextension.Variant(pointers.Get(gd.NewVariant(err.Error()))))
-		gdextension.Host.Builtin.Functions.Call(push_error_fn, nil, gdextension.ShapeVariants(len(variants)), gdextension.CallAccepts[any](&variants[0]))
+		gdunsafe.BuiltinCall(gdunsafe.FunctionID(push_error_fn), nil, uint64(gdextension.ShapeVariants(len(variants))), unsafe.Pointer(&variants[0]))
 	}
 }
 
@@ -135,5 +136,5 @@ func RaiseWarning(v ...any) { //gd:push_warning
 	for _, value := range v {
 		variants = append(variants, gdextension.Variant(pointers.Get(gd.NewVariant(value))))
 	}
-	gdextension.Host.Builtin.Functions.Call(push_warning_fn, nil, gdextension.ShapeVariants(len(variants)), gdextension.CallAccepts[any](&variants[0]))
+	gdunsafe.BuiltinCall(gdunsafe.FunctionID(push_warning_fn), nil, uint64(gdextension.ShapeVariants(len(variants))), unsafe.Pointer(&variants[0]))
 }

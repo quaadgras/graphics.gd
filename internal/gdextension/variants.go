@@ -1,18 +1,24 @@
 package gdextension
 
+import gdunsafe "graphics.gd"
+
 // Call a static method on a variant type.
 func (variant VariantType) Call(method StringName, args ...Variant) (Variant, error) {
-	var err CallError
-	var raw Variant
-	Host.Builtin.Types.Call(variant, method, CallReturns[Variant](&raw), len(args), CallAccepts[Variant](&args[0]), CallReturns[CallError](&err))
-	return raw, err
+	converted := make([]gdunsafe.Variant, len(args))
+	for i, a := range args {
+		converted[i] = gdunsafe.Variant(a)
+	}
+	raw, callErr := gdunsafe.VariantType(variant).StaticCall(gdunsafe.StringName(method[0]), converted...)
+	return Variant(raw), CallError(callErr)
 }
 
 // New calls the variant constructor with the given arguments and returns the
 // result as a variant.
 func (variant VariantType) New(args ...Variant) (Variant, error) {
-	var err CallError
-	var raw Variant
-	Host.Builtin.Types.Make(variant, CallReturns[Variant](&raw), len(args), CallAccepts[Variant](&args[0]), CallReturns[CallError](&err))
-	return raw, err
+	converted := make([]gdunsafe.Variant, len(args))
+	for i, a := range args {
+		converted[i] = gdunsafe.Variant(a)
+	}
+	raw, callErr := gdunsafe.VariantType(variant).Make(converted...)
+	return Variant(raw), CallError(callErr)
 }

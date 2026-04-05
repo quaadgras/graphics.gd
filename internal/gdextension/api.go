@@ -63,14 +63,14 @@ type API struct {
 		}
 		Free func(addr Pointer) `gd:"memory_free"`
 	}*/
-	Threads struct {
+	/*Threads struct {
 		Main func() bool `gd:"thread_is_main"`
-	}
+	}*/
 	Log struct {
 		Error   func(text, code, fn, file string, line int32, notify_editor bool) `gd:"log_error"`
 		Warning func(text, code, fn, file string, line int32, notify_editor bool) `gd:"log_warning"`
 	}
-	Builtin struct {
+	/*Builtin struct {
 		Types struct {
 			Name            func(vtype VariantType) String                                                                                                                                  `gd:"variant_type_name"`
 			Make            func(vtype VariantType, result CallReturns[Variant], arg_count int, args CallAccepts[Variant], err CallReturns[CallError])                                      `gd:"variant_type_make"`
@@ -97,7 +97,7 @@ type API struct {
 			Name func(utility StringName, hash int64) FunctionID                                  `gd:"builtin_name"`
 			Call func(fn FunctionID, result CallReturns[any], shape Shape, args CallAccepts[any]) `gd:"builtin_call"`
 		}
-	}
+	}*/
 	/*Variants struct {
 		Zero func(result CallReturns[Variant])                                                                                                     `gd:"variant_zero"`
 		Copy func(v Variant, result CallReturns[Variant])                                                                                          `gd:"variant_copy"`
@@ -509,7 +509,7 @@ func ShapeVariants(count int) Shape {
 type VariantType uint32
 
 func (vtype VariantType) String() string {
-	name := Host.Builtin.Types.Name(vtype)
+	name := String{Pointer(gdunsafe.VariantType(vtype).Name())}
 	var buf = make([]byte, 32)
 	n := Host.Strings.Encode.UTF8(name, buf)
 	return unsafe.String(&buf[0], min(n, len(buf)))
