@@ -5,6 +5,7 @@ import (
 	"sync"
 	"unsafe"
 
+	gdunsafe "graphics.gd"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdclass"
 	"graphics.gd/internal/gdextension"
@@ -57,7 +58,7 @@ func init() {
 		gd.RegisterCleanup(func() {
 			for _, resource := range preloaded_resources {
 				if resource.Unreference() {
-					gdextension.Host.Objects.Unsafe.Free(gdreference.GetObject(resource.AsObject()[0]))
+					gdunsafe.Object(gdreference.GetObject(resource.AsObject()[0])).Free()
 				}
 			}
 		})
@@ -119,7 +120,7 @@ var self [1]gdclass.ResourceLoader
 var once sync.Once
 
 func singleton() {
-	self[0] = gdclass.NewResourceLoader(gdreference.RawObject(gdextension.Host.Objects.Global(loader_sname)))
+	self[0] = gdclass.NewResourceLoader(gdreference.RawObject(gdextension.Object(gdunsafe.ObjectGlobal(gdunsafe.StringName(loader_sname[0])))))
 }
 
 func load(path String.Unicode, type_hint String.Unicode, cache_mode int) [1]gdclass.Resource { //gd:ResourceLoader.load

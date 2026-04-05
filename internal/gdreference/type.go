@@ -1,6 +1,7 @@
 package gdreference
 
 import (
+	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdextension"
 )
 
@@ -25,7 +26,7 @@ func GC(free func(gdextension.Object)) {
 			}
 			if obj.inEngine == 0 {
 				if obj.objectID != 0 {
-					raw := gdextension.Host.Objects.Lookup(obj.objectID)
+					raw := gdextension.Object(gdunsafe.ObjectID(obj.objectID).Lookup())
 					*obj = object{}
 					free(raw)
 				}

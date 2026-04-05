@@ -75,7 +75,11 @@ typedef uint32_t MethodFlags;
 typedef uint32_t ArgumentMetadata;
 
 typedef int64_t Int;
+#ifndef __EMSCRIPTEN__
+typedef void* UnsafePointer;
+#else
 typedef uintptr_t UnsafePointer;
+#endif
 
 typedef uintptr_t Object;
 typedef uint64_t ObjectID;
@@ -366,28 +370,73 @@ uint32_t gd_memory_load_u32(UnsafePointer addr);
 // gd_memory_load_u64 reads a 64-bit value from the given memory address.
 uint64_t gd_memory_load_u64(UnsafePointer addr);
 
+// gd_object_make creates a new engine object of the given class name.
 Object gd_object_make(StringName name);
-void gd_object_call(Object obj, MethodForClass method, ANY result, INT arg_count, ANY args, ANY err);
+
+// gd_object_call calls a checked method on an object with variant arguments.
+void gd_object_call(Object obj, MethodForClass method, UnsafePointer result, Int arg_count, UnsafePointer args, UnsafePointer err);
+
+// gd_object_name returns the class name of the given object.
 StringName gd_object_name(Object obj);
+
+// gd_object_type returns the class tag for the given class name.
 ObjectType gd_object_type(StringName name);
+
+// gd_object_cast casts an object to a specific type, returns 0 if the cast fails.
 Object gd_object_cast(Object obj, ObjectType to);
-Object gd_object_lookup(OBJECT_ID(id));
+
+// gd_object_lookup returns the object with the given instance ID, or 0.
+Object gd_object_lookup(ObjectID id);
+
+// gd_object_global returns the global singleton with the given name.
 Object gd_object_global(StringName name);
-void gd_object_extension_setup(Object obj, StringName name, ExtensionInstanceID class_name);
+
+// gd_object_extension_setup binds an extension instance to an engine object.
+void gd_object_extension_setup(Object obj, StringName name, ExtensionInstanceID inst);
+
+// gd_object_extension_fetch returns the extension instance bound to the given object.
 ExtensionInstanceID gd_object_extension_fetch(Object obj);
+
+// gd_object_extension_close removes the extension binding from an object.
 void gd_object_extension_close(Object obj);
-void gd_object_id(Object obj, ANY id);
-void gd_object_id_inside_variant(VARIANT_ARG_OLD(v), ANY id);
-MethodForClass gd_object_method_lookup(StringName name, StringName method, INT64(hash));
+
+// gd_object_id returns the instance ID of the given object.
+ObjectID gd_object_id(Object obj);
+
+// gd_object_id_inside_variant returns the object instance ID stored in a variant.
+ObjectID gd_object_id_inside_variant(VARIANT_ARG(v));
+
+// gd_object_method_lookup returns the method bind for a class method.
+MethodForClass gd_object_method_lookup(StringName class_name, StringName method, int64_t hash);
+
+// gd_object_script_make creates a new script instance.
 ScriptInstance gd_object_script_make(ExtensionInstanceID fn);
-void gd_object_script_call(Object obj, StringName name, ANY result, INT arg_count, ANY args, ANY err);
+
+// gd_object_script_call calls a script method on an object.
+void gd_object_script_call(Object obj, StringName name, UnsafePointer result, Int arg_count, UnsafePointer args, UnsafePointer err);
+
+// gd_object_script_setup attaches a script instance to an object.
 void gd_object_script_setup(Object obj, ScriptInstance script);
+
+// gd_object_script_fetch returns the script instance attached to an object.
 ScriptInstance gd_object_script_fetch(Object obj, Object language);
+
+// gd_object_script_defines_method returns whether the object's script defines the given method.
 bool gd_object_script_defines_method(Object obj, StringName method);
-void gd_object_script_property_state_add(FunctionID fn, uintptr_t arg, StringName name, VARIANT_ARG_OLD(state));
+
+// gd_object_script_property_state_add adds a property state entry during serialization.
+void gd_object_script_property_state_add(FunctionID fn, uintptr_t arg, StringName name, VARIANT_ARG(state));
+
+// gd_object_script_placeholder_create creates a placeholder script instance.
 ScriptInstance gd_object_script_placeholder_create(Object language, Object script, Object owner);
+
+// gd_object_script_placeholder_update updates a placeholder script instance's properties.
 void gd_object_script_placeholder_update(ScriptInstance script, Array array, Dictionary dict);
-void gd_object_unsafe_call(Object obj, MethodForClass fn, ANY result, SHAPE(shape), ANY args);
+
+// gd_object_unsafe_call calls a method on an object using the ptrcall convention.
+void gd_object_unsafe_call(Object obj, MethodForClass fn, UnsafePointer result, uint64_t shape, UnsafePointer args);
+
+// gd_object_unsafe_free destroys the given object.
 void gd_object_unsafe_free(Object obj);
 
 uintptr_t gd_packed_byte_array_unsafe(PACKED_ARRAY_ARG(pa));

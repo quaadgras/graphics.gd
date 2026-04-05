@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"testing"
 
+	gdunsafe "graphics.gd"
 	"graphics.gd/classdb"
 	"graphics.gd/classdb/Engine"
 	"graphics.gd/classdb/Node"
@@ -13,7 +14,6 @@ import (
 	"graphics.gd/classdb/Node3D"
 	"graphics.gd/classdb/Resource"
 	gd "graphics.gd/internal"
-	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Float"
 	"graphics.gd/variant/Object"
@@ -26,10 +26,10 @@ func TestRegister(t *testing.T) {
 		}
 		classdb.Register[TestingSimpleClass]()
 
-		if tag := gdextension.Host.Objects.Type(pointers.Get(gd.NewStringName("Node2D"))); tag == 0 {
+		if tag := gdunsafe.ObjectTypeTag(gdunsafe.StringName(pointers.Get(gd.NewStringName("Node2D"))[0])); tag == 0 {
 			t.Fail()
 		}
-		if tag := gdextension.Host.Objects.Type(pointers.Get(gd.NewStringName("TestingSimpleClass"))); tag == 0 {
+		if tag := gdunsafe.ObjectTypeTag(gdunsafe.StringName(pointers.Get(gd.NewStringName("TestingSimpleClass"))[0])); tag == 0 {
 			t.Fail()
 		}
 
@@ -128,10 +128,10 @@ func TestExtensionInherits(t *testing.T) {
 		classdb.Register[ChildExtension]()
 
 		// Verify both classes are registered
-		if tag := gdextension.Host.Objects.Type(pointers.Get(gd.NewStringName("ParentExtension"))); tag == 0 {
+		if tag := gdunsafe.ObjectTypeTag(gdunsafe.StringName(pointers.Get(gd.NewStringName("ParentExtension"))[0])); tag == 0 {
 			t.Fatal("ParentExtension not registered")
 		}
-		if tag := gdextension.Host.Objects.Type(pointers.Get(gd.NewStringName("ChildExtension"))); tag == 0 {
+		if tag := gdunsafe.ObjectTypeTag(gdunsafe.StringName(pointers.Get(gd.NewStringName("ChildExtension"))[0])); tag == 0 {
 			t.Fatal("ChildExtension not registered")
 		}
 

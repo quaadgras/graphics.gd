@@ -12,9 +12,21 @@ type (
 	String     uintptr
 	StringName uintptr
 	Array      uintptr
+	Dictionary uintptr
 	Pointer    uintptr
 
 	VariantType uint32
+
+	Object              uintptr
+	ObjectType          uintptr
+	MethodForClass      uintptr
+	ScriptInstance      uintptr
+	ExtensionInstanceID uintptr
+	ExtensionClassID    uintptr
+	ExtensionBindingID  uintptr
+	FunctionID          uintptr
+	PropertyList        uintptr
+	MethodList          uintptr
 )
 
 func (args VariadicVariants) Index(i int) Variant {
@@ -41,19 +53,21 @@ func VersionHex() uint32       { return uint32(C.gd_version_hex()) }
 func VersionStatus() String    { return String(C.gd_version_status()) }
 func VersionBuild() String     { return String(C.gd_version_build()) }
 func VersionHash() String      { return String(C.gd_version_hash()) }
-func VersionTimestamp() uint64  { return uint64(C.gd_version_timestamp()) }
+func VersionTimestamp() uint64 { return uint64(C.gd_version_timestamp()) }
 func VersionString() String    { return String(C.gd_version_string()) }
 func LibraryLocation() String  { return String(C.gd_library_location()) }
 
-func Malloc(size Int) Pointer  { return Pointer(C.gd_memory_malloc(C.int64_t(size))) }
+func Malloc(size Int) Pointer    { return Pointer(C.gd_memory_malloc(C.int64_t(size))) }
 func Sizeof(name StringName) Int { return Int(C.gd_memory_sizeof(C.uintptr_t(name))) }
-func Resize(ptr Pointer, size Int) Pointer { return Pointer(C.gd_memory_resize(C.uintptr_t(ptr), C.int64_t(size))) }
-func Clear(ptr Pointer, size Int) { C.gd_memory_clear(C.uintptr_t(ptr), C.int64_t(size)) }
+func Resize(ptr Pointer, size Int) Pointer {
+	return Pointer(C.gd_memory_resize(C.UnsafePointer(ptr), C.int64_t(size)))
+}
+func Clear(ptr Pointer, size Int) { C.gd_memory_clear(C.UnsafePointer(ptr), C.int64_t(size)) }
 
-func (ptr Pointer) Byte() byte       { return *(*byte)(*(*unsafe.Pointer)(unsafe.Pointer(&ptr))) }
-func (ptr Pointer) Uint16() uint16   { return *(*uint16)(*(*unsafe.Pointer)(unsafe.Pointer(&ptr))) }
-func (ptr Pointer) Uint32() uint32   { return *(*uint32)(*(*unsafe.Pointer)(unsafe.Pointer(&ptr))) }
-func (ptr Pointer) Uint64() uint64   { return *(*uint64)(*(*unsafe.Pointer)(unsafe.Pointer(&ptr))) }
+func (ptr Pointer) Byte() byte     { return *(*byte)(*(*unsafe.Pointer)(unsafe.Pointer(&ptr))) }
+func (ptr Pointer) Uint16() uint16 { return *(*uint16)(*(*unsafe.Pointer)(unsafe.Pointer(&ptr))) }
+func (ptr Pointer) Uint32() uint32 { return *(*uint32)(*(*unsafe.Pointer)(unsafe.Pointer(&ptr))) }
+func (ptr Pointer) Uint64() uint64 { return *(*uint64)(*(*unsafe.Pointer)(unsafe.Pointer(&ptr))) }
 
 func (ptr Pointer) SetByte(v byte)     { *(*byte)(*(*unsafe.Pointer)(unsafe.Pointer(&ptr))) = v }
 func (ptr Pointer) SetUint16(v uint16) { *(*uint16)(*(*unsafe.Pointer)(unsafe.Pointer(&ptr))) = v }
@@ -73,7 +87,7 @@ func (ptr Pointer) SetBits512(val [8]uint64) {
 	*(*[8]uint64)(p) = val
 }
 
-func (ptr Pointer) Free() { C.gd_memory_free(C.uintptr_t(ptr)) }
+func (ptr Pointer) Free() { C.gd_memory_free(C.UnsafePointer(ptr)) }
 
 func LogError(text, code, fn, file string, line int32, notify_editor bool) {
 	C.gd_log_error((*C.char)(unsafe.Pointer(unsafe.StringData(text))), C.int64_t(len(text)), (*C.char)(unsafe.Pointer(unsafe.StringData(code))), C.int64_t(len(code)), (*C.char)(unsafe.Pointer(unsafe.StringData(fn))), C.int64_t(len(fn)), (*C.char)(unsafe.Pointer(unsafe.StringData(file))), C.int64_t(len(file)), C.int32_t(line), C._Bool(notify_editor))
@@ -140,3 +154,84 @@ func gd_on_callable_string(c C.CallableID) C.String {
 
 //export gd_on_callable_length
 func gd_on_callable_length(c CallableID) C.Int { return C.Int(callables.Get(CallableID(c)).NumIn()) }
+
+// Object construction and identity
+
+func MakeObject(name StringName) Object {
+	return Object(C.gd_object_make(C.StringName(name)))
+}
+func (obj Object) Name() StringName {
+	return StringName(C.gd_object_name(C.Object(obj)))
+}
+func ObjectTypeTag(name StringName) ObjectType {
+	return ObjectType(C.gd_object_type(C.StringName(name)))
+}
+func (obj Object) Cast(to ObjectType) Object {
+	return Object(C.gd_object_cast(C.Object(obj), C.ObjectType(to)))
+}
+func (id ObjectID) Lookup() Object {
+	return Object(C.gd_object_lookup(C.ObjectID(id)))
+}
+func ObjectGlobal(name StringName) Object {
+	return Object(C.gd_object_global(C.StringName(name)))
+}
+func (obj Object) ID() ObjectID {
+	return ObjectID(C.gd_object_id(C.Object(obj)))
+}
+func ObjectIDInsideVariant(v Variant) ObjectID {
+	return ObjectID(C.gd_object_id_inside_variant(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2])))
+}
+func (obj Object) Free() {
+	C.gd_object_unsafe_free(C.Object(obj))
+}
+
+// Object method calls
+
+func MethodLookup(class, method StringName, hash int64) MethodForClass {
+	return MethodForClass(C.gd_object_method_lookup(C.StringName(class), C.StringName(method), C.int64_t(hash)))
+}
+func (obj Object) Call(method MethodForClass, result unsafe.Pointer, argc Int, args unsafe.Pointer, err unsafe.Pointer) {
+	C.gd_object_call(C.Object(obj), C.MethodForClass(method), C.UnsafePointer(result), C.int64_t(argc), C.UnsafePointer(args), C.UnsafePointer(err))
+}
+func (obj Object) UnsafeCall(fn MethodForClass, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
+	C.gd_object_unsafe_call(C.Object(obj), C.MethodForClass(fn), C.UnsafePointer(result), C.uint64_t(shape), C.UnsafePointer(args))
+}
+
+// Extension instance management
+
+func (obj Object) ExtensionSetup(name StringName, inst ExtensionInstanceID) {
+	C.gd_object_extension_setup(C.Object(obj), C.StringName(name), C.ExtensionInstanceID(inst))
+}
+func (obj Object) ExtensionFetch() ExtensionInstanceID {
+	return ExtensionInstanceID(C.gd_object_extension_fetch(C.Object(obj)))
+}
+func (obj Object) ExtensionClose() {
+	C.gd_object_extension_close(C.Object(obj))
+}
+
+// Script instance management
+
+func ScriptMake(fn ExtensionInstanceID) ScriptInstance {
+	return ScriptInstance(C.gd_object_script_make(C.ExtensionInstanceID(fn)))
+}
+func (obj Object) ScriptCall(name StringName, result unsafe.Pointer, argc Int, args unsafe.Pointer, err unsafe.Pointer) {
+	C.gd_object_script_call(C.Object(obj), C.StringName(name), C.UnsafePointer(result), C.int64_t(argc), C.UnsafePointer(args), C.UnsafePointer(err))
+}
+func (obj Object) ScriptSetup(script ScriptInstance) {
+	C.gd_object_script_setup(C.Object(obj), C.ScriptInstance(script))
+}
+func (obj Object) ScriptFetch(language Object) ScriptInstance {
+	return ScriptInstance(C.gd_object_script_fetch(C.Object(obj), C.Object(language)))
+}
+func (obj Object) ScriptDefinesMethod(method StringName) bool {
+	return bool(C.gd_object_script_defines_method(C.Object(obj), C.StringName(method)))
+}
+func ScriptPropertyStateAdd(fn FunctionID, arg Pointer, name StringName, state Variant) {
+	C.gd_object_script_property_state_add(C.FunctionID(fn), C.uintptr_t(arg), C.StringName(name), C.uint64_t(state[0]), C.uint64_t(state[1]), C.uint64_t(state[2]))
+}
+func ScriptPlaceholderCreate(language, script, owner Object) ScriptInstance {
+	return ScriptInstance(C.gd_object_script_placeholder_create(C.Object(language), C.Object(script), C.Object(owner)))
+}
+func ScriptPlaceholderUpdate(script ScriptInstance, array Array, dict Dictionary) {
+	C.gd_object_script_placeholder_update(C.ScriptInstance(script), C.Array(array), C.Dictionary(dict))
+}

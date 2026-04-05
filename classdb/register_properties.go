@@ -7,6 +7,7 @@ import (
 	"graphics.gd/classdb/Engine"
 	"graphics.gd/classdb/Node"
 	"graphics.gd/classdb/Resource"
+	gdunsafe "graphics.gd"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdreference"
@@ -195,7 +196,7 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 			if ref, ok := field.Interface().(RefCounted.Any); ok {
 				ref := ref.AsRefCounted()[0]
 				if ref.Unreference() {
-					gdextension.Host.Objects.Unsafe.Free(gdreference.GetObject(gdreference.Object(ref)))
+					gdunsafe.Object(gdreference.GetObject(gdreference.Object(ref))).Free()
 				}
 			}
 		}

@@ -7,8 +7,8 @@ import (
 	"reflect"
 	"slices"
 	"time"
-	"unsafe"
 
+	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
@@ -114,15 +114,13 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 			return reflect.ValueOf(value).Convert(rtype), nil
 		case gdreference.Object:
 			if rtype.Name() == "ID" {
-				var id gdextension.ObjectID
-				gdextension.Host.Objects.ID.Get(gdreference.GetObject(value), gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
+				id := gdextension.ObjectID(gdunsafe.Object(gdreference.GetObject(value)).ID())
 				return reflect.ValueOf(id).Convert(rtype), nil
 			}
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 		case IsClass:
 			if rtype.Name() == "ID" {
-				var id gdextension.ObjectID
-				gdextension.Host.Objects.ID.Get(gdreference.GetObject(value.AsObject()[0]), gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
+				id := gdextension.ObjectID(gdunsafe.Object(gdreference.GetObject(value.AsObject()[0])).ID())
 				return reflect.ValueOf(id).Convert(rtype), nil
 			}
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
@@ -130,8 +128,7 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 			rvalue := reflect.ValueOf(value)
 			if rvalue.Kind() == reflect.Array && rvalue.Type().Implements(reflect.TypeFor[IsClass]()) {
 				if rtype.Name() == "ID" {
-					var id gdextension.ObjectID
-					gdextension.Host.Objects.ID.Get(gdreference.GetObject(rvalue.Interface().(IsClass).AsObject()[0]), gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
+					id := gdextension.ObjectID(gdunsafe.Object(gdreference.GetObject(rvalue.Interface().(IsClass).AsObject()[0])).ID())
 					return reflect.ValueOf(id).Convert(rtype), nil
 				}
 			}

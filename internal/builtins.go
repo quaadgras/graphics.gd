@@ -3,6 +3,7 @@ package gd
 import (
 	"unsafe"
 
+	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/jumponly"
@@ -546,18 +547,18 @@ func ObjectCall(o gdreference.Object, method StringName, args ...Variant) (Varia
 	ring.Main.Flush()
 	self := gdreference.GetObject(o)
 	name := pointers.Get(method)
-	if gdextension.Host.Objects.Script.DefinesMethod(self, name) {
+	if gdunsafe.Object(self).ScriptDefinesMethod(gdunsafe.StringName(name[0])) {
 		var converted []gdextension.Variant
 		for _, arg := range args {
 			converted = append(converted, gdextension.Variant(pointers.Get(arg)))
 		}
 		var err gdextension.CallError
 		var result gdextension.Variant
-		gdextension.Host.Objects.Script.Call(self, name,
-			gdextension.CallReturns[gdextension.Variant](&result),
-			len(args),
-			gdextension.CallAccepts[gdextension.Variant](unsafe.SliceData(converted)),
-			gdextension.CallReturns[gdextension.CallError](&err),
+		gdunsafe.Object(self).ScriptCall(gdunsafe.StringName(name[0]),
+			unsafe.Pointer(&result),
+			gdunsafe.Int(len(args)),
+			unsafe.Pointer(unsafe.SliceData(converted)),
+			unsafe.Pointer(&err),
 		)
 		return pointers.New[Variant](result), err.Err()
 	}

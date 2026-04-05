@@ -12,10 +12,22 @@ import (
 type (
 	String     uint32
 	StringName uint32
-	Pointer    uint32
 	Array      uint32
+	Dictionary uint32
+	Pointer    uint32
 
 	VariantType uint32
+
+	Object              uint32
+	ObjectType          uint32
+	MethodForClass      uint32
+	ScriptInstance      uint32
+	ExtensionInstanceID uint32
+	ExtensionClassID    uint32
+	ExtensionBindingID  uint32
+	FunctionID          uint32
+	PropertyList        uint32
+	MethodList          uint32
 )
 
 //go:wasmimport gd array_set
@@ -281,6 +293,38 @@ func copyVariants[T ~unsafe.Pointer | *gdextension.Variant](args T, n int) gdext
 	return wasmArgBuf
 }
 
+func copyArguments(shape gdextension.Shape, args unsafe.Pointer) gdextension.Pointer {
+	wasmSetup()
+	if args == nil {
+		return 0
+	}
+	bytes := shape.SizeArguments()
+	buf := unsafe.Slice((*byte)(args), bytes)
+	ptr := wasmArgBuf
+	off := gdextension.Pointer(0)
+	for len(buf) > 0 {
+		switch {
+		case len(buf) >= 8:
+			Pointer(ptr + off).SetUint64(*(*uint64)(unsafe.Pointer(&buf[0])))
+			buf = buf[8:]
+			off += 8
+		case len(buf) >= 4:
+			Pointer(ptr + off).SetUint32(*(*uint32)(unsafe.Pointer(&buf[0])))
+			buf = buf[4:]
+			off += 4
+		case len(buf) >= 2:
+			Pointer(ptr + off).SetUint16(*(*uint16)(unsafe.Pointer(&buf[0])))
+			buf = buf[2:]
+			off += 2
+		default:
+			Pointer(ptr + off).SetByte(*(*uint8)(unsafe.Pointer(&buf[0])))
+			buf = buf[1:]
+			off += 1
+		}
+	}
+	return ptr
+}
+
 func readVariant(addr gdextension.Pointer) Variant {
 	if addr == 0 {
 		panic("nil pointer dereference")
@@ -290,4 +334,162 @@ func readVariant(addr gdextension.Pointer) Variant {
 	v[1] = Pointer(addr + 8).Uint64()
 	v[2] = Pointer(addr + 16).Uint64()
 	return v
+}
+
+// Object construction and identity
+
+//go:wasmimport gd object_make
+func gd_object_make(name StringName) Object
+
+func MakeObject(name StringName) Object { return gd_object_make(name) }
+
+//go:wasmimport gd object_name
+func gd_object_name(obj Object) StringName
+
+func (obj Object) Name() StringName { return gd_object_name(obj) }
+
+//go:wasmimport gd object_type
+func gd_object_type(name StringName) ObjectType
+
+func ObjectTypeTag(name StringName) ObjectType { return gd_object_type(name) }
+
+//go:wasmimport gd object_cast
+func gd_object_cast(obj Object, to ObjectType) Object
+
+func (obj Object) Cast(to ObjectType) Object { return gd_object_cast(obj, to) }
+
+//go:wasmimport gd object_lookup
+func gd_object_lookup(id ObjectID) Object
+
+func (id ObjectID) Lookup() Object { return gd_object_lookup(id) }
+
+//go:wasmimport gd object_global
+func gd_object_global(name StringName) Object
+
+func ObjectGlobal(name StringName) Object { return gd_object_global(name) }
+
+//go:wasmimport gd object_id
+func gd_object_id(obj Object) ObjectID
+
+func (obj Object) ID() ObjectID { return gd_object_id(obj) }
+
+//go:wasmimport gd object_id_inside_variant
+func gd_object_id_inside_variant(v1, v2, v3 uint64) ObjectID
+
+func ObjectIDInsideVariant(v Variant) ObjectID {
+	return gd_object_id_inside_variant(v[0], v[1], v[2])
+}
+
+//go:wasmimport gd object_unsafe_free
+func gd_object_unsafe_free(obj Object)
+
+func (obj Object) Free() { gd_object_unsafe_free(obj) }
+
+// Object method calls
+
+//go:wasmimport gd object_method_lookup
+func gd_object_method_lookup(class, method StringName, hash int64) MethodForClass
+
+func MethodLookup(class, method StringName, hash int64) MethodForClass {
+	return gd_object_method_lookup(class, method, hash)
+}
+
+//go:wasmimport gd object_call
+func gd_object_call(obj Object, method MethodForClass, result Pointer, argc Int, args Pointer, err Pointer)
+
+func (obj Object) Call(method MethodForClass, result unsafe.Pointer, argc Int, args unsafe.Pointer, err unsafe.Pointer) {
+	mem_result := makeResult(gdextension.SizeVariant)
+	mem_args := copyVariants(args, int(argc))
+	mem_err := makeResult(gdextension.SizeCallError)
+	gd_object_call(obj, method, Pointer(mem_result), argc, Pointer(mem_args), Pointer(mem_err))
+	loadResult(gdextension.SizeVariant, result, mem_result)
+	loadResult(gdextension.SizeCallError, err, mem_err)
+}
+
+//go:wasmimport gd object_unsafe_call
+func gd_object_unsafe_call(obj Object, fn MethodForClass, result Pointer, shape uint64, args Pointer)
+
+func (obj Object) UnsafeCall(fn MethodForClass, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
+	mem_result := makeResult(gdextension.Shape(shape))
+	mem_args := copyArguments(gdextension.Shape(shape), args)
+	gd_object_unsafe_call(obj, fn, Pointer(mem_result), shape, Pointer(mem_args))
+	loadResult(gdextension.Shape(shape), result, mem_result)
+}
+
+// Extension instance management
+
+//go:wasmimport gd object_extension_setup
+func gd_object_extension_setup(obj Object, name StringName, inst ExtensionInstanceID)
+
+func (obj Object) ExtensionSetup(name StringName, inst ExtensionInstanceID) {
+	gd_object_extension_setup(obj, name, inst)
+}
+
+//go:wasmimport gd object_extension_fetch
+func gd_object_extension_fetch(obj Object) ExtensionInstanceID
+
+func (obj Object) ExtensionFetch() ExtensionInstanceID { return gd_object_extension_fetch(obj) }
+
+//go:wasmimport gd object_extension_close
+func gd_object_extension_close(obj Object)
+
+func (obj Object) ExtensionClose() { gd_object_extension_close(obj) }
+
+// Script instance management
+
+//go:wasmimport gd object_script_make
+func gd_object_script_make(fn ExtensionInstanceID) ScriptInstance
+
+func ScriptMake(fn ExtensionInstanceID) ScriptInstance { return gd_object_script_make(fn) }
+
+//go:wasmimport gd object_script_call
+func gd_object_script_call(obj Object, name StringName, result Pointer, argc Int, args Pointer, err Pointer)
+
+func (obj Object) ScriptCall(name StringName, result unsafe.Pointer, argc Int, args unsafe.Pointer, err unsafe.Pointer) {
+	mem_result := makeResult(gdextension.SizeVariant)
+	mem_args := copyVariants(args, int(argc))
+	mem_err := makeResult(gdextension.SizeCallError)
+	gd_object_script_call(obj, name, Pointer(mem_result), argc, Pointer(mem_args), Pointer(mem_err))
+	loadResult(gdextension.SizeVariant, result, mem_result)
+	loadResult(gdextension.SizeCallError, err, mem_err)
+}
+
+//go:wasmimport gd object_script_setup
+func gd_object_script_setup(obj Object, script ScriptInstance)
+
+func (obj Object) ScriptSetup(script ScriptInstance) { gd_object_script_setup(obj, script) }
+
+//go:wasmimport gd object_script_fetch
+func gd_object_script_fetch(obj Object, language Object) ScriptInstance
+
+func (obj Object) ScriptFetch(language Object) ScriptInstance {
+	return gd_object_script_fetch(obj, language)
+}
+
+//go:wasmimport gd object_script_defines_method
+func gd_object_script_defines_method(obj Object, method StringName) uint32
+
+func (obj Object) ScriptDefinesMethod(method StringName) bool {
+	return gd_object_script_defines_method(obj, method) != 0
+}
+
+//go:wasmimport gd object_script_property_state_add
+func gd_object_script_property_state_add(fn FunctionID, arg uint32, name StringName, s1, s2, s3 uint64)
+
+func ScriptPropertyStateAdd(fn FunctionID, arg Pointer, name StringName, state Variant) {
+	gd_object_script_property_state_add(fn, uint32(arg), name, state[0], state[1], state[2])
+}
+
+//go:wasmimport gd object_script_placeholder_create
+func gd_object_script_placeholder_create(language, script, owner Object) ScriptInstance
+
+func ScriptPlaceholderCreate(language, script, owner Object) ScriptInstance {
+	return gd_object_script_placeholder_create(language, script, owner)
+}
+
+//go:wasmimport gd object_script_placeholder_update
+func gd_object_script_placeholder_update(script ScriptInstance, array Array, dict Dictionary)
+
+func ScriptPlaceholderUpdate(script ScriptInstance, array Array, dict Dictionary) {
+	gd_object_script_placeholder_update(script, array, dict)
 }

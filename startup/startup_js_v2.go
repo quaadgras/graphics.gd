@@ -72,29 +72,6 @@ func init() {
 		gd_library_location                        js.Value
 		gd_log_error                               js.Value
 		gd_log_warning                             js.Value
-		gd_object_make                             js.Value
-		gd_object_call                             js.Value
-		gd_object_name                             js.Value
-		gd_object_type                             js.Value
-		gd_object_cast                             js.Value
-		gd_object_lookup                           js.Value
-		gd_object_global                           js.Value
-		gd_object_extension_setup                  js.Value
-		gd_object_extension_fetch                  js.Value
-		gd_object_extension_close                  js.Value
-		gd_object_id                               js.Value
-		gd_object_id_inside_variant                js.Value
-		gd_object_method_lookup                    js.Value
-		gd_object_script_make                      js.Value
-		gd_object_script_call                      js.Value
-		gd_object_script_setup                     js.Value
-		gd_object_script_fetch                     js.Value
-		gd_object_script_defines_method            js.Value
-		gd_object_script_property_state_add        js.Value
-		gd_object_script_placeholder_create        js.Value
-		gd_object_script_placeholder_update        js.Value
-		gd_object_unsafe_call                      js.Value
-		gd_object_unsafe_free                      js.Value
 		gd_packed_byte_array_unsafe                js.Value
 		gd_packed_byte_array_access                js.Value
 		gd_packed_color_array_unsafe               js.Value
@@ -225,29 +202,6 @@ func init() {
 		gd_library_location = GD.Get("library_location")
 		gd_log_error = GD.Get("log_error")
 		gd_log_warning = GD.Get("log_warning")
-		gd_object_make = GD.Get("object_make")
-		gd_object_call = GD.Get("object_call")
-		gd_object_name = GD.Get("object_name")
-		gd_object_type = GD.Get("object_type")
-		gd_object_cast = GD.Get("object_cast")
-		gd_object_lookup = GD.Get("object_lookup")
-		gd_object_global = GD.Get("object_global")
-		gd_object_extension_setup = GD.Get("object_extension_setup")
-		gd_object_extension_fetch = GD.Get("object_extension_fetch")
-		gd_object_extension_close = GD.Get("object_extension_close")
-		gd_object_id = GD.Get("object_id")
-		gd_object_id_inside_variant = GD.Get("object_id_inside_variant")
-		gd_object_method_lookup = GD.Get("object_method_lookup")
-		gd_object_script_make = GD.Get("object_script_make")
-		gd_object_script_call = GD.Get("object_script_call")
-		gd_object_script_setup = GD.Get("object_script_setup")
-		gd_object_script_fetch = GD.Get("object_script_fetch")
-		gd_object_script_defines_method = GD.Get("object_script_defines_method")
-		gd_object_script_property_state_add = GD.Get("object_script_property_state_add")
-		gd_object_script_placeholder_create = GD.Get("object_script_placeholder_create")
-		gd_object_script_placeholder_update = GD.Get("object_script_placeholder_update")
-		gd_object_unsafe_call = GD.Get("object_unsafe_call")
-		gd_object_unsafe_free = GD.Get("object_unsafe_free")
 		gd_packed_byte_array_unsafe = GD.Get("packed_byte_array_unsafe")
 		gd_packed_byte_array_access = GD.Get("packed_byte_array_access")
 		gd_packed_color_array_unsafe = GD.Get("packed_color_array_unsafe")
@@ -647,138 +601,6 @@ func init() {
 	gdextension.Host.Log.Warning = func(p0 string, p1 string, p2 string, p3 string, p4 int32, p5 bool) {
 		setup()
 		gd_log_warning.Invoke(string(p0), len(p0), string(p1), len(p1), string(p2), len(p2), string(p3), len(p3), int32(p4), p5)
-		return
-	}
-	gdextension.Host.Objects.Make = func(p0 gdextension.StringName) (result gdextension.Object) {
-		setup()
-		result = gdextension.Object(gd_object_make.Invoke(uint32(p0[0])).Int())
-		return
-	}
-	gdextension.Host.Objects.Call = func(p0 gdextension.Object, p1 gdextension.MethodForClass, p2 gdextension.CallReturns[gdextension.Variant], p3 int, p4 gdextension.CallAccepts[gdextension.Variant], p5 gdextension.CallReturns[gdextension.CallError]) {
-		setup()
-		mem2 := gdmemory.MakeResult(gdextension.SizeVariant)
-		mem4 := gdmemory.CopyVariants(p4, p3)
-		mem5 := gdmemory.MakeResult(gdextension.SizeVariant)
-		gd_object_call.Invoke(uint32(p0), uint32(p1), uint32(mem2), p3, uint32(mem4), uint32(mem5))
-		gdmemory.LoadResult(gdextension.SizeVariant, p2, mem2)
-		gdmemory.LoadResult(gdextension.SizeVector3, p5, mem5)
-		return
-	}
-	gdextension.Host.Objects.Name = func(p0 gdextension.Object) (result gdextension.StringName) {
-		setup()
-		result = gdextension.StringName{gdextension.Pointer(gd_object_name.Invoke(uint32(p0)).Int())}
-		return
-	}
-	gdextension.Host.Objects.Type = func(p0 gdextension.StringName) (result gdextension.ObjectType) {
-		setup()
-		result = gdextension.ObjectType(gd_object_type.Invoke(uint32(p0[0])).Int())
-		return
-	}
-	gdextension.Host.Objects.Cast = func(p0 gdextension.Object, p1 gdextension.ObjectType) (result gdextension.Object) {
-		setup()
-		result = gdextension.Object(gd_object_cast.Invoke(uint32(p0), uint32(p1)).Int())
-		return
-	}
-	gdextension.Host.Objects.Lookup = func(p0 gdextension.ObjectID) (result gdextension.Object) {
-		setup()
-		result = gdextension.Object(gd_object_lookup.Invoke(uint32(p0>>32), uint32(p0&0xFFFFFFFF)).Int())
-		return
-	}
-	gdextension.Host.Objects.Global = func(p0 gdextension.StringName) (result gdextension.Object) {
-		setup()
-		result = gdextension.Object(gd_object_global.Invoke(uint32(p0[0])).Int())
-		return
-	}
-	gdextension.Host.Objects.Extension.Setup = func(p0 gdextension.Object, p1 gdextension.StringName, p2 gdextension.ExtensionInstanceID) {
-		setup()
-		gd_object_extension_setup.Invoke(uint32(p0), uint32(p1[0]), uint32(p2))
-		return
-	}
-	gdextension.Host.Objects.Extension.Fetch = func(p0 gdextension.Object) (result gdextension.ExtensionInstanceID) {
-		setup()
-		result = gdextension.ExtensionInstanceID(gd_object_extension_fetch.Invoke(uint32(p0)).Int())
-		return
-	}
-	gdextension.Host.Objects.Extension.Close = func(p0 gdextension.Object) {
-		setup()
-		gd_object_extension_close.Invoke(uint32(p0))
-		return
-	}
-	gdextension.Host.Objects.ID.Get = func(p0 gdextension.Object, p1 gdextension.CallReturns[gdextension.ObjectID]) {
-		setup()
-		mem1 := gdmemory.MakeResult(gdextension.SizeInt)
-		gd_object_id.Invoke(uint32(p0), uint32(mem1))
-		gdmemory.LoadResult(gdextension.SizeInt, p1, mem1)
-		return
-	}
-	gdextension.Host.Objects.ID.InsideVariant = func(p0 gdextension.Variant, p1 gdextension.CallReturns[gdextension.ObjectID]) {
-		setup()
-		mem1 := gdmemory.MakeResult(gdextension.SizeInt)
-		gd_object_id_inside_variant.Invoke(uint32(p0[0]>>32), uint32(p0[0]&0xFFFFFFFF), uint32(p0[1]>>32), uint32(p0[1]&0xFFFFFFFF), uint32(p0[2]>>32), uint32(p0[2]&0xFFFFFFFF), uint32(mem1))
-		gdmemory.LoadResult(gdextension.SizeInt, p1, mem1)
-		return
-	}
-	gdextension.Host.Objects.Method.Lookup = func(p0 gdextension.StringName, p1 gdextension.StringName, p2 int64) (result gdextension.MethodForClass) {
-		setup()
-		result = gdextension.MethodForClass(gd_object_method_lookup.Invoke(uint32(p0[0]), uint32(p1[0]), uint32(*(*uint64)(unsafe.Pointer(&p2))>>32), uint32(*(*uint64)(unsafe.Pointer(&p2))&0xFFFFFFFF)).Int())
-		return
-	}
-	gdextension.Host.Objects.Script.Make = func(p0 gdextension.ExtensionInstanceID) (result gdextension.ScriptInstance) {
-		setup()
-		result = gdextension.ScriptInstance(gd_object_script_make.Invoke(uint32(p0)).Int())
-		return
-	}
-	gdextension.Host.Objects.Script.Call = func(p0 gdextension.Object, p1 gdextension.StringName, p2 gdextension.CallReturns[gdextension.Variant], p3 int, p4 gdextension.CallAccepts[gdextension.Variant], p5 gdextension.CallReturns[gdextension.CallError]) {
-		setup()
-		mem2 := gdmemory.MakeResult(gdextension.SizeVariant)
-		mem4 := gdmemory.CopyVariants(p4, p3)
-		mem5 := gdmemory.MakeResult(gdextension.SizeVariant)
-		gd_object_script_call.Invoke(uint32(p0), uint32(p1[0]), uint32(mem2), p3, uint32(mem4), uint32(mem5))
-		gdmemory.LoadResult(gdextension.SizeVariant, p2, mem2)
-		gdmemory.LoadResult(gdextension.SizeVector3, p5, mem5)
-		return
-	}
-	gdextension.Host.Objects.Script.Setup = func(p0 gdextension.Object, p1 gdextension.ScriptInstance) {
-		setup()
-		gd_object_script_setup.Invoke(uint32(p0), uint32(p1))
-		return
-	}
-	gdextension.Host.Objects.Script.Fetch = func(p0 gdextension.Object, p1 gdextension.Object) (result gdextension.ScriptInstance) {
-		setup()
-		result = gdextension.ScriptInstance(gd_object_script_fetch.Invoke(uint32(p0), uint32(p1)).Int())
-		return
-	}
-	gdextension.Host.Objects.Script.DefinesMethod = func(p0 gdextension.Object, p1 gdextension.StringName) (result bool) {
-		setup()
-		result = bool(gd_object_script_defines_method.Invoke(uint32(p0), uint32(p1[0])).Bool())
-		return
-	}
-	gdextension.Host.Objects.Script.AddPropertyState = func(p0 gdextension.FunctionID, p1 gdextension.Pointer, p2 gdextension.StringName, p3 gdextension.Variant) {
-		setup()
-		gd_object_script_property_state_add.Invoke(uint32(p0), uint32(p1), uint32(p2[0]), uint32(p3[0]>>32), uint32(p3[0]&0xFFFFFFFF), uint32(p3[1]>>32), uint32(p3[1]&0xFFFFFFFF), uint32(p3[2]>>32), uint32(p3[2]&0xFFFFFFFF))
-		return
-	}
-	gdextension.Host.Objects.Script.Placeholder.Create = func(p0 gdextension.Object, p1 gdextension.Object, p2 gdextension.Object) (result gdextension.ScriptInstance) {
-		setup()
-		result = gdextension.ScriptInstance(gd_object_script_placeholder_create.Invoke(uint32(p0), uint32(p1), uint32(p2)).Int())
-		return
-	}
-	gdextension.Host.Objects.Script.Placeholder.Update = func(p0 gdextension.ScriptInstance, p1 gdextension.Array, p2 gdextension.Dictionary) {
-		setup()
-		gd_object_script_placeholder_update.Invoke(uint32(p0), uint32(p1[0]), uint32(p2[0]))
-		return
-	}
-	gdextension.Host.Objects.Unsafe.Call = func(p0 gdextension.Object, p1 gdextension.MethodForClass, p2 gdextension.CallReturns[interface{}], shape gdextension.Shape, p4 gdextension.CallAccepts[interface{}]) {
-		setup()
-		mem2 := gdmemory.MakeResult(shape)
-		mem4 := gdmemory.CopyArguments(shape, p4)
-		gd_object_unsafe_call.Invoke(uint32(p0), uint32(p1), uint32(mem2), uint32(shape>>32), uint32(shape&0xFFFFFFFF), uint32(mem4))
-		gdmemory.LoadResult(shape, p2, mem2)
-		return
-	}
-	gdextension.Host.Objects.Unsafe.Free = func(p0 gdextension.Object) {
-		setup()
-		gd_object_unsafe_free.Invoke(uint32(p0))
 		return
 	}
 	gdextension.Host.Packed.Bytes.Unsafe = func(p0 gdextension.PackedArray[uint8]) (result gdextension.Pointer) {

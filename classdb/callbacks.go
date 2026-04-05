@@ -7,6 +7,7 @@ import (
 	"strings"
 	"unsafe"
 
+	gdunsafe "graphics.gd"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdmemory"
@@ -28,7 +29,7 @@ var debugOwnership = strings.Contains(os.Getenv("GDDEBUG"), "ownership")
 
 func init() {
 	gd.ExtensionInstanceLookup = func(obj gdextension.Object) any {
-		val := instances.Get(gdextension.Host.Objects.Extension.Fetch(obj))
+		val := instances.Get(gdextension.ExtensionInstanceID(gdunsafe.Object(obj).ExtensionFetch()))
 		if val == nil {
 			return nil
 		}
@@ -36,7 +37,7 @@ func init() {
 		return ptr
 	}
 	gd.ExtensionInstanceGoOnly = func(obj gdextension.Object, goOnly bool) (gdreference.Object, bool) {
-		impl := instances.Get(gdextension.Host.Objects.Extension.Fetch(obj))
+		impl := instances.Get(gdextension.ExtensionInstanceID(gdunsafe.Object(obj).ExtensionFetch()))
 		if impl == nil {
 			return gdreference.Object{}, false
 		}

@@ -5,7 +5,7 @@ package ring
 import (
 	"unsafe"
 
-	"graphics.gd/internal/gdextension"
+	gdunsafe "graphics.gd"
 )
 
 func flush(entries unsafe.Pointer, tail, head uint32) {
@@ -13,12 +13,11 @@ func flush(entries unsafe.Pointer, tail, head uint32) {
 	for i := tail; i != head; i++ {
 		CrashIndex = i & Mask
 		e := &ring[i&Mask]
-		gdextension.Host.Objects.Unsafe.Call(
-			gdextension.Object(e.Object),
-			gdextension.MethodForClass(e.Method),
-			gdextension.CallReturns[any](unsafe.Pointer(&e.Result[0])),
-			gdextension.Shape(e.Shape),
-			gdextension.CallAccepts[any](unsafe.Pointer(&e.Args[0])),
+		gdunsafe.Object(e.Object).UnsafeCall(
+			gdunsafe.MethodForClass(e.Method),
+			unsafe.Pointer(&e.Result[0]),
+			uint64(e.Shape),
+			unsafe.Pointer(&e.Args[0]),
 		)
 	}
 	CrashIndex = 0xFFFFFFFF

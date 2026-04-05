@@ -33,6 +33,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import gdunsafe "graphics.gd"
 import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -85,6 +86,7 @@ var _ RID.Any
 var _ noescape.Variant
 var _ = jumponly.PtrcallFn
 var _ String.Readable
+var _ gdunsafe.Object
 var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
@@ -127,7 +129,7 @@ type Singleton[T gdclass.Interface] = Extension[T]
 // Instance of the class with convieniently typed arguments and results.
 type Instance [1]gdclass.CanvasItem
 
-var otype gdextension.ObjectType
+var otype gdunsafe.ObjectType
 var sname gdextension.StringName
 var methods struct {
 	get_canvas_item                         gdextension.MethodForClass `hash:"2944877500"`
@@ -226,7 +228,7 @@ var methods struct {
 func init() {
 	gd.Links = append(gd.Links, func() {
 		sname = gdextension.Host.Strings.Intern.UTF8("CanvasItem")
-		otype = gdextension.Host.Objects.Type(sname)
+		otype = gdunsafe.ObjectTypeTag(gdunsafe.StringName(sname[0]))
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
@@ -1389,14 +1391,14 @@ type class [1]gdclass.CanvasItem
 
 func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gdreference.Object) bool {
-	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
+	if gdunsafe.Object(gdreference.GetObject(obj[0])).Cast(otype) != 0 {
 		self[0] = gdclass.NewCanvasItem(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gdreference.Object) bool {
-	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
+	if gdunsafe.Object(gdreference.GetObject(obj[0])).Cast(otype) != 0 {
 		self[0] = gdclass.NewCanvasItem(obj[0])
 		return true
 	}
@@ -1413,14 +1415,14 @@ func New() Instance {
 				gdreference.SetObject(gdclass.GetCanvasItem(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := gdreference.GetObject(placeholder.AsObject()[0]); raw != 0 {
-						gdextension.Host.Objects.Unsafe.Free(raw)
+						gdunsafe.Object(raw).Free()
 					}
 				})
 			}
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.CanvasItem{gdclass.NewCanvasItem(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
+	casted := Instance([1]gdclass.CanvasItem{gdclass.NewCanvasItem(gdreference.OwnObject(gdextension.Object(gdunsafe.MakeObject(gdunsafe.StringName(sname[0]))), gd.Free))})
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

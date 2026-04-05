@@ -9,6 +9,7 @@ import (
 	"strings"
 	"unsafe"
 
+	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 )
@@ -89,7 +90,7 @@ func LinkMethods(className gdextension.StringName, methods any, editor bool) {
 		if err != nil {
 			panic("gdextension.Link: invalid gd.API builtin function hash for " + method.Name + ": " + err.Error())
 		}
-		bind := gdextension.Host.Objects.Method.Lookup(className, pointers.Get(methodName), hash)
+		bind := gdextension.MethodForClass(gdunsafe.MethodLookup(gdunsafe.StringName(className[0]), gdunsafe.StringName(pointers.Get(methodName)[0]), hash))
 		if bind == 0 {
 			fmt.Println("null bind ", method.Name)
 		}
@@ -99,10 +100,10 @@ func LinkMethods(className gdextension.StringName, methods any, editor bool) {
 	}
 }
 
-var refCountedClassTag gdextension.ObjectType
+var refCountedClassTag gdunsafe.ObjectType
 
 func linkTypeset() {
-	refCountedClassTag = gdextension.Host.Objects.Type(pointers.Get(NewStringName("RefCounted")))
+	refCountedClassTag = gdunsafe.ObjectTypeTag(gdunsafe.StringName(pointers.Get(NewStringName("RefCounted"))[0]))
 }
 
 // linkTypesetCreation, each field is an array of constructors.

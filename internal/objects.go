@@ -10,6 +10,7 @@ import (
 	"strings"
 	"unsafe"
 
+	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
@@ -48,8 +49,7 @@ func PointerWithOwnershipTransferredToGodot(obj gdreference.Object) EnginePointe
 	if raw == 0 {
 		return 0
 	}
-	var id gdextension.ObjectID
-	gdextension.Host.Objects.ID.Get(raw, gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
+	gdunsafe.Object(raw).ID()
 	ExtensionInstanceGoOnly(raw, false)
 	return EnginePointer(raw)
 }
@@ -62,8 +62,7 @@ func PointerMustAssertInstanceID[T pointers.Generic[T, [3]uint64]](ptr gdextensi
 	if ptr == 0 {
 		return T{}
 	}
-	var id gdextension.ObjectID
-	gdextension.Host.Objects.ID.Get(gdextension.Object(ptr), gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
+	id := gdextension.ObjectID(gdunsafe.Object(ptr).ID())
 	return pointers.Let[T]([3]uint64{uint64(ptr), uint64(id)})
 }
 
@@ -100,7 +99,7 @@ func (self RefCounted) Free() {
 }
 
 func (self *RefCounted) SetObject(obj [1]gdreference.Object) bool {
-	ref := gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), refCountedClassTag)
+	ref := gdunsafe.Object(gdreference.GetObject(obj[0])).Cast(refCountedClassTag)
 	if ref != 0 {
 		*self = RefCounted(obj[0])
 		return true
@@ -109,7 +108,7 @@ func (self *RefCounted) SetObject(obj [1]gdreference.Object) bool {
 }
 
 func ObjectIsAlive(raw [3]uint64) bool {
-	return raw[1] == 0 || gdextension.Host.Objects.Lookup(gdextension.ObjectID(raw[1])) != 0
+	return raw[1] == 0 || gdunsafe.ObjectID(raw[1]).Lookup() != 0
 }
 
 var debugFree = strings.Contains(os.Getenv("GDDEBUG"), "free")
@@ -118,7 +117,7 @@ func Free(raw gdextension.Object) {
 	if raw == 0 {
 		return
 	}
-	ref := gdextension.Host.Objects.Cast(raw, refCountedClassTag)
+	ref := gdextension.Object(gdunsafe.Object(raw).Cast(refCountedClassTag))
 	if ref != 0 {
 		// Important that we don't destroy RefCounted objects, instead
 		// they should be unreferenced instead.
@@ -132,7 +131,7 @@ func Free(raw gdextension.Object) {
 		fmt.Println(runtime.Caller(2))
 	}
 	ring.Main.Flush()
-	gdextension.Host.Objects.Unsafe.Free(raw)
+	gdunsafe.Object(raw).Free()
 }
 
 func ObjectFree(self gdreference.Object) {

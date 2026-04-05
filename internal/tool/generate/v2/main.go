@@ -175,6 +175,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprintln(file, `import "graphics.gd/internal/gdextension"`)
 		fmt.Fprintln(file, `import "graphics.gd/internal/gdreference"`)
 		fmt.Fprintln(file, `import "graphics.gd/internal/noescape"`)
+		fmt.Fprintln(file, `import gdunsafe "graphics.gd"`)
 		if gdfunc.TrivialMethods != nil && len(gdfunc.TrivialMethods[class.Name]) > 0 {
 			fmt.Fprintln(file, `import "graphics.gd/internal/jumponly"`)
 		}
@@ -212,6 +213,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			fmt.Fprintln(file, "var _ = jumponly.PtrcallFn")
 		}
 		fmt.Fprintln(file, "var _ String.Readable")
+		fmt.Fprintln(file, "var _ gdunsafe.Object")
 		fmt.Fprintln(file, "var _ Path.ToNode")
 		fmt.Fprintln(file, "var _ Packed.Bytes")
 		fmt.Fprintln(file, "var _ Error.Code")
@@ -257,7 +259,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 
 		fmt.Fprintf(file, "// Instance of the class with convieniently typed arguments and results.\n")
 		fmt.Fprintf(file, "type Instance [1]gdclass.%s\n", class.Name)
-		fmt.Fprintf(file, "var otype gdextension.ObjectType\n")
+		fmt.Fprintf(file, "var otype gdunsafe.ObjectType\n")
 		fmt.Fprintf(file, "var sname gdextension.StringName\n")
 		fmt.Fprintf(file, "var methods struct {\n")
 		for _, method := range class.Methods {
@@ -271,7 +273,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		if class.Name != "Startup" {
 			fmt.Fprintf(file, "\tgd.Links = append(gd.Links, func() {\n")
 			fmt.Fprintf(file, "\t\tsname = gdextension.Host.Strings.Intern.UTF8(%q)\n", class.Name)
-			fmt.Fprintf(file, "\t\totype = gdextension.Host.Objects.Type(sname)\n")
+			fmt.Fprintf(file, "\t\totype = gdunsafe.ObjectTypeTag(gdunsafe.StringName(sname[0]))\n")
 			fmt.Fprintf(file, "\t\tgd.LinkMethods(sname, &methods, %v)\n", class.APIType == "editor")
 			fmt.Fprintf(file, "\t\t})\n")
 		}
@@ -287,7 +289,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			fmt.Fprintf(file, "var self [1]gdclass.%s\n", class.Name)
 			fmt.Fprintf(file, "var once sync.Once\n")
 			fmt.Fprintf(file, "func singleton() {\n")
-			fmt.Fprintf(file, "\tself[0] = gdclass.New%[1]v(gdreference.RawObject(gdextension.Host.Objects.Global(sname)))\n", class.Name)
+			fmt.Fprintf(file, "\tself[0] = gdclass.New%[1]v(gdreference.RawObject(gdextension.Object(gdunsafe.ObjectGlobal(gdunsafe.StringName(sname[0])))))\n", class.Name)
 			fmt.Fprintf(file, "}\n")
 		} else {
 			var hasDefaults bool
@@ -412,14 +414,14 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprintf(file, "type class [1]gdclass.%s\n", class.Name)
 		fmt.Fprintf(file, "func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }\n")
 		fmt.Fprintln(file, "func (self *class) SetObject(obj [1]gdreference.Object) bool {")
-		fmt.Fprintln(file, "\tif gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {")
+		fmt.Fprintln(file, "\tif gdunsafe.Object(gdreference.GetObject(obj[0])).Cast(otype) != 0 {")
 		fmt.Fprintf(file, "\t\tself[0] = gdclass.New%[1]s(obj[0])\n", class.Name)
 		fmt.Fprintln(file, "\t\treturn true")
 		fmt.Fprintln(file, "\t}")
 		fmt.Fprintln(file, "\treturn false")
 		fmt.Fprintln(file, "}")
 		fmt.Fprintln(file, "func (self *Instance) SetObject(obj [1]gdreference.Object) bool {")
-		fmt.Fprintln(file, "\tif gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {")
+		fmt.Fprintln(file, "\tif gdunsafe.Object(gdreference.GetObject(obj[0])).Cast(otype) != 0 {")
 		fmt.Fprintf(file, "\t\tself[0] = gdclass.New%[1]s(obj[0])\n", class.Name)
 		fmt.Fprintln(file, "\t\treturn true")
 		fmt.Fprintln(file, "\t}")

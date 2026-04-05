@@ -37,6 +37,7 @@ import (
 	"graphics.gd/variant/Signal"
 	"graphics.gd/variant/String"
 
+	gdunsafe "graphics.gd"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/docgen"
 	"graphics.gd/internal/gdclass"
@@ -623,13 +624,13 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 	// This prevents the issue where extension classes inheriting from other extension
 	// classes would trigger multiple calls to set_instance_binding on the same object.
 	var super *gdreference.Object = (*gdreference.Object)(value.UnsafePointer())
-	gdreference.PinObject(super, gdextension.Host.Objects.Make(pointers.Get(class.EngineClass)))
+	gdreference.PinObject(super, gdextension.Object(gdunsafe.MakeObject(gdunsafe.StringName(pointers.Get(class.EngineClass)[0]))))
 	if class.RefCounted {
 		gd.RefCounted(*super).InitRef()
 	}
 	instance := class.reloadInstance(value, super)
 	id := gdextension.ExtensionInstanceID(instances.New(instance))
-	gdextension.Host.Objects.Extension.Setup(gdreference.GetObject(*super), pointers.Get(class.Name), id)
+	gdunsafe.Object(gdreference.GetObject(*super)).ExtensionSetup(gdunsafe.StringName(pointers.Get(class.Name)[0]), gdunsafe.ExtensionInstanceID(id))
 	if keepalive := compile_keepalive(reflect.PointerTo(class.Type)); keepalive != nil {
 		roots.Insert(value, keepalive)
 	}
@@ -903,7 +904,7 @@ func (instance *instanceImplementation) Free() {
 			ref := rvalue.FieldByIndex(field.Index).Interface().(RefCounted.Any).AsRefCounted()[0]
 			if ref.Unreference() {
 				gdreference.EndObject(gdreference.Object(ref))
-				gdextension.Host.Objects.Unsafe.Free(gdreference.GetObject(gdreference.Object(ref)))
+				gdunsafe.Object(gdreference.GetObject(gdreference.Object(ref))).Free()
 			}
 		}
 	}
@@ -1071,7 +1072,7 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 	path := Path.ToNode(String.New(name))
 	if !Node.Advanced(parent).HasNode(path) {
 		if not_initialised {
-			child := [1]gdreference.Object{gdreference.OwnObject(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName(nameOf(field.Type)))), gd.Free)}
+			child := [1]gdreference.Object{gdreference.OwnObject(gdextension.Object(gdunsafe.MakeObject(gdunsafe.StringName(pointers.Get(gd.NewStringName(nameOf(field.Type)))[0]))), gd.Free)}
 			gd.ObjectNotification(child[0], 0, false)
 			defer gdreference.EndObject(child[0])
 			native := gd.ExtensionInstanceLookup(gdreference.GetObject(child[0]))
@@ -1112,7 +1113,7 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 	Engine.RaiseWarning("graphics.gd DeclarativeChildren[" + nameOf(instance.Type) + "]: converting " + string(Node.Advanced(parent).GetPath().String()) + "/" + field.Name +
 		" into " + nameOf(field.Type) + " (previously " + Object.Instance(node.AsObject()).ClassName() + ")")
 	if not_initialised {
-		child := [1]gdreference.Object{gdreference.OwnObject(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName(nameOf(field.Type)))), gd.Free)}
+		child := [1]gdreference.Object{gdreference.OwnObject(gdextension.Object(gdunsafe.MakeObject(gdunsafe.StringName(pointers.Get(gd.NewStringName(nameOf(field.Type)))[0]))), gd.Free)}
 		gd.ObjectNotification(child[0], 0, false)
 		defer gdreference.EndObject(child[0])
 		native := gd.ExtensionInstanceLookup(gdreference.GetObject(child[0]))

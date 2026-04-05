@@ -32,6 +32,7 @@ import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/gdreference"
 import "graphics.gd/internal/noescape"
+import gdunsafe "graphics.gd"
 import "graphics.gd/internal/jumponly"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -78,6 +79,7 @@ var _ RID.Any
 var _ noescape.Variant
 var _ = jumponly.PtrcallFn
 var _ String.Readable
+var _ gdunsafe.Object
 var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
@@ -118,7 +120,7 @@ type Singleton[T gdclass.Interface] = Extension[T]
 // Instance of the class with convieniently typed arguments and results.
 type Instance [1]gdclass.NavigationServer3D
 
-var otype gdextension.ObjectType
+var otype gdunsafe.ObjectType
 var sname gdextension.StringName
 var methods struct {
 	get_maps                             gdextension.MethodForClass `hash:"3995934104"`
@@ -280,7 +282,7 @@ var methods struct {
 func init() {
 	gd.Links = append(gd.Links, func() {
 		sname = gdextension.Host.Strings.Intern.UTF8("NavigationServer3D")
-		otype = gdextension.Host.Objects.Type(sname)
+		otype = gdunsafe.ObjectTypeTag(gdunsafe.StringName(sname[0]))
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
@@ -293,7 +295,7 @@ var self [1]gdclass.NavigationServer3D
 var once sync.Once
 
 func singleton() {
-	self[0] = gdclass.NewNavigationServer3D(gdreference.RawObject(gdextension.Host.Objects.Global(sname)))
+	self[0] = gdclass.NewNavigationServer3D(gdreference.RawObject(gdextension.Object(gdunsafe.ObjectGlobal(gdunsafe.StringName(sname[0])))))
 }
 
 /*
@@ -1473,14 +1475,14 @@ type class [1]gdclass.NavigationServer3D
 
 func (o class) AsObject() [1]gdreference.Object { return *(*[1]gdreference.Object)(ie.As(&o)) }
 func (self *class) SetObject(obj [1]gdreference.Object) bool {
-	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
+	if gdunsafe.Object(gdreference.GetObject(obj[0])).Cast(otype) != 0 {
 		self[0] = gdclass.NewNavigationServer3D(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gdreference.Object) bool {
-	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
+	if gdunsafe.Object(gdreference.GetObject(obj[0])).Cast(otype) != 0 {
 		self[0] = gdclass.NewNavigationServer3D(obj[0])
 		return true
 	}

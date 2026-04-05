@@ -233,7 +233,7 @@ type API struct {
 		Create func(id FunctionID, object ObjectID, result CallReturns[Callable]) `gd:"callable_create"`
 		Lookup func(Callable) FunctionID                                          `gd:"callable_lookup"`
 	}*/
-	Objects struct {
+	/*Objects struct {
 		Make func(name StringName) Object                                                                                                               `gd:"object_make"`
 		Call func(obj Object, method MethodForClass, result CallReturns[Variant], arg_count int, args CallAccepts[Variant], err CallReturns[CallError]) `gd:"object_call"`
 		Name func(obj Object) StringName                                                                                                                `gd:"object_name"`
@@ -274,7 +274,7 @@ type API struct {
 			Fetch func(obj Object) ExtensionInstanceID                         `gd:"object_extension_fetch"`
 			Close func(obj Object)                                             `gd:"object_extension_close"`
 		}
-	}
+	}*/
 	RefCounted struct {
 		Get func(ref RefCounted) Object      `gd:"ref_get_object"`
 		Set func(ref RefCounted, obj Object) `gd:"ref_set_object"`

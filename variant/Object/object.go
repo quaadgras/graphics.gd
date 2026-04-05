@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"unsafe"
 
+	gdunsafe "graphics.gd"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdclass"
 	"graphics.gd/internal/gdextension"
@@ -23,7 +24,7 @@ func (id ID) Instance() Instance { //gd:instance_from_id is_instance_id_valid
 	if id == 0 {
 		return Nil
 	}
-	instance := gdextension.Host.Objects.Lookup(gdextension.ObjectID(id))
+	instance := gdextension.Object(gdunsafe.ObjectID(id).Lookup())
 	if instance == 0 {
 		return Nil
 	}
@@ -78,13 +79,13 @@ var otype gdextension.ObjectType
 func init() {
 	gd.Links = append(gd.Links, func() {
 		sname := gdextension.Host.Strings.Intern.UTF8("Object")
-		otype = gdextension.Host.Objects.Type(sname)
+		otype = gdextension.ObjectType(gdunsafe.ObjectTypeTag(gdunsafe.StringName(sname[0])))
 		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 
 func (self *Instance) SetObject(obj [1]gdclass.Object) bool {
-	if gdextension.Host.Objects.Cast(gdreference.GetObject(obj[0]), otype) != 0 {
+	if gdunsafe.Object(gdreference.GetObject(obj[0])).Cast(gdunsafe.ObjectType(otype)) != 0 {
 		self[0] = *(*gdclass.Object)(unsafe.Pointer(&obj))
 		return true
 	}
@@ -126,13 +127,13 @@ func New() Instance {
 				raw, _ := gdreference.EndObject(New().AsObject()[0])
 				gdreference.SetObject(*(*gdreference.Object)(unsafe.Pointer(&placeholder)), raw)
 				gd.RegisterCleanup(func() {
-					gdextension.Host.Objects.Unsafe.Free(raw)
+					gdunsafe.Object(raw).Free()
 				})
 			}
 		})
 		return placeholder
 	}
-	return Instance{gdreference.OwnObject(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Object"))), gd.Free)}
+	return Instance{gdreference.OwnObject(gdextension.Object(gdunsafe.MakeObject(gdunsafe.StringName(pointers.Get(gd.NewStringName("Object"))[0]))), gd.Free)}
 }
 
 func (obj Instance) AsObject() [1]gdreference.Object { return obj }
@@ -155,8 +156,7 @@ func (obj Instance) CanTranslateMessages() bool { //gd:Object.can_translate_mess
 // ID returns the object's unique instance ID. This ID can be saved in EncodedObjectAsID, and can be used
 // to retrieve this object instance with [ID.Instance].
 func (obj Instance) ID() ID { //gd:Object.get_instance_id
-	var id gdextension.ObjectID
-	gdextension.Host.Objects.ID.Get(gdreference.GetObject(obj[0]), gdextension.CallReturns[gdextension.ObjectID](&id))
+	id := gdextension.ObjectID(gdunsafe.Object(gdreference.GetObject(obj[0])).ID())
 	return ID(id)
 }
 

@@ -4,6 +4,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/threadcheck"
 	"graphics.gd/variant/Callable"
@@ -41,8 +42,7 @@ func RawObject(obj gdextension.Object) Object {
 	if obj == 0 {
 		return Object{}
 	}
-	var id gdextension.ObjectID
-	gdextension.Host.Objects.ID.Get(obj, gdextension.CallReturns[gdextension.ObjectID](&id))
+	id := gdextension.ObjectID(gdunsafe.Object(obj).ID())
 	return Object{assigned: object{inEngine: obj, objectID: id}}
 }
 
@@ -51,8 +51,7 @@ func LetObject(obj gdextension.Object) Object {
 	if obj == 0 {
 		return Object{}
 	}
-	var id gdextension.ObjectID
-	gdextension.Host.Objects.ID.Get(obj, gdextension.CallReturns[gdextension.ObjectID](&id))
+	id := gdextension.ObjectID(gdunsafe.Object(obj).ID())
 	var revision uint64
 	if threadcheck.Main() {
 		revision = now
@@ -75,8 +74,7 @@ func PinObject(obj *Object, raw gdextension.Object) {
 		obj.revision = 0
 		return
 	}
-	var id gdextension.ObjectID
-	gdextension.Host.Objects.ID.Get(raw, gdextension.CallReturns[gdextension.ObjectID](&id))
+	id := gdextension.ObjectID(gdunsafe.Object(raw).ID())
 	obj.sentinel = &obj.assigned
 	obj.assigned = object{objectID: id, inEngine: raw}
 }
@@ -86,8 +84,7 @@ func OwnObject(obj gdextension.Object, free func(gdextension.Object)) Object {
 	if obj == 0 {
 		return Object{}
 	}
-	var id gdextension.ObjectID
-	gdextension.Host.Objects.ID.Get(obj, gdextension.CallReturns[gdextension.ObjectID](&id))
+	id := gdextension.ObjectID(gdunsafe.Object(obj).ID())
 	var sentinel *object
 	var revision uint64
 	var result Object
@@ -149,8 +146,7 @@ func SetObject(obj Object, val gdextension.Object) {
 		*obj.sentinel = object{}
 		return
 	}
-	var id gdextension.ObjectID
-	gdextension.Host.Objects.ID.Get(val, gdextension.CallReturns[gdextension.ObjectID](&id))
+	id := gdextension.ObjectID(gdunsafe.Object(val).ID())
 	obj.sentinel.inEngine = val
 	obj.sentinel.objectID = id
 }
@@ -166,12 +162,12 @@ func AskObject(obj Object) (gdextension.Object, Type) {
 		if obj.revision == now {
 			return obj.assigned.inEngine, TypeBorrow
 		}
-		return gdextension.Host.Objects.Lookup(obj.assigned.objectID), TypeBorrow
+		return gdextension.Object(gdunsafe.ObjectID(obj.assigned.objectID).Lookup()), TypeBorrow
 	}
 	if obj.assigned.objectID == 0 {
 		if obj.assigned.inEngine == 0 {
 			if obj.sentinel.inEngine == 0 {
-				return gdextension.Host.Objects.Lookup(obj.sentinel.objectID), TypeStatic
+				return gdextension.Object(gdunsafe.ObjectID(obj.sentinel.objectID).Lookup()), TypeStatic
 			}
 			return obj.sentinel.inEngine, TypeStatic
 		}
@@ -186,7 +182,7 @@ func AskObject(obj Object) (gdextension.Object, Type) {
 		}
 		return obj.assigned.inEngine, TypePooled
 	}
-	return gdextension.Host.Objects.Lookup(obj.assigned.objectID), TypeBorrow
+	return gdextension.Object(gdunsafe.ObjectID(obj.assigned.objectID).Lookup()), TypeBorrow
 }
 
 // EndObject leaks the object, releasing ownership to the engine.
