@@ -2,22 +2,23 @@
 
 package ring
 
-import "unsafe"
+import (
+	"unsafe"
 
-var shadowRing uint32
+	gdunsafe "graphics.gd"
+)
+
+var shadowRing gdunsafe.Pointer
 
 //go:wasmimport gd ring_flush
-func wasm_gd_ring_flush(entries uint32, stride uint32, tail uint32, head uint32)
-
-//go:wasmimport gd memory_malloc
-func wasm_gd_memory_malloc(size uint32) uint32
+func wasm_gd_ring_flush(entries gdunsafe.Pointer, stride uint32, tail uint32, head uint32)
 
 //go:wasmimport gd bulk_copy
-func wasm_gd_bulk_copy(godot_dst uint32, go_src uint32, length uint32)
+func wasm_gd_bulk_copy(godot_dst gdunsafe.Pointer, go_src uint32, length uint32)
 
 func flush(entries unsafe.Pointer, tail, head uint32) {
 	if shadowRing == 0 {
-		shadowRing = wasm_gd_memory_malloc(Size * uint32(unsafe.Sizeof(Entry{})))
+		shadowRing = gdunsafe.Malloc(gdunsafe.Int(Size * uint32(unsafe.Sizeof(Entry{}))))
 	}
 	entrySize := uint32(unsafe.Sizeof(Entry{}))
 	start := tail & Mask
@@ -26,14 +27,14 @@ func flush(entries unsafe.Pointer, tail, head uint32) {
 	if start < end {
 		// Contiguous range
 		wasm_gd_bulk_copy(
-			shadowRing+start*entrySize,
+			shadowRing+gdunsafe.Pointer(start*entrySize),
 			base+start*entrySize,
 			(end-start)*entrySize,
 		)
 	} else {
 		// Wraps around: copy [start..Size) then [0..end)
 		wasm_gd_bulk_copy(
-			shadowRing+start*entrySize,
+			shadowRing+gdunsafe.Pointer(start*entrySize),
 			base+start*entrySize,
 			(Size-start)*entrySize,
 		)

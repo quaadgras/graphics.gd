@@ -8,55 +8,6 @@ import (
 	"graphics.gd/internal/gdmemory"
 )
 
-//go:wasmexport gd_on_callable_call
-func gd_on_callable_call(p0 uint32, p1 uint32, p2 int32, p3 uint32, p4 uint32) {
-	gdextension.On.Callables.Call(gdextension.FunctionID(p0), gdextension.Returns[gdextension.Variant](p1), int(p2), gdextension.Accepts[gdextension.Variant](p3), gdextension.Returns[gdextension.CallError](p4))
-}
-
-//go:wasmexport gd_on_callable_validation
-func gd_on_callable_validation(p0 uint32) uint32 {
-	if gdextension.On.Callables.Validation(gdextension.FunctionID(p0)) {
-		return 1
-	}
-	return 0
-}
-
-//go:wasmexport gd_on_callable_free
-func gd_on_callable_free(p0 uint32) {
-	gdextension.On.Callables.Free(gdextension.FunctionID(p0))
-}
-
-//go:wasmexport gd_on_callable_hash
-func gd_on_callable_hash(p0 uint32) uint32 {
-	return uint32(gdextension.On.Callables.Hash(gdextension.FunctionID(p0)))
-}
-
-//go:wasmexport gd_on_callable_compare
-func gd_on_callable_compare(p0 uint32, p1 uint32) uint32 {
-	if gdextension.On.Callables.Compare(gdextension.FunctionID(p0), gdextension.FunctionID(p1)) {
-		return 1
-	}
-	return 0
-}
-
-//go:wasmexport gd_on_callable_less_than
-func gd_on_callable_less_than(p0 uint32, p1 uint32) uint32 {
-	if gdextension.On.Callables.LessThan(gdextension.FunctionID(p0), gdextension.FunctionID(p1)) {
-		return 1
-	}
-	return 0
-}
-
-//go:wasmexport gd_on_callable_stringify
-func gd_on_callable_stringify(p0 uint32, p1 uint32) uint32 {
-	return uint32(gdextension.On.Callables.Stringify(gdextension.FunctionID(p0), gdextension.Returns[gdextension.CallError](p1))[0])
-}
-
-//go:wasmexport gd_on_callable_get_argument_count
-func gd_on_callable_get_argument_count(p0 uint32, p1 uint32) int32 {
-	return int32(gdextension.On.Callables.ArgumentCount(gdextension.FunctionID(p0), gdextension.Returns[gdextension.CallError](p1)))
-}
-
 //go:wasmexport gd_on_editor_class_in_use_detection
 func gd_on_editor_class_in_use_detection(p0 uint32, p1 uint32, p2 uint32) {
 	gdextension.On.Editor.ClassInUseDetection(gdextension.PackedArray[gdextension.String]{uint64(uint64(uint64(p0)<<32) | uint64(p1))}, gdextension.Returns[gdextension.PackedArray[gdextension.String]](p2))

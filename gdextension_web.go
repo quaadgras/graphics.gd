@@ -3,10 +3,10 @@
 package gdunsafe
 
 import (
+	"sync"
 	"unsafe"
 
 	"graphics.gd/internal/gdextension"
-	"graphics.gd/internal/gdmemory"
 )
 
 type (
@@ -30,9 +30,9 @@ func gd_array_get(array Array, index Int, result uint32)
 
 func (array Array) Get(index Int) Variant {
 	var value Variant
-	result := gdmemory.MakeResult(gdextension.SizeVariant)
+	result := makeResult(gdextension.SizeVariant)
 	gd_array_get(array, index, uint32(result))
-	gdmemory.LoadResult(gdextension.SizeVariant, &value, result)
+	loadResult(gdextension.SizeVariant, &value, result)
 	return value
 }
 
@@ -143,11 +143,151 @@ func (t VariantType) Name() String
 func gd_variant_type_make(t VariantType, result Pointer, arg_count Int, args, err Pointer)
 
 func (t VariantType) Make(args ...Variant) (value Variant, err CallError) {
-	var param = gdmemory.CopyVariants(unsafe.SliceData(args), len(args))
-	result := gdmemory.MakeResult(gdextension.SizeVariant)
-	result_err := gdmemory.MakeResult(gdextension.SizeCallError)
+	var param = copyVariants(unsafe.SliceData(args), len(args))
+	result := makeResult(gdextension.SizeVariant)
+	result_err := makeResult(gdextension.SizeCallError)
 	gd_variant_type_make(t, Pointer(result), Int(len(args)), Pointer(param), Pointer(result_err))
-	gdmemory.LoadResult(gdextension.SizeVariant, &value, result)
-	gdmemory.LoadResult(gdextension.SizeCallError, &value, result_err)
+	loadResult(gdextension.SizeVariant, &value, result)
+	loadResult(gdextension.SizeCallError, &value, result_err)
 	return value, err
+}
+
+func (args VariadicVariants) Index(i int) Variant {
+	if i >= args.Count || i < 0 {
+		panic("index out of range")
+	}
+	// args.First points to an engine-side array of pointers-to-Variant.
+	// Read the i-th pointer, then read the Variant it points to.
+	ptr := Pointer(gdextension.Pointer(args.First) + gdextension.Pointer(i)*gdextension.Pointer(4)).Uint32()
+	if ptr == 0 {
+		return Variant{}
+	}
+	return readVariant(gdextension.Pointer(ptr))
+}
+
+type (
+	Callable   [2]uint64
+	CallableID uint32
+)
+
+//go:wasmimport gd callable_create
+func gd_callable_create(id CallableID, object ObjectID, result Pointer)
+
+func MakeCallable(impl CallableImplementation, obj ObjectID) Callable {
+	result := makeResult(gdextension.SizeCallable)
+	gd_callable_create(callables.New(impl), obj, Pointer(result))
+	var c Callable
+	loadResult(gdextension.SizeCallable, unsafe.Pointer(&c), result)
+	return c
+}
+
+//go:wasmexport gd_on_callable_called
+func gd_on_callable_called(c CallableID, ret Pointer, argc Int, args Pointer, err Pointer) {
+	r, e := callables.Get(c).Call(VariadicVariants{First: PointerTo[PointerTo[Variant]](args), Count: int(argc)})
+	ret.SetBits128([2]uint64{r[0], r[1]})
+	(ret + 16).SetUint64(r[2])
+	(err + 0).SetUint32(uint32(e.Type))
+	(err + 4).SetInt32(e.Argument)
+	(err + 8).SetInt32(e.Expected)
+}
+
+//go:wasmexport gd_on_callable_verify
+func gd_on_callable_verify(c CallableID) bool {
+	return callables.Get(c).IsValid()
+}
+
+//go:wasmexport gd_on_callable_delete
+func gd_on_callable_delete(c CallableID) { callables.Del(c) }
+
+//go:wasmexport gd_on_callable_hashed
+func gd_on_callable_hashed(c CallableID) uint32 {
+	return callables.Get(c).Hash()
+}
+
+//go:wasmexport gd_on_callable_sorted
+func gd_on_callable_sorted(a, b CallableID) int64 {
+	return int64(callables.Get(a).Compare(callables.Get(b)))
+}
+
+//go:wasmexport gd_on_callable_string
+func gd_on_callable_string(c CallableID) String {
+	return callables.Get(c).UnsafeString()
+}
+
+//go:wasmexport gd_on_callable_length
+func gd_on_callable_length(c CallableID) int64 {
+	return int64(callables.Get(c).NumIn())
+}
+
+// Cross-memory helpers for transferring data between Go and engine address spaces.
+
+var wasmResultBufs [2]gdextension.Pointer
+var wasmResultIdx int
+var wasmArgBuf gdextension.Pointer
+
+var wasmSetup = sync.OnceFunc(func() {
+	wasmArgBuf = gdextension.Pointer(Malloc(64 * 64))
+	for i := range wasmResultBufs {
+		wasmResultBufs[i] = gdextension.Pointer(Malloc(64 * 64))
+		Clear(Pointer(wasmResultBufs[i]), 64*64)
+	}
+})
+
+func makeResult(shape gdextension.Shape) gdextension.Pointer {
+	wasmSetup()
+	wasmResultIdx ^= 1
+	return wasmResultBufs[wasmResultIdx]
+}
+
+func loadResult[T ~unsafe.Pointer | *gdextension.Variant](shape gdextension.Shape, result T, from gdextension.Pointer) {
+	wasmSetup()
+	if from == 0 {
+		panic("nil pointer dereference")
+	}
+	data := unsafe.Pointer(result)
+	done := 0
+	size := shape.SizeResult()
+	if size == 0 {
+		return
+	}
+	defer Clear(Pointer(from), Int(size))
+	for size > 0 {
+		switch {
+		case size >= 4:
+			*(*uint32)(unsafe.Add(data, done)) = Pointer(from + gdextension.Pointer(done)).Uint32()
+			done += 4
+			size -= 4
+		case size >= 2:
+			*(*uint16)(unsafe.Add(data, done)) = Pointer(from + gdextension.Pointer(done)).Uint16()
+			done += 2
+			size -= 2
+		default:
+			*(*uint8)(unsafe.Add(data, done)) = Pointer(from + gdextension.Pointer(done)).Byte()
+			done += 1
+			size -= 1
+		}
+	}
+}
+
+func copyVariants[T ~unsafe.Pointer | *gdextension.Variant](args T, n int) gdextension.Pointer {
+	wasmSetup()
+	var offset int
+	var data = unsafe.Pointer(args)
+	for i := range n {
+		Pointer(wasmArgBuf + gdextension.Pointer(offset)).SetBits128(*(*[2]uint64)(unsafe.Add(data, uintptr(i*24))))
+		Pointer(wasmArgBuf + gdextension.Pointer(offset+16)).SetUint64(*(*uint64)(unsafe.Add(data, uintptr(i*24+16))))
+		offset += 24
+	}
+	return wasmArgBuf
+}
+
+func readVariant(addr gdextension.Pointer) Variant {
+	if addr == 0 {
+		panic("nil pointer dereference")
+	}
+	var v Variant
+	v[0] = Pointer(addr).Uint64()
+	v[1] = Pointer(addr + 8).Uint64()
+	v[2] = Pointer(addr + 16).Uint64()
+	return v
 }

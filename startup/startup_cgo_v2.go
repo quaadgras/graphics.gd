@@ -15,46 +15,6 @@ import (
 // #include <stdbool.h>
 import "C"
 
-//export gd_on_callable_call
-func gd_on_callable_call(p0 C.uintptr_t, p1 *C.Variant, p2 C.int64_t, p3 C.VariantArguments, p4 *C.CallError) {
-	gdextension.On.Callables.Call(gdextension.FunctionID(p0), gdextension.Returns[gdextension.Variant](p1), int(p2), gdextension.Accepts[gdextension.Variant](p3), gdextension.Returns[gdextension.CallError](p4))
-}
-
-//export gd_on_callable_validation
-func gd_on_callable_validation(p0 C.uintptr_t) C.bool {
-	return C.bool(gdextension.On.Callables.Validation(gdextension.FunctionID(p0)))
-}
-
-//export gd_on_callable_free
-func gd_on_callable_free(p0 C.uintptr_t) {
-	gdextension.On.Callables.Free(gdextension.FunctionID(p0))
-}
-
-//export gd_on_callable_hash
-func gd_on_callable_hash(p0 C.uintptr_t) C.uint32_t {
-	return C.uint32_t(gdextension.On.Callables.Hash(gdextension.FunctionID(p0)))
-}
-
-//export gd_on_callable_compare
-func gd_on_callable_compare(p0 C.uintptr_t, p1 C.uintptr_t) C.bool {
-	return C.bool(gdextension.On.Callables.Compare(gdextension.FunctionID(p0), gdextension.FunctionID(p1)))
-}
-
-//export gd_on_callable_less_than
-func gd_on_callable_less_than(p0 C.uintptr_t, p1 C.uintptr_t) C.bool {
-	return C.bool(gdextension.On.Callables.LessThan(gdextension.FunctionID(p0), gdextension.FunctionID(p1)))
-}
-
-//export gd_on_callable_stringify
-func gd_on_callable_stringify(p0 C.uintptr_t, p1 *C.CallError) C.uintptr_t {
-	return C.uintptr_t(gdextension.On.Callables.Stringify(gdextension.FunctionID(p0), gdextension.Returns[gdextension.CallError](p1))[0])
-}
-
-//export gd_on_callable_get_argument_count
-func gd_on_callable_get_argument_count(p0 C.uintptr_t, p1 *C.CallError) C.int64_t {
-	return C.int64_t(gdextension.On.Callables.ArgumentCount(gdextension.FunctionID(p0), gdextension.Returns[gdextension.CallError](p1)))
-}
-
 //export gd_on_editor_class_in_use_detection
 func gd_on_editor_class_in_use_detection(p0 C.uint64_t, p1 C.uint64_t, p2 *C.PackedStringArray) {
 	gdextension.On.Editor.ClassInUseDetection(gdextension.PackedArray[gdextension.String]{uint64(p0), uint64(p1)}, gdextension.Returns[gdextension.PackedArray[gdextension.String]](p2))
@@ -161,12 +121,12 @@ func gd_on_extension_instance_called(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.void,
 }
 
 //export gd_on_extension_instance_variant_call
-func gd_on_extension_instance_variant_call(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.Variant, p3 C.VariantArguments) {
+func gd_on_extension_instance_variant_call(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.Variant, p3 C.VariadicVariants) {
 	gdextension.On.Extension.Instance.VariantCall(gdextension.ExtensionInstanceID(p0), gdextension.FunctionID(p1), gdextension.Returns[gdextension.Variant](p2), gdextension.Accepts[gdextension.Variant](p3))
 }
 
 //export gd_on_extension_instance_dynamic_call
-func gd_on_extension_instance_dynamic_call(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.Variant, p3 C.int64_t, p4 C.VariantArguments, p5 *C.CallError) {
+func gd_on_extension_instance_dynamic_call(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.Variant, p3 C.int64_t, p4 C.VariadicVariants, p5 *C.CallError) {
 	gdextension.On.Extension.Instance.DynamicCall(gdextension.ExtensionInstanceID(p0), gdextension.FunctionID(p1), gdextension.Returns[gdextension.Variant](p2), int(p3), gdextension.Accepts[gdextension.Variant](p4), gdextension.Returns[gdextension.CallError](p5))
 }
 
@@ -323,14 +283,6 @@ func init() {
 		C.gd_variant_type_unsafe_free(C.uint32_t(p0), C.uint64_t(shape), unsafe.Pointer(p2))
 		return
 	}
-	gdextension.Host.Callables.Create = func(p0 gdextension.FunctionID, p1 gdextension.ObjectID, p2 gdextension.CallReturns[gdextension.Callable]) {
-		C.gd_callable_create(C.uintptr_t(p0), C.uint64_t(p1), unsafe.Pointer(p2))
-		return
-	}
-	gdextension.Host.Callables.Lookup = func(p0 gdextension.Callable) (result gdextension.FunctionID) {
-		result = gdextension.FunctionID(C.gd_callable_lookup(C.uint64_t(p0[0]), C.uint64_t(p0[1])))
-		return
-	}
 	gdextension.Host.ClassDB.FileAccess.Write = func(p0 gdextension.Object, p1 []byte) {
 		C.gd_classdb_FileAccess_write(C.uintptr_t(p0), (*C.char)(unsafe.Pointer(unsafe.SliceData(p1))), C.int64_t(len(p1)))
 		return
@@ -485,66 +437,6 @@ func init() {
 	}
 	gdextension.Host.Log.Warning = func(p0 string, p1 string, p2 string, p3 string, p4 int32, p5 bool) {
 		C.gd_log_warning((*C.char)(unsafe.Pointer(unsafe.StringData(p0))), C.int64_t(len(p0)), (*C.char)(unsafe.Pointer(unsafe.StringData(p1))), C.int64_t(len(p1)), (*C.char)(unsafe.Pointer(unsafe.StringData(p2))), C.int64_t(len(p2)), (*C.char)(unsafe.Pointer(unsafe.StringData(p3))), C.int64_t(len(p3)), C.int32_t(p4), C.bool(p5))
-		return
-	}
-	gdextension.Host.Memory.Malloc = func(p0 int) (result gdextension.Pointer) {
-		result = gdextension.Pointer(C.gd_memory_malloc(C.int64_t(p0)))
-		return
-	}
-	gdextension.Host.Memory.Sizeof = func(p0 gdextension.StringName) (result int) {
-		result = int(C.gd_memory_sizeof(C.uintptr_t(p0[0])))
-		return
-	}
-	gdextension.Host.Memory.Resize = func(p0 gdextension.Pointer, p1 int) (result gdextension.Pointer) {
-		result = gdextension.Pointer(C.gd_memory_resize(C.uintptr_t(p0), C.int64_t(p1)))
-		return
-	}
-	gdextension.Host.Memory.Clear = func(p0 gdextension.Pointer, p1 int) {
-		C.gd_memory_clear(C.uintptr_t(p0), C.int64_t(p1))
-		return
-	}
-	gdextension.Host.Memory.Free = func(p0 gdextension.Pointer) {
-		C.gd_memory_free(C.uintptr_t(p0))
-		return
-	}
-	gdextension.Host.Memory.Edit.Byte = func(p0 gdextension.Pointer, p1 uint8) {
-		C.gd_memory_edit_byte(C.uintptr_t(p0), C.uint8_t(p1))
-		return
-	}
-	gdextension.Host.Memory.Edit.Uint16 = func(p0 gdextension.Pointer, p1 uint16) {
-		C.gd_memory_edit_u16(C.uintptr_t(p0), C.uint16_t(p1))
-		return
-	}
-	gdextension.Host.Memory.Edit.Uint32 = func(p0 gdextension.Pointer, p1 uint32) {
-		C.gd_memory_edit_u32(C.uintptr_t(p0), C.uint32_t(p1))
-		return
-	}
-	gdextension.Host.Memory.Edit.Uint64 = func(p0 gdextension.Pointer, p1 uint64) {
-		C.gd_memory_edit_u64(C.uintptr_t(p0), C.uint64_t(p1))
-		return
-	}
-	gdextension.Host.Memory.Edit.Bits128 = func(p0 gdextension.Pointer, p1 [2]uint64) {
-		C.gd_memory_edit_128(C.uintptr_t(p0), C.uint64_t(p1[0]), C.uint64_t(p1[1]))
-		return
-	}
-	gdextension.Host.Memory.Edit.Bits256 = func(p0 gdextension.Pointer, p1 [4]uint64) {
-		C.gd_memory_edit_256(C.uintptr_t(p0), C.uint64_t(p1[0]), C.uint64_t(p1[1]), C.uint64_t(p1[2]), C.uint64_t(p1[3]))
-		return
-	}
-	gdextension.Host.Memory.Edit.Bits512 = func(p0 gdextension.Pointer, p1 [8]uint64) {
-		C.gd_memory_edit_512(C.uintptr_t(p0), C.uint64_t(p1[0]), C.uint64_t(p1[1]), C.uint64_t(p1[2]), C.uint64_t(p1[3]), C.uint64_t(p1[4]), C.uint64_t(p1[5]), C.uint64_t(p1[6]), C.uint64_t(p1[7]))
-		return
-	}
-	gdextension.Host.Memory.Load.Byte = func(p0 gdextension.Pointer) (result uint8) {
-		result = uint8(C.gd_memory_load_byte(C.uintptr_t(p0)))
-		return
-	}
-	gdextension.Host.Memory.Load.Uint16 = func(p0 gdextension.Pointer) (result uint16) {
-		result = uint16(C.gd_memory_load_u16(C.uintptr_t(p0)))
-		return
-	}
-	gdextension.Host.Memory.Load.Uint32 = func(p0 gdextension.Pointer) (result uint32) {
-		result = uint32(C.gd_memory_load_u32(C.uintptr_t(p0)))
 		return
 	}
 	gdextension.Host.Objects.Make = func(p0 gdextension.StringName) (result gdextension.Object) {

@@ -6,8 +6,8 @@ type Callbacks struct {
 	Engine CallbacksForEngine
 	Editor CallbacksForEditor
 
-	MainLoop  CallbacksForMainLoop
-	Callables CallbacksForCallables
+	MainLoop CallbacksForMainLoop
+	//Callables CallbacksForCallables
 	Extension CallbacksForExtension
 	Threading CallbacksForThreading
 }

@@ -10,7 +10,6 @@
     #define UINT uint64_t
     #define OBJECT_ID(n) uint64_t n
     #define UINT64(n) uint64_t n
-    #define CALLABLE_ARG(n) uint64_t n##_1, uint64_t n##_2
     #define BUFFER char*
     #define STRING const char*
     #define RESULT_POINTER
@@ -24,7 +23,6 @@
     #define INT64(n) uint32_t n##_1, uint32_t n##_2
     #define SHAPE(n) uint32_t n##_1, uint32_t n##_2
     #define OBJECT_ID(n) uint32_t n##_1, uint32_t n##_2
-    #define CALLABLE_ARG(n) uint32_t n##_1, uint32_t n##_2, uint32_t n##_3, uint32_t n##_4
     #define BUFFER uint32_t
     #define STRING std::string
     #define RESULT_POINTER , uint32_t result
@@ -40,7 +38,7 @@ typedef struct {
     uint64_t payload[2];
 } Variant;
 
-typedef const Variant* const* VariantArguments;
+typedef const Variant* const* VariadicVariants;
 
 typedef struct {
     uint64_t array;
@@ -77,8 +75,10 @@ typedef uint32_t MethodFlags;
 typedef uint32_t ArgumentMetadata;
 
 typedef int64_t Int;
+typedef uintptr_t UnsafePointer;
 
 typedef uintptr_t Object;
+typedef uint64_t ObjectID;
 typedef uintptr_t ObjectType;
 
 typedef uintptr_t RefCounted;
@@ -90,7 +90,6 @@ typedef uintptr_t MethodForClass;
 typedef uintptr_t ScriptInstance;
 
 typedef uintptr_t TaskID;
-typedef uintptr_t CallableID;
 typedef uintptr_t FunctionID;
 typedef uintptr_t ExtensionClassID;
 typedef uintptr_t ExtensionInstanceID;
@@ -99,14 +98,73 @@ typedef uintptr_t ExtensionBindingID;
 typedef uintptr_t PropertyList;
 typedef uintptr_t MethodList;
 
-extern void gd_on_callable_call(CallableID c, Variant* result, INT arg_count, VariantArguments args, CallError* err);
-extern bool gd_on_callable_validation(CallableID c);
-extern void gd_on_callable_free(CallableID c);
-extern uint32_t gd_on_callable_hash(CallableID c);
-extern bool gd_on_callable_compare(CallableID a, CallableID b);
-extern bool gd_on_callable_less_than(CallableID a, CallableID b);
-extern String gd_on_callable_stringify(CallableID c, CallError* err);
-extern INT gd_on_callable_get_argument_count(CallableID c, CallError* err);
+// Callable is a generic first-class-function represented by the engine. The underlying function may
+// be defined by the engine, a script, or an extension. Extensions use [CallableID] to identify any
+// callables they've created. These are extension-specific opaque identifiers (sometimes pointers).
+typedef struct {
+    uint64_t opaque[2];
+} Callable;
+
+#define CALLABLE_ARG(n) uint64_t n##_1, uint64_t n##_2
+#define CALLABLE_ARG_GET(n) (Callable){{n##_1, n##_2}}
+#define CALLABLE_ARG_PUT(n) n.opaque[0], n.opaque[1]
+
+// CallableID is an opaque pointer-sized extension-specific identifier for a [Callable]. Either
+// store a pinned pointer to your callable here, or a handle that you can lookup from a table.
+typedef uintptr_t CallableID;
+
+// gd_callable_create writes an extension [Callable] into 'result', it is associated with the
+// given 'id' and 'owner' (when the owner is freed, the [Callable] is deleted). The 'id' will
+// be passed back to gd_on_callable_* callbacks, so that the implementation is identifyable.
+void gd_callable_create(CallableID id, ObjectID owner, Callable* result);
+
+// gd_callable_lookup returns the [CallableID] associated with the given [Callable] or zero
+// if the [Callable] belongs to the engine, a script, or another extension.
+CallableID gd_callable_lookup(CALLABLE_ARG(c));
+
+// CALLBACK declares a callback function. On Emscripten it expands to a static
+// function pointer plus a setter (gd_set_<name>) so that engine.js can register
+// gdextension WASM exports by name into Emscripten's indirect function table.
+// The engine then calls the extension through call_indirect with no JS intermediary.
+// Everywhere else it's a plain extern declaration resolved by the linker.
+#ifdef __EMSCRIPTEN__
+    #define CALLBACK(ret, name, params)                                          \
+        static ret (*name) params;                                               \
+        EMSCRIPTEN_KEEPALIVE void gd_set_callback_##name(uintptr_t fn) {         \
+            *(uintptr_t*)&name = fn;                                             \
+        }
+#else
+    #define CALLBACK(ret, name, params) extern ret name params
+#endif
+
+// gd_on_callable_called is called whenever the [Callable] identified by 'c' is called. It's given
+// a variadic list of arguments and the implementation should write the result into 'ret'. If the
+// arguments aren't compatible with the [Callable], write a non-zero error into 'err'.
+CALLBACK(void, gd_on_callable_called, (CallableID c, Variant* ret, Int argc, VariadicVariants args, CallError* err));
+
+// gd_on_callable_verify is called to verify that [Callable] identified by 'c' is valid.
+// It should return true if the callable is in a valid state (and callable), otherwise false.
+CALLBACK(bool, gd_on_callable_verify, (CallableID c));
+
+// gd_on_callable_delete is called to delete the callable created with [CallableID] 'c'. After
+// this call returns 'c' can be reused by a newly created callable.
+CALLBACK(void, gd_on_callable_delete, (CallableID c));
+
+// gd_on_callable_hashed is called to hash the [Callable] identified by 'c'. Identical
+// underlying implementations of a callable should always return the same value.
+CALLBACK(uint32_t, gd_on_callable_hashed, (CallableID c));
+
+// gd_on_callable_sorted is called to compare two different [Callable] values. It should
+// return less than zero, if a < b, zero if a = b and more than zero if a > b.
+CALLBACK(Int, gd_on_callable_sorted, (CallableID a, CallableID b));
+
+// gd_on_callable_string is called when the [Callable] identified by 'c' is being converted
+// into a string. It should return a useful string representation of the callable, or error.
+CALLBACK(String, gd_on_callable_string, (CallableID c));
+
+// gd_on_callable_length is called to determine how many arguments the [Callable] expects to
+// receive. Return -1, if the [Callable] is able to accept any number of arguments.
+CALLBACK(Int, gd_on_callable_length, (CallableID c));
 
 extern void gd_on_editor_class_in_use_detection(PACKED_ARRAY_ARG(a), PackedStringArray* result);
 
@@ -132,8 +190,8 @@ extern String gd_on_extension_instance_stringify(ExtensionInstanceID inst);
 extern bool gd_on_extension_instance_reference(ExtensionInstanceID inst, bool increment);
 extern RETURNS(uint64_t) gd_on_extension_instance_rid(ExtensionInstanceID inst RESULT_POINTER);
 extern void gd_on_extension_instance_checked_call(ExtensionInstanceID inst, FunctionID fn, void* result, void* args);
-extern void gd_on_extension_instance_variant_call(ExtensionInstanceID inst, FunctionID fn, Variant* result, VariantArguments args);
-extern void gd_on_extension_instance_dynamic_call(ExtensionInstanceID inst, FunctionID fn, Variant* result, INT count, VariantArguments args, CallError* err);
+extern void gd_on_extension_instance_variant_call(ExtensionInstanceID inst, FunctionID fn, Variant* result, VariadicVariants args);
+extern void gd_on_extension_instance_dynamic_call(ExtensionInstanceID inst, FunctionID fn, Variant* result, INT count, VariadicVariants args, CallError* err);
 extern void gd_on_extension_instance_free(ExtensionInstanceID inst);
 extern void gd_on_extension_instance_called(ExtensionInstanceID inst, FunctionID fn, void* result, void* args);
 
@@ -179,9 +237,6 @@ FunctionID gd_variant_type_builtin_method(VariantType t, StringName method, INT6
 void gd_variant_type_unsafe_call(ANY self, FunctionID fn, ANY result, SHAPE(shape), ANY args);
 void gd_variant_type_unsafe_make(FunctionID constructor, ANY result, SHAPE(shape), ANY args);
 void gd_variant_type_unsafe_free(VariantType t, SHAPE(shape), ANY args);
-
-void gd_callable_create(CallableID fn, OBJECT_ID(object), ANY result);
-FunctionID gd_callable_lookup(CALLABLE_ARG(c));
 
 void gd_classdb_FileAccess_write(Object file, BUFFER buf, INT len);
 INT gd_classdb_FileAccess_read(Object file, BUFFER buf, INT cap);
@@ -261,22 +316,55 @@ void gd_log_warning(
     int32_t line, bool notify_editor
 );
 
-uintptr_t gd_memory_malloc(INT size);
-INT gd_memory_sizeof(StringName struct_name);
-uintptr_t gd_memory_resize(uintptr_t addr, INT size);
-void gd_memory_clear(uintptr_t addr, INT size);
-void gd_memory_free(uintptr_t addr);
-void gd_memory_edit_byte(uintptr_t addr, uint8_t v);
-void gd_memory_edit_u16(uintptr_t addr, uint16_t v);
-void gd_memory_edit_u32(uintptr_t addr, uint32_t v);
-void gd_memory_edit_u64(uintptr_t addr, UINT64(v));
-void gd_memory_edit_128(uintptr_t addr, UINT64(v1), UINT64(v2));
-void gd_memory_edit_256(uintptr_t addr, UINT64(v1), UINT64(v2), UINT64(v3), UINT64(v4));
-void gd_memory_edit_512(uintptr_t addr, UINT64(v1), UINT64(v2), UINT64(v3), UINT64(v4), UINT64(v5), UINT64(v6), UINT64(v7), UINT64(v8));
-uint8_t gd_memory_load_byte(uintptr_t addr);
-uint16_t gd_memory_load_u16(uintptr_t addr);
-uint32_t gd_memory_load_u32(uintptr_t addr);
-uint64_t gd_memory_load_u64(uintptr_t addr);
+// gd_memory_malloc allocates memory of the given size and returns an unsafe pointer to that
+// memory. The memory is not initialized.
+UnsafePointer gd_memory_malloc(Int size);
+
+// gd_memory_sizeof returns the size of the given engine struct in bytes.
+Int gd_memory_sizeof(StringName struct_name);
+
+// gd_memory_resize resizes the memory allocation at the given address to the given size. The
+// contents of the memory block are preserved.
+UnsafePointer gd_memory_resize(UnsafePointer addr, Int size);
+
+// gd_memory_clear clears the memory (sets to zero) from addr to addr + size.
+void gd_memory_clear(UnsafePointer addr, Int size);
+
+// gd_memory_free frees the memory block at the given address.
+void gd_memory_free(UnsafePointer addr);
+
+// gd_memory_edit_byte writes a byte at the given memory address.
+void gd_memory_edit_byte(UnsafePointer addr, uint8_t v);
+
+// gd_memory_edit_u16 writes a 16-bit value at the given memory address.
+void gd_memory_edit_u16(UnsafePointer addr, uint16_t v);
+
+// gd_memory_edit_u32 writes a 32-bit value at the given memory address.
+void gd_memory_edit_u32(UnsafePointer addr, uint32_t v);
+
+// gd_memory_edit_u64 writes a 64-bit value at the given memory address.
+void gd_memory_edit_u64(UnsafePointer addr, uint64_t v);
+
+// gd_memory_edit_128 writes a 128-bit value at the given memory address.
+void gd_memory_edit_128(UnsafePointer addr, uint64_t a, uint64_t b);
+
+// gd_memory_edit_256 writes a 256-bit value at the given memory address.
+void gd_memory_edit_256(UnsafePointer addr, uint64_t a, uint64_t b, uint64_t c, uint64_t d);
+
+// gd_memory_edit_512 writes a 512-bit value at the given memory address.
+void gd_memory_edit_512(UnsafePointer addr, uint64_t a, uint64_t b, uint64_t c, uint64_t d, uint64_t e, uint64_t f, uint64_t g, uint64_t h);
+
+// gd_memory_load_byte reads a byte from the given memory address.
+uint8_t gd_memory_load_byte(UnsafePointer addr);
+
+// gd_memory_load_u16 reads a 16-bit value from the given memory address.
+uint16_t gd_memory_load_u16(UnsafePointer addr);
+
+// gd_memory_load_u32 reads a 32-bit value from the given memory address.
+uint32_t gd_memory_load_u32(UnsafePointer addr);
+
+// gd_memory_load_u64 reads a 64-bit value from the given memory address.
+uint64_t gd_memory_load_u64(UnsafePointer addr);
 
 Object gd_object_make(StringName name);
 void gd_object_call(Object obj, MethodForClass method, ANY result, INT arg_count, ANY args, ANY err);

@@ -33,8 +33,6 @@ func init() {
 		gd_variant_type_unsafe_call                js.Value
 		gd_variant_type_unsafe_make                js.Value
 		gd_variant_type_unsafe_free                js.Value
-		gd_callable_create                         js.Value
-		gd_callable_lookup                         js.Value
 		gd_classdb_FileAccess_write                js.Value
 		gd_classdb_FileAccess_read                 js.Value
 		gd_classdb_Image_unsafe                    js.Value
@@ -74,21 +72,6 @@ func init() {
 		gd_library_location                        js.Value
 		gd_log_error                               js.Value
 		gd_log_warning                             js.Value
-		gd_memory_malloc                           js.Value
-		gd_memory_sizeof                           js.Value
-		gd_memory_resize                           js.Value
-		gd_memory_clear                            js.Value
-		gd_memory_free                             js.Value
-		gd_memory_edit_byte                        js.Value
-		gd_memory_edit_u16                         js.Value
-		gd_memory_edit_u32                         js.Value
-		gd_memory_edit_u64                         js.Value
-		gd_memory_edit_128                         js.Value
-		gd_memory_edit_256                         js.Value
-		gd_memory_edit_512                         js.Value
-		gd_memory_load_byte                        js.Value
-		gd_memory_load_u16                         js.Value
-		gd_memory_load_u32                         js.Value
 		gd_object_make                             js.Value
 		gd_object_call                             js.Value
 		gd_object_name                             js.Value
@@ -203,8 +186,6 @@ func init() {
 		gd_variant_type_unsafe_call = GD.Get("variant_type_unsafe_call")
 		gd_variant_type_unsafe_make = GD.Get("variant_type_unsafe_make")
 		gd_variant_type_unsafe_free = GD.Get("variant_type_unsafe_free")
-		gd_callable_create = GD.Get("callable_create")
-		gd_callable_lookup = GD.Get("callable_lookup")
 		gd_classdb_FileAccess_write = GD.Get("classdb_FileAccess_write")
 		gd_classdb_FileAccess_read = GD.Get("classdb_FileAccess_read")
 		gd_classdb_Image_unsafe = GD.Get("classdb_Image_unsafe")
@@ -244,21 +225,6 @@ func init() {
 		gd_library_location = GD.Get("library_location")
 		gd_log_error = GD.Get("log_error")
 		gd_log_warning = GD.Get("log_warning")
-		gd_memory_malloc = GD.Get("memory_malloc")
-		gd_memory_sizeof = GD.Get("memory_sizeof")
-		gd_memory_resize = GD.Get("memory_resize")
-		gd_memory_clear = GD.Get("memory_clear")
-		gd_memory_free = GD.Get("memory_free")
-		gd_memory_edit_byte = GD.Get("memory_edit_byte")
-		gd_memory_edit_u16 = GD.Get("memory_edit_u16")
-		gd_memory_edit_u32 = GD.Get("memory_edit_u32")
-		gd_memory_edit_u64 = GD.Get("memory_edit_u64")
-		gd_memory_edit_128 = GD.Get("memory_edit_128")
-		gd_memory_edit_256 = GD.Get("memory_edit_256")
-		gd_memory_edit_512 = GD.Get("memory_edit_512")
-		gd_memory_load_byte = GD.Get("memory_load_byte")
-		gd_memory_load_u16 = GD.Get("memory_load_u16")
-		gd_memory_load_u32 = GD.Get("memory_load_u32")
 		gd_object_make = GD.Get("object_make")
 		gd_object_call = GD.Get("object_call")
 		gd_object_name = GD.Get("object_name")
@@ -465,18 +431,6 @@ func init() {
 		setup()
 		mem2 := gdmemory.CopyArguments(shape, p2)
 		gd_variant_type_unsafe_free.Invoke(uint32(p0), uint32(shape>>32), uint32(shape&0xFFFFFFFF), uint32(mem2))
-		return
-	}
-	gdextension.Host.Callables.Create = func(p0 gdextension.FunctionID, p1 gdextension.ObjectID, p2 gdextension.CallReturns[gdextension.Callable]) {
-		setup()
-		mem2 := gdmemory.MakeResult(gdextension.SizeCallable)
-		gd_callable_create.Invoke(uint32(p0), uint32(p1>>32), uint32(p1&0xFFFFFFFF), uint32(mem2))
-		gdmemory.LoadResult(gdextension.SizeCallable, p2, mem2)
-		return
-	}
-	gdextension.Host.Callables.Lookup = func(p0 gdextension.Callable) (result gdextension.FunctionID) {
-		setup()
-		result = gdextension.FunctionID(gd_callable_lookup.Invoke(uint32(p0[0]>>32), uint32(p0[0]&0xFFFFFFFF), uint32(p0[1]>>32), uint32(p0[1]&0xFFFFFFFF)).Int())
 		return
 	}
 	gdextension.Host.ClassDB.FileAccess.Write = func(p0 gdextension.Object, p1 []byte) {
@@ -693,81 +647,6 @@ func init() {
 	gdextension.Host.Log.Warning = func(p0 string, p1 string, p2 string, p3 string, p4 int32, p5 bool) {
 		setup()
 		gd_log_warning.Invoke(string(p0), len(p0), string(p1), len(p1), string(p2), len(p2), string(p3), len(p3), int32(p4), p5)
-		return
-	}
-	gdextension.Host.Memory.Malloc = func(p0 int) (result gdextension.Pointer) {
-		setup()
-		result = gdextension.Pointer(gd_memory_malloc.Invoke(p0).Int())
-		return
-	}
-	gdextension.Host.Memory.Sizeof = func(p0 gdextension.StringName) (result int) {
-		setup()
-		result = int(gd_memory_sizeof.Invoke(uint32(p0[0])).Int())
-		return
-	}
-	gdextension.Host.Memory.Resize = func(p0 gdextension.Pointer, p1 int) (result gdextension.Pointer) {
-		setup()
-		result = gdextension.Pointer(gd_memory_resize.Invoke(uint32(p0), p1).Int())
-		return
-	}
-	gdextension.Host.Memory.Clear = func(p0 gdextension.Pointer, p1 int) {
-		setup()
-		gd_memory_clear.Invoke(uint32(p0), p1)
-		return
-	}
-	gdextension.Host.Memory.Free = func(p0 gdextension.Pointer) {
-		setup()
-		gd_memory_free.Invoke(uint32(p0))
-		return
-	}
-	gdextension.Host.Memory.Edit.Byte = func(p0 gdextension.Pointer, p1 uint8) {
-		setup()
-		gd_memory_edit_byte.Invoke(uint32(p0), p1)
-		return
-	}
-	gdextension.Host.Memory.Edit.Uint16 = func(p0 gdextension.Pointer, p1 uint16) {
-		setup()
-		gd_memory_edit_u16.Invoke(uint32(p0), p1)
-		return
-	}
-	gdextension.Host.Memory.Edit.Uint32 = func(p0 gdextension.Pointer, p1 uint32) {
-		setup()
-		gd_memory_edit_u32.Invoke(uint32(p0), uint32(p1))
-		return
-	}
-	gdextension.Host.Memory.Edit.Uint64 = func(p0 gdextension.Pointer, p1 uint64) {
-		setup()
-		gd_memory_edit_u64.Invoke(uint32(p0), uint32(p1>>32), uint32(p1&0xFFFFFFFF))
-		return
-	}
-	gdextension.Host.Memory.Edit.Bits128 = func(p0 gdextension.Pointer, p1 [2]uint64) {
-		setup()
-		gd_memory_edit_128.Invoke(uint32(p0), uint32(p1[0]>>32), uint32(p1[0]&0xFFFFFFFF), uint32(p1[1]>>32), uint32(p1[1]&0xFFFFFFFF))
-		return
-	}
-	gdextension.Host.Memory.Edit.Bits256 = func(p0 gdextension.Pointer, p1 [4]uint64) {
-		setup()
-		gd_memory_edit_256.Invoke(uint32(p0), uint32(p1[0]>>32), uint32(p1[0]&0xFFFFFFFF), uint32(p1[1]>>32), uint32(p1[1]&0xFFFFFFFF), uint32(p1[2]>>32), uint32(p1[2]&0xFFFFFFFF), uint32(p1[3]>>32), uint32(p1[3]&0xFFFFFFFF))
-		return
-	}
-	gdextension.Host.Memory.Edit.Bits512 = func(p0 gdextension.Pointer, p1 [8]uint64) {
-		setup()
-		gd_memory_edit_512.Invoke(uint32(p0), uint32(p1[0]>>32), uint32(p1[0]&0xFFFFFFFF), uint32(p1[1]>>32), uint32(p1[1]&0xFFFFFFFF), uint32(p1[2]>>32), uint32(p1[2]&0xFFFFFFFF), uint32(p1[3]>>32), uint32(p1[3]&0xFFFFFFFF), uint32(p1[4]>>32), uint32(p1[4]&0xFFFFFFFF), uint32(p1[5]>>32), uint32(p1[5]&0xFFFFFFFF), uint32(p1[6]>>32), uint32(p1[6]&0xFFFFFFFF), uint32(p1[7]>>32), uint32(p1[7]&0xFFFFFFFF))
-		return
-	}
-	gdextension.Host.Memory.Load.Byte = func(p0 gdextension.Pointer) (result uint8) {
-		setup()
-		result = uint8(gd_memory_load_byte.Invoke(uint32(p0)).Int())
-		return
-	}
-	gdextension.Host.Memory.Load.Uint16 = func(p0 gdextension.Pointer) (result uint16) {
-		setup()
-		result = uint16(gd_memory_load_u16.Invoke(uint32(p0)).Int())
-		return
-	}
-	gdextension.Host.Memory.Load.Uint32 = func(p0 gdextension.Pointer) (result uint32) {
-		setup()
-		result = uint32(gd_memory_load_u32.Invoke(uint32(p0)).Int())
 		return
 	}
 	gdextension.Host.Objects.Make = func(p0 gdextension.StringName) (result gdextension.Object) {

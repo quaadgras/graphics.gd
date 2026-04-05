@@ -6,8 +6,9 @@ import (
 	"hash/maphash"
 	"reflect"
 
+	gdunsafe "graphics.gd"
+
 	"graphics.gd/internal/gdextension"
-	"graphics.gd/internal/gdmemory"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/internal/threadsafe"
 	VariantPkg "graphics.gd/variant"
@@ -26,107 +27,97 @@ type comparableCallable struct {
 	id any // comparable
 }
 
-func init() {
-	gdextension.On.Callables = gdextension.CallbacksForCallables{
-		Call: func(fn gdextension.FunctionID, result gdextension.Returns[gdextension.Variant], arg_count int, args gdextension.Accepts[gdextension.Variant], call_error gdextension.Returns[gdextension.CallError]) {
-			defer Recover()
-			callable := callables.Get(fn)
-			switch cb := callable.fn.(type) {
-			case func():
-				cb()
-				gdmemory.Set(gdextension.Pointer(result), gdextension.Variant{})
-				gdmemory.Set(gdextension.Pointer(call_error), gdextension.CallError{})
-				return
-			}
-			vargs := make([]reflect.Value, min(arg_count, 16))
-			rtype := reflect.TypeOf(callable.fn)
-			for i := range arg_count {
-				var to_type reflect.Type
-				if rtype.IsVariadic() && i >= rtype.NumIn()-1 {
-					to_type = rtype.In(rtype.NumIn() - 1).Elem()
-				} else {
-					if i >= rtype.NumIn() {
-						gdmemory.Set(gdextension.Pointer(call_error), gdextension.CallError{
-							Type:     gdextension.CallTooManyArguments,
-							Expected: int32(rtype.NumIn()),
-						})
-						return
-					}
-					to_type = rtype.In(i)
-				}
-				var err error
-				vargs[i], err = ConvertToDesiredGoType(pointers.Let[Variant](gdmemory.IndexVariants(args, arg_count, i)), to_type)
-				if err != nil {
-					vtype, _ := VariantTypeOf(rtype.In(i))
-					gdmemory.Set(gdextension.Pointer(call_error), gdextension.CallError{
-						Type:     gdextension.CallInvalidArguments,
-						Argument: int32(i),
-						Expected: int32(vtype),
-					})
-					return
-				}
-			}
-			if len(vargs) < rtype.NumIn() && (!rtype.IsVariadic() && len(vargs) == rtype.NumIn()-1) {
-				gdmemory.Set(gdextension.Pointer(call_error), gdextension.CallError{
-					Type:     gdextension.CallTooFewArguments,
-					Expected: int32(rtype.NumIn()),
-				})
-				return
-			}
-			results := reflect.ValueOf(callable.fn).Call(vargs)
-			if len(results) > 0 {
-				raw, _ := pointers.End(CutVariant(results[0].Interface(), true))
-				gdmemory.Set(gdextension.Pointer(result), raw)
-			}
-			gdmemory.Set(gdextension.Pointer(call_error), gdextension.CallError{})
-		},
-		Hash: func(fn gdextension.FunctionID) uint32 {
-			return uint32(maphash.Comparable(callables_hash, callables.Get(fn).id))
-		},
-		Stringify: func(fn gdextension.FunctionID, err gdextension.Returns[gdextension.CallError]) gdextension.String {
-			s := NewString(reflect.ValueOf(callables.Get(fn).fn).String())
-			raw, _ := pointers.End(s)
-			return raw
-		},
-		ArgumentCount: func(fn gdextension.FunctionID, err gdextension.Returns[gdextension.CallError]) int {
-			return reflect.ValueOf(callables.Get(fn)).Type().NumIn()
-		},
-		Validation: func(fn gdextension.FunctionID) bool {
-			return callables.Get(fn).fn != nil
-		},
-		Compare: func(fn, other gdextension.FunctionID) bool {
-			if cgoHandle(fn) == cgoHandle(other) {
-				return true
-			}
-			a := callables.Get(fn).id
-			b := callables.Get(other).id
-			if a != nil && b != nil {
-				return a == b
-			}
-			return false
-		},
-		LessThan: func(fn, other gdextension.FunctionID) bool {
-			return gdextension.On.Callables.Hash(fn) < gdextension.On.Callables.Hash(other)
-		},
-		Free: func(fn gdextension.FunctionID) {
-			callables.Del(fn)
-		},
+func (c comparableCallable) Call(args gdunsafe.VariadicVariants) (gdunsafe.Variant, gdunsafe.CallError) {
+	defer Recover()
+	switch cb := c.fn.(type) {
+	case func():
+		cb()
+		return gdunsafe.Variant{}, gdunsafe.CallError{}
+	case func() int:
+		raw, _ := pointers.End(CutVariant(cb(), true))
+		return raw, gdunsafe.CallError{}
 	}
+	vargs := make([]reflect.Value, min(args.Count, 16))
+	rtype := reflect.TypeOf(c.fn)
+	for i := range args.Count {
+		var to_type reflect.Type
+		if rtype.IsVariadic() && i >= rtype.NumIn()-1 {
+			to_type = rtype.In(rtype.NumIn() - 1).Elem()
+		} else {
+			if i >= rtype.NumIn() {
+				return gdunsafe.Variant{}, gdunsafe.CallError{
+					Type:     gdextension.CallTooManyArguments,
+					Expected: int32(rtype.NumIn()),
+				}
+			}
+			to_type = rtype.In(i)
+		}
+		var err error
+		vargs[i], err = ConvertToDesiredGoType(pointers.Let[Variant](args.Index(i)), to_type)
+		if err != nil {
+			vtype, _ := VariantTypeOf(rtype.In(i))
+			return gdunsafe.Variant{}, gdunsafe.CallError{
+				Type:     gdextension.CallInvalidArguments,
+				Argument: int32(i),
+				Expected: int32(vtype),
+			}
+		}
+	}
+	if len(vargs) < rtype.NumIn() && (!rtype.IsVariadic() && len(vargs) == rtype.NumIn()-1) {
+		return gdunsafe.Variant{}, gdunsafe.CallError{
+			Type:     gdextension.CallTooFewArguments,
+			Expected: int32(rtype.NumIn()),
+		}
+	}
+	results := reflect.ValueOf(c.fn).Call(vargs)
+	if len(results) > 0 {
+		raw, _ := pointers.End(CutVariant(results[0].Interface(), true))
+		return raw, gdunsafe.CallError{}
+	}
+	return gdunsafe.Variant{}, gdunsafe.CallError{}
+}
+
+func (c comparableCallable) IsValid() bool {
+	return c.fn != nil
+}
+
+func (c comparableCallable) Hash() uint32 {
+	return uint32(maphash.Comparable(callables_hash, c.id))
+}
+
+func (c comparableCallable) UnsafeString() gdunsafe.String {
+	s := NewString(reflect.ValueOf(c.fn).String())
+	raw, _ := pointers.End(s)
+	return gdunsafe.String(raw[0])
+}
+
+func (c comparableCallable) NumIn() int {
+	return reflect.TypeOf(c.fn).NumIn()
+}
+
+func (c comparableCallable) Compare(other gdunsafe.CallableImplementation) int {
+	if o, ok := other.(comparableCallable); ok {
+		if c.id != nil && o.id != nil && c.id == o.id {
+			return 0
+		}
+	}
+	if c.Hash() < other.Hash() {
+		return -1
+	}
+	return 1
 }
 
 // NewCallable creates a new callable out of the given function which must only accept
 // godot-compatible types and return up to one godot-compatible type.
 func NewCallable(fn any) Callable {
-	var result gdextension.Callable
-	gdextension.Host.Callables.Create(callables.New(comparableCallable{fn: fn}), 0, gdextension.CallReturns[gdextension.Callable](&result))
+	var result = gdextension.Callable(gdunsafe.MakeCallable(comparableCallable{fn: fn}, 0))
 	return pointers.New[Callable](result)
 }
 
 // NewComparableCallable creates a new comparable callable from the given function which must only accept
 // godot-compatible types and return up to one godot-compatible type.
 func NewComparableCallable[T comparable](fn any, id T) Callable {
-	var result gdextension.Callable
-	gdextension.Host.Callables.Create(callables.New(comparableCallable{fn: fn, id: id}), 0, gdextension.CallReturns[gdextension.Callable](&result))
+	var result = gdextension.Callable(gdunsafe.MakeCallable(comparableCallable{fn: fn, id: id}, 0))
 	return pointers.New[Callable](result)
 }
 

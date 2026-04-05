@@ -77,7 +77,7 @@ func TestNativeStructSize(t *testing.T) {
 			"PhysicsServer3DExtensionMotionCollision": unsafe.Sizeof(gd.PhysicsServer3DExtensionMotionCollision{}),
 			"PhysicsServer3DExtensionMotionResult":    unsafe.Sizeof(gd.PhysicsServer3DExtensionMotionResult{}),
 		} {
-			if size := gdextension.Host.Memory.Sizeof(pointers.Get(gd.NewStringName(name))); uintptr(size) != expectation {
+			if size := gdunsafe.Sizeof(gdunsafe.StringName(pointers.Get(gd.NewStringName(name))[0])); uintptr(size) != expectation {
 				t.Fatalf("Our size of %v is %v, but Godot's is %v", name, expectation, size)
 			}
 		}

@@ -5,10 +5,11 @@ package gdmemory
 import (
 	"unsafe"
 
+	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdextension"
 )
 
-func Get[T gdextension.AnyVariant | gdextension.CallError](frame gdextension.Pointer) T {
+func Get[T gdextension.AnyVariant | gdextension.CallError | gdextension.Pointer](frame gdextension.Pointer) T {
 	if frame == 0 {
 		panic("nil pointer dereference")
 	}
@@ -19,17 +20,17 @@ func Get[T gdextension.AnyVariant | gdextension.CallError](frame gdextension.Poi
 	for size > 0 {
 		switch {
 		case size >= 4:
-			*(*uint32)(unsafe.Add(unsafe.Pointer(&zero), done)) = gdextension.Host.Memory.Load.Uint32(addr)
+			*(*uint32)(unsafe.Add(unsafe.Pointer(&zero), done)) = gdunsafe.Pointer(addr).Uint32()
 			addr += 4
 			done += 4
 			size -= 4
 		case size >= 2:
-			*(*uint16)(unsafe.Add(unsafe.Pointer(&zero), done)) = gdextension.Host.Memory.Load.Uint16(addr)
+			*(*uint16)(unsafe.Add(unsafe.Pointer(&zero), done)) = gdunsafe.Pointer(addr).Uint16()
 			addr += 2
 			done += 2
 			size -= 2
 		case size >= 1:
-			*(*uint8)(unsafe.Add(unsafe.Pointer(&zero), done)) = gdextension.Host.Memory.Load.Byte(addr)
+			*(*uint8)(unsafe.Add(unsafe.Pointer(&zero), done)) = gdunsafe.Pointer(addr).Byte()
 			addr += 1
 			done += 1
 			size -= 1
@@ -48,22 +49,22 @@ func Set[T gdextension.AnyVariant | gdextension.CallError](frame gdextension.Poi
 	for size > 0 {
 		switch {
 		case size >= 8:
-			gdextension.Host.Memory.Edit.Uint64(addr, *(*uint64)(unsafe.Add(unsafe.Pointer(&value), done)))
+			gdunsafe.Pointer(addr).SetUint64(*(*uint64)(unsafe.Add(unsafe.Pointer(&value), done)))
 			addr += 8
 			done += 8
 			size -= 8
 		case size >= 4:
-			gdextension.Host.Memory.Edit.Uint32(addr, *(*uint32)(unsafe.Add(unsafe.Pointer(&value), done)))
+			gdunsafe.Pointer(addr).SetUint32(*(*uint32)(unsafe.Add(unsafe.Pointer(&value), done)))
 			addr += 4
 			done += 4
 			size -= 4
 		case size >= 2:
-			gdextension.Host.Memory.Edit.Uint16(addr, *(*uint16)(unsafe.Add(unsafe.Pointer(&value), done)))
+			gdunsafe.Pointer(addr).SetUint16(*(*uint16)(unsafe.Add(unsafe.Pointer(&value), done)))
 			addr += 2
 			done += 2
 			size -= 2
 		case size >= 1:
-			gdextension.Host.Memory.Edit.Byte(addr, *(*uint8)(unsafe.Add(unsafe.Pointer(&value), done)))
+			gdunsafe.Pointer(addr).SetByte(*(*uint8)(unsafe.Add(unsafe.Pointer(&value), done)))
 			addr += 1
 			done += 1
 			size -= 1
@@ -94,19 +95,19 @@ func LoadSlice[T gdextension.Packable](ptr gdextension.Pointer, slice []T) {
 	for len(buf) > 0 {
 		switch {
 		case len(buf) >= 8:
-			gdextension.Host.Memory.Edit.Uint64(ptr+off, *(*uint64)(unsafe.Pointer(&buf[0])))
+			gdunsafe.Pointer(ptr + off).SetUint64(*(*uint64)(unsafe.Pointer(&buf[0])))
 			buf = buf[8:]
 			off += 8
 		case len(buf) >= 4:
-			gdextension.Host.Memory.Edit.Uint32(ptr+off, *(*uint32)(unsafe.Pointer(&buf[0])))
+			gdunsafe.Pointer(ptr + off).SetUint32(*(*uint32)(unsafe.Pointer(&buf[0])))
 			buf = buf[4:]
 			off += 4
 		case len(buf) >= 2:
-			gdextension.Host.Memory.Edit.Uint16(ptr+off, *(*uint16)(unsafe.Pointer(&buf[0])))
+			gdunsafe.Pointer(ptr + off).SetUint16(*(*uint16)(unsafe.Pointer(&buf[0])))
 			buf = buf[2:]
 			off += 2
 		case len(buf) >= 1:
-			gdextension.Host.Memory.Edit.Byte(ptr+off, *(*uint8)(unsafe.Pointer(&buf[0])))
+			gdunsafe.Pointer(ptr + off).SetByte(*(*uint8)(unsafe.Pointer(&buf[0])))
 			buf = buf[1:]
 			off += 1
 		}

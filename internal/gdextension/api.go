@@ -40,7 +40,7 @@ type API struct {
 	Library struct {
 		Location func() String `gd:"library_location"`
 	}
-	Memory struct {
+	/*Memory struct {
 		Malloc func(size int) Pointer               `gd:"memory_malloc"`
 		Sizeof func(name StringName) int            `gd:"memory_sizeof"`
 		Resize func(addr Pointer, size int) Pointer `gd:"memory_resize"`
@@ -62,7 +62,7 @@ type API struct {
 			Bits512 func(addr Pointer, value [8]uint64) `gd:"memory_edit_512"`
 		}
 		Free func(addr Pointer) `gd:"memory_free"`
-	}
+	}*/
 	Threads struct {
 		Main func() bool `gd:"thread_is_main"`
 	}
@@ -229,10 +229,10 @@ type API struct {
 		Get func(dict Dictionary, index Variant, result CallReturns[Variant]) `gd:"packed_dictionary_access"`
 		Set func(dict Dictionary, index, value Variant)                       `gd:"packed_dictionary_modify"`
 	}
-	Callables struct {
+	/*Callables struct {
 		Create func(id FunctionID, object ObjectID, result CallReturns[Callable]) `gd:"callable_create"`
 		Lookup func(Callable) FunctionID                                          `gd:"callable_lookup"`
-	}
+	}*/
 	Objects struct {
 		Make func(name StringName) Object                                                                                                               `gd:"object_make"`
 		Call func(obj Object, method MethodForClass, result CallReturns[Variant], arg_count int, args CallAccepts[Variant], err CallReturns[CallError]) `gd:"object_call"`
