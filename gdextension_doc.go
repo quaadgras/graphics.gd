@@ -1,5 +1,6 @@
 //go:build !cgo && !wasm
 
+// Package gdunsafe provides direct 'unsafe' access to the graphics/game development engine's extension API.
 package gdunsafe
 
 import (
@@ -35,8 +36,8 @@ type (
 )
 
 type (
-	Callable       [2]uint64
-	CallableID     uintptr
+	Callable        [2]uint64
+	CallableID      uintptr
 	VariantOperator = uint32
 )
 
@@ -60,7 +61,7 @@ func VersionHex() uint32       { panic(unavailable) }
 func VersionStatus() String    { panic(unavailable) }
 func VersionBuild() String     { panic(unavailable) }
 func VersionHash() String      { panic(unavailable) }
-func VersionTimestamp() uint64  { panic(unavailable) }
+func VersionTimestamp() uint64 { panic(unavailable) }
 func VersionString() String    { panic(unavailable) }
 func LibraryLocation() String  { panic(unavailable) }
 
@@ -73,26 +74,26 @@ func Clear(ptr Pointer, size Int)          { panic(unavailable) }
 
 // Pointer operations
 
-func (ptr Pointer) Byte() byte        { panic(unavailable) }
-func (ptr Pointer) Uint16() uint16    { panic(unavailable) }
-func (ptr Pointer) Uint32() uint32    { panic(unavailable) }
-func (ptr Pointer) Uint64() uint64    { panic(unavailable) }
-func (ptr Pointer) SetByte(v byte)    { panic(unavailable) }
-func (ptr Pointer) SetUint16(v uint16) { panic(unavailable) }
-func (ptr Pointer) SetUint32(v uint32) { panic(unavailable) }
-func (ptr Pointer) SetUint64(v uint64) { panic(unavailable) }
+func (ptr Pointer) Byte() byte               { panic(unavailable) }
+func (ptr Pointer) Uint16() uint16           { panic(unavailable) }
+func (ptr Pointer) Uint32() uint32           { panic(unavailable) }
+func (ptr Pointer) Uint64() uint64           { panic(unavailable) }
+func (ptr Pointer) SetByte(v byte)           { panic(unavailable) }
+func (ptr Pointer) SetUint16(v uint16)       { panic(unavailable) }
+func (ptr Pointer) SetUint32(v uint32)       { panic(unavailable) }
+func (ptr Pointer) SetUint64(v uint64)       { panic(unavailable) }
 func (ptr Pointer) SetBits128(val [2]uint64) { panic(unavailable) }
 func (ptr Pointer) SetBits256(val [4]uint64) { panic(unavailable) }
 func (ptr Pointer) SetBits512(val [8]uint64) { panic(unavailable) }
-func (ptr Pointer) Free()             { panic(unavailable) }
+func (ptr Pointer) Free()                    { panic(unavailable) }
 
 // String operations
 
-func (s String) Access(idx Int) int32      { panic(unavailable) }
-func (s String) Resize(size Int) String    { panic(unavailable) }
-func (s String) UnsafePtr() Pointer        { panic(unavailable) }
-func (s String) Append(other String) String { panic(unavailable) }
-func (s String) AppendRune(ch int32) String { panic(unavailable) }
+func (s String) Access(idx Int) int32                      { panic(unavailable) }
+func (s String) Resize(size Int) String                    { panic(unavailable) }
+func (s String) UnsafePtr() Pointer                        { panic(unavailable) }
+func (s String) Append(other String) String                { panic(unavailable) }
+func (s String) AppendRune(ch int32) String                { panic(unavailable) }
 func (s String) Encode(enc StringEncoding, buf []byte) Int { panic(unavailable) }
 func (enc StringEncoding) String(s string) String          { panic(unavailable) }
 func (enc StringEncoding) Intern(s string) StringName      { panic(unavailable) }
@@ -105,17 +106,19 @@ func Log(level LogLevel, text, code, fn, file string, line int32, notify_editor 
 
 // PackedArray operations
 
-func (ptr PointerTo[T]) Get() T  { panic(unavailable) }
-func (ptr PointerTo[T]) Set(v T) { panic(unavailable) }
+func (ptr PointerTo[T]) Get() T                      { panic(unavailable) }
+func (ptr PointerTo[T]) Set(v T)                     { panic(unavailable) }
 func (p PackedArray[T]) Access(idx Int) PointerTo[T] { panic(unavailable) }
 func (p PackedArray[T]) Modify(idx Int) PointerTo[T] { panic(unavailable) }
 
 // VariantType operations
 
-func (t VariantType) Name() String                                          { panic(unavailable) }
-func (t VariantType) Make(args ...Variant) (Variant, CallError)             { panic(unavailable) }
-func (t VariantType) StaticCall(method StringName, args ...Variant) (Variant, CallError) { panic(unavailable) }
-func (t VariantType) Convertable(to VariantType, strict bool) bool          { panic(unavailable) }
+func (t VariantType) Name() String                              { panic(unavailable) }
+func (t VariantType) Make(args ...Variant) (Variant, CallError) { panic(unavailable) }
+func (t VariantType) StaticCall(method StringName, args ...Variant) (Variant, CallError) {
+	panic(unavailable)
+}
+func (t VariantType) Convertable(to VariantType, strict bool) bool { panic(unavailable) }
 
 // Builtin and utility functions
 
@@ -135,12 +138,14 @@ func VariantTypeSetupDictionary(dict Dictionary, keyType VariantType, keyClassNa
 func VariantTypeFetchConstant(vtype VariantType, constant StringName, result unsafe.Pointer) {
 	panic(unavailable)
 }
-func VariantTypeConstructor(vtype VariantType, n Int) FunctionID              { panic(unavailable) }
-func VariantTypeEvaluator(op VariantOperator, a, b VariantType) FunctionID    { panic(unavailable) }
-func VariantTypeSetter(vtype VariantType, property StringName) FunctionID     { panic(unavailable) }
-func VariantTypeGetter(vtype VariantType, property StringName) FunctionID     { panic(unavailable) }
-func VariantTypeHasProperty(vtype VariantType, property StringName) bool      { panic(unavailable) }
-func VariantTypeMethod(vtype VariantType, method StringName, hash int64) FunctionID { panic(unavailable) }
+func VariantTypeConstructor(vtype VariantType, n Int) FunctionID           { panic(unavailable) }
+func VariantTypeEvaluator(op VariantOperator, a, b VariantType) FunctionID { panic(unavailable) }
+func VariantTypeSetter(vtype VariantType, property StringName) FunctionID  { panic(unavailable) }
+func VariantTypeGetter(vtype VariantType, property StringName) FunctionID  { panic(unavailable) }
+func VariantTypeHasProperty(vtype VariantType, property StringName) bool   { panic(unavailable) }
+func VariantTypeMethod(vtype VariantType, method StringName, hash int64) FunctionID {
+	panic(unavailable)
+}
 
 // Variant type unsafe operations
 
@@ -160,15 +165,15 @@ func MakeCallable(impl CallableImplementation, obj ObjectID) Callable { panic(un
 
 // Object operations
 
-func MakeObject(name StringName) Object         { panic(unavailable) }
-func (obj Object) Name() StringName             { panic(unavailable) }
-func ObjectTypeTag(name StringName) ObjectType   { panic(unavailable) }
-func (obj Object) Cast(to ObjectType) Object    { panic(unavailable) }
-func (id ObjectID) Lookup() Object              { panic(unavailable) }
-func ObjectGlobal(name StringName) Object        { panic(unavailable) }
-func (obj Object) ID() ObjectID                 { panic(unavailable) }
-func ObjectIDInsideVariant(v Variant) ObjectID   { panic(unavailable) }
-func (obj Object) Free()                        { panic(unavailable) }
+func MakeObject(name StringName) Object        { panic(unavailable) }
+func (obj Object) Name() StringName            { panic(unavailable) }
+func ObjectTypeTag(name StringName) ObjectType { panic(unavailable) }
+func (obj Object) Cast(to ObjectType) Object   { panic(unavailable) }
+func (id ObjectID) Lookup() Object             { panic(unavailable) }
+func ObjectGlobal(name StringName) Object      { panic(unavailable) }
+func (obj Object) ID() ObjectID                { panic(unavailable) }
+func ObjectIDInsideVariant(v Variant) ObjectID { panic(unavailable) }
+func (obj Object) Free()                       { panic(unavailable) }
 
 // Object method calls
 
@@ -183,8 +188,8 @@ func (obj Object) ShapedCall(fn MethodForClass, result unsafe.Pointer, shape uin
 // Extension instance management
 
 func (obj Object) ExtensionSetup(name StringName, inst ExtensionInstanceID) { panic(unavailable) }
-func (obj Object) ExtensionFetch() ExtensionInstanceID                     { panic(unavailable) }
-func (obj Object) ExtensionClose()                                         { panic(unavailable) }
+func (obj Object) ExtensionFetch() ExtensionInstanceID                      { panic(unavailable) }
+func (obj Object) ExtensionClose()                                          { panic(unavailable) }
 
 // Script instance management
 
@@ -205,8 +210,8 @@ func ScriptPlaceholderUpdate(script ScriptInstance, array Array, dict Dictionary
 
 // Variant operations
 
-func ZeroVariant() Variant                                        { panic(unavailable) }
-func (v Variant) Copy() Variant                                   { panic(unavailable) }
+func ZeroVariant() Variant      { panic(unavailable) }
+func (v Variant) Copy() Variant { panic(unavailable) }
 func (v Variant) VariantCall(method StringName, args ...Variant) (Variant, CallError) {
 	panic(unavailable)
 }
@@ -220,14 +225,14 @@ func (v Variant) DeepHash(recursion Int) Int                       { panic(unava
 
 // Variant get/set/has
 
-func (v Variant) GetIndex(key Variant) (Variant, bool)             { panic(unavailable) }
-func (v Variant) GetArray(idx Int) (Variant, bool, CallError)      { panic(unavailable) }
-func (v Variant) GetField(field StringName) (Variant, bool)        { panic(unavailable) }
-func (v Variant) SetIndex(key, val Variant) bool                   { panic(unavailable) }
+func (v Variant) GetIndex(key Variant) (Variant, bool)                   { panic(unavailable) }
+func (v Variant) GetArray(idx Int) (Variant, bool, CallError)            { panic(unavailable) }
+func (v Variant) GetField(field StringName) (Variant, bool)              { panic(unavailable) }
+func (v Variant) SetIndex(key, val Variant) bool                         { panic(unavailable) }
 func (v Variant) SetArray(idx Int, val Variant, err unsafe.Pointer) bool { panic(unavailable) }
-func (v Variant) SetField(field StringName, value Variant) bool    { panic(unavailable) }
-func (v Variant) HasIndex(index Variant) bool                      { panic(unavailable) }
-func (v Variant) HasMethod(method StringName) bool                 { panic(unavailable) }
+func (v Variant) SetField(field StringName, value Variant) bool          { panic(unavailable) }
+func (v Variant) HasIndex(index Variant) bool                            { panic(unavailable) }
+func (v Variant) HasMethod(method StringName) bool                       { panic(unavailable) }
 
 // Unsafe variant operations
 
@@ -271,8 +276,8 @@ func (d Dictionary) Modify(key, val Variant)    { panic(unavailable) }
 
 // RefCounted operations
 
-func RefGet(ref Pointer) Object       { panic(unavailable) }
-func RefSet(ref Pointer, obj Object)  { panic(unavailable) }
+func RefGet(ref Pointer) Object      { panic(unavailable) }
+func RefSet(ref Pointer, obj Object) { panic(unavailable) }
 
 // Editor operations
 
@@ -286,13 +291,13 @@ func MakePropertyList(n Int) PropertyList { panic(unavailable) }
 func (p PropertyList) Push(vtype VariantType, name StringName, className StringName, hint uint32, hintString String, usage uint32, meta uint32) {
 	panic(unavailable)
 }
-func (p PropertyList) Free()                  { panic(unavailable) }
-func (p PropertyList) InfoType() VariantType  { panic(unavailable) }
-func (p PropertyList) InfoName() StringName   { panic(unavailable) }
+func (p PropertyList) Free()                     { panic(unavailable) }
+func (p PropertyList) InfoType() VariantType     { panic(unavailable) }
+func (p PropertyList) InfoName() StringName      { panic(unavailable) }
 func (p PropertyList) InfoClassName() StringName { panic(unavailable) }
-func (p PropertyList) InfoHint() uint32       { panic(unavailable) }
-func (p PropertyList) InfoHintString() String { panic(unavailable) }
-func (p PropertyList) InfoUsage() uint32      { panic(unavailable) }
+func (p PropertyList) InfoHint() uint32          { panic(unavailable) }
+func (p PropertyList) InfoHintString() String    { panic(unavailable) }
+func (p PropertyList) InfoUsage() uint32         { panic(unavailable) }
 
 // MethodList operations
 
@@ -304,11 +309,11 @@ func (m MethodList) Free() { panic(unavailable) }
 
 // ClassDB sub-API operations
 
-func FileAccessWrite(file Object, buf []byte)       { panic(unavailable) }
-func FileAccessRead(file Object, buf []byte) int     { panic(unavailable) }
-func ImageUnsafe(img Object) Pointer                 { panic(unavailable) }
-func ImageAccess(img Object, offset Int) byte        { panic(unavailable) }
-func XMLParserLoad(parser Object, buf []byte) int    { panic(unavailable) }
+func FileAccessWrite(file Object, buf []byte)     { panic(unavailable) }
+func FileAccessRead(file Object, buf []byte) int  { panic(unavailable) }
+func ImageUnsafe(img Object) Pointer              { panic(unavailable) }
+func ImageAccess(img Object, offset Int) byte     { panic(unavailable) }
+func XMLParserLoad(parser Object, buf []byte) int { panic(unavailable) }
 func WorkerThreadPoolAddTask(pool Object, task Pointer, priority bool, description String) {
 	panic(unavailable)
 }

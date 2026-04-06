@@ -17,6 +17,7 @@ import (
 	"graphics.gd/variant/Vector4"
 )
 
+type RID uint64
 type Int = int64
 type Variant [3]uint64
 type CallError struct {
@@ -36,56 +37,41 @@ type VariadicVariants struct {
 	Count int
 }
 
-var callables threadsafe.Handles[CallableImplementation, CallableID]
+var callables threadsafe.Handles[ExtensionCallable, CallableID]
 
-type CallableImplementation interface {
+// ExtensionCallable can be implemented to provide an extension-implemented
+// [Callable] to the engine.
+type ExtensionCallable interface {
 
-	// Call is called whenever the [Callable] is called. It's given
-	// a variadic list of arguments and the implementation returns a [Variant]. If the
+	// Call is called whenever the [Callable] is called. It's given a variadic
+	// list of variants and the implementation returns a [Variant]. If the
 	// arguments aren't compatible, return a non-zero error.
 	Call(VariadicVariants) (Variant, CallError)
 
-	// IsValid is called to verify that the [Callable] is valid. It should return true
+	// IsValid is called to verify that the [Callable] is valid. Return true
 	// if the callable is in a valid state (and callable), otherwise false.
 	IsValid() bool
 
-	// Hash is called to hash the [Callable]. Identical underlying implementations of a
-	// callable should always return the same value.
+	// Hash is called to hash the [Callable]. Identical underlying
+	// implementations of a callable should always return the same value.
 	Hash() uint32
 
-	// UnsafeString is called when the [Callable] is being converted by the engine into a string.
-	// It should return a useful string representation of the callable, or an error.
+	// UnsafeString is called when the [Callable] is being converted by the
+	// engine into a string. It should string representation of the callable.
 	UnsafeString() String
 
-	// NumIn is called to determine how many arguments the [Callable] expects to
-	// receive. Return -1, if the [Callable] is able to accept an unknown number of arguments.
-	NumIn() int
+	// ArgumentCount is called to determine how many arguments the [Callable]
+	// expects to receive. Return -1, for variadic arguments.
+	ArgumentCount() int
 
-	// Compare is called to compare two different [CustomCallable] values. It should
-	// return less than zero, if a < b, zero if a = b and more than zero if a > b.
-	Compare(CallableImplementation) int
+	// Compare is called to compare two different [CustomCallable] values. Return
+	// less than zero, if a < b, zero if a = b and more than zero if a > b.
+	Compare(ExtensionCallable) int
 }
 
 func (ptr Pointer) SetInt32(v int32) {
 	ptr.SetUint32(*(*uint32)(unsafe.Pointer(&v)))
 }
-
-// just a placeholder for functions that don't need to be implemented
-// as they are already available in the Go standard library.
-
-func randomize() { //gd:randomize
-	rand.Seed(time.Now().UnixNano())
-}
-
-func seed(s int) { //gd:seed
-	rand.Seed(int64(s))
-}
-
-func rand_from_seed(seed int) *rand.Rand { //gd:rand_from_seed
-	return rand.New(rand.NewSource(int64(seed)))
-}
-
-func weakref(v any) any { return v } //gd:weakref
 
 // Shape is used to correctly transfer data for unsafe calls into the engine.
 type Shape uint64
@@ -331,3 +317,104 @@ func (p PackedArray[T]) Type() VariantType {
 		return 0
 	}
 }
+
+type ExtensionInstance interface {
+	Set(StringName, Variant) bool
+	Get(StringName) Variant
+	HasDefault(StringName) bool
+	GetDefault(StringName) Variant
+	PropertyList() PropertyList
+	ValidateProperty(StringName) bool
+	Notification(what int32, reverse bool)
+	UnsafeString() String
+	Reference(bool) bool
+	RID() RID
+	Free()
+}
+
+type ExtensionFunction interface {
+	PointerCall(ExtensionInstance, Pointer, Pointer)
+	CheckedCall(ExtensionInstance, VariadicVariants) Variant
+	DynamicCall(ExtensionInstance, VariadicVariants) (Variant, CallError)
+}
+
+type ExtensionClass interface {
+	Create(notify_postinitialize bool) Object
+	Method(name StringName, hash uint32) ExtensionFunction
+}
+
+type PropertyInfo PropertyList
+
+// ExtensionScript is an interface that can be used to implement a script
+// in the engine. Useful when creating new scripting languages.
+type ExtensionScript interface {
+	ExtensionInstance
+
+	// PropertyCategory used in editor's inspector as a heading to
+	// group script properties together.
+	PropertyCategory() StringName
+
+	// PropertyType returns the variant type for the given Property.
+	PropertyType(StringName) VariantType
+
+	// Owner should return the object that the script is attached to.
+	Owner() Object
+
+	// ExportedProperties iterator. Should call the given function
+	// for each exported property. Used when serializing the script.
+	ExportedProperties(func(StringName, Variant) bool)
+
+	// MethodList should return a [MethodList] that represents each
+	// of the script's defined methods.
+	MethodList() MethodList
+
+	// HasMethod returns true if the script has a method with the
+	// given name.
+	HasMethod(StringName) bool
+
+	// MethodArgumentCount returns the number of arguments that the
+	// given method expects. Use -1, if the method is variadic.
+	MethodArgumentCount(StringName) int
+
+	// Script returns the underlying Script object.
+	Script() Object
+
+	// IsPlaceholder returns true if the script is a placeholder script
+	// ie. the script failed to load, or the language is not available.
+	IsPlaceholder() bool
+
+	// ScriptLanguage returns the underlying ScriptLanguage object.
+	ScriptLanguage() Object
+}
+
+type InitializationLevel uint32
+
+func OnEngineInit(func(InitializationLevel)) {}
+func OnEngineExit(func(InitializationLevel)) {}
+func OnFirstFrame(func())                    {}
+func OnEveryFrame(func())                    {}
+func OnFinalFrame(func())                    {}
+
+type TaskID uintptr
+
+func OnWorkerThreadPoolTask(func(TaskID))
+func OnWorkerThreadPoolGroupTask(func(TaskID, int32))
+
+func OnEditorClassDetection(func(PackedArray[String]) PackedArray[String]) {}
+
+// just a placeholder for functions that don't need to be implemented
+// as they are already available in the Go standard library.
+
+func randomize() { //gd:randomize
+	rand.Seed(time.Now().UnixNano())
+}
+
+func seed(s int) { //gd:seed
+	rand.Seed(int64(s))
+}
+
+func rand_from_seed(seed int) *rand.Rand { //gd:rand_from_seed
+	return rand.New(rand.NewSource(int64(seed)))
+}
+
+func weakref(v any) any { return v } //gd:weakref

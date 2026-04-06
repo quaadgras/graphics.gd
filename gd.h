@@ -179,16 +179,16 @@ extern void   gd_on_extension_instance_called(ExtensionInstanceID inst, Function
 
 extern PropertyList gd_on_extension_instance_property_list(ExtensionInstanceID inst);
 
-extern bool       gd_on_extension_script_categorization(ExtensionInstanceID inst, PropertyList p1);
-extern uint32_t   gd_on_extension_script_get_property_type(ExtensionInstanceID inst, CallError* err);
-extern Object     gd_on_extension_script_get_owner(ExtensionInstanceID inst);
-extern void       gd_on_extension_script_get_property_state(ExtensionInstanceID inst, FunctionID add, uintptr_t arg);
-extern MethodList gd_on_extension_script_get_methods(ExtensionInstanceID inst);
-extern bool       gd_on_extension_script_has_method(ExtensionInstanceID inst, uintptr_t p1);
-extern Int        gd_on_extension_script_get_method_argument_count(ExtensionInstanceID inst, StringName property);
-extern Object     gd_on_extension_script_get(ExtensionInstanceID inst);
-extern bool       gd_on_extension_script_is_placeholder(ExtensionInstanceID inst);
-extern Object     gd_on_extension_script_get_language(ExtensionInstanceID inst);
+extern bool        gd_on_extension_script_categorization(ExtensionInstanceID inst, PropertyList p1);
+extern VariantType gd_on_extension_script_get_property_type(ExtensionInstanceID inst, StringName property, CallError* err);
+extern Object      gd_on_extension_script_get_owner(ExtensionInstanceID inst);
+extern void        gd_on_extension_script_get_property_state(ExtensionInstanceID inst, FunctionID op, uintptr_t arg);
+extern MethodList  gd_on_extension_script_get_methods(ExtensionInstanceID inst);
+extern bool        gd_on_extension_script_has_method(ExtensionInstanceID inst, uintptr_t p1);
+extern Int         gd_on_extension_script_get_method_argument_count(ExtensionInstanceID inst, StringName property);
+extern Object      gd_on_extension_script_get(ExtensionInstanceID inst);
+extern bool        gd_on_extension_script_is_placeholder(ExtensionInstanceID inst);
+extern Object      gd_on_extension_script_get_language(ExtensionInstanceID inst);
 
 extern void gd_on_first_frame(void);
 extern void gd_on_every_frame(void);

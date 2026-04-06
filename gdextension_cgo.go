@@ -240,7 +240,7 @@ type (
 	CallableID uintptr
 )
 
-func MakeCallable(impl CallableImplementation, obj ObjectID) Callable {
+func MakeCallable(impl ExtensionCallable, obj ObjectID) Callable {
 	var c C.Callable
 	C.gd_callable_create(C.CallableID(callables.New(impl)), C.ObjectID(obj), &c)
 	return Callable{uint64(c.opaque[0]), uint64(c.opaque[1])}
@@ -277,7 +277,9 @@ func gd_on_callable_string(c C.CallableID) C.String {
 }
 
 //export gd_on_callable_length
-func gd_on_callable_length(c CallableID) C.Int { return C.Int(callables.Get(CallableID(c)).NumIn()) }
+func gd_on_callable_length(c CallableID) C.Int {
+	return C.Int(callables.Get(CallableID(c)).ArgumentCount())
+}
 
 // Object construction and identity
 

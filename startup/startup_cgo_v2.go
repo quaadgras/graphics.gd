@@ -139,8 +139,8 @@ func gd_on_extension_script_categorization(p0 C.uintptr_t, p1 C.uintptr_t) C.boo
 }
 
 //export gd_on_extension_script_get_property_type
-func gd_on_extension_script_get_property_type(p0 C.uintptr_t, p1 *C.CallError) C.uint32_t {
-	return C.uint32_t(gdextension.On.Extension.Script.PropertyType(gdextension.StringName{gdextension.Pointer(p0)}, gdextension.Returns[gdextension.CallError](p1)))
+func gd_on_extension_script_get_property_type(p0 C.uintptr_t, name C.StringName, p1 *C.CallError) C.VariantType {
+	return C.VariantType(gdextension.On.Extension.Script.PropertyType(gdextension.StringName{gdextension.Pointer(name)}, gdextension.Returns[gdextension.CallError](p1)))
 }
 
 //export gd_on_extension_script_get_owner

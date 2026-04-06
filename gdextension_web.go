@@ -526,7 +526,7 @@ type (
 //go:wasmimport gd callable_create
 func gd_callable_create(id CallableID, object ObjectID, result Pointer)
 
-func MakeCallable(impl CallableImplementation, obj ObjectID) Callable {
+func MakeCallable(impl ExtensionCallable, obj ObjectID) Callable {
 	result := makeResult(SizeCallable)
 	gd_callable_create(callables.New(impl), obj, Pointer(result))
 	var c Callable
@@ -569,7 +569,7 @@ func gd_on_callable_string(c CallableID) String {
 
 //go:wasmexport gd_on_callable_length
 func gd_on_callable_length(c CallableID) int64 {
-	return int64(callables.Get(c).NumIn())
+	return int64(callables.Get(c).ArgumentCount())
 }
 
 // Cross-memory helpers for transferring data between Go and engine address spaces.

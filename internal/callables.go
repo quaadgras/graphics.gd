@@ -91,11 +91,11 @@ func (c comparableCallable) UnsafeString() gdunsafe.String {
 	return gdunsafe.String(raw[0])
 }
 
-func (c comparableCallable) NumIn() int {
+func (c comparableCallable) ArgumentCount() int {
 	return reflect.TypeOf(c.fn).NumIn()
 }
 
-func (c comparableCallable) Compare(other gdunsafe.CallableImplementation) int {
+func (c comparableCallable) Compare(other gdunsafe.ExtensionCallable) int {
 	if o, ok := other.(comparableCallable); ok {
 		if c.id != nil && o.id != nil && c.id == o.id {
 			return 0
