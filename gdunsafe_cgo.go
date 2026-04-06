@@ -150,11 +150,11 @@ func (ptr PointerTo[T]) Get() T  { return *(*T)(unsafe.Pointer(ptr)) }
 func (ptr PointerTo[T]) Set(v T) { *(*T)(unsafe.Pointer(ptr)) = v }
 
 func (p PackedArray[T]) Access(idx Int) PointerTo[T] {
-	return PointerTo[T](C.gd_packed_array_access(C.uint32_t(p.Type()), C.uint64_t(p[0]), C.uint64_t(p[1]), C.int64_t(idx)))
+	return PointerTo[T](C.gd_packed_array_access(C.uint32_t(p.Type()), C.uintptr_t(p[0]), C.uintptr_t(p[1]), C.int64_t(idx)))
 }
 
 func (p PackedArray[T]) Modify(idx Int) PointerTo[T] {
-	return PointerTo[T](C.gd_packed_array_modify(C.uint32_t(p.Type()), C.uint64_t(p[0]), C.uint64_t(p[1]), C.int64_t(idx)))
+	return PointerTo[T](C.gd_packed_array_modify(C.uint32_t(p.Type()), C.uintptr_t(p[0]), C.uintptr_t(p[1]), C.int64_t(idx)))
 }
 
 func (t VariantType) Name() String {
