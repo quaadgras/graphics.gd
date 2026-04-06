@@ -12,12 +12,12 @@ import (
 
 	"graphics.gd/internal/threadsafe"
 	"graphics.gd/variant/Color"
+	"graphics.gd/variant/RID"
 	"graphics.gd/variant/Vector2"
 	"graphics.gd/variant/Vector3"
 	"graphics.gd/variant/Vector4"
 )
 
-type RID uint64
 type Int = int64
 type Variant [3]uint64
 type CallError struct {
@@ -320,16 +320,15 @@ func (p PackedArray[T]) Type() VariantType {
 
 type ExtensionInstance interface {
 	Set(StringName, Variant) bool
-	Get(StringName) Variant
+	Get(StringName) (Variant, bool)
 	HasDefault(StringName) bool
-	GetDefault(StringName) Variant
+	GetDefault(StringName) (Variant, bool)
 	PropertyList() PropertyList
 	ValidateProperty(StringName) bool
 	Notification(what int32, reverse bool)
 	UnsafeString() String
 	Reference(bool) bool
-	RID() RID
-	Free()
+	RID() RID.Any
 }
 
 type ExtensionFunction interface {
